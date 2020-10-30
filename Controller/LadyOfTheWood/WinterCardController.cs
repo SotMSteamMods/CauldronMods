@@ -1,57 +1,28 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SotMWorkshop.Controller.LadyOfTheWood
 {
-	public class CalmBeforeTheStormCardController : CardController
+	public class WinterCardController : CardController
     {
-		public CalmBeforeTheStormCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+		public WinterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
 		}
-		public override IEnumerator Play()
+		public override void AddTriggers()
 		{
-			List<int> discardedCards = new List<int>();
-			IEnumerator coroutine = this.DiscardOneOrMoreCards(discardedCards);
-			if (base.UseUnityCoroutines)
+			base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.DamageType == DamageType.Cold, new Func<DealDamageAction, IEnumerator>(this.DrawCardResponse), new TriggerType[]
 			{
-				yield return base.GameController.StartCoroutine(coroutine);
-			}
-			else
-			{
-				base.GameController.ExhaustCoroutine(coroutine);
-			}
-			IEnumerator coroutine2 = base.AddStatusEffect(new IncreaseDamageStatusEffect(discardedCards.First<int>() + 2)
-			{
-				SourceCriteria =
-				{
-					IsSpecificCard = base.CharacterCard
-				},
-				NumberOfUses = new int?(1),
-				CardDestroyedExpiryCriteria =
-				{
-					Card = base.CharacterCard
-				}
-			}, true);
-			if (base.UseUnityCoroutines)
-			{
-				yield return base.GameController.StartCoroutine(coroutine2);
-			}
-			else
-			{
-				base.GameController.ExhaustCoroutine(coroutine2);
-			}
-			yield break;
+				TriggerType.DrawCard
+			}, TriggerTiming.After, null, false, true, new bool?(false), false, null, null, false, false);
 		}
 
-		protected IEnumerator DiscardOneOrMoreCards(List<int> storedResults)
+		private IEnumerator DrawCardResponse(DealDamageAction dd)
 		{
-			if (base.HeroTurnTakerController.HasCardsInHand)
+			if (dd.DidDealDamage)
 			{
-				List<DiscardCardAction> storedResultsDiscard = new List<DiscardCardAction>();
-				IEnumerator coroutine = base.SelectAndDiscardCards(base.HeroTurnTakerController, null, false, new int?(0), storedResultsDiscard, false, null, null, null, SelectionType.DiscardCard, null);
+				IEnumerator coroutine = base.DrawCard(null, false, null, true);
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);
@@ -60,22 +31,7 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 				{
 					base.GameController.ExhaustCoroutine(coroutine);
 				}
-				storedResults.Add(base.GetNumberOfCardsDiscarded(storedResultsDiscard));
-				storedResultsDiscard = null;
-				storedResultsDiscard = null;
-				storedResultsDiscard = null;
-			}
-			else
-			{
-				IEnumerator coroutine2 = base.GameController.SendMessageAction("Lady of the Wood has no cards in his hand to discard.", Priority.High, base.GetCardSource(null), null, false);
-				if (base.UseUnityCoroutines)
-				{
-					yield return base.GameController.StartCoroutine(coroutine2);
-				}
-				else
-				{
-					base.GameController.ExhaustCoroutine(coroutine2);
-				}
+				yield break;
 			}
 			yield break;
 		}
