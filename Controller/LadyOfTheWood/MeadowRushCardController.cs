@@ -12,6 +12,7 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 		}
 		public override IEnumerator Play()
 		{
+			//Draw a card.
 			IEnumerator coroutine = base.DrawCard(null, false, null, true);
 			if (base.UseUnityCoroutines)
 			{
@@ -21,6 +22,8 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 			{
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
+
+			//Search your deck for a Season card. Put it into your hand, then shuffle your deck.
 			IEnumerator coroutine2 = base.SearchForCards(this.DecisionMaker, true, false, new int?(1), 1, new LinqCardCriteria((Card c) => this.IsSeason(c), "season", true, false, null, null, false), false, true, false, false, null, false, null, null);
 			if (base.UseUnityCoroutines)
 			{
@@ -30,6 +33,8 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 			{
 				base.GameController.ExhaustCoroutine(coroutine2);
 			}
+
+			//You may play a card.
 			IEnumerator coroutine3 = base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, null, null, false, false, true, null);
 			if (base.UseUnityCoroutines)
 			{
@@ -42,6 +47,11 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 			yield break;
 		}
 
+		/// <summary>
+		/// Check if a given card is a Season
+		/// </summary>
+		/// <param name="card">card to check</param>
+		/// <returns></returns>
 		private bool IsSeason(Card card)
 		{
 			return card.DoKeywordsContain("season", false, false);

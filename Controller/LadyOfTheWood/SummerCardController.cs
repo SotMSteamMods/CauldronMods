@@ -11,6 +11,7 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 		}
 		public override void AddTriggers()
 		{
+			//Increase fire damage dealt by LadyOfTheWood by 2
 			Func<DealDamageAction, int> amountToIncrease = (DealDamageAction dd) => 2;
 			base.AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.DamageType == DamageType.Fire, amountToIncrease, false);
 		}

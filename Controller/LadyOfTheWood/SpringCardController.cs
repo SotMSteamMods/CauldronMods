@@ -10,6 +10,7 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 		}
 		public override void AddTriggers()
 		{
+			//Whenever LadyOfTheWood deals toxic damage to a target, she regains that much HP.
 			base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.DamageType == DamageType.Toxic, (DealDamageAction dd) => base.GameController.GainHP(base.CharacterCard, new int?(dd.Amount), null, null, base.GetCardSource(null)), new TriggerType[]
 			{
 				TriggerType.GainHP

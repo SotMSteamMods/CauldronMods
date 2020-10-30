@@ -12,6 +12,7 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 		}
 		public override IEnumerator Play()
 		{
+			//LadyOfTheWood deals 1 target 3 fire damage or up to 3 targets 1 lightning damage each.
 			List<Function> list = new List<Function>();
 			list.Add(new Function(this.DecisionMaker, "Deal 1 target 3 fire damage", SelectionType.DealDamage, () => base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 3, DamageType.Fire, new int?(1), false, new int?(1), false, false, false, null, null, null, null, null, false, null, null, false, null, base.GetCardSource(null)), null, null, "Deal 1 target 3 fire damage"));
 			list.Add(new Function(this.DecisionMaker, "Deal up to 3 targets 1 lightning damage each", SelectionType.DealDamage, () => base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Lightning, new int?(3), false, new int?(0), false, false, false, null, null, null, null, null, false, null, null, false, null, base.GetCardSource(null)), new bool?(true), null, "Deal up to 3 targets 1 lightning damage each"));

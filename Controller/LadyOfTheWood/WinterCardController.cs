@@ -12,6 +12,7 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 		}
 		public override void AddTriggers()
 		{
+			//Whenever LadyOfTheWood deals cold damage to a target, draw a card.
 			base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.DamageType == DamageType.Cold, new Func<DealDamageAction, IEnumerator>(this.DrawCardResponse), new TriggerType[]
 			{
 				TriggerType.DrawCard
@@ -20,6 +21,7 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 
 		private IEnumerator DrawCardResponse(DealDamageAction dd)
 		{
+			//Whenever LadyOfTheWood deals cold damage to a target, draw a card.
 			if (dd.DidDealDamage)
 			{
 				IEnumerator coroutine = base.DrawCard(null, false, null, true);

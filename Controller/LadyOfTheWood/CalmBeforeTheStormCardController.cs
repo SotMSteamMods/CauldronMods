@@ -13,6 +13,7 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 		}
 		public override IEnumerator Play()
 		{
+			//Discard any number of cards.
 			List<int> discardedCards = new List<int>();
 			IEnumerator coroutine = this.DiscardOneOrMoreCards(discardedCards);
 			if (base.UseUnityCoroutines)
@@ -23,6 +24,7 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 			{
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
+			//Increase the next damage dealt by {LadyOfTheWood} by X, where X is 2 plus the number of cards discarded this way.
 			IEnumerator coroutine2 = base.AddStatusEffect(new IncreaseDamageStatusEffect(discardedCards.First<int>() + 2)
 			{
 				SourceCriteria =
@@ -46,6 +48,11 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 			yield break;
 		}
 
+		/// <summary>
+		/// Discard one or more cards
+		/// </summary>
+		/// <param name="storedResults">a list containing the number of cards discarded</param>
+		/// <returns></returns>
 		protected IEnumerator DiscardOneOrMoreCards(List<int> storedResults)
 		{
 			if (base.HeroTurnTakerController.HasCardsInHand)
@@ -61,9 +68,6 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 					base.GameController.ExhaustCoroutine(coroutine);
 				}
 				storedResults.Add(base.GetNumberOfCardsDiscarded(storedResultsDiscard));
-				storedResultsDiscard = null;
-				storedResultsDiscard = null;
-				storedResultsDiscard = null;
 			}
 			else
 			{

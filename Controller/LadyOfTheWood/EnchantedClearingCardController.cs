@@ -10,6 +10,7 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 		}
 		public override void AddTriggers()
 		{
+			//Reduce damage dealt to Lady of the Wood by 1
 			base.AddReduceDamageTrigger((Card c) => c == base.CharacterCard, 1);
 		}
 	}

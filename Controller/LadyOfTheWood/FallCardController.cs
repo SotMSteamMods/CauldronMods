@@ -12,6 +12,7 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 		}
 		public override void AddTriggers()
 		{
+			//Whenever LadyOfTheWood deals lightning damage to a target, reduce damage dealt by that target by 1 until the start of your next turn.
 			base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.DamageType == DamageType.Lightning, new Func<DealDamageAction, IEnumerator>(this.ReduceDamageResponse), new TriggerType[]
 			{
 				TriggerType.ReduceDamage
@@ -20,6 +21,7 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 
 		private IEnumerator ReduceDamageResponse(DealDamageAction dd)
 		{
+			//Reduce damage dealt by that target by 1 until the start of your next turn.
 			if (dd.DidDealDamage)
 			{
 				ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(base.GetPowerNumeral(2, 1));

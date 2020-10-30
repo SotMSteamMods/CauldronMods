@@ -13,6 +13,7 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 
 		public override void AddTriggers()
 		{
+			//The first time LadyOfTheWood would be dealt 1 damage each turn, she regains 1 HP instead.
 			base.AddPreventDamageTrigger((DealDamageAction dd) => dd.Target == base.CharacterCard && dd.Amount == 1 && !base.IsPropertyTrue(base.GeneratePerTargetKey("FirstDamageTakenThisTurn", dd.Target, null), null), new Func<DealDamageAction, IEnumerator>(this.PreventDamageResponse), new TriggerType[]
 			{
 				TriggerType.GainHP
@@ -21,6 +22,7 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 
 		public override IEnumerator UsePower(int index = 0)
 		{
+			//Draw a card.
 			IEnumerator coroutine = base.DrawCard(null, false, null, true);
 			if (base.UseUnityCoroutines)
 			{
@@ -35,6 +37,7 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 
 		private IEnumerator PreventDamageResponse(DealDamageAction dd)
 		{
+			//Indicate that this damage has been taken and regain 1 HP
 			base.SetCardPropertyToTrueIfRealAction(base.GeneratePerTargetKey("FirstDamageTakenThisTurn", dd.Target, null), null);
 			IEnumerator coroutine = base.GameController.GainHP(base.CharacterCard, new int?(dd.Amount), null, null, base.GetCardSource(null));
 			if (base.UseUnityCoroutines)

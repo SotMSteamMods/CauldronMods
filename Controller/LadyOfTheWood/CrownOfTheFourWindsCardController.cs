@@ -14,6 +14,7 @@ namespace SotMWorkshop.Controller.LadyOfTheWood
 
 		public override IEnumerator UsePower(int index = 0)
 		{
+			//LadyOfTheWood deals 1 target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage.
 			List<DealDamageAction> targets = new List<DealDamageAction>();
 			IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Toxic, new int?(1), false, new int?(1), false, false, false, null, null, targets, null, null, false, null, null, false, null, base.GetCardSource(null));
 			IEnumerator secondDamage = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Fire, new int?(1), false, new int?(1), false, false, false, (Card c) => !(from d in targets
