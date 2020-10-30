@@ -1,0 +1,63 @@
+﻿{
+   "name":"TheChef",
+   "kind":"Hero",
+   "expansionIdentifier":"Experimental",
+   "initialCardIdentifiers":[
+      "TheChefCharacter"
+   ],
+   "cards":[
+      {
+         "identifier":"TheChefCharacter",
+         "count":1,
+         "title":"The Chef",
+         "alternateTitle":"The Chef",
+         "body":"Chef's Touch",
+         "backgroundColor":"C87243",
+         "foilBackgroundColor":"C87243",
+         "character":true,
+         "powers":[  
+            "{TheChefCharacter} can use the power on 1 ingredient card in play, using the garnish."
+         ],
+         "icons":[  
+            "HasPower"
+         ],
+         "hitpoints":28,
+         "nemesisIdentifiers":[  
+            "TheChef"
+         ],
+         "incapacitatedAbilities":[  
+            "Roast food.",
+            "Boil food.",
+            "Sautee food."
+         ],
+         "flippedIcons":[  
+         ],
+         "complexity":2,
+         "openingLines":{  
+            "default": "Orders up!",
+         }
+      },
+      {  
+         "identifier":"Potatoes",
+         "count":40,
+         "title":"Potatoes",
+         "keywords":[  
+            "ingredient"
+         ],
+         "powers":[  
+            "Deal 1 target 1 melee damage."
+         ],
+         "icons":[  
+            "DealDamageMelee"
+         ],
+         "flavorQuotes":[  
+            {  
+               "identifier":"TheChef",
+               "text":"Garnish: This card deals 3 damage instead of 1 damage."
+            }
+         ],
+         "flavorReference":"The Chef"
+      }
+   ]
+}	
+

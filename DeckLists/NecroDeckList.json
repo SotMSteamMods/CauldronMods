@@ -1,0 +1,424 @@
+﻿{
+   "name":"Necro",
+   "kind":"Hero",
+   "expansionIdentifier":"Cauldron",
+   "initialCardIdentifiers":[
+      "NecroCharacter"
+   ],
+   "cards":[
+      {
+         "identifier":"NecroCharacter",
+         "count":1,
+         "title":"Necro",
+         "body":"Blight",
+         "backgroundColor":"936895",
+         "foilBackgroundColor":"FDDF42",
+         "character":true,
+         "powers":[
+            "{Necro} deals 1 target 1 toxic damage or 1 Undead target 2 toxic damage."
+         ],
+         "icons":[
+            "HasPower",
+         ],
+         "hitpoints":24,
+         "nemesisIdentifiers":[
+            "Necro"
+         ],
+         "incapacitatedAbilities":[
+            "One hero may deal himself 2 toxic damage to draw 2 cards now.",
+            "One hero may discard up to 3 cards, then regain 2 HP for each card discarded.",
+            "Select a hero target. Increase damage dealt by that target by 3 and increase damage dealt to that target by 2 until the start of your next turn."
+         ],
+         "flippedIcons":[
+            "IncreaseDamageDealt",
+            "DrawCardNow",
+            "Discard",
+            "GainHP"
+         ],
+		 "complexity":3,
+		 "openingLines":
+		 {
+		    "default": "Join the rest of my undead!",
+		   
+         }
+      },
+	  {
+         "identifier":"DarkPact",
+         "count":2,
+         "title":"Dark Pact",
+         "keywords":[
+            "ongoing",
+			"limited",
+            "ritual"
+         ],
+         "powers":[
+         	"Put an undead card from hand into play."
+         ],
+         "body":[
+         	"Whenever an undead target is destroyed, draw a card."
+         ],
+         "icons":[
+         	"PlayCardNow",
+			"DrawCardNow"
+         ],
+         "flavorQuotes":[
+            {	
+				"identifier":"Necro",
+				"text":"As his minion exploded into{BR}demonic fire, Necro absorbed its{BR}tainted memories.",
+                "omitQuotationMarks":true
+			}
+         ],
+         "flavorReference":""
+      },
+      {
+         "identifier":"BookOfTheDead",
+         "count":4,
+         "title":"Book of the Dead",
+         "keywords":[
+            "one-shot"
+         ],
+         "body":[
+         	"Search your deck or trash for a ritual and put it into play or into your hand. If you searched your deck, shuffle your deck.",
+            "You may draw a card."
+
+         ],
+         "icons":[
+         	"Search",
+            "DrawCardNow"
+         ],
+         "flavorQuotes":[
+            {	
+            	"identifier":"Necro",
+				"text":"May its knowledge guide me."
+			}
+         ],
+         "flavorReference":"Necro, Shadowfall #2"
+      },
+      {
+         "identifier":"Ghoul",
+         "count":3,
+         "title":"Ghoul",
+         "hitpoints":4,
+         "hitpointsText":"#",
+         "keywords":[
+            "undead",
+         ],
+         "body":[
+         	"At the end of your turn, this card deals the non-undead target with the second lowest HP 2 toxic damage.",
+            "When this card enters play, # = the number of rituals in play plus 2."
+         ],
+         "icons":[
+         	"DealDamageToxic"
+         ],
+         "flavorQuotes":[
+            {	
+            	"identifier":"Necro",
+				"text":"Not something I was hoping{BR}to bump into in a dark alley."
+			}
+         ],
+         "flavorReference":"Nightmist, Tower of Night #100"
+      },
+      {
+         "identifier":"ChaoticSummon",
+         "count":4,
+         "title":"Chaotic Summon",
+         "keywords":[
+            "one-shot"
+         ],
+         "body":[
+         	"Put the top 2 cards of your deck into play."
+         ],
+         "icons":[
+         	"PlayCardNow"
+         ],
+         "flavorQuotes":[
+            {	
+            	"identifier":"Necro",
+				"text":"Stand back, mortals. What comes next{BR}may be unpleasant."
+			}
+         ],
+         "flavorReference":"Necro, Book of the Dead #411"
+      },
+      {
+         "identifier":"BackfireHex",
+         "count":2,
+         "title":"Backfire Hex",
+         "keywords":[
+            "one-shot"
+         ],
+         "body":[
+         	"You may destroy an ongoing card.",
+            "Put an undead card from the trash into play."
+         ],
+         "icons":[
+         	"DestroyOngoing",
+            "PlayCardNow"
+         ],
+         "flavorQuotes":[
+            {	
+            	"identifier":"Necro",
+				"text":"For every action there is a reaction."
+			}
+         ],
+         "flavorReference":"Necro, Shadowfall #2"
+      },
+      {
+         "identifier":"BloodRite",
+         "count":2,
+         "title":"Blood Rite",
+         "keywords":[
+            "ongoing",
+			"limited",
+			"ritual"
+         ],
+         "body":[
+         	"When an Undead target is destroyed, all non-undead hero targets regain 2 HP."
+         ],
+         "icons":[
+         	"GainHP"
+         ],
+         "flavorQuotes":[
+            {	
+            	"identifier":"Necro",
+				"text":"May this blessing atone for my sins."
+			}
+         ],
+         "flavorReference":"Necro, Book of the Dead #470"
+      },
+      {
+         "identifier":"Hellfire",
+         "count":2,
+         "title":"Hellfire",
+         "keywords":[
+            "ongoing",
+			"limited",
+			"ritual"
+         ],
+         "body":[
+         	"Whenever an Undead target is destroyed, {Necro} deals 1 non-hero target 3 infernal damage."
+         ],
+         "icons":[
+         	"DealDamageInfernal"
+         ],
+         "flavorQuotes":[
+            {	
+            	"identifier":"Necro",
+				"text":"Now that is black and ancient magic.{BR}Only ancient to some."
+	
+			}
+         ],
+         "flavorReference":"The Caudron One-Shot"
+      },
+      {
+         "identifier":"CorpseExplosion",
+         "count":2,
+         "title":"Corpse Explosion",
+         "keywords":[
+            "ongoing",
+			"limited",
+			"ritual"
+         ],
+         "body":[
+         	"Whenever an Undead target is destroyed, {Necro} deals 2 toxic damage to all villain targets."
+         ],
+         "icons":[
+         	"DealDamageToxic"
+         ],
+         "flavorQuotes":[
+            {	
+            	"identifier":"Necro",
+				"text":"Boom",
+                "omitQuotationMarks":true
+			}
+         ],
+         "flavorReference":""
+      },
+      {
+         "identifier":"FinalRitual",
+         "count":2,
+         "title":"Final Ritual",
+         "keywords":[
+            "one-shot"
+         ],
+         "body":[
+         	"Search your trash for up to 2 Undead and put them into play. {Necro} deals each of those cards 2 toxic damage.",
+			"Then {Necro} deals himself X toxic damage, where X is 2 times the number of cards put into play this way."
+         ],
+         "icons":[
+         	"PlayCardNow",
+            "DealDamageToxic"
+         ],
+         "flavorQuotes":[
+            {	
+            	"identifier":"Necro",
+				"text":"The pain is good.{BR}...And they're here to spread it around?"
+			}
+         ],
+         "flavorReference":"Book of the Dead #575"
+      },
+      {
+         "identifier":"GrandSummon",
+         "count":2,
+         "title":"Grand Summon",
+         "keywords":[
+            "one-shot"         ],
+         "body":[
+         	"Reveal cards from the top of your deck until you reveal 2 Undead cards. Put 1 into play and 1 into the trash.",
+            "Shuffle the other revealed cards back into your deck."
+         ],
+         "icons":[
+         	"PlayCardNow"
+         ],
+         "flavorQuotes":[
+            {	
+            	"identifier":"Necro",
+				"text":"You summon your own doom?"
+			}
+         ],
+         "flavorReference":"Set, Book of the Dead #1101"
+      },
+      {
+         "identifier":"PossessedCorpse",
+         "count":2,
+         "title":"Possessed Corpse",
+         "hitpoints":4,
+         "hitpointsText":"#",
+         "keywords":[
+            "undead"
+         ],
+         "body":[
+         	"At the end of your turn, this card deals the non-undead hero target with the lowest HP 2 infernal damage.",
+			"When this card enters play, # = the number of rituals in play plus 2."
+         ],
+         "icons":[
+         	"DealDamageInfernal"
+         ],
+         "flavorQuotes":[
+            {	
+            	"identifier":"Necro",
+				"text":"Corpse of what?"
+			}
+         ],
+         "flavorReference":"Detective Sedrick, Book of the Dead #310"
+      },
+      {
+         "identifier":"Demonic Imp",
+         "count":2,
+         "title":"Demonic Imp",
+         "hitpoints":4,
+         "hitpointsText":"#",
+         "keywords":[
+            "undead"
+         ],
+         "body":[
+         	"At the end of your turn, destroy 1 hero equipment or ongoing card.",
+			"When this card is destroyed, one player may play a card.",
+			"When this card enters play, # = the number of rituals in play plus 2."
+         ],
+         "icons":[
+			"PlayCardNow",
+            "DestroyOngoing",
+            "DestroyEquipment"
+         ],
+         "flavorQuotes":[
+            {	
+            	"identifier":"Necro",
+				"text":"They are troublesome fuel for his{BR}necromantic fire."
+			}
+         ],
+         "flavorReference":"The Stranger, Book of the Dead #576"
+      },
+      {
+         "identifier":"TaintedBlood",
+         "count":2,
+         "title":"Tainted Blood",
+         "keywords":[
+            "ongoing",
+            "limited"
+         ],
+         "body":[
+         	"At the end of your draw phase, {Necro} deals the undead target with the lowest HP 2 irreducible toxic damage."
+         ],
+         "icons":[
+            "DealDamageToxic"
+         ],
+         "flavorQuotes":[
+            {	
+            	"identifier":"Necro",
+				"text":"Tis not a sickness, but a curse."
+			}
+         ],
+         "flavorReference":"Baccarat, Book of the Dead #620"
+      },
+       {
+         "identifier":"Talismaan",
+         "count":2,
+         "title":"Talisman",
+         "keywords":[
+            "equipment"
+         ],
+         "body":[
+            "Place this card next to a target. That target is immune to damage from undead targets."
+         ],
+         "icons":[
+         ],
+         "flavorQuotes":[
+            {	
+            	"identifier":"Necro",
+				"text":"This will protect you from my {BR}horrors."
+			}
+         ],
+         "flavorReference":"Necro, Tome of the Bizarre #35"
+      },
+       {
+         "identifier":"Abomination",
+         "count":2,
+         "title":"Abomination",
+         "hitpoints":6,
+         "hitpointsText":"#",
+         "keywords":[
+            "undead"
+         ],
+         "body":[
+            "At the end of your turn, this card deals all non-Undead hero targets 2 toxic damage.",
+            "When this card is destroyed, all players draw a card.",
+            "When this card enters play, # = the number of rituals in play plus 6."
+         ],
+         "icons":[
+           "DealDamageToxic"
+         ],
+         "flavorQuotes":[
+            {	
+            	"identifier":"Necro",
+				"text":"Mmm, leftovers.."
+			}
+         ],
+         "flavorReference":"Necro, Tower of Night #83"
+      },
+       {
+         "identifier":"NecroZombie",
+         "count":5,
+         "title":"Zombie",
+         "hitpoints":2,
+         "hitpointsText":"#",
+         "keywords":[
+            "undead"
+         ],
+         "body":[
+            "At the end of your turn, this card deals the non-Undead hero target with the highest HP 2 toxic damage.",
+            "When this card enters play, # = the number of rituals in play plus 2."
+         ],
+         "icons":[
+         "DealDamageToxic"
+         ],
+         "flavorQuotes":[
+            {	
+            	"identifier":"Necro",
+				"text":"Of course it doesn't speak.{BR}It doesn't have the brains."
+			}
+         ],
+         "flavorReference":"Necro, Tower of Night #15"
+      }    
+   ]
+}	
+
