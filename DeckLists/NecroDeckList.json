@@ -302,7 +302,7 @@
          "flavorReference":"Detective Sedrick, Book of the Dead #310"
       },
       {
-         "identifier":"Demonic Imp",
+         "identifier":"DemonicImp",
          "count":2,
          "title":"Demonic Imp",
          "hitpoints":4,
@@ -351,7 +351,7 @@
          "flavorReference":"Baccarat, Book of the Dead #620"
       },
        {
-         "identifier":"Talismaan",
+         "identifier":"Talisman",
          "count":2,
          "title":"Talisman",
          "keywords":[
