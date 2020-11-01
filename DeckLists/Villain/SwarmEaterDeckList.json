@@ -1,0 +1,507 @@
+{
+    "name": "Swarm Eater",
+    "kind": "Villain",
+    "expansionIdentifier": "CauldronExperimental",
+    "initialCardIdentifiers": [
+        "SwarmEaterCharacter"
+    ],
+    "cards": [
+        {
+            "identifier": "SwarmEaterCharacter",
+            "count": 1,
+            "title": "Swarm Eater",
+            "keywords": [
+                "villain"
+            ],
+            "body": "Power Hungry",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 80,
+            "nemesisIdentifiers": [
+                "Cypher"
+            ],
+            "setup": [
+                "At the start of the game, put {SwarmEater}'s villain character cards into play, 'Power Hungry' side up. Reveal cards from the top of the villain deck until {H - 1} targets, 2 traits, and Single-Minded Pursuit are revealed. Put them into play, and shuffle the rest of the revealed cards back into the villain deck."
+            ],
+            "gameplay": [
+                "If Single-Minded Pursuit leaves play, flip {SwarmEater}'s villain character cards.",
+                "At the start of the villain turn, {SwarmEater} deals the pursued target 3 psychic damage.",
+                "Whenever a pursued hero deals damage to a target other than {SwarmEater}, you may move Single-Minded Pursuit next to that target."
+            ],
+            "advanced": "Increase damage dealt by {SwarmEater} to environment targets by 1.",
+            "icons": [
+                "StartOfTurnAction"
+            ],
+            "advancedIcons": [],
+            "flippedBody": "Assimiliating Nanoswarm",
+            "flippedGameplay": [
+                "At the start of the villain turn, {SwarmEater} deals the target other than itself with the lowest HP 2 melee damage.",
+                "Whenever Single-Minded Pursuit enters play, flip {SwarmEater}'s villain character cards.",
+                "Whenever a villain card is play {SwarmEater} deals the non-hero target other than itself with the lowest HP 3 melee damage."
+            ],
+            "flippedAdvanced": "Whenever {SwarmEater} destroys a villain target, play the top card of the villain deck.",
+            "flippedIcons": [],
+            "flippedAdvancedIcons": [],
+            "difficulty": 1,
+            "openingLines": {
+                "default": "default placeholder",
+                "CypherCharacter": "Cypher placeholder",
+                "FirstResponseCypherCharacter": "First Response Cypher placeholder",
+                "SwarmingProtocolCypherCharacter": "Swarming Protocol Cypher placeholder"
+            }
+        },
+        {
+            "identifier": "AbsorbedNanites",
+            "count": 1,
+            "title": "Absorbed Nanites",
+            "keywords": [
+                "trait"
+            ],
+            "icons": [
+                "Indestructible"
+            ],
+            "body": [
+                "This card and cards beneath it are indestructible.",
+                "Whenever {SwarmEater} destroys a villain target, put it beneath this card. Activate the Absorb text of all cards beneath this one. Ignore all other game text on those cards."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Cricket",
+                    "text": "Could it do that before?"
+                }
+            ],
+            "flavorReference": "Cricket, Cypher: Terminated #3"
+        },
+        {
+            "identifier": "BehindYou",
+            "count": 1,
+            "title": "“Behind you!”",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "DealDamageMelee",
+                "PlayCardNow"
+            ],
+            "body": [
+                "Whenever a target enters play, {SwarmEater} deals that target 1 melee damage.",
+                "When this card is destroyed, play the top card of the villain deck."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheKnight",
+                    "text": "My neck is beginning{BR}to cause me discomfort."
+                },
+                {
+                    "identifier": "Titan",
+                    "text": "You get used to it."
+                }
+            ],
+            "flavorReference": "Titan, Experimental One-Shot"
+        },
+        {
+            "identifier": "BladeAug",
+            "count": 2,
+            "title": "Blade Aug",
+            "keywords": [
+                "nanomutant"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageLightning"
+            ],
+            "body": [
+                "At the end of the villain turn, this card deals the hero target with the highest HP 2 lightning damage.",
+                "Absorb: at the end of the villain turn, {SwarmEater} deals the target other than itself with the highest HP 2 lightning damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "OmnitronXI",
+                    "text": "He is tracking down nanite-infected lifeforms{BR}and consuming their abilities."
+                }
+            ],
+            "flavorReference": "Omnitron-XI, The Coming of the Swarm #5",
+            "hitpoints": 4
+        },
+        {
+            "identifier": "ConvertedBiomass",
+            "count": 1,
+            "title": "Converted Biomass",
+            "keywords": [
+                "trait"
+            ],
+            "icons": [
+                "Indestructible",
+                "GainHP"
+            ],
+            "body": [
+                "This card and cards beneath it are indestructible.",
+                "Whenever {SwarmEater} destroys an environment target, put it beneath this card. Cards beneath this one have no game text.",
+                "At the end of the villain turn, {SwarmEater} regains X times 2 HP, where X is the number of cards beneath this one."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "SwarmEater",
+                    "text": "I...hunger."
+                }
+            ],
+            "flavorReference": "Swarm Eater, Department of Secrets #6"
+        },
+        {
+            "identifier": "FireAug",
+            "count": 1,
+            "title": "Fire Aug",
+            "keywords": [
+                "nanomutant"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageFire",
+                "Discard"
+            ],
+            "body": [
+                "At the end of the villain turn this card deals the hero target with the second highest HP {H - 1} fire damage and each player must discard a card.",
+                "Absorb: at the start of the villain turn, {H - 2} players must discard a card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Ripfire",
+                    "text": "Fire eats everything."
+                }
+            ],
+            "flavorReference": "Ripfire, The Coming of the Swarm #3",
+            "hitpoints": 14
+        },
+        {
+            "identifier": "FollowTheScreams",
+            "count": 2,
+            "title": "Follow the Screams",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DealDamageProjectile",
+                "DealDamageMelee"
+            ],
+            "body": [
+                "{SwarmEater} deals the {H} non-character targets with the lowest HP 4 irreducible projectile damage each.",
+                "{SwarmEater} deals the hero target with the highest HP {H} melee damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Cricket",
+                    "text": "I don't think super-hearing{BR}is going to be necessary."
+                }
+            ],
+            "flavorReference": "Cricket, Windmill City #31"
+        },
+        {
+            "identifier": "HuntingGrounds",
+            "count": 1,
+            "title": "Hunting Grounds",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "ReduceDamageTaken",
+                "IncreaseDamageDealt",
+                "PlayCardNow"
+            ],
+            "body": [
+                "Reduce damage dealt to {SwarmEater} by environment targets by 1.",
+                "Increase damage dealt by {SwarmEater} to environment targets by 1.",
+                "Whenever {SwarmEater} destroys a target, play the top card of the environment deck."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "ChronoRanger",
+                    "text": "We're all on the menu tonight."
+                }
+            ],
+            "flavorReference": "Chrono-Ranger, Department of Secrets #117"
+        },
+        {
+            "identifier": "InsatiableCharge",
+            "count": 2,
+            "title": "Insatiable Charge",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DealDamageMelee",
+                "DestroyOngoing",
+                "DestroyEquipment"
+            ],
+            "body": "{SwarmEater} deals each other target 2 melee damage. For each target destroyed by {SwarmEater} this way, destroy 1 hero ongoing or equipment card.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Cypher",
+                    "text": "The more he eats, the{BR}more dangerous he becomes."
+                }
+            ],
+            "flavorReference": "Cypher, Halcyon Crash Limited Series #1"
+        },
+        {
+            "identifier": "JumperAug",
+            "count": 1,
+            "title": "Jumper Aug",
+            "keywords": [
+                "nanomutant"
+            ],
+            "icons": [
+                "ReduceDamageTaken",
+                "EndOfTurnAction",
+                "DealDamageMelee"
+            ],
+            "body": [
+                "Reduce damage dealt to this card by non-villain cards by 1.",
+                "At the end of the villain turn this card deals the 2 hero targets with the lowest HP {H - 2} melee damage each.",
+                "Absorb: reduce damage dealt to {SwarmEater} by 1."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Longjump",
+                    "text": "HeeheeheeAMBUSH!"
+                }
+            ],
+            "flavorReference": "Longjump, The Coming of the Swarm #2",
+            "hitpoints": 13
+        },
+        {
+            "identifier": "LasherAug",
+            "count": 1,
+            "title": "Lasher Aug",
+            "keywords": [
+                "nanomutant"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageProjectile",
+                "DestroyOngoing"
+            ],
+            "body": [
+                "At the end of the villain turn this card deals the hero target with the highest HP {H} projectile damage and destroys {H - 2} hero ongoing and/or equipment cards.",
+                "Absorb: at the start of the villain turn, destroy 1 hero ongoing or equipment card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Webtongue",
+                    "text": "Scream for me."
+                }
+            ],
+            "flavorReference": "Webtongue, The Coming of the Swarm #1",
+            "hitpoints": 12
+        },
+        {
+            "identifier": "NaniteCorruption",
+            "count": 2,
+            "title": "Nanite Corruption",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "DealDamageProjectile"
+            ],
+            "body": [
+                "Reveal cards from the top of the villain deck until {H - 1} targets are revealed. Put those cards into play and discard the rest.",
+                "{SwarmEater} deals the {H} targets other than itself with the lowest HP 2 projectile damage each."
+            ],
+            "flavorText": "Cypher was not the only one augmented{BR}by the release of the nanite swarm."
+        },
+        {
+            "identifier": "SingleMindedPursuit",
+            "count": 1,
+            "title": "Single-Minded Pursuit",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "IncreaseDamageDealt",
+                "DestroySelf"
+            ],
+            "body": [
+                "Play this card next to the target with the lowest HP, other than {SwarmEater}. The target next to this card is Pursued.",
+                "Increase damage dealt by {SwarmEater} by 2.",
+                "If the Pursued target leaves play, destroy this card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Titan",
+                    "text": "Advice from an old tracker: run."
+                }
+            ],
+            "flavorReference": "Titan, The Coming of the Swarm #1"
+        },
+        {
+            "identifier": "SpeedAug",
+            "count": 2,
+            "title": "Speed Aug",
+            "keywords": [
+                "nanomutant"
+            ],
+            "icons": [
+                "IncreaseDamageDealt"
+            ],
+            "body": [
+                "Increase damage dealt by villain targets by 1.",
+                "Absorb: increase damage dealt by {SwarmEater} by 1."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "SwarmEater",
+                    "text": "Your strengths will be mine."
+                }
+            ],
+            "flavorReference": "Swarm Eater, Cypher: Terminated #2",
+            "hitpoints": 7
+        },
+        {
+            "identifier": "StalkerAug",
+            "count": 1,
+            "title": "Stalker Aug",
+            "keywords": [
+                "nanomutant"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageEnergy"
+            ],
+            "body": [
+                "At the end of the villain turn this card deals each hero target except the hero with the lowest HP {H - 2} irreducible energy damage.",
+                "Absorb: At the end of the villain turn, {SwarmEater} deals each other target 1 irreducible energy damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Nighteye",
+                    "text": "Hide and seek. Our favorite."
+                }
+            ],
+            "flavorReference": "Nighteye, The Coming of the Swarm #3",
+            "hitpoints": 16
+        },
+        {
+            "identifier": "SubterranAug",
+            "count": 2,
+            "title": "Subterran Aug",
+            "keywords": [
+                "nanomutant"
+            ],
+            "icons": [
+                "StartOfTurnAction",
+                "ReduceDamageTaken"
+            ],
+            "body": [
+                "At the start of the villain turn, put a random target from the villain trash into play.",
+                "Absorb: The first time {SwarmEater} would be dealt damage each turn, reduce that damage by 1."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Titan",
+                    "text": "Dig deep enough and you're bound to{BR}find somethin' you won't like."
+                }
+            ],
+            "flavorReference": "Titan, Department of Secrets #24",
+            "hitpoints": 6
+        },
+        {
+            "identifier": "UpdatedPriorities",
+            "count": 3,
+            "title": "Updated Priorities",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Search",
+                "PlayCardNow"
+            ],
+            "body": [
+                "Search the villain deck and trash for Single-Minded Pursuit and put it into play. If you searched the deck, shuffle it.",
+                "Play the top card of the villain deck."
+            ],
+            "flavoText": "“I will absorb your power! MWAHA!” he{BR}cried, as he ran past Cypher and toward{BR}the T-Rex."
+        },
+        {
+            "identifier": "VenomAug",
+            "count": 1,
+            "title": "Venom Aug",
+            "keywords": [
+                "nanomutant"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageProjectile",
+                "DealDamageToxic"
+            ],
+            "body": [
+                "At the end of the villain turn this card deals the hero target with the highest HP {H} projectile damage. Any target dealt damage this way deals itself 1 toxic damage.",
+                "Absorb: whenever {SwarmEater} deals damage to another target, that target deals itself 1 toxic damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Viledart",
+                    "text": "We've all got new tricksss now!"
+                }
+            ],
+            "flavorReference": "Viledart, The Coming of the Swarm #2",
+            "hitpoints": 15
+        }
+    ],
+    "promoCards": [
+        {
+            "identifier": "SwarmEaterCharacter",
+            "promoIdentifier": "DistributedHivemindSwarmEaterCharacter",
+            "count": 1,
+            "title": "Swarm Eater",
+            "promoTitle": "Swarm Eater: Distributed Hivemind",
+            "keywords": [
+                "villain"
+            ],
+            "body": "Distributed Hivemind",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 80,
+            "nemesisIdentifiers": [
+                "Cypher"
+            ],
+            "setup": [
+                "At the start of the game, put {SwarmEater}'s villain character cards into play, 'Distributed Hivemind' side up. Search the villain deck for Converted Biomass and Absorbed Nanites and remove them from the game. Shuffle the villain deck."
+            ],
+            "gameplay": [
+                "Whenever a villain target would deal damage to another villain target, redirect that damage to the hero target with the highest HP. When a villain target enters play, flip {SwarmEater}'s villain character cards.",
+                "Activate the Absorb text of all cards beneath villain targets, treating {SwarmEater}'s name as the name of that target. Ignore all other game text on those cards and destroy them when that target leaves play.",
+                "At then end of the villain turn, if there are no nanomutants in play, play the top card of the villain deck."
+            ],
+            "advanced": "Single-Minded Pursuit is indestructible.",
+            "icons": [
+                "RedirectDamage",
+                "PlayCardNow"
+            ],
+            "advancedIcons": [
+                "Indestructible"
+            ],
+            "flippedBody": "Colony Upgrades",
+            "flippedGameplay": [
+                "When {SwarmEater} flips to this side, discard cards from the top of the villain deck until a target is discarded.",
+                "Put the discarded target beneath the villain target that just entered play. Then flip {SwarmEater}'s character cards."
+            ],
+            "flippedAdvanced": "When {SwarmEater} flips to this side he regains {H - 2} HP.",
+            "flippedIcons": [
+                "Discard",
+                "Manipulate"
+            ],
+            "flippedAdvancedIcons": [
+                "GainHP"
+            ],
+            "difficulty": 1,
+            "openingLines": {
+                "default": "default placeholder",
+                "CypherCharacter": "Cypher placeholder",
+                "FirstResponseCypherCharacter": "First Response Cypher placeholder",
+                "SwarmingProtocolCypherCharacter": "Swarming Protocol Cypher placeholder"
+            }
+        }
+    ]
+}

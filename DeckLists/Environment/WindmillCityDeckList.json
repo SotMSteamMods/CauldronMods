@@ -1,0 +1,279 @@
+{
+    "name": "Windmill City",
+    "kind": "Environment",
+    "expansionIdentifier": "CauldronAdrift",
+    "backgroundColor": "FB5455",
+    "difficulty": 1,
+    "cards": [
+        {
+            "identifier": "BridgeDisaster",
+            "count": 1,
+            "title": "Bridge Disaster",
+            "keywords": [
+                "emergency"
+            ],
+            "icons": [
+                "DealDamageCold",
+                "EndOfTurnAction"
+            ],
+            "body": [
+                "When this card enters play, it deals the Responder with the lowest HP 2 cold damage.",
+                "At the end of the environment turn, this card deals the {H - 1} hero targets with the highest HP 2 cold damage each."
+            ],
+            "flavorText": "Impact grunted with the strain. “I'll{BR}worry about those cars when the{BR}bridge stops collapsing.” Cricket{BR}leaped past him, yelling “I got 'em.”"
+        },
+        {
+            "identifier": "CitywideCarnage",
+            "count": 1,
+            "title": "Citywide Carnage",
+            "keywords": [
+                "emergency"
+            ],
+            "icons": [
+                "DealDamageEnergy",
+                "EndOfTurnAction",
+                "DealDamageToxic"
+            ],
+            "body": [
+                "When this card enters play, it deals each Responder 2 energy damage.",
+                "At the end of the environment turn, this card deals each hero target 1 toxic damage and each villain target 1 energy damage."
+            ],
+            "flavorText": "“Not me this time,” shrugged Pyre,{BR}as another explosion went off two{BR}blocks away. “I'm betting it's still{BR}somehow your fault,” said Vanish."
+        },
+        {
+            "identifier": "CrackedWaterMain",
+            "count": 1,
+            "title": "Cracked Water Main",
+            "keywords": [
+                "emergency"
+            ],
+            "icons": [
+                "DealDamageCold",
+                "ReduceDamageDealt"
+            ],
+            "body": [
+                "When this card enters play, it deals 1 Responder 2 melee damage.",
+                "Reduce all damage dealt by non-environment cards by 1."
+            ],
+            "flavorText": "Whose mascot are you supposed{BR}to be? Dynamo called out.{BR}Gyrosaur, alarmed by the rising{BR}water, curled into her shell."
+        },
+        {
+            "identifier": "CrashedTanker",
+            "count": 1,
+            "title": "Crashed Tanker",
+            "keywords": [
+                "emergency"
+            ],
+            "icons": [
+                "DealDamageFire",
+                "EndOfTurnAction"
+            ],
+            "body": [
+                "When this card enters play, it deals the Responder with the lowest HP 2 fire damage.",
+                "At the end of the environment turn, this card deals the target with the second highest HP {H - 1} fire damage."
+            ],
+            "flavorText": "Windmill City's technology district{BR}had been renowned worldwide for{BR}almost a century, which attracted{BR}plenty of criminal activity."
+        },
+        {
+            "identifier": "DetectiveSedrick",
+            "count": 1,
+            "title": "Detective Sedrick",
+            "keywords": [
+                "responder"
+            ],
+            "icons": [
+                "DealDamageProjectile",
+                "StartOfTurnAction",
+                "Destroy",
+                "GainHP"
+            ],
+            "body": [
+                "When this card enters play, it deals 1 target 3 projectile damage.",
+                "At the start of the environment turn, the players may destroy 1 Emergency card. If a card is destroyed this way, 1 hero target regains 2HP."
+            ],
+            "flavorText": "“There's a right way to do things,” said{BR}the detective, blowing on his coffee.{BR}“Most of these vigilantes are hardly{BR}better than criminals themselves.”",
+            "hitpoints": 6
+        },
+        {
+            "identifier": "FrameJob",
+            "count": 1,
+            "title": "Frame Job",
+            "icons": [
+                "Manipulate",
+                "RedirectDamage",
+                "StartOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, reveal cards from the top of the environment deck until a Responder is revealed, put it into play, and discard the other revealed cards.",
+                "Redirect all damage dealt by Responders to the hero target with the highest HP.",
+                "At the start of the environment turn, destroy this card."
+            ],
+            "flavorText": "The swat team had surrounded the{BR}building and begun working their way up{BR}floor by floor. Without her mask, Kate{BR}was quickly running out of options."
+        },
+        {
+            "identifier": "Gearlock",
+            "count": 1,
+            "title": "Gearlock",
+            "keywords": [
+                "supercriminal"
+            ],
+            "icons": [
+                "ReduceDamageTaken",
+                "CounterDamage",
+                "DealDamageLightning",
+                "PlayCardNow"
+            ],
+            "body": [
+                "Reduce damage dealt to this card by {H - 1}.",
+                "Whenever this card is dealt damage, it deals the source of that damage 3 lightning damage.",
+                "When this card is reduced to 0 HP, play the top card of each hero deck in turn order."
+            ],
+            "flavorText": "No one knew where the city's criminal element obtained such advanced tech and weaponry. Not even Echelon had been able to track down the source.",
+            "hitpoints": 6
+        },
+        {
+            "identifier": "GrayPharmaceuticalBuilding",
+            "count": 1,
+            "title": "Gray Pharmaceutical Building",
+            "icons": [
+                "IncreaseDamageDealt",
+                "Destroy",
+                "StartOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "Whenever a hero uses a power that deals damage, increase that damage by 2.",
+                "After a hero uses a power on a non-character card, destroy that card.",
+                "At the start of the environment turn, destroy this card."
+            ],
+            "flavorText": "Despite its ruined public image and{BR}the loss of its CEO, the biotech{BR}giant showed no signs of changing{BR}its dangerous business practices."
+        },
+        {
+            "identifier": "InjuredWorker",
+            "count": 1,
+            "title": "Injured Worker",
+            "keywords": [
+                "emergency"
+            ],
+            "icons": [
+                "DealDamageMelee",
+                "IncreaseDamageTaken"
+            ],
+            "body": [
+                "When this card enters play, it deals the Responder wth the lowest HP 2 melee damage. Then move this card next to the hero with the highest HP.",
+                "Increase the first damage dealt to that hero each turn by 1."
+            ],
+            "flavorText": "In the chaos of the villains'{BR}coordinated attacks, the remaining{BR}First Response members ignored the{BR}city's stance on costumed heroes."
+        },
+        {
+            "identifier": "IntrepidReporter",
+            "count": 1,
+            "title": "Intrepid Reporter",
+            "keywords": [
+                "responder"
+            ],
+            "icons": [
+                "DrawCardNow",
+                "StartOfTurnAction",
+                "Destroy"
+            ],
+            "body": [
+                "When this card enters play, 2 players may each draw a card.",
+                "At the start of the environment turn, the players may destroy 1 Emergency card. If a card is destroyed this way, 1 player may draw a card."
+            ],
+            "flavorText": "As the battle raged overhead, Ellen{BR}Easter and the Channel 14 camera crew{BR}provided emergency responders with{BR}valuable information on the scene.",
+            "hitpoints": 6
+        },
+        {
+            "identifier": "IronWasp",
+            "count": 1,
+            "title": "Iron Wasp",
+            "keywords": [
+                "supercriminal"
+            ],
+            "nemesisIdentifiers": [
+                "Cricket"
+            ],
+            "icons": [
+                "StartOfTurnAction",
+                "DealDamageMelee"
+            ],
+            "body": "At the start of the environment turn, this card deals each hero target X melee damage, where X is the current HP of this card.",
+            "flavorText": "“I will destroy you all!” screamed the{BR}maniac, over the rising hum of her{BR}suit powering up. Cricket resigned herself{BR}to being late for class again.",
+            "hitpoints": 8
+        },
+        {
+            "identifier": "RainOfDebris",
+            "count": 1,
+            "title": "Rain of Debris",
+            "keywords": [
+                "emergency"
+            ],
+            "icons": [
+                "DealDamageMelee",
+                "EndOfTurnAction",
+                "Discard"
+            ],
+            "body": [
+                "When this card enters play, it deals the Responder wth the lowest HP 2 melee damage.",
+                "At the end of the environment turn, each hero may discard a card. This card deals any hero that did not discard a card this way 2 melee damage."
+            ],
+            "flavorText": "Ambuscade thumbed the detonator and{BR}waved. “Bon voyage!” To his surprise, the{BR}newcomer launched himself from the{BR}falling debris, back onto the structure."
+        },
+        {
+            "identifier": "SaveTheDay",
+            "count": 1,
+            "title": "Save the day",
+            "icons": [
+                "PlayCardNow",
+                "GainHP"
+            ],
+            "body": [
+                "When this card enters play, play the top card of the environment deck.",
+                "Whenever a hero card destroys a villain target, 1 Responder regains 1HP."
+            ],
+            "flavorText": "Mere paces from her, the twisted{BR}creatures stopped suddenly. As one,{BR}they turned to face the ruined street,{BR}where a new figure now stood."
+        },
+        {
+            "identifier": "WCPDSquad",
+            "count": 1,
+            "title": "W.C.P.D. Squad",
+            "keywords": [
+                "responder"
+            ],
+            "icons": [
+                "DealDamageProjectile",
+                "StartOfTurnAction",
+                "Destroy"
+            ],
+            "body": [
+                "When this card enters play, it deals each villain target 1 projectile damage.",
+                "At the start of the environment turn, the players may destroy 1 Emergency card. If a card is destroyed this way, this card deals 1 target 3 projectile damage."
+            ],
+            "flavorText": "The city's police force was{BR}extremely effective, perhaps due to{BR}the high number of superpowered{BR}rogues they had to contend with.",
+            "hitpoints": 6
+        },
+        {
+            "identifier": "WCPDChariot",
+            "count": 1,
+            "title": "W.C.P.D. 'Chariot'",
+            "keywords": [
+                "device",
+                "drone"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageProjectile",
+                "Discard",
+                "RedirectDamage"
+            ],
+            "body": [
+                "At the end of the environment turn, this card deals the non-environment target with the second lowest HP {H - 1} projectile damage.",
+                "If a hero target would be dealt damage this way, that hero may discard 2 cards to redirect that damage to a non-environment target."
+            ],
+            "flavorText": "“Halt,” blared the police drone, “you{BR}have been identified as a wanted{BR}criminal.” Pyre's fist began to glow.{BR}“I'm flattered, really,” he replied.",
+            "hitpoints": 5
+        }
+    ]
+}

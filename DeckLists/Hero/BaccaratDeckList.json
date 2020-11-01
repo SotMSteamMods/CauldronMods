@@ -1,0 +1,447 @@
+{
+    "name": "Baccarat",
+    "kind": "Hero",
+    "expansionIdentifier":"Cauldron",
+    "initialCardIdentifiers": [
+        "BaccaratCharacter"
+    ],
+    "cards": [
+        {
+            "identifier": "BaccaratCharacter",
+            "count": 1,
+            "title": "Baccarat",
+            "body": "Dead Man's Hand",
+            "backgroundColor": "FBF8F9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C94742",
+            "character": true,
+            "powers": [
+                "Discard the top card of your deck or put up to 2 trick cards with the same name from your trash into play."
+            ],
+            "icons": [
+                "HasPower",
+                "Discard",
+                "Manipulate",
+                "PlayCardNow"
+            ],
+            "hitpoints": 27,
+            "nemesisIdentifiers": [
+                "Baccarat"
+            ],
+            "incapacitatedAbilities": [
+                "Put 2 cards from a trash on the bottom of their deck.",
+                "Increase the next damage dealt by a hero target by 2.",
+                "Each hero character may deal themselves 3 toxic damage to use a power now."
+            ],
+            "flippedIcons": [
+                "Manipulate",
+                "IncreaseDamageDealt",
+                "DealDamageToxic",
+                "UsePowerNow"
+            ],
+            "openingLines": {
+                "default": "default placeholder",
+                "MistressOfFateCharacter": "Mistress of Fate placeholder",
+                "1929RamCharacter": "1929 Ram placeholder"
+            },
+            "complexity": 1
+        },
+        {
+            "identifier": "AbyssalSolitaire",
+            "count": 3,
+            "title": "Abyssal Solitaire",
+            "keywords": [
+                "one-shot",
+                "trick"
+            ],
+            "icons": [
+                "ReduceDamageTaken"
+            ],
+            "body": "Until the start of your next turn, reduce damage dealt to {Baccarat} by 1.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Vanish",
+                    "text": "Why play a game{BR}if you can't beat somebody?"
+                }
+            ],
+            "flavorReference": "Vanish, Smoke and Mirrors #18"
+        },
+        {
+            "identifier": "AceInTheHole",
+            "count": 4,
+            "title": "Ace In The Hole",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "UsePowerExtra"
+            ],
+            "body": [
+                "You may play a card.",
+                "You may use {Baccarat}'s innate power twice during your phase this turn."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Baccarat",
+                    "text": "Some things, you can't take{BR}with you. Others, you never lose."
+                }
+            ],
+            "flavorReference": "Baccarat, The Debt #2"
+        },
+        {
+            "identifier": "AceOfSaints",
+            "count": 2,
+            "title": "Ace Of Saints",
+            "keywords": [
+                "equipment",
+                "limited"
+            ],
+            "icons": [
+                "ReduceDamageTaken",
+                "Manipulate",
+                "DestroySelf"
+            ],
+            "body": [
+                "Reduce damage dealt to hero targets by 1.",
+                "At the start of your turn, shuffle 2 cards with the same name from your trash into your deck or this card is destroyed."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "OmnitronX",
+                    "text": "Cannot detect specimen's origin.{BR}Celestial? Primordial? Further research{BR}required."
+                }
+            ],
+            "flavorReference": "Omnitron-X, All The Wrong Places #18"
+        },
+        {
+            "identifier": "AceOfSinners",
+            "count": 2,
+            "title": "Ace Of Sinners",
+            "keywords": [
+                "equipment",
+                "limited"
+            ],
+            "icons": [
+                "IncreaseDamageDealt",
+                "Manipulate",
+                "DestroySelf"
+            ],
+            "body": [
+                "Increase damage dealt by hero targets by 1.",
+                "At the start of your turn, shuffle 2 cards with the same name from your trash into your deck or this card is destroyed."
+            ],
+            "flavorText": "Havoc Handed the card back.{BR}“It's a pretty small weapon.”{BR}“'Tis not a weapon.'Tis a coupon{BR}for victory.”"
+        },
+        {
+            "identifier": "AfterlifeEuchre",
+            "count": 4,
+            "title": "Afterlife Euchre",
+            "keywords": [
+                "one-shot",
+                "trick"
+            ],
+            "icons": [
+                "IncreaseDamageDealt",
+                "DealDamageToxic"
+            ],
+            "body": "Increase the next damage dealt by {Baccarat} by 1, or {Baccarat} deals 1 target 2 toxic damage.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Ambuscade",
+                    "text": "What are the stakes?"
+                },
+                {
+                    "identifier": "Baccarat",
+                    "text": "Only your soul."
+                }
+            ],
+            "flavorReference": "Under the Rainbow #5"
+        },
+        {
+            "identifier": "AllIn",
+            "count": 4,
+            "title": "\"All In\"",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Discard",
+                "DealDamageInfernal",
+                "DealDamageRadiant"
+            ],
+            "body": "Discard a card from your hand. If you do, {Baccarat} deals each non-hero target 1 infernal damage and 1 radiant damage.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Baccarat",
+                    "text": "Heaven and hell don't{BR}hold back. Neither shall I."
+                }
+            ],
+            "flavorReference": "Baccarat, Mystery Comics #568"
+        },
+        {
+            "identifier": "BringDownTheHouse",
+            "count": 2,
+            "title": "Bring Down The House",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Manipulate",
+                "DestroyEnvironment",
+                "DestroyOngoing"
+            ],
+            "body": [
+                "Shuffle any number of pairs of cards with the same name from your trash into your deck.",
+                "You may destroy up to X ongoing or environment cards, where X is the number of pairs you shuffled this way."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheKnight",
+                    "text": "This place{BR}has seen better days."
+                },
+                {
+                    "identifier": "Baccarat",
+                    "text": "So have we."
+                }
+            ],
+            "flavorReference": "The Cauldron One-Shot"
+        },
+        {
+            "identifier": "CardToss",
+            "count": 4,
+            "title": "CardToss",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DealDamageProjectile",
+                "PlayCardNow"
+            ],
+            "body": [
+                "{Baccarat} deals 1 target 1 projectile damage.",
+                "You may play a card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Baccarat",
+                    "text": "'Tis actually called 'scaling.'"
+                },
+                {
+                    "identifier": "Nightmist",
+                    "text": "Does it matter what it's called? Just keep doing it!"
+                }
+            ],
+            "flavorReference": "Elder Tales #1"
+        },
+        {
+            "identifier": "CheapTrick",
+            "count": 4,
+            "title": "Cheap Trick",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Discard",
+                "Manipulate",
+                "PlayCardNow"
+            ],
+            "body": [
+                "Discard the top card of your deck.",
+                "Reveal cards from the top of your deck until you reveal a trick. Shuffle the other cards back into your deck and put the trick into play."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheScholar",
+                    "text": "For a guy with no sleeves, he{BR}has a lot of tricks up them."
+                }
+            ],
+            "flavorReference": "The Scholar, Eternity Gambit One-Shot"
+        },
+        {
+            "identifier": "GraveyardBridge",
+            "count": 3,
+            "title": "Graveyard Bridge",
+            "keywords": [
+                "one-shot",
+                "trick"
+            ],
+            "icons": [
+                "Manipulate",
+                "PlayCardNow"
+            ],
+            "body": [
+                "You may shuffle a card from your trash into your deck. If you do, put a card with the same name from your trash into play.",
+                "Shuffle all copies of that card from your trash into your deck."
+            ],
+            "flavorText": "Baccarat grinned through what remained of his lips. “Shall we play again?”"
+        },
+        {
+            "identifier": "IFold",
+            "count": 4,
+            "title": "\"I Fold\"",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Discard",
+                "DrawCardNow"
+            ],
+            "body": "Discard your hand and draw 3 cards.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Tachyon",
+                    "text": "Don't worry. His luck improves the second time around."
+                }
+            ],
+            "flavorReference": "Tachyon, Freedom Five #735"
+        },
+        {
+            "identifier": "UnderworldHoldEm",
+            "count": 4,
+            "title": "Underworld Hold 'Em",
+            "keywords": [
+                "one-shot",
+                "trick"
+            ],
+            "icons": [
+                "DrawCardNow"
+            ],
+            "body": "One player may draw a card.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Haka",
+                    "text": "Explain it one more time. When you{BR}say, 'hit me,' you don't mean literally?"
+                }
+            ],
+            "flavorReference": "Haka, The Book of the Dead #721"
+        }
+    ],
+    "promoCards": [
+        {
+            "identifier": "BaccaratCharacter",
+            "promoIdentifier": "AceOfSwordsBaccaratCharacter",
+            "count": 1,
+            "title": "Baccarat",
+            "promoTitle": "Baccarat: Ace Of Swords",
+            "shortPromoTitle": "Swords Baccarat",
+            "body": "Ace Of Swords",
+            "backgroundColor": "FBF8F9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C94742",
+            "character": true,
+            "powers": [
+                "Play X copies of Afterlife Euchre from your trash (up to 3). Discard the top 3-X cards of your deck."
+            ],
+            "icons": [
+                "HasPower",
+                "PlayCardNow",
+                "Discard"
+            ],
+            "hitpoints": 30,
+            "nemesisIdentifiers": [
+                "Baccarat"
+            ],
+            "incapacitatedAbilities": [
+                "Select a card in a trash. Destroy a card in play with the same name.",
+                "One target deals itself 1 energy damage.",
+                "Each hero character may deal themselves 1 toxic damage to draw a card now."
+            ],
+            "flippedIcons": [
+                "Destroy",
+                "DealDamageEnergy",
+                "DealDamageToxic",
+                "DrawCardNow"
+            ],
+            "openingLines": {
+                "default": "default placeholder",
+                "MistressOfFateCharacter": "Mistress of Fate placeholder",
+                "1929RamCharacter": "1929 Ram placeholder"
+            },
+            "complexity": 1
+        },
+        {
+            "identifier": "BaccaratCharacter",
+            "promoIdentifier": "AceOfSorrowsBaccaratCharacter",
+            "count": 1,
+            "title": "Baccarat",
+            "promoTitle": "Baccarat: Ace Of Sorrows ",
+            "shortPromoTitle": "Sorrows Baccarat",
+            "body": "Ace Of Sorrows",
+            "backgroundColor": "FBF8F9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C94742",
+            "character": true,
+            "powers": [
+                "Play any number of tricks from your hand, or put 2 tricks from your trash into your hand."
+            ],
+            "icons": [
+                "HasPower",
+                "PlayCardNow",
+                "Manipulate"
+            ],
+            "hitpoints": 28,
+            "nemesisIdentifiers": [
+                "Baccarat"
+            ],
+            "incapacitatedAbilities": [
+                "One player may shuffle a card from their trash into their deck, then put all cards with the same name from their trash into their hand.",
+                "Each target regains 1 HP.",
+                "Each hero character may deal themselves 3 toxic damage to play a card now."
+            ],
+            "flippedIcons": [
+                "Manipulate",
+                "GainHP",
+                "DealDamageToxic",
+                "PlayCardNow"
+            ],
+            "openingLines": {
+                "default": "default placeholder",
+                "MistressOfFateCharacter": "Mistress of Fate placeholder",
+                "1929RamCharacter": "1929 Ram placeholder"
+            },
+            "complexity": 1
+        },
+        {
+            "identifier": "BaccaratCharacter",
+            "promoIdentifier": "1929BaccaratCharacter",
+            "count": 1,
+            "title": "Baccarat",
+            "promoTitle": "Baccarat 1929",
+            "shortPromoTitle": "Baccarat 1929",
+            "body": "Card Sharp",
+            "backgroundColor": "FBF8F9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C94742",
+            "character": true,
+            "powers": [
+                "Play or draw a card. If you played a trick this way, draw a card."
+            ],
+            "icons": [
+                "HasPower",
+                "PlayCardNow",
+                "DrawCardNow"
+            ],
+            "hitpoints": 24,
+            "nemesisIdentifiers": [
+                "Baccarat"
+            ],
+            "incapacitatedAbilities": [
+                "One player may play a card now.",
+                "One player may use a power now.",
+                "One player may draw a card now."
+            ],
+            "flippedIcons": [
+                "PlayCardNow",
+                "DrawCardNow",
+                "UsePowerNow"
+            ],
+            "openingLines": {
+                "default": "default placeholder",
+                "MistressOfFateCharacter": "Mistress of Fate placeholder",
+                "1929RamCharacter": "1929 Ram placeholder"
+            },
+            "complexity": 1
+        }
+    ]
+}

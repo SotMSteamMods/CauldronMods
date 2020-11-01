@@ -1,0 +1,580 @@
+{
+    "name": "ScreaMachine",
+    "kind": "Villain",
+    "expansionIdentifier": "CauldronAdrift",
+    "initialCardIdentifiers": [
+        "TheSetList",
+        "SliceCharacter",
+        "ValentineCharacter",
+        "BloodlaceCharacter",
+        "RickyGCharacter"
+    ],
+    "cards": [
+        {
+            "identifier": "TheSetList",
+            "count": 1,
+            "title": "The Set List",
+            "body": "Warming Up",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "setup": [
+                "At the start of the game, put this card, {Slice}, {Valentine}, {Bloodlace}, and {RickyG}'s villain character cards into play, “Warming Up” side up.",
+                "Search the villain deck for all Guitarist, Vocalist, Bassist, and Drummer cards, shuffle them, and place them beneath this card face down. Shuffle the villain deck."
+            ],
+            "gameplay": [
+                "At the start of the villain turn, flip this card."
+            ],
+            "advanced": "At the start of the game, reveal cards from beneath this one until {H - 2} cards with different keywords are revealed. Play those cards. Shuffle the rest and replace them face down beneath this card.",
+            "icons": [
+                "StartOfTurnAction"
+            ],
+            "advancedIcons": [
+                "PlayCardNow"
+            ],
+            "flippedBody": "The Main Event!",
+            "flippedGameplay": [
+                "Cards beneath this one are not considered in play. Guitarist, Vocalist, Bassist, and Drummer cards are indestructible. Destroyed villain characteres are removed from the game.",
+                "Whenever a card beneath this one is revealed, play it if it shares a keyword with a card in play. Otherwise, place it face down on the bottom of the stack and play the top card beneath this one.",
+                "At the start of the villain turn, reveal the top card beneath this one.",
+                "At the end of the villain turn, if {H - 2} or fewer villain characters remain in play, the villain target with the highest HP deals each hero 2 sonic damage and plays the top card of the villain deck."
+            ],
+            "flippedAdvanced": "When a villain target flips, destroy 1 hero ongoing or equipment.",
+            "flippedIcons": [
+                "Indestructible",
+                "StartOfTurnAction",
+                "PlayCardNow",
+                "EndOfTurnAction",
+                "DealDamageSonic"
+            ],
+            "flippedAdvancedIcons": [
+                "DestroyOngoing",
+                "DestroyEquipment"
+            ],
+            "difficulty": 1,
+            "openingLines": {
+                "default": "default placeholder",
+                "GyrosaurCharacter": "Gyrosaur placeholder",
+                "RenegadeGyrosaurCharacter": "Renegade Gyrosaur placeholder",
+                "SpeedDemonGyrosaurCharacter": "Gyrosaur Speed Demon placeholder"
+            }
+        },
+        {
+            "identifier": "SliceCharacter",
+            "count": 1,
+            "title": "Slice",
+            "keywords": [
+                "villain"
+            ],
+            "body": "Warming Up",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 28,
+            "nemesisIdentifiers": [
+                "Gyrosaur"
+            ],
+            "gameplay": [
+                "If there are ever 3 Guitarist cards in play, flip this card.",
+                "{ScreaMachineGuitar} {Slice} deals the hero with the second lowest HP {H - 1} sonic damage."
+            ],
+            "icons": [
+                "DealDamageSonic"
+            ],
+            "flippedBody": "Ultimate Guitarist",
+            "flippedGameplay": [
+                "At the end of the villain turn, {Slice} deals the hero with the second lowest HP {H - 1} sonic damage. Targets in that hero's play area cannot deal damage until the start of the next villain turn."
+            ],
+            "flippedIcons": [
+                "EndOfTurnAction",
+                "DealDamageSonic",
+                "CannotDealDamage"
+            ]
+        },
+        {
+            "identifier": "ValentineCharacter",
+            "count": 1,
+            "title": "Valentine",
+            "keywords": [
+                "villain"
+            ],
+            "body": "Warming Up",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 31,
+            "nemesisIdentifiers": [
+                "Gyrosaur"
+            ],
+            "gameplay": [
+                "If there are ever 3 Vocalist cards in play, flip this card.",
+                "{ScreaMachineVocal} {Valentine} deals the 2 hero targets with the highest HP {H - 2} psychic damage."
+            ],
+            "icons": [
+                "DealDamagePsychic"
+            ],
+            "flippedBody": "Ultimate Vocalist",
+            "flippedGameplay": [
+                "Increase damage dealt by villain targets by 1.",
+                "At the end of the villain turn, {Valentine} deals the hero with the highest HP {H - 1} sonic damage and {H - 2} psychic damage."
+            ],
+            "flippedIcons": [
+                "IncreaseDamageDealt",
+                "EndOfTurnAction",
+                "DealDamageSonic",
+                "DealDamagePsychic"
+            ]
+        },
+        {
+            "identifier": "BloodlaceCharacter",
+            "count": 1,
+            "title": "Bloodlace",
+            "keywords": [
+                "villain"
+            ],
+            "body": "Warming Up",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 26,
+            "nemesisIdentifiers": [
+                "Gyrosaur"
+            ],
+            "gameplay": [
+                "If there are ever 3 Bassist cards in play, flip this card.",
+                "{ScreaMachineBass} Each other villain target regains {H - 2} HP."
+            ],
+            "icons": [
+                "GainHP"
+            ],
+            "flippedBody": "Ultimate Bassist",
+            "flippedGameplay": [
+                "At the end of the villain turn, the villain target with the lowest HP deals the hero target with the highest HP {H} melee damage and regains {H} HP."
+            ],
+            "flippedIcons": [
+                "EndOfTurnAction",
+                "DealDamageMelee",
+                "GainHP"
+            ]
+        },
+        {
+            "identifier": "RickyGCharacter",
+            "count": 1,
+            "title": "Ricky G",
+            "keywords": [
+                "villain"
+            ],
+            "body": "Warming Up",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 35,
+            "nemesisIdentifiers": [
+                "Gyrosaur"
+            ],
+            "gameplay": [
+                "If there are ever 3 Drummer cards in play, flip this card.",
+                "{ScreaMachineDrum} Select the villain target with the lowest HP. Reduce damage dealt to that target by 1 until the start of the next villain turn."
+            ],
+            "icons": [
+                "ReduceDamageDealt"
+            ],
+            "flippedBody": "Ultimate Drummer",
+            "flippedGameplay": [
+                "All other villain targets are indestructible and immune damage.",
+                "At the end of the villain turn, discard the top card of the villain deck. If it shows {ScreaMachineDrum} on it, {RickyG} deals each hero target 3 melee damage."
+            ],
+            "flippedIcons": [
+                "EndOfTurnAction",
+                "Discard",
+                "DealDamageSonic"
+            ]
+        },
+        {
+            "identifier": "Biosurge",
+            "count": 1,
+            "title": "Biosurge",
+            "keywords": [
+                "bassist"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "IncreaseDamageDealt"
+            ],
+            "body": [
+                "When this card enters play, if {Bloodlace} is not in play, reveal the top card beneath The Set List",
+                "{ScreaMachineBass} Increase the next damage dealt by {Bloodlace} by 2."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Bloodlace",
+                    "text": "Music will change your life."
+                }
+            ],
+            "flavorReference": "Bloodlace, The ScreaMachine Holiday Album"
+        },
+        {
+            "identifier": "CantStopTheMusic",
+            "count": 2,
+            "title": "Can't Stop the Music",
+            "keywords": [
+                "bassist"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "GainHP"
+            ],
+            "body": [
+                "When this card enters play, if {Bloodlace} is not in play, reveal the top card beneath The Set List",
+                "{ScreaMachineBass} If {Bloodlace} is in play, the villain target with the lowest HP regains 2 HP."
+            ],
+            "flavorText": "As far as the bandmembers{BR}were concerned, the so-called{BR}'heroes' were responsible for the{BR}destruction of their concert."
+        },
+        {
+            "identifier": "DeathMetal",
+            "count": 2,
+            "title": "Death Metal",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DestroyOngoing",
+                "DestroyEquipment",
+                "DealDamagePsychic",
+                "{ScreaMachineVocal}",
+                "{ScreaMachineBass}"
+            ],
+            "body": [
+                "Each hero may destroy 1 of their ongoing or equipment cards.",
+                "The villain target with the highest HP deals each hero that did not destroy a card this way 3 psychic damage.",
+                "Activate all {ScreaMachineVocal} and {ScreaMachineBass} effects."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheArgentAdept",
+                    "text": "Strange powers? Maybe their{BR}music is just that bad."
+                }
+            ],
+            "flavorReference": "The Argent Adept, Virtuoso of the Void #30"
+        },
+        {
+            "identifier": "HarshNote",
+            "count": 2,
+            "title": "Harsh Note",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "IncreaseDamageDealt",
+                "{ScreaMachineGuitar}",
+                "{ScreaMachineVocal}"
+            ],
+            "body": [
+                "Increase the next damage dealt by a villain target by {H}.",
+                "Activate all {ScreaMachineGuitar} and {ScreaMachineVocal} effects."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Valentine",
+                    "text": "Truth is a loud and bitter medicine."
+                }
+            ],
+            "flavorReference": "Valentine, Soothe the Soul One-Shot"
+        },
+        {
+            "identifier": "HypnotizeTheCrowd",
+            "count": 1,
+            "title": "Hypnotize the Crowd",
+            "keywords": [
+                "vocalist"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "ImmuneToDamage",
+                "DealDamageMelee"
+            ],
+            "body": [
+                "When this card enters play, if {Valentine} is not in play, reveal the top card beneath The Set List",
+                "{Valentine} is immune to damage dealt by environment cards.",
+                "{ScreaMachineVocal} If {Valentine} is in play, 1 environment card in play deals the hero target with the highest HP 3 melee damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Cricket",
+                    "text": "Hey, I was a fan before{BR}all the mind control."
+                },
+                {
+                    "identifier": "Echelon",
+                    "text": "Well good for you."
+                }
+            ],
+            "flavorReference": "Windmill City Renegades"
+        },
+        {
+            "identifier": "IrresistableVoice",
+            "count": 1,
+            "title": "Irresistable Voice",
+            "keywords": [
+                "vocalist"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "DealDamageMelee"
+            ],
+            "body": [
+                "When this card enters play, if {Valentine} is not in play, reveal the top card beneath The Set List",
+                "{ScreaMachineVocal} If {Valentine} is in play, the hero target with the lowest HP deals the hero target with the highest HP 2 melee damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Valentine",
+                    "text": "...it's time you destroyed each other."
+                }
+            ],
+            "flavorReference": "Valentine, Windmill City #100"
+        },
+        {
+            "identifier": "LiveInConcert",
+            "count": 1,
+            "title": "Live in Concert",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DealDamageMelee",
+                "Discard",
+                "{ScreaMachineGuitar}",
+                "{ScreaMachineVocal}",
+                "{ScreaMachineBass}",
+                "{ScreaMachineDrum}"
+            ],
+            "body": [
+                "The villain target with the highest HP deals the hero target with the highest HP {H} melee damage.",
+                "Each player discards 1 card.",
+                "Activate all {ScreaMachineGuitar}{ScreaMachineVocal}{ScreaMachineBass}{ScreaMachineDrum} effects."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Valentine",
+                    "text": "Are you all having a good time?!?"
+                }
+            ],
+            "flavorReference": "Valentine, The Refrain Limited Series"
+        },
+        {
+            "identifier": "MentalLink",
+            "count": 1,
+            "title": "Mental Link",
+            "keywords": [
+                "vocalist"
+            ],
+            "icons": [
+                "PlayCardNow"
+            ],
+            "body": [
+                "When this card enters play, if {Valentine} is not in play, reveal the top card beneath The Set List",
+                "{ScreaMachineVocal} If {Valentine} is in play, play the top card of the villain deck. That card does not activate any {ScreaMachineGuitar}{ScreaMachineVocal}{ScreaMachineBass}{ScreaMachineDrum} effects."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Valentine",
+                    "text": "We're in sync like you wouldn't{BR}believe. After we crush 'em we gotta{BR}get back in the studio and jam!"
+                }
+            ],
+            "flavorReference": "Valentine, Crash #25"
+        },
+        {
+            "identifier": "NothingButHits",
+            "count": 2,
+            "title": "Nothing But Hits",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DealDamageProjectile",
+                "{ScreaMachineVocal}",
+                "{ScreaMachineDrum}"
+            ],
+            "body": [
+                "Each villain target deals the target with the highest HP 2 projectile damage.",
+                "Activate all {ScreaMachineVocal} and {ScreaMachineDrum} effects."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "RickyG",
+                    "text": "Get it?!"
+                }
+            ],
+            "flavorReference": "Ricky G, The Wanderer's Encore"
+        },
+        {
+            "identifier": "PercussiveWave",
+            "count": 2,
+            "title": "Percussive Wave",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "{ScreaMachineDrum}",
+                "{ScreaMachineGuitar}",
+                "StartOfTurnAction",
+                "DestroySelf",
+                "ReduceDamageTaken"
+            ],
+            "body": [
+                "When this card enters play, activate all {ScreaMachineDrum} and {ScreaMachineGuitar} effects. At the start of the villain turn, destroy this card.",
+                "Whenever a villain target would be dealt damage, reduce that damage by X. X is 2 if the damage is 4 or more, 1 if the damage is exactly 3, and 0 otherwise."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Tachyon",
+                    "text": "Actually, I could dance to this."
+                }
+            ],
+            "flavorReference": "Tachyon, Tales of the Unseen: Oblask Crater"
+        },
+        {
+            "identifier": "PoundingRhythm",
+            "count": 2,
+            "title": "Pounding Rhythm",
+            "keywords": [
+                "drummer"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "DealDamageMelee",
+                "ReduceDamageDealt"
+            ],
+            "body": [
+                "When this card enters play, if {RickyG} is not in play, reveal the top card beneath The Set List",
+                "{ScreaMachineDrum} {RickyG} deals the hero target with the highest HP 1 irreducible melee damage. Reduce the next damage dealt by a target damaged this way by 2."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "RickyG",
+                    "text": "[b]ONETWOTHREEFOUR![/b]"
+                }
+            ],
+            "flavorReference": "Ricky G, Crash #4"
+        },
+        {
+            "identifier": "ScreamAndShout",
+            "count": 2,
+            "title": "Scream and Shout",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DealDamageSonic",
+                "{ScreaMachineGuitar}",
+                "{ScreaMachineVocal}"
+            ],
+            "body": [
+                "Each villain target deals the target with the highest HP 2 sonic damage.",
+                "Activate all {ScreaMachineGuitar} and {ScreaMachineVocal} effects."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Bloodlace",
+                    "text": "Mandatory audience participation."
+                }
+            ],
+            "flavorReference": "Bloodlace, Crash #16"
+        },
+        {
+            "identifier": "ShredZone",
+            "count": 2,
+            "title": "Shred Zone",
+            "keywords": [
+                "guitarist"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "DealDamageSonic"
+            ],
+            "body": [
+                "When this card enters play, reveal the top card beneath The Set List.",
+                "{ScreaMachineGuitar} Slice deals the 2 hero targetse with the lowest HP 1 irreducible sonic damage each."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Slice",
+                    "text": "Nanananawaaaayeah!"
+                }
+            ],
+            "flavorReference": "Slice, The Refrain Limited Series"
+        },
+        {
+            "identifier": "SlicesAxe",
+            "count": 1,
+            "title": "Slice's Axe",
+            "keywords": [
+                "guitarist"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "DealDamageMelee"
+            ],
+            "body": [
+                "When this card enters play, if {Slice} is not in play, reveal the top card beneath The Set List",
+                "{ScreaMachineGuitar} Slice deals the hero with the most cards in hand {H - 1} melee damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Slice",
+                    "text": "I'm keeping it classic."
+                }
+            ],
+            "flavorReference": "Slice, Tribute in D Minor"
+        },
+        {
+            "identifier": "TectonicBeat",
+            "count": 1,
+            "title": "Tectonic Beat",
+            "keywords": [
+                "drummer"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "ReduceDamageTaken"
+            ],
+            "body": [
+                "When this card enters play, if {RickyG} is not in play, reveal the top card beneath The Set List",
+                "{ScreaMachineDrum} Reduce damage dealt to {RickyG} by 1 until the start of the next villain turn."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "RickyG",
+                    "text": "I feel it now in my bones, all{BR}the time now. Nothing stops the beat!"
+                }
+            ],
+            "flavorReference": "Ricky G, State of Decay #9"
+        },
+        {
+            "identifier": "UpToEleven",
+            "count": 2,
+            "title": "Up To Eleven",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "GainHP",
+                "DealDamageSonic",
+                "{ScreaMachineBass}",
+                "{ScreaMachineDrum}",
+                "PlayCardNow"
+            ],
+            "body": [
+                "The villain target with the lowest HP regains {H - 1} HP. {Valentine} deals each non-villain target 1 sonic damage.",
+                "Activate all {ScreaMachineBass} and {ScreaMachineDrum} effects.",
+                "Reveal the top card beneath the set list."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "RickyG",
+                    "text": "You gotta be considerate{BR}to the old folks in the back who{BR}don't hear so well. Crank it!"
+                }
+            ],
+            "flavorReference": "Ricky G, Burnout #18"
+        }
+    ]
+}

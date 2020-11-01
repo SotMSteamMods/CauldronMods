@@ -1,0 +1,268 @@
+{
+    "name": "Nightlore Citadel",
+    "kind": "Environment",
+    "expansionIdentifier": "CauldronAdrift",
+    "backgroundColor": "FB5455",
+    "difficulty": 1,
+    "cards": [
+        {
+            "identifier": "AethiumCannon",
+            "count": 1,
+            "title": "Aethium Cannon",
+            "keywords": [
+                "superweapon"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "Manipulate",
+                "DealDamageRadiant",
+                "Discard"
+            ],
+            "body": [
+                "At the end of the environment turn, each player may put 1 card from their hand beneath this one. Cards beneath this one are not considered in play.",
+                "If there are ever {H} times 3 cards beneath this one, this card deals 1 target 15 radiant damage and those cards are discarded."
+            ],
+            "flavorText": "With the cannon damaged in the initial{BR}assault, the heroes headed into the{BR}bowels of the citadel to scavenge{BR}whatever aethium they could find."
+        },
+        {
+            "identifier": "AethiumRage",
+            "count": 1,
+            "title": "Aethium Rage",
+            "icons": [
+                "GainHP",
+                "DealDamageRadiant",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, the villain target with the highest HP regains {H} HP and deals the 2 non-villain targets with the highest HP 3 radiant damage each.",
+                "Then, destroy this card."
+            ],
+            "flavorText": "She handed Gyrosaur a glowing green crystal. 'Aethium seeding brought life to the universe. But their energies can be used more nefariously as well.'"
+        },
+        {
+            "identifier": "ArtemisVector",
+            "count": 1,
+            "title": "Artemis Vector",
+            "keywords": [
+                "nightlore councilor"
+            ],
+            "icons": [
+                "IncreaseDamageDealt",
+                "DealDamagePsychic",
+                "DrawCardNow"
+            ],
+            "body": [
+                "Increase damage dealt to villain targets with Constellations next to them by 1.",
+                "When this card is destroyed, each hero target deals themselves 2 psychic damage and each player draws a card."
+            ],
+            "flavorText": "The Meer'ago had a long history on the{BR}Council. Their Starlight had guarded the{BR}Citadel for ages, ever since the Ancients{BR}mysteriously abandoned it.",
+            "hitpoints": 3
+        },
+        {
+            "identifier": "AssembleTheCouncil",
+            "count": 1,
+            "title": "Assemble the Council",
+            "icons": [
+                "Manipulate",
+                "DealDamagePsychic",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, reveal cards from the top of the environment deck until a target is revealed, put it into play, and discard the other revealed cards. If Starlight of Oros was put into play this way, she deals each other target 1 psychic damage.",
+                "Then, destroy this card."
+            ],
+            "flavorText": "To survey the darkness and guard the{BR}light. This we pledge, intoned the three{BR}simultaneously, under the silent stares{BR}of a hundred Nightlore agents."
+        },
+        {
+            "identifier": "CitadelGarrison",
+            "count": 1,
+            "title": "Citadel Garrison",
+            "keywords": [
+                "ancient automaton"
+            ],
+            "icons": [
+                "StartOfTurnACtion",
+                "DealDamageRadiant",
+                "Discard"
+            ],
+            "body": [
+                "At the start of the environment turn, this card deals the hero target with the second highest HP {H + 1} radiant damage.",
+                "Then, if Starlight of Oros and Aethium Cannon are in play, discard 2 cards from beneath Aethium Cannon."
+            ],
+            "flavorText": "You rely on this errant religion and{BR}ancient technology without having the{BR}first clue where they come from, said{BR}Oros, as the automaton turned on them.",
+            "hitpoints": 9
+        },
+        {
+            "identifier": "GravityFluctuation",
+            "count": 1,
+            "title": "Gravity Fluctuation",
+            "icons": [
+                "DealDamageMelee",
+                "ReduceDamageDealt",
+                "StartOfTurnACtion",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, it deals each hero with more than 3 cards in their hand 2 irreducible melee damage. One hero that was dealt no damage this way may deal 1 target 3 melee damage.",
+                "Reduce all damage dealt by 1.",
+                "At the start of the environment turn, destroy this card."
+            ],
+            "flavorText": "Sky-scraper slammed into what had{BR}previously been the corridor ceiling,{BR}while Impact remained completely{BR}unaffected by the twisting gravity."
+        },
+        {
+            "identifier": "LonelyCalling",
+            "count": 1,
+            "title": "Lonely Calling",
+            "icons": [
+                "CannotPlayCards",
+                "StartOfTurnACtion",
+                "DestroySelf"
+            ],
+            "body": [
+                "Players may not play cards that share a keyword with the last hero card that entered play.",
+                "At the start of the environment turn, if no hero cards entered play this round, destroy this card."
+            ],
+            "flavorText": "Only one representative is called to{BR}serve from each Council world. A great{BR}honor for those chosen; but a great{BR}sacrifice as well."
+        },
+        {
+            "identifier": "RogueConstellation",
+            "count": 1,
+            "title": "Rogue Constellation",
+            "keywords": [
+                "constellation"
+            ],
+            "icons": ["PlayCardNow","DestroySelf"],
+            "body": [
+                "When this card enters play, move it next to the villain target with the highest HP. Then, play the top card of the environment deck.",
+                "If the target next to this card leaves play, destroy this card."
+            ],
+            "flavorText": "Councilor Artemis Vector carefully{BR}considered the datamap. “The stars that{BR}have gone dark form a pattern.” Just{BR}then, the Citadel sirens began to blare."
+        },
+        {
+            "identifier": "StarlightOfNoome",
+            "count": 1,
+            "title": "Starlight of Noome",
+            "keywords": [
+                "nightlore agent"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageMelee",
+                "GainHP"
+            ],
+            "body": "At the end of the environment turn, select the 2 non-environment targets with the lowest HP. This card deals 1 of those targets 2 melee damage, and the other target regains 2HP.",
+            "flavorText": "The Arborean let out a low, sonorous{BR}“Noooome”, as she walked past. “Even{BR}Nightlore translators have some{BR}trouble with her,” explained Dr. McLear.",
+            "hitpoints": 8
+        },
+        {
+            "identifier": "StarlightOfOros",
+            "count": 1,
+            "title": "Starlight of Oros",
+            "keywords": [
+                "nightlore traitor"
+            ],
+            "nemesisIdentifiers": [
+                "Starlight"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageInfernal",
+                "DealDamagePsychic",
+                "GainHP"
+            ],
+            "body": [
+                "At the end of the environment turn, this card deals each hero target 2 infernal damage and each other environment target 2 psychic damage.",
+                "Then, each villain target next to a Constellation regains {H} HP."
+            ],
+            "flavorText": "“The void consumes all starlight,” said{BR}the newcomer, as she stepped through{BR}the shattered bulkhead. “Soon you'll see{BR}that as I did.”",
+            "hitpoints": 8
+        },
+        {
+            "identifier": "StarlightOfZzeck",
+            "count": 1,
+            "title": "Starlight of Zzeck",
+            "keywords": [
+                "nightlore agent"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageToxic",
+                "Manipulate"
+            ],
+            "body": [
+                "At the end of the environment turn, this card deals the villain target with the lowest HP 3 toxic damage.",
+                "Then, if Aethium Cannon is in play, put the top card of 1 hero deck beneath it."
+            ],
+            "flavorText": "“They said something about being under attack,” said the Nightlore mechanic absent-mindedly. “I wasn’t really paying attention. There are things to fix.”",
+            "hitpoints": 6
+        },
+        {
+            "identifier": "TalinBrosk",
+            "count": 1,
+            "title": "Talin Brosk",
+            "keywords": [
+                "nightlore trainer"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageSonic",
+                "IncreaseDamageDealt"
+            ],
+            "body": [
+                "At the end of the environment turn, this card deals 1 other target 3 sonic damage.",
+                "Increase damage dealt by a target damaged this way by 1 until the start of the next environment turn."
+            ],
+            "flavorText": "“Come on you Piunean maggots, do you{BR}want to stargaze forever?!” shouted the{BR}citadel's weapons trainer, as Gyrosaur{BR}backed slowly away from her aunt.",
+            "hitpoints": 7
+        },
+        {
+            "identifier": "UrgentMission",
+            "count": 1,
+            "title": "Urgent Mission",
+            "icons": [
+                "CannotDealDamage",
+                "ImmuneToDamage",
+                "StartOfTurnACtion",
+                "DrawCardNow",
+                "DestroySelf"
+            ],
+            "body": [
+                "Play this card next to the hero with the highest HP. Targets in this play area cannot deal damage and are immune to damage dealt by environment cards.",
+                "At the start of the environment turn, this player draws 2 cards. Then, destroy this card."
+            ],
+            "flavorText": "We have located our missing agent,{BR}trapped aboard the ship of an{BR}intergalactic criminal. You three must{BR}rescue her. Time is of the essence."
+        },
+        {
+            "identifier": "WarpBridge",
+            "count": 1,
+            "title": "Warp Bridge",
+            "icons": [
+                "EndOfTurnAction",
+                "Manipulate",
+                "PlayCardNow",
+                "DestroySelf"
+            ],
+            "body": [
+                "At the end of the environment turn, select 1 non-character card in play other than this one and shuffle it back into its associated deck.",
+                "If a card leaves play this way, play the top card of the associated deck. Then, if Rogue Constellation is in play, destroy this card."
+            ],
+            "flavorText": "“You don't seem too excited to be going{BR}home,” said Zzeck. Absolute Zero{BR}crossed his arms. “Something always{BR}goes wrong,” he replied. “Just wait.”"
+        },
+        {
+            "identifier": "WatchedByTheStars",
+            "count": 1,
+            "title": "Watched by the Stars",
+            "icons": [
+                "DealDamageRadiant",
+                "DealDamageCold",
+                "EndOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, it deals each villain target 2 radiant damage. If Starlight of Oros is in play, this card deals each hero target 2 cold damage instead.",
+                "At the end of the environment turn, destroy this card."
+            ],
+            "flavorText": "“The Earth is under Nightlore{BR}protection, foul creature!” shouted{BR}Asheron. To Cryos, she added, “This{BR}planet certainly has a lot of monsters.”"
+        }
+    ]
+}

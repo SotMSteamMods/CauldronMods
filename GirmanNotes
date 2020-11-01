@@ -1,0 +1,133 @@
+Questions:
+--new scions => limit to 10? set limit? min 10?
+
+--opening lines for variants before implemented
+
+--complexity => default 0, displays "Mod"
+
+--external links?
+-BGG/Cauldron site
+
+--flipping changes name/header
+-Oriphel/Jade
+-If no then switch body to "Shardwalker Jade"
+
+Look for Examples:
+check out Absolute Zero's Focused Apperatures for flavor text with no issue/speaker
+
+check out Absolute Zero's Imaple for flavor text with multiple speakers
+
+Playing cards to other play areas
+--Capt Cosmic, La Commodora, Sky-Scraper
+
+look for an example with dialogue and action --Including double quotes
+--Baccarat - Ace of Sinners
+
+Look at Miss Information for Villains that do not start as targets
+--Calderoch, Menagerie
+
+Look for top card of deck face up
+--Calderoch
+
+Look for token pools
+--Calderoch - Storm Pool(Character card)
+
+Look at Baron Blade's Blade Battalion for variable target health
+-- Necro - all his targets depend on # of rituals
+
+Look for X where X is {whatever} 
+-Baron Blade's 
+=Devious Disrption
+=Blade Battalion
+--Calderoch, others
+
+Look to display tooltips
+--Calderoch - number of tokens in storm pool
+
+Look to X of keyword at start --Vengeance Baron Blade
+--Calderoch
+
+--H times 2 - The Dreamer Character card
+-Gray's character card
+
+--Not considered in play
+-Menagerie
+
+--Cannot damage other play areas - Miss Information's Isolated clue
+-Flipped Menagerie
+
+--the hero in a play area and multiple heroes - Sentinels interactions
+--Flipped Menagerie enclosures
+
+--Look for multiple character cards - The Chairman (opening lines and how do work good)
+-Tiamat multiple character cards
+
+--incapacitated villains - Chairman/Ennead
+-Tiamat
+
+--alternate lose conditions - Wager Master
+-Vector
+
+--no game text - Akash'bhuta
+-Vector
+
+--unique icons in text - Naturalist
+-Drift
+
+--new identifier? - Drift's Past/Future effects
+-like power section in display?
+
+--look at santa guise's deck shenanigans
+-Mistress of Fate's removed cards are secret. (keep known cards tracked?)
+
+--Look at Sentinels on how to replace multiple cards - Drift
+--how do promos work for Sentinels?
+
+--Look at Ennead triggers for Swarm Eater's Absorbs
+
+Notes:
+Villains -- flippedHitpoints, above flippedBody
+Calderoch -- play targets matching keyword
+Blackwood Forest -- Mirror Wraith - Fuck
+
+Icons:
+Cypher: Augment Icon?
+Catchwater Harbor: Travel Icon?
+Superstorm Akela: Movement Icon?
+Swarm Eater: Absorb Icon?
+--Absorbs like Titles on cards?
+--Traits like Titles on cards?
+
+Into Play?
+Change to sonic damage?
+
+Destroy? Cypher
+IrreducibleDamage? Doc Havoc
+Search? Cypher
+PlayExtraCard? Cypher
+GainExtraHP? Doc Havoc 2199
+PreventDamage? Doc Havoc
+PreventGainHP? Doc Havoc
+DrawExtraCard? Doc Havoc
+PreventPower? Echelon
+PreventPlayCard? Echelon
+UseExtraPower? Echelon
+IncreaseDamageTaken? Cricket
+AddToken/RemoveToken? Lady
+IncreaseFireDamageDealt? Lady
+ImmuneToDamageEnergy? Malichae
+IncreaseDamageDealtMelee? Quicksilver
+EndTurn? Quicksilver
+PreventDealDamage? Tango One
+RemoveFromGame? Terminus
+Indestructible? Terminus
+SkipTurn? FSC Continuance
+EndTurn? StSimeons
+IncreaseDamageTakenFire? Northspar
+ImmuneToDamageCold? Northspar
+IncreaseDamageDealtLightning? Superstorm Akela
+ImmuneToDamagePsychic? Vault 5
+IncreaseDamageDealtPsychic? Vault 5
+ReduceGainHP? Outlander
+IncreaseDamageDealtProjectile? Ram 1929
+CannotWin? Ram - Admiral Winters

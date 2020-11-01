@@ -1,0 +1,211 @@
+{
+    "name": "Superstorm Akela",
+    "kind": "Environment",
+    "expansionIdentifier": "CauldronStormfall",
+    "backgroundColor": "FB5455",
+    "difficulty": 1,
+    "cards": [
+        {
+            "identifier": "AscendedEdifice",
+            "count": 1,
+            "title": "Ascended Edifice",
+            "keywords": [
+                "obstacle"
+            ],
+            "icons": ["PlayCardNow","ReduceDamageTaken"],
+            "body": [
+                "When this card enters play, play the top card of the environment deck.",
+                "Reduce damage dealt to villain cards by 1."
+            ],
+            "flavorText": "With a thunderous crack, the structure{BR}tore upward and away, leaving an{BR}expanse of sky between The Stranger{BR}and Dendron's maniacal laughter.",
+            "hitpoints": 6
+        },
+        {
+            "identifier": "ChurningVoid",
+            "count": 1,
+            "title": "Churning Void",
+            "icons": ["Indestructible","StartOfTurnAction","DealDamageProjectile"],
+            "body": [
+                "This card is indestructible.",
+                "At the start of the environment turn, this card deals the {H} targets with the highest HP X projectile damage each, where X is the number of environment cards to the left of this one. After all other start of turn effects have taken place, move this card 1 space to the right in the environment play area."
+            ],
+            "flavorText": "Quicksilver stared over the edge,{BR}unable to spot the ground through the{BR}violent clouds. “Bad time to mention that{BR}I hate heights?” she asked."
+        },
+        {
+            "identifier": "CutLoose",
+            "count": 1,
+            "title": "Cut Loose",
+            "icons": ["IncreaseDamageDealt",
+            "DealDamageProjectile","DestroySelf"],
+            "body": [
+                "Increase all damage dealt by 1.",
+                "When a hero destroys a target, this card deals that hero {H} projectile damage and is destroyed."
+            ],
+            "flavorText": "Impact was knocked over by flying{BR}pieces of the crippled robot. “Put{BR}your toys away when you're done{BR}with them!” yelled Quicksilver."
+        },
+        {
+            "identifier": "FlailingWires",
+            "count": 1,
+            "title": "Flailing Wires",
+            "keywords": [
+                "storm"
+            ],
+            "icons": ["PlayCardNow","DealDamageLightning"],
+            "body": [
+                "When this card enters play, play the top card of the environment deck.",
+                "At the end of the environment turn, this card deals the X+1 hero targets with the highest HP 1 lightning damage each, where X is the number of environment cards to the left of this one."
+            ],
+            "flavorText": "Piece by piece, the entire city was torn{BR}into the sky. In the crater below, an{BR}ancient temple was revealed, sundered{BR}by the event.",
+            "hitpoints": 3
+        },
+        {
+            "identifier": "FlyingBus",
+            "count": 1,
+            "title": "Flying bus",
+            "keywords": [
+                "vehicle"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageProjectile"
+            ],
+            "body": "At the end of the environment turn, this card deals the X+1 hero targets with the highest HP {H} projectile damage each, where X is the number of environment cards to the left of this one.",
+            "flavorText": "Titan commented favorably on the{BR}speed of the public transit system{BR}as it ricocheted off his shoulder.",
+            "hitpoints": 8
+        },
+        {
+            "identifier": "ForgottenDjinn",
+            "count": 1,
+            "title": "Forgotten Djinn",
+            "keywords": [
+                "guardian"
+            ],
+            "icons": ["EndOfTurnAction","DealDamageMelee"],
+            "body": "At the end of the environment turn, this card deals the non-environment target with the second highest HP X+2 melee damage, where X is the number of environment cards to the left of this one.",
+            "flavorText": "As the rising city exposed the{BR}temple's entrance, its guardian{BR}awakened: a djinn so old not even{BR}Malichae knew its name.",
+            "hitpoints": 5
+        },
+        {
+            "identifier": "FracturedSky",
+            "count": 1,
+            "title": "Fractured Sky",
+            "icons": ["PlayCardNow","DestroySelf"],
+            "body": [
+                "When this card enters play, reveal the top 2 cards of the environment deck. Put one into play to the left of all cards in the environment play area, and the other into play to the right.",
+                "When an environment target is destroyed, destroy this card."
+            ],
+            "flavorText": "The destabilized anomaly left pieces{BR}of Akelabad drifting in a perpetual{BR}storm, whose intensity fluctuated{BR}constantly."
+        },
+        {
+            "identifier": "GeminiIndra",
+            "count": 1,
+            "title": "Gemini Indra",
+            "keywords": [
+                "criminal"
+            ],
+            "icons": ["IncreaseDamageDealtLightning","DealDamageProjectile"],
+            "body": [
+                "Increase all lightning damage dealt by 1.",
+                "At the end of the environment turn, this card deals the 2 targets with the highest HP X+1 projectile damage each, where X is the number of environment cards to the left of this one."
+            ],
+            "flavorText": "The city had always possessed its share{BR}of strange criminals. After the event,{BR}they were quick to turn their abilities{BR}toward exploiting the situation.",
+            "hitpoints": 13
+        },
+        {
+            "identifier": "GeminiMaya",
+            "count": 1,
+            "title": "Gemini Maya",
+            "keywords": [
+                "criminal"
+            ],
+            "icons": ["IncreaseDamageDealtProjectile","DealDamageLightning"],
+            "body": [
+                "Increase all projectile damage dealt by 1.",
+                "At the end of the environment turn, this card deals the 2 targets with the highest HP X+1 lightning damage each, where X is the number of environment cards to the left of this one."
+            ],
+            "flavorText": "The Gemini Twins found a natural affinity{BR}for the new weather, prowling the{BR}floating ruins and stealing from{BR}abandoned Garotech warehouses.",
+            "hitpoints": 13
+        },
+        {
+            "identifier": "GeogravLocus",
+            "count": 1,
+            "title": "Geograv Locus",
+            "keywords": [
+                "device"
+            ],
+            "icons": ["ReduceDamageTaken","EndOfTurnAction","PlayCardNow"],
+            "body": [
+                "Reduce damage dealt to this card by X, where X is the number of environment cards to the left of this one.",
+                "At the end of the environment turn, play the top card of the environment deck."
+            ],
+            "flavorText": "“In the wrong hands, it could tear{BR}the city apart!” he cried. The{BR}intruder only grinned. “Those are{BR}the hands that paid me.”",
+            "hitpoints": 7
+        },
+        {
+            "identifier": "PressureDrop",
+            "count": 1,
+            "title": "Pressure Drop",
+            "icons": ["Discard","StartOfTurnAction","DestroySelf"],
+            "body": [
+                "When this card enters play, the hero with the lowest HP must discard X cards, where X is the number of environment cards to the left of this one.",
+                "At the start of the environment turn, if there are 3 environment cards to the right of this one, destroy this card."
+            ],
+            "flavorText": "The relentless wind and thinning{BR}atmosphere made breathing all but{BR}impossible. “How much higher does{BR}this go?” gasped Tempest."
+        },
+        {
+            "identifier": "RideTheCurrents",
+            "count": 1,
+            "title": "Ride the Currents",
+            "icons": ["PlayCardNow","StartOfTurnAction"],
+            "body": [
+                "When this card enters play, select the deck with the least number of non-character cards in play. Put the top card of that deck into play.",
+                "At the start of the villain turn, you may move 1 environment card to a new location in the environment play area."
+            ],
+            "flavorText": "“You look different. New haircut?” asked{BR}the Stranger. As a claw shot towards{BR}him, he stepped backward and was{BR}whipped away by the corridor of wind."
+        },
+        {
+            "identifier": "Scatterburst",
+            "count": 1,
+            "title": "Scatterburst",
+            "icons": ["GainHP","DestroySelf"],
+            "body": [
+                "On the turn this card enters play, after all other end of turn effects have taken place, shuffle all non-character villain cards from the villain play area and replace them in a random order. Do the same for environment cards in the environment play area.",
+                "Then, each hero target regains 1HP and this card is destroyed."
+            ],
+            "flavorText": "A blast of wind threw the madman's{BR}projections into disarray, as the{BR}team leapt from the hovering{BR}Kestrel to aid in the evacuation."
+        },
+        {
+            "identifier": "SkulkingIntermediary",
+            "count": 1,
+            "title": "Skulking intermediary",
+            "keywords": [
+                "contact"
+            ],
+            "icons": ["EndOfTurnAction","GainHP","ImmuneToDamage"],
+            "body": [
+                "At the end of the environment turn, each environment and villain target regains X+1 HP, where X is the number of environment cards to the left of this one.",
+                "This card is immune to damage dealt by villain targets."
+            ],
+            "flavorText": "“Please, test the equipment,” it said. “We{BR}went to a great deal of trouble to{BR}procure it. Should make your job{BR}considerably easier.”",
+            "hitpoints": 9,
+            "nemesisIdentifiers": [
+                "Titan"
+            ]
+        },
+        {
+            "identifier": "ToppledSkyscraper",
+            "count": 1,
+            "title": "Toppled Skyscraper",
+            "keywords": [
+                "structure"
+            ],
+            "icons": ["RedirectDamage","StartOfTurnAction"],
+            "body": [
+                "The first time a villain target would be dealt damage each turn, redirect it to this card.",
+                "At the start of each hero’s turn, they may choose what order to perform that turn's play, power, and draw phases in."
+            ],
+            "flavorText": "“Hold it, this could get bodgy,” Echelon{BR}said. The aircraft dove beneath the{BR}crumbling skyscraper, cutting off sight{BR}of the trailing Tiamat.",
+            "hitpoints": 10
+        }
+    ]
+}

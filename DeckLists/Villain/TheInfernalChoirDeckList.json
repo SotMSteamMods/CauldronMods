@@ -1,0 +1,417 @@
+{
+    "name": "The Infernal Choir",
+    "kind": "Villain",
+    "expansionIdentifier": "CauldronAdrift",
+    "initialCardIdentifiers": [
+        "TheInfernalChoirCharacter",
+        "VagrantHeart"
+    ],
+    "cards": [
+        {
+            "identifier": "TheInfernalChoirCharacter",
+            "count": 1,
+            "title": "The Infernal Choir",
+            "keywords": [
+                "villain"
+            ],
+            "body": "Unfinished Business",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 55,
+            "nemesisIdentifiers": [
+                "Terminus"
+            ],
+            "setup": [
+                "At the start of the game, put {TheInfernalChoir}'s villain character cards into play, 'Unfinished Business' side up. Search the villain deck for the card Vagrant Heart and put it face-up on the bottom of a random hero deck. Shuffle the villain deck."
+            ],
+            "gameplay": [
+                "The Infernal Choir is indestructible. If she would be dealt damage, prevent that damage and move Vagrant Heart's card up that many cards instead.",
+                "If an effect would manipulate the cards of the deck containing Vagrant Heart, that effect ignores Vagrant Heart and all cards in the deck below it. If Vagrant Heart leaves the game, the heroes lose. Game over.",
+                "At the end of the villain turn, play the top card of the villain deck. Then The Infernal Choir deals each non-ghost, non-villain target 1 infernal damage."
+            ],
+            "advanced": "Increase all damage dealt by 1.",
+            "icons": [
+                "PreventDamage",
+                "Manipulate",
+                "LoseTheGame",
+                "EndOfTurnAction",
+                "PlayCardNow",
+                "DealDamageInfernal"
+            ],
+            "advancedIcons": [
+                "IncreaseDamageDealt"
+            ],
+            "flippedBody": "Harmonic Souls",
+            "flippedGameplay": [
+                "Redirect all hero damage that would be dealt to villain targets during the villain turn to the hero target with the highest HP.",
+                "At the start of the villain turn, remove all but the bottom 5 cards of each hero's deck from the game, then destroy each hero character whose deck contains no cards. Play the top card of the villain deck and each hero deck in order in turn order. Remove all hero cards played this way from the game at the end of the villain turn."
+            ],
+            "flippedAdvanced": "At the start of each player's turn, remove the top card of their deck from the game.",
+            "flippedIcons": [
+                "RedirectDamage",
+                "StartOfTurnAction",
+                "Destroy",
+                "PlayCardNow",
+                "RemoveFromGame"
+            ],
+            "flippedAdvancedIcons": [
+                "RemoveFromGame"
+            ],
+            "difficulty": 1,
+            "openingLines": {
+                "default": "default placeholder",
+                "TerminusCharacter": "Terminus placeholder",
+                "MinistryOfStrategicSciencesCharacter": "Ministry Of Strategic Sciences Terminus placeholder",
+                "2199TerminusCharacter": "Terminus 2199 placeholder"
+            }
+        },
+        {
+            "identifier": "VagrantHeart",
+            "count": 1,
+            "title": "Vagrant Heart",
+            "keywords": [
+                "soul"
+            ],
+            "icons": [
+                "PlayCardNow"
+            ],
+            "body": [
+                "When this card is on top of a hero deck, put it into play, shuffle that deck, and flip {TheInfernalChoir}'s villain character cards.",
+                "This card is indestructible.",
+                "If a player would draw, play, or discard cards from an empty deck, nothing happens instead."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheInfernalChoir",
+                    "text": "My ethereal heart{BR}is tucked away inside one of flesh{BR}and blood. Don't you see? You can't{BR}beat me without destroying yourself."
+                }
+            ],
+            "flavorReference": "The Infernal Choir, End of the Line #30"
+        },
+        {
+            "identifier": "BaneOfEmbers",
+            "count": 2,
+            "title": "Bane of Embers",
+            "keywords": [
+                "ghost"
+            ],
+            "icons": [
+                "ImmuneToDamage",
+                "EndOfTurnAction",
+                "DealDamageCold"
+            ],
+            "body": [
+                "Whenever this card is dealt damage, it becomes immune to damage until the end of the turn.",
+                "At the end of the villain turn, this card deals the {H} hero targets with the highest HP X cold damage each, where X is the current HP of this card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Echelon",
+                    "text": "No sign of forced entry.{BR}You're sure the killers were here?"
+                },
+                {
+                    "identifier": "Terminus",
+                    "text": "They still are."
+                }
+            ],
+            "flavorReference": "Silencer #2",
+            "hitpoints": 4
+        },
+        {
+            "identifier": "BaneOfIron",
+            "count": 2,
+            "title": "Bane of Iron",
+            "keywords": [
+                "ghost"
+            ],
+            "icons": [
+                "ReduceDamageDealt",
+                "DestroyOngoing",
+                "DestroyEquipment"
+            ],
+            "body": [
+                "Reduce damage dealt by hero characters whose deck does not contain Vagrant Heart by 1.",
+                "When this card is destroyed, destroy {H} hero ongoing and/or equipment cards."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheInfernalChoir",
+                    "text": "Metal rusts, my friend. If your{BR}syndicate wants to upgrade to ethereal{BR}weapons, you'll have to deal with me."
+                }
+            ],
+            "flavorReference": "The Infernal Choir, True Colors #8",
+            "hitpoints": 3
+        },
+        {
+            "identifier": "BeneathTheFlesh",
+            "count": 2,
+            "title": "Beneath the Flesh",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "Discard",
+                "DealDamageInfernal",
+                "PlayCardNow",
+                "DestroySelf"
+            ],
+            "body": "Whenever a hero character is dealt 3 or more damage at once, put the top 1, 2, or 3 cards of their deck into their trash. That hero may deal themself X infernal damage and put one of those cards into play, where X is the number of cards that entered their trash this way. If they do, destroy this card.",
+            "flavorQuotes": [
+                {
+                    "identifier": "RedSunXu",
+                    "text": "Let's have a look at the real you."
+                }
+            ],
+            "flavorReference": "Red Sun Xu, Full Moon Express #13"
+        },
+        {
+            "identifier": "DanchengTheGiant",
+            "count": 1,
+            "title": "Dancheng the Giant",
+            "keywords": [
+                "ghost"
+            ],
+            "icons": [
+                "DealDamageInfernal",
+                "Discard",
+                "ReduceDamageTaken"
+            ],
+            "body": "Whenever a hero draws a card, {TheInfernalChoir} deals them 4 infernal damage. They may discard that card to reduce that damage by 3.",
+            "flavorText": "“We've got to escape,” said the Harpy.{BR}“But I can't remember from what.”",
+            "hitpoints": 7
+        },
+        {
+            "identifier": "Eclipse",
+            "count": 1,
+            "title": "Eclipse",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageInfernal"
+            ],
+            "body": "At the end of the villain turn, {TheInfernalChoir} deals the hero with the most cards in their trash 3 infernal damage.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Drift",
+                    "text": "Whichever way{BR}I shift, it's dark out!"
+                },
+                {
+                    "identifier": "LadyOfTheWood",
+                    "text": "I fear this night is{BR}far from over."
+                }
+            ],
+            "flavorReference": "Department of Secrets #60"
+        },
+        {
+            "identifier": "HauntingNocturne",
+            "count": 3,
+            "title": "Haunting Nocturne",
+            "keywords": [
+                "charm"
+            ],
+            "icons": [
+                "Search",
+                "IncreaseDamageDealt"
+            ],
+            "body": [
+                "When this card enters play, if Eclipse is not in play, search the villain trash and deck for it and put it into play, then shuffle the villain deck.",
+                "Increase damage dealt by {TheInfernalChoir} by 1."
+            ],
+            "flavorText": "Throughout the city,{BR}everyone had the same nightmare. A{BR}mournful song, and an unseen singer{BR}growing ever closer.",
+            "hitpoints": 6
+        },
+        {
+            "identifier": "InfernalElegy",
+            "count": 1,
+            "title": "Infernal Elegy",
+            "keywords": [
+                "charm"
+            ],
+            "icons": [
+                "PlayCardNow"
+            ],
+            "body": [
+                "When this card enters play, play the top card of the environment deck.",
+                "The first time each turn that an environment card is destroyed, put a random Ghost card from the villain trash into play."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "RedSunXu",
+                    "text": "She's got bigger plans than just{BR}this city. But it'll do for a start."
+                }
+            ],
+            "flavorReference": "Red Sun Xu, Unusual Suspects #21",
+            "hitpoints": 11
+        },
+        {
+            "identifier": "KataMichi",
+            "count": 1,
+            "title": "Kata Michi",
+            "keywords": [
+                "ghost"
+            ],
+            "icons": [
+                "IncreaseDamageDealt",
+                "HasPower",
+                "DealDamageCold"
+            ],
+            "body": [
+                "Increase damage dealt by hero characters whose deck contains Vagrant Heart by 1.",
+                "Replace all powers on hero character cards with the following power:",
+                "Power: Each hero target and each Ghost deals itself 2 cold damage."
+            ],
+            "powers": [
+                "Each hero target and each Ghost deals itself 2 cold damage."
+            ],
+            "flavorText": "Buried long ago on a{BR}distant island, the ghost called Kata{BR}Michi trekked for years across the{BR}ocean, desperate to escape its{BR}reckoning.",
+            "hitpoints": 9
+        },
+        {
+            "identifier": "MoonEater",
+            "count": 2,
+            "title": "Moon Eater",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Discard",
+                "DealDamageCold"
+            ],
+            "body": [
+                "Each player puts the top 1, 2, or 3 cards of their deck into their trash, then each hero deals themself X cold damage.",
+                "If Vagrant Heart is in play, X is half the number of cards in that hero's deck, rounded up. Otherwise, X is the number of cards put into that hero's trash this way."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "KataMichi",
+                    "text": "The moon itself shall{BR}be our death mask. Not even the{BR}Conductor will be able to banish{BR}our Choir from this world!"
+                }
+            ],
+            "flavorReference": "Kata Michi, Full Moon Express #49"
+        },
+        {
+            "identifier": "NoWitnesses",
+            "count": 2,
+            "title": "No Witnesses",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DealDamageInfernal",
+                "DrawCardNow",
+                "Discard"
+            ],
+            "body": [
+                "{TheInfernalChoir} deals the {H - 1} hero characters with the lowest HP 3 infernal damage each.",
+                "1 hero dealt damage this way draws a card. Each other hero dealt damage this way discards a card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheInfernalChoir",
+                    "text": "Crime is wasted on the living."
+                }
+            ],
+            "flavorReference": "The Infernal Choir, Shallow Earth One-shot"
+        },
+        {
+            "identifier": "RedSunXu",
+            "count": 1,
+            "title": "Red Sun Xu",
+            "keywords": [
+                "ghost"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamagePsychic"
+            ],
+            "body": [
+                "Each Equipment card in play now has a maximum HP of 1 and gains the keyword 'Ghost.'",
+                "At the end of the villain turn, {H - 1} hero targets deal themselves 3 psychic damage each."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "RedSunXu",
+                    "text": "That sword was never yours.{BR}Twelve generations held it before you,{BR}and they rise to reclaim it."
+                }
+            ],
+            "flavorReference": "Red Sun Xu, True Colors #14",
+            "hitpoints": 3
+        },
+        {
+            "identifier": "TheVoicesGather",
+            "count": 3,
+            "title": "The Voices Gather",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "DealDamagePsychic",
+                "DrawCardNow"
+            ],
+            "body": [
+                "Reveal cards from the top of the villain deck until a target is revealed, put it into play, and discard the other revealed cards.",
+                "That target deals the hero target with the highest HP {H - 1} psychic damage. If Vagrant Heart is in play, each player draws a card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheStranger",
+                    "text": "Do you hear something?{BR}Or several somethings?"
+                }
+            ],
+            "flavorReference": "The Stranger, Dust to Dust #1"
+        },
+        {
+            "identifier": "TrueColors",
+            "count": 2,
+            "title": "True Colors",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DealDamageInfernal",
+                "DealDamageCold"
+            ],
+            "body": [
+                "{TheInfernalChoir} deals the hero target with the highest HP 6 infernal damage.",
+                "If Vagrant Heart is in play, {TheInfernalChoir} deals the hero target with the highest HP 6 cold damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheInfernalChoir",
+                    "text": "You dug up my soul, Daiyu.{BR}Let me return the favor!"
+                }
+            ],
+            "flavorReference": "The Infernal Choir, Full Moon Express #24"
+        },
+        {
+            "identifier": "WretchedSymphony",
+            "count": 1,
+            "title": "Wretched Symphony",
+            "keywords": [
+                "charm"
+            ],
+            "icons": [
+                "ReduceDamageDealt",
+                "EndOfTurnAction",
+                "GainHP",
+                "DealDamageCold"
+            ],
+            "body": [
+                "Reduce damage dealt to {TheInfernalChoir} by 1.",
+                "At the end of the villain turn, if Vagrant Heart is in play, restore each Ghost to its maximum HP. Otherwise, the hero whose deck contains Vagrant Heart deals each other hero character 2 cold damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Titan",
+                    "text": "It takes a lot to make my blood{BR}freeze. So, good job, I guess."
+                }
+            ],
+            "flavorReference": "Titan, Losing Your Voice #1",
+            "hitpoints": 7
+        }
+    ]
+}

@@ -1,0 +1,224 @@
+{
+    "name": "F.S.C. Continuance Wanderer DeckList",
+    "kind": "Environment",
+    "expansionIdentifier": "Cauldron",
+    "backgroundColor": "FB5455",
+    "difficulty": 1,
+    "cards": [
+        {
+            "identifier": "CombatCyborg",
+            "count": 1,
+            "title": "Combat Cyborg",
+            "keywords": [
+                "time monster"
+            ],
+            "icons": [
+                "ReduceDamageTaken",
+                "EndOfTurnAction",
+                "DealDamageProjectile"
+            ],
+            "body": [
+                "Reduce damage dealt to environment targets by 2.",
+                "At the end of the environment turn, this card deals non-environment the target with the lowest HP (H)-2 projectile damage."
+            ],
+            "flavorText": "“Now that's my kind of possible future!” said Unity. Omnitron-X grabbed her wrist and began retreating. “Please Accompany me if you wish to survive.”",
+            "hitpoints": 4
+        },
+        {
+            "identifier": "HeartOfTheWanderer",
+            "count": 1,
+            "title": "Heart of the Wanderer",
+            "icons": [
+                "Manipulate",
+                "EndOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, reveal the top card of each deck in turn order and either discard it or replace it.",
+                "At the end of the environment turn, destroy this card."
+            ],
+            "flavorText": "“I think...it's showing us things to{BR}come,” said Cricket. Haka looked{BR}around nervously. “Does anyone{BR}else hear a heartbeat?”"
+        },
+        {
+            "identifier": "ParadoxIntrusion",
+            "count": 2,
+            "title": "Paradox Intrusion",
+            "keywords": [
+                "time monster"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageEnergy"
+            ],
+            "body": "At the end of the environment turn, this card deals the hero target with the highest HP {H} energy damage.",
+            "flavorText": "“The way I hear it, some things ain't{BR}supposed to exist,” said Chrono-Ranger.{BR}“Problem is, when they intersect this{BR}crystal thing, they [b]DO[/b].”",
+            "hitpoints": 8
+        },
+        {
+            "identifier": "PrehistoricBehemoth",
+            "count": 2,
+            "title": "Prehistoric Behemoth",
+            "keywords": [
+                "time monster"
+            ],
+            "icons": [
+                "ImmuneToDamage",
+                "EndOfTurnAction",
+                "DealDamageMelee"
+            ],
+            "body": [
+                "This card is immune to damage dealt by targets with less than 10HP.",
+                "At the end of the environment turn, this card deals the {H - 2} hero target 2 melee damage."
+            ],
+            "flavorText": "The timeship attracts everything that{BR}might have been, including denizens{BR}of a potential world whose ice{BR}age never ended.",
+            "hitpoints": 8
+        },
+        {
+            "identifier": "SuperimposedRealities",
+            "count": 1,
+            "title": "Superimposed Realities",
+            "icons": [
+                "PlayExtraCard",
+                "DrawExtraCard",
+                "UseExtraPower",
+                "StartOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "Play this card next to a hero.",
+                "Whenever another hero would play a card, use a power, or draw a card, instead the hero next to this card does that respective action",
+                "At the start of the environment turn, destroy this card."
+            ],
+            "flavorText": "As the ship crashed through the shards of{BR}multiple realities, the Stranger felt each{BR}version of himself pass, and knew the{BR}choices that had cost each of them dearly."
+        },
+        {
+            "identifier": "TemporalAcceleration",
+            "count": 1,
+            "title": "Temporal Acceleration",
+            "icons": [
+                "PlayCardNow",
+                "EndOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, play the top card of each deck in turn order, starting with the villain deck.",
+                "At the end of the environment turn, destroy this card."
+            ],
+            "flavorText": "The FSC “Continuance Wanderer” possessed no{BR}conventional propulsion. instead its crystal{BR}hull bent reality, speeding up the universe{BR}around and, occasionally, inside it."
+        },
+        {
+            "identifier": "TemporalReset",
+            "count": 1,
+            "title": "Temporal Reset",
+            "icons": [
+                "Manipulate",
+                "EndOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, destroy all other environment cards. Then shuffle 2 cards from each trash pile back into their deck, and each non-character target regains {H} HP.",
+                "At the end of the environment turn, destroy this card."
+            ],
+            "flavorText": "The younger Legacy stared at the{BR}enormous crystal embedded in its{BR}framework of sculpted metal and{BR}wondered, “What if?”"
+        },
+        {
+            "identifier": "TemporalReversal",
+            "count": 1,
+            "title": "Temporal Reversal",
+            "icons": [
+                "Manipulate",
+                "EndOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, place 1 card in play from each other deck back on top of that deck.",
+                "At the end of the environment turn, destroy this card."
+            ],
+            "flavorText": "“What happened?” Fanatic asked as{BR}she stumbled against the bulkhead.{BR}“Another chance to make the same{BR}mistakes,” replied Baccarat."
+        },
+        {
+            "identifier": "TemporalSlipstream",
+            "count": 1,
+            "title": "Temporal Slipstream",
+            "icons": [
+                "SkipTurn",
+                "EndOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, each player discards their hand and draws that many cards.",
+                "At the end of the environment turn, destroy this card."
+            ],
+            "flavorText": "Defects in the chronospherical lattice{BR}throughout the corridors caused random{BR}divergences in the local timestream. Not{BR}even Vanish could escape them."
+        },
+        {
+            "identifier": "TimeFreeze",
+            "count": 1,
+            "title": "Time Freeze",
+            "icons": [
+                "Discard",
+                "DrawCardNow",
+                "StartOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "Play this card next to a hero.",
+                "That hero skips their turns, and targets in their play are are immune to damage.",
+                "At the start of the environment turn, destroy this card."
+            ],
+            "flavorText": "Blade's minions stared at the giant{BR}golem, which had suddenly stopped{BR}moving. “What are you doing?!{BR}Attack it!” their captain shouted."
+        },
+        {
+            "identifier": "VortexGlitch",
+            "count": 1,
+            "title": "Vortex Glitch",
+            "keywords": [
+                "time vortex"
+            ],
+            "icons": [
+                "CannotPlayCards",
+                "DestroySelf"
+            ],
+            "body": [
+                "Heroes may not play one-shots.",
+                "When another environment card enters play, destroy this card."
+            ],
+            "flavorText": "As the timeship's call resonated through the{BR}fabric of reality, those beings contaminated by{BR}temporal anomalies were pulled into it. Not all{BR}of them arrived in one piece."
+        },
+        {
+            "identifier": "VortexInterference",
+            "count": 1,
+            "title": "Vortex Interference",
+            "keywords": [
+                "time vortex"
+            ],
+            "icons": [
+                "DestroyOngoing",
+                "DestroyEquipment",
+                "DestroySelf"
+            ],
+            "body": [
+                "Whenever a hero uses a power, destroy 1 hero ongoing or equipment card.",
+                "When another environment card enters play, destroy this card."
+            ],
+            "flavorText": "Unity studied the ship’s schematics. “The{BR}crystal's a link to an unstable chrono-spatial{BR}rift. The inside is actually a pocket of another{BR}dimension. And it's bigger than the outside.”"
+        },
+        {
+            "identifier": "VortexSurge",
+            "count": 1,
+            "title": "Vortex Surge",
+            "keywords": [
+                "time vortex"
+            ],
+            "icons": [
+                "Discard",
+                "DestroySelf"
+            ],
+            "body": [
+                "Whenever a hero card is drawn, 1 player must discard a card.",
+                "When another environment card enters play, destroy this card."
+            ],
+            "flavorText": "I don't know how F.I.L.T.E.R. got their{BR}hands on this, but it could take you{BR}back to your time. If these temporal{BR}fluctuations don't kill us all first."
+        }
+    ]
+}

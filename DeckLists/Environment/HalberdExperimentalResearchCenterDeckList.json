@@ -1,0 +1,269 @@
+{
+    "name": "Halberd Experimental Research Center",
+    "kind": "Environment",
+    "expansionIdentifier": "Cauldron",
+    "backgroundColor": "FB5455",
+    "difficulty": 1,
+    "cards": [
+        {
+            "identifier": "HalberdProphet",
+            "count": 1,
+            "title": "Halberd-03: Prophet",
+            "keywords": [
+                "test subject"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "Manipulate",
+                "PlayCardNow"
+            ],
+            "body": "At the end of the environment turn, if there are no Chemical Triggers in play, each player may look at the top card of their deck, and put it back on either the top or bottom of their deck. Otherwise, play the top card of the villain deck.",
+            "flavorText": "“How do you know this stuff? It{BR}hasn't happened yet.” said Unity. The{BR}mute shrugged and tapped his{BR}metal helmet.",
+            "hitpoints": 3
+        },
+        {
+            "identifier": "EmergencyReleaseProtocol",
+            "count": 1,
+            "title": "Emergency Release Protocol",
+            "icons": [
+                "EndOfTurnAction",
+                "PlayCardNow",
+                "StartOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "At the end of the environment turn, play the top card of the environment deck.",
+                "At the start of their turn, a player may skip the rest of their turn to destroy this card."
+            ],
+            "flavorText": "Alarms began to blare as Cpt.{BR}Reager overrode the cell locks.{BR}“Let's see what these intruders{BR}think of our work.”"
+        },
+        {
+            "identifier": "HalberdAlpha",
+            "count": 1,
+            "title": "Halberd-04: Alpha",
+            "keywords": [
+                "test subject"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageMelee"
+            ],
+            "body": "At the end of the environment turn, if there are no Chemical Triggers in play, each Test Subject deals the villain target with the highest HP 1 melee damage. Otherwise, each Test Subject deals the hero target with the highest HP 1 melee damage.",
+            "flavorText": "“Doesn't look like a secret lab.” said{BR}the gunslinger, as they observed from{BR}a nearby rooftop. “They never do.”{BR}replied Expatriette.",
+            "hitpoints": 4
+        },
+        {
+            "identifier": "HalberdSiren",
+            "count": 1,
+            "title": "Halberd-05: Siren",
+            "keywords": [
+                "test subject"
+            ],
+            "icons": [
+                "RedirectDamage"
+            ],
+            "body": "If there are no Chemical Triggers in play, the first time the hero target with the highest HP would be dealt damage each turn, redirect that damage to the villain target with the highest HP. Otherwise, the first time a non-hero target would be dealt damage each turn, redirect that damage to the hero target with the highest HP.",
+            "flavorText": "Reager slid the plans across the desk.{BR}“Our guests keep trying to escape. I{BR}want the R42 adapted to retrieve them{BR}when they do.”",
+            "hitpoints": 5
+        },
+        {
+            "identifier": "HalberdFoamcore",
+            "count": 1,
+            "title": "Halberd-06: Foamcore",
+            "keywords": [
+                "test subject"
+            ],
+            "icons": [
+                "ReduceDamageTaken"
+            ],
+            "body": [
+                "If there are no Chemical Triggers in play, reduce damage dealt to the hero target with the lowest HP by 1.",
+                "Otherwise, reduce damage dealt to villain targets by 1."
+            ],
+            "flavorText": "Halcyon's interests were laudably diverse:{BR}mutants, aliens, and the odd biomechanical{BR}genetic engineering experiment all{BR}disappeared into the complex.",
+            "hitpoints": 6
+        },
+        {
+            "identifier": "HalberdPlasma",
+            "count": 1,
+            "title": "Halberd-07: Plasma",
+            "keywords": [
+                "test subject"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageEnergy"
+            ],
+            "body": [
+                "At the end of the environment turn, if there are no Chemical Triggers in play, this card deals the villain target with highest HP {H} energy damage.",
+                "Otherwise, this card deals the hero target with the highest HP {H} energy damage."
+            ],
+            "flavorText": "Halcyon’s black projects took extreme{BR}security precautions. Standard procedure{BR}was to shoot first. The Halberd test{BR}subjects were receptive to this philosophy.",
+            "hitpoints": 7
+        },
+        {
+            "identifier": "HalberdZephyr",
+            "count": 1,
+            "title": "Halberd-08: Zephyr",
+            "keywords": [
+                "test subject"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "GainHP"
+            ],
+            "body": [
+                "At the end of the environment turn, each Test Subject regains 1HP.",
+                "Then, If there are no Chemical Triggers in play, the hero with the lowest HP regains 3HP. Otherwise, the villain target with the lowest HP regains 3HP."
+            ],
+            "flavorText": "The observing scientists didn't{BR}realize the extent of Mia Volke's{BR}mutation until she had explored{BR}most of the facility.",
+            "hitpoints": 8
+        },
+        {
+            "identifier": "HalberdEther",
+            "count": 1,
+            "title": "Halberd-09: Ether",
+            "keywords": [
+                "test subject"
+            ],
+            "icons": [
+                "IncreaseDamageDealt"
+            ],
+            "body": [
+                "If there are no Chemical Triggers in play, increase damage dealt by the hero target with the highest HP by 1.",
+                "Otherwise, increase damage dealt by villain targets by 1."
+            ],
+            "flavorText": "“There's three of them just around{BR}the next corner,” the disembodied{BR}voice whispered to Chrono-Ranger.{BR}“Make it count.”",
+            "hitpoints": 9
+        },
+        {
+            "identifier": "HalberdSplinter",
+            "count": 1,
+            "title": "Halberd-10: Splinter",
+            "keywords": [
+                "test subject"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageProjectile"
+            ],
+            "body": "At the end of the environment turn, if there are no Chemical Triggers in play, this card deals the 3 villain targets with the lowest HP 1 projectile damage each. Otherwise, this card deal the 3 hero targets with the lowest HP 1 projectile damage each.",
+            "flavorText": "The collateral damage from{BR}Halberd-19's escape freed several{BR}other subjects. It took days before{BR}all of them were recaptured.",
+            "hitpoints": 10
+        },
+        {
+            "identifier": "HalberdOmega",
+            "count": 1,
+            "title": "Halberd-12: Omega",
+            "keywords": [
+                "test subject"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageInfernal"
+            ],
+            "body": "At the end of the environment turn, if there are no Chemical Triggers in play, this cards deals each villain target 2 infernal damage. Otherwise, this cards deals each hero target 2 infernal damage.",
+            "flavorText": "“That wing of the complex was a{BR}smoking ruin,” said Havoc. “Whatever{BR}was down there, I don't think we{BR}want to meet it.”",
+            "hitpoints": 12
+        },
+        {
+            "identifier": "HalcyonCleaners",
+            "count": 1,
+            "title": "Halcyon Cleaners",
+            "keywords": [
+                "specialist"
+            ],
+            "icons": [
+                "IncreaseDamageDealt",
+                "EndOfTurnAction",
+                "DealDamageFire",
+                "PlayCardNow"
+            ],
+            "body": [
+                "If there are no Chemical Triggers in play, increase damage dealt by this card to Test Subjects by 5.",
+                "At the end of the environment turn, this card deals the target other than itself with the second lowest HP {H} fire damage. Whenever this card destroys a Test Subject, play the top card of the environment deck."
+            ],
+            "flavorText": "“You made quite the mess last time,”{BR}grunted the specialist, as his{BR}helmet slid into place. “I'm here to{BR}clean up.”",
+            "hitpoints": 6
+        },
+        {
+            "identifier": "HcBSwarmingAgent",
+            "count": 1,
+            "title": "HC-01b Swarming Agent",
+            "keywords": [
+                "chemical trigger"
+            ],
+            "icons": [
+                "Indestructible",
+                "StartOfTurnAction",
+                "DestroySelf",
+                "Manipulate"
+            ],
+            "body": [
+                "This card is indestructible if at least 1 Test Subject is in play. At the start of the environment turn, destroy this card.",
+                "When this card enters play, reveal cards from the top of the environment deck until 2 Test Subjects have been revealed. Put them into play and shuffle the remaining cards into the deck."
+            ],
+            "flavorText": "“What do you mean she's not reacting{BR}to the trigger?” Cpt. Reager slammed{BR}his fist on the console. “Then get{BR}everything else after her!”"
+        },
+        {
+            "identifier": "HrCombatPheromones",
+            "count": 1,
+            "title": "HR-03 Combat Pheromones",
+            "keywords": [
+                "chemical trigger"
+            ],
+            "icons": [
+                "Indestructible",
+                "StartOfTurnAction",
+                "DestroySelf",
+                "Search",
+                "ReduceDamageTaken"
+            ],
+            "body": [
+                "This card is indestructible if at least 1 Test Subject is in play. At the start of the environment turn, destroy this card.",
+                "When this card enters play, search the environment deck and trash for Halberd-12: Omega and put it into play, then shuffle the deck.",
+                "Reduce damage dealt to Test Subjects by 1."
+            ],
+            "flavorText": "“Twelve! You okay?” yelled{BR}Quicksilver, as the shadows on the{BR}walls began to reach for her."
+        },
+        {
+            "identifier": "HtAggressionStimulant",
+            "count": 1,
+            "title": "HT-21 Aggression Stimulant",
+            "keywords": [
+                "chemical trigger"
+            ],
+            "icons": [
+                "Indestructible",
+                "StartOfTurnAction",
+                "DestroySelf",
+                "Search",
+                "IncreaseDamageDealt"
+            ],
+            "body": [
+                "This card is indestructible if at least 1 Test Subject is in play. At the start of the environment turn, destroy this card.",
+                "When this card enters play, search the environment deck and trash for Halberd-04: Alpha and put it into play, then shuffle the deck.",
+                "Increase damage dealt by Test Subjects by 1."
+            ],
+            "flavorText": "“We've synthesized an aggressor{BR}response trigger from the toxic flora{BR}of a rather endearing little island,”{BR}said the tech. “Would you care to see?”"
+        },
+        {
+            "identifier": "SubjectRecyclingProject",
+            "count": 1,
+            "title": "Subject Recycling Project",
+            "keywords": [
+                "device"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "DestroySelf",
+                "ReduceDamageTaken"
+            ],
+            "body": [
+                "When this card enters play, put a random Test Subject from the environment trash into play and place this card next to it, otherwise destroy this card.",
+                "Reduce damage dealt to that Test Subject by 1. If that Test Subject leaves play, this card is destroyed."
+            ],
+            "flavorText": "The Halcyon-R42 A.I. which supervised{BR}subject containment within the complex{BR}had developed a steadfast belief in not{BR}letting anything go to waste."
+        }
+    ]
+}

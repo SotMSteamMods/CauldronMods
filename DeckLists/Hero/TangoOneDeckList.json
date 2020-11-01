@@ -1,0 +1,444 @@
+{
+    "name": "Tango One",
+    "kind": "Hero",
+    "initialCardIdentifiers": [
+        "TangoOneCharacter"
+    ],
+    "cards": [
+        {
+            "identifier": "TangoOneCharacter",
+            "count": 1,
+            "title": "Tango One",
+            "body": "Snipe",
+            "backgroundColor": "FBF8F9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C94742",
+            "character": true,
+            "powers": [
+                "{TangoOne} deals 1 target 1 projectile damage."
+            ],
+            "icons": [
+                "HasPower",
+                "DealDamageProjectile"
+            ],
+            "hitpoints": 24,
+            "nemesisIdentifiers": [
+                "TangoOne"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "Reveal the top card of a deck, then replace it or discard it.",
+                "Up to 2 ongoing hero cards may be played now."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "Manipulate",
+                "PlayCardNow"
+            ],
+            "openingLines": {
+                "default": "default placeholder",
+                "AnathemaCharacter": "Anathema placeholder",
+                "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
+                "1929RamCharacter": "1929 Ram placeholder"
+            },
+            "complexity": 1
+        },
+        {
+            "identifier": "ChameleonArmor",
+            "count": 2,
+            "title": "Chameleon Armor",
+            "keywords": [
+                "equipment",
+                "limited"
+            ],
+            "icons": [
+                "Discard",
+                "PreventDamage"
+            ],
+            "body": "Whenever {TangoOne} would be dealt damage, you may discard the top card of your deck. If it is a Critical card, prevent that damage.",
+            "flavorQuotes": [
+                {
+                    "identifier": "TangoOne",
+                    "text": "Alright, Janet, try{BR}to blend in."
+                },
+                {
+                    "identifier": "Vanish",
+                    "text": "That's not fair."
+                }
+            ],
+            "flavorReference": "Vanish #100"
+        },
+        {
+            "identifier": "CriticalHit",
+            "count": 3,
+            "title": "Critical Hit",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "Discard",
+                "IncreaseDamageDealt"
+            ],
+            "body": "Whenever {TangoOne} deals damage, you may discard the top card of your deck. If it is a Critical card, increase that damage by 3.",
+            "flavorQuotes": [
+                {
+                    "identifier": "ChronoRanger",
+                    "text": "Show her your face and{BR}she'll cure all your ills."
+                }
+            ],
+            "flavorReference": "Chrono-Ranger, Anathema #2"
+        },
+        {
+            "identifier": "DamnGoodGround",
+            "count": 3,
+            "title": "Damn Good Ground",
+            "keywords": [
+                "one-shot",
+                "critical"
+            ],
+            "icons": [
+                "GainHP",
+                "DealDamageProjectile"
+            ],
+            "body": "{TangoOne} regains 2HP and may deal up to 3 targets 1 projectile damage each.",
+            "flavorQuotes": [
+                {
+                    "identifier": "AbsoluteZero",
+                    "text": "Do you have a plan{BR}to kill [b]EVERYONE[/b] you meet?"
+                }
+            ],
+            "flavorReference": "Absolute Zero, Temporal Targets #300"
+        },
+        {
+            "identifier": "DisablingShot",
+            "count": 2,
+            "title": "Disabling Shot",
+            "keywords": [
+                "one-shot",
+                "critical"
+            ],
+            "icons": [
+                "DestroyOngoing",
+                "DealDamageProjectile"
+            ],
+            "body": "You may destroy 1 ongoing card. {TangoOne} may deal 1 target 2 projectile damage.",
+            "flavorQuotes": [
+                {
+                    "identifier": "HalcyonR43SystemLog",
+                    "text": "Warning//recharge{BR}circuit malfunction//projectile{BR}trauma to primary synapse."
+                }
+            ],
+            "flavorReference": "Halcyon-R43 System Log, Quicksilver #78"
+        },
+        {
+            "identifier": "Farsight",
+            "count": 3,
+            "title": "Farsight",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "IrreducibleDamage"
+            ],
+            "body": "Damage dealt by {TangoOne} Is irreducible.",
+            "flavorQuotes": [
+                {
+                    "identifier": "TangoOne",
+                    "text": "You can't hide from me."
+                }
+            ],
+            "flavorReference": "Tango One, Dancing Ghosts #70"
+        },
+        {
+            "identifier": "GhostReactor",
+            "count": 3,
+            "title": "Ghost Reactor",
+            "keywords": [
+                "equipment",
+                "limited",
+                "critical"
+            ],
+            "icons": [
+                "ImmuneToDamagePsychic",
+                "HasPower",
+                "DrawCardNow",
+                "IncreaseDamageDealt"
+            ],
+            "body": [
+                "{TangoOne} is immune to psychic damage.",
+                "Power: Draw a card. Increase the next damage dealt by {TangoOne} by 2."
+            ],
+            "powers": [
+                "Draw a card. Increase the next damage dealt by {TangoOne} by 2."
+            ],
+            "flavorText": "There's enough in this world that you{BR}don't understand without getting into the{BR}details of psionic augmentation equipment.",
+            "flavorReference": "Tango One And Bunker, Neon Jungle #19"
+        },
+        {
+            "identifier": "Infiltrate",
+            "count": 4,
+            "title": "Infiltrate",
+            "keywords": [
+                "one-shot",
+                "critical"
+            ],
+            "icons": [
+                "Manipulate",
+                "DrawCardNow",
+                "PlayCardNow"
+            ],
+            "body": "Reveal the top 2 cards of any deck, then replace them in any order. You may draw a card. You may play a card.",
+            "flavorQuotes": [
+                {
+                    "identifier": "TangoOne",
+                    "text": "Walk softly and carry a{BR}diverse arsenal of lockpicks."
+                }
+            ],
+            "flavorReference": "Tango One, Supernova #1"
+        },
+        {
+            "identifier": "LineEmUp",
+            "count": 2,
+            "title": "Line 'Em Up",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "DealDamageProjectile"
+            ],
+            "body": "Whenever {TangoOne} destroys a card, she may deal 1 target 1 projectile damage.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Haka",
+                    "text": "They're making it too easy!"
+                }
+            ],
+            "flavorReference": "Haka, The Eternal Haka #351"
+        },
+        {
+            "identifier": "OneShotOneKill",
+            "count": 2,
+            "title": "One Shot, One Kill",
+            "keywords": [
+                "one-shot",
+                "critical"
+            ],
+            "icons": [
+                "Discard",
+                "DestroyTarget",
+                "DrawCardNow"
+            ],
+            "body": "Discard any number of cards. Destroy a target with X or fewer HP, where X is 2 times the number of cards discarded this way. If you destroyed a target this way, draw a card.",
+            "flavorQuotes": [
+                {
+                    "identifier": "CptReager",
+                    "text": "And what if you miss?"
+                },
+                {
+                    "identifier": "TangoOne",
+                    "text": "Wouldn't know. Never{BR}have."
+                }
+            ],
+            "flavorReference": "Halcyon Days Limited Series #3"
+        },
+        {
+            "identifier": "Opportunist",
+            "count": 3,
+            "title": "Opportunist",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "IncreaseDamageDealt",
+                "Manipulate",
+                "DrawCardNow"
+            ],
+            "body": "Increase the next damage dealt by {TangoOne} by 3. You may shuffle your trash into your deck. Draw 2 cards.",
+            "flavorQuotes": [
+                {
+                    "identifier": "TangoOne",
+                    "text": "The answer? Use a gun.{BR}And if that don't work?{BR}Use more gun."
+                }
+            ],
+            "flavorReference": "Tango One, Elemental Wrath #5"
+        },
+        {
+            "identifier": "PerfectFocus",
+            "count": 4,
+            "title": "Perfect Focus",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "IncreaseDamageDealt",
+                "DealDamageProjectile"
+            ],
+            "body": "Increase the next damage dealt by {TangoOne} by 3. You may play a card.",
+            "flavorQuotes": [
+                {
+                    "identifier": "TangoOne",
+                    "text": "I see dead people all the{BR}time, they just don't know it yet."
+                }
+            ],
+            "flavorReference": "Tango One, Dancing Ghosts #2"
+        },
+        {
+            "identifier": "PsionicSuppression",
+            "count": 3,
+            "title": "Psionic Suppression",
+            "keywords": [
+                "one-shot",
+                "critical"
+            ],
+            "icons": [
+                "CannotDealDamage"
+            ],
+            "body": "Select a target. That target may not deal damage until the start of your next turn.",
+            "flavorQuotes": [
+                {
+                    "identifier": "TangoOne",
+                    "text": "That lump of clay has a mind, and I{BR}am about to make that a problem for it."
+                }
+            ],
+            "flavorReference": "Tango One, Lullaby for Gaia #24"
+        },
+        {
+            "identifier": "SniperRifle",
+            "count": 3,
+            "title": "Sniper Rifle",
+            "keywords": [
+                "equipment",
+                "limited"
+            ],
+            "icons": [
+                "HasPower",
+                "Discard",
+                "Destroy",
+                "DealDamageProjectile"
+            ],
+            "body": [
+                "Power: Discard 2 Critical cards. If you do, destroy a non-character card in play.",
+                "Power: {TangoOne} deals 1 target 2 projectile damage."
+            ],
+            "powers": [
+                "Discard 2 Critical cards. If you do, destroy a non-character card in play.",
+                "{TangoOne} deals 1 target 2 projectile damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Expatriette",
+                    "text": "For a rogue psychic mercenary,{BR}she's got some pretty good hardware."
+                }
+            ],
+            "flavorReference": "Expatriette, Dancing Ghosts #156"
+        },
+        {
+            "identifier": "WetWork",
+            "count": 3,
+            "title": "Wet Work",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Manipulate",
+                "DealDamageMelee"
+            ],
+            "body": "Shuffle 2 cards from each trash back into their decks. {TangoOne} may deal 1 target 2 melee damage.",
+            "flavorQuotes": [
+                {
+                    "identifier": "TheChairman",
+                    "text": "Where are the reinforcements?!"
+                }
+            ],
+            "flavorReference": "The Chairman, Two to Tango #8"
+        }
+    ],
+    "promoCards": [
+        {
+            "identifier": "TangoOneCharacter",
+            "promoIdentifier": "GhostOpsTangoOneCharacter",
+            "count": 1,
+            "title": "Tango One",
+            "promoTitle": "Ghost Ops Tango One",
+            "shortPromoTitle": "Ghost Tango One",
+            "body": "Ghost Ops",
+            "backgroundColor": "FBF8F9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C94742",
+            "character": true,
+            "powers": [
+                "Draw 2 cards. Then put 2 cards from your hand on top of your deck."
+            ],
+            "icons": [
+                "HasPower",
+                "DrawCardNow",
+                "Manipulate"
+            ],
+            "hitpoints": 28,
+            "nemesisIdentifiers": [
+                "TangoOne"
+            ],
+            "incapacitatedAbilities": [
+                "One player may play a card now.",
+                "All damage is irreducible until the start of your next turn.",
+                "The next time a hero uses a power which deals damage, increase that damage by 2."
+            ],
+            "flippedIcons": [
+                "PlayCardNow",
+                "IrreducibleDamage",
+                "IncreaseDamageDealt"
+            ],
+            "openingLines": {
+                "default": "default placeholder",
+                "AnathemaCharacter": "Anathema placeholder",
+                "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
+                "1929RamCharacter": "1929 Ram placeholder"
+            },
+            "complexity": 1
+        },
+        {
+            "identifier": "TangoOneCharacter",
+            "promoIdentifier": "1929TangoOneCharacter",
+            "count": 1,
+            "title": "Tango One",
+            "promoTitle": "Tango One 1929",
+            "shortPromoTitle": "Tango One 1929",
+            "body": "Lead the Target",
+            "backgroundColor": "FBF8F9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C94742",
+            "character": true,
+            "powers": [
+                "Select a target, at the start of your next turn, {TangoOne} deals that target 3 projectile damage."
+            ],
+            "icons": [
+                "HasPower",
+                "DealDamageProjectile"
+            ],
+            "hitpoints": 24,
+            "nemesisIdentifiers": [
+                "TangoOne"
+            ],
+            "incapacitatedAbilities": [
+                "Select a player, at the start of your next turn, they may draw 2 cards.",
+                "Select a player, at the start of your next turn, they may play 2 cards.",
+                "Destroy an environment card."
+            ],
+            "flippedIcons": [
+                "PlayCardNow",
+                "DrawCardNow",
+                "DestroyEnvironment"
+            ],
+            "openingLines": {
+                "default": "default placeholder",
+                "AnathemaCharacter": "Anathema placeholder",
+                "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
+                "1929RamCharacter": "1929 Ram placeholder"
+            },
+            "complexity": 1
+        }
+    ]
+}

@@ -1,0 +1,264 @@
+{
+    "name": "The Cybersphere",
+    "kind": "Environment",
+    "expansionIdentifier": "CauldronExperimental",
+    "backgroundColor": "FB5455",
+    "difficulty": 1,
+    "cards": [
+        {
+            "identifier": "B3h3mth",
+            "count": 1,
+            "title": "B3H3M-TH",
+            "keywords": [
+                "grid virus"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageFire"
+            ],
+            "body": "At the end of the environment turn, this card deals the non-environment target with the second lowest HP 4 fire damage.",
+            "flavorText": "Eventually the Cybersphere’s strongest{BR}defenses were corrupted by the virus.{BR}As the safeguards failed, the sleepers{BR}within the sphere began to awaken.",
+            "hitpoints": 10
+        },
+        {
+            "identifier": "Dr3Dnt",
+            "count": 1,
+            "title": "DR3D-NT",
+            "keywords": [
+                "grid virus"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageProjectile"
+            ],
+            "body": "At the end of the environment turn, this card deals each other target 2 projectile damage.",
+            "flavorText": "The stranger opened his eyes within the{BR}artificial world. The first thing he saw{BR}was a ship, floating above the glowing{BR}buildings and aiming its cannons at him.",
+            "hitpoints": 10
+        },
+        {
+            "identifier": "Fo551l",
+            "count": 1,
+            "title": "FO55-1L",
+            "keywords": [
+                "grid virus"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageMelee",
+                "DealDamageLightning"
+            ],
+            "body": "At the end of the environment turn, this card deals the non-environment target with the second highest HP 3 melee damage and 1 lightning damage.",
+            "flavorText": "'That simulation is linked to defense{BR}grids around the globe,' said Bunker.{BR}'We’ve got to get a team in there and{BR}stop Gray before it’s too late.'",
+            "hitpoints": 7
+        },
+        {
+            "identifier": "Gho5t",
+            "count": 1,
+            "title": "GHO-5T",
+            "keywords": [
+                "grid virus"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DestroyOngoing",
+                "DestroyEnvironment",
+                "DrawCardNow"
+            ],
+            "body": [
+                "At the end of the environment turn, each hero must destroy 1 of their ongoing or equipment cards.",
+                "When this card is destroyed, each player may draw a card."
+            ],
+            "flavorText": "Cricket spun around and flung a sonic{BR}blast at the tattered figure, as her{BR}staff began to crumble into fragments{BR}of code from its touch.",
+            "hitpoints": 3
+        },
+        {
+            "identifier": "Glitch",
+            "count": 1,
+            "title": "Glitch",
+            "keywords": [
+                "grid virus"
+            ],
+            "icons": [
+                "DealDamageLightning"
+            ],
+            "body": "When this card is destroyed, it deals the non-environment target with the second highest HP 5 lightning damage.",
+            "flavorText": "A stray blast of radiation tore through{BR}the corridor walls with an unnatural{BR}scream. The air flickered with light, and{BR}Gray’s arm lost its shape.",
+            "hitpoints": 1
+        },
+        {
+            "identifier": "H3l1x",
+            "count": 1,
+            "title": "H3L-1X",
+            "keywords": [
+                "grid virus"
+            ],
+            "icons": [
+                "StartOfTurnAction",
+                "DealDamageMelee"
+            ],
+            "body": "At the start of the environment turn, this card deals the hero target with the lowest HP 1 melee damage, the hero target with the second highest HP 3 melee damage, and the hero target with the highest HP 5 melee damage.",
+            "flavorText": "There’s two kinds of viral constructs{BR}you can expect to run into; the ones you{BR}don’t want to mess with, and the ones{BR}you really don’t want to mess with.",
+            "hitpoints": 8
+        },
+        {
+            "identifier": "HolocycleRace",
+            "count": 1,
+            "title": "Holocycle Race",
+            "keywords": [
+                "grid program"
+            ],
+            "icons": [
+                "IncreaseDamageDealt",
+                "StartOfTurnAction",
+                "Discard",
+                "DestroySelf"
+            ],
+            "body": [
+                "Increase all damage dealt by 1.",
+                "At the start of the environment turn, each player may discard up to 2 cards. Then, unless {H} cards were discarded this way, destroy this card."
+            ],
+            "flavorText": "Several game programs had been{BR}activated by the system. The holocycle{BR}race was particularly dangerous, as{BR}Tiamat had made its lair on the course."
+        },
+        {
+            "identifier": "HologameArena",
+            "count": 1,
+            "title": "Hologame Arena",
+            "keywords": [
+                "grid program"
+            ],
+            "icons": [
+                "DrawCardNow",
+                "EndOfTurnAction",
+                "DestroySelf",
+                "PlayCardNow"
+            ],
+            "body": [
+                "Whenever a hero card destroys an environment target, that hero draws a card.",
+                "At the end of the Environment turn, either destroy this card or play the top card of the Environment deck."
+            ],
+            "flavorText": "“Well,” said the Stranger, “I believe a{BR}little invisibility will even the playing{BR}field. Good hunting.” Next to him, Tango{BR}loaded her rifle and faded from sight."
+        },
+        {
+            "identifier": "InfectedFirewall",
+            "count": 1,
+            "title": "Infected Firewall",
+            "keywords": [
+                "grid virus"
+            ],
+            "icons": [
+                "ReduceDamageTaken",
+                "EndOfTurnAction",
+                "PlayCardNow"
+            ],
+            "body": [
+                "Reduce damage dealt to environment targets by 1.",
+                "At the end of the environment turn, play the top card of the environment deck."
+            ],
+            "flavorText": "The shapeshifter recoded his fists into{BR}armored battering rams and began{BR}hammering away at the barrier. Behind it,{BR}several new viruses emerged.",
+            "hitpoints": 4
+        },
+        {
+            "identifier": "InfectedHoloweapon",
+            "count": 1,
+            "title": "Infected Holoweapon",
+            "keywords": [
+                "grid virus"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageEnergy",
+                "IrreducibleDamage"
+            ],
+            "body": [
+                "At the end of the environment turn, this card deals the 2 non-environment targets with the highest HP 2 irreducible energy damage each.",
+                "Damage dealt by those targets is irreducible until the start of the environment turn."
+            ],
+            "flavorText": "“This is not my blade. Not even a{BR}simulation of it,” said Fanatic, as she{BR}examined the floating weapon. “This is an{BR}instrument of corruption.”",
+            "hitpoints": 4
+        },
+        {
+            "identifier": "N1nj4",
+            "count": 1,
+            "title": "N1N-J4",
+            "keywords": [
+                "grid virus"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageEnergy",
+                "PlayCardNow"
+            ],
+            "body": [
+                "At the end of the environment turn, this card deals the target other than itself with the lowest HP 3 energy damage.",
+                "Whenever damage dealt by this card destroys a target, play the top card of the environment deck."
+            ],
+            "flavorText": "The first agents spread by the Virus{BR}were infiltrators programmed to{BR}overwrite unsecured files and turn{BR}them against the system.",
+            "hitpoints": 4
+        },
+        {
+            "identifier": "Replication",
+            "count": 1,
+            "title": "Replication",
+            "keywords": [
+                "other"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "EndOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, play the top X cards of the environment deck, where X is 1 plus the number of Grid Virus cards currently in play.",
+                "At the end of the environment turn, destroy this card."
+            ],
+            "flavorText": "As Cypher prepared to engage the{BR}cranial jack, warning lights began to{BR}flash on the console. The virus was{BR}spreading out of control."
+        },
+        {
+            "identifier": "Sp4rk",
+            "count": 1,
+            "title": "SP4-RK",
+            "keywords": [
+                "grid virus"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageToxic"
+            ],
+            "body": "At the end of the environment turn, this card deals the non-environment target with the second highest HP 3 toxic damage.",
+            "flavorText": "In its simplest form the virus appeared{BR}as an amalgamation of random shapes,{BR}floating through the cybersphere and{BR}searching for other entities to infect.",
+            "hitpoints": 7
+        },
+        {
+            "identifier": "SystemCrash",
+            "count": 1,
+            "title": "System Crash",
+            "keywords": [
+                "other"
+            ],
+            "icons": [
+                "StartOfTurnAction",
+                "LoseTheGame"
+            ],
+            "body": "At the start of the environment turn, if there are at least 4 Grid Virus cards in play, everyone is deleted. [b]Game Over.[/b]",
+            "flavorText": "“The cybersphere was created as a{BR}pacification mechanism,” said the warden.{BR}“somehow the subjects have corrupted{BR}the source code from inside.”"
+        },
+        {
+            "identifier": "YourMindMakesItReal",
+            "count": 1,
+            "title": "Your Mind Makes it Real",
+            "keywords": [
+                "other"
+            ],
+            "icons": [
+                "DealDamageLightning",
+                "EndOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, it deals each target 3 lightning damage.",
+                "At the end of the environment turn, destroy this card."
+            ],
+            "flavorText": "The Raptor bot exploded into flames{BR}which felt uncannily real. “If only your{BR}arm had some sort of giant blaster{BR}for situations like this!” yelled Unity."
+        }
+    ]
+}

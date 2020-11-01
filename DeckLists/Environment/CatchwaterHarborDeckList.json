@@ -1,0 +1,258 @@
+{
+    "name": "Catchwater Harbor 1929",
+    "kind": "Environment",
+    "expansionIdentifier": "CauldronAdrift",
+    "backgroundColor": "FB5455",
+    "difficulty": 1,
+    "cards": [
+        {
+            "identifier": "AbandonedFactory",
+            "count": 1,
+            "title": "Abandoned Factory",
+            "icons": [
+                "GainHP",
+                "DestroySelf"
+            ],
+            "body": [
+                "Whenever an ongoing or equipment card enters a hero trash pile, the villain character target with the lowest HP regains 2HP.",
+                "When a Transport card would be destroyed, you may destroy this card instead."
+            ],
+            "flavorText": "Rather than handing the recovered{BR}devices over to the military, Admiral{BR}Winters kept them for a project of his{BR}own, hidden in the warehouse district."
+        },
+        {
+            "identifier": "AllAboard",
+            "count": 1,
+            "title": "All Aboard",
+            "icons": [
+                "Indestructible",
+                "EndOfTurnAction",
+                "Destroy"
+            ],
+            "body": [
+                "This card is indestructible.",
+                "At the end of the environment turn, the players may activate the Travel text of a Transport card. If they do, destroy that card at the start of the next environment turn."
+            ],
+            "flavorText": "“That train has something to do with{BR}the loop. Today, we're going to be on{BR}it,” Julia told the Knight. He nodded.{BR}“Remind me, which one is a train?”"
+        },
+        {
+            "identifier": "AlteringHistory",
+            "count": 1,
+            "title": "Altering History",
+            "icons": [
+                "DealDamagePsychic"
+            ],
+            "body": "Whenever this card or any other environment card is destroyed, this card deals the 2 non-environment targets with the lowest HP 2 psychic damage each.",
+            "flavorText": "The technology in these photographs{BR}is impossibly advanced, said Reager.{BR}Taking a closer look, he added. “Can{BR}the R42 be adapted for a pilot?”"
+        },
+        {
+            "identifier": "FrightenedOnlookers",
+            "count": 1,
+            "title": "Frightened Onlookers",
+            "keywords": [
+                "civilian"
+            ],
+            "icons": [
+                "DealDamageProjectile",
+                "StartOfTurnAction",
+                "PlayCardNow"
+            ],
+            "body": [
+                "Whenever a target is dealt 4 or more damage from a single source, this card deals itself 1 projectile damage.",
+                "At the start of the environment turn, 1 player may play a card."
+            ],
+            "flavorText": "As the dreadnaught's rockets blew{BR}apart the wharf, several bystanders{BR}were narrowly saved by a dashing{BR}young man of impressive strength.",
+            "hitpoints": 3
+        },
+        {
+            "identifier": "HarborCrane",
+            "count": 1,
+            "title": "Harbor Crane",
+            "keywords": [
+                "structure"
+            ],
+            "icons": [
+                "IncreaseDamageTaken",
+                "DealDamageMelee"
+            ],
+            "body": [
+                "Whenever this card is dealt damage by a target, move it next to that target.",
+                "Increase damage dealt by the target next to this card by 1.",
+                "When this card is destroyed, it deals the target next to it 5 melee damage."
+            ],
+            "flavorText": "The walking dreadnought let out a{BR}roar of angry steam. Far above,{BR}Vanish called out, “I've got the high{BR}ground! Want to give up now?”",
+            "hitpoints": 5
+        },
+        {
+            "identifier": "HarkinParishJr",
+            "count": 1,
+            "title": "Harkin Parish Jr.",
+            "keywords": [
+                "gangster"
+            ],
+            "icons": [
+                "Discard",
+                "EndOfTurnAction",
+                "DealDamageMelee"
+            ],
+            "body": [
+                "When this card enters play, the hero with the highest HP must discard a card. Each other player must discard a card that shares a keyword with that card.",
+                "At the end of the environment turn, this card deals the hero target with the highest HP {H} melee damage."
+            ],
+            "flavorText": "The well-dressed man was blocking their{BR}exit, as more figures surrounded the{BR}heroes. “Theft is such an ugly word,” he{BR}said. “I prefer extortion.”",
+            "hitpoints": 8
+        },
+        {
+            "identifier": "LeftBehind",
+            "count": 1,
+            "title": "Left Behind",
+            "icons": [
+                "LoseTheGame"
+            ],
+            "body": [
+                "Play this card next to the hero with the second lowest HP.",
+                "If the last villain character target is reduced to 0HP by a target other than that hero, or if that hero is incapacitated, they are stuck in the past and the heroes lose. [b]Game over.[/b]"
+            ],
+            "flavorText": "Necro, silent and bloody, watched{BR}as La Paradoja Magnifica{BR}disappeared into the glowing{BR}portal in the sky. He was alone."
+        },
+        {
+            "identifier": "OminousLoop",
+            "count": 1,
+            "title": "Ominous Loop",
+            "keywords": [
+                "anomaly"
+            ],
+            "icons": [
+                "StartOfTurnAction",
+                "PlayCardNow"
+            ],
+            "body": [
+                "The first time a One-shot card enters the trash each turn, move it beneath this card. Cards beneath this one are not considered in play.",
+                "At the start of the environment turn, destroy this card and put all cards beneath it into play in the order they were placed there."
+            ],
+            "flavorText": "“This is a new one for me,” drawled{BR}Chrono-Ranger. Maria Helena, scowling,{BR}replied, “Something here has bent time{BR}back on itself. Not good.”"
+        },
+        {
+            "identifier": "RadioPlaza",
+            "count": 1,
+            "title": "Radio Plaza",
+            "icons": [
+                "Manipulate",
+                "IrreducibleDamage",
+                "StartOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "Play with the top card of each deck face up. Damage dealt to hero targets is irreducible.",
+                "At the start of the environment turn, destroy this card."
+            ],
+            "flavorText": "Remember to tune to WC1100 for the{BR}day's important news! barked the radio.{BR}“We'll keep you informed about what's{BR}happening in beautiful Windmill City!”"
+        },
+        {
+            "identifier": "SmoothCriminal",
+            "count": 1,
+            "title": "Smooth Criminal",
+            "keywords": [
+                "gangster"
+            ],
+            "icons": [
+                "ReduceDamgeTaken",
+                "EndOfTurnAction",
+                "DealDamageProjectile"
+            ],
+            "body": [
+                "Reduce damage dealt to Gangsters by 1.",
+                "At the end of the environment turn, this card deals each hero target X projectile damage, where X is 1 plus the number of Transports in play."
+            ],
+            "flavorText": "“Mr. Parish would like to see you,”{BR}said the woman in charge of the{BR}thugs. Deckard grinned. “Really?{BR}Does he fancy a game of cards?”",
+            "hitpoints": 4
+        },
+        {
+            "identifier": "SSEscape",
+            "count": 1,
+            "title": "SS Escape",
+            "keywords": [
+                "transport"
+            ],
+            "icons": [
+                "Search",
+                "GainHP",
+                "Travel",
+                "DrawCardNow"
+            ],
+            "body": [
+                "When this card enters play, search the environment deck and trash for All Aboard and put it into play. Shuffle the environment deck and each target regains 2HP.",
+                "Travel: Each player draws a card. Each villain target regains 3HP."
+            ],
+            "flavorText": "Catchwater Harbor was an international{BR}melting pot. It was full of those{BR}looking to start a new life of{BR}opportunity, or in some cases, villainy."
+        },
+        {
+            "identifier": "TheCervantesClub",
+            "count": 1,
+            "title": "The Cervantes Club",
+            "icons": [
+                "EndOfTurnAction",
+                "GainHP",
+                "Discard",
+                "DrawCardNow"
+            ],
+            "body": [
+                "At the end of the environment turn, 1 hero character regains X HP and discards the top X cards of their deck, where X is 1, 2, or 3.",
+                "If any One-shots were discarded this way, that player discards 2 cards, then draws a card."
+            ],
+            "flavorText": "“Hey, stranger,” said Mara, sitting down{BR}beside him, “drink's on me.” He gave her{BR}a confused but hopeful look. “Do I{BR}know you?” She smiled sadly. “Not yet.”"
+        },
+        {
+            "identifier": "ThisJustIn",
+            "count": 1,
+            "title": "“This just in...”",
+            "icons": [
+                "Discard",
+                "PlayCardNow",
+                "EndOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, 1 player may discard 3 cards. If no cards are discarded this way, play the top card of the villain deck.",
+                "At the end of the environment turn, destroy this card."
+            ],
+            "flavorText": "“...we're getting reports from all over{BR}town that people are seeing, uh,{BR}strange creatures,” the announcer{BR}whispered. “Like the one behind me now.”"
+        },
+        {
+            "identifier": "ToOverbrook",
+            "count": 1,
+            "title": "3:10 to Overbrook",
+            "keywords": [
+                "transport"
+            ],
+            "icons": [
+                "Search",
+                "PlayCardNow",
+                "Travel"
+            ],
+            "body": [
+                "When this card enters play, search the environment deck and trash for All Aboard and put it into play. Shuffle the environment deck and play its top card.",
+                "Travel: Play the top card of each other deck in turn order, starting with the villain deck."
+            ],
+            "flavorText": "Julia looked at the clock tower as the{BR}train pulled in. “3:08,” she muttered,{BR}“always the same. This whole cursed day{BR}is the same. What is going on?”"
+        },
+        {
+            "identifier": "UnmooredZeppelin",
+            "count": 1,
+            "title": "Unmoored Zeppelin",
+            "keywords": [
+                "transport"
+            ],
+            "icons": [
+                "Search",
+                "DealDamageProjectile",
+                "Travel",
+                "IncreaseDamageDealt"
+            ],
+            "body": [
+                "When this card enters play, search the environment deck and trash for All Aboard and put it into play. Shuffle the environment deck and this card deals each target 2 projectile damage.",
+                "Travel: Increase all damage dealt by 1 until the start of the next environment turn."
+            ],
+            "flavorText": "Li-Feng Airships had revolutionized the{BR}transportation industry, transforming{BR}the small harbor town into a bustling{BR}city, despite their lax safety practices."
+        }
+    ]
+}

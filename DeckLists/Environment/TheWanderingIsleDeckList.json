@@ -1,0 +1,186 @@
+{
+    "name": "Anathema",
+    "kind": "Environment",
+    "expansionIdentifier": "Cauldron",
+    "backgroundColor": "FB5455",
+    "difficulty": 1,
+    "cards": [
+        {
+            "identifier": "AmphibiousAssault",
+            "count": 2,
+            "title": "Amphibious Assault",
+            "icons": [
+                "DealDamageLightning",
+                "StartOfTurnAction",
+                "PlayCardNow",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, the {H - 1} villain targets with the lowest HP each deal 3 lightning damage to a different hero target.",
+                "At the start of the environment turn, if any hero cards were played this round, play the top card of the villain deck. Then, destroy this card."
+            ],
+            "flavorText": "One of the Halcyon Black Teams{BR}attacked during the night, quickly{BR}overrunning the beach."
+        },
+        {
+            "identifier": "AncientParasite",
+            "count": 2,
+            "title": "Ancient Parasite",
+            "keywords": [
+                "creature"
+            ],
+            "icons": [
+                "StartOfTurnAction",
+                "DealDamageToxic"
+            ],
+            "body": [
+                "At the start of the environment turn, if this card is next to a target, it deals that target {H} toxic damage and moves back to the environment play area. Otherwise it deals Teryx {H + 2} toxic damage.",
+                "Whenever this card is dealt damage by a hero target, move it next to that target."
+            ],
+            "flavorText": "Quicksilver's grin faded. Her distraction{BR}had been successful, and the crab{BR}was turning to charge her.",
+            "hitpoints": 20
+        },
+        {
+            "identifier": "BarnacleHydra",
+            "count": 3,
+            "title": "Barnacle Hydra",
+            "keywords": [
+                "creature"
+            ],
+            "icons": [
+                "DealDamageToxic",
+                "EndOfTurnAction",
+                "DealDamageProjectile",
+                "GainHP"
+            ],
+            "body": [
+                "When this card is destroyed, it deals Teryx {H} toxic damage.",
+                "At the end of the environment turn, this card deals the non-environment target with the lowest HP 2 projectile damage. Then, if Submerge is in play, this card regains 6HP."
+            ],
+            "flavorText": "The barnacles' size was{BR}proportionate to their host. But{BR}their temperment was far worse.",
+            "hitpoints": 6
+        },
+        {
+            "identifier": "ExposedLifeforce",
+            "count": 1,
+            "title": "Exposed Lifeforce",
+            "icons": [
+                "Search",
+                "IncreaseDamageDealt",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, search the environment deck and trash for Teryx and put it into play, then shuffle the deck.",
+                "Increase damage dealt by villain cards by 1.",
+                "Destroy this card if Teryx regains 10HP in a single round."
+            ],
+            "flavorText": "Apostate plunged his sword into{BR}the gap, and the island shook.{BR}“Your last journey is at hand!”"
+        },
+        {
+            "identifier": "Islandquake",
+            "count": 1,
+            "title": "Islandquake",
+            "icons": [
+                "StartOfTurnAction",
+                "DealDamageSonic",
+                "ImmuneToDamage",
+                "DestroySelf"
+            ],
+            "body": [
+                "At the start of the environment turn, this card deals each target other than Teryx 4 sonic damage. Hero targets which caused Teryx to regain HP since the end of the last environment turn are immune to this damage.",
+                "Then, this card is destroyed."
+            ],
+            "flavorText": "“Hold on to something!” Tempest{BR}cried, as the island tried to{BR}dislodge its numerous passengers."
+        },
+        {
+            "identifier": "SongOfTheDeep",
+            "count": 1,
+            "title": "Song of the Deep",
+            "icons": [
+                "PlayCardNow",
+                "StartOfTurnAction",
+                "DrawCardNow",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, play the top card of the environment deck.",
+                "At the start of the environment turn, if Teryx is in play, each player may draw a card. Then, if there are at least 2 creatures in play, destroy this card."
+            ],
+            "flavorText": "The ancient island's song sounded{BR}through the waters, the echoes{BR}dying away unanswered."
+        },
+        {
+            "identifier": "Submerge",
+            "count": 2,
+            "title": "Submerge",
+            "icons": [
+                "Search",
+                "ReduceDamageDealt",
+                "StartOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, search the environment deck and trash for Teryx and put it into play, then shuffle the deck.",
+                "Reduce all damage dealt by 2.",
+                "At the start of the environment turn, this card is destroyed."
+            ],
+            "flavorText": "With no warning, Teryx plunged{BR}beneath the icy waves. Ra held his{BR}breath and cursed inwardly."
+        },
+        {
+            "identifier": "Teryx",
+            "count": 1,
+            "title": "Teryx",
+            "keywords": [
+                "living island"
+            ],
+            "icons": [
+                "Indestructible",
+                "LoseTheGame",
+                "DealDamageEnergy",
+                "PreventDamage",
+                "GainHP"
+            ],
+            "body": [
+                "This card is indestructible. If this card reaches 0HP, the heroes lose.",
+                "At the end of the environment turn, the villain target with the highest HP deals Teryx {H + 2} energy damage.",
+                "Whenever a hero target would deal damage to Teryx, Teryx Instead regains that much HP."
+            ],
+            "flavorText": "“Say hello to my little friend,” Baccarat chuckled. The mountains themselves trembled and began to rise slowly out of the waves far below.",
+            "hitpoints": 50
+        },
+        {
+            "identifier": "ThroughTheHurricane",
+            "count": 1,
+            "title": "Through the Hurricane",
+            "icons": [
+                "DealDamageLightning",
+                "StartOfTurnAction",
+                "PlayCardNow",
+                "DestroySelf"
+            ],
+            "body": [
+                "Whenever a target enters play, this card deals {H - 1} lightning damage to the target with the third highest HP.",
+                "At the start of the environment turn, you may play the top 2 cards of the environment deck. If you do, this card is destroyed."
+            ],
+            "flavorText": "Quicksilver crouched low, wishing{BR}she was less conductive as the{BR}lightning flashed over the ocean."
+        },
+        {
+            "identifier": "TimedDetonator",
+            "count": 1,
+            "title": "Timed Detonator",
+            "keywords": [
+                "device"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "StartOfTurnAction",
+                "DealDamageFire",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, play the top card of the environment deck.",
+                "At the start of the environment turn, this card deals Teryx 10 fire damage and each hero target {H - 2} fire damage. Then, this card is destroyed."
+            ],
+            "flavorText": "As Quicksilver whirled, frantically trying{BR}to locate him, Ambuscade's chuckle{BR}faded into the ruins. “Turtle soup is{BR}back on the menu.”",
+            "hitpoints": 8
+        }
+    ]
+}

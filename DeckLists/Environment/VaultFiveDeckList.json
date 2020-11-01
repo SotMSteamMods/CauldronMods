@@ -1,0 +1,266 @@
+{
+    "name": "Vault Five",
+    "kind": "Environment",
+    "expansionIdentifier": "CauldronAdrift",
+    "backgroundColor": "FB5455",
+    "difficulty": 1,
+    "cards": [
+        {
+            "identifier": "ByrgsNail",
+            "count": 1,
+            "title": "B'yrg's Nail",
+            "keywords": [
+                "artifact"
+            ],
+            "icons": [
+                "Manipulate",
+                "DealDamageMelee"
+            ],
+            "body": [
+                "The first time this card enters play, select a player. Treat this card as part of their deck for the rest of the game.",
+                "When this card enters play, a hero from its deck deals the 3 targets with the lowest HP 3 melee damage each. Then move this card beneath the top 2 cards of its deck face down."
+            ],
+            "flavorText": "Titan considered the worn inscription{BR}on the statue before breaking one of{BR}its stone swords free.“Just going to{BR}borrow this. Don't tell anyone.”"
+        },
+        {
+            "identifier": "DeeperIntoTheVault",
+            "count": 1,
+            "title": "Deeper into the Vault",
+            "icons": [
+                "Manipulate",
+                "IncreaseDamageDealtPsychic"
+            ],
+            "body": [
+                "When this card enters play, reveal the top {H} cards of the environment deck. Put any Artifact cards revealed into play and discard the other revealed cards.",
+                "Increase all psychic damage dealt by 1."
+            ],
+            "flavorText": "There were rumors that the Ministry's{BR}Archive was located over even deeper,{BR}more ancient caverns, but no one was{BR}particularly eager to find out."
+        },
+        {
+            "identifier": "DirectorWells",
+            "count": 1,
+            "title": "Director Wells",
+            "keywords": [
+                "occult expert"
+            ],
+            "icons": [
+                "ImmuneToDamagePsychic",
+                "CannotDrawCards"
+            ],
+            "body": [
+                "Play this next to the hero with the lowest HP. That hero is immune to psychic damage.",
+                "Players with Artifact cards in their hand cannot draw cards."
+            ],
+            "flavorText": "“He's back”, said the director, tapping{BR}idly on his desk. “He seeks to finish what{BR}he started that night. But without the{BR}stone, who knows what he'll try.”",
+            "hitpoints": 3
+        },
+        {
+            "identifier": "ForbiddenKnowledge",
+            "count": 1,
+            "title": "Forbidden Knowledge",
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageInfernal",
+                "DrawCardNow",
+                "DealDamagePsychic"
+            ],
+            "body": [
+                "At the end of the environment turn, this card deals 1 hero 2 infernal damage. A hero dealt damage this way may draw 1 card.",
+                "At the end of each hero's turn, if they have an Artifact card in their hand, this card deals that hero 2 psychic damage."
+            ],
+            "flavorText": "A whisper floated through the endless{BR}shelves: “You seek truth?” It came from{BR}everywhere at once; a harsh, skeletal{BR}noise. “You are not equipped for truth.”"
+        },
+        {
+            "identifier": "MapToLostChoth",
+            "count": 1,
+            "title": "Map to Lost Choth",
+            "keywords": [
+                "artifact"
+            ],
+            "icons": [
+                "Manipulate",
+                "Discard",
+                "PlayCardNow",
+                "UsePowerNow"
+            ],
+            "body": [
+                "The first time this card enters play, select a player. Treat this card as part of their deck for the rest of the game.",
+                "When this card enters play, 1 player discards a card, a second player plays a card, and a third player’s hero uses a power. Then move this card beneath the top 2 cards of its deck face down."
+            ],
+            "flavorText": "Terminus closed her eyes. Visions of the{BR}city came clearly, along with the smell{BR}of salt and iron, and the sense of{BR}something waiting for her in the dark."
+        },
+        {
+            "identifier": "MomentOfSanity",
+            "count": 1,
+            "title": "Moment of Sanity",
+            "icons": [
+                "DestroyOngoing",
+                "HasPower",
+                "Discard",
+                "PlayCardNow",
+                "DestroyEnvironment",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, destroy {H - 2} ongoing cards.",
+                "Heroes gain the following power:",
+                "Power: Discard 1 Artifact card. If you do, play a card or destroy 1 environment card. Then destroy this card."
+            ],
+            "flavorText": "“Sorry, sword, but I have a policy. No{BR}mental subjugation on the first date.”{BR}With that, Titan hurled the stone weapon{BR}out into the black waters."
+        },
+        {
+            "identifier": "Pelaga",
+            "count": 1,
+            "title": "Pelaga",
+            "keywords": [
+                "cryptid"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageToxic",
+                "Discard"
+            ],
+            "body": [
+                "At the end of the environment turn, this card deals each target from the hero deck with the most Artifacts 3 toxic damage.",
+                "Whenever this card is dealt damage by a hero target, that hero must discard 1 non-Artifact card."
+            ],
+            "flavorText": "“This is your fate when the Crown tires{BR}of you!” shrieked the monster. “Fishy,”{BR}said Titan, “every time we let you out,{BR}you try to digest someone.”",
+            "hitpoints": 6
+        },
+        {
+            "identifier": "PhoebeNelson",
+            "count": 1,
+            "title": "Phoebe Nelson",
+            "keywords": [
+                "talent"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageFire",
+                "DealDamagePsychic"
+            ],
+            "body": [
+                "At the end of the environment turn, this card deals each villain target 1 fire damage and each hero with an Artifact card in their hand 1 fire damage.",
+                "Whenever an Artifact card enters play, this card deals itself 2 psychic damage."
+            ],
+            "flavorText": "“Another Friday night wasted,” she said,{BR}brushing away cobwebs. A fiery outline{BR}formed over her hand, illuminating the{BR}hall. “After you, big guy.”",
+            "hitpoints": 5
+        },
+        {
+            "identifier": "ShatteredDisplayCase",
+            "count": 1,
+            "title": "Shattered Display Case",
+            "icons": [
+                "Discard",
+                "DestroySelf",
+                "EndOfTurnAction",
+                "Manipulate"
+            ],
+            "body": [
+                "Whenever a target is destroyed, discard the top card of the environment deck. If an Artifact card is discarded this way, put it into play and destroy this card.",
+                "At the end of the environment turn, place all Artifact cards in all trash piles on top of their respective decks."
+            ],
+            "flavorText": "“I have a job to do,” said Phase, picking{BR}up the carved tablet from the shattered{BR}glass. “Now pardon me. I'm leaving your{BR}creepy basement.”"
+        },
+        {
+            "identifier": "SigQuilsSign",
+            "count": 1,
+            "title": "Sig-Quil's Sign",
+            "keywords": [
+                "artifact"
+            ],
+            "icons": [
+                "Manipulate",
+                "IncreaseDamageDealt",
+                "IncreaseDamageTaken"
+            ],
+            "body": [
+                "The first time this card enters play, select a player. Treat this card as part of their deck for the rest of the game.",
+                "When this card enters play, increase damage dealt to and by targets from its deck by 1 until the start of their next turn. Then move this card beneath the top 2 cards of its deck face down."
+            ],
+            "flavorText": "“Vault Five is where they stick the{BR}unhealthy stuff. Things no sane person{BR}should see,” said Agent Nelson. “That's{BR}why they're sending us to sort this out.”"
+        },
+        {
+            "identifier": "TheAncientsStir",
+            "count": 1,
+            "title": "The Ancients Stir",
+            "icons": [
+                "IncreaseDamageDealt",
+                "EndOfTurnAction",
+                "DealDamageInfernal"
+            ],
+            "body": [
+                "Whenever an Artifact card enters play, increase damage dealt by this card by 1.",
+                "At the end of the environment turn, this card deals the target with the second-highest HP 1 infernal damage."
+            ],
+            "flavorText": "The crystal spun indecisively, as if it{BR}could not discern where the danger lay.{BR}Or perhaps, the danger was everywhere.{BR}Neither thought was comforting."
+        },
+        {
+            "identifier": "TheCoinThatStrays",
+            "count": 1,
+            "title": "The Coin That Strays",
+            "keywords": [
+                "artifact"
+            ],
+            "icons": [
+                "Manipulate",
+                "DealDamagePsychic",
+                "PlayCardNow"
+            ],
+            "body": [
+                "The first time this card enters play, select a player. Treat this card as part of their deck for the rest of the game.",
+                "When this card enters play, a hero from its deck deals themselves and 1 other target 1 psychic damage each and plays a card. Then move this card beneath the top 2 cards of its deck face down."
+            ],
+            "flavorText": "Staring at the coin was strangely{BR}unpleasant; Malichae blinked to clear his{BR}head. Then he realized the coin was now{BR}on top of its case rather than inside it."
+        },
+        {
+            "identifier": "TheEyeOfFomirhet",
+            "count": 1,
+            "title": "The Eye of Fomirhet",
+            "keywords": [
+                "artifact"
+            ],
+            "icons": [
+                "Manipulate",
+                "GainHP",
+                "DealDamageInfernal"
+            ],
+            "body": [
+                "The first time this card enters play, select a player. Treat this card as part of their deck for the rest of the game.",
+                "When this card enters play, a hero from its deck regains 4HP and deals each other hero target 1 infernal damage. Then move this card beneath the top 2 cards of its deck face down."
+            ],
+            "flavorText": "“Fomirhet, Who Burns. Class five entity.{BR}Extremely dangerous,” Wells said. Titan{BR}grimaced at the old man. “So why do{BR}you have its eye?”"
+        },
+        {
+            "identifier": "TheOuterMusic",
+            "count": 1,
+            "title": "The Outer Music",
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamagePsychic",
+                "DestroySelf"
+            ],
+            "body": [
+                "At the end of the environment turn, each hero target deals itself 1 psychic damage.",
+                "When a player plays an Artifact card from their hand, destroy this card."
+            ],
+            "flavorText": "Cricket listened for echoes, trying to{BR}measure the cavern's depth. “This can't{BR}be right,” she said to Baccarat. “There's{BR}no other side. It just keeps going.”"
+        },
+        {
+            "identifier": "TheRatsInTheWalls",
+            "count": 1,
+            "title": "The Rats in the Walls",
+            "icons": [
+                "DealDamagePsychic",
+                "DrawCardNow",
+                "IncreaseDamageTaken"
+            ],
+            "body": [
+                "When this card enters play, it deals each target 1 psychic damage.",
+                "Whenever a player draws an Artifact card, they may draw a card.",
+                "Increase damage dealt to heroes with Artifact cards in their hands by 1."
+            ],
+            "flavorText": "Expatriette continued bashing apart the{BR}plaster walls, exposing the slick cave{BR}rock beneath. “How can you not hear{BR}them? They're all around us!”"
+        }
+    ]
+}

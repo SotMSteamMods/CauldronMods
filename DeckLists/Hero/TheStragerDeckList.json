@@ -1,0 +1,525 @@
+{
+    "name": "The Stranger",
+    "kind": "Hero",
+    "expansionIdentifier": "Cauldron",
+    "initialCardIdentifiers": [
+        "TheStrangerCharacter"
+    ],
+    "cards": [
+        {
+            "identifier": "TheStrangerCharacter",
+            "count": 1,
+            "title": "The Stranger",
+            "body": "Inscribe",
+            "backgroundColor": "FBF8F9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C94742",
+            "character": true,
+            "powers": [
+                "Play a rune."
+            ],
+            "icons": [
+                "HasPower",
+                "PlayCardNow"
+            ],
+            "hitpoints": 26,
+            "nemesisIdentifiers": [
+                "TheStranger"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "Reveal the top card of a deck, then replace it or discard it.",
+                "Up to 2 ongoing hero cards may be played now."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "Manipulate",
+                "PlayCardNow"
+            ],
+            "openingLines": {
+                "default": "default placeholder",
+                "DendronCharacter": "Dendron placeholder",
+                "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
+                "1929RamCharacter": "1929 Ram placeholder",
+                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+            },
+            "complexity": 1
+        },
+        {
+            "identifier": "Corruption",
+            "count": 3,
+            "title": "Corruption",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": ["DrawCardNow","DealDamageToxic"],
+            "body": [
+                "Draw up to 4 cards.",
+                "For each card drawn this way, {TheStranger} deals himself 1 toxic damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheStranger",
+                    "text": "Old magic works its way into{BR}your bones, until eventually they're{BR}not your bones any more."
+                }
+            ],
+            "flavorReference": "The Stranger, Roots of the World #40"
+        },
+        {
+            "identifier": "FlickeringWeb",
+            "count": 2,
+            "title": "Flickering Web",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": ["PlayCardNow"],
+            "body": "You may play up to 3 Runes now.",
+            "flavorQuotes": [
+                {
+                    "identifier": "TheStranger",
+                    "text": "Each rune burns in my mind; they will{BR}not be contained."
+                }
+            ],
+            "flavorReference": "The Stranger, The Stranger #37"
+        },
+        {
+            "identifier": "GlyphOfCombustion",
+            "count": 1,
+            "title": "Glyph of Combustion",
+            "keywords": [
+                "ongoing",
+                "glyph"
+            ],
+            "icons": ["PreventDamage","DealDamageFire"],
+            "body": [
+                "Once during your turn when {TheStranger} would deal himself damage, prevent that damage.",
+                "Whenever a Rune or Glyph is destroyed, {TheStranger} may deal 1 target 1 fire damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Vanish",
+                    "text": "Your writing can be a bit{BR}inflammatory."
+                }
+            ],
+            "flavorReference": "Vanish, The Stranger #63"
+        },
+        {
+            "identifier": "GlyphOfDecay",
+            "count": 1,
+            "title": "Glyph of Decay",
+            "keywords": [
+                "ongoing",
+                "glyph"
+            ],
+            "icons": ["PreventDamage","HasPower","PlayCardNow","DealDamageToxic"],
+            "body": [
+                "Once during your turn when {TheStranger} would deal himself damage, prevent that damage.",
+                "Power: You may play a Rune. {TheStranger} deals 1 target 1 toxic damage."
+            ],
+            "powers": [
+                "You may play a Rune. {TheStranger} deals 1 target 1 toxic damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheStranger",
+                    "text": "Everything unwritten will be lost to{BR}the mists of time."
+                }
+            ],
+            "flavorReference": "The Stranger, The Coming of Winter #8"
+        },
+        {
+            "identifier": "GlyphOfInnervation",
+            "count": 1,
+            "title": "Glyph of Innervation",
+            "keywords": [
+                "ongoing",
+                "glyph"
+            ],
+            "icons": ["PreventDamage","HasPower","DrawCardNow"],
+            "body": [
+                "Once during your turn when {TheStranger} would deal himself damage, prevent that damage.",
+                "Power: Draw a card."
+            ],
+            "powers": [
+                "Draw a card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Unity",
+                    "text": "Within that circle, you play by his{BR}rules."
+                }
+            ],
+            "flavorReference": "Unity, Disassembled #33"
+        },
+        {
+            "identifier": "GlyphOfPerception",
+            "count": 1,
+            "title": "Glyph of Perception",
+            "keywords": [
+                "ongoing",
+                "glyph"
+            ],
+            "icons": ["PreventDamage","PlayCardNow"],
+            "body": [
+                "Once during your turn when {TheStranger} would deal himself damage, prevent that damage.",
+                "When a villain target enters play, you may play a Rune."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheStranger",
+                    "text": "They are coming."
+                }
+            ],
+            "flavorReference": "The Stranger, Strange Roads #84"
+        },
+        {
+            "identifier": "MarkOfBinding",
+            "count": 3,
+            "title": "Mark of Binding",
+            "keywords": [
+                "ongoing",
+                "rune"
+            ],
+            "icons": ["ReduceDamageDealt","StartOfTurnAction","DealDamageToxic"],
+            "body": [
+                "Play this next to a non-hero target. Reduce damage dealt by that target by 1.",
+                "At the start of your turn you may destroy this card. If you do not, {TheStranger} deals himself 1 irreducible toxic damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "LaCapitan",
+                    "text": "How can you break a chain you can't{BR}understand?"
+                }
+            ],
+            "flavorReference": "La Capitan, The Living Island #25"
+        },
+        {
+            "identifier": "MarkOfBreaking",
+            "count": 3,
+            "title": "Mark of Breaking",
+            "keywords": [
+                "ongoing",
+                "rune"
+            ],
+            "icons": ["IncreaseDamageTaken",
+            "StartOfTurnAction","DealDamageToxic"],
+            "body": [
+                "Play this next to a target. Increase damage dealt to that target by 1.",
+                "At the start of your turn you may destroy this card. If you do not, {TheStranger} deals himself 1 irreducible toxic damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheArgentAdept",
+                    "text": "The slender threads holding you are{BR}snapping, one by one."
+                }
+            ],
+            "flavorReference": "The Argent Adept, Strange Roads #97"
+        },
+        {
+            "identifier": "MarkOfDestruction",
+            "count": 2,
+            "title": "Mark of Destruction",
+            "keywords": [
+                "rune"
+            ],
+            "icons": ["Destroy","RedirectDamage"],
+            "body": "Play this next to a non-character card. If either card is destroyed, destroy the other. Redirect damage dealt to this card by non-hero targets to the hero target with the highest HP.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Baccarat",
+                    "text": "A writ of harsh judgment."
+                }
+            ],
+            "flavorReference": "Baccarat, Book of the Dead #628",
+            "hitpoints": 5
+        },
+        {
+            "identifier": "MarkOfQuickening",
+            "count": 2,
+            "title": "Mark of Quickening",
+            "keywords": [
+                "ongoing",
+                "rune"
+            ],
+            "icons": ["PlayExtraCard","StartOfTurnAction","DealDamageToxic"],
+            "body": [
+                "Play this next to a hero. They may play an additional card during their play phase.",
+                "At the start of your turn you may destroy this card. If you do not, {TheStranger} deals himself 1 irreducible toxic damage."
+            ],
+            "flavorText": "Bunker grinned as the world slowed{BR}around him. “Oh, YEAH.”",
+            "flavorReference": "Strange Roads #95"
+        },
+        {
+            "identifier": "MarkOfTheBloodThorn",
+            "count": 3,
+            "title": "Mark of the Blood Thorn",
+            "keywords": [
+                "ongoing",
+                "rune"
+            ],
+            "icons": ["CounterDamage","DealDamageToxic","StartOfTurnAction"],
+            "body": [
+                "Play this next to a hero target. The first time that target is dealt damage each turn, it deals 1 target 1 toxic damage.",
+                "At the start of your turn you may destroy this card. If you do not, {TheStranger} deals himself 1 irreducible toxic damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheStranger",
+                    "text": "Do not give your blood freely."
+                }
+            ],
+            "flavorReference": "The Stranger, Strange Roads #95"
+        },
+        {
+            "identifier": "MarkOfTheBoneLeech",
+            "count": 2,
+            "title": "Mark of the Bone Leech",
+            "keywords": [
+                "ongoing",
+                "rune"
+            ],
+            "icons": ["GainHP","StartOfTurnAction","DealDamageToxic"],
+            "body": [
+                "Play this next to a hero target. The first time that target deals damage each turn, it regains 1HP.",
+                "At the start of your turn you may destroy this card. If you do not,  {TheStranger} deals himself 1 irreducible toxic damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheStranger",
+                    "text": "There is still life in this place, if not{BR}in these people."
+                }
+            ],
+            "flavorReference": "The Stranger, Freedom Five #746"
+        },
+        {
+            "identifier": "MarkOfTheFaded",
+            "count": 2,
+            "title": "Mark of the Faded",
+            "keywords": [
+                "ongoing",
+                "rune"
+            ],
+            "icons": ["RedirectDamage","StartOfTurnAction","DealDamageToxic"],
+            "body": [
+                "Play this next to a hero target. When that target would be dealt damage by a non-hero card, you may redirect that damage to a hero with higher HP.",
+                "At the start of your turn you may destroy this card. If you do not, {TheStranger} deals himself 1 irreducible toxic damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Ambuscade",
+                    "text": "Two can play this game."
+                }
+            ],
+            "flavorReference": "Ambuscade, Neon Jungle #5"
+        },
+        {
+            "identifier": "MarkOfTheTwistedShadow",
+            "count": 3,
+            "title": "Mark of the Twisted Shadow",
+            "keywords": [
+                "ongoing",
+                "rune"
+            ],
+            "icons": ["IncreaseDamageDealt","StartOfTurnAction","DealDamageToxic"],
+            "body": [
+                "Play this next to a hero target. Increase damage dealt by that target by 1.",
+                "At the start of your turn you may destroy this card. If you do not, {TheStranger} deals himself 1 irreducible toxic damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheStranger",
+                    "text": "We each carry a void in our wake,{BR}hungry for light."
+                }
+            ],
+            "flavorReference": "The Stranger, Strange Roads #64"
+        },
+        {
+            "identifier": "TheOldRoads",
+            "count": 4,
+            "title": "The Old Roads",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": ["Manipulate","PlayCardNow","DrawCardNow"],
+            "body": "Put a Glyph from your trash into your hand, or reveal cards from the top of your deck until you reveal a Glyph, put it into play, and shuffle the other revealed cards into your deck. You may draw a card.",
+            "flavorQuotes": [
+                {
+                    "identifier": "TheStranger",
+                    "text": "Shortcuts that leave long wounds."
+                }
+            ],
+            "flavorReference": "The Stranger, The Tourist #16"
+        },
+        {
+            "identifier": "Unweave",
+            "count": 3,
+            "title": "Unweave",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": ["Manipulate","Discard","DrawCardNow","GainHP"],
+            "body": [
+                "You may shuffle up to 4 Runes from your trash into your deck, or discard up to 4 cards.",
+                "For each card shuffled or discarded this way, {TheStranger} may draw a card or regain 1HP."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheScholar",
+                    "text": "You cannot take a thing apart without{BR}learning about it. Including yourself."
+                }
+            ],
+            "flavorReference": "The Scholar, Roots of the World #51"
+        },
+        {
+            "identifier": "WhisperedSigns",
+            "count": 4,
+            "title": "Whispered Signs",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": ["DrawCardNow","PlayCardNow"],
+            "body": [
+                "You may draw 2 cards or put a Rune from your trash into your hand.",
+                "You may play a Rune or Glyph now."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheStranger",
+                    "text": "The world is written in rain and{BR}shadows."
+                }
+            ],
+            "flavorReference": "The Stranger, Strange Roads #187"
+        }
+    ],
+    "promoCards": [
+        {
+            "identifier": "TheStrangerCharacter",
+            "promoIdentifier": "RunecarvedTheStrangerCharacter",
+            "count": 1,
+            "title": "The Stranger",
+            "promoTitle": "The Runecarved Stranger",
+            "shortPromoTitle": "Runecarved Stranger",
+            "body": "Purify",
+            "backgroundColor": "FBF8F9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C94742",
+            "character": true,
+            "powers": [
+                "1 hero target regains 2 HP."
+            ],
+            "icons": [
+                "HasPower",
+                "GainHP"
+            ],
+            "hitpoints": 28,
+            "nemesisIdentifiers": [
+                "TheStranger"
+            ],
+            "incapacitatedAbilities": [
+                "One player may play a card now.",
+                "Destroy 1 hero ongoing, 1 non-hero ongoing, and 1 environment card.",
+                "Villain targets may not regain HP until the start of your turn."
+            ],
+            "flippedIcons": [
+                "PlayCardNow",
+                "DestroyOngoing",
+                "DestroyEnvironment",
+                "CannotGainHP"
+            ],
+            "openingLines": {
+                "default": "default placeholder",
+                "DendronCharacter": "Dendron placeholder",
+                "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
+                "1929RamCharacter": "1929 Ram placeholder",
+                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+            },
+            "complexity": 1
+        },
+        {
+            "identifier": "TheStrangerCharacter",
+            "promoIdentifier": "1929TheStrangerCharacter",
+            "count": 1,
+            "title": "The Stranger",
+            "promoTitle": "The Stranger 1929",
+            "shortPromoTitle": "Stranger 1929",
+            "body": "Soul Tap",
+            "backgroundColor": "FBF8F9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C94742",
+            "character": true,
+            "powers": [
+                "The next time {TheStranger} would deal himself damage, redirect it to another target."
+            ],
+            "icons": [
+                "HasPower",
+                "RedirectDamage"
+            ],
+            "hitpoints": 29,
+            "nemesisIdentifiers": [
+                "TheStranger"
+            ],
+            "incapacitatedAbilities": [
+                "One player may use a power now.",
+                "Destroy 1 ongoing card.",
+                "The target with the lowest HP deals itself 1 irreducible toxic damage."
+            ],
+            "flippedIcons": [
+                "UsePowerNow",
+                "DestroyOngoing",
+                "DealDamageToxic"
+            ],
+            "openingLines": {
+                "default": "default placeholder",
+                "DendronCharacter": "Dendron placeholder",
+                "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
+                "1929RamCharacter": "1929 Ram placeholder",
+                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+            },
+            "complexity": 1
+        },
+        {
+            "identifier": "TheStrangerCharacter",
+            "promoIdentifier": "WastelandRoninTheStrangerCharacter",
+            "count": 1,
+            "title": "The Stranger",
+            "promoTitle": "Wasteland Ronin The Stranger",
+            "shortPromoTitle": "Wasteland Stranger",
+            "body": "Mark of the Wasteland",
+            "backgroundColor": "FBF8F9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C94742",
+            "character": true,
+            "powers": [
+                "Discard a rune. If you do, {TheStranger} deals 1 target 4 infernal damage."
+            ],
+            "icons": [
+                "HasPower",
+                "Discard",
+                "DealDamageInfernal"
+            ],
+            "hitpoints": 24,
+            "nemesisIdentifiers": [
+                "TheStranger"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "One hero target deals itself 1 infernal damage.",
+                "Destroy all environment cards. Play the top card of the environment deck."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "DealDamageInfernal",
+                "DestroyEnvironment",
+                "PlayCardNow"
+            ],
+            "openingLines": {
+                "default": "default placeholder",
+                "DendronCharacter": "Dendron placeholder",
+                "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
+                "1929RamCharacter": "1929 Ram placeholder",
+                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+            },
+            "complexity": 1
+        }
+    ]
+}

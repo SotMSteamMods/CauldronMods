@@ -1,0 +1,288 @@
+{
+    "name": "Northspar",
+    "kind": "Environment",
+    "expansionIdentifier": "Cauldron",
+    "backgroundColor": "FB5455",
+    "difficulty": 1,
+    "cards": [
+        {
+            "identifier": "AethiumVein",
+            "count": 1,
+            "title": "Aethium Vein",
+            "keywords": [
+                "mineral deposit"
+            ],
+            "icons": [
+                "StartOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "If this card is destroyed by a hero card and Tak Ahab is in play, place the top card of the villain deck beneath him.",
+                "At the start of the environment turn, destroy this card and Tak Ahab's end of turn effect acts twice this turn."
+            ],
+            "flavorText": "Jack Donovan set the lump of glowing{BR}crystal in front of the mercenary. “So{BR}this is what you're here for, right?{BR}There's something I want you to do.”",
+            "hitpoints": 10
+        },
+        {
+            "identifier": "AlienFungus",
+            "count": 1,
+            "title": "Alien Fungus",
+            "keywords": [
+                "creature"
+            ],
+            "icons": [
+                "GainHP",
+                "EndOfTurnAction",
+                "DealDamageToxic"
+            ],
+            "body": [
+                "Whenever a Frozen card enters play, this card and Tak Ahab each regain 3HP.",
+                "At the end of the environment turn this card deals each hero target 2 toxic damage."
+            ],
+            "flavorText": "The mercenary's ship brought with it{BR}several spores of a normally harmless{BR}alien fungus which, like Tak Ahab himself,{BR}thrived dangerously in the frigid climate.",
+            "hitpoints": 4
+        },
+        {
+            "identifier": "BitterCold",
+            "count": 1,
+            "title": "Bitter Cold",
+            "keywords": [
+                "frozen"
+            ],
+            "icons": [
+                "DealDamageCold",
+                "EndOfTurnAction",
+                "DealDamagePsychic"
+            ],
+            "body": [
+                "Whenever an environment card enters play, this card deals the target with the third highest HP 2 cold damage.",
+                "At the end of each turn, all targets that were dealt cold damage during that turn deal themselves 1 psychic damage."
+            ],
+            "flavorText": "If the cold doesn't kill you,{BR}thinking about the possibility will{BR}make up the difference."
+        },
+        {
+            "identifier": "DemolishedCamp",
+            "count": 1,
+            "title": "Demolished Camp",
+            "keywords": [
+                "third waypoint"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "DestroySelf",
+                "RemoveFromGame",
+                "IncreaseDamageTaken"
+            ],
+            "body": [
+                "When this card enters play, play the top card of the environment deck and destroy this card. If Landing Site would enter play, instead remove it from the game.",
+                "Increase damage dealt to Tak Ahab by 1. If Tak Ahab is destroyed, remove him from the game."
+            ],
+            "flavorText": "Tango One drew her knife. “You're{BR}going to pay for this,” she said.{BR}Tak Ahab shook his head slowly.{BR}“I'm going to be paid for this.”"
+        },
+        {
+            "identifier": "EerieStillness",
+            "count": 1,
+            "title": "Eerie Stillness",
+            "icons": [
+                "ImmuneToDamageCold",
+                "StartOfTurnAction",
+                "Search",
+                "DestroySelf"
+            ],
+            "body": [
+                "All targets are immune to cold damage.",
+                "At the start of the environment turn, search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play, then shuffle the deck and destroy this card."
+            ],
+            "flavorText": "“Something is unnatural here,”{BR}Baccarat said. In response to{BR}Fanatic's raised eyebrow, he added,{BR}“besides us.”"
+        },
+        {
+            "identifier": "Frostbite",
+            "count": 1,
+            "title": "Frostbite",
+            "keywords": [
+                "frozen"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageCold",
+                "DestroySelf"
+            ],
+            "body": "At the end of the environment turn, this card deals the {H + 1} non-environment targets with the lowest HP 4 cold damage each and is destroyed.",
+            "flavorText": "The crowbar in Mr. Fixer's hand{BR}was searing cold as the alien{BR}marched towards him. It seemed to{BR}be indifferent to the weather."
+        },
+        {
+            "identifier": "FrozenSolid",
+            "count": 1,
+            "title": "Frozen Solid",
+            "keywords": [
+                "frozen"
+            ],
+            "icons": [
+                "IncreaseDamageTakenCold",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, place it next to the hero with the lowest HP. That hero must skip either their play or power phase during their turn.",
+                "If that hero is dealt fire damage, destroy this card."
+            ],
+            "flavorText": "“What's our supply situation?”{BR}asked Bunker. Tango hesitated.{BR}“We've got plenty of water.{BR}Drinking it will be the problem.”"
+        },
+        {
+            "identifier": "LandingSite",
+            "count": 1,
+            "title": "Landing Site",
+            "keywords": [
+                "third waypoint"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "Destroy",
+                "RemoveFromGame",
+                "StartOfTurnAction",
+                "Manipulate"
+            ],
+            "body": [
+                "When this card enters play, play the top card of the environment deck and destroy this card. If Demolished Camp would enter play, instead remove it from the game.",
+                "At the start of the environment turn, if Tak Ahab is in play, you may destroy 1 hero ongoing or equipment card. If you do, place the top card of any deck beneath Tak Ahab."
+            ],
+            "flavorText": "The mercenary caught site of the{BR}aethium crystal in Starlight's armor.{BR}Slowly, he lowered his weapon. “Perhaps{BR}we can come to an arrangement.”"
+        },
+        {
+            "identifier": "LostInTheSnow",
+            "count": 1,
+            "title": "Lost in the Snow",
+            "keywords": [
+                "frozen"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageCold",
+                "StartOfTurnAction",
+                "DestroyOngoing",
+                "DestroyEquipment"
+            ],
+            "body": [
+                "At the end of the environment turn, this card deals each hero target 1 cold damage.",
+                "At the start of the environment turn, each hero must destroy 1 ongoing and 1 equipment card."
+            ],
+            "flavorText": "“Contact with the Northspar expedition{BR}was lost 2 weeks ago,” said Bunker.{BR}“We're going to find out why. Let's be{BR}careful out there.”",
+            "hitpoints": 3
+        },
+        {
+            "identifier": "MakeshiftShelter",
+            "count": 1,
+            "title": "Makeshift Shelter",
+            "keywords": [
+                "first waypoint"
+            ],
+            "icons": [
+                "Indestructible",
+                "StartOfTurnAction",
+                "Manipulate"
+            ],
+            "body": [
+                "This card and Supply Depot are indestructible.",
+                "At the start of the environment turn, you may shuffle a card from the environment trash into the deck. if Tak Ahab is in the environment trash, shuffle him into the deck."
+            ],
+            "flavorText": "The group dug through the snow{BR}which had claimed the camp. Havoc, distracted,{BR}kept glancing out into the night. “Do{BR}you hear something movin' out there?”"
+        },
+        {
+            "identifier": "RagingBlizzard",
+            "count": 1,
+            "title": "Raging Blizzard",
+            "keywords": [
+                "frozen"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "Discard",
+                "DealDamageCold",
+                "DestroySelf"
+            ],
+            "body": [
+                "At the end of the environment turn, discard the top 4 cards of the environment deck. This card deals each non-environment target X cold damage, where X = the number of Frozen cards discarded this way.",
+                "If 4 Frozen cards were discarded this way, destroy this card."
+            ],
+            "flavorText": "Absolute Zero continued marching{BR}ahead through the driving wind.{BR}“What's everyone complaining{BR}about?”"
+        },
+        {
+            "identifier": "SnowShrieker",
+            "count": 1,
+            "title": "Snow Shrieker",
+            "keywords": [
+                "creature",
+                "frozen"
+            ],
+            "icons": [
+                "IncreaseDamageTakenFire",
+                "EndOfTurnAction",
+                "DealDamageCold"
+            ],
+            "body": [
+                "Increase fire damage dealt to this card by 2.",
+                "At the end of the environment turn, this card deals the non-environment target with the second lowest HP X cold damage, where X = 1 plus the number of Frozen cards in the environment trash."
+            ],
+            "flavorText": "Scans of the Northspar region showed{BR}it to be full of strange minerals and{BR}E.M. signals, but scientists believed it to{BR}be too inhospitable for life.",
+            "hitpoints": 14
+        },
+        {
+            "identifier": "SupplyDepot",
+            "count": 1,
+            "title": "Supply Depot",
+            "keywords": [
+                "second waypoint"
+            ],
+            "icons": [
+                "Indestructible",
+                "DestroySelf",
+                "PlayCardNow",
+                "HasPower",
+                "DealDamageFire"
+            ],
+            "body": [
+                "Third Waypoint cards are indestructible.",
+                "When this card enters play, destroy it and play the top card of the environment deck if Makeshift Shelter is not in play. Otherwise place it next to a hero. They gain:",
+                "Power: this hero deals 1 target 1 fire damage."
+            ],
+            "flavorText": "The expedition's second base camp still{BR}contained a stash of survival gear.{BR}Vance found an old gas lantern and{BR}began thawing his suit."
+        },
+        {
+            "identifier": "TakAhab",
+            "count": 1,
+            "title": "Tak Ahab",
+            "keywords": [
+                "mercenary"
+            ],
+            "icons": [
+                "Manipulate",
+                "EndOfTurnAction",
+                "DealDamageSonic"
+            ],
+            "body": [
+                "Whenever this card has no cards beneath it, place the top card of each hero deck beneath this one.",
+                "At the end of the environment turn, discard a card from beneath this one. This card deals the target from that deck with the highest HP X irreducible sonic damage, where X = the number of Waypoints in play plus 2."
+            ],
+            "flavorText": "“I know he paid you to kill me,” Starlight{BR}shouted from behind cover, “but we need to{BR}talk.” The alien kept his gun level. “Talking{BR}is not usually something I get paid for.”",
+            "hitpoints": 20
+        },
+        {
+            "identifier": "WhatsLeftOfThem",
+            "count": 1,
+            "title": "“What's left of them...”",
+            "keywords": [
+                "frozen"
+            ],
+            "icons": [
+                "Search",
+                "EndOfTurnAction",
+                "DealDamagePsychic",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play, then shuffle the deck.",
+                "At the end of the environment turn, this card deals each hero target 1 psychic damage and is destroyed."
+            ],
+            "flavorText": "“How do you know the expedition went{BR}this way?” Fanatic yelled over the storm.{BR}Up ahead, Absolute Zero stared at the{BR}frozen bodies and said nothing."
+        }
+    ]
+}

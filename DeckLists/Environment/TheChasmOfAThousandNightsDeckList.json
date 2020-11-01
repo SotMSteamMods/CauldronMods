@@ -1,0 +1,238 @@
+{
+    "name": "The Chasm of a Thousand Nights",
+    "kind": "Environment",
+    "expansionIdentifier": "CauldronAdrift",
+    "backgroundColor": "FB5455",
+    "difficulty": 1,
+    "cards": [
+        {
+            "identifier": "TheChasmOfAThousandNights",
+            "count": 1,
+            "title": "The Chasm Of A Thousand Nights",
+            "setup": "At the start of the game search the environment deck for all nature cards and put them face up beneath this card. Shuffle the environment deck and flip this card.",
+            "flippedGameplay": [
+                "Cards beneath this one are not considered in play. Nature cards are indestructible.",
+                "Whenever an environment target enters play, put a random card beneath this one into play next to that target.",
+                "If a nature ever has no target next to it, put that nature face down beneath this card."
+            ]
+        },
+        {
+            "identifier": "Axion",
+            "count": 1,
+            "title": "Axion",
+            "keywords": [
+                "djinn"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageMelee"
+            ],
+            "body": [
+                "At the end of the environment turn, this card deals each villain target 1 melee damage."
+            ],
+            "flavorText": "Gul, The Faded Scholar, keeper of{BR}knowledge and wisdom among the djinn,{BR}he has studied both sides of the viel{BR}for ages, fascinated by it all.",
+            "hitpoints": 4
+        },
+        {
+            "identifier": "BeyondTheVeil",
+            "count": 1,
+            "title": "Beyond the Veil",
+            "icons": [
+                "Manipulate",
+                "DealDamagePsychic"
+            ],
+            "body": [
+                "When this card enters play, shuffle all targets from the environment trash into the environment deck.",
+                "The first time a hero card is discarded each turn, that hero deals themselves 1 psychic damage."
+            ],
+            "flavorText": "Jade's ritual had left a tear in the Veil,{BR}through which the strange fabric of the{BR}djinn realm seeped into the canyon.{BR}Along with the djinn themselves."
+        },
+        {
+            "identifier": "CrumblingRuins",
+            "count": 1,
+            "title": "Crumbling Ruins",
+            "icons": [
+                "DealDamageMelee"
+            ],
+            "body": "At the end of the environment turn, this card deals each non-environment target X melee damage, where X is the number of environment targets in play.",
+            "flavorText": "The summoning chamber began to{BR}collapse, along with the rest of the{BR}ancient city, as the unsummoned djinn{BR}waged war above and around it."
+        },
+        {
+            "identifier": "GrandAmaraqiel",
+            "count": 1,
+            "title": "Grand Amaraqiel",
+            "keywords": [
+                "djinn"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageCold"
+            ],
+            "body": "At the end of the environment turn, this card deals the 2 non-environment targets with the highest HP 3 cold damage each.",
+            "flavorText": "Amaraqiel, The Bitter Emissary. A marid{BR}of the Fourth Circle. It was she who{BR}banished the Breathing Shadow, trapping{BR}him in a corner of the Veil.",
+            "hitpoints": 12
+        },
+        {
+            "identifier": "Gul",
+            "count": 1,
+            "title": "Gul",
+            "keywords": [
+                "djinn"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageInfernal",
+                "DealDamageCold"
+            ],
+            "body": [
+                "At the end of the environment turn, this card deals the non-environment target with the lowest HP 3 infernal damage.",
+                "Whenever this card destroys a target, it deals each target other than itself 1 cold damage."
+            ],
+            "flavorText": "Gul, The Sunless Mask. Shunned even by{BR}its own kind, this spirit's presence{BR}burns the mind and body, although its{BR}intentions are unknown.",
+            "hitpoints": 4
+        },
+        {
+            "identifier": "HighMhegas",
+            "count": 1,
+            "title": "High Mhegas",
+            "keywords": [
+                "djinn"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageMelee"
+            ],
+            "body": "At the end of the environment turn, this card deals the 3 hero targets with the highest HP 2 melee damage each.",
+            "flavorText": "Mhegas, The Iron Judge. A violent and{BR}powerful djinn who was summoned to{BR}Earth in ancient times and now bears no{BR}love for our world.",
+            "hitpoints": 8
+        },
+        {
+            "identifier": "HighTemoq",
+            "count": 1,
+            "title": "High Temoq",
+            "keywords": [
+                "djinn"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageFire"
+            ],
+            "body": "At the end of the environment turn, this card deals the 2 non-environment targets with the lowest HP 2 fire damage each.",
+            "flavorText": "Temoq, The Imprisoned Flame. A force of{BR}destruction so great that his fellow{BR}djinn were forced to bind him in iron{BR}and exile to save themselves.",
+            "hitpoints": 8
+        },
+        {
+            "identifier": "IreOfTheDjinn",
+            "count": 1,
+            "title": "Ire of the Djinn",
+            "icons": [
+                "DrawCardNow",
+                "RedirectDamage",
+                "StartOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, 3 players each draw 1 card.",
+                "Redirect all damage dealt by environment targets to the hero target with the highest HP. Nature cards cannot redirect this damage.",
+                "At the start of the environment turn, destroy this card."
+            ],
+            "flavorText": "“You dare draw on the power of our{BR}realm for your own petty gains?”{BR}rasped the icy figure, as Malichae and{BR}Bathiel tried to reason with her."
+        },
+        {
+            "identifier": "Malevolent",
+            "count": 1,
+            "title": "Malevolent",
+            "keywords": [
+                "nature"
+            ],
+            "icons": [
+                "RedirectDamage"
+            ],
+            "body": "Redirect all damage dealt by the target next to this card to the hero target with the highest HP.",
+            "flavorText": "Mhegas briefly surveyed the conflict{BR}around the Tear. Then he turned{BR}towards the heroes and dove at them,{BR}blade singing. Dawn's forces cheered."
+        },
+        {
+            "identifier": "Noxious",
+            "count": 1,
+            "title": "Noxious",
+            "keywords": [
+                "nature"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageToxic"
+            ],
+            "body": "At the end of the environment turn, the target next to this card deals each hero target 1 toxic damage.",
+            "flavorText": "“I'm not afraid of shadows,” said Jade,{BR}as the billowing creature drifted{BR}forward, its very presence poisoning{BR}the air around her."
+        },
+        {
+            "identifier": "RatherFriendly",
+            "count": 1,
+            "title": "Rather Friendly",
+            "keywords": [
+                "nature"
+            ],
+            "icons": [
+                "RedirectDamage"
+            ],
+            "body": "Redirect all damage dealt by the target next to this card to the villain target with the highest HP.",
+            "flavorText": "Nature spirit and djinn regarded each{BR}other amicably. “You are much quieter{BR}than your fellows,” said the Lady.{BR}“Especially the little bird.”"
+        },
+        {
+            "identifier": "SurprisinglyAgile",
+            "count": 1,
+            "title": "Surprisingly Agile",
+            "keywords": [
+                "nature"
+            ],
+            "icons": [
+                "ReduceDamageTaken"
+            ],
+            "body": "Reduce damage dealt to the target next to this card by 1.",
+            "flavorText": "Drift aimed a throwing shard at the{BR}angry djinn, but despite its size it was a{BR}blur of motion, dodging ever closer{BR}while flinging icicles at her in turn."
+        },
+        {
+            "identifier": "Tevael",
+            "count": 1,
+            "title": "Tevael",
+            "keywords": [
+                "djinn"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageProjectile",
+                "Indestructible"
+            ],
+            "body": [
+                "At the end of the environment turn, this card deals the non-environment target with the third highest HP 4 projectile damage.",
+                "This card is indestructible while it has more than 0 HP."
+            ],
+            "flavorText": "Tevael, The Buried Warden. He once{BR}guarded the Veil Shardkey, until his{BR}affinity for earthly treasure distracted{BR}him. He has not been seen since.",
+            "hitpoints": 4
+        },
+        {
+            "identifier": "Thieving",
+            "count": 1,
+            "title": "Thieving",
+            "keywords": [
+                "nature"
+            ],
+            "icons": [],
+            "body": "Whenever the target next to this card deals damage to a hero, that hero must discard a card.",
+            "flavorText": "“Such pretty trinkets,” Tevael rumbled{BR}to himself in a voice of scraping stone.{BR}Clutching his prize, he sunk out of sight{BR}into the earth."
+        },
+        {
+            "identifier": "Vicious",
+            "count": 1,
+            "title": "Vicious",
+            "keywords": [
+                "nature"
+            ],
+            "icons": [
+                "IncreaseDamageDealt"
+            ],
+            "body": "Increase damage dealt by the target next to this card by 1.",
+            "flavorText": "Fright Train held his ground as Temoq{BR}took another burning swipe at him. The{BR}djinn's fury was unrelenting: metal{BR}bubbled and sparked at its touch."
+        }
+    ]
+}

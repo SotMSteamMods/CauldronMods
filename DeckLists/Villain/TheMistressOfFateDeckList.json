@@ -1,0 +1,508 @@
+{
+    "name": "The Mistress Of Fate",
+    "kind": "Villain",
+    "expansionIdentifier": "CauldronAdrift",
+    "initialCardIdentifiers": [
+        "TheMistressOfFateCharacter",
+        "Timeline"
+    ],
+    "cards": [
+        {
+            "identifier": "TheMistressOfFateCharacter",
+            "count": 1,
+            "title": "The Mistress Of Fate",
+            "keywords": [
+                "villain"
+            ],
+            "body": "Endless Cycle",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 88,
+            "nemesisIdentifiers": [
+                "Baccarat"
+            ],
+            "setup": [
+                "At the start of the game, put {TheMistressOfFate}'s villain character cards into play, 'Endless Cycle' side up. Put the Timeline card in the center of the play area. Shuffle the day cards face down, and place them in a row to the right of the Timeline."
+            ],
+            "gameplay": [
+                "At the start of the villain turn, flip the left-most face down day card.",
+                "{TheMistressOfFate} is immune to villain damage. If there are no cards in the villain deck, the heroes lose.",
+                "Continue playing if all heroes are incapacitated. Incapacitated heroes keep the cards from their hand, deck, and trash separarte from each other when removing them from the game. Cards that were in play go to their trash."
+            ],
+            "advanced": "At the end of the villain turn, {TheMistressOfFate} deals the hero with the lowest HP {H} psychic damage.",
+            "icons": [
+                "StartOfTurnAction",
+                "ImmuneToDamage",
+                "LoseTheGame"
+            ],
+            "advancedIcons": [
+                "DealDamagePsychic"
+            ],
+            "flippedBody": "Back to the Beginning",
+            "flippedGameplay": [
+                "Continue playing if all heroes are incapacitated.",
+                "When {TheMistressOfFate} to this side:",
+                "{Bulletpoint} Resore all other targets to their maximum HP.",
+                "{Bulletpoint} Destroy all environment cards.",
+                "{Bulletpoint} Flip all day cards face down.",
+                "{Bulletpoint} Remove all cards in the villain trash and the top {H - 1} cards of the villain deck from the game without looking at them.",
+                "{Bulletpoint} Flip all incapacitated heroes and restore them to their maximum HP. Cards that were in a hero's deck, hand, or trash when they were incapacitated are returned to those respective locations.",
+                "Then, flip {TheMistressOfFate}'s villain character cards."
+            ],
+            "flippedAdvanced": "When {TheMistressOfFate} flips to this side, she regains 10 HP.",
+            "flippedIcons": [
+                "GainHP",
+                "DestroyEnvironment",
+                "RemoveFromGame"
+            ],
+            "flippedAdvancedIcons": [
+                "GainHP"
+            ],
+            "difficulty": 1,
+            "openingLines": {
+                "default": "default placeholder",
+                "BaccaratCharacter": "Baccarat placeholder",
+                "AceOfSorrowsBaccaratCharacter": "Ace Of Sorrows Baccarat placeholder",
+                "AceOfSwordsBaccaratCharacter": "Ace Of Swords Baccarat placeholder",
+                "1929BaccaratCharacter": "Baccarat 1929 placeholder"
+            }
+        },
+        {
+            "identifier": "TheTimeline",
+            "count": 1,
+            "title": "The Timeline",
+            "icons": [
+                "Indestructible"
+            ],
+            "body": [
+                "This card is indestructible.",
+                "Day cards cannot be affected by non-villain cards. Cards beneath villain cards are not considered in play.",
+                "Immediately after the environment turn, flip {TheMistressOfFate}'s villain character cards if one of these things occurs:",
+                "{Bulletpoint} The players choose to flip her.",
+                "{Bulletpoint} All heroes are incapacitated.",
+                "{Bulletpoint} All Day cards are face up.",
+                "{MistressOfFateDayCards}"
+            ]
+        },
+        {
+            "identifier": "DayOfSaints",
+            "count": 1,
+            "title": "Day of Saints",
+            "keywords": [
+                "day"
+            ],
+            "icons": [
+                "IncreaseDamageDealt",
+                "DealDamagePsychic"
+            ],
+            "body": [
+                "When this card flips face up, increase damage dealt by villain targets by 2 until the start of the next villain turn.",
+                "Then {TheMistressOfFate} deals the hero with the lowest HP {H} times 3 psychic damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Baccarat",
+                    "text": "Wait, I've been{BR}stuck in a time loop{BR}before? When?"
+                },
+                {
+                    "identifier": "TangoOne",
+                    "text": "1929."
+                }
+            ],
+            "flavorReference": "Once More With Feeling"
+        },
+        {
+            "identifier": "DayOfSinners",
+            "count": 1,
+            "title": "Day of Sinners",
+            "keywords": [
+                "day"
+            ],
+            "icons": [
+                "PlayCardNow"
+            ],
+            "body": [
+                "When this card flips face up, put any cards beneath it into play. If there are none, reveal cards from the top of the villain deck until a One-shot is revealed, put it into play, and shuffle the other revealed cards into the villain deck.",
+                "When that one-shot leaves play, put it beneath this card."
+            ],
+            "flavorText": "As the 4-day loop repeated,{BR}over and over, time itself began to{BR}splinter and crack."
+        },
+        {
+            "identifier": "DayOfSorrows",
+            "count": 1,
+            "title": "Day of Sorrows",
+            "keywords": [
+                "day"
+            ],
+            "icons": [
+                "PlayCardNow"
+            ],
+            "body": [
+                "When this card flips face up, put any cards beneath it into play. If there are none, reveal cards from the top of the villain deck until an Anomaly is revealed, put it into play, and shuffle the other revealed cards into the villain deck.",
+                "When {TheMistressOfFate} flips or that card leaves play, put it beneath this card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Vanish",
+                    "text": "This is that same rain. They always{BR}show up right after it starts."
+                }
+            ],
+            "flavorReference": "Vanish, The Debt #5"
+        },
+        {
+            "identifier": "DayOfSwords",
+            "count": 1,
+            "title": "Day of Swords",
+            "keywords": [
+                "day"
+            ],
+            "icons": [
+                "PlayCardNow"
+            ],
+            "body": [
+                "When this card flips face up, put any cards beneath it into play. If there are none, reveal cards from the top of the villain deck until an Anomaly or One-shot is revealed, put it into play, and shuffle the other revealed cards into the villain deck.",
+                "When {TheMistressOfFate} flips or that card leaves play, put it beneath this card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Unity",
+                    "text": "I don't think I want to{BR}wish on this one."
+                }
+            ],
+            "flavorReference": "Unity, Abstract Tales Annual #4"
+        },
+        {
+            "identifier": "CantFightFate",
+            "count": 2,
+            "title": "Can't Fight Fate",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Discard",
+                "DealDamagePsychic"
+            ],
+            "body": [
+                "The hero with the highest HP may discard 3 cards that share a keyword.",
+                "If they do not, {TheMistressOfFate} deals each target in that hero's play area 20 psychic damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheMistressOfFate",
+                    "text": "You always have something to lose."
+                }
+            ],
+            "flavorReference": "The Mistress of Fate, The Debt #1"
+        },
+        {
+            "identifier": "ChaosButterfly",
+            "count": 1,
+            "title": "Chaos Butterfly",
+            "keywords": [
+                "creature"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageCold",
+                "Manipulate"
+            ],
+            "body": [
+                "At the end of the villain turn, this card deals each hero target 3 projectile damage and 3 cold damage.",
+                "When this card is destroyed, the players may swap the position of 2 face up Day cards. Cards under them move as well."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Baccarat",
+                    "text": "Watch where you step."
+                }
+            ],
+            "flavorReference": "Baccarat, Eternity Gambit One-Shot",
+            "hitpoints": 31
+        },
+        {
+            "identifier": "FadingRealities",
+            "count": 2,
+            "title": "Fading Realities",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "RemoveFromGame",
+                "DealDamageInfernal"
+            ],
+            "body": [
+                "The hero with the second lowest HP may select 1 card in their hand and 1 of their cards in play. Remove the selected cards from the game.",
+                "If 2 cards were not removed from the game this way, {TheMistressOfFate} deals that hero 20 infernal damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheMistressOfFate",
+                    "text": "I will not remain trapped in this{BR}decaying moment of time. Not alone."
+                }
+            ],
+            "flavorReference": "The Mistress of Fate, Adrift One-shot"
+        },
+        {
+            "identifier": "HourDevourer",
+            "count": 1,
+            "title": "Hour Devourer",
+            "keywords": [
+                "anomaly"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageSonic",
+                "ImmuneToDamage"
+            ],
+            "body": [
+                "At the end of the villain turn, this card deals each non-villain target X sonic damage, where X is 3 times the number of Day cards face up.",
+                "When damage dealt by a target destroys this card, that target becomes immune to damage until the start of its next turn."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Drift",
+                    "text": "Yesterday is...disappearing.{BR}They're eating it!"
+                }
+            ],
+            "flavorReference": "Drift, Ace of Shadows #1",
+            "hitpoints": 8
+        },
+        {
+            "identifier": "IllusionOfFreeWill",
+            "count": 1,
+            "title": "Illusion of Free Will",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "DestroySelf",
+                "RedirectDamage",
+                "PlayCardNow"
+            ],
+            "body": [
+                "Play this card next to the hero with the lowest HP. Destroy this card if {TheMistressOfFate} flips or there are ever less than 5 cards in the villain deck.",
+                "Redirect damage dealt by this hero’s cards to the hero with the highest HP. At the end of this hero's turn, play the top 2 cards of their deck."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheMistressOfFate",
+                    "text": "You assume this to be a{BR}matter of choice. But your{BR}destiny is already written."
+                }
+            ],
+            "flavorReference": "The Mistress of Fate, Adrift One-shot"
+        },
+        {
+            "identifier": "MemoryOfTomorrow",
+            "count": 1,
+            "title": "Memory of Tomorrow",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "DealDamageSonic",
+                "DealDamageCold",
+                "DrawCardNow",
+                "PlayCardNow"
+            ],
+            "body": [
+                "When this card enters play, move it next to the right-most face up Day card and {TheMistressOfFate} deals each hero 5 sonic damage and 5 cold damage.",
+                "Each time the Day card next to this one is flipped face up, 1 hero may draw a card and play a card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TangoOne",
+                    "text": "Get ready. 5...4...3...2..."
+                }
+            ],
+            "flavorReference": "Tango One, Once More With Feeling"
+        },
+        {
+            "identifier": "NecessaryCorrection",
+            "count": 1,
+            "title": "Necessary Correction",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "DealDamagePsychic",
+                "EndOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, {TheMistressOfFate} deals the {H - 1} hero targets with the highest HP 10 psychic damage each.",
+                "At the end of the environment turn, if there are at least 5 cards remaining in the villain deck, destroy this card and flip {TheMistressOfFate}'s villain character cards."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Tachyon",
+                    "text": "Your little jaunt{BR}through her timeline gave her an{BR}anomaly to work with. She doesn't need{BR}those magic cards any more."
+                }
+            ],
+            "flavorReference": "Tachyon, Adrift One-shot"
+        },
+        {
+            "identifier": "ResidualMalus",
+            "count": 2,
+            "title": "Residual Malus",
+            "keywords": [
+                "anomaly"
+            ],
+            "icons": [
+                "DealDamageMelee",
+                "Destroy"
+            ],
+            "body": [
+                "The first time a hero card is played each turn, this card deals that hero X melee damage, where X is the number of cards in the environment trash plus 1.",
+                "When this card is destroyed, destroy 1 Warped Malus."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheMistressOfFate",
+                    "text": "No one lasts beyond{BR}their time without consequence."
+                }
+            ],
+            "flavorReference": "The Mistress of Fate, Abstract Tales Annual #4",
+            "hitpoints": 10
+        },
+        {
+            "identifier": "SameTimeAndPlace",
+            "count": 1,
+            "title": "Same Time and Place",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "DealDamageMelee",
+                "Manipulate"
+            ],
+            "body": [
+                "When this card enters play, {TheMistressOfFate} deals each hero 10 melee damage.",
+                "If there is no card beneath this one and an environment card leaves play, put that card beneath this one. When a Day card flips face down, put any cards beneath this one on top of the environment deck."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Gyrosaur",
+                    "text": "How come we always reset here? I{BR}don't like any of their foods."
+                }
+            ],
+            "flavorReference": "Gyrosaur, Eternity Gambit One-Shot"
+        },
+        {
+            "identifier": "SeeThePattern",
+            "count": 2,
+            "title": "See the Pattern",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "DealDamagePsychic",
+                "DealDamageMelee",
+                "Manipulate",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, {TheMistressOfFate} deals each hero {H} psychic damage and {H} melee damage.",
+                "When {TheMistressOfFate} flips, each player may move 1 card from their trash to their hand. If any cards were moved this way, destroy this card."
+            ],
+            "flavorText": "vHuh. Déjà vu,” mused Vanish.{BR}She turned to find Baccarat staring at{BR}the cat. “That means she changed{BR}something,” he said."
+        },
+        {
+            "identifier": "StolenFuture",
+            "count": 1,
+            "title": "Stolen Future",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "DealDAmageRadiant",
+                "DestroySelf",
+                "Destroy"
+            ],
+            "body": [
+                "Play this card next to the hero with the highest HP. That hero may deal 1 target 5 radiant damage. Then, destroy this card.",
+                "When this card is destroyed, destroy all hero characters in its play area."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheMistressOfFate",
+                    "text": "What was stolen from me{BR}will be exacted from all."
+                }
+            ],
+            "flavorReference": "The Mistress Of Fate, Virtuoso of the Void #60"
+        },
+        {
+            "identifier": "TangledWeft",
+            "count": 1,
+            "title": "Tangled Weft",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Discard",
+                "DealDamageInfernal"
+            ],
+            "body": [
+                "Each player may discard a card that shares a keyword with at least one of their cards in play.",
+                "Then, {TheMistressOfFate} deals each hero that did not discard a card this way 5 infernal damage for each face up Day card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheMistressOfFate",
+                    "text": "Nothing happens that is{BR}not part of my design."
+                }
+            ],
+            "flavorReference": "The Mistress Of Fate, The Debt #2"
+        },
+        {
+            "identifier": "ToDust",
+            "count": 2,
+            "title": "To Dust",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DealDamageProjectile",
+                "Manipulate",
+                "RedirectDamage"
+            ],
+            "body": [
+                "{TheMistressOfFate} deals the hero target with the second highest HP 15 projectile damage.",
+                "That hero may shuffle 10 cards from their trash into their deck. If they do, they may redirect that damage to another target."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Baccarat",
+                    "text": "Actually, cheaters sometimes{BR}prosper. Just not today."
+                }
+            ],
+            "flavorReference": "Baccarat, The Cauldron One-shot"
+        },
+        {
+            "identifier": "WarpedMalus",
+            "count": 2,
+            "title": "Warped Malus",
+            "keywords": [
+                "anomaly"
+            ],
+            "icons": [
+                "ReduceDamageTaken",
+                "EndOfTurnAction",
+                "dealDamageEnergy",
+                "GainHP"
+            ],
+            "body": [
+                "Reduce damage dealt to this card by {H - 2}.",
+                "At the end of the villain turn, this card deals each non-villain target {H + 1} energy damage and regains 4 HP."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "ChronoRanger",
+                    "text": "Reinforcements from the future.{BR}That gives me an idea."
+                }
+            ],
+            "flavorReference": "Chrono-Ranger, Abstract Tales Annual #4",
+            "hitpoints": 6
+        }
+    ]
+}
