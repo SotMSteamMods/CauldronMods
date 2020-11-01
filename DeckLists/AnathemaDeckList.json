@@ -1,0 +1,408 @@
+{
+   "name":"Anathema",
+   "kind":"Villain",
+   "initialCardIdentifiers":[
+      "AnathemaCharacter"
+   ],
+   "cards":[
+      {
+         "identifier":"AnathemaCharacter",
+         "count":1,
+         "title":"Anathema",
+         "keywords":[
+            "villain"
+         ],
+         "icons":[
+            "StartOfTurnAction"
+         ],
+         "advancedIcons":[
+            "ImmuneToDamage"
+         ],
+         "body":"Shapeshifting Bioform",
+         "backgroundColor":"D99FC5",
+         "foilBackgroundColor":"CD96C0",
+         "character":true,
+         "hitpoints":45,
+         "nemesisIdentifiers":[
+            "TangoOne"
+         ],
+         "setup":[
+            "At the start of the game, put {Anathema} enters play “Shapeshifting Bioform“ side up.",
+            "Reveal cards from the top of the Villain Deck until 2 arms, 1 body, and 1 head are revealed. Put those cards into play and shuffle the rest in to the Villain Deck."
+         ],
+         "gameplay":[
+            "At the start of the Villain Turn, if there are no other villain targets in play, flip {Anathema}'s character card.",
+            "If there are 4 other villain targets in play, {Anathema} is immune to damage.",
+			"Whenever a villain card destroys an arm, body, or head, {Anathema} regains 2HP."
+         ],
+         "advanced":"If there are 3 other villain targets in play, {Anathema} is immune to damage.",
+         "flippedHitpoints":45,
+         "flippedBody":"Exposed Mutant",
+         "flippedGameplay":[
+            "At the start of the Villain Turn, play the top card of the villain deck.",
+			"At the end of the Villain Turn, if there are any other villain targets in play, flip {Anathema}'s character card.",
+			"At the end of the Villain Turn, each player discards a card from their hand."
+         ],
+         "flippedAdvanced":"At the start of the Villain Turn, each player discards a card from their hand.",
+         "flippedIcons":[
+            "EndOfTurnAction",
+            "StartOfTurnAction"
+         ],
+         "flippedAdvancedIcons":[
+         ],
+		 "difficulty":3,
+		"openingLines":
+		{
+		   "default": "You can't stop who I've become!"	  
+        }
+			
+      },
+      {
+         "identifier":"BoneCleaver",
+         "count":2,
+         "title":"Bone Cleaver",
+         "keywords":[
+            "arm"
+         ],
+         "icons":[
+         	"DealDamageMelee"
+         ],
+         "body":[
+            "When this card enters play, destroy all other arm cards except for the one with the highest HP.",
+            "At the end of the Villain Turn, {Anathema} deals the Hero target with the lowest HP {H-2} melee damage. If that target took damage this way, it cannot deal damage until the start of the next Villain Turn."
+         ],
+         "flavorQuotes":[
+            {
+               "identifier":"Anathema",
+               "text":"My mercenary days are long behind{BR}me. This one's free. He's got it coming."
+            }
+         ],
+         "flavorReference":"Tango One, Doppelganger #14",
+		 "hitpoints":7
+      },
+            {
+         "identifier":"WhipTendril",
+         "count":2,
+         "title":"Whip Tendril",
+         "keywords":[
+            "arm"
+         ],
+         "icons":[
+         	"DealDamageProjectile"
+         ],
+         "body":[
+            "When this card enters play, destroy all other arm cards except for the one with the highest HP.",
+            "At the end of the Villain Turn, {Anathema} deals each Hero target 2 projectile damage. Heroes that take damage this way must destroy 1 of their equipment cards."
+         ],
+         "flavorQuotes":[
+            {
+               "identifier":"Anathema",
+               "text":"If we make it out, I am{BR}going to find whatever lab he{BR}came from and blow it to Mars."
+            }
+         ],
+         "flavorReference":"Tango One, Anathema #206",
+		 "hitpoints":7
+      },
+            {
+         "identifier":"KnuckleDragger",
+         "count":2,
+         "title":"Knuckle Dragger",
+         "keywords":[
+            "arm"
+         ],
+         "icons":[
+         	"DealDamageMelee"
+         ],
+         "body":[
+            "When this card enters play, destroy all other arm cards except for the one with the highest HP.",
+            "At the end of the Villain Turn, {Anathema} deals the Hero character with the highest HP {H+1} melee damage. If that Hero takes damage this way, they must destroy 1 of their ongoing cards."
+         ],
+         "flavorQuotes":[
+            {
+               "identifier":"Anathema",
+               "text":"These are heavy matters to ponder."
+            }
+         ],
+         "flavorReference":"Anathema, Mystery Comics #1435",
+		 "hitpoints":7
+      },
+            {
+         "identifier":"ThresherClaw",
+         "count":2,
+         "title":"Thresher Claw",
+         "keywords":[
+            "arm"
+         ],
+         "icons":[
+         	"DealDamageToxic"
+         ],
+         "body":[
+            "When this card enters play, destroy all other arm cards except for the one with the highest HP.",
+            "At the end of the Villain Turn, {Anathema} deals the {H-2} heroes with the highest HP 3 toxic damage each."
+         ],
+         "flavorQuotes":[
+            {
+               "identifier":"Anathema",
+               "text":"You don't understand; I{BR}volunteered for those experiments.{BR}And look what I've become!"
+            }
+         ],
+         "flavorReference":"Anathema, Halcyon Days #59",
+		 "hitpoints":7
+      },
+      {
+         "identifier":"RazorScales",
+         "count":1,
+         "title":"Razor Scales",
+         "keywords":[
+            "body"
+         ],
+         "icons":[
+         	"DealDamageMelee"
+         ],
+         "body":[
+            "When this card enters play, destroy all other body cards.",
+            "The first time a Villain target is dealt damage each turn, this card deals the source of that damage 2 melee damage."
+         ],
+         "flavorQuotes":[
+            {
+               "identifier":"Anathema",
+               "text":"I don't like where this is going{BR}or how fast we're getting there."
+            }
+         ],
+         "flavorReference":"Quicksilver, Nightmare World #151",
+		 "hitpoints":9
+      },
+	  {
+         "identifier":"MetabolicArmor",
+         "count":1,
+         "title":"Metabolic Armor",
+         "keywords":[
+            "body"
+         ],
+         "icons":[
+         	"IncreaseDamageDealt",
+			"GainHP"
+         ],
+         "body":[
+            "When this card enters play, destroy all other body cards.",
+            "Increase damage dealt by Villain targets by 1.",
+			"At the end of the Villain Turn, all Villain targets regain 1HP."
+         ],
+         "flavorQuotes":[
+            {
+               "identifier":"Anathema",
+               "text":"The strain? Don't worry.{BR}The first thing I changed{BR}was adding a few extra hearts."
+            }
+         ],
+         "flavorReference":"Anathema, Anathema #4",
+		 "hitpoints":9
+      },
+	  {
+         "identifier":"HeavyCarapace",
+         "count":1,
+         "title":"Heavy Carapace",
+         "keywords":[
+            "body"
+         ],
+         "icons":[
+         	"ReduceDamageTaken"
+         ],
+         "body":[
+            "When this card enters play, destroy all other body cards.",
+            "Reduce damage dealt to Villain targets by 2."
+         ],
+         "flavorQuotes":[
+            {
+               "identifier":"Anathema",
+               "text":"I can increase outer{BR}biomass density all day{BR}long. What's your trick, Meatsack?"
+            }
+         ],
+         "flavorReference":"Anathema to the Scholar, Vagabond's Tale #143",
+		 "hitpoints":9
+      },
+	  {
+         "identifier":"ReflexBooster",
+         "count":1,
+         "title":"Reflex Booster",
+         "keywords":[
+            "head"
+         ],
+         "icons":[
+         	"PlayCardNow"
+         ],
+         "body":[
+            "When this card enters play, destroy all other head cards.",
+            "At the end of the Villain Turn, play the top card of the Villain Deck."
+         ],
+         "flavorQuotes":[
+            {
+               "identifier":"Anathema",
+               "text":"Okay, so he's got{BR}pretty good reaction time."
+            }
+         ],
+         "flavorReference":"Tachyon, Anathema #38",
+		 "hitpoints":5
+      },
+	  {
+         "identifier":"CarapaceHelmet",
+         "count":1,
+         "title":"Carapace Helmet",
+         "keywords":[
+            "head"
+         ],
+         "icons":[
+         	"ReduceDamageTaken",
+			"ImmuneToDamage"
+         ],
+         "body":[
+            "When this card enters play, destroy all other head cards.",
+            "Reduce damage dealt to this card by 1.",
+			"Villain targets are immune to damage dealt by environment cards."
+         ],
+         "flavorQuotes":[
+            {
+               "identifier":"Anathema",
+               "text":"Headshot's not gonna cut it."
+            }
+         ],
+         "flavorReference":"Tango One, Dancing Ghosts #60",
+		 "hitpoints":5
+      },
+	  {
+         "identifier":"EnhancedSenses",
+         "count":2,
+         "title":"Enhanced Senses",
+         "keywords":[
+            "head"
+         ],
+         "icons":[
+         	"DealDamageSonic"
+         ],
+         "body":[
+            "When this card enters play, destroy all other head cards.",
+            "Change the type of all damage to sonic.",
+			"Whenever a Hero card enters play, this card deals that Hero Character 1 sonic damage."
+         ],
+         "flavorQuotes":[
+            {
+               "identifier":"Anathema",
+               "text":"Heard you primitive{BR}bioforms coming miles away."
+            }
+         ],
+         "flavorReference":"Anathema, Times A-Changin' #22",
+		 "hitpoints":5
+      },
+      {
+         "identifier":"TheStuffOfNightmares",
+         "count":2,
+         "title":"The Stuff Of Nightmares",
+         "keywords":[
+            "ongoing"
+         ],
+         "body":"Whenever a Villain target enters play, that target deals the hero target with the second lowest HP 2 psychic damage.",
+         "icons":[
+            "DealDamagePsychic"
+         ],
+         "flavorQuotes":[
+            {
+               "identifier":"Anathema",
+               "text":"The most terrifying enemy{BR}is the one you cannot see."
+            }
+         ],
+         "flavorReference":"The Visionary, Doppleganger #15"
+      },
+      {
+         "identifier":"ExplosiveTransformation",
+         "count":2,
+         "title":"Explosive Transformation",
+         "keywords":[
+            "one-shot"
+         ],
+         "icons":[
+            "DealDamageToxic",
+            "PlayCardNow"
+         ],
+         "body":[
+            "{Anathema} deals each Hero target 1 projectile damage.",
+            "Reveal the top {H} cards of the Villain Deck. Put the first revealed arm, body, and head into play. Shuffle the remaining cards back into the Villain Deck."
+         ],
+         "flavorQuotes":[
+            {
+               "identifier":"Anathema",
+               "text":"Change or die."
+            }
+         ],
+         "flavorReference":"Lady of the Wood, Anathema #213"
+      },
+      {
+         "identifier":"AnathemaRampage",
+         "count":2,
+         "title":"Rampage",
+         "keywords":[
+            "one-shot"
+         ],
+         "icons":[
+            "ReduceDamageTaken",
+			"IncreaseDamageDealt",
+			"DealDamageMelee"
+         ],
+		"body":[
+            "{Anathema} deals the Hero target with the most cards in hand {H-1} melee damage.",
+            "Until the start of the next Villain Turn, increase damage dealt by Villain targets by 1 and reduce damage dealt to Villain targets by 1."
+         ],
+         "flavorQuotes":[
+            {
+               "identifier":"Anathema",
+               "text":"You're all made of meat!"
+            }
+         ],
+         "flavorReference":"Anathema, Transmission of Honor #85"
+      },
+	        {
+         "identifier":"DopplegangerStrike",
+         "count":2,
+         "title":"Doppleganger Strike",
+         "keywords":[
+            "one-shot"
+         ],
+         "icons":[
+            "DealDamageToxic",
+			"PlayCardNow"
+         ],
+		"body":[
+            "The Hero target with the highest HP deals the Hero Character with the lowest HP X toxic damage, where X is the number of villain targets in play. A Hero dealt damage this way must discard {H-2} cards.",
+			"Play the top card of the Villain Deck."
+         ],
+         "flavorQuotes":[
+            {
+               "identifier":"Anathema",
+               "text":"In my future, he can{BR}perfectly imitate any lifeform he{BR}comes into contact with. Be prepared."
+            }
+         ],
+         "flavorReference":"Anathema, Transmission of Honor #85"
+      },
+	  {
+         "identifier":"Biofeedback",
+         "count":1,
+         "title":"Biofeedback",
+         "keywords":[
+            "ongoing"
+         ],
+         "icons":[
+            "GainHP",
+			"DealDamagePsychic"
+         ],
+		"body":[
+            "Whenever {Anathema} deals damage to a Hero target, he regains 1 HP.",
+            "Whenever an arm, body, or head is destroyed by a Hero target, Anathema deals himself 2 psychic damage."
+         ],
+         "flavorQuotes":[
+            {
+               "identifier":"Anathema",
+               "text":"Fresh DNA for the kitchen."
+            }
+         ],
+         "flavorReference":"Anathema, Times A-Changin' #7"
+      }
+   ]
+}
