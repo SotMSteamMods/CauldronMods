@@ -25,7 +25,7 @@
                 "Necro"
             ],
             "setup": [
-                "At the start of the game, put {Tiamat}'s villain character cards into play, 'The Jaws of Winter' side up."
+                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Jaws of Winter“ side up."
             ],
             "gameplay": [
                 "{Tiamat}, The Jaws of Winter is immune to cold damage.",
@@ -43,7 +43,7 @@
             ],
             "flippedBody": "Decapitated",
             "flippedGameplay": [
-                "When a spell card causes a head to deal damage, increase that damage by 1 for each 'Element of Ice' card in the villain trash"
+                "When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Ice“ card in the villain trash"
             ],
             "flippedAdvanced": "Reduce damage taken by heads by 1.",
             "flippedIcons": [
@@ -77,7 +77,7 @@
                 "TheKnight"
             ],
             "setup": [
-                "At the start of the game, put {Tiamat}'s villain character cards into play, 'The Mouth of the Inferno' side up."
+                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Mouth of the Inferno“ side up."
             ],
             "gameplay": [
                 "{Tiamat}, The Mouth of the Inferno is immune to fire damage.",
@@ -95,7 +95,7 @@
             ],
             "flippedBody": "Decapitated",
             "flippedGameplay": [
-                "When a spell card causes a head to deal damage, increase that damage by 1 for each 'Element of Fire' card in the villain trash"
+                "When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Fire“ card in the villain trash"
             ],
             "flippedAdvanced": "Reduce damage dealt by heads by 1.",
             "flippedIcons": [
@@ -131,7 +131,7 @@
                 "Echelon"
             ],
             "setup": [
-                "At the start of the game, put {Tiamat}'s villain character cards into play, 'The Eye of the Storm' side up."
+                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Eye of the Storm“ side up."
             ],
             "gameplay": [
                 "{Tiamat}, The Eye of the Storm is immune to lightnining damage.",
@@ -149,7 +149,7 @@
             ],
             "flippedBody": "Decapitated",
             "flippedGameplay": [
-                "When a spell card causes a head to deal damage, increase that damage by 1 for each 'Element of Lightning' card in the villain trash"
+                "When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Lightning“ card in the villain trash"
             ],
             "flippedAdvanced": "Reduce damage taken by heads by 1.",
             "flippedIcons": [

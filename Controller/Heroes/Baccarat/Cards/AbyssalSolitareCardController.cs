@@ -1,4 +1,4 @@
-namespace Cauldron.Controller.Baccarat
+namespace Cauldron.Baccarat
 {
     using System;
     using System.Collections;

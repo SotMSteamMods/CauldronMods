@@ -1,7 +1,7 @@
 {
     "name": "Phase",
     "kind": "Villain",
-    "expansionIdentifier":"CauldronStormfall",
+    "expansionIdentifier": "CauldronStormfall",
     "initialCardIdentifiers": [
         "PhaseCharacter",
         "ReinforcedWall"
@@ -23,7 +23,8 @@
                 "Impact"
             ],
             "setup": [
-                "At the start of the game, put {Phase}'s villain character cards into play, 'Intagible Saboteur' side up. Search the villain deck for the card Reinforced Wall and put it into play. Shuffle the villain deck."
+                "At the start of the game, put {Phase}'s villain character cards into play, “Intagible Saboteur“ side up.",
+                "Search the villain deck for the card Reinforced Wall and put it into play. Shuffle the villain deck."
             ],
             "gameplay": [
                 "At the start of the villain turn, if there are 3 or more obstacles in play, flip {Phase}'s villain character cards.",
@@ -33,17 +34,30 @@
             ],
             "advanced": "When {Phase} is damaged, she becomes immune to damage until the end of the turn.",
             "icons": [
-                "StartOfTurnAction","IncreaseDamageDealt","ImmuneToDamage","EndOfTurnAction","PlayCardNow"
+                "StartOfTurnAction",
+                "IncreaseDamageDealt",
+                "ImmuneToDamage",
+                "EndOfTurnAction",
+                "PlayCardNow"
             ],
-            "advancedIcons": ["ImmuneToDamage"],
+            "advancedIcons": [
+                "ImmuneToDamage"
+            ],
             "flippedBody": "New Job, New Gear",
             "flippedGameplay": [
                 "When {Phase} flips to this side, destroy the obstacle with the lowest HP and remove it from the game. If the card Insubstantial Matador is in play, destroy it.",
                 "At the end of the villain turn, {Phase} deals each hero target {H} radiant damage. Then, flip {Phase}'s villain character cards."
             ],
             "flippedAdvanced": "When {Phase} flips to this side, destroy {H - 2} hero ongoing cards.",
-            "flippedIcons": ["Destroy","RemoveFromGame","EndOfTurnAction","DealDamageRadiant"],
-            "flippedAdvancedIcons": ["DestroyOngoing"],
+            "flippedIcons": [
+                "Destroy",
+                "RemoveFromGame",
+                "EndOfTurnAction",
+                "DealDamageRadiant"
+            ],
+            "flippedAdvancedIcons": [
+                "DestroyOngoing"
+            ],
             "difficulty": 1,
             "openingLines": {
                 "default": "default placeholder",
@@ -59,7 +73,13 @@
             "keywords": [
                 "ongoing"
             ],
-            "icons": ["IncreaseDamageTaken","IrreducibleDamage","StartOfTurnAction","Discard","DestroySelf"],
+            "icons": [
+                "IncreaseDamageTaken",
+                "IrreducibleDamage",
+                "StartOfTurnAction",
+                "Discard",
+                "DestroySelf"
+            ],
             "body": [
                 "Increase damage dealt to Obstacles by 1 by the first hero target damaged by {Phase} each round.",
                 "Damage dealt by {Phase} is irreducible.",
@@ -74,7 +94,9 @@
             "keywords": [
                 "ongoing"
             ],
-            "icons": ["DealDamageRadiant"],
+            "icons": [
+                "DealDamageRadiant"
+            ],
             "body": "The first time an Obstacle is destroyed each turn, {Phase} deals each hero target 2 radiant damage.",
             "flavorQuotes": [
                 {
@@ -91,7 +113,10 @@
             "keywords": [
                 "obstacle"
             ],
-            "icons": ["ReduceDamageTaken","DealDamageRadiant"],
+            "icons": [
+                "ReduceDamageTaken",
+                "DealDamageRadiant"
+            ],
             "body": [
                 "Whenever {Phase} would be dealt damage, reduce that damage to 0.",
                 "When this card is destroyed, {Phase} deals the 2 hero targets with the highest HP {H} irreducible radiant damage each."
@@ -112,7 +137,11 @@
             "keywords": [
                 "device"
             ],
-            "icons": ["ReduceDamageTaken","EndOfTurnAction","DealDamageRadiant"],
+            "icons": [
+                "ReduceDamageTaken",
+                "EndOfTurnAction",
+                "DealDamageRadiant"
+            ],
             "body": [
                 "Reduce damage dealt to {Phase} by 1.",
                 "At the end of the villain turn, {Phase} deals each hero target except the hero target with the lowest HP 2 radiant damage."
@@ -133,7 +162,10 @@
             "keywords": [
                 "device"
             ],
-            "icons": ["IncreaseDamageDealt","dealDamageLighting"],
+            "icons": [
+                "IncreaseDamageDealt",
+                "dealDamageLighting"
+            ],
             "body": [
                 "Increase damage dealt to non-villain targets by 1.",
                 "When this card enters play, it deals the {H}-1 hero targets with the lowest HP 2 lightning damage each."
@@ -154,7 +186,11 @@
             "keywords": [
                 "device"
             ],
-            "icons": ["ReduceDamageDealt","StartOfTurnAction","DealDamageToxic"],
+            "icons": [
+                "ReduceDamageDealt",
+                "StartOfTurnAction",
+                "DealDamageToxic"
+            ],
             "body": [
                 "When this card enters play, place it next to the hero with the highest HP.",
                 "Reduce damage dealt by that hero by 2.",
@@ -176,7 +212,12 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": ["GainHP","DealDamageRadiant","DestroyOngoing","DestroyEquipment"],
+            "icons": [
+                "GainHP",
+                "DealDamageRadiant",
+                "DestroyOngoing",
+                "DestroyEquipment"
+            ],
             "body": [
                 "{Phase} regains X HP, where X is the number of Obstacle cards in play.",
                 "{Phase} deals the hero target with the highest HP {H} irreducible radiant damage and destroys 1 ongoing and 1 equipment card belonging to that hero."
@@ -196,7 +237,11 @@
             "keywords": [
                 "ongoing"
             ],
-            "icons": ["DealDamageRadiant","EndOfTurnAction","DealDamageMelee"],
+            "icons": [
+                "DealDamageRadiant",
+                "EndOfTurnAction",
+                "DealDamageMelee"
+            ],
             "body": [
                 "When this card enters play, {Phase} deals the hero target with the second lowest HP {H - 1} radiant damage.",
                 "At the end of each hero's turn, if that hero dealt {Phase} no damage, that hero deals themselves 1 irreducible melee damage."
@@ -216,7 +261,9 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": ["PlayCardNow"],
+            "icons": [
+                "PlayCardNow"
+            ],
             "body": [
                 "Reveal cards from the top of the villain deck until {H - 1} Obstacle cards are revealed. Shuffle the other revealed cards back into the villain deck.",
                 "Put the Obstacles into play in the order they were revealed."
@@ -236,7 +283,10 @@
             "keywords": [
                 "obstacle"
             ],
-            "icons": ["DealDamageProjectile","ImmuneToDamage"],
+            "icons": [
+                "DealDamageProjectile",
+                "ImmuneToDamage"
+            ],
             "body": [
                 "When this card enters play, it deals the hero target with the lowest HP {H - 1} projectile damage. Then, play the top card of the villain deck.",
                 "{Phase} is immune to damage."
@@ -257,7 +307,10 @@
             "keywords": [
                 "obstacle"
             ],
-            "icons": ["ImmuneToDamage","Indestructible"],
+            "icons": [
+                "ImmuneToDamage",
+                "Indestructible"
+            ],
             "body": [
                 "{Phase} is immune to damage.",
                 "This card is indestructible while it has more than 0 HP.",
@@ -279,7 +332,11 @@
             "keywords": [
                 "ongoing"
             ],
-            "icons": ["ReduceDamageTaken","CounterDamage","DealDamageEnergy"],
+            "icons": [
+                "ReduceDamageTaken",
+                "CounterDamage",
+                "DealDamageEnergy"
+            ],
             "body": [
                 "Reduce damage dealt to Obstacles by 1.",
                 "The first time a villain target is dealt damage each turn, it deals the source of that damage 2 energy damage."
@@ -299,7 +356,11 @@
             "keywords": [
                 "ongoing"
             ],
-            "icons": ["EndOfTurnAction","PlayCardNow","DestroySelf"],
+            "icons": [
+                "EndOfTurnAction",
+                "PlayCardNow",
+                "DestroySelf"
+            ],
             "body": [
                 "At the end of the villain turn, play the top card of the villain deck.",
                 "Destroy this card when {Phase} is dealt 2 times {H} or more damage in 1 round."
@@ -319,7 +380,10 @@
             "keywords": [
                 "obstacle"
             ],
-            "icons": ["ImmuneToDamage","PreventDamage"],
+            "icons": [
+                "ImmuneToDamage",
+                "PreventDamage"
+            ],
             "body": [
                 "{Phase} is immune to damage.",
                 "When this card would be dealt 2 or less damage, prevent that damage."

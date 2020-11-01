@@ -26,7 +26,8 @@
                 "Quicksilver"
             ],
             "setup": [
-                "At the start of the game, put {TheRam}'s villain character cards into play, “Mechanical Juggernaut” side up. Search the villain deck for all copies of Up Close and put them in the trash. Put Grappling Claw into play. Shuffle the villain deck."
+                "At the start of the game, put {TheRam}'s villain character cards into play, “Mechanical Juggernaut” side up.",
+                "Search the villain deck for all copies of Up Close and put them in the trash. Put Grappling Claw into play. Shuffle the villain deck."
             ],
             "gameplay": [
                 "Whenever all active heroes are Up Close, flip {TheRam}'s character cards and destroy all copies of Fall Back,",

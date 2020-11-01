@@ -23,7 +23,8 @@
                 "Terminus"
             ],
             "setup": [
-                "At the start of the game, put {TheInfernalChoir}'s villain character cards into play, 'Unfinished Business' side up. Search the villain deck for the card Vagrant Heart and put it face-up on the bottom of a random hero deck. Shuffle the villain deck."
+                "At the start of the game, put {TheInfernalChoir}'s villain character cards into play, “Unfinished Business“ side up.",
+                "Search the villain deck for the card Vagrant Heart and put it face-up on the bottom of a random hero deck. Shuffle the villain deck."
             ],
             "gameplay": [
                 "The Infernal Choir is indestructible. If she would be dealt damage, prevent that damage and move Vagrant Heart's card up that many cards instead.",
