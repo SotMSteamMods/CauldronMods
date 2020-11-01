@@ -58,7 +58,7 @@ namespace SotMWorkshop.Controller.Anathema
 				base.AddSideTrigger(base.AddImmuneToDamageTrigger((DealDamageAction d) => d.Target == base.CharacterCard && this.NumberOfVillainTargetsInPlay == 4, false));
 
 				//Whenever a villain card destroys an arm, body, or head, Anathema regains 2HP.
-				base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction destroyCard) => destroyCard.WasCardDestroyed && this.IsArmHeadOrBody(destroyCard.CardToDestroy.Card) && base.GameController.IsCardVisibleToCardSource(destroyCard.CardToDestroy.Card, base.GetCardSource(null)) && base.IsVillain(destroyCard.CardSource.Card), new Func<DestroyCardAction, IEnumerator>(this.GainHpResponse), TriggerType.GainHP, TriggerTiming.After, ActionDescription.Unspecified, false, true, null, false, null, null, false, false));
+				base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction destroyCard) => destroyCard.WasCardDestroyed && this.IsArmHeadOrBody(destroyCard.CardToDestroy.Card) && base.GameController.IsCardVisibleToCardSource(destroyCard.CardToDestroy.Card, base.GetCardSource(null)) && destroyCard.CardSource != null && base.IsVillain(destroyCard.CardSource.Card), new Func<DestroyCardAction, IEnumerator>(this.GainHpResponse), TriggerType.GainHP, TriggerTiming.After, ActionDescription.Unspecified, false, true, null, false, null, null, false, false));
 				
 				if (base.IsGameAdvanced)
 				{

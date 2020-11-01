@@ -16,9 +16,9 @@ namespace SotMWorkshop.Controller.Anathema
 			//Change the type of all damage to sonic.
 			base.AddChangeDamageTypeTrigger((DealDamageAction dd) => true, DamageType.Sonic);
 			//Whenever a Hero card enters play, this card deals that Hero Character 1 sonic damage.
-			base.AddTargetEntersPlayTrigger((Card c) => c.IsHero, 
-				(Card c) => base.DealDamage(base.Card, c.Owner.CharacterCard,1,DamageType.Sonic,false,false,false,null,null,null,false,base.GetCardSource(null)),
-				TriggerType.DealDamage, TriggerTiming.After, false, false);			
+			base.AddTrigger<PlayCardAction>((PlayCardAction pca) => pca.CardToPlay.IsHero,
+				(PlayCardAction pc) => base.DealDamage(base.Card, pc.CardToPlay.Owner.CharacterCard, 1, DamageType.Sonic, false, false, false, null, null, null, false, base.GetCardSource(null)),
+				new TriggerType[] { TriggerType.DealDamage }, TriggerTiming.After, null, false, true, null, false, null, null, false, false);		
 		}
 
 
