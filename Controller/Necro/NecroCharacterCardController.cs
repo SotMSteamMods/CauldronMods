@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SotMWorkshop.Controller.Necro
+namespace Cauldron.Necro
 {
 	public class NecroCharacterCardController : HeroCharacterCardController
 	{

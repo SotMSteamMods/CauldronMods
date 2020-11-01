@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace SotMWorkshop.Controller.LadyOfTheWood
+namespace Cauldron.LadyOfTheWood
 {
 	public class NobilityOfDuskCardController : CardController
     {

@@ -1,7 +1,7 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
-namespace SotMWorkshop.Controller.LadyOfTheWood
+namespace Cauldron.LadyOfTheWood
 {
 	public class EnchantedClearingCardController : CardController
     {

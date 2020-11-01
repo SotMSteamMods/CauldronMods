@@ -4,7 +4,7 @@ using System.Collections;
 using System.Linq;
 using System;
 
-namespace SotMWorkshop.Controller.Necro
+namespace Cauldron.Necro
 {
 	public class DemonicImpCardController : CardController
     {

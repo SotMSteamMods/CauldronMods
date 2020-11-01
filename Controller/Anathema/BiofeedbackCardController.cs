@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace SotMWorkshop.Controller.Anathema
+namespace Cauldron.Anathema
 {
 	public class BiofeedbackCardController : CardController
     {

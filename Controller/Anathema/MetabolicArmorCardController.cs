@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Linq;
 
-namespace SotMWorkshop.Controller.Anathema
+namespace Cauldron.Anathema
 {
 	public class MetabolicArmorCardController : CardController
     {

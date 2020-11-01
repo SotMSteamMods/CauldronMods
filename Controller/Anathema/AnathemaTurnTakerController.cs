@@ -2,7 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System.Collections;
 
-namespace SotMWorkshop.Controller.Anathema
+namespace Cauldron.Anathema
 {
 	// Token: 0x02001A15 RID: 6677
 	public class AnathemaTurnTakerController : TurnTakerController

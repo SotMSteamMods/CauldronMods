@@ -3,7 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System.Collections;
 using System.Linq;
 
-namespace SotMWorkshop.Controller.Anathema
+namespace Cauldron.Anathema
 {
 	public class EnhancedSensesCardController : CardController
     {

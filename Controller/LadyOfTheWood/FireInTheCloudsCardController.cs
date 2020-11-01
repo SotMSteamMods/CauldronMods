@@ -3,7 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace SotMWorkshop.Controller.LadyOfTheWood
+namespace Cauldron.LadyOfTheWood
 {
 	public class FireInTheCloudsCardController : CardController
     {

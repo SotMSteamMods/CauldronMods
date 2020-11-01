@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Collections;
 
-namespace SotMWorkshop.Controller.LadyOfTheWood
+namespace Cauldron.LadyOfTheWood
 {
 	public class SerenityOfDawnController : CardController
     {

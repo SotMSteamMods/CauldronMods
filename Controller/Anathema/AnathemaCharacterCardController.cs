@@ -4,7 +4,7 @@ using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
-namespace SotMWorkshop.Controller.Anathema
+namespace Cauldron.Anathema
 {
 	public class AnathemaCharacterCardController : VillainCharacterCardController
 	{

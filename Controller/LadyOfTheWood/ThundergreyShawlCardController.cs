@@ -2,7 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System.Collections;
 
-namespace SotMWorkshop.Controller.LadyOfTheWood
+namespace Cauldron.LadyOfTheWood
 {
 	public class ThundergreyShawlCardController : CardController
 	{

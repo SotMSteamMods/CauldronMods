@@ -5,7 +5,7 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace SotMWorkshop.Controller.Necro
+namespace Cauldron.Necro
 {
 	public class GrandSummonCardController : CardController
     {
