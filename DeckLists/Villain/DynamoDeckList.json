@@ -22,7 +22,8 @@
                 "Cricket"
             ],
             "setup": [
-                "At the start of the game, put {Dynamo}'s villain character cards into play, 'Notorious Supercriminal' side up. Shuffle the villain deck."
+                "At the start of the game, put {Dynamo}'s villain character cards into play, 'Notorious Supercriminal' side up.",
+				"Shuffle the villain deck."
             ],
             "gameplay": [
                 "At the start of the villain turn, discard the top card of the villain deck and {Dynamo} deals the hero target with the highest HP {H} energy damage.",

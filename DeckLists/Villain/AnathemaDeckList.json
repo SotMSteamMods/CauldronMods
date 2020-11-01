@@ -22,7 +22,8 @@
                 "TangoOne"
             ],
             "setup": [
-                "At the start of the game, put {Anathema}'s villain character cards into play, 'Shapeshifting Bioform' side up. Reveal cards from the top of the villain deck until 2 arms, 1 Body, and 1 Head are revealed. Put those cards into play and shuffle the rest into the villain deck."
+                "At the start of the game, put {Anathema}'s villain character cards into play, 'Shapeshifting Bioform' side up.",
+				"Reveal cards from the top of the villain deck until 2 arms, 1 Body, and 1 Head are revealed. Put those cards into play and shuffle the rest into the villain deck."
             ],
             "gameplay": [
                 "At the start of the villain turn, if there are no other villain targets in play, flip {Anathema}'s Character Cards.",
@@ -284,7 +285,7 @@
             "hitpoints": 9
         },
         {
-            "identifier": "Rampage",
+            "identifier":"AnathemaRampage",
             "count": 2,
             "title": "Rampage",
             "keywords": [

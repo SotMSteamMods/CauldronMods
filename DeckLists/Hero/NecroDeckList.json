@@ -357,7 +357,7 @@
             "flavorReference": "Necro, Tome of the Bizarre #35"
         },
         {
-            "identifier": "Zombie",
+            "identifier": "NecroZombie",
             "count": 5,
             "title": "Zombie",
             "keywords": [

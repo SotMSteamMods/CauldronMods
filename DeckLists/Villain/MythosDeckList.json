@@ -22,7 +22,8 @@
                 "Titan"
             ],
             "setup": [
-                "At the start of the game, put {Mythos}'s villain character cards into play, 'Insubstantial Rumor' side up. Search the villain deck for Dangerous Investigations and put it into play. Shuffle the villain deck."
+                "At the start of the game, put {Mythos}'s villain character cards into play, 'Insubstantial Rumor' side up.",
+				"Search the villain deck for Dangerous Investigations and put it into play. Shuffle the villain deck."
             ],
             "gameplay": [
                 "{Mythos} and Dangerous Investigation are indestructible. Activate any {MythosDanger}, {MythosGreen}, {MythosClue} effects that match the icon on top of the villain deck.",

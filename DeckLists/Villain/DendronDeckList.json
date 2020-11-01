@@ -22,7 +22,8 @@
                 "TheStranger"
             ],
             "setup": [
-                "At the start of the game, put {Dendron}'s villain character cards into play, 'Mural of the Forest' side up. Search the deck for 1 copy of Stained Wolf and 1 copy of Painted Viper and put them into play."
+                "At the start of the game, put {Dendron}'s villain character cards into play, 'Mural of the Forest' side up.",
+				"Search the deck for 1 copy of Stained Wolf and 1 copy of Painted Viper and put them into play."
             ],
             "gameplay": [
                 "At the start and end of the villain turn, if there are fewer than {H - 2} tattos in play, play the top card of the villain deck.",

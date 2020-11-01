@@ -21,7 +21,8 @@
                 "Starlight"
             ],
             "setup": [
-                "At the start of the game, put {Menagerie}'s villain character cards into play, 'Intergalactic Collector' side up. Search the villain deck for the card Prized Catch and put it into play. Shuffle the villain deck."
+                "At the start of the game, put {Menagerie}'s villain character cards into play, 'Intergalactic Collector' side up.",
+				"Search the villain deck for the card Prized Catch and put it into play. Shuffle the villain deck."
             ],
             "gameplay": [
                 "Cards beneath villain cards are not considered in play. When an enclosure leaves play, put it under this card, discarding all cards beneath it. Put any discarded targets into play.",

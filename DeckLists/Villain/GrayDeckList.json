@@ -26,7 +26,8 @@
                 "Vanish"
             ],
             "setup": [
-                "At the start of the game, put {Gray}'s villain character cards into play, 'Walking Nuclear Reactor' side up. Search the villain deck for 1 copy of Chain Reaction and put it into play. Shuffle the villain deck."
+                "At the start of the game, put {Gray}'s villain character cards into play, 'Walking Nuclear Reactor' side up.",
+				"Search the villain deck for 1 copy of Chain Reaction and put it into play. Shuffle the villain deck."
             ],
             "gameplay": [
                 "At the end of the villain turn, if there are 3 or more radiation cards in play, flip {Gray}'s villain character cards and destroy 1 environment card.",
