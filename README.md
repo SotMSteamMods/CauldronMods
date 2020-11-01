@@ -8,3 +8,6 @@ HEROES:
 Lady of the Wood
 
 Necro
+
+VILLAINS:
+Anathema
