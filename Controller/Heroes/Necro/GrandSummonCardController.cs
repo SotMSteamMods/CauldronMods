@@ -13,7 +13,7 @@ namespace Cauldron.Necro
 		{
 		
 		}
-		public override IEnumerator Play()
+				public override IEnumerator Play()
 		{
 			//Reveal cards from the top of your deck until you reveal 2 Undead cards. 
 
@@ -31,11 +31,16 @@ namespace Cauldron.Necro
 			}
 
 			List<Card> revealedCards = new List<Card>();
+			List<Card> nonUndeadCards = new List<Card>();
 			foreach(Card card in revealedCardActions.FirstOrDefault().RevealedCards)
 			{
 				if(this.IsUndead(card))
 				{
 					revealedCards.Add(card);
+				}
+				else
+				{
+					nonUndeadCards.Add(card);
 				}
 			}
 
@@ -79,7 +84,20 @@ namespace Cauldron.Necro
 						base.GameController.ExhaustCoroutine(coroutine);
 					}
 				}
-				otherCard = null;
+
+				//Put the remaining revealed cards back on the deck and shuffle
+				IEnumerator moveRemaining = this.GameController.MoveCards(this.TurnTakerController, nonUndeadCards, this.TurnTaker.Deck, false, false, true, null, false, false, null, this.GetCardSource(null));
+				IEnumerator shuffle = this.ShuffleDeck(this.DecisionMaker, this.TurnTaker.Deck, false, null);
+				if (this.UseUnityCoroutines)
+				{
+					yield return this.GameController.StartCoroutine(moveRemaining);
+					yield return this.GameController.StartCoroutine(shuffle);
+				}
+				else
+				{
+					this.GameController.ExhaustCoroutine(moveRemaining);
+					this.GameController.ExhaustCoroutine(shuffle);
+				}
 			}
 			yield break;
 		}
