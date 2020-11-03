@@ -11,7 +11,8 @@ namespace Cauldron.TheWanderingIsle
 	{
 		public AmphibiousAssaultCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
-			base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.PlayCardResponse), new TriggerType[] { TriggerType.PlayCard }, (PhaseChangeAction pca) => this.WasHeroCardPlayedThisRound(), false);
+			//At the start of the environment turn, if any hero cards were played this round, play the top card of the villain deck. Then, destroy this card.
+			base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.PlayCardResponse), new TriggerType[] { TriggerType.PlayCard }, (PhaseChangeAction pca) => this.WasHeroCardPlayedThisRound(), false);
 		}
 
 		public override IEnumerator Play()
@@ -34,13 +35,13 @@ namespace Cauldron.TheWanderingIsle
 			if (storedResults != null)
 			{
 				List<Card> lowestVillains = new List<Card>();
-				foreach(Card c in storedResults)
+				foreach (Card c in storedResults)
 				{
 					lowestVillains.Add(c);
 				}
 
 				//the two lowest villain targets each deal 3 lightning damage to a different target
-				foreach(Card villainSource in lowestVillains)
+				foreach (Card villainSource in lowestVillains)
 				{
 					List<DealDamageAction> damageDealt = new List<DealDamageAction>();
 					IEnumerator dealDamage = base.DealDamage(villainSource, (Card c) => c.IsTarget && c.IsHero && !heroTargetsChosen.Contains(c), (Card c) => new int?(3), DamageType.Lightning, false, false, damageDealt, null, null, false, new Func<int>(this.GetNumberOfTargets), null, false, true);
@@ -60,15 +61,15 @@ namespace Cauldron.TheWanderingIsle
 						heroTargetsChosen.Add(heroTarget);
 					}
 				}
-				
+
 			}
-			
+
 			yield break;
 		}
 
 		private IEnumerator PlayCardResponse(PhaseChangeAction pca)
 		{
-			//play the top card of the villain deck. Then, destroy this card
+			//play the top card of the villain deck.
 			IEnumerator play = base.PlayTopCardOfEachDeckInTurnOrder((TurnTakerController ttc) => ttc.IsVillain && !ttc.TurnTaker.IsScion, (Location l) => l.IsVillain, base.TurnTaker, false, true, false);
 			if (base.UseUnityCoroutines)
 			{
@@ -79,6 +80,7 @@ namespace Cauldron.TheWanderingIsle
 				base.GameController.ExhaustCoroutine(play);
 			}
 
+			//Then, destroy this card
 			IEnumerator destroy = this.GameController.DestroyCard(this.DecisionMaker, this.Card, false, null, null, null, null, null, null, null, null, this.GetCardSource(null));
 			if (this.UseUnityCoroutines)
 			{
@@ -92,6 +94,10 @@ namespace Cauldron.TheWanderingIsle
 			yield break;
 		}
 
+		/// <summary>
+		/// Gets all PlayCardEntries from the journal from this round
+		/// </summary>
+		/// <returns>IEnumerable with only the PlayCardEntries from this round</returns>
 		private IEnumerable<PlayCardJournalEntry> PlayCardEntriesThisRound()
 		{
 			return from e in base.GameController.Game.Journal.PlayCardEntries()
@@ -99,15 +105,23 @@ namespace Cauldron.TheWanderingIsle
 				   select e;
 		}
 
+		/// <summary>
+		/// Determine if a hero card was played this round
+		/// </summary>
+		/// <returns>Whether a hero card was played this round</returns>
 		private bool WasHeroCardPlayedThisRound()
 		{
 			int numHeroCardsPlayedThisRound = (from e in this.PlayCardEntriesThisRound()
-			  where e.CardPlayed != null && e.CardPlayed.IsHero == true
-			  select e).Count<PlayCardJournalEntry>();
+											   where e.CardPlayed != null && e.CardPlayed.IsHero == true
+											   select e).Count<PlayCardJournalEntry>();
 
 			return numHeroCardsPlayedThisRound > 0;
 		}
 
+		/// <summary>
+		/// method wrapper for getting the number 1
+		/// </summary>
+		/// <returns>1</returns>
 		private int GetNumberOfTargets()
 		{
 			return 1;
