@@ -4,6 +4,7 @@ namespace Cauldron.Baccarat
     using System.Collections;
     
     using Handelabra.Sentinels.Engine.Model;
+    using Handelabra.Sentinels.Engine.Controller;
 
     public class CheapTrickCardController : CardController
     {
@@ -20,7 +21,7 @@ namespace Cauldron.Baccarat
         {
             //Discard the top card of your deck.
             //Reveal cards from the top of your deck until you reveal a trick. Shuffle the other cards back into your deck and put the trick into play.
-
+            yield break;
         }
 
         #endregion Methods

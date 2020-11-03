@@ -4,6 +4,7 @@ namespace Cauldron.Baccarat
     using System.Collections;
     
     using Handelabra.Sentinels.Engine.Model;
+    using Handelabra.Sentinels.Engine.Controller;
 
     public class GraveyardBridgeCardController : CardController
     {
@@ -20,7 +21,7 @@ namespace Cauldron.Baccarat
         {
             //You may shuffle a card from your trash into your deck. If you do, put a card with the same name from your trash into play.
             //Shuffle all copies of that card from your trash into your deck.
-
+            yield break;
         }
 
         #endregion Methods

@@ -4,6 +4,7 @@ namespace Cauldron.Baccarat
     using System.Collections;
     
     using Handelabra.Sentinels.Engine.Model;
+    using Handelabra.Sentinels.Engine.Controller;
 
     public class IFoldCardController : CardController
     {
@@ -19,7 +20,7 @@ namespace Cauldron.Baccarat
         public override IEnumerator Play()
         {
             //Discard your hand and draw 3 cards.
-
+            yield break;
         }
 
         #endregion Methods

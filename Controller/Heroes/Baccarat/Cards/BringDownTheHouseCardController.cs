@@ -4,6 +4,7 @@ namespace Cauldron.Baccarat
     using System.Collections;
     
     using Handelabra.Sentinels.Engine.Model;
+    using Handelabra.Sentinels.Engine.Controller;
 
     public class BringDownTheHouseCardController : CardController
     {
@@ -20,7 +21,7 @@ namespace Cauldron.Baccarat
         {
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
             //You may destroy up to X ongoing or environment cards, where X is the number of pairs you shuffled this way.
-
+            yield break;
         }
 
         #endregion Methods

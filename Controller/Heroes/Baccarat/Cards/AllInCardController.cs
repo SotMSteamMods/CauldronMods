@@ -4,6 +4,7 @@ namespace Cauldron.Baccarat
     using System.Collections;
     
     using Handelabra.Sentinels.Engine.Model;
+    using Handelabra.Sentinels.Engine.Controller;
 
     public class AllInCardController : CardController
     {
@@ -19,7 +20,7 @@ namespace Cauldron.Baccarat
         public override IEnumerator Play()
         {
             //Discard a card from your hand. If you do, {Baccarat} deals each non-hero target 1 infernal damage and 1 radiant damage.
-
+            yield break;
         }
 
         #endregion Methods

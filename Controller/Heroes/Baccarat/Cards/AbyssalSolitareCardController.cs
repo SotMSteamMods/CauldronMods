@@ -22,7 +22,7 @@ namespace Cauldron.Baccarat
         public override IEnumerator Play()
         {
             //Until the start of your next turn, reduce damage dealt to {Baccarat} by 1.
-
+            yield break;
         }
 
         #endregion Methods
