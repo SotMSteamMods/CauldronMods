@@ -8,9 +8,9 @@ using System.Linq;
 
 namespace Cauldron.Anathema
 {
-	public class DopplegangerStrikeCardController : CardController
+	public class DoppelgangerStrikeCardController : CardController
     {
-		public DopplegangerStrikeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+		public DoppelgangerStrikeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
 		}
 
