@@ -74,6 +74,7 @@ namespace MyModTest
             QuickHPCheck(-1);
 
         }
+        
         [Test()]
         public void TestNecroInnatePowerOption2()
         {

@@ -70,9 +70,12 @@ namespace Cauldron.Baccarat
                         //Increase the next damage dealt by a hero target by 2.
                         IEnumerator coroutine2 = base.AddStatusEffect(new IncreaseDamageStatusEffect(2)
                         {
+                            SourceCriteria =
+                            {
+                                IsHero = new bool?(true)
+                            },
                             TargetCriteria = 
                             {
-                                IsHero = new bool?(true),
                                 IsTarget = new bool?(true)
                             },
                             NumberOfUses = new int?(1)
@@ -93,8 +96,7 @@ namespace Cauldron.Baccarat
                         this.actedHeroes = new List<Card>();
                         IEnumerable<Function> functionsBasedOnCard(Card c) => new Function[]
                         {
-                            new Function(base.FindCardController(c).DecisionMaker, "Deal self 3 toxic damage and use a power", SelectionType.UsePower, () => this.DealDamageAndUsePowerResponse(c), null, null, null),
-                            new Function(base.FindCardController(c).DecisionMaker, "Skip", SelectionType.None, () => this.Skip(c), null, null, null)
+                            new Function(base.FindCardController(c).DecisionMaker, "Deal self 3 toxic damage and use a power", SelectionType.UsePower, () => this.DealDamageAndUsePowerResponse(c), null, null, null)
                         };
                         IEnumerator coroutine3 = base.GameController.SelectCardsAndPerformFunction(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && !this.actedHeroes.Contains(c), "active hero character cards", false, false, null, null, false), functionsBasedOnCard, true, base.GetCardSource(null));
                         if (base.UseUnityCoroutines)
@@ -132,14 +134,7 @@ namespace Cauldron.Baccarat
             }
             yield break;
         }
-        private IEnumerator Skip(Card card)
-        {
-            if (card != null)
-            {
-                this.LogActedCard(card);
-            }
-            yield break;
-        }
+
         private void LogActedCard(Card card)
         {
             if (card.SharedIdentifier != null)
@@ -186,7 +181,7 @@ namespace Cauldron.Baccarat
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            coroutine = base.GameController.PlayCards(this.HeroTurnTakerController, (Card c) => c.Identifier == list.FirstOrDefault<SelectCardDecision>().SelectedCard.Identifier, false, true, null, null, true, null, null, null, this.TurnTaker, base.GetCardSource(null));
+            coroutine = base.GameController.PlayCards(this.HeroTurnTakerController, (Card c) => c.Identifier == list.FirstOrDefault<SelectCardDecision>().SelectedCard.Identifier, false, true, new int?(2), null, true, null, null, null, this.TurnTaker, base.GetCardSource(null));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
