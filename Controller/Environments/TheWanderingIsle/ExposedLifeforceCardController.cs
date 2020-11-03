@@ -3,7 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
 
-namespace Studio29.TheWanderingIsle
+namespace Cauldron.TheWanderingIsle
 {
 	public class ExposedLifeforceCardController : CardController
 	{

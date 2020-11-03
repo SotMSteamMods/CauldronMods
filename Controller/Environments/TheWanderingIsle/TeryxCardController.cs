@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Studio29.TheWanderingIsle
+namespace Cauldron.TheWanderingIsle
 {
 	public class TeryxCardController : CardController
 	{
