@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.12.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="EngineCommon">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\Sentinels of the Multiverse\Sentinels_Data\Managed\EngineCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="SentinelsEngine">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\Sentinels of the Multiverse\Sentinels_Data\Managed\SentinelsEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

@@ -4,12 +4,13 @@ namespace Cauldron.Baccarat
     using System.Collections;
 
     using Handelabra.Sentinels.Engine.Model;
+    using Handelabra.Sentinels.Engine.Controller;
 
     public class BaccaratCharacterCardController : HeroCharacterCardController
     {
         #region Constructors
 
-        public BaccaratCharacterCardController(Card card, TurnTakercontroller turnTakercontroller)
+        public BaccaratCharacterCardController(Card card, TurnTakerController turnTakercontroller)
             : base(card, turnTakercontroller)
         {
 
@@ -48,11 +49,13 @@ namespace Cauldron.Baccarat
                         break;
                     }
             }
+            yield break;
         }
 
         public override IEnumerator UsePower(int index = 0)
         {
             //Discard the top card of your deck or put up to 2 trick cards with the same name from your trash into play.
+            yield break;
         }
 
         #endregion Methods
