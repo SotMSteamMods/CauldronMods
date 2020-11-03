@@ -194,7 +194,7 @@ namespace MyModTest
             List<Card> arms = GetListOfArmsInPlay(anathema);
 
             //destroy an arm to have less than 4 villain targets
-            DestroyCard(arms[0]);
+            DestroyCard(arms[0], ra.CharacterCard);
 
             //verify that there is only 1 arm in play now
             AssertNumberOfArmsInPlay(anathema, 1);

@@ -471,8 +471,7 @@ namespace MyModTest
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            //put submerge into play
-            PutIntoPlay("Submerge");
+       
 
             SetHitPoints(ra.CharacterCard, 5);
             SetHitPoints(visionary.CharacterCard, 7);
@@ -486,12 +485,17 @@ namespace MyModTest
             //this also checks to make sure that damage being dealt ignores hydra
             SetHitPoints(hydra, 1);
 
+            GoToPlayCardPhase(isle);
+            //put submerge into play
+            PutIntoPlay("Submerge");
+
             //At the end of the environment turn, this card deals the non-environment target with the lowest HP 2 projectile damage. Then, if Submerge is in play, this card regains 6HP
             //lowest HP is ra
             //Submerge is in play
+            //submerge reduces damage by 2 so 0 damage should be dealt
             QuickHPStorage(ra);
             GoToEndOfTurn(isle);
-            QuickHPCheck(-2);
+            QuickHPCheck(0);
 
             //hydra max Hp is 6, so should be at max Hp now
             AssertIsAtMaxHP(hydra);
@@ -583,6 +587,8 @@ namespace MyModTest
         {
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
+
+            PutOnDeck("AncientParasite");
             PutIntoPlay("Teryx");
             //Play song of the deep
             PutIntoPlay("SongOfTheDeep");
@@ -607,6 +613,9 @@ namespace MyModTest
         {
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
+
+            //stack deck for less variance
+            PutOnDeck("BarnacleHydra");
 
             //Play song of the deep
             PutIntoPlay("SongOfTheDeep");
@@ -656,7 +665,188 @@ namespace MyModTest
             Assert.AreEqual(numCardsInEnvironmentPlayBefore, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play area don't match.");
         }
 
+        [Test()]
+        public void TestSubmergePlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
 
+            // When this card enters play, search the environment deck and trash for Teryx and put it into play, then shuffle the deck.
+            PutIntoPlay("Submerge");
+
+            //teryx should now be in play
+            Assert.IsTrue(this.IsTeryxInPlay(isle), "Teryx is not in play");
+
+        }
+
+        [Test()]
+        public void TestSubmergeReduceDamage()
+        {
+            SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            PutIntoPlay("Submerge");
+            //Reduce all damage dealt by 2
+
+            QuickHPStorage(ra);
+            DealDamage(baron, ra, 5, DamageType.Lightning);
+            //since 5 damage dealt - 2 = should be 3 less now
+            QuickHPCheck(-3);
+
+        }
+
+        [Test()]
+        public void TestSubmergeStartOfTurn()
+        {
+            SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            PutIntoPlay("Submerge");
+            //At the start of the environment turn, this card is destroyed.
+
+            int numCardsInPlayBefore = GetNumberOfCardsInPlay(isle);
+            GoToStartOfTurn(isle);
+            int numCardsInPlayAfter = GetNumberOfCardsInPlay(isle);
+
+            //Submerge should have destroyed itself so 1 fewer env cards in play
+            Assert.AreEqual(numCardsInPlayBefore - 1, numCardsInPlayAfter, "The number of environment cards in play don't match");
+        }
+        [Test()]
+        public void TestThroughTheHurricaneTargetIsPlayed()
+        {
+            SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(visionary.CharacterCard, 18);
+            SetHitPoints(haka.CharacterCard, 28);
+
+           // Whenever a target enters play, this card deals { H - 1}lightning damage to the target with the third highest HP.
+           // 3rd highest hp is ra
+           //H =3, 3-1 = 2
+            PutIntoPlay("ThroughTheHurricane");
+
+            QuickHPStorage(ra);
+            PlayCard("DecoyProjection");
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestThroughTheHurricaneStartOfTurnPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //stack deck for less variance
+            PutOnDeck("Teryx");
+            PutOnDeck("AncientParasite");
+            
+            PutIntoPlay("ThroughTheHurricane");
+
+            //At the start of the environment turn, you may play the top 2 cards of the environment deck. If you do, this card is destroyed.
+            DecisionYesNo = true;
+            int numCardsInEnvironmentDeckBefore = GetNumberOfCardsInDeck(isle);
+            GoToStartOfTurn(isle);
+            int numCardsInEnvironmentDeckAfter = GetNumberOfCardsInDeck(isle);
+
+            //should be 2 cards played, so 2 fewer cards in deck
+            Assert.AreEqual(numCardsInEnvironmentDeckBefore - 2, numCardsInEnvironmentDeckAfter, "The number of cards in the environment deck do not match.");
+        }
+
+        [Test()]
+        public void TestThroughTheHurricaneStartOfTurnDestroy()
+        {
+            SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //stack deck for less variance
+            PutOnDeck("Teryx");
+            PutOnDeck("AncientParasite");
+
+            PutIntoPlay("ThroughTheHurricane");
+
+            //At the start of the environment turn, you may play the top 2 cards of the environment deck. If you do, this card is destroyed.
+            DecisionYesNo = true;
+            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+            GoToStartOfTurn(isle);
+            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
+
+            //should be 2 cards played, but this card destroyed, so 1 more
+            Assert.AreEqual(numCardsInEnvironmentPlayBefore + 1, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play do not match.");
+        }
+
+        [Test()]
+        public void TestTimedDetonatorPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //stack deck to reduce variance
+            PutOnDeck("Teryx");
+
+            //When this card enters play, play the top card of the environment deck.
+
+            int numCardsInEnvironmentDeckBefore = GetNumberOfCardsInDeck(isle);
+            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+            //Play timed detonator
+            PutIntoPlay("TimedDetonator");
+
+            int numCardsInEnvironmentDeckAfter = GetNumberOfCardsInDeck(isle);
+            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
+
+
+            //should be 2 fewer cards in the deck, one for timed detonator, 1 for top card of the deck
+            Assert.AreEqual(numCardsInEnvironmentDeckBefore - 2, numCardsInEnvironmentDeckAfter, "The number of cards in the environment deck don't match.");
+            //should be 2 more cards in play, one for 1 for timed detonator, 1 for top card of deck
+            Assert.AreEqual(numCardsInEnvironmentPlayBefore + 2, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play area don't match.");
+
+        }
+        [Test()]
+        public void TestTimedDetonatorStartofTurnDamage()
+        {
+            SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //stack deck for less variance
+            PutOnDeck("BarnacleHydra");
+
+            //play teryx
+            PutIntoPlay("Teryx");
+            Card teryx = GetCardInPlay("Teryx");
+
+            //Play timed detonator
+            PutIntoPlay("TimedDetonator");
+
+            //pause before environment to collect effects
+            GoToEndOfTurn(haka);
+
+            //At the start of the environment turn, this card deals Teryx 10 fire damage and each hero target {H - 2} fire damage. Then, this card is destroyed.
+            //H = 3, so H-2 = 1
+            QuickHPStorage(teryx, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard);
+            GoToStartOfTurn(isle);
+            QuickHPCheck(-10, -1, -1, -1);
+        }
+
+        [Test()]
+        public void TestTimedDetonatorStartOfTurnDestroy()
+        {
+            SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+            //stack deck for less variance
+            PutOnDeck("BarnacleHydra");
+
+            //play timed detonator
+            PutIntoPlay("TimedDetonator");
+
+            //At the start of the environment turn, this card deals Teryx 10 fire damage and each hero target {H - 2} fire damage. Then, this card is destroyed.
+           
+            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+            GoToStartOfTurn(isle);
+            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
+
+            //this card should be destroyed, so 1 less
+            Assert.AreEqual(numCardsInEnvironmentPlayBefore - 1, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play do not match.");
+        }
 
     }
 }

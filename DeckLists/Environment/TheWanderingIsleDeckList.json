@@ -117,7 +117,7 @@
                 "StartOfTurnAction",
                 "DestroySelf"
             ],
-            "body": [
+            "body": [ 
                 "When this card enters play, search the environment deck and trash for Teryx and put it into play, then shuffle the deck.",
                 "Reduce all damage dealt by 2.",
                 "At the start of the environment turn, this card is destroyed."
