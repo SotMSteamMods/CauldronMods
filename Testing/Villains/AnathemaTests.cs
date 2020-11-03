@@ -1200,7 +1200,7 @@ namespace MyModTest
         }
 
         [Test()]
-        public void TestDopplegangerStrikeDealDamageSuccess()
+        public void TestDoppelgangerStrikeDealDamageSuccess()
         {
             SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis");
 
@@ -1217,18 +1217,18 @@ namespace MyModTest
 
             PutOnDeck("WhipTendril");
 
-            //Put Doppleganger Strike in play. 
+            //Put Doppelganger Strike in play. 
             //The Hero target with the highest HP deals the Hero Character with the lowest HP X toxic damage, where X is the number of villain targets in play.
             //A Hero dealt damage this way must discard {H-2} cards.
             //highest HP is haka, lowest hp is legacy,3 targets (including anathema, so X=3, H - 2 = 1
             QuickHPStorage(legacy);
             QuickHandStorage(legacy);
-            PutIntoPlay("DopplegangerStrike");
+            PutIntoPlay("DoppelgangerStrike");
             QuickHPCheck(-3);
             QuickHandCheck(-1);
         }
         [Test()]
-        public void TestDopplegangerStrikeDealDamageFailure()
+        public void TestDoppelgangerStrikeDealDamageFailure()
         {
             SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis");
 
@@ -1244,18 +1244,18 @@ namespace MyModTest
             PlayCard("BoneCleaver");
             PlayCard("KnuckleDragger");
 
-            //Put Doppleganger Strike in play. 
+            //Put Doppelganger Strike in play. 
             //The Hero target with the highest HP deals the Hero Character with the lowest HP X toxic damage, where X is the number of villain targets in play.
             //A Hero dealt damage this way must discard {H-2} cards.
             //since all heroes immune, no damage should be dealt, and no cards discarded
             QuickHPStorage(legacy);
             QuickHandStorage(legacy);
-            PutIntoPlay("DopplegangerStrike");
+            PutIntoPlay("DoppelgangerStrike");
             QuickHPCheck(0);
             QuickHandCheck(0);
         }
         [Test()]
-        public void TestDopplegangerStrikePlayCard()
+        public void TestDoppelgangerStrikePlayCard()
         {
             SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis");
 
@@ -1264,13 +1264,13 @@ namespace MyModTest
             
             GoToPlayCardPhase(anathema);
 
-            //Put Doppleganger Strike in play. 
+            //Put Doppelganger Strike in play. 
             //play the top card of the villain deck
             int numCardsInDeckBefore = GetNumberOfCardsInDeck(anathema);
-            PutIntoPlay("DopplegangerStrike");
+            PutIntoPlay("DoppelgangerStrike");
             int numCardsInDeckAfter = GetNumberOfCardsInDeck(anathema);
 
-            //2 cards should have been played, doppleganger strike, and the new card
+            //2 cards should have been played, Doppelganger strike, and the new card
             Assert.AreEqual(numCardsInDeckBefore - 2, numCardsInDeckAfter);
         }
         [Test()]
