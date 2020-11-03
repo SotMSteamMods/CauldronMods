@@ -12,10 +12,16 @@ Currently included decks:
 
 HEROES:
 
+Baccarat
+
 Lady of the Wood
 
 Necro
 
+
 VILLAINS:
 
 Anathema
+
+ENVIRONMENTS:
+The Wandering Isle
