@@ -246,6 +246,12 @@ namespace Handelabra.Sentinels.UnitTest
         private int _coroutineCount;
         private static int _totalCoroutineCount;
 
+        [OneTimeSetUp]
+        public void Startup()
+        {
+            ModHelper.AddAssembly("Cauldron", GetType().Assembly);
+        }
+
         [SetUp]
         public void Init()
         {
