@@ -29,7 +29,7 @@ namespace Cauldron.Baccarat
             }
 
             //Reveal cards from the top of your deck until you reveal a trick. Shuffle the other cards back into your deck and put the trick into play.
-            coroutine = base.RevealCards_PutSomeIntoPlay_DiscardRemaining(base.TurnTakerController, base.TurnTaker.Deck, null, new LinqCardCriteria((Card c) => c.DoKeywordsContain("trick"), "trick", true, false, null, null, false), true, null, null, null, false, new int?(1));
+            coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, true, false, new LinqCardCriteria((Card c) => c.DoKeywordsContain("trick")), new int?(1), null, true, false, RevealedCardDisplay.ShowMatchingCards, true, false, null, false, false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
