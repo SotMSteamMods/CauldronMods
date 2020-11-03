@@ -1,27 +1,83 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Handelabra;
+using Handelabra.Sentinels.Engine.Controller;
+using Handelabra.Sentinels.Engine.Model;
+
 namespace Cauldron.Baccarat
 {
-    using System;
-    using System.Collections;
-    
-    using Handelabra.Sentinels.Engine.Model;
-    using Handelabra.Sentinels.Engine.Controller;
-
     public class AceOfSaintsCardController : CardController
     {
         #region Constructors
 
-        public AceOfSaintsCardController(Card card, TurnTakerController turnTakerController)
-            : base(card, turnTakerController) { }
+        public AceOfSaintsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController) { }
 
         #endregion Constructors
 
         #region Methods
 
-        public override IEnumerator Play()
+        public override void AddTriggers()
         {
             //Reduce damage dealt to hero targets by 1.
+            base.AddReduceDamageTrigger((Card c) => c.IsHero, 1);
             //At the start of your turn, shuffle 2 cards with the same name from your trash into your deck or this card is destroyed.
-            yield break;
+            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.ShuffleTwoSameCardFromTrashOrDestroyResponse), new TriggerType[] { TriggerType.ShuffleCardIntoDeck, TriggerType.DestroySelf }, null, false);
+        }
+
+        private IEnumerator ShuffleTwoSameCardFromTrashOrDestroyResponse(PhaseChangeAction phaseChange)
+        {
+            MoveCardDestination obj = new MoveCardDestination(base.TurnTaker.Deck, true, false, false);
+            List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
+
+            //...shuffle 2 cards with the same name from your trash into your deck...
+            IEnumerator coroutine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => TwoOrMoreCopiesInTrash(c), "two cards with the same name", true, false, null, null, false), obj.ToEnumerable<MoveCardDestination>(), false, true, true, true, storedResults, false, true, null, false, true, null, null, base.GetCardSource(null));
+            SelectCardDecision selectCardDecision = storedResults.FirstOrDefault<SelectCardDecision>();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            if (selectCardDecision != null && selectCardDecision.SelectedCard != null)
+            {
+                IEnumerator coroutine3 = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == selectCardDecision.SelectedCard.Identifier, "two cards with the same name", true, false, null, null, false), obj.ToEnumerable<MoveCardDestination>(), false, true, true, true, storedResults, false, true, null, false, true, null, null, base.GetCardSource(null));
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine3);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine3);
+                }
+            }
+
+            //...or this card is destroyed.
+            if (selectCardDecision != null && selectCardDecision.SelectedCard != null)
+            {
+                IEnumerator coroutine2 = base.GameController.DestroyCard(this.DecisionMaker, base.Card, false, null, null, null, null, null, null, null, null, base.GetCardSource(null));
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine2);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine2);
+                }
+            }
+                yield break;
+        }
+
+        private bool TwoOrMoreCopiesInTrash(Card c)
+        {
+            int num = (from card in base.TurnTaker.Trash.Cards
+                       where card.Identifier == c.Identifier
+                       select card).Count<Card>();
+            return num >= 2;
+
         }
 
         #endregion Methods
