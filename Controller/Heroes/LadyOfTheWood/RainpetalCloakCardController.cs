@@ -5,9 +5,9 @@ using System.Collections;
 
 namespace Cauldron.LadyOfTheWood
 {
-	public class RainpetalCoatCardController : CardController
+	public class RainpetalCloakCardController : CardController
 	{
-		public RainpetalCoatCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+		public RainpetalCloakCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
 		}
 

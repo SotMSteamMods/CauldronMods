@@ -15,20 +15,7 @@ namespace Cauldron.LadyOfTheWood
 		{
 			//Select a damage type.
 			List<SelectDamageTypeDecision> storedResults = new List<SelectDamageTypeDecision>();
-			IEnumerator coroutine = base.GameController.SelectDamageType(base.HeroTurnTakerController, storedResults, new DamageType[]
-			{
-				DamageType.Cold,
-				DamageType.Energy,
-				DamageType.Lightning,
-				DamageType.Infernal,
-				DamageType.Projectile,
-				DamageType.Psychic,
-				DamageType.Sonic,
-				DamageType.Toxic,
-				DamageType.Melee,
-				DamageType.Fire,
-				DamageType.Radiant
-			}, null, SelectionType.DamageType, base.GetCardSource(null));
+			IEnumerator coroutine = base.GameController.SelectDamageType(base.HeroTurnTakerController, storedResults, null, null, SelectionType.DamageType, base.GetCardSource(null));
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -37,11 +24,11 @@ namespace Cauldron.LadyOfTheWood
 			{
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
+			DamageType damageType = storedResults.First((SelectDamageTypeDecision d) => d.Completed).SelectedDamageType.Value;
 
 			//LadyOfTheWood deals 1 target 1 damage of the chosen type.
-			DamageType value = storedResults.First((SelectDamageTypeDecision d) => d.Completed).SelectedDamageType.Value;
 			int powerNumeral = base.GetPowerNumeral(0, 1);
-			IEnumerator coroutine2 = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), powerNumeral, value, new int?(powerNumeral), false, new int?(powerNumeral), false, false, false, null, null, null, null, null, false, null, null, false, null, base.GetCardSource(null));
+			IEnumerator coroutine2 = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), powerNumeral, damageType, new int?(powerNumeral), false, new int?(powerNumeral), false, false, false, null, null, null, null, null, false, null, null, false, null, base.GetCardSource(null));
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine2);
@@ -60,20 +47,7 @@ namespace Cauldron.LadyOfTheWood
 					{
 						//Select a damage type.
 						List<SelectDamageTypeDecision> storedResults = new List<SelectDamageTypeDecision>();
-						IEnumerator coroutine = base.GameController.SelectDamageType(base.HeroTurnTakerController, storedResults, new DamageType[]
-						{
-					DamageType.Cold,
-					DamageType.Energy,
-					DamageType.Lightning,
-					DamageType.Infernal,
-					DamageType.Projectile,
-					DamageType.Psychic,
-					DamageType.Sonic,
-					DamageType.Toxic,
-					DamageType.Melee,
-					DamageType.Fire,
-					DamageType.Radiant
-						}, null, SelectionType.DamageType, base.GetCardSource(null));
+						IEnumerator coroutine = base.GameController.SelectDamageType(base.HeroTurnTakerController, storedResults, null, null, SelectionType.DamageType, base.GetCardSource(null));
 						if (base.UseUnityCoroutines)
 						{
 							yield return base.GameController.StartCoroutine(coroutine);
@@ -82,11 +56,11 @@ namespace Cauldron.LadyOfTheWood
 						{
 							base.GameController.ExhaustCoroutine(coroutine);
 						}
+						DamageType damageType = storedResults.First((SelectDamageTypeDecision d) => d.Completed).SelectedDamageType.Value;
 						//Until the start of your next turn, increase damage of the chosen type by 1.
-						DamageType value = storedResults.First((SelectDamageTypeDecision d) => d.Completed).SelectedDamageType.Value;
 						IncreaseDamageStatusEffect increaseDamageStatusEffect = new IncreaseDamageStatusEffect(1);
 						increaseDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-						increaseDamageStatusEffect.DamageTypeCriteria.AddType(value);
+						increaseDamageStatusEffect.DamageTypeCriteria.AddType(damageType);
 						IEnumerator coroutine2 = base.AddStatusEffect(increaseDamageStatusEffect, true);
 						if (base.UseUnityCoroutines)
 						{

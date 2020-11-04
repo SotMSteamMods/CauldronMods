@@ -6,9 +6,9 @@ using System.Collections;
 
 namespace Cauldron.LadyOfTheWood
 {
-	public class SerenityOfDawnController : CardController
+	public class SerenityOfDawnCardController : CardController
     {
-		public SerenityOfDawnController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+		public SerenityOfDawnCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
 		}
 		public override void AddTriggers()
