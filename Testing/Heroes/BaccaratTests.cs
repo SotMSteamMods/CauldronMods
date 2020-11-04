@@ -472,8 +472,11 @@ namespace MyModTest
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
             StartGame();
             Card toss = GetCard("CardToss");
+            Card saint = GetCard("AceOfSaints");
             Card mdp = GetCardInPlay("MobileDefensePlatform");
 
+            PutInHand(saint);
+            DecisionSelectCard = saint;
             DecisionSelectTarget = mdp;
 
             //{Baccarat} deals 1 target 1 projectile damage.
@@ -553,8 +556,8 @@ namespace MyModTest
             DiscardTopCards(baccarat.TurnTaker.Deck, 36);
             DiscardAllCards(baccarat);
             Card abyssal = GetCard("AbyssalSolitaire");
+            PutInHand("GraveyardBridge");
             Card bridge = GetCard("GraveyardBridge");
-            PutInHand(bridge);
             DecisionSelectCard = abyssal;
 
             AssertNumberOfCardsInTrash(baccarat, 39);
