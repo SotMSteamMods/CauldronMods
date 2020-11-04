@@ -390,10 +390,6 @@
                 "DealDamageRadiant",
                 "{DriftL}"
             ],
-            "body": [
-                "Power: {DriftPast} Draw a card. Shift {DriftR}.",
-                "Power: {DriftFuture} Drift 1 target 2 radiant damage. Shift {DriftL}."
-            ],
             "powers": [
                 "{DriftPast} Draw a card. Shift {DriftR}.",
                 "{DriftFuture} Drift 1 target 2 radiant damage. Shift {DriftL}."
@@ -419,10 +415,6 @@
                 "{DriftR}",
                 "DealDamageRadiant",
                 "{DriftL}"
-            ],
-            "body": [
-                "Power: {DriftPast} 1 target regains 2 HP. Shift {DriftRR}.",
-                "Power: {DriftFuture} Drift deals each non-hero target 1 radiant damage. Shift {DriftLL}."
             ],
             "powers": [
                 "{DriftPast} 1 target regains 2 HP. {DriftRR}.",

@@ -74,7 +74,6 @@
             "icons": [
                 "DealDamageToxic"
             ],
-            "body": "Power: {Gargoyle} deals up to 2 targets 2 toxic damage each.{BR}If a hero was damaged this way, {Gargoyle} deals a third target 2 melee damage.",
             "powers": [
                 "{Gargoyle} deals up to 2 targets 2 toxic damage each.{BR}If a hero was damaged this way, {Gargoyle} deals a third target 2 melee damage."
             ],
@@ -98,10 +97,7 @@
                 "DealDamageToxic",
                 "IncreaseDamageDealt"
             ],
-            "body": [
-                "Whenever {Gargoyle} deals himself damage, he may also deal that to 1 other target.",
-                "Power: {Gargoyle} deals each non-hero target 1 toxic damage.{BR}Increase the next damage {Gargoyle} deals by 1."
-            ],
+            "body": "Whenever {Gargoyle} deals himself damage, he may also deal that to 1 other target.",
             "powers": [
                 "{Gargoyle} deals each non-hero target 1 toxic damage.{BR}Increase the next damage {Gargoyle} deals by 1."
             ],
@@ -222,8 +218,7 @@
                 "DealDamageMelee"
             ],
             "body": [
-                "Each hero gains the following power:",
-                "Power: {Gargoyle} deals 1 target 2 toxic damage.{BR}{Gargoyle} may deal a second target 1 melee damage."
+                "Each hero gains the following power:"
             ],
             "powers": [
                 "{Gargoyle} deals 1 target 2 toxic damage.{BR}{Gargoyle} may deal a second target 1 melee damage."
@@ -252,10 +247,7 @@
                 "Discard",
                 "DrawCardNow"
             ],
-            "body": [
-                "When {Gargoyle} destroys a target by reducing its HP below 0, increase the next damage dealt by {Gargoyle} by X and he regains 1HP, where X is the amount of negative HP that target had.",
-                "Power: Discard 2 cards. Draw 2 cards."
-            ],
+            "body": "When {Gargoyle} destroys a target by reducing its HP below 0, increase the next damage dealt by {Gargoyle} by X and he regains 1HP, where X is the amount of negative HP that target had.",
             "powers": [
                 "Discard 2 cards. Draw 2 cards."
             ],

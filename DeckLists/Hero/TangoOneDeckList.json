@@ -166,10 +166,7 @@
                 "DrawCardNow",
                 "IncreaseDamageDealt"
             ],
-            "body": [
-                "{TangoOne} is immune to psychic damage.",
-                "Power: Draw a card. Increase the next damage dealt by {TangoOne} by 2."
-            ],
+            "body": "{TangoOne} is immune to psychic damage.",
             "powers": [
                 "Draw a card. Increase the next damage dealt by {TangoOne} by 2."
             ],
@@ -318,10 +315,6 @@
                 "Discard",
                 "Destroy",
                 "DealDamageProjectile"
-            ],
-            "body": [
-                "Power: Discard 2 Critical cards. If you do, destroy a non-character card in play.",
-                "Power: {TangoOne} deals 1 target 2 projectile damage."
             ],
             "powers": [
                 "Discard 2 Critical cards. If you do, destroy a non-character card in play.",

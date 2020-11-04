@@ -54,7 +54,6 @@
                 "HasPower",
                 "DealDamageMelee"
             ],
-            "body": "Power: One non-hero target deals {DocHavoc} 4 melee damage. Then {DocHavoc} deals that target X melee damage, where X is the amount of damage that target dealt {DocHavoc} this turn.",
             "powers": [
                 "One non-hero target deals {DocHavoc} 4 melee damage. Then {DocHavoc} deals that target X melee damage, where X is the amount of damage that target dealt {DocHavoc} this turn."
             ],
@@ -96,7 +95,7 @@
                 "GainHP",
                 "HasPower"
             ],
-            "body": "At the start of your turn, 1 hero target regains 1HP. Power: Each 1 hero target regains 1HP.",
+            "body": "At the start of your turn, 1 hero target regains 1HP.",
             "flavorQuotes": [
                 {
                     "identifier": "DocHavoc",
@@ -260,7 +259,7 @@
                 "HasPower",
                 "DestroySelf"
             ],
-            "body": "Increase damage dealt to {DocHavoc} by 1. You may draw an extra card during your draw phase. Power: Destroy this card.",
+            "body": "Increase damage dealt to {DocHavoc} by 1. You may draw an extra card during your draw phase.",
             "flavorQuotes": [
                 {
                     "identifier": "DocHavoc",
@@ -351,7 +350,6 @@
                 "HasPower",
                 "dealDamageProjectile"
             ],
-            "body": "Power: {DocHavoc} deals up to 2 targets 2 projectile damage each.",
             "flavorQuotes": [
                 {
                     "identifier": "Vanish",

@@ -133,10 +133,7 @@
                 "HasPower",
                 "PlayCardNow"
             ],
-            "body": [
-                "At the end of your turn, you may discard a Tactic. If you do, draw a card.",
-                "Power: Put a Tactic from your hand into play."
-            ],
+            "body": "At the end of your turn, you may discard a Tactic. If you do, draw a card.",
             "powers": [
                 "Put a Tactic from your hand into play."
             ],
@@ -267,7 +264,6 @@
                 "CounterDamage",
                 "DealDamageMelee"
             ],
-            "body": "Power: Once before your next turn, when a hero target is dealt damage, {Echelon} may deal the source of that damage 3 melee damage.",
             "powers": [
                 "Once before your next turn, when a hero target is dealt damage, {Echelon} may deal the source of that damage 3 melee damage"
             ],
@@ -445,10 +441,7 @@
                 "DealDamageLightining",
                 "HasPower"
             ],
-            "body": [
-                "At the end of your turn, {Echelon} may deal 1 target X lightning damage, where X is the number of Tactics destroyed during your turn.",
-                "Power: {Echelon} deals each non-hero target 1 lightning damage."
-            ],
+            "body": "At the end of your turn, {Echelon} may deal 1 target X lightning damage, where X is the number of Tactics destroyed during your turn.",
             "powers": [
                 "{Echelon} deals each non-hero target 1 lightning damage."
             ],
@@ -474,10 +467,6 @@
                 "GainHP",
                 "DestroySelf",
                 "DrawCardNow"
-            ],
-            "body": [
-                "Power: {Echelon} deals 1 target 1 projectile damage and regains 2HP.",
-                "Power: Destroy this card. One player draws 2 cards."
             ],
             "powers": [
                 "{Echelon} deals 1 target 1 projectile damage and regains 2HP.",

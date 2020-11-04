@@ -186,8 +186,7 @@
             ],
             "body": [
                 "Play this card next to a target.",
-                "Whenever that target would take damage, redirect that damage to {TheKnight}. Damage redirected this way is irreducible.",
-                "Power: Destroy this card."
+                "Whenever that target would take damage, redirect that damage to {TheKnight}. Damage redirected this way is irreducible."
             ],
             "powers": [
                 "Destroy this card."
@@ -213,7 +212,6 @@
                 "PlayCardNow",
                 "DrawCardNow"
             ],
-            "body": "Power: You may play an Equipment card. Draw a card.",
             "powers": [
                 "You may play an Equipment card. Draw a card."
             ],
@@ -286,8 +284,7 @@
             ],
             "body": [
                 "When this card is put into play, destroy all but 2 Single Hand Equipment cards.",
-                "Increase damage dealt by {TheKnight} by 1.",
-                "Power: {TheKnight} deals 1 target 2 melee damage."
+                "Increase damage dealt by {TheKnight} by 1."
             ],
             "powers": [
                 "{TheKnight} deals 1 target 2 melee damage."
@@ -325,7 +322,6 @@
                 "PlayCardNow",
                 "DrawCardNow"
             ],
-            "body": "Power: You may play a one-shot now. Draw a card.",
             "flavorQuotes": [
                 {
                     "identifier": "DocHavoc",

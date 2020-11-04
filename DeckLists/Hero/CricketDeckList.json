@@ -147,8 +147,7 @@
             ],
             "body": [
                 "At the start of your turn, reveal the top card of 2 different decks, then replace them.",
-                "Increase sonic damage dealt to {Cricket} by 1.",
-                "Power: Destroy this card."
+                "Increase sonic damage dealt to {Cricket} by 1."
             ],
             "flavorQuotes": [
                 {
@@ -177,7 +176,6 @@
                 "DealDamageMelee",
                 "ImmuneToDamage"
             ],
-            "body": "Power: {Cricket} deals 1 target 2 melee damage. {Cricket} is immune to damage dealt by environment targets until the start of your next turn.",
             "flavorQuotes": [
                 {
                     "identifier": "Vanish",
@@ -271,10 +269,7 @@
                 "Discard",
                 "DealDamageSonic"
             ],
-            "body": [
-                "Whenever {Cricket} deals sonic damage to a target, you may put the top card of your deck beneath this one. Cards beneath this one are not considered to be in play.",
-                "Power: Discard all cards beneath this one. {Cricket} deals 1 target X sonic damage, where X is the number of cards discarded this way."
-            ],
+            "body":"Whenever {Cricket} deals sonic damage to a target, you may put the top card of your deck beneath this one. Cards beneath this one are not considered to be in play.",
             "powers": [
                 "Discard all cards beneath this one. {Cricket} deals 1 target X sonic damage, where X is the number of cards discarded this way."
             ],
@@ -316,7 +311,6 @@
                 "DrawCardNow",
                 "Discard"
             ],
-            "body": "Power: Each player may draw a card. When a player draws a card this way, 1 other player must discard a card.",
             "powers": [
                 "Each player may draw a card. When a player draws a card this way, 1 other player must discard a card."
             ],
@@ -365,7 +359,6 @@
                 "DealDamageMelee",
                 "PlayCardNow"
             ],
-            "body": "Power: {Cricket} deals 1 target 1 melee damage. You may play a card.",
             "powers": [
                 "{Cricket} deals 1 target 1 melee damage. You may play a card."
             ],
@@ -389,7 +382,6 @@
                 "Manipulate",
                 "DestroySelf"
             ],
-            "body": "Power: Each player may put a card other than Vantage Point from their trash into their hand. Destroy this card.",
             "powers": [
                 "Each player may put a card other than Vantage Point from their trash into their hand. Destroy this card."
             ],

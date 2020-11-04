@@ -225,10 +225,7 @@
                 "HasPower",
                 "DealDamageInfernal"
             ],
-            "body": [
-                "When this card enters play, draw a card.",
-                "Power: Select a target that {Impact} damaged this turn. {Impact} deals that target 4 infernal damage."
-            ],
+            "body": "When this card enters play, draw a card.",
             "flavorQuotes": [
                 {
                     "identifier": "Impact",
@@ -257,8 +254,7 @@
             ],
             "body": [
                 "When this card enters play, {Impact} regains 1HP.",
-                "The first time {Impact} would be dealt damage each environment turn, prevent that damage.",
-                "Power: {Impact} deals 1 target 3 sonic damage. Destroy this card."
+                "The first time {Impact} would be dealt damage each environment turn, prevent that damage."
             ],
             "flavorQuotes": [
                 {
@@ -359,10 +355,7 @@
                 "DestroyOngoing",
                 "DealDamageProjectile"
             ],
-            "body": [
-                "When this card enters play, {Impact} deals 1 target 2 infernal damage.",
-                "Power: Destroy any number of your ongoing cards. {Impact} deals X targets 2 projectile damage each, where X is 1 plus the number of ongoing cards destroyed this way."
-            ],
+            "body": "When this card enters play, {Impact} deals 1 target 2 infernal damage.",
             "flavorQuotes": [
                 {
                     "identifier": "Impact",

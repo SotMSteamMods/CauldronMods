@@ -152,7 +152,6 @@
             ],
             "body": [
                 "When this card enters play, attach it to Bathiel. If High Bathiel is ever not in play, destroy this card.",
-                "Power: Bathiel deals 1 target 6 energy damage.",
                 "At the end of your turn, destroy this card."
             ],
             "powers": [
@@ -182,7 +181,6 @@
             ],
             "body": [
                 "When this card enters play, attach it to Ezael. If High Ezael is ever not in play, destroy this card.",
-                "Power: All hero targets regain 3HP.",
                 "At the end of your turn, destroy this card."
             ],
             "powers": [
@@ -238,7 +236,6 @@
             ],
             "body": [
                 "When this card enters play, attach it to Somael. If High Somael is ever not in play, destroy this card.",
-                "Power: Reduce damage dealt to hero targets by 2 until the start of your next turn.",
                 "At the end of your turn, destroy this card."
             ],
             "powers": [
@@ -269,8 +266,7 @@
             ],
             "body": [
                 "When this card enters play, attach it to Bathiel. If Bathiel is ever not in play, destroy this card.",
-                "Increase damage dealt by Bathiel by 1.",
-                "Power: Bathiel deals 1 target 4 energy damage. Destroy this card."
+                "Increase damage dealt by Bathiel by 1."
             ],
             "powers": [
                 "Bathiel deals 1 target 4 energy damage. Destroy this card."
@@ -299,8 +295,7 @@
             ],
             "body": [
                 "When this card enters play, attach it to Ezael. If Ezael is ever not in play, destroy this card.",
-                "At the end of your turn, each Djinn regains 1HP.",
-                "Power: All Djinn regain 2HP. All other hero targets regain 1HP. Destroy this card."
+                "At the end of your turn, each Djinn regains 1HP."
             ],
             "powers": [
                 "All Djinn regain 2HP. All other hero targets regain 1HP. Destroy this card."
@@ -330,8 +325,7 @@
             ],
             "body": [
                 "When this card enters play, attach it to Reshiel. If Reshiel is ever not in play, destroy this card.",
-                "Increase damage dealt by Reshiel by 1.",
-                "Power: Reshiel deals up to 3 targets 2 sonic damage each. Destroy this card."
+                "Increase damage dealt by Reshiel by 1."
             ],
             "powers": [
                 "Reshiel deals up to 3 targets 2 sonic damage each. Destroy this card."
@@ -360,8 +354,7 @@
             ],
             "body": [
                 "When this card enters play, attach it to Somael. If Somael is ever not in play, destroy this card.",
-                "Reduce damage dealt to Djinn by 1.",
-                "Power: Reduce damage dealt to hero targets by 1 until the start of your next turn. Destroy this card."
+                "Reduce damage dealt to Djinn by 1."
             ],
             "powers": [
                 "Reduce damage dealt to hero targets by 1 until the start of your next turn. Destroy this card."
@@ -498,7 +491,6 @@
                 "HasPower",
                 "PlayCardNow"
             ],
-            "body": "Power: Put a Djinn from your hand into play.",
             "powers": [
                 "Put a Djinn from your hand into play."
             ],
@@ -544,7 +536,6 @@
                 "DestroyOngoing",
                 "DestroyEnvironment"
             ],
-            "body": "Power: Put a Djinn target in play back into your hand. If you do, destroy up to X ongoing or environment cards, where X is 1 plus the number of Djinn ongoings attached to that target.",
             "powers": [
                 "Put a Djinn target in play back into your hand. If you do, destroy up to X ongoing or environment cards, where X is 1 plus the number of Djinn ongoings attached to that target."
             ],

@@ -53,10 +53,7 @@
                 "equipment"
             ],
             "icons": [],
-            "body": [
-                "When this card enters play, you may use a power.",
-                "Power: 2 heroes may each discard a card to regain 2 HP. Each hero who discards a {PyreIrradiate} card this way may draw a card."
-            ],
+            "body": "When this card enters play, you may use a power.",
             "powers": [
                 "2 heroes may each discard a card to regain 2 HP. Each hero who discards a {PyreIrradiate} card this way may draw a card."
             ],
@@ -144,10 +141,7 @@
                 "limited"
             ],
             "icons": [],
-            "body": [
-                "Whenever a player plays a {PyreIrradiate} card, {Pyre} deals 1 target 1 energy damage.",
-                "Power: Discard a card. {Pyre} deals 2 targets 2 lightning damage each."
-            ],
+            "body": "Whenever a player plays a {PyreIrradiate} card, {Pyre} deals 1 target 1 energy damage.",
             "powers": [
                 "Discard a card. {Pyre} deals 2 targets 2 lightning damage each."
             ],
@@ -168,10 +162,7 @@
                 "limited"
             ],
             "icons": [],
-            "body": [
-                "Whenever a player plays a {PyreIrradiate} card, increase energy damage dealt by {Pyre} by 1 until the end of your turn. Then shuffle a Cascade card from your trash into your deck.",
-                "Power: {Pyre} deals himself and each non-hero target 1 energy damage."
-            ],
+            "body": "Whenever a player plays a {PyreIrradiate} card, increase energy damage dealt by {Pyre} by 1 until the end of your turn. Then shuffle a Cascade card from your trash into your deck.",
             "powers": [
                 "{Pyre} deals himself and each non-hero target 1 energy damage."
             ],
@@ -192,10 +183,7 @@
                 "limited"
             ],
             "icons": [],
-            "body": [
-                "When Rogue Fission Cascade would enter play, instead discard it and draw a card. Then put a Cascade card from your trash on top of your deck and destroy this card.",
-                "Power: Each player selects 1 non-{PyreIrradiate} card in their hand. {PyreIrradiate} those cards until they leave their hands."
-            ],
+            "body": "When Rogue Fission Cascade would enter play, instead discard it and draw a card. Then put a Cascade card from your trash on top of your deck and destroy this card.",
             "powers": [
                 "Each player selects 1 non-{PyreIrradiate} card in their hand. {PyreIrradiate} those cards until they leave their hands."
             ],
@@ -275,10 +263,7 @@
                 "limited"
             ],
             "icons": [],
-            "body": [
-                "Reduce damage dealt to and by {Pyre} by 1. If Containment Breach is ever in play, destroy it or destroy this card.",
-                "Power: Draw 2 cards. Destroy this card."
-            ],
+            "body": "Reduce damage dealt to and by {Pyre} by 1. If Containment Breach is ever in play, destroy it or destroy this card.",
             "powers": [
                 "Draw 2 cards. Destroy this card."
             ],
@@ -313,10 +298,7 @@
                 "limited"
             ],
             "icons": [],
-            "body": [
-                "If this card is {PyreIrradiate} when you play it, it becomes indestructible until the end of your turn.",
-                "Power: Select a hero target. Until the start of your next turn, that target is immune to damage. Destroy this card."
-            ],
+            "body": "If this card is {PyreIrradiate} when you play it, it becomes indestructible until the end of your turn.",
             "powers": [
                 "Select a hero target. Until the start of your next turn, that target is immune to damage. Destroy this card."
             ],
@@ -337,9 +319,6 @@
                 "limited"
             ],
             "icons": [],
-            "body": [
-                "Power: 1 player may play a {PyreIrradiate} card now. {Pyre} deals 1 target 1 energy damage. You may destroy a copy of Thermonuclear Core. If you do, increase this damage by 3."
-            ],
             "powers": [
                 "1 player may play a {PyreIrradiate} card now. {Pyre} deals 1 target 1 energy damage. You may destroy a copy of Thermonuclear Core. If you do, increase this damage by 3."
             ],
