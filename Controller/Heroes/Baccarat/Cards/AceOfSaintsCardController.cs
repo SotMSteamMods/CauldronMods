@@ -53,10 +53,8 @@ namespace Cauldron.Baccarat
                 {
                     base.GameController.ExhaustCoroutine(coroutine3);
                 }
-            }
-
-            //...or this card is destroyed.
-            if (selectCardDecision != null && selectCardDecision.SelectedCard != null)
+            }//...or this card is destroyed.
+            else
             {
                 IEnumerator coroutine2 = base.GameController.DestroyCard(this.DecisionMaker, base.Card, false, null, null, null, null, null, null, null, null, base.GetCardSource(null));
                 if (base.UseUnityCoroutines)

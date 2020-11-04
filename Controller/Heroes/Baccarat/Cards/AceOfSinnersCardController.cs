@@ -45,28 +45,26 @@ namespace Cauldron.Baccarat
             }
             if (selectCardDecision != null && selectCardDecision.SelectedCard != null)
             {
-                IEnumerator coroutine3 = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == selectCardDecision.SelectedCard.Identifier, "two cards with the same name", true, false, null, null, false), obj.ToEnumerable<MoveCardDestination>(), false, true, true, true, storedResults, false, true, null, false, true, null, null, base.GetCardSource(null));
+                coroutine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == selectCardDecision.SelectedCard.Identifier, "two cards with the same name", true, false, null, null, false), obj.ToEnumerable<MoveCardDestination>(), false, true, true, true, storedResults, false, true, null, false, true, null, null, base.GetCardSource(null));
                 if (base.UseUnityCoroutines)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine3);
+                    yield return base.GameController.StartCoroutine(coroutine);
                 }
                 else
                 {
-                    base.GameController.ExhaustCoroutine(coroutine3);
+                    base.GameController.ExhaustCoroutine(coroutine);
                 }
-            }
-
-            //...or this card is destroyed.
-            if (selectCardDecision != null && selectCardDecision.SelectedCard != null)
+            }//...or this card is destroyed.
+            else
             {
-                IEnumerator coroutine2 = base.GameController.DestroyCard(this.DecisionMaker, base.Card, false, null, null, null, null, null, null, null, null, base.GetCardSource(null));
+                coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card, false, null, null, null, null, null, null, null, null, base.GetCardSource(null));
                 if (base.UseUnityCoroutines)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine2);
+                    yield return base.GameController.StartCoroutine(coroutine);
                 }
                 else
                 {
-                    base.GameController.ExhaustCoroutine(coroutine2);
+                    base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
             yield break;

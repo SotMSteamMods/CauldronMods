@@ -145,26 +145,28 @@ namespace MyModTest
         }
 
         [Test()]
-        public void TestAbyssalSolitareBeforeNextStart()
+        public void TestAbyssalSolitaireBeforeNextStart()
         {
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
             StartGame();
-            Card abyssal = GetCard("AbyssalSolitare");
+            Card abyssal = GetCard("AbyssalSolitaire");
 
             //Until the start of your next turn, reduce damage dealt to {Baccarat} by 1.
             QuickHPStorage(baccarat);
+            GoToPlayCardPhase(baccarat);
             PlayCard(abyssal);
+            GoToEndOfTurn(baccarat);
             DealDamage(baron, baccarat, 2, DamageType.Melee);
             QuickHPCheck(-1);
             PrintJournal();
         }
 
         [Test()]
-        public void TestAbyssalSolitareAfterNextStart()
+        public void TestAbyssalSolitaireAfterNextStart()
         {
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
             StartGame();
-            Card abyssal = GetCard("AbyssalSolitare");
+            Card abyssal = GetCard("AbyssalSolitaire");
 
             QuickHPStorage(baccarat);
 
@@ -552,10 +554,10 @@ namespace MyModTest
             DiscardAllCards(baccarat);
             Card abyssal = GetCard("AbyssalSolitaire");
             Card bridge = GetCard("GraveyardBridge");
+            PutInHand(bridge);
             DecisionSelectCard = abyssal;
 
-            AssertNumberOfCardsInTrash(baccarat, 40);
-            PutInHand(bridge);
+            AssertNumberOfCardsInTrash(baccarat, 39);
             PlayCard(bridge);
             AssertNumberOfCardsInTrash(baccarat, 37);
 
