@@ -42,7 +42,6 @@ namespace Cauldron.Baccarat
             {
                 //...put a card with the same name from your trash into play.
                 IEnumerable<Card> list = FindCardsWhere(new LinqCardCriteria((Card c) => c.Identifier == selectCardDecision.SelectedCard.Identifier && c.IsInTrash, "card with the same name", false, false, null, null, false));
-                Debug.WriteLine("coroutine2 begin");
                 coroutine = base.GameController.PlayCard(this.TurnTakerController, list.FirstOrDefault(), false, null, false, null, this.TurnTaker, false, null, null, null, false, false, true, base.GetCardSource(null));
                 //coroutine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, cardCriteria, turnTakerPlayArea.ToEnumerable<MoveCardDestination>(), false, true, false, false, null, false, false, null, false, false, null, null, base.GetCardSource(null));
                 if (base.UseUnityCoroutines)
@@ -53,9 +52,9 @@ namespace Cauldron.Baccarat
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-
+                
                 //Shuffle all copies of that card from your trash into your deck.
-                coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.HeroTurnTakerController, base.TurnTaker.Trash, new int?(0), base.TurnTaker.Deck.NumberOfCards, cardCriteria, turnTakerDeck.ToEnumerable<MoveCardDestination>(), false, true, true, false, null, null, false, false, false, this.TurnTaker, false, true, null, null, base.GetCardSource(null));
+                coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.HeroTurnTakerController, base.TurnTaker.Trash, list.Count<Card>(), this.TurnTaker.Trash.NumberOfCards, cardCriteria, turnTakerDeck.ToEnumerable<MoveCardDestination>(), false, true, false, false, null, null, false, false, false, this.TurnTaker, false, false, null, SelectionType.MoveCardOnDeck, base.GetCardSource(null));
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
