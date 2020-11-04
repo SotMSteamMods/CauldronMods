@@ -37,10 +37,17 @@ namespace Cauldron.Baccarat
                     {
                         List<SelectLocationDecision> storedResults = new List<SelectLocationDecision>();
                         //Put 2 cards from a trash on the bottom of their deck.
-                        IEnumerator coroutine = base.GameController.SelectADeck(this.HeroTurnTakerController, SelectionType.MoveCardOnBottomOfDeck, null, storedResults, false, null, base.GetCardSource(null));
-                        var a = storedResults.FirstOrDefault().SelectedTurnTaker.Trash;
-                        CardSource source = base.GetCardSource(null);
-                        coroutine = base.GameController.SelectAndPlayCard(this.DecisionMaker, (Card c) => c.Location.IsTrash && this.GameController.IsLocationVisibleToSource(c.Location, source) && c == c.Location.TopCard, false, true, base.GetCardSource(null), "There are no cards in any trashes.", null, false);
+                        
+                        //IEnumerator coroutine = base.GameController.SelectADeck(this.HeroTurnTakerController, SelectionType.MoveCardOnBottomOfDeck, null, storedResults, false, null, base.GetCardSource(null));
+                        //var a = storedResults.FirstOrDefault().SelectedTurnTaker.Trash;
+                        //CardSource source = base.GetCardSource(null);
+                        
+                        //coroutine = base.GameController.SelectAndPlayCard(this.DecisionMaker, (Card c) => c.Location.IsTrash && this.GameController.IsLocationVisibleToSource(c.Location, source) && c == c.Location.TopCard, false, true, base.GetCardSource(null), "There are no cards in any trashes.", null, false);
+
+                        //coroutine = base.GameController.SelectAndMoveCard(this.HeroTurnTakerController, (Card c) => c.IsInTrash && this.GameController.IsLocationVisibleToSource(c.Location, source),);
+
+                        List<SelectCardDecision> selectCardDecisions = new List<SelectCardDecision>();
+                        IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.HeroTurnTakerController, SelectionType.MoveCardOnBottomOfDeck, new LinqCardCriteria((Card c) => c.IsInTrash && this.GameController.IsLocationVisibleToSource(c.Location, base.GetCardSource(null))), selectCardDecisions, false, false, null, true, base.GetCardSource(null));
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -52,9 +59,20 @@ namespace Cauldron.Baccarat
 
                         List<MoveCardDestination> list = new List<MoveCardDestination>
                         {
-                            new MoveCardDestination(storedResults.FirstOrDefault().SelectedTurnTaker.Deck, true, false, false)
+                            new MoveCardDestination(selectCardDecisions.FirstOrDefault().SelectedCard.NativeDeck, true, false, false)
                         };
-                        coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.HeroTurnTakerController, null, new int?(2),2,new LinqCardCriteria((Card c) => c.Location.IsTrash && c.Location.OwnerTurnTaker.Identifier == storedResults.FirstOrDefault().SelectedTurnTaker.Identifier), list, true, false, false);
+                        coroutine = base.GameController.MoveCard(this.TurnTakerController, selectCardDecisions.FirstOrDefault().SelectedCard, list.FirstOrDefault().Location, true, false, false, null, false, null, null, null, false, false, null, false, false, false, true, base.GetCardSource(null));
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+
+                        coroutine = base.GameController.SelectCardFromLocationAndMoveIt(this.HeroTurnTakerController, list.FirstOrDefault().Location, new LinqCardCriteria((Card c) => c.Location == selectCardDecisions.FirstOrDefault().HeroTurnTakerController.TurnTaker.Trash), list, false, false, false, false, null, false, false, null, false, false, null, null, base.GetCardSource(null));
+                        //coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.HeroTurnTakerController, null, new int?(1),1,new LinqCardCriteria((Card c) => c.Location.IsTrash && c.Location.OwnerTurnTaker.Identifier == storedResults.FirstOrDefault().SelectedTurnTaker.Identifier), list, true, false, false);
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -181,7 +199,9 @@ namespace Cauldron.Baccarat
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            coroutine = base.GameController.PlayCards(this.HeroTurnTakerController, (Card c) => c.Identifier == list.FirstOrDefault<SelectCardDecision>().SelectedCard.Identifier, false, true, new int?(2), null, true, null, null, null, this.TurnTaker, base.GetCardSource(null));
+            List<bool> werePlayed = new List<bool>();
+            coroutine = base.PlayCardsFromLocation(base.TurnTaker.Trash, list.FirstOrDefault<SelectCardDecision>().SelectedCard.Identifier,2,true,werePlayed, false, false);
+            //coroutine = base.GameController.PlayCards(this.HeroTurnTakerController, (Card c) => c.Identifier == list.FirstOrDefault<SelectCardDecision>().SelectedCard.Identifier, false, true, new int?(2), null, true, null, null, null, this.TurnTaker, base.GetCardSource(null));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

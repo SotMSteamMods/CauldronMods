@@ -57,7 +57,7 @@ namespace Cauldron.Baccarat
             }
 
             //You may destroy up to X ongoing or environment cards, where X is the number of pairs you shuffled this way.
-            coroutine = base.GameController.SelectAndDestroyCards(this.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsOngoing || c.IsEnvironment), X, true, null, null, null, null, false, this.CharacterCard, true, null, base.GetCardSource(null));
+            coroutine = base.GameController.SelectAndDestroyCards(this.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsOngoing || c.IsEnvironment), X, true, new int?(0), null, null, null, false, this.CharacterCard, null, null, base.GetCardSource(null));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

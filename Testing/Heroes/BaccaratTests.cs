@@ -54,13 +54,24 @@ namespace MyModTest
         {
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
             StartGame();
-            DiscardTopCards(baccarat, 36);
+            Card hold1 = GetCard("UnderworldHoldEm", 1);
+            Card hold2 = GetCard("UnderworldHoldEm", 2);
+            Card saint = GetCard("AceOfSaints");
+            IEnumerable<Card> trashCards = new Card[] { saint, hold1, hold2 };
+
             //...or put up to 2 trick cards with the same name from your trash into play.
+
+            //In case any of these cards start in hand we want to count hand with them
+            PutInHand(trashCards);
+            QuickHandStorage(baccarat);
+            //prep trash
+            PutInTrash(trashCards);
             DecisionSelectFunction = 1;
             GoToUsePowerPhase(baccarat);
+
+            //By discarding 3 cards then drawing 2 from the two Hold Em's net -1
             UsePower(baccarat.CharacterCard);
-            Assert.IsTrue(false);
-            PrintJournal();
+            QuickHandCheck(-1);
         }
 
         [Test()]
@@ -71,13 +82,44 @@ namespace MyModTest
             SetupIncap(baron);
             AssertIncapacitated(baccarat);
             DiscardTopCards(legacy, 4);
+
+            //Put 2 cards from a trash on the bottom of their deck.
+            GoToUseIncapacitatedAbilityPhase(baccarat);
+            UseIncapacitatedAbility(baccarat, 0);
+            //Assert.AreEqual(2, GetNumberOfCardsInTrash(legacy));
+            Assert.AreEqual(GetNumberOfCardsInDeck(legacy), 34);
+        }
+
+        [Test()]
+        public void TestBaccaratIncap1Villain()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+            AssertIncapacitated(baccarat);
             DiscardTopCards(baron, 4);
+
+            //Put 2 cards from a trash on the bottom of their deck.
+            GoToUseIncapacitatedAbilityPhase(baccarat);
+            UseIncapacitatedAbility(baccarat, 0);
+            //Assert.AreEqual(2, GetNumberOfCardsInTrash(baron));
+            Assert.AreEqual(22, GetNumberOfCardsInDeck(baron));
+        }
+
+        [Test()]
+        public void TestBaccaratIncap1Environment()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+            AssertIncapacitated(baccarat);
             DiscardTopCards(env, 4);
 
             //Put 2 cards from a trash on the bottom of their deck.
             GoToUseIncapacitatedAbilityPhase(baccarat);
             UseIncapacitatedAbility(baccarat, 0);
-            PrintJournal();
+            Assert.AreEqual(2, GetNumberOfCardsInTrash(env));
+            Assert.AreEqual(13, GetNumberOfCardsInDeck(env));
         }
 
         [Test()]
@@ -420,50 +462,189 @@ namespace MyModTest
         [Test()]
         public void TestBringDownTheHouseShufflePair()
         {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            StartGame();
+            Card trick1 = GetCard("CheapTrick", 1);
+            Card trick2 = GetCard("CheapTrick", 2);
+            Card saint = GetCard("AceOfSaints");
+            IEnumerable<Card> trashCards = new Card[] { trick1, trick2, saint };
+            PutInTrash(trashCards);
+
+            Card house = GetCard("BringDownTheHouse");
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
-            Assert.IsTrue(false);
+            PlayCard(house);
+            AssertNumberOfCardsInTrash(baccarat, 2);
+            Assert.IsTrue(baccarat.TurnTaker.Trash.HasCard(saint));
+            Assert.IsTrue(baccarat.TurnTaker.Trash.HasCard(house));
         }
 
         [Test()]
         public void TestBringDownTheHouseDontShuffle()
         {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            StartGame();
+            Card trick1 = GetCard("CheapTrick", 1);
+            Card trick2 = GetCard("CheapTrick", 2);
+            Card toss1 = GetCard("CardToss", 1);
+            Card toss2 = GetCard("CardToss", 2);
+            Card bridge1 = GetCard("GraveyardBridge", 1);
+            Card bridge2 = GetCard("GraveyardBridge", 2);
+            Card saint = GetCard("AceOfSaints");
+            IEnumerable<Card> trashCards = new Card[] { trick1, trick2, saint, toss1, toss2, bridge1, bridge2 };
+            PutInTrash(trashCards);
+
+            DecisionsYesNo = new bool[] { false };
+
+            Card house = GetCard("BringDownTheHouse");
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
-            Assert.IsTrue(false);
+            PlayCard(house);
+            AssertNumberOfCardsInTrash(baccarat, 8);
         }
 
         [Test()]
         public void TestBringDownTheHouseShuffle3Pairs()
         {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            StartGame();
+            Card trick1 = GetCard("CheapTrick", 1);
+            Card trick2 = GetCard("CheapTrick", 2);
+            Card toss1 = GetCard("CardToss", 1);
+            Card toss2 = GetCard("CardToss", 2);
+            Card bridge1 = GetCard("GraveyardBridge", 1);
+            Card bridge2 = GetCard("GraveyardBridge", 2);
+            Card saint = GetCard("AceOfSaints");
+            IEnumerable<Card> trashCards = new Card[] { trick1, trick2, saint, toss1, toss2, bridge1, bridge2 };
+            PutInTrash(trashCards);
+
+            DecisionsYesNo = new bool[]{ true, true, true };
+
+            Card house = GetCard("BringDownTheHouse");
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
-            Assert.IsTrue(false);
+            PlayCard(house);
+            AssertNumberOfCardsInTrash(baccarat, 2);
+            Assert.IsTrue(baccarat.TurnTaker.Trash.HasCard(saint));
+            Assert.IsTrue(baccarat.TurnTaker.Trash.HasCard(house));
         }
 
         [Test()]
         public void TestBringDownTheHouseDestroy0Cards()
         {
-            //You may destroy up to X ongoing or environment cards, where X is the number of pairs you shuffled this way.
-            Assert.IsTrue(false);
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            StartGame();
+            //Setup Trash
+            Card trick1 = GetCard("CheapTrick", 1);
+            Card trick2 = GetCard("CheapTrick", 2);
+            Card toss1 = GetCard("CardToss", 1);
+            Card toss2 = GetCard("CardToss", 2);
+            Card bridge1 = GetCard("GraveyardBridge", 1);
+            Card bridge2 = GetCard("GraveyardBridge", 2);
+            Card saint = GetCard("AceOfSaints");
+            IEnumerable<Card> trashCards = new Card[] { trick1, trick2, saint, toss1, toss2, bridge1, bridge2 };
+            PutInTrash(trashCards);
+
+            //Setup In play
+            Card field = GetCard("LivingForceField");
+            PlayCard(field);
+
+            DecisionsYesNo = new bool[] { true, true, true };
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card house = GetCard("BringDownTheHouse");
+            //Shuffle any number of pairs of cards with the same name from your trash into your deck.
+            PlayCard(house);
+            AssertIsInPlay(field);
         }
 
         [Test()]
         public void TestBringDownTheHouseDestroy1Ongoing()
         {
-            //You may destroy up to X ongoing or environment cards, where X is the number of pairs you shuffled this way.
-            Assert.IsTrue(false);
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            StartGame();
+            //Setup Trash
+            Card trick1 = GetCard("CheapTrick", 1);
+            Card trick2 = GetCard("CheapTrick", 2);
+            Card toss1 = GetCard("CardToss", 1);
+            Card toss2 = GetCard("CardToss", 2);
+            Card bridge1 = GetCard("GraveyardBridge", 1);
+            Card bridge2 = GetCard("GraveyardBridge", 2);
+            Card saint = GetCard("AceOfSaints");
+            IEnumerable<Card> trashCards = new Card[] { trick1, trick2, saint, toss1, toss2, bridge1, bridge2 };
+            PutInTrash(trashCards);
+
+            //Setup In play
+            Card field = GetCard("LivingForceField");
+            PlayCard(field);
+
+            DecisionsYesNo = new bool[] { true, true, true };
+
+            Card house = GetCard("BringDownTheHouse");
+            //Shuffle any number of pairs of cards with the same name from your trash into your deck.
+            PlayCard(house);
+            AssertInTrash(field);
         }
 
         [Test()]
         public void TestBringDownTheHouseDestroy1Environment()
         {
-            //You may destroy up to X ongoing or environment cards, where X is the number of pairs you shuffled this way.
-            Assert.IsTrue(false);
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            StartGame();
+            //Setup Trash
+            Card trick1 = GetCard("CheapTrick", 1);
+            Card trick2 = GetCard("CheapTrick", 2);
+            Card toss1 = GetCard("CardToss", 1);
+            Card toss2 = GetCard("CardToss", 2);
+            Card bridge1 = GetCard("GraveyardBridge", 1);
+            Card bridge2 = GetCard("GraveyardBridge", 2);
+            Card saint = GetCard("AceOfSaints");
+            IEnumerable<Card> trashCards = new Card[] { trick1, trick2, saint, toss1, toss2, bridge1, bridge2 };
+            PutInTrash(trashCards);
+
+            //Setup In play
+            Card monorail = GetCard("PlummetingMonorail");
+            PlayCard(monorail);
+
+            DecisionsYesNo = new bool[] { true, true, true };
+
+            Card house = GetCard("BringDownTheHouse");
+            //Shuffle any number of pairs of cards with the same name from your trash into your deck.
+            PlayCard(house);
+            AssertInTrash(monorail);
         }
 
         [Test()]
         public void TestBringDownTheHouseDestroy3Cards()
         {
-            //You may destroy up to X ongoing or environment cards, where X is the number of pairs you shuffled this way.
-            Assert.IsTrue(false);
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            StartGame();
+            //Setup Trash
+            Card trick1 = GetCard("CheapTrick", 1);
+            Card trick2 = GetCard("CheapTrick", 2);
+            Card toss1 = GetCard("CardToss", 1);
+            Card toss2 = GetCard("CardToss", 2);
+            Card bridge1 = GetCard("GraveyardBridge", 1);
+            Card bridge2 = GetCard("GraveyardBridge", 2);
+            Card saint = GetCard("AceOfSaints");
+            IEnumerable<Card> trashCards = new Card[] { trick1, trick2, saint, toss1, toss2, bridge1, bridge2 };
+            PutInTrash(trashCards);
+
+            //Setup In play
+            Card field = GetCard("LivingForceField");
+            Card monorail = GetCard("PlummetingMonorail");
+            Card backlash = GetCard("BacklashField");
+            Card police = GetCard("PoliceBackup");
+            IEnumerable<Card> playCardsToDestroy = new Card[] { field, monorail, backlash };
+            PlayCards(playCardsToDestroy);
+            PlayCard(police);
+
+            DecisionsYesNo = new bool[] { true, true, true };
+
+            Card house = GetCard("BringDownTheHouse");
+            //Shuffle any number of pairs of cards with the same name from your trash into your deck.
+            PlayCard(house);
+            AssertInTrash(field);
+            AssertInTrash(monorail);
+            AssertInTrash(backlash);
+            AssertIsInPlay(police);
         }
 
         [Test()]
