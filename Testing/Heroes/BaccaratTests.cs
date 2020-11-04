@@ -155,14 +155,14 @@ namespace MyModTest
             //Each hero character may deal themselves 3 toxic damage to use a power now.
             QuickHandStorage(bunker);
             QuickHPStorage(bunker);
+            int scholarHP = GetHitPoints(scholar);
 
             GoToUseIncapacitatedAbilityPhase(baccarat);
             UseIncapacitatedAbility(baccarat, 2);
 
+            Assert.AreEqual(scholarHP - 2, GetHitPoints(scholar));
             QuickHandCheck(1);
             QuickHPCheck(-3);
-
-            PrintJournal();
         }
 
         [Test()]
@@ -173,17 +173,19 @@ namespace MyModTest
             SetupIncap(baron);
             AssertIncapacitated(baccarat);
 
+            DecisionDoNotSelectFunction = true;
+
             //Each hero character may deal themselves 3 toxic damage to use a power now.
             QuickHandStorage(bunker);
             QuickHPStorage(bunker);
-            //DecisionSelectCard = 2;
-            //DecisionSelectFunction = 1;
+            int scholarHP = GetHitPoints(scholar);
+
             GoToUseIncapacitatedAbilityPhase(baccarat);
             UseIncapacitatedAbility(baccarat, 2);
+
+            Assert.AreEqual(scholarHP, GetHitPoints(scholar));
             QuickHandCheck(0);
             QuickHPCheck(0);
-
-            PrintJournal();
         }
 
         [Test()]

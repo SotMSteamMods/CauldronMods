@@ -135,7 +135,7 @@ namespace Cauldron.Baccarat
             if (card != null)
             {
                 CardController cc = base.FindCardController(card);
-                IEnumerator coroutine = base.DealDamage(card, card, 3, DamageType.Toxic, false, true, false, null, null, null, false, null);
+                IEnumerator coroutine = base.DealDamage(card, card, 3, DamageType.Toxic, false, false, false, null, null, null, false, null);
                 IEnumerator e2 = base.SelectAndUsePower(cc, false, null, null, false, false, true);
                 if (base.UseUnityCoroutines)
                 {
