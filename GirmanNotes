@@ -101,33 +101,33 @@ Swarm Eater: Absorb Icon?
 Into Play?
 Change to sonic damage?
 
-Destroy? Cypher
-IrreducibleDamage? Doc Havoc
-Search? Cypher
-PlayExtraCard? Cypher
-GainExtraHP? Doc Havoc 2199
-PreventDamage? Doc Havoc
-PreventGainHP? Doc Havoc
-DrawExtraCard? Doc Havoc
-PreventPower? Echelon
-PreventPlayCard? Echelon
-UseExtraPower? Echelon
-IncreaseDamageTaken? Cricket
-AddToken/RemoveToken? Lady
-IncreaseFireDamageDealt? Lady
-ImmuneToDamageEnergy? Malichae
-IncreaseDamageDealtMelee? Quicksilver
-EndTurn? Quicksilver
-PreventDealDamage? Tango One
-RemoveFromGame? Terminus
-Indestructible? Terminus
-SkipTurn? FSC Continuance
-EndTurn? StSimeons
-IncreaseDamageTakenFire? Northspar
-ImmuneToDamageCold? Northspar
-IncreaseDamageDealtLightning? Superstorm Akela
-ImmuneToDamagePsychic? Vault 5
-IncreaseDamageDealtPsychic? Vault 5
-ReduceGainHP? Outlander
-IncreaseDamageDealtProjectile? Ram 1929
-CannotWin? Ram - Admiral Winters
+Destroy? Cypher GOOD
+IrreducibleDamage? Doc Havoc BAD
+Search? Cypher GOOD
+PlayExtraCard? Cypher BAD
+GainExtraHP? Doc Havoc 2199 BAD
+PreventDamage? Doc Havoc BAD
+PreventGainHP? Doc Havoc BAD
+DrawExtraCard? Doc Havoc BAD
+PreventPower? Echelon BAD
+PreventPlayCard? Echelon BAD
+UseExtraPower? Echelon BAD
+IncreaseDamageTaken? Cricket GOOD
+AddToken/RemoveToken? Lady BAD/BAD
+IncreaseFireDamageDealt? Lady BAD
+ImmuneToDamageEnergy? Malichae GOOD
+IncreaseDamageDealtMelee? Quicksilver GOOD
+EndTurn? Quicksilver BAD
+PreventDealDamage? Tango One BAD
+RemoveFromGame? Terminus GOOD
+Indestructible? Terminus GOOD
+SkipTurn? FSC Continuance GOOD
+EndTurn? StSimeons BAD
+IncreaseDamageTakenFire? Northspar GOOD
+ImmuneToDamageCold? Northspar GOOD
+IncreaseDamageDealtLightning? Superstorm Akela GOOD
+ImmuneToDamagePsychic? Vault 5 GOOD
+IncreaseDamageDealtPsychic? Vault 5 GOOD
+ReduceGainHP? Outlander GOOD
+IncreaseDamageDealtProjectile? Ram 1929 GOOD
+CannotWin? Ram - Admiral Winters BAD

@@ -217,7 +217,6 @@
                 "DealDamageLightning",
                 "DealDamageCold"
             ],
-            "body": "Power: {LadyOfTheWood} deals 1 target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage.",
             "powers": [
                 "{LadyOfTheWood} deals 1 target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage."
             ],
@@ -277,10 +276,6 @@
                 "GainHP",
                 "HasPower",
                 "DrawCardNow"
-            ],
-            "body": [
-                "The first time the {LadyOfTheWood} would be dealt 1 damage each turn, she regains 1HP instead.",
-                "Power: Draw a card."
             ],
             "powers": [
                 "Draw a card."
@@ -380,10 +375,6 @@
                 "HasPower",
                 "DealDamageFire"
             ],
-            "body": [
-                "Increase damage dealt by {LadyOfTheWood} by 3 as long as her HP is 5 or less.",
-                "Power: {LadyOfTheWood} deals herself 1 fire damage and 1 target 4 fire damage."
-            ],
             "powers": [
                 "{LadyOfTheWood} deals herself 1 fire damage and 1 target 4 fire damage."
             ],
@@ -407,10 +398,6 @@
                 "IrreducibleDamage",
                 "HasPower",
                 "DealDamageLightning"
-            ],
-            "body": [
-                "Whenever {LadyOfTheWood} deals 2 or less damage to a target, that damage is irreducible.",
-                "Power: {LadyOfTheWood} deals up to 2 targets 1 lightning damage each."
             ],
             "powers": [
                 "{LadyOfTheWood} deals up to 2 targets 1 lightning damage each."
