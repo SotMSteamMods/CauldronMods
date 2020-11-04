@@ -244,7 +244,6 @@
                 "DestroyOngoing",
                 "DestroyEnvironment"
             ],
-            "body": "Power: {Cypher} deals himself 2 irreducible energy damage. If he takes damage this way, destroy 1 ongoing or environment card.",
             "flavorQuotes": [
                 {
                     "identifier": "MssSecurityLog",
@@ -386,7 +385,6 @@
                 "DrawCardNow",
                 "Discard"
             ],
-            "body": "Power: You may move 1 Augment in play next to a new hero. Draw 2 cards. Discard a card.",
             "flavorQuotes": [
                 {
                     "identifier": "Cypher",

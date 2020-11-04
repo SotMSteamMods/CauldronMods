@@ -50,10 +50,7 @@
                 "ongoing"
             ],
             "icons": [],
-            "body": [
-                "When a non-hero card enters play, you may destroy this card. If you do, you may use a power now.",
-                "Power: {Titan} regains 3HP."
-            ],
+            "body": "When a non-hero card enters play, you may destroy this card. If you do, you may use a power now.",
             "powers": [
                 "{Titan} regains 3HP."
             ],
@@ -274,7 +271,6 @@
                 "limited"
             ],
             "icons": [],
-            "body": "Power: {Titan} deals up to 2 non-hero targets 2 infernal damage each.{BR}Until the start of your next turn, when those targets would deal damage, you may redirect that damage to {Titan}.",
             "powers": [
                 "{Titan} deals up to 2 non-hero targets 2 infernal damage each.{BR}Until the start of your next turn, when those targets would deal damage, you may redirect that damage to {Titan}."
             ],
@@ -295,10 +291,6 @@
                 "limited"
             ],
             "icons": [],
-            "body": [
-                "Power: {Titan} deals 1 target 3 projectile damage.",
-                "Power: If Titanform is in play, destroy 1 ongoing card."
-            ],
             "powers": [
                 "{Titan} deals 1 target 3 projectile damage.",
                 "If Titanform is in play, destroy 1 ongoing card."
@@ -360,10 +352,7 @@
                 "ongoing"
             ],
             "icons": [],
-            "body": [
-                "When this card is destroyed, {Titan} deals 1 villain target 5 infernal damage. If Titanform is in play, {Titan} also deals that target 2 fire damage.",
-                "Power: Destroy this card."
-            ],
+            "body": "When this card is destroyed, {Titan} deals 1 villain target 5 infernal damage. If Titanform is in play, {Titan} also deals that target 2 fire damage.",
             "powers": [
                 "Destroy this card."
             ],

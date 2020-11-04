@@ -112,10 +112,7 @@
                 "glyph"
             ],
             "icons": ["PreventDamage","HasPower","PlayCardNow","DealDamageToxic"],
-            "body": [
-                "Once during your turn when {TheStranger} would deal himself damage, prevent that damage.",
-                "Power: You may play a Rune. {TheStranger} deals 1 target 1 toxic damage."
-            ],
+            "body": "Once during your turn when {TheStranger} would deal himself damage, prevent that damage.",
             "powers": [
                 "You may play a Rune. {TheStranger} deals 1 target 1 toxic damage."
             ],
@@ -136,10 +133,7 @@
                 "glyph"
             ],
             "icons": ["PreventDamage","HasPower","DrawCardNow"],
-            "body": [
-                "Once during your turn when {TheStranger} would deal himself damage, prevent that damage.",
-                "Power: Draw a card."
-            ],
+            "body": "Once during your turn when {TheStranger} would deal himself damage, prevent that damage.",
             "powers": [
                 "Draw a card."
             ],

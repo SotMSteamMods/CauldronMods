@@ -50,10 +50,7 @@
                 "CannotDealDamage",
                 "DealDamageCold"
             ],
-            "body": [
-                "A non-character target next to this card cannot have its current HP increased and cannot deal damage to {Terminus}.",
-                "Power: {Terminus} deals 1 target 2 cold damage. You may move this card next to that target."
-            ],
+            "body": "A non-character target next to this card cannot have its current HP increased and cannot deal damage to {Terminus}.",
             "powers": [
                 "{Terminus} deals 1 target 2 cold damage. You may move this card next to that target."
             ],
@@ -77,10 +74,7 @@
                 "DealDamageCold",
                 "DestroySelf"
             ],
-            "body": [
-                "When this card would be destroyed, you may remove 3 tokens from your Wrath pool. If you removed 3 tokens this way, prevent that destruction.",
-                "Power: {Terminus} deals 1 target 6 cold damage. Destroy this card."
-            ],
+            "body": "When this card would be destroyed, you may remove 3 tokens from your Wrath pool. If you removed 3 tokens this way, prevent that destruction.",
             "powers": [
                 "{Terminus} deals 1 target 6 cold damage. Destroy this card."
             ],
@@ -230,9 +224,6 @@
                 "RemoveToken",
                 "ReduceDamageDealt"
             ],
-            "body": [
-                "Power: {Terminus} deals 1 target 3 cold damage. Add 1 or remove 3 tokens from your Wrath pool.{BR}If you removed 3 tokens this way, reduce damage dealt by that target by 1 until the start of your next turn."
-            ],
             "powers": [
                 "{Terminus} deals 1 target 3 cold damage. Add 1 or remove 3 tokens from your Wrath pool.{BR}If you removed 3 tokens this way, reduce damage dealt by that target by 1 until the start of your next turn."
             ],
@@ -258,10 +249,7 @@
                 "DealDamageCold",
                 "DealDamageProjectile"
             ],
-            "body": [
-                "When this card enters play, add 3 tokens to your Wrath pool and destroy all other copies of Jailbreaker.",
-                "Power: {Terminus} deals herself 1 cold damage and any number of other targets 2 projectile damage each."
-            ],
+            "body":  "When this card enters play, add 3 tokens to your Wrath pool and destroy all other copies of Jailbreaker.",
             "powers": [
                 "{Terminus} deals herself 1 cold damage and any number of other targets 2 projectile damage each."
             ],

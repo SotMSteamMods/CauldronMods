@@ -135,7 +135,7 @@
                 "HasPower",
                 "DestroySelf"
             ],
-            "body": "Increase all damage dealt by 1. The first time a hero target would be dealt damage by a non-hero target during the villain turn, you may redirect that damage to {Quicksilver}. Power: Destroy this card.",
+            "body": "Increase all damage dealt by 1. The first time a hero target would be dealt damage by a non-hero target during the villain turn, you may redirect that damage to {Quicksilver}.",
             "powers": [
                 "Destroy this card."
             ],
@@ -227,10 +227,7 @@
                 "GainHP",
                 "HasPower"
             ],
-            "body": [
-                "If {Quicksilver} would be reduced from greater than 1 HP to 0 or fewer HP, restore her to 1HP.",
-                "Power: If {Quicksilver} has not dealt damage this turn, she regains 3HP."
-            ],
+            "body": "If {Quicksilver} would be reduced from greater than 1 HP to 0 or fewer HP, restore her to 1HP.",
             "powers": [
                 "If {Quicksilver} has not dealt damage this turn, she regains 3HP."
             ],

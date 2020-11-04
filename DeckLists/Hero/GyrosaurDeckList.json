@@ -253,10 +253,7 @@
                 "PlayCardNow",
                 "Manipulate"
             ],
-            "body": [
-                "At the end of your turn, if you have 0 Crash cards in your hand, {Gyrosaur} deals 1 other hero 2 psychic damage.",
-                "Power: Play a Crash card, or discard cards from the top of your deck until you discard a Crash card and put it into your hand."
-            ],
+            "body": "At the end of your turn, if you have 0 Crash cards in your hand, {Gyrosaur} deals 1 other hero 2 psychic damage.",
             "powers": [
                 "Play a Crash card, or discard cards from the top of your deck until you discard a Crash card and put it into your hand."
             ],
@@ -272,10 +269,7 @@
             "icons": [
                 "IncreaseDamageDealt"
             ],
-            "body": [
-                "At the start of your turn, reveal the top card of your deck and replace or discard it.",
-                "Power: If {Gyrosaur} deals no damage this turn, increase damage dealt by {Gyrosaur} during your next turn to non-hero targets by 1."
-            ],
+            "body": "At the start of your turn, reveal the top card of your deck and replace or discard it.",
             "powers": [
                 "If {Gyrosaur} deals no damage this turn, increase damage dealt by {Gyrosaur} during your next turn to non-hero targets by 1."
             ],
@@ -300,10 +294,7 @@
                 "UsePowerNow",
                 "DealDamageMelee"
             ],
-            "body": [
-                "During your turn, the first time you have more than 3 Crash cards in your hand, immediately use this card's power and then destroy it.",
-                "Power: {Gyrosaur} deals 1 target X+1 melee damage, where X is the number of Crash cards in your hand."
-            ],
+            "body": "During your turn, the first time you have more than 3 Crash cards in your hand, immediately use this card's power and then destroy it.",
             "powers": [
                 "{Gyrosaur} deals 1 target X+1 melee damage, where X is the number of Crash cards in your hand."
             ],

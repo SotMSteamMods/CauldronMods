@@ -104,7 +104,6 @@
                 "DestroySelf",
                 "IncreaseDamageDealt"
             ],
-            "body": "Power: Once before your next turn when a non-hero card enters play, one hero target may deal a non-hero target 2 damage of a type of their choosing. You may destroy this card to increase that damage by 2.",
             "powers": [
                 "Once before your next turn when a non-hero card enters play, one hero target may deal a non-hero target 2 damage of a type of their choosing. You may destroy this card to increase that damage by 2."
             ],
@@ -200,7 +199,6 @@
                 "Manipulate",
                 "DestroySelf"
             ],
-            "body": "Power: Reveal the top card of each other hero deck. One player may put their revealed card into their hand or into play. Replace or discard the other revealed cards. If a card is put into play this way, destroy this card.",
             "flavorQuotes": [
                 {
                     "identifier": "TheStranger",

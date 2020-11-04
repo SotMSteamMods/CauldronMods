@@ -178,7 +178,7 @@
                 "HasPower",
                 "PlayCardNow"
             ],
-            "body": "Whenever an Undead target is destroyed, draw a card. Power: Put an Undead card from hand into play.",
+            "body": "Whenever an Undead target is destroyed, draw a card.",
             "powers": [
                 "Put an Undead card from hand into play."
             ],

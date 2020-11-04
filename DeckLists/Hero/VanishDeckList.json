@@ -76,7 +76,6 @@
                 "HasPower",
                 "IncreaseDamageTaken"
             ],
-            "body": "Power: {Vanish} deals 1 target 1 energy damage.{BR}Until the start of your next turn, increase damage taken by that target by 1.",
             "powers": [
                 "{Vanish} deals 1 target 1 energy damage. Until the start of your next turn, increase damage taken by that target by 1."
             ],
@@ -136,7 +135,6 @@
                 "DrawCardNow",
                 "PlayCardNow"
             ],
-            "body": "Power: Reduce the next damage dealt to {Vanish} by 1. You may draw a card or play a card now.",
             "powers": [
                 "Reduce the next damage dealt to {Vanish} by 1. You may draw a card or play a card now."
             ],
@@ -245,10 +243,7 @@
                 "DestroySelf",
                 "DrawCardNow"
             ],
-            "body": [
-                "Once per turn when a Hero target is dealt damage by a non-hero card, you may discard a card. If you do, you may use a power.",
-                "Power: Destroy this card. If you do, draw 2 cards."
-            ],
+            "body": "Once per turn when a Hero target is dealt damage by a non-hero card, you may discard a card. If you do, you may use a power.",
             "powers": [
                 "Destroy this card. If you do, draw 2 cards."
             ],
@@ -294,7 +289,6 @@
                 "limited"
             ],
             "icons": ["HasPower","DealDamageEnergy","Discard"],
-            "body": "Power: {Vanish} deals 1 target 2 energy damage.{BR}Discard up to 3 cards.{BR}For each card discarded this way, {Vanish} deals 1 target 1 energy damage.",
             "powers": [
                 "{Vanish} deals 1 target 2 energy damage. Discard up to 3 cards. For each card discarded this way, {Vanish} deals 1 target 1 energy damage."
             ],

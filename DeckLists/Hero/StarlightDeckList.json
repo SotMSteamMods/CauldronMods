@@ -196,10 +196,7 @@
                 "DealDamageRadiant",
                 "DrawCardNow"
             ],
-            "body": [
-                "Whenever {Starlight} would deal damage to a hero target next to a constellation, instead that target regains that much HP.",
-                "Power: {Starlight} deals 1 target 1 radiant damage. Draw a card."
-            ],
+            "body": "Whenever {Starlight} would deal damage to a hero target next to a constellation, instead that target regains that much HP.",
             "powers": [
                 "{Starlight} deals 1 target 1 radiant damage. Draw a card."
             ],
@@ -262,7 +259,6 @@
                 "DealDamageEnergy",
                 "UsePowerNow"
             ],
-            "body": "Power: {Starlight} deals herself 2 energy damage. One hero character next to a constellation may use a power now.",
             "powers": [
                 "{Starlight} deals herself 2 energy damage. One hero character next to a constellation may use a power now."
             ],
