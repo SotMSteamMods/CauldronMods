@@ -1261,7 +1261,10 @@ namespace MyModTest
 
             StartGame();
             ResetAnathemaDeck();
-            
+
+            //stack deck to reduce variance
+            PutOnDeck("Biofeedback");
+
             GoToPlayCardPhase(anathema);
 
             //Put Doppelganger Strike in play. 
