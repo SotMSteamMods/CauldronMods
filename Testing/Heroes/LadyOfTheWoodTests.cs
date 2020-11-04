@@ -7,6 +7,7 @@ using Cauldron.LadyOfTheWood;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Handelabra.Sentinels.Engine.Controller.TheArgentAdept;
 
 namespace MyModTest
 {
@@ -19,6 +20,31 @@ namespace MyModTest
         {
             SetHitPoints(ladyOfTheWood.CharacterCard, 1);
             DealDamage(villain, ladyOfTheWood, 2, DamageType.Melee);
+        }
+
+        protected void AssertNumberOfSeasonsInHand(TurnTakerController ttc, int number)
+        {
+            var cardsInHand = ttc.TurnTaker.GetAllCards().Where(c => c.IsInHand && this.IsSeason(c));
+            var actual = cardsInHand.Count();
+            Assert.AreEqual(number, actual, String.Format("{0} should have had {1} cards in hand, but actually had {2}: {3}", ttc.Name, number, actual, cardsInHand.Select(c => c.Title).ToCommaList()));
+        }
+        protected void AssertNumberOfSeasonsInPLay(TurnTakerController ttc, int number)
+        {
+            var cardsInPlay = ttc.TurnTaker.GetAllCards().Where(c => c.IsInPlay && this.IsSeason(c));
+            var actual = cardsInPlay.Count();
+            Assert.AreEqual(number, actual, String.Format("{0} should have had {1} cards in play, but actually had {2}: {3}", ttc.Name, number, actual, cardsInPlay.Select(c => c.Title).ToCommaList()));
+        }
+
+
+        protected int GetNumberOfSeasonsInHand(TurnTakerController ttc)
+        {
+            var cardsInHand = ttc.TurnTaker.GetAllCards().Where(c => c.IsInHand && this.IsSeason(c));
+            var actual = cardsInHand.Count();
+            return actual;
+        }
+        private bool IsSeason(Card card)
+        {
+            return card != null && base.GameController.DoesCardContainKeyword(card, "season", false, false);
         }
         #endregion
 
@@ -173,6 +199,228 @@ namespace MyModTest
             DealDamage(ladyOfTheWood, haka, 4, DamageType.Melee);
             //since 0 cards discarded, should be +2 for  6 damage
             QuickHPCheck(-6);
+
+        }
+
+        [Test()]
+        public void TestCrownOfTheFourWinds()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, haka.CharacterCard);
+            PutInHand("CrownOfTheFourWinds");
+            Card crown = GetCardFromHand("CrownOfTheFourWinds");
+            GoToPlayCardPhase(ladyOfTheWood); ;
+            PlayCard(crown);
+            //LadyOfTheWood deals 1 target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage.
+            GoToUsePowerPhase(ladyOfTheWood);
+            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+
+            UsePower(crown);
+            //every target in play should get 1 damage
+            QuickHPCheck(-1, -1, -1, -1);
+
+        }
+
+        [Test()]
+        public void TestEnchantedClearing()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //Reduce damage dealt to LadyOfTheWood by 1.
+            PlayCard("EnchantedClearing");
+
+            QuickHPStorage(ladyOfTheWood);
+            DealDamage(baron, ladyOfTheWood, 5, DamageType.Melee);
+
+            //reduced by 1, so should be 4
+            QuickHPCheck(-4);
+
+        }
+
+        [Test()]
+        public void TestFallDealLightning()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //Whenever LadyOfTheWood deals lightning damage to a target, reduce damage dealt by that target by 1 until the start of your next turn.
+            GoToPlayCardPhase(ladyOfTheWood);
+            PlayCard("Fall");
+           
+            DealDamage(ladyOfTheWood, haka, 8, DamageType.Lightning);
+
+            QuickHPStorage(ra);
+            DealDamage(haka, ra, 5, DamageType.Projectile);
+            //reduced by 1, so should be 4
+            QuickHPCheck(-4);
+
+            GoToStartOfTurn(ladyOfTheWood);
+            QuickHPStorage(ra);
+            DealDamage(haka, ra, 5, DamageType.Projectile);
+            //no longer reduced by 1, so should be 5
+            QuickHPCheck(-5);
+        }
+
+        [Test()]
+        public void TestFallDealNotLightning()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //Whenever LadyOfTheWood deals lightning damage to a target, reduce damage dealt by that target by 1 until the start of your next turn.
+            GoToPlayCardPhase(ladyOfTheWood);
+            PlayCard("Fall");
+
+            DealDamage(ladyOfTheWood, haka, 8, DamageType.Fire);
+
+            QuickHPStorage(ra);
+            DealDamage(haka, ra, 5, DamageType.Projectile);
+            //not lightning so not reduced by 1, so should be 5
+            QuickHPCheck(-5);
+        }
+
+        [Test()]
+        public void TestFireInTheCloudsOption1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            //LadyOfTheWood deals 1 target 3 fire damage or up to 3 targets 1 lightning damage each.
+            GoToPlayCardPhase(ladyOfTheWood);
+            //should deal 1 target 3 fire
+            DecisionSelectFunction = 0;
+            DecisionSelectTarget = mdp;
+            QuickHPStorage(mdp);
+            PlayCard("FireInTheClouds");
+            QuickHPCheck(-3);
+            
+        }
+
+        [Test()]
+        public void TestFireInTheCloudsOption2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+            //LadyOfTheWood deals 1 target 3 fire damage or up to 3 targets 1 lightning damage each.
+            GoToPlayCardPhase(ladyOfTheWood);
+            //should deal 3 target 1 lightning
+            DecisionSelectFunction = 1;
+            QuickHPStorage(baron, ladyOfTheWood, ra);
+            PlayCard("FireInTheClouds");
+            QuickHPCheck(-1, -1, -1);
+
+        }
+
+        [Test()]
+        public void TestFrostOnThePetalsOption1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            //LadyOfTheWood deals 1 target 3 toxic damage or up to 3 targets 1 cold damage each.
+            GoToPlayCardPhase(ladyOfTheWood);
+            //should deal 1 target 3 fire
+            DecisionSelectFunction = 0;
+            DecisionSelectTarget = mdp;
+            QuickHPStorage(mdp);
+            PlayCard("FrostOnThePetals");
+            QuickHPCheck(-3);
+
+        }
+
+        [Test()]
+        public void TestFrostOnThePetalsOption2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+            //LadyOfTheWood deals 1 target 3 toxic damage or up to 3 targets 1 cold damage each.
+            GoToPlayCardPhase(ladyOfTheWood);
+            //should deal 3 target 1 lightning
+            DecisionSelectFunction = 1;
+            QuickHPStorage(baron, ladyOfTheWood, ra);
+            PlayCard("FrostOnThePetals");
+            QuickHPCheck(-1, -1, -1);
+
+        }
+
+        [Test()]
+        public void TestMeadowRushDraw()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //stack deck
+            Card spring = GetCard("Spring");
+            PutOnDeck(ladyOfTheWood, FindCardController(spring));
+
+            //Draw a card.
+            PutInHand("MeadowRush");
+            Card meadow = GetCardFromHand("MeadowRush");
+
+            //choose to not play a card
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+            PlayCard(meadow);
+            //spring - which was stacked on top of deck, should be now in the hand
+            AssertInHand(spring);
+
+        }
+
+        [Test()]
+        public void TestMeadowRushSearch()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            PutInHand("MeadowRush");
+            Card meadow = GetCardFromHand("MeadowRush");
+
+            //stack deck to prevent drawing a season
+            PutOnDeck("FireInTheClouds");
+
+            int numSeasonsBefore = GetNumberOfSeasonsInHand(ladyOfTheWood);
+
+            //Search your deck for a season card, put it into your hand, then shuffle your deck.
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+            PlayCard(meadow);
+
+            AssertNumberOfSeasonsInHand(ladyOfTheWood, numSeasonsBefore + 1);
+
+        }
+
+        [Test()]
+        public void TestMeadowRushPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //Put all cards in hand back on the deck
+            Card card;
+            for (int i = 0; i < 4; i++)
+            {
+                card = GetCardFromHand(ladyOfTheWood, 0);
+                PutOnDeck(ladyOfTheWood, FindCardController(card));
+            }
+
+            //put "Spring" on the top of the deck, a card that will stay in play
+            PutOnDeck("Spring");
+
+            PutInHand("MeadowRush");
+            Card meadow = GetCardFromHand("MeadowRush");
+            //You may play a card.
+
+            PlayCard(meadow);
+
+            //expect just two card in play, character card and played card
+            AssertNumberOfCardsInPlay(ladyOfTheWood, 2);
 
         }
 
