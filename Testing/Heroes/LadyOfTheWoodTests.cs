@@ -150,7 +150,29 @@ namespace MyModTest
             //since 4 cards discarded, should be +6 for  10 damage
             QuickHPCheck(-10);
 
+        }
 
+        [Test()]
+        public void TestCalmBeforeTheStormNoDiscard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            PutInHand("CalmBeforeTheStorm");
+            Card calm = GetCardFromHand("CalmBeforeTheStorm");
+            //Discard any number of cards.
+            // Increase the next damage dealt by LadyOfTheWood by X, where X is 2 plus the number of cards discarded this way.
+            GoToPlayCardPhase(ladyOfTheWood);
+            QuickHandStorage(ladyOfTheWood);
+            DecisionDoNotSelectCard = SelectionType.DiscardCard;
+            PlayCard(calm);
+            //should be -1, 1 for calm before storm, and 0 others discarded
+            QuickHandCheck(-1);
+
+            QuickHPStorage(haka);
+            DealDamage(ladyOfTheWood, haka, 4, DamageType.Melee);
+            //since 0 cards discarded, should be +2 for  6 damage
+            QuickHPCheck(-6);
 
         }
 
