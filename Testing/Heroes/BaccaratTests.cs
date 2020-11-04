@@ -556,13 +556,13 @@ namespace MyModTest
             DiscardTopCards(baccarat.TurnTaker.Deck, 36);
             DiscardAllCards(baccarat);
             Card abyssal = GetCard("AbyssalSolitaire");
-            PutInHand("GraveyardBridge");
             Card bridge = GetCard("GraveyardBridge");
-            DecisionSelectCard = abyssal;
+            PutInHand(bridge);
 
-            AssertNumberOfCardsInTrash(baccarat, 39);
+            GoToPlayCardPhase(baccarat);
             PlayCard(bridge);
             AssertNumberOfCardsInTrash(baccarat, 37);
+            GoToStartOfTurn(baron);
 
             QuickHPStorage(baccarat);
             DealDamage(baron, baccarat, 2, DamageType.Melee);
