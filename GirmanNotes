@@ -131,3 +131,4 @@ IncreaseDamageDealtPsychic? Vault 5 GOOD
 ReduceGainHP? Outlander GOOD
 IncreaseDamageDealtProjectile? Ram 1929 GOOD
 CannotWin? Ram - Admiral Winters BAD
+CannotDealDamage? GOOD
