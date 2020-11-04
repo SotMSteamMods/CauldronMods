@@ -276,18 +276,18 @@ namespace MyModTest
         {
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
             StartGame();
+            DiscardTopCards(baccarat, 35);
             Card saint = GetCard("AceOfSaints");
-            DiscardTopCards(baccarat, 36);
+            PutInHand(saint);
 
             //At the start of your turn, shuffle 2 cards with the same name from your trash into your deck...
             GoToPlayCardPhase(baccarat);
             PlayCard(saint);
             AssertNumberOfCardsInPlay(baccarat, 2);
+            int trash = baccarat.TurnTaker.Trash.NumberOfCards;
             GoToStartOfTurn(baccarat);
             AssertNumberOfCardsInPlay(baccarat, 2);
-            AssertNumberOfCardsInTrash(baccarat, 34);
-
-            Assert.IsFalse(true);
+            Assert.AreEqual(trash - 2, baccarat.TurnTaker.Trash.NumberOfCards);
         }
 
         [Test()]
@@ -335,18 +335,18 @@ namespace MyModTest
         {
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
             StartGame();
+            DiscardTopCards(baccarat, 35);
             Card sinner = GetCard("AceOfSinners");
-            DiscardTopCards(baccarat, 36);
+            PutInHand(sinner);
 
             //At the start of your turn, shuffle 2 cards with the same name from your trash into your deck...
             GoToPlayCardPhase(baccarat);
             PlayCard(sinner);
             AssertNumberOfCardsInPlay(baccarat, 2);
+            int trash = baccarat.TurnTaker.Trash.NumberOfCards;
             GoToStartOfTurn(baccarat);
             AssertNumberOfCardsInPlay(baccarat, 2);
-            AssertNumberOfCardsInTrash(baccarat, 34);
-
-            Assert.IsFalse(true);
+            Assert.AreEqual(trash - 2, baccarat.TurnTaker.Trash.NumberOfCards);
         }
 
         [Test()]
