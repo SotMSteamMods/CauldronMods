@@ -9,58 +9,6 @@
     ],
     "cards": [
         {
-            "identifier": "WinterTiamatCharacter",
-            "count": 1,
-            "title": "Tiamat",
-            "keywords": [
-                "villain",
-                "head"
-            ],
-            "body": "The Jaws of Winter",
-            "backgroundColor": "D99FC5",
-            "foilBackgroundColor": "CD96C0",
-            "character": true,
-            "hitpoints": 40,
-            "nemesisIdentifiers": [
-                "Necro"
-            ],
-            "setup": [
-                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Jaws of Winter“ side up."
-            ],
-            "gameplay": [
-                "{Tiamat}, The Jaws of Winter is immune to cold damage.",
-                "At the end of the villain turn, if {Tiamat}, The Jaws of Winter dealt no damage this turn, she deals the hero target with the highest HP {H - 2} cold damage.",
-                "When {Tiamat}, The Jaws of Winter is destroyed, flip her."
-            ],
-            "advanced": "Increase damage dealt by {Tiamat}, The Jaws of Winter by 1.",
-            "icons": [
-                "ImmuneToDamageCold",
-                "EndOfTurnAction",
-                "DealDamageCold"
-            ],
-            "advancedIcons": [
-                "IncreaseDamageDealt"
-            ],
-            "flippedBody": "Decapitated",
-            "flippedGameplay": [
-                "When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Ice“ card in the villain trash"
-            ],
-            "flippedAdvanced": "Reduce damage taken by heads by 1.",
-            "flippedIcons": [
-                "IncreaseDamageDealt"
-            ],
-            "flippedAdvancedIcons": [
-                "ReduceDamageTaken"
-            ],
-            "difficulty": 1,
-            "openingLines": {
-                "default": "default placeholder",
-                "NecroCharacter": "Necro placeholder",
-                "WardenOfChaosNecroCharacter": "Warden of Chaos Necro placeholder",
-                "1929NecroCharacter": "Necro 1929 placeholder"
-            }
-        },
-        {
             "identifier": "InfernoTiamatCharacter",
             "count": 1,
             "title": "Tiamat",
@@ -164,6 +112,58 @@
                 "EchelonCharacter": "Echelon placeholder",
                 "FirstResponseEchelonCharacter": "First Response Echelon placeholder",
                 "2199EchelonCharacter": "Echelon 2199 placeholder"
+            }
+        },
+        {
+            "identifier": "WinterTiamatCharacter",
+            "count": 1,
+            "title": "Tiamat",
+            "keywords": [
+                "villain",
+                "head"
+            ],
+            "body": "The Jaws of Winter",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 40,
+            "nemesisIdentifiers": [
+                "Necro"
+            ],
+            "setup": [
+                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Jaws of Winter“ side up."
+            ],
+            "gameplay": [
+                "{Tiamat}, The Jaws of Winter is immune to cold damage.",
+                "At the end of the villain turn, if {Tiamat}, The Jaws of Winter dealt no damage this turn, she deals the hero target with the highest HP {H - 2} cold damage.",
+                "When {Tiamat}, The Jaws of Winter is destroyed, flip her."
+            ],
+            "advanced": "Increase damage dealt by {Tiamat}, The Jaws of Winter by 1.",
+            "icons": [
+                "ImmuneToDamageCold",
+                "EndOfTurnAction",
+                "DealDamageCold"
+            ],
+            "advancedIcons": [
+                "IncreaseDamageDealt"
+            ],
+            "flippedBody": "Decapitated",
+            "flippedGameplay": [
+                "When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Ice“ card in the villain trash"
+            ],
+            "flippedAdvanced": "Reduce damage taken by heads by 1.",
+            "flippedIcons": [
+                "IncreaseDamageDealt"
+            ],
+            "flippedAdvancedIcons": [
+                "ReduceDamageTaken"
+            ],
+            "difficulty": 1,
+            "openingLines": {
+                "default": "default placeholder",
+                "NecroCharacter": "Necro placeholder",
+                "WardenOfChaosNecroCharacter": "Warden of Chaos Necro placeholder",
+                "1929NecroCharacter": "Necro 1929 placeholder"
             }
         },
         {
