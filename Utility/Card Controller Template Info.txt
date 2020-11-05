@@ -1,0 +1,6 @@
+﻿Microsoft documentation: https://docs.microsoft.com/en-us/visualstudio/ide/how-to-locate-and-organize-project-and-item-templates?view=vs-2019
+
+If you drop the Card Controller folder from the Utility folder of this mod into: %USERPROFILE%\Documents\Visual Studio 2019\Templates\ItemTemplates
+ie.: C:\Users\UserName\Documents\Visual Studio 2019\Templates\ProjectTemplates\Visual C#
+
+Then, when adding a new item you can use the template. It is a simple template that just creates the Constructors for CardControllers
