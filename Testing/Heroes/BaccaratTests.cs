@@ -87,7 +87,7 @@ namespace MyModTest
             GoToUseIncapacitatedAbilityPhase(baccarat);
             UseIncapacitatedAbility(baccarat, 0);
             //Assert.AreEqual(2, GetNumberOfCardsInTrash(legacy));
-            Assert.AreEqual(GetNumberOfCardsInDeck(legacy), 34);
+            Assert.AreEqual(34, GetNumberOfCardsInDeck(legacy));
         }
 
         [Test()]
