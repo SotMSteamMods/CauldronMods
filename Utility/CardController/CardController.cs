@@ -6,9 +6,9 @@ namespace Cauldron
 {
     class $itemname$ : CardController
     {
+        public $itemname$(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        {
 
-    public $itemname$(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
-    {
-
+        }
     }
 }
