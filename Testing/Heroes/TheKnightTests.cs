@@ -3,12 +3,12 @@ using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
 using NUnit.Framework;
-using Cauldron.Necro;
+using Cauldron.TheKnight;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cauldron.TheKnight.Tests
+namespace CauldronTests
 {
     [TestFixture()]
     public class TheKnightTests : BaseTest
