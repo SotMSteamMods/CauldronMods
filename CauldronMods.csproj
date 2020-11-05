@@ -41,7 +41,6 @@
   <ItemGroup>
     <Folder Include="Controller\Heroes\LadyOfTheWood\Cards\" />
     <Folder Include="Controller\Heroes\LadyOfTheWood\CharacterCards\" />
-    <Folder Include="Controller\Villains\Tiamat\Cards\" />
   </ItemGroup>
 
 </Project>
