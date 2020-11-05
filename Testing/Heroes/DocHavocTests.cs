@@ -9,7 +9,7 @@ using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
 using NUnit.Framework;
 
-namespace MyModTest
+namespace CauldronTests
 {
     [TestFixture()]
     public class DocHavocTests : BaseTest
