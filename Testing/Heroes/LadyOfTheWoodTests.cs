@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Handelabra.Sentinels.Engine.Controller.TheArgentAdept;
 
-namespace MyModTest
+namespace CauldronTests
 {
     [TestFixture()]
     public class LadyOfTheWoodTests : BaseTest
@@ -424,6 +424,218 @@ namespace MyModTest
 
         }
 
+        [Test()]
+        public void TestNobilityOfDuskIncreaseOnFirstDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
 
+            //Once per turn when LadyOfTheWood would deal damage you may increase that damage by 2.
+
+            PlayCard("NobilityOfDusk");
+            //use effect
+            DecisionYesNo = true;
+            QuickHPStorage(haka);
+            DealDamage(ladyOfTheWood, haka, 5, DamageType.Lightning);
+            //damage should have increased by 2, so 7
+            QuickHPCheck(-7);
+
+            //try again, this time there should be no option to increase
+            QuickHPStorage(haka);
+            DealDamage(ladyOfTheWood, haka, 5, DamageType.Lightning);
+            //damage should have not been increased by 2, so 5
+            QuickHPCheck(-5);
+
+            //at next turn, should reset
+            GoToNextTurn();
+            DecisionYesNo = true;
+            QuickHPStorage(haka);
+            DealDamage(ladyOfTheWood, haka, 5, DamageType.Lightning);
+            //damage should have increased by 2, so 7
+            QuickHPCheck(-7);
+
+
+
+        }
+
+        [Test()]
+        public void TestNobilityOfDuskIncreaseOnSecondDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //Once per turn when LadyOfTheWood would deal damage you may increase that damage by 2.
+
+            PlayCard("NobilityOfDusk");
+            //use effect
+            DecisionsYesNo = new bool[] { false, true, true };
+            QuickHPStorage(haka);
+            DealDamage(ladyOfTheWood, haka, 5, DamageType.Lightning);
+            //damage should not increase, so 5
+            QuickHPCheck(-5);
+
+            //try again, this time should be increased
+            QuickHPStorage(haka);
+            DealDamage(ladyOfTheWood, haka, 5, DamageType.Lightning);
+            //damage should have been increased by 2, so 7
+            QuickHPCheck(-7);
+
+            //at next turn, should reset
+            GoToNextTurn();
+            DecisionYesNo = true;
+            QuickHPStorage(haka);
+            DealDamage(ladyOfTheWood, haka, 5, DamageType.Lightning);
+            //damage should have increased by 2, so 7
+            QuickHPCheck(-7);
+
+        }
+
+        [Test()]
+        public void TestRebirthPutCardsUnder()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //stack trash
+            PutInTrash("Spring");
+            PutInTrash("Fall");
+            PutInTrash("Summer");
+
+            Card spring = GetCardFromTrash(ladyOfTheWood,"Spring");
+            Card fall = GetCardFromTrash(ladyOfTheWood, "Fall");
+            Card summer = GetCardFromTrash(ladyOfTheWood, "Summer");
+
+            //When this card enters play, put up to 3 cards from your trash beneath it.
+
+            DecisionSelectCards = new Card[] { spring, fall, summer };
+            PlayCard("Rebirth");
+            Card rebirth = GetCardInPlay("Rebirth");
+
+            //check that there are 3 cards under and that they are the cards under are correct
+            AssertNumberOfCardsUnderCard(rebirth, 3);
+            AssertUnderCard(rebirth, spring);
+            AssertUnderCard(rebirth, fall);
+            AssertUnderCard(rebirth, summer);
+
+
+        }
+
+        [Test()]
+        public void TestRebirthMoveCardToHand()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            //stack trash
+            PutInTrash("Spring");
+            PutInTrash("Fall");
+            PutInTrash("Summer");
+
+            Card spring = GetCardFromTrash(ladyOfTheWood, "Spring");
+            Card fall = GetCardFromTrash(ladyOfTheWood, "Fall");
+            Card summer = GetCardFromTrash(ladyOfTheWood, "Summer");
+
+            //Whenever LadyOfTheWood destroys a target, put a card from beneath this one into your hand.
+            DecisionSelectCards = new Card[] { spring, fall, summer, summer };
+            PlayCard("Rebirth");
+            Card rebirth = GetCardInPlay("Rebirth");
+
+            QuickHandStorage(ladyOfTheWood);
+            //have lady of the wood destroy mdp
+            DestroyCard(mdp, ladyOfTheWood.CharacterCard);
+            //summer should have been moved to hand
+            QuickHandCheck(1);
+            AssertNumberOfCardsUnderCard(rebirth, 2);
+            AssertUnderCard(rebirth, spring);
+            AssertUnderCard(rebirth, fall);
+            AssertInHand(summer);
+
+
+        }
+
+        [Test()]
+        public void TestRebirthDestroy()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //stack trash
+            PutInTrash("Spring");
+            PutInTrash("Fall");
+            PutInTrash("Summer");
+
+            Card spring = GetCardFromTrash(ladyOfTheWood, "Spring");
+            Card fall = GetCardFromTrash(ladyOfTheWood, "Fall");
+            Card summer = GetCardFromTrash(ladyOfTheWood, "Summer");
+
+            //When there are no cards beneath this one, destroy this card.
+            DecisionSelectCards = new Card[] { spring, fall, summer };
+            PlayCard("Rebirth");
+            Card rebirth = GetCardInPlay("Rebirth");
+
+            
+            MoveCards(ladyOfTheWood, new Card[] { spring, fall, summer }, ladyOfTheWood.HeroTurnTaker.Hand);
+            AssertNotInPlay(rebirth);
+            AssertInTrash(rebirth);
+        }
+
+        [Test()]
+        public void TestSerenityOfDawnDestroyCard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            //If LadyOfTheWood deals 3 or more damage to a target, destroy this card.
+            PlayCard("SerenityOfDawn");
+            Card serenity = GetCardInPlay("SerenityOfDawn");
+
+            DealDamage(ladyOfTheWood, haka, 5, DamageType.Cold);
+
+            //since more than 3 damage has been dealt, serenity should be destroyed
+            AssertNotInPlay(serenity);
+            AssertInTrash(serenity);
+
+        }
+
+        [Test()]
+        public void TestSerenityOfDawnEndOfTurnHasDealtDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            //At the end of your turn, if {LadyOfTheWood} dealt no damage this turn, she regains 2 HP and you may draw a card.
+            GoToPlayCardPhase(ladyOfTheWood);
+            PlayCard("SerenityOfDawn");
+            DealDamage(ladyOfTheWood, haka, 5, DamageType.Toxic);
+
+            QuickHPStorage(ladyOfTheWood);
+            GoToEndOfTurn(ladyOfTheWood);
+            //since damage was dealt, no hp should be gained
+            QuickHPCheckZero();
+        }
+
+        [Test()]
+        public void TestSerenityOfDawnEndOfTurnHasNotDealtDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //set hp to have room to gain later
+            SetHitPoints(ladyOfTheWood.CharacterCard, 15);
+            //At the end of your turn, if {LadyOfTheWood} dealt no damage this turn, she regains 2 HP and you may draw a card.
+            PlayCard("SerenityOfDawn");
+            QuickHPStorage(ladyOfTheWood);
+            GoToEndOfTurn(ladyOfTheWood);
+            //since no damage dealt, gain 2 HP
+            QuickHPCheck(2);
+        }
+
+        [Test()]
+        public void TestSnowshadeGown()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            
+        }
     }
 }

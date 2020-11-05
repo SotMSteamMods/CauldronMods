@@ -10,7 +10,7 @@ using Cauldron.Anathema;
 using Handelabra;
 using System.Collections.Generic;
 
-namespace MyModTest
+namespace CauldronTests
 {
     [TestFixture()]
     public class AnathemaTests : BaseTest
