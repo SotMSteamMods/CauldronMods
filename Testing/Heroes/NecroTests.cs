@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MyModTest
+namespace CauldronTests
 {
     [TestFixture()]
     public class NecroTests : BaseTest
@@ -74,6 +74,7 @@ namespace MyModTest
             QuickHPCheck(-1);
 
         }
+        
         [Test()]
         public void TestNecroInnatePowerOption2()
         {

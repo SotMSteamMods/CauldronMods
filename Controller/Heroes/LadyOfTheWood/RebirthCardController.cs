@@ -12,9 +12,11 @@ namespace Cauldron.LadyOfTheWood
 		public RebirthCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
 			base.SpecialStringMaker.ShowNumberOfCardsUnderCard(base.Card, null);
+			this._primed = false;
 		}
 		public override IEnumerator Play()
 		{
+			
 			//When this card enters play, put up to 3 cards from your trash beneath it.
 			List<MoveCardDestination> list = new List<MoveCardDestination>();
 			list.Add(new MoveCardDestination(base.Card.UnderLocation, false, false, false));
@@ -27,6 +29,8 @@ namespace Cauldron.LadyOfTheWood
 			{
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
+			//this card has cards under it, so mark as primed so that if any future actions result in 0 cards under this one, it is destroyed
+			this._primed = true;
 			yield break;
 		}
 		public override void AddTriggers()
@@ -36,6 +40,9 @@ namespace Cauldron.LadyOfTheWood
 			{
 				TriggerType.MoveCard
 			}, TriggerTiming.After, null, false, true, null, false, null, null, false, false);
+
+			//When there are no cards beneath this one, destroy this card.
+			base.AddTrigger<GameAction>((GameAction action) => this._primed && base.Card.UnderLocation.Cards.Count<Card>() == 0, new Func<GameAction, IEnumerator>(this.DestroyThisCardResponse), TriggerType.DestroySelf, TriggerTiming.After, ActionDescription.Unspecified, false, true, null, false, null, null, false, false);
 
 			//If this card is destroyed, move all cards under it into the trash
 			base.AddBeforeLeavesPlayAction(new Func<GameAction, IEnumerator>(this.MoveCardsUnderThisCardToTrash), TriggerType.MoveCard);
@@ -69,22 +76,9 @@ namespace Cauldron.LadyOfTheWood
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
 
-			//When there are no cards beneath this one, destroy this card."
-			if (base.Card.UnderLocation.Cards.Count<Card>() == 0)
-			{
-				IEnumerator coroutine2 = base.GameController.DestroyCard(this.DecisionMaker, base.Card, false, null, null, null, null, null, null, null, null, base.GetCardSource(null));
-				if (base.UseUnityCoroutines)
-				{
-					yield return base.GameController.StartCoroutine(coroutine2);
-				}
-				else
-				{
-					base.GameController.ExhaustCoroutine(coroutine2);
-				}
-				yield break;
-			}
-
 			yield break;
 		}
+
+		private bool _primed;
 	}
 }

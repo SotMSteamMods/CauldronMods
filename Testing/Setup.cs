@@ -2,7 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using NUnit.Framework;
 
-namespace MyModTest
+namespace CauldronTests
 {
     [SetUpFixture]
     public class Setup
