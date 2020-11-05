@@ -5,7 +5,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MyModTest
+namespace CauldronTests
 {
     [TestFixture()]
     public class TheWanderingIsleTests : BaseTest
