@@ -7,9 +7,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron
 {
-    class InfernoTiamatCharacterCardController : VillainCharacterCardController
+    class WinterTiamatCharacterCardController : VillainCharacterCardController
     {
-        public InfernoTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public WinterTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
@@ -25,27 +25,27 @@ namespace Cauldron
 
 		public override void AddSideTriggers()
         {
-			//Front - The Mouth of The Inferno
+			//Front - The Mouth of The Winter
             if (!base.Card.IsFlipped)
 			{
-				//{Tiamat}, The Mouth of the Inferno is immune to fire damage.
-				base.AddSideTrigger(base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.CharacterCard && dealDamage.DamageType == DamageType.Fire, false));
+				//{Tiamat}, The Mouth of the Winter is immune to Cold damage.
+				base.AddSideTrigger(base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.CharacterCard && dealDamage.DamageType == DamageType.Cold, false));
 
-				//At the end of the villain turn, if {Tiamat}, The Mouth of the Inferno dealt no damage this turn, she deals the hero target with the highest HP {H - 2} fire damage.
-				base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, (PhaseChangeAction p) => this.DidInfernoDealDamageThisTurn(), false));
+				//At the end of the villain turn, if {Tiamat}, The Mouth of the Winter dealt no damage this turn, she deals the hero target with the highest HP {H - 2} Cold damage.
+				base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, (PhaseChangeAction p) => this.DidWinterDealDamageThisTurn(), false));
 				
 				//If advanced
 				if (base.IsGameAdvanced)
 				{
-					//Increase damage dealt by {Tiamat}, The Mouth of the Inferno by 1.
+					//Increase damage dealt by {Tiamat}, The Mouth of the Winter by 1.
 					this.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.DamageSource.IsCard && dealDamage.DamageSource.Card == base.CharacterCard, 1, null, null, false));
 				}
 			}
 			//Back - Decapitated
 			else
 			{
-				//When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Fire“ card in the villain trash.
-				this.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => IsSpell(dealDamage.CardSource.Card) && IsHead(dealDamage.DamageSource.Card), GetNumberOfElementOfFireInTrash()));
+				//When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Cold“ card in the villain trash.
+				this.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => IsSpell(dealDamage.CardSource.Card) && IsHead(dealDamage.DamageSource.Card), GetNumberOfElementOfIceInTrash()));
 
 
 				if (base.IsGameAdvanced)
@@ -56,7 +56,7 @@ namespace Cauldron
 			}
 		}
 
-		//When {Tiamat}, Mouth of the Inferno is destroyed, flip her.
+		//When {Tiamat}, Mouth of the Winter is destroyed, flip her.
 		public override IEnumerator DestroyAttempted(DestroyCardAction destroyCard)
 		{
 			if (!base.Card.IsFlipped)
@@ -103,8 +103,8 @@ namespace Cauldron
 			yield break;
 		}
 
-		//Did Inferno Deal Damage This Turn
-		private bool DidInfernoDealDamageThisTurn()
+		//Did Winter Deal Damage This Turn
+		private bool DidWinterDealDamageThisTurn()
         {
 			int result = 0;
             try
@@ -121,10 +121,10 @@ namespace Cauldron
 			return result == 0;
 		}
 
-		//Deal H-2 Fire damage to highest hero target
+		//Deal H-2 Cold damage to highest hero target
 		private IEnumerator DealDamageResponse(PhaseChangeAction phaseChange)
 		{
-			IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero, (Card c) => new int?(base.H - 2), DamageType.Fire, false, false, null, null, null, null, false, false);
+			IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero, (Card c) => new int?(base.H - 2), DamageType.Cold, false, false, null, null, null, null, false, false);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -136,11 +136,11 @@ namespace Cauldron
 			yield break;
 		}
 
-		//Get number of "Element of Fire" cards in trash
-		private int GetNumberOfElementOfFireInTrash()
+		//Get number of "Element of Ice" cards in trash
+		private int GetNumberOfElementOfIceInTrash()
         {
 			return (from card in base.TurnTaker.Trash.Cards
-						  where card.Identifier == "ElementOfFire"
+						  where card.Identifier == "ElementOfIce"
 						  select card).Count<Card>();
         }
 	}
