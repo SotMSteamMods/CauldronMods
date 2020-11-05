@@ -4,7 +4,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron
 {
-    class $itemname$ : CardController
+    class $itemname$CardController : CardController
     {
         public $itemname$(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
