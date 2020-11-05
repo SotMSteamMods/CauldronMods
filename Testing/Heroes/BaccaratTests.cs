@@ -9,7 +9,7 @@ using System.Linq;
 
 using Cauldron.Baccarat;
 
-namespace MyModTest
+namespace CauldronTests
 {
     [TestFixture()]
     public class BaccaratTests : BaseTest
@@ -25,7 +25,7 @@ namespace MyModTest
         #endregion BaccaratHelperFunctions
 
         [Test()]
-        public void LoadTestBaccarat()
+        public void TestLoadBaccarat()
         {
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
 
@@ -50,7 +50,7 @@ namespace MyModTest
         }
 
         [Test()]
-        public void TestBaccaratInnatePowerOption2()
+        public void TestBaccaratInnatePowerOption2Play2()
         {
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
             StartGame();
@@ -72,6 +72,32 @@ namespace MyModTest
             //By discarding 3 cards then drawing 2 from the two Hold Em's net -1
             UsePower(baccarat.CharacterCard);
             QuickHandCheck(-1);
+        }
+
+        [Test()]
+        public void TestBaccaratInnatePowerOption2Play0()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
+            StartGame();
+            Card hold1 = GetCard("UnderworldHoldEm", 1);
+            Card hold2 = GetCard("UnderworldHoldEm", 2);
+            Card saint = GetCard("AceOfSaints");
+            IEnumerable<Card> trashCards = new Card[] { saint, hold1, hold2 };
+
+            //...or put up to 2 trick cards with the same name from your trash into play.
+
+            //In case any of these cards start in hand we want to count hand with them
+            PutInHand(trashCards);
+            QuickHandStorage(baccarat);
+            //prep trash
+            PutInTrash(trashCards);
+            DecisionSelectFunction = 1;
+            DecisionDoNotSelectCard = SelectionType.MoveCard;
+            GoToUsePowerPhase(baccarat);
+
+            //By discarding 3 cards then drawing 0 from the two Hold Em's net -3
+            UsePower(baccarat.CharacterCard);
+            QuickHandCheck(-3);
         }
 
         [Test()]

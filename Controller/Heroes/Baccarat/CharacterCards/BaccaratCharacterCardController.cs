@@ -181,7 +181,7 @@ namespace Cauldron.Baccarat
                 //...or put up to 2 trick cards with the same name from your trash into play.
                 new Function(base.FindCardController(c).DecisionMaker, "put up to 2 trick cards with the same name from your trash into play", SelectionType.PlayCard, () => this.PlayTricksFromTrash(), null, null, null)
             };
-            IEnumerator coroutine3 = base.GameController.SelectCardsAndPerformFunction(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && !this.actedHeroes.Contains(c), "active hero character cards", false, false, null, null, false), functionsBasedOnCard, true, base.GetCardSource(null));
+            IEnumerator coroutine3 = base.GameController.SelectCardsAndPerformFunction(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && !this.actedHeroes.Contains(c), "active hero character cards", false, false, null, null, false), functionsBasedOnCard, false, base.GetCardSource(null));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine3);
@@ -197,7 +197,7 @@ namespace Cauldron.Baccarat
         {
             //...or put up to 2 trick cards with the same name from your trash into play.
             List<SelectCardDecision> list = new List<SelectCardDecision>();
-            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.HeroTurnTakerController, SelectionType.SearchTrash, new LinqCardCriteria((Card c) => c.Location.IsTrash && TwoOrMoreCopiesInTrash(c) && c.DoKeywordsContain("trick"), "trick cards with two or more copies in the trash", false, false, null, null, false), list, false, false, null, true, base.GetCardSource(null));
+            IEnumerator coroutine = SelectAndMoveCardOptional(base.HeroTurnTakerController, (Card c) => c.IsInTrash && c.DoKeywordsContain("trick"), base.TurnTaker.PlayArea, false, true, true, true, list, base.GetCardSource(null));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -206,26 +206,44 @@ namespace Cauldron.Baccarat
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            List<bool> werePlayed = new List<bool>();
-            coroutine = base.PlayCardsFromLocation(base.TurnTaker.Trash, list.FirstOrDefault<SelectCardDecision>().SelectedCard.Identifier, 2, true, werePlayed, false, false);
-            //coroutine = base.GameController.PlayCards(this.HeroTurnTakerController, (Card c) => c.Identifier == list.FirstOrDefault<SelectCardDecision>().SelectedCard.Identifier, false, true, new int?(2), null, true, null, null, null, this.TurnTaker, base.GetCardSource(null));
-            if (base.UseUnityCoroutines)
+            //play second card
+            if (list.FirstOrDefault() != null && list.FirstOrDefault().SelectedCard != null)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                coroutine = SelectAndMoveCardOptional(base.HeroTurnTakerController, (Card c) => c.IsInTrash && c.DoKeywordsContain("trick") && c.Identifier == list.FirstOrDefault().SelectedCard.Identifier && c.InstanceIndex != list.FirstOrDefault().SelectedCard.InstanceIndex, base.TurnTaker.PlayArea, false, true, true, true, list, base.GetCardSource(null));
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }
-        private bool TwoOrMoreCopiesInTrash(Card c)
+        public IEnumerator SelectAndMoveCardOptional(HeroTurnTakerController hero, Func<Card, bool> criteria, Location toLocation, bool toBottom = false, bool optional = false, bool isPutIntoPlay = false, bool playIfMovingToPlayArea = true, List<SelectCardDecision> storedResults = null, CardSource cardSource = null)
         {
-            int num = (from card in base.TurnTaker.Trash.Cards
-                       where card.Identifier == c.Identifier
-                       select card).Count<Card>();
-            return num >= 2;
-
+            BattleZone battleZone = null;
+            if (cardSource != null)
+            {
+                battleZone = cardSource.BattleZone;
+            }
+            SelectCardDecision selectCardDecision = new SelectCardDecision(this.GameController, hero, SelectionType.MoveCard, this.GameController.FindCardsWhere(criteria, true, null, battleZone), optional, false, null, null, null, null, null, false, true, cardSource, null);
+            selectCardDecision.BattleZone = battleZone;
+            if (storedResults != null)
+            {
+                storedResults.Add(selectCardDecision);
+            }
+            IEnumerator coroutine = this.GameController.SelectCardAndDoAction(selectCardDecision, (SelectCardDecision d) => this.GameController.MoveCard(hero, d.SelectedCard, toLocation, toBottom, isPutIntoPlay, playIfMovingToPlayArea, null, false, null, null, null, false, false, null, false, false, false, false, cardSource), true);
+            if (this.UseUnityCoroutines)
+            {
+                yield return this.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                this.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
 
         #endregion Methods
