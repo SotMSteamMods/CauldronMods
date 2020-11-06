@@ -14,7 +14,6 @@ namespace Cauldron.LadyOfTheWood
 		public override void AddTriggers()
 		{
 			//Whenever LadyOfTheWood deals 2 or less damage to a target, that damage is irreducible.
-			//This currently has a bug where if the damage starts out with as 2 or less and then increases to be more, it will still become irreducible
 			base.AddMakeDamageIrreducibleTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.Amount <= 2);
 		}
 
@@ -33,6 +32,11 @@ namespace Cauldron.LadyOfTheWood
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
 			yield break;
+		}
+
+		public override bool CanOrderAffectOutcome(GameAction action)
+		{
+			return action is DealDamageAction &&  (action as DealDamageAction).DamageSource.Card == base.CharacterCard;
 		}
 	}
 }

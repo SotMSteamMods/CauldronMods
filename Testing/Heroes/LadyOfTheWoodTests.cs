@@ -491,6 +491,52 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestRainpetalPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            PlayCard("RainpetalCloak");
+            Card cloak = GetCardInPlay("RainpetalCloak");
+            //  Power: Draw a card.
+            GoToUsePowerPhase(ladyOfTheWood);
+            QuickHandStorage(ladyOfTheWood);
+            UsePower(cloak);
+            QuickHandCheck(1);
+
+
+        }
+
+        [Test()]
+        public void TestRainpetalPrevent()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            //give room to gain hp
+            SetHitPoints(ladyOfTheWood.CharacterCard, 15);
+            PlayCard("RainpetalCloak");
+            //  The first time {LadyOfTheWood} would be dealt 1 damage each turn, she regains 1 HP instead.    
+            GoToPlayCardPhase(ladyOfTheWood);
+            QuickHPStorage(ladyOfTheWood);
+            DealDamage(baron, ladyOfTheWood, 1, DamageType.Infernal);
+            //should have prevented and gained an HP
+            QuickHPCheck(1);
+
+            QuickHPStorage(ladyOfTheWood);
+            DealDamage(baron, ladyOfTheWood, 1, DamageType.Infernal);
+            //should have not prevented and is normal
+            QuickHPCheck(-1);
+
+            GoToNextTurn();
+
+            QuickHPStorage(ladyOfTheWood);
+            DealDamage(baron, ladyOfTheWood, 1, DamageType.Infernal);
+            //should have prevented again and gained an HP
+            QuickHPCheck(1);
+
+        }
+
+        [Test()]
         public void TestRebirthPutCardsUnder()
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
@@ -630,12 +676,239 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestSnowshadeGown()
+        public void TestSnowshadeGownPower()
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            
+            //give room to gain HP
+            SetHitPoints(ladyOfTheWood, 10);
+
+            PlayCard("SnowshadeGown");
+            Card gown = GetCardInPlay("SnowshadeGown");
+
+            // power: LadyOfTheWood regains 3HP.
+            GoToUsePowerPhase(ladyOfTheWood);
+            QuickHPStorage(ladyOfTheWood);
+            UsePower(gown);
+            QuickHPCheck(3);
+        }
+
+        [Test()]
+        public void TestSnowshadeGownPowerDealDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //give room to gain HP
+            SetHitPoints(ladyOfTheWood, 10);
+
+            //destroy mdp so baron is vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            PlayCard("SnowshadeGown");
+            Card gown = GetCardInPlay("SnowshadeGown");
+
+            // Whenever LadyOfTheWood regains HP, you may select a target that hasn't been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
+
+            GoToUsePowerPhase(ladyOfTheWood);
+
+
+            //Have baron blade and LotW have been dealt damage they aren't available for the reaction
+            DealDamage(ra, baron, 5, DamageType.Fire);
+            DealDamage(ra, ladyOfTheWood, 3, DamageType.Fire);
+
+            //since baron blade is unavailable, ra should become the target
+            QuickHPStorage(ra);
+            //Use LotW power to trigger reaction
+            UsePower(gown);
+            QuickHPCheck(-1);
+        }
+
+        [Test()]
+        public void TestSpring()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //set hp so room to gain more
+            SetHitPoints(ladyOfTheWood, 10);
+            //put spring in play
+            PutIntoPlay("Spring");
+            //Whenever LadyOfTheWood deals toxic damage to a target, she regains that much HP.
+
+            QuickHPStorage(ladyOfTheWood);
+            DealDamage(ladyOfTheWood, ra, 5, DamageType.Toxic);
+            //since she dealt 5 toxic damage, she should gain 5 HP
+            QuickHPCheck(5);
+
+            QuickHPStorage(ladyOfTheWood);
+            DealDamage(ladyOfTheWood, ra, 5, DamageType.Fire);
+            //since she dealt fire damage, she should not gain HP
+            QuickHPCheckZero();
+        }
+
+        [Test()]
+        public void TestSummer()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //put summer in play
+            PutIntoPlay("Summer");
+            //Increase fire damage dealt by LadyOfTheWood by 2.
+
+            QuickHPStorage(ra);
+            DealDamage(ladyOfTheWood, ra, 5, DamageType.Fire);
+            //since she dealt 5 fire damage, +2 damage, for 7 total
+            QuickHPCheck(-7);
+
+            //check bonus doesn't apply to non fire damage
+            QuickHPStorage(ra);
+            DealDamage(ladyOfTheWood, ra, 5, DamageType.Toxic);
+            //since she dealt not fire damage, no bonus, just 5
+            QuickHPCheck(-5);
+
+            //check bonus doesn't apply to other damage sources
+            QuickHPStorage(haka);
+            DealDamage(ra, haka, 5, DamageType.Fire);
+            //since other target, just 5
+            QuickHPCheck(-5);
+        }
+
+        [Test()]
+        public void TestSuncastMantlePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //put suncast mantle in play
+            PutIntoPlay("SuncastMantle");
+            Card suncast = GetCardInPlay("SuncastMantle");
+            //LadyOfTheWood deals herself 1 fire damage and 1 target 4 fire damage.
+            QuickHPStorage(ladyOfTheWood, haka);
+            DecisionSelectTarget = haka.CharacterCard;
+            UsePower(suncast);
+            QuickHPCheck(-1, -4);
+        }
+
+        [Test()]
+        public void TestSuncastMantleIncrease()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            //set hp to be less than 5
+            SetHitPoints(ladyOfTheWood, 3);
+            //put suncast mantle in play
+            PutIntoPlay("SuncastMantle");
+            Card suncast = GetCardInPlay("SuncastMantle");
+            //Increase damage dealt by LadyOfTheWood by 3 as long as her HP is 5 or less.
+            QuickHPStorage(haka);
+            DecisionSelectTarget = haka.CharacterCard;
+            DealDamage(ladyOfTheWood, haka, 2, DamageType.Fire);
+            //should be +3 for 5 damage
+            QuickHPCheck(-5);
+
+            //check when HP greater than 5
+            SetHitPoints(ladyOfTheWood, 7);
+            QuickHPStorage(haka);
+            DecisionSelectTarget = haka.CharacterCard;
+            DealDamage(ladyOfTheWood, haka, 2, DamageType.Fire);
+            //should be +0 for 2 damage
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestThundergreyShawlPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            GoToUsePowerPhase(ladyOfTheWood);
+            PlayCard("ThundergreyShawl");
+            Card shawl = GetCardInPlay("ThundergreyShawl");
+
+            // power: LadyOfTheWood deals up to 2 targets 1 lightning damage each."
+            DecisionSelectCards = new Card[] { ra.CharacterCard, haka.CharacterCard };
+            QuickHPStorage(ra, haka);
+            UsePower(shawl);
+            QuickHPCheck(-1, -1);
+
+
+        }
+
+        [Test()]
+        public void TestThundergreyShawlMakeIrreducibleLessThan2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //destroy mdp so baron is vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            //add a -1 to baron blade
+            PlayCard("LivingForceField");
+
+            PlayCard("ThundergreyShawl");
+            Card shawl = GetCardInPlay("ThundergreyShawl");
+            //  Whenever LadyOfTheWood deals 2 or less damage to a target, that damage is irreducible.
+            QuickHPStorage(baron);
+            DealDamage(ladyOfTheWood, baron, 2, DamageType.Lightning);
+            //even though -1 on baron, damage is < 2 so is irreducible
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestThundergreyShawlMakeNotIrreducibleWhenIncreasedMoreThan2()
+        {
+            //looks like the irreducibility might linger past being boosted, verifying with tosx
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //set hp less than 5 to trigger suncast mantle
+            SetHitPoints(ladyOfTheWood.CharacterCard, 3);
+            PlayCard("SuncastMantle");
+
+            //destroy mdp so baron is vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            //add a -1 to baron blade
+            PlayCard("LivingForceField");
+
+            PlayCard("ThundergreyShawl");
+            Card shawl = GetCardInPlay("ThundergreyShawl");
+            //  Whenever LadyOfTheWood deals 2 or less damage to a target, that damage is irreducible.
+            QuickHPStorage(baron);
+            DealDamage(ladyOfTheWood, baron, 2, DamageType.Lightning);
+            //because of suncast mantle, +3 damage, now 5
+            //it is still irreducible, so -5
+            QuickHPCheck(-5);
+        }
+
+        [Test()]
+        public void TestWinter()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //put winter in play
+            PutIntoPlay("Winter");
+            //Whenever {LadyOfTheWood} deals cold damage to a target, draw a card.
+
+            //check draws when cold
+            QuickHandStorage(ladyOfTheWood);
+            DealDamage(ladyOfTheWood, haka, 3, DamageType.Cold);
+            QuickHandCheck(1);
+
+            //check does not draw when not cold
+            QuickHandStorage(ladyOfTheWood);
+            DealDamage(ladyOfTheWood, haka, 3, DamageType.Toxic);
+            QuickHandCheck(0);
+
+
         }
     }
 }
