@@ -750,13 +750,100 @@ namespace CauldronTests
 
             
             PutIntoPlay("GlyphOfInnervation");
-            Card decay = GetCardInPlay("GlyphOfInnervation");
+            Card innervation = GetCardInPlay("GlyphOfInnervation");
             //Power: Draw a card.
             GoToUsePowerPhase(stranger);
             QuickHandStorage(stranger);
-            UsePower(decay);
+            UsePower(innervation);
             QuickHandCheck(1);
 
+        }
+
+        [Test()]
+        public void TestGlyphOfPerceptionPrevention_FirstDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(stranger);
+            PutIntoPlay("GlyphOfPerception");
+
+            //Once during your turn when TheStranger would deal himself damage, prevent that damage.
+            QuickHPStorage(stranger);
+            DecisionYesNo = true;
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since damage was prevented, no change in health
+            QuickHPCheckZero();
+
+            QuickHPStorage(stranger);
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since already used this turn, damage should be dealt
+            QuickHPCheck(-5);
+
+            GoToStartOfTurn(stranger);
+            QuickHPStorage(stranger);
+            DecisionYesNo = true;
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since new round, damage was prevented, no change in health
+            QuickHPCheckZero();
+        }
+        [Test()]
+        public void TestGlyphOfPerceptionPrevention_SecondDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(stranger);
+            PutIntoPlay("GlyphOfPerception");
+
+            //Once during your turn when TheStranger would deal himself damage, prevent that damage.
+            QuickHPStorage(stranger);
+            DecisionsYesNo = new bool[] { false, true, true };
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since said no, -5
+            QuickHPCheck(-5);
+
+            QuickHPStorage(stranger);
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since said yes, damage should be prevented
+            QuickHPCheckZero();
+
+            GoToStartOfTurn(stranger);
+            QuickHPStorage(stranger);
+            DecisionYesNo = true;
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since new round, damage was prevented, no change in health
+            QuickHPCheckZero();
+        }
+
+        [Test()]
+        public void TestGlyphOfPerception_PlayResponse()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            //put a rune in the hand to play
+            Card boneLeech = GetCard("MarkOfTheBoneLeech");
+            Card faded = GetCard("MarkOfTheFaded");
+            PutInHand(boneLeech);
+            PutInHand(faded);
+
+            PutIntoPlay("GlyphOfPerception");
+            Card innervation = GetCardInPlay("GlyphOfPerception");
+            //When a villain target enters play, you may play a Rune.
+
+            GoToPlayCardPhase(stranger);
+            //say yes we want to play a card
+            DecisionYesNo = true;
+            DecisionSelectCard = boneLeech;
+            //cause a villain target to enter play
+            PlayCard("ElementalRedistributor");
+            AssertIsInPlay(boneLeech);
+
+            //cause an environment target to enter play
+            DecisionSelectCard = faded;
+            PlayCard("PoliceBackup");
+            AssertInHand(faded);
         }
 
     }
