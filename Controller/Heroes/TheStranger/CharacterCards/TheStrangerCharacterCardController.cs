@@ -74,6 +74,9 @@ namespace Cauldron.TheStranger
 					}
 				case 2:
 					{
+						//Up to 2 ongoing hero cards may be played now.
+
+						//choose up to 2 cards
 						List<SelectCardsDecision> storedResults = new List<SelectCardsDecision>();
 						IEnumerator coroutine3 = base.GameController.SelectCardsAndStoreResults(base.HeroTurnTakerController, SelectionType.PlayCard, (Card c) => c.IsInHand && c.Location.IsHero && c.IsOngoing,2, storedResults, true,new int?(0));
 						if (base.UseUnityCoroutines)
@@ -86,6 +89,7 @@ namespace Cauldron.TheStranger
 						}
 						if (storedResults != null && storedResults[0].NumberOfCards > 0)
 						{
+							//play each card selected
 							foreach(SelectCardDecision d in storedResults[0].SelectCardDecisions)
 							{
 								Card selectedCard = d.SelectedCard;
