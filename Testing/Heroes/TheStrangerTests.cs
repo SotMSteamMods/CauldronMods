@@ -1420,5 +1420,89 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestMarkOfDestructionPutNextToTarget()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToPlayCardPhase(stranger);
+
+            //Play this next to a non-character card. If either card is destroyed, destroy the other. 
+            DecisionSelectCard = mdp;
+            PutIntoPlay("MarkOfDestruction");
+            Card rune = GetCardInPlay("MarkOfDestruction");
+            AssertNextToCard(rune, mdp);
+
+
+        }
+
+        [Test()]
+        public void TestMarkOfDestruction_NextToDestroyed()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToPlayCardPhase(stranger);
+
+            //Play this next to a non-character card. If either card is destroyed, destroy the other.
+            DecisionSelectCard = mdp;
+            PutIntoPlay("MarkOfDestruction");
+            Card rune = GetCardInPlay("MarkOfDestruction");
+
+            //destroy mdp, this should destroy the mark of destruction
+            AssertIsInPlay(rune);
+            DestroyCard(mdp, haka.CharacterCard);
+            AssertInTrash(rune);
+
+
+        }
+
+        [Test()]
+        public void TestMarkOfDestruction_ThisCardDestroyed()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToPlayCardPhase(stranger);
+
+            //Play this next to a non-character card. If either card is destroyed, destroy the other. 
+            DecisionSelectCard = mdp;
+            PutIntoPlay("MarkOfDestruction");
+            Card rune = GetCardInPlay("MarkOfDestruction");
+
+            //destroy mark of destruction, this should destroy mdp
+            AssertIsInPlay(mdp);
+            DestroyCard(rune, baron.CharacterCard);
+            AssertInTrash(mdp);
+
+
+        }
+
+        [Test()]
+        public void TestMarkOfDestruction_Redirect()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(haka.CharacterCard, 15);
+            SetHitPoints(ra.CharacterCard, 25);
+            SetHitPoints(stranger.CharacterCard, 20);
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToPlayCardPhase(stranger);
+
+            DecisionSelectCard = mdp;
+            PutIntoPlay("MarkOfDestruction");
+            Card rune = GetCardInPlay("MarkOfDestruction");
+
+            //Redirect damage dealt to this card by non-hero targets to the hero target with the highest HP.
+            //ra has the highest hp of hero targests
+            QuickHPStorage(ra);
+            DealDamage(baron.CharacterCard, rune, 5, DamageType.Projectile);
+            QuickHPCheck(-5);
+
+
+        }
+
     }
 }
