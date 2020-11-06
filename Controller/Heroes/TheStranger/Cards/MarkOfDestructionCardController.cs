@@ -4,7 +4,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TheStranger
 {
-    public class MarkOfDestructionCardController : RuneCardController
+    public class MarkOfDestructionCardController : CardController
     {
         #region Constructors
 
