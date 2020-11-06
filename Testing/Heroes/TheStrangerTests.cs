@@ -1084,6 +1084,89 @@ namespace CauldronTests
             //check that haka can play 2 cards
             AssertPhaseActionCount(new int?(2));
 
+        }
+
+        [Test()]
+        public void TestMarkOfTheBloodThornDestroySuccessful()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToEndOfTurn(haka);
+            PutIntoPlay("MarkOfTheBloodThorn");
+            Card rune = GetCardInPlay("MarkOfTheBloodThorn");
+            //At the start of your turn you may destroy this card. If you do not, TheStranger deals himself 1 irreducible toxic damage.
+            AssertIsInPlay(rune);
+            //yes we want to destroy
+            DecisionYesNo = true;
+            QuickHPStorage(stranger);
+            GoToStartOfTurn(stranger);
+            //should have been destroyed and no damage dealt
+            AssertInTrash(rune);
+            QuickHPCheckZero();
+
+        }
+
+        [Test()]
+        public void TestMarkOfTheBloodThornDestroyFailed()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToEndOfTurn(haka);
+            PutIntoPlay("MarkOfTheBloodThorn");
+            Card rune = GetCardInPlay("MarkOfTheBloodThorn");
+            //At the start of your turn you may destroy this card. If you do not, TheStranger deals himself 1 irreducible toxic damage.
+            AssertIsInPlay(rune);
+            //no we don't want to destroy
+            DecisionYesNo = false;
+            QuickHPStorage(stranger);
+            GoToStartOfTurn(stranger);
+            //should have not been destroyed and damage dealt
+            AssertIsInPlay(rune);
+            QuickHPCheck(-1);
+
+        }
+
+        [Test()]
+        public void TestMarkOfTheBloodThornPutNextToTarget()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+            GoToPlayCardPhase(stranger);
+
+            //Play this next to a hero target. The first time that target is dealt damage each turn, it deals 1 target 1 toxic damage.
+            DecisionSelectCard = haka.CharacterCard;
+            PutIntoPlay("MarkOfTheBloodThorn");
+            Card rune = GetCardInPlay("MarkOfTheBloodThorn");
+            AssertNextToCard(rune, haka.CharacterCard);
+
+
+        }
+
+
+        [Test()]
+        public void TestMarkOfTheBloodThornDealDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToPlayCardPhase(stranger);
+
+            //Play this next to a hero target. The first time that target is dealt damage each turn, it deals 1 target 1 toxic damage.
+            DecisionSelectCards = new Card[] { haka.CharacterCard, mdp };
+            PutIntoPlay("MarkOfTheBloodThorn");
+            Card rune = GetCardInPlay("MarkOfTheBloodThorn");
+
+            //counter damage should have occurred
+            QuickHPStorage(mdp);
+            DealDamage(mdp, haka.CharacterCard, 5, DamageType.Cold);
+            QuickHPCheck(-1);
+
+            //counter damage should not have occurred
+            QuickHPStorage(mdp);
+            DealDamage(mdp, haka.CharacterCard, 5, DamageType.Cold);
+            QuickHPCheckZero();
 
         }
 
