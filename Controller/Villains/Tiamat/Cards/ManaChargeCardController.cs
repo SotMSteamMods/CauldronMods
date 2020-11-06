@@ -4,11 +4,11 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron
 {
-    public class $itemname$ : CardController
+    public class ManaChargeCardController : CardController
     {
         #region Constructors
 
-        public $itemname$(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public ManaChargeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }

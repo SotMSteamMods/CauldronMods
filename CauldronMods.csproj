@@ -3,10 +3,14 @@
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <RootNamespace>Cauldron</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Utility\**" />
+    <EmbeddedResource Remove="Utility\**" />
     <None Remove="DeckLists\**\*.json" />
+    <None Remove="Utility\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,10 +21,6 @@
 
   <ItemGroup>
     <None Remove="CodingBugs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="CodingBugs" />
   </ItemGroup>
 
   <ItemGroup>
