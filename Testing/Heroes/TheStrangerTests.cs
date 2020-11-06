@@ -1170,5 +1170,91 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestMarkOfTheBoneLeechDestroySuccessful()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToEndOfTurn(haka);
+            PutIntoPlay("MarkOfTheBoneLeech");
+            Card rune = GetCardInPlay("MarkOfTheBoneLeech");
+            //At the start of your turn you may destroy this card. If you do not, TheStranger deals himself 1 irreducible toxic damage.
+            AssertIsInPlay(rune);
+            //yes we want to destroy
+            DecisionYesNo = true;
+            QuickHPStorage(stranger);
+            GoToStartOfTurn(stranger);
+            //should have been destroyed and no damage dealt
+            AssertInTrash(rune);
+            QuickHPCheckZero();
+
+        }
+
+        [Test()]
+        public void TestMarkOfTheBoneLeechDestroyFailed()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToEndOfTurn(haka);
+            PutIntoPlay("MarkOfTheBoneLeech");
+            Card rune = GetCardInPlay("MarkOfTheBoneLeech");
+            //At the start of your turn you may destroy this card. If you do not, TheStranger deals himself 1 irreducible toxic damage.
+            AssertIsInPlay(rune);
+            //no we don't want to destroy
+            DecisionYesNo = false;
+            QuickHPStorage(stranger);
+            GoToStartOfTurn(stranger);
+            //should have not been destroyed and damage dealt
+            AssertIsInPlay(rune);
+            QuickHPCheck(-1);
+
+        }
+
+        [Test()]
+        public void TestMarkOfTheBoneLeechPutNextToTarget()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+            GoToPlayCardPhase(stranger);
+
+            //Play this next to a hero target.The first time that target deals damage each turn, it regains 1HP.DecisionSelectCard = haka.CharacterCard;
+            PutIntoPlay("MarkOfTheBoneLeech");
+            Card rune = GetCardInPlay("MarkOfTheBoneLeech");
+            AssertNextToCard(rune, haka.CharacterCard);
+
+
+        }
+
+
+        [Test()]
+        public void TestMarkOfTheBoneLeechGainHP()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+            //give room to gain hp
+            SetHitPoints(haka.CharacterCard, 20);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToPlayCardPhase(stranger);
+
+            //Play this next to a hero target. The first time that target deals damage each turn, it regains 1HP.            DecisionSelectCards = new Card[] { haka.CharacterCard, mdp };
+            DecisionSelectCard = haka.CharacterCard;
+            PutIntoPlay("MarkOfTheBoneLeech");
+            Card rune = GetCardInPlay("MarkOfTheBoneLeech");
+
+            //hp should have been gained
+            QuickHPStorage(haka);
+            DealDamage(haka.CharacterCard, mdp, 3, DamageType.Cold);
+            QuickHPCheck(1);
+
+            //only gain hp on first damage dealt
+            QuickHPStorage(haka);
+            DealDamage(haka.CharacterCard, mdp, 3, DamageType.Cold);
+            QuickHPCheckZero();
+
+        }
+
     }
 }
