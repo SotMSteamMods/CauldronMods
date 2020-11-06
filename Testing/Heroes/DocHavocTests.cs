@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Cauldron.DocHavoc;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
@@ -159,6 +157,7 @@ namespace CauldronTests
             GoToStartOfTurn(env);
 
             PutIntoPlay("BattalionGunner"); // End of env. each hero target takes 1 damage
+
             GoToEndOfTurn(env);
 
             // Assert

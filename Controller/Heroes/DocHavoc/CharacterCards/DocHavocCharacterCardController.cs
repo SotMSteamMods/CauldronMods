@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -20,7 +18,6 @@ namespace Cauldron.DocHavoc
             //========================================================================================================================
             // Adrenaline: Deals 1 hero 3 toxic damage. If that hero took damage this way, they may play a card now.
             //========================================================================================================================
-
 
             List<DealDamageAction> storedDamageResults = new List<DealDamageAction>();
 
@@ -61,11 +58,6 @@ namespace Cauldron.DocHavoc
 
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
-            /*
-            IEnumerator routine = this.GameController.SelectAndGainHP(this.DecisionMaker, 1, additionalCriteria: ((Func<Card, bool>)(c => c.IsHero)),
-                numberOfTargets: 3, requiredDecisions: new int?(0), cardSource: this.GetCardSource());
-
-            */
             IEnumerator routine = null;
             switch (index)
             {
@@ -99,9 +91,19 @@ namespace Cauldron.DocHavoc
                     break;
 
                 case 2:
-                    yield return DoIncapacitateOption3();
-                    break;
 
+                    routine = DoIncapacitateOption3();
+
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(routine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(routine);
+                    }
+
+                    break;
             }
         }
 
@@ -132,7 +134,7 @@ namespace Cauldron.DocHavoc
 
             CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new CannotDealDamageStatusEffect();
             cannotDealDamageStatusEffect.IsPreventEffect = true;
-            cannotDealDamageStatusEffect.TargetCriteria.IsEnvironment = true;
+            cannotDealDamageStatusEffect.SourceCriteria.IsEnvironment = true;
             cannotDealDamageStatusEffect.UntilStartOfNextTurn(this.TurnTaker);
 
             return this.GameController.AddStatusEffect(cannotDealDamageStatusEffect, true, this.GetCardSource());
