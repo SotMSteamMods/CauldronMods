@@ -1,630 +1,606 @@
 {
-    "name": "The Knight",
-    "kind": "Hero",
-    "expansionIdentifier": "Cauldron",
-    "initialCardIdentifiers": [
-        "TheKnightCharacter"
-    ],
-    "cards": [
-        {
-            "identifier": "TheKnightCharacter",
-            "count": 1,
-            "title": "The Knight",
-            "body": "Swing",
-            "backgroundColor": "FBF8F9",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
-            "character": true,
-            "powers": [
-                "{TheKnight} deals 1 target 1 melee damage."
-            ],
-            "icons": [
-                "HasPower",
-                "DealDamageMelee"
-            ],
-            "hitpoints": 32,
-            "nemesisIdentifiers": [
-                "TheKnight"
-            ],
-            "incapacitatedAbilities": [
-                "One player may play a card now.",
-                "Reduce damage dealt to 1 target by 1 until the start of your next turn.",
-                "Increase damage dealt by 1 target by 1 until the start of your next turn."
-            ],
-            "flippedIcons": [
-                "PlayCardNow",
-                "ReduceDamageDealt",
-                "IncreaseDamageDealt"
-            ],
-            "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
-            },
-            "complexity": 1
-        },
-        {
-            "identifier": "ArmYourself",
-            "count": 2,
-            "title": "Arm Yourself",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Manipulate"
-            ],
-            "body": "Select up to 2 Equipment cards from your trash. Put one into play and one into your hand.",
-            "flavorQuotes": [
-                {
-                    "identifier": "TheKnight",
-                    "text": "One might not see the claws of the{BR}bear, but they are never far."
-                }
-            ],
-            "flavorReference": "The Knight, The Wanderer's Ballad #144"
-        },
-        {
-            "identifier": "BattlefieldScavenger",
-            "count": 2,
-            "title": "Battlefield Scavenger",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "DrawCardNow",
-                "Manipulate"
-            ],
-            "body": "Each player may draw a card, or take an Equipment or Ongoing card from their trash and put it on top of their deck.",
-            "flavorQuotes": [
-                {
-                    "identifier": "TheStranger",
-                    "text": "I have a great respect for{BR}crows. They do not waste anything. Or{BR}nest on my head."
-                }
-            ],
-            "flavorReference": "The Stranger, Book of the Dead #578"
-        },
-        {
-            "identifier": "CatchYourBreath",
-            "count": 2,
-            "title": "Catch Your Breath",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "DrawCardNow",
-                "GainHP"
-            ],
-            "body": "Draw a card. {TheKnight} regains 2 HP.",
-            "flavorQuotes": [
-                {
-                    "identifier": "TheKnight",
-                    "text": "A moment, and I will attend you."
-                }
-            ],
-            "flavorReference": "The Knight, The Wanderer's Requiem #145"
-        },
-        {
-            "identifier": "ChampionOfTheRealm",
-            "count": 2,
-            "title": "Champion of the Realm",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Search",
-                "IncreaseDamageDealt"
-            ],
-            "body": [
-                "Search your deck for a Single Hand Equipment card and put it into play. Shuffle your deck.",
-                "Select a hero target. Until the start of your next turn, increase damage dealt by that target by 1."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "LadyOfTheWood",
-                    "text": "I did not think to{BR}set eyes on you again."
-                }
-            ],
-            "flavorReference": "Lady Of The Wood, The Wanderer's{BR}Requiem #146"
-        },
-        {
-            "identifier": "DefenderOfTheRealm",
-            "count": 2,
-            "title": "Defender of the Realm",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Search",
-                "ReduceDamageDealt"
-            ],
-            "body": [ 
-                "Search your deck for a copy of “Plate Mail” or “Plate Helm” and put it into play. Shuffle your deck.",
-                "Select a hero target. Until the start of your next turn, reduce damage dealt to that target by 1."
-            ]
-            "flavorQuotes": [
-                {
-                    "identifier": "TheKnight",
-                    "text": "The Knight, This is my home now!"
-                }
-            ],
-            "flavorReference": "Dragonfire #12"
-        },
-        {
-            "identifier": "HeavySwing",
-            "count": 4,
-            "title": "Heavy Swing",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "DealDamageMelee"
-            ],
-            "body": "{TheKnight} deals 1 target 3 melee damage.",
-            "flavorQuotes": [
-                {
-                    "identifier": "AbsoluteZero",
-                    "text": "They don't make{BR}'em like they used to."
-                },
-                {
-                    "identifier": "Quicksilver",
-                    "text": "Swords, or robots?"
-                }
-            ],
-            "flavorReference": "The Coming Winter #5"
-        },
-        {
-            "identifier": "KnightsHonor",
-            "count": 2,
-            "title": "Knight's Honor",
-            "keywords": [
-                "ongoing",
-                "limited"
-            ],
-            "icons": [
-                "RedirectDamage",
-                "IrreducibleDamage",
-                "HasPower",
-                "DestroySelf"
-            ],
-            "body": [
-                "Play this card next to a target.",
-                "Whenever that target would take damage, redirect that damage to {TheKnight}. Damage redirected this way is irreducible."
-            ],
-            "powers": [
-                "Destroy this card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TheKnight",
-                    "text": "I shall protect the weak."
-                }
-            ],
-            "flavorReference": "The Knight, The Wanderer's Ballad #49"
-        },
-        {
-            "identifier": "MaidensBlessing",
-            "count": 2,
-            "title": "Maiden's Blessing",
-            "keywords": [
-                "ongoing",
-                "limited"
-            ],
-            "icons": [
-                "HasPower",
-                "PlayCardNow",
-                "DrawCardNow"
-            ],
-            "powers": [
-                "You may play an Equipment card. Draw a card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TheKnight",
-                    "text": "I have an oath to uphold,"
-                }
-            ],
-            "flavorReference": "The Knight, The Wanderer's Ballad #1"
-        },
-        {
-            "identifier": "PlateHelm",
-            "count": 4,
-            "title": "Plate Helm",
-            "keywords": [
-                "equipment",
-                "limited"
-            ],
-            "icons": [
-                "DrawCardNow",
-                "RedirectDamage"
-            ],
-            "body": [
-                "When this card enters play, you may draw a card.",
-                "When {TheKnight} would be dealt damage, you may redirect that damage to this card."
-            ],
-            "flavorText": "The Knight donned his helm,{BR}and The Scholar his sunglasses.{BR}“Ready”",
-            "flavorReference": "Temporal Targets #53",
-            "hitpoints": 5
-        },
-        {
-            "identifier": "PlateMail",
-            "count": 4,
-            "title": "Plate Mail",
-            "keywords": [
-                "equipment",
-                "limited"
-            ],
-            "icons": [
-                "RedirectDamage"
-            ],
-            "body": "When {TheKnight} would be dealt damage, you may redirect that damage to this card.",
-            "flavorQuotes": [
-                {
-                    "identifier": "TheKnight",
-                    "text": "Forgive me, I do not{BR}hail from this place."
-                },
-                {
-                    "identifier": "ChronoRanger",
-                    "text": "Yeah, can't help you."
-                }
-            ],
-            "flavorReference": "Temporal Targets #53",
-            "hitpoints": 5
-        },
-        {
-            "identifier": "ShortSword",
-            "count": 3,
-            "title": "Short Sword",
-            "keywords": [
-                "equipment",
-                "single hand"
-            ],
-            "icons": [
-                "Destroy",
-                "IncreaseDamageDealt",
-                "HasPower",
-                "DealDamageMelee"
-            ],
-            "body": [
-                "When this card is put into play, destroy all but 2 Single Hand Equipment cards.",
-                "Increase damage dealt by {TheKnight} by 1."
-            ],
-            "powers": [
-                "{TheKnight} deals 1 target 2 melee damage."
-            ],
-            "flavorText": "A question{BR}The blood{BR}of his enemies{BR}answers."
-        },
-        {
-            "identifier": "StalwartShield",
-            "count": 3,
-            "title": "Stalwart Shield",
-            "keywords": [
-                "equipment",
-                "single hand"
-            ],
-            "icons": [
-                "Destroy",
-                "ReduceDamageTaken"
-            ],
-            "body": [
-                "When this card is put into play, destroy all but 2 Single Hand Equipment cards.",
-                "Reduce damage taken by {TheKnight} and your Equipment cards by 1."
-            ],
-            "flavorText": "An answer{BR}The swords{BR}Of his enemies{BR}Question."
-        },
-        {
-            "identifier": "SureFooting",
-            "count": 2,
-            "title": "Sure Footing",
-            "keywords": [
-                "ongoing",
-                "limited"
-            ],
-            "icons": [
-                "HasPower",
-                "PlayCardNow",
-                "DrawCardNow"
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "DocHavoc",
-                    "text": "Okay, he's the only one here{BR}allowed to run with scissors."
-                }
-            ],
-            "flavorReference": "Doc Havoc, War Journal #200",
-            "powers": [
-                "You may play a one-shot now. Draw a card."
-            ]
-        },
-        {
-            "identifier": "SwiftStrikes",
-            "count": 4,
-            "title": "Swift Strikes",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "DealDamageMelee"
-            ],
-            "body": "{TheKnight} deals up to 2 targets 1 melee damage each.",
-            "flavorQuotes": [
-                {
-                    "identifier": "TheKnight",
-                    "text": "Suprise is not something one{BR}shouts, it is something one embodies."
-                }
-            ],
-            "flavorReference": "The Knight, A Life in a Day One Shot"
-        },
-        {
-            "identifier": "Whetstone",
-            "count": 2,
-            "title": "Whetstone",
-            "keywords": [
-                "equipment",
-                "limited"
-            ],
-            "icons": [
-                "IncreaseDamageDealt"
-            ],
-            "body": "Increase melee damage dealt by {TheKnight} by 1.",
-            "flavorQuotes": [
-                {
-                    "identifier": "TheKnight",
-                    "text": "A warrior is only as good as his{BR}equipment."
-                }
-            ],
-            "flavorReference": "The Knight, The Wanderer's Ballad #3"
-        }
-    ],
-    "promoCards": [
-        {
-            "identifier": "TheKnightCharacter",
-            "promoIdentifier": "FairTheKnightCharacter",
-            "count": 1,
-            "title": "The Knight",
-            "promoTitle": "The Fair Knight",
-            "shortPromoTitle": "Fair Knight",
-            "body": "Resourceful",
-            "backgroundColor": "FBF8F9",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
-            "character": true,
-            "powers": [
-                "{TheKnight} and all her targets regain 2 HP."
-            ],
-            "icons": [
-                "HasPower",
-                "GainHP"
-            ],
-            "hitpoints": 25,
-            "nemesisIdentifiers": [
-                "TheKnight"
-            ],
-            "incapacitatedAbilities": [
-                "One player may play a card now.",
-                "One player may draw a card now.",
-                "Until the start of your next turn, reduce damage dealt to hero targets by 2."
-            ],
-            "flippedIcons": [
-                "PlayCardNow",
-                "DrawCardNow",
-                "ReduceDamageTaken"
-            ],
-            "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
-            },
-            "complexity": 1
-        },
-        {
-            "identifier": "TheKnightCharacter",
-            "promoIdentifier": "BerzerkerTheKnightCharacter",
-            "count": 1,
-            "title": "The Knight",
-            "promoTitle": "The Berzerker Knight",
-            "shortPromoTitle": "Berzerk Knight",
-            "body": "Rage",
-            "backgroundColor": "FBF8F9",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
-            "character": true,
-            "powers": [
-                "Destroy an equipment target. {TheKnight} deals 1 target X psychic damage, where X is the HP of the equipment before it was destroyed by 1."
-            ],
-            "icons": [
-                "HasPower",
-                "DestroyTarget",
-                "DealDamagePsychic"
-            ],
-            "hitpoints": 27,
-            "nemesisIdentifiers": [
-                "TheKnight"
-            ],
-            "incapacitatedAbilities": [
-                "One player may draw a card now.",
-                "Increase all damage by 1 until the start of your next turn.",
-                "One target deals itself 1 psychic damage."
-            ],
-            "flippedIcons": [
-                "DrawCardNow",
-                "IncreaseDamageDealt",
-                "DealDamagePsychic"
-            ],
-            "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
-            },
-            "complexity": 1
-        },
-        {
-            "identifier": "TheKnightCharacter",
-            "promoIdentifier": "1929TheKnightCharacter",
-            "count": 1,
-            "title": "The Knight",
-            "promoTitle": "The Knight 1929",
-            "shortPromoTitle": "1929 Knight",
-            "body": "Vigilar",
-            "backgroundColor": "FBF8F9",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
-            "character": true,
-            "powers": [
-                "Play an equipment target next to a hero. Treat {TheKnight}'s name on that equipment as the name of the hero it is next to."
-            ],
-            "icons": [
-                "HasPower",
-                "PlayCardNow"
-            ],
-            "hitpoints": 27,
-            "nemesisIdentifiers": [
-                "TheKnight"
-            ],
-            "incapacitatedAbilities": [
-                "One player may draw a card now.",
-                "Reveal the top card of the villain deck, then replace it.",
-                "Select a target, increase the next damage dealt to and by that target by 2."
-            ],
-            "flippedIcons": [
-                "DrawCardNow",
-                "Manipulate",
-                "IncreaseDamageTaken",
-                "IncreaseDamageDealt"
-            ],
-            "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
-            },
-            "complexity": 1
-        },
-        {
-            "identifier": "TheKnightCharacter",
-            "promoIdentifier": "WastelandRoninTheKnightCharacter",
-            "count": 1,
-            "title": "The Knight",
-            "promoTitle": "The Knights: Wasteland Ronin",
-            "shortPromoTitle": "The Wasteland Knights",
-            "backgroundColor": "FBF8F9",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
-            "setup": [
-                "At the start of the game, put the caharacter cards for the Young and Old Knights into play, active side up.",
-                "Shuffle the hero deck and draw 4 cards."
-            ],
-            "gameplay": [
-                "If you have no hero character targets in play, flip this card.",
-                "When 1 of your equipment cards enter play, put it next to 1 of your active knights.",
-                "When your cards refer to “The Knight”, put it next to 1 of your active knights. For equipment cards, you must choose the knight they are next to. Stalwart Shield does not reduce damage to the other knight's equipment targets.",
-                "Whenever an equipment enters play next to The Young Knight, she deals 1 target 1 toxic damage.",
-                "Whenever an equipment card enters play next to The Old Knight, draw a card."
-            ],
-            "icons": [
-                "DealDamageToxic",
-                "DrawCardNow"
-            ],
-            "flippedTitle": "Incapacitated",
-            "incapacitatedAbilities": [
-                "One hero deals 1 target 1 projectile damage.",
-                "One target regains 1 HP.",
-                "One player may discard a card to play 2 cards now."
-            ],
-            "flippedIcons": [
-                "DealDamageProjectile",
-                "GainHP",
-                "Discard",
-                "PlayCardNow"
-            ],
-            "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
-            },
-            "complexity": 1
-        },
-        {
-            "identifier": "TheKnightCharacter",
-            "promoIdentifier": "WastelandRoninTheKnightCharacter",
-            "count": 1,
-            "title": "The Knight",
-            "promoTitle": "The Old Knight: Wasteland Ronin",
-            "shortPromoTitle": "The Old Knight",
-            "body": "Destroyer",
-            "backgroundColor": "FBF8F9",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
-            "character": true,
-            "powers": [
-                "{TheKnight} deals 1 target 2 irreducible lightning damage. Return 1 of your equipment cards in play to your hand."
-            ],
-            "icons": [
-                "HasPower",
-                "DealDamageLightning",
-                "Manipulate"
-            ],
-            "hitpoints": 18,
-            "nemesisIdentifiers": [
-                "TheKnight"
-            ],
-            "flippedTitle": "Incapacitated",
-            "flippedBody": "When {TheKnight} flips to this side, destroy all equipment cards next to him.",
-            "flippedIcons": [
-                "DestroyEquipment"
-            ],
-            "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
-            },
-            "complexity": 1
-        },
-        {
-            "identifier": "TheKnightCharacter",
-            "promoIdentifier": "WastelandRoninTheKnightCharacter",
-            "count": 1,
-            "title": "The Knight",
-            "promoTitle": "The Young Knight: Wasteland Ronin",
-            "shortPromoTitle": "The Young Knight",
-            "body": "Dragon's Dance",
-            "backgroundColor": "FBF8F9",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
-            "character": true,
-            "powers": [
-                "{TheKnight} deals herself and 2 other targets 2 toxic damage each"
-            ],
-            "icons": [
-                "HasPower",
-                "DealDamageToxic"
-            ],
-            "hitpoints": 15,
-            "nemesisIdentifiers": [
-                "TheKnight"
-            ],
-            "flippedTitle": "Incapacitated",
-            "flippedBody": "When {TheKnight} flips to this side, destroy all equipment cards next to her.",
-            "flippedIcons": [
-                "DestroyEquipment"
-            ],
-            "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
-            },
-            "complexity": 1
-        }
-    ]
+	"name": "The Knight",
+	"kind": "Hero",
+	"expansionIdentifier": "Cauldron",
+	"initialCardIdentifiers": [
+		"TheKnightCharacter"
+	],
+	"cards": [{
+			"identifier": "TheKnightCharacter",
+			"count": 1,
+			"title": "The Knight",
+			"body": "Swing",
+			"backgroundColor": "FBF8F9",
+			"foilBackgroundColor": "FEFEFE",
+			"hitpointColor": "C94742",
+			"character": true,
+			"powers": [
+				"{TheKnight} deals 1 target 1 melee damage."
+			],
+			"icons": [
+				"HasPower",
+				"DealDamageMelee"
+			],
+			"hitpoints": 32,
+			"nemesisIdentifiers": [
+				"TheKnight"
+			],
+			"incapacitatedAbilities": [
+				"One player may play a card now.",
+				"Reduce damage dealt to 1 target by 1 until the start of your next turn.",
+				"Increase damage dealt by 1 target by 1 until the start of your next turn."
+			],
+			"flippedIcons": [
+				"PlayCardNow",
+				"ReduceDamageDealt",
+				"IncreaseDamageDealt"
+			],
+			"openingLines": {
+				"default": "default placeholder",
+				"OutlanderCharacter": "Outlander placeholder",
+				"1929RamCharacter": "1929 Ram placeholder",
+				"TiamatCharacter": "Tiamat placeholder",
+				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+			},
+			"complexity": 1
+		},
+		{
+			"identifier": "ArmYourself",
+			"count": 2,
+			"title": "Arm Yourself",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"Manipulate"
+			],
+			"body": "Select up to 2 Equipment cards from your trash. Put one into play and one into your hand.",
+			"flavorQuotes": [{
+				"identifier": "TheKnight",
+				"text": "One might not see the claws of the{BR}bear, but they are never far."
+			}],
+			"flavorReference": "The Knight, The Wanderer's Ballad #144"
+		},
+		{
+			"identifier": "BattlefieldScavenger",
+			"count": 2,
+			"title": "Battlefield Scavenger",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"DrawCardNow",
+				"Manipulate"
+			],
+			"body": "Each player may draw a card, or take an Equipment or Ongoing card from their trash and put it on top of their deck.",
+			"flavorQuotes": [{
+				"identifier": "TheStranger",
+				"text": "I have a great respect for{BR}crows. They do not waste anything. Or{BR}nest on my head."
+			}],
+			"flavorReference": "The Stranger, Book of the Dead #578"
+		},
+		{
+			"identifier": "CatchYourBreath",
+			"count": 2,
+			"title": "Catch Your Breath",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"DrawCardNow",
+				"GainHP"
+			],
+			"body": "Draw a card. {TheKnight} regains 2 HP.",
+			"flavorQuotes": [{
+				"identifier": "TheKnight",
+				"text": "A moment, and I will attend you."
+			}],
+			"flavorReference": "The Knight, The Wanderer's Requiem #145"
+		},
+		{
+			"identifier": "ChampionOfTheRealm",
+			"count": 2,
+			"title": "Champion of the Realm",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"Search",
+				"IncreaseDamageDealt"
+			],
+			"body": [
+				"Search your deck for a Single Hand Equipment card and put it into play. Shuffle your deck.",
+				"Select a hero target. Until the start of your next turn, increase damage dealt by that target by 1."
+			],
+			"flavorQuotes": [{
+				"identifier": "LadyOfTheWood",
+				"text": "I did not think to{BR}set eyes on you again."
+			}],
+			"flavorReference": "Lady Of The Wood, The Wanderer's{BR}Requiem #146"
+		},
+		{
+			"identifier": "DefenderOfTheRealm",
+			"count": 2,
+			"title": "Defender of the Realm",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"Search",
+				"ReduceDamageDealt"
+			],
+			"body": [
+				"Search your deck for a copy of “Plate Mail” or “Plate Helm” and put it into play. Shuffle your deck.",
+				"Select a hero target. Until the start of your next turn, reduce damage dealt to that target by 1."
+			],
+			"flavorQuotes": [{
+				"identifier": "TheKnight",
+				"text": "The Knight, This is my home now!"
+			}],
+			"flavorReference": "Dragonfire #12"
+		},
+		{
+			"identifier": "HeavySwing",
+			"count": 4,
+			"title": "Heavy Swing",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"DealDamageMelee"
+			],
+			"body": "{TheKnight} deals 1 target 3 melee damage.",
+			"flavorQuotes": [{
+					"identifier": "AbsoluteZero",
+					"text": "They don't make{BR}'em like they used to."
+				},
+				{
+					"identifier": "Quicksilver",
+					"text": "Swords, or robots?"
+				}
+			],
+			"flavorReference": "The Coming Winter #5"
+		},
+		{
+			"identifier": "KnightsHonor",
+			"count": 2,
+			"title": "Knight's Honor",
+			"keywords": [
+				"ongoing",
+				"limited"
+			],
+			"icons": [
+				"RedirectDamage",
+				"IrreducibleDamage",
+				"HasPower",
+				"DestroySelf"
+			],
+			"body": [
+				"Play this card next to a target.",
+				"Whenever that target would take damage, redirect that damage to {TheKnight}. Damage redirected this way is irreducible."
+			],
+			"powers": [
+				"Destroy this card."
+			],
+			"flavorQuotes": [{
+				"identifier": "TheKnight",
+				"text": "I shall protect the weak."
+			}],
+			"flavorReference": "The Knight, The Wanderer's Ballad #49"
+		},
+		{
+			"identifier": "MaidensBlessing",
+			"count": 2,
+			"title": "Maiden's Blessing",
+			"keywords": [
+				"ongoing",
+				"limited"
+			],
+			"icons": [
+				"HasPower",
+				"PlayCardNow",
+				"DrawCardNow"
+			],
+			"powers": [
+				"You may play an Equipment card. Draw a card."
+			],
+			"flavorQuotes": [{
+				"identifier": "TheKnight",
+				"text": "I have an oath to uphold,"
+			}],
+			"flavorReference": "The Knight, The Wanderer's Ballad #1"
+		},
+		{
+			"identifier": "PlateHelm",
+			"count": 4,
+			"title": "Plate Helm",
+			"keywords": [
+				"equipment",
+				"limited"
+			],
+			"icons": [
+				"DrawCardNow",
+				"RedirectDamage"
+			],
+			"body": [
+				"When this card enters play, you may draw a card.",
+				"When {TheKnight} would be dealt damage, you may redirect that damage to this card."
+			],
+			"flavorText": "The Knight donned his helm,{BR}and The Scholar his sunglasses.{BR}“Ready”",
+			"flavorReference": "Temporal Targets #53",
+			"hitpoints": 5
+		},
+		{
+			"identifier": "PlateMail",
+			"count": 4,
+			"title": "Plate Mail",
+			"keywords": [
+				"equipment",
+				"limited"
+			],
+			"icons": [
+				"RedirectDamage"
+			],
+			"body": "When {TheKnight} would be dealt damage, you may redirect that damage to this card.",
+			"flavorQuotes": [{
+					"identifier": "TheKnight",
+					"text": "Forgive me, I do not{BR}hail from this place."
+				},
+				{
+					"identifier": "ChronoRanger",
+					"text": "Yeah, can't help you."
+				}
+			],
+			"flavorReference": "Temporal Targets #53",
+			"hitpoints": 5
+		},
+		{
+			"identifier": "ShortSword",
+			"count": 3,
+			"title": "Short Sword",
+			"keywords": [
+				"equipment",
+				"single hand"
+			],
+			"icons": [
+				"Destroy",
+				"IncreaseDamageDealt",
+				"HasPower",
+				"DealDamageMelee"
+			],
+			"body": [
+				"When this card is put into play, destroy all but 2 Single Hand Equipment cards.",
+				"Increase damage dealt by {TheKnight} by 1."
+			],
+			"powers": [
+				"{TheKnight} deals 1 target 2 melee damage."
+			],
+			"flavorText": "A question{BR}The blood{BR}of his enemies{BR}answers."
+		},
+		{
+			"identifier": "StalwartShield",
+			"count": 3,
+			"title": "Stalwart Shield",
+			"keywords": [
+				"equipment",
+				"single hand"
+			],
+			"icons": [
+				"Destroy",
+				"ReduceDamageTaken"
+			],
+			"body": [
+				"When this card is put into play, destroy all but 2 Single Hand Equipment cards.",
+				"Reduce damage taken by {TheKnight} and your Equipment cards by 1."
+			],
+			"flavorText": "An answer{BR}The swords{BR}Of his enemies{BR}Question."
+		},
+		{
+			"identifier": "SureFooting",
+			"count": 2,
+			"title": "Sure Footing",
+			"keywords": [
+				"ongoing",
+				"limited"
+			],
+			"icons": [
+				"HasPower",
+				"PlayCardNow",
+				"DrawCardNow"
+			],
+			"flavorQuotes": [{
+				"identifier": "DocHavoc",
+				"text": "Okay, he's the only one here{BR}allowed to run with scissors."
+			}],
+			"flavorReference": "Doc Havoc, War Journal #200",
+			"powers": [
+				"You may play a one-shot now. Draw a card."
+			]
+		},
+		{
+			"identifier": "SwiftStrikes",
+			"count": 4,
+			"title": "Swift Strikes",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"DealDamageMelee"
+			],
+			"body": "{TheKnight} deals up to 2 targets 1 melee damage each.",
+			"flavorQuotes": [{
+				"identifier": "TheKnight",
+				"text": "Suprise is not something one{BR}shouts, it is something one embodies."
+			}],
+			"flavorReference": "The Knight, A Life in a Day One Shot"
+		},
+		{
+			"identifier": "Whetstone",
+			"count": 2,
+			"title": "Whetstone",
+			"keywords": [
+				"equipment",
+				"limited"
+			],
+			"icons": [
+				"IncreaseDamageDealt"
+			],
+			"body": "Increase melee damage dealt by {TheKnight} by 1.",
+			"flavorQuotes": [{
+				"identifier": "TheKnight",
+				"text": "A warrior is only as good as his{BR}equipment."
+			}],
+			"flavorReference": "The Knight, The Wanderer's Ballad #3"
+		}
+	],
+	"promoCards": [{
+			"identifier": "TheKnightCharacter",
+			"promoIdentifier": "FairTheKnightCharacter",
+			"count": 1,
+			"title": "The Knight",
+			"promoTitle": "The Fair Knight",
+			"shortPromoTitle": "Fair Knight",
+			"body": "Resourceful",
+			"backgroundColor": "FBF8F9",
+			"foilBackgroundColor": "FEFEFE",
+			"hitpointColor": "C94742",
+			"character": true,
+			"powers": [
+				"{TheKnight} and all her targets regain 2 HP."
+			],
+			"icons": [
+				"HasPower",
+				"GainHP"
+			],
+			"hitpoints": 25,
+			"nemesisIdentifiers": [
+				"TheKnight"
+			],
+			"incapacitatedAbilities": [
+				"One player may play a card now.",
+				"One player may draw a card now.",
+				"Until the start of your next turn, reduce damage dealt to hero targets by 2."
+			],
+			"flippedIcons": [
+				"PlayCardNow",
+				"DrawCardNow",
+				"ReduceDamageTaken"
+			],
+			"openingLines": {
+				"default": "default placeholder",
+				"OutlanderCharacter": "Outlander placeholder",
+				"1929RamCharacter": "1929 Ram placeholder",
+				"TiamatCharacter": "Tiamat placeholder",
+				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+			},
+			"complexity": 1
+		},
+		{
+			"identifier": "TheKnightCharacter",
+			"promoIdentifier": "BerzerkerTheKnightCharacter",
+			"count": 1,
+			"title": "The Knight",
+			"promoTitle": "The Berzerker Knight",
+			"shortPromoTitle": "Berzerk Knight",
+			"body": "Rage",
+			"backgroundColor": "FBF8F9",
+			"foilBackgroundColor": "FEFEFE",
+			"hitpointColor": "C94742",
+			"character": true,
+			"powers": [
+				"Destroy an equipment target. {TheKnight} deals 1 target X psychic damage, where X is the HP of the equipment before it was destroyed by 1."
+			],
+			"icons": [
+				"HasPower",
+				"DestroyTarget",
+				"DealDamagePsychic"
+			],
+			"hitpoints": 27,
+			"nemesisIdentifiers": [
+				"TheKnight"
+			],
+			"incapacitatedAbilities": [
+				"One player may draw a card now.",
+				"Increase all damage by 1 until the start of your next turn.",
+				"One target deals itself 1 psychic damage."
+			],
+			"flippedIcons": [
+				"DrawCardNow",
+				"IncreaseDamageDealt",
+				"DealDamagePsychic"
+			],
+			"openingLines": {
+				"default": "default placeholder",
+				"OutlanderCharacter": "Outlander placeholder",
+				"1929RamCharacter": "1929 Ram placeholder",
+				"TiamatCharacter": "Tiamat placeholder",
+				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+			},
+			"complexity": 1
+		},
+		{
+			"identifier": "TheKnightCharacter",
+			"promoIdentifier": "1929TheKnightCharacter",
+			"count": 1,
+			"title": "The Knight",
+			"promoTitle": "The Knight 1929",
+			"shortPromoTitle": "1929 Knight",
+			"body": "Vigilar",
+			"backgroundColor": "FBF8F9",
+			"foilBackgroundColor": "FEFEFE",
+			"hitpointColor": "C94742",
+			"character": true,
+			"powers": [
+				"Play an equipment target next to a hero. Treat {TheKnight}'s name on that equipment as the name of the hero it is next to."
+			],
+			"icons": [
+				"HasPower",
+				"PlayCardNow"
+			],
+			"hitpoints": 27,
+			"nemesisIdentifiers": [
+				"TheKnight"
+			],
+			"incapacitatedAbilities": [
+				"One player may draw a card now.",
+				"Reveal the top card of the villain deck, then replace it.",
+				"Select a target, increase the next damage dealt to and by that target by 2."
+			],
+			"flippedIcons": [
+				"DrawCardNow",
+				"Manipulate",
+				"IncreaseDamageTaken",
+				"IncreaseDamageDealt"
+			],
+			"openingLines": {
+				"default": "default placeholder",
+				"OutlanderCharacter": "Outlander placeholder",
+				"1929RamCharacter": "1929 Ram placeholder",
+				"TiamatCharacter": "Tiamat placeholder",
+				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+			},
+			"complexity": 1
+		},
+		{
+			"identifier": "TheKnightCharacter",
+			"promoIdentifier": "WastelandRoninTheKnightCharacter",
+			"count": 1,
+			"title": "The Knight",
+			"promoTitle": "The Knights: Wasteland Ronin",
+			"shortPromoTitle": "The Wasteland Knights",
+			"backgroundColor": "FBF8F9",
+			"foilBackgroundColor": "FEFEFE",
+			"hitpointColor": "C94742",
+			"setup": [
+				"At the start of the game, put the caharacter cards for the Young and Old Knights into play, active side up.",
+				"Shuffle the hero deck and draw 4 cards."
+			],
+			"gameplay": [
+				"If you have no hero character targets in play, flip this card.",
+				"When 1 of your equipment cards enter play, put it next to 1 of your active knights.",
+				"When your cards refer to “The Knight”, put it next to 1 of your active knights. For equipment cards, you must choose the knight they are next to. Stalwart Shield does not reduce damage to the other knight's equipment targets.",
+				"Whenever an equipment enters play next to The Young Knight, she deals 1 target 1 toxic damage.",
+				"Whenever an equipment card enters play next to The Old Knight, draw a card."
+			],
+			"icons": [
+				"DealDamageToxic",
+				"DrawCardNow"
+			],
+			"flippedTitle": "Incapacitated",
+			"incapacitatedAbilities": [
+				"One hero deals 1 target 1 projectile damage.",
+				"One target regains 1 HP.",
+				"One player may discard a card to play 2 cards now."
+			],
+			"flippedIcons": [
+				"DealDamageProjectile",
+				"GainHP",
+				"Discard",
+				"PlayCardNow"
+			],
+			"openingLines": {
+				"default": "default placeholder",
+				"OutlanderCharacter": "Outlander placeholder",
+				"1929RamCharacter": "1929 Ram placeholder",
+				"TiamatCharacter": "Tiamat placeholder",
+				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+			},
+			"complexity": 1
+		},
+		{
+			"identifier": "TheKnightCharacter",
+			"promoIdentifier": "WastelandRoninTheKnightCharacter",
+			"count": 1,
+			"title": "The Knight",
+			"promoTitle": "The Old Knight: Wasteland Ronin",
+			"shortPromoTitle": "The Old Knight",
+			"body": "Destroyer",
+			"backgroundColor": "FBF8F9",
+			"foilBackgroundColor": "FEFEFE",
+			"hitpointColor": "C94742",
+			"character": true,
+			"powers": [
+				"{TheKnight} deals 1 target 2 irreducible lightning damage. Return 1 of your equipment cards in play to your hand."
+			],
+			"icons": [
+				"HasPower",
+				"DealDamageLightning",
+				"Manipulate"
+			],
+			"hitpoints": 18,
+			"nemesisIdentifiers": [
+				"TheKnight"
+			],
+			"flippedTitle": "Incapacitated",
+			"flippedBody": "When {TheKnight} flips to this side, destroy all equipment cards next to him.",
+			"flippedIcons": [
+				"DestroyEquipment"
+			],
+			"openingLines": {
+				"default": "default placeholder",
+				"OutlanderCharacter": "Outlander placeholder",
+				"1929RamCharacter": "1929 Ram placeholder",
+				"TiamatCharacter": "Tiamat placeholder",
+				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+			},
+			"complexity": 1
+		},
+		{
+			"identifier": "TheKnightCharacter",
+			"promoIdentifier": "WastelandRoninTheKnightCharacter",
+			"count": 1,
+			"title": "The Knight",
+			"promoTitle": "The Young Knight: Wasteland Ronin",
+			"shortPromoTitle": "The Young Knight",
+			"body": "Dragon's Dance",
+			"backgroundColor": "FBF8F9",
+			"foilBackgroundColor": "FEFEFE",
+			"hitpointColor": "C94742",
+			"character": true,
+			"powers": [
+				"{TheKnight} deals herself and 2 other targets 2 toxic damage each"
+			],
+			"icons": [
+				"HasPower",
+				"DealDamageToxic"
+			],
+			"hitpoints": 15,
+			"nemesisIdentifiers": [
+				"TheKnight"
+			],
+			"flippedTitle": "Incapacitated",
+			"flippedBody": "When {TheKnight} flips to this side, destroy all equipment cards next to her.",
+			"flippedIcons": [
+				"DestroyEquipment"
+			],
+			"openingLines": {
+				"default": "default placeholder",
+				"OutlanderCharacter": "Outlander placeholder",
+				"1929RamCharacter": "1929 Ram placeholder",
+				"TiamatCharacter": "Tiamat placeholder",
+				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+			},
+			"complexity": 1
+		}
+	]
 }
