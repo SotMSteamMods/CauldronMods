@@ -60,7 +60,6 @@ namespace Cauldron.TheWanderingIsle
 				base.GameController.ExhaustCoroutine(destroy);
 			}
 			yield break;
-			yield break;
 		}
 
 		public override IEnumerator Play()
