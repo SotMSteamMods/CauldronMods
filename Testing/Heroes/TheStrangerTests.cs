@@ -265,7 +265,178 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestCorruptionDraw4()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
 
+            GoToPlayCardPhase(stranger);
+
+            //Draw up to 4 cards.
+            QuickHandStorage(stranger);
+
+            //draw 4
+            DecisionsYesNo = new bool[] { true, true, true, true };
+            PlayCard("Corruption");
+            QuickHandCheck(4);
+        }
+
+        [Test()]
+        public void TestCorruptionDraw3()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(stranger);
+
+            //Draw up to 4 cards.
+            QuickHandStorage(stranger);
+            //draw 3
+            DecisionsYesNo = new bool[] { true, true, true, false };
+            PlayCard("Corruption");
+            QuickHandCheck(3);
+        }
+        [Test()]
+        public void TestCorruptionDraw2()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(stranger);
+
+            //Draw up to 4 cards.
+            QuickHandStorage(stranger);
+            //draw 2
+            DecisionsYesNo = new bool[] { true, true, false };
+            PlayCard("Corruption");
+            QuickHandCheck(2);
+        }
+
+        [Test()]
+        public void TestCorruptionDraw1()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(stranger);
+
+            //Draw up to 4 cards.
+            QuickHandStorage(stranger);
+            //draw 1
+            DecisionsYesNo = new bool[] { true, false };
+            PlayCard("Corruption");
+            QuickHandCheck(1);
+        }
+
+
+        [Test()]
+        public void TestCorruptionNoDraw()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            //Draw up to 4 cards.
+            QuickHandStorage(stranger);
+            DecisionsYesNo = new bool[] { false };
+            PlayCard("Corruption");
+            QuickHandCheck(0);
+        }
+
+        [Test()]
+        public void TestCorruptionDamage_ZeroDrawn()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(stranger);
+
+            //Draw up to 4 cards.
+            QuickHPStorage(stranger);
+            //draw 4
+            DecisionsYesNo = new bool[] { false };
+            PlayCard("Corruption");
+
+            //For each card drawn this way, TheStranger deals himself 1 toxic damage.
+            QuickHPCheck(0);
+
+        }
+
+        [Test()]
+        public void TestCorruptionDamage_FourDrawn()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(stranger);
+
+            //Draw up to 4 cards.
+            QuickHPStorage(stranger);
+            //draw 4
+            DecisionsYesNo = new bool[] { true, true, true, true };
+            PlayCard("Corruption");
+
+            //For each card drawn this way, TheStranger deals himself 1 toxic damage.
+            QuickHPCheck(-4);
+            
+        }
+
+        [Test()]
+        public void TestCorruptionDamage_ThreeDrawn()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(stranger);
+
+            //Draw up to 4 cards.
+            QuickHPStorage(stranger);
+            //draw 3
+            DecisionsYesNo = new bool[] { true, true, true, false };
+            PlayCard("Corruption");
+
+            //For each card drawn this way, TheStranger deals himself 1 toxic damage.
+            QuickHPCheck(-3);
+
+        }
+
+        [Test()]
+        public void TestCorruptionDamage_TwoDrawn()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(stranger);
+
+            //Draw up to 4 cards.
+            QuickHPStorage(stranger);
+            //draw 2
+            DecisionsYesNo = new bool[] { true, true, false };
+            PlayCard("Corruption");
+
+            //For each card drawn this way, TheStranger deals himself 1 toxic damage.
+            QuickHPCheck(-2);
+
+        }
+
+        [Test()]
+        public void TestCorruptionDamage_OneDrawn()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(stranger);
+
+            //Draw up to 4 cards.
+            QuickHPStorage(stranger);
+            //draw 1
+            DecisionsYesNo = new bool[] { true, false };
+            PlayCard("Corruption");
+
+            //For each card drawn this way, TheStranger deals himself 1 toxic damage.
+            QuickHPCheck(-1);
+
+        }
 
 
     }
