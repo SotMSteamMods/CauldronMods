@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Handelabra.Sentinels.Engine.Controller.ChronoRanger;
 
 namespace CauldronTests
 {
@@ -50,7 +51,7 @@ namespace CauldronTests
 
             GoToUsePowerPhase(stranger);
             AssertInHand(binding);
-            DecisionSelectCard = binding;
+            DecisionSelectCards = new Card[] { binding, baron.CharacterCard };
             //Play a rune
             UsePower(stranger.CharacterCard);
             AssertIsInPlay(binding);
@@ -457,7 +458,7 @@ namespace CauldronTests
             //play 3 cards
             DecisionsYesNo = new bool[] { true, true, true };
             //choose the 3 cards to play
-            DecisionSelectCards = new Card[] { boneLeech, faded, twistedShadow };
+            DecisionSelectCards = new Card[] { boneLeech, haka.CharacterCard, faded, haka.CharacterCard, twistedShadow, haka.CharacterCard };
             PlayCard("FlickeringWeb");
             AssertIsInPlay(boneLeech, faded, twistedShadow);
 
@@ -662,7 +663,7 @@ namespace CauldronTests
             Card decay = GetCardInPlay("GlyphOfDecay");
             //Power: You may play a Rune. 
             GoToUsePowerPhase(stranger);
-            DecisionSelectCard = rune;
+            DecisionSelectCards = new Card[] { rune, baron.CharacterCard };
             UsePower(decay);
             AssertIsInPlay(rune);
 
@@ -836,7 +837,7 @@ namespace CauldronTests
             GoToPlayCardPhase(stranger);
             //say yes we want to play a card
             DecisionYesNo = true;
-            DecisionSelectCard = boneLeech;
+            DecisionSelectCards = new Card[] { boneLeech, haka.CharacterCard };
             //cause a villain target to enter play
             PlayCard("ElementalRedistributor");
             AssertIsInPlay(boneLeech);
@@ -906,6 +907,7 @@ namespace CauldronTests
 
         }
 
+
         [Test()]
         public void TestMarkOfBindingReduceDamage()
         {
@@ -922,6 +924,86 @@ namespace CauldronTests
             DealDamage(mdp, haka.CharacterCard, 5, DamageType.Melee);
             //should be reduced by 1, so 4 damage taken
             QuickHPCheck(-4);
+
+
+        }
+
+        [Test()]
+        public void TestMarkOfBreakingDestroySuccessful()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToEndOfTurn(haka);
+            PutIntoPlay("MarkOfBreaking");
+            Card rune = GetCardInPlay("MarkOfBreaking");
+            //At the start of your turn you may destroy this card. If you do not, TheStranger deals himself 1 irreducible toxic damage.
+            AssertIsInPlay(rune);
+            //yes we want to destroy
+            DecisionYesNo = true;
+            QuickHPStorage(stranger);
+            GoToStartOfTurn(stranger);
+            //should have been destroyed and no damage dealt
+            AssertInTrash(rune);
+            QuickHPCheckZero();
+
+        }
+
+        [Test()]
+        public void TestMarkOfBreakingDestroyFailed()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToEndOfTurn(haka);
+            PutIntoPlay("MarkOfBreaking");
+            Card rune = GetCardInPlay("MarkOfBreaking");
+            //At the start of your turn you may destroy this card. If you do not, TheStranger deals himself 1 irreducible toxic damage.
+            AssertIsInPlay(rune);
+            //no we don't want to destroy
+            DecisionYesNo = false;
+            QuickHPStorage(stranger);
+            GoToStartOfTurn(stranger);
+            //should have not been destroyed and damage dealt
+            AssertIsInPlay(rune);
+            QuickHPCheck(-1);
+
+        }
+
+        [Test()]
+        public void TestMarkOfBreakingPutNextToTarget()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToPlayCardPhase(stranger);
+
+            //Play this next to a target. Increase damage dealt to that target by 1. 
+            DecisionSelectCard = mdp;
+            PutIntoPlay("MarkOfBreaking");
+            Card rune = GetCardInPlay("MarkOfBreaking");
+            AssertNextToCard(rune, mdp);
+
+
+        }
+
+
+        [Test()]
+        public void TestMarkOfBreakingIncreaseDamage()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToPlayCardPhase(stranger);
+
+            //Play this next to a target. Increase damage dealt to that target by 1.
+            DecisionSelectCard = mdp;
+            PutIntoPlay("MarkOfBreaking");
+            Card rune = GetCardInPlay("MarkOfBreaking");
+            QuickHPStorage(mdp);
+            DealDamage(haka.CharacterCard, mdp, 5, DamageType.Melee);
+            //should be increase by 1, so 6 damage taken
+            QuickHPCheck(-6);
 
 
         }

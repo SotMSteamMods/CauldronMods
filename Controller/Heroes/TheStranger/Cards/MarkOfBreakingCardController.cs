@@ -16,7 +16,12 @@ namespace Cauldron.TheStranger
         #endregion Constructors
 
         #region Methods
-
-        #endregion Methods
+        public override void AddTriggers()
+        {
+            base.AddTriggers();
+            //Increase damage dealt to that target by 1.
+            base.AddIncreaseDamageTrigger((DealDamageAction dd) => dd.Target == base.GetCardThisCardIsNextTo(true), 1);
+        }
     }
+    #endregion Methods
 }
