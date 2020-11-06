@@ -8,7 +8,7 @@ namespace Cauldron.TheStranger
     {
         #region Constructors
 
-        public MarkOfBreakingCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public MarkOfBreakingCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new LinqCardCriteria((Card c) => c.IsTarget, "targets", false, false, null, null, false))
         {
 
         }

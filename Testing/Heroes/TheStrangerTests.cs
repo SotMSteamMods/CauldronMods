@@ -7,6 +7,7 @@ using Cauldron.TheStranger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace CauldronTests
 {
@@ -844,6 +845,85 @@ namespace CauldronTests
             DecisionSelectCard = faded;
             PlayCard("PoliceBackup");
             AssertInHand(faded);
+        }
+
+        [Test()]
+        public void TestMarkOfBindingDestroySuccessful()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToEndOfTurn(haka);
+            PutIntoPlay("MarkOfBinding");
+            Card rune = GetCardInPlay("MarkOfBinding");
+            //At the start of your turn you may destroy this card. If you do not, TheStranger deals himself 1 irreducible toxic damage.
+            AssertIsInPlay(rune);
+            //yes we want to destroy
+            DecisionYesNo = true;
+            QuickHPStorage(stranger);
+            GoToStartOfTurn(stranger);
+            //should have been destroyed and no damage dealt
+            AssertInTrash(rune);
+            QuickHPCheckZero();
+
+        }
+
+        [Test()]
+        public void TestMarkOfBindingDestroyFailed()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToEndOfTurn(haka);
+            PutIntoPlay("MarkOfBinding");
+            Card rune = GetCardInPlay("MarkOfBinding");
+            //At the start of your turn you may destroy this card. If you do not, TheStranger deals himself 1 irreducible toxic damage.
+            AssertIsInPlay(rune);
+            //no we don't want to destroy
+            DecisionYesNo = false;
+            QuickHPStorage(stranger);
+            GoToStartOfTurn(stranger);
+            //should have not been destroyed and damage dealt
+            AssertIsInPlay(rune);
+            QuickHPCheck(-1);
+
+        }
+
+        [Test()]
+        public void TestMarkOfBindingPutNextToTarget()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToPlayCardPhase(stranger);
+
+            //Play this next to a non-hero target. Reduce damage dealt by that target by 1. 
+            DecisionSelectCard = mdp;
+            PutIntoPlay("MarkOfBinding");
+            Card rune = GetCardInPlay("MarkOfBinding");
+            AssertNextToCard(rune, mdp);
+
+
+        }
+
+        [Test()]
+        public void TestMarkOfBindingReduceDamage()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToPlayCardPhase(stranger);
+
+            //Play this next to a non-hero target. Reduce damage dealt by that target by 1. 
+            DecisionSelectCard = mdp;
+            PutIntoPlay("MarkOfBinding");
+            Card rune = GetCardInPlay("MarkOfBinding");
+            QuickHPStorage(haka);
+            DealDamage(mdp, haka.CharacterCard, 5, DamageType.Melee);
+            //should be reduced by 1, so 4 damage taken
+            QuickHPCheck(-4);
+
+
         }
 
     }

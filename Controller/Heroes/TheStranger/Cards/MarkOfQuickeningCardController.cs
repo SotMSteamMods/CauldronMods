@@ -8,7 +8,7 @@ namespace Cauldron.TheStranger
     {
         #region Constructors
 
-        public MarkOfQuickeningCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public MarkOfQuickeningCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, "hero", true, false, null, null, false))
         {
 
         }
