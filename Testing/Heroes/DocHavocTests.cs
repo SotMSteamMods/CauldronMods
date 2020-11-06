@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Cauldron.DocHavoc;
+
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
@@ -195,6 +197,39 @@ namespace CauldronTests
             // Assert
             AssertTriggersWhere((Func<ITrigger, bool>)(t => t.Types.Contains(TriggerType.GainHP)));
             QuickHPCheck(2, 1);
+        }
+
+        [Test]
+        public void TestFieldDressing()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "Megalopolis");
+
+            // We need to make an explicit hand so two FieldDressings aren't in hand so it doesn't play another FieldDressing which will throw off the Asserts
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                FieldDressingCardController.Identifier, PhosphorBlastCardController.Identifier, PhosphorBlastCardController.Identifier, PhosphorBlastCardController.Identifier
+            });
+
+            StartGame();
+
+            // Reduce Ra's, Havoc's  HP by 2
+            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+            DealDamage(baron, ra, 2, DamageType.Melee);
+            QuickHPStorage(ra, DocHavoc);
+            QuickHandStorage(DocHavoc);
+
+            // Act
+            Card phosphorBlast = GetCard(PhosphorBlastCardController.Identifier);
+            DecisionSelectCardToPlay = phosphorBlast;
+
+            GoToPlayCardPhase(DocHavoc);
+            Card fieldDressing = GetCardFromHand(FieldDressingCardController.Identifier);
+            PlayCard(fieldDressing);
+
+            // Assert
+            QuickHPCheck(1, 1);
+            QuickHandCheck(-2);
         }
 
     }
