@@ -589,6 +589,104 @@ namespace CauldronTests
             QuickHPCheck(-1);
         }
 
+        [Test()]
+        public void TestGlyphOfDecayPrevention_FirstDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(stranger);
+            PutIntoPlay("GlyphOfDecay");
+
+            //Once during your turn when TheStranger would deal himself damage, prevent that damage.
+            QuickHPStorage(stranger);
+            DecisionYesNo = true;
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since damage was prevented, no change in health
+            QuickHPCheckZero();
+
+            QuickHPStorage(stranger);
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since already used this turn, damage should be dealt
+            QuickHPCheck(-5);
+
+            GoToStartOfTurn(stranger);
+            QuickHPStorage(stranger);
+            DecisionYesNo = true;
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since new round, damage was prevented, no change in health
+            QuickHPCheckZero();
+        }
+        [Test()]
+        public void TestGlyphOfDecayPrevention_SecondDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(stranger);
+            PutIntoPlay("GlyphOfDecay");
+
+            //Once during your turn when TheStranger would deal himself damage, prevent that damage.
+            QuickHPStorage(stranger);
+            DecisionsYesNo = new bool[] { false, true, true };
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since said no, -5
+            QuickHPCheck(-5);
+
+            QuickHPStorage(stranger);
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since said yes, damage should be prevented
+            QuickHPCheckZero();
+
+            GoToStartOfTurn(stranger);
+            QuickHPStorage(stranger);
+            DecisionYesNo = true;
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since new round, damage was prevented, no change in health
+            QuickHPCheckZero();
+        }
+
+        [Test()]
+        public void TestGlyphOfDecayPower_Play()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            //put a rune in hand
+            Card rune = GetCard("MarkOfBinding");
+            PutInHand(rune);
+
+            GoToPlayCardPhase(stranger);
+            PutIntoPlay("GlyphOfDecay");
+            Card decay = GetCardInPlay("GlyphOfDecay");
+            //Power: You may play a Rune. 
+            GoToUsePowerPhase(stranger);
+            DecisionSelectCard = rune;
+            UsePower(decay);
+            AssertIsInPlay(rune);
+
+        }
+
+
+
+        [Test()]
+        public void TestGlyphOfDecayPower_Damage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(stranger);
+            PutIntoPlay("GlyphOfDecay");
+            Card decay = GetCardInPlay("GlyphOfDecay");
+            //{TheStranger} deals 1 target 1 toxic damage.
+            GoToUsePowerPhase(stranger);
+            DecisionSelectTarget = haka.CharacterCard;
+            QuickHPStorage(haka);
+            UsePower(decay);
+            //1 damage should be dealt
+            QuickHPCheck(-1);
+        }
+
 
     }
 }
