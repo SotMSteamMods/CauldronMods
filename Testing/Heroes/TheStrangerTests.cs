@@ -1504,5 +1504,80 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestTheOldRoads_GlyphFromTrash()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            //put a glyph in trash
+            Card glyph = GetCard("GlyphOfDecay");
+            PutInTrash(stranger, glyph);
+
+
+
+            //Put a Glyph from your trash into your hand, or reveal cards from the top of your deck until you reveal a Glyph, put it into play, and shuffle the other revealed cards into your deck. 
+            //taking glyph from trash
+            DecisionSelectFunction = 0;
+            AssertInTrash(glyph);
+            PutIntoPlay("TheOldRoads");
+            AssertInHand(glyph);
+        }
+
+        [Test()]
+        public void TestTheOldRoads_GlyphFromDeck()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            Card roads = GetCard("TheOldRoads");
+            PutInHand(roads);
+            //stack so glyph is second card in the deck
+            Card glyph = GetCard("GlyphOfDecay");
+            PutOnDeck(stranger, glyph);
+            PutOnDeck("Corruption");
+
+
+            //Put a Glyph from your trash into your hand, or reveal cards from the top of your deck until you reveal a Glyph, put it into play, and shuffle the other revealed cards into your deck. 
+
+            //revealing cards from deck
+            DecisionSelectFunction = 1;
+            AssertInDeck(glyph);
+            int numCardsInDeckBefore = GetNumberOfCardsInDeck(stranger);
+            PlayCard(roads);
+
+            AssertIsInPlay(glyph);
+            //2 cards off deck, 1 for glyph, 1 for card draw
+            AssertNumberOfCardsInDeck(stranger, numCardsInDeckBefore - 2);
+
+        }
+
+        [Test()]
+        public void TestTheOldRoads_DrawCard()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+
+           // put a glyph in trash
+            Card glyph = GetCard("GlyphOfDecay");
+            PutInTrash(stranger, glyph);
+
+            //put card on top of deck to draw
+            Card web = GetCard("FlickeringWeb");
+            PutOnDeck(stranger, web);
+
+            //You may draw card
+            DecisionSelectFunction = 0;
+            //yes we want to draw a card
+            DecisionYesNo = true;
+            AssertInDeck(web);
+            PutIntoPlay("TheOldRoads");
+            //flickering web should have moved from deck to hand
+            AssertInHand(web);
+
+
+        }
+
     }
 }
