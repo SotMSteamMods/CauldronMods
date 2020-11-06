@@ -28,7 +28,7 @@ namespace Cauldron.TheKnight
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             var storedResult = new List<SelectCardDecision>();
-            criteria = new LinqCardCriteria(c => c.IsHero && c.IsTarget, "hero target");
+            criteria = new LinqCardCriteria(c => c.IsHero && c.IsTarget && c.IsInPlay, "hero target");
             coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.IncreaseDamage, criteria, storedResult, false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
@@ -43,7 +43,7 @@ namespace Cauldron.TheKnight
             {
                 Card card = GetSelectedCard(storedResult);
                 IncreaseDamageStatusEffect increaseDamageStatusEffect = new IncreaseDamageStatusEffect(1);
-                increaseDamageStatusEffect.TargetCriteria.IsSpecificCard = card;
+                increaseDamageStatusEffect.SourceCriteria.IsSpecificCard = card;
                 increaseDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
 
                 coroutine = base.AddStatusEffect(increaseDamageStatusEffect, true);

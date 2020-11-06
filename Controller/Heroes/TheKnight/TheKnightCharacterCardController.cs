@@ -33,7 +33,7 @@ namespace Cauldron.TheKnight
                 case 0:
                     {
                         //"One player may play a card now."
-                        coroutine = base.SelectHeroToPlayCard(this.DecisionMaker);
+                        coroutine = base.SelectHeroToPlayCard(this.HeroTurnTakerController);
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -93,7 +93,7 @@ namespace Cauldron.TheKnight
                         {
                             Card selectedCard = GetSelectedCard(storedResults);
                             IncreaseDamageStatusEffect increaseDamageStatusEffect = new IncreaseDamageStatusEffect(1);
-                            increaseDamageStatusEffect.TargetCriteria.IsSpecificCard = selectedCard;
+                            increaseDamageStatusEffect.SourceCriteria.IsSpecificCard = selectedCard;
                             increaseDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
                             coroutine = base.AddStatusEffect(increaseDamageStatusEffect, true);
                             if (base.UseUnityCoroutines)

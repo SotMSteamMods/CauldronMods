@@ -16,7 +16,7 @@ namespace Cauldron.TheKnight
         {
         }
 
-        protected bool IsSingleHandCard(Card card)
+        public bool IsSingleHandCard(Card card)
         {
             return card.DoKeywordsContain(SingleHandKeyword, evenIfUnderCard: true);
         }
@@ -31,12 +31,12 @@ namespace Cauldron.TheKnight
             return card.IsHeroCharacterCard && card.ParentDeck == this.Card.ParentDeck;
         }
 
-        protected IEnumerator SelectOwnCharacterCard(List<SelectCardDecision> result, SelectionType selectionType)
+        public IEnumerator SelectOwnCharacterCard(List<SelectCardDecision> results, SelectionType selectionType)
         {
             if (base.HeroTurnTakerController.HasMultipleCharacterCards)
             {
                 var criteria = new LinqCardCriteria(c => IsOwnCharacterCard(c), "hero character cards");
-                var coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, selectionType, criteria, result, false, cardSource: base.GetCardSource());
+                var coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, selectionType, criteria, results, false, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -48,7 +48,10 @@ namespace Cauldron.TheKnight
             }
             else
             {
-                result.Add(new SelectCardDecision(this.GameController, this.DecisionMaker, selectionType, new[] { base.CharacterCard }, false, true, cardSource: base.GetCardSource()));
+                var result = new SelectCardDecision(this.GameController, this.DecisionMaker, selectionType, new[] { base.CharacterCard }, false, true, cardSource: base.GetCardSource());
+                result.ChooseIndex(0);
+                result.AutoDecide();
+                results.Add(result);
             }
             yield break;
         }

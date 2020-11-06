@@ -16,8 +16,6 @@ namespace Cauldron.TheKnight
 
         public override void AddTriggers()
         {
-            //TODO - Promo Support
-
             //"Reduce damage taken by {TheKnight} and your Equipment cards by 1."
             base.AddReduceDamageTrigger(c => IsEquipmentEffectingCard(c), 1);
             base.AddTriggers();

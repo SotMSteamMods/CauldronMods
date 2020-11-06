@@ -18,7 +18,7 @@ namespace Cauldron.TheKnight
             //"Select up to 2 Equipment cards from your trash. Put one into play and one into your hand.",
             bool criteria(Card c) => c.Owner == this.TurnTaker && IsEquipment(c) && c.Location.OwnerTurnTaker == this.TurnTaker && c.Location.Name == LocationName.Trash;
             List<SelectCardsDecision> storedResults = new List<SelectCardsDecision>();
-            var coroutine = base.GameController.SelectCardsAndStoreResults(this.DecisionMaker, SelectionType.SearchTrash, criteria, 2, storedResults, true, cardSource: base.GetCardSource());
+            var coroutine = base.GameController.SelectCardsAndStoreResults(this.DecisionMaker, SelectionType.SearchTrash, criteria, 2, storedResults, false, 0, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -27,9 +27,9 @@ namespace Cauldron.TheKnight
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            if (storedResults.Count > 0)
+            if (DidSelectCards(storedResults))
             {
-                var cards = base.GetSelectedCards(storedResults).ToList();
+                var cards = GetSelectedCards(storedResults).ToList();
                 var card = cards[0];
 
                 var destinations = new[] {
@@ -48,7 +48,7 @@ namespace Cauldron.TheKnight
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                if (storedResults.Count > 1)
+                if (cards.Count > 1)
                 {
                     card = cards[1];
                     Location destination;
