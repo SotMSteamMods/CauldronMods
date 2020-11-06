@@ -438,6 +438,54 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestFlickeringWeb_Play3()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            Card boneLeech = GetCard("MarkOfTheBoneLeech");
+            Card faded = GetCard("MarkOfTheFaded");
+            Card twistedShadow = GetCard("MarkOfTheTwistedShadow");
+            PutInHand(boneLeech);
+            PutInHand(faded);
+            PutInHand(twistedShadow);
+
+            GoToPlayCardPhase(stranger);
+            //You may play up to 3 Runes now.
+            //play 3 cards
+            DecisionsYesNo = new bool[] { true, true, true };
+            //choose the 3 cards to play
+            DecisionSelectCards = new Card[] { boneLeech, faded, twistedShadow };
+            PlayCard("FlickeringWeb");
+            AssertIsInPlay(boneLeech, faded, twistedShadow);
+
+        }
+
+
+        [Test()]
+        public void TestFlickeringWeb_Play0()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            Card boneLeech = GetCard("MarkOfTheBoneLeech");
+            Card faded = GetCard("MarkOfTheFaded");
+            Card twistedShadow = GetCard("MarkOfTheTwistedShadow");
+            PutInHand(boneLeech);
+            PutInHand(faded);
+            PutInHand(twistedShadow);
+
+            GoToPlayCardPhase(stranger);
+            //You may play up to 3 Runes now.
+            //play 0 cards
+            DecisionsYesNo = new bool[] { false };
+
+            PlayCard("FlickeringWeb");
+            AssertInHand(boneLeech, faded, twistedShadow);
+
+        }
+
 
     }
 }
