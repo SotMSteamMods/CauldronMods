@@ -5,10 +5,10 @@ using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
-namespace Cauldron
+namespace Cauldron.Tiamat
 {
-    class WinterTiamatCharacterCardController : VillainCharacterCardController
-    {
+    class WinterTiamatCharacterCardController : TiamatCharacterCardController
+	{
         public WinterTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 

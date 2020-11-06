@@ -5,7 +5,7 @@ using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
-namespace Cauldron
+namespace Cauldron.Tiamat
 {
     public class ElementalFormCardController : CardController
     {
