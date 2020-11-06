@@ -138,7 +138,10 @@
                 "Search",
                 "ReduceDamageDealt"
             ],
-            "body": "Search your deck for a copy of “Plate Mail” or “Plate Helm” and put it into play. Shuffle your deck. Select a hero target. Until the start of your next turn, reduce damage dealt to that target by 1.",
+            "body": [ 
+                "Search your deck for a copy of “Plate Mail” or “Plate Helm” and put it into play. Shuffle your deck.",
+                "Select a hero target. Until the start of your next turn, reduce damage dealt to that target by 1."
+            ]
             "flavorQuotes": [
                 {
                     "identifier": "TheKnight",
