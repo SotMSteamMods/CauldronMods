@@ -1579,5 +1579,136 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestUnweaveShuffle4_Gain4()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(stranger.CharacterCard, 10);
+            Card rune1 = GetCard("MarkOfBinding");
+            Card rune2 = GetCard("MarkOfBreaking");
+            Card rune3 = GetCard("MarkOfDestruction");
+            Card rune4 = GetCard("MarkOfQuickening");
+            PutInTrash(stranger, rune1);
+            PutInTrash(stranger, rune2);
+            PutInTrash(stranger, rune3);
+            PutInTrash(stranger, rune4);
+
+
+            //You may shuffle up to 4 Runes from your trash into your deck, or discard up to 4 cards.",
+            //For each card shuffled or discarded this way, {TheStranger} may draw a card or regain 1HP."
+            //shuffle, gain hp, gain hp, gain hp, gain hp
+            DecisionSelectFunctions = new int?[] { 0, 1, 1, 1, 1 };
+            DecisionSelectCards = new Card[] { rune1, rune2, rune3, rune4 };
+            QuickHPStorage(stranger);
+            PutIntoPlay("Unweave");
+            QuickHPCheck(4);
+            AssertInDeck(rune1);
+            AssertInDeck(rune2);
+            AssertInDeck(rune3);
+            AssertInDeck(rune4);
+
+
+
+        }
+
+        [Test()]
+        public void TestUnweaveShuffle4_Draw4()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(stranger.CharacterCard, 10);
+            Card rune1 = GetCard("MarkOfBinding");
+            Card rune2 = GetCard("MarkOfBreaking");
+            Card rune3 = GetCard("MarkOfDestruction");
+            Card rune4 = GetCard("MarkOfQuickening");
+            PutInTrash(stranger, rune1);
+            PutInTrash(stranger, rune2);
+            PutInTrash(stranger, rune3);
+            PutInTrash(stranger, rune4);
+
+
+            //You may shuffle up to 4 Runes from your trash into your deck, or discard up to 4 cards.",
+            //For each card shuffled or discarded this way, {TheStranger} may draw a card or regain 1HP."
+            //shuffle,draw, draw, draw, draw
+            DecisionSelectFunctions = new int?[] { 0, 0, 0, 0, 0 };
+            DecisionSelectCards = new Card[] { rune1, rune2, rune3, rune4 };
+            QuickHandStorage(stranger);
+            PutIntoPlay("Unweave");
+            QuickHandCheck(4);
+            AssertNotInTrash(rune1);
+            AssertNotInTrash(rune2);
+            AssertNotInTrash(rune3);
+            AssertNotInTrash(rune4);
+
+        }
+
+        [Test()]
+        public void TestUnweaveDiscard4_Draw4()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(stranger.CharacterCard, 10);
+            Card rune1 = GetCard("MarkOfBinding");
+            Card rune2 = GetCard("MarkOfBreaking");
+            Card rune3 = GetCard("MarkOfDestruction");
+            Card rune4 = GetCard("MarkOfQuickening");
+            PutInHand(stranger, rune1);
+            PutInHand(stranger, rune2);
+            PutInHand(stranger, rune3);
+            PutInHand(stranger, rune4);
+
+
+            //You may shuffle up to 4 Runes from your trash into your deck, or discard up to 4 cards.",
+            //For each card shuffled or discarded this way, {TheStranger} may draw a card or regain 1HP."
+            //discard,draw, draw, draw, draw
+            DecisionSelectFunctions = new int?[] { 1, 0, 0, 0, 0 };
+            DecisionSelectCards = new Card[] { rune1, rune2, rune3, rune4 };
+            QuickHandStorage(stranger);
+            PutIntoPlay("Unweave");
+            QuickHandCheck(0);
+            AssertInTrash(rune1);
+            AssertInTrash(rune2);
+            AssertInTrash(rune3);
+            AssertInTrash(rune4);
+
+        }
+
+        [Test()]
+        public void TestUnweaveDiscard4_Gain4()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(stranger.CharacterCard, 10);
+            Card rune1 = GetCard("MarkOfBinding");
+            Card rune2 = GetCard("MarkOfBreaking");
+            Card rune3 = GetCard("MarkOfDestruction");
+            Card rune4 = GetCard("MarkOfQuickening");
+            PutInHand(stranger, rune1);
+            PutInHand(stranger, rune2);
+            PutInHand(stranger, rune3);
+            PutInHand(stranger, rune4);
+
+
+            //You may shuffle up to 4 Runes from your trash into your deck, or discard up to 4 cards.",
+            //For each card shuffled or discarded this way, {TheStranger} may draw a card or regain 1HP."
+            //discard,gain hp, gain hp, gain hp, gain hp
+            DecisionSelectFunctions = new int?[] { 1, 1, 1, 1, 1 };
+            DecisionSelectCards = new Card[] { rune1, rune2, rune3, rune4 };
+            QuickHPStorage(stranger);
+            PutIntoPlay("Unweave");
+            QuickHPCheck(4);
+            AssertInTrash(rune1);
+            AssertInTrash(rune2);
+            AssertInTrash(rune3);
+            AssertInTrash(rune4);
+
+        }
+
+
     }
 }
