@@ -21,6 +21,7 @@ namespace Cauldron.TheKnight
 
         private IEnumerator DestroyExcessSingleHandCardReponse()
         {
+            //"When this card is put into play, destroy all but 2 Single Hand Equipment cards.",
             int num = base.FindCardsWhere((Card c) => IsEquipment(c) && IsSingleHandCard(c) && c.IsInPlay).Count();
             if (num > 2)
             {

@@ -17,7 +17,6 @@ namespace Cauldron.TheKnight
         {
             //"Search your deck for a Single Hand Equipment card and put it into play. Shuffle your deck.",
             //"Select a hero target. Until the start of your next turn, increase damage dealt by that target by 1."
-
             var criteria = new LinqCardCriteria(c => IsEquipment(c) && IsSingleHandCard(c), "single hand equipment");
             var coroutine = base.SearchForCards(this.DecisionMaker, true, false, 1, 1, criteria, true, false, false, shuffleAfterwards: true);
             if (base.UseUnityCoroutines)
@@ -29,7 +28,7 @@ namespace Cauldron.TheKnight
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             var storedResult = new List<SelectCardDecision>();
-            criteria = new LinqCardCriteria(c => c.IsHero && c.IsTarget && !c.IsBeingDestroyed, "hero target");
+            criteria = new LinqCardCriteria(c => c.IsHero && c.IsTarget, "hero target");
             coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.IncreaseDamage, criteria, storedResult, false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {

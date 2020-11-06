@@ -4,20 +4,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Markup;
 
 namespace Cauldron.TheKnight
 {
-    public class HeavySwingCardController : TheKnightCardController
+    public class SureFootingCardController : TheKnightCardController
     {
-        public HeavySwingCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public SureFootingCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
 
-        public override IEnumerator Play()
+        public override IEnumerator UsePower(int index = 0)
         {
-            //"{TheKnight} deals 1 target 3 melee damage."
-            List<SelectCardDecision> results = new List<SelectCardDecision>();
-            var coroutine = base.SelectOwnCharacterCard(results, SelectionType.HeroToDealDamage);
+            //"You may play a one-shot now. Draw a card."
+            var criteria = new LinqCardCriteria(c => c.IsOneShot, "one-shot");
+            var coroutine = base.SelectAndPlayCardFromHand(this.DecisionMaker, cardCriteria: criteria);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -26,8 +27,7 @@ namespace Cauldron.TheKnight
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            Card card = GetSelectedCard(results);
-            coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, card), 3, DamageType.Melee, 1, false, 1);
+            coroutine = base.DrawCard(this.HeroTurnTaker);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

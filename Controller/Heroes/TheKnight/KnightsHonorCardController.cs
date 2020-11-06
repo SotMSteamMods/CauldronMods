@@ -17,7 +17,7 @@ namespace Cauldron.TheKnight
         public override void AddTriggers()
         {
             //TODO - Promo Support
-            base.AddRedirectDamageTrigger(dd => IsThisCardNextToCard(dd.Target), c => base.CharacterCard, false);
+            base.AddRedirectDamageTrigger(dd => IsThisCardNextToCard(dd.Target), dd => base.CharacterCard, false);
             base.AddMakeDamageIrreducibleTrigger(dd => dd.Target == base.CharacterCard && dd.NumberOfTimesRedirected > 0 && IsThisCardNextToCard(dd.OriginalTarget));
             Card cardThisCardIsNextTo = base.GetCardThisCardIsNextTo(true);
             base.AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(true, cardThisCardIsNextTo != null && !cardThisCardIsNextTo.IsHeroCharacterCard);

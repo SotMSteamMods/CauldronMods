@@ -17,7 +17,7 @@ namespace Cauldron.TheKnight
         public override IEnumerator UsePower(int index = 0)
         {
             //"You may play an Equipment card. Draw a card."
-            var criteria = new LinqCardCriteria(c => IsEquipment(c) && (!c.IsLimited || (c.IsLimited && !this.GameController.IsCardInPlayAndNotUnderCard(c.Identifier))), "equipment");
+            var criteria = new LinqCardCriteria(c => IsEquipment(c), "equipment");
             var coroutine = base.SelectAndPlayCardFromHand(this.DecisionMaker, cardCriteria: criteria);
             if (base.UseUnityCoroutines)
             {

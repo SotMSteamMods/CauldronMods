@@ -16,8 +16,7 @@ namespace Cauldron.TheKnight
 
         public override void AddTriggers()
         {
-            //TODO - Promo Support
-            base.AddRedirectDamageTrigger(dd => dd.Target == base.CharacterCard, c => base.Card, true);
+            base.AddRedirectDamageTrigger(dd => IsEquipmentEffectingCard(dd.Target), c => base.Card, true);
         }
 
         public override IEnumerator Play()

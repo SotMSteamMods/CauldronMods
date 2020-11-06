@@ -7,15 +7,15 @@ using System.Linq;
 
 namespace Cauldron.TheKnight
 {
-    public class HeavySwingCardController : TheKnightCardController
+    public class SwiftStrikesCardController : TheKnightCardController
     {
-        public HeavySwingCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public SwiftStrikesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
 
         public override IEnumerator Play()
         {
-            //"{TheKnight} deals 1 target 3 melee damage."
+            //"{TheKnight} deals up to 2 targets 1 melee damage each.",
             List<SelectCardDecision> results = new List<SelectCardDecision>();
             var coroutine = base.SelectOwnCharacterCard(results, SelectionType.HeroToDealDamage);
             if (base.UseUnityCoroutines)
@@ -27,7 +27,7 @@ namespace Cauldron.TheKnight
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             Card card = GetSelectedCard(results);
-            coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, card), 3, DamageType.Melee, 1, false, 1);
+            coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, card), 1, DamageType.Melee, 2, false, 0);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

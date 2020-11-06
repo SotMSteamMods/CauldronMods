@@ -27,7 +27,7 @@ namespace Cauldron.TheKnight
             }
             if (base.HeroTurnTaker.HasMultipleCharacterCards)
             {
-                coroutine = base.GameController.SelectAndGainHP(this.DecisionMaker, 2, additionalCriteria: c => c.IsHeroCharacterCard && c.Owner == this.TurnTaker, numberOfTargets: 1, requiredDecisions: 1, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectAndGainHP(this.DecisionMaker, 2, additionalCriteria: c => IsOwnCharacterCard(c), numberOfTargets: 1, requiredDecisions: 1, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

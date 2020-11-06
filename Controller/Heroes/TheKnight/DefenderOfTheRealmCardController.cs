@@ -17,8 +17,8 @@ namespace Cauldron.TheKnight
         {
             //"Search your deck for a copy of “Plate Mail” or “Plate Helm” and put it into play. Shuffle your deck.",
             //"Select a hero target. Until the start of your next turn, reduce damage dealt to that target by 1."
-            //TODO - Not Implemented
-            var coroutine = base.GameController.SendMessageAction("Not implemented", Priority.Medium, base.GetCardSource());
+            var criteria = new LinqCardCriteria(c => c.Identifier == "PlateHelm" || c.Identifier == "PlateMail", "armor");
+            var coroutine = base.SearchForCards(this.DecisionMaker, true, false, 1, 1, criteria, true, false, false, shuffleAfterwards: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -26,6 +26,35 @@ namespace Cauldron.TheKnight
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
+            }
+            var storedResult = new List<SelectCardDecision>();
+            criteria = new LinqCardCriteria(c => c.IsHero && c.IsTarget, "hero target");
+            coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.IncreaseDamage, criteria, storedResult, false, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if (DidSelectCard(storedResult))
+            {
+                Card card = GetSelectedCard(storedResult);
+                ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(1);
+                reduceDamageStatusEffect.TargetCriteria.IsSpecificCard = card;
+                reduceDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+
+                coroutine = base.AddStatusEffect(reduceDamageStatusEffect, true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }

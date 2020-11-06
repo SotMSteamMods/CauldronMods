@@ -8,15 +8,15 @@ using System.Windows.Markup;
 
 namespace Cauldron.TheKnight
 {
-    public class PlateMailCardController : TheKnightCardController
+    public class WhetstoneCardController : TheKnightCardController
     {
-        public PlateMailCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public WhetstoneCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
 
         public override void AddTriggers()
         {
-            base.AddRedirectDamageTrigger(dd => IsEquipmentEffectingCard(dd.Target), c => base.Card, true);
+            base.AddIncreaseDamageTrigger(dd => dd.DamageType == DamageType.Melee && IsEquipmentEffectingCard(dd.DamageSource.Card), 1);
         }
     }
 }
