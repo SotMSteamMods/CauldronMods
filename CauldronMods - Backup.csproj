@@ -16,11 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Utility\CardController\CardController.cs" />
+    <None Remove="CodingBugs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="CodingBugs" />
+    <Compile Include="CodingBugs" />
   </ItemGroup>
 
   <ItemGroup>
