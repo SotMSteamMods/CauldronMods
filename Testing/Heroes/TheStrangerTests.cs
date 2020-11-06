@@ -1338,6 +1338,84 @@ namespace CauldronTests
             //damage should been redirected to Ra
             QuickHPCheck(0, -3);
 
+        }
+
+        [Test()]
+        public void TestMarkOfTheTwistedShadowDestroySuccessful()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToEndOfTurn(haka);
+            PutIntoPlay("MarkOfTheTwistedShadow");
+            Card rune = GetCardInPlay("MarkOfTheTwistedShadow");
+            //At the start of your turn you may destroy this card. If you do not, TheStranger deals himself 1 irreducible toxic damage.
+            AssertIsInPlay(rune);
+            //yes we want to destroy
+            DecisionYesNo = true;
+            QuickHPStorage(stranger);
+            GoToStartOfTurn(stranger);
+            //should have been destroyed and no damage dealt
+            AssertInTrash(rune);
+            QuickHPCheckZero();
+
+        }
+
+        [Test()]
+        public void TestMarkOfTheTwistedShadowDestroyFailed()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToEndOfTurn(haka);
+            PutIntoPlay("MarkOfTheTwistedShadow");
+            Card rune = GetCardInPlay("MarkOfTheTwistedShadow");
+            //At the start of your turn you may destroy this card. If you do not, TheStranger deals himself 1 irreducible toxic damage.
+            AssertIsInPlay(rune);
+            //no we don't want to destroy
+            DecisionYesNo = false;
+            QuickHPStorage(stranger);
+            GoToStartOfTurn(stranger);
+            //should have not been destroyed and damage dealt
+            AssertIsInPlay(rune);
+            QuickHPCheck(-1);
+
+        }
+
+        [Test()]
+        public void TestMarkOfTheTwistedShadowPutNextToTarget()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToPlayCardPhase(stranger);
+
+            // Play this next to a hero target.Increase damage dealt by that target by 1.
+            DecisionSelectCard = haka.CharacterCard;
+            PutIntoPlay("MarkOfTheTwistedShadow");
+            Card rune = GetCardInPlay("MarkOfTheTwistedShadow");
+            AssertNextToCard(rune, haka.CharacterCard);
+
+
+        }
+
+
+        [Test()]
+        public void TestMarkOfTheTwistedShadowIncreaseDamage()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToPlayCardPhase(stranger);
+
+            // Play this next to a hero target.Increase damage dealt by that target by 1.
+            DecisionSelectCard = haka.CharacterCard;
+            PutIntoPlay("MarkOfTheTwistedShadow");
+            Card rune = GetCardInPlay("MarkOfTheTwistedShadow");
+            QuickHPStorage(mdp);
+            DealDamage(haka.CharacterCard, mdp, 5, DamageType.Melee);
+            //should be increased by 1, so 6 damage taken
+            QuickHPCheck(-6);
 
 
         }
