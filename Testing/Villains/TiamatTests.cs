@@ -83,5 +83,15 @@ namespace CauldronTests
             SetupIncap(legacy, winter);
             AssertNotGameOver();
         }
+
+        [Test()]
+        public void TestDecapitatedHeadCannotDealDamage()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Megalopolis");
+            SetupIncap(legacy, winter);
+            QuickHPStorage(legacy);
+            DealDamage(winter, legacy, 2, DamageType.Cold);
+            QuickHPCheck(0);
+        }
     }
 }
