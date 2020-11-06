@@ -1008,5 +1008,84 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestMarkOfQuickeningDestroySuccessful()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToEndOfTurn(haka);
+            PutIntoPlay("MarkOfQuickening");
+            Card rune = GetCardInPlay("MarkOfQuickening");
+            //At the start of your turn you may destroy this card. If you do not, TheStranger deals himself 1 irreducible toxic damage.
+            AssertIsInPlay(rune);
+            //yes we want to destroy
+            DecisionYesNo = true;
+            QuickHPStorage(stranger);
+            GoToStartOfTurn(stranger);
+            //should have been destroyed and no damage dealt
+            AssertInTrash(rune);
+            QuickHPCheckZero();
+
+        }
+
+        [Test()]
+        public void TestMarkOfQuickeningDestroyFailed()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToEndOfTurn(haka);
+            PutIntoPlay("MarkOfQuickening");
+            Card rune = GetCardInPlay("MarkOfQuickening");
+            //At the start of your turn you may destroy this card. If you do not, TheStranger deals himself 1 irreducible toxic damage.
+            AssertIsInPlay(rune);
+            //no we don't want to destroy
+            DecisionYesNo = false;
+            QuickHPStorage(stranger);
+            GoToStartOfTurn(stranger);
+            //should have not been destroyed and damage dealt
+            AssertIsInPlay(rune);
+            QuickHPCheck(-1);
+
+        }
+
+        [Test()]
+        public void TestMarkOfQuickeningPutNextToTarget()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToPlayCardPhase(stranger);
+
+            //Play this next to a hero. They may play an additional card during their play phase.
+            DecisionSelectCard = haka.CharacterCard;
+            PutIntoPlay("MarkOfQuickening");
+            Card rune = GetCardInPlay("MarkOfQuickening");
+            AssertNextToCard(rune, haka.CharacterCard);
+
+
+        }
+
+
+        [Test()]
+        public void TestMarkOfQuickeningExtraPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToPlayCardPhase(stranger);
+
+            //Play this next to a hero. They may play an additional card during their play phase.
+            DecisionSelectCard = haka.CharacterCard;
+            PutIntoPlay("MarkOfQuickening");
+            Card rune = GetCardInPlay("MarkOfQuickening");
+            GoToPlayCardPhase(haka);
+            //check that haka can play 2 cards
+            AssertPhaseActionCount(new int?(2));
+
+
+        }
+
     }
 }
