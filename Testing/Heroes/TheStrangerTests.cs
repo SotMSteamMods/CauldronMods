@@ -486,6 +486,109 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestGlyphOfCombustionPrevention_FirstDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(stranger);
+            PutIntoPlay("GlyphOfCombustion");
+
+            //Once during your turn when TheStranger would deal himself damage, prevent that damage.
+            QuickHPStorage(stranger);
+            DecisionYesNo = true;
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since damage was prevented, no change in health
+            QuickHPCheckZero();
+
+            QuickHPStorage(stranger);
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since already used this turn, damage should be dealt
+            QuickHPCheck(-5);
+
+            GoToStartOfTurn(stranger);
+            QuickHPStorage(stranger);
+            DecisionYesNo = true;
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since new round, damage was prevented, no change in health
+            QuickHPCheckZero();
+        }
+        [Test()]
+        public void TestGlyphOfCombustionPrevention_SecondDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(stranger);
+            PutIntoPlay("GlyphOfCombustion");
+
+            //Once during your turn when TheStranger would deal himself damage, prevent that damage.
+            QuickHPStorage(stranger);
+            DecisionsYesNo = new bool[] { false, true, true };
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since said no, -5
+            QuickHPCheck(-5);
+
+            QuickHPStorage(stranger);
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since said yes, damage should be prevented
+            QuickHPCheckZero();
+
+            GoToStartOfTurn(stranger);
+            QuickHPStorage(stranger);
+            DecisionYesNo = true;
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            //since new round, damage was prevented, no change in health
+            QuickHPCheckZero();
+        }
+
+        [Test()]
+        public void TestGlyphOfCombustion_DestroyGlyph()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            //put a glyph in play
+            Card glyph = GetCard("GlyphOfDecay");
+            PlayCard(glyph);
+
+            GoToPlayCardPhase(stranger);
+            PutIntoPlay("GlyphOfCombustion");
+            //Whenever a Rune or Glyph is destroyed, TheStranger may deal 1 target 1 fire damage
+
+            QuickHPStorage(haka);
+            DecisionSelectTarget = haka.CharacterCard;
+            //say yes to dealing damage
+            DecisionYesNo = true;
+            DestroyCard(glyph, baron.CharacterCard);
+            //since a glyph was destroyed, 1 damage should have been dealt to Haka;
+            QuickHPCheck(-1);
+        }
+
+        [Test()]
+        public void TestGlyphOfCombustion_DestroyRune()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            //put a rune in play
+            Card rune = GetCard("MarkOfBinding");
+            PlayCard(rune);
+
+            GoToPlayCardPhase(stranger);
+            PutIntoPlay("GlyphOfCombustion");
+            //Whenever a Rune or Glyph is destroyed, TheStranger may deal 1 target 1 fire damage
+
+            QuickHPStorage(haka);
+            DecisionSelectTarget = haka.CharacterCard;
+            //say yes to dealing damage
+            DecisionYesNo = true;
+            DestroyCard(rune, baron.CharacterCard);
+            //since a rune was destroyed, 1 damage should have been dealt to Haka;
+            QuickHPCheck(-1);
+        }
+
 
     }
 }
