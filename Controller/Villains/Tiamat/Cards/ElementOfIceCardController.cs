@@ -47,7 +47,7 @@ namespace Cauldron
 			{
 				foreach (Card hero in heroes)
 				{
-					if (hero.HitPoints >= highestHpHero.HitPoints)
+					if (hero.HitPoints <= highestHpHero.HitPoints)
 					{
 						highestHpHero = hero;
 					}
@@ -57,7 +57,7 @@ namespace Cauldron
 			{
 				foreach (Card hero in heroes)
 				{
-					if (hero.HitPoints >= highestHpHero.HitPoints)
+					if (hero.HitPoints <= highestHpHero.HitPoints)
 					{
 						highestHP = Convert.ToInt32(hero.HitPoints);
 					}
