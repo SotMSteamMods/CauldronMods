@@ -526,12 +526,13 @@ namespace CauldronTests
             Card euchre = GetCard("AfterlifeEuchre");
             Card mdp = GetCardInPlay("MobileDefensePlatform");
 
+            DecisionSelectFunction = 0;
             //Increase the next damage dealt by {Baccarat} by 1,
             PlayCard(euchre);
             QuickHPStorage(mdp);
             DealDamage(baccarat, mdp, 2, DamageType.Melee);
             QuickHPCheck(-3);
-
+            //should only apply to next damage
             QuickHPStorage(mdp);
             DealDamage(baccarat, mdp, 2, DamageType.Melee);
             QuickHPCheck(-2);
