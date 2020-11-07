@@ -536,21 +536,16 @@ namespace CauldronTests
 
             GoToPlayCardPhase(necro);
 
-            PlayCard(explosion, true);
+            DecisionAutoDecideIfAble = true;
+            PlayCard(explosion);
+            AssertInPlayArea(necro, explosion);
+
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, ghoul, mdp, elemental);
 
             //Whenever an Undead target is destroyed, Necro deals 2 toxic damage to all villain targets.
-            List<int?> HpBefore = new List<int?>() { baron.CharacterCard.HitPoints, mdp.HitPoints, elemental.HitPoints };
             DestroyCard(ghoul, baron.CharacterCard);
-            List<int?> HpAfter = new List<int?>() { baron.CharacterCard.HitPoints, mdp.HitPoints, elemental.HitPoints };
 
-            //baron blade is immune to damage, so HP should be the same
-            Assert.AreEqual(HpBefore[0], HpAfter[0], "Baron Blade's hitpoints don't match.");
-
-            //other villain targets should have 2 fewer HP
-            Assert.AreEqual(HpBefore[1] - 2, HpAfter[1], "Mobile Defense Platform's hitpoints don't match");
-            Assert.AreEqual(HpBefore[2] - 2, HpAfter[2], "Elemental Redistributor's hitpoints don't match");
-
-
+            QuickHPCheck(0, 0, 0, 0, 0, -2, -2);
         }
 
         [Test()]
