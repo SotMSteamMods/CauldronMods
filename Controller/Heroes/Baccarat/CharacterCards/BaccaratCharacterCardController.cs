@@ -78,7 +78,7 @@ namespace Cauldron.Baccarat
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
 
-                        //Move scecond card
+                        //Move second card
                         coroutine = base.GameController.MoveCard(this.TurnTakerController, selectCardDecisions2.FirstOrDefault().SelectedCard, list.FirstOrDefault().Location, true, false, false, null, false, null, null, null, false, false, null, false, false, false, true, base.GetCardSource(null));
                         if (base.UseUnityCoroutines)
                         {

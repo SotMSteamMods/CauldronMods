@@ -27,9 +27,9 @@ namespace CauldronTests
         [Test()]
         public void TestLoadBaccarat()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
 
-            Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
+            Assert.AreEqual(6, this.GameController.TurnTakerControllers.Count());
 
             Assert.IsNotNull(baccarat);
             Assert.IsInstanceOf(typeof(BaccaratCharacterCardController), baccarat.CharacterCardController);
@@ -40,7 +40,7 @@ namespace CauldronTests
         [Test()]
         public void TestBaccaratInnatePowerOption1()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             //Discard the top card of your deck...
             GoToUsePowerPhase(baccarat);
@@ -52,7 +52,7 @@ namespace CauldronTests
         [Test()]
         public void TestBaccaratInnatePowerOption2Play2()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card hold1 = GetCard("UnderworldHoldEm", 1);
             Card hold2 = GetCard("UnderworldHoldEm", 2);
@@ -77,7 +77,7 @@ namespace CauldronTests
         [Test()]
         public void TestBaccaratInnatePowerOption2Play0()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card hold1 = GetCard("UnderworldHoldEm", 1);
             Card hold2 = GetCard("UnderworldHoldEm", 2);
@@ -103,7 +103,7 @@ namespace CauldronTests
         [Test()]
         public void TestBaccaratIncap1Hero()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             SetupIncap(baron);
             AssertIncapacitated(baccarat);
@@ -119,7 +119,7 @@ namespace CauldronTests
         [Test()]
         public void TestBaccaratIncap1Villain()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             SetupIncap(baron);
             AssertIncapacitated(baccarat);
@@ -135,7 +135,7 @@ namespace CauldronTests
         [Test()]
         public void TestBaccaratIncap1Environment()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             SetupIncap(baron);
             AssertIncapacitated(baccarat);
@@ -151,7 +151,7 @@ namespace CauldronTests
         [Test()]
         public void TestBaccaratIncap2()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             SetupIncap(baron);
             AssertIncapacitated(baccarat);
@@ -173,7 +173,7 @@ namespace CauldronTests
         [Test()]
         public void TestBaccaratIncap3Yes()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             SetupIncap(baron);
             AssertIncapacitated(baccarat);
@@ -194,7 +194,7 @@ namespace CauldronTests
         [Test()]
         public void TestBaccaratIncap3No()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             SetupIncap(baron);
             AssertIncapacitated(baccarat);
@@ -217,7 +217,7 @@ namespace CauldronTests
         [Test()]
         public void TestAbyssalSolitaireBeforeNextStart()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card abyssal = GetCard("AbyssalSolitaire");
 
@@ -234,7 +234,7 @@ namespace CauldronTests
         [Test()]
         public void TestAbyssalSolitaireAfterNextStart()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card abyssal = GetCard("AbyssalSolitaire");
 
@@ -253,7 +253,7 @@ namespace CauldronTests
         [Test()]
         public void TestAceInTheHolePlayCard()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card ace = GetCard("AceInTheHole");
             Card saint = GetCard("AceOfSaints");
@@ -269,7 +269,7 @@ namespace CauldronTests
         [Test()]
         public void TestAceInTheHoleDontPlayCard()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card ace = GetCard("AceInTheHole");
 
@@ -284,7 +284,7 @@ namespace CauldronTests
         [Test()]
         public void TestAceInTheHoleTwoPowerPhase()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card ace = GetCard("AceInTheHole");
             Card saint = GetCard("AceOfSaints");
@@ -305,7 +305,7 @@ namespace CauldronTests
         [Test()]
         public void TestAceOfSaintsReduceDamage()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat","Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card saint = GetCard("AceOfSaints");
             Card mdp = GetCardInPlay("MobileDefensePlatform");
@@ -329,7 +329,7 @@ namespace CauldronTests
         [Test()]
         public void TestAceOfSaintsDestroySelf()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card saint = GetCard("AceOfSaints");
 
@@ -344,7 +344,7 @@ namespace CauldronTests
         [Test()]
         public void TestAceOfSaintsShuffleSame2Cards()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             DiscardTopCards(baccarat, 35);
             Card saint = GetCard("AceOfSaints");
@@ -363,7 +363,7 @@ namespace CauldronTests
         [Test()]
         public void TestAceOfSinnersIncreaseDamage()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat","Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card sinner = GetCard("AceOfSinners");
             Card mdp = GetCardInPlay("MobileDefensePlatform");
@@ -388,7 +388,7 @@ namespace CauldronTests
         [Test()]
         public void TestAceOfSinnersDestroySelf()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card sinner = GetCard("AceOfSinners");
 
@@ -403,7 +403,7 @@ namespace CauldronTests
         [Test()]
         public void TestAceOfSinnersShuffleSame2Cards()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             DiscardTopCards(baccarat, 35);
             Card sinner = GetCard("AceOfSinners");
@@ -422,7 +422,7 @@ namespace CauldronTests
         [Test()]
         public void TestAfterlifeEuchreIncreaseDamage()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card euchre = GetCard("AfterlifeEuchre");
             Card mdp = GetCardInPlay("MobileDefensePlatform");
@@ -441,7 +441,7 @@ namespace CauldronTests
         [Test()]
         public void TestAfterlifeEuchreDealDamage()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card euchre = GetCard("AfterlifeEuchre");
             Card mdp = GetCardInPlay("MobileDefensePlatform");
@@ -458,7 +458,7 @@ namespace CauldronTests
         [Test()]
         public void TestAllInDiscard()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card allin = GetCard("AllIn");
 
@@ -470,7 +470,7 @@ namespace CauldronTests
         [Test()]
         public void TestAllInDamage()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card allin = GetCard("AllIn");
             Card mdp = GetCardInPlay("MobileDefensePlatform");
@@ -490,7 +490,7 @@ namespace CauldronTests
         [Test()]
         public void TestBringDownTheHouseShufflePair()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card trick1 = GetCard("CheapTrick", 1);
             Card trick2 = GetCard("CheapTrick", 2);
@@ -509,7 +509,7 @@ namespace CauldronTests
         [Test()]
         public void TestBringDownTheHouseDontShuffle()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card trick1 = GetCard("CheapTrick", 1);
             Card trick2 = GetCard("CheapTrick", 2);
@@ -532,7 +532,7 @@ namespace CauldronTests
         [Test()]
         public void TestBringDownTheHouseShuffle3Pairs()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card trick1 = GetCard("CheapTrick", 1);
             Card trick2 = GetCard("CheapTrick", 2);
@@ -557,7 +557,7 @@ namespace CauldronTests
         [Test()]
         public void TestBringDownTheHouseDestroy0Cards()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             //Setup Trash
             Card trick1 = GetCard("CheapTrick", 1);
@@ -586,7 +586,7 @@ namespace CauldronTests
         [Test()]
         public void TestBringDownTheHouseDestroy1Ongoing()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             //Setup Trash
             Card trick1 = GetCard("CheapTrick", 1);
@@ -614,7 +614,7 @@ namespace CauldronTests
         [Test()]
         public void TestBringDownTheHouseDestroy1Environment()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             //Setup Trash
             Card trick1 = GetCard("CheapTrick", 1);
@@ -642,7 +642,7 @@ namespace CauldronTests
         [Test()]
         public void TestBringDownTheHouseDestroy3Cards()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             //Setup Trash
             Card trick1 = GetCard("CheapTrick", 1);
@@ -678,7 +678,7 @@ namespace CauldronTests
         [Test()]
         public void TestCardTossDealDamage()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card toss = GetCard("CardToss");
             Card saint = GetCard("AceOfSaints");
@@ -697,7 +697,7 @@ namespace CauldronTests
         [Test()]
         public void TestCardTossPlayCard()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card toss = GetCard("CardToss");
             Card saint = GetCard("AceOfSaints");
@@ -713,7 +713,7 @@ namespace CauldronTests
         [Test()]
         public void TestCardTossDontPlayCard()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card toss = GetCard("CardToss");
 
@@ -728,7 +728,7 @@ namespace CauldronTests
         [Test()]
         public void TestCheapTrick()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card cheap = GetCard("CheapTrick");
             Card abyssal = GetCard("AbyssalSolitaire");
@@ -760,7 +760,7 @@ namespace CauldronTests
         [Test()]
         public void TestGraveyardBridge()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             DiscardTopCards(baccarat.TurnTaker.Deck, 36);
             DiscardAllCards(baccarat);
@@ -781,7 +781,7 @@ namespace CauldronTests
         [Test()]
         public void TestIFold()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card fold = GetCard("IFold");
             PutInHand(fold);
@@ -795,7 +795,7 @@ namespace CauldronTests
         [Test()]
         public void TestUnderworldHoldEmSelfDraw()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card hold = GetCard("UnderworldHoldEm");
             PutInHand(hold);
@@ -809,7 +809,7 @@ namespace CauldronTests
         [Test()]
         public void TestUnderworldHoldEmOtherDraw()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card hold = GetCard("UnderworldHoldEm");
             PutInHand(hold);
@@ -824,7 +824,7 @@ namespace CauldronTests
         [Test()]
         public void TestUnderworldHoldEmDontDraw()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card hold = GetCard("UnderworldHoldEm");
             PutInHand(hold);
