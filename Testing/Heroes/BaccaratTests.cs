@@ -173,7 +173,7 @@ namespace CauldronTests
         [Test()]
         public void TestBaccaratIncap3Yes()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             SetupIncap(baron);
             AssertIncapacitated(baccarat);

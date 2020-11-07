@@ -172,16 +172,13 @@ namespace Cauldron.Baccarat
 
         public override IEnumerator UsePower(int index = 0)
         {
-            
-            this.actedHeroes = new List<Card>();
-            IEnumerable<Function> functionsBasedOnCard(Card c) => new Function[]
-            {
-                //Discard the top card of your deck...
-                new Function(base.FindCardController(c).DecisionMaker, "Discard the top card of your deck", SelectionType.DiscardFromDeck, () => base.DiscardCardsFromTopOfDeck(this.TurnTakerController, 1, false, null, false, this.TurnTaker), null, null, null),
-                //...or put up to 2 trick cards with the same name from your trash into play.
-                new Function(base.FindCardController(c).DecisionMaker, "put up to 2 trick cards with the same name from your trash into play", SelectionType.PlayCard, () => this.PlayTricksFromTrash(), null, null, null)
-            };
-            IEnumerator coroutine3 = base.GameController.SelectCardsAndPerformFunction(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && !this.actedHeroes.Contains(c), "active hero character cards", false, false, null, null, false), functionsBasedOnCard, false, base.GetCardSource(null));
+            List<Function> list = new List<Function>();
+            //Discard the top card of your deck...
+            list.Add(new Function(this.DecisionMaker, "Discard the top card of your deck", SelectionType.DiscardFromDeck, () => base.DiscardCardsFromTopOfDeck(this.TurnTakerController, 1, false, null, false, this.TurnTaker), null, null, null));
+            //...or put up to 2 trick cards with the same name from your trash into play.
+            list.Add(new Function(this.DecisionMaker, "Put up to 2 trick cards with the same name from your trash into play", SelectionType.PlayCard, () => this.PlayTricksFromTrash(), null, null, null));
+            SelectFunctionDecision selectFunction = new SelectFunctionDecision(base.GameController, this.DecisionMaker, list, false, null, null, null, base.GetCardSource(null));
+            IEnumerator coroutine3 = base.GameController.SelectAndPerformFunction(selectFunction, null, null);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine3);
