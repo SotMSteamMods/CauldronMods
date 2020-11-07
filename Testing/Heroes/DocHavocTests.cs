@@ -279,5 +279,34 @@ namespace CauldronTests
 
         }
 
+        [Test]
+        public void TestGasMask()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "InsulaPrimalis");
+            PutInHand(GasMaskCardController.Identifier);
+
+            StartGame();
+
+            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+            QuickHPStorage(DocHavoc);
+
+            // Act
+            GoToPlayCardPhase(DocHavoc);
+            Card gasMask = GetCardFromHand(GasMaskCardController.Identifier);
+            PlayCard(gasMask);
+
+            GoToStartOfTurn(env);
+            Card volcanicEruption = GetCard("ObsidianField");
+            PlayCard(volcanicEruption);
+            DestroyCard(volcanicEruption);
+
+            // Assert
+            Assert.AreEqual(1,
+                this.GameController.FindTriggersWhere((Func<ITrigger, bool>)(t => t.Types.Contains(TriggerType.GainHP))).Count());
+            AssertTriggersWhere((Func<ITrigger, bool>)(t => t.Types.Contains(TriggerType.GainHP)));
+            QuickHPCheck(2);
+        }
+
     }
 }
