@@ -29,9 +29,9 @@ namespace CauldronTests
         [Order(1)]
         public void TheKnightCharacter_Load()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
 
-            Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
+            Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
 
             Assert.IsNotNull(HeroController);
             Assert.IsInstanceOf(typeof(TheKnightCharacterCardController), HeroController.CharacterCardController);
@@ -43,7 +43,7 @@ namespace CauldronTests
         [Order(1)]
         public void TheKnightCardController()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -66,7 +66,7 @@ namespace CauldronTests
         [Order(1)]
         public void SingleHandEquipmentCardController()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -111,7 +111,7 @@ namespace CauldronTests
         [Description("TheKnight Innate - {TheKnight} deals 1 target 1 melee damage.")]
         public void TheKnightCharacter_InnatePower()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -131,7 +131,7 @@ namespace CauldronTests
         [Description("TheKnight Incap 1 - One player may play a card now.")]
         public void TheKnightCharacter_Incap1()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -141,27 +141,29 @@ namespace CauldronTests
             SetupIncap(baron);
             AssertIncapacitated(HeroController);
 
-            //set up legacy
-            PutInHand(legacy, "NextEvolution");
-            QuickHandStorage(legacy);
+            //set up wraith
+            var card = wraith.GetCardsAtLocation(wraith.HeroTurnTaker.Deck).First(c => c.IsOngoing || IsEquipment(c));
+            PutInHand(wraith, card);
+            QuickHandStorage(wraith);
 
             PrintSeparator("Test");
             GoToUseIncapacitatedAbilityPhase(HeroController);
 
             PrintSeparator("use incap");
-            DecisionSelectCard = legacy.GetCardsAtLocation(legacy.HeroTurnTaker.Hand).First(c => c.Identifier == "NextEvolution");
+            DecisionSelectTurnTaker = wraith.TurnTaker;
+            DecisionSelectCard = card;
             UseIncapacitatedAbility(HeroController, 0);
 
             PrintSeparator("assert card was played");
             QuickHandCheck(-1);
-            Assert.IsTrue(legacy.GetCardsAtLocation(legacy.HeroTurnTaker.PlayArea).Count(c => c.Identifier == "NextEvolution") == 1);
+            AssertInPlayArea(wraith, card);
         }
 
         [Test]
         [Description("TheKnight Incap 2 - Reduce damage dealt to 1 target by 1 until the start of your next turn.")]
         public void TheKnightCharacter_Incap2()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -176,22 +178,22 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(0);
 
             PrintSeparator("Test");
-            DecisionSelectCard = legacy.CharacterCard;
+            DecisionSelectCard = wraith.CharacterCard;
             UseIncapacitatedAbility(HeroController, 1);
 
-            string messageText = $"Reduce damage dealt to {legacy.Name} by 1.";
+            string messageText = $"Reduce damage dealt to {wraith.Name} by 1.";
 
             PrintSeparator("Assert Applied");
             AssertNumberOfStatusEffectsInPlay(1);
-            AssertStatusEffectAssociatedTurnTaker(0, legacy.TurnTaker);
+            AssertStatusEffectAssociatedTurnTaker(0, wraith.TurnTaker);
             AssertStatusEffectsContains(messageText);
 
             PrintSeparator("Change turns");
-            GoToEndOfTurn(legacy);
+            GoToEndOfTurn(wraith);
 
             PrintSeparator("Effect still applied");
             AssertNumberOfStatusEffectsInPlay(1);
-            AssertStatusEffectAssociatedTurnTaker(0, legacy.TurnTaker);
+            AssertStatusEffectAssociatedTurnTaker(0, wraith.TurnTaker);
             AssertStatusEffectsContains(messageText);
 
             PrintSeparator("Effect expires");
@@ -204,7 +206,7 @@ namespace CauldronTests
         [Description("TheKnight Incap 3 - Increase damage dealt by 1 target by 1 until the start of your next turn.")]
         public void TheKnightCharacter_Incap3()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -219,22 +221,22 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(0);
 
             PrintSeparator("Test");
-            DecisionSelectCard = legacy.CharacterCard;
+            DecisionSelectCard = wraith.CharacterCard;
             UseIncapacitatedAbility(HeroController, 2);
 
-            string messageText = $"Increase damage dealt by {legacy.Name} by 1.";
+            string messageText = $"Increase damage dealt by {wraith.Name} by 1.";
 
             PrintSeparator("Assert Applied");
             AssertNumberOfStatusEffectsInPlay(1);
-            AssertStatusEffectAssociatedTurnTaker(0, legacy.TurnTaker);
+            AssertStatusEffectAssociatedTurnTaker(0, wraith.TurnTaker);
             AssertStatusEffectsContains(messageText);
 
             PrintSeparator("Change turns");
-            GoToEndOfTurn(legacy);
+            GoToEndOfTurn(wraith);
 
             PrintSeparator("Effect still applied");
             AssertNumberOfStatusEffectsInPlay(1);
-            AssertStatusEffectAssociatedTurnTaker(0, legacy.TurnTaker);
+            AssertStatusEffectAssociatedTurnTaker(0, wraith.TurnTaker);
             AssertStatusEffectsContains(messageText);
 
             PrintSeparator("Effect expires");
@@ -247,7 +249,7 @@ namespace CauldronTests
         [Description("TheKnight - Arm Yourself - No Cards to Select")]
         public void ArmYourself_NoCards()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -273,7 +275,7 @@ namespace CauldronTests
         [Description("TheKnight - Arm Yourself - Choose skip")]
         public void ArmYourself_Skip()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -300,7 +302,7 @@ namespace CauldronTests
         [Description("TheKnight - Arm Yourself - Choose 2")]
         public void ArmYourself_Choose2()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -329,7 +331,7 @@ namespace CauldronTests
         [Description("TheKnight - Battlefield Scavenger - Draw Cards")]
         public void BattlefieldScavenger_Draw()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -339,20 +341,17 @@ namespace CauldronTests
             PutInHand(HeroController, "BattlefieldScavenger");
 
             PrintSeparator("Put some random cards in the trash");
-            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(5));
-            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c)).Take(5));
-
-            PutInTrash(legacy.HeroTurnTaker.Deck.Cards.Where(c => c.IsOngoing).Take(5));
-            PutInTrash(legacy.HeroTurnTaker.Deck.Cards.Where(c => !c.IsOngoing).Take(5));
+            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || c.IsOngoing).Take(2));
+            PutInTrash(wraith.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || c.IsOngoing).Take(2));
             GoToPlayCardPhase(HeroController);
 
             PrintSeparator("Test");
             AssertNumberOfCardsInPlay(HeroController, 1);
-            QuickHandStorage(HeroController, legacy);
+            QuickHandStorage(HeroController, ra, wraith);
             DecisionAutoDecideIfAble = true;
-            DecisionSelectFunctions = new int?[] { 0, 0 };
+            DecisionSelectFunctions = new int?[] { 0, 0, 0 };
             PlayCardFromHand(HeroController, "BattlefieldScavenger");
-            QuickHandCheck(0, 1);
+            QuickHandCheck(0, 1, 1);
             AssertNumberOfCardsInPlay(HeroController, 1);
         }
 
@@ -360,7 +359,7 @@ namespace CauldronTests
         [Description("TheKnight - Battlefield Scavenger - Top Deck Cards")]
         public void BattlefieldScavenger_TopDeck()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -370,26 +369,24 @@ namespace CauldronTests
             PutInHand(HeroController, "BattlefieldScavenger");
 
             PrintSeparator("Put some random cards in the trash");
-            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(5));
-            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c)).Take(5));
-
-            PutInTrash(legacy.HeroTurnTaker.Deck.Cards.Where(c => c.IsOngoing).Take(5));
-            PutInTrash(legacy.HeroTurnTaker.Deck.Cards.Where(c => !c.IsOngoing).Take(5));
+            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || c.IsOngoing).Take(2));
+            PutInTrash(wraith.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || c.IsOngoing).Take(2));
             GoToPlayCardPhase(HeroController);
 
             PrintSeparator("Test");
             AssertNumberOfCardsInPlay(HeroController, 1);
-            QuickHandStorage(HeroController, legacy);
+            QuickHandStorage(HeroController, ra, wraith);
             DecisionAutoDecideIfAble = true;
-            DecisionSelectFunctions = new int?[] { 1, 1 };
-            var cards = HeroController.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c)).Take(1).Concat(
-                legacy.HeroTurnTaker.Trash.Cards.Where(c => c.IsOngoing).Take(1)).ToList();
+            DecisionSelectFunctions = new int?[] { 1, 0, 1 };
+            var cards = new[] {
+                HeroController.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c) || c.IsOngoing).First(),
+                wraith.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c) || c.IsOngoing).First(),
+            };
             DecisionSelectCards = cards;
-
             PlayCardFromHand(HeroController, "BattlefieldScavenger");
             AssertOnTopOfDeck(HeroController, cards[0]);
-            AssertOnTopOfDeck(legacy, cards[1]);
-            QuickHandCheck(-1, 0);
+            AssertOnTopOfDeck(wraith, cards[1]);
+            QuickHandCheck(-1, 1, 0);
             AssertNumberOfCardsInPlay(HeroController, 1);
         }
 
@@ -397,7 +394,7 @@ namespace CauldronTests
         [Description("TheKnight - Catch Your Breath")]
         public void CatchYourBreath()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -425,7 +422,7 @@ namespace CauldronTests
         [Description("TheKnight - ChampionOfTheRealm")]
         public void ChampionOfTheRealm()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -438,9 +435,9 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(0);
 
             var card = HeroController.HeroTurnTaker.Deck.Cards.First(c => c.Identifier == "ShortSword");
-            string messageText = $"Increase damage dealt by {legacy.Name} by 1.";
+            string messageText = $"Increase damage dealt by {wraith.Name} by 1.";
 
-            DecisionSelectCards = card.ToEnumerable().Concat(legacy.CharacterCard.ToEnumerable());
+            DecisionSelectCards = card.ToEnumerable().Concat(wraith.CharacterCard.ToEnumerable());
 
             GoToPlayCardPhase(HeroController);
             PlayCardFromHand(HeroController, "ChampionOfTheRealm");
@@ -450,15 +447,15 @@ namespace CauldronTests
 
             PrintSeparator("Assert Applied");
             AssertNumberOfStatusEffectsInPlay(1);
-            AssertStatusEffectAssociatedTurnTaker(0, legacy.TurnTaker);
+            AssertStatusEffectAssociatedTurnTaker(0, wraith.TurnTaker);
             AssertStatusEffectsContains(messageText);
 
             PrintSeparator("Change turns");
-            GoToEndOfTurn(legacy);
+            GoToEndOfTurn(wraith);
 
             PrintSeparator("Effect still applied");
             AssertNumberOfStatusEffectsInPlay(1);
-            AssertStatusEffectAssociatedTurnTaker(0, legacy.TurnTaker);
+            AssertStatusEffectAssociatedTurnTaker(0, wraith.TurnTaker);
             AssertStatusEffectsContains(messageText);
 
             PrintSeparator("Effect expires");
@@ -471,7 +468,7 @@ namespace CauldronTests
         [Description("TheKnight - DefenderOfTheRealm")]
         public void DefenderOfTheRealm()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -484,9 +481,9 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(0);
 
             var card = HeroController.HeroTurnTaker.Deck.Cards.First(c => c.Identifier == "PlateMail");
-            string messageText = $"Reduce damage dealt to {legacy.Name} by 1.";
+            string messageText = $"Reduce damage dealt to {wraith.Name} by 1.";
 
-            DecisionSelectCards = card.ToEnumerable().Concat(legacy.CharacterCard.ToEnumerable());
+            DecisionSelectCards = card.ToEnumerable().Concat(wraith.CharacterCard.ToEnumerable());
 
             GoToPlayCardPhase(HeroController);
             PlayCardFromHand(HeroController, "DefenderOfTheRealm");
@@ -496,15 +493,15 @@ namespace CauldronTests
 
             PrintSeparator("Assert Applied");
             AssertNumberOfStatusEffectsInPlay(1);
-            AssertStatusEffectAssociatedTurnTaker(0, legacy.TurnTaker);
+            AssertStatusEffectAssociatedTurnTaker(0, wraith.TurnTaker);
             AssertStatusEffectsContains(messageText);
 
             PrintSeparator("Change turns");
-            GoToEndOfTurn(legacy);
+            GoToEndOfTurn(wraith);
 
             PrintSeparator("Effect still applied");
             AssertNumberOfStatusEffectsInPlay(1);
-            AssertStatusEffectAssociatedTurnTaker(0, legacy.TurnTaker);
+            AssertStatusEffectAssociatedTurnTaker(0, wraith.TurnTaker);
             AssertStatusEffectsContains(messageText);
 
             PrintSeparator("Effect expires");
@@ -517,7 +514,7 @@ namespace CauldronTests
         [Description("TheKnight - HeavySwing")]
         public void HeavySwing()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -538,7 +535,7 @@ namespace CauldronTests
         [Description("TheKnight - KnightsHonor")]
         public void KnightsHonor()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Legacy", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -552,23 +549,23 @@ namespace CauldronTests
             PrintSeparator("Test");
             GoToPlayCardPhase(HeroController);
             DecisionNextSelectionType = SelectionType.MoveCardNextToCard;
-            DecisionNextToCard = legacy.CharacterCard;
+            DecisionNextToCard = wraith.CharacterCard;
             PlayCardFromHand(HeroController, "KnightsHonor");
 
-            PrintSeparator("check redirect from legacy to knight");
-            QuickHPStorage(HeroController, legacy, ra);
-            DealDamage(baron, legacy, 4, DamageType.Psychic);
+            PrintSeparator("check redirect from wraith to knight");
+            QuickHPStorage(HeroController, wraith, ra);
+            DealDamage(baron, wraith, 4, DamageType.Psychic);
             QuickHPCheck(-4, 0, 0);
 
             PrintSeparator("check no redirect from ra to knight");
-            QuickHPStorage(HeroController, legacy, ra);
+            QuickHPStorage(HeroController, wraith, ra);
             DealDamage(baron, ra, 4, DamageType.Psychic);
             QuickHPCheck(0, 0, -4);
 
             PrintSeparator("check redirect damage is irreducible");
             PlayCard(HeroController, "StalwartShield");
-            QuickHPStorage(HeroController, legacy, ra);
-            DealDamage(baron, legacy, 4, DamageType.Psychic);
+            QuickHPStorage(HeroController, wraith, ra);
+            DealDamage(baron, wraith, 4, DamageType.Psychic);
             QuickHPCheck(-4, 0, 0);
 
             PrintSeparator("Test Power");
@@ -576,16 +573,16 @@ namespace CauldronTests
             AssertInTrash("KnightsHonor");
 
             PrintSeparator("no redirect redirect after card leaves play");
-            QuickHPStorage(HeroController, legacy, ra);
-            DealDamage(baron, legacy, 4, DamageType.Psychic);
-            QuickHPCheck(0, -5, 0);
+            QuickHPStorage(HeroController, wraith, ra);
+            DealDamage(baron, wraith, 4, DamageType.Psychic);
+            QuickHPCheck(0, -4, 0);
         }
 
         [Test]
         [Description("TheKnight - MaidensBlessing")]
         public void MaidensBlessing()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -630,7 +627,7 @@ namespace CauldronTests
         [Description("TheKnight - PlateHelm")]
         public void PlateHelm()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -652,32 +649,32 @@ namespace CauldronTests
             GoToStartOfTurn(baron);
 
             PrintSeparator("check redirect from knight to helm");
-            QuickHPStorage(HeroController.CharacterCard, testCard, legacy.CharacterCard);
+            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
             DecisionYesNo = true;
             DealDamage(baron, HeroController.CharacterCard, 1, DamageType.Psychic);
             QuickHPCheck(0, -1, 0);
 
             PrintSeparator("check redirect is optional");
-            QuickHPStorage(HeroController.CharacterCard, testCard, legacy.CharacterCard);
+            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
             DecisionYesNo = false;
             DealDamage(baron, HeroController.CharacterCard, 1, DamageType.Psychic);
             QuickHPCheck(-1, 0, 0);
 
-            PrintSeparator("check no redirect from legacy");
+            PrintSeparator("check no redirect from wraith");
             DecisionYesNo = true;
-            QuickHPStorage(HeroController.CharacterCard, testCard, legacy.CharacterCard);
-            DealDamage(baron, legacy.CharacterCard, 1, DamageType.Psychic);
-            QuickHPCheck(0, 0, -2); //nemesis
+            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
+            DealDamage(baron, wraith.CharacterCard, 1, DamageType.Psychic);
+            QuickHPCheck(0, 0, -1);
 
             PrintSeparator("check no redirect from helm");
-            QuickHPStorage(HeroController.CharacterCard, testCard, legacy.CharacterCard);
+            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
             DealDamage(baron, testCard, 1, DamageType.Psychic);
             QuickHPCheck(0, -1, 0);
 
             PrintSeparator("check no redirect after helm leaves play");
             DealDamage(baron, testCard, 3, DamageType.Psychic);
             AssertInTrash(HeroController, testCard);
-            QuickHPStorage(HeroController.CharacterCard, testCard, legacy.CharacterCard);
+            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
             DealDamage(baron, HeroController.CharacterCard, 1, DamageType.Psychic);
             QuickHPCheck(-1, 0, 0);
         }
@@ -686,7 +683,7 @@ namespace CauldronTests
         [Description("TheKnight - PlateMail")]
         public void PlateMail()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -708,32 +705,32 @@ namespace CauldronTests
             GoToStartOfTurn(baron);
 
             PrintSeparator("check redirect from knight to mail");
-            QuickHPStorage(HeroController.CharacterCard, testCard, legacy.CharacterCard);
+            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
             DecisionYesNo = true;
             DealDamage(baron, HeroController.CharacterCard, 1, DamageType.Psychic);
             QuickHPCheck(0, -1, 0);
 
             PrintSeparator("check redirect is optional");
-            QuickHPStorage(HeroController.CharacterCard, testCard, legacy.CharacterCard);
+            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
             DecisionYesNo = false;
             DealDamage(baron, HeroController.CharacterCard, 1, DamageType.Psychic);
             QuickHPCheck(-1, 0, 0);
 
-            PrintSeparator("check no redirect from legacy");
+            PrintSeparator("check no redirect from wraith");
             DecisionYesNo = true;
-            QuickHPStorage(HeroController.CharacterCard, testCard, legacy.CharacterCard);
-            DealDamage(baron, legacy.CharacterCard, 1, DamageType.Psychic);
-            QuickHPCheck(0, 0, -2); //nemesis
+            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
+            DealDamage(baron, wraith.CharacterCard, 1, DamageType.Psychic);
+            QuickHPCheck(0, 0, -1);
 
             PrintSeparator("check no redirect from helm");
-            QuickHPStorage(HeroController.CharacterCard, testCard, legacy.CharacterCard);
+            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
             DealDamage(baron, testCard, 1, DamageType.Psychic);
             QuickHPCheck(0, -1, 0);
 
             PrintSeparator("check no redirect after mail leaves play");
             DealDamage(baron, testCard, 3, DamageType.Psychic);
             AssertInTrash(HeroController, testCard);
-            QuickHPStorage(HeroController.CharacterCard, testCard, legacy.CharacterCard);
+            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
             DealDamage(baron, HeroController.CharacterCard, 1, DamageType.Psychic);
             QuickHPCheck(-1, 0, 0);
         }
@@ -742,7 +739,7 @@ namespace CauldronTests
         [Description("TheKnight - Short Sword - Increase Damage Triggers")]
         public void ShortSword_Trigger()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -768,8 +765,8 @@ namespace CauldronTests
 
             PrintSeparator("Other Damage not increased");
             QuickHPStorage(baron);
-            DealDamage(legacy, baron, 1, DamageType.Radiant);
-            QuickHPCheck(-2);
+            DealDamage(wraith, baron, 1, DamageType.Radiant);
+            QuickHPCheck(-1);
 
             PrintSeparator("Other Damage not increased");
             QuickHPStorage(HeroController);
@@ -801,7 +798,7 @@ namespace CauldronTests
         [Description("TheKnight - Short Sword - Power")]
         public void ShortSword_Power()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -829,7 +826,7 @@ namespace CauldronTests
         [Description("TheKnight - StalwartShield")]
         public void StalwartShield()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -860,8 +857,8 @@ namespace CauldronTests
 
             PrintSeparator("Other Damage not reduced");
             QuickHPStorage(baron);
-            DealDamage(legacy, baron, 1, DamageType.Radiant);
-            QuickHPCheck(-2);
+            DealDamage(wraith, baron, 1, DamageType.Radiant);
+            QuickHPCheck(-1);
 
             PrintSeparator("Multiples stack correctly");
             AssertNumberOfCardsInPlay(HeroController, 2);
@@ -889,7 +886,7 @@ namespace CauldronTests
         [Description("TheKnight - SureFooting")]
         public void SureFooting()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -934,7 +931,7 @@ namespace CauldronTests
         [Description("TheKnight - SwiftStrikes")]
         public void SwiftStrikes()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -945,8 +942,8 @@ namespace CauldronTests
 
             PrintSeparator("Test");
             GoToPlayCardPhase(HeroController);
-            QuickHPStorage(baron, legacy);
-            DecisionSelectTargets = new Card[] { baron.CharacterCard, legacy.CharacterCard };
+            QuickHPStorage(baron, wraith);
+            DecisionSelectTargets = new Card[] { baron.CharacterCard, wraith.CharacterCard };
             PlayCardFromHand(HeroController, "SwiftStrikes");
             QuickHPCheck(-1, -1);
         }
@@ -955,7 +952,7 @@ namespace CauldronTests
         [Description("TheKnight - Whetstone")]
         public void Whetstone()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -985,8 +982,8 @@ namespace CauldronTests
 
             PrintSeparator("Other Damage not increased");
             QuickHPStorage(baron);
-            DealDamage(legacy, baron, 1, DamageType.Melee);
-            QuickHPCheck(-2);
+            DealDamage(wraith, baron, 1, DamageType.Melee);
+            QuickHPCheck(-1);
 
             PrintSeparator("Effect removed when cards leave play");
             DestroyCard("Whetstone");
