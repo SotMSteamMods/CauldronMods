@@ -1077,9 +1077,9 @@ namespace CauldronTests
 
             //At the end of your turn, this card deals the non-Undead hero target with the highest HP 2 toxic damage.
             // highest HP should be necro
-            QuickHPStorage(necro);
+            QuickHPStorage(baron, necro, ra, fanatic);
             GoToEndOfTurn(necro);
-            QuickHPCheck(-2);
+            QuickHPCheck(0, -2, 0, 0);
         }
 
     }
