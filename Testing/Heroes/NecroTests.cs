@@ -224,18 +224,19 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Megalopolis");
             StartGame();
             Card darkPact = GetCard("DarkPact");
-            PutInHand("Ghoul");
+            Card ghoul = PutInHand("Ghoul");
             GoToPlayCardPhase(necro);
-            PutIntoPlay("DarkPact");
+            PlayCard(darkPact);
+            AssertInPlayArea(necro, darkPact);
+
             GoToUsePowerPhase(necro);
 
-            QuickHandStorage(necro);
+            QuickHandStorage(necro, ra);
             //Put an undead card from hand into play.
+            DecisionSelectCard = ghoul;
             UsePower(darkPact);
-            QuickHandCheck(-1);
-
-            AssertNumberOfUndeadInPlay(necro, 1);
-
+            QuickHandCheck(-1, 0);
+            AssertInPlayArea(necro, ghoul);
         }
 
         [Test()]
@@ -246,14 +247,13 @@ namespace CauldronTests
             Card ghoul = GetCard("Ghoul");
             PlayCard(ghoul, true);
             GoToPlayCardPhase(necro);
-            PutIntoPlay("DarkPact");
-            GoToUsePowerPhase(necro);
+            Card ritual = PutIntoPlay("DarkPact");
+            AssertInPlayArea(necro, ritual);
 
             //Whenever an undead target is destroyed, draw a card."
-            QuickHandStorage(necro);
+            QuickHandStorage(necro, ra);
             DestroyCard(ghoul);
-            QuickHandCheck(1);
-
+            QuickHandCheck(1, 0);
         }
 
         [Test()]
