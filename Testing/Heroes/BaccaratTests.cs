@@ -405,8 +405,11 @@ namespace CauldronTests
             GoToPlayCardPhase(baccarat);
             PlayCard(saint);
             AssertNumberOfCardsInPlay(baccarat, 2);
+            AssertIsInPlay(saint);
             GoToStartOfTurn(baccarat);
             AssertNumberOfCardsInPlay(baccarat, 1);
+            AssertInTrash(saint);
+
         }
 
         [Test()]
@@ -477,8 +480,10 @@ namespace CauldronTests
             GoToPlayCardPhase(baccarat);
             PlayCard(sinner);
             AssertNumberOfCardsInPlay(baccarat, 2);
+            AssertIsInPlay(sinner);
             GoToStartOfTurn(baccarat);
             AssertNumberOfCardsInPlay(baccarat, 1);
+            AssertInTrash(sinner);
         }
 
         [Test()]
@@ -486,18 +491,31 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
-            DiscardTopCards(baccarat, 35);
+            //put sinner in hand
             Card sinner = GetCard("AceOfSinners");
             PutInHand(sinner);
+            //discard the rest of bacarrat's deck to make sure there are pairs in the trash
+            DiscardTopCards(baccarat, 35);
 
-            //At the start of your turn, shuffle 2 cards with the same name from your trash into your deck...
+
             GoToPlayCardPhase(baccarat);
             PlayCard(sinner);
+            //check that there are 2 cards in play, character card and sinner
             AssertNumberOfCardsInPlay(baccarat, 2);
+            //verify it is actually sinner in play
+            AssertIsInPlay(sinner);
+            //get the number of cards in the trash
             int trash = baccarat.TurnTaker.Trash.NumberOfCards;
+
+            //At the start of your turn, shuffle 2 cards with the same name from your trash into your deck...
             GoToStartOfTurn(baccarat);
+
+            //verify that there are still 2 cards in play, character card and sinner
             AssertNumberOfCardsInPlay(baccarat, 2);
-            Assert.AreEqual(trash - 2, baccarat.TurnTaker.Trash.NumberOfCards);
+            AssertIsInPlay(sinner);
+            //check that there are 2 fewer cards in the trash
+            AssertNumberOfCardsInTrash(baccarat, trash - 2);
+            AssertNumberOfCardsInDeck(baccarat, 2);
         }
 
         [Test()]
