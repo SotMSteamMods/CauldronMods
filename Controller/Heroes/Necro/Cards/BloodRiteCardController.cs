@@ -15,7 +15,7 @@ namespace Cauldron.Necro
         public override void AddTriggers()
         {
             //When an Undead target is destroyed, all non-undead hero targets regain 2 HP.
-            base.AddTrigger<DestroyCardAction>(d => this.IsUndead(d.CardToDestroy.Card) && d.WasCardDestroyed, GainHPResponse, TriggerType.GainHP, TriggerTiming.After);
+            AddUndeadDestroyedTrigger(GainHPResponse, TriggerType.GainHP);
         }
 
         private IEnumerator GainHPResponse(DestroyCardAction dca)

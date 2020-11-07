@@ -15,7 +15,7 @@ namespace Cauldron.Necro
 		public override void AddTriggers()
 		{
 			//When an Undead target is destroyed, Necro deals 1 non-hero target 3 infernal damage.
-			base.AddTrigger<DestroyCardAction>((DestroyCardAction d) => this.IsUndead(d.CardToDestroy.Card) && d.WasCardDestroyed, new Func<DestroyCardAction, IEnumerator>(this.DealDamageResponse), TriggerType.DrawCard, TriggerTiming.After, ActionDescription.Unspecified, false, true, null, false, null, null, false, false);
+			AddUndeadDestroyedTrigger(DealDamageResponse, TriggerType.DealDamage);
 		}
 
 		private IEnumerator DealDamageResponse(DestroyCardAction dca)

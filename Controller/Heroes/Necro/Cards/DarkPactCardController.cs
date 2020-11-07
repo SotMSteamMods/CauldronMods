@@ -28,7 +28,7 @@ namespace Cauldron.Necro
 		public override void AddTriggers()
 		{
 			//Whenever an undead target is destroyed, draw a card.
-			base.AddTrigger<DestroyCardAction>((DestroyCardAction d) => this.IsUndead(d.CardToDestroy.Card) && d.WasCardDestroyed, new Func<DestroyCardAction, IEnumerator>(this.DrawCardResponse), TriggerType.DrawCard, TriggerTiming.After, ActionDescription.Unspecified, false, true, null, false, null, null, false, false);
+			AddUndeadDestroyedTrigger(DrawCardResponse, TriggerType.DrawCard);
 		}
 
 		private IEnumerator DrawCardResponse(DestroyCardAction dca)
