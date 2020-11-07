@@ -266,15 +266,46 @@ namespace CauldronTests
 
             //Search your deck or trash for a ritual and put it into play or into your hand. If you searched your deck, shuffle your deck.
             //since no decisions specified, searching deck and putting in play
-            int numCardsInDeckBefore = GetNumberOfCardsInDeck(necro);
-            PutIntoPlay("BookOfTheDead");
-            int numCardsInDeckAfter = GetNumberOfCardsInDeck(necro);
 
-            AssertNumberOfRitualInPlay(necro, 1);
-            Assert.IsTrue(numCardsInDeckBefore > numCardsInDeckAfter, "There was not fewer cards in deck after playing BookOfTheDead");
+            PutInTrash("BloodRite");
+            QuickHandStorage(necro, ra);
+
+            var shuffleCheck = necro.HeroTurnTaker.Deck.GetTopCards(2).Concat(necro.HeroTurnTaker.Deck.GetBottomCards(2)).ToList();
+            DecisionSelectLocation = new LocationChoice(necro.HeroTurnTaker.Deck);
+            DecisionMoveCardDestination = new MoveCardDestination(necro.HeroTurnTaker.PlayArea);
+            var ritual = necro.HeroTurnTaker.Deck.Cards.First(c => IsRitual(c) && !shuffleCheck.Contains(c)); //exclude the top & bottom so we don't mess up our assert
+            DecisionSelectCard = ritual;
+            var card = PutIntoPlay("BookOfTheDead");
+            QuickHandCheck(1, 0);
+            AssertInPlayArea(necro, ritual);
+            AssertInTrash(necro, card);
+            AssertDeckShuffled(necro, shuffleCheck[0], shuffleCheck[1], shuffleCheck[2], shuffleCheck[3]);
         }
 
-        //once figure out a way to choose location of deck or trash followed by decision of in play or hand, add those test cases
+        [Test()]
+        public void TestBookOfTheDeadSearchTrashAndPutIntoHand()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(necro);
+
+            //Search your deck or trash for a ritual and put it into play or into your hand. If you searched your deck, shuffle your deck.
+            //since no decisions specified, searching deck and putting in play
+
+            var ritual = PutInTrash("BloodRite");
+            QuickHandStorage(necro, ra);
+
+            var shuffleCheck = necro.HeroTurnTaker.Deck.GetTopCards(2).Concat(necro.HeroTurnTaker.Deck.GetBottomCards(2)).ToList();
+            DecisionSelectLocation = new LocationChoice(necro.HeroTurnTaker.Trash);
+            DecisionMoveCardDestination = new MoveCardDestination(necro.HeroTurnTaker.Hand);
+            DecisionSelectCard = ritual;
+            var card = PutIntoPlay("BookOfTheDead");
+            QuickHandCheck(2, 0);
+            AssertInHand(necro, ritual);
+            AssertInTrash(necro, card);
+            AssertDeckShuffled(necro, shuffleCheck[0], shuffleCheck[1], shuffleCheck[2], shuffleCheck[3]);
+        }
 
         [Test()]
         public void TestBookOfTheDeadDraw()
@@ -285,13 +316,12 @@ namespace CauldronTests
             GoToPlayCardPhase(necro);
 
             //You may draw a card.
-            QuickHandStorage(necro);
+            QuickHandStorage(necro, ra);
             //tell the game that necro wants to draw a card
             DecisionYesNo = true;
             PutIntoPlay("BookOfTheDead");
             //we expect to have 1 more card in hand
-            QuickHandCheck(1);
-
+            QuickHandCheck(1, 0);
         }
 
         [Test()]
