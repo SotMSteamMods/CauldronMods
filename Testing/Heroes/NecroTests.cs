@@ -355,18 +355,19 @@ namespace CauldronTests
             SetHitPoints(ra.CharacterCard, 12);
             SetHitPoints(baron.CharacterCard, 23);
             SetHitPoints(fanatic.CharacterCard, 25);
-            SetHitPoints(GetCard("MobileDefensePlatform"), 6);
+            var mdp = GetCard("MobileDefensePlatform");
+            SetHitPoints(mdp, 6);
 
 
             GoToPlayCardPhase(necro);
 
-            PlayCard(ghoul, true);
+            PlayCard(ghoul);
 
-            //At the end of your turn, this card deals the non-undead target with the second lowest HP 2 toxic damage.
-            //second lowest non-undead should be ra
-            QuickHPStorage(ra);
+            //At the end of your turn, this card deals the non-undead hero target with the second lowest HP 2 toxic damage.
+            //second lowest non-undead should be necro
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, mdp);
             GoToEndOfTurn(necro);
-            QuickHPCheck(-2);
+            QuickHPCheck(0, -2, 0, 0, 0);
         }
 
         [Test()]

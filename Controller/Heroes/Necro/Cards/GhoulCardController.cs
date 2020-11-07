@@ -5,23 +5,23 @@ using System.Linq;
 
 namespace Cauldron.Necro
 {
-	public class GhoulCardController : UndeadCardController
-	{
-		public GhoulCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
-		{
-		}
-		public override IEnumerator Play()
-		{
-			//When this card enters play, # = the number of rituals in play plus 2.
-			SetMaximumHPWithRituals(2);
+    public class GhoulCardController : UndeadCardController
+    {
+        public GhoulCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        {
+        }
+        public override IEnumerator Play()
+        {
+            //When this card enters play, # = the number of rituals in play plus 2.
+            SetMaximumHPWithRituals(2);
 
-			yield break;
-		}
+            yield break;
+        }
 
-		public override void AddTriggers()
-		{
-			//At the end of your turn, this card deals the non-undead target with the second lowest HP 2 toxic damage.
-			base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, (PhaseChangeAction p) => base.DealDamageToLowestHP(base.Card, 2, (Card c) => !this.IsUndead(c), (Card c) => new int?(2), DamageType.Toxic, false, false, null, 1, null, null, false), TriggerType.DealDamage, null, false);
-		}
-	}
+        public override void AddTriggers()
+        {
+            //At the end of your turn, this card deals the non-undead target with the second lowest HP 2 toxic damage.
+            base.AddEndOfTurnTrigger(tt => tt == TurnTaker, p => base.DealDamageToLowestHP(Card, 2, c => !this.IsUndead(c) && IsHeroConsidering1929(c), c => 2, DamageType.Toxic), TriggerType.DealDamage);
+        }
+    }
 }
