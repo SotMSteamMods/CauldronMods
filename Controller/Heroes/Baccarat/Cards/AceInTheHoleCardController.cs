@@ -23,7 +23,7 @@ namespace Cauldron.Baccarat
         public override IEnumerator Play()
         {
             //You may play a card.
-            IEnumerator coroutine = base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, null, null, false, false, true, null);
+            IEnumerator coroutine = base.SelectAndPlayCardFromHand(base.HeroTurnTakerController);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -42,7 +42,7 @@ namespace Cauldron.Baccarat
 				allowSetNumberOfPowerUseStatusEffect.UntilThisTurnIsOver(base.GameController.Game);
 				allowSetNumberOfPowerUseStatusEffect.CardDestroyedExpiryCriteria.Card = base.CharacterCard;
 				allowSetNumberOfPowerUseStatusEffect.NumberOfUses = new int?(1);
-				coroutine = base.AddStatusEffect(allowSetNumberOfPowerUseStatusEffect, true);
+				coroutine = base.AddStatusEffect(allowSetNumberOfPowerUseStatusEffect);
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);
@@ -65,7 +65,7 @@ namespace Cauldron.Baccarat
 					{
 						type = SelectionType.UsePowerAgain;
 					}
-					IEnumerator coroutine2 = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, type, base.CharacterCard, null, storedResults, null, base.GetCardSource(null));
+					IEnumerator coroutine2 = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, type, base.CharacterCard, null, storedResults);
 					if (base.UseUnityCoroutines)
 					{
 						yield return base.GameController.StartCoroutine(coroutine2);
@@ -79,7 +79,7 @@ namespace Cauldron.Baccarat
 						int num;
 						for (int i = 0; i < 2 - timesUsed; i = num + 1)
 						{
-							coroutine2 = base.UsePowerOnOtherCard(base.CharacterCard, 0, true);
+							coroutine2 = base.UsePowerOnOtherCard(base.CharacterCard);
 							if (base.UseUnityCoroutines)
 							{
 								yield return base.GameController.StartCoroutine(coroutine2);
