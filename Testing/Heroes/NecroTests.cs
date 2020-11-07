@@ -783,14 +783,14 @@ namespace CauldronTests
             PutIntoPlay("TheStaffOfRa");
             GoToPlayCardPhase(necro);
 
-            PlayCard(imp, true);
+            PlayCard(imp);
 
             //At the end of your turn, destroy 1 hero equipment or ongoing card."
             GoToEndOfTurn(necro);
 
             //there should be no more equipment in play
             AssertNumberOfCardsInPlay((Card c) => GameController.IsEquipment(c) && c.IsHero, 0);
-
+            AssertInTrash("TheStaffOfRa");
         }
 
         [Test()]
@@ -804,14 +804,14 @@ namespace CauldronTests
             PutIntoPlay("FleshOfTheSunGod");
             GoToPlayCardPhase(necro);
 
-            PlayCard(imp, true);
+            PlayCard(imp);
 
             //At the end of your turn, destroy 1 hero equipment or ongoing card."
             GoToEndOfTurn(necro);
 
             //there should be no more ongoings in play
             AssertNumberOfCardsInPlay((Card c) => c.IsOngoing && c.IsHero, 0);
-
+            AssertInTrash("FleshOfTheSunGod");
         }
 
         [Test()]
@@ -828,10 +828,10 @@ namespace CauldronTests
             DecisionSelectTurnTaker = ra.TurnTaker;
             DecisionSelectCard = staff;
             //When this card is destroyed, one player may play a card."
-            QuickHandStorage(ra);
+            QuickHandStorage(necro, ra, fanatic);
             DestroyCard(imp, baron.CharacterCard);
-            QuickHandCheck(-1);
-
+            QuickHandCheck(0, -1, 0);
+            AssertInPlayArea(ra, staff);
         }
 
         [Test()]
@@ -995,28 +995,15 @@ namespace CauldronTests
             StartGame();
             Card abomination = GetCard("Abomination");
 
-            SetHitPoints(necro.CharacterCard, 15);
-            SetHitPoints(ra.CharacterCard, 12);
-            SetHitPoints(baron.CharacterCard, 23);
-            SetHitPoints(fanatic.CharacterCard, 3);
-            SetHitPoints(GetCard("MobileDefensePlatform"), 6);
-
-
             GoToPlayCardPhase(necro);
 
-            PlayCard(abomination, true);
+            PlayCard(abomination);
 
             // When this card is destroyed, all players draw a card.
-
-             List<int?> numCardsInHandBefore = new List<int?>() { GetNumberOfCardsInHand(necro), GetNumberOfCardsInHand(ra), GetNumberOfCardsInHand(fanatic)};
+            QuickHandStorage(necro, ra, fanatic);
             DestroyCard(abomination, necro.CharacterCard);
-            List<int?> numCardsInHandAfter = new List<int?>() { GetNumberOfCardsInHand(necro), GetNumberOfCardsInHand(ra), GetNumberOfCardsInHand(fanatic) };
-
-            //check each hero's hand size, should be +1
-            Assert.AreEqual(numCardsInHandBefore[0] + 1, numCardsInHandAfter[0]);
-            Assert.AreEqual(numCardsInHandBefore[1] + 1, numCardsInHandAfter[1]);
-            Assert.AreEqual(numCardsInHandBefore[2] + 1, numCardsInHandAfter[2]);
- 
+            QuickHandCheck(1, 1, 1);
+            AssertInTrash(abomination);
         }
 
 
