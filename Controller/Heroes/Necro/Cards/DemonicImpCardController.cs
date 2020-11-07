@@ -6,15 +6,15 @@ using System;
 
 namespace Cauldron.Necro
 {
-	public class DemonicImpCardController : CardController
-    {
+	public class DemonicImpCardController : UndeadCardController
+	{
 		public DemonicImpCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
 		}
 		public override IEnumerator Play()
 		{
 			//When this card enters play, # = the number of rituals in play plus 2.
-			this.Card.SetMaximumHP(this.GetNumberOfRitualsInPlay() + 2, true);
+			SetMaximumHPWithRituals(2);
 
 			yield break;
 		}
@@ -40,21 +40,6 @@ namespace Cauldron.Necro
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
 			yield break;
-		}
-
-		private bool IsRitual(Card card)
-		{
-			return card != null && this.GameController.DoesCardContainKeyword(card, "ritual", false, false);
-		}
-
-		private int GetNumberOfRitualsInPlay()
-		{
-			return base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && this.IsRitual(c), false, null, false).Count<Card>();
-		}
-
-		private bool IsUndead(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "undead", false, false);
 		}
 	}
 }
