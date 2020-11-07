@@ -560,11 +560,14 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
+            //put all in to hand to reduce variability
             Card allin = GetCard("AllIn");
+            PutInHand(allin);
 
             QuickHandStorage(baccarat);
             PlayCard(allin);
-            QuickHandCheck(-1);
+            //should be 2 fewer cards in hand, one for discard one for playing all in
+            QuickHandCheck(-2);
         }
 
         [Test()]
@@ -578,13 +581,37 @@ namespace CauldronTests
 
             PlayCard(battalion);
             //...{Baccarat} deals each non-hero target 1 infernal damage and 1 radiant damage.
-            int bunkerHP = GetHitPoints(bunker);
-            int mdpHP = GetHitPoints(mdp);
-            QuickHPStorage(battalion);
+
+            QuickHPStorage(battalion, mdp, bunker.CharacterCard);
             PlayCard(allin);
-            QuickHPCheck(-2);
-            Assert.AreEqual(mdpHP - 2, GetHitPoints(mdp));
-            Assert.AreEqual(bunkerHP, GetHitPoints(bunker));
+            QuickHPCheck(-2, -2, 0);
+
+        }
+
+        [Test()]
+        public void TestAllInDamageCantDiscard_NoDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //discard all cards to not have any in hand
+            DiscardAllCards(baccarat);
+
+            //put all in to hand
+            Card allin = GetCard("AllIn");
+            PutInHand(allin);
+
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card battalion = GetCard("BladeBattalion");
+
+            PlayCard(battalion);
+            //...if you do {Baccarat} deals each non-hero target 1 infernal damage and 1 radiant damage.
+            //since there are no cards in hand to discard, no damage should be dealt
+            QuickHPStorage(battalion, mdp, bunker.CharacterCard);
+            PlayCard(allin);
+            QuickHPCheck(0, 0, 0);
+
         }
 
         [Test()]
