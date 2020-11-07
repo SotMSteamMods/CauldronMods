@@ -22,7 +22,7 @@ namespace Cauldron.Baccarat
             List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
 
             //Discard a card from your hand...
-            IEnumerator coroutine = base.GameController.SelectAndDiscardCard(this.DecisionMaker, true, null, storedResults, SelectionType.DiscardCard, null, base.TurnTaker, false, null, base.GetCardSource(null));
+            IEnumerator coroutine = base.GameController.SelectAndDiscardCard(this.DecisionMaker, true, null, storedResults, responsibleTurnTaker: base.TurnTaker, cardSource: base.GetCardSource(null));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -33,18 +33,18 @@ namespace Cauldron.Baccarat
             }
 
             //...If you do...
-            if (base.DidDiscardCards(storedResults, new int?(1), false))
+            if (base.DidDiscardCards(storedResults, new int?(1)))
             {
                 Card cardToDiscard = storedResults.First<DiscardCardAction>().CardToDiscard;
                 //...{Baccarat} deals each non-hero target...
                 coroutine = base.DealMultipleInstancesOfDamage(new List<DealDamageAction>
                 { 
                     //...1 infernal damage...
-                    new DealDamageAction(base.GetCardSource(null), new DamageSource(base.GameController, base.CharacterCard), null, 1, DamageType.Infernal, false, null, null, null, false),
+                    new DealDamageAction(base.GetCardSource(null), new DamageSource(base.GameController, base.CharacterCard), null, 1, DamageType.Infernal),
 
                     //...and 1 radiant damage.
-                    new DealDamageAction(base.GetCardSource(null), new DamageSource(base.GameController, base.CharacterCard), null, 1, DamageType.Radiant, false, null, null, null, false)
-                }, (Card c) => !c.IsHero, null, null, null, null, false);
+                    new DealDamageAction(base.GetCardSource(null), new DamageSource(base.GameController, base.CharacterCard), null, 1, DamageType.Radiant)
+                }, (Card c) => !c.IsHero);
             }
             else
             {
