@@ -208,7 +208,7 @@ namespace CauldronTests
             // We need to make an explicit hand so two FieldDressings aren't in hand so it doesn't play another FieldDressing which will throw off the Asserts
             MakeCustomHeroHand(DocHavoc, new List<string>()
             {
-                FieldDressingCardController.Identifier, PhosphorBlastCardController.Identifier, PhosphorBlastCardController.Identifier, PhosphorBlastCardController.Identifier
+                FieldDressingCardController.Identifier, RecklessChargeCardController.Identifier, RecklessChargeCardController.Identifier
             });
 
             StartGame();
@@ -220,8 +220,8 @@ namespace CauldronTests
             QuickHandStorage(DocHavoc);
 
             // Act
-            Card phosphorBlast = GetCard(PhosphorBlastCardController.Identifier);
-            DecisionSelectCardToPlay = phosphorBlast;
+            Card recklessCharge = GetCard(RecklessChargeCardController.Identifier);
+            DecisionSelectCardToPlay = recklessCharge;
 
             GoToPlayCardPhase(DocHavoc);
             Card fieldDressing = GetCardFromHand(FieldDressingCardController.Identifier);
@@ -233,33 +233,50 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestGasMask()
+        public void TestPhosphorBlast()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "InsulaPrimalis");
-            PutInHand(GasMaskCardController.Identifier);
-
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Legacy", "Ra", "Megalopolis");
             StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card bladeBattalion = GetCard("BladeBattalion");
+            PlayCard(bladeBattalion);
+            QuickHPStorage(baron.CharacterCard, mdp, bladeBattalion, DocHavoc.CharacterCard, legacy.CharacterCard, ra.CharacterCard);
 
-            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
-            QuickHPStorage(DocHavoc);
 
             // Act
+            Card phosphorBlast = GetCard(PhosphorBlastCardController.Identifier);
+            PutInHand(phosphorBlast);
             GoToPlayCardPhase(DocHavoc);
-            Card gasMask = GetCardFromHand(GasMaskCardController.Identifier);
-            PlayCard(gasMask);
+            PlayCard(phosphorBlast);
 
-            GoToStartOfTurn(env);
-            Card volcanicEruption = GetCard("ObsidianField");
-            PlayCard(volcanicEruption);
-            DestroyCard(volcanicEruption);
 
             // Assert
-            
-            Assert.AreEqual(1,
-                this.GameController.FindTriggersWhere((Func<ITrigger, bool>) (t => t.Types.Contains(TriggerType.GainHP))).Count());
-            AssertTriggersWhere((Func<ITrigger, bool>)(t => t.Types.Contains(TriggerType.GainHP)));
-            QuickHPCheck(2);
+
+            /*
+             * Check HP Loss:
+             * Baron (0: Immune)
+             * MDP (-1: Phosphor Blast)
+             * Blade Battalion (-1: Phosphor Blast)
+             * Doc Havoc (-1: Phosphor Blast)
+             * Legacy (-6: Blade Battalion, Phosphor Blast)
+             * Ra (-1: Phosphor Blast)
+             *
+             */
+            QuickHPCheck(0, -1, -1, -1, -6, -1);
+
+            // 2 status effects in play (MDP, Blade Battalion)
+            AssertNumberOfStatusEffectsInPlay(2);
+
+            // Both should be of type CannotGainHPStatusEffect
+            Assert.AreEqual(2 ,this.GameController.StatusEffectControllers.Count(sec => sec.StatusEffect is CannotGainHPStatusEffect));
+
+            // Go back around to Doc Havoc's turn again to ensure effects have expired
+            GoToStartOfTurn(DocHavoc);
+
+            // Both status effects should have expired
+            AssertNumberOfStatusEffectsInPlay(0);
+
         }
 
     }
