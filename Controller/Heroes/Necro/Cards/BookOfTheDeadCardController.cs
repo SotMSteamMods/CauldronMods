@@ -28,7 +28,7 @@ namespace Cauldron.Necro
             }
 
             //You may draw a card.
-            IEnumerator coroutine3 = base.DrawCard(optional: true);
+            IEnumerator coroutine3 = base.DrawCard(this.HeroTurnTaker, optional: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine3);
