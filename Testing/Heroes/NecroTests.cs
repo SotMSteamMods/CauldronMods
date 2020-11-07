@@ -401,17 +401,20 @@ namespace CauldronTests
             StartGame();
             Card backfire = GetCard("BackfireHex");
 
-            PutIntoPlay("BacklashField");
+            Card backlash = PutIntoPlay("BacklashField");
 
             GoToPlayCardPhase(necro);
 
             //You may destroy an ongoing card.
-            int numCardsInPlayBefore = GetNumberOfCardsInPlay(baron);
-            PlayCard(backfire, true);
-            int numCardsInPlayAfter = GetNumberOfCardsInPlay(baron);
+            AssertInPlayArea(baron, backlash);
 
-            //should be at 1 card fewer, since backfire hex destroyed backlash field
-            Assert.AreEqual(numCardsInPlayBefore - 1, numCardsInPlayAfter);
+            DecisionSelectCard = backlash;
+            AssertNextMessageContains($"There are no undead cards in {necro.Name}'s trash.");
+            PlayCard(backfire);
+
+            AssertNotInPlayArea(baron, backlash);
+            AssertInTrash(baron, backlash);
+            AssertInTrash(necro, backfire);
         }
 
         [Test()]
@@ -421,15 +424,18 @@ namespace CauldronTests
             StartGame();
             Card backfire = GetCard("BackfireHex");
 
-            PutInTrash("Ghoul");
+            var undead = PutInTrash("Ghoul");
+            PutInTrash("NecroZombie");
 
             GoToPlayCardPhase(necro);
 
             //Put an undead card from the trash into play.
-            PlayCard(backfire, true);
+            DecisionSelectCard = undead;
+            AssertNextMessageContains($"There are no ongoing cards in play for {backfire.Title} to destroy.");
+            PlayCard(backfire);
 
-            //should be at 1 undead in play now
-            AssertNumberOfUndeadInPlay(necro, 1);
+            AssertInPlayArea(necro, undead);
+            AssertInTrash(necro, backfire);
         }
 
         [Test()]
