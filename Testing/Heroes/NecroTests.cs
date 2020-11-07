@@ -414,10 +414,10 @@ namespace CauldronTests
             Console.WriteLine("DEBUG: Cards in play " + cardsInPlay.ToString());
 
             GoToPlayCardPhase(necro);
-            
+
             //Put the top 2 cards of your deck into play.
             PlayCard(chaotic);
-                        
+
             AssertInPlayArea(necro, card1);
             AssertInPlayArea(necro, card2);
             AssertInTrash(necro, chaotic);
@@ -555,30 +555,25 @@ namespace CauldronTests
             StartGame();
             Card final = GetCard("FinalRitual");
 
-
             //put in play a ritual to boost HP of undead by 1
             PutIntoPlay("DarkPact");
 
-
             //set up game for effect testing
-            PutInTrash("Ghoul");
-            PutInTrash("Abomination");
+            var card1 = PutInTrash("Ghoul");
+            var card2 = PutInTrash("Abomination");
 
             GoToPlayCardPhase(necro);
 
+            DecisionSelectCards = new[] { card1, card2 };
+            DecisionSelectTargets = new[] { card1, card2 };
+
             //Search your trash for up to 2 Undead and put them into play. {Necro} deals each of those cards 2 toxic damage.
-            PlayCard(final, true);
-
-            //check that there are 2 in play
-            AssertNumberOfUndeadInPlay(necro, 2);
-            Card abomination = GetCardInPlay("Abomination");
-            Card ghoul = GetCardInPlay("Ghoul");
-
-            //check the health of each
-            Assert.AreEqual(abomination.MaximumHitPoints - 2, abomination.HitPoints);
-            Assert.AreEqual(ghoul.MaximumHitPoints - 2, ghoul.HitPoints);
-
-
+            PlayCard(final);
+            AssertInTrash(final);
+            AssertInPlayArea(necro, card1);
+            AssertInPlayArea(necro, card2);
+            AssertHitPoints(card1, card1.MaximumHitPoints.Value - 2);
+            AssertHitPoints(card2, card2.MaximumHitPoints.Value - 2);
         }
 
         [Test()]
@@ -588,25 +583,25 @@ namespace CauldronTests
             StartGame();
             Card final = GetCard("FinalRitual");
 
-
             //put in play a ritual to boost HP of undead by 1
             PutIntoPlay("DarkPact");
 
-
             //set up game for effect testing
-            PutInTrash("Ghoul");
-            PutInTrash("Abomination");
+            var card1 = PutInTrash("Ghoul");
+            var card2 = PutInTrash("Abomination");
 
             GoToPlayCardPhase(necro);
 
-            QuickHPStorage(necro);
-            //Necro deals himself X toxic damage, where X is 2 times the number of cards put into play this way.
-            PlayCard(final, true);
+            DecisionSelectCards = new[] { card1, card2 };
+            DecisionSelectTargets = new[] { card1, card2 };
 
-            //2 cards were put into play, so 4 damage should be dealt
-            QuickHPCheck(-4);
+            //Search your trash for up to 2 Undead and put them into play. {Necro} deals each of those cards 2 toxic damage.
+            QuickHPStorage(baron, necro, ra, fanatic);
+            PlayCard(final);
 
-
+            //2 cards played, 4 damage should be dealt
+            AssertInTrash(final);
+            QuickHPCheck(0, -4, 0, 0);
         }
 
         [Test()]
@@ -616,26 +611,25 @@ namespace CauldronTests
             StartGame();
             Card final = GetCard("FinalRitual");
 
-
             //put in play a ritual to boost HP of undead by 1
             PutIntoPlay("DarkPact");
 
-
             //set up game for effect testing
-            PutInTrash("Ghoul");
-            PutInTrash("Abomination");
+            var card1 = PutInTrash("Ghoul");
+            var card2 = PutInTrash("Abomination");
 
             GoToPlayCardPhase(necro);
 
-            QuickHPStorage(necro);
+            QuickHPStorage(baron, necro, ra, fanatic);
             DecisionDoNotSelectCard = SelectionType.PutIntoPlay;
             //Necro deals himself X toxic damage, where X is 2 times the number of cards put into play this way.
-            PlayCard(final, true);
+            PlayCard(final);
 
             //no cards were put into play so no damage should be dealt
-            QuickHPCheck(0);
-
-
+            AssertInTrash(final);
+            QuickHPCheck(0, 0, 0, 0);
+            AssertInTrash(necro, card1);
+            AssertInTrash(necro, card2);
         }
 
         [Test()]
