@@ -1,7 +1,16 @@
 # CauldronMods
-## The Cauldron decks for Sentinels of the Multiverse Digital
+
+**What is the Cauldron**
+The Cauldron is a custom fan expansion for the [Sentinels of the Multiverse](http://sentinelsofthemultiverse.com/)
+cooperative card game by Greater Than Games.  These decks were designed by Matthew Bishop (@Tosx), his roommate, and his brother.
+The base set was begun around 2013, and the last set was completed in 2019.
+
+This project will bring the fantastic Cauldron Decks to [Sentinels of the Multiverse Digital](https://store.steampowered.com/app/337150/Sentinels_of_the_Multiverse/) as a Steam Workshop Mod.
+
 ----------------------------------------------------------
+
 Links:
+- Get the Game: [Steam](https://store.steampowered.com/app/337150/Sentinels_of_the_Multiverse/)
 - Cauldron website: https://cauldron4.webnode.com/
 - Trello board: https://trello.com/b/Doyff7gB/cauldron-sotm-mod
 - BGG Forum: https://boardgamegeek.com/thread/2532898/mod-sentinels-digital 
