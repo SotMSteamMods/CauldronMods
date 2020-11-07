@@ -15,6 +15,34 @@ namespace Cauldron.Necro
         {
         }
 
+        protected bool IsHeroConsidering1929(Card card)
+        {
+            return card.IsHero;
+        }
+
+        protected bool IsVillianConsidering1929(Card card)
+        {
+            return card.IsVillain;
+        }
+
+        protected string HeroStringConsidering1929
+        {
+            get
+            {
+                return "hero";
+            }
+        }
+
+        protected string VillianStringConsidering1929
+        {
+            get
+            {
+                return "villian";
+            }
+        }
+
+
+
         protected bool IsRitual(Card card)
         {
             return card.DoKeywordsContain(RitualKeyword);
