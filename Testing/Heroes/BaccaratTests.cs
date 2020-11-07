@@ -629,8 +629,11 @@ namespace CauldronTests
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
             PlayCard(house);
             AssertNumberOfCardsInTrash(baccarat, 2);
-            Assert.IsTrue(baccarat.TurnTaker.Trash.HasCard(saint));
-            Assert.IsTrue(baccarat.TurnTaker.Trash.HasCard(house));
+            AssertInTrash(saint);
+            AssertInTrash(house);
+            AssertInDeck(trick1);
+            AssertInDeck(trick2);
+
         }
 
         [Test()]
@@ -653,6 +656,7 @@ namespace CauldronTests
             Card house = GetCard("BringDownTheHouse");
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
             PlayCard(house);
+            //7 cards already in the trash +1 = 8 cards in trash
             AssertNumberOfCardsInTrash(baccarat, 8);
         }
 
@@ -677,8 +681,14 @@ namespace CauldronTests
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
             PlayCard(house);
             AssertNumberOfCardsInTrash(baccarat, 2);
-            Assert.IsTrue(baccarat.TurnTaker.Trash.HasCard(saint));
-            Assert.IsTrue(baccarat.TurnTaker.Trash.HasCard(house));
+            AssertInTrash(saint);
+            AssertInTrash(house);
+            AssertInDeck(trick1);
+            AssertInDeck(trick2);
+            AssertInDeck(toss1);
+            AssertInDeck(toss2);
+            AssertInDeck(bridge1);
+            AssertInDeck(bridge2);
         }
 
         [Test()]
@@ -701,12 +711,15 @@ namespace CauldronTests
             Card field = GetCard("LivingForceField");
             PlayCard(field);
 
-            DecisionsYesNo = new bool[] { true, true, true };
+            //yes to move cards
+            //no to destroy cards
+            DecisionsYesNo = new bool[] { true, false };
             DecisionDoNotSelectCard = SelectionType.DestroyCard;
 
             Card house = GetCard("BringDownTheHouse");
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
             PlayCard(house);
+            //no card should have been destroyed, thus field will still be in play
             AssertIsInPlay(field);
         }
 
@@ -730,7 +743,7 @@ namespace CauldronTests
             Card field = GetCard("LivingForceField");
             PlayCard(field);
 
-            DecisionsYesNo = new bool[] { true, true, true };
+            DecisionsYesNo = new bool[] { true, true };
 
             Card house = GetCard("BringDownTheHouse");
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
@@ -758,13 +771,50 @@ namespace CauldronTests
             Card monorail = GetCard("PlummetingMonorail");
             PlayCard(monorail);
 
-            DecisionsYesNo = new bool[] { true, true, true };
+            DecisionsYesNo = new bool[] { true, true };
 
             Card house = GetCard("BringDownTheHouse");
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
             PlayCard(house);
             AssertInTrash(monorail);
         }
+
+        [Test()]
+        public void TestBringDownTheHouseDestroy2Cards()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            //Setup Trash
+            Card trick1 = GetCard("CheapTrick", 1);
+            Card trick2 = GetCard("CheapTrick", 2);
+            Card toss1 = GetCard("CardToss", 1);
+            Card toss2 = GetCard("CardToss", 2);
+            Card saint = GetCard("AceOfSaints");
+            IEnumerable<Card> trashCards = new Card[] { trick1, trick2, saint, toss1, toss2 };
+            PutInTrash(trashCards);
+
+            //Setup In play
+            Card field = GetCard("LivingForceField");
+            Card monorail = GetCard("PlummetingMonorail");
+            Card backlash = GetCard("BacklashField");
+            Card police = GetCard("PoliceBackup");
+            IEnumerable<Card> playCardsToDestroy = new Card[] { field, monorail, backlash };
+            PlayCards(playCardsToDestroy);
+            PlayCard(police);
+
+            DecisionsYesNo = new bool[] { true, true };
+            Card house = GetCard("BringDownTheHouse");
+            //Shuffle any number of pairs of cards with the same name from your trash into your deck.
+            PlayCard(house);
+
+            //since only 2 pairs were shuffled, 2 cards will be destroyed
+            AssertInTrash(field);
+            AssertInTrash(backlash);
+            AssertIsInPlay(police);
+            AssertIsInPlay(monorail);
+
+        }
+
 
         [Test()]
         public void TestBringDownTheHouseDestroy3Cards()
@@ -791,7 +841,7 @@ namespace CauldronTests
             PlayCards(playCardsToDestroy);
             PlayCard(police);
 
-            DecisionsYesNo = new bool[] { true, true, true };
+            DecisionsYesNo = new bool[] { true, true };
 
             Card house = GetCard("BringDownTheHouse");
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
