@@ -270,10 +270,12 @@ namespace CauldronTests
         [Test()]
         public void TestAbyssalSolitaireBeforeNextStart()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("BaronBlade", "Legacy", "Cauldron.Baccarat", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card abyssal = GetCard("AbyssalSolitaire");
 
+            //go to end of turn legacy to collect HP accurately
+            GoToEndOfTurn(legacy);
             //Until the start of your next turn, reduce damage dealt to {Baccarat} by 1.
             QuickHPStorage(baccarat);
             GoToPlayCardPhase(baccarat);
