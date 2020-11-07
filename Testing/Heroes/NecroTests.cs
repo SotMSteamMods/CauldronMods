@@ -408,20 +408,20 @@ namespace CauldronTests
             Card chaotic = GetCard("ChaoticSummon");
 
             //stack deck so that we know that 2 cards should enter play
-            PutOnDeck("Ghoul");
-            PutOnDeck("DemonicImp");
+            Card card1 = PutOnDeck("Ghoul");
+            Card card2 = PutOnDeck("DemonicImp");
+            int cardsInPlay = base.GetNumberOfCardsInPlay(c => true);
+            Console.WriteLine("DEBUG: Cards in play " + cardsInPlay.ToString());
 
             GoToPlayCardPhase(necro);
+            
             //Put the top 2 cards of your deck into play.
-            int numCardsInDeckBefore = GetNumberOfCardsInDeck(necro);
-            PlayCard(chaotic, true);
-            int numCardsInDeckAfter = GetNumberOfCardsInDeck(necro);
-
-            //should be at 2 cards fewer, 2 cards played + chaotic summon
-            Assert.AreEqual(numCardsInDeckBefore - 3, numCardsInDeckAfter);
-
-            //based on the stacking of the deck, should be 2 undead now in play
-            AssertNumberOfUndeadInPlay(necro, 2);
+            PlayCard(chaotic);
+                        
+            AssertInPlayArea(necro, card1);
+            AssertInPlayArea(necro, card2);
+            AssertInTrash(necro, chaotic);
+            AssertNumberOfCardsInPlay(c => true, cardsInPlay + 2);
         }
 
         [Test()]
