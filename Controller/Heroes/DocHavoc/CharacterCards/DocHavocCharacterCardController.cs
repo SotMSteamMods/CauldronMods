@@ -15,9 +15,9 @@ namespace Cauldron.DocHavoc
 
         public override IEnumerator UsePower(int index = 0)
         {
-            //========================================================================================================================
+            //==============================================================
             // Adrenaline: Deals 1 hero 3 toxic damage. If that hero took damage this way, they may play a card now.
-            //========================================================================================================================
+            //==============================================================
 
             List<DealDamageAction> storedDamageResults = new List<DealDamageAction>();
 
@@ -109,9 +109,9 @@ namespace Cauldron.DocHavoc
 
         private IEnumerator GetIncapacitateOption1()
         {
-            //========================================================================================================================
+            //==============================================================
             // Up to 3 hero targets regain 1 HP each.
-            //========================================================================================================================
+            //==============================================================
 
             return this.GameController.SelectAndGainHP(this.DecisionMaker, 1, additionalCriteria: ((Func<Card, bool>)(c => c.IsHero)),
                 numberOfTargets: 3, requiredDecisions: new int?(0), cardSource: this.GetCardSource());
@@ -119,18 +119,18 @@ namespace Cauldron.DocHavoc
 
         private IEnumerator DoIncapacitateOption2()
         {
-            //========================================================================================================================
+            //==============================================================
             // One player may draw a card now.
-            //========================================================================================================================
+            //==============================================================
 
             return this.GameController.SelectHeroToDrawCard(this.DecisionMaker);
         }
 
         private IEnumerator DoIncapacitateOption3()
         {
-            //========================================================================================================================
+            //==============================================================
             // Environment cards cannot deal damage until the start of your next turn..
-            //========================================================================================================================
+            //==============================================================
 
             CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new CannotDealDamageStatusEffect();
             cannotDealDamageStatusEffect.IsPreventEffect = true;

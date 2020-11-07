@@ -5939,6 +5939,18 @@ namespace Handelabra.Sentinels.UnitTest
         {
             RunCoroutine(this.GameController.SwitchBattleZone(ttc));
         }
+
+        protected void MakeCustomHeroHand(HeroTurnTakerController hero, IList<string> cardIdentifiers)
+        {
+            // Put hero's current hand back in the deck
+            MoveAllCardsFromHandToDeck(hero);
+
+            // Move desired cards to hero's hand
+            foreach (string cardIdentifier in cardIdentifiers)
+            {
+                MoveCard(hero, hero.TurnTaker.Deck.Cards.FirstOrDefault(c => c.Identifier.Equals(cardIdentifier)), hero.HeroTurnTaker.Hand);
+            }
+        }
     }
 }
 
