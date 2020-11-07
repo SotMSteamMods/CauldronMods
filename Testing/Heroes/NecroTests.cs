@@ -455,25 +455,16 @@ namespace CauldronTests
             PlayCard(imp, true);
             SetHitPoints(imp, 1);
 
-
-
             GoToPlayCardPhase(necro);
 
             PlayCard(bloodRite, true);
 
             //When an Undead target is destroyed, all non-undead hero targets regain 2 HP.
-
-            List<int?> heroHpBefore = new List<int?>() { necro.CharacterCard.HitPoints, ra.CharacterCard.HitPoints, fanatic.CharacterCard.HitPoints, imp.HitPoints };
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, imp);
             DestroyCard(ghoul, baron.CharacterCard);
-            List<int?> heroHpAfter = new List<int?>() { necro.CharacterCard.HitPoints, ra.CharacterCard.HitPoints, fanatic.CharacterCard.HitPoints, imp.HitPoints };
 
-            //check each hero's hp
-            Assert.AreEqual(heroHpBefore[0] + 2, heroHpAfter[0]);
-            Assert.AreEqual(heroHpBefore[1] + 2, heroHpAfter[1]);
-            Assert.AreEqual(heroHpBefore[2] + 2, heroHpAfter[2]);
-            //check imp hp hasn't changed
-            Assert.AreEqual(heroHpBefore[3], heroHpAfter[3]);
-
+            //assert only non-undead hero's regained HP
+            QuickHPCheck(0, 2, 2, 2, 0);
         }
 
         [Test()]
