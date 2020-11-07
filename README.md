@@ -1,20 +1,38 @@
 # CauldronMods
-Mod adaptations of the Cauldron decks for Sentinels of the Multiverse for Steam Workshop
+## The Cauldron decks for Sentinels of the Multiverse Digital
 ----------------------------------------------------------
 Links:
--Cauldron website: https://cauldron4.webnode.com/
--Trello board: https://trello.com/b/Doyff7gB/cauldron-sotm-mod
--BGG Forum: https://boardgamegeek.com/thread/2532898/mod-sentinels-digital 
+- Cauldron website: https://cauldron4.webnode.com/
+- Trello board: https://trello.com/b/Doyff7gB/cauldron-sotm-mod
+- BGG Forum: https://boardgamegeek.com/thread/2532898/mod-sentinels-digital 
 
-Currently included decks:
+To get started helping out take a look at:
+- [Code of Conduct](./Docs/CODE_OF_CONDUCT.md)
+- [Contributing](./Docs/CONTRIBUTING.md)
 
-HEROES:
--Baccarat
--Lady of the Wood
--Necro
+**How to I play this mod?**
 
-VILLAINS:
--Anathema
+You can't.
+Handelabra is implementing Mod support now.
+You can follow the development on [Handelabra's Discord](https://discordapp.com/invite/handelabra)
+channel with [Weekly Dev. Streams](https://www.youtube.com/playlist?list=PLGPBmjNUB43ick6QwxGIOMFFN5yKuTvQU).
 
-ENVIRONMENTS:
--The Wandering Isle
+**What are you working on them**
+
+We are working to implement the core Cauldron decks, and be ready out of the gate
+when mods are available to have Cauldron ready to play.
+
+- HEROES:
+  - Baccarat
+  - Doc Havoc - In Progress
+  - Lady of the Wood
+  - Necro
+  - The Knight
+  - The Stranger
+
+- VILLAINS:
+  - Anathema
+  - Tiamat - In Progress
+
+- ENVIRONMENTS:
+  - The Wandering Isle
