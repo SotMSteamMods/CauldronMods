@@ -228,7 +228,7 @@
 			],
 			"flavorText": "The Knight donned his helm,{BR}and The Scholar his sunglasses.{BR}“Ready”",
 			"flavorReference": "Temporal Targets #53",
-			"hitpoints": 5
+			"hitpoints": 3
 		},
 		{
 			"identifier": "PlateMail",
