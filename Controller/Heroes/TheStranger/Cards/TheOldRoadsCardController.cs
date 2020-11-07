@@ -22,7 +22,7 @@ namespace Cauldron.TheStranger
         {
             //Put a Glyph from your trash into your hand, or reveal cards from the top of your deck until you reveal a Glyph, put it into play, and shuffle the other revealed cards into your deck.
             string option1 = "Put a Glyph from your trash into your hand";
-            string option2 = "reveal cards from the top of your deck until you reveal a Glyph, put it into play, and shuffle the other revealed cards into your deck";
+            string option2 = "Reveal cards from the top of your deck until you reveal a Glyph, put it into play, and shuffle the other revealed cards into your deck";
             List<Function> list = new List<Function>();
             list.Add(new Function(this.DecisionMaker, option1, SelectionType.MoveCardToHandFromTrash, () => base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => this.IsGlyph(c), "glyph"), new MoveCardDestination[] { new MoveCardDestination(base.Card.Owner.ToHero().Hand, false, false, false) }), null, null, option1));
             list.Add(new Function(this.DecisionMaker, option2, SelectionType.RevealCardsFromDeck, () => base.RevealCards_MoveMatching_ReturnNonMatchingCards(this.DecisionMaker, base.TurnTaker.Deck, false, true, false, new LinqCardCriteria((Card c) => this.IsGlyph(c), "glyph", true, false, null, null, false), new int?(1), null, true, false, RevealedCardDisplay.None, false, false, null, false, false), new bool?(true), null, option2));
