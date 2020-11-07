@@ -22,7 +22,7 @@ namespace Cauldron.Baccarat
             List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
 
             //Discard a card from your hand...
-            IEnumerator coroutine = base.GameController.SelectAndDiscardCard(this.DecisionMaker, true, null, storedResults, responsibleTurnTaker: base.TurnTaker, cardSource: base.GetCardSource(null));
+            IEnumerator coroutine = base.GameController.SelectAndDiscardCard(this.DecisionMaker, true, null, storedResults, responsibleTurnTaker: base.TurnTaker, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -40,15 +40,15 @@ namespace Cauldron.Baccarat
                 coroutine = base.DealMultipleInstancesOfDamage(new List<DealDamageAction>
                 { 
                     //...1 infernal damage...
-                    new DealDamageAction(base.GetCardSource(null), new DamageSource(base.GameController, base.CharacterCard), null, 1, DamageType.Infernal),
+                    new DealDamageAction(base.GetCardSource(), new DamageSource(base.GameController, base.CharacterCard), null, 1, DamageType.Infernal),
 
                     //...and 1 radiant damage.
-                    new DealDamageAction(base.GetCardSource(null), new DamageSource(base.GameController, base.CharacterCard), null, 1, DamageType.Radiant)
+                    new DealDamageAction(base.GetCardSource(), new DamageSource(base.GameController, base.CharacterCard), null, 1, DamageType.Radiant)
                 }, (Card c) => !c.IsHero);
             }
             else
             {
-                coroutine = base.GameController.SendMessageAction(base.TurnTaker.Name + " did not discard a card, so no damage will be dealt.", Priority.Medium, base.GetCardSource(null), null, true);
+                coroutine = base.GameController.SendMessageAction(base.TurnTaker.Name + " did not discard a card, so no damage will be dealt.", Priority.Medium, base.GetCardSource(), null, true);
             }
             if (base.UseUnityCoroutines)
             {
