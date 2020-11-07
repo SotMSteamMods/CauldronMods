@@ -1709,6 +1709,94 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestWhisperedSigns_Draw2()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+            Card signs = GetCard("WhisperedSigns");
+            PutInHand(signs);
+            //You may draw 2 cards or put a Rune from your trash into your hand.
+            DecisionSelectFunction = 0;
+            QuickHandStorage(stranger);
+            int numCardsInDeckBefore = GetNumberOfCardsInDeck(stranger);
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+            PlayCard(signs);
+            //should be +1 card in hand,drew 2, played 1
+            QuickHandCheck(1);
+            AssertNumberOfCardsInDeck(stranger, numCardsInDeckBefore - 2);
+
+
+        }
+
+        [Test()]
+        public void TestWhisperedSigns_RetrieveRune()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            Card signs = GetCard("WhisperedSigns");
+            PutInHand(signs);
+            Card rune = GetCard("MarkOfBinding");
+            PutInTrash(stranger, rune);
+
+            //You may draw 2 cards or put a Rune from your trash into your hand.
+            DecisionSelectFunction = 1;
+            QuickHandStorage(stranger);
+            int numCardsInTrashBefore = GetNumberOfCardsInTrash(stranger);
+            AssertInTrash(rune);
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+            PlayCard(signs);
+            //should be +0, played 1, moved 1 into hand
+            QuickHandCheckZero();
+            //should be +0, as whispered signs moved to trash, and we retrieved card from trash
+            AssertNumberOfCardsInTrash(stranger, numCardsInTrashBefore);
+            AssertInHand(rune);
+
+
+        }
+        [Test()]
+        public void TestWhisperedSigns_PlayRune()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            Card signs = GetCard("WhisperedSigns");
+            PutInHand(signs);
+            Card rune = GetCard("MarkOfBinding");
+            PutInHand(rune);
+
+            //You may play a Rune or Glyph now.
+
+            DecisionSelectCards = new Card[] { rune, baron.CharacterCard };
+            AssertInHand(rune);
+            PlayCard(signs);
+            AssertIsInPlay(rune);
+
+
+        }
+        [Test()]
+        public void TestWhisperedSigns_PlayGlyph()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            Card signs = GetCard("WhisperedSigns");
+            PutInHand(signs);
+            Card glyph = GetCard("GlyphOfDecay");
+            PutInHand(glyph);
+
+            //You may play a Rune or Glyph now.
+
+            DecisionSelectCard = glyph;
+            AssertInHand(glyph);
+            PlayCard(signs);
+            AssertIsInPlay(glyph);
+
+
+        }
+
+
 
     }
 }

@@ -58,7 +58,7 @@ namespace Cauldron.TheStranger
             int maxActions = Math.Max(numberOfCardsDiscarded, numberOfCardsShuffled);
 
             //define function options
-            Func<IEnumerator> draw = new Func<IEnumerator>(() => base.DrawCard(base.HeroTurnTaker, true, null, true));
+            Func<IEnumerator> draw = new Func<IEnumerator>(() => base.DrawCard(base.HeroTurnTaker, false, null, true));
             Func<IEnumerator> gainHp = new Func<IEnumerator>(() => base.GameController.GainHP(base.CharacterCard, new int?(1)));
             string drawCardsMessage = "You may draw a card";
             string gainHpMessage = "Regain 1 HP";
