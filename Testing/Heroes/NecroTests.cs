@@ -74,7 +74,7 @@ namespace CauldronTests
             QuickHPCheck(-1);
 
         }
-        
+
         [Test()]
         public void TestNecroInnatePowerOption2()
         {
@@ -143,7 +143,7 @@ namespace CauldronTests
             QuickHandCheck(-3);
         }
 
-           //once figure out a way to choose only 1 card or 2 cards to discard, add test cases for that
+        //once figure out a way to choose only 1 card or 2 cards to discard, add test cases for that
 
         [Test()]
         public void TestNecroIncap2_0CardDiscard()
@@ -235,7 +235,7 @@ namespace CauldronTests
             QuickHandCheck(-1);
 
             AssertNumberOfUndeadInPlay(necro, 1);
-            
+
         }
 
         [Test()]
@@ -244,7 +244,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Megalopolis");
             StartGame();
             Card ghoul = GetCard("Ghoul");
-            PlayCard(ghoul,true);
+            PlayCard(ghoul, true);
             GoToPlayCardPhase(necro);
             PutIntoPlay("DarkPact");
             GoToUsePowerPhase(necro);
@@ -291,7 +291,7 @@ namespace CauldronTests
             PutIntoPlay("BookOfTheDead");
             //we expect to have 1 more card in hand
             QuickHandCheck(1);
-     
+
         }
 
         [Test()]
@@ -389,7 +389,7 @@ namespace CauldronTests
 
             //should be at 2 cards fewer, 2 cards played + chaotic summon
             Assert.AreEqual(numCardsInDeckBefore - 3, numCardsInDeckAfter);
-            
+
             //based on the stacking of the deck, should be 2 undead now in play
             AssertNumberOfUndeadInPlay(necro, 2);
         }
@@ -448,7 +448,7 @@ namespace CauldronTests
             PlayCard(ghoul, true);
             PlayCard(imp, true);
             SetHitPoints(imp, 1);
-            
+
 
 
             GoToPlayCardPhase(necro);
@@ -482,7 +482,7 @@ namespace CauldronTests
             PlayCard(ghoul, true);
 
             GoToPlayCardPhase(necro);
-            
+
             PlayCard(hellfire, true);
 
             //Whenever an Undead target is destroyed, Necro deals 1 non-hero target 3 infernal damage.
@@ -717,9 +717,9 @@ namespace CauldronTests
 
             //At the end of your turn, this card deals the non-undead hero target with the lowest HP 2 infernal damage
             // lowest non-undead should be fanatic
-            QuickHPStorage(fanatic);
+            QuickHPStorage(baron, necro, ra, fanatic);
             GoToEndOfTurn(necro);
-            QuickHPCheck(-2);
+            QuickHPCheck(0, 0, 0, -2);
         }
 
         [Test()]
@@ -822,7 +822,7 @@ namespace CauldronTests
             Card imp = GetCard("DemonicImp");
             PutInHand(ra, "TheStaffOfRa");
             Card staff = GetCardFromHand(ra, "TheStaffOfRa");
-            
+
 
             PlayCard(imp, true);
             DecisionSelectTurnTaker = ra.TurnTaker;
