@@ -149,6 +149,59 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestBaccaratIncap1HeroAndEnvironment_ChooseHero()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+            AssertIncapacitated(baccarat);
+            DiscardTopCards(env, 4);
+            //grab the top 2 cards of the hero deck
+            Card heroCard1 = GetTopCardOfDeck(legacy);
+            Card heroCard2 = GetTopCardOfDeck(legacy, 1);
+            DiscardTopCards(legacy, 4);
+            AssertInTrash(heroCard1);
+            AssertInTrash(heroCard2);
+            //Put 2 cards from a trash on the bottom of their deck.
+            GoToUseIncapacitatedAbilityPhase(baccarat);
+            //choose to move hero cards
+            DecisionSelectCards = new Card[] { heroCard1, heroCard2 };
+            UseIncapacitatedAbility(baccarat, 0);
+            //assert that the hero cards were moved 
+            AssertNotInTrash(heroCard1);
+            AssertNotInTrash(heroCard2);
+            AssertInDeck(heroCard1);
+            AssertInDeck(heroCard2);
+        }
+
+        [Test()]
+        public void TestBaccaratIncap1HeroAndEnvironment_ChooseEnv()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+            AssertIncapacitated(baccarat);
+            //grab the top 2 cards of the hero deck
+            Card envCard1 = GetTopCardOfDeck(env);
+            Card envCard2 = GetTopCardOfDeck(env, 1);
+            DiscardTopCards(env, 4);
+            DiscardTopCards(legacy, 4);
+
+            AssertInTrash(envCard1);
+            AssertInTrash(envCard2);
+            //Put 2 cards from a trash on the bottom of their deck.
+            GoToUseIncapacitatedAbilityPhase(baccarat);
+            //choose to move env cards
+            DecisionSelectCards = new Card[] { envCard1, envCard2 };
+            UseIncapacitatedAbility(baccarat, 0);
+            //assert that the env cards were moved 
+            AssertNotInTrash(envCard1);
+            AssertNotInTrash(envCard2);
+            AssertInDeck(envCard1);
+            AssertInDeck(envCard2);
+        }
+
+        [Test()]
         public void TestBaccaratIncap2()
         {
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
