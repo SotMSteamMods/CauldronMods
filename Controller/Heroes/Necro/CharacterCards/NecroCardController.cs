@@ -15,6 +15,11 @@ namespace Cauldron.Necro
         {
         }
 
+        protected ITrigger AddUndeadDestroyedTrigger(Func<DestroyCardAction, IEnumerator> response, TriggerType triggerType)
+        {
+            return base.AddTrigger<DestroyCardAction>(d => this.IsUndead(d.CardToDestroy.Card) && d.WasCardDestroyed, response, triggerType, TriggerTiming.After);
+        }
+
         protected bool IsHeroConsidering1929(Card card)
         {
             return card.IsHero;
