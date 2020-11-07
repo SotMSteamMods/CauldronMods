@@ -4,8 +4,8 @@ using System.Collections;
 
 namespace Cauldron.Necro
 {
-	public class ChaoticSummonCardController : CardController
-    {
+	public class ChaoticSummonCardController : NecroCardController
+	{
 		public ChaoticSummonCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
 		

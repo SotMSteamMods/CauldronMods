@@ -7,8 +7,8 @@ using System.Collections.Generic;
 
 namespace Cauldron.Necro
 {
-	public class FinalRitualCardController : CardController
-    {
+	public class FinalRitualCardController : NecroCardController
+	{
 		public FinalRitualCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
 		}
@@ -61,11 +61,5 @@ namespace Cauldron.Necro
 			}
 			yield break;
 		}
-
-		private bool IsUndead(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "undead", false, false);
-		}
-
 	}
 }

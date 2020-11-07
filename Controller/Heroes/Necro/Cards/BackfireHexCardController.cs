@@ -5,8 +5,8 @@ using System.Collections;
 
 namespace Cauldron.Necro
 {
-	public class BackfireHexCardController : CardController
-    {
+	public class BackfireHexCardController : NecroCardController
+	{
 		public BackfireHexCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
 			base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => this.IsUndead(c), "undead", true, false, null, null, false), null, false);
@@ -38,11 +38,5 @@ namespace Cauldron.Necro
 			}
 			yield break;
 		}
-
-		private bool IsUndead(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "undead", false, false);
-		}
-
 	}
 }

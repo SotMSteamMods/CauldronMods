@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Cauldron.Necro
 {
-	public class TalismanCardController : CardController
+	public class TalismanCardController : NecroCardController
 	{
 		public TalismanCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
@@ -31,12 +31,6 @@ namespace Cauldron.Necro
 			//That target is immune to damage from undead targets.
 			base.AddImmuneToDamageTrigger((DealDamageAction dd) => this.IsUndead(dd.DamageSource.Card) && base.IsThisCardNextToCard(dd.Target), false);
 			base.AddIfTheTargetThatThisCardIsNextToLeavesPlayDestroyThisCardTrigger(null);
-		}
-
-
-		private bool IsUndead(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "undead", false, false);
 		}
 	}
 }

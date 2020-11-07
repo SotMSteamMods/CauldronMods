@@ -4,8 +4,8 @@ using System.Collections;
 
 namespace Cauldron.Necro
 {
-	public class BookOfTheDeadCardController : CardController
-    {
+	public class BookOfTheDeadCardController : NecroCardController
+	{
 		public BookOfTheDeadCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
 			base.SpecialStringMaker.ShowNumberOfCardsAtLocations(() => new Location[]
@@ -54,13 +54,7 @@ namespace Cauldron.Necro
 				base.GameController.ExhaustCoroutine(coroutine3);
 			}
 
-
 			yield break;
-		}
-
-		private bool IsRitual(Card card)
-		{
-			return card != null && this.GameController.DoesCardContainKeyword(card, "ritual", false, false);
 		}
 	}
 }

@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace Cauldron.Necro
 {
-	public class CorpseExplosionCardController : CardController
+	public class CorpseExplosionCardController : NecroCardController
 	{
 		public CorpseExplosionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
@@ -31,11 +31,6 @@ namespace Cauldron.Necro
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
 			yield break;
-		}
-
-		private bool IsUndead(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "undead", false, false);
 		}
 	}
 }

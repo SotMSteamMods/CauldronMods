@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace Cauldron.Necro
 {
-	public class BloodRiteCardController : CardController
+	public class BloodRiteCardController : NecroCardController
 	{
 		public BloodRiteCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
@@ -32,11 +32,6 @@ namespace Cauldron.Necro
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
 			yield break;
-		}
-		
-		private bool IsUndead(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "undead", false, false);
 		}
 	}
 }
