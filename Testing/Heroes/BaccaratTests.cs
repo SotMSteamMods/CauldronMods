@@ -388,7 +388,7 @@ namespace CauldronTests
             DealDamage(baron, bunker, 2, DamageType.Melee);
             QuickHPCheck(-1);
 
-            //not villain targetrs
+            //not villain targets
             QuickHPStorage(mdp);
             DealDamage(baccarat, mdp, 2, DamageType.Melee);
             QuickHPCheck(-2);
@@ -414,18 +414,31 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
-            DiscardTopCards(baccarat, 35);
+            //put saint in hand
             Card saint = GetCard("AceOfSaints");
             PutInHand(saint);
+            //discard the rest of bacarrat's deck to make sure there are pairs in the trash
+            DiscardTopCards(baccarat, 35);
 
-            //At the start of your turn, shuffle 2 cards with the same name from your trash into your deck...
+
             GoToPlayCardPhase(baccarat);
             PlayCard(saint);
+            //check that there are 2 cards in play, character card and saint
             AssertNumberOfCardsInPlay(baccarat, 2);
+            //verify it is actually saint in play
+            AssertIsInPlay(saint);
+            //get the number of cards in the trash
             int trash = baccarat.TurnTaker.Trash.NumberOfCards;
+
+            //At the start of your turn, shuffle 2 cards with the same name from your trash into your deck...
             GoToStartOfTurn(baccarat);
+
+            //verify that there are still 2 cards in play, character card and saint
             AssertNumberOfCardsInPlay(baccarat, 2);
-            Assert.AreEqual(trash - 2, baccarat.TurnTaker.Trash.NumberOfCards);
+            AssertIsInPlay(saint);
+            //check that there are 2 fewer cards in the trash
+            AssertNumberOfCardsInTrash(baccarat, trash - 2);
+            AssertNumberOfCardsInDeck(baccarat, 2);
         }
 
         [Test()]
