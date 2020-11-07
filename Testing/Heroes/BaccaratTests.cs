@@ -310,15 +310,20 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
+            //put both saint and ace in hand to reduce variance
             Card ace = GetCard("AceInTheHole");
             Card saint = GetCard("AceOfSaints");
             PutInHand(baccarat, saint);
+            PutInHand(baccarat, ace);
             DecisionSelectCard = saint;
 
             //You may play a card.
             QuickHandStorage(baccarat);
             PlayCard(ace);
-            QuickHandCheck(-1);
+            //should have 2 fewer cards in hand, 1 for ace being played and 1 for saint being played
+            QuickHandCheck(-2);
+            //check that saint has been played
+            AssertIsInPlay(saint);
         }
 
         [Test()]
@@ -326,14 +331,22 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
+            //put both ace and saint in hand to reduce variance
             Card ace = GetCard("AceInTheHole");
+            Card saint = GetCard("AceOfSaints");
+            PutInHand(baccarat, saint);
+            PutInHand(baccarat, ace);
+            DecisionSelectCard = saint;
 
             DecisionDoNotSelectCard = SelectionType.PlayCard;
 
             //You may play a card.
             QuickHandStorage(baccarat);
             PlayCard(ace);
-            QuickHandCheck(0);
+            //should have 1 fewer card in hand, for ace being played
+            QuickHandCheck(-1);
+            //saint should be still in hand
+            AssertInHand(saint);
         }
 
         [Test()]
