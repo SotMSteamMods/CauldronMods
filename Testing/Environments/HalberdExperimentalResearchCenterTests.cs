@@ -705,5 +705,84 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestHalberdPlasma_NoChemicalTriggers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //Set hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(haka.CharacterCard, 10);
+
+            //destroy mdp so baron blade is vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            GoToPlayCardPhase(halberd);
+
+            //we play out plasma
+            Card plasma = GetCard("HalberdPlasma");
+            PlayCard(plasma);
+            AssertIsInPlay(plasma);
+
+            //At the end of the environment turn, if there are no Chemical Triggers in play, this card deals the villain target with highest HP {H} energy damage.
+            //highest hp hero is ra, highest villain is baron blade
+            //H is 3
+            QuickHPStorage(ra, baron);
+            GoToEndOfTurn(halberd);
+            //check that highest hero got dealt damage and highest villain did not
+            QuickHPCheck(-3, 0);
+
+        }
+
+        [Test()]
+        public void TestHalberdPlasma_WithChemicalTriggers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //Set hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(haka.CharacterCard, 10);
+
+            //destroy mdp so baron blade is vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            GoToPlayCardPhase(halberd);
+
+            //we put a chem trigger in play
+            //this chem trigger plays omega
+            //this chem trigger reduces damage dealt to subjects, so it doesn't impact this test
+            Card chem = GetCard("HrCombatPheromones");
+            PlayCard(chem);
+            AssertIsInPlay(chem);
+
+            //the chem trigger plays omega
+            //destroy omega
+            Card omega = GetCardInPlay("HalberdOmega");
+            DestroyCard(omega);
+
+            //we play out plasma
+            Card plasma = GetCard("HalberdPlasma");
+            PlayCard(plasma);
+            AssertIsInPlay(plasma);
+
+            //Otherwise, this card deals the hero target with the highest HP {H} energy damage.
+            //highest hp hero is ra, highest villain is baron blade
+            //H is 3
+            QuickHPStorage(ra, baron);
+            GoToEndOfTurn(halberd);
+            //check that highest villain got dealt damage and highest hero did not
+            QuickHPCheck(0, -3);
+
+
+
+
+        }
+
     }
 }
