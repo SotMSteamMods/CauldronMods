@@ -26,34 +26,30 @@ namespace Cauldron.HalberdExperimentalResearchCenter
 
         private IEnumerator EndOfTurnResponse(PhaseChangeAction pca)
         {
-            //if there are no Chemical Triggers in play...
-            if (!base.IsChemicalTriggerInPlay())
+            Func<Card, bool> targets;
+            //set targets based on whether there are chemical triggers in play
+            if (base.IsChemicalTriggerInPlay())
             {
-                //this cards deals each villain target 2 infernal damage. 
-                IEnumerator coroutine = base.DealDamage(base.Card, (Card c) => c.IsVillainTarget, 2, DamageType.Infernal);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
+                //find all hero targets
+                targets = (Card c) => c.IsHero && c.IsTarget;
             }
             else
             {
-                //Otherwise, this cards deals each hero target 2 infernal damage. 
-                IEnumerator coroutine2 = base.DealDamage(base.Card, (Card c) => c.IsTarget && c.IsHero, 2, DamageType.Infernal);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine2);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine2);
-                }
+                //find all villain targets
+                targets = (Card c) => c.IsVillainTarget;
             }
+
+            //this cards deals each hero/villain target 2 infernal damage. 
+            IEnumerator coroutine = base.DealDamage(base.Card, targets, 2, DamageType.Infernal);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
             yield break;
         }
         #endregion Methods

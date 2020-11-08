@@ -29,46 +29,35 @@ namespace Cauldron.HalberdExperimentalResearchCenter
 
         private IEnumerator EndOfTurnResponse(PhaseChangeAction pca)
         {
-            //if there are no Chemical Triggers in play...
-            if (!base.IsChemicalTriggerInPlay())
+            Func<Card, bool> targets;
+            //set targets based on whether there are chemical triggers in play
+            if (base.IsChemicalTriggerInPlay())
             {
-                //each Test Subject deals the villain target with the highest HP 1 melee damage.
-                IEnumerable<Card> testSubjectsInPlay = FindAllTestSubjectsInPlay();
-                IEnumerator coroutine;
-                foreach(Card testSubject in testSubjectsInPlay)
-                {
-
-                    coroutine = base.DealDamageToHighestHP(testSubject, 1, (Card c) => c.IsVillainTarget, (Card c) => new int?(1), DamageType.Melee);
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
-                    }
-                }
-
+                //find all hero targets
+                targets = (Card c) => c.IsHero && c.IsTarget;
             }
             else
             {
-                //Otherwise, each Test Subject deals the hero target with the highest HP 1 melee damage.
-                IEnumerable<Card> testSubjectsInPlay = FindAllTestSubjectsInPlay();
-                IEnumerator coroutine2;
-                foreach (Card testSubject in testSubjectsInPlay)
-                {
+                //find all villain targets
+                targets = (Card c) => c.IsVillainTarget;
+            }
 
-                    coroutine2 = base.DealDamageToHighestHP(testSubject, 1, (Card c) => c.IsTarget && c.IsHero, (Card c) => new int?(1), DamageType.Melee);
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine2);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine2);
-                    }
+            IEnumerable<Card> testSubjectsInPlay = FindAllTestSubjectsInPlay();
+            IEnumerator coroutine;
+            foreach (Card testSubject in testSubjectsInPlay)
+            {
+                //each Test Subject deals the hero/villain target with the highest HP 1 melee damage
+                coroutine = base.DealDamageToHighestHP(testSubject, 1, targets, (Card c) => new int?(1), DamageType.Melee);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
+
             yield break;
         }
 

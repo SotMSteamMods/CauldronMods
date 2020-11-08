@@ -27,7 +27,8 @@ namespace Cauldron.HalberdExperimentalResearchCenter
         private IEnumerator EndOfTurnResponse(PhaseChangeAction pca)
         {
             Func<Card, bool> targets;
-            if(!base.IsChemicalTriggerInPlay())
+            //set targets based on whether there are chemical triggers in play
+            if (base.IsChemicalTriggerInPlay())
             {
                 //find all hero targets
                 targets = (Card c) => c.IsHero && c.IsTarget;
@@ -36,7 +37,6 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             {
                 //find all villain targets
                 targets = (Card c) => c.IsVillainTarget;
-
             }
 
             //deals the hero/villain target with the highest HP {H} energy damage

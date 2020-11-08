@@ -131,7 +131,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestHalberdAlphaOmega_WithChemicalTriggers()
+        public void TestHalberdAlpha_WithChemicalTriggers()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
             StartGame();
@@ -155,16 +155,55 @@ namespace CauldronTests
             AssertIsInPlay(chem);
 
             //the chem trigger plays omega
+            //destroy it
+            Card omega = GetCardInPlay("HalberdOmega");
+            DestroyCard(omega, baron.CharacterCard);
+
+            //put another test subject in play
+            //zephyr just causes hp gain, so doesn't impact this test
+            Card zephyr = GetCard("HalberdZephyr");
+            PlayCard(zephyr);
+            AssertIsInPlay(zephyr);
+
+
+            //Otherwise, each Test Subject deals the hero target with the highest HP 1 melee damage.
+            //ra is highest hp,  2 damage to it, 1 for each test subject in play
+            QuickHPStorage(ra, legacy, haka);
+            GoToEndOfTurn(halberd);
+            QuickHPCheck(-2, 0, 0);
+        }
+
+        [Test()]
+        public void TestHalberdOmega_WithChemicalTriggers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //Set hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(haka.CharacterCard, 10);
+
+            GoToPlayCardPhase(halberd);
+
+
+            //we put a chem trigger in play
+            //this chem trigger plays omega
+            //this chem trigger reduces damage dealt to subjects, so it doesn't impact this test
+            Card chem = GetCard("HrCombatPheromones");
+            PlayCard(chem);
+            AssertIsInPlay(chem);
+
+            //the chem trigger plays omega
             Card omega = GetCardInPlay("HalberdOmega");
             AssertIsInPlay(omega);
 
 
-            //Alpha: Otherwise, each Test Subject deals the hero target with the highest HP 1 melee damage.
             //Omega: Otherwise, this cards deals each hero target 2 infernal damage.
-            //ra is highest hp, extra 2 damage to it, 1 for each test subject in play
+            //2 damage to all heroes
             QuickHPStorage(ra, legacy, haka);
             GoToEndOfTurn(halberd);
-            QuickHPCheck(-4, -2, -2);
+            QuickHPCheck(-2, -2, -2);
         }
 
         [Test()]
@@ -732,8 +771,8 @@ namespace CauldronTests
             //H is 3
             QuickHPStorage(ra, baron);
             GoToEndOfTurn(halberd);
-            //check that highest hero got dealt damage and highest villain did not
-            QuickHPCheck(-3, 0);
+            //check that highest villain got dealt damage and highest hero did not
+            QuickHPCheck(0, -3);
 
         }
 
@@ -776,8 +815,8 @@ namespace CauldronTests
             //H is 3
             QuickHPStorage(ra, baron);
             GoToEndOfTurn(halberd);
-            //check that highest villain got dealt damage and highest hero did not
-            QuickHPCheck(0, -3);
+            //check that highest hero got dealt damage and highest villain did not
+            QuickHPCheck(-3, 0);
 
 
 
