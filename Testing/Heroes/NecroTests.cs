@@ -926,23 +926,51 @@ namespace CauldronTests
             PutIntoPlay("DarkPact");
 
             //put some undead in play
-            PutIntoPlay("Ghoul");
-            PutIntoPlay("Abomination");
-
-            Card ghoul = GetCardInPlay("Ghoul");
-            Card abomination = GetCardInPlay("Abomination");
+            Card zombie = PutIntoPlay("NecroZombie");
+            Card abomination = PutIntoPlay("Abomination");
 
             GoToPlayCardPhase(necro);
 
-            PutIntoPlay("TaintedBlood");
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, zombie, abomination);
+            var blood = PutIntoPlay("TaintedBlood");
+            AssertInPlayArea(necro, blood);
+
+            DecisionAutoDecideIfAble = true;
 
             //At the end of your draw phase, Necro deals the undead target with the lowest HP 2 irreducible toxic damage.
-            //lowest hp undead is ghoul
-
-            QuickHPStorage(ghoul);
+            //lowest hp undead is zombie
+            //note that the undead will deal damage, 2 to all heros, 2 extra to ra
             GoToEndOfTurn(necro);
-            QuickHPCheck(-2);
+            QuickHPCheck(0, -2, -4, -2, -2, 0);
+        }
 
+        [Test]
+        
+        public void TestTaintedBloodTiming([Values("NecroZombie", "Abomination", "DemonicImp", "Ghoul", "PossessedCorpse")] string undeadIdentifier)
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            //put a undead in play
+            Card undead = PutIntoPlay(undeadIdentifier);
+            AssertInPlayArea(necro, undead);
+            SetHitPoints(undead, 2); //ensure we can kill the target
+            DiscardAllCards(necro, ra, fanatic); //clear out everybodies hand so DemonicImp's death trigger doesn' fire
+
+            var blood = PutInHand(necro, "TaintedBlood");
+
+            GoToPlayCardPhase(necro);
+
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard);
+            PlayCardFromHand(necro, "TaintedBlood");
+            AssertInPlayArea(necro, blood);
+
+            //At the end of your draw phase, Necro deals the undead target with the lowest HP 2 irreducible toxic damage.
+            //tainted blood should kill the undead before it deals damage/destroys cards
+            GoToEndOfTurn(necro);
+            QuickHPCheck(0, 0, 0, 0);
+            AssertInTrash(necro, undead);
+            AssertInPlayArea(necro, blood);
         }
 
         [Test()]
