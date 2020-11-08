@@ -28,25 +28,28 @@ First step to helping out is to join the [Discord](https://discord.gg/t6xupMv767
 ## How to get started
 
 1. Install [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
-   * Community Edition is free and perfect for modders 
-   * When installing choose the C# and Game Development options
-   * You'll also want the select the .NET Core SDK's
+   * Community Edition is free and perfect for modders.
+   * When installing choose the C# and Game Development options.
+   * You'll also want the select the .NET Core SDK's.
 1. Install a GitHub client
-   * Microsoft has a integrated [GitHub Extension](https://visualstudio.github.com/) available
+   * Microsoft has a integrated [GitHub Extension](https://visualstudio.github.com/) available.
    * Directions assume this is the route you choose.
+1. Install Sentinels of the Multiverse Digital in Steam.
 1. Connect to GitHub and get the project
-   * In Team Explorer, connect to your GitHub account
-   * Sync from https://github.com/SotMSteamMods/CauldronMods.git
+   * In Team Explorer, connect to your GitHub account.
+   * Sync from https://github.com/SotMSteamMods/CauldronMods.git.
 1. Build the Solution, and Run the Tests
 
 You will also want one or more .Net Decompilers
-* [dnSpy](https://github.com/dnSpy/dnSpy/releases) is easy to use and great for just looking
-* [ILSpy](https://github.com/icsharpcode/ILSpy/releases) generates better code if you plan on exporting code
+* [dnSpy](https://github.com/dnSpy/dnSpy/releases) is easy to use and great for just looking.
+* [ILSpy](https://github.com/icsharpcode/ILSpy/releases) generates better code if you plan on exporting code.
 
 ## How to contribute code
+
+* [Coding Notes](./CODE_WISDOM.md)
 
 ## How to contribute art
 
 ## How to contribute music
 
-We are still working this out
+We are still working this out.
