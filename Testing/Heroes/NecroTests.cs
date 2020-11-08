@@ -61,7 +61,7 @@ namespace CauldronTests
         [Test()]
         public void TestNecroInnatePowerOption1()
         {
-            SetupGameController("BaronBlade", "Cauldron.Necro", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Fanatic", "Megalopolis");
             StartGame();
             Card abomination = GetCard("Abomination");
 
@@ -69,153 +69,166 @@ namespace CauldronTests
             GoToUsePowerPhase(necro);
             DecisionSelectFunction = 0;
             DecisionSelectTarget = abomination;
-            QuickHPStorage(abomination);
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, fanatic.CharacterCard, abomination);
             UsePower(necro.CharacterCard);
-            QuickHPCheck(-1);
-
+            QuickHPCheck(0, 0, 0, -1);
         }
-        
+
         [Test()]
         public void TestNecroInnatePowerOption2()
         {
-            SetupGameController("BaronBlade", "Cauldron.Necro", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Fanatic", "Megalopolis");
             StartGame();
             Card abomination = GetCard("Abomination");
-
 
             PlayCard(abomination);
 
             GoToUsePowerPhase(necro);
             DecisionSelectFunction = 1;
             DecisionSelectTarget = abomination;
-            QuickHPStorage(abomination);
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, fanatic.CharacterCard, abomination);
             UsePower(necro.CharacterCard);
-            QuickHPCheck(-2);
+            QuickHPCheck(0, 0, 0, -2);
 
         }
         [Test()]
         public void TestNecroIncap1()
         {
-            SetupGameController("BaronBlade", "Cauldron.Necro", "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Legacy", "Fanatic", "Megalopolis");
             StartGame();
 
             SetupIncap(baron);
             AssertIncapacitated(necro);
+            GoToUseIncapacitatedAbilityPhase(necro);
 
             //One hero may deal himself 2 toxic damage to draw 2 cards now.
-            QuickHandStorage(legacy);
-            QuickHPStorage(legacy);
+            QuickHandStorage(necro, legacy, fanatic);
+            QuickHPStorage(baron, legacy, fanatic);
             //using incap ability on legacy
             DecisionSelectTarget = legacy.CharacterCard;
             //set to true so legacy will deal himself the damage
             DecisionsYesNo = new bool[] { true };
 
-            GoToUseIncapacitatedAbilityPhase(necro);
             UseIncapacitatedAbility(necro, 0);
 
             //verify damage was dealt and cards were drawn
-            QuickHPCheck(-2);
-            QuickHandCheck(2);
+            QuickHandCheck(0, 2, 0);
+            QuickHPCheck(0, -2, 0);
         }
 
         [Test()]
-        public void TestNecroIncap2_3CardDiscard()
+        public void TestNecroIncap1_NoDamageDealt()
         {
-            SetupGameController("BaronBlade", "Cauldron.Necro", "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", "Legacy", "Cauldron.Necro", "Fanatic", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(necro);
+
+            //Make legacy immune to toxic damage
+            GoToPlayCardPhase(legacy);
+            var card = PlayCard(legacy, "NextEvolution");
+
+            GoToUsePowerPhase(legacy);
+            DecisionSelectDamageType = DamageType.Toxic;
+            UsePower(card);
+
+            GoToUseIncapacitatedAbilityPhase(necro);
+
+            //One hero may deal himself 2 toxic damage to draw 2 cards now.
+            QuickHandStorage(necro, legacy, fanatic);
+            QuickHPStorage(baron, legacy, fanatic);
+            //using incap ability on legacy
+            DecisionSelectTarget = legacy.CharacterCard;
+            //set to true so legacy will deal himself the damage
+            DecisionsYesNo = new bool[] { true };
+
+            UseIncapacitatedAbility(necro, 0);
+
+            //verify no damage was dealt and cards were drawn
+            QuickHandCheck(0, 2, 0);
+            QuickHPCheck(0, 0, 0);
+        }
+
+        [Test()]
+        public void TestNecroIncap2([Values(0, 1, 2, 3)] int cardsToDiscard)
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Legacy", "Fanatic", "Megalopolis");
             StartGame();
             SetHitPoints(legacy.CharacterCard, 20);
 
             SetupIncap(baron);
             AssertIncapacitated(necro);
+            GoToUseIncapacitatedAbilityPhase(necro);
 
             //Grab the first three cards to discard
             //One hero may discard up to 3 cards, then regain 2 HP for each card discarded.
-            QuickHandStorage(legacy);
-            QuickHPStorage(legacy);
+            QuickHandStorage(necro, legacy, fanatic);
+            QuickHPStorage(baron, legacy, fanatic);
+            PrintHand(legacy);
             //using incap ability on legacy
             DecisionSelectTarget = legacy.CharacterCard;
+            //null at end causes engine to select skip
+            DecisionSelectCards = legacy.HeroTurnTaker.Hand.Cards.Take(cardsToDiscard).Concat(new Card[] { null }).ToList();
 
-            GoToUseIncapacitatedAbilityPhase(necro);
             UseIncapacitatedAbility(necro, 1);
 
-            //verify damage was dealt and cards were drawn
-            QuickHPCheck(6);
-            QuickHandCheck(-3);
-        }
-
-           //once figure out a way to choose only 1 card or 2 cards to discard, add test cases for that
-
-        [Test()]
-        public void TestNecroIncap2_0CardDiscard()
-        {
-            SetupGameController("BaronBlade", "Cauldron.Necro", "Legacy", "Megalopolis");
-            StartGame();
-            SetHitPoints(legacy.CharacterCard, 20);
-
-            SetupIncap(baron);
-            AssertIncapacitated(necro);
-
-            //One hero may discard up to 3 cards, then regain 2 HP for each card discarded.
-            QuickHandStorage(legacy);
-            QuickHPStorage(legacy);
-            //using incap ability on legacy
-            DecisionSelectTarget = legacy.CharacterCard;
-            //setting legacy to discard 0 cards
-            DecisionDoNotSelectCard = SelectionType.DiscardCard;
-
-            GoToUseIncapacitatedAbilityPhase(necro);
-            UseIncapacitatedAbility(necro, 1);
-
-            //verify damage was dealt and cards were drawn
-            QuickHPCheck(0);
-            QuickHandCheck(0);
+            //verify damage was dealt and cards were drawn and discarded
+            QuickHPCheck(0, cardsToDiscard * 2, 0);
+            QuickHandCheck(0, -cardsToDiscard, 0);
+            AssertNumberOfCardsInTrash(legacy, cardsToDiscard);
         }
 
         [Test()]
         public void TestNecroIncap3()
         {
-            SetupGameController("Omnitron", "Cauldron.Necro", "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Legacy", "Fanatic", "Megalopolis");
             StartGame();
             SetHitPoints(legacy.CharacterCard, 20);
-            SetupIncap(omnitron);
+            SetupIncap(baron);
             AssertIncapacitated(necro);
 
             //Destroy all non-character cards in play to reduce variance
             GoToStartOfTurn(necro);
             DestroyCards((Card c) => c.IsInPlayAndHasGameText && !c.IsCharacter);
+            GoToUseIncapacitatedAbilityPhase(necro);
 
-
+            AssertNumberOfStatusEffectsInPlay(0);
 
             //Select a hero target. Increase damage dealt by that target by 3 and increase damage dealt to that target by 2 until the start of your next turn.
-            //using incap ability on legacy
-            DecisionSelectTarget = legacy.CharacterCard;
-            GoToUseIncapacitatedAbilityPhase(necro);
-            DestroyCards((Card c) => c.IsInPlayAndHasGameText && !c.IsCharacter);
+            //using incap ability on fanatic
+            DecisionSelectCard = fanatic.CharacterCard;
+            string dealtText = $"Increase damage dealt by {fanatic.Name} by 3.";
+            string takenText = $"Increase damage dealt to {fanatic.Name} by 2.";
+            AssertNextMessages(dealtText, takenText, dealtText, takenText);
+
             UseIncapacitatedAbility(necro, 2);
+            AssertNumberOfStatusEffectsInPlay(2);
+            AssertStatusEffectAssociatedTurnTaker(0, fanatic.TurnTaker);
+            AssertStatusEffectAssociatedTurnTaker(1, fanatic.TurnTaker);
 
-            GoToPlayCardPhase(legacy);
+            GoToPlayCardPhase(fanatic);
 
-            //try legacy dealing damage to omnitron, should be +3
-            QuickHPStorage(omnitron);
-            DealDamage(legacy, omnitron, 2, DamageType.Melee);
-            QuickHPCheck(-5);
+            //try fanatic dealing damage to omnitron, should be +3
+            QuickHPStorage(baron, legacy, fanatic);
+            DealDamage(fanatic, baron, 2, DamageType.Melee);
+            QuickHPCheck(-5, 0, 0);
 
-            //try omnitron dealing damage to legacy, should be +2
-            QuickHPStorage(legacy);
-            DealDamage(omnitron, legacy, 2, DamageType.Projectile);
-            QuickHPCheck(-4);
+            //try omnitron dealing damage to fanatic, should be +2
+            QuickHPStorage(baron, legacy, fanatic);
+            DealDamage(baron, fanatic, 2, DamageType.Projectile);
+            QuickHPCheck(0, 0, -4);
 
             //go to necro's next turn, should be normal damage
             GoToUseIncapacitatedAbilityPhase(necro);
 
-            QuickHPStorage(omnitron);
-            DealDamage(legacy, omnitron, 2, DamageType.Melee);
-            QuickHPCheck(-2);
-
-            QuickHPStorage(legacy);
-            DealDamage(omnitron, legacy, 2, DamageType.Projectile);
-            QuickHPCheck(-2);
-
+            AssertNumberOfStatusEffectsInPlay(0);
+            QuickHPStorage(baron, legacy, fanatic);
+            DealDamage(fanatic, baron, 2, DamageType.Melee);
+            QuickHPCheck(-2, 0, 0);
+            QuickHPStorage(baron, legacy, fanatic);
+            DealDamage(baron, fanatic, 2, DamageType.Projectile);
+            QuickHPCheck(0, 0, -2);
         }
 
         [Test()]
@@ -224,18 +237,19 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Megalopolis");
             StartGame();
             Card darkPact = GetCard("DarkPact");
-            PutInHand("Ghoul");
+            Card ghoul = PutInHand("Ghoul");
             GoToPlayCardPhase(necro);
-            PutIntoPlay("DarkPact");
+            PlayCard(darkPact);
+            AssertInPlayArea(necro, darkPact);
+
             GoToUsePowerPhase(necro);
 
-            QuickHandStorage(necro);
+            QuickHandStorage(necro, ra);
             //Put an undead card from hand into play.
+            DecisionSelectCard = ghoul;
             UsePower(darkPact);
-            QuickHandCheck(-1);
-
-            AssertNumberOfUndeadInPlay(necro, 1);
-            
+            QuickHandCheck(-1, 0);
+            AssertInPlayArea(necro, ghoul);
         }
 
         [Test()]
@@ -244,16 +258,15 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Megalopolis");
             StartGame();
             Card ghoul = GetCard("Ghoul");
-            PlayCard(ghoul,true);
+            PlayCard(ghoul, true);
             GoToPlayCardPhase(necro);
-            PutIntoPlay("DarkPact");
-            GoToUsePowerPhase(necro);
+            Card ritual = PutIntoPlay("DarkPact");
+            AssertInPlayArea(necro, ritual);
 
             //Whenever an undead target is destroyed, draw a card."
-            QuickHandStorage(necro);
+            QuickHandStorage(necro, ra);
             DestroyCard(ghoul);
-            QuickHandCheck(1);
-
+            QuickHandCheck(1, 0);
         }
 
         [Test()]
@@ -266,15 +279,46 @@ namespace CauldronTests
 
             //Search your deck or trash for a ritual and put it into play or into your hand. If you searched your deck, shuffle your deck.
             //since no decisions specified, searching deck and putting in play
-            int numCardsInDeckBefore = GetNumberOfCardsInDeck(necro);
-            PutIntoPlay("BookOfTheDead");
-            int numCardsInDeckAfter = GetNumberOfCardsInDeck(necro);
 
-            AssertNumberOfRitualInPlay(necro, 1);
-            Assert.IsTrue(numCardsInDeckBefore > numCardsInDeckAfter, "There was not fewer cards in deck after playing BookOfTheDead");
+            PutInTrash("BloodRite");
+            QuickHandStorage(necro, ra);
+
+            var shuffleCheck = necro.HeroTurnTaker.Deck.GetTopCards(2).Concat(necro.HeroTurnTaker.Deck.GetBottomCards(2)).ToList();
+            DecisionSelectLocation = new LocationChoice(necro.HeroTurnTaker.Deck);
+            DecisionMoveCardDestination = new MoveCardDestination(necro.HeroTurnTaker.PlayArea);
+            var ritual = necro.HeroTurnTaker.Deck.Cards.First(c => IsRitual(c) && !shuffleCheck.Contains(c)); //exclude the top & bottom so we don't mess up our assert
+            DecisionSelectCard = ritual;
+            var card = PutIntoPlay("BookOfTheDead");
+            QuickHandCheck(1, 0);
+            AssertInPlayArea(necro, ritual);
+            AssertInTrash(necro, card);
+            AssertDeckShuffled(necro, shuffleCheck[0], shuffleCheck[1], shuffleCheck[2], shuffleCheck[3]);
         }
 
-        //once figure out a way to choose location of deck or trash followed by decision of in play or hand, add those test cases
+        [Test()]
+        public void TestBookOfTheDeadSearchTrashAndPutIntoHand()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(necro);
+
+            //Search your deck or trash for a ritual and put it into play or into your hand. If you searched your deck, shuffle your deck.
+            //since no decisions specified, searching deck and putting in play
+
+            var ritual = PutInTrash("BloodRite");
+            QuickHandStorage(necro, ra);
+
+            var shuffleCheck = necro.HeroTurnTaker.Deck.GetTopCards(2).Concat(necro.HeroTurnTaker.Deck.GetBottomCards(2)).ToList();
+            DecisionSelectLocation = new LocationChoice(necro.HeroTurnTaker.Trash);
+            DecisionMoveCardDestination = new MoveCardDestination(necro.HeroTurnTaker.Hand);
+            DecisionSelectCard = ritual;
+            var card = PutIntoPlay("BookOfTheDead");
+            QuickHandCheck(2, 0);
+            AssertInHand(necro, ritual);
+            AssertInTrash(necro, card);
+            AssertDeckShuffled(necro, shuffleCheck[0], shuffleCheck[1], shuffleCheck[2], shuffleCheck[3]);
+        }
 
         [Test()]
         public void TestBookOfTheDeadDraw()
@@ -285,13 +329,12 @@ namespace CauldronTests
             GoToPlayCardPhase(necro);
 
             //You may draw a card.
-            QuickHandStorage(necro);
+            QuickHandStorage(necro, ra);
             //tell the game that necro wants to draw a card
             DecisionYesNo = true;
             PutIntoPlay("BookOfTheDead");
             //we expect to have 1 more card in hand
-            QuickHandCheck(1);
-     
+            QuickHandCheck(1, 0);
         }
 
         [Test()]
@@ -355,18 +398,19 @@ namespace CauldronTests
             SetHitPoints(ra.CharacterCard, 12);
             SetHitPoints(baron.CharacterCard, 23);
             SetHitPoints(fanatic.CharacterCard, 25);
-            SetHitPoints(GetCard("MobileDefensePlatform"), 6);
+            var mdp = GetCard("MobileDefensePlatform");
+            SetHitPoints(mdp, 6);
 
 
             GoToPlayCardPhase(necro);
 
-            PlayCard(ghoul, true);
+            PlayCard(ghoul);
 
-            //At the end of your turn, this card deals the non-undead target with the second lowest HP 2 toxic damage.
-            //second lowest non-undead should be ra
-            QuickHPStorage(ra);
+            //At the end of your turn, this card deals the non-undead hero target with the second lowest HP 2 toxic damage.
+            //second lowest non-undead should be necro
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, mdp);
             GoToEndOfTurn(necro);
-            QuickHPCheck(-2);
+            QuickHPCheck(0, -2, 0, 0, 0);
         }
 
         [Test()]
@@ -377,20 +421,20 @@ namespace CauldronTests
             Card chaotic = GetCard("ChaoticSummon");
 
             //stack deck so that we know that 2 cards should enter play
-            PutOnDeck("Ghoul");
-            PutOnDeck("DemonicImp");
+            Card card1 = PutOnDeck("Ghoul");
+            Card card2 = PutOnDeck("DemonicImp");
+            int cardsInPlay = base.GetNumberOfCardsInPlay(c => true);
+            Console.WriteLine("DEBUG: Cards in play " + cardsInPlay.ToString());
 
             GoToPlayCardPhase(necro);
-            //Put the top 2 cards of your deck into play.
-            int numCardsInDeckBefore = GetNumberOfCardsInDeck(necro);
-            PlayCard(chaotic, true);
-            int numCardsInDeckAfter = GetNumberOfCardsInDeck(necro);
 
-            //should be at 2 cards fewer, 2 cards played + chaotic summon
-            Assert.AreEqual(numCardsInDeckBefore - 3, numCardsInDeckAfter);
-            
-            //based on the stacking of the deck, should be 2 undead now in play
-            AssertNumberOfUndeadInPlay(necro, 2);
+            //Put the top 2 cards of your deck into play.
+            PlayCard(chaotic);
+
+            AssertInPlayArea(necro, card1);
+            AssertInPlayArea(necro, card2);
+            AssertInTrash(necro, chaotic);
+            AssertNumberOfCardsInPlay(c => true, cardsInPlay + 2);
         }
 
         [Test()]
@@ -400,17 +444,20 @@ namespace CauldronTests
             StartGame();
             Card backfire = GetCard("BackfireHex");
 
-            PutIntoPlay("BacklashField");
+            Card backlash = PutIntoPlay("BacklashField");
 
             GoToPlayCardPhase(necro);
 
             //You may destroy an ongoing card.
-            int numCardsInPlayBefore = GetNumberOfCardsInPlay(baron);
-            PlayCard(backfire, true);
-            int numCardsInPlayAfter = GetNumberOfCardsInPlay(baron);
+            AssertInPlayArea(baron, backlash);
 
-            //should be at 1 card fewer, since backfire hex destroyed backlash field
-            Assert.AreEqual(numCardsInPlayBefore - 1, numCardsInPlayAfter);
+            DecisionSelectCard = backlash;
+            AssertNextMessageContains($"There are no undead cards in {necro.Name}'s trash.");
+            PlayCard(backfire);
+
+            AssertNotInPlayArea(baron, backlash);
+            AssertInTrash(baron, backlash);
+            AssertInTrash(necro, backfire);
         }
 
         [Test()]
@@ -420,15 +467,18 @@ namespace CauldronTests
             StartGame();
             Card backfire = GetCard("BackfireHex");
 
-            PutInTrash("Ghoul");
+            var undead = PutInTrash("Ghoul");
+            PutInTrash("NecroZombie");
 
             GoToPlayCardPhase(necro);
 
             //Put an undead card from the trash into play.
-            PlayCard(backfire, true);
+            DecisionSelectCard = undead;
+            AssertNextMessageContains($"There are no ongoing cards in play for {backfire.Title} to destroy.");
+            PlayCard(backfire);
 
-            //should be at 1 undead in play now
-            AssertNumberOfUndeadInPlay(necro, 1);
+            AssertInPlayArea(necro, undead);
+            AssertInTrash(necro, backfire);
         }
 
         [Test()]
@@ -447,26 +497,17 @@ namespace CauldronTests
             PlayCard(ghoul, true);
             PlayCard(imp, true);
             SetHitPoints(imp, 1);
-            
-
 
             GoToPlayCardPhase(necro);
 
-            PlayCard(bloodRite, true);
+            PlayCard(bloodRite);
 
             //When an Undead target is destroyed, all non-undead hero targets regain 2 HP.
-
-            List<int?> heroHpBefore = new List<int?>() { necro.CharacterCard.HitPoints, ra.CharacterCard.HitPoints, fanatic.CharacterCard.HitPoints, imp.HitPoints };
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, imp);
             DestroyCard(ghoul, baron.CharacterCard);
-            List<int?> heroHpAfter = new List<int?>() { necro.CharacterCard.HitPoints, ra.CharacterCard.HitPoints, fanatic.CharacterCard.HitPoints, imp.HitPoints };
 
-            //check each hero's hp
-            Assert.AreEqual(heroHpBefore[0] + 2, heroHpAfter[0]);
-            Assert.AreEqual(heroHpBefore[1] + 2, heroHpAfter[1]);
-            Assert.AreEqual(heroHpBefore[2] + 2, heroHpAfter[2]);
-            //check imp hp hasn't changed
-            Assert.AreEqual(heroHpBefore[3], heroHpAfter[3]);
-
+            //assert only non-undead hero's regained HP
+            QuickHPCheck(0, 2, 2, 2, 0);
         }
 
         [Test()]
@@ -481,15 +522,15 @@ namespace CauldronTests
             PlayCard(ghoul, true);
 
             GoToPlayCardPhase(necro);
-            
-            PlayCard(hellfire, true);
+
+            PlayCard(hellfire);
+            AssertInPlayArea(necro, hellfire);
 
             //Whenever an Undead target is destroyed, Necro deals 1 non-hero target 3 infernal damage.
             DecisionSelectTarget = mdp;
-            QuickHPStorage(mdp);
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, mdp);
             DestroyCard(ghoul, baron.CharacterCard);
-            QuickHPCheck(-3);
-
+            QuickHPCheck(0, 0, 0, 0, -3);
         }
 
         [Test()]
@@ -508,21 +549,16 @@ namespace CauldronTests
 
             GoToPlayCardPhase(necro);
 
-            PlayCard(explosion, true);
+            DecisionAutoDecideIfAble = true;
+            PlayCard(explosion);
+            AssertInPlayArea(necro, explosion);
+
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, ghoul, mdp, elemental);
 
             //Whenever an Undead target is destroyed, Necro deals 2 toxic damage to all villain targets.
-            List<int?> HpBefore = new List<int?>() { baron.CharacterCard.HitPoints, mdp.HitPoints, elemental.HitPoints };
             DestroyCard(ghoul, baron.CharacterCard);
-            List<int?> HpAfter = new List<int?>() { baron.CharacterCard.HitPoints, mdp.HitPoints, elemental.HitPoints };
 
-            //baron blade is immune to damage, so HP should be the same
-            Assert.AreEqual(HpBefore[0], HpAfter[0], "Baron Blade's hitpoints don't match.");
-
-            //other villain targets should have 2 fewer HP
-            Assert.AreEqual(HpBefore[1] - 2, HpAfter[1], "Mobile Defense Platform's hitpoints don't match");
-            Assert.AreEqual(HpBefore[2] - 2, HpAfter[2], "Elemental Redistributor's hitpoints don't match");
-
-
+            QuickHPCheck(0, 0, 0, 0, 0, -2, -2);
         }
 
         [Test()]
@@ -532,30 +568,25 @@ namespace CauldronTests
             StartGame();
             Card final = GetCard("FinalRitual");
 
-
             //put in play a ritual to boost HP of undead by 1
             PutIntoPlay("DarkPact");
 
-
             //set up game for effect testing
-            PutInTrash("Ghoul");
-            PutInTrash("Abomination");
+            var card1 = PutInTrash("Ghoul");
+            var card2 = PutInTrash("Abomination");
 
             GoToPlayCardPhase(necro);
 
+            DecisionSelectCards = new[] { card1, card2 };
+            DecisionSelectTargets = new[] { card1, card2 };
+
             //Search your trash for up to 2 Undead and put them into play. {Necro} deals each of those cards 2 toxic damage.
-            PlayCard(final, true);
-
-            //check that there are 2 in play
-            AssertNumberOfUndeadInPlay(necro, 2);
-            Card abomination = GetCardInPlay("Abomination");
-            Card ghoul = GetCardInPlay("Ghoul");
-
-            //check the health of each
-            Assert.AreEqual(abomination.MaximumHitPoints - 2, abomination.HitPoints);
-            Assert.AreEqual(ghoul.MaximumHitPoints - 2, ghoul.HitPoints);
-
-
+            PlayCard(final);
+            AssertInTrash(final);
+            AssertInPlayArea(necro, card1);
+            AssertInPlayArea(necro, card2);
+            AssertHitPoints(card1, card1.MaximumHitPoints.Value - 2);
+            AssertHitPoints(card2, card2.MaximumHitPoints.Value - 2);
         }
 
         [Test()]
@@ -565,25 +596,25 @@ namespace CauldronTests
             StartGame();
             Card final = GetCard("FinalRitual");
 
-
             //put in play a ritual to boost HP of undead by 1
             PutIntoPlay("DarkPact");
 
-
             //set up game for effect testing
-            PutInTrash("Ghoul");
-            PutInTrash("Abomination");
+            var card1 = PutInTrash("Ghoul");
+            var card2 = PutInTrash("Abomination");
 
             GoToPlayCardPhase(necro);
 
-            QuickHPStorage(necro);
-            //Necro deals himself X toxic damage, where X is 2 times the number of cards put into play this way.
-            PlayCard(final, true);
+            DecisionSelectCards = new[] { card1, card2 };
+            DecisionSelectTargets = new[] { card1, card2 };
 
-            //2 cards were put into play, so 4 damage should be dealt
-            QuickHPCheck(-4);
+            //Search your trash for up to 2 Undead and put them into play. {Necro} deals each of those cards 2 toxic damage.
+            QuickHPStorage(baron, necro, ra, fanatic);
+            PlayCard(final);
 
-
+            //2 cards played, 4 damage should be dealt
+            AssertInTrash(final);
+            QuickHPCheck(0, -4, 0, 0);
         }
 
         [Test()]
@@ -593,26 +624,25 @@ namespace CauldronTests
             StartGame();
             Card final = GetCard("FinalRitual");
 
-
             //put in play a ritual to boost HP of undead by 1
             PutIntoPlay("DarkPact");
 
-
             //set up game for effect testing
-            PutInTrash("Ghoul");
-            PutInTrash("Abomination");
+            var card1 = PutInTrash("Ghoul");
+            var card2 = PutInTrash("Abomination");
 
             GoToPlayCardPhase(necro);
 
-            QuickHPStorage(necro);
+            QuickHPStorage(baron, necro, ra, fanatic);
             DecisionDoNotSelectCard = SelectionType.PutIntoPlay;
             //Necro deals himself X toxic damage, where X is 2 times the number of cards put into play this way.
-            PlayCard(final, true);
+            PlayCard(final);
 
             //no cards were put into play so no damage should be dealt
-            QuickHPCheck(0);
-
-
+            AssertInTrash(final);
+            QuickHPCheck(0, 0, 0, 0);
+            AssertInTrash(necro, card1);
+            AssertInTrash(necro, card2);
         }
 
         [Test()]
@@ -627,23 +657,89 @@ namespace CauldronTests
 
             GoToPlayCardPhase(necro);
 
+            QuickShuffleStorage(baron, necro, ra, fanatic);
             int numCardsInDeckBefore = GetNumberOfCardsInDeck(necro);
             int numCardsInPlayBefore = GetNumberOfCardsInPlay(necro);
             int numCardsInTrashBefore = GetNumberOfCardsInTrash(necro);
             //Reveal cards from the top of your deck until you reveal 2 Undead cards. Put 1 into play and 1 into the trash.
-            PlayCard(grand, true);
-            int numCardsInDeckAfter = GetNumberOfCardsInDeck(necro);
-            int numCardsInPlayAfter = GetNumberOfCardsInPlay(necro);
-            int numCardsInTrashAfter = GetNumberOfCardsInTrash(necro);
+            PlayCard(grand);
+            AssertInTrash(necro, grand);
+            QuickShuffleCheck(0, 1, 0, 0);
 
-            //should be 3 fewer cards in deck, 2 for revealed undeads
-            Assert.AreEqual(numCardsInDeckBefore - 2, numCardsInDeckAfter, "The number of cards in the deck don't match.");
+            //should be 2 fewer cards in deck, 2 for revealed undeads
+            AssertNumberOfCardsInDeck(necro, numCardsInDeckBefore - 2);
             //should be 1 more card in play, check that it is undead
-            Assert.AreEqual(numCardsInPlayBefore + 1, numCardsInPlayAfter, "The number of cards in play don't match.");
+            AssertNumberOfCardsInPlay(necro, numCardsInPlayBefore + 1);
             AssertNumberOfUndeadInPlay(necro, 1);
             //should be 2 more cards in trash, undead trashed and grand summon
-            Assert.AreEqual(numCardsInTrashBefore + 2, numCardsInTrashAfter, "The number of cards in the trash don't match.");
+            AssertNumberOfCardsInTrash(necro, numCardsInTrashBefore + 2);
+            AssertNumberOfCardsInRevealed(necro, 0);
+        }
 
+        [Test()]
+        public void TestGrandSummonPlayOnly1Card()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            //get GrandSummon from hand for consistent behavior
+            PutInHand("GrandSummon");
+            Card grand = GetCardFromHand("GrandSummon");
+            MoveCards(necro, necro.HeroTurnTaker.Deck.Cards.Where(c => IsUndead(c)).Skip(1), necro.HeroTurnTaker.Trash);
+
+            GoToPlayCardPhase(necro);
+
+            QuickShuffleStorage(baron, necro, ra, fanatic);
+            int numCardsInDeckBefore = GetNumberOfCardsInDeck(necro);
+            int numCardsInPlayBefore = GetNumberOfCardsInPlay(necro);
+            int numCardsInTrashBefore = GetNumberOfCardsInTrash(necro);
+            //Reveal cards from the top of your deck until you reveal 2 Undead cards. Put 1 into play and 1 into the trash.
+            //should only be able to find 1
+            PlayCard(grand);
+            AssertInTrash(necro, grand);
+            QuickShuffleCheck(0, 1, 0, 0);
+
+            //should be 2 fewer cards in deck, 1 for revealed undeads
+            AssertNumberOfCardsInDeck(necro, numCardsInDeckBefore - 1);
+            //should be 1 more card in play, check that it is undead
+            AssertNumberOfCardsInPlay(necro, numCardsInPlayBefore + 1);
+            AssertNumberOfUndeadInPlay(necro, 1);
+            //should be 1 more cards in trash, undead trashed and grand summon
+            AssertNumberOfCardsInTrash(necro, numCardsInTrashBefore + 1);
+            AssertNumberOfCardsInRevealed(necro, 0);
+        }
+
+        [Test()]
+        public void TestGrandSummonPlayNoCard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            //get GrandSummon from hand for consistent behavior
+            PutInHand("GrandSummon");
+            Card grand = GetCardFromHand("GrandSummon");
+            MoveCards(necro, necro.HeroTurnTaker.Deck.Cards.Where(c => IsUndead(c)), necro.HeroTurnTaker.Trash);
+
+            GoToPlayCardPhase(necro);
+
+            QuickShuffleStorage(baron, necro, ra, fanatic);
+            int numCardsInDeckBefore = GetNumberOfCardsInDeck(necro);
+            int numCardsInPlayBefore = GetNumberOfCardsInPlay(necro);
+            int numCardsInTrashBefore = GetNumberOfCardsInTrash(necro);
+            //Reveal cards from the top of your deck until you reveal 2 Undead cards. Put 1 into play and 1 into the trash.
+            //should only be able to find 1
+            PlayCard(grand);
+            AssertInTrash(necro, grand);
+            QuickShuffleCheck(0, 1, 0, 0);
+
+            //should be 2 fewer cards in deck, 1 for revealed undeads
+            AssertNumberOfCardsInDeck(necro, numCardsInDeckBefore);
+            //should be 1 more card in play, check that it is undead
+            AssertNumberOfCardsInPlay(necro, numCardsInPlayBefore);
+            AssertNumberOfUndeadInPlay(necro, 0);
+            //should be 1 more cards in trash, undead trashed and grand summon
+            AssertNumberOfCardsInTrash(necro, numCardsInTrashBefore + 1);
+            AssertNumberOfCardsInRevealed(necro, 0);
         }
 
         [Test()]
@@ -716,9 +812,9 @@ namespace CauldronTests
 
             //At the end of your turn, this card deals the non-undead hero target with the lowest HP 2 infernal damage
             // lowest non-undead should be fanatic
-            QuickHPStorage(fanatic);
+            QuickHPStorage(baron, necro, ra, fanatic);
             GoToEndOfTurn(necro);
-            QuickHPCheck(-2);
+            QuickHPCheck(0, 0, 0, -2);
         }
 
         [Test()]
@@ -782,14 +878,14 @@ namespace CauldronTests
             PutIntoPlay("TheStaffOfRa");
             GoToPlayCardPhase(necro);
 
-            PlayCard(imp, true);
+            PlayCard(imp);
 
             //At the end of your turn, destroy 1 hero equipment or ongoing card."
             GoToEndOfTurn(necro);
 
             //there should be no more equipment in play
             AssertNumberOfCardsInPlay((Card c) => GameController.IsEquipment(c) && c.IsHero, 0);
-
+            AssertInTrash("TheStaffOfRa");
         }
 
         [Test()]
@@ -803,14 +899,14 @@ namespace CauldronTests
             PutIntoPlay("FleshOfTheSunGod");
             GoToPlayCardPhase(necro);
 
-            PlayCard(imp, true);
+            PlayCard(imp);
 
             //At the end of your turn, destroy 1 hero equipment or ongoing card."
             GoToEndOfTurn(necro);
 
             //there should be no more ongoings in play
             AssertNumberOfCardsInPlay((Card c) => c.IsOngoing && c.IsHero, 0);
-
+            AssertInTrash("FleshOfTheSunGod");
         }
 
         [Test()]
@@ -821,16 +917,16 @@ namespace CauldronTests
             Card imp = GetCard("DemonicImp");
             PutInHand(ra, "TheStaffOfRa");
             Card staff = GetCardFromHand(ra, "TheStaffOfRa");
-            
+
 
             PlayCard(imp, true);
             DecisionSelectTurnTaker = ra.TurnTaker;
             DecisionSelectCard = staff;
             //When this card is destroyed, one player may play a card."
-            QuickHandStorage(ra);
+            QuickHandStorage(necro, ra, fanatic);
             DestroyCard(imp, baron.CharacterCard);
-            QuickHandCheck(-1);
-
+            QuickHandCheck(0, -1, 0);
+            AssertInPlayArea(ra, staff);
         }
 
         [Test()]
@@ -843,23 +939,51 @@ namespace CauldronTests
             PutIntoPlay("DarkPact");
 
             //put some undead in play
-            PutIntoPlay("Ghoul");
-            PutIntoPlay("Abomination");
-
-            Card ghoul = GetCardInPlay("Ghoul");
-            Card abomination = GetCardInPlay("Abomination");
+            Card zombie = PutIntoPlay("NecroZombie");
+            Card abomination = PutIntoPlay("Abomination");
 
             GoToPlayCardPhase(necro);
 
-            PutIntoPlay("TaintedBlood");
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, zombie, abomination);
+            var blood = PutIntoPlay("TaintedBlood");
+            AssertInPlayArea(necro, blood);
+
+            DecisionAutoDecideIfAble = true;
 
             //At the end of your draw phase, Necro deals the undead target with the lowest HP 2 irreducible toxic damage.
-            //lowest hp undead is ghoul
-
-            QuickHPStorage(ghoul);
+            //lowest hp undead is zombie
+            //note that the undead will deal damage, 2 to all heros, 2 extra to ra
             GoToEndOfTurn(necro);
-            QuickHPCheck(-2);
+            QuickHPCheck(0, -2, -4, -2, -2, 0);
+        }
 
+        [Test]
+
+        public void TestTaintedBloodTiming([Values("NecroZombie", "Abomination", "DemonicImp", "Ghoul", "PossessedCorpse")] string undeadIdentifier)
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            //put a undead in play
+            Card undead = PutIntoPlay(undeadIdentifier);
+            AssertInPlayArea(necro, undead);
+            SetHitPoints(undead, 2); //ensure we can kill the target
+            DiscardAllCards(necro, ra, fanatic); //clear out everybodies hand so DemonicImp's death trigger doesn' fire
+
+            var blood = PutInHand(necro, "TaintedBlood");
+
+            GoToPlayCardPhase(necro);
+
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard);
+            PlayCardFromHand(necro, "TaintedBlood");
+            AssertInPlayArea(necro, blood);
+
+            //At the end of your draw phase, Necro deals the undead target with the lowest HP 2 irreducible toxic damage.
+            //tainted blood should kill the undead before it deals damage/destroys cards
+            GoToEndOfTurn(necro);
+            QuickHPCheck(0, 0, 0, 0);
+            AssertInTrash(necro, undead);
+            AssertInPlayArea(necro, blood);
         }
 
         [Test()]
@@ -869,46 +993,57 @@ namespace CauldronTests
             StartGame();
             Card corpse = GetCard("PossessedCorpse");
 
-            SetHitPoints(necro.CharacterCard, 15);
-            SetHitPoints(ra.CharacterCard, 12);
-            SetHitPoints(baron.CharacterCard, 23);
-            SetHitPoints(fanatic.CharacterCard, 3);
-            SetHitPoints(GetCard("MobileDefensePlatform"), 6);
-
-
             GoToPlayCardPhase(necro);
-
+            SetHitPoints(fanatic, 10);
             PlayCard(corpse, true);
 
             //put the talisman in play on fanatic
             DecisionSelectCard = fanatic.CharacterCard;
-            PutIntoPlay("Talisman");
+            var card = PutIntoPlay("Talisman");
+            AssertNextToCard(card, fanatic.CharacterCard);
 
             //At the end of your turn, possessed card deals the non-undead hero target with the lowest HP 2 infernal damage
             // lowest non-undead should be fanatic, but since talisman is on her, she should be immune
-            QuickHPStorage(fanatic);
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, corpse);
             GoToEndOfTurn(necro);
-            QuickHPCheck(0);
+            QuickHPCheck(0, 0, 0, 0, 0);
         }
         [Test()]
         public void TestTalismanNotImmuneToNotUndead()
         {
             SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Fanatic", "Megalopolis");
             StartGame();
-            Card corpse = GetCard("PossessedCorpse");
-
 
             GoToPlayCardPhase(necro);
 
+            //put the talisman in play on fanatic
+            DecisionSelectCard = fanatic.CharacterCard;
+            var card = PutIntoPlay("Talisman");
+            AssertNextToCard(card, fanatic.CharacterCard);
+
+            //Damage is being dealt by not an undead target, should be dealt normally
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard);
+            DealDamage(baron, fanatic, 5, DamageType.Fire);
+            QuickHPCheck(0, 0, 0, -5);
+        }
+
+        [Test()]
+        public void TestTalismanBehaviorAfterNextIsDestroyed()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(necro);
 
             //put the talisman in play on fanatic
             DecisionSelectCard = fanatic.CharacterCard;
-            PutIntoPlay("Talisman");
+            var card = PutIntoPlay("Talisman");
+            AssertNextToCard(card, fanatic.CharacterCard);
 
-            //Damage is being dealt by not an undead target, should be dealt normally
-            QuickHPStorage(fanatic);
-            DealDamage(baron, fanatic, 5, DamageType.Fire);
-            QuickHPCheck(-5);
+            //obliterate fanatic
+            DealDamage(baron, fanatic, 99, DamageType.Psychic, true);
+
+            AssertInPlayArea(necro, card);
         }
 
         [Test()]
@@ -974,25 +1109,17 @@ namespace CauldronTests
             SetHitPoints(ra.CharacterCard, 12);
             SetHitPoints(baron.CharacterCard, 23);
             SetHitPoints(fanatic.CharacterCard, 3);
-            SetHitPoints(GetCard("MobileDefensePlatform"), 6);
-
+            var mdp = GetCard("MobileDefensePlatform");
+            SetHitPoints(mdp, 6);
 
             GoToPlayCardPhase(necro);
 
-            PlayCard(abomination, true);
+            PlayCard(abomination);
 
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, mdp, abomination, imp);
             //At the end of your turn, this card deals all non-Undead hero targets 2 toxic damage.
-
-            List<int?> heroHpBefore = new List<int?>() { necro.CharacterCard.HitPoints, ra.CharacterCard.HitPoints, fanatic.CharacterCard.HitPoints, imp.HitPoints };
             GoToEndOfTurn(necro);
-            List<int?> heroHpAfter = new List<int?>() { necro.CharacterCard.HitPoints, ra.CharacterCard.HitPoints, fanatic.CharacterCard.HitPoints, imp.HitPoints };
-
-            //check each hero's hp
-            Assert.AreEqual(heroHpBefore[0] - 2, heroHpAfter[0]);
-            Assert.AreEqual(heroHpBefore[1] - 2, heroHpAfter[1]);
-            Assert.AreEqual(heroHpBefore[2] - 2, heroHpAfter[2]);
-            //check imp hp hasn't changed
-            Assert.AreEqual(heroHpBefore[3], heroHpAfter[3]);
+            QuickHPCheck(0, -2, -2, -2, 0, 0, 0);
         }
 
         [Test()]
@@ -1002,28 +1129,15 @@ namespace CauldronTests
             StartGame();
             Card abomination = GetCard("Abomination");
 
-            SetHitPoints(necro.CharacterCard, 15);
-            SetHitPoints(ra.CharacterCard, 12);
-            SetHitPoints(baron.CharacterCard, 23);
-            SetHitPoints(fanatic.CharacterCard, 3);
-            SetHitPoints(GetCard("MobileDefensePlatform"), 6);
-
-
             GoToPlayCardPhase(necro);
 
-            PlayCard(abomination, true);
+            PlayCard(abomination);
 
             // When this card is destroyed, all players draw a card.
-
-             List<int?> numCardsInHandBefore = new List<int?>() { GetNumberOfCardsInHand(necro), GetNumberOfCardsInHand(ra), GetNumberOfCardsInHand(fanatic)};
+            QuickHandStorage(necro, ra, fanatic);
             DestroyCard(abomination, necro.CharacterCard);
-            List<int?> numCardsInHandAfter = new List<int?>() { GetNumberOfCardsInHand(necro), GetNumberOfCardsInHand(ra), GetNumberOfCardsInHand(fanatic) };
-
-            //check each hero's hand size, should be +1
-            Assert.AreEqual(numCardsInHandBefore[0] + 1, numCardsInHandAfter[0]);
-            Assert.AreEqual(numCardsInHandBefore[1] + 1, numCardsInHandAfter[1]);
-            Assert.AreEqual(numCardsInHandBefore[2] + 1, numCardsInHandAfter[2]);
- 
+            QuickHandCheck(1, 1, 1);
+            AssertInTrash(abomination);
         }
 
 
@@ -1097,9 +1211,9 @@ namespace CauldronTests
 
             //At the end of your turn, this card deals the non-Undead hero target with the highest HP 2 toxic damage.
             // highest HP should be necro
-            QuickHPStorage(necro);
+            QuickHPStorage(baron, necro, ra, fanatic);
             GoToEndOfTurn(necro);
-            QuickHPCheck(-2);
+            QuickHPCheck(0, -2, 0, 0);
         }
 
     }
