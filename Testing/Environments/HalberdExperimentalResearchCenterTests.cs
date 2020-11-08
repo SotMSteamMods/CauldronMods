@@ -522,5 +522,100 @@ namespace CauldronTests
             AssertIsInPlay(battalion);
         }
 
+        [Test()]
+        public void TestHalberdSiren_NoChemicalTriggers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+
+            //Set hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(haka.CharacterCard, 10);
+
+            //destroy mdp so baron blade is vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            
+
+            GoToPlayCardPhase(halberd);
+
+            //we play out siren
+            Card siren = GetCard("HalberdSiren");
+            PlayCard(siren);
+            AssertIsInPlay(siren);
+
+            //If there are no Chemical Triggers in play, the first time the hero target with the highest HP would be dealt damage each turn, redirect that damage to the villain target with the highest HP. 
+            //ra is highest hp hero
+            //baron is highest hp villain
+            QuickHPStorage(baron, ra);
+            DealDamage(haka, ra, 3, DamageType.Melee);
+            QuickHPCheck(-3, 0);
+
+            //should only happen for the first damage
+            QuickHPStorage(baron, ra);
+            DealDamage(haka, ra, 2, DamageType.Melee);
+            QuickHPCheck(0, -2);
+
+            GoToNextTurn();
+
+            //should be reset for the next turn
+            QuickHPStorage(baron, ra);
+            DealDamage(haka, ra, 3, DamageType.Melee);
+            QuickHPCheck(-3, 0);
+        }
+
+        [Test()]
+        public void TestHalberdSiren_WithChemicalTriggers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //Set hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(haka.CharacterCard, 10);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToPlayCardPhase(halberd);
+
+            //play halberd siren
+            Card siren = GetCard("HalberdSiren");
+            PlayCard(siren);
+            AssertIsInPlay(siren);
+
+            //we put a chem trigger in play
+            //this chem trigger plays omega
+            //this chem trigger reduces damage dealt to subjects, so it doesn't impact this test
+            Card chem = GetCard("HrCombatPheromones");
+            PlayCard(chem);
+            AssertIsInPlay(chem);
+
+            //the chem trigger plays omega
+            //destroy omega
+            Card omega = GetCardInPlay("HalberdOmega");
+            DestroyCard(omega);
+
+            //Otherwise, the first time a non-hero target would be dealt damage each turn, redirect that damage to the hero target with the highest HP.
+            //hero with highest hp is ra
+            QuickHPStorage(mdp, ra.CharacterCard);
+            DealDamage(haka.CharacterCard, mdp, 2, DamageType.Melee);
+            QuickHPCheck(0, -2);
+
+            //only first a turn
+            QuickHPStorage(mdp, ra.CharacterCard);
+            DealDamage(haka.CharacterCard, mdp, 2, DamageType.Melee);
+            QuickHPCheck(-2, 0);
+
+            //reset for next turn
+            GoToNextTurn();
+            QuickHPStorage(mdp, ra.CharacterCard);
+            DealDamage(haka.CharacterCard, mdp, 2, DamageType.Melee);
+            QuickHPCheck(0, -2);
+
+        }
+
     }
 }
