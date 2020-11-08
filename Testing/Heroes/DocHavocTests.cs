@@ -433,8 +433,10 @@ namespace CauldronTests
 
             StartGame();
             Card mdp = GetCardInPlay("MobileDefensePlatform");
-            QuickHPStorage(mdp, baron.CharacterCard);
-            DecisionSelectTargets = new[] {mdp, baron.CharacterCard};
+            QuickHPStorage(mdp);
+            
+            DecisionSelectTargets = new[] {mdp, null};
+            DecisionSelectWordSkip = true;
 
             // Act
             GoToPlayCardPhase(DocHavoc);
@@ -442,8 +444,10 @@ namespace CauldronTests
             GoToUsePowerPhase(DocHavoc);
             UsePower(SyringeDartsCardController.Identifier);
 
+            GoToEndOfTurn(env);
+
             // Assert
-            QuickHPCheck(-2, 0);
+            QuickHPCheck(-2);
         }
     }
 }
