@@ -50,7 +50,10 @@
                 "EndOfTurnAction",
                 "DealDamageEnergy"
             ],
-            "body": "At the end of the environment turn, this card deals the hero target with the highest HP {H} energy damage.",
+            "body": [
+                "At the end of the environment turn, this card deals the hero target with the highest HP {H} energy damage.",
+                "Then, this card deals X villain targets 2 energy damage each, where x is the number of time vortex cards in the environment trash."
+            ],
             "flavorText": "“The way I hear it, some things ain't{BR}supposed to exist,” said Chrono-Ranger.{BR}“Problem is, when they intersect this{BR}crystal thing, they [b]DO[/b].”",
             "hitpoints": 8
         },
