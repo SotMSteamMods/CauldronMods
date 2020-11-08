@@ -11,7 +11,6 @@ namespace Cauldron.Necro
         {
         }
 
-
         public override void AddTriggers()
         {
             //When an Undead target is destroyed, Necro deals 1 non-hero target 3 infernal damage.
@@ -21,7 +20,9 @@ namespace Cauldron.Necro
         private IEnumerator DealDamageResponse(DestroyCardAction dca)
         {
             //Necro deals 1 non - hero target 3 infernal damage.
-            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 3, DamageType.Melee, new int?(1), false, new int?(1), false, false, false, (Card c) => !c.IsHero, null, null, null, null, false, null, null, false, null, base.GetCardSource(null));
+            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 3, DamageType.Infernal, 1, false, 1,
+                additionalCriteria: c => !IsHeroConsidering1929(c),
+                cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

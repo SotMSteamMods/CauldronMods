@@ -487,7 +487,7 @@ namespace CauldronTests
 
             GoToPlayCardPhase(necro);
 
-            PlayCard(bloodRite, true);
+            PlayCard(bloodRite);
 
             //When an Undead target is destroyed, all non-undead hero targets regain 2 HP.
             QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, imp);
@@ -510,14 +510,14 @@ namespace CauldronTests
 
             GoToPlayCardPhase(necro);
 
-            PlayCard(hellfire, true);
+            PlayCard(hellfire);
+            AssertInPlayArea(necro, hellfire);
 
             //Whenever an Undead target is destroyed, Necro deals 1 non-hero target 3 infernal damage.
             DecisionSelectTarget = mdp;
-            QuickHPStorage(mdp);
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, mdp);
             DestroyCard(ghoul, baron.CharacterCard);
-            QuickHPCheck(-3);
-
+            QuickHPCheck(0, 0, 0, 0, -3);
         }
 
         [Test()]
