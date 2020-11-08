@@ -414,9 +414,36 @@ namespace CauldronTests
             GoToPlayCardPhase(DocHavoc);
             PlayCardFromHand(DocHavoc, StimShotCardController.Identifier);
 
+            // Assert
             QuickHandCheck(0); // No change as Stim Shot allowed Doc Havoc to draw a card
             QuickHPCheck(-1); // Stim Shot allowed Tempest to use power Squall, 1 dmg to MDP
         }
 
+        [Test]
+        public void TestSyringeDarts()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                SyringeDartsCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            QuickHPStorage(mdp, baron.CharacterCard);
+            DecisionSelectTargets = new[] {mdp, baron.CharacterCard};
+
+            // Act
+            GoToPlayCardPhase(DocHavoc);
+            PlayCardFromHand(DocHavoc, SyringeDartsCardController.Identifier);
+            GoToUsePowerPhase(DocHavoc);
+            UsePower(SyringeDartsCardController.Identifier);
+
+            // Assert
+            QuickHPCheck(-2, 0);
+        }
     }
 }
