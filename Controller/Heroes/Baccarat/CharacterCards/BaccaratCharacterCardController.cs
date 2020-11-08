@@ -41,7 +41,7 @@ namespace Cauldron.Baccarat
 
                         List<SelectCardDecision> selectCardDecisions = new List<SelectCardDecision>();
                         //Pick first card (and subsequentially the deck)
-                        IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.HeroTurnTakerController, SelectionType.MoveCardOnBottomOfDeck, new LinqCardCriteria((Card c) => c.IsInTrash && this.GameController.IsLocationVisibleToSource(c.Location, base.GetCardSource(null))), selectCardDecisions, false, false, null, true, base.GetCardSource(null));
+                        IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.HeroTurnTakerController, SelectionType.MoveCardOnBottomOfDeck, new LinqCardCriteria((Card c) => c.IsInTrash && this.GameController.IsLocationVisibleToSource(c.Location, base.GetCardSource(null))), selectCardDecisions, false);
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -53,7 +53,7 @@ namespace Cauldron.Baccarat
 
                         List<MoveCardDestination> list = new List<MoveCardDestination>
                         {
-                            new MoveCardDestination(selectCardDecisions.FirstOrDefault().SelectedCard.NativeDeck, true, false, false)
+                            new MoveCardDestination(selectCardDecisions.FirstOrDefault().SelectedCard.NativeDeck, true)
                         };
                         //Move first card
                         coroutine = base.GameController.MoveCard(this.TurnTakerController, selectCardDecisions.FirstOrDefault().SelectedCard, list.FirstOrDefault().Location, true, false, false, null, false, null, null, null, false, false, null, false, false, false, true, base.GetCardSource(null));
@@ -68,7 +68,7 @@ namespace Cauldron.Baccarat
 
                         //Pick second card
                         List<SelectCardDecision> selectCardDecisions2 = new List<SelectCardDecision>();
-                        coroutine = base.GameController.SelectCardAndStoreResults(this.HeroTurnTakerController, SelectionType.MoveCardOnBottomOfDeck, new LinqCardCriteria((Card c) => c.IsInTrash && c.NativeDeck == list.FirstOrDefault().Location && this.GameController.IsLocationVisibleToSource(c.Location, base.GetCardSource(null))), selectCardDecisions2, false, false, null, true, base.GetCardSource(null));
+                        coroutine = base.GameController.SelectCardAndStoreResults(this.HeroTurnTakerController, SelectionType.MoveCardOnBottomOfDeck, new LinqCardCriteria((Card c) => c.IsInTrash && c.NativeDeck == list.FirstOrDefault().Location && this.GameController.IsLocationVisibleToSource(c.Location, base.GetCardSource(null))), selectCardDecisions2, false);
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -78,7 +78,7 @@ namespace Cauldron.Baccarat
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
 
-                        //Move scecond card
+                        //Move second card
                         coroutine = base.GameController.MoveCard(this.TurnTakerController, selectCardDecisions2.FirstOrDefault().SelectedCard, list.FirstOrDefault().Location, true, false, false, null, false, null, null, null, false, false, null, false, false, false, true, base.GetCardSource(null));
                         if (base.UseUnityCoroutines)
                         {
@@ -121,7 +121,7 @@ namespace Cauldron.Baccarat
                         this.actedHeroes = new List<Card>();
                         IEnumerable<Function> functionsBasedOnCard(Card c) => new Function[]
                         {
-                            new Function(base.FindCardController(c).DecisionMaker, "Deal self 3 toxic damage and use a power", SelectionType.UsePower, () => this.DealDamageAndUsePowerResponse(c), null, null, null)
+                            new Function(base.FindCardController(c).DecisionMaker, "Deal self 3 toxic damage and use a power", SelectionType.UsePower, () => this.DealDamageAndUsePowerResponse(c))
                         };
                         IEnumerator coroutine3 = base.GameController.SelectCardsAndPerformFunction(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && !this.actedHeroes.Contains(c), "active hero character cards", false, false, null, null, false), functionsBasedOnCard, true, base.GetCardSource(null));
                         if (base.UseUnityCoroutines)
@@ -172,16 +172,13 @@ namespace Cauldron.Baccarat
 
         public override IEnumerator UsePower(int index = 0)
         {
-            
-            this.actedHeroes = new List<Card>();
-            IEnumerable<Function> functionsBasedOnCard(Card c) => new Function[]
-            {
-                //Discard the top card of your deck...
-                new Function(base.FindCardController(c).DecisionMaker, "Discard the top card of your deck", SelectionType.DiscardFromDeck, () => base.DiscardCardsFromTopOfDeck(this.TurnTakerController, 1, false, null, false, this.TurnTaker), null, null, null),
-                //...or put up to 2 trick cards with the same name from your trash into play.
-                new Function(base.FindCardController(c).DecisionMaker, "put up to 2 trick cards with the same name from your trash into play", SelectionType.PlayCard, () => this.PlayTricksFromTrash(), null, null, null)
-            };
-            IEnumerator coroutine3 = base.GameController.SelectCardsAndPerformFunction(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && !this.actedHeroes.Contains(c), "active hero character cards", false, false, null, null, false), functionsBasedOnCard, false, base.GetCardSource(null));
+            List<Function> list = new List<Function>();
+            //Discard the top card of your deck...
+            list.Add(new Function(this.DecisionMaker, "Discard the top card of your deck", SelectionType.DiscardFromDeck, () => base.DiscardCardsFromTopOfDeck(this.TurnTakerController, 1, false, null, false, this.TurnTaker)));
+            //...or put up to 2 trick cards with the same name from your trash into play.
+            list.Add(new Function(this.DecisionMaker, "Put up to 2 trick cards with the same name from your trash into play", SelectionType.PlayCard, () => this.PlayTricksFromTrash()));
+            SelectFunctionDecision selectFunction = new SelectFunctionDecision(base.GameController, this.DecisionMaker, list, false, null, null, null, base.GetCardSource(null));
+            IEnumerator coroutine3 = base.GameController.SelectAndPerformFunction(selectFunction, null, null);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine3);
