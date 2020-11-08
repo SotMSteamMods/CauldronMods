@@ -45,6 +45,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, inferno);
+            //Head flips on incap
             Assert.IsTrue(inferno.IsFlipped);
         }
 
@@ -54,6 +55,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, inferno);
+            //Should only win when all 3 heads are destroyed
             AssertNotGameOver();
         }
 
@@ -63,6 +65,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, storm);
+            //Head flips on incap
             Assert.IsTrue(storm.IsFlipped);
         }
 
@@ -72,6 +75,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, storm);
+            //Should only win when all 3 heads are destroyed
             AssertNotGameOver();
         }
 
@@ -81,6 +85,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, winter);
+            //Head flips on incap
             Assert.IsTrue(winter.IsFlipped);
         }
 
@@ -90,6 +95,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, winter);
+            //Should only win when all 3 heads are destroyed
             AssertNotGameOver();
         }
 
@@ -99,6 +105,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, winter);
+            //Flipped heads cannot deal damage
             QuickHPStorage(legacy);
             DealDamage(winter, legacy, 2, DamageType.Cold);
             QuickHPCheck(0);
@@ -114,6 +121,7 @@ namespace CauldronTests
             SetupIncap(legacy, inferno);
             AssertNotGameOver();
             SetupIncap(legacy, storm);
+            //Win if all heads are flipped
             AssertGameOver();
         }
 
@@ -123,6 +131,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             QuickHPStorage(inferno);
+            //Inferno Tiamat should be immune to fire damage
             DealDamage(legacy, inferno, 2, DamageType.Fire);
             QuickHPCheck(0);
         }
@@ -133,6 +142,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             QuickHPStorage(storm);
+            //Storm Tiamat should be immune to lightning damage
             DealDamage(legacy, storm, 2, DamageType.Lightning);
             QuickHPCheck(0);
         }
@@ -143,6 +153,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             QuickHPStorage(winter);
+            //Inferno Tiamat should be immune to cold damage
             DealDamage(legacy, winter, 2, DamageType.Cold);
             QuickHPCheck(0);
         }
@@ -155,6 +166,7 @@ namespace CauldronTests
             SetupIncap(legacy, winter);
             SetupIncap(legacy, storm);
             QuickHPStorage(legacy);
+            //Inferno deals damage at the end of turn if she did not already deal damage this turn
             GoToEndOfTurn(tiamat);
             QuickHPCheck(-1);
         }
@@ -167,6 +179,7 @@ namespace CauldronTests
             SetupIncap(legacy, winter);
             SetupIncap(legacy, storm);
             QuickHPStorage(legacy);
+            //Winter deals damage at the end of turn if she did not already deal damage this turn
             GoToEndOfTurn(tiamat);
             QuickHPCheck(-1);
         }
@@ -179,6 +192,7 @@ namespace CauldronTests
             SetupIncap(legacy, winter);
             SetupIncap(legacy, storm);
             QuickHPStorage(legacy);
+            //Storm deals damage at the end of turn if she did not already deal damage this turn
             GoToEndOfTurn(tiamat);
             QuickHPCheck(-1);
         }
@@ -189,6 +203,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Haka", "Guise", "Parse", "Megalopolis");
             StartGame();
             QuickHPStorage(haka);
+            //End of turn damage checking happens per head
             GoToEndOfTurn(tiamat);
             QuickHPCheck(-3);
         }
@@ -199,6 +214,7 @@ namespace CauldronTests
             SetupGameController(new string[] { "Cauldron.Tiamat", "Legacy", "Guise", "Parse", "Megalopolis" }, true);
             StartGame();
             QuickHPStorage(legacy);
+            //Advanced heads deal 1 extra damage
             DealDamage(inferno, legacy, 2, DamageType.Melee);
             QuickHPCheck(-3);
         }
@@ -209,6 +225,7 @@ namespace CauldronTests
             SetupGameController(new string[] { "Cauldron.Tiamat", "Legacy", "Guise", "Parse", "Megalopolis" }, true);
             StartGame();
             QuickHPStorage(legacy);
+            //Advanced heads deal 1 extra damage
             DealDamage(storm, legacy, 2, DamageType.Melee);
             QuickHPCheck(-3);
         }
@@ -219,6 +236,7 @@ namespace CauldronTests
             SetupGameController(new string[] { "Cauldron.Tiamat", "Legacy", "Guise", "Parse", "Megalopolis" }, true);
             StartGame();
             QuickHPStorage(legacy);
+            //Advanced heads deal 1 extra damage
             DealDamage(winter, legacy, 2, DamageType.Melee);
             QuickHPCheck(-3);
         }
@@ -229,8 +247,9 @@ namespace CauldronTests
             SetupGameController(new string[] { "Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis" }, true);
             StartGame();
             SetupIncap(legacy, inferno);
-            QuickHPStorage(winter);
-            DealDamage(legacy, winter, 2, DamageType.Melee);
+            QuickHPStorage(storm);
+            //Advanced heads make the other heads take 1 less damage
+            DealDamage(legacy, storm, 2, DamageType.Melee);
             QuickHPCheck(-1);
         }
 
@@ -241,6 +260,7 @@ namespace CauldronTests
             StartGame();
             SetupIncap(legacy, storm);
             QuickHPStorage(winter);
+            //Advanced heads make the other heads take 1 less damage
             DealDamage(legacy, winter, 2, DamageType.Melee);
             QuickHPCheck(-1);
         }
@@ -252,6 +272,7 @@ namespace CauldronTests
             StartGame();
             SetupIncap(legacy, winter);
             QuickHPStorage(inferno);
+            //Advanced heads make the other heads take 1 less damage
             DealDamage(legacy, inferno, 2, DamageType.Melee);
             QuickHPCheck(-1);
         }
@@ -277,6 +298,8 @@ namespace CauldronTests
             });
 
             PlayCard(GetCard("AcidBreath"));
+            //These should be destroyed
+            AssertInTrash(az, new Card[] { GetCard("CryoChamber"), GetCard("FocusedApertures"), GetCard("ColdSnap"), GetCard("CoolantBlast") });
             //Without choics cards are selected alphabetically. So this should be skipped
             AssertInPlayArea(az, glacial);
             //Environment shouldn't be destroyed
@@ -305,6 +328,7 @@ namespace CauldronTests
                 GetCard("BlockGuard")
             });
 
+            //Heroes that don't destroy a card get H damage
             QuickHPStorage(ra.CharacterCard, haka.CharacterCard);
             PlayCard(GetCard("AcidBreath"));
             QuickHPCheck(-3, -3);
@@ -335,7 +359,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             PlayCard(tiamat, "AncientWard");
-
+            //Heads take 1 less damage
             QuickHPStorage(inferno);
             DealDamage(legacy, inferno, 2, DamageType.Melee);
             QuickHPCheck(-1);
@@ -355,7 +379,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             PlayCard(tiamat, "DragonsWrath");
-
+            //Heads deal 1 extra damage
             QuickHPStorage(legacy);
             DealDamage(inferno, legacy, 2, DamageType.Melee);
             QuickHPCheck(-3);
@@ -377,9 +401,11 @@ namespace CauldronTests
             StartGame();
             PlayCard(tiamat, "ElementalForm");
 
+            //Until start of next turn heads become immune to a damage type when they take that damage
             QuickHPStorage(inferno);
             DealDamage(legacy, inferno, 2, DamageType.Melee);
             QuickHPCheck(-2);
+            //Should be immune now
             QuickHPStorage(inferno);
             DealDamage(legacy, inferno, 2, DamageType.Melee);
             QuickHPCheck(0);
@@ -387,6 +413,7 @@ namespace CauldronTests
             QuickHPStorage(storm);
             DealDamage(legacy, storm, 2, DamageType.Melee);
             QuickHPCheck(-2);
+            //Should be immune now
             QuickHPStorage(storm);
             DealDamage(legacy, storm, 2, DamageType.Melee);
             QuickHPCheck(0);
@@ -394,6 +421,7 @@ namespace CauldronTests
             QuickHPStorage(winter);
             DealDamage(legacy, winter, 2, DamageType.Melee);
             QuickHPCheck(-2);
+            //Should be immune now
             QuickHPStorage(winter);
             DealDamage(legacy, winter, 2, DamageType.Melee);
             QuickHPCheck(0);
@@ -409,20 +437,23 @@ namespace CauldronTests
             QuickHPStorage(inferno);
             DealDamage(legacy, inferno, 2, DamageType.Psychic);
             QuickHPCheck(-2);
+            //Should be immune now
             QuickHPStorage(inferno);
             DealDamage(legacy, inferno, 2, DamageType.Psychic);
             QuickHPCheck(0);
-
+            //Should only be immune to Psychic
             QuickHPStorage(storm);
             DealDamage(legacy, storm, 2, DamageType.Projectile);
             QuickHPCheck(-2);
+            //Should be immune now
             QuickHPStorage(storm);
             DealDamage(legacy, storm, 2, DamageType.Projectile);
             QuickHPCheck(0);
-
+            //Should only be immune to Psychic and Radiant
             QuickHPStorage(winter);
             DealDamage(legacy, winter, 2, DamageType.Radiant);
             QuickHPCheck(-2);
+            //Should be immune now
             QuickHPStorage(winter);
             DealDamage(legacy, winter, 2, DamageType.Radiant);
             QuickHPCheck(0);
@@ -438,6 +469,7 @@ namespace CauldronTests
             QuickHPStorage(inferno);
             DealDamage(legacy, inferno, 2, DamageType.Psychic);
             QuickHPCheck(-2);
+            //Immunity only lasts until start of turn
             GoToStartOfTurn(tiamat);
             QuickHPStorage(inferno);
             DealDamage(legacy, inferno, 2, DamageType.Psychic);
@@ -455,7 +487,7 @@ namespace CauldronTests
             DealDamage(legacy, inferno, 2, DamageType.Psychic);
             DealDamage(legacy, inferno, 2, DamageType.Projectile);
             DealDamage(legacy, inferno, 2, DamageType.Radiant);
-
+            //Can be immune to multiple types of damage
             DealDamage(legacy, inferno, 2, DamageType.Psychic);
             DealDamage(legacy, inferno, 2, DamageType.Radiant);
             DealDamage(legacy, inferno, 2, DamageType.Projectile);
@@ -468,6 +500,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
+            //Inferno deals 2+X damage to each hero where X is the number of Element of Fires in trash
             QuickHPStorage(legacy, bunker, haka);
             PlayCard(tiamat, "ElementOfFire");
             QuickHPCheck(-2, -2, -2);
@@ -480,6 +513,7 @@ namespace CauldronTests
             StartGame();
             PutInTrash(GetCard("ElementOfFire", 1));
             PutInTrash(GetCard("ElementOfFire", 2));
+            //Inferno deals 2+X damage to each hero where X is the number of Element of Fires in trash
             QuickHPStorage(legacy, bunker, haka);
             PlayCard(tiamat, GetCard("ElementOfFire"));
             QuickHPCheck(-4, -4, -4);
@@ -492,9 +526,22 @@ namespace CauldronTests
             StartGame();
             PlayCard("OmniCannon");
             PlayCard(tiamat, GetCard("ElementOfFire"));
+            //The hero with most cards in play cannot play cards until start of next villain turn
             AssertCanPlayCards(legacy);
             AssertCanPlayCards(haka);
             AssertCannotPlayCards(bunker);
+        }
+
+        [Test()]
+        public void TestElementOfFireCanPlayCardsNextTurn()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+            PlayCard("OmniCannon");
+            //The hero with most cards in play cannot play cards until start of next villain turn
+            PlayCard(tiamat, GetCard("ElementOfFire"));
+            GoToStartOfTurn(tiamat);
+            AssertCanPlayCards(bunker);
         }
 
         [Test()]
@@ -502,6 +549,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
+            //Winter deals 2+X damage to each hero where X is the number of Element of Ices in trash
             QuickHPStorage(legacy, bunker, haka);
             PlayCard(tiamat, "ElementOfIce");
             QuickHPCheck(-2, -2, -2);
@@ -514,6 +562,7 @@ namespace CauldronTests
             StartGame();
             PutInTrash(GetCard("ElementOfIce", 1));
             PutInTrash(GetCard("ElementOfIce", 2));
+            //Winter deals 2+X damage to each hero where X is the number of Element of Ices in trash
             QuickHPStorage(legacy, bunker, haka);
             PlayCard(tiamat, GetCard("ElementOfIce"));
             QuickHPCheck(-4, -4, -4);
@@ -524,6 +573,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Parse", "Bunker", "Haka", "Megalopolis");
             StartGame();
+            //Highest HP cannot use powers until start of next villain turn
             PlayCard(tiamat, GetCard("ElementOfIce"));
             GoToUsePowerPhase(parse);
             AssertNumberOfUsablePowers(parse, 1);
@@ -534,10 +584,23 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestElementOfIceCanUsePowersNextTurn()
+        {
+            SetupGameController("Cauldron.Tiamat", "Parse", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+            //Highest HP cannot use powers until start of next villain turn
+            PlayCard(tiamat, GetCard("ElementOfIce"));
+            GoToUsePowerPhase(haka);
+            GoToUsePowerPhase(haka);
+            AssertNumberOfUsablePowers(haka, 1);
+        }
+
+        [Test()]
         public void TestElementOfLightningDamage0InTrash()
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
+            //Storm deals 2+X damage to each hero where X is the number of Element of Lightning in trash
             QuickHPStorage(legacy, bunker, haka);
             PlayCard(tiamat, "ElementOfLightning");
             QuickHPCheck(-2, -2, -2);
@@ -550,6 +613,7 @@ namespace CauldronTests
             StartGame();
             PutInTrash(GetCard("ElementOfLightning", 1));
             PutInTrash(GetCard("ElementOfLightning", 2));
+            //Storm deals 2+X damage to each hero where X is the number of Element of Lightning in trash
             QuickHPStorage(legacy, bunker, haka);
             PlayCard(tiamat, GetCard("ElementOfLightning"));
             QuickHPCheck(-4, -4, -4);
@@ -561,6 +625,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             DrawCard(bunker);
+            //The hero with most cards in hand cannot draw cards until start of next villain turn
             PlayCard(tiamat, GetCard("ElementOfLightning"));
             GoToDrawCardPhase(legacy);
             AssertCanPerformPhaseAction();
@@ -571,11 +636,25 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestElementOfLightningCanDrawCardsNextTurn()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+            DrawCard(bunker);
+            //The hero with most cards in hand cannot draw cards until start of next villain turn
+            PlayCard(tiamat, GetCard("ElementOfLightning"));
+            GoToDrawCardPhase(bunker);
+            GoToDrawCardPhase(bunker);
+            AssertCanPerformPhaseAction();
+        }
+
+        [Test()]
         public void TestInfernoIncapEffect0InTrash()
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, inferno);
+            //Inferno increases Spell damage dealt by heads when Incapped for number of Element of Fires in trash
             QuickHPStorage(legacy, bunker, haka);
             PlayCard(tiamat, GetCard("ElementOfLightning"));
             QuickHPCheck(-2, -2, -2);
@@ -589,6 +668,7 @@ namespace CauldronTests
             PutInTrash(GetCard("ElementOfFire", 1));
             PutInTrash(GetCard("ElementOfFire", 2));
             SetupIncap(legacy, inferno);
+            //Inferno increases Spell damage dealt by heads when Incapped for number of Element of Fires in trash
             QuickHPStorage(legacy, bunker, haka);
             PlayCard(tiamat, GetCard("ElementOfLightning"));
             QuickHPCheck(-4, -4, -4);
@@ -600,6 +680,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, storm);
+            //Storm increases Spell damage dealt by heads when Incapped for number of Element of Lightning in trash
             QuickHPStorage(legacy, bunker, haka);
             PlayCard(tiamat, GetCard("ElementOfIce"));
             QuickHPCheck(-2, -2, -2);
@@ -608,11 +689,12 @@ namespace CauldronTests
         [Test()]
         public void TestStormIncapEffect2InTrash()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis" );
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             PutInTrash(GetCard("ElementOfLightning", 1));
             PutInTrash(GetCard("ElementOfLightning", 2));
             SetupIncap(legacy, storm);
+            //Storm increases Spell damage dealt by heads when Incapped for number of Element of Lightning in trash
             QuickHPStorage(legacy, bunker, haka);
             PlayCard(tiamat, GetCard("ElementOfIce"));
             QuickHPCheck(-4, -4, -4);
@@ -624,6 +706,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, winter);
+            //Winter increases Spell damage dealt by heads when Incapped for number of Element of Ice in trash
             QuickHPStorage(legacy, bunker, haka);
             PlayCard(tiamat, GetCard("ElementOfFire"));
             QuickHPCheck(-2, -2, -2);
@@ -637,6 +720,7 @@ namespace CauldronTests
             PutInTrash(GetCard("ElementOfIce", 1));
             PutInTrash(GetCard("ElementOfIce", 2));
             SetupIncap(legacy, winter);
+            //Winter increases Spell damage dealt by heads when Incapped for number of Element of Ice in trash
             QuickHPStorage(legacy, bunker, haka);
             PlayCard(tiamat, GetCard("ElementOfFire"));
             QuickHPCheck(-4, -4, -4);
@@ -658,8 +742,8 @@ namespace CauldronTests
             PutInTrash(GetCard("ElementOfLightning", 2));
             PutInTrash(ward);
 
+            //Elemental Frenzy puts all spells in trash face down under it
             PlayCard(frenzy);
-
             AssertNumberOfCardsUnderCard(frenzy, 6);
             AssertNumberOfCardsInTrash(tiamat, 1);
             AssertInTrash(ward);
@@ -675,11 +759,12 @@ namespace CauldronTests
             PutInTrash(GetCard("ElementOfFire", 1));
             PutInTrash(GetCard("ElementOfFire", 2));
 
+            //At end of turn play the top card of the pile under Elemental Frenzy
             PlayCard(frenzy);
-
             QuickHPStorage(legacy, bunker, haka);
             GoToEndOfTurn(tiamat);
             //End of Turn effects of heads deal 2 to Haka and 1 to Legacy
+            //The spell played deals 2 to each hero
             QuickHPCheck(-3, -2, -4);
 
             AssertNumberOfCardsInTrash(tiamat, 1);
@@ -693,9 +778,9 @@ namespace CauldronTests
             Card frenzy = GetCard("ElementalFrenzy");
             PutInTrash(GetCard("ElementOfFire", 1));
 
+            //Elemental Frenzy destroys self when no more cards underneath it
             PlayCard(frenzy);
             GoToEndOfTurn(tiamat);
-
             AssertInTrash(tiamat, frenzy);
         }
 
@@ -706,8 +791,8 @@ namespace CauldronTests
             StartGame();
             Card frenzy = GetCard("ElementalFrenzy");
 
+            //Elemental Frenzy destroys self when no cards underneath it
             PlayCard(frenzy);
-
             AssertInTrash(tiamat, frenzy);
         }
 
@@ -720,10 +805,11 @@ namespace CauldronTests
             Card ward = GetCard("AncientWard");
             PutOnDeck(tiamat, ward);
             DealDamage(legacy, inferno, 10, DamageType.Psychic);
-            //Checks
+            //The Head with the lowest HP regains {H} + X HP, where X is the number of Healing Magic cards in the villain trash.
             QuickHPStorage(inferno);
             PlayCard(tiamat, "HealingMagic");
             QuickHPCheck(3);
+            //The top card of the villain deck is played
             AssertInPlayArea(tiamat, ward);
         }
 
@@ -740,6 +826,7 @@ namespace CauldronTests
             PutOnDeck(tiamat, new Card[] { ice, ward, fire, lightning });
             AssertNumberOfCardsInTrash(tiamat, 0);
 
+            //Mana Charge discards the first 3 spells from the deck and returns all other revealed cards
             QuickShuffleStorage(tiamat);
             PlayCard(tiamat, charge);
             AssertNumberOfCardsInTrash(tiamat, 4);
@@ -756,6 +843,7 @@ namespace CauldronTests
             StartGame();
             PutInTrash(tiamat, new Card[] { GetCard("ElementalFrenzy"), GetCard("ElementalFrenzy", 1) });
 
+            //Mana Charge shuffles all copies of Elemental Frenzy in the trash to the deck
             QuickShuffleStorage(tiamat);
             PlayCard(tiamat, "ManaCharge");
             AssertNumberOfCardsInTrash(tiamat, 4);
@@ -773,6 +861,7 @@ namespace CauldronTests
             DealDamage(legacy, winter, 5, DamageType.Melee);
             DealDamage(legacy, haka, 5, DamageType.Melee);
             QuickHPStorage(new Card[] { inferno, storm, winter, haka.CharacterCard });
+            //Reptilian Aspect heals all heads for H - 2 at end of turn
             PlayCard(tiamat, "ReptilianAspect");
             GoToEndOfTurn(tiamat);
             QuickHPCheck(1, 1, 1, 0);
@@ -783,6 +872,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
+            //Sky Breaker deals H + 2 to all heroes
             QuickHPStorage(new Card[] { inferno, legacy.CharacterCard, bunker.CharacterCard, haka.CharacterCard });
             PlayCard(tiamat, "SkyBreaker");
             QuickHPCheck(0, -5, -5, -5);
