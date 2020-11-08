@@ -1212,7 +1212,6 @@ namespace CauldronTests
             Card omega = GetCard("HalberdOmega");
             PlayCard(omega);
             AssertIsInPlay(omega);
-
             //If there are no Chemical Triggers in play, increase damage dealt by this card to Test Subjects by 5.
             //no chemical triggers are in play so damage should be increased
             QuickHPStorage(omega, ra.CharacterCard);
@@ -1221,6 +1220,134 @@ namespace CauldronTests
             //damage to omega should have been +5
             //damage to ra should have been normal
             QuickHPCheck(-8, -3);
+        }
+
+        [Test()]
+        public void TestSubjectRecyclingProjectPlay_0InTrash()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            GoToPlayCardPhase(halberd);
+
+            //otherwise destroy this card
+
+
+            //we play out recycling
+            Card recycling = GetCard("SubjectRecyclingProject");
+            PlayCard(recycling);
+
+            //since there are no test subjects in the trash, this card should destroy itself
+            AssertInTrash(recycling);
+            
+
+        }
+
+        [Test()]
+        public void TestSubjectRecyclingProjectPlay_2InTrash()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            GoToPlayCardPhase(halberd);
+
+            //put omega in trash
+            Card omega = GetCard("HalberdOmega");
+            PutInTrash(halberd, omega);
+            AssertInTrash(omega);
+
+            //put alpha in trash
+            Card alpha = GetCard("HalberdAlpha");
+            PutInTrash(halberd, alpha);
+            AssertInTrash(alpha);
+
+            //When this card enters play, put a random Test Subject from the environment trash into play and place this card next to it, otherwise destroy this card
+
+            //we play out recycling
+            Card recycling = GetCard("SubjectRecyclingProject");
+            PlayCard(recycling);
+
+            //should have grabbed one of alpha or omega from the trash to put into play
+
+            Assert.IsTrue(alpha.IsInPlay || omega.IsInPlay, alpha.Title + "or " + omega.Title +" should be in play.");
+            Assert.IsTrue(alpha.IsInTrash || omega.IsInTrash, alpha.Title + "or " + omega.Title + " should be in the trash.");
+
+
+
+
+        }
+
+        [Test()]
+        public void TestSubjectRecyclingProjectIsNextToCard()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            GoToPlayCardPhase(halberd);
+
+            //put omega in trash
+            Card omega = GetCard("HalberdOmega");
+            PutInTrash(halberd, omega);
+            AssertInTrash(omega);
+
+            //When this card enters play, put a random Test Subject from the environment trash into play and place this card next to it
+
+            //we play out recycling
+            //should go next to omega since its the only test subject in the trash
+            Card recycling = GetCard("SubjectRecyclingProject");
+            PlayCard(recycling);
+            AssertNextToCard(recycling, omega);
+        }
+
+        [Test()]
+        public void TestSubjectRecyclingProjectReduceDamage()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            GoToPlayCardPhase(halberd);
+
+            //put omega in trash
+            Card omega = GetCard("HalberdOmega");
+            PutInTrash(halberd, omega);
+            AssertInTrash(omega);
+
+            //we play out recycling
+            Card recycling = GetCard("SubjectRecyclingProject");
+            PlayCard(recycling);
+
+            //recyling is next to omega
+
+            //Reduce damage dealt to that Test Subject by 1. 
+            QuickHPStorage(omega);
+            DealDamage(ra.CharacterCard, omega, 3, DamageType.Fire);
+            //should have been reduced by 1
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestSubjectRecyclingProjectDestroy()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            GoToPlayCardPhase(halberd);
+
+            //put omega in trash
+            Card omega = GetCard("HalberdOmega");
+            PutInTrash(halberd, omega);
+            AssertInTrash(omega);
+
+            //we play out recycling
+            Card recycling = GetCard("SubjectRecyclingProject");
+            PlayCard(recycling);
+
+            //recycling should have brought out omega and went next to it
+
+            //If that Test Subject leaves play, this card is destroyed
+            DestroyCard(omega, baron.CharacterCard);
+            AssertInTrash(recycling);
+
         }
 
     }
