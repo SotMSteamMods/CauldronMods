@@ -617,5 +617,93 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestHalberdFoamcore_NoChemicalTriggers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //Set hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(haka.CharacterCard, 10);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToPlayCardPhase(halberd);
+
+            //we play out foamcore
+            Card foamcore = GetCard("HalberdFoamcore");
+            PlayCard(foamcore);
+            AssertIsInPlay(foamcore);
+
+            //If there are no Chemical Triggers in play, reduce damage dealt to the hero target with the lowest HP by 1.
+            //haka has the lowest hitpoints
+            QuickHPStorage(haka);
+            DealDamage(baron, haka, 4, DamageType.Melee);
+            //damage should have been reduced by 1
+            QuickHPCheck(-3);
+
+            //check that it is only for the lowest hp
+            QuickHPStorage(ra);
+            DealDamage(baron, ra, 4, DamageType.Melee);
+            //damage should not have been reduced
+            QuickHPCheck(-4);
+
+            //check that the other trigger isn't in effect
+            QuickHPStorage(mdp);
+            DealDamage(haka.CharacterCard, mdp, 4, DamageType.Melee);
+            //damage should not have been reduced
+            QuickHPCheck(-4);
+        }
+
+        [Test()]
+        public void TestHalberdFoamcore_WithChemicalTriggers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //Set hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(haka.CharacterCard, 10);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToPlayCardPhase(halberd);
+
+            //we put a chem trigger in play
+            //this chem trigger plays omega
+            //this chem trigger reduces damage dealt to subjects, so it doesn't impact this test
+            Card chem = GetCard("HrCombatPheromones");
+            PlayCard(chem);
+            AssertIsInPlay(chem);
+
+            //the chem trigger plays omega
+            //destroy omega
+            Card omega = GetCardInPlay("HalberdOmega");
+            DestroyCard(omega);
+
+            //we play out foamcore
+            Card foamcore = GetCard("HalberdFoamcore");
+            PlayCard(foamcore);
+            AssertIsInPlay(foamcore);
+
+            //Otherwise, Reduce damage dealt to villain targets by 1.
+
+            QuickHPStorage(mdp);
+            DealDamage(haka.CharacterCard, mdp, 4, DamageType.Melee);
+            //damage should  have been reduced by 1
+            QuickHPCheck(-3);
+
+            ////check that the other trigger isn't in effect
+            //haka has the lowest hitpoints
+            QuickHPStorage(haka);
+            DealDamage(baron, haka, 4, DamageType.Melee);
+            //damage should have not been reduced
+            QuickHPCheck(-4);
+
+        }
+
     }
 }
