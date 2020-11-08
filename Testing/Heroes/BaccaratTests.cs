@@ -645,10 +645,10 @@ namespace CauldronTests
             Card trick2 = GetCard("CheapTrick", 2);
             Card toss1 = GetCard("CardToss", 1);
             Card toss2 = GetCard("CardToss", 2);
-            Card bridge1 = GetCard("GraveyardBridge", 1);
-            Card bridge2 = GetCard("GraveyardBridge", 2);
+            Card ace1 = GetCard("AceInTheHole", 1);
+            Card ace2 = GetCard("AceInTheHole", 2);
             Card saint = GetCard("AceOfSaints");
-            IEnumerable<Card> trashCards = new Card[] { trick1, trick2, saint, toss1, toss2, bridge1, bridge2 };
+            IEnumerable<Card> trashCards = new Card[] { trick1, trick2, saint, toss1, toss2, ace1, ace2 };
             PutInTrash(trashCards);
 
             DecisionsYesNo = new bool[] { false };
