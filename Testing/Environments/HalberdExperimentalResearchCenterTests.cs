@@ -450,5 +450,77 @@ namespace CauldronTests
 
         }
 
+
+        [Test()]
+        public void TestHalberdProphet_NoChemicalTriggers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+
+
+            GoToPlayCardPhase(halberd);
+
+            //we play out prophet
+            Card prophet = GetCard("HalberdProphet");
+            PlayCard(prophet);
+            AssertIsInPlay(prophet);
+
+            Card solar = GetCard("SolarFlare");
+            PutOnDeck(ra, solar);
+            Card evolution = GetCard("NextEvolution");
+            PutOnDeck(legacy, evolution);
+            Card mere = GetCard("Mere");
+            PutOnDeck(haka, mere);
+
+            //we want to put cards on the bottom of the deck
+            DecisionMoveCardDestinations = new MoveCardDestination[] { new MoveCardDestination(ra.TurnTaker.Deck, true), new MoveCardDestination(legacy.TurnTaker.Deck, true), new MoveCardDestination(haka.TurnTaker.Deck, true) };
+            AssertOnTopOfDeck(solar);
+            AssertOnTopOfDeck(evolution);
+            AssertOnTopOfDeck(mere);
+            //At the end of the environment turn, if there are no Chemical Triggers in play, each player may look at the top card of their deck, and put it back on either the top or bottom of their deck.
+            GoToEndOfTurn(halberd);
+            AssertOnBottomOfDeck(solar);
+            AssertOnBottomOfDeck(evolution);
+            AssertOnBottomOfDeck(mere);
+
+        }
+
+        [Test()]
+        public void TestHalberdProphet_WithChemicalTriggers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+           
+            GoToPlayCardPhase(halberd);
+
+            //play halberd prophet
+            Card prophet = GetCard("HalberdProphet");
+            PlayCard(prophet);
+            AssertIsInPlay(prophet);
+
+            //we put a chem trigger in play
+            //this chem trigger plays omega
+            //this chem trigger reduces damage dealt to subjects, so it doesn't impact this test
+            Card chem = GetCard("HrCombatPheromones");
+            PlayCard(chem);
+            AssertIsInPlay(chem);
+
+            //the chem trigger plays omega
+            //omega dealing damage does not impact this test
+            Card omega = GetCardInPlay("HalberdOmega");
+            AssertIsInPlay(omega);
+
+            //stack top of deck
+            Card battalion = GetCard("BladeBattalion");
+            PutOnDeck(baron, battalion);
+
+            //Prophet: Otherwise, play the top card of the villain deck.
+            AssertInDeck(battalion);
+            GoToEndOfTurn(halberd);
+            AssertIsInPlay(battalion);
+        }
+
     }
 }
