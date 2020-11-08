@@ -853,6 +853,43 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestBringDownTheHouseDestroy4Cards()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            //Setup Trash
+            Card trick1 = GetCard("CheapTrick", 0);
+            Card trick2 = GetCard("CheapTrick", 1);
+            Card trick3 = GetCard("CheapTrick", 2);
+            Card trick4 = GetCard("CheapTrick", 3);
+            Card toss1 = GetCard("CardToss", 1);
+            Card toss2 = GetCard("CardToss", 2);
+            Card ace1 = GetCard("AceInTheHole", 1);
+            Card ace2 = GetCard("AceInTheHole", 2);
+            Card saint = GetCard("AceOfSaints");
+            IEnumerable<Card> trashCards = new Card[] { trick1, trick2, trick3, trick4, saint, toss1, toss2, ace1, ace2 };
+            PutInTrash(trashCards);
+
+            //Setup In play
+            Card field = GetCard("LivingForceField");
+            Card monorail = GetCard("PlummetingMonorail");
+            Card backlash = GetCard("BacklashField");
+            Card police = GetCard("PoliceBackup");
+            IEnumerable<Card> playCardsToDestroy = new Card[] { field, monorail, backlash, police };
+            PlayCards(playCardsToDestroy);
+
+            DecisionsYesNo = new bool[] { true, true };
+
+            Card house = GetCard("BringDownTheHouse");
+            //Shuffle any number of pairs of cards with the same name from your trash into your deck.
+            PlayCard(house);
+            AssertInTrash(field);
+            AssertInTrash(monorail);
+            AssertInTrash(backlash);
+            AssertInTrash(police);
+        }
+
+        [Test()]
         public void TestCardTossDealDamage()
         {
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
