@@ -30,15 +30,15 @@ namespace Cauldron.Tiamat
 
 		private void CreateTriggers(Card characterCard)
 		{
-			base.AddTrigger<DealDamageAction>((DealDamageAction dealDamage) => dealDamage.Target == characterCard, new Func<DealDamageAction, IEnumerator>(this.ImmuneResponse), TriggerType.ImmuneToDamage, TriggerTiming.After, ActionDescription.DamageTaken, false, true, null, false, null, null, false, false);
-			base.AddTrigger<DealDamageAction>((DealDamageAction dealDamage) => characterCard.IsInPlayAndHasGameText && dealDamage.Target == characterCard && dealDamage.DidDealDamage, new Func<DealDamageAction, IEnumerator>(this.WarningMessageResponse), TriggerType.Hidden, TriggerTiming.After, ActionDescription.Unspecified, false, true, null, false, null, null, false, false);
+			base.AddTrigger<DealDamageAction>((DealDamageAction dealDamage) => dealDamage.Target == characterCard, new Func<DealDamageAction, IEnumerator>(this.ImmuneResponse), TriggerType.ImmuneToDamage, TriggerTiming.After, ActionDescription.DamageTaken);
+			base.AddTrigger<DealDamageAction>((DealDamageAction dealDamage) => characterCard.IsInPlayAndHasGameText && dealDamage.Target == characterCard && dealDamage.DidDealDamage, new Func<DealDamageAction, IEnumerator>(this.WarningMessageResponse), TriggerType.Hidden, TriggerTiming.After, ActionDescription.Unspecified);
 		}
 
 		private IEnumerator WarningMessageResponse(DealDamageAction dealDamage)
 		{
 			if (base.IsFirstOrOnlyCopyOfThisCardInPlay())
 			{
-				IEnumerator coroutine = base.GameController.SendMessageAction("Tiamat used Elemental Form to become immune to " + dealDamage.DamageType.ToString() + " damage.", Priority.High, base.GetCardSource(), null, false);
+				IEnumerator coroutine = base.GameController.SendMessageAction("Tiamat used Elemental Form to become immune to " + dealDamage.DamageType.ToString() + " damage.", Priority.High, base.GetCardSource());
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);
@@ -62,7 +62,7 @@ namespace Cauldron.Tiamat
 			immuneToDamageStatusEffect.TargetCriteria.IsSpecificCard = dealDamage.Target;
 			immuneToDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
 			immuneToDamageStatusEffect.CardDestroyedExpiryCriteria.Card = dealDamage.Target;
-			IEnumerator coroutine2 = base.AddStatusEffect(immuneToDamageStatusEffect, true);
+			IEnumerator coroutine2 = base.AddStatusEffect(immuneToDamageStatusEffect);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine2);

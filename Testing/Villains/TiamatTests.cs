@@ -480,10 +480,9 @@ namespace CauldronTests
             StartGame();
             PutInTrash(GetCard("ElementOfFire", 1));
             PutInTrash(GetCard("ElementOfFire", 2));
-            int? diff = new int?(-4);
             QuickHPStorage(legacy, bunker, haka);
-            PlayCard(tiamat, GetCard("ElementOfFire", 0));
-            QuickHPCheck(diff, diff, diff);
+            PlayCard(tiamat, GetCard("ElementOfFire"));
+            QuickHPCheck(-4, -4, -4);
         }
 
         [Test()]
@@ -492,7 +491,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             PlayCard("OmniCannon");
-            PlayCard(tiamat, GetCard("ElementOfFire", 0));
+            PlayCard(tiamat, GetCard("ElementOfFire"));
             AssertCanPlayCards(legacy);
             AssertCanPlayCards(haka);
             AssertCannotPlayCards(bunker);
@@ -503,10 +502,9 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            int? diff = new int?(-2);
             QuickHPStorage(legacy, bunker, haka);
             PlayCard(tiamat, "ElementOfIce");
-            QuickHPCheck(diff, diff, diff);
+            QuickHPCheck(-2, -2, -2);
         }
 
         [Test()]
@@ -516,10 +514,9 @@ namespace CauldronTests
             StartGame();
             PutInTrash(GetCard("ElementOfIce", 1));
             PutInTrash(GetCard("ElementOfIce", 2));
-            int? diff = new int?(-4);
             QuickHPStorage(legacy, bunker, haka);
-            PlayCard(tiamat, GetCard("ElementOfIce", 0));
-            QuickHPCheck(diff, diff, diff);
+            PlayCard(tiamat, GetCard("ElementOfIce"));
+            QuickHPCheck(-4, -4, -4);
         }
 
         [Test()]
@@ -527,7 +524,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Parse", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            PlayCard(tiamat, GetCard("ElementOfIce", 0));
+            PlayCard(tiamat, GetCard("ElementOfIce"));
             GoToUsePowerPhase(parse);
             AssertNumberOfUsablePowers(parse, 1);
             GoToUsePowerPhase(haka);
@@ -541,10 +538,9 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            int? diff = new int?(-2);
             QuickHPStorage(legacy, bunker, haka);
             PlayCard(tiamat, "ElementOfLightning");
-            QuickHPCheck(diff, diff, diff);
+            QuickHPCheck(-2, -2, -2);
         }
 
         [Test()]
@@ -554,10 +550,9 @@ namespace CauldronTests
             StartGame();
             PutInTrash(GetCard("ElementOfLightning", 1));
             PutInTrash(GetCard("ElementOfLightning", 2));
-            int? diff = new int?(-4);
             QuickHPStorage(legacy, bunker, haka);
-            PlayCard(tiamat, GetCard("ElementOfLightning", 0));
-            QuickHPCheck(diff, diff, diff);
+            PlayCard(tiamat, GetCard("ElementOfLightning"));
+            QuickHPCheck(-4, -4, -4);
         }
 
         [Test()]
@@ -566,7 +561,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             DrawCard(bunker);
-            PlayCard(tiamat, GetCard("ElementOfLightning", 0));
+            PlayCard(tiamat, GetCard("ElementOfLightning"));
             GoToDrawCardPhase(legacy);
             AssertCanPerformPhaseAction();
             GoToDrawCardPhase(bunker);
@@ -576,36 +571,75 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestInfernoIncapEffect()
+        public void TestInfernoIncapEffect0InTrash()
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, inferno);
             QuickHPStorage(legacy, bunker, haka);
-            PlayCard(tiamat, GetCard("ElementOfLightning", 0));
-            QuickHPCheck(-3, -3, -3);
+            PlayCard(tiamat, GetCard("ElementOfLightning"));
+            QuickHPCheck(-2, -2, -2);
         }
 
         [Test()]
-        public void TestStormIncapEffect()
+        public void TestInfernoIncapEffect2InTrash()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis" );
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+            PutInTrash(GetCard("ElementOfFire", 1));
+            PutInTrash(GetCard("ElementOfFire", 2));
+            SetupIncap(legacy, inferno);
+            QuickHPStorage(legacy, bunker, haka);
+            PlayCard(tiamat, GetCard("ElementOfLightning"));
+            QuickHPCheck(-4, -4, -4);
+        }
+
+        [Test()]
+        public void TestStormIncapEffect0InTrash()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, storm);
             QuickHPStorage(legacy, bunker, haka);
-            PlayCard(tiamat, GetCard("ElementOfIce", 0));
-            QuickHPCheck(-3, -3, -3);
+            PlayCard(tiamat, GetCard("ElementOfIce"));
+            QuickHPCheck(-2, -2, -2);
         }
 
         [Test()]
-        public void TestWinterIncapEffect()
+        public void TestStormIncapEffect2InTrash()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis" );
+            StartGame();
+            PutInTrash(GetCard("ElementOfLightning", 1));
+            PutInTrash(GetCard("ElementOfLightning", 2));
+            SetupIncap(legacy, storm);
+            QuickHPStorage(legacy, bunker, haka);
+            PlayCard(tiamat, GetCard("ElementOfIce"));
+            QuickHPCheck(-4, -4, -4);
+        }
+
+        [Test()]
+        public void TestWinterIncapEffect0InTrash()
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, winter);
             QuickHPStorage(legacy, bunker, haka);
-            PlayCard(tiamat, GetCard("ElementOfFire", 0));
-            QuickHPCheck(-3, -3, -3);
+            PlayCard(tiamat, GetCard("ElementOfFire"));
+            QuickHPCheck(-2, -2, -2);
+        }
+
+        [Test()]
+        public void TestWinterIncapEffect2InTrash()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+            PutInTrash(GetCard("ElementOfIce", 1));
+            PutInTrash(GetCard("ElementOfIce", 2));
+            SetupIncap(legacy, winter);
+            QuickHPStorage(legacy, bunker, haka);
+            PlayCard(tiamat, GetCard("ElementOfFire"));
+            QuickHPCheck(-4, -4, -4);
         }
 
         [Test()]
@@ -613,8 +647,8 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            Card ward = GetCard("AncientWard", 0);
-            Card frenzy = GetCard("ElementalFrenzy", 0);
+            Card ward = GetCard("AncientWard");
+            Card frenzy = GetCard("ElementalFrenzy");
             Card fire = GetCard("ElementOfFire", 1);
             PutInTrash(fire);
             PutInTrash(GetCard("ElementOfFire", 2));
@@ -637,7 +671,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            Card frenzy = GetCard("ElementalFrenzy", 0);
+            Card frenzy = GetCard("ElementalFrenzy");
             PutInTrash(GetCard("ElementOfFire", 1));
             PutInTrash(GetCard("ElementOfFire", 2));
 
@@ -656,7 +690,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            Card frenzy = GetCard("ElementalFrenzy", 0);
+            Card frenzy = GetCard("ElementalFrenzy");
             PutInTrash(GetCard("ElementOfFire", 1));
 
             PlayCard(frenzy);
@@ -670,7 +704,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            Card frenzy = GetCard("ElementalFrenzy", 0);
+            Card frenzy = GetCard("ElementalFrenzy");
 
             PlayCard(frenzy);
 
@@ -698,11 +732,11 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            Card charge = GetCard("ManaCharge", 0);
-            Card fire = GetCard("ElementOfFire", 0);
-            Card ice = GetCard("ElementOfIce", 0);
-            Card lightning = GetCard("ElementOfLightning", 0);
-            Card ward = GetCard("AncientWard", 0);
+            Card charge = GetCard("ManaCharge");
+            Card fire = GetCard("ElementOfFire");
+            Card ice = GetCard("ElementOfIce");
+            Card lightning = GetCard("ElementOfLightning");
+            Card ward = GetCard("AncientWard");
             PutOnDeck(tiamat, new Card[] { ice, ward, fire, lightning });
             AssertNumberOfCardsInTrash(tiamat, 0);
 
@@ -711,7 +745,7 @@ namespace CauldronTests
             AssertNumberOfCardsInTrash(tiamat, 4);
             AssertInTrash(tiamat, new Card[] { ice, charge, fire, lightning });
             AssertNotInTrash(tiamat, ward.Identifier);
-            QuickShuffleCheck(0);
+            QuickShuffleCheck(1);
             AssertNumberOfCardsInRevealed(tiamat, 0);
         }
 
@@ -720,15 +754,12 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            Card frenzy1 = GetCard("ElementalFrenzy", 0);
-            Card frenzy2 = GetCard("ElementalFrenzy", 1);
-            Card frenzy3 = GetCard("ElementalFrenzy", 2);
-            PutInTrash(tiamat, new Card[] { frenzy1, frenzy2, frenzy3 });
+            PutInTrash(tiamat, new Card[] { GetCard("ElementalFrenzy"), GetCard("ElementalFrenzy", 1) });
 
             QuickShuffleStorage(tiamat);
             PlayCard(tiamat, "ManaCharge");
-            AssertNumberOfCardsInTrash(tiamat, 1);
-            QuickShuffleCheck(1,2);
+            AssertNumberOfCardsInTrash(tiamat, 4);
+            QuickShuffleCheck(2);
             AssertNumberOfCardsInRevealed(tiamat, 0);
         }
 
@@ -754,7 +785,7 @@ namespace CauldronTests
             StartGame();
             QuickHPStorage(new Card[] { inferno, legacy.CharacterCard, bunker.CharacterCard, haka.CharacterCard });
             PlayCard(tiamat, "SkyBreaker");
-            QuickHPCheck(0, -4, -4, -4);
+            QuickHPCheck(0, -5, -5, -5);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Cauldron.Tiamat
 			Card characterCard = base.TurnTaker.FindCard("InfernoTiamatCharacter");
 			//If {Tiamat}, The Mouth of the Inferno is active, she deals each hero target 2+X fire damage, where X is the number of Element of Fire cards in the villain trash.
 			if (characterCard.IsInPlayAndHasGameText && !characterCard.IsFlipped)
-			{ 
+			{
 				coroutine = base.GameController.DealDamage(base.DecisionMaker, characterCard, (Card c) => c.IsHero, PlusNumberOfThisCardInTrash(2), DamageType.Fire, cardSource: base.GetCardSource());
 				if (base.UseUnityCoroutines)
 				{
@@ -39,7 +39,7 @@ namespace Cauldron.Tiamat
 
 			//The hero with the most cards in play...
 			List<TurnTaker> storedResults = new List<TurnTaker>();
-			coroutine = base.FindHeroWithMostCardsInPlay(storedResults, 1, 1, null, null, false, null, false);
+			coroutine = base.FindHeroWithMostCardsInPlay(storedResults);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -56,7 +56,7 @@ namespace Cauldron.Tiamat
 				CannotPlayCardsStatusEffect cannotPlayCardsStatusEffect = new CannotPlayCardsStatusEffect();
 				cannotPlayCardsStatusEffect.TurnTakerCriteria.IsSpecificTurnTaker = isSpecificTurnTaker;
 				cannotPlayCardsStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-				coroutine = base.AddStatusEffect(cannotPlayCardsStatusEffect, true);
+				coroutine = base.AddStatusEffect(cannotPlayCardsStatusEffect);
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);

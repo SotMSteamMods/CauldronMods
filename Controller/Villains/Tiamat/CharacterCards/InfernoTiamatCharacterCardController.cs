@@ -19,10 +19,10 @@ namespace Cauldron.Tiamat
 			return new ITrigger[] 
 			{
 				//{Tiamat}, The Mouth of the Inferno is immune to fire damage.
-				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Fire, false),
+				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Fire),
 
 				//At the end of the villain turn, if {Tiamat}, The Mouth of the Inferno dealt no damage this turn, she deals the hero target with the highest HP {H - 2} fire damage.
-				base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, (PhaseChangeAction p) => this.DidDealDamageThisTurn(), false)
+				base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, (PhaseChangeAction p) => this.DidDealDamageThisTurn())
 			};
 		}
 
@@ -31,7 +31,7 @@ namespace Cauldron.Tiamat
 			return new ITrigger[] 
 			{ 
 				//Increase damage dealt by {Tiamat}, The Mouth of the Inferno by 1.
-				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.DamageSource.IsCard && dealDamage.DamageSource.Card == base.Card, 1, null, null, false)
+				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.DamageSource.IsCard && dealDamage.DamageSource.Card == base.Card, 1)
 			};
 		}
 
@@ -56,7 +56,7 @@ namespace Cauldron.Tiamat
 		//Deal H-2 Fire damage to highest hero target
 		private IEnumerator DealDamageResponse(PhaseChangeAction phaseChange)
 		{
-			IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero, (Card c) => new int?(base.H - 2), DamageType.Fire, false, false, null, null, null, null, false, false);
+			IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero, (Card c) => new int?(base.H - 2), DamageType.Fire);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);

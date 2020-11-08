@@ -39,7 +39,7 @@ namespace Cauldron.Tiamat
 
 			//The hero with the most cards in hand...
 			List<TurnTaker> storedResults = new List<TurnTaker>();
-			coroutine = base.FindHeroWithMostCardsInHand(storedResults, 1, 1, null, null, false, false);
+			coroutine = base.FindHeroWithMostCardsInHand(storedResults);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -57,7 +57,7 @@ namespace Cauldron.Tiamat
 				preventPhaseActionStatusEffect.ToTurnPhaseCriteria.Phase = new Phase?(Phase.DrawCard);
 				preventPhaseActionStatusEffect.ToTurnPhaseCriteria.TurnTaker = isSpecificTurnTaker;
 				preventPhaseActionStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-				coroutine = base.AddStatusEffect(preventPhaseActionStatusEffect, true);
+				coroutine = base.AddStatusEffect(preventPhaseActionStatusEffect);
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);

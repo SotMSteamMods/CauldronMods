@@ -40,11 +40,11 @@ namespace Cauldron.Tiamat
 
 		public bool IsSpell(Card card)
 		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "spell", false, false);
+			return card != null && base.GameController.DoesCardContainKeyword(card, "spell");
 		}
 		public bool IsHead(Card card)
 		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "head", false, false);
+			return card != null && base.GameController.DoesCardContainKeyword(card, "head");
 		}
 
 		public override void AddSideTriggers()
@@ -54,14 +54,14 @@ namespace Cauldron.Tiamat
 			{
 				if (base.GameController.HasGameStarted && !(g is GameOverAction) && !(g is IncrementAchievementAction))
 				{
-					return base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsVillainTarget, false, null, false).Count<Card>() == 0;
+					return base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsVillainTarget).Count<Card>() == 0;
 				}
 				return false;
 			}, (GameAction g) => base.DefeatedResponse(g), new TriggerType[]
 			{
 				TriggerType.GameOver,
 				TriggerType.Hidden
-			}, TriggerTiming.After, null, false, true, null, false, null, null, false, false));
+			}, TriggerTiming.After));
 			//Front Triggers
 			if (!base.Card.IsFlipped)
 			{
@@ -127,7 +127,7 @@ namespace Cauldron.Tiamat
 			{
 				cardSource = base.GetCardSource(null);
 			}
-			IEnumerator coroutine = base.GameController.RemoveTarget(base.Card, true, cardSource);
+			IEnumerator coroutine = base.GameController.RemoveTarget(base.Card, cardSource: cardSource);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);

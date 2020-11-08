@@ -21,11 +21,11 @@ namespace Cauldron.Tiamat
         public override void AddTriggers()
         {
             //At the end of the villain turn each Head regains {H - 2} HP.
-            base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.GainHPResponse), TriggerType.GainHP, null, false);
+            base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.GainHPResponse), TriggerType.GainHP);
         }
         private IEnumerator GainHPResponse(PhaseChangeAction phaseChange)
         {
-            IEnumerator coroutine = base.GameController.GainHP(this.DecisionMaker, (Card card) => card.DoKeywordsContain("head"), base.Game.H - 2, null, false, null, null, null, base.GetCardSource());
+            IEnumerator coroutine = base.GameController.GainHP(this.DecisionMaker, (Card card) => card.DoKeywordsContain("head"), base.Game.H - 2, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

@@ -20,8 +20,8 @@ namespace Cauldron.Tiamat
         public override IEnumerator Play()
         {
 			//Play the top card of the environment deck. Play the top card of the villain deck.
-			IEnumerator coroutine = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, false, 1, false, null, null, null, false, null, false, false, false, null, null, base.GetCardSource());
-			IEnumerator coroutine2 = base.GameController.PlayTopCard(this.DecisionMaker, base.FindEnvironment(null), false, 1, false, null, null, null, false, null, false, false, false, null, null, base.GetCardSource());
+			IEnumerator coroutine = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, cardSource: base.GetCardSource());
+			IEnumerator coroutine2 = base.GameController.PlayTopCard(this.DecisionMaker, base.FindEnvironment(), cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);

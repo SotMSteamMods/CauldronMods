@@ -63,7 +63,7 @@ namespace Cauldron.Tiamat
 					}
 				}
 				List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-				coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.HeroCharacterCard, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsFlipped && c.HitPoints == highestHP), storedResults, false, false, null, true, null);
+				coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.HeroCharacterCard, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsFlipped && c.HitPoints == highestHP), storedResults, false, cardSource: base.GetCardSource());
 				highestHpHero = storedResults.FirstOrDefault().SelectedCard;
             }
 
@@ -71,7 +71,7 @@ namespace Cauldron.Tiamat
 			CannotUsePowersStatusEffect cannotUsePowersStatusEffect = new CannotUsePowersStatusEffect();
 			cannotUsePowersStatusEffect.TurnTakerCriteria.IsSpecificTurnTaker = highestHpHero.NativeDeck.OwnerTurnTaker;
 			cannotUsePowersStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-			coroutine = base.AddStatusEffect(cannotUsePowersStatusEffect, true);
+			coroutine = base.AddStatusEffect(cannotUsePowersStatusEffect);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);

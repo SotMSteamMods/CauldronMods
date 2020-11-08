@@ -22,7 +22,7 @@ namespace Cauldron.Tiamat
 		public override IEnumerator Play()
 		{
 			//Reveal cards from the top of the villain deck until 3 Spell cards are revealed. Discard those cards. Shuffle the rest of the revealed cards back into the villain deck.
-			IEnumerator coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, false, new LinqCardCriteria((Card c) => c.DoKeywordsContain("spell"), "spell", true, false, null, null, false), new int?(3), null, true, false, RevealedCardDisplay.None, false, false, null, true, false);
+			IEnumerator coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, false, new LinqCardCriteria((Card c) => c.DoKeywordsContain("spell"), "spell"), new int?(3), moveMatchingCardsToTrash: true);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -36,14 +36,17 @@ namespace Cauldron.Tiamat
 			IEnumerable<Card> frenzies = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Identifier == "ElementalFrenzy" && c.IsInTrash));
 			if (frenzies.Count<Card>() > 0)
 			{ 
-				coroutine = base.BulkMoveCard(this.TurnTakerController, frenzies, this.TurnTaker.Deck, false, false, null, false);
+				coroutine = base.BulkMoveCard(this.TurnTakerController, frenzies, this.TurnTaker.Deck, false, false, this.TurnTakerController, false);
+				IEnumerator coroutine2 = base.GameController.ShuffleLocation(this.TurnTaker.Deck, cardSource: base.GetCardSource());
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);
+					yield return base.GameController.StartCoroutine(coroutine2);
 				}
 				else
 				{
 					base.GameController.ExhaustCoroutine(coroutine);
+					base.GameController.ExhaustCoroutine(coroutine2);
 				}
 			}
 			yield break;
