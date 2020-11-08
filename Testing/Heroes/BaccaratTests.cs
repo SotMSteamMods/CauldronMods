@@ -999,8 +999,15 @@ namespace CauldronTests
             PlayCard(bridge);
             QuickShuffleCheck(1);
             AssertNumberOfCardsInTrash(baccarat, 37);
+            //check that all 3 copies are in the deck
+            AssertInDeck(GetCard("AbyssalSolitaire", 0));
+            AssertInDeck(GetCard("AbyssalSolitaire", 1));
+            AssertInDeck(GetCard("AbyssalSolitaire", 2));
+
             GoToStartOfTurn(baron);
 
+
+            //check that abyssal solitaire is the one that was played
             QuickHPStorage(baccarat);
             DealDamage(baron, baccarat, 2, DamageType.Melee);
             QuickHPCheck(-1);
