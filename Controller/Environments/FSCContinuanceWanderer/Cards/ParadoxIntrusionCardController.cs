@@ -27,12 +27,6 @@ namespace Cauldron
             base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsVillain, TargetType.SelectTarget, 2, DamageType.Energy, numberOfTargets: base.FindCardsWhere((Card c) => c.DoKeywordsContain("time vortex") && c.IsInTrash && c.IsEnvironment).Count<Card>());
         }
 
-        private int NumberOfVorticiesInTrash()
-        {
-            //...the number of time vortex cards in the environment trash.
-            return base.FindCardsWhere((Card c) => c.DoKeywordsContain("time vortex")).Count<Card>();
-        }
-
         #endregion Methods
     }
 }
