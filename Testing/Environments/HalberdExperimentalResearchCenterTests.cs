@@ -911,5 +911,89 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestHalberdEther_NoChemicalTriggers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //Set hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(haka.CharacterCard, 10);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToPlayCardPhase(halberd);
+
+            //we play out ether
+            Card ether = GetCard("HalberdEther");
+            PlayCard(ether);
+            AssertIsInPlay(ether);
+
+            //If there are no Chemical Triggers in play, increase damage dealt by the hero target with the highest HP by 1.
+            //ra is the highest hp
+            QuickHPStorage(mdp);
+            DealDamage(ra.CharacterCard, mdp, 3, DamageType.Fire);
+            //hero w/ highest hp damage should be +1
+            QuickHPCheck(-4);
+
+            //other heroes shouldn't have boost
+            QuickHPStorage(mdp);
+            DealDamage(haka.CharacterCard, mdp, 3, DamageType.Melee);
+            //damage should be normal
+            QuickHPCheck(-3);
+
+            //villain targets shouldn't have boost
+            QuickHPStorage(ra);
+            DealDamage(baron, ra, 3, DamageType.Melee);
+            //damage should be normal
+            QuickHPCheck(-3);
+        }
+
+        [Test()]
+        public void TestHalberdEther_WithChemicalTriggers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //Set hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(haka.CharacterCard, 10);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToPlayCardPhase(halberd);
+
+            //we put a chem trigger in play
+            //this chem trigger plays omega
+            //this chem trigger reduces damage dealt to subjects, so it doesn't impact this test
+            Card chem = GetCard("HrCombatPheromones");
+            PlayCard(chem);
+            AssertIsInPlay(chem);
+
+            //the chem trigger plays omega
+            //destroy omega as it would impact this test
+            Card omega = GetCardInPlay("HalberdOmega");
+            DestroyCard(omega, baron.CharacterCard);
+
+            //we play out ether
+            Card ether = GetCard("HalberdEther");
+            PlayCard(ether);
+            AssertIsInPlay(ether);
+
+            //Otherwise, increase damage dealt by villain targets by 1
+            QuickHPStorage(ra.CharacterCard, haka.CharacterCard, mdp);
+            DealDamage(baron, ra, 3, DamageType.Lightning);
+            DealDamage(mdp, haka.CharacterCard, 3, DamageType.Lightning);
+            DealDamage(ra.CharacterCard, mdp, 3, DamageType.Fire);
+            //villain damage should be +1, hero w/ highest hp damage should be normal
+            QuickHPCheck(-4, -4, -3);
+
+
+
+        }
+
     }
 }
