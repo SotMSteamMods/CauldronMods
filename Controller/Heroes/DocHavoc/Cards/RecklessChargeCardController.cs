@@ -44,6 +44,20 @@ namespace Cauldron.DocHavoc
             }
         }
 
+        public override IEnumerator UsePower(int index = 0)
+        {
+            // Destroy this card
+            IEnumerator destroyCardRoutine = this.GameController.DestroyCard(this.DecisionMaker, this.Card, cardSource: this.GetCardSource());
+            if (this.UseUnityCoroutines)
+            {
+                yield return this.GameController.StartCoroutine(destroyCardRoutine);
+            }
+            else
+            {
+                this.GameController.ExhaustCoroutine(destroyCardRoutine);
+            }
+        }
+
         public override bool AskIfIncreasingCurrentPhaseActionCount() => this.GameController.ActiveTurnPhase.IsDrawCard && this.ShouldIncreasePhaseActionCount(this.GameController.ActiveTurnTaker);
 
 
