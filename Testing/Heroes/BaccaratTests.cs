@@ -977,7 +977,10 @@ namespace CauldronTests
                     cheaps++;
                 }
             }
+            AssertNumberOfCardsInRevealed(baccarat, 0);
             Assert.IsTrue(cheaps == 1 && tricks == 2);
+
+            
         }
 
         [Test()]
