@@ -23,14 +23,14 @@ namespace Cauldron.Tiamat
 		public override void AddTriggers()
 		{
 			//Whenever a Head takes damage, it becomes immune to damage of that type until the start of the next villain turn.
-			CreateTriggers(base.TurnTaker.GetCardByIdentifier("InfernoTiamatCharacterCard"));
-			CreateTriggers(base.TurnTaker.GetCardByIdentifier("StormTiamatCharacterCard"));
-			CreateTriggers(base.TurnTaker.GetCardByIdentifier("WinterTiamatCharacterCard"));
+			CreateTriggers(base.TurnTaker.FindCard("InfernoTiamatCharacter"));
+			CreateTriggers(base.TurnTaker.FindCard("StormTiamatCharacter"));
+			CreateTriggers(base.TurnTaker.FindCard("WinterTiamatCharacter"));
 		}
 
 		private void CreateTriggers(Card characterCard)
 		{
-			base.AddTrigger<DealDamageAction>((DealDamageAction dealDamage) => dealDamage.Target == characterCard, new Func<DealDamageAction, IEnumerator>(this.ImmuneResponse), TriggerType.ImmuneToDamage, TriggerTiming.Before, ActionDescription.DamageTaken, false, true, null, false, null, null, false, false);
+			base.AddTrigger<DealDamageAction>((DealDamageAction dealDamage) => dealDamage.Target == characterCard, new Func<DealDamageAction, IEnumerator>(this.ImmuneResponse), TriggerType.ImmuneToDamage, TriggerTiming.After, ActionDescription.DamageTaken, false, true, null, false, null, null, false, false);
 			base.AddTrigger<DealDamageAction>((DealDamageAction dealDamage) => characterCard.IsInPlayAndHasGameText && dealDamage.Target == characterCard && dealDamage.DidDealDamage, new Func<DealDamageAction, IEnumerator>(this.WarningMessageResponse), TriggerType.Hidden, TriggerTiming.After, ActionDescription.Unspecified, false, true, null, false, null, null, false, false);
 		}
 
@@ -38,7 +38,7 @@ namespace Cauldron.Tiamat
 		{
 			if (base.IsFirstOrOnlyCopyOfThisCardInPlay())
 			{
-				IEnumerator coroutine = base.GameController.SendMessageAction("Tiamat used Elemental Form to become immune to " + dealDamage.DamageType.ToString() + " damage.", Priority.High, base.GetCardSource(null), null, false);
+				IEnumerator coroutine = base.GameController.SendMessageAction("Tiamat used Elemental Form to become immune to " + dealDamage.DamageType.ToString() + " damage.", Priority.High, base.GetCardSource(), null, false);
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);
@@ -55,37 +55,25 @@ namespace Cauldron.Tiamat
 
 		private IEnumerator ImmuneResponse(DealDamageAction dealDamage)
 		{
-			DamageType? damageTypeThatOmnitronIsImmuneTo = this.GetDamageTypeThatOmnitronIsImmuneTo();
-			if (damageTypeThatOmnitronIsImmuneTo != null && base.IsFirstOrOnlyCopyOfThisCardInPlay() && dealDamage.DamageType == damageTypeThatOmnitronIsImmuneTo.Value)
+			DamageType value = dealDamage.DamageType;
+				//this.GetDamageTypeThatHeadIsImmuneTo(dealDamage.Target) ?? default;
+			ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect();
+			immuneToDamageStatusEffect.DamageTypeCriteria.AddType(value);
+			immuneToDamageStatusEffect.TargetCriteria.IsSpecificCard = dealDamage.Target;
+			immuneToDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+			immuneToDamageStatusEffect.CardDestroyedExpiryCriteria.Card = dealDamage.Target;
+			IEnumerator coroutine2 = base.AddStatusEffect(immuneToDamageStatusEffect, true);
+			if (base.UseUnityCoroutines)
 			{
-				IEnumerator coroutine = base.GameController.ImmuneToDamage(dealDamage, base.GetCardSource(null));
-				if (base.UseUnityCoroutines)
-				{
-					yield return base.GameController.StartCoroutine(coroutine);
-				}
-				else
-				{
-					base.GameController.ExhaustCoroutine(coroutine);
-				}
+				yield return base.GameController.StartCoroutine(coroutine2);
+			}
+			else
+			{
+				base.GameController.ExhaustCoroutine(coroutine2);
 			}
 			yield break;
 		}
 
-		private DamageType? GetDamageTypeThatOmnitronIsImmuneTo()
-		{
-			DealDamageJournalEntry dealDamageJournalEntry = base.GameController.Game.Journal.MostRecentDealDamageEntry((DealDamageJournalEntry e) => e.TargetCard == base.CharacterCard && e.Amount > 0);
-			PlayCardJournalEntry playCardJournalEntry = base.GameController.Game.Journal.QueryJournalEntries<PlayCardJournalEntry>((PlayCardJournalEntry e) => e.CardPlayed == base.Card).LastOrDefault<PlayCardJournalEntry>();
-			if (playCardJournalEntry != null)
-			{
-				int? entryIndex = base.GameController.Game.Journal.GetEntryIndex(dealDamageJournalEntry);
-				int? entryIndex2 = base.GameController.Game.Journal.GetEntryIndex(playCardJournalEntry);
-				if (entryIndex != null && entryIndex2 != null && entryIndex.Value > entryIndex2.Value)
-				{
-					return new DamageType?(dealDamageJournalEntry.DamageType);
-				}
-			}
-			return null;
-		}
 		#endregion Methods
 	}
 }

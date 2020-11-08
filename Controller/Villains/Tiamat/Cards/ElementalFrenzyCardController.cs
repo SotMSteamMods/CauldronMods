@@ -53,7 +53,7 @@ namespace Cauldron.Tiamat
         public override void AddTriggers()
 		{
 			//At the end of the villain turn play the top card from this pile. 
-			base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, (PhaseChangeAction p) => base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, false, 1, false, null, null, null, false, null, false, false, true, null, base.Card.UnderLocation, base.GetCardSource(null)), TriggerType.PlayCard, null, false);
+			base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, (PhaseChangeAction p) => base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, false, 1, false, null, null, null, false, null, false, false, true, null, base.Card.UnderLocation, base.GetCardSource()), TriggerType.PlayCard, null, false);
 			//When this pile is depleted, destroy this card.
 			base.AddTrigger<GameAction>((GameAction action) => this._primed && base.Card.UnderLocation.Cards.Count<Card>() == 0, new Func<GameAction, IEnumerator>(this.DestroyThisCardResponse), TriggerType.DestroySelf, TriggerTiming.After, ActionDescription.Unspecified, false, true, null, false, null, null, false, false);
 			//If this card is destroyed, move all cards under it into the trash
@@ -65,7 +65,7 @@ namespace Cauldron.Tiamat
 		private IEnumerator MoveCardsUnderThisCardToTrash(GameAction ga)
 		{
 			//Move all cards under this to the trash
-			IEnumerator coroutine = base.GameController.MoveCards(base.TurnTakerController, base.Card.UnderLocation.Cards, base.TurnTaker.Trash, false, false, true, null, false, false, null, base.GetCardSource(null));
+			IEnumerator coroutine = base.GameController.MoveCards(base.TurnTakerController, base.Card.UnderLocation.Cards, base.TurnTaker.Trash, false, false, true, null, false, false, null, base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -78,7 +78,7 @@ namespace Cauldron.Tiamat
 		}
 		private IEnumerator OnDestroyResponse(DestroyCardAction dc)
 		{
-			base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, false, 1, false, null, null, null, false, null, false, false, false, null, null, base.GetCardSource(null));
+			base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, false, 1, false, null, null, null, false, null, false, false, false, null, null, base.GetCardSource());
 			yield break;
 		}
 

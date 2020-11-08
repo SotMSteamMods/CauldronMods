@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -33,17 +34,17 @@ namespace Cauldron.Tiamat
 
 			//Shuffle all copies of Elemental Frenzy from the villain trash into the villain deck.
 			IEnumerable<Card> frenzies = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Identifier == "ElementalFrenzy" && c.IsInTrash));
-			coroutine = base.BulkMoveCard(this.TurnTakerController, frenzies, this.TurnTaker.Deck, false, false, null, false);
-			IEnumerator coroutine2 = base.ShuffleDeck(this.DecisionMaker, this.TurnTaker.Deck);
-			if (base.UseUnityCoroutines)
-			{
-				yield return base.GameController.StartCoroutine(coroutine);
-				yield return base.GameController.StartCoroutine(coroutine2);
-			}
-			else
-			{
-				base.GameController.ExhaustCoroutine(coroutine);
-				base.GameController.ExhaustCoroutine(coroutine2);
+			if (frenzies.Count<Card>() > 0)
+			{ 
+				coroutine = base.BulkMoveCard(this.TurnTakerController, frenzies, this.TurnTaker.Deck, false, false, null, false);
+				if (base.UseUnityCoroutines)
+				{
+					yield return base.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					base.GameController.ExhaustCoroutine(coroutine);
+				}
 			}
 			yield break;
 		}

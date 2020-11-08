@@ -8,8 +8,8 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Tiamat
 {
-    public class ElementOfIceCardController : CardController
-    {
+    public class ElementOfIceCardController : SpellCardController
+	{
         #region Constructors
 
         public ElementOfIceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
@@ -24,11 +24,11 @@ namespace Cauldron.Tiamat
 		public override IEnumerator Play()
 		{
 			IEnumerator coroutine;
-			Card characterCard = base.TurnTaker.GetCardByIdentifier("WinterTiamatCharacterCard");
+			Card characterCard = base.TurnTaker.FindCard("WinterTiamatCharacter");
 			//If {Tiamat}, The Jaws of Winter is active, she deals each hero target 2+X cold damage, where X is the number of Element of Ice cards in the villain trash.
 			if (characterCard.IsInPlayAndHasGameText && !characterCard.IsFlipped)
 			{
-				coroutine = base.GameController.DealDamage(this.DecisionMaker, characterCard, (Card c) => c.IsHero && c.IsTarget, PlusNumberOfCardInTrash(2, "ElementOfIce"), DamageType.Cold);
+				coroutine = base.GameController.DealDamage(this.DecisionMaker, characterCard, (Card c) => c.IsHero, PlusNumberOfThisCardInTrash(2), DamageType.Cold, cardSource: base.GetCardSource());
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);
@@ -47,7 +47,7 @@ namespace Cauldron.Tiamat
 			{
 				foreach (Card hero in heroes)
 				{
-					if (hero.HitPoints <= highestHpHero.HitPoints)
+					if (highestHpHero.HitPoints < hero.HitPoints)
 					{
 						highestHpHero = hero;
 					}
@@ -81,13 +81,6 @@ namespace Cauldron.Tiamat
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
 			yield break;
-		}
-
-		private int PlusNumberOfCardInTrash(int damage, string identifier)
-		{
-			return damage + (from card in base.TurnTaker.Trash.Cards
-							 where card.Identifier == identifier
-							 select card).Count<Card>();
 		}
 
 		#endregion Methods

@@ -7,7 +7,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Tiamat
 {
-    public class HealingMagicCardController : CardController
+    public class HealingMagicCardController : SpellCardController
     {
         #region Constructors
 
@@ -31,7 +31,7 @@ namespace Cauldron.Tiamat
             {
                 foreach (Card head in heads)
                 {
-                    if (head.HitPoints >= lowestHPHead.HitPoints)
+                    if (lowestHPHead.HitPoints > head.HitPoints)
                     {
                         lowestHPHead = head;
                     }
@@ -41,7 +41,7 @@ namespace Cauldron.Tiamat
             {
                 foreach (Card head in heads)
                 {
-                    if (head.HitPoints >= lowestHPHead.HitPoints)
+                    if (lowestHPHead.HitPoints > head.HitPoints)
                     {
                         lowestHP = Convert.ToInt32(head.HitPoints);
                     }
@@ -51,9 +51,9 @@ namespace Cauldron.Tiamat
                 lowestHPHead = storedResults.FirstOrDefault().SelectedCard;
             }
             //The Head with the lowest HP regains {H} + X HP, where X is the number of Healing Magic cards in the villain trash.
-            coroutine = base.GameController.GainHP(lowestHPHead, PlusNumberOfCardInTrash(Game.H, "HealingMagic"));
+            coroutine = base.GameController.GainHP(lowestHPHead, PlusNumberOfThisCardInTrash(Game.H));
             //Play the top card of the villain deck.
-            IEnumerator coroutine2 = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, false, 1, false, null, null, null, false, null, false, false, false, null, null, base.GetCardSource(null));
+            IEnumerator coroutine2 = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, false, 1, false, null, null, null, false, null, false, false, false, null, null, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -65,13 +65,6 @@ namespace Cauldron.Tiamat
                 base.GameController.ExhaustCoroutine(coroutine2);
             }
             yield break;
-        }
-
-        private int PlusNumberOfCardInTrash(int damage, string identifier)
-        {
-            return damage + (from card in base.TurnTaker.Trash.Cards
-                             where card.Identifier == identifier
-                             select card).Count<Card>();
         }
 
         #endregion Methods

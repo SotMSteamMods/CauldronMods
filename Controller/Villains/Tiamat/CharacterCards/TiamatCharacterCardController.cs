@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
@@ -47,7 +48,21 @@ namespace Cauldron.Tiamat
 		}
 
 		public override void AddSideTriggers()
-        {
+		{
+			//Win Condition
+			base.AddSideTrigger(base.AddTrigger<GameAction>(delegate (GameAction g)
+			{
+				if (base.GameController.HasGameStarted && !(g is GameOverAction) && !(g is IncrementAchievementAction))
+				{
+					return base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsVillainTarget, false, null, false).Count<Card>() == 0;
+				}
+				return false;
+			}, (GameAction g) => base.DefeatedResponse(g), new TriggerType[]
+			{
+				TriggerType.GameOver,
+				TriggerType.Hidden
+			}, TriggerTiming.After, null, false, true, null, false, null, null, false, false));
+			//Front Triggers
 			if (!base.Card.IsFlipped)
 			{
 				base.AddSideTriggers(this.AddFrontTriggers());
@@ -56,6 +71,7 @@ namespace Cauldron.Tiamat
 					base.AddSideTriggers(this.AddFrontAdvancedTriggers());
                 }
 			}
+			//Back Triggers
 			else
 			{
 				base.AddSideTriggers(this.AddDecapitatedTriggers());
@@ -64,17 +80,17 @@ namespace Cauldron.Tiamat
 				{
 					base.AddSideTriggers(this.AddDecapitatedAdvancedTriggers());
 				}
-			}
+			};
 		}
 
-		//Did Inferno Deal Damage This Turn
+		//Did Head Deal Damage This Turn
 		public bool DidDealDamageThisTurn()
 		{
 			int result = 0;
 			try
 			{
 				result = (from e in base.GameController.Game.Journal.DealDamageEntriesThisTurn()
-						  where e.SourceCard == base.CharacterCard
+						  where e.SourceCard == base.Card
 						  select e.Amount).Sum();
 			}
 			catch (OverflowException ex)

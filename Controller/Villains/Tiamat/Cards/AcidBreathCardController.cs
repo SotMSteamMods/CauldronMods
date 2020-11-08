@@ -46,7 +46,7 @@ namespace Cauldron.Tiamat
                     while (enumerator.MoveNext())
                     {
                         DestroyCardAction destroy = enumerator.Current;
-                        characterCardsWithDestroyed.Add(destroy.CardSource.HeroTurnTakerController.CharacterCard);
+                        characterCardsWithDestroyed.Add(destroy.CardToDestroy.CharacterCard);
                     }
                 }
             }

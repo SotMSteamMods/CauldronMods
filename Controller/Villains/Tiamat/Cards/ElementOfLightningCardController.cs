@@ -7,8 +7,8 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Tiamat
 {
-    public class ElementOfLightningCardController : CardController
-    {
+    public class ElementOfLightningCardController : SpellCardController
+	{
         #region Constructors
 
         public ElementOfLightningCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
@@ -22,11 +22,11 @@ namespace Cauldron.Tiamat
 		public override IEnumerator Play()
 		{
 			IEnumerator coroutine;
-			Card characterCard = base.TurnTaker.GetCardByIdentifier("StormTiamatCharacterCard");
+			Card characterCard = base.TurnTaker.FindCard("StormTiamatCharacter");
 			//If {Tiamat}, The Eye of the Storm is active, she deals each hero target 2+X lightning damage, where X is the number of Element of Lightning cards in the villain trash.
 			if (characterCard.IsInPlayAndHasGameText && !characterCard.IsFlipped)
 			{
-				coroutine = base.GameController.DealDamage(this.DecisionMaker, characterCard, (Card c) => c.IsHero && c.IsTarget, PlusNumberOfCardInTrash(2, "ElementOfLightning"), DamageType.Lightning);
+				coroutine = base.GameController.DealDamage(this.DecisionMaker, characterCard, (Card c) => c.IsHero, PlusNumberOfThisCardInTrash(2), DamageType.Lightning, cardSource: base.GetCardSource());
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);
@@ -68,13 +68,6 @@ namespace Cauldron.Tiamat
 				}
 			}
 			yield break;
-		}
-
-		private int PlusNumberOfCardInTrash(int damage, string identifier)
-		{
-			return damage + (from card in base.TurnTaker.Trash.Cards
-							 where card.Identifier == identifier
-							 select card).Count<Card>();
 		}
 
 		#endregion Methods

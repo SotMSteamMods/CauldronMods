@@ -25,7 +25,7 @@ namespace Cauldron.Tiamat
         }
         private IEnumerator GainHPResponse(PhaseChangeAction phaseChange)
         {
-            IEnumerator coroutine = base.GameController.GainHP(this.DecisionMaker, (Card card) => card.DoKeywordsContain("head"), base.Game.H - 2, null, false, null, null, null, base.GetCardSource(null));
+            IEnumerator coroutine = base.GameController.GainHP(this.DecisionMaker, (Card card) => card.DoKeywordsContain("head"), base.Game.H - 2, null, false, null, null, null, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

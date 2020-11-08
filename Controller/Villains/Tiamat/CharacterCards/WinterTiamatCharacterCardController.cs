@@ -19,7 +19,7 @@ namespace Cauldron.Tiamat
 			return new ITrigger[]
 			{ 
 				//{Tiamat}, The Jaws of Winter is immune to Cold damage.
-				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.CharacterCard && dealDamage.DamageType == DamageType.Cold, false),
+				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Cold, false),
 				//At the end of the villain turn, if {Tiamat}, The Jaws of Winter dealt no damage this turn, she deals the hero target with the highest HP {H - 2} Cold damage. 
 				base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, (PhaseChangeAction p) => this.DidDealDamageThisTurn(), false) 
 			};
@@ -30,7 +30,7 @@ namespace Cauldron.Tiamat
 			return new ITrigger[]
 			{
 				//Increase damage dealt by {Tiamat}, The Jaws of Winter by 1.
-				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.DamageSource.IsCard && dealDamage.DamageSource.Card == base.CharacterCard, 1, null, null, false)
+				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.DamageSource.IsCard && dealDamage.DamageSource.Card == base.Card, 1, null, null, false)
 			};
 		}
 

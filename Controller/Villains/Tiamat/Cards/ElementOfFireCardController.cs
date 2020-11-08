@@ -7,8 +7,8 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Tiamat
 {
-    public class ElementOfFireCardController : CardController
-    {
+    public class ElementOfFireCardController : SpellCardController
+	{
         #region Constructors
 
         public ElementOfFireCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
@@ -22,11 +22,11 @@ namespace Cauldron.Tiamat
 		public override IEnumerator Play()
 		{
 			IEnumerator coroutine;
-			Card characterCard = base.TurnTaker.GetCardByIdentifier("InfernoTiamatCharacterCard");
+			Card characterCard = base.TurnTaker.FindCard("InfernoTiamatCharacter");
 			//If {Tiamat}, The Mouth of the Inferno is active, she deals each hero target 2+X fire damage, where X is the number of Element of Fire cards in the villain trash.
 			if (characterCard.IsInPlayAndHasGameText && !characterCard.IsFlipped)
 			{ 
-				coroutine = base.GameController.DealDamage(this.DecisionMaker, characterCard, (Card c) => c.IsHero && c.IsTarget, PlusNumberOfCardInTrash(2, "ElementOfFire"), DamageType.Fire);
+				coroutine = base.GameController.DealDamage(base.DecisionMaker, characterCard, (Card c) => c.IsHero, PlusNumberOfThisCardInTrash(2), DamageType.Fire, cardSource: base.GetCardSource());
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);
@@ -67,13 +67,6 @@ namespace Cauldron.Tiamat
 				}
 			}
 			yield break;
-        }
-
-        private int PlusNumberOfCardInTrash(int damage, string identifier)
-        {
-            return damage + (from card in base.TurnTaker.Trash.Cards
-                             where card.Identifier == identifier
-                             select card).Count<Card>();
         }
 
         #endregion Methods

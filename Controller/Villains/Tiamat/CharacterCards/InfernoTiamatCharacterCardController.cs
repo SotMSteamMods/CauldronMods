@@ -19,7 +19,7 @@ namespace Cauldron.Tiamat
 			return new ITrigger[] 
 			{
 				//{Tiamat}, The Mouth of the Inferno is immune to fire damage.
-				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.CharacterCard && dealDamage.DamageType == DamageType.Fire, false),
+				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Fire, false),
 
 				//At the end of the villain turn, if {Tiamat}, The Mouth of the Inferno dealt no damage this turn, she deals the hero target with the highest HP {H - 2} fire damage.
 				base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, (PhaseChangeAction p) => this.DidDealDamageThisTurn(), false)
@@ -31,7 +31,7 @@ namespace Cauldron.Tiamat
 			return new ITrigger[] 
 			{ 
 				//Increase damage dealt by {Tiamat}, The Mouth of the Inferno by 1.
-				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.DamageSource.IsCard && dealDamage.DamageSource.Card == base.CharacterCard, 1, null, null, false)
+				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.DamageSource.IsCard && dealDamage.DamageSource.Card == base.Card, 1, null, null, false)
 			};
 		}
 
@@ -49,7 +49,7 @@ namespace Cauldron.Tiamat
 			return new ITrigger[]
 			{
 				//Reduce damage dealt by heads by 1.
-				base.AddReduceDamageTrigger((Card c) => IsHead(c),1)
+				base.AddReduceDamageTrigger((Card c) => IsHead(c), 1)
 			};
 		}
 
