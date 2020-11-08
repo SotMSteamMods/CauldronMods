@@ -353,5 +353,43 @@ namespace CauldronTests
 
         }
 
+        [Test]
+        public void RapidRegenTest()
+        {
+            // Arrange
+            SetupGameController("CitizenDawn", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                RapidRegenCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+
+            DealDamage(tempest, dawn, 30, DamageType.Lightning);
+            DealDamage(dawn, DocHavoc, 4, DamageType.Projectile);
+            DealDamage(dawn, tempest, 4, DamageType.Projectile);
+
+            // Act
+            GoToPlayCardPhase(DocHavoc);
+            QuickHPStorage(DocHavoc, tempest, dawn);
+
+            PlayCardFromHand(DocHavoc, RapidRegenCardController.Identifier);
+
+            GoToPlayCardPhase(tempest);
+            PutInHand("CleansingDownpour");
+            Card cleansingDownpour = GetCardFromHand("CleansingDownpour");
+
+            PlayCard(cleansingDownpour);
+            UsePower(cleansingDownpour);
+
+            PlayCard(dawn, "HealingLight");
+
+            // Assert
+            QuickHPCheck(3, 3, 11); // Heroes: Cleansing Rains +2 (+1 with Rapid Regen), // Citizen Dawn: Healing Light +10 (+1 with Rapid Regen)
+
+        }
+
     }
 }
