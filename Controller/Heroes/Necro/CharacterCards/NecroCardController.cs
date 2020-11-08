@@ -46,8 +46,6 @@ namespace Cauldron.Necro
             }
         }
 
-
-
         protected bool IsRitual(Card card)
         {
             return card.DoKeywordsContain(RitualKeyword);
