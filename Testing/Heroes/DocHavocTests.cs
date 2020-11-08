@@ -391,5 +391,32 @@ namespace CauldronTests
 
         }
 
+        [Test]
+        public void TestStimShot()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                StimShotCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            QuickHPStorage(mdp);
+            QuickHandStorage(DocHavoc);
+
+            DecisionSelectTurnTaker = tempest.TurnTaker;
+
+            // Act
+            GoToPlayCardPhase(DocHavoc);
+            PlayCardFromHand(DocHavoc, StimShotCardController.Identifier);
+
+            QuickHandCheck(0); // No change as Stim Shot allowed Doc Havoc to draw a card
+            QuickHPCheck(-1); // Stim Shot allowed Tempest to use power Squall, 1 dmg to MDP
+        }
+
     }
 }
