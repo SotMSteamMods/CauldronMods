@@ -9,6 +9,8 @@ namespace Cauldron.DocHavoc
 {
     public class DocHavocCharacterCardController : HeroCharacterCardController
     {
+        private const int PowerDamageAmount = 3;
+
         public DocHavocCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
@@ -22,7 +24,7 @@ namespace Cauldron.DocHavoc
             List<DealDamageAction> storedDamageResults = new List<DealDamageAction>();
 
             DamageSource damageSource = new DamageSource(base.GameController, base.CharacterCard);
-            int powerNumeral = base.GetPowerNumeral(0, 3);
+            int powerNumeral = base.GetPowerNumeral(0, PowerDamageAmount);
 
             IEnumerator routine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, damageSource, powerNumeral,
                 DamageType.Toxic, new int?(1), false, new int?(1),
