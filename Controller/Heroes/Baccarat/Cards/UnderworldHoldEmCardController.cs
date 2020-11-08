@@ -18,7 +18,7 @@ namespace Cauldron.Baccarat
         public override IEnumerator Play()
         {
             //One player may draw a card.
-            IEnumerator coroutine = base.GameController.SelectHeroToDrawCard(this.HeroTurnTakerController, true, false, false, null, null, new int?(1), base.GetCardSource(null));
+            IEnumerator coroutine = base.GameController.SelectHeroToDrawCard(this.HeroTurnTakerController,numberOfCards: new int?(1), cardSource: base.GetCardSource(null));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

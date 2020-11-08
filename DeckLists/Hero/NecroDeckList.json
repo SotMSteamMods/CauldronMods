@@ -67,7 +67,8 @@
                 }
             ],
             "flavorReference": "Necro, Tower of Night #83",
-            "hitpoints": 6
+            "hitpoints": 6,
+            "hitpointText": "#"
         },
         {
             "identifier": "BackfireHex",
@@ -205,7 +206,8 @@
                 }
             ],
             "flavorReference": "The Stranger, Book of the Dead #576",
-            "hitpoints": 2
+            "hitpoints": 2,
+            "hitpointText": "#"
         },
         {
             "identifier": "FinalRitual",
@@ -250,7 +252,8 @@
                 }
             ],
             "flavorReference": "Nightmist, Tower of Night #100",
-            "hitpoints": 2
+            "hitpoints": 2,
+            "hitpointText": "#"
         },
         {
             "identifier": "GrandSummon",
@@ -315,7 +318,8 @@
                 }
             ],
             "flavorReference": "Detective Sedrick, Book of the Dead #310",
-            "hitpoints": 2
+            "hitpoints": 2,
+            "hitpointText": "#"
         },
         {
             "identifier": "TaintedBlood",
@@ -375,7 +379,8 @@
                 }
             ],
             "flavorReference": "Necro, Tower of Night #15",
-            "hitpoints": 2
+            "hitpoints": 2,
+            "hitpointText": "#"
         }
     ],
     "promoCards": [

@@ -52,7 +52,10 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": ["DrawCardNow","DealDamageToxic"],
+            "icons": [
+                "DrawCardNow",
+                "DealDamageToxic"
+            ],
             "body": [
                 "Draw up to 4 cards.",
                 "For each card drawn this way, {TheStranger} deals himself 1 toxic damage."
@@ -72,7 +75,9 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": ["PlayCardNow"],
+            "icons": [
+                "PlayCardNow"
+            ],
             "body": "You may play up to 3 Runes now.",
             "flavorQuotes": [
                 {
@@ -90,7 +95,10 @@
                 "ongoing",
                 "glyph"
             ],
-            "icons": ["PreventDamage","DealDamageFire"],
+            "icons": [
+                "PreventDamage",
+                "DealDamageFire"
+            ],
             "body": [
                 "Once during your turn when {TheStranger} would deal himself damage, prevent that damage.",
                 "Whenever a Rune or Glyph is destroyed, {TheStranger} may deal 1 target 1 fire damage."
@@ -111,7 +119,12 @@
                 "ongoing",
                 "glyph"
             ],
-            "icons": ["PreventDamage","HasPower","PlayCardNow","DealDamageToxic"],
+            "icons": [
+                "PreventDamage",
+                "HasPower",
+                "PlayCardNow",
+                "DealDamageToxic"
+            ],
             "body": "Once during your turn when {TheStranger} would deal himself damage, prevent that damage.",
             "powers": [
                 "You may play a Rune. {TheStranger} deals 1 target 1 toxic damage."
@@ -132,7 +145,11 @@
                 "ongoing",
                 "glyph"
             ],
-            "icons": ["PreventDamage","HasPower","DrawCardNow"],
+            "icons": [
+                "PreventDamage",
+                "HasPower",
+                "DrawCardNow"
+            ],
             "body": "Once during your turn when {TheStranger} would deal himself damage, prevent that damage.",
             "powers": [
                 "Draw a card."
@@ -153,7 +170,10 @@
                 "ongoing",
                 "glyph"
             ],
-            "icons": ["PreventDamage","PlayCardNow"],
+            "icons": [
+                "PreventDamage",
+                "PlayCardNow"
+            ],
             "body": [
                 "Once during your turn when {TheStranger} would deal himself damage, prevent that damage.",
                 "When a villain target enters play, you may play a Rune."
@@ -174,7 +194,11 @@
                 "ongoing",
                 "rune"
             ],
-            "icons": ["ReduceDamageDealt","StartOfTurnAction","DealDamageToxic"],
+            "icons": [
+                "ReduceDamageDealt",
+                "StartOfTurnAction",
+                "DealDamageToxic"
+            ],
             "body": [
                 "Play this next to a non-hero target. Reduce damage dealt by that target by 1.",
                 "At the start of your turn you may destroy this card. If you do not, {TheStranger} deals himself 1 irreducible toxic damage."
@@ -195,8 +219,11 @@
                 "ongoing",
                 "rune"
             ],
-            "icons": ["IncreaseDamageTaken",
-            "StartOfTurnAction","DealDamageToxic"],
+            "icons": [
+                "IncreaseDamageTaken",
+                "StartOfTurnAction",
+                "DealDamageToxic"
+            ],
             "body": [
                 "Play this next to a target. Increase damage dealt to that target by 1.",
                 "At the start of your turn you may destroy this card. If you do not, {TheStranger} deals himself 1 irreducible toxic damage."
@@ -216,7 +243,10 @@
             "keywords": [
                 "rune"
             ],
-            "icons": ["Destroy","RedirectDamage"],
+            "icons": [
+                "Destroy",
+                "RedirectDamage"
+            ],
             "body": "Play this next to a non-character card. If either card is destroyed, destroy the other. Redirect damage dealt to this card by non-hero targets to the hero target with the highest HP.",
             "flavorQuotes": [
                 {
@@ -235,7 +265,11 @@
                 "ongoing",
                 "rune"
             ],
-            "icons": ["PlayExtraCard","StartOfTurnAction","DealDamageToxic"],
+            "icons": [
+                "PlayExtraCard",
+                "StartOfTurnAction",
+                "DealDamageToxic"
+            ],
             "body": [
                 "Play this next to a hero. They may play an additional card during their play phase.",
                 "At the start of your turn you may destroy this card. If you do not, {TheStranger} deals himself 1 irreducible toxic damage."
@@ -251,7 +285,11 @@
                 "ongoing",
                 "rune"
             ],
-            "icons": ["CounterDamage","DealDamageToxic","StartOfTurnAction"],
+            "icons": [
+                "CounterDamage",
+                "DealDamageToxic",
+                "StartOfTurnAction"
+            ],
             "body": [
                 "Play this next to a hero target. The first time that target is dealt damage each turn, it deals 1 target 1 toxic damage.",
                 "At the start of your turn you may destroy this card. If you do not, {TheStranger} deals himself 1 irreducible toxic damage."
@@ -272,10 +310,14 @@
                 "ongoing",
                 "rune"
             ],
-            "icons": ["GainHP","StartOfTurnAction","DealDamageToxic"],
+            "icons": [
+                "GainHP",
+                "StartOfTurnAction",
+                "DealDamageToxic"
+            ],
             "body": [
-                "Play this next to a hero target. The first time that target deals damage each turn, it regains 1HP.",
-                "At the start of your turn you may destroy this card. If you do not,  {TheStranger} deals himself 1 irreducible toxic damage."
+                "Play this next to a hero target. The first time that target deals damage each turn, it regains 1 HP.",
+                "At the start of your turn you may destroy this card. If you do not, {TheStranger} deals himself 1 irreducible toxic damage."
             ],
             "flavorQuotes": [
                 {
@@ -293,7 +335,11 @@
                 "ongoing",
                 "rune"
             ],
-            "icons": ["RedirectDamage","StartOfTurnAction","DealDamageToxic"],
+            "icons": [
+                "RedirectDamage",
+                "StartOfTurnAction",
+                "DealDamageToxic"
+            ],
             "body": [
                 "Play this next to a hero target. When that target would be dealt damage by a non-hero card, you may redirect that damage to a hero with higher HP.",
                 "At the start of your turn you may destroy this card. If you do not, {TheStranger} deals himself 1 irreducible toxic damage."
@@ -314,7 +360,11 @@
                 "ongoing",
                 "rune"
             ],
-            "icons": ["IncreaseDamageDealt","StartOfTurnAction","DealDamageToxic"],
+            "icons": [
+                "IncreaseDamageDealt",
+                "StartOfTurnAction",
+                "DealDamageToxic"
+            ],
             "body": [
                 "Play this next to a hero target. Increase damage dealt by that target by 1.",
                 "At the start of your turn you may destroy this card. If you do not, {TheStranger} deals himself 1 irreducible toxic damage."
@@ -334,7 +384,11 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": ["Manipulate","PlayCardNow","DrawCardNow"],
+            "icons": [
+                "Manipulate",
+                "PlayCardNow",
+                "DrawCardNow"
+            ],
             "body": "Put a Glyph from your trash into your hand, or reveal cards from the top of your deck until you reveal a Glyph, put it into play, and shuffle the other revealed cards into your deck. You may draw a card.",
             "flavorQuotes": [
                 {
@@ -351,7 +405,12 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": ["Manipulate","Discard","DrawCardNow","GainHP"],
+            "icons": [
+                "Manipulate",
+                "Discard",
+                "DrawCardNow",
+                "GainHP"
+            ],
             "body": [
                 "You may shuffle up to 4 Runes from your trash into your deck, or discard up to 4 cards.",
                 "For each card shuffled or discarded this way, {TheStranger} may draw a card or regain 1HP."
@@ -371,7 +430,10 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": ["DrawCardNow","PlayCardNow"],
+            "icons": [
+                "DrawCardNow",
+                "PlayCardNow"
+            ],
             "body": [
                 "You may draw 2 cards or put a Rune from your trash into your hand.",
                 "You may play a Rune or Glyph now."
