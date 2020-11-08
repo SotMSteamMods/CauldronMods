@@ -25,10 +25,9 @@ namespace Cauldron.DocHavoc
             //==============================================================
 
             List<DealDamageAction> storedDamageResults = new List<DealDamageAction>();
-            int powerNumeral = base.GetPowerNumeral(0, DamageAmount);
 
             IEnumerator routine = base.GameController.DealDamage(this.HeroTurnTakerController, this.Card, (Func<Card, bool>) (c => c.IsTarget),
-                powerNumeral, DamageType.Radiant, storedResults: storedDamageResults, cardSource: this.GetCardSource());
+                DamageAmount, DamageType.Radiant, storedResults: storedDamageResults, cardSource: this.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
