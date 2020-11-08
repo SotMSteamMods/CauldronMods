@@ -4,11 +4,11 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.HalberdExperimentalResearchCenter
 {
-    public class HalberdSirenCardController : CardController
+    public class HcBSwarmingAgentCardController : ChemicalTriggerCardController
     {
         #region Constructors
 
-        public HalberdSirenCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public HcBSwarmingAgentCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
@@ -16,7 +16,10 @@ namespace Cauldron.HalberdExperimentalResearchCenter
         #endregion Constructors
 
         #region Methods
-
+        public override void AddTriggers()
+        {
+            base.AddTriggers();
+        }
         #endregion Methods
     }
 }

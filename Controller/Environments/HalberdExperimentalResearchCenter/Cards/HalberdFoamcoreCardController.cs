@@ -4,11 +4,11 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.HalberdExperimentalResearchCenter
 {
-    public class HalcyonCleanersCardController : CardController
+    public class HalberdFoamcoreCardController : TestSubjectCardController
     {
         #region Constructors
 
-        public HalcyonCleanersCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public HalberdFoamcoreCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }

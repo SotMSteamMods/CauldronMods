@@ -4,7 +4,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.HalberdExperimentalResearchCenter
 {
-    public class HtAggressionStimulantCardController : CardController
+    public class HtAggressionStimulantCardController : ChemicalTriggerCardController
     {
         #region Constructors
 
@@ -16,7 +16,10 @@ namespace Cauldron.HalberdExperimentalResearchCenter
         #endregion Constructors
 
         #region Methods
-
+        public override void AddTriggers()
+        {
+            base.AddTriggers();
+        }
         #endregion Methods
     }
 }
