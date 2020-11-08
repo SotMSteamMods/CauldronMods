@@ -18,7 +18,7 @@ namespace Cauldron.Baccarat
         public override IEnumerator Play()
         {
             //Baccarat deals 1 target 1 projectile damage.
-            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Projectile, new int?(1), false, new int?(1), false, false, false, null, null, null, null, null, false, null, null, false, null, base.GetCardSource(null));
+            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Projectile, new int?(1), false, new int?(1), cardSource: base.GetCardSource(null));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -29,7 +29,7 @@ namespace Cauldron.Baccarat
             }
 
             //You may play a card.
-            coroutine = base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, null, null, false, false, true, null);
+            coroutine = base.SelectAndPlayCardFromHand(base.HeroTurnTakerController);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
