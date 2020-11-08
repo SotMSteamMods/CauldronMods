@@ -980,46 +980,57 @@ namespace CauldronTests
             StartGame();
             Card corpse = GetCard("PossessedCorpse");
 
-            SetHitPoints(necro.CharacterCard, 15);
-            SetHitPoints(ra.CharacterCard, 12);
-            SetHitPoints(baron.CharacterCard, 23);
-            SetHitPoints(fanatic.CharacterCard, 3);
-            SetHitPoints(GetCard("MobileDefensePlatform"), 6);
-
-
             GoToPlayCardPhase(necro);
-
+            SetHitPoints(fanatic, 10);
             PlayCard(corpse, true);
 
             //put the talisman in play on fanatic
             DecisionSelectCard = fanatic.CharacterCard;
-            PutIntoPlay("Talisman");
+            var card = PutIntoPlay("Talisman");
+            AssertNextToCard(card, fanatic.CharacterCard);
 
             //At the end of your turn, possessed card deals the non-undead hero target with the lowest HP 2 infernal damage
             // lowest non-undead should be fanatic, but since talisman is on her, she should be immune
-            QuickHPStorage(fanatic);
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, corpse);
             GoToEndOfTurn(necro);
-            QuickHPCheck(0);
+            QuickHPCheck(0, 0, 0, 0, 0);
         }
         [Test()]
         public void TestTalismanNotImmuneToNotUndead()
         {
             SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Fanatic", "Megalopolis");
             StartGame();
-            Card corpse = GetCard("PossessedCorpse");
-
 
             GoToPlayCardPhase(necro);
 
+            //put the talisman in play on fanatic
+            DecisionSelectCard = fanatic.CharacterCard;
+            var card = PutIntoPlay("Talisman");
+            AssertNextToCard(card, fanatic.CharacterCard);
+
+            //Damage is being dealt by not an undead target, should be dealt normally
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, ra.CharacterCard, fanatic.CharacterCard);
+            DealDamage(baron, fanatic, 5, DamageType.Fire);
+            QuickHPCheck(0, 0, 0, -5);
+        }
+
+        [Test()]
+        public void TestTalismanBehaviorAfterNextIsDestroyed()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(necro);
 
             //put the talisman in play on fanatic
             DecisionSelectCard = fanatic.CharacterCard;
-            PutIntoPlay("Talisman");
+            var card = PutIntoPlay("Talisman");
+            AssertNextToCard(card, fanatic.CharacterCard);
 
-            //Damage is being dealt by not an undead target, should be dealt normally
-            QuickHPStorage(fanatic);
-            DealDamage(baron, fanatic, 5, DamageType.Fire);
-            QuickHPCheck(-5);
+            //obliterate fanatic
+            DealDamage(baron, fanatic, 99, DamageType.Psychic, true);
+
+            AssertInPlayArea(necro, card);
         }
 
         [Test()]
