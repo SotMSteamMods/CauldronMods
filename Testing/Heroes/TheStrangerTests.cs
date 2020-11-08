@@ -22,16 +22,16 @@ namespace CauldronTests
             SetHitPoints(stranger.CharacterCard, 1);
             DealDamage(villain, stranger, 2, DamageType.Melee);
         }
-       
+
 
         #endregion
 
         [Test()]
         public void TestStrangerLoads()
         {
-            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
 
-            Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
+            Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
 
             Assert.IsNotNull(stranger);
             Assert.IsInstanceOf(typeof(TheStrangerCharacterCardController), stranger.CharacterCardController);
@@ -42,7 +42,7 @@ namespace CauldronTests
         [Test()]
         public void TestStrangerInnatePower()
         {
-            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
             StartGame();
 
             //put a rune in hand
@@ -55,13 +55,12 @@ namespace CauldronTests
             //Play a rune
             UsePower(stranger.CharacterCard);
             AssertIsInPlay(binding);
-
         }
 
         [Test()]
         public void TestStrangerIncap1()
         {
-            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
             StartGame();
 
             SetupIncap(baron);
@@ -80,7 +79,7 @@ namespace CauldronTests
         [Test()]
         public void TestStrangerIncap2OnDeck()
         {
-            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
             StartGame();
 
             Card mere = GetCard("Mere");
@@ -105,7 +104,7 @@ namespace CauldronTests
         [Test()]
         public void TestStrangerIncap2ToTrash()
         {
-            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
             StartGame();
 
             Card mere = GetCard("Mere");
@@ -176,7 +175,7 @@ namespace CauldronTests
 
             GoToPlayCardPhase(stranger);
             PutIntoPlay("GlyphOfPerception");
-            
+
             //Once during your turn when TheStranger would deal himself damage, prevent that damage.
             QuickHPStorage(stranger);
             DecisionYesNo = true;
@@ -243,7 +242,7 @@ namespace CauldronTests
             //should have been destroyed and no damage dealt
             AssertInTrash(rune);
             QuickHPCheckZero();
-        
+
         }
 
         [Test()]
@@ -380,7 +379,7 @@ namespace CauldronTests
 
             //For each card drawn this way, TheStranger deals himself 1 toxic damage.
             QuickHPCheck(-4);
-            
+
         }
 
         [Test()]
@@ -666,7 +665,27 @@ namespace CauldronTests
             DecisionSelectCards = new Card[] { rune, baron.CharacterCard };
             UsePower(decay);
             AssertIsInPlay(rune);
+        }
 
+        [Test()]
+        public void TestGlyphOfDecayPower_NoPlayIfNoRunes()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            //discard hand
+            DiscardAllCards(stranger);
+            //put a non-rune in hand
+            Card glyph = GetCard("GlyphOfCombustion");
+            PutInHand(glyph);
+
+            GoToPlayCardPhase(stranger);
+            PutIntoPlay("GlyphOfDecay");
+            Card decay = GetCardInPlay("GlyphOfDecay");
+            //Power: You may play a Rune. 
+            GoToUsePowerPhase(stranger);
+            UsePower(decay);
+            AssertNotInPlay(glyph);
         }
 
         [Test()]
@@ -715,6 +734,7 @@ namespace CauldronTests
             //since new round, damage was prevented, no change in health
             QuickHPCheckZero();
         }
+
         [Test()]
         public void TestGlyphOfInnervationPrevention_SecondDamage()
         {
@@ -750,15 +770,13 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
             StartGame();
 
-            
-            PutIntoPlay("GlyphOfInnervation");
             Card innervation = GetCardInPlay("GlyphOfInnervation");
+            PlayCard(innervation);
             //Power: Draw a card.
             GoToUsePowerPhase(stranger);
             QuickHandStorage(stranger);
             UsePower(innervation);
             QuickHandCheck(1);
-
         }
 
         [Test()]
@@ -789,6 +807,7 @@ namespace CauldronTests
             //since new round, damage was prevented, no change in health
             QuickHPCheckZero();
         }
+
         [Test()]
         public void TestGlyphOfPerceptionPrevention_SecondDamage()
         {
@@ -831,7 +850,6 @@ namespace CauldronTests
             PutInHand(faded);
 
             PutIntoPlay("GlyphOfPerception");
-            Card innervation = GetCardInPlay("GlyphOfPerception");
             //When a villain target enters play, you may play a Rune.
 
             GoToPlayCardPhase(stranger);
@@ -846,6 +864,24 @@ namespace CauldronTests
             DecisionSelectCard = faded;
             PlayCard("PoliceBackup");
             AssertInHand(faded);
+        }
+
+        [Test()]
+        public void TestGlyphOfPerception_PlayResponse_NoPlayIfNoRunes()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            //discard hand
+            DiscardAllCards(stranger);
+            //put a non-rune in hand
+            Card glyph = GetCard("GlyphOfCombustion");
+            PutInHand(glyph);
+
+            PutIntoPlay("GlyphOfPerception");
+            //cause a villain target to enter play
+            PlayCard("ElementalRedistributor");
+            AssertNotInPlay(glyph);
         }
 
         [Test()]
@@ -887,7 +923,6 @@ namespace CauldronTests
             //should have not been destroyed and damage dealt
             AssertIsInPlay(rune);
             QuickHPCheck(-1);
-
         }
 
         [Test()]
@@ -903,8 +938,6 @@ namespace CauldronTests
             PutIntoPlay("MarkOfBinding");
             Card rune = GetCardInPlay("MarkOfBinding");
             AssertNextToCard(rune, mdp);
-
-
         }
 
 
@@ -924,8 +957,6 @@ namespace CauldronTests
             DealDamage(mdp, haka.CharacterCard, 5, DamageType.Melee);
             //should be reduced by 1, so 4 damage taken
             QuickHPCheck(-4);
-
-
         }
 
         [Test()]
@@ -946,7 +977,6 @@ namespace CauldronTests
             //should have been destroyed and no damage dealt
             AssertInTrash(rune);
             QuickHPCheckZero();
-
         }
 
         [Test()]
@@ -967,7 +997,6 @@ namespace CauldronTests
             //should have not been destroyed and damage dealt
             AssertIsInPlay(rune);
             QuickHPCheck(-1);
-
         }
 
         [Test()]
@@ -983,8 +1012,6 @@ namespace CauldronTests
             PutIntoPlay("MarkOfBreaking");
             Card rune = GetCardInPlay("MarkOfBreaking");
             AssertNextToCard(rune, mdp);
-
-
         }
 
 
@@ -1004,8 +1031,6 @@ namespace CauldronTests
             DealDamage(haka.CharacterCard, mdp, 5, DamageType.Melee);
             //should be increase by 1, so 6 damage taken
             QuickHPCheck(-6);
-
-
         }
 
         [Test()]
@@ -1026,7 +1051,6 @@ namespace CauldronTests
             //should have been destroyed and no damage dealt
             AssertInTrash(rune);
             QuickHPCheckZero();
-
         }
 
         [Test()]
@@ -1047,7 +1071,6 @@ namespace CauldronTests
             //should have not been destroyed and damage dealt
             AssertIsInPlay(rune);
             QuickHPCheck(-1);
-
         }
 
         [Test()]
@@ -1063,8 +1086,6 @@ namespace CauldronTests
             PutIntoPlay("MarkOfQuickening");
             Card rune = GetCardInPlay("MarkOfQuickening");
             AssertNextToCard(rune, haka.CharacterCard);
-
-
         }
 
 
@@ -1083,7 +1104,6 @@ namespace CauldronTests
             GoToPlayCardPhase(haka);
             //check that haka can play 2 cards
             AssertPhaseActionCount(new int?(2));
-
         }
 
         [Test()]
@@ -1140,8 +1160,6 @@ namespace CauldronTests
             PutIntoPlay("MarkOfTheBloodThorn");
             Card rune = GetCardInPlay("MarkOfTheBloodThorn");
             AssertNextToCard(rune, haka.CharacterCard);
-
-
         }
 
 
@@ -1167,7 +1185,6 @@ namespace CauldronTests
             QuickHPStorage(mdp);
             DealDamage(mdp, haka.CharacterCard, 5, DamageType.Cold);
             QuickHPCheckZero();
-
         }
 
         [Test()]
@@ -1188,7 +1205,6 @@ namespace CauldronTests
             //should have been destroyed and no damage dealt
             AssertInTrash(rune);
             QuickHPCheckZero();
-
         }
 
         [Test()]
@@ -1209,7 +1225,6 @@ namespace CauldronTests
             //should have not been destroyed and damage dealt
             AssertIsInPlay(rune);
             QuickHPCheck(-1);
-
         }
 
         [Test()]
@@ -1223,8 +1238,6 @@ namespace CauldronTests
             PutIntoPlay("MarkOfTheBoneLeech");
             Card rune = GetCardInPlay("MarkOfTheBoneLeech");
             AssertNextToCard(rune, haka.CharacterCard);
-
-
         }
 
 
@@ -1253,7 +1266,6 @@ namespace CauldronTests
             QuickHPStorage(haka);
             DealDamage(haka.CharacterCard, mdp, 3, DamageType.Cold);
             QuickHPCheckZero();
-
         }
 
 
@@ -1275,7 +1287,6 @@ namespace CauldronTests
             //should have been destroyed and no damage dealt
             AssertInTrash(rune);
             QuickHPCheckZero();
-
         }
 
         [Test()]
@@ -1296,7 +1307,6 @@ namespace CauldronTests
             //should have not been destroyed and damage dealt
             AssertIsInPlay(rune);
             QuickHPCheck(-1);
-
         }
 
         [Test()]
@@ -1310,8 +1320,6 @@ namespace CauldronTests
             PutIntoPlay("MarkOfTheFaded");
             Card rune = GetCardInPlay("MarkOfTheFaded");
             AssertNextToCard(rune, haka.CharacterCard);
-
-
         }
 
 
@@ -1337,7 +1345,6 @@ namespace CauldronTests
             DealDamage(mdp, haka.CharacterCard, 3, DamageType.Cold);
             //damage should been redirected to Ra
             QuickHPCheck(0, -3);
-
         }
 
         [Test()]
@@ -1358,7 +1365,6 @@ namespace CauldronTests
             //should have been destroyed and no damage dealt
             AssertInTrash(rune);
             QuickHPCheckZero();
-
         }
 
         [Test()]
@@ -1379,7 +1385,6 @@ namespace CauldronTests
             //should have not been destroyed and damage dealt
             AssertIsInPlay(rune);
             QuickHPCheck(-1);
-
         }
 
         [Test()]
@@ -1395,8 +1400,6 @@ namespace CauldronTests
             PutIntoPlay("MarkOfTheTwistedShadow");
             Card rune = GetCardInPlay("MarkOfTheTwistedShadow");
             AssertNextToCard(rune, haka.CharacterCard);
-
-
         }
 
 
@@ -1416,8 +1419,6 @@ namespace CauldronTests
             DealDamage(haka.CharacterCard, mdp, 5, DamageType.Melee);
             //should be increased by 1, so 6 damage taken
             QuickHPCheck(-6);
-
-
         }
 
         [Test()]
@@ -1433,8 +1434,6 @@ namespace CauldronTests
             PutIntoPlay("MarkOfDestruction");
             Card rune = GetCardInPlay("MarkOfDestruction");
             AssertNextToCard(rune, mdp);
-
-
         }
 
         [Test()]
@@ -1454,8 +1453,6 @@ namespace CauldronTests
             AssertIsInPlay(rune);
             DestroyCard(mdp, haka.CharacterCard);
             AssertInTrash(rune);
-
-
         }
 
         [Test()]
@@ -1475,8 +1472,6 @@ namespace CauldronTests
             AssertIsInPlay(mdp);
             DestroyCard(rune, baron.CharacterCard);
             AssertInTrash(mdp);
-
-
         }
 
         [Test()]
@@ -1500,8 +1495,6 @@ namespace CauldronTests
             QuickHPStorage(ra);
             DealDamage(baron.CharacterCard, rune, 5, DamageType.Projectile);
             QuickHPCheck(-5);
-
-
         }
 
         [Test()]
@@ -1513,8 +1506,6 @@ namespace CauldronTests
             //put a glyph in trash
             Card glyph = GetCard("GlyphOfDecay");
             PutInTrash(stranger, glyph);
-
-
 
             //Put a Glyph from your trash into your hand, or reveal cards from the top of your deck until you reveal a Glyph, put it into play, and shuffle the other revealed cards into your deck. 
             //taking glyph from trash
@@ -1537,7 +1528,6 @@ namespace CauldronTests
             PutOnDeck(stranger, glyph);
             PutOnDeck("Corruption");
 
-
             //Put a Glyph from your trash into your hand, or reveal cards from the top of your deck until you reveal a Glyph, put it into play, and shuffle the other revealed cards into your deck. 
 
             //revealing cards from deck
@@ -1549,7 +1539,6 @@ namespace CauldronTests
             AssertIsInPlay(glyph);
             //2 cards off deck, 1 for glyph, 1 for card draw
             AssertNumberOfCardsInDeck(stranger, numCardsInDeckBefore - 2);
-
         }
 
         [Test()]
@@ -1558,8 +1547,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
             StartGame();
 
-
-           // put a glyph in trash
+            // put a glyph in trash
             Card glyph = GetCard("GlyphOfDecay");
             PutInTrash(stranger, glyph);
 
@@ -1575,8 +1563,6 @@ namespace CauldronTests
             PutIntoPlay("TheOldRoads");
             //flickering web should have moved from deck to hand
             AssertInHand(web);
-
-
         }
 
         [Test()]
@@ -1595,7 +1581,6 @@ namespace CauldronTests
             PutInTrash(stranger, rune3);
             PutInTrash(stranger, rune4);
 
-
             //You may shuffle up to 4 Runes from your trash into your deck, or discard up to 4 cards.",
             //For each card shuffled or discarded this way, {TheStranger} may draw a card or regain 1HP."
             //shuffle, gain hp, gain hp, gain hp, gain hp
@@ -1608,9 +1593,6 @@ namespace CauldronTests
             AssertInDeck(rune2);
             AssertInDeck(rune3);
             AssertInDeck(rune4);
-
-
-
         }
 
         [Test()]
@@ -1629,7 +1611,6 @@ namespace CauldronTests
             PutInTrash(stranger, rune3);
             PutInTrash(stranger, rune4);
 
-
             //You may shuffle up to 4 Runes from your trash into your deck, or discard up to 4 cards.",
             //For each card shuffled or discarded this way, {TheStranger} may draw a card or regain 1HP."
             //shuffle,draw, draw, draw, draw
@@ -1642,7 +1623,6 @@ namespace CauldronTests
             AssertNotInTrash(rune2);
             AssertNotInTrash(rune3);
             AssertNotInTrash(rune4);
-
         }
 
         [Test()]
@@ -1661,10 +1641,9 @@ namespace CauldronTests
             PutInHand(stranger, rune3);
             PutInHand(stranger, rune4);
 
-
             //You may shuffle up to 4 Runes from your trash into your deck, or discard up to 4 cards.",
             //For each card shuffled or discarded this way, {TheStranger} may draw a card or regain 1HP."
-            //discard,draw, draw, draw, draw
+            //discard, draw, draw, draw, draw
             DecisionSelectFunctions = new int?[] { 1, 0, 0, 0, 0 };
             DecisionSelectCards = new Card[] { rune1, rune2, rune3, rune4 };
             QuickHandStorage(stranger);
@@ -1674,7 +1653,6 @@ namespace CauldronTests
             AssertInTrash(rune2);
             AssertInTrash(rune3);
             AssertInTrash(rune4);
-
         }
 
         [Test()]
@@ -1693,10 +1671,9 @@ namespace CauldronTests
             PutInHand(stranger, rune3);
             PutInHand(stranger, rune4);
 
-
             //You may shuffle up to 4 Runes from your trash into your deck, or discard up to 4 cards.",
             //For each card shuffled or discarded this way, {TheStranger} may draw a card or regain 1HP."
-            //discard,gain hp, gain hp, gain hp, gain hp
+            //discard, gain hp, gain hp, gain hp, gain hp
             DecisionSelectFunctions = new int?[] { 1, 1, 1, 1, 1 };
             DecisionSelectCards = new Card[] { rune1, rune2, rune3, rune4 };
             QuickHPStorage(stranger);
@@ -1706,7 +1683,6 @@ namespace CauldronTests
             AssertInTrash(rune2);
             AssertInTrash(rune3);
             AssertInTrash(rune4);
-
         }
 
         [Test()]
@@ -1722,11 +1698,9 @@ namespace CauldronTests
             int numCardsInDeckBefore = GetNumberOfCardsInDeck(stranger);
             DecisionDoNotSelectCard = SelectionType.PlayCard;
             PlayCard(signs);
-            //should be +1 card in hand,drew 2, played 1
+            //should be +1 card in hand, drew 2, played 1
             QuickHandCheck(1);
             AssertNumberOfCardsInDeck(stranger, numCardsInDeckBefore - 2);
-
-
         }
 
         [Test()]
@@ -1752,9 +1726,8 @@ namespace CauldronTests
             //should be +0, as whispered signs moved to trash, and we retrieved card from trash
             AssertNumberOfCardsInTrash(stranger, numCardsInTrashBefore);
             AssertInHand(rune);
-
-
         }
+
         [Test()]
         public void TestWhisperedSigns_PlayRune()
         {
@@ -1772,9 +1745,8 @@ namespace CauldronTests
             AssertInHand(rune);
             PlayCard(signs);
             AssertIsInPlay(rune);
-
-
         }
+
         [Test()]
         public void TestWhisperedSigns_PlayGlyph()
         {
@@ -1792,11 +1764,30 @@ namespace CauldronTests
             AssertInHand(glyph);
             PlayCard(signs);
             AssertIsInPlay(glyph);
-
-
         }
 
+        [Test()]
+        public void TestWhisperedSign_NoPlayIfNoRuneOrGlyph()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
 
+            //discard hand
+            DiscardAllCards(stranger);
+            //put a non-rune in hand
+            Card unweave = GetCard("Unweave", 0);
+            PutInHand(unweave);
 
+            Card signs = GetCard("WhisperedSigns");
+            PutInHand(signs);
+            PutOnDeck(stranger, GetCard("Unweave", 1));
+            PutOnDeck(stranger, GetCard("Unweave", 2));
+            //You may draw 2 cards or put a Rune from your trash into your hand.
+            DecisionSelectFunction = 0;
+            QuickHandStorage(stranger);
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+            PlayCard(signs);
+            AssertNotInTrash(unweave);
+        }
     }
 }
