@@ -11,10 +11,14 @@ namespace Cauldron.TheKnight
         public TheKnightCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
         public override IEnumerator UsePower(int index = 0)
         {
             //"{TheKnight} deals 1 target 1 melee damage."
-            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.Card), 1, DamageType.Melee, 1, false, 1, cardSource: base.GetCardSource());
+            int targets = GetPowerNumeral(0, 1);
+            int damages = GetPowerNumeral(1, 1);
+
+            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.Card), damages, DamageType.Melee, targets, false, targets, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

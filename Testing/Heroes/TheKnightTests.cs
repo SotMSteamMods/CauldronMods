@@ -429,7 +429,7 @@ namespace CauldronTests
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
-            PutInHand(HeroController, "ChampionOfTheRealm");
+            var realm = PutInHand(HeroController, "ChampionOfTheRealm");
 
             PrintSeparator("Test");
             AssertNumberOfStatusEffectsInPlay(0);
@@ -440,9 +440,11 @@ namespace CauldronTests
             DecisionSelectCards = card.ToEnumerable().Concat(wraith.CharacterCard.ToEnumerable());
 
             GoToPlayCardPhase(HeroController);
+            QuickShuffleStorage(HeroController.TurnTaker.Deck);
             PlayCardFromHand(HeroController, "ChampionOfTheRealm");
-
-            PrintSeparator("Assert Played");
+            AssertInTrash(HeroController, realm);
+            
+            QuickShuffleCheck(1);
             AssertInPlayArea(HeroController, card);
 
             PrintSeparator("Assert Applied");
@@ -475,7 +477,7 @@ namespace CauldronTests
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
-            PutInHand(HeroController, "DefenderOfTheRealm");
+            var realm = PutInHand(HeroController, "DefenderOfTheRealm");
 
             PrintSeparator("Test");
             AssertNumberOfStatusEffectsInPlay(0);
@@ -486,9 +488,11 @@ namespace CauldronTests
             DecisionSelectCards = card.ToEnumerable().Concat(wraith.CharacterCard.ToEnumerable());
 
             GoToPlayCardPhase(HeroController);
+            QuickShuffleStorage(HeroController.TurnTaker.Deck);
             PlayCardFromHand(HeroController, "DefenderOfTheRealm");
+            AssertInTrash(realm);
 
-            PrintSeparator("Assert Played");
+            QuickShuffleCheck(1);
             AssertInPlayArea(HeroController, card);
 
             PrintSeparator("Assert Applied");
@@ -533,7 +537,7 @@ namespace CauldronTests
 
         [Test]
         [Description("TheKnight - KnightsHonor")]
-        public void KnightsHonor()
+        public void KnightsHonor_TestRedirect()
         {
             SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
@@ -576,6 +580,35 @@ namespace CauldronTests
             QuickHPStorage(HeroController, wraith, ra);
             DealDamage(baron, wraith, 4, DamageType.Psychic);
             QuickHPCheck(0, -4, 0);
+        }
+
+        [Test]
+        [Description("TheKnight - KnightsHonor")]
+        public void KnightsHonor_TestTargetLeavesPlay()
+        {
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            PrintSeparator("Setup");
+            //nuke all baron blades cards so his ongoings don't break tests
+            DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
+            DiscardAllCards(HeroController);
+            ShuffleTrashIntoDeck(HeroController);
+            var target = PutIntoPlay("BladeBattalion");
+
+            var card = PutInHand(HeroController, "KnightsHonor");
+
+            PrintSeparator("Test");
+            GoToPlayCardPhase(HeroController);
+            DecisionNextSelectionType = SelectionType.MoveCardNextToCard;
+            DecisionNextToCard = target;
+            PlayCardFromHand(HeroController, "KnightsHonor");
+
+            PrintSeparator("Destroy Target");
+            DestroyCard(target, baron.CharacterCard);
+            
+            PrintSeparator("Assert");
+            AssertInPlayArea(baron, card);
         }
 
         [Test]

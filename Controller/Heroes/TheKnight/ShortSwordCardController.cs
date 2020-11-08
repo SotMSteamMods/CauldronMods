@@ -24,6 +24,9 @@ namespace Cauldron.TheKnight
         public override IEnumerator UsePower(int index = 0)
         {
             //"{TheKnight} deals 1 target 2 melee damage."
+            int targets = GetPowerNumeral(0, 1);
+            int damages = GetPowerNumeral(1, 2);
+
             List<SelectCardDecision> results = new List<SelectCardDecision>();
             var coroutine = base.SelectOwnCharacterCard(results, SelectionType.HeroToDealDamage);
             if (base.UseUnityCoroutines)
@@ -35,7 +38,7 @@ namespace Cauldron.TheKnight
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             Card card = GetSelectedCard(results);
-            coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, card), 2, DamageType.Melee, 1, false, 1, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, card), damages, DamageType.Melee, targets, false, targets, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
