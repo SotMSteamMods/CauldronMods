@@ -18,7 +18,7 @@ namespace Cauldron.Baccarat
         public override IEnumerator Play()
         {
             //Discard your hand...
-            IEnumerator coroutine = base.GameController.DiscardHand(this.HeroTurnTakerController, false, null, this.TurnTaker, base.GetCardSource(null));
+            IEnumerator coroutine = base.GameController.DiscardHand(this.HeroTurnTakerController, false, null, this.TurnTaker, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -28,7 +28,7 @@ namespace Cauldron.Baccarat
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             //... and draw 3 cards.
-            coroutine = base.GameController.DrawCards(this.HeroTurnTakerController, 3, false, false, null, true, null, base.GetCardSource(null));
+            coroutine = base.GameController.DrawCards(this.HeroTurnTakerController, 3, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
