@@ -876,7 +876,9 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
+            //put cards in hand to reduce variability
             Card toss = GetCard("CardToss");
+            PutInHand(toss);
             Card saint = GetCard("AceOfSaints");
             PutInHand(baccarat, saint);
             DecisionSelectCard = saint;
@@ -884,7 +886,8 @@ namespace CauldronTests
             //You may play a card.
             QuickHandStorage(baccarat);
             PlayCard(toss);
-            QuickHandCheck(-1);
+            //should be 2 fewer, 1 for saints being played and 1 for card toss being played
+            QuickHandCheck(-2);
         }
 
         [Test()]
@@ -892,14 +895,16 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
+            //put toss in hand to reduce variability
             Card toss = GetCard("CardToss");
-
+            PutInHand(toss);
             DecisionDoNotSelectCard = SelectionType.PlayCard;
 
             //You may play a card.
             QuickHandStorage(baccarat);
             PlayCard(toss);
-            QuickHandCheck(0);
+            //toss should have been the only thing played
+            QuickHandCheck(-1);
         }
 
         [Test()]
