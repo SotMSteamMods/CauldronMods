@@ -8,7 +8,7 @@ namespace Cauldron.TheStranger
     {
         #region Constructors
 
-        public MarkOfTheTwistedShadowCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public MarkOfTheTwistedShadowCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new LinqCardCriteria((Card c) => c.IsHero && c.IsTarget && !c.IsIncapacitatedOrOutOfGame, "hero targets", false, false, null, null, false))
         {
 
         }
@@ -16,7 +16,13 @@ namespace Cauldron.TheStranger
         #endregion Constructors
 
         #region Methods
+        public override void AddTriggers()
+        {
+            base.AddTriggers();
+            //Increase damage dealt by that target by 1.
+            base.AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card == base.GetCardThisCardIsNextTo(true), (DealDamageAction dd) => 1);
 
+        }
         #endregion Methods
     }
 }
