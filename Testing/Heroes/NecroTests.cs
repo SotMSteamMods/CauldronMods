@@ -660,6 +660,7 @@ namespace CauldronTests
             AssertNumberOfUndeadInPlay(necro, 1);
             //should be 2 more cards in trash, undead trashed and grand summon
             AssertNumberOfCardsInTrash(necro, numCardsInTrashBefore + 2);
+            AssertNumberOfCardsInRevealed(necro, 0);
         }
 
         [Test()]
@@ -692,6 +693,7 @@ namespace CauldronTests
             AssertNumberOfUndeadInPlay(necro, 1);
             //should be 1 more cards in trash, undead trashed and grand summon
             AssertNumberOfCardsInTrash(necro, numCardsInTrashBefore + 1);
+            AssertNumberOfCardsInRevealed(necro, 0);
         }
 
         [Test()]
@@ -724,6 +726,7 @@ namespace CauldronTests
             AssertNumberOfUndeadInPlay(necro, 0);
             //should be 1 more cards in trash, undead trashed and grand summon
             AssertNumberOfCardsInTrash(necro, numCardsInTrashBefore + 1);
+            AssertNumberOfCardsInRevealed(necro, 0);
         }
 
         [Test()]
