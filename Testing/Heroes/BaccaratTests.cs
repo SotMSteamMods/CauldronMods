@@ -1070,7 +1070,6 @@ namespace CauldronTests
             QuickHandStorage(bunker);
             PlayCard(hold);
             QuickHandCheck(0);
-            Assert.AreEqual(baccaratCards, baccarat.NumberOfCardsInHand + 1);
         }
     }
 }
