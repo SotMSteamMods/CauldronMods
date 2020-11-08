@@ -1070,5 +1070,158 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestHalcyonCleanersEndOfTurn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //Set hitpoints to start
+            SetHitPoints(ra.CharacterCard, 6);
+            SetHitPoints(legacy.CharacterCard, 7);
+            SetHitPoints(haka.CharacterCard, 8);
+            SetHitPoints(tachyon.CharacterCard, 9);
+
+            //Destroy mdp to clean up test
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            GoToPlayCardPhase(halberd);
+
+            //we play out cleaner
+            Card cleaner = GetCard("HalcyonCleaners");
+            PlayCard(cleaner);
+            AssertIsInPlay(cleaner);
+
+            //At the end of the environment turn, this card deals the target other than itself with the second lowest HP {H} fire damage. 
+            //second lowest hp is legacy
+            //H = 4
+            QuickHPStorage(ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, tachyon.CharacterCard, baron.CharacterCard, cleaner);
+            GoToEndOfTurn(halberd);
+            QuickHPCheck(0, -4, 0, 0, 0, 0);
+
+        }
+
+        [Test()]
+        public void TestHalcyonCleanersTestSubjectDestroyedByCleaner()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            GoToPlayCardPhase(halberd);
+
+            //we play out cleaner
+            Card cleaner = GetCard("HalcyonCleaners");
+            PlayCard(cleaner);
+            AssertIsInPlay(cleaner);
+
+            //play alpha to have a subject to destroy
+            Card alpha = GetCard("HalberdAlpha");
+            PlayCard(alpha);
+            AssertIsInPlay(alpha);
+
+            //stack deck with omega
+            Card omega = GetCard("HalberdOmega");
+            PutOnDeck(halberd, omega);
+            AssertInDeck(omega);
+
+            //Whenever this card destroys a Test Subject, play the top card of the environment deck.
+            DestroyCard(alpha, cleaner);
+            //alpha should have been destroyed, causing omega to be played from the top of the environment deck
+            AssertInTrash(alpha);
+            AssertIsInPlay(omega);
+        }
+
+        [Test()]
+        public void TestHalcyonCleanersTestSubjectDestroyedByNotCleaner()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            GoToPlayCardPhase(halberd);
+
+            //we play out cleaner
+            Card cleaner = GetCard("HalcyonCleaners");
+            PlayCard(cleaner);
+            AssertIsInPlay(cleaner);
+
+            //play alpha to have a subject to destroy
+            Card alpha = GetCard("HalberdAlpha");
+            PlayCard(alpha);
+            AssertIsInPlay(alpha);
+
+            //stack deck with omega
+            Card omega = GetCard("HalberdOmega");
+            PutOnDeck(halberd, omega);
+            AssertInDeck(omega);
+
+            //Whenever this card destroys a Test Subject, play the top card of the environment deck.
+            DestroyCard(alpha, baron.CharacterCard);
+            //alpha should have been destroyed, but since it was done by baron, not cards should be played
+            AssertInTrash(alpha);
+            AssertInDeck(omega);
+        }
+
+        [Test()]
+        public void TestHalcyonCleanersIncrease_WithChemicalTrigger()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            GoToPlayCardPhase(halberd);
+
+
+            //we play out cleaner
+            Card cleaner = GetCard("HalcyonCleaners");
+            PlayCard(cleaner);
+            AssertIsInPlay(cleaner);
+
+            //we put a chem trigger in play
+            //this chem trigger plays omega
+            //this chem trigger reduces damage dealt to subjects, so it doesn't impact this test
+            Card chem = GetCard("HrCombatPheromones");
+            PlayCard(chem);
+            AssertIsInPlay(chem);
+
+            //the chem trigger plays omega
+            Card omega = GetCardInPlay("HalberdOmega");
+
+            //If there are no Chemical Triggers in play, increase damage dealt by this card to Test Subjects by 5.
+            //chemical triggers are in play so damage should not be increased
+            QuickHPStorage(omega, ra.CharacterCard);
+            DealDamage(cleaner, omega, 3, DamageType.Fire);
+            DealDamage(cleaner, ra.CharacterCard, 3, DamageType.Melee);
+            //damage to omega will be reduced by 1 due to combat pheromones, but no further modifications
+            //damage to ra should have been normal
+            QuickHPCheck(-2, -3);
+        }
+
+        [Test()]
+        public void TestHalcyonCleanersIncrease_NoChemicalTrigger()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+            GoToPlayCardPhase(halberd);
+
+            //we play out cleaner
+            Card cleaner = GetCard("HalcyonCleaners");
+            PlayCard(cleaner);
+            AssertIsInPlay(cleaner);
+
+            //play omega to have a subject to deal damage to
+            Card omega = GetCard("HalberdOmega");
+            PlayCard(omega);
+            AssertIsInPlay(omega);
+
+            //If there are no Chemical Triggers in play, increase damage dealt by this card to Test Subjects by 5.
+            //no chemical triggers are in play so damage should be increased
+            QuickHPStorage(omega, ra.CharacterCard);
+            DealDamage(cleaner, omega, 3, DamageType.Fire);
+            DealDamage(cleaner, ra.CharacterCard, 3, DamageType.Melee);
+            //damage to omega should have been +5
+            //damage to ra should have been normal
+            QuickHPCheck(-8, -3);
+        }
+
     }
 }
