@@ -68,7 +68,7 @@
             ],
             "body": [
                 "This card is immune to damage dealt by targets with less than 10HP.",
-                "At the end of the environment turn, this card deals the {H - 2} hero target 2 melee damage."
+                "At the end of the environment turn, this card deals the {H - 2} hero target 2 melee damage each."
             ],
             "flavorText": "The timeship attracts everything that{BR}might have been, including denizens{BR}of a potential world whose ice{BR}age never ended.",
             "hitpoints": 8
@@ -101,7 +101,7 @@
                 "DestroySelf"
             ],
             "body": [
-                "When this card enters play, play the top card of each deck in turn order, starting with the villain deck.",
+                "When this card enters play, play the top card of the villain deck. Then, play the top card of each hero deck in turn order.",
                 "At the end of the environment turn, destroy this card."
             ],
             "flavorText": "The FSC “Continuance Wanderer” possessed no{BR}conventional propulsion. instead its crystal{BR}hull bent reality, speeding up the universe{BR}around and, occasionally, inside it."
@@ -180,7 +180,7 @@
                 "DestroySelf"
             ],
             "body": [
-                "Heroes may not play one-shots.",
+                "Players may not play one-shots.",
                 "When another environment card enters play, destroy this card."
             ],
             "flavorText": "As the timeship's call resonated through the{BR}fabric of reality, those beings contaminated by{BR}temporal anomalies were pulled into it. Not all{BR}of them arrived in one piece."

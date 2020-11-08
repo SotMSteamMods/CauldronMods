@@ -8,7 +8,7 @@ namespace Cauldron.TheStranger
     {
         #region Constructors
 
-        public MarkOfBreakingCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public MarkOfBreakingCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new LinqCardCriteria((Card c) => c.IsTarget, "targets", false, false, null, null, false))
         {
 
         }
@@ -16,7 +16,12 @@ namespace Cauldron.TheStranger
         #endregion Constructors
 
         #region Methods
-
-        #endregion Methods
+        public override void AddTriggers()
+        {
+            base.AddTriggers();
+            //Increase damage dealt to that target by 1.
+            base.AddIncreaseDamageTrigger((DealDamageAction dd) => dd.Target == base.GetCardThisCardIsNextTo(true), 1);
+        }
     }
+    #endregion Methods
 }
