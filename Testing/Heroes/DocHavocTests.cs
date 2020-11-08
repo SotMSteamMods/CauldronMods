@@ -449,5 +449,25 @@ namespace CauldronTests
             // Assert
             QuickHPCheck(-2);
         }
+
+        [Test]
+        public void TestSearchAndRescue()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                SearchAndRescueCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+
+            // Act
+            GoToPlayCardPhase(DocHavoc);
+            PlayCardFromHand(DocHavoc, SearchAndRescueCardController.Identifier);
+
+        }
     }
 }
