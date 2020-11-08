@@ -818,7 +818,95 @@ namespace CauldronTests
             //check that highest hero got dealt damage and highest villain did not
             QuickHPCheck(-3, 0);
 
+        }
 
+        [Test()]
+        public void TestHalberdZephyr_NoChemicalTriggers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //Set hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(haka.CharacterCard, 10);
+
+            //destroy mdp so baron blade is vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            GoToPlayCardPhase(halberd);
+
+            //we play out zephyr
+            Card zephyr = GetCard("HalberdZephyr");
+            PlayCard(zephyr);
+            AssertIsInPlay(zephyr);
+
+            //we play out siren to have another test subject
+            //siren's redirection does not impact this test
+            Card siren = GetCard("HalberdSiren");
+            PlayCard(siren);
+            AssertIsInPlay(siren);
+
+            //set test subjects hitpoints so there is room to gain
+            SetHitPoints(zephyr, 4);
+            SetHitPoints(siren, 4);
+
+            //At the end of the environment turn, each Test Subject regains 1HP.
+            //If there are no Chemical Triggers in play, the hero with the lowest HP regains 3HP
+            //lowest hero is haka
+            QuickHPStorage(zephyr, siren, haka.CharacterCard, ra.CharacterCard);
+            GoToEndOfTurn(halberd);
+            QuickHPCheck(1, 1, 3, 0);
+        }
+
+        [Test()]
+        public void TestHalberdZephyr_WithChemicalTriggers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            //Set hitpoints to start
+            SetHitPoints(baron.CharacterCard, 20);
+            SetHitPoints(mdp, 5);
+
+            GoToPlayCardPhase(halberd);
+
+            //we put a chem trigger in play
+            //this chem trigger plays omega
+            //this chem trigger reduces damage dealt to subjects, so it doesn't impact this test
+            Card chem = GetCard("HrCombatPheromones");
+            PlayCard(chem);
+            AssertIsInPlay(chem);
+
+            //the chem trigger plays omega
+            //destroy omega as it would impact this test
+            Card omega = GetCardInPlay("HalberdOmega");
+            DestroyCard(omega, baron.CharacterCard);
+
+            //we play out zephyr
+            Card zephyr = GetCard("HalberdZephyr");
+            PlayCard(zephyr);
+            AssertIsInPlay(zephyr);
+
+            //we play out siren to have another test subject
+            //siren's redirection does not impact this test
+            Card siren = GetCard("HalberdSiren");
+            PlayCard(siren);
+            AssertIsInPlay(siren);
+
+            //set test subjects hitpoints so there is room to gain
+            SetHitPoints(zephyr, 4);
+            SetHitPoints(siren, 4);
+
+            //At the end of the environment turn, each Test Subject regains 1HP.
+            //Otherwise, the villain target with the lowest HP regains 3HP.
+            //lowest villain is mdp
+            QuickHPStorage(zephyr, siren, mdp, baron.CharacterCard);
+            GoToEndOfTurn(halberd);
+            QuickHPCheck(1, 1, 3, 0);
 
 
         }
