@@ -308,5 +308,50 @@ namespace CauldronTests
             QuickHPCheck(2);
         }
 
+        [Test]
+        public void TestRecklessCharge()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                FieldDressingCardController.Identifier, RecklessChargeCardController.Identifier, 
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+
+            QuickHPStorage(DocHavoc, ra);
+
+            // Act
+            GoToPlayCardPhase(DocHavoc);
+            PlayCardFromHand(DocHavoc, RecklessChargeCardController.Identifier);
+
+            GoToDrawCardPhase(DocHavoc);
+            GoToEndOfTurn(DocHavoc);
+
+            GoToStartOfTurn(env);
+            Card mysticalDefences = GetCard("MysticalDefenses");
+            PlayCard(mysticalDefences);
+            GoToEndOfTurn(env);
+
+            // Assert
+            Assert.AreEqual(1,
+                this.GameController.FindTriggersWhere((Func<ITrigger, bool>)(t 
+                    => t.CardSource.Card.Identifier == RecklessChargeCardController.Identifier 
+                       && t.Types.Contains(TriggerType.IncreaseDamage))).Count());
+
+            Assert.AreEqual(1,
+           this.GameController.FindTriggersWhere((Func<ITrigger, bool>)(t 
+                => t.CardSource.Card.Identifier == RecklessChargeCardController.Identifier
+                && t.ActionType == typeof(PhaseChangeAction)
+                )).Count());
+
+
+            QuickHPCheck(-3, -2); // 1 Mystical Defenses dmg + 1 from Reckless Charge for Doc Havoc
+
+        }
+
     }
 }
