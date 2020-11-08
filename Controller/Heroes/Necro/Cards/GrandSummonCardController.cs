@@ -4,102 +4,83 @@ using Handelabra;
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
+using Handelabra.Sentinels.Engine.Controller.TheChairman;
 
 namespace Cauldron.Necro
 {
-	public class GrandSummonCardController : NecroCardController
-	{
-		public GrandSummonCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
-		{
-		
-		}
-				public override IEnumerator Play()
-		{
-			//Reveal cards from the top of your deck until you reveal 2 Undead cards. 
+    public class GrandSummonCardController : NecroCardController
+    {
+        public GrandSummonCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        {
 
-			List<RevealCardsAction> revealedCardActions = new List<RevealCardsAction>();
-			IEnumerator coroutine = base.GameController.RevealCards(base.HeroTurnTakerController, base.TurnTaker.Deck, (Card c) => this.IsUndead(c), 2, revealedCardActions, RevealedCardDisplay.None, this.GetCardSource(null));
+        }
+        public override IEnumerator Play()
+        {
+            //Reveal cards from the top of your deck until you reveal 2 Undead cards. 
+            List<RevealCardsAction> revealedCardActions = new List<RevealCardsAction>();
+            IEnumerator coroutine = base.GameController.RevealCards(base.HeroTurnTakerController, base.TurnTaker.Deck, (Card c) => this.IsUndead(c), 2, revealedCardActions, cardSource: this.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
 
+            List<Card> undeadCards = GetRevealedCards(revealedCardActions).Where(c => IsUndead(c)).Take(2).ToList();
+            List<Card> otherCards = GetRevealedCards(revealedCardActions).Where(c => !undeadCards.Contains(c)).ToList();
+            if (undeadCards.Any())
+            {
+                //Put 1 into play 
+                coroutine = base.GameController.SelectAndPlayCard(this.DecisionMaker, undeadCards, isPutIntoPlay: true, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                Card nonSelectedCard = undeadCards.FirstOrDefault(c => c.Location.IsRevealed);
+                if (nonSelectedCard != null)
+                {
+                    //and put 1 into the trash.
+                    coroutine = base.GameController.MoveCard(this.DecisionMaker, nonSelectedCard, base.FindCardController(nonSelectedCard).GetTrashDestination(), showMessage: true, cardSource: base.GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+            }
+            if (otherCards.Any())
+            {
+                //Put the remaining revealed cards back on the deck and shuffle
+                coroutine = base.GameController.MoveCards(this.DecisionMaker, otherCards, this.TurnTaker.Deck, cardSource: base.GetCardSource());
+                if (this.UseUnityCoroutines)
+                {
+                    yield return this.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    this.GameController.ExhaustCoroutine(coroutine);
+                }
+                coroutine = this.ShuffleDeck(this.DecisionMaker, this.TurnTaker.Deck);
+                if (this.UseUnityCoroutines)
+                {
+                    yield return this.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    this.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
 
-			if (base.UseUnityCoroutines)
-			{
-				yield return base.GameController.StartCoroutine(coroutine);
-			}
-			else
-			{
-				base.GameController.ExhaustCoroutine(coroutine);
-			}
-
-			List<Card> revealedCards = new List<Card>();
-			List<Card> nonUndeadCards = new List<Card>();
-			foreach(Card card in revealedCardActions.FirstOrDefault().RevealedCards)
-			{
-				if(this.IsUndead(card))
-				{
-					revealedCards.Add(card);
-				}
-				else
-				{
-					nonUndeadCards.Add(card);
-				}
-			}
-
-			if (revealedCards.Any<Card>())
-			{
-				//Put 1 into play 
-				int powerNumeral = base.GetPowerNumeral(1, 1);
-				coroutine = base.GameController.SelectCardsAndDoAction(this.DecisionMaker, new LinqCardCriteria( (Card c) => revealedCards.Contains(c), "", true, false, null, null, false), SelectionType.PutIntoPlay, (Card c) => this.GameController.PlayCard(this.TurnTakerController, c, true, null, false, null, null, false, null, null, null, false, false, true, this.GetCardSource(null)), new int?(powerNumeral), false, null, null, false, null, base.GetCardSource(null), true);
-				if (base.UseUnityCoroutines)
-				{
-					yield return base.GameController.StartCoroutine(coroutine);
-				}
-				else
-				{
-					base.GameController.ExhaustCoroutine(coroutine);
-				}
-				Card otherCard = (from c in revealedCards
-								  where c.Location.IsRevealed
-								  select c).FirstOrDefault<Card>();
-				if (otherCard != null)
-				{
-					//and put 1 into the trash.
-					List<Card> list = new List<Card>();
-					list.Add(otherCard);
-					coroutine = base.GameController.SendMessageAction(base.Card.Title + " put " + otherCard.Title + " into the trash.", Priority.Low, base.GetCardSource(null), list, false);
-					if (base.UseUnityCoroutines)
-					{
-						yield return base.GameController.StartCoroutine(coroutine);
-					}
-					else
-					{
-						base.GameController.ExhaustCoroutine(coroutine);
-					}
-					coroutine = base.GameController.MoveCard(base.TurnTakerController, otherCard, base.FindCardController(otherCard).GetTrashDestination(), false, false, true, null, false, null, null, null, false, false, null, false, false, false, false, base.GetCardSource(null));
-					if (base.UseUnityCoroutines)
-					{
-						yield return base.GameController.StartCoroutine(coroutine);
-					}
-					else
-					{
-						base.GameController.ExhaustCoroutine(coroutine);
-					}
-				}
-
-				//Put the remaining revealed cards back on the deck and shuffle
-				IEnumerator moveRemaining = this.GameController.MoveCards(this.TurnTakerController, nonUndeadCards, this.TurnTaker.Deck, false, false, true, null, false, false, null, this.GetCardSource(null));
-				IEnumerator shuffle = this.ShuffleDeck(this.DecisionMaker, this.TurnTaker.Deck, false, null);
-				if (this.UseUnityCoroutines)
-				{
-					yield return this.GameController.StartCoroutine(moveRemaining);
-					yield return this.GameController.StartCoroutine(shuffle);
-				}
-				else
-				{
-					this.GameController.ExhaustCoroutine(moveRemaining);
-					this.GameController.ExhaustCoroutine(shuffle);
-				}
-			}
-			yield break;
-		}
-	}
+            yield break;
+        }
+    }
 }

@@ -644,23 +644,86 @@ namespace CauldronTests
 
             GoToPlayCardPhase(necro);
 
+            QuickShuffleStorage(baron, necro, ra, fanatic);
             int numCardsInDeckBefore = GetNumberOfCardsInDeck(necro);
             int numCardsInPlayBefore = GetNumberOfCardsInPlay(necro);
             int numCardsInTrashBefore = GetNumberOfCardsInTrash(necro);
             //Reveal cards from the top of your deck until you reveal 2 Undead cards. Put 1 into play and 1 into the trash.
-            PlayCard(grand, true);
-            int numCardsInDeckAfter = GetNumberOfCardsInDeck(necro);
-            int numCardsInPlayAfter = GetNumberOfCardsInPlay(necro);
-            int numCardsInTrashAfter = GetNumberOfCardsInTrash(necro);
+            PlayCard(grand);
+            AssertInTrash(necro, grand);
+            QuickShuffleCheck(0, 1, 0, 0);
 
-            //should be 3 fewer cards in deck, 2 for revealed undeads
-            Assert.AreEqual(numCardsInDeckBefore - 2, numCardsInDeckAfter, "The number of cards in the deck don't match.");
+            //should be 2 fewer cards in deck, 2 for revealed undeads
+            AssertNumberOfCardsInDeck(necro, numCardsInDeckBefore - 2);
             //should be 1 more card in play, check that it is undead
-            Assert.AreEqual(numCardsInPlayBefore + 1, numCardsInPlayAfter, "The number of cards in play don't match.");
+            AssertNumberOfCardsInPlay(necro, numCardsInPlayBefore + 1);
             AssertNumberOfUndeadInPlay(necro, 1);
             //should be 2 more cards in trash, undead trashed and grand summon
-            Assert.AreEqual(numCardsInTrashBefore + 2, numCardsInTrashAfter, "The number of cards in the trash don't match.");
+            AssertNumberOfCardsInTrash(necro, numCardsInTrashBefore + 2);
+        }
 
+        [Test()]
+        public void TestGrandSummonPlayOnly1Card()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            //get GrandSummon from hand for consistent behavior
+            PutInHand("GrandSummon");
+            Card grand = GetCardFromHand("GrandSummon");
+            MoveCards(necro, necro.HeroTurnTaker.Deck.Cards.Where(c => IsUndead(c)).Skip(1), necro.HeroTurnTaker.Trash);
+
+            GoToPlayCardPhase(necro);
+
+            QuickShuffleStorage(baron, necro, ra, fanatic);
+            int numCardsInDeckBefore = GetNumberOfCardsInDeck(necro);
+            int numCardsInPlayBefore = GetNumberOfCardsInPlay(necro);
+            int numCardsInTrashBefore = GetNumberOfCardsInTrash(necro);
+            //Reveal cards from the top of your deck until you reveal 2 Undead cards. Put 1 into play and 1 into the trash.
+            //should only be able to find 1
+            PlayCard(grand);
+            AssertInTrash(necro, grand);
+            QuickShuffleCheck(0, 1, 0, 0);
+
+            //should be 2 fewer cards in deck, 1 for revealed undeads
+            AssertNumberOfCardsInDeck(necro, numCardsInDeckBefore - 1);
+            //should be 1 more card in play, check that it is undead
+            AssertNumberOfCardsInPlay(necro, numCardsInPlayBefore + 1);
+            AssertNumberOfUndeadInPlay(necro, 1);
+            //should be 1 more cards in trash, undead trashed and grand summon
+            AssertNumberOfCardsInTrash(necro, numCardsInTrashBefore + 1);
+        }
+
+        [Test()]
+        public void TestGrandSummonPlayNoCard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            //get GrandSummon from hand for consistent behavior
+            PutInHand("GrandSummon");
+            Card grand = GetCardFromHand("GrandSummon");
+            MoveCards(necro, necro.HeroTurnTaker.Deck.Cards.Where(c => IsUndead(c)), necro.HeroTurnTaker.Trash);
+
+            GoToPlayCardPhase(necro);
+
+            QuickShuffleStorage(baron, necro, ra, fanatic);
+            int numCardsInDeckBefore = GetNumberOfCardsInDeck(necro);
+            int numCardsInPlayBefore = GetNumberOfCardsInPlay(necro);
+            int numCardsInTrashBefore = GetNumberOfCardsInTrash(necro);
+            //Reveal cards from the top of your deck until you reveal 2 Undead cards. Put 1 into play and 1 into the trash.
+            //should only be able to find 1
+            PlayCard(grand);
+            AssertInTrash(necro, grand);
+            QuickShuffleCheck(0, 1, 0, 0);
+
+            //should be 2 fewer cards in deck, 1 for revealed undeads
+            AssertNumberOfCardsInDeck(necro, numCardsInDeckBefore);
+            //should be 1 more card in play, check that it is undead
+            AssertNumberOfCardsInPlay(necro, numCardsInPlayBefore);
+            AssertNumberOfUndeadInPlay(necro, 0);
+            //should be 1 more cards in trash, undead trashed and grand summon
+            AssertNumberOfCardsInTrash(necro, numCardsInTrashBefore + 1);
         }
 
         [Test()]
