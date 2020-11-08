@@ -61,7 +61,7 @@ namespace CauldronTests
         [Test()]
         public void TestNecroInnatePowerOption1()
         {
-            SetupGameController("BaronBlade", "Cauldron.Necro", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Fanatic", "Megalopolis");
             StartGame();
             Card abomination = GetCard("Abomination");
 
@@ -69,153 +69,166 @@ namespace CauldronTests
             GoToUsePowerPhase(necro);
             DecisionSelectFunction = 0;
             DecisionSelectTarget = abomination;
-            QuickHPStorage(abomination);
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, fanatic.CharacterCard, abomination);
             UsePower(necro.CharacterCard);
-            QuickHPCheck(-1);
-
+            QuickHPCheck(0, 0, 0, -1);
         }
 
         [Test()]
         public void TestNecroInnatePowerOption2()
         {
-            SetupGameController("BaronBlade", "Cauldron.Necro", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Fanatic", "Megalopolis");
             StartGame();
             Card abomination = GetCard("Abomination");
-
 
             PlayCard(abomination);
 
             GoToUsePowerPhase(necro);
             DecisionSelectFunction = 1;
             DecisionSelectTarget = abomination;
-            QuickHPStorage(abomination);
+            QuickHPStorage(baron.CharacterCard, necro.CharacterCard, fanatic.CharacterCard, abomination);
             UsePower(necro.CharacterCard);
-            QuickHPCheck(-2);
+            QuickHPCheck(0, 0, 0, -2);
 
         }
         [Test()]
         public void TestNecroIncap1()
         {
-            SetupGameController("BaronBlade", "Cauldron.Necro", "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Legacy", "Fanatic", "Megalopolis");
             StartGame();
 
             SetupIncap(baron);
             AssertIncapacitated(necro);
+            GoToUseIncapacitatedAbilityPhase(necro);
 
             //One hero may deal himself 2 toxic damage to draw 2 cards now.
-            QuickHandStorage(legacy);
-            QuickHPStorage(legacy);
+            QuickHandStorage(necro, legacy, fanatic);
+            QuickHPStorage(baron, legacy, fanatic);
             //using incap ability on legacy
             DecisionSelectTarget = legacy.CharacterCard;
             //set to true so legacy will deal himself the damage
             DecisionsYesNo = new bool[] { true };
 
-            GoToUseIncapacitatedAbilityPhase(necro);
             UseIncapacitatedAbility(necro, 0);
 
             //verify damage was dealt and cards were drawn
-            QuickHPCheck(-2);
-            QuickHandCheck(2);
+            QuickHandCheck(0, 2, 0);
+            QuickHPCheck(0, -2, 0);
         }
 
         [Test()]
-        public void TestNecroIncap2_3CardDiscard()
+        public void TestNecroIncap1_NoDamageDealt()
         {
-            SetupGameController("BaronBlade", "Cauldron.Necro", "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", "Legacy", "Cauldron.Necro", "Fanatic", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(necro);
+
+            //Make legacy immune to toxic damage
+            GoToPlayCardPhase(legacy);
+            var card = PlayCard(legacy, "NextEvolution");
+
+            GoToUsePowerPhase(legacy);
+            DecisionSelectDamageType = DamageType.Toxic;
+            UsePower(card);
+
+            GoToUseIncapacitatedAbilityPhase(necro);
+
+            //One hero may deal himself 2 toxic damage to draw 2 cards now.
+            QuickHandStorage(necro, legacy, fanatic);
+            QuickHPStorage(baron, legacy, fanatic);
+            //using incap ability on legacy
+            DecisionSelectTarget = legacy.CharacterCard;
+            //set to true so legacy will deal himself the damage
+            DecisionsYesNo = new bool[] { true };
+
+            UseIncapacitatedAbility(necro, 0);
+
+            //verify no damage was dealt and cards were drawn
+            QuickHandCheck(0, 2, 0);
+            QuickHPCheck(0, 0, 0);
+        }
+
+        [Test()]
+        public void TestNecroIncap2([Values(0, 1, 2, 3)] int cardsToDiscard)
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Legacy", "Fanatic", "Megalopolis");
             StartGame();
             SetHitPoints(legacy.CharacterCard, 20);
 
             SetupIncap(baron);
             AssertIncapacitated(necro);
+            GoToUseIncapacitatedAbilityPhase(necro);
 
             //Grab the first three cards to discard
             //One hero may discard up to 3 cards, then regain 2 HP for each card discarded.
-            QuickHandStorage(legacy);
-            QuickHPStorage(legacy);
+            QuickHandStorage(necro, legacy, fanatic);
+            QuickHPStorage(baron, legacy, fanatic);
+            PrintHand(legacy);
             //using incap ability on legacy
             DecisionSelectTarget = legacy.CharacterCard;
+            //null at end causes engine to select skip
+            DecisionSelectCards = legacy.HeroTurnTaker.Hand.Cards.Take(cardsToDiscard).Concat(new Card[] { null }).ToList();
 
-            GoToUseIncapacitatedAbilityPhase(necro);
             UseIncapacitatedAbility(necro, 1);
 
-            //verify damage was dealt and cards were drawn
-            QuickHPCheck(6);
-            QuickHandCheck(-3);
-        }
-
-        //once figure out a way to choose only 1 card or 2 cards to discard, add test cases for that
-
-        [Test()]
-        public void TestNecroIncap2_0CardDiscard()
-        {
-            SetupGameController("BaronBlade", "Cauldron.Necro", "Legacy", "Megalopolis");
-            StartGame();
-            SetHitPoints(legacy.CharacterCard, 20);
-
-            SetupIncap(baron);
-            AssertIncapacitated(necro);
-
-            //One hero may discard up to 3 cards, then regain 2 HP for each card discarded.
-            QuickHandStorage(legacy);
-            QuickHPStorage(legacy);
-            //using incap ability on legacy
-            DecisionSelectTarget = legacy.CharacterCard;
-            //setting legacy to discard 0 cards
-            DecisionDoNotSelectCard = SelectionType.DiscardCard;
-
-            GoToUseIncapacitatedAbilityPhase(necro);
-            UseIncapacitatedAbility(necro, 1);
-
-            //verify damage was dealt and cards were drawn
-            QuickHPCheck(0);
-            QuickHandCheck(0);
+            //verify damage was dealt and cards were drawn and discarded
+            QuickHPCheck(0, cardsToDiscard * 2, 0);
+            QuickHandCheck(0, -cardsToDiscard, 0);
+            AssertNumberOfCardsInTrash(legacy, cardsToDiscard);
         }
 
         [Test()]
         public void TestNecroIncap3()
         {
-            SetupGameController("Omnitron", "Cauldron.Necro", "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Legacy", "Fanatic", "Megalopolis");
             StartGame();
             SetHitPoints(legacy.CharacterCard, 20);
-            SetupIncap(omnitron);
+            SetupIncap(baron);
             AssertIncapacitated(necro);
 
             //Destroy all non-character cards in play to reduce variance
             GoToStartOfTurn(necro);
             DestroyCards((Card c) => c.IsInPlayAndHasGameText && !c.IsCharacter);
+            GoToUseIncapacitatedAbilityPhase(necro);
 
-
+            AssertNumberOfStatusEffectsInPlay(0);
 
             //Select a hero target. Increase damage dealt by that target by 3 and increase damage dealt to that target by 2 until the start of your next turn.
-            //using incap ability on legacy
-            DecisionSelectTarget = legacy.CharacterCard;
-            GoToUseIncapacitatedAbilityPhase(necro);
-            DestroyCards((Card c) => c.IsInPlayAndHasGameText && !c.IsCharacter);
+            //using incap ability on fanatic
+            DecisionSelectCard = fanatic.CharacterCard;
+            string dealtText = $"Increase damage dealt by {fanatic.Name} by 3.";
+            string takenText = $"Increase damage dealt to {fanatic.Name} by 2.";
+            AssertNextMessages(dealtText, takenText, dealtText, takenText);
+
             UseIncapacitatedAbility(necro, 2);
+            AssertNumberOfStatusEffectsInPlay(2);
+            AssertStatusEffectAssociatedTurnTaker(0, fanatic.TurnTaker);
+            AssertStatusEffectAssociatedTurnTaker(1, fanatic.TurnTaker);
 
-            GoToPlayCardPhase(legacy);
+            GoToPlayCardPhase(fanatic);
 
-            //try legacy dealing damage to omnitron, should be +3
-            QuickHPStorage(omnitron);
-            DealDamage(legacy, omnitron, 2, DamageType.Melee);
-            QuickHPCheck(-5);
+            //try fanatic dealing damage to omnitron, should be +3
+            QuickHPStorage(baron, legacy, fanatic);
+            DealDamage(fanatic, baron, 2, DamageType.Melee);
+            QuickHPCheck(-5, 0, 0);
 
-            //try omnitron dealing damage to legacy, should be +2
-            QuickHPStorage(legacy);
-            DealDamage(omnitron, legacy, 2, DamageType.Projectile);
-            QuickHPCheck(-4);
+            //try omnitron dealing damage to fanatic, should be +2
+            QuickHPStorage(baron, legacy, fanatic);
+            DealDamage(baron, fanatic, 2, DamageType.Projectile);
+            QuickHPCheck(0, 0, -4);
 
             //go to necro's next turn, should be normal damage
             GoToUseIncapacitatedAbilityPhase(necro);
 
-            QuickHPStorage(omnitron);
-            DealDamage(legacy, omnitron, 2, DamageType.Melee);
-            QuickHPCheck(-2);
-
-            QuickHPStorage(legacy);
-            DealDamage(omnitron, legacy, 2, DamageType.Projectile);
-            QuickHPCheck(-2);
-
+            AssertNumberOfStatusEffectsInPlay(0);
+            QuickHPStorage(baron, legacy, fanatic);
+            DealDamage(fanatic, baron, 2, DamageType.Melee);
+            QuickHPCheck(-2, 0, 0);
+            QuickHPStorage(baron, legacy, fanatic);
+            DealDamage(baron, fanatic, 2, DamageType.Projectile);
+            QuickHPCheck(0, 0, -2);
         }
 
         [Test()]
@@ -945,7 +958,7 @@ namespace CauldronTests
         }
 
         [Test]
-        
+
         public void TestTaintedBloodTiming([Values("NecroZombie", "Abomination", "DemonicImp", "Ghoul", "PossessedCorpse")] string undeadIdentifier)
         {
             SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Fanatic", "Megalopolis");
