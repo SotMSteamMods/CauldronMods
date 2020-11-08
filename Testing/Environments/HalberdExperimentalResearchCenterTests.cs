@@ -990,8 +990,83 @@ namespace CauldronTests
             DealDamage(ra.CharacterCard, mdp, 3, DamageType.Fire);
             //villain damage should be +1, hero w/ highest hp damage should be normal
             QuickHPCheck(-4, -4, -3);
+        }
+
+        [Test()]
+        public void TestHalberdSplinter_NoChemicalTriggers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //Set hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(haka.CharacterCard, 10);
+
+            //Destroy mdp to make it vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card battalion1 = GetCard("BladeBattalion");
+            PlayCard(battalion1);
+            Card redistributor = GetCard("ElementalRedistributor");
+            PlayCard(redistributor);
+            Card turret = GetCard("PoweredRemoteTurret");
+            PlayCard(turret);
 
 
+            GoToPlayCardPhase(halberd);
+
+            //we play out splinter
+            Card splinter = GetCard("HalberdSplinter");
+            PlayCard(splinter);
+            AssertIsInPlay(splinter);
+
+            //At the end of the environment turn, if there are no Chemical Triggers in play, this card deals the 3 villain targets with the lowest HP 1 projectile damage each.
+            //3 lowest hp are blade battalions
+            QuickHPStorage(battalion1, redistributor, turret, baron.CharacterCard);
+            GoToEndOfTurn(halberd);
+            QuickHPCheck(-1, -1, -1, 0);
+        }
+
+        [Test()]
+        public void TestHalberdSplinter_WithChemicalTriggers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //Set hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(haka.CharacterCard, 10);
+            SetHitPoints(tachyon.CharacterCard, 21);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToPlayCardPhase(halberd);
+
+            //we put a chem trigger in play
+            //this chem trigger plays omega
+            //this chem trigger reduces damage dealt to subjects, so it doesn't impact this test
+            Card chem = GetCard("HrCombatPheromones");
+            PlayCard(chem);
+            AssertIsInPlay(chem);
+
+            //the chem trigger plays omega
+            //destroy omega as it would impact this test
+            Card omega = GetCardInPlay("HalberdOmega");
+            DestroyCard(omega, baron.CharacterCard);
+
+            //we play out splinter
+            Card splinter = GetCard("HalberdSplinter");
+            PlayCard(splinter);
+            AssertIsInPlay(splinter);
+
+            //Otherwise, this card deal the 3 hero targets with the lowest HP 1 projectile damage each.
+            //3 lowest hero targets are ra, legacy, haka
+            QuickHPStorage(ra, legacy, haka, tachyon);
+            GoToEndOfTurn(halberd);
+            QuickHPCheck(-1, -1, -1, 0);
 
         }
 
