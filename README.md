@@ -28,8 +28,8 @@ channel with [Weekly Dev. Streams](https://www.youtube.com/playlist?list=PLGPBmj
 
 **What are you working on them**
 
-We are working to implement the core Cauldron decks, and be ready out of the gate
-when mods are available to have Cauldron ready to play.
+We are working to implement the core Cauldron decks so that they are ready to play out of the gate
+when mods are available.
 
 - HEROES:
   - Baccarat
@@ -45,3 +45,4 @@ when mods are available to have Cauldron ready to play.
 
 - ENVIRONMENTS:
   - The Wandering Isle
+  - FSC Continuance Wanderer - In Progress
