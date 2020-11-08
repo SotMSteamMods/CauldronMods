@@ -262,6 +262,101 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestHtAggressionStimulant_StartOfTurnIndestructible()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //go to haka's end of turn to prime environment
+            GoToEndOfTurn(haka);
+
+
+            Card combat = GetCard("HtAggressionStimulant");
+            PlayCard(combat);
+            AssertIsInPlay(combat);
+
+            //when this was played, alpha entered play
+
+            //This card is indestructible if at least 1 Test Subject is in play. 
+            //At the start of the environment turn, destroy this card.
+            GoToStartOfTurn(halberd);
+
+            //since there is a test subject in play, should not be destroyed
+            AssertIsInPlay(combat);
+
+        }
+
+        [Test()]
+        public void TestHtAggressionStimulant_StartOfTurnCanBeDestroye()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+
+            //go to haka's end of turn to prime environment
+            GoToEndOfTurn(haka);
+
+
+            Card stimulant = GetCard("HtAggressionStimulant");
+            PlayCard(stimulant);
+            AssertIsInPlay(stimulant);
+
+            //Destroy alpha so there are no test subjects in play
+            Card alpha = GetCardInPlay("HalberdAlpha");
+            DestroyCard(alpha, baron.CharacterCard);
+
+            //This card is indestructible if at least 1 Test Subject is in play. 
+            //At the start of the environment turn, destroy this card.
+            GoToStartOfTurn(halberd);
+            //since no test subjects in play, this card will destroy itself
+            AssertInTrash(stimulant);
+
+        }
+
+        [Test()]
+        public void TestHtAggressionStimulant_Play()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            Card alpha = GetCard("HalberdAlpha");
+            Card stimulant = GetCard("HtAggressionStimulant");
+
+            AssertInDeck(alpha);
+
+            //When this card enters play, search the environment deck and trash for Halberd-04: Alpha and put it into play, then shuffle the deck.
+            QuickShuffleStorage(halberd.TurnTaker.Deck);
+            PlayCard(stimulant);
+            AssertIsInPlay(alpha);
+            QuickShuffleCheck(1);
+
+        }
+
+        [Test()]
+        public void TestHtAggressionStimulant_Increase()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+
+            Card stimulant = GetCard("HtAggressionStimulant");
+            PlayCard(stimulant);
+            AssertIsInPlay(stimulant);
+
+            //grab the alpha test subject that was put into play
+            Card alpha = GetCardInPlay("HalberdAlpha");
+            AssertIsInPlay(alpha);
+
+            //Increase damage dealt by Test Subjects by 1.
+            QuickHPStorage(ra);
+            DealDamage(alpha, ra.CharacterCard, 3, DamageType.Fire);
+            QuickHPCheck(-4);
+
+
+
+        }
+
 
 
 
