@@ -353,12 +353,102 @@ namespace CauldronTests
             DealDamage(alpha, ra.CharacterCard, 3, DamageType.Fire);
             QuickHPCheck(-4);
 
+        }
 
+        [Test()]
+        public void TestHcBSwarmingAgent_StartOfTurnIndestructible()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //go to haka's end of turn to prime environment
+            GoToEndOfTurn(haka);
+
+            Card alpha = GetCard("HalberdAlpha");
+            Card omega = GetCard("HalberdOmega");
+
+            PutOnDeck("EmergencyReleaseProtocol");
+            PutOnDeck(halberd, alpha);
+            PutOnDeck(halberd, omega);
+            PutOnDeck("SubjectRecyclingProject");
+
+
+            Card agent = GetCard("HcBSwarmingAgent");
+            PlayCard(agent);
+            AssertIsInPlay(agent);
+
+            //when this was played, alpha and omega should have entered play
+
+            //This card is indestructible if at least 1 Test Subject is in play. 
+            //At the start of the environment turn, destroy this card.
+            GoToStartOfTurn(halberd);
+
+            //since there are 2 test subjects in play, should not be destroyed
+            AssertIsInPlay(agent);
 
         }
 
+        [Test()]
+        public void TestHcBSwarmingAgent_StartOfTurnCanBeDestroye()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
 
 
+            //go to haka's end of turn to prime environment
+            GoToEndOfTurn(haka);
+
+            Card alpha = GetCard("HalberdAlpha");
+            Card omega = GetCard("HalberdOmega");
+
+            PutOnDeck("EmergencyReleaseProtocol");
+            PutOnDeck(halberd, alpha);
+            PutOnDeck(halberd, omega);
+            PutOnDeck("SubjectRecyclingProject");
+
+            Card agent = GetCard("HcBSwarmingAgent");
+            PlayCard(agent);
+            AssertIsInPlay(agent);
+
+            //Destroy alpha and omega so there are no test subjects in play
+            
+            DestroyCard(alpha, baron.CharacterCard);
+            DestroyCard(omega, baron.CharacterCard);
+
+            //This card is indestructible if at least 1 Test Subject is in play. 
+            //At the start of the environment turn, destroy this card.
+            GoToStartOfTurn(halberd);
+            //since no test subjects in play, this card will destroy itself
+            AssertInTrash(agent);
+
+        }
+
+        [Test()]
+        public void TestHcBSwarmingAgent_Play()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            Card agent = GetCard("HcBSwarmingAgent");
+            Card alpha = GetCard("HalberdAlpha");
+            Card omega = GetCard("HalberdOmega");
+
+            PutOnDeck("EmergencyReleaseProtocol");
+            PutOnDeck(halberd, alpha);
+            PutOnDeck(halberd, omega);
+            PutOnDeck("SubjectRecyclingProject");
+
+            //When this card enters play, reveal cards from the top of the environment deck until 2 Test Subjects have been revealed. Put them into play and shuffle the remaining cards into the deck.
+            QuickShuffleStorage(halberd.TurnTaker.Deck);
+            AssertInDeck(alpha);
+            AssertInDeck(omega);
+            PlayCard(agent);
+            QuickShuffleCheck(1);
+            AssertIsInPlay(alpha);
+            AssertIsInPlay(omega);
+            AssertNumberOfCardsInRevealed(halberd, 0);
+
+        }
 
     }
 }
