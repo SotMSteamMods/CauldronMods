@@ -432,10 +432,10 @@ namespace CauldronTests
             AssertIsInPlay(saint);
             //get the number of cards in the trash
             int trash = baccarat.TurnTaker.Trash.NumberOfCards;
-
+            QuickShuffleStorage(baccarat);
             //At the start of your turn, shuffle 2 cards with the same name from your trash into your deck...
             GoToStartOfTurn(baccarat);
-
+            QuickShuffleCheck(1);
             //verify that there are still 2 cards in play, character card and saint
             AssertNumberOfCardsInPlay(baccarat, 2);
             AssertIsInPlay(saint);
@@ -506,10 +506,10 @@ namespace CauldronTests
             AssertIsInPlay(sinner);
             //get the number of cards in the trash
             int trash = baccarat.TurnTaker.Trash.NumberOfCards;
-
+            QuickShuffleStorage(baccarat);
             //At the start of your turn, shuffle 2 cards with the same name from your trash into your deck...
             GoToStartOfTurn(baccarat);
-
+            QuickShuffleCheck(1);
             //verify that there are still 2 cards in play, character card and sinner
             AssertNumberOfCardsInPlay(baccarat, 2);
             AssertIsInPlay(sinner);
@@ -669,17 +669,19 @@ namespace CauldronTests
             Card trick2 = GetCard("CheapTrick", 2);
             Card toss1 = GetCard("CardToss", 1);
             Card toss2 = GetCard("CardToss", 2);
-            Card bridge1 = GetCard("GraveyardBridge", 1);
-            Card bridge2 = GetCard("GraveyardBridge", 2);
+            Card ace1 = GetCard("AceInTheHole", 1);
+            Card ace2 = GetCard("AceInTheHole", 2);
             Card saint = GetCard("AceOfSaints");
-            IEnumerable<Card> trashCards = new Card[] { trick1, trick2, saint, toss1, toss2, bridge1, bridge2 };
+            IEnumerable<Card> trashCards = new Card[] { trick1, trick2, saint, toss1, toss2, ace1, ace2 };
             PutInTrash(trashCards);
 
             DecisionsYesNo = new bool[]{ true, true, true };
-
+            QuickShuffleStorage(baccarat.TurnTaker.Deck);
             Card house = GetCard("BringDownTheHouse");
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
             PlayCard(house);
+            QuickShuffleCheck(0);
+            //should have 2 cards in the trash, bring down the house and saints
             AssertNumberOfCardsInTrash(baccarat, 2);
             AssertInTrash(saint);
             AssertInTrash(house);
@@ -687,8 +689,8 @@ namespace CauldronTests
             AssertInDeck(trick2);
             AssertInDeck(toss1);
             AssertInDeck(toss2);
-            AssertInDeck(bridge1);
-            AssertInDeck(bridge2);
+            AssertInDeck(ace1);
+            AssertInDeck(ace2);
         }
 
         [Test()]
@@ -958,7 +960,9 @@ namespace CauldronTests
             int cheaps = 0;
 
             PutOnDeck(baccarat, list);
+            QuickShuffleStorage(baccarat);
             PlayCard(cheap);
+            QuickShuffleCheck(1);
             //Discard the top card of your deck.
             //Reveal cards from the top of your deck until you reveal a trick. Shuffle the other cards back into your deck and put the trick into play.
             AssertNumberOfCardsInTrash(baccarat, 3);
@@ -988,7 +992,9 @@ namespace CauldronTests
             PutInHand(bridge);
 
             GoToPlayCardPhase(baccarat);
+            QuickShuffleStorage(baccarat);
             PlayCard(bridge);
+            QuickShuffleCheck(1);
             AssertNumberOfCardsInTrash(baccarat, 37);
             GoToStartOfTurn(baron);
 
