@@ -661,14 +661,15 @@ namespace CauldronTests
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
-            PutInHand(HeroController, "HeavySwing");
+            Card heavy = PutInHand(HeroController, "HeavySwing");
 
             PrintSeparator("Test");
             GoToPlayCardPhase(HeroController);
             QuickHPStorage(baron);
             DecisionSelectTarget = baron.CharacterCard;
-            PlayCardFromHand(HeroController, "HeavySwing");
+            PlayCard(HeroController, heavy);
             QuickHPCheck(-3);
+            AssertInTrash(heavy);
         }
 
         [Test]
