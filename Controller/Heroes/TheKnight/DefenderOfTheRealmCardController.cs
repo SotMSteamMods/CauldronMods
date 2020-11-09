@@ -29,7 +29,7 @@ namespace Cauldron.TheKnight
             }
             var storedResult = new List<SelectCardDecision>();
             criteria = new LinqCardCriteria(c => c.IsHero && c.IsTarget, "hero target");
-            coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.IncreaseDamage, criteria, storedResult, false, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.ReduceDamageTaken, criteria, storedResult, false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

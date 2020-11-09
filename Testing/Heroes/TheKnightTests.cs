@@ -609,7 +609,7 @@ namespace CauldronTests
 
             GoToPlayCardPhase(HeroController);
             QuickShuffleStorage(HeroController.TurnTaker.Deck);
-            PlayCardFromHand(HeroController, "DefenderOfTheRealm");
+            PlayCard(HeroController, realm);
             AssertInTrash(realm);
 
             QuickShuffleCheck(1);
@@ -619,6 +619,12 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(1);
             AssertStatusEffectAssociatedTurnTaker(0, wraith.TurnTaker);
             AssertStatusEffectsContains(messageText);
+            //Test that the reducing effect works as expected
+            QuickHPStorage(wraith);
+            DealDamage(baron, wraith, 3, DamageType.Melee);
+            //should have been reduced by 1
+            QuickHPCheck(-2);
+
 
             PrintSeparator("Change turns");
             GoToEndOfTurn(wraith);
@@ -627,11 +633,21 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(1);
             AssertStatusEffectAssociatedTurnTaker(0, wraith.TurnTaker);
             AssertStatusEffectsContains(messageText);
+            //Test that the reducing effect works as expected
+            QuickHPStorage(wraith);
+            DealDamage(baron, wraith, 3, DamageType.Melee);
+            //should have been reduced by 1
+            QuickHPCheck(-2);
 
             PrintSeparator("Effect expires");
             AssertNextMessageContains(messageText);
             GoToStartOfTurn(HeroController);
             AssertNumberOfStatusEffectsInPlay(0);
+            //Test that the reducing effect has expired
+            QuickHPStorage(wraith);
+            DealDamage(baron, wraith, 3, DamageType.Melee);
+            //should have not been reduced
+            QuickHPCheck(-3);
         }
 
         [Test]
