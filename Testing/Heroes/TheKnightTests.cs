@@ -868,7 +868,7 @@ namespace CauldronTests
             PrintSeparator("Test");
 
             QuickHandStorage(HeroController);
-            PlayCardFromHand(HeroController, testCard.Identifier);
+            PlayCard(HeroController, testCard);
             QuickHandCheck(-1);
             AssertInPlayArea(HeroController, testCard);
             AssertIsTarget(testCard, 5);
@@ -893,7 +893,7 @@ namespace CauldronTests
             DealDamage(baron, wraith.CharacterCard, 1, DamageType.Psychic);
             QuickHPCheck(0, 0, -1);
 
-            PrintSeparator("check no redirect from helm");
+            PrintSeparator("check no redirect from mail");
             QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
             DealDamage(baron, testCard, 1, DamageType.Psychic);
             QuickHPCheck(0, -1, 0);
