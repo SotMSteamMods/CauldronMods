@@ -1155,7 +1155,7 @@ namespace CauldronTests
             GoToPlayCardPhase(HeroController);
             QuickHandStorage(HeroController);
             AssertNumberOfCardsInPlay(HeroController, 1);
-            PlayCardFromHand(HeroController, "SureFooting");
+            PlayCard(HeroController, testCard);
             AssertNumberOfCardsInPlay(HeroController, 2);
             QuickHandCheck(-1);
             GoToUsePowerPhase(HeroController);
