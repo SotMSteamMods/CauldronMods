@@ -546,7 +546,7 @@ namespace CauldronTests
 
             GoToPlayCardPhase(HeroController);
             QuickShuffleStorage(HeroController.TurnTaker.Deck);
-            PlayCardFromHand(HeroController, "ChampionOfTheRealm");
+            PlayCard(HeroController, realm);
             AssertInTrash(HeroController, realm);
             
             QuickShuffleCheck(1);
@@ -556,6 +556,11 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(1);
             AssertStatusEffectAssociatedTurnTaker(0, wraith.TurnTaker);
             AssertStatusEffectsContains(messageText);
+            //Test that the increasing effect works as expected
+            QuickHPStorage(baron);
+            DealDamage(wraith, baron, 3, DamageType.Melee);
+            //should have been increased by 1
+            QuickHPCheck(-4);
 
             PrintSeparator("Change turns");
             GoToEndOfTurn(wraith);
@@ -564,11 +569,21 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(1);
             AssertStatusEffectAssociatedTurnTaker(0, wraith.TurnTaker);
             AssertStatusEffectsContains(messageText);
+            //Test that the increasing effect works as expected
+            QuickHPStorage(baron);
+            DealDamage(wraith, baron, 3, DamageType.Melee);
+            //should have been increased by 1
+            QuickHPCheck(-4);
 
             PrintSeparator("Effect expires");
             AssertNextMessageContains(messageText);
             GoToStartOfTurn(HeroController);
             AssertNumberOfStatusEffectsInPlay(0);
+            //Test that the increasing effect expired
+            QuickHPStorage(baron);
+            DealDamage(wraith, baron, 3, DamageType.Melee);
+            //should have not been increased
+            QuickHPCheck(-3);
         }
 
         [Test]
