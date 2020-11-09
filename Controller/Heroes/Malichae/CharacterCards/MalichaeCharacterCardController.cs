@@ -13,7 +13,9 @@ namespace Cauldron.Malichae
         }
         public override IEnumerator UsePower(int index = 0)
         {
-            var coroutine = base.DrawCards(this.DecisionMaker, 2);
+            //PowerNumerals required on powers
+            int cardsToDraw = GetPowerNumeral(0, 2);
+            var coroutine = base.DrawCards(this.DecisionMaker, cardsToDraw);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
