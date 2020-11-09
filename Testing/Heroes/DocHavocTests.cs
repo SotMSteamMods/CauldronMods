@@ -41,7 +41,6 @@ namespace CauldronTests
 
             GoToUsePowerPhase(DocHavoc);
             DecisionSelectTarget = ra.CharacterCard;
-            DecisionSelectTurnTaker = ra.HeroTurnTaker;
 
             QuickHandStorage(ra);
             QuickHPStorage(ra);
@@ -73,7 +72,6 @@ namespace CauldronTests
 
             GoToUsePowerPhase(DocHavoc);
             DecisionSelectTarget = legacy.CharacterCard;
-            DecisionSelectTurnTaker = legacy.HeroTurnTaker;
 
             QuickHandStorage(legacy);
             QuickHPStorage(legacy);
@@ -462,11 +460,43 @@ namespace CauldronTests
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
             });
 
+            PutOnDeck(DocHavoc, GetCard(BrawlerCardController.Identifier));
+            PutOnDeck(DocHavoc, GetCard(StimShotCardController.Identifier));
+            PutOnDeck(DocHavoc, GetCard(DocsFlaskCardController.Identifier));
+
             StartGame();
+
+            PrintHand(DocHavoc);
+
+            QuickHandStorage(DocHavoc, tempest);
+
+
+            DecisionSelectCards = new[] 
+            {
+                GetCardFromHand(RecklessChargeCardController.Identifier), 
+                null,
+                GetCard(DocsFlaskCardController.Identifier),
+                GetCard(BrawlerCardController.Identifier),
+                GetCard(StimShotCardController.Identifier)
+            };
 
             // Act
             GoToPlayCardPhase(DocHavoc);
             PlayCardFromHand(DocHavoc, SearchAndRescueCardController.Identifier);
+
+            PrintHand(DocHavoc);
+
+            // Assert
+            // DocHavoc started with 4, played Search & Rescue (-1), discarded Reckless Charge (-1), put Docs Flask into hand (+1)
+            // Tempest did not discard so Search and Rescue did not proc for him
+            QuickHandCheck(-1, 0);
+
+            // Reckless charge and Stim shot should be in Doc's trash
+            Assert.IsNotNull(GetCardFromTrash(DocHavoc, RecklessChargeCardController.Identifier) != null);
+            Assert.IsNotNull(GetCardFromTrash(DocHavoc, StimShotCardController.Identifier) != null);
+
+            // Bottom of Doc's deck should be Brawler
+            Assert.AreEqual(BrawlerCardController.Identifier, GetBottomCardOfDeck(DocHavoc).Identifier);
 
         }
     }
