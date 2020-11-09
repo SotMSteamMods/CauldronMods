@@ -504,7 +504,9 @@ namespace CauldronTests
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
-            DealDamage(baron, HeroController.CharacterCard, 5, DamageType.Psychic);
+            //set hitpoints to give room for gaining hp
+            SetHitPoints(HeroController.CharacterCard, 20);
+
             PutInHand(HeroController, "CatchYourBreath");
             GoToPlayCardPhase(HeroController);
 
