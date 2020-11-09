@@ -466,10 +466,7 @@ namespace CauldronTests
 
             StartGame();
 
-            PrintHand(DocHavoc);
-
             QuickHandStorage(DocHavoc, tempest);
-
 
             DecisionSelectCards = new[] 
             {
@@ -484,9 +481,8 @@ namespace CauldronTests
             GoToPlayCardPhase(DocHavoc);
             PlayCardFromHand(DocHavoc, SearchAndRescueCardController.Identifier);
 
-            PrintHand(DocHavoc);
-
             // Assert
+
             // DocHavoc started with 4, played Search & Rescue (-1), discarded Reckless Charge (-1), put Docs Flask into hand (+1)
             // Tempest did not discard so Search and Rescue did not proc for him
             QuickHandCheck(-1, 0);
@@ -498,6 +494,38 @@ namespace CauldronTests
             // Bottom of Doc's deck should be Brawler
             Assert.AreEqual(BrawlerCardController.Identifier, GetBottomCardOfDeck(DocHavoc).Identifier);
 
+        }
+
+        [Test]
+        public void TestImmediateEvac()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                ImmediateEvacCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            PutInTrash(DocHavoc, new List<Card>() { GetCard(DocsFlaskCardController.Identifier), GetCard(BrawlerCardController.Identifier)});
+
+            DealDamage(DocHavoc, baron, 5, DamageType.Energy);
+
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DealDamage(DocHavoc, mdp, 5, DamageType.Lightning);
+            QuickHPStorage(baron.CharacterCard, mdp);
+
+            DecisionSelectCards = new[] {GetCardFromHand(DocHavoc, GasMaskCardController.Identifier), null};
+
+            // Act
+            GoToPlayCardPhase(DocHavoc);
+            PlayCardFromHand(DocHavoc, ImmediateEvacCardController.Identifier);
+
+            // Assert
+            QuickHPCheck(2, 2);
         }
     }
 }
