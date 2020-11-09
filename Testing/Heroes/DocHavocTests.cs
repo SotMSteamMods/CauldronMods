@@ -533,5 +533,35 @@ namespace CauldronTests
             QuickHandCheck(0, 1);
 
         }
+
+        [Test]
+        public void TestPainkillers()
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                PainkillersCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+
+            // Act
+
+            DecisionNextToCard = tempest.CharacterCard;
+            DecisionSelectTarget = GetCardInPlay("MobileDefensePlatform");
+
+            GoToPlayCardPhase(DocHavoc);
+            PlayCardFromHand(DocHavoc, PainkillersCardController.Identifier);
+
+            GoToStartOfTurn(tempest);
+
+            PutInHand(tempest, "LightningSlash");
+            PlayCardFromHand(tempest, "LightningSlash");
+            // Assert
+
+
+        }
     }
 }
