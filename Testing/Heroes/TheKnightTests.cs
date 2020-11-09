@@ -918,14 +918,14 @@ namespace CauldronTests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
             DiscardAllCards(HeroController);
 
-            PutInHand(HeroController, "ShortSword");
-            PutInHand(HeroController, "ShortSword");
+            Card sword1 = PutInHand(HeroController, "ShortSword");
+            Card sword2 = PutInHand(HeroController, "ShortSword");
             GoToPlayCardPhase(HeroController);
 
             PrintSeparator("Test");
             AssertNumberOfCardsInPlay(HeroController, 1);
             QuickHandStorage(HeroController);
-            PlayCardFromHand(HeroController, "ShortSword");
+            PlayCard(HeroController, sword1);
             AssertNumberOfCardsInPlay(HeroController, 2);
             QuickHandCheck(-1);
 
@@ -947,14 +947,14 @@ namespace CauldronTests
             PrintSeparator("Multiples stack correctly");
             AssertNumberOfCardsInPlay(HeroController, 2);
             QuickHandStorage(HeroController);
-            PlayCardFromHand(HeroController, "ShortSword");
+            PlayCard(HeroController, sword2);
             AssertNumberOfCardsInPlay(HeroController, 3);
             QuickHandCheck(-1);
 
             PrintSeparator("Damage increased by 2");
             QuickHPStorage(baron);
             DealDamage(HeroController, baron, 1, DamageType.Radiant);
-            QuickHPCheck(-3); //increased by 1
+            QuickHPCheck(-3); //increased by 2
 
             PrintSeparator("Effect removed when cards leave play");
             DestroyCard("ShortSword");
@@ -983,13 +983,14 @@ namespace CauldronTests
             PrintSeparator("Test");
             AssertNumberOfCardsInPlay(HeroController, 1);
             QuickHandStorage(HeroController);
-            PlayCardFromHand(HeroController, "ShortSword");
+            PlayCard(HeroController, testCard);
             AssertNumberOfCardsInPlay(HeroController, 2);
             QuickHandCheck(-1);
 
             QuickHPStorage(baron);
             DecisionSelectTarget = baron.CharacterCard;
             UsePower(testCard);
+            //power deals 2 damage, +1 buff from itself = 3 total
             QuickHPCheck(-3); 
         }
 
