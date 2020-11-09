@@ -330,6 +330,78 @@ namespace CauldronTests
         }
 
         [Test]
+        [Description("TheKnight - Arm Yourself - Choose 1 Play")]
+        public void ArmYourself_Choose1Play()
+        {
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            PrintSeparator("Setup");
+            //nuke all baron blades cards so his ongoings don't break tests
+            DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
+
+            PutInHand(HeroController, "ArmYourself");
+
+            PrintSeparator("Put some random cards in the trash");
+            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(5));
+            //exclude PlateHelm since it draws a card
+            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) && c.Identifier != "PlateHelm").Take(5));
+            GoToPlayCardPhase(HeroController);
+
+            PrintSeparator("Test");
+            AssertNumberOfCardsInPlay(HeroController, 1);
+            QuickHandStorage(HeroController);
+
+            //get 1 equipment from the trash, then append null at the end to force only 1 equipment taken
+            List<Card> selectedCards = (HeroController.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c)).Take(1)).ToList();
+            selectedCards.Add(null);
+            DecisionSelectCards = selectedCards;
+
+            DecisionMoveCardDestination = new MoveCardDestination(HeroController.HeroTurnTaker.PlayArea); //Select the non-default decision just because
+            PlayCardFromHand(HeroController, "ArmYourself");
+            //no cards should have returned to hand for net -1
+            //1 card should have been played, so 2 cards now in play
+            QuickHandCheck(-1);
+            AssertNumberOfCardsInPlay(HeroController, 2);
+        }
+
+        [Test]
+        [Description("TheKnight - Arm Yourself - Choose 1 Play")]
+        public void ArmYourself_Choose1Hand()
+        {
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            PrintSeparator("Setup");
+            //nuke all baron blades cards so his ongoings don't break tests
+            DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
+
+            PutInHand(HeroController, "ArmYourself");
+
+            PrintSeparator("Put some random cards in the trash");
+            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(5));
+            //exclude PlateHelm since it draws a card
+            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) && c.Identifier != "PlateHelm").Take(5));
+            GoToPlayCardPhase(HeroController);
+
+            PrintSeparator("Test");
+            AssertNumberOfCardsInPlay(HeroController, 1);
+            QuickHandStorage(HeroController);
+
+            //get 1 equipment from the trash, then append null at the end to force only 1 equipment taken
+            List<Card> selectedCards = (HeroController.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c)).Take(1)).ToList();
+            selectedCards.Add(null);
+            DecisionSelectCards = selectedCards;
+
+            DecisionMoveCardDestination = new MoveCardDestination(HeroController.HeroTurnTaker.Hand); //Select the non-default decision just because
+            PlayCardFromHand(HeroController, "ArmYourself");
+            //1 card should have returned to hand for net 0
+            //no card should have been played, so only the character card is still in play
+            QuickHandCheck(0);
+            AssertNumberOfCardsInPlay(HeroController, 1);
+        }
+
+        [Test]
         [Description("TheKnight - Arm Yourself - Choose 2")]
         public void ArmYourself_Choose2()
         {
@@ -352,7 +424,7 @@ namespace CauldronTests
             AssertNumberOfCardsInPlay(HeroController, 1);
             QuickHandStorage(HeroController);
             DecisionSelectCards = HeroController.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c)).Take(2);
-            DecisionSelectLocation = new LocationChoice(HeroController.HeroTurnTaker.PlayArea); //Select the non-default decision just because
+            DecisionMoveCardDestination = new MoveCardDestination(HeroController.HeroTurnTaker.PlayArea); //Select the non-default decision just because
             PlayCardFromHand(HeroController, "ArmYourself");
             QuickHandCheck(0);
             AssertNumberOfCardsInPlay(HeroController, 2);
