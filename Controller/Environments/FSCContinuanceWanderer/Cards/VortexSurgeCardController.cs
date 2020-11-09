@@ -27,7 +27,16 @@ namespace Cauldron.FSCContinuanceWanderer
 
         private IEnumerator DiscardCardResponse(DrawCardAction action)
         {
-            IEnumerator coroutine = base.SelectAndDiscardCards(this.DecisionMaker, new int?(1));
+            IEnumerator coroutine = base.GameController.SelectHeroToDiscardCard(this.DecisionMaker, optionalDiscardCard: false, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
