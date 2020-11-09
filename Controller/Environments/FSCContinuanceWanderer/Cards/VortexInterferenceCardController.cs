@@ -25,7 +25,7 @@ namespace Cauldron.FSCContinuanceWanderer
             base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction p) => p.CardEnteringPlay.IsEnvironment, (base.DestroyThisCardResponse), TriggerType.DestroySelf, TriggerTiming.After);
         }
 
-        public IEnumerator DestroyHeroOngoingOrEquipmentResponse(UsePowerAction action)
+        private IEnumerator DestroyHeroOngoingOrEquipmentResponse(UsePowerAction action)
         {
             IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
