@@ -39,10 +39,15 @@ namespace Cauldron
         public override void AddTriggers()
         {
             //Whenever another hero would play a card, use a power, or draw a card, instead the hero next to this card does that respective action.
+            //When a Play Card/Use Power/Draw Card phase is entered then give the Superimposed target those actions instead
             base.AddPhaseChangeTrigger((TurnTaker turnTaker) => turnTaker.IsHero && turnTaker != cardThisIsNextTo.NativeDeck.OwnerTurnTaker, (Phase phase) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(phase), null, this.SuperimposedPhaseResponse, new TriggerType[] { TriggerType.SetPhaseActionCount, TriggerType.PreventPhaseAction }, TriggerTiming.After);
+            //If something were to make a hero play. Instead the Superimposed plays.
             base.AddTrigger<PlayCardAction>((PlayCardAction action) => action.DecisionMaker != superimposedTurnTakerController && action.DecisionMaker.IsHero, SuperimposePlayResponse, TriggerType.PlayCard, TriggerTiming.Before);
+            //If something were to make a hero use a power. Instead the Superimposed plays.
             base.AddTrigger<UsePowerAction>((UsePowerAction action) => action.DecisionMaker != superimposedTurnTakerController && action.DecisionMaker.IsHero, SuperimposePowerResponse, TriggerType.UsePower, TriggerTiming.Before);
+            //If something were to make a hero draw a card. Instead the Superimposed does.
             base.AddTrigger<DrawCardAction>((DrawCardAction action) => action.DecisionMaker != superimposedTurnTakerController && action.DecisionMaker.IsHero, SuperimposeDrawResponse, TriggerType.DrawCard, TriggerTiming.Before);
+
             //At the start of the environment turn, destroy this card.
             base.AddStartOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(base.DestroyThisCardResponse), TriggerType.DestroySelf);
         }
@@ -131,7 +136,7 @@ namespace Cauldron
         private IEnumerator SuperimposeDrawResponse(DrawCardAction action)
         {
             IEnumerator coroutine = CancelAction(action);
-            IEnumerator coroutine2 = base.DrawCards(superimposedTurnTakerController, actionCount, true);
+            IEnumerator coroutine2 = base.DrawCards(superimposedTurnTakerController, 1, true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
