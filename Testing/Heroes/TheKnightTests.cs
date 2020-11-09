@@ -957,8 +957,8 @@ namespace CauldronTests
             QuickHPCheck(-3); //increased by 2
 
             PrintSeparator("Effect removed when cards leave play");
-            DestroyCard("ShortSword");
-            DestroyCard("ShortSword");
+            DestroyCard(sword1);
+            DestroyCard(sword2);
 
             QuickHPStorage(baron);
             DealDamage(HeroController, baron, 1, DamageType.Radiant);
@@ -995,8 +995,8 @@ namespace CauldronTests
         }
 
         [Test]
-        [Description("TheKnight - StalwartShield")]
-        public void StalwartShield()
+        [Description("TheKnight - StalwartShield - Character Targeted")]
+        public void StalwartShield_CharacterTargeted()
         {
             SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
             StartGame();
@@ -1006,14 +1006,14 @@ namespace CauldronTests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
             DiscardAllCards(HeroController);
 
-            PutInHand(HeroController, "StalwartShield");
-            PutInHand(HeroController, "StalwartShield");
+            Card shield1 = PutInHand(HeroController, "StalwartShield");
+            Card shield2 = PutInHand(HeroController, "StalwartShield");
             GoToPlayCardPhase(HeroController);
 
             PrintSeparator("Test");
             AssertNumberOfCardsInPlay(HeroController, 1);
             QuickHandStorage(HeroController);
-            PlayCardFromHand(HeroController, "StalwartShield");
+            PlayCard(HeroController, shield1);
             AssertNumberOfCardsInPlay(HeroController, 2);
             QuickHandCheck(-1);
 
@@ -1035,7 +1035,7 @@ namespace CauldronTests
             PrintSeparator("Multiples stack correctly");
             AssertNumberOfCardsInPlay(HeroController, 2);
             QuickHandStorage(HeroController);
-            PlayCardFromHand(HeroController, "StalwartShield");
+            PlayCard(HeroController, shield2);
             AssertNumberOfCardsInPlay(HeroController, 3);
             QuickHandCheck(-1);
 
@@ -1045,11 +1045,89 @@ namespace CauldronTests
             QuickHPCheck(-1); //reduced by 2
 
             PrintSeparator("Effect removed when cards leave play");
-            DestroyCard("StalwartShield");
-            DestroyCard("StalwartShield");
+            DestroyCard(shield1);
+            DestroyCard(shield2);
 
             QuickHPStorage(HeroController);
             DealDamage(baron, HeroController, 1, DamageType.Energy);
+            QuickHPCheck(-1);
+        }
+
+        [Test]
+        [Description("TheKnight - StalwartShield - Equipment Targeted")]
+        public void StalwartShield_EquipmentTargeted()
+        {
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            PrintSeparator("Setup");
+            //nuke all baron blades cards so his ongoings don't break tests
+            DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
+            DiscardAllCards(HeroController);
+
+            Card shield1 = PutInHand(HeroController, "StalwartShield");
+            Card shield2 = PutInHand(HeroController, "StalwartShield");
+            
+            //put an equipment in play to test equipment reduction works
+            //put a wraith equipment in play to make sure only applies to the knight's equipment
+            Card equipment = PutInHand(HeroController, "PlateMail");
+            Card wraithEquipment = PutInHand(wraith, "InfraredEyepiece");
+            PlayCard(equipment);
+            PlayCard(wraithEquipment);
+
+            //really janky code to make infrared eyepiece have hp
+            RunCoroutine(base.GameController.MakeTargettable(wraithEquipment, 6, 6, base.GetCardController(wraith.CharacterCard).GetCardSource()));
+
+            GoToPlayCardPhase(HeroController);
+
+            PrintSeparator("Test");
+            AssertNumberOfCardsInPlay(HeroController, 2);
+            QuickHandStorage(HeroController);
+            PlayCard(HeroController, shield1);
+            AssertNumberOfCardsInPlay(HeroController, 3);
+            QuickHandCheck(-1);
+
+            PrintSeparator("Damage reduced by 1");
+            QuickHPStorage(equipment);
+            DealDamage(baron.CharacterCard, equipment, 2, DamageType.Energy);
+            QuickHPCheck(-1); //reduced by 1
+
+            PrintSeparator("Irreducible not effected");
+            QuickHPStorage(equipment);
+            DealDamage(baron.CharacterCard, equipment, 2, DamageType.Energy, true);
+            QuickHPCheck(-2);
+
+            //reset to max health
+            SetHitPoints(equipment, 5);
+
+            PrintSeparator("Other Damage not reduced");
+            QuickHPStorage(baron);
+            DealDamage(wraith, baron, 1, DamageType.Radiant);
+            QuickHPCheck(-1);
+
+            PrintSeparator("Other Equipment not reduced");
+            QuickHPStorage(wraithEquipment);
+            DealDamage(baron.CharacterCard, wraithEquipment, 1, DamageType.Radiant);
+            QuickHPCheck(-1);
+
+            PrintSeparator("Multiples stack correctly");
+            AssertNumberOfCardsInPlay(HeroController, 3);
+            QuickHandStorage(HeroController);
+            PlayCard(HeroController, shield2);
+            AssertNumberOfCardsInPlay(HeroController, 4);
+            QuickHandCheck(-1);
+
+            PrintSeparator("Damage reduced by 2");
+            QuickHPStorage(equipment);
+            DealDamage(baron.CharacterCard, equipment, 3, DamageType.Energy);
+            QuickHPCheck(-1); //reduced by 2
+
+            PrintSeparator("Effect removed when cards leave play");
+            DestroyCard(shield1);
+            DestroyCard(shield2);
+
+            QuickHPStorage(equipment);
+            DealDamage(baron.CharacterCard, equipment, 1, DamageType.Energy);
             QuickHPCheck(-1);
         }
 
