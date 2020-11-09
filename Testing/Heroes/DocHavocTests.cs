@@ -508,19 +508,21 @@ namespace CauldronTests
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
             });
 
-            PutInTrash(DocHavoc, new List<Card>() { GetCard(DocsFlaskCardController.Identifier), GetCard(BrawlerCardController.Identifier)});
-
-            DealDamage(DocHavoc, baron, 5, DamageType.Energy);
+            SetHitPoints(baron, 35);
 
             StartGame();
+
+            PutInTrash(DocHavoc, new List<Card>() { GetCard(DocsFlaskCardController.Identifier), GetCard(BrawlerCardController.Identifier) });
+            PutInTrash(tempest, new List<Card>() { GetCard("ChainLightning"), GetCard("FlashFlood") });
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DealDamage(DocHavoc, mdp, 5, DamageType.Lightning);
             QuickHPStorage(baron.CharacterCard, mdp);
+            QuickHandStorage(DocHavoc, tempest);
 
-            DecisionSelectFunctions = new int?[]{ 0, 1};
+            DecisionSelectFunctions = new int?[]{ 1, 0};
 
-            DecisionSelectCards = new[] {GetCardFromHand(DocHavoc, GasMaskCardController.Identifier), null};
+            DecisionSelectCards = new[] {GetCardFromHand(DocHavoc, RecklessChargeCardController.Identifier), GetCardFromTrash(tempest, "FlashFlood") };
 
             // Act
             GoToPlayCardPhase(DocHavoc);
@@ -528,6 +530,8 @@ namespace CauldronTests
 
             // Assert
             QuickHPCheck(2, 2); // Villain HP gain check
+            QuickHandCheck(0, 1);
+
         }
     }
 }

@@ -19,7 +19,6 @@ namespace Cauldron.DocHavoc
         public static string Identifier = "ImmediateEvac";
         
         private const int HpGain = 2;
-        private const int CardsToDiscard = 1;
         private const int CardsToDrawFromDeck = 2;
 
         private const string ChoiceTextSelectTrashIntoHand = "Take a card from your trash and place it in your hand";
@@ -31,19 +30,24 @@ namespace Cauldron.DocHavoc
 
         public override IEnumerator Play()
         {
-
             IEnumerable<Function> Functions(HeroTurnTakerController h) => new List<Function>()
             {
-                new Function(h, ChoiceTextSelectTrashIntoHand, SelectionType.MoveCardToHandFromTrash, () => TakeCardFromTrashResponse(h.CharacterCard)), 
-                new Function(h, ChoiceTextDiscardAndDraw, SelectionType.DiscardAndDrawCard, () => DiscardCardAndDrawCardsResponse(h.CharacterCard))
-            };
+                new Function(h, ChoiceTextSelectTrashIntoHand, SelectionType.MoveCardToHandFromTrash, 
+                    () => base.GameController.SelectCardFromLocationAndMoveIt(h, h.TurnTaker.Trash, 
+                        new LinqCardCriteria((Card c) => c.Location.Equals(h.TurnTaker.Trash)), 
+                        new MoveCardDestination[] { new MoveCardDestination(h.HeroTurnTaker.Hand, 
+                            false, false, false) }), null, null, ChoiceTextSelectTrashIntoHand),
 
+                new Function(h, ChoiceTextDiscardAndDraw, SelectionType.DiscardAndDrawCard, () => DiscardCardAndDrawCardsResponse(h.CharacterCard)),
+            };
+            
             List<SelectFunctionDecision> choicesMade = new List<SelectFunctionDecision>();
             IEnumerator playerSelectRoutine = this.EachPlayerSelectsFunction(
                 (Func<HeroTurnTakerController, bool>) (h => h.IsHero && !h.IsIncapacitatedOrOutOfGame),
                 Functions,
                 storedResults: choicesMade,
                 outputIfCannotChooseFunction: ((Func<HeroTurnTakerController, string>)(h => $"{h.Name} has no valid choices")));
+            
 
             if (this.UseUnityCoroutines)
             {
@@ -69,50 +73,7 @@ namespace Cauldron.DocHavoc
             }
         }
 
-        private IEnumerator TakeCardFromTrashResponse(Card card)
-        {
-            if (card == null)
-            {
-                yield break;
-            }
 
-            HeroTurnTakerController heroTurnTakerController =
-                this.GameController.HeroTurnTakerControllers.First(httc => httc.CharacterCard.Equals(card));
-
-            List <SelectCardDecision> selectCardDecision = new List<SelectCardDecision>();
-
-            IEnumerator routine = base.GameController.SelectCardAndStoreResults(heroTurnTakerController, 
-                SelectionType.MoveCardToHand, 
-                new LinqCardCriteria((Card c) => c.IsInTrash && this.GameController.IsLocationVisibleToSource(c.Location, base.GetCardSource(null))), 
-                selectCardDecision, false);
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-
-            if (!selectCardDecision.Any())
-            {
-                yield break;
-            }
-
-            routine = base.GameController.MoveCard(heroTurnTakerController, selectCardDecision.First().SelectedCard,
-                new Location(selectCardDecision.First().SelectedCard, LocationName.Hand));
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-        }
-        
         private IEnumerator DiscardCardAndDrawCardsResponse(Card card)
         {
             if (card == null)
@@ -120,9 +81,14 @@ namespace Cauldron.DocHavoc
                 yield break;
             }
 
+            CardController cc = base.FindCardController(card);
+
             List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
-            IEnumerator discardCardRoutine
-                = this.GameController.EachPlayerDiscardsCards(CardsToDiscard, CardsToDiscard, storedResults);
+
+            IEnumerator discardCardRoutine = this.GameController.SelectAndDiscardCard(cc.HeroTurnTakerController, storedResults: storedResults);
+
+            //IEnumerator discardCardRoutine
+                //= this.GameController.EachPlayerDiscardsCards(CardsToDiscard, CardsToDiscard, storedResults);
 
             if (this.UseUnityCoroutines)
             {
