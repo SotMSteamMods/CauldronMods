@@ -685,13 +685,13 @@ namespace CauldronTests
             DiscardAllCards(HeroController);
             ShuffleTrashIntoDeck(HeroController);
 
-            PutInHand(HeroController, "KnightsHonor");
+            Card honor = PutInHand(HeroController, "KnightsHonor");
 
             PrintSeparator("Test");
             GoToPlayCardPhase(HeroController);
             DecisionNextSelectionType = SelectionType.MoveCardNextToCard;
             DecisionNextToCard = wraith.CharacterCard;
-            PlayCardFromHand(HeroController, "KnightsHonor");
+            PlayCard(HeroController, honor);
 
             PrintSeparator("check redirect from wraith to knight");
             QuickHPStorage(HeroController, wraith, ra);
@@ -746,6 +746,7 @@ namespace CauldronTests
             
             PrintSeparator("Assert");
             AssertInPlayArea(baron, card);
+            AssertNotNextToCard(card, target);
         }
 
         [Test]
