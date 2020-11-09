@@ -292,5 +292,70 @@ namespace CauldronTests
             //-1 + 2 + -1 = 0
             QuickHandCheck(0, 0, 0);
         }
+
+        [Test]
+        public void DjinnTarget_IsTarget()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            string djinn = "Bathiel";
+
+            var card = PlayCard(djinn);
+            AssertInPlayArea(Malichae, card);
+            AssertIsTarget(card, 5);
+            AssertCardHasKeyword(card, "djinn", false);
+        }
+
+        [Test]
+        public void DjinnTarget_IsImmuneToDamageType()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            string djinn = "Bathiel";
+            DamageType type = DamageType.Energy;
+
+            var card = PlayCard(djinn);
+            AssertInPlayArea(Malichae, card);
+
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
+            DealDamage(baron.CharacterCard, card, 1, type, true); //damage is irreducible to ensure it's only the immunity that blocks the damage
+            QuickHPCheck(0, 0, 0, 0, 0); //no damage
+
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
+            DealDamage(baron.CharacterCard, card, 1, DamageType.Melee, true); //damage is irreducible to ensure it's only the immunity that blocks the damage
+            QuickHPCheck(0, 0, 0, 0, -1); //no damage
+        }
+
+        [Test]
+        public void DjinnTarget_ReturnsToHandIfDestroyed()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            string djinn = "Bathiel";
+
+            PrintSeparator("Destroy Action");
+            var card = PlayCard(djinn);
+            AssertInPlayArea(Malichae, card);
+
+            DestroyCard(card, baron.CharacterCard);
+            AssertInHand(Malichae, card);
+
+            PrintSeparator("Damage Action");
+            PlayCard(card);
+            AssertInPlayArea(Malichae, card);
+
+            DealDamage(baron.CharacterCard, card, 99, DamageType.Melee, true);
+            AssertInHand(Malichae, card);
+        }
+
     }
 }

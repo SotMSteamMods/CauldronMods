@@ -67,8 +67,7 @@ namespace Cauldron.Malichae
         private IEnumerator DjinnDestroyInsteadReponse(GameAction action)
         {
             var storedResults = new List<DestroyCardAction>();
-            var criteria = new LinqCardCriteria(c => c.IsInPlay && c.IsOngoing && IsDjinn(c) && IsThisCardNextToCard(c), "djinn ongoings");
-            var coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, criteria, false, storedResults, action.CardSource.Card, GetCardSource());
+            var coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, _djinnOngoingCriteria, false, storedResults, action.CardSource.Card, GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
