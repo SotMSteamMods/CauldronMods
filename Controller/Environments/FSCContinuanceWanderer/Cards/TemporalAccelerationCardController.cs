@@ -50,6 +50,7 @@ namespace Cauldron
             //At the end of the environment turn, destroy this card.
             base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(base.DestroyThisCardResponse), TriggerType.DestroySelf);
         }
+
         #endregion Methods
     }
 }
