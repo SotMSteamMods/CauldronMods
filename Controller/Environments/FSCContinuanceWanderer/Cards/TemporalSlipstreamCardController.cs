@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
-namespace Cauldron
+namespace Cauldron.FSCContinuanceWanderer
 {
     public class TemporalSlipstreamCardController : CardController
     {

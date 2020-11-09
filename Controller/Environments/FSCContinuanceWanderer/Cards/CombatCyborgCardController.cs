@@ -1,8 +1,7 @@
-﻿using System;
-using Handelabra.Sentinels.Engine.Controller;
+﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
-namespace Cauldron
+namespace Cauldron.FSCContinuanceWanderer
 {
     public class CombatCyborgCardController : CardController
     {
