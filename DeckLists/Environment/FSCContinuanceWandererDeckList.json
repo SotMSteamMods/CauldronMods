@@ -55,7 +55,7 @@
                 "Then, this card deals X villain targets 2 energy damage each, where x is the number of time vortex cards in the environment trash."
             ],
             "flavorText": "“The way I hear it, some things ain't{BR}supposed to exist,” said Chrono-Ranger.{BR}“Problem is, when they intersect this{BR}crystal thing, they [b]DO[/b].”",
-            "hitpoints": 8
+            "hitpoints": 4
         },
         {
             "identifier": "PrehistoricBehemoth",
