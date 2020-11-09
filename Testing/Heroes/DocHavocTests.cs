@@ -535,7 +535,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestPainkillers()
+        public void TestPainkillersSuccess()
         {
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
 
@@ -546,11 +546,12 @@ namespace CauldronTests
             });
 
             StartGame();
+            QuickHPStorage(tempest.CharacterCard, GetCardInPlay("MobileDefensePlatform"));
 
             // Act
-
             DecisionNextToCard = tempest.CharacterCard;
             DecisionSelectTarget = GetCardInPlay("MobileDefensePlatform");
+            DecisionYesNo = true;
 
             GoToPlayCardPhase(DocHavoc);
             PlayCardFromHand(DocHavoc, PainkillersCardController.Identifier);
@@ -559,7 +560,13 @@ namespace CauldronTests
 
             PutInHand(tempest, "LightningSlash");
             PlayCardFromHand(tempest, "LightningSlash");
+            
             // Assert
+            QuickHPCheck(-2, -5); // Tempest lost 2 HP for keeping Painkillers, -5 HP on MDP from Lightning Slash
+            AssertNumberOfCardsNextToCard(tempest.CharacterCard, 1); // Painkillers next to Tempest
+
+            Card pk = GetCard(PainkillersCardController.Identifier);
+            AssertTriggersWhere(trigger => trigger.CardSource.Card.Identifier.Equals(PainkillersCardController.Identifier));
 
 
         }
