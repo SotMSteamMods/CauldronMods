@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.Malichae
 {
-	public class HighReshielCardController : MalichaeCardController
+	public class HighReshielCardController : MalichaeDjinnCardController
 	{
 		public HighReshielCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
