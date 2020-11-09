@@ -772,7 +772,7 @@ namespace CauldronTests
             GoToPlayCardPhase(HeroController);
             QuickHandStorage(HeroController);
             AssertNumberOfCardsInPlay(HeroController, 1);
-            PlayCardFromHand(HeroController, "MaidensBlessing");
+            PlayCard(HeroController, testCard);
             AssertNumberOfCardsInPlay(HeroController, 2);
             QuickHandCheck(-1);
             GoToUsePowerPhase(HeroController);
