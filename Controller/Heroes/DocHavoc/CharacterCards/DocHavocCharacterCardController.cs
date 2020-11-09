@@ -47,7 +47,12 @@ namespace Cauldron.DocHavoc
             }
 
             // Intended damage taken, allow hero to draw a card
-            IEnumerator drawCardRoutine = base.GameController.SelectHeroToDrawCard(this.DecisionMaker);
+            Card targetCard = storedDamageResults.First().Target;
+
+            IEnumerator drawCardRoutine = base.GameController.DrawCard(
+                base.GameController.HeroTurnTakerControllers.First(httc 
+                    => httc.CharacterCard.Equals(targetCard)).HeroTurnTaker);
+
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(drawCardRoutine);
