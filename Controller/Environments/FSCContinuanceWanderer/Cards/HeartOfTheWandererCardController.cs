@@ -31,6 +31,7 @@ namespace Cauldron
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+            yield break;
         }
 
         public override void AddTriggers()
@@ -51,6 +52,7 @@ namespace Cauldron
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+            yield break;
         }
 
         #endregion Methods

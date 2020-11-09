@@ -30,6 +30,7 @@ namespace Cauldron
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+            yield break;
         }
 
         private IEnumerator MoveCardToDeckResponse(TurnTakerController turnTakerController)
@@ -43,6 +44,7 @@ namespace Cauldron
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+            yield break;
         }
 
         public override void AddTriggers()
