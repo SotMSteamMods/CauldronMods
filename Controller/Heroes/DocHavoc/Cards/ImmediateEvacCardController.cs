@@ -32,29 +32,6 @@ namespace Cauldron.DocHavoc
         public override IEnumerator Play()
         {
 
-            //Func<Card, IEnumerable<Function>> functionsBasedOnCard = new Func<Card, IEnumerable<Function>>(this.DiscardCardAndDrawCardsResponse);
-
-            /*
-            Func<HeroTurnTakerController, IEnumerable<Function>> functions 
-                = new Func<HeroTurnTakerController, IEnumerable<Function>>(h => h.GetCardsAtLocation);
-
-            IEnumerator coroutine = this.EachPlayerSelectsFunction((Func<HeroTurnTakerController, bool>)
-                (h => !h.IsIncapacitatedOrOutOfGame), functions, new int?(0), 
-                outputIfCannotChooseFunction: ((Func<HeroTurnTakerController, string>)(h 
-                    => h.Name + " has no cards in their trash or their deck.")));
-            */
-
-
-            /*
-            Func<Card, IEnumerable<Function>> functionsBasedOnCard 
-                = new Func<Card, IEnumerable<Function>>(c => DiscardCardAndDrawCardsResponse(c));
-
-            IEnumerator coroutine2 = this.GameController.SelectCardsAndPerformFunction(this.DecisionMaker, 
-                new LinqCardCriteria(new Func<Card, bool>(c => c.IsHero && c.IsActive), "active hero character cards", false), 
-                functionsBasedOnCard, true, this.GetCardSource());
-            */
-
-
             IEnumerable<Function> Functions(HeroTurnTakerController h) => new List<Function>()
             {
                 new Function(h, ChoiceTextSelectTrashIntoHand, SelectionType.MoveCardToHandFromTrash, () => TakeCardFromTrashResponse(h.CharacterCard)), 

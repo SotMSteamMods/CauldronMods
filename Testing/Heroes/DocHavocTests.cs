@@ -518,8 +518,7 @@ namespace CauldronTests
             DealDamage(DocHavoc, mdp, 5, DamageType.Lightning);
             QuickHPStorage(baron.CharacterCard, mdp);
 
-            //DecisionSelectFunctions = new int?[]{ 1, 0};
-            DecisionSelectFunction = 1;
+            DecisionSelectFunctions = new int?[]{ 0, 1};
 
             DecisionSelectCards = new[] {GetCardFromHand(DocHavoc, GasMaskCardController.Identifier), null};
 
@@ -528,7 +527,7 @@ namespace CauldronTests
             PlayCardFromHand(DocHavoc, ImmediateEvacCardController.Identifier);
 
             // Assert
-            QuickHPCheck(2, 2);
+            QuickHPCheck(2, 2); // Villain HP gain check
         }
     }
 }
