@@ -22,6 +22,8 @@ namespace Handelabra.Sentinels.UnitTest
         protected SelectionType? DecisionDoNotSelectCard { get; set; }
         protected bool DecisionDoNotSelectFunction { get; set; }
         protected IEnumerable<Card> DecisionSelectCards { get; set; }
+        protected IEnumerable<DamageType?> DecisionSelectDamageTypes { get; set; }
+        protected int DecisionSelectDamageTypesIndex { get; set; }
         protected int DecisionSelectCardsIndex { get; set; }
         protected Card DecisionSelectCardToPlay { get; set; }
         protected Card[] DecisionSelectTargets { get; set; }
@@ -312,6 +314,8 @@ namespace Handelabra.Sentinels.UnitTest
             DecisionRedirectTarget = null;
             DecisionAmbiguousCard = null;
             DecisionSelectDamageType = null;
+            DecisionSelectDamageTypes = null;
+            DecisionSelectDamageTypesIndex = 0;
             DecisionYesNo = null;
             DecisionsYesNo = null;
             DecisionsYesNoIndex = 0;
@@ -1023,6 +1027,18 @@ namespace Handelabra.Sentinels.UnitTest
                     {
                         damage.SelectedDamageType = this.DecisionSelectDamageType;
                         Console.WriteLine("Selected: " + damage.SelectedDamageType);
+                    } else if (this.DecisionSelectDamageTypes != null)
+                    {
+                        // Select each of the given targets in order
+                        damage.SelectedDamageType = this.DecisionSelectDamageTypes.ElementAt(this.DecisionSelectDamageTypesIndex);
+                        if (this.DecisionSelectDamageTypes.Count() - 1 > this.DecisionSelectDamageTypesIndex)
+                        {
+                            this.DecisionSelectDamageTypesIndex++;
+                        }
+                        else
+                        {
+                            this.DecisionSelectDamageTypesIndex = 0;
+                        }
                     }
                     else
                     {

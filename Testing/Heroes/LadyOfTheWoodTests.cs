@@ -80,10 +80,92 @@ namespace CauldronTests
             GoToUsePowerPhase(ladyOfTheWood);
             DecisionSelectDamageType = DamageType.Cold;
             DecisionSelectTarget = ra.CharacterCard;
-            QuickHPStorage(ra);
+            QuickHPStorage(ra, haka);
             UsePower(ladyOfTheWood.CharacterCard);
-            QuickHPCheck(-1);
+            QuickHPCheck(-1, 0);
+        }
 
+        [Test()]
+        public void TestLadyOfTheWoodInnatePower_DamageType()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //Select a damage type. {LadyOfTheWood} deals 1 target 1 damage of the chosen type.
+            GoToUsePowerPhase(ladyOfTheWood);
+            DecisionSelectDamageTypes = new DamageType?[] {
+                DamageType.Cold, DamageType.Energy, DamageType.Fire,
+                DamageType.Infernal, DamageType.Lightning, DamageType.Melee,
+                DamageType.Projectile, DamageType.Psychic, DamageType.Radiant,
+                DamageType.Sonic, DamageType.Toxic
+            };
+            DecisionSelectTarget = ra.CharacterCard;
+
+            PrintSeparator("Check for Cold");
+            QuickHPStorage(ra);
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Cold, 1);
+            UsePower(ladyOfTheWood.CharacterCard);
+            QuickHPCheck(0);
+
+            PrintSeparator("Check for Energy");
+            QuickHPStorage(ra);
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Energy, 1);
+            UsePower(ladyOfTheWood.CharacterCard);
+            QuickHPCheck(0);
+
+            PrintSeparator("Check for Fire");
+            QuickHPStorage(ra);
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Fire, 1);
+            UsePower(ladyOfTheWood.CharacterCard);
+            QuickHPCheck(0);
+
+            PrintSeparator("Check for Infernal");
+            QuickHPStorage(ra);
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Infernal, 1);
+            UsePower(ladyOfTheWood.CharacterCard);
+            QuickHPCheck(0);
+
+            PrintSeparator("Check for Lightning");
+            QuickHPStorage(ra);
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Lightning, 1);
+            UsePower(ladyOfTheWood.CharacterCard);
+            QuickHPCheck(0);
+
+            PrintSeparator("Check for Melee");
+            QuickHPStorage(ra);
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Melee, 1);
+            UsePower(ladyOfTheWood.CharacterCard);
+            QuickHPCheck(0);
+
+            PrintSeparator("Check for Projectile");
+            QuickHPStorage(ra);
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Projectile, 1);
+            UsePower(ladyOfTheWood.CharacterCard);
+            QuickHPCheck(0);
+
+            PrintSeparator("Check for Psychic");
+            QuickHPStorage(ra);
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Psychic, 1);
+            UsePower(ladyOfTheWood.CharacterCard);
+            QuickHPCheck(0);
+
+            PrintSeparator("Check for Radiant");
+            QuickHPStorage(ra);
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Radiant, 1);
+            UsePower(ladyOfTheWood.CharacterCard);
+            QuickHPCheck(0);
+
+            PrintSeparator("Check for Sonic");
+            QuickHPStorage(ra);
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Sonic, 1);
+            UsePower(ladyOfTheWood.CharacterCard);
+            QuickHPCheck(0);
+
+            PrintSeparator("Check for Toxic");
+            QuickHPStorage(ra);
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Toxic, 1);
+            UsePower(ladyOfTheWood.CharacterCard);
+            QuickHPCheck(0);
         }
 
         [Test()]
@@ -107,12 +189,18 @@ namespace CauldronTests
             //Damage dealt should be 5 +1 => 6
             QuickHPCheck(-6);
 
-            GoToStartOfTurn(ladyOfTheWood);
-
+            //check only for selected damage type
             QuickHPStorage(haka);
             DealDamage(ra, haka, 5, DamageType.Fire);
 
-            //start of turn has passed, trigger should be gone, 5 damage
+            //Damage dealt should be 5,no modifiers
+            QuickHPCheck(-5);
+
+            GoToStartOfTurn(ladyOfTheWood);
+
+            //start of turn has passed, trigger should be gone
+            QuickHPStorage(haka);
+            DealDamage(ra, haka, 5, DamageType.Fire);
             QuickHPCheck(-5);
         }
 
@@ -141,6 +229,31 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestLadyOfTheWoodIncap2_NoDiscard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(ladyOfTheWood);
+
+            //give hake room to gain health
+            SetHitPoints(haka, 20);
+
+            //1 hero may discard a card to regain 3 HP.
+            GoToUseIncapacitatedAbilityPhase(ladyOfTheWood);
+            DecisionSelectTurnTaker = haka.HeroTurnTaker;
+            DecisionDoNotSelectCard = SelectionType.DiscardCard;
+            QuickHandStorage(haka);
+            QuickHPStorage(haka);
+            UseIncapacitatedAbility(ladyOfTheWood, 1);
+            //should have same number of cards in hand and the same hp
+            QuickHandCheck(0);
+            QuickHPCheck(0);
+
+        }
+
+        [Test()]
         public void TestLadyOfTheWoodIncap3()
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
@@ -155,11 +268,13 @@ namespace CauldronTests
             GoToUseIncapacitatedAbilityPhase(ladyOfTheWood);
 
             int numEnvironmentCardsInPlayBefore = GetNumberOfCardsInPlay(FindEnvironment());
-            UseIncapacitatedAbility(ladyOfTheWood, 2);
-            int numEnvironmentCardsInPlayAfter = GetNumberOfCardsInPlay(FindEnvironment());
+            int numEnvironmentCardsInTrashBefore = GetNumberOfCardsInTrash(FindEnvironment());
 
-            //1 environment card should have been destroyed, so 1 less card in play
-            Assert.AreEqual(numEnvironmentCardsInPlayBefore - 1, numEnvironmentCardsInPlayAfter, "The number of environment cards in play does not match");
+            UseIncapacitatedAbility(ladyOfTheWood, 2);
+
+            //1 environment card should have been destroyed, so 1 less card in play, 1 more in trash
+            AssertNumberOfCardsInPlay(FindEnvironment(), numEnvironmentCardsInPlayBefore - 1);
+            AssertNumberOfCardsInTrash(FindEnvironment(), numEnvironmentCardsInTrashBefore + 1);
 
         }
 
