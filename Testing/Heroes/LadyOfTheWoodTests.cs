@@ -1314,8 +1314,7 @@ namespace CauldronTests
             //give room to gain HP
             SetHitPoints(ladyOfTheWood, 10);
 
-            PlayCard("SnowshadeGown");
-            Card gown = GetCardInPlay("SnowshadeGown");
+            Card gown = PlayCard("SnowshadeGown");
 
             // power: LadyOfTheWood regains 3HP.
             GoToUsePowerPhase(ladyOfTheWood);
@@ -1325,7 +1324,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestSnowshadeGownPowerDealDamage()
+        public void TestSnowshadeGownDealDamage()
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
@@ -1337,8 +1336,7 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
 
-            PlayCard("SnowshadeGown");
-            Card gown = GetCardInPlay("SnowshadeGown");
+            Card gown = PlayCard("SnowshadeGown");
 
             // Whenever LadyOfTheWood regains HP, you may select a target that hasn't been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
 
@@ -1348,12 +1346,104 @@ namespace CauldronTests
             //Have baron blade and LotW have been dealt damage they aren't available for the reaction
             DealDamage(ra, baron, 5, DamageType.Fire);
             DealDamage(ra, ladyOfTheWood, 3, DamageType.Fire);
-
-            //since baron blade is unavailable, ra should become the target
+            DecisionYesNo = true;
+            DecisionSelectCard = ra.CharacterCard;
             QuickHPStorage(ra);
             //Use LotW power to trigger reaction
             UsePower(gown);
             QuickHPCheck(-1);
+        }
+
+
+        [Test()]
+        public void TestSnowshadeGownDealDamage_NoTargets()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //give room to gain HP
+            SetHitPoints(ladyOfTheWood, 10);
+
+            //destroy mdp so baron is vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card gown = PlayCard("SnowshadeGown");
+
+            // Whenever LadyOfTheWood regains HP, you may select a target that hasn't been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
+
+            GoToUsePowerPhase(ladyOfTheWood);
+
+
+            //Have baron blade and LotW have been dealt damage they aren't available for the reaction
+            DealDamage(ra, baron, 5, DamageType.Fire);
+            DealDamage(ra, ladyOfTheWood, 3, DamageType.Fire);
+            DealDamage(ra, ra, 2, DamageType.Fire);
+            DealDamage(ra, haka, 2, DamageType.Fire);
+            QuickHPStorage(ra);
+            DecisionSelectCard = ra.CharacterCard;
+            //Use LotW power to trigger reaction
+            //since there are no targets in play, shouldn't have dealt damage
+            UsePower(gown);
+            QuickHPCheck(0);
+        }
+
+        [Test()]
+        public void TestSnowshadeGownDealDamage_Optional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //give room to gain HP
+            SetHitPoints(ladyOfTheWood, 10);
+
+            //destroy mdp so baron is vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card gown = PlayCard("SnowshadeGown");
+
+            // Whenever LadyOfTheWood regains HP, you may select a target that hasn't been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
+
+            GoToUsePowerPhase(ladyOfTheWood);
+
+            QuickHPStorage(baron);
+            DecisionYesNo = false;
+
+            //Use LotW power to trigger reaction
+            //since we declined, shouldn't have dealt damage
+            UsePower(gown);
+            QuickHPCheck(0);
+        }
+
+        [Test()]
+        public void TestSnowshadeGownDealDamage_DamageType()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //give room to gain HP
+            SetHitPoints(ladyOfTheWood, 10);
+
+            //destroy mdp so baron is vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card gown = PlayCard("SnowshadeGown");
+
+            // Whenever LadyOfTheWood regains HP, you may select a target that hasn't been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
+
+            GoToUsePowerPhase(ladyOfTheWood);
+
+
+            DealDamage(ra, baron, 5, DamageType.Fire);
+            DealDamage(ra, ladyOfTheWood, 3, DamageType.Fire);
+            DecisionSelectCard = ra.CharacterCard;
+            QuickHPStorage(ra);
+            //Use LotW power to trigger reaction
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Cold, 1);
+            UsePower(gown);
+            QuickHPCheck(0);
         }
 
         [Test()]
