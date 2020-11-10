@@ -1456,17 +1456,27 @@ namespace CauldronTests
             SetHitPoints(ladyOfTheWood, 10);
             //put spring in play
             PutIntoPlay("Spring");
+
             //Whenever LadyOfTheWood deals toxic damage to a target, she regains that much HP.
 
+            PrintSeparator("Check for toxic");
             QuickHPStorage(ladyOfTheWood);
             DealDamage(ladyOfTheWood, ra, 5, DamageType.Toxic);
             //since she dealt 5 toxic damage, she should gain 5 HP
             QuickHPCheck(5);
 
+            PrintSeparator("Check for non-toxic");
             QuickHPStorage(ladyOfTheWood);
             DealDamage(ladyOfTheWood, ra, 5, DamageType.Fire);
             //since she dealt fire damage, she should not gain HP
             QuickHPCheckZero();
+
+            PrintSeparator("Check for others dealing toxic");
+            QuickHPStorage(ladyOfTheWood);
+            DealDamage(haka, ra, 5, DamageType.Toxic);
+            //since not lady of the wood dealt the damage, she should not gain hp
+            QuickHPCheckZero();
+
         }
 
         [Test()]
