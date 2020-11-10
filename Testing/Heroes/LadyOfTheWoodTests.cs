@@ -542,17 +542,18 @@ namespace CauldronTests
 
             //LadyOfTheWood deals 1 target 3 toxic damage or up to 3 targets 1 cold damage each.
             GoToPlayCardPhase(ladyOfTheWood);
-            //should deal 1 target 3 fire
+            //should deal 1 target 3 toxic
             DecisionSelectFunction = 0;
             DecisionSelectTarget = mdp;
             QuickHPStorage(mdp);
             PlayCard("FrostOnThePetals");
             QuickHPCheck(-3);
+            
 
         }
 
         [Test()]
-        public void TestFrostOnThePetalsOption2()
+        public void TestFrostOnThePetalsOption2_3Targets()
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
@@ -560,12 +561,63 @@ namespace CauldronTests
             DestroyCard(mdp, baron.CharacterCard);
             //LadyOfTheWood deals 1 target 3 toxic damage or up to 3 targets 1 cold damage each.
             GoToPlayCardPhase(ladyOfTheWood);
-            //should deal 3 target 1 lightning
+            //should deal 3 target 1 cold
             DecisionSelectFunction = 1;
-            QuickHPStorage(baron, ladyOfTheWood, ra);
+            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard };
+            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
             PlayCard("FrostOnThePetals");
-            QuickHPCheck(-1, -1, -1);
+            QuickHPCheck(-1, -1, -1, 0);
+        }
 
+        [Test()]
+        public void TestFrostOnThePetalsOption2_2Targets()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+            //LadyOfTheWood deals 1 target 3 toxic damage or up to 3 targets 1 cold damage each.
+            GoToPlayCardPhase(ladyOfTheWood);
+            //should deal 3 target 1 cold
+            DecisionSelectFunction = 1;
+            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyOfTheWood.CharacterCard, null };
+            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            PlayCard("FrostOnThePetals");
+            QuickHPCheck(-1, -1, 0, 0);
+        }
+
+        [Test()]
+        public void TestFrostOnThePetalsOption2_1Target()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+            //LadyOfTheWood deals 1 target 3 toxic damage or up to 3 targets 1 cold damage each.
+            GoToPlayCardPhase(ladyOfTheWood);
+            //should deal 3 target 1 cold
+            DecisionSelectFunction = 1;
+            DecisionSelectCards = new Card[] { baron.CharacterCard, null };
+            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            PlayCard("FrostOnThePetals");
+            QuickHPCheck(-1, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestFrostOnThePetalsOption2_NoTargets()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+            //LadyOfTheWood deals 1 target 3 toxic damage or up to 3 targets 1 cold damage each.
+            GoToPlayCardPhase(ladyOfTheWood);
+            //should deal 3 target 1 cold
+            DecisionSelectFunction = 1;
+            DecisionDoNotSelectCard = SelectionType.SelectTarget;
+            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            PlayCard("FrostOnThePetals");
+            QuickHPCheck(0, 0, 0, 0);
         }
 
         [Test()]
