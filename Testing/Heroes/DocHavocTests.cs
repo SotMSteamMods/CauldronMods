@@ -387,7 +387,7 @@ namespace CauldronTests
             PlayCard(ambuscade, "QuickStimPatch");
 
             // Assert
-            QuickHPCheck(3, 3, 3); // Heroes: Cleansing Rains +2 (+1 with Rapid Regen), // Citizen Dawn: Healing Light +10 (+1 with Rapid Regen)
+            QuickHPCheck(3, 3, 3); // Heroes: Cleansing Rains +2 (+1 with Rapid Regen), // Ambuscade: Quick Stim Patch +2 (+1 with Rapid Regen)
 
         }
 
@@ -598,8 +598,8 @@ namespace CauldronTests
             PlayCardFromHand(tempest, "LightningSlash");
 
             // Assert
-            QuickHPCheck(0, -5); // Tempest lost 2 HP for keeping Painkillers, -5 HP on MDP from Lightning Slash
-            AssertNumberOfCardsNextToCard(tempest.CharacterCard, 0); // Painkillers next to Tempest
+            QuickHPCheck(0, -5); // Tempest lost 0 HP for discarding Painkillers, -5 HP on MDP from Lightning Slash
+            AssertNumberOfCardsNextToCard(tempest.CharacterCard, 0); // Painkillers not next to Tempest
 
             AssertTriggersWhere(trigger => !trigger.CardSource.Card.Identifier.Equals(PainkillersCardController.Identifier));
         }
