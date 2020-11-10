@@ -6,14 +6,11 @@ using System.Linq;
 
 namespace Cauldron.Malichae
 {
-	public class GrandEzaelCardController : MalichaeCardController
+	public class GrandEzaelCardController : DjinnOngoingController
 	{
-		public GrandEzaelCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+		public GrandEzaelCardController(Card card, TurnTakerController turnTakerController)
+			: base(card, turnTakerController, "HighEzael", "Ezael")
 		{
-		}
-		public override IEnumerator Play()
-		{
-			yield break;
 		}
 	}
 }
