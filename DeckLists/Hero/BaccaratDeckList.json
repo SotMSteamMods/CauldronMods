@@ -42,7 +42,7 @@
             "openingLines": {
                 "default": "default placeholder",
                 "MistressOfFateCharacter": "Mistress of Fate placeholder",
-                "1929RamCharacter": "1929 Ram placeholder"
+                "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 1
         },
@@ -356,7 +356,7 @@
             "openingLines": {
                 "default": "default placeholder",
                 "MistressOfFateCharacter": "Mistress of Fate placeholder",
-                "1929RamCharacter": "1929 Ram placeholder"
+                "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 1
         },
@@ -398,13 +398,13 @@
             "openingLines": {
                 "default": "default placeholder",
                 "MistressOfFateCharacter": "Mistress of Fate placeholder",
-                "1929RamCharacter": "1929 Ram placeholder"
+                "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 1
         },
         {
             "identifier": "BaccaratCharacter",
-            "promoIdentifier": "1929BaccaratCharacter",
+            "promoIdentifier": "PastBaccaratCharacter",
             "count": 1,
             "title": "Baccarat",
             "promoTitle": "Baccarat 1929",
@@ -439,7 +439,7 @@
             "openingLines": {
                 "default": "default placeholder",
                 "MistressOfFateCharacter": "Mistress of Fate placeholder",
-                "1929RamCharacter": "1929 Ram placeholder"
+                "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 1
         }

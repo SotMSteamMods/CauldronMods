@@ -38,7 +38,7 @@
 			"openingLines": {
 				"default": "default placeholder",
 				"OutlanderCharacter": "Outlander placeholder",
-				"1929RamCharacter": "1929 Ram placeholder",
+				"PastTheRamCharacter": "1929 Ram placeholder",
 				"TiamatCharacter": "Tiamat placeholder",
 				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
 			},
@@ -389,7 +389,7 @@
 			"openingLines": {
 				"default": "default placeholder",
 				"OutlanderCharacter": "Outlander placeholder",
-				"1929RamCharacter": "1929 Ram placeholder",
+				"PastTheRamCharacter": "1929 Ram placeholder",
 				"TiamatCharacter": "Tiamat placeholder",
 				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
 			},
@@ -432,7 +432,7 @@
 			"openingLines": {
 				"default": "default placeholder",
 				"OutlanderCharacter": "Outlander placeholder",
-				"1929RamCharacter": "1929 Ram placeholder",
+				"PastTheRamCharacter": "1929 Ram placeholder",
 				"TiamatCharacter": "Tiamat placeholder",
 				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
 			},
@@ -440,7 +440,7 @@
 		},
 		{
 			"identifier": "TheKnightCharacter",
-			"promoIdentifier": "1929TheKnightCharacter",
+			"promoIdentifier": "PastTheKnightCharacter",
 			"count": 1,
 			"title": "The Knight",
 			"promoTitle": "The Knight 1929",
@@ -475,7 +475,7 @@
 			"openingLines": {
 				"default": "default placeholder",
 				"OutlanderCharacter": "Outlander placeholder",
-				"1929RamCharacter": "1929 Ram placeholder",
+				"PastTheRamCharacter": "1929 Ram placeholder",
 				"TiamatCharacter": "Tiamat placeholder",
 				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
 			},
@@ -521,7 +521,7 @@
 			"openingLines": {
 				"default": "default placeholder",
 				"OutlanderCharacter": "Outlander placeholder",
-				"1929RamCharacter": "1929 Ram placeholder",
+				"PastTheRamCharacter": "1929 Ram placeholder",
 				"TiamatCharacter": "Tiamat placeholder",
 				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
 			},
@@ -559,7 +559,7 @@
 			"openingLines": {
 				"default": "default placeholder",
 				"OutlanderCharacter": "Outlander placeholder",
-				"1929RamCharacter": "1929 Ram placeholder",
+				"PastTheRamCharacter": "1929 Ram placeholder",
 				"TiamatCharacter": "Tiamat placeholder",
 				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
 			},
@@ -596,7 +596,7 @@
 			"openingLines": {
 				"default": "default placeholder",
 				"OutlanderCharacter": "Outlander placeholder",
-				"1929RamCharacter": "1929 Ram placeholder",
+				"PastTheRamCharacter": "1929 Ram placeholder",
 				"TiamatCharacter": "Tiamat placeholder",
 				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
 			},

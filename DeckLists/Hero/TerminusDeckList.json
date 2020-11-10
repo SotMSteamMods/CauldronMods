@@ -570,7 +570,7 @@
         },
         {
             "identifier": "TerminusCharacter",
-            "promoIdentifier": "2199TerminusCharacter",
+            "promoIdentifier": "FutureTerminusCharacter",
             "count": 1,
             "title": "Terminus",
             "promoTitle": "2199 Terminus",
