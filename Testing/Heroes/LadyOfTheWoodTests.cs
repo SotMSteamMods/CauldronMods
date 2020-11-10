@@ -46,6 +46,15 @@ namespace CauldronTests
         {
             return card != null && base.GameController.DoesCardContainKeyword(card, "season", false, false);
         }
+
+        private void AddReduceDamageOfDamageTypeTrigger(HeroTurnTakerController httc, DamageType damageType, int amount)
+        {
+            ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(amount);
+            reduceDamageStatusEffect.DamageTypeCriteria.AddType(damageType);
+            reduceDamageStatusEffect.NumberOfUses = 1;
+            this.RunCoroutine(this.GameController.AddStatusEffect(reduceDamageStatusEffect, true, new CardSource(httc.CharacterCardController)));
+        }
+
         #endregion
 
         [Test()]
@@ -332,6 +341,53 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestCrownOfTheFourWinds_DamageTypes()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            //destroy mdp to make baron vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, haka.CharacterCard);
+            //add another target to play to make explicit card selection work
+            Card battalion = PutIntoPlay("BladeBattalion");
+
+            PutInHand("CrownOfTheFourWinds");
+            Card crown = GetCardFromHand("CrownOfTheFourWinds");
+            GoToPlayCardPhase(ladyOfTheWood); ;
+            PlayCard(crown);
+            //LadyOfTheWood deals 1 target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage.
+            GoToUsePowerPhase(ladyOfTheWood);
+            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            DecisionSelectCards = new Card[] {
+                baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard, 
+                baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard,
+                baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard,
+                baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard 
+            };
+            PrintSeparator("Check for Toxic");
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Toxic, 1);
+            UsePower(crown);
+            QuickHPCheck(0, -1, -1, -1);
+
+            PrintSeparator("Check for Fire");
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Fire, 1);
+            UsePower(crown);
+            QuickHPCheck(-1, 0, -1, -1);
+
+
+            PrintSeparator("Check for Lightning");
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Lightning, 1);
+            UsePower(crown);
+            QuickHPCheck(-1, -1, 0, -1);
+
+            PrintSeparator("Check for Cold");
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Cold, 1);
+            UsePower(crown);
+            QuickHPCheck(-1, -1, -1, 0);
+
+        }
+
+        [Test()]
         public void TestCrownOfTheFourWinds_MoreThan4Targets()
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
@@ -466,6 +522,27 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestFireInTheCloudsOption1_DamageType()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            //LadyOfTheWood deals 1 target 3 fire damage or up to 3 targets 1 lightning damage each.
+            GoToPlayCardPhase(ladyOfTheWood);
+            //should deal 1 target 3 fire
+            DecisionSelectFunction = 0;
+            DecisionSelectTarget = mdp;
+            QuickHPStorage(mdp);
+
+            PrintSeparator("Check for fire");
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Fire, 1);
+            PlayCard("FireInTheClouds");
+            QuickHPCheck(-2);
+
+        }
+
+        [Test()]
         public void TestFireInTheCloudsOption2_3Targets()
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
@@ -512,8 +589,28 @@ namespace CauldronTests
             DecisionSelectFunction = 1;
             DecisionSelectCards = new Card[] { baron.CharacterCard, null };
             QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+
             PlayCard("FireInTheClouds");
             QuickHPCheck(-1, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestFireInTheCloudsOption2_DamageType()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+            //LadyOfTheWood deals 1 target 3 fire damage or up to 3 targets 1 lightning damage each.
+            GoToPlayCardPhase(ladyOfTheWood);
+            //should deal 3 target 1 lightning
+            DecisionSelectFunction = 1;
+            DecisionSelectCards = new Card[] { baron.CharacterCard, null };
+            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            PrintSeparator("Check for lightning");
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Lightning, 1);
+            PlayCard("FireInTheClouds");
+            QuickHPCheck(0, 0, 0, 0);
         }
 
         [Test()]
@@ -550,6 +647,46 @@ namespace CauldronTests
             QuickHPCheck(-3);
             
 
+        }
+
+        [Test()]
+        public void TestFrostOnThePetalsOption1_DamageType()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            //LadyOfTheWood deals 1 target 3 toxic damage or up to 3 targets 1 cold damage each.
+            GoToPlayCardPhase(ladyOfTheWood);
+            //should deal 1 target 3 fire
+            DecisionSelectFunction = 0;
+            DecisionSelectTarget = mdp;
+            QuickHPStorage(mdp);
+
+            PrintSeparator("Check for toxic");
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Toxic, 1);
+            PlayCard("FrostOnThePetals");
+            QuickHPCheck(-2);
+
+        }
+
+        [Test()]
+        public void TestFrostOnThePetalsOption2_DamageType()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+            //LadyOfTheWood deals 1 target 3 toxic damage or up to 3 targets 1 cold damage each.
+            GoToPlayCardPhase(ladyOfTheWood);
+            //should deal 3 target 1 lightning
+            DecisionSelectFunction = 1;
+            DecisionSelectCards = new Card[] { baron.CharacterCard, null };
+            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            PrintSeparator("Check for cold");
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Cold, 1);
+            PlayCard("FrostOnThePetals");
+            QuickHPCheck(0, 0, 0, 0);
         }
 
         [Test()]
