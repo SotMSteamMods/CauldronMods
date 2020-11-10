@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -21,7 +23,7 @@ namespace Cauldron.FSCContinuanceWanderer
         public override IEnumerator Play()
         {
             //When this card enters play, reveal the top card of each deck in turn order and either discard it or replace it.
-            IEnumerator coroutine = base.DoActionToEachTurnTakerInTurnOrder(null, new Func<TurnTakerController, IEnumerator>(this.EachTurnTakerResponse), base.TurnTaker);
+            IEnumerator coroutine = base.DoActionToEachTurnTakerInTurnOrder((TurnTakerController) => true, new Func<TurnTakerController, IEnumerator>(this.EachTurnTakerResponse), base.TurnTaker);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -42,7 +44,9 @@ namespace Cauldron.FSCContinuanceWanderer
         private IEnumerator EachTurnTakerResponse(TurnTakerController turnTakerController)
         {
             //...reveal the top card of each deck in turn order and either discard it or replace it.
-            IEnumerator coroutine = base.RevealTopCard_PutItBackOrDiscardIt(this.DecisionMaker, base.TurnTakerController, base.TurnTaker.Deck);
+            List<Card> revealedCards = new List<Card>();
+            TurnTaker turnTaker = turnTakerController.TurnTaker;
+            IEnumerator coroutine = base.GameController.RevealCards(FindTurnTakerController(turnTaker), turnTaker.Deck, 1, revealedCards);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -50,6 +54,23 @@ namespace Cauldron.FSCContinuanceWanderer
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
+            }
+            Card revealedCard = revealedCards.FirstOrDefault<Card>();
+            if (revealedCard != null)
+            {
+                coroutine = base.GameController.SelectLocationAndMoveCard(this.DecisionMaker, revealedCard, new MoveCardDestination[]
+                {
+                        new MoveCardDestination(turnTaker.Deck),
+                        new MoveCardDestination(turnTaker.Trash)
+                }, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }

@@ -1,5 +1,5 @@
 {
-    "name": "F.S.C. Continuance Wanderer DeckList",
+    "name": "F.S.C. Continuance Wanderer",
     "kind": "Environment",
     "expansionIdentifier": "Cauldron",
     "backgroundColor": "FB5455",
@@ -71,7 +71,7 @@
             ],
             "body": [
                 "This card is immune to damage dealt by targets with less than 10HP.",
-                "At the end of the environment turn, this card deals the {H - 2} hero target 2 melee damage each."
+                "At the end of the environment turn, this card deals the {H - 2} hero target with the highest HP 2 melee damage each."
             ],
             "flavorText": "The timeship attracts everything that{BR}might have been, including denizens{BR}of a potential world whose ice{BR}age never ended.",
             "hitpoints": 8
