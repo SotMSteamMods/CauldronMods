@@ -6,11 +6,57 @@ using System.Linq;
 
 namespace Cauldron.Malichae
 {
-	public class HighEzaelCardController : DjinnOngoingController
-	{
-		public HighEzaelCardController(Card card, TurnTakerController turnTakerController)
-			: base(card, turnTakerController, "Ezael", "Ezael")
-		{
-		}
-	}
+    public class HighEzaelCardController : DjinnOngoingController
+    {
+        public HighEzaelCardController(Card card, TurnTakerController turnTakerController)
+            : base(card, turnTakerController, "Ezael", "Ezael")
+        {
+        }
+
+        public override void AddTriggers()
+        {
+            base.AddEndOfTurnTrigger(tt => tt == base.TurnTaker, EndOfTurnReponse, TriggerType.GainHP);
+            base.AddTriggers();
+        }
+
+        private IEnumerator EndOfTurnReponse(PhaseChangeAction pca)
+        {
+            var coroutine = GameController.GainHP(this.DecisionMaker, c => c.IsTarget && IsDjinn(c), 1, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        public override IEnumerator UsePower(int index = 0)
+        {
+            var card = GetCardThisCardIsNextTo();
+            var coroutine = base.GameController.GainHP(DecisionMaker, c => c.IsTarget && (c.IsHero || IsDjinn(c)), c => IsDjinn(c) ? 2 : 1, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            coroutine = base.GameController.DestroyCard(DecisionMaker, this.Card,
+                            responsibleCard: this.CharacterCard,
+                            cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+    }
 }

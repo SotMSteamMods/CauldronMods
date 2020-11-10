@@ -800,19 +800,55 @@ namespace CauldronTests
             var card = PlayCard(djinn);
             var ongoing = GetCard("High" + djinn);
             AssertInPlayArea(Malichae, card);
+            var otherCard = PlayCard("Bathiel");
             SetHitPoints(ra.CharacterCard, 10);
+            SetHitPoints(otherCard, 3);
+            SetHitPoints(card, 3);
 
             PlayCard(ongoing);
             AssertNextToCard(ongoing, card);
 
             DecisionSelectCard = ra.CharacterCard;
-            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card, otherCard);
             GoToEndOfTurn(Malichae);
-            QuickHPCheck(0, 0, 2, 0, 0);
+            QuickHPCheck(0, 0, 2, 0, 1, 1);
             AssertInPlayArea(Malichae, card);
         }
 
-        
+        [Test]
+        public void DjinnTarget_HighEzael_UsePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            string djinn = "Ezael";
+
+            var card = PlayCard(djinn);
+            var ongoing = GetCard("High" + djinn);
+            AssertInPlayArea(Malichae, card);
+            var otherCard = PlayCard("Bathiel");
+            SetHitPoints(ra.CharacterCard, 10);
+            SetHitPoints(otherCard, 3);
+            SetHitPoints(card, 3);
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(baron.CharacterCard, 20);
+            SetHitPoints(fanatic.CharacterCard, 20);
+            SetHitPoints(Malichae.CharacterCard, 20);
+
+            PlayCard(ongoing);
+            AssertNextToCard(ongoing, card);
+
+            GoToUsePowerPhase(Malichae);
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card, otherCard);
+
+            UsePower(ongoing);
+
+            QuickHPCheck(0, 1, 1, 1, 2, 2);
+            AssertInPlayArea(Malichae, card);
+            AssertInTrash(Malichae, ongoing);
+        }
 
     }
 }
