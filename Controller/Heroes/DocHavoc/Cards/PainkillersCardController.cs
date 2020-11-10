@@ -89,19 +89,23 @@ namespace Cauldron.DocHavoc
                 base.GameController.ExhaustCoroutine(selectTargetsToSelfDamageRoutine);
             }
 
-            if(!base.DidIntendedTargetTakeDamage(storedDamageResults, cc.CharacterCard))
+            if (base.DidIntendedTargetTakeDamage(storedDamageResults, cc.CharacterCard))
             {
-                IEnumerator destroyCardRoutine = base.GameController.DestroyCard(this.DecisionMaker, this.Card, 
-                    false, null, null, null, null, null, 
-                    null, null, null, base.GetCardSource(null));
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(destroyCardRoutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(destroyCardRoutine);
-                }
+                yield break;
+            }
+
+
+            IEnumerator destroyCardRoutine = base.GameController.DestroyCard(this.DecisionMaker, this.Card, 
+                false, null, null, null, null, null, 
+                null, null, null, base.GetCardSource(null));
+            
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(destroyCardRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(destroyCardRoutine);
             }
         }
     }
