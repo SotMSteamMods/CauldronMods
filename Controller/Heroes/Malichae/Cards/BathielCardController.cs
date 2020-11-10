@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.Malichae
 {
-    public class BathielCardController : MalichaeDjinnCardController
+    public class BathielCardController : DjinnTargetCardController
     {
         public BathielCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -15,8 +15,7 @@ namespace Cauldron.Malichae
         public override void AddTriggers()
         {
             base.AddEndOfTurnTrigger(tt => tt == this.TurnTaker, EndOfTurnReponse, TriggerType.DealDamage);
-            base.AddImmuneToDamageTrigger(dda => dda.DamageType == DamageType.Energy);
-            AddDjinnTargetTrigger();
+            base.AddImmuneToDamageTrigger(dda => dda.DamageType == DamageType.Energy && dda.Target == Card);
         }
 
         private IEnumerator EndOfTurnReponse(PhaseChangeAction pca)

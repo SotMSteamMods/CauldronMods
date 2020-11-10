@@ -104,6 +104,7 @@ namespace Cauldron.Malichae
                             status.SourceCriteria.IsHero = true;
                             status.SourceCriteria.IsTarget = true;
                             status.UntilStartOfNextTurn(this.TurnTaker);
+                            status.CardSource = Card;
 
                             coroutine = base.AddStatusEffect(status);
                             if (base.UseUnityCoroutines)

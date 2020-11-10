@@ -186,9 +186,12 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
+            //Failed on seed:2079599467
+
             //2nd discard for the UsePower innate
             var discard1 = GetCard("GrandBathiel");
             var discard2 = GetCardFromHand(Malichae);
+            Console.WriteLine($"TEST: {discard2.Identifier}:{discard2.InstanceIndex} selected for Power discard.");
             PutInHand(Malichae, discard1);
 
             var card = PutInHand(Malichae, "BaitAndSwitch");
@@ -294,14 +297,15 @@ namespace CauldronTests
         }
 
         [Test]
-        public void DjinnTarget_IsTarget()
+        [Sequential]
+        public void DjinnTarget_IsTarget(
+            [Values("Bathiel", "Ezael", "Somael", "Reshiel")] string djinn
+            )
         {
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
             GoToPlayCardPhase(Malichae);
-
-            string djinn = "Bathiel";
 
             var card = PlayCard(djinn);
             AssertInPlayArea(Malichae, card);
@@ -310,15 +314,16 @@ namespace CauldronTests
         }
 
         [Test]
-        public void DjinnTarget_IsImmuneToDamageType()
+        [Sequential]
+        public void DjinnTarget_IsImmuneToDamageType(
+            [Values("Bathiel", "Ezael", "Somael", "Reshiel")] string djinn,
+            [Values(DamageType.Energy, DamageType.Radiant, DamageType.Projectile, DamageType.Sonic)] DamageType type
+            )
         {
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
             GoToPlayCardPhase(Malichae);
-
-            string djinn = "Bathiel";
-            DamageType type = DamageType.Energy;
 
             var card = PlayCard(djinn);
             AssertInPlayArea(Malichae, card);
@@ -330,17 +335,22 @@ namespace CauldronTests
             QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
             DealDamage(baron.CharacterCard, card, 1, DamageType.Melee, true); //damage is irreducible to ensure it's only the immunity that blocks the damage
             QuickHPCheck(0, 0, 0, 0, -1); //no damage
+
+            //check only djinn is effected
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
+            DealDamage(baron.CharacterCard, Malichae.CharacterCard, 1, type, true); //damage is irreducible to ensure it's only the immunity that blocks the damage
+            QuickHPCheck(0, -1, 0, 0, 0); //no damage
         }
 
         [Test]
-        public void DjinnTarget_ReturnsToHandIfDestroyed()
+        public void DjinnTarget_ReturnsToHandIfDestroyed(
+            [Values("Bathiel", "Ezael", "Somael", "Reshiel")] string djinn
+            )
         {
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
             GoToPlayCardPhase(Malichae);
-
-            string djinn = "Bathiel";
 
             PrintSeparator("Destroy Action");
             var card = PlayCard(djinn);
@@ -355,6 +365,140 @@ namespace CauldronTests
 
             DealDamage(baron.CharacterCard, card, 99, DamageType.Melee, true);
             AssertInHand(Malichae, card);
+        }
+
+        [Test]
+        public void DjinnTarget_DestroyPreventedWithHighOngoing(
+            [Values("Bathiel", "Ezael", "Somael", "Reshiel")] string djinn
+            )
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            PrintSeparator("Destroy Action");
+            var card = PlayCard(djinn);
+            DecisionNextToCard = card;
+            var high = PlayCard("High" + djinn);
+            SetHitPoints(card, 3); //low Hp to confirm the heal
+            AssertInPlayArea(Malichae, card);
+            AssertInPlayArea(Malichae, high);
+
+            //Destroy on djinn should destroy ongoing instead
+            DestroyCard(card, baron.CharacterCard);
+            AssertInPlayArea(Malichae, card);
+            AssertInTrash(Malichae, high);
+            AssertIsAtMaxHP(card);
+
+            PrintSeparator("Damage Action");
+            DecisionNextToCard = card;
+            PlayCard(high);
+            AssertInPlayArea(Malichae, card);
+            AssertInPlayArea(Malichae, high);
+
+            DealDamage(baron.CharacterCard, card, 99, DamageType.Melee, true);
+            AssertInPlayArea(Malichae, card);
+            AssertInTrash(Malichae, high);
+            AssertIsAtMaxHP(card);
+        }
+
+        [Test]
+        public void DjinnTarget_Bathiel()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            string djinn = "Bathiel";
+
+            var card = PlayCard(djinn);
+            AssertInPlayArea(Malichae, card);
+
+            DecisionSelectTarget = ra.CharacterCard;
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
+            GoToEndOfTurn(Malichae);
+            QuickHPCheck(0, 0, -2, 0, 0);
+            AssertInPlayArea(Malichae, card);
+        }
+
+        [Test]
+        public void DjinnTarget_Somael()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            string djinn = "Somael";
+
+            var card = PlayCard(djinn);
+            AssertInPlayArea(Malichae, card);
+
+            DecisionSelectCard = ra.CharacterCard;
+
+            GoToEndOfTurn(Malichae);
+
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
+            DealDamage(baron.CharacterCard, ra.CharacterCard, 1, DamageType.Cold);
+            QuickHPCheck(0, 0, 0, 0, 0); //damage reduced to zero
+
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
+            DealDamage(baron.CharacterCard, ra.CharacterCard, 1, DamageType.Cold, true);
+            QuickHPCheck(0, 0, -1, 0, 0); //damage not reduced to zero
+
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
+            DealDamage(baron.CharacterCard, fanatic.CharacterCard, 1, DamageType.Cold);
+            QuickHPCheck(0, 0, 0, -1, 0); //damage not reduced
+
+            //expire effect
+            GoToStartOfTurn(Malichae);
+
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
+            DealDamage(baron.CharacterCard, ra.CharacterCard, 1, DamageType.Cold);
+            QuickHPCheck(0, 0, -1, 0, 0); //damage not reduced
+        }
+
+        [Test]
+        public void DjinnTarget_Ezael()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            string djinn = "Ezael";
+
+            var card = PlayCard(djinn);
+            AssertInPlayArea(Malichae, card);
+            SetHitPoints(ra.CharacterCard, 10);
+
+            DecisionSelectCard = ra.CharacterCard;
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
+            GoToEndOfTurn(Malichae);
+            QuickHPCheck(0, 0, 2, 0, 0);
+            AssertInPlayArea(Malichae, card);
+        }
+
+        [Test]
+        public void DjinnTarget_Reshiel()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            string djinn = "Reshiel";
+
+            var card = PlayCard(djinn);
+            AssertInPlayArea(Malichae, card);
+
+            DecisionSelectCards = new Card[] { ra.CharacterCard, fanatic.CharacterCard };
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
+            GoToEndOfTurn(Malichae);
+            QuickHPCheck(0, 0, -1, -1, 0);
+            AssertInPlayArea(Malichae, card);
         }
 
     }

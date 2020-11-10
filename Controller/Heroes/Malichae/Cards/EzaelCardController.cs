@@ -6,14 +6,32 @@ using System.Linq;
 
 namespace Cauldron.Malichae
 {
-	public class EzaelCardController : MalichaeDjinnCardController
+	public class EzaelCardController : DjinnTargetCardController
 	{
 		public EzaelCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
 		}
-		public override IEnumerator Play()
-		{
-			yield break;
-		}
-	}
+        public override void AddTriggers()
+        {
+            base.AddEndOfTurnTrigger(tt => tt == this.TurnTaker, EndOfTurnReponse, TriggerType.GainHP);
+            base.AddImmuneToDamageTrigger(dda => dda.DamageType == DamageType.Radiant && dda.Target == Card);
+        }
+
+        private IEnumerator EndOfTurnReponse(PhaseChangeAction pca)
+        {
+
+            var coroutine = GameController.SelectAndGainHP(this.DecisionMaker, 2,
+                additionalCriteria: c => c.IsHero && c.IsTarget,
+                cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+    }
 }
