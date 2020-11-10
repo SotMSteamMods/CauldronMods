@@ -268,8 +268,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            PutInHand("CalmBeforeTheStorm");
-            Card calm = GetCardFromHand("CalmBeforeTheStorm");
+            Card calm = PutInHand("CalmBeforeTheStorm");
             //Discard any number of cards.
             // Increase the next damage dealt by LadyOfTheWood by X, where X is 2 plus the number of cards discarded this way.
             GoToPlayCardPhase(ladyOfTheWood);
@@ -312,7 +311,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestCrownOfTheFourWinds()
+        public void TestCrownOfTheFourWinds_4Targets()
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
@@ -325,10 +324,60 @@ namespace CauldronTests
             //LadyOfTheWood deals 1 target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage.
             GoToUsePowerPhase(ladyOfTheWood);
             QuickHPStorage(baron, ladyOfTheWood, ra, haka);
-
+            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard };
             UsePower(crown);
             //every target in play should get 1 damage
             QuickHPCheck(-1, -1, -1, -1);
+
+        }
+
+        [Test()]
+        public void TestCrownOfTheFourWinds_MoreThan4Targets()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, haka.CharacterCard);
+            Card battalion = PutIntoPlay("BladeBattalion");
+
+            PutInHand("CrownOfTheFourWinds");
+            Card crown = GetCardFromHand("CrownOfTheFourWinds");
+            GoToPlayCardPhase(ladyOfTheWood); ;
+            PlayCard(crown);
+            //LadyOfTheWood deals 1 target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage.
+            GoToUsePowerPhase(ladyOfTheWood);
+            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard };
+            UsePower(crown);
+            //every target in play should get 1 damage
+            QuickHPCheck(-1, -1, -1, -1);
+
+        }
+
+        [Test()]
+        public void TestCrownOfTheFourWinds_LessThan3Targets()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //incap haka to have only 3 targets
+            SetHitPoints(haka.CharacterCard, 1);
+            DealDamage(baron, haka, 2, DamageType.Melee);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, haka.CharacterCard);
+            PutInHand("CrownOfTheFourWinds");
+            Card crown = GetCardFromHand("CrownOfTheFourWinds");
+            GoToPlayCardPhase(ladyOfTheWood); ;
+            PlayCard(crown);
+            //LadyOfTheWood deals 1 target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage.
+            GoToUsePowerPhase(ladyOfTheWood);
+            QuickHPStorage(baron, ladyOfTheWood, ra);
+            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard };
+
+            UsePower(crown);
+            //every target in play should get 1 damage (but only 3 targets)
+            QuickHPCheck(-1, -1, -1);
 
         }
 
