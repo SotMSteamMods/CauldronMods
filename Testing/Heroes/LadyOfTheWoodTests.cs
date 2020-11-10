@@ -191,7 +191,7 @@ namespace CauldronTests
 
             //check only for selected damage type
             QuickHPStorage(haka);
-            DealDamage(ra, haka, 5, DamageType.Fire);
+            DealDamage(ra, haka, 5, DamageType.Melee);
 
             //Damage dealt should be 5,no modifiers
             QuickHPCheck(-5);
