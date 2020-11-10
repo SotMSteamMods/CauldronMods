@@ -771,7 +771,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
             StartGame();
-
+            
             Card innervation = PlayCard("GlyphOfInnervation");
             //Power: Draw a card.
             GoToUsePowerPhase(stranger);
