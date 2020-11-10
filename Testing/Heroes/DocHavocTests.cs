@@ -665,5 +665,82 @@ namespace CauldronTests
             Assert.NotNull(FindCardInPlay(UnstableSerumCardController.Identifier));
             Assert.NotNull(FindCardInPlay("BacklashField"));
         }
+
+        [Test]
+        public void TestImprovisedMineDestroyDrawnVillainCard()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                ImprovisedMineCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+
+            // Act
+
+            DecisionSelectCard = GetCardFromHand(GasMaskCardController.Identifier);
+            //DecisionSelectCards = new Card[] {null};
+            DecisionYesNo = true;
+
+            GoToPlayCardPhase(DocHavoc);
+            PlayCardFromHand(DocHavoc, ImprovisedMineCardController.Identifier);
+            GoToEndOfTurn(DocHavoc);
+
+            PlayCard(baron, "BacklashField");
+
+            PrintCardsInPlayWithGameText();
+
+            // Assert
+
+            // Improvised Mine should be in Doc's trash
+            AssertInTrash(DocHavoc, ImprovisedMineCardController.Identifier);
+
+            // Improvised Mine shouldn't be in play
+            Assert.AreEqual(0, FindCardsWhere(c => c.Identifier == ImprovisedMineCardController.Identifier && c.IsInPlay).Count());
+
+            // Backlash Field shouldn't be in play
+            Assert.AreEqual(0, FindCardsWhere(c => c.Identifier == "BacklashField" && c.IsInPlay).Count());
+        }
+
+        [Test]
+        public void TestImprovisedMineDontDestroyDrawnVillainCard()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                ImprovisedMineCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+
+            // Act
+            DecisionSelectCard = GetCardFromHand(GasMaskCardController.Identifier);
+            DecisionYesNo = false;
+
+            GoToPlayCardPhase(DocHavoc);
+            PlayCardFromHand(DocHavoc, ImprovisedMineCardController.Identifier);
+            GoToEndOfTurn(DocHavoc);
+
+            PlayCard(baron, "BacklashField");
+
+
+            // Assert
+
+            // Improvised Mine shouldn't be in Doc's trash
+            AssertNotInTrash(DocHavoc, ImprovisedMineCardController.Identifier);
+
+            // Improvised Mine should be in play
+            Assert.AreEqual(1, FindCardsWhere(c => c.Identifier == ImprovisedMineCardController.Identifier && c.IsInPlay).Count());
+
+            // Backlash Field should be in play
+            Assert.AreEqual(1, FindCardsWhere(c => c.Identifier == "BacklashField" && c.IsInPlay).Count());
+        }
     }
 }
