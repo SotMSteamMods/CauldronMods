@@ -764,15 +764,16 @@ namespace CauldronTests
             StartGame();
 
             //stack deck
-            Card spring = GetCard("Spring");
-            PutOnDeck(ladyOfTheWood, FindCardController(spring));
+            Card spring = StackDeck(ladyOfTheWood, "Spring");
+
 
             //Draw a card.
             PutInHand("MeadowRush");
             Card meadow = GetCardFromHand("MeadowRush");
 
-            //choose to not play a card
+            //choose to not play a card and not to search
             DecisionDoNotSelectCard = SelectionType.PlayCard;
+ 
             PlayCard(meadow);
             //spring - which was stacked on top of deck, should be now in the hand
             AssertInHand(spring);
@@ -785,18 +786,19 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            PutInHand("MeadowRush");
-            Card meadow = GetCardFromHand("MeadowRush");
+            Card meadow = PutInHand("MeadowRush");
 
             //stack deck to prevent drawing a season
             PutOnDeck("FireInTheClouds");
 
             int numSeasonsBefore = GetNumberOfSeasonsInHand(ladyOfTheWood);
-
+            //pick a random season from deck
+            DecisionSelectCard = (ladyOfTheWood.HeroTurnTaker.Deck.Cards.Where(c => IsSeason(c)).Take(1)).First();
             //Search your deck for a season card, put it into your hand, then shuffle your deck.
             DecisionDoNotSelectCard = SelectionType.PlayCard;
+            QuickShuffleStorage(ladyOfTheWood.TurnTaker.Deck);
             PlayCard(meadow);
-
+            QuickShuffleCheck(1);
             AssertNumberOfSeasonsInHand(ladyOfTheWood, numSeasonsBefore + 1);
 
         }
@@ -807,25 +809,18 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            //Put all cards in hand back on the deck
-            Card card;
-            for (int i = 0; i < 4; i++)
-            {
-                card = GetCardFromHand(ladyOfTheWood, 0);
-                PutOnDeck(ladyOfTheWood, FindCardController(card));
-            }
+            //Discard all cards in hand
+            DiscardAllCards(ladyOfTheWood);
 
             //put "Spring" on the top of the deck, a card that will stay in play
-            PutOnDeck("Spring");
+            Card spring = PutOnDeck("Spring");
 
-            PutInHand("MeadowRush");
-            Card meadow = GetCardFromHand("MeadowRush");
+            Card meadow = PutInHand("MeadowRush");
             //You may play a card.
 
             PlayCard(meadow);
-
             //expect just two card in play, character card and played card
-            AssertNumberOfCardsInPlay(ladyOfTheWood, 2);
+            AssertIsInPlay(spring);
 
         }
 
