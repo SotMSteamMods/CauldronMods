@@ -1712,15 +1712,22 @@ namespace CauldronTests
             //Whenever {LadyOfTheWood} deals cold damage to a target, draw a card.
 
             //check draws when cold
+            PrintSeparator("check draws when cold");
             QuickHandStorage(ladyOfTheWood);
             DealDamage(ladyOfTheWood, haka, 3, DamageType.Cold);
             QuickHandCheck(1);
 
+            PrintSeparator("check no draws when not cold");
             //check does not draw when not cold
             QuickHandStorage(ladyOfTheWood);
             DealDamage(ladyOfTheWood, haka, 3, DamageType.Toxic);
             QuickHandCheck(0);
 
+            PrintSeparator("check no draws when not lady of the wood");
+            //check does not draw when not cold
+            QuickHandStorage(ladyOfTheWood);
+            DealDamage(ra, haka, 3, DamageType.Cold);
+            QuickHandCheck(0);
 
         }
     }
