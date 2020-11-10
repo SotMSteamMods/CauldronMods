@@ -850,5 +850,157 @@ namespace CauldronTests
             AssertInTrash(Malichae, ongoing);
         }
 
+
+        [Test]
+        public void GrandDjinnOngoing_PlayWithoutTarget(
+            [Values("Bathiel", "Ezael", "Somael", "Reshiel")] string djinn
+            )
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            var ongoing = GetCard("Grand" + djinn);
+
+            AssertNextMessage($"There are no {djinn} cards in play to put Grand {djinn} next to. Moving it to {Malichae.Name}'s trash.");
+            PlayCard(ongoing);
+            AssertNotInPlay(ongoing);
+            AssertInTrash(Malichae, ongoing);
+        }
+
+        [Test]
+        public void GrandDjinnOngoing_PlayWithTargetNoHighOngoing(
+            [Values("Bathiel", "Ezael", "Somael", "Reshiel")] string djinn
+            )
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            var card = PlayCard(djinn);
+            var grand = GetCard("Grand" + djinn);
+            AssertInPlayArea(Malichae, card);
+
+            PlayCard(grand);
+
+            //card should destroy itself
+            AssertInPlayArea(Malichae, card);
+            AssertInTrash(Malichae, grand);
+        }
+
+        [Test]
+        public void GrandDjinnOngoing_PlayWithHighOngoing(
+            [Values("Bathiel", "Ezael", "Somael", "Reshiel")] string djinn
+            )
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            var card = PlayCard(djinn);
+            var high = GetCard("High" + djinn);
+            var grand = GetCard("Grand" + djinn);
+            AssertInPlayArea(Malichae, card);
+
+            PlayCard(high);
+            AssertNextToCard(high, card);
+
+            PlayCard(grand);
+            AssertNextToCard(grand, card);
+        }
+
+
+        [Test]
+        public void GrandDjinnOngoing_NoEffectIfOngoingDestroy(
+            [Values("Bathiel", "Ezael", "Somael", "Reshiel")] string djinn
+            )
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            var card = PlayCard(djinn);
+            SetHitPoints(card, 2); //to check we don't heal
+            var high = GetCard("High" + djinn);
+            var grand = GetCard("Grand" + djinn);
+            AssertInPlayArea(Malichae, card);
+
+            PlayCard(high);
+            AssertNextToCard(high, card);
+
+            PlayCard(grand);
+            AssertNextToCard(grand, card);
+
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
+            DestroyCard(grand, baron.CharacterCard);
+
+            AssertInPlayArea(Malichae, card);
+            AssertInTrash(Malichae, high);
+            QuickHPCheck(0, 0, 0, 0, 0);
+        }
+
+        [Test]
+        public void GrandDjinnOngoing_DestroyIfHighIsDestroyed(
+            [Values("Bathiel", "Ezael", "Somael", "Reshiel")] string djinn
+            )
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            var card = PlayCard(djinn);
+            var high = GetCard("High" + djinn);
+            var grand = GetCard("Grand" + djinn);
+            AssertInPlayArea(Malichae, card);
+
+            PlayCard(high);
+            AssertNextToCard(high, card);
+
+            PlayCard(grand);
+            AssertNextToCard(grand, card);
+
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
+            DestroyCard(high, baron.CharacterCard);
+
+            AssertInPlayArea(Malichae, card);
+            AssertInTrash(Malichae, high);
+            AssertInTrash(Malichae, grand);
+            QuickHPCheck(0, 0, 0, 0, 0);
+        }
+
+        [Test]
+        public void GrandDjinnOngoing_DestroyAtEndOfTurn(
+            [Values("Bathiel", "Ezael", "Somael", "Reshiel")] string djinn
+            )
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            var card = PlayCard(djinn);
+            var high = GetCard("High" + djinn);
+            var grand = GetCard("Grand" + djinn);
+            AssertInPlayArea(Malichae, card);
+
+            PlayCard(high);
+            AssertNextToCard(high, card);
+
+            PlayCard(grand);
+            AssertNextToCard(grand, card);
+
+            GoToEndOfTurn(Malichae);
+
+            AssertInPlayArea(Malichae, card);
+            AssertNextToCard(high, card);
+            AssertInTrash(Malichae, grand);
+        }
+
+
     }
 }
