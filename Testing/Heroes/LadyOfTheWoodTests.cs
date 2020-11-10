@@ -466,7 +466,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestFireInTheCloudsOption2()
+        public void TestFireInTheCloudsOption2_3Targets()
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
@@ -476,10 +476,61 @@ namespace CauldronTests
             GoToPlayCardPhase(ladyOfTheWood);
             //should deal 3 target 1 lightning
             DecisionSelectFunction = 1;
-            QuickHPStorage(baron, ladyOfTheWood, ra);
+            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard };
+            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
             PlayCard("FireInTheClouds");
-            QuickHPCheck(-1, -1, -1);
+            QuickHPCheck(-1, -1, -1, 0);
+        }
 
+        [Test()]
+        public void TestFireInTheCloudsOption2_2Targets()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+            //LadyOfTheWood deals 1 target 3 fire damage or up to 3 targets 1 lightning damage each.
+            GoToPlayCardPhase(ladyOfTheWood);
+            //should deal 3 target 1 lightning
+            DecisionSelectFunction = 1;
+            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyOfTheWood.CharacterCard, null };
+            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            PlayCard("FireInTheClouds");
+            QuickHPCheck(-1, -1, 0, 0);
+        }
+
+        [Test()]
+        public void TestFireInTheCloudsOption2_1Target()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+            //LadyOfTheWood deals 1 target 3 fire damage or up to 3 targets 1 lightning damage each.
+            GoToPlayCardPhase(ladyOfTheWood);
+            //should deal 3 target 1 lightning
+            DecisionSelectFunction = 1;
+            DecisionSelectCards = new Card[] { baron.CharacterCard, null };
+            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            PlayCard("FireInTheClouds");
+            QuickHPCheck(-1, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestFireInTheCloudsOption2_NoTargets()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+            //LadyOfTheWood deals 1 target 3 fire damage or up to 3 targets 1 lightning damage each.
+            GoToPlayCardPhase(ladyOfTheWood);
+            //should deal 3 target 1 lightning
+            DecisionSelectFunction = 1;
+            DecisionDoNotSelectCard = SelectionType.SelectTarget;
+            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            PlayCard("FireInTheClouds");
+            QuickHPCheck(0, 0, 0, 0);
         }
 
         [Test()]
