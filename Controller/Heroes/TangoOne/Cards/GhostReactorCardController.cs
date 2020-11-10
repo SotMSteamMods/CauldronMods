@@ -4,7 +4,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TangoOne
 {
-    public class GhostReactorCardController : CardController
+    public class GhostReactorCardController : TangoOneBaseCardController
     {
         public static string Identifier = "GhostReactor";
 

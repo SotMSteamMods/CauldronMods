@@ -4,7 +4,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TangoOne
 {
-    public class PerfectFocusCardController : CardController
+    public class PerfectFocusCardController : TangoOneBaseCardController
     {
         public static string Identifier = "PerfectFocus";
 

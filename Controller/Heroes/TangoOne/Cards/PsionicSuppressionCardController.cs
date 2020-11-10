@@ -4,7 +4,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TangoOne
 {
-    public class PsionicSuppressionCardController : CardController
+    public class PsionicSuppressionCardController : TangoOneBaseCardController
     {
         public static string Identifier = "PsionicSuppression";
 

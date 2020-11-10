@@ -4,7 +4,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TangoOne
 {
-    public class InfiltrateCardController : CardController
+    public class InfiltrateCardController : TangoOneBaseCardController
     {
         public static string Identifier = "Infiltrate";
 

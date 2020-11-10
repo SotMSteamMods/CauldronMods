@@ -4,7 +4,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TangoOne
 {
-    public class WetWorkCardController : CardController
+    public class WetWorkCardController : TangoOneBaseCardController
     {
         public static string Identifier = "WetWork";
 

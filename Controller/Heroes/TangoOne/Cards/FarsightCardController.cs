@@ -4,7 +4,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TangoOne
 {
-    public class FarsightCardController : CardController
+    public class FarsightCardController : TangoOneBaseCardController
     {
         public static string Identifier = "Farsight";
 

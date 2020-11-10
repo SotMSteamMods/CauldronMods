@@ -4,7 +4,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TangoOne
 {
-    public class OneShotOneKillCardController : CardController
+    public class OneShotOneKillCardController : TangoOneBaseCardController
     {
         public static string Identifier = "OneShotOneKill";
 

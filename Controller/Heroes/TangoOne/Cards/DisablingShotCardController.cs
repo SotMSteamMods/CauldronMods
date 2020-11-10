@@ -4,7 +4,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TangoOne
 {
-    public class DisablingShotCardController : CardController
+    public class DisablingShotCardController : TangoOneBaseCardController
     {
         public static string Identifier = "DisablingShot";
 

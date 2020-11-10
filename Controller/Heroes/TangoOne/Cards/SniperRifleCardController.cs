@@ -4,7 +4,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TangoOne
 {
-    public class SniperRifleCardController : CardController
+    public class SniperRifleCardController : TangoOneBaseCardController
     {
         public static string Identifier = "SniperRifle";
 
