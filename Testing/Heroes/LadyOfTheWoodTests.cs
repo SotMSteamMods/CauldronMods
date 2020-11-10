@@ -155,18 +155,21 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestCalmBeforeTheStormDiscard3()
+        public void TestCalmBeforeTheStormDiscard4()
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            PutInHand("CalmBeforeTheStorm");
-            Card calm = GetCardFromHand("CalmBeforeTheStorm");
+            //grab the hand besides calm
+            IEnumerable<Card> cardsInHand = base.GameController.GetAllCardsInHand(ladyOfTheWood);
+
+            Card calm = PutInHand("CalmBeforeTheStorm");
             //Discard any number of cards.
             // Increase the next damage dealt by LadyOfTheWood by X, where X is 2 plus the number of cards discarded this way.
             GoToPlayCardPhase(ladyOfTheWood);
             QuickHandStorage(ladyOfTheWood);
 
+            DecisionSelectCards = new Card[] { cardsInHand.ElementAt(0), cardsInHand.ElementAt(1), cardsInHand.ElementAt(2), cardsInHand.ElementAt(3)};
             PlayCard(calm);
             //should be -5, 1 for calm before storm, and 4 others discarded
             QuickHandCheck(-5);
@@ -175,6 +178,87 @@ namespace CauldronTests
             DealDamage(ladyOfTheWood, haka, 4, DamageType.Melee);
             //since 4 cards discarded, should be +6 for  10 damage
             QuickHPCheck(-10);
+
+        }
+
+        [Test()]
+        public void TestCalmBeforeTheStormDiscard3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //grab the hand besides calm
+            IEnumerable<Card> cardsInHand = base.GameController.GetAllCardsInHand(ladyOfTheWood);
+
+            Card calm = PutInHand("CalmBeforeTheStorm");
+            //Discard any number of cards.
+            // Increase the next damage dealt by LadyOfTheWood by X, where X is 2 plus the number of cards discarded this way.
+            GoToPlayCardPhase(ladyOfTheWood);
+            QuickHandStorage(ladyOfTheWood);
+
+            DecisionSelectCards = new Card[] { cardsInHand.ElementAt(0), cardsInHand.ElementAt(1), cardsInHand.ElementAt(2), null };
+            PlayCard(calm);
+            //should be -4, 1 for calm before storm, and 3 others discarded
+            QuickHandCheck(-4);
+
+            QuickHPStorage(haka);
+            DealDamage(ladyOfTheWood, haka, 4, DamageType.Melee);
+            //since 3 cards discarded, should be +5 for  9 damage
+            QuickHPCheck(-9);
+
+        }
+
+        [Test()]
+        public void TestCalmBeforeTheStormDiscard2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //grab the hand besides calm
+            IEnumerable<Card> cardsInHand = base.GameController.GetAllCardsInHand(ladyOfTheWood);
+
+            Card calm = PutInHand("CalmBeforeTheStorm");
+            //Discard any number of cards.
+            // Increase the next damage dealt by LadyOfTheWood by X, where X is 2 plus the number of cards discarded this way.
+            GoToPlayCardPhase(ladyOfTheWood);
+            QuickHandStorage(ladyOfTheWood);
+
+            DecisionSelectCards = new Card[] { cardsInHand.ElementAt(0), cardsInHand.ElementAt(1), null };
+            PlayCard(calm);
+            //should be -3, 1 for calm before storm, and 2 others discarded
+            QuickHandCheck(-3);
+
+            QuickHPStorage(haka);
+            DealDamage(ladyOfTheWood, haka, 4, DamageType.Melee);
+            //since 2 cards discarded, should be +4 for 8 damage
+            QuickHPCheck(-8);
+
+        }
+
+        [Test()]
+        public void TestCalmBeforeTheStormDiscard1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //grab the hand besides calm
+            IEnumerable<Card> cardsInHand = base.GameController.GetAllCardsInHand(ladyOfTheWood);
+
+            Card calm = PutInHand("CalmBeforeTheStorm");
+            //Discard any number of cards.
+            // Increase the next damage dealt by LadyOfTheWood by X, where X is 2 plus the number of cards discarded this way.
+            GoToPlayCardPhase(ladyOfTheWood);
+            QuickHandStorage(ladyOfTheWood);
+
+            DecisionSelectCards = new Card[] { cardsInHand.ElementAt(0), null };
+            PlayCard(calm);
+            //should be -2, 1 for calm before storm, and 1 other discarded
+            QuickHandCheck(-2);
+
+            QuickHPStorage(haka);
+            DealDamage(ladyOfTheWood, haka, 4, DamageType.Melee);
+            //since 1 card discarded, should be +3 for  7 damage
+            QuickHPCheck(-7);
 
         }
 
@@ -191,6 +275,31 @@ namespace CauldronTests
             GoToPlayCardPhase(ladyOfTheWood);
             QuickHandStorage(ladyOfTheWood);
             DecisionDoNotSelectCard = SelectionType.DiscardCard;
+            PlayCard(calm);
+            //should be -1, 1 for calm before storm, and 0 others discarded
+            QuickHandCheck(-1);
+
+            QuickHPStorage(haka);
+            DealDamage(ladyOfTheWood, haka, 4, DamageType.Melee);
+            //since 0 cards discarded, should be +2 for  6 damage
+            QuickHPCheck(-6);
+
+        }
+
+        [Test()]
+        public void TestCalmBeforeTheStormCantDiscard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            DiscardAllCards(ladyOfTheWood);
+            PutInHand("CalmBeforeTheStorm");
+            Card calm = GetCardFromHand("CalmBeforeTheStorm");
+            //Discard any number of cards.
+            // Increase the next damage dealt by LadyOfTheWood by X, where X is 2 plus the number of cards discarded this way.
+            GoToPlayCardPhase(ladyOfTheWood);
+            QuickHandStorage(ladyOfTheWood);
+            
+            //there shouldn't be any cards to discard
             PlayCard(calm);
             //should be -1, 1 for calm before storm, and 0 others discarded
             QuickHandCheck(-1);

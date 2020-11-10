@@ -24,8 +24,19 @@ namespace Cauldron.LadyOfTheWood
 			{
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
-			//Increase the next damage dealt by {LadyOfTheWood} by X, where X is 2 plus the number of cards discarded this way.
-			IEnumerator coroutine2 = base.AddStatusEffect(new IncreaseDamageStatusEffect(discardedCards.First<int>() + 2)
+
+			//X is 2 plus the number of cards discarded
+			int X;
+			if(discardedCards.Count > 0)
+			{
+				X = discardedCards.First<int>() + 2;
+			}
+			else
+			{
+				X = 2;
+			}
+			//Increase the next damage dealt by {LadyOfTheWood} by X
+			IEnumerator coroutine2 = base.AddStatusEffect(new IncreaseDamageStatusEffect(X)
 			{
 				SourceCriteria =
 				{
@@ -36,7 +47,7 @@ namespace Cauldron.LadyOfTheWood
 				{
 					Card = base.CharacterCard
 				}
-			}, true);
+			});
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine2);
@@ -58,7 +69,7 @@ namespace Cauldron.LadyOfTheWood
 			if (base.HeroTurnTakerController.HasCardsInHand)
 			{
 				List<DiscardCardAction> storedResultsDiscard = new List<DiscardCardAction>();
-				IEnumerator coroutine = base.SelectAndDiscardCards(base.HeroTurnTakerController, null, false, new int?(0), storedResultsDiscard, false, null, null, null, SelectionType.DiscardCard, null);
+				IEnumerator coroutine = base.SelectAndDiscardCards(base.HeroTurnTakerController, null, false, new int?(0), storedResultsDiscard);
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);
@@ -67,11 +78,17 @@ namespace Cauldron.LadyOfTheWood
 				{
 					base.GameController.ExhaustCoroutine(coroutine);
 				}
-				storedResults.Add(base.GetNumberOfCardsDiscarded(storedResultsDiscard));
+
+				if(storedResultsDiscard != null)
+				{
+					storedResults.Add(base.GetNumberOfCardsDiscarded(storedResultsDiscard));
+
+				}
+				
 			}
 			else
 			{
-				IEnumerator coroutine2 = base.GameController.SendMessageAction("Lady of the Wood has no cards in his hand to discard.", Priority.High, base.GetCardSource(null), null, false);
+				IEnumerator coroutine2 = base.GameController.SendMessageAction("Lady of the Wood has no cards in her hand to discard.", Priority.High, base.GetCardSource());
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine2);
