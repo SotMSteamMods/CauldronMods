@@ -1489,17 +1489,20 @@ namespace CauldronTests
             PutIntoPlay("Summer");
             //Increase fire damage dealt by LadyOfTheWood by 2.
 
+            PrintSeparator("Check for fire");
             QuickHPStorage(ra);
             DealDamage(ladyOfTheWood, ra, 5, DamageType.Fire);
             //since she dealt 5 fire damage, +2 damage, for 7 total
             QuickHPCheck(-7);
 
+            PrintSeparator("Check for non-fire");
             //check bonus doesn't apply to non fire damage
             QuickHPStorage(ra);
             DealDamage(ladyOfTheWood, ra, 5, DamageType.Toxic);
             //since she dealt not fire damage, no bonus, just 5
             QuickHPCheck(-5);
 
+            PrintSeparator("Check for other target dealing fire");
             //check bonus doesn't apply to other damage sources
             QuickHPStorage(haka);
             DealDamage(ra, haka, 5, DamageType.Fire);
