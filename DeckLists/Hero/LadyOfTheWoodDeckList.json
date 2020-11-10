@@ -218,7 +218,7 @@
                 "DealDamageCold"
             ],
             "powers": [
-                "{LadyOfTheWood} deals 1 target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage."
+                "{LadyOfTheWood} deals one target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage."
             ],
             "flavorQuotes": [
                 {
@@ -526,7 +526,7 @@
         },
         {
             "identifier": "LadyOfTheWoodCharacter",
-            "promoIdentifier": "2199LadyOfTheWoodCharacter",
+            "promoIdentifier": "FutureLadyOfTheWoodCharacter",
             "count": 1,
             "title": "Lady Of The Wood",
             "promoTitle": "Lady of the Wood 2199",

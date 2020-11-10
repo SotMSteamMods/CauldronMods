@@ -860,6 +860,14 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             //Setup Trash
+
+            DiscardAllCards(baccarat);
+            ShuffleTrashIntoDeck(baccarat);
+
+            PutInTrash(baccarat.HeroTurnTaker.Deck.Cards.Where(c => c.Identifier == "CheapTrick"));
+            PutInTrash(baccarat.HeroTurnTaker.Deck.Cards.Where(c => c.Identifier == "CardToss").Take(2));
+            PutInTrash(baccarat.HeroTurnTaker.Deck.Cards.Where(c => c.Identifier == "GraveyardBridge").Take(2));
+
             Card trick1 = GetCard("CheapTrick", 0);
             Card trick2 = GetCard("CheapTrick", 1);
             Card trick3 = GetCard("CheapTrick", 2);
@@ -869,8 +877,8 @@ namespace CauldronTests
             Card ace1 = GetCard("AceInTheHole", 1);
             Card ace2 = GetCard("AceInTheHole", 2);
             Card saint = GetCard("AceOfSaints");
-            IEnumerable<Card> trashCards = new Card[] { trick1, trick2, trick3, trick4, saint, toss1, toss2, ace1, ace2 };
-            PutInTrash(trashCards);
+
+            IEnumerable<Card> trashCards = baccarat.HeroTurnTaker.Trash.Cards;
 
             //Setup In play
             Card field = GetCard("LivingForceField");

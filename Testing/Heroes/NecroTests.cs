@@ -654,6 +654,7 @@ namespace CauldronTests
             //get GrandSummon from hand for consistent behavior
             PutInHand("GrandSummon");
             Card grand = GetCardFromHand("GrandSummon");
+            StackDeck("BloodRite"); //stack the deck so that there's always a card to shuffle.
 
             GoToPlayCardPhase(necro);
 
@@ -663,6 +664,7 @@ namespace CauldronTests
             int numCardsInTrashBefore = GetNumberOfCardsInTrash(necro);
             //Reveal cards from the top of your deck until you reveal 2 Undead cards. Put 1 into play and 1 into the trash.
             PlayCard(grand);
+            
             AssertInTrash(necro, grand);
             QuickShuffleCheck(0, 1, 0, 0);
 
