@@ -1018,8 +1018,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            PlayCard("RainpetalCloak");
-            Card cloak = GetCardInPlay("RainpetalCloak");
+            Card cloak = PlayCard("RainpetalCloak");
             //  Power: Draw a card.
             GoToUsePowerPhase(ladyOfTheWood);
             QuickHandStorage(ladyOfTheWood);
@@ -1037,20 +1036,23 @@ namespace CauldronTests
             //give room to gain hp
             SetHitPoints(ladyOfTheWood.CharacterCard, 15);
             PlayCard("RainpetalCloak");
+
             //  The first time {LadyOfTheWood} would be dealt 1 damage each turn, she regains 1 HP instead.    
             GoToPlayCardPhase(ladyOfTheWood);
+            PrintSeparator("Check initial prevention");
             QuickHPStorage(ladyOfTheWood);
             DealDamage(baron, ladyOfTheWood, 1, DamageType.Infernal);
             //should have prevented and gained an HP
             QuickHPCheck(1);
 
+            PrintSeparator("Check doesn't prevent on second damage");
             QuickHPStorage(ladyOfTheWood);
             DealDamage(baron, ladyOfTheWood, 1, DamageType.Infernal);
             //should have not prevented and is normal
             QuickHPCheck(-1);
 
             GoToNextTurn();
-
+            PrintSeparator("check resets on non-lady of wood start of turn");
             QuickHPStorage(ladyOfTheWood);
             DealDamage(baron, ladyOfTheWood, 1, DamageType.Infernal);
             //should have prevented again and gained an HP
