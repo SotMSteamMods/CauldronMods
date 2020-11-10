@@ -1061,33 +1061,108 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestRebirthPutCardsUnder()
+        public void TestRebirthPutCardsUnder_Choose3()
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
 
             //stack trash
-            PutInTrash("Spring");
-            PutInTrash("Fall");
-            PutInTrash("Summer");
+            Card spring = PutInTrash("Spring");
+            Card fall = PutInTrash("Fall");
+            Card summer = PutInTrash("Summer");
 
-            Card spring = GetCardFromTrash(ladyOfTheWood,"Spring");
-            Card fall = GetCardFromTrash(ladyOfTheWood, "Fall");
-            Card summer = GetCardFromTrash(ladyOfTheWood, "Summer");
 
             //When this card enters play, put up to 3 cards from your trash beneath it.
 
             DecisionSelectCards = new Card[] { spring, fall, summer };
-            PlayCard("Rebirth");
-            Card rebirth = GetCardInPlay("Rebirth");
+            Card rebirth = PlayCard("Rebirth");
 
             //check that there are 3 cards under and that they are the cards under are correct
             AssertNumberOfCardsUnderCard(rebirth, 3);
             AssertUnderCard(rebirth, spring);
             AssertUnderCard(rebirth, fall);
             AssertUnderCard(rebirth, summer);
+        }
+
+        [Test()]
+        public void TestRebirthPutCardsUnder_Choose2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //stack trash
+            Card spring = PutInTrash("Spring");
+            Card fall = PutInTrash("Fall");
+            Card summer = PutInTrash("Summer");
 
 
+            //When this card enters play, put up to 3 cards from your trash beneath it.
+
+            DecisionSelectCards = new Card[] { spring, fall, null };
+            Card rebirth = PlayCard("Rebirth");
+
+            //check that there are 2 cards under and that they are the cards under are correct
+            AssertNumberOfCardsUnderCard(rebirth, 2);
+            AssertUnderCard(rebirth, spring);
+            AssertUnderCard(rebirth, fall);
+            AssertInTrash(summer);
+        }
+
+        [Test()]
+        public void TestRebirthPutCardsUnder_Choose1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //stack trash
+            Card spring = PutInTrash("Spring");
+            Card fall = PutInTrash("Fall");
+            Card summer = PutInTrash("Summer");
+
+
+            //When this card enters play, put up to 3 cards from your trash beneath it.
+
+            DecisionSelectCards = new Card[] { spring, null };
+            Card rebirth = PlayCard("Rebirth");
+
+            //check that there is 1 card under and that it is correct
+            AssertNumberOfCardsUnderCard(rebirth, 1);
+            AssertUnderCard(rebirth, spring);
+            AssertInTrash(fall, summer);
+        }
+
+        [Test()]
+        public void TestRebirthPutCardsUnder_Choose0()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //stack trash
+            Card spring = PutInTrash("Spring");
+            Card fall = PutInTrash("Fall");
+            Card summer = PutInTrash("Summer");
+
+
+            //When this card enters play, put up to 3 cards from your trash beneath it.
+
+            DecisionDoNotSelectCard = SelectionType.MoveCard;
+            Card rebirth = PlayCard("Rebirth");
+
+            //since there are 0 cards moved under this card, it should immediately destroy itself
+            AssertInTrash(rebirth);
+        }
+
+        [Test()]
+        public void TestRebirthPutCardsUnder_NoCardsToMove()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //When this card enters play, put up to 3 cards from your trash beneath it.
+            Card rebirth = PlayCard("Rebirth");
+
+            //since there are no cards to be moved under this card, it should immediately destroy itself
+            AssertInTrash(rebirth);
         }
 
         [Test()]
@@ -1097,19 +1172,16 @@ namespace CauldronTests
             StartGame();
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
-            //stack trash
-            PutInTrash("Spring");
-            PutInTrash("Fall");
-            PutInTrash("Summer");
+            Card battalion = PlayCard("BladeBattalion");
 
-            Card spring = GetCardFromTrash(ladyOfTheWood, "Spring");
-            Card fall = GetCardFromTrash(ladyOfTheWood, "Fall");
-            Card summer = GetCardFromTrash(ladyOfTheWood, "Summer");
+            //stack trash
+            Card spring = PutInTrash("Spring");
+            Card fall = PutInTrash("Fall");
+            Card summer = PutInTrash("Summer");
 
             //Whenever LadyOfTheWood destroys a target, put a card from beneath this one into your hand.
             DecisionSelectCards = new Card[] { spring, fall, summer, summer };
-            PlayCard("Rebirth");
-            Card rebirth = GetCardInPlay("Rebirth");
+            Card rebirth = PlayCard("Rebirth");
 
             QuickHandStorage(ladyOfTheWood);
             //have lady of the wood destroy mdp
@@ -1121,7 +1193,15 @@ namespace CauldronTests
             AssertUnderCard(rebirth, fall);
             AssertInHand(summer);
 
-
+            //check doesn't move when another hero destroys a target
+            QuickHandStorage(ladyOfTheWood);
+            //have lady of the wood destroy mdp
+            DestroyCard(battalion, haka.CharacterCard);
+            //nothing should have been moved to hand
+            QuickHandCheck(0);
+            AssertNumberOfCardsUnderCard(rebirth, 2);
+            AssertUnderCard(rebirth, spring);
+            AssertUnderCard(rebirth, fall);
         }
 
         [Test()]
@@ -1131,19 +1211,14 @@ namespace CauldronTests
             StartGame();
 
             //stack trash
-            PutInTrash("Spring");
-            PutInTrash("Fall");
-            PutInTrash("Summer");
+            Card spring = PutInTrash("Spring");
+            Card fall = PutInTrash("Fall");
+            Card summer = PutInTrash("Summer");
 
-            Card spring = GetCardFromTrash(ladyOfTheWood, "Spring");
-            Card fall = GetCardFromTrash(ladyOfTheWood, "Fall");
-            Card summer = GetCardFromTrash(ladyOfTheWood, "Summer");
 
             //When there are no cards beneath this one, destroy this card.
             DecisionSelectCards = new Card[] { spring, fall, summer };
-            PlayCard("Rebirth");
-            Card rebirth = GetCardInPlay("Rebirth");
-
+            Card rebirth = PlayCard("Rebirth");
             
             MoveCards(ladyOfTheWood, new Card[] { spring, fall, summer }, ladyOfTheWood.HeroTurnTaker.Hand);
             AssertNotInPlay(rebirth);
