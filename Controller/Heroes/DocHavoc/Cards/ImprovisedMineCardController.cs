@@ -109,7 +109,7 @@ namespace Cauldron.DocHavoc
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            
+            // Move villain card back to deck
             CardController cc = base.FindCardController(card);
             routine = base.GameController.MoveCard(base.TurnTakerController, card, cc.TurnTaker.Deck, 
                 false, false, true, null, false, 
@@ -125,7 +125,21 @@ namespace Cauldron.DocHavoc
             {
                 base.GameController.ExhaustCoroutine(routine);
             }
-            
+
+            // 1 target 2 Fire damage
+            routine = this.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
+                new DamageSource(this.GameController, this.CharacterCard), DamageAmount, DamageType.Fire,
+                new int?(1), false,
+                new int?(1), cardSource: this.GetCardSource());
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
 
             // Destroy this card
             routine = base.GameController.DestroyCard(this.DecisionMaker, base.Card, false, null, null, null, null, null, null, null, null, base.GetCardSource(null));

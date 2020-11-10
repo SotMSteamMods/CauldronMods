@@ -681,8 +681,10 @@ namespace CauldronTests
             StartGame();
 
             // Act
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            QuickHPStorage(mdp);
 
-            DecisionSelectCard = GetCardFromHand(GasMaskCardController.Identifier);
+            DecisionSelectCards = new [] { GetCardFromHand(GasMaskCardController.Identifier), mdp };
             //DecisionSelectCards = new Card[] {null};
             DecisionYesNo = true;
 
@@ -692,7 +694,6 @@ namespace CauldronTests
 
             PlayCard(baron, "BacklashField");
 
-            PrintCardsInPlayWithGameText();
 
             // Assert
 
@@ -704,6 +705,9 @@ namespace CauldronTests
 
             // Backlash Field shouldn't be in play
             Assert.AreEqual(0, FindCardsWhere(c => c.Identifier == "BacklashField" && c.IsInPlay).Count());
+
+            // Mobile Defense Platform -2 HP
+            QuickHPCheck(-2);
         }
 
         [Test]
