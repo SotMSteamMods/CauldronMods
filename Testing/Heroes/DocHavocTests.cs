@@ -352,7 +352,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void RapidRegenTest()
+        public void TestRapidRegen()
         {
             // Arrange
             SetupGameController("Ambuscade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
@@ -745,6 +745,36 @@ namespace CauldronTests
 
             // Backlash Field should be in play
             Assert.AreEqual(1, FindCardsWhere(c => c.Identifier == "BacklashField" && c.IsInPlay).Count());
+        }
+
+        [Test]
+        public void TestBrawler()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                BrawlerCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            QuickHPStorage(DocHavoc.CharacterCard, mdp);
+            // Act
+
+            DecisionSelectTarget = mdp;
+
+            GoToPlayCardPhase(DocHavoc);
+            PlayCardFromHand(DocHavoc, BrawlerCardController.Identifier);
+            UsePower(BrawlerCardController.Identifier);
+            GoToEndOfTurn(DocHavoc);
+
+            // Assert
+            QuickHPCheck(-4, -4);
+
         }
     }
 }
