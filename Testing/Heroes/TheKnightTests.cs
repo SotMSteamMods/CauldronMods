@@ -1210,13 +1210,13 @@ namespace CauldronTests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
             DiscardAllCards(HeroController);
 
-            PutInHand(HeroController, "Whetstone");
+            Card whetstone = PutInHand(HeroController, "Whetstone");
             GoToPlayCardPhase(HeroController);
 
             PrintSeparator("Test");
             AssertNumberOfCardsInPlay(HeroController, 1);
             QuickHandStorage(HeroController);
-            PlayCardFromHand(HeroController, "Whetstone");
+            PlayCard(HeroController, whetstone);
             AssertNumberOfCardsInPlay(HeroController, 2);
             QuickHandCheck(-1);
 
@@ -1230,13 +1230,13 @@ namespace CauldronTests
             DealDamage(HeroController, baron, 1, DamageType.Fire);
             QuickHPCheck(-1);
 
-            PrintSeparator("Other Damage not increased");
+            PrintSeparator("Other's Melee Damage not increased");
             QuickHPStorage(baron);
             DealDamage(wraith, baron, 1, DamageType.Melee);
             QuickHPCheck(-1);
 
             PrintSeparator("Effect removed when cards leave play");
-            DestroyCard("Whetstone");
+            DestroyCard(whetstone);
 
             QuickHPStorage(baron);
             DealDamage(HeroController, baron, 1, DamageType.Melee);
