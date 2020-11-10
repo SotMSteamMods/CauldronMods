@@ -2,8 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
@@ -28,7 +27,6 @@ namespace Cauldron.DocHavoc
 
         public override IEnumerator UsePower(int index = 0)
         {
-
             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
 
             IEnumerator selectCardRoutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.SelectTargetNoDamage, 
@@ -45,40 +43,43 @@ namespace Cauldron.DocHavoc
             }
 
             Card selectedCard = (from d in storedResults where d.Completed select d.SelectedCard).FirstOrDefault<Card>();
-            if (selectedCard != null)
+            if (selectedCard == null)
             {
-                int powerNumeral = this.GetPowerNumeral(0, DamageAmountToNonHeroTarget);
+                yield break;
+            }
 
-                IEnumerator dealDamageRoutine = base.GameController.DealDamageToTarget(new DamageSource(this.GameController, selectedCard), this.Card.Owner.CharacterCard,
-                    powerNumeral, DamageType.Melee);
 
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(dealDamageRoutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(dealDamageRoutine);
-                }
+            int powerNumeral = this.GetPowerNumeral(0, DamageAmountToNonHeroTarget);
 
-                // Get damage amount dealt to Doc Havoc by selected target this turn
-                int damageDealtToDocHavocByTargetThisTurn = GetDamageDealtToDocHavocByTargetThisTurn(selectedCard, this.Card.Owner.CharacterCard);
-                int powerNumeral2 = this.GetPowerNumeral(1, damageDealtToDocHavocByTargetThisTurn);
+            IEnumerator dealDamageRoutine = base.GameController.DealDamageToTarget(new DamageSource(this.GameController, selectedCard), this.Card.Owner.CharacterCard,
+                powerNumeral, DamageType.Melee);
 
-                Console.WriteLine($"Damage dealt to Doc Havoc this turn by {selectedCard.Identifier}: {powerNumeral2}");
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(dealDamageRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(dealDamageRoutine);
+            }
 
-                IEnumerator dealDamageRoutine2 = base.GameController.DealDamageToTarget(
-                    new DamageSource(this.GameController, this.Card.Owner.CharacterCard), selectedCard,
-                    powerNumeral2, DamageType.Melee);
+            // Get damage amount dealt to Doc Havoc by selected target this turn
+            int damageDealtToDocHavocByTargetThisTurn = GetDamageDealtToDocHavocByTargetThisTurn(selectedCard, this.Card.Owner.CharacterCard);
+            int powerNumeral2 = this.GetPowerNumeral(1, damageDealtToDocHavocByTargetThisTurn);
 
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(dealDamageRoutine2);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(dealDamageRoutine2);
-                }
+            Console.WriteLine($"Damage dealt to Doc Havoc this turn by {selectedCard.Identifier}: {powerNumeral2}");
+
+            IEnumerator dealDamageRoutine2 = base.GameController.DealDamageToTarget(
+                new DamageSource(this.GameController, this.Card.Owner.CharacterCard), selectedCard,
+                powerNumeral2, DamageType.Melee);
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(dealDamageRoutine2);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(dealDamageRoutine2);
             }
         }
 

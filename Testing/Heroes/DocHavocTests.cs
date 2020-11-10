@@ -763,8 +763,8 @@ namespace CauldronTests
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             QuickHPStorage(DocHavoc.CharacterCard, mdp);
+            
             // Act
-
             DecisionSelectTarget = mdp;
 
             GoToPlayCardPhase(DocHavoc);
@@ -774,7 +774,6 @@ namespace CauldronTests
 
             // Assert
             QuickHPCheck(-4, -4);
-
         }
     }
 }
