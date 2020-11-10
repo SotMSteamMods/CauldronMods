@@ -961,7 +961,7 @@ namespace CauldronTests
             //damage should have not been increased by 2, so 5
             QuickHPCheck(-5);
 
-            //at next turn, should reset
+            //at next turn lady, should reset
             GoToNextTurn();
             DecisionYesNo = true;
             QuickHPStorage(haka);
@@ -969,6 +969,13 @@ namespace CauldronTests
             //damage should have increased by 2, so 7
             QuickHPCheck(-7);
 
+            //at next turn anyone, should reset
+            GoToNextTurn();
+            DecisionYesNo = true;
+            QuickHPStorage(haka);
+            DealDamage(ladyOfTheWood, haka, 5, DamageType.Lightning);
+            //damage should have increased by 2, so 7
+            QuickHPCheck(-7);
 
 
         }
