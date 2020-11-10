@@ -1728,7 +1728,91 @@ namespace CauldronTests
             QuickHandStorage(ladyOfTheWood);
             DealDamage(ra, haka, 3, DamageType.Cold);
             QuickHandCheck(0);
+        }
 
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Season_IsSeason([Values("Spring", "Summer", "Fall", "Winter")] string season)
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(ladyOfTheWood);
+
+            Card card = PlayCard(season);
+            AssertInPlayArea(ladyOfTheWood, card);
+            AssertCardHasKeyword(card, "season", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Ongoing_IsOngoing([Values("Spring", "Summer", "Fall", "Winter", "Rebirth", "EnchantedClearing", "SerenityOfDawn", "NobilityOfDusk")] string ongoing)
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+            //put a card in trash so that rebirth doesn't destroy itself
+            PutInTrash("SuncastMantle");
+            GoToPlayCardPhase(ladyOfTheWood);
+
+            Card card = PlayCard(ongoing);
+            AssertInPlayArea(ladyOfTheWood, card);
+            AssertCardHasKeyword(card, "ongoing", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Equipment_IsEquipment([Values("RainpetalCloak", "SuncastMantle", "ThundergreyShawl", "SnowshadeGown", "CrownOfTheFourWinds")] string equipment)
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(ladyOfTheWood);
+
+            Card card = PlayCard(equipment);
+            AssertInPlayArea(ladyOfTheWood, card);
+            AssertCardHasKeyword(card, "equipment", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Limited_IsLimited([Values("RainpetalCloak", "SuncastMantle", "ThundergreyShawl", "SnowshadeGown","Spring", "Summer","Fall","Winter","EnchantedClearing","SerenityOfDawn","NobilityOfDusk", "CrownOfTheFourWinds")] string limited)
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(ladyOfTheWood);
+
+            Card card = PlayCard(limited);
+            AssertInPlayArea(ladyOfTheWood, card);
+            AssertCardHasKeyword(card, "limited", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Relic_IsRelic([Values("CrownOfTheFourWinds")] string relic)
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(ladyOfTheWood);
+
+            Card card = PlayCard(relic);
+            AssertInPlayArea(ladyOfTheWood, card);
+            AssertCardHasKeyword(card, "relic", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_OneShot_IsOneShot([Values("MeadowRush", "FrostOnThePetals", "FireInTheClouds", "CalmBeforeTheStorm")] string oneshot)
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(ladyOfTheWood);
+
+            Card card = PlayCard(oneshot);
+            AssertInTrash(ladyOfTheWood, card);
+            AssertCardHasKeyword(card, "one-shot", false);
         }
     }
 }
