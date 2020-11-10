@@ -355,7 +355,7 @@ namespace CauldronTests
         public void RapidRegenTest()
         {
             // Arrange
-            SetupGameController("CitizenDawn", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
+            SetupGameController("Ambuscade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
 
             MakeCustomHeroHand(DocHavoc, new List<string>()
             {
@@ -363,15 +363,17 @@ namespace CauldronTests
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
             });
 
+            DealDamage(tempest, ambuscade, 30, DamageType.Lightning);
+
             StartGame();
 
-            DealDamage(tempest, dawn, 30, DamageType.Lightning);
-            DealDamage(dawn, DocHavoc, 4, DamageType.Projectile);
-            DealDamage(dawn, tempest, 4, DamageType.Projectile);
+
+            DealDamage(ambuscade, DocHavoc, 4, DamageType.Projectile);
+            DealDamage(ambuscade, tempest, 4, DamageType.Projectile);
 
             // Act
             GoToPlayCardPhase(DocHavoc);
-            QuickHPStorage(DocHavoc, tempest, dawn);
+            QuickHPStorage(DocHavoc, tempest, ambuscade);
 
             PlayCardFromHand(DocHavoc, RapidRegenCardController.Identifier);
 
@@ -382,10 +384,10 @@ namespace CauldronTests
             PlayCard(cleansingDownpour);
             UsePower(cleansingDownpour);
 
-            PlayCard(dawn, "HealingLight");
+            PlayCard(ambuscade, "QuickStimPatch");
 
             // Assert
-            QuickHPCheck(3, 3, 11); // Heroes: Cleansing Rains +2 (+1 with Rapid Regen), // Citizen Dawn: Healing Light +10 (+1 with Rapid Regen)
+            QuickHPCheck(3, 3, 3); // Heroes: Cleansing Rains +2 (+1 with Rapid Regen), // Citizen Dawn: Healing Light +10 (+1 with Rapid Regen)
 
         }
 
@@ -535,7 +537,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestPainkillersSuccess()
+        public void TestPainkillersAcceptSelfDamage()
         {
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
 
@@ -565,10 +567,103 @@ namespace CauldronTests
             QuickHPCheck(-2, -5); // Tempest lost 2 HP for keeping Painkillers, -5 HP on MDP from Lightning Slash
             AssertNumberOfCardsNextToCard(tempest.CharacterCard, 1); // Painkillers next to Tempest
 
-            Card pk = GetCard(PainkillersCardController.Identifier);
             AssertTriggersWhere(trigger => trigger.CardSource.Card.Identifier.Equals(PainkillersCardController.Identifier));
+        }
 
+        [Test]
+        public void TestPainkillersDeclineSelfDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
 
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                PainkillersCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+            QuickHPStorage(tempest.CharacterCard, GetCardInPlay("MobileDefensePlatform"));
+
+            // Act
+            DecisionNextToCard = tempest.CharacterCard;
+            DecisionSelectTarget = GetCardInPlay("MobileDefensePlatform");
+            DecisionYesNo = false;
+
+            GoToPlayCardPhase(DocHavoc);
+            PlayCardFromHand(DocHavoc, PainkillersCardController.Identifier);
+
+            GoToStartOfTurn(tempest);
+
+            PutInHand(tempest, "LightningSlash");
+            PlayCardFromHand(tempest, "LightningSlash");
+
+            // Assert
+            QuickHPCheck(0, -5); // Tempest lost 2 HP for keeping Painkillers, -5 HP on MDP from Lightning Slash
+            AssertNumberOfCardsNextToCard(tempest.CharacterCard, 0); // Painkillers next to Tempest
+
+            AssertTriggersWhere(trigger => !trigger.CardSource.Card.Identifier.Equals(PainkillersCardController.Identifier));
+        }
+
+        [Test]
+        public void TestUnstableSerumDestroyOngoing()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                UnstableSerumCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+            PlayCard(baron, "BacklashField");
+
+            DealDamage(baron, tempest, 4, DamageType.Projectile);
+            QuickHPStorage(tempest);
+
+            // Act
+            DecisionSelectCards = new [] { tempest.CharacterCard, GetCardInPlay("BacklashField") };
+
+            GoToPlayCardPhase(DocHavoc);
+            PlayCardFromHand(DocHavoc, UnstableSerumCardController.Identifier);
+            GoToEndOfTurn(DocHavoc);
+
+            // Assert
+            QuickHPCheck(2);
+            Assert.IsNull(FindCardInPlay(UnstableSerumCardController.Identifier));
+            Assert.IsNull(FindCardInPlay("BacklashField"));
+        }
+
+        [Test]
+        public void TestUnstableSerumSkipDestroyOngoing()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                UnstableSerumCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+            PlayCard(baron, "BacklashField");
+
+            DealDamage(baron, tempest, 4, DamageType.Projectile);
+            QuickHPStorage(tempest);
+
+            // Act
+            DecisionSelectCards = new[] { tempest.CharacterCard, null };
+
+            GoToPlayCardPhase(DocHavoc);
+            PlayCardFromHand(DocHavoc, UnstableSerumCardController.Identifier);
+            GoToEndOfTurn(DocHavoc);
+
+            // Assert
+            QuickHPCheck(2);
+            Assert.NotNull(FindCardInPlay(UnstableSerumCardController.Identifier));
+            Assert.NotNull(FindCardInPlay("BacklashField"));
         }
     }
 }
