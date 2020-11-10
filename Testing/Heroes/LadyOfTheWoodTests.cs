@@ -388,13 +388,20 @@ namespace CauldronTests
             StartGame();
 
             //Reduce damage dealt to LadyOfTheWood by 1.
-            PlayCard("EnchantedClearing");
+            Card clearing = PlayCard("EnchantedClearing");
 
             QuickHPStorage(ladyOfTheWood);
             DealDamage(baron, ladyOfTheWood, 5, DamageType.Melee);
 
             //reduced by 1, so should be 4
             QuickHPCheck(-4);
+
+            //check that it is gone if enchanted cleared destroyed
+            DestroyCard(clearing, baron.CharacterCard);
+            QuickHPStorage(ladyOfTheWood);
+            DealDamage(baron, ladyOfTheWood, 5, DamageType.Melee);
+            //should not be modified, so -5
+            QuickHPCheck(-5);
 
         }
 
