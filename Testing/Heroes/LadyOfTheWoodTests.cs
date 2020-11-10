@@ -1231,8 +1231,12 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
             //If LadyOfTheWood deals 3 or more damage to a target, destroy this card.
-            PlayCard("SerenityOfDawn");
-            Card serenity = GetCardInPlay("SerenityOfDawn");
+            Card serenity =  PlayCard("SerenityOfDawn");
+
+            DealDamage(ladyOfTheWood, haka, 2, DamageType.Cold);
+
+            //since less than 3 damage has been dealt, serenity should not be destroyed
+            AssertIsInPlay(serenity);
 
             DealDamage(ladyOfTheWood, haka, 5, DamageType.Cold);
 
@@ -1253,9 +1257,12 @@ namespace CauldronTests
             DealDamage(ladyOfTheWood, haka, 5, DamageType.Toxic);
 
             QuickHPStorage(ladyOfTheWood);
+            QuickHandStorage(ladyOfTheWood);
             GoToEndOfTurn(ladyOfTheWood);
             //since damage was dealt, no hp should be gained
             QuickHPCheckZero();
+            //since damage was dealt no cards should have been drawn
+            QuickHandCheck(0);
         }
 
         [Test()]
@@ -1268,10 +1275,34 @@ namespace CauldronTests
             SetHitPoints(ladyOfTheWood.CharacterCard, 15);
             //At the end of your turn, if {LadyOfTheWood} dealt no damage this turn, she regains 2 HP and you may draw a card.
             PlayCard("SerenityOfDawn");
+            DecisionYesNo = true;
             QuickHPStorage(ladyOfTheWood);
+            QuickHandStorage(ladyOfTheWood);
             GoToEndOfTurn(ladyOfTheWood);
-            //since no damage dealt, gain 2 HP
+            //since no damage dealt, gain 2 HP, draw 1 card
             QuickHPCheck(2);
+            QuickHandCheck(1);
+            
+        }
+
+        [Test()]
+        public void TestSerenityOfDawnEndOfTurnHasNotDealtDamage_DrawOptional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //set hp to have room to gain later
+            SetHitPoints(ladyOfTheWood.CharacterCard, 15);
+            //At the end of your turn, if {LadyOfTheWood} dealt no damage this turn, she regains 2 HP and you may draw a card.
+            PlayCard("SerenityOfDawn");
+            DecisionYesNo = false;
+            QuickHPStorage(ladyOfTheWood);
+            QuickHandStorage(ladyOfTheWood);
+            GoToEndOfTurn(ladyOfTheWood);
+            //since no damage dealt, gain 2 HP, draw card was declined, so no new cards in hand
+            QuickHPCheck(2);
+            QuickHandCheck(0);
+
         }
 
         [Test()]
