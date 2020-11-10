@@ -1517,13 +1517,30 @@ namespace CauldronTests
             StartGame();
 
             //put suncast mantle in play
-            PutIntoPlay("SuncastMantle");
-            Card suncast = GetCardInPlay("SuncastMantle");
+            Card suncast = PutIntoPlay("SuncastMantle");
+
             //LadyOfTheWood deals herself 1 fire damage and 1 target 4 fire damage.
-            QuickHPStorage(ladyOfTheWood, haka);
+            QuickHPStorage(ladyOfTheWood, haka, baron, ra);
             DecisionSelectTarget = haka.CharacterCard;
             UsePower(suncast);
-            QuickHPCheck(-1, -4);
+            QuickHPCheck(-1, -4, 0, 0);
+        }
+
+        [Test()]
+        public void TestSuncastMantlePower_DamageType()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //put suncast mantle in play
+            Card suncast = PutIntoPlay("SuncastMantle");
+
+            //LadyOfTheWood deals herself 1 fire damage and 1 target 4 fire damage.
+            QuickHPStorage(ladyOfTheWood, haka, baron, ra);
+            DecisionSelectTarget = haka.CharacterCard;
+            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Fire, 1);
+            UsePower(suncast);
+            QuickHPCheck(0, -4, 0, 0);
         }
 
         [Test()]
@@ -1537,13 +1554,22 @@ namespace CauldronTests
             PutIntoPlay("SuncastMantle");
             Card suncast = GetCardInPlay("SuncastMantle");
             //Increase damage dealt by LadyOfTheWood by 3 as long as her HP is 5 or less.
+            PrintSeparator("check for lady of the wood damage when hp less than 5");
             QuickHPStorage(haka);
             DecisionSelectTarget = haka.CharacterCard;
             DealDamage(ladyOfTheWood, haka, 2, DamageType.Fire);
             //should be +3 for 5 damage
             QuickHPCheck(-5);
 
+            PrintSeparator("check for others damage when hp less than 5");
+            QuickHPStorage(haka);
+            DecisionSelectTarget = haka.CharacterCard;
+            DealDamage(ra, haka, 2, DamageType.Fire);
+            //should be +0 for 2 damage
+            QuickHPCheck(-2);
+
             //check when HP greater than 5
+            PrintSeparator("check for when hp greater than 5");
             SetHitPoints(ladyOfTheWood, 7);
             QuickHPStorage(haka);
             DecisionSelectTarget = haka.CharacterCard;
