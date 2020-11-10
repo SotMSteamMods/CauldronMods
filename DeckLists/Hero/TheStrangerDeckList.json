@@ -40,7 +40,7 @@
                 "default": "default placeholder",
                 "DendronCharacter": "Dendron placeholder",
                 "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
+                "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 1
@@ -486,14 +486,14 @@
                 "default": "default placeholder",
                 "DendronCharacter": "Dendron placeholder",
                 "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
+                "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 1
         },
         {
             "identifier": "TheStrangerCharacter",
-            "promoIdentifier": "1929TheStrangerCharacter",
+            "promoIdentifier": "PastTheStrangerCharacter",
             "count": 1,
             "title": "The Stranger",
             "promoTitle": "The Stranger 1929",
@@ -528,7 +528,7 @@
                 "default": "default placeholder",
                 "DendronCharacter": "Dendron placeholder",
                 "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
+                "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 1
@@ -572,7 +572,7 @@
                 "default": "default placeholder",
                 "DendronCharacter": "Dendron placeholder",
                 "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
+                "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 1
