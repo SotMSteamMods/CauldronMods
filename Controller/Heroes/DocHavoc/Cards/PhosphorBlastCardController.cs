@@ -10,6 +10,11 @@ namespace Cauldron.DocHavoc
 {
     public class PhosphorBlastCardController : CardController
     {
+        //==============================================================
+        // Deals each target 1 radiant damage. Non-hero targets dealt
+        // damage this way may not regain HP until the start of your next turn.
+        //==============================================================
+
         public static string Identifier = "PhosphorBlast";
         private const int DamageAmount = 1;
 
@@ -20,10 +25,6 @@ namespace Cauldron.DocHavoc
 
         public override IEnumerator Play()
         {
-            //==============================================================
-            // Deals each target 1 radiant damage. Non-hero targets dealt damage this way may not regain HP until the start of your next turn.
-            //==============================================================
-
             List<DealDamageAction> storedDamageResults = new List<DealDamageAction>();
 
             IEnumerator routine = base.GameController.DealDamage(this.HeroTurnTakerController, this.Card, (Func<Card, bool>) (c => c.IsTarget),
