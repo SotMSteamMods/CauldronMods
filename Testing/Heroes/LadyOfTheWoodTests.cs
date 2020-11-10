@@ -55,6 +55,14 @@ namespace CauldronTests
             this.RunCoroutine(this.GameController.AddStatusEffect(reduceDamageStatusEffect, true, new CardSource(httc.CharacterCardController)));
         }
 
+        private void AddIncreaseDamageOfDamageTypeTrigger(HeroTurnTakerController httc, DamageType damageType, int amount)
+        {
+            IncreaseDamageStatusEffect increaseDamageStatusEffect = new IncreaseDamageStatusEffect(amount);
+            increaseDamageStatusEffect.DamageTypeCriteria.AddType(damageType);
+            increaseDamageStatusEffect.NumberOfUses = 1;
+            this.RunCoroutine(this.GameController.AddStatusEffect(increaseDamageStatusEffect, true, new CardSource(httc.CharacterCardController)));
+        }
+
         #endregion
 
         [Test()]
@@ -1585,15 +1593,49 @@ namespace CauldronTests
             StartGame();
 
             GoToUsePowerPhase(ladyOfTheWood);
-            PlayCard("ThundergreyShawl");
-            Card shawl = GetCardInPlay("ThundergreyShawl");
+            Card shawl = PlayCard("ThundergreyShawl");
 
             // power: LadyOfTheWood deals up to 2 targets 1 lightning damage each."
             DecisionSelectCards = new Card[] { ra.CharacterCard, haka.CharacterCard };
-            QuickHPStorage(ra, haka);
+            QuickHPStorage(ra, haka, baron);
             UsePower(shawl);
-            QuickHPCheck(-1, -1);
+            QuickHPCheck(-1, -1, 0);
 
+        }
+
+        [Test()]
+        public void TestThundergreyShawlPower_Choose0()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            GoToUsePowerPhase(ladyOfTheWood);
+            Card shawl = PlayCard("ThundergreyShawl");
+
+            // power: LadyOfTheWood deals up to 2 targets 1 lightning damage each."
+            QuickHPStorage(ra, haka, baron);
+            DecisionDoNotSelectCard = SelectionType.SelectTarget;
+            UsePower(shawl);
+            QuickHPCheck(0, 0, 0);
+
+        }
+
+        [Test()]
+        public void TestThundergreyShawlPower_DamageType()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            GoToUsePowerPhase(ladyOfTheWood);
+            Card shawl = PlayCard("ThundergreyShawl");
+
+            // power: LadyOfTheWood deals up to 2 targets 1 lightning damage each."
+            DecisionSelectCards = new Card[] { ra.CharacterCard, haka.CharacterCard };
+            QuickHPStorage(ra, haka, baron);
+            //use increase damage check since damage will be irreducible
+            AddIncreaseDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Lightning, 1);
+            UsePower(shawl);
+            QuickHPCheck(-2, -1, 0);
 
         }
 
@@ -1611,16 +1653,29 @@ namespace CauldronTests
             PlayCard("LivingForceField");
 
             PlayCard("ThundergreyShawl");
-            Card shawl = GetCardInPlay("ThundergreyShawl");
             //  Whenever LadyOfTheWood deals 2 or less damage to a target, that damage is irreducible.
+            PrintSeparator("check for lady of the wood less than 2");
             QuickHPStorage(baron);
             DealDamage(ladyOfTheWood, baron, 2, DamageType.Lightning);
             //even though -1 on baron, damage is < 2 so is irreducible
             QuickHPCheck(-2);
+
+            PrintSeparator("check for lady of the wood more than 2");
+            QuickHPStorage(baron);
+            DealDamage(ladyOfTheWood, baron, 4, DamageType.Lightning);
+            //should not be irreducible
+            QuickHPCheck(-3);
+
+            //check for other targets not made irreducible
+            PrintSeparator("check for other targets deal less than 2");
+            QuickHPStorage(baron);
+            DealDamage(haka, baron, 2, DamageType.Lightning);
+            //should not be irreducible
+            QuickHPCheck(-1);
         }
 
         [Test()]
-        public void TestThundergreyShawlMakeNotIrreducibleWhenIncreasedMoreThan2()
+        public void TestThundergreyShawlStillIrreducibleWhenIncreasedMoreThan2()
         {
             //looks like the irreducibility might linger past being boosted, verifying with tosx
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
@@ -1638,7 +1693,6 @@ namespace CauldronTests
             PlayCard("LivingForceField");
 
             PlayCard("ThundergreyShawl");
-            Card shawl = GetCardInPlay("ThundergreyShawl");
             //  Whenever LadyOfTheWood deals 2 or less damage to a target, that damage is irreducible.
             QuickHPStorage(baron);
             DealDamage(ladyOfTheWood, baron, 2, DamageType.Lightning);
