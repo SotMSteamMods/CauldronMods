@@ -331,5 +331,26 @@ namespace CauldronTests
             QuickHandCheck(0); // Discard Ghost Reactor (-1), Draw a card (+1)
         }
 
+        [Test]
+        public void TestInfiltrate()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                InfiltrateCardController.Identifier, GhostReactorCardController.Identifier
+            });
+
+            DecisionSelectLocation = new LocationChoice(TangoOne.HeroTurnTaker.Deck);
+            DecisionSelectCardsIndex = 2;
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, InfiltrateCardController.Identifier);
+
+
+        }
+
     }
 }
