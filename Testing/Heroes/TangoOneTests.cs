@@ -271,7 +271,6 @@ namespace CauldronTests
             // Assert
             AssertNotInPlay(new []{ "BacklashField"});
             QuickHPCheck(-2);
-
         }
 
         [Test]
@@ -296,6 +295,40 @@ namespace CauldronTests
 
             // Assert
             QuickHPCheck(-1); // Farsight allows Innate Power to deal 1 damage
+        }
+
+        [Test]
+        public void TestGhostReactor()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                GhostReactorCardController.Identifier
+            });
+
+            StartGame();
+
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+
+            DecisionSelectTarget = mdp;
+            QuickHPStorage(TangoOne.CharacterCard, mdp);
+            QuickHandStorage(TangoOne);
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, GhostReactorCardController.Identifier);
+
+            UsePower(GhostReactorCardController.Identifier);
+
+            DealDamage(baron, TangoOne, 10, DamageType.Psychic);
+            DealDamage(TangoOne, mdp, 1, DamageType.Projectile); // With +2 increase from Ghost Reactor
+            DealDamage(TangoOne, mdp, 1, DamageType.Projectile); // +1, Ghost Reactor effect expired
+
+            // Assert
+            QuickHPCheck(0, -4); // Tango One (0) due to Ghost Reactor immunity, MDP -4 
+            QuickHandCheck(0); // Discard Ghost Reactor (-1), Draw a card (+1)
         }
 
     }
