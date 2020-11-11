@@ -13,8 +13,9 @@ namespace CauldronTests
     [TestFixture()]
     class FSCContinuanceWandererTests : BaseTest
     {
-        private Game baseGame = new Game(new string[] { "Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer" });
-        private Game vengeanceGame = new Game(new string[] { "ErmineTeam", "Legacy", "BiomancerTeam", "Ra", "FrictionTeam", "Haka", "Cauldron.FSCContinuanceWanderer" });
+        private string[] baseGame = new string[] { "Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer" };
+        private string[] envFirstGame = new string[] { "Cauldron.FSCContinuanceWanderer", "Spite", "Legacy", "Ra", "Haka" };
+        private string[] vengeanceGame = new string[] { "ErmineTeam", "Legacy", "BiomancerTeam", "Ra", "FrictionTeam", "Haka", "Cauldron.FSCContinuanceWanderer" };
         protected TurnTakerController fsc { get { return FindEnvironment(); } }
 
         [Test()]
@@ -200,7 +201,7 @@ namespace CauldronTests
         [Test()]
         public void TestParadoxIntrusionEndTurnDamage0Vortex()
         {
-            SetupGameController("Spite", "Guise", "Parse", "Haka", "Cauldron.FSCContinuanceWanderer");
+            SetupGameController("Cauldron.FSCContinuanceWanderer", "Spite", "Guise", "Parse", "Haka");
             StartGame();
             GoToPlayCardPhase(env);
             PlayCard("ParadoxIntrusion");
@@ -214,7 +215,7 @@ namespace CauldronTests
         [Test()]
         public void TestParadoxIntrusionEndTurnDamage2Vortex()
         {
-            SetupGameController("LaCapitan", "Guise", "Parse", "Haka", "Cauldron.FSCContinuanceWanderer");
+            SetupGameController("Cauldron.FSCContinuanceWanderer", "LaCapitan", "Guise", "Parse", "Haka");
             StartGame();
             Card boat = GetCardInPlay("LaParadojaMagnifica");
             PutInTrash("VortexSurge", "VortexGlitch");
@@ -269,10 +270,10 @@ namespace CauldronTests
         [Test()]
         public void TestTemporalAccelerationDestroySelf()
         {
-            //When this card enters play, play the top card of the villain deck. Then, play the top card of each hero deck in turn order.
             SetupGameController(baseGame);
             StartGame();
             Card accel = GetCard("TemporalAcceleration");
+            GoToStartOfTurn(haka);
             PlayCard(accel);
             //At the end of the environment turn, destroy this card.
             GoToStartOfTurn(env);
@@ -303,14 +304,200 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestTemporalResetDestroySelf()
+        {
+            SetupGameController(baseGame);
+            StartGame();
+            Card reset = GetCard("TemporalReset");
+            GoToStartOfTurn(haka);
+            PlayCard(reset);
+            //At the end of the environment turn, destroy this card.
+            GoToStartOfTurn(env);
+            AssertInPlayArea(env, reset);
+            GoToEndOfTurn(env);
+            AssertInTrash(env, reset);
+        }
+
+        [Test()]
         public void TestTemporalReset()
         {
-            //This card is immune to damage dealt by targets with less than 10HP.
+            SetupGameController("LaCapitan", "Ra", "Parse", "Haka", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+            Card pi0 = GetCard("ParadoxIntrusion", 0);
+            Card pi1 = GetCard("ParadoxIntrusion", 1);
+            PlayCards(pi0, pi1);
+            //When this card enters play, destroy all other environment cards. Then shuffle 2 cards from each trash pile back into their deck, and each non-character target regains {H} HP.
+            Card reset = GetCard("TemporalReset");
+            PlayCard(reset);
+            AssertInDeck(env, pi0);
+            AssertInDeck(env, pi1);
+        }
+
+        [Test()]
+        public void TestTemporalReversal()
+        {
             SetupGameController("LaCapitan", "Guise", "Parse", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
-            Card behemoth = GetCard("PrehistoricBehemoth");
-            PlayCard(behemoth);
+            Card rev = GetCard("TemporalReversal");
+            PlayCard(rev);
             Assert.IsTrue(false);
+        }
+
+        [Test()]
+        public void TestTemporalReversalDestroySelf()
+        {
+            SetupGameController(baseGame);
+            StartGame();
+            Card rev = GetCard("TemporalReversal");
+            GoToStartOfTurn(haka);
+            PlayCard(rev);
+            //At the end of the environment turn, destroy this card.
+            GoToStartOfTurn(env);
+            AssertInPlayArea(env, rev);
+            GoToEndOfTurn(env);
+            AssertInTrash(env, rev);
+        }
+
+        [Test()]
+        public void TestTemporalSlipstream()
+        {
+            SetupGameController("LaCapitan", "Guise", "Parse", "Haka", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+            Card slip = GetCard("TemporalSlipstream");
+            int guiseTrash = guise.TurnTaker.Trash.NumberOfCards;
+            int parseTrash = parse.TurnTaker.Trash.NumberOfCards;
+            int hakaTrash = haka.TurnTaker.Trash.NumberOfCards;
+            int guiseHand = guise.NumberOfCardsInHand;
+            int parseHand = parse.NumberOfCardsInHand;
+            int hakaHand = haka.NumberOfCardsInHand;
+            QuickHandStorage(guise, parse, haka);
+            //When this card enters play, each player discards their hand and draws that many cards.
+            PlayCard(slip);
+            AssertNumberOfCardsInTrash(guise, guiseHand + guiseTrash);
+            AssertNumberOfCardsInTrash(guise, parseHand + parseTrash);
+            AssertNumberOfCardsInTrash(guise, hakaHand + hakaTrash);
+            QuickHandCheck(0, 0, 0);
+        }
+
+        [Test()]
+        public void TestTemporalSlipstreamDestroySelf()
+        {
+            SetupGameController(baseGame);
+            StartGame();
+            Card slip = GetCard("TemporalSlipstream");
+            GoToStartOfTurn(haka);
+            PlayCard(slip);
+            //At the end of the environment turn, destroy this card.
+            GoToStartOfTurn(env);
+            AssertInPlayArea(env, slip);
+            GoToEndOfTurn(env);
+            AssertInTrash(env, slip);
+        }
+
+        [Test()]
+        public void TestTimeFreeze()
+        {
+            SetupGameController("LaCapitan", "CaptainCosmic", "Parse", "Haka", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+            Card slip = GetCard("TimeFreeze");
+            Card crest = GetCard("CosmicCrest");
+            PlayCard(crest);
+            DecisionSelectCard = cosmic.CharacterCard;
+            //Play this card next to a hero.
+            PlayCard(slip);
+            //That hero skips their turns...
+            GoToStartOfTurn(cosmic);
+            //...and targets in their play are are immune to damage.
+            QuickHPStorage(cosmic.CharacterCard, crest, parse.CharacterCard);
+            DealDamage(capitan, cosmic, 2, DamageType.Melee);
+            DealDamage(capitan, crest, 2, DamageType.Melee);
+            DealDamage(capitan, parse, 2, DamageType.Melee);
+            QuickHPCheck(0, 0, -2);
+        }
+
+        [Test()]
+        public void TestTimeFreezeDestroySelf()
+        {
+            SetupGameController(baseGame);
+            StartGame();
+            Card freeze = GetCard("TimeFreeze");
+            GoToStartOfTurn(haka);
+            PlayCard(freeze);
+            //At the start of the environment turn, destroy this card.
+            GoToStartOfTurn(env);
+            AssertInTrash(env, freeze);
+        }
+
+        [Test()]
+        public void TestVortexGlitch()
+        {
+            //Players may not play one-shots.
+            Assert.IsTrue(false);
+        }
+
+        [Test()]
+        public void TestVortexGlitchDestroySelf()
+        {
+            SetupGameController(baseGame);
+            StartGame();
+            Card glitch = GetCard("VortexGlitch");
+            GoToStartOfTurn(haka);
+            PlayCard(glitch);
+            GoToStartOfTurn(env);
+            AssertInPlayArea(env, glitch);
+            GoToEndOfTurn(env);
+            AssertInPlayArea(env, glitch);
+            //When another environment card enters play, destroy this card.
+            PlayCard("TimeFreeze");
+            AssertInTrash(env, glitch);
+        }
+
+        [Test()]
+        public void TestVortexInterference()
+        {
+            //Whenever a hero uses a power, destroy 1 hero ongoing or equipment card.
+            Assert.IsTrue(false);
+        }
+
+        [Test()]
+        public void TestVortexInterferenceDestroySelf()
+        {
+            SetupGameController(baseGame);
+            StartGame();
+            Card interference = GetCard("VortexInterference");
+            GoToStartOfTurn(haka);
+            PlayCard(interference);
+            GoToStartOfTurn(env);
+            AssertInPlayArea(env, interference);
+            GoToEndOfTurn(env);
+            AssertInPlayArea(env, interference);
+            //When another environment card enters play, destroy this card.
+            PlayCard("TimeFreeze");
+            AssertInTrash(env, interference);
+        }
+
+        [Test()]
+        public void TestVortexSurgee()
+        {
+            //Whenever a hero card is drawn, 1 player must discard a card.
+            Assert.IsTrue(false);
+        }
+
+        [Test()]
+        public void TestVortexSurgeDestroySelf()
+        {
+            SetupGameController(baseGame);
+            StartGame();
+            Card surge = GetCard("VortexSurge");
+            GoToStartOfTurn(haka);
+            PlayCard(surge);
+            GoToStartOfTurn(env);
+            AssertInPlayArea(env, surge);
+            GoToEndOfTurn(env);
+            AssertInPlayArea(env, surge);
+            //When another environment card enters play, destroy this card.
+            PlayCard("TimeFreeze");
+            AssertInTrash(env, surge);
         }
     }
 }

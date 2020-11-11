@@ -12,7 +12,7 @@ namespace Cauldron.FSCContinuanceWanderer
 
         public TemporalResetCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            ModifyDealDamageAction mdda = new IncreaseDamageAction(this.GameController, dda, DamageIncrease, dda.Target.IsNemesis);
         }
 
         #endregion Constructors
@@ -34,7 +34,7 @@ namespace Cauldron.FSCContinuanceWanderer
             //Then shuffle 2 cards from each trash pile back into their deck...
             coroutine = base.DoActionToEachTurnTakerInTurnOrder((TurnTakerController turnTakerController) => true, MoveCardToDeckResponse);
             //...and each non-character target regains {H} HP.
-            IEnumerator coroutine2 = base.GameController.GainHP(this.DecisionMaker, (Card c) => !c.IsCharacter, base.Game.H);
+            IEnumerator coroutine2 = base.GameController.GainHP(this.DecisionMaker, (Card c) => !c.IsCharacter && c.IsTarget && c.IsInPlayAndHasGameText, base.Game.H, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -55,7 +55,15 @@ namespace Cauldron.FSCContinuanceWanderer
             {
                 new MoveCardDestination(turnTaker.Deck)
             };
-            IEnumerator coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(turnTakerController.ToHero(), turnTaker.Trash, new int?(0), 2, new LinqCardCriteria((Card c) => c.Location == turnTaker.Trash, "trash"), list, shuffleAfterwards: true, cardSource: base.GetCardSource());
+            IEnumerator coroutine;
+            if (turnTaker.IsHero)
+            {
+                coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(turnTakerController.ToHero(), turnTaker.Trash, new int?(0), 2, new LinqCardCriteria((Card c) => c.Location == turnTaker.Trash, "trash"), list, shuffleAfterwards: true, cardSource: base.GetCardSource());
+            }
+            else
+            {
+                coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.DecisionMaker, turnTaker.Trash, new int?(0), 2, new LinqCardCriteria((Card c) => c.Location == turnTaker.Trash, "trash"), list, shuffleAfterwards: true, cardSource: base.GetCardSource());
+            }
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
