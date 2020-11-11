@@ -421,8 +421,10 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            PlayCard(tiamat, "DragonsWrath");
+            Card wrath = PlayCard(tiamat, "DragonsWrath");
             //Heads deal 1 extra damage
+            PrintSeparator("check all heads increased by 1");
+
             QuickHPStorage(legacy);
             DealDamage(inferno, legacy, 2, DamageType.Melee);
             QuickHPCheck(-3);
@@ -434,6 +436,27 @@ namespace CauldronTests
             QuickHPStorage(legacy);
             DealDamage(winter, legacy, 2, DamageType.Melee);
             QuickHPCheck(-3);
+
+            //non-heads take damage normally
+            PrintSeparator("check non-heads normal");
+            QuickHPStorage(winter);
+            DealDamage(legacy, winter, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //after destroying dragon's wrath, should be normal
+            PrintSeparator("check damage dealt by heads normal after dragon's wrath is gone");
+            DestroyCard(wrath, bunker.CharacterCard);
+            QuickHPStorage(legacy);
+            DealDamage(inferno, legacy, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            QuickHPStorage(legacy);
+            DealDamage(storm, legacy, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            QuickHPStorage(legacy);
+            DealDamage(winter, legacy, 2, DamageType.Melee);
+            QuickHPCheck(-2);
 
         }
 
