@@ -376,8 +376,10 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            PlayCard(tiamat, "AncientWard");
+            Card ward = PlayCard(tiamat, "AncientWard");
+
             //Heads take 1 less damage
+            PrintSeparator("check all heads reduced by 1");
             QuickHPStorage(inferno);
             DealDamage(legacy, inferno, 2, DamageType.Melee);
             QuickHPCheck(-1);
@@ -389,6 +391,29 @@ namespace CauldronTests
             QuickHPStorage(winter);
             DealDamage(legacy, winter, 2, DamageType.Melee);
             QuickHPCheck(-1);
+
+            //non-heads take damage normally
+            PrintSeparator("check non-heads normal");
+            QuickHPStorage(legacy);
+            DealDamage(winter, legacy, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //after destroying ancient ward, should be normal
+            PrintSeparator("check damage to heads normal after ancient ward is gone");
+            DestroyCard(ward, bunker.CharacterCard);
+
+            QuickHPStorage(inferno);
+            DealDamage(legacy, inferno, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            QuickHPStorage(storm);
+            DealDamage(legacy, storm, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            QuickHPStorage(winter);
+            DealDamage(legacy, winter, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
         }
 
         [Test()]
