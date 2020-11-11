@@ -355,7 +355,7 @@ namespace CauldronTests
         public void TestRapidRegen()
         {
             // Arrange
-            SetupGameController("Ambuscade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
 
             MakeCustomHeroHand(DocHavoc, new List<string>()
             {
@@ -363,19 +363,19 @@ namespace CauldronTests
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
             });
 
-            DealDamage(tempest, ambuscade, 30, DamageType.Lightning);
+            //PlayCard("CustomHandCannon");
+            DealDamage(tempest, baron, 20, DamageType.Lightning);
+            DealDamage(baron, DocHavoc, 4, DamageType.Projectile);
+            DealDamage(baron, tempest, 4, DamageType.Projectile);
 
             StartGame();
 
-
-            DealDamage(ambuscade, DocHavoc, 4, DamageType.Projectile);
-            DealDamage(ambuscade, tempest, 4, DamageType.Projectile);
-
             // Act
             GoToPlayCardPhase(DocHavoc);
-            QuickHPStorage(DocHavoc, tempest, ambuscade);
 
             PlayCardFromHand(DocHavoc, RapidRegenCardController.Identifier);
+
+            QuickHPStorage(DocHavoc, tempest, baron);
 
             GoToPlayCardPhase(tempest);
             PutInHand("CleansingDownpour");
@@ -384,10 +384,10 @@ namespace CauldronTests
             PlayCard(cleansingDownpour);
             UsePower(cleansingDownpour);
 
-            PlayCard(ambuscade, "QuickStimPatch");
+            PlayCard(baron, "FleshRepairNanites");
 
             // Assert
-            QuickHPCheck(3, 3, 3); // Heroes: Cleansing Rains +2 (+1 with Rapid Regen), // Ambuscade: Quick Stim Patch +2 (+1 with Rapid Regen)
+            QuickHPCheck(3, 3, 11); // Heroes: Cleansing Rains +2 (+1 with Rapid Regen), // Baron: Flesh-Repair Nanites +10 (+1 with Rapid Regen)
 
         }
 
