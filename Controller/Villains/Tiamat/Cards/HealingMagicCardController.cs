@@ -48,6 +48,14 @@ namespace Cauldron.Tiamat
                 }
                 List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
                 coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.SelectTarget, new LinqCardCriteria((Card c) => c.DoKeywordsContain("head") && c.IsTarget && c.HitPoints == lowestHP), storedResults, false, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
                 lowestHPHead = storedResults.FirstOrDefault().SelectedCard;
             }
             //The Head with the lowest HP regains {H} + X HP, where X is the number of Healing Magic cards in the villain trash.
