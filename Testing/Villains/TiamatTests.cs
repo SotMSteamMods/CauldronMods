@@ -908,7 +908,7 @@ namespace CauldronTests
 
         [Test()]
         [Sequential]
-        public void DecklistTest_Ongoing_Ongoing([Values("ElementalForm", "AncientWard", "DragonsWrath", "ReptilianAspect", "ElementalFrenzy")] string ongoing)
+        public void DecklistTest_Ongoing_IsOngoing([Values("ElementalForm", "AncientWard", "DragonsWrath", "ReptilianAspect", "ElementalFrenzy")] string ongoing)
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Ra", "Fanatic", "Megalopolis");
             StartGame();
@@ -919,6 +919,30 @@ namespace CauldronTests
             Card card = PlayCard(ongoing);
             AssertInPlayArea(tiamat, card);
             AssertCardHasKeyword(card, "ongoing", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Head_IsHead([Values("InfernoTiamatCharacter", "StormTiamatCharacter", "WinterTiamatCharacter")] string head)
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            Card card = GetCard(head);
+            AssertInPlayArea(tiamat, card);
+            AssertCardHasKeyword(card, "head", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Villain_IsVillain([Values("InfernoTiamatCharacter", "StormTiamatCharacter", "WinterTiamatCharacter")] string villain)
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            Card card = GetCard(villain);
+            AssertInPlayArea(tiamat, card);
+            AssertCardHasKeyword(card, "villain", false);
         }
     }
 }
