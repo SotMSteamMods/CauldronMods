@@ -28,7 +28,9 @@ namespace Cauldron.Tiamat
 			//If {Tiamat}, The Jaws of Winter is active, she deals each hero target 2+X cold damage, where X is the number of Element of Ice cards in the villain trash.
 			if (characterCard.IsInPlayAndHasGameText && !characterCard.IsFlipped)
 			{
-				coroutine = base.GameController.DealDamage(this.DecisionMaker, characterCard, (Card c) => c.IsHero, PlusNumberOfThisCardInTrash(2), DamageType.Cold, cardSource: base.GetCardSource());
+				Func<Card, int?> X = (Card c) => new int?(PlusNumberOfThisCardInTrash(2));
+				coroutine = base.DealDamage(characterCard, (Card c) => c.IsHero, X, DamageType.Cold);
+
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);
@@ -40,33 +42,19 @@ namespace Cauldron.Tiamat
 			}
 
 			//The hero with the highest HP...
-			IEnumerable<Card> heroes = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsFlipped));
-			Card highestHpHero = heroes.FirstOrDefault();
-			int highestHP = Convert.ToInt32(heroes.FirstOrDefault().HitPoints);
-			if (base.IsHighestHitPointsUnique((Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsFlipped, 1))
+			List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
+			LinqCardCriteria criteria  = new LinqCardCriteria((Card card) => base.CanCardBeConsideredHighestHitPoints(card,(Card c) =>  c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsFlipped));
+			coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.HeroCharacterCard, criteria, storedResults, false, cardSource: base.GetCardSource());
+			if (base.UseUnityCoroutines)
 			{
-				foreach (Card hero in heroes)
-				{
-					if (highestHpHero.HitPoints < hero.HitPoints)
-					{
-						highestHpHero = hero;
-					}
-				}
-            }
-            else
+				yield return base.GameController.StartCoroutine(coroutine);
+			}
+			else
 			{
-				foreach (Card hero in heroes)
-				{
-					if (hero.HitPoints <= highestHpHero.HitPoints)
-					{
-						highestHP = Convert.ToInt32(hero.HitPoints);
-					}
-				}
-				List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-				coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.HeroCharacterCard, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsFlipped && c.HitPoints == highestHP), storedResults, false, cardSource: base.GetCardSource());
-				highestHpHero = storedResults.FirstOrDefault().SelectedCard;
-            }
-
+				base.GameController.ExhaustCoroutine(coroutine);
+			}
+			Card highestHpHero = highestHpHero = storedResults.FirstOrDefault().SelectedCard;
+			
 			//...may not use powers until the start of the next villain turn.
 			CannotUsePowersStatusEffect cannotUsePowersStatusEffect = new CannotUsePowersStatusEffect();
 			cannotUsePowersStatusEffect.TurnTakerCriteria.IsSpecificTurnTaker = highestHpHero.NativeDeck.OwnerTurnTaker;

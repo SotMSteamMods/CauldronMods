@@ -652,7 +652,7 @@ namespace CauldronTests
 
             //Inferno deals 2+X damage to each hero where X is the number of Element of Fires in trash
             QuickHPStorage(legacy, bunker, haka);
-            PlayCard(tiamat, GetCard("ElementOfFire"));
+            PlayCard(tiamat,fire);
             AddCannotDealNextDamageTrigger(tiamat, storm);
             AddCannotDealNextDamageTrigger(tiamat, winter);
             QuickHPCheck(-4, -4, -4);
@@ -673,7 +673,7 @@ namespace CauldronTests
             //Inferno deals 2+X damage to each hero where X is the number of Element of Fires in trash
             QuickHPStorage(legacy, bunker, haka);
             AddShuffleTrashCounterAttackTrigger(legacy, tiamat.TurnTaker);
-            PlayCard(tiamat, GetCard("ElementOfFire"));
+            PlayCard(tiamat, fire);
             AddCannotDealNextDamageTrigger(tiamat, storm);
             AddCannotDealNextDamageTrigger(tiamat, winter);
             //after damage is dealt to legacy, tiamat's trash should have been shuffled into the deck
@@ -713,7 +713,11 @@ namespace CauldronTests
             StartGame();
             //Winter deals 2+X damage to each hero where X is the number of Element of Ices in trash
             QuickHPStorage(legacy, bunker, haka);
+            //winter is the one who should be dealing the damage
+            AddCannotDealNextDamageTrigger(tiamat, storm);
+            AddCannotDealNextDamageTrigger(tiamat, inferno);
             PlayCard(tiamat, "ElementOfIce");
+
             QuickHPCheck(-2, -2, -2);
         }
 
@@ -722,12 +726,44 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            PutInTrash(GetCard("ElementOfIce", 1));
-            PutInTrash(GetCard("ElementOfIce", 2));
-            //Winter deals 2+X damage to each hero where X is the number of Element of Ices in trash
+            Card ice = GetCard("ElementOfIce");
+
+            //put the other two copies of element of fire in the trash
+            List<Card> spellCards = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementOfIce" && c != ice).Take(2)).ToList();
+            PutInTrash(spellCards);
+
+            //Inferno deals 2+X damage to each hero where X is the number of Element of Fires in trash
             QuickHPStorage(legacy, bunker, haka);
-            PlayCard(tiamat, GetCard("ElementOfIce"));
+            //winter is the one who should be dealing the damage
+            AddCannotDealNextDamageTrigger(tiamat, storm);
+            AddCannotDealNextDamageTrigger(tiamat, inferno);
+            PlayCard(tiamat, ice);
+            //since there are 2 cards in trash, should deal 4 damage per hero
             QuickHPCheck(-4, -4, -4);
+        }
+
+        [Test()]
+        public void TestElementOfIceDamage2InTrash_DynamicValues()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            Card ice = GetCard("ElementOfIce");
+
+            //put the other two copies of element of fire in the trash
+            List<Card> spellCards = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementOfIce" && c != ice).Take(2)).ToList();
+            PutInTrash(spellCards);
+
+            //Inferno deals 2+X damage to each hero where X is the number of Element of Fires in trash
+            QuickHPStorage(legacy, bunker, haka);
+            AddShuffleTrashCounterAttackTrigger(legacy, tiamat.TurnTaker);
+            //winter is the one who should be dealing the damage
+            AddCannotDealNextDamageTrigger(tiamat, storm);
+            AddCannotDealNextDamageTrigger(tiamat, inferno);
+            PlayCard(tiamat, ice);
+            //after damage is dealt to legacy, tiamat's trash should have been shuffled into the deck
+            //this means that the subsequent damage will only be 2
+            QuickHPCheck(-4, -2, -2);
         }
 
         [Test()]
