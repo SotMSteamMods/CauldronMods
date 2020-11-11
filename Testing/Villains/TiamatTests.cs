@@ -4,6 +4,8 @@ using Handelabra.Sentinels.Engine.Controller.AbsoluteZero;
 using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
 using NUnit.Framework;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -31,6 +33,13 @@ namespace CauldronTests
             cannotDealDamageStatusEffect.NumberOfUses = 1;
             cannotDealDamageStatusEffect.SourceCriteria.IsSpecificCard = card; 
             this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
+        }
+
+        private void AddShuffleTrashCounterAttackTrigger(TurnTakerController ttc, TurnTaker turnTakerToReshuffleTrash) 
+        {
+            Func<DealDamageAction, bool> criteria = (DealDamageAction dd) => dd.Target == ttc.CharacterCard;
+            Func<DealDamageAction, IEnumerator> response = (DealDamageAction dd) => this.GameController.ShuffleTrashIntoDeck(this.GameController.FindTurnTakerController(turnTakerToReshuffleTrash));
+            this.GameController.AddTrigger<DealDamageAction>(new Trigger<DealDamageAction>(this.GameController, criteria, response, new TriggerType[] { TriggerType.ShuffleTrashIntoDeck }, TriggerTiming.After, this.GameController.FindCardController(turnTakerToReshuffleTrash.CharacterCard).GetCardSource()));
         }
 
         private bool IsSpell(Card card)
@@ -620,21 +629,56 @@ namespace CauldronTests
             StartGame();
             //Inferno deals 2+X damage to each hero where X is the number of Element of Fires in trash
             QuickHPStorage(legacy, bunker, haka);
+            //mouth of inferno should be the one dealing this damage
+            AddCannotDealNextDamageTrigger(tiamat, storm);
+            AddCannotDealNextDamageTrigger(tiamat, winter);
             PlayCard(tiamat, "ElementOfFire");
             QuickHPCheck(-2, -2, -2);
         }
+
+
 
         [Test()]
         public void TestElementOfFireDamage2InTrash()
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            PutInTrash(GetCard("ElementOfFire", 1));
-            PutInTrash(GetCard("ElementOfFire", 2));
+
+            Card fire = GetCard("ElementOfFire");
+
+            //put the other two copies of element of fire in the trash
+            List<Card> spellCards = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementOfFire" && c != fire).Take(2)).ToList();
+            PutInTrash(spellCards);
+
             //Inferno deals 2+X damage to each hero where X is the number of Element of Fires in trash
             QuickHPStorage(legacy, bunker, haka);
             PlayCard(tiamat, GetCard("ElementOfFire"));
+            AddCannotDealNextDamageTrigger(tiamat, storm);
+            AddCannotDealNextDamageTrigger(tiamat, winter);
             QuickHPCheck(-4, -4, -4);
+        }
+
+        [Test()]
+        public void TestElementOfFireDamage2InTrash_DynamicValues()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            Card fire = GetCard("ElementOfFire");
+
+            //put the other two copies of element of fire in the trash
+            List<Card> spellCards = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementOfFire" && c != fire).Take(2)).ToList();
+            PutInTrash(spellCards);
+
+            //Inferno deals 2+X damage to each hero where X is the number of Element of Fires in trash
+            QuickHPStorage(legacy, bunker, haka);
+            AddShuffleTrashCounterAttackTrigger(legacy, tiamat.TurnTaker);
+            PlayCard(tiamat, GetCard("ElementOfFire"));
+            AddCannotDealNextDamageTrigger(tiamat, storm);
+            AddCannotDealNextDamageTrigger(tiamat, winter);
+            //after damage is dealt to legacy, tiamat's trash should have been shuffled into the deck
+            //this means that the subsequent damage will only be 2
+            QuickHPCheck(-4, -2, -2);
         }
 
         [Test()]

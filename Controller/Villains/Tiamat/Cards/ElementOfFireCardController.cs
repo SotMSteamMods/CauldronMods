@@ -26,7 +26,9 @@ namespace Cauldron.Tiamat
 			//If {Tiamat}, The Mouth of the Inferno is active, she deals each hero target 2+X fire damage, where X is the number of Element of Fire cards in the villain trash.
 			if (characterCard.IsInPlayAndHasGameText && !characterCard.IsFlipped)
 			{
-				coroutine = base.GameController.DealDamage(base.DecisionMaker, characterCard, (Card c) => c.IsHero, PlusNumberOfThisCardInTrash(2), DamageType.Fire, cardSource: base.GetCardSource());
+				Func<Card, int?> X = (Card c) => new int?(PlusNumberOfThisCardInTrash(2));
+				coroutine = base.DealDamage(characterCard, (Card c) => c.IsHero, X, DamageType.Fire);
+
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);
