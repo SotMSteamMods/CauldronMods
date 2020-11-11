@@ -578,6 +578,9 @@ namespace CauldronTests
 
             PlayCard(high);
             AssertNextToCard(high, card);
+            AssertCardHasKeyword(high, "ongoing", false);
+            AssertCardHasKeyword(high, "limited", false);
+            AssertCardHasKeyword(high, "djinn", false);
         }
 
         [Test]
@@ -947,6 +950,8 @@ namespace CauldronTests
 
             PlayCard(grand);
             AssertNextToCard(grand, card);
+            AssertCardHasKeyword(grand, "ongoing", false);
+            AssertCardHasKeyword(grand, "djinn", false);
         }
 
 
@@ -1203,6 +1208,29 @@ namespace CauldronTests
             DealDamage(baron.CharacterCard, card, 1, DamageType.Cold);
             DealDamage(baron.CharacterCard, blade, 1, DamageType.Cold);
             QuickHPCheck(0, -1, -1, -1, 0, -1); //damage not reduced, djinn still have a global reducer
+        }
+
+        [Test]
+        public void SummoningCrystal()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            var card = PutInHand("SummoningCrystal");
+            var target = PutInHand("Bathiel");
+            AssertCardHasKeyword(card, "equipment", false);
+
+            PlayCard(card);
+            AssertInPlayArea(Malichae, card);
+
+            GoToUsePowerPhase(Malichae);
+
+            DecisionSelectCard = target;
+            UsePower(card);
+
+            AssertInPlayArea(Malichae, target);
         }
     }
 }
