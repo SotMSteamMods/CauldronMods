@@ -20,5 +20,39 @@ namespace Cauldron.TangoOne
             return card != null && base.GameController.DoesCardContainKeyword(card, "critical");
         }
 
+        protected bool IsOwnCharacterCard(Card card)
+        {
+            return card.IsHeroCharacterCard && card.ParentDeck == this.Card.ParentDeck;
+        }
+
+        protected IEnumerator SelectOwnCharacterCard(List<SelectCardDecision> results, SelectionType selectionType)
+        {
+            if (base.HeroTurnTakerController.HasMultipleCharacterCards)
+            {
+                LinqCardCriteria criteria = new LinqCardCriteria(IsOwnCharacterCard, "hero character cards");
+                var routine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, selectionType, 
+                    criteria, results, false, cardSource: base.GetCardSource());
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
+            }
+            else
+            {
+                var result = new SelectCardDecision(this.GameController, this.DecisionMaker, selectionType, 
+                    new[] { base.CharacterCard }, false, true, cardSource: base.GetCardSource());
+                result.ChooseIndex(0);
+                result.AutoDecide();
+                results.Add(result);
+            }
+
+            yield break;
+        }
+
     }
 }
