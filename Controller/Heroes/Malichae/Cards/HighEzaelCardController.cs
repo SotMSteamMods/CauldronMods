@@ -35,8 +35,11 @@ namespace Cauldron.Malichae
 
         public override IEnumerator UsePower(int index = 0)
         {
+            int djinnHP = GetPowerNumeral(0, 2);
+            int otherHP = GetPowerNumeral(1, 1);
+
             var card = GetCardThisCardIsNextTo();
-            var coroutine = base.GameController.GainHP(DecisionMaker, c => c.IsTarget && (c.IsHero || IsDjinn(c)), c => IsDjinn(c) ? 2 : 1, cardSource: GetCardSource());
+            var coroutine = base.GameController.GainHP(DecisionMaker, c => c.IsTarget && (c.IsHero || IsDjinn(c)), c => IsDjinn(c) ? djinnHP : otherHP, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -45,9 +48,7 @@ namespace Cauldron.Malichae
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            coroutine = base.GameController.DestroyCard(DecisionMaker, this.Card,
-                            responsibleCard: this.CharacterCard,
-                            cardSource: GetCardSource());
+            coroutine = DestroySelf();
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

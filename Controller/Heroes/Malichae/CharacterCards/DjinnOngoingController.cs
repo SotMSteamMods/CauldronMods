@@ -36,8 +36,35 @@ namespace Cauldron.Malichae
 
         public override void AddTriggers()
         {
-            AddTrigger<MoveCardAction>(MoveCriteria, DestroyCardReponse, TriggerType.DestroySelf, TriggerTiming.After);
-            AddTrigger<DestroyCardAction>(DestroyCriteria, DestroyCardReponse, TriggerType.DestroySelf, TriggerTiming.After);
+            AddTrigger<MoveCardAction>(MoveCriteria, RequiredCardMissingDestroySelfResponse, TriggerType.DestroySelf, TriggerTiming.After);
+            AddTrigger<DestroyCardAction>(DestroyCriteria, RequiredCardMissingDestroySelfResponse, TriggerType.DestroySelf, TriggerTiming.After);
+        }
+
+        protected void AddDestroyAtEndOfTurnTrigger()
+        {
+            AddEndOfTurnTrigger(tt => tt == this.TurnTaker, pca => DestroySelf(pca), TriggerType.DestroySelf);
+        }
+
+        public override IEnumerator Play()
+        {
+            return CheckPlayConditionsAreMet();
+        }
+
+        protected IEnumerator CheckPlayConditionsAreMet()
+        {
+            var query = GameController.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.Identifier == _requiredIdentifier, visibleToCard: GetCardSource());
+            if (!query.Any())
+            {
+                var coroutine = RequiredCardMissingDestroySelfResponse(null);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
         }
 
         private bool DestroyCriteria(DestroyCardAction dca)
@@ -63,11 +90,11 @@ namespace Cauldron.Malichae
                    (mca.Destination.IsHand || mca.Destination.IsTrash);
         }
 
-        private IEnumerator DestroyCardReponse(GameAction ga)
+        private IEnumerator RequiredCardMissingDestroySelfResponse(GameAction ga)
         {
-            IEnumerator coroutine = base.GameController.DestroyCard(this.DecisionMaker, Card,
-                actionSource: ga,
-                cardSource: GetCardSource());
+            var sample = FindCard(_requiredIdentifier);
+            string message = $"{sample.Title} is not in play, {Card.Title} will be destroyed.";
+            IEnumerator coroutine = GameController.SendMessageAction(message, Priority.Medium, cardSource: GetCardSource(), showCardSource: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -76,6 +103,22 @@ namespace Cauldron.Malichae
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+            coroutine = DestroySelf(ga);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+
+        protected IEnumerator DestroySelf(GameAction ga = null)
+        {
+            return base.GameController.DestroyCard(this.DecisionMaker, Card,
+                actionSource: ga,
+                cardSource: GetCardSource());
         }
     }
 }

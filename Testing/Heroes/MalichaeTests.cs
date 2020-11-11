@@ -267,6 +267,7 @@ namespace CauldronTests
             StartGame();
 
             //FAILED w/ 471631917
+            //FAILED w/ -1996836557
 
             //2nd discard for the UsePower innate
             var discard1 = GetCard("GrandBathiel");
@@ -381,28 +382,29 @@ namespace CauldronTests
 
             GoToPlayCardPhase(Malichae);
 
-            PrintSeparator("Destroy Action");
+            PrintSeparator("Setup");
             var card = PlayCard(djinn);
             DecisionNextToCard = card;
             var high = PlayCard("High" + djinn);
             SetHitPoints(card, 3); //low Hp to confirm the heal
             AssertInPlayArea(Malichae, card);
             AssertNextToCard(high, card);
-            Console.WriteLine(string.Join(", ", high.GetAllNextToCards(true).Select(c => c.Title)));
-            PrintCardsInPlayWithGameText(c => c.IsInPlay && c.IsOngoing && c.DoKeywordsContain("djinn") && c.Location == card.NextToLocation);
 
+            PrintSeparator("Destroy Action");
             //Destroy on djinn should destroy ongoing instead
             DestroyCard(card, baron.CharacterCard);
             AssertInPlayArea(Malichae, card);
             AssertInTrash(Malichae, high);
             AssertIsAtMaxHP(card);
-
-            PrintSeparator("Damage Action");
+                        
+            PrintSeparator("Setup");
             DecisionNextToCard = card;
             PlayCard(high);
+            SetHitPoints(card, 3); //low Hp to confirm the heal
             AssertInPlayArea(Malichae, card);
             AssertNextToCard(high, card);
 
+            PrintSeparator("Damage Action");
             DealDamage(baron.CharacterCard, card, 99, DamageType.Melee, true);
             AssertInPlayArea(Malichae, card);
             AssertInTrash(Malichae, high);
@@ -410,7 +412,54 @@ namespace CauldronTests
         }
 
         [Test]
-        public void DjinnTarget_Bathiel()
+        public void DjinnTarget_DestroyPreventedWithGrandOngoing(
+            [Values("Bathiel", "Ezael", "Somael", "Reshiel")] string djinn
+            )
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            PrintSeparator("Setup");
+            var card = PlayCard(djinn);
+            DecisionNextToCard = card;
+            var high = PlayCard("High" + djinn);
+            DecisionNextToCard = card;
+            var grand = PlayCard("Grand" + djinn);
+            SetHitPoints(card, 3); //low Hp to confirm the heal
+            AssertInPlayArea(Malichae, card);
+            AssertNextToCard(high, card);
+            AssertNextToCard(grand, card);
+
+            PrintSeparator("Destroy Action");
+            //Destroy on djinn should destroy ongoing instead
+            DecisionSelectCard = grand;
+            DestroyCard(card, baron.CharacterCard);
+            AssertInPlayArea(Malichae, card);
+            AssertNextToCard(high, card);
+            AssertInTrash(Malichae, grand);
+            AssertIsAtMaxHP(card);
+
+            PrintSeparator("Setup");
+            DecisionNextToCard = card;
+            PlayCard(grand);
+            SetHitPoints(card, 3); //low Hp to confirm the heal
+            AssertInPlayArea(Malichae, card);
+            AssertNextToCard(high, card);
+            AssertNextToCard(grand, card);
+
+            PrintSeparator("Damage Action");
+            DecisionSelectCard = grand;
+            DealDamage(baron.CharacterCard, card, 99, DamageType.Melee, true);
+            AssertInPlayArea(Malichae, card);
+            AssertNextToCard(high, card);
+            AssertInTrash(Malichae, grand);
+            AssertIsAtMaxHP(card);
+        }
+
+        [Test]
+        public void Djinn_Bathiel()
         {
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
@@ -430,7 +479,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void DjinnTarget_Somael()
+        public void Djinn_Somael()
         {
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
@@ -467,7 +516,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void DjinnTarget_Ezael()
+        public void Djinn_Ezael()
         {
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
@@ -488,7 +537,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void DjinnTarget_Reshiel()
+        public void Djinn_Reshiel()
         {
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
@@ -517,12 +566,12 @@ namespace CauldronTests
 
             GoToPlayCardPhase(Malichae);
 
-            var ongoing = GetCard("High" + djinn);
+            var high = GetCard("High" + djinn);
 
             AssertNextMessage($"There are no {djinn} cards in play to put High {djinn} next to. Moving it to {Malichae.Name}'s trash.");
-            PlayCard(ongoing);
-            AssertNotInPlay(ongoing);
-            AssertInTrash(Malichae, ongoing);
+            PlayCard(high);
+            AssertNotInPlay(high);
+            AssertInTrash(Malichae, high);
         }
 
         [Test]
@@ -536,11 +585,11 @@ namespace CauldronTests
             GoToPlayCardPhase(Malichae);
 
             var card = PlayCard(djinn);
-            var ongoing = GetCard("High" + djinn);
+            var high = GetCard("High" + djinn);
             AssertInPlayArea(Malichae, card);
 
-            PlayCard(ongoing);
-            AssertNextToCard(ongoing, card);
+            PlayCard(high);
+            AssertNextToCard(high, card);
         }
 
         [Test]
@@ -555,23 +604,23 @@ namespace CauldronTests
 
             var card = PlayCard(djinn);
             SetHitPoints(card, 2); //to check we don't heal
-            var ongoing = GetCard("High" + djinn);
+            var high = GetCard("High" + djinn);
             AssertInPlayArea(Malichae, card);
 
-            PlayCard(ongoing);
-            AssertNextToCard(ongoing, card);
+            PlayCard(high);
+            AssertNextToCard(high, card);
 
             QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
-            DestroyCard(ongoing, baron.CharacterCard);
+            DestroyCard(high, baron.CharacterCard);
 
             AssertInPlayArea(Malichae, card);
-            AssertInTrash(Malichae, ongoing);
+            AssertInTrash(Malichae, high);
             QuickHPCheck(0, 0, 0, 0, 0);
         }
 
 
         [Test]
-        public void DjinnTarget_HighBathiel_Passive()
+        public void Djinn_HighBathiel_Passive()
         {
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
@@ -581,22 +630,22 @@ namespace CauldronTests
             string djinn = "Bathiel";
 
             var card = PlayCard(djinn);
-            var ongoing = GetCard("High" + djinn);
+            var high = GetCard("High" + djinn);
             AssertInPlayArea(Malichae, card);
 
-            PlayCard(ongoing);
-            AssertNextToCard(ongoing, card);
+            PlayCard(high);
+            AssertNextToCard(high, card);
 
             DecisionSelectTarget = ra.CharacterCard;
             QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
             GoToEndOfTurn(Malichae);
             QuickHPCheck(0, 0, -3, 0, 0);
             AssertInPlayArea(Malichae, card);
-            AssertNextToCard(ongoing, card);
+            AssertNextToCard(high, card);
         }
 
         [Test]
-        public void DjinnTarget_HighBathiel_UsePower()
+        public void Djinn_HighBathiel_UsePower()
         {
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
@@ -606,24 +655,24 @@ namespace CauldronTests
             string djinn = "Bathiel";
 
             var card = PlayCard(djinn);
-            var ongoing = GetCard("High" + djinn);
+            var high = GetCard("High" + djinn);
             AssertInPlayArea(Malichae, card);
 
-            PlayCard(ongoing);
-            AssertNextToCard(ongoing, card);
+            PlayCard(high);
+            AssertNextToCard(high, card);
 
             DecisionSelectTarget = ra.CharacterCard;
             QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
             GoToUsePowerPhase(Malichae);
-            UsePower(ongoing);
+            UsePower(high);
             QuickHPCheck(0, 0, -5, 0, 0); //4 + 1
             AssertInPlayArea(Malichae, card);
-            AssertInTrash(Malichae, ongoing);
+            AssertInTrash(Malichae, high);
         }
 
 
         [Test]
-        public void DjinnTarget_HighSomael_Passive()
+        public void Djinn_HighSomael_Passive()
         {
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
@@ -633,11 +682,11 @@ namespace CauldronTests
             string djinn = "Somael";
 
             var card = PlayCard(djinn);
-            var ongoing = GetCard("High" + djinn);
+            var high = GetCard("High" + djinn);
             AssertInPlayArea(Malichae, card);
 
-            PlayCard(ongoing);
-            AssertNextToCard(ongoing, card);
+            PlayCard(high);
+            AssertNextToCard(high, card);
 
             DecisionSelectCard = ra.CharacterCard;
 
@@ -683,7 +732,7 @@ namespace CauldronTests
 
 
         [Test]
-        public void DjinnTarget_HighSomael_UsePower()
+        public void Djinn_HighSomael_UsePower()
         {
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
@@ -693,15 +742,15 @@ namespace CauldronTests
             string djinn = "Somael";
             var blade = PlayCard("BladeBattalion");
             var card = PlayCard(djinn);
-            var ongoing = GetCard("High" + djinn);
+            var high = GetCard("High" + djinn);
             AssertInPlayArea(Malichae, card);
 
-            PlayCard(ongoing);
-            AssertNextToCard(ongoing, card);
+            PlayCard(high);
+            AssertNextToCard(high, card);
 
             GoToUsePowerPhase(Malichae);
-            UsePower(ongoing);
-            AssertInTrash(ongoing);
+            UsePower(high);
+            AssertInTrash(high);
 
             QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card, blade);
             DealDamage(baron.CharacterCard, Malichae.CharacterCard, 1, DamageType.Cold);
@@ -736,7 +785,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void DjinnTarget_HighReshiel_Passive()
+        public void Djinn_HighReshiel_Passive()
         {
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
@@ -746,11 +795,11 @@ namespace CauldronTests
             string djinn = "Reshiel";
 
             var card = PlayCard(djinn);
-            var ongoing = GetCard("High" + djinn);
+            var high = GetCard("High" + djinn);
             AssertInPlayArea(Malichae, card);
 
-            PlayCard(ongoing);
-            AssertNextToCard(ongoing, card);
+            PlayCard(high);
+            AssertNextToCard(high, card);
 
             DecisionSelectCards = new Card[] { ra.CharacterCard, fanatic.CharacterCard };
             QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
@@ -761,7 +810,7 @@ namespace CauldronTests
 
 
         [Test]
-        public void DjinnTarget_HighReshiel_UsePower()
+        public void Djinn_HighReshiel_UsePower()
         {
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
@@ -771,24 +820,24 @@ namespace CauldronTests
             string djinn = "Reshiel";
 
             var card = PlayCard(djinn);
-            var ongoing = GetCard("High" + djinn);
+            var high = GetCard("High" + djinn);
             AssertInPlayArea(Malichae, card);
 
-            PlayCard(ongoing);
-            AssertNextToCard(ongoing, card);
+            PlayCard(high);
+            AssertNextToCard(high, card);
 
             DecisionSelectTargets = new Card[] { ra.CharacterCard, fanatic.CharacterCard, Malichae.CharacterCard };
             QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
             GoToUsePowerPhase(Malichae);
-            UsePower(ongoing);
+            UsePower(high);
             QuickHPCheck(0, -3, -3, -3, 0); //4 + 1
             AssertInPlayArea(Malichae, card);
-            AssertInTrash(Malichae, ongoing);
+            AssertInTrash(Malichae, high);
         }
 
 
         [Test]
-        public void DjinnTarget_HighEzael_Passive()
+        public void Djinn_HighEzael_Passive()
         {
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
@@ -798,15 +847,15 @@ namespace CauldronTests
             string djinn = "Ezael";
 
             var card = PlayCard(djinn);
-            var ongoing = GetCard("High" + djinn);
+            var high = GetCard("High" + djinn);
             AssertInPlayArea(Malichae, card);
             var otherCard = PlayCard("Bathiel");
             SetHitPoints(ra.CharacterCard, 10);
             SetHitPoints(otherCard, 3);
             SetHitPoints(card, 3);
 
-            PlayCard(ongoing);
-            AssertNextToCard(ongoing, card);
+            PlayCard(high);
+            AssertNextToCard(high, card);
 
             DecisionSelectCard = ra.CharacterCard;
             QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card, otherCard);
@@ -816,7 +865,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void DjinnTarget_HighEzael_UsePower()
+        public void Djinn_HighEzael_UsePower()
         {
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
@@ -826,7 +875,7 @@ namespace CauldronTests
             string djinn = "Ezael";
 
             var card = PlayCard(djinn);
-            var ongoing = GetCard("High" + djinn);
+            var high = GetCard("High" + djinn);
             AssertInPlayArea(Malichae, card);
             var otherCard = PlayCard("Bathiel");
             SetHitPoints(ra.CharacterCard, 10);
@@ -837,17 +886,17 @@ namespace CauldronTests
             SetHitPoints(fanatic.CharacterCard, 20);
             SetHitPoints(Malichae.CharacterCard, 20);
 
-            PlayCard(ongoing);
-            AssertNextToCard(ongoing, card);
+            PlayCard(high);
+            AssertNextToCard(high, card);
 
             GoToUsePowerPhase(Malichae);
             QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card, otherCard);
 
-            UsePower(ongoing);
+            UsePower(high);
 
             QuickHPCheck(0, 1, 1, 1, 2, 2);
             AssertInPlayArea(Malichae, card);
-            AssertInTrash(Malichae, ongoing);
+            AssertInTrash(Malichae, high);
         }
 
 
@@ -939,7 +988,7 @@ namespace CauldronTests
             DestroyCard(grand, baron.CharacterCard);
 
             AssertInPlayArea(Malichae, card);
-            AssertInTrash(Malichae, high);
+            AssertInTrash(Malichae, grand);
             QuickHPCheck(0, 0, 0, 0, 0);
         }
 
@@ -1001,6 +1050,171 @@ namespace CauldronTests
             AssertInTrash(Malichae, grand);
         }
 
+        [Test]
+        public void Djinn_GrandBathiel_UsePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
 
+            GoToPlayCardPhase(Malichae);
+
+            string djinn = "Bathiel";
+
+            var card = PlayCard(djinn);
+            var high = GetCard("High" + djinn);
+            var grand = GetCard("Grand" + djinn);
+            AssertInPlayArea(Malichae, card);
+
+            PlayCard(high);
+            AssertNextToCard(high, card);
+            PlayCard(grand);
+            AssertNextToCard(grand, card);
+
+            DecisionSelectTarget = ra.CharacterCard;
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
+            GoToUsePowerPhase(Malichae);
+            UsePower(grand);
+            QuickHPCheck(0, 0, -7, 0, 0); //6 + 1
+            AssertInPlayArea(Malichae, card);
+            AssertNextToCard(high, card);
+            AssertNextToCard(grand, card);
+        }
+
+
+        [Test]
+        public void Djinn_GrandEzael_UsePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            string djinn = "Ezael";
+
+            var card = PlayCard(djinn);
+            var high = GetCard("High" + djinn);
+            var grand = GetCard("Grand" + djinn);
+            AssertInPlayArea(Malichae, card);
+            var otherCard = PlayCard("Bathiel");
+            SetHitPoints(ra.CharacterCard, 10);
+            SetHitPoints(otherCard, 1);
+            SetHitPoints(card, 1);
+            SetHitPoints(ra.CharacterCard, 10);
+            SetHitPoints(baron.CharacterCard, 10);
+            SetHitPoints(fanatic.CharacterCard, 10);
+            SetHitPoints(Malichae.CharacterCard, 10);
+
+            PlayCard(high);
+            AssertNextToCard(high, card);
+            PlayCard(grand);
+            AssertNextToCard(grand, card);
+
+            GoToUsePowerPhase(Malichae);
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card, otherCard);
+
+            UsePower(grand);
+
+            QuickHPCheck(0, 3, 3, 3, 3, 3);
+            AssertInPlayArea(Malichae, card);
+            AssertNextToCard(high, card);
+            AssertNextToCard(grand, card);
+        }
+
+        [Test]
+        public void Djinn_GrandReshiel_UsePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            var mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToPlayCardPhase(Malichae);
+
+            var blade = PlayCard("BladeBattalion");
+
+            string djinn = "Reshiel";
+
+            var card = PlayCard(djinn);
+            var high = GetCard("High" + djinn);
+            var grand = GetCard("Grand" + djinn);
+            AssertInPlayArea(Malichae, card);
+
+            PlayCard(high);
+            AssertNextToCard(high, card);
+            PlayCard(grand);
+            AssertNextToCard(grand, card);
+
+            DecisionAutoDecideIfAble = true;
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card, blade, mdp);
+            GoToUsePowerPhase(Malichae);
+
+            UsePower(grand);
+            QuickHPCheck(0, 0, 0, 0, 0, -3, -3); //2 + 1
+            AssertInPlayArea(Malichae, card);
+            AssertNextToCard(high, card);
+            AssertNextToCard(grand, card);
+        }
+
+
+        [Test]
+        public void Djinn_GrandSomael_UsePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            string djinn = "Somael";
+            var blade = PlayCard("BladeBattalion");
+            var card = PlayCard(djinn);
+            var high = GetCard("High" + djinn);
+            var grand = GetCard("Grand" + djinn);
+            AssertInPlayArea(Malichae, card);
+
+            PlayCard(high);
+            AssertNextToCard(high, card);
+            PlayCard(grand);
+            AssertNextToCard(grand, card);
+
+            GoToUsePowerPhase(Malichae);
+            UsePower(grand);
+
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card, blade);
+            DealDamage(baron.CharacterCard, Malichae.CharacterCard, 2, DamageType.Cold);
+            DealDamage(baron.CharacterCard, ra.CharacterCard, 2, DamageType.Cold);
+            DealDamage(baron.CharacterCard, fanatic.CharacterCard, 2, DamageType.Cold);
+            DealDamage(baron.CharacterCard, card, 3, DamageType.Cold);
+            DealDamage(baron.CharacterCard, blade, 2, DamageType.Cold);
+            QuickHPCheck(0, 0, 0, 0, 0, -2); //damage reduced to zero except for villain
+            SetHitPoints(blade, 5);
+
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card, blade);
+            DealDamage(baron.CharacterCard, Malichae.CharacterCard, 2, DamageType.Cold, true);
+            DealDamage(baron.CharacterCard, ra.CharacterCard, 2, DamageType.Cold, true);
+            DealDamage(baron.CharacterCard, fanatic.CharacterCard, 2, DamageType.Cold, true);
+            DealDamage(baron.CharacterCard, card, 2, DamageType.Cold, true);
+            DealDamage(baron.CharacterCard, blade, 2, DamageType.Cold, true);
+            QuickHPCheck(0, -2, -2, -2, -2, -2); //damage not reduced to zero
+            SetHitPoints(blade, 5);
+
+            DecisionSelectCard = ra.CharacterCard;
+
+            AssertInPlayArea(Malichae, card);
+            AssertNextToCard(high, card);
+            AssertNextToCard(grand, card);
+
+            GoToEndOfTurn(Malichae);
+
+            //expire effect4
+            GoToStartOfTurn(Malichae);
+
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card, blade);
+            DealDamage(baron.CharacterCard, Malichae.CharacterCard, 1, DamageType.Cold);
+            DealDamage(baron.CharacterCard, ra.CharacterCard, 1, DamageType.Cold);
+            DealDamage(baron.CharacterCard, fanatic.CharacterCard, 1, DamageType.Cold);
+            DealDamage(baron.CharacterCard, card, 1, DamageType.Cold);
+            DealDamage(baron.CharacterCard, blade, 1, DamageType.Cold);
+            QuickHPCheck(0, -1, -1, -1, 0, -1); //damage not reduced, djinn still have a global reducer
+        }
     }
 }

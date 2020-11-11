@@ -21,8 +21,11 @@ namespace Cauldron.Malichae
 
         public override IEnumerator UsePower(int index = 0)
         {
-            var card = GetCardThisCardIsNextTo();
-            var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, card), 2, DamageType.Sonic, 3, false, 0, cardSource: GetCardSource());
+            int targets = GetPowerNumeral(0, 3);
+            int damages = GetPowerNumeral(1, 2);
+
+            var card = GetCardThisCardIsNextTo(); //TODO - PROMO - DamageSource can be Malichae
+            var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, card), damages, DamageType.Sonic, targets, false, 0, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -31,9 +34,7 @@ namespace Cauldron.Malichae
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            coroutine = base.GameController.DestroyCard(DecisionMaker, this.Card,
-                            responsibleCard: this.CharacterCard,
-                            cardSource: GetCardSource());
+            coroutine = DestroySelf();
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

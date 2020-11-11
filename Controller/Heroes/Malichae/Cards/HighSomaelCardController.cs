@@ -20,9 +20,11 @@ namespace Cauldron.Malichae
 
         public override IEnumerator UsePower(int index = 0)
         {
+            int reduces = GetPowerNumeral(0, 1);
+
             var card = GetCardThisCardIsNextTo();
-            ReduceDamageStatusEffect effect = new ReduceDamageStatusEffect(1);
-            effect.CardSource = card;
+            ReduceDamageStatusEffect effect = new ReduceDamageStatusEffect(reduces);
+            effect.CardSource = card; //TODO - PROMO - CardSource can be Malichae
             effect.UntilStartOfNextTurn(this.DecisionMaker.TurnTaker);
             effect.TargetCriteria.IsInPlayAndNotUnderCard = true;
             effect.TargetCriteria.IsHero = true;
@@ -37,9 +39,7 @@ namespace Cauldron.Malichae
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            coroutine = base.GameController.DestroyCard(DecisionMaker, this.Card,
-                            responsibleCard: this.CharacterCard,
-                            cardSource: GetCardSource());
+            coroutine = DestroySelf();
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
