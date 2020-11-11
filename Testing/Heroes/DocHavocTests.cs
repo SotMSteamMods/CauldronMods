@@ -775,5 +775,28 @@ namespace CauldronTests
             // Assert
             QuickHPCheck(-4, -4);
         }
+
+        [Test]
+        public void TestCauterize()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                CauterizeCardController.Identifier, SyringeDartsCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+
+            // Act
+            PlayCardFromHand(DocHavoc, CauterizeCardController.Identifier);
+            GoToPlayCardPhase(DocHavoc);
+            PlayCardFromHand(DocHavoc, SyringeDartsCardController.Identifier);
+            UsePower(SyringeDartsCardController.Identifier);
+
+            // Arrange
+        }
     }
 }
