@@ -360,10 +360,8 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             //Setup top of decks
-            Card ward = GetCard("AncientWard");
-            PutOnDeck(tiamat, ward);
-            Card traffic = GetCard("TrafficPileup");
-            PutOnDeck(env, traffic);
+            Card ward = PutOnDeck("AncientWard");
+            Card traffic = PutOnDeck("TrafficPileup");
             //Assert nothing in play
             AssertNumberOfCardsInPlay(tiamat, 3);
             AssertNumberOfCardsInPlay(env, 0);
