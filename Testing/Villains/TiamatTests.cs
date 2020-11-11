@@ -468,6 +468,7 @@ namespace CauldronTests
             PlayCard(tiamat, "ElementalForm");
 
             //Until start of next turn heads become immune to a damage type when they take that damage
+            PrintSeparator("check for inferno");
             QuickHPStorage(inferno);
             DealDamage(legacy, inferno, 2, DamageType.Melee);
             QuickHPCheck(-2);
@@ -476,6 +477,7 @@ namespace CauldronTests
             DealDamage(legacy, inferno, 2, DamageType.Melee);
             QuickHPCheck(0);
 
+            PrintSeparator("check for storm");
             QuickHPStorage(storm);
             DealDamage(legacy, storm, 2, DamageType.Melee);
             QuickHPCheck(-2);
@@ -484,6 +486,7 @@ namespace CauldronTests
             DealDamage(legacy, storm, 2, DamageType.Melee);
             QuickHPCheck(0);
 
+            PrintSeparator("check for winter");
             QuickHPStorage(winter);
             DealDamage(legacy, winter, 2, DamageType.Melee);
             QuickHPCheck(-2);
@@ -491,6 +494,25 @@ namespace CauldronTests
             QuickHPStorage(winter);
             DealDamage(legacy, winter, 2, DamageType.Melee);
             QuickHPCheck(0);
+        }
+
+        [Test()]
+        public void TestElementalFormZeroDamageDealt()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+            PlayCard(tiamat, "ElementalForm");
+
+            //Until start of next turn heads become immune to a damage type when they take that damage
+            PrintSeparator("check for inferno");
+            QuickHPStorage(inferno);
+            DealDamage(legacy, inferno, 0, DamageType.Melee);
+            QuickHPCheck(0);
+            //Should not be immune now
+            QuickHPStorage(inferno);
+            DealDamage(legacy, inferno, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
         }
 
         [Test()]
@@ -536,6 +558,31 @@ namespace CauldronTests
             DealDamage(legacy, inferno, 2, DamageType.Psychic);
             QuickHPCheck(-2);
             //Immunity only lasts until start of turn
+            GoToStartOfTurn(tiamat);
+            QuickHPStorage(inferno);
+            DealDamage(legacy, inferno, 2, DamageType.Psychic);
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestElementalFormRemainsAfterDestruction()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+            Card form = PlayCard(tiamat, "ElementalForm");
+
+            QuickHPStorage(inferno);
+            DealDamage(legacy, inferno, 2, DamageType.Psychic);
+            QuickHPCheck(-2);
+
+            DestroyCard(form, bunker.CharacterCard);
+
+            //should still be immune even with elemental form gone
+            QuickHPStorage(inferno);
+            DealDamage(legacy, inferno, 2, DamageType.Psychic);
+            QuickHPCheck(0);
+
+            //Immunity should go away at next start of turn
             GoToStartOfTurn(tiamat);
             QuickHPStorage(inferno);
             DealDamage(legacy, inferno, 2, DamageType.Psychic);

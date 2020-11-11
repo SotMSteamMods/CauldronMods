@@ -30,8 +30,9 @@ namespace Cauldron.Tiamat
 
 		private void CreateTriggers(Card characterCard)
 		{
-			base.AddTrigger<DealDamageAction>((DealDamageAction dealDamage) => dealDamage.Target == characterCard, new Func<DealDamageAction, IEnumerator>(this.ImmuneResponse), TriggerType.ImmuneToDamage, TriggerTiming.After, ActionDescription.DamageTaken);
-			base.AddTrigger<DealDamageAction>((DealDamageAction dealDamage) => characterCard.IsInPlayAndHasGameText && dealDamage.Target == characterCard && dealDamage.DidDealDamage, new Func<DealDamageAction, IEnumerator>(this.WarningMessageResponse), TriggerType.Hidden, TriggerTiming.After, ActionDescription.Unspecified);
+			Func<DealDamageAction, bool> criteria = (DealDamageAction dealDamage) => characterCard.IsInPlayAndHasGameText && dealDamage.Target == characterCard && dealDamage.DidDealDamage;
+			base.AddTrigger<DealDamageAction>(criteria, new Func<DealDamageAction, IEnumerator>(this.ImmuneResponse), TriggerType.ImmuneToDamage, TriggerTiming.After, ActionDescription.DamageTaken);
+			base.AddTrigger<DealDamageAction>(criteria, new Func<DealDamageAction, IEnumerator>(this.WarningMessageResponse), TriggerType.Hidden, TriggerTiming.After);
 		}
 
 		private IEnumerator WarningMessageResponse(DealDamageAction dealDamage)
