@@ -336,11 +336,18 @@ namespace CauldronTests
         [Test()]
         public void TestTemporalReversal()
         {
-            SetupGameController("LaCapitan", "Guise", "Parse", "Haka", "Cauldron.FSCContinuanceWanderer");
+            SetupGameController("LaCapitan", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            //When this card enters play, place 1 card in play from each other deck back on top of that deck.
+            IEnumerable<Card> inDeck = GetCards("Fortitude", "FleshOfTheSunGod", "Mere");
+            PlayCards(inDeck);
+            IEnumerable<Card> inPlay = GetCards("TheLegacyRing", "TheStaffOfRa", "TaMoko", "Trueshot");
+            PlayCards(inPlay);
             Card rev = GetCard("TemporalReversal");
             PlayCard(rev);
-            Assert.IsTrue(false);
+            AssertIsInPlay(inPlay);
+            AssertInDeck(capitan, GetCard("LaParadojaMagnifica"));
+            AssertInDeck(inDeck);
         }
 
         [Test()]
