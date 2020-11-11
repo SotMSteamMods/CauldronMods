@@ -12,7 +12,7 @@ namespace Cauldron.FSCContinuanceWanderer
 
         public TemporalResetCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            ModifyDealDamageAction mdda = new IncreaseDamageAction(this.GameController, dda, DamageIncrease, dda.Target.IsNemesis);
+
         }
 
         #endregion Constructors
