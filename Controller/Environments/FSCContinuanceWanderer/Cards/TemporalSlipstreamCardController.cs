@@ -22,7 +22,7 @@ namespace Cauldron.FSCContinuanceWanderer
         public override IEnumerator Play()
         {
             //When this card enters play, each player discards their hand and draws that many cards.
-            IEnumerator coroutine = base.DoActionToEachTurnTakerInTurnOrder((TurnTakerController turnTakerController) => turnTakerController.IsHero, DiscardAndDrawResponse);
+            IEnumerator coroutine = base.GameController.SelectTurnTakersAndDoAction(null, new LinqTurnTakerCriteria((TurnTaker turnTaker) => turnTaker.IsHero && !turnTaker.IsIncapacitatedOrOutOfGame), SelectionType.DiscardHand, (TurnTaker turnTaker) => this.DiscardAndDrawResponse(turnTaker), cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -34,10 +34,11 @@ namespace Cauldron.FSCContinuanceWanderer
             yield break;
         }
 
-        private IEnumerator DiscardAndDrawResponse(TurnTakerController turnTakerController)
+        private IEnumerator DiscardAndDrawResponse(TurnTaker turnTaker)
         {
             List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
-            IEnumerator coroutine = base.GameController.DiscardHand(turnTakerController.ToHero(), false, storedResults, this.TurnTaker, base.GetCardSource());
+            HeroTurnTakerController heroTurnTakerController = base.FindHeroTurnTakerController(turnTaker.ToHero());
+            IEnumerator coroutine = base.GameController.DiscardHand(heroTurnTakerController, false, storedResults, this.TurnTaker, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -49,7 +50,7 @@ namespace Cauldron.FSCContinuanceWanderer
             int numberOfCardsDiscarded = base.GetNumberOfCardsDiscarded(storedResults);
             if (numberOfCardsDiscarded > 0)
             {
-                coroutine = base.DrawCards(this.DecisionMaker, numberOfCardsDiscarded, false, false, null, true, null);
+                coroutine = base.DrawCards(heroTurnTakerController, numberOfCardsDiscarded, false, false, null, true, null);
             }
             else
             {
