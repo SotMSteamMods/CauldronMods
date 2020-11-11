@@ -1,5 +1,6 @@
 ﻿using Cauldron.Tiamat;
 using Handelabra.Sentinels.Engine.Controller;
+using Handelabra.Sentinels.Engine.Controller.AbsoluteZero;
 using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
 using NUnit.Framework;
@@ -22,6 +23,14 @@ namespace CauldronTests
         {
             SetHitPoints(target, 1);
             DealDamage(source, target, 2, DamageType.Melee);
+        }
+
+        protected void AddCannotDealNextDamageTrigger(TurnTakerController ttc, Card card)
+        {
+            CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new CannotDealDamageStatusEffect();
+            cannotDealDamageStatusEffect.NumberOfUses = 1;
+            cannotDealDamageStatusEffect.SourceCriteria.IsSpecificCard = card; 
+            this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
         }
 
         [Test()]
@@ -313,6 +322,12 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "AbsoluteZero", "Ra", "Haka", "TheBlock");
             StartGame();
+
+            //set hp of heads
+            SetHitPoints(inferno, 20);
+            SetHitPoints(storm, 15);
+            SetHitPoints(winter, 25);
+
             Card glacial = GetCard("GlacialStructure");
             PlayCards(new Card[] {
                 //2 Hero Equipment
@@ -329,9 +344,14 @@ namespace CauldronTests
             });
 
             //Heroes that don't destroy a card get H damage
-            QuickHPStorage(ra.CharacterCard, haka.CharacterCard);
+            QuickHPStorage(ra.CharacterCard, haka.CharacterCard, az.CharacterCard);
+
+            //damage should be dealt by highest hp, which is winter
+            //adding cannot deal damage status effects to storm and inferno
+            AddCannotDealNextDamageTrigger(tiamat, inferno);
+            AddCannotDealNextDamageTrigger(tiamat, storm);
             PlayCard(GetCard("AcidBreath"));
-            QuickHPCheck(-3, -3);
+            QuickHPCheck(-3, -3, 0);
         }
 
         [Test()]
