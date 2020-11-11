@@ -877,5 +877,48 @@ namespace CauldronTests
             PlayCard(tiamat, "SkyBreaker");
             QuickHPCheck(0, -5, -5, -5);
         }
+
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_OneShot_IsOneShot([Values("ElementOfFire", "ElementOfIce", "ElementOfLightning", "AcidBreath", "ManaCharge", "SkyBreaker", "HealingMagic", "Alteration")] string oneshot)
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(tiamat);
+
+            Card card = PlayCard(oneshot);
+            AssertInTrash(tiamat, card);
+            AssertCardHasKeyword(card, "one-shot", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Spell_IsSpell([Values("ElementOfFire", "ElementOfIce", "ElementOfLightning")] string spell)
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(tiamat);
+
+            Card card = PlayCard(spell);
+            AssertCardHasKeyword(card, "spell", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Ongoing_Ongoing([Values("ElementalForm", "AncientWard", "DragonsWrath", "ReptilianAspect", "ElementalFrenzy")] string ongoing)
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+            //put a spell in trash so ElementalFrenzy doesn't nuke itself
+            PutInTrash("ElementOfFire");
+            GoToPlayCardPhase(tiamat);
+
+            Card card = PlayCard(ongoing);
+            AssertInPlayArea(tiamat, card);
+            AssertCardHasKeyword(card, "ongoing", false);
+        }
     }
 }
