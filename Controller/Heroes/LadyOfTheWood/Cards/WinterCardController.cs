@@ -13,10 +13,8 @@ namespace Cauldron.LadyOfTheWood
 		public override void AddTriggers()
 		{
 			//Whenever LadyOfTheWood deals cold damage to a target, draw a card.
-			base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.DamageType == DamageType.Cold, new Func<DealDamageAction, IEnumerator>(this.DrawCardResponse), new TriggerType[]
-			{
-				TriggerType.DrawCard
-			}, TriggerTiming.After, null, false, true, new bool?(false), false, null, null, false, false);
+			Func<DealDamageAction, bool> criteria = (DealDamageAction dd) => dd.DamageSource != null &&  dd.DamageSource.IsSameCard(base.CharacterCard) && dd.DamageType == DamageType.Cold;
+			base.AddTrigger<DealDamageAction>(criteria, new Func<DealDamageAction, IEnumerator>(this.DrawCardResponse), new TriggerType[]{ TriggerType.DrawCard	}, TriggerTiming.After);
 		}
 
 		private IEnumerator DrawCardResponse(DealDamageAction dd)
@@ -24,7 +22,7 @@ namespace Cauldron.LadyOfTheWood
 			//Whenever LadyOfTheWood deals cold damage to a target, draw a card.
 			if (dd.DidDealDamage)
 			{
-				IEnumerator coroutine = base.DrawCard(null, false, null, true);
+				IEnumerator coroutine = base.DrawCard();
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);

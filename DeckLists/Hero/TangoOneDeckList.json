@@ -39,7 +39,7 @@
                 "default": "default placeholder",
                 "AnathemaCharacter": "Anathema placeholder",
                 "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
-                "1929RamCharacter": "1929 Ram placeholder"
+                "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 1
         },
@@ -388,13 +388,13 @@
                 "default": "default placeholder",
                 "AnathemaCharacter": "Anathema placeholder",
                 "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
-                "1929RamCharacter": "1929 Ram placeholder"
+                "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 1
         },
         {
             "identifier": "TangoOneCharacter",
-            "promoIdentifier": "1929TangoOneCharacter",
+            "promoIdentifier": "PastTangoOneCharacter",
             "count": 1,
             "title": "Tango One",
             "promoTitle": "Tango One 1929",
@@ -429,7 +429,7 @@
                 "default": "default placeholder",
                 "AnathemaCharacter": "Anathema placeholder",
                 "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
-                "1929RamCharacter": "1929 Ram placeholder"
+                "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 1
         }

@@ -41,7 +41,7 @@
             ],
             "openingLines": {
                 "default": "default placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
+                "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatCharacter": "Tiamat placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
@@ -419,7 +419,7 @@
             ],
             "openingLines": {
                 "default": "default placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
+                "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatCharacter": "Tiamat placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
@@ -427,7 +427,7 @@
         },
         {
             "identifier": "NecroCharacter",
-            "promoIdentifier": "1929NecroCharacter",
+            "promoIdentifier": "PastNecroCharacter",
             "count": 1,
             "title": "Necro",
             "promoTitle": "Necro 1929",
@@ -460,7 +460,7 @@
             ],
             "openingLines": {
                 "default": "default placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
+                "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatCharacter": "Tiamat placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },

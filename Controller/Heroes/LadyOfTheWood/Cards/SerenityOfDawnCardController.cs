@@ -18,21 +18,20 @@ namespace Cauldron.LadyOfTheWood
 			{
 				TriggerType.GainHP,
 				TriggerType.DrawCard
-			}, null, false);
+			});
 
 			//If LadyOfTheWood deals 3 or more damage to a target, destroy this card.
-			base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.Amount >= 3, new Func<DealDamageAction, IEnumerator>(this.ExcessDamageResponse), new TriggerType[]
-			{
-				TriggerType.DestroySelf
-			}, TriggerTiming.After, null, false, true, null, false, null, null, false, false);
+			Func<DealDamageAction, bool> criteria = (DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.Amount >= 3;
+			base.AddTrigger<DealDamageAction>(criteria, new Func<DealDamageAction, IEnumerator>(this.ExcessDamageResponse), new TriggerType[]{ TriggerType.DestroySelf }, TriggerTiming.After);
 		}
+
 
 		private IEnumerator EndOfTurnResponse(PhaseChangeAction p)
 		{
 			//if LadyOfTheWood dealt no damage this turn, 
 			if (this.GetDamageDealtByLadyOfTheWoodThisTurn() == 0)
 			{
-				IEnumerator coroutine = base.GameController.SendMessageAction("Lady of the Wood has not dealt any damage this turn. She regains 2 HP and may draw a card", Priority.High, base.GetCardSource(null), null, false);
+				IEnumerator coroutine = base.GameController.SendMessageAction("Lady of the Wood has not dealt any damage this turn. She regains 2 HP and may draw a card", Priority.High, base.GetCardSource());
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);
@@ -43,8 +42,7 @@ namespace Cauldron.LadyOfTheWood
 				}
 
 				//she regains 2 HP
-				int powerNumeral = base.GetPowerNumeral(1, 2);
-				IEnumerator coroutine2 = base.GameController.GainHP(base.CharacterCard, new int?(powerNumeral), null, null, base.GetCardSource(null));
+				IEnumerator coroutine2 = base.GameController.GainHP(base.CharacterCard, new int?(2), cardSource: base.GetCardSource());
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine2);
@@ -55,7 +53,7 @@ namespace Cauldron.LadyOfTheWood
 				}
 
 				//you may draw a card.
-				IEnumerator coroutine3 = base.DrawCards(this.DecisionMaker, 1, false, true, null, false, null);
+				IEnumerator coroutine3 = base.DrawCards(this.DecisionMaker, 1, upTo: true, allowAutoDraw: false);
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine3);
@@ -71,7 +69,7 @@ namespace Cauldron.LadyOfTheWood
 		private IEnumerator ExcessDamageResponse(DealDamageAction dd)
 		{
 			//destroy this card.
-			IEnumerator coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card, false, null, base.CharacterCard.Title + " has dealt 3 or more damage this turn. Destroying " + base.Card.Title + ".", null, null, null, null, null, null, base.GetCardSource(null));
+			IEnumerator coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card, overrideOutput: base.CharacterCard.Title + " has dealt 3 or more damage this turn. Destroying " + base.Card.Title + ".", cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);

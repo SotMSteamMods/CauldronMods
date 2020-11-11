@@ -510,7 +510,7 @@
         },
         {
             "identifier": "DriftCharacter",
-            "promoIdentifier": "19292199DriftCharacter",
+            "promoIdentifier": "SplitDriftCharacter",
             "count": 1,
             "title": "Drift",
             "keywords": [
@@ -555,7 +555,7 @@
         },
         {
             "identifier": "DriftCharacter",
-            "promoIdentifier": "19292199DriftCharacter",
+            "promoIdentifier": "SplitDriftCharacter",
             "count": 1,
             "title": "Drift",
             "keywords": [
@@ -601,7 +601,7 @@
         },
         {
             "identifier": "ShiftTrack",
-            "promoIdentifier": "19292199DriftCharacter",
+            "promoIdentifier": "SplitDriftCharacter",
             "count": 1,
             "title": "Shift Track",
             "setup": [

@@ -13,7 +13,7 @@ namespace Cauldron.LadyOfTheWood
 		public override IEnumerator Play()
 		{
 			//Draw a card.
-			IEnumerator coroutine = base.DrawCard(null, false, null, true);
+			IEnumerator coroutine = base.DrawCard();
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -24,7 +24,8 @@ namespace Cauldron.LadyOfTheWood
 			}
 
 			//Search your deck for a Season card. Put it into your hand, then shuffle your deck.
-			IEnumerator coroutine2 = base.SearchForCards(this.DecisionMaker, true, false, new int?(1), 1, new LinqCardCriteria((Card c) => this.IsSeason(c), "season", true, false, null, null, false), false, true, false, false, null, false, null, null);
+			LinqCardCriteria criteria = new LinqCardCriteria((Card c) => this.IsSeason(c), "season");
+			IEnumerator coroutine2 = base.SearchForCards(this.DecisionMaker, true, false, new int?(1), 1, criteria, false, true, false, shuffleAfterwards: new bool?(true));
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine2);
@@ -35,7 +36,7 @@ namespace Cauldron.LadyOfTheWood
 			}
 
 			//You may play a card.
-			IEnumerator coroutine3 = base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, null, null, false, false, true, null);
+			IEnumerator coroutine3 = base.SelectAndPlayCardFromHand(base.HeroTurnTakerController);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine3);
@@ -54,7 +55,7 @@ namespace Cauldron.LadyOfTheWood
 		/// <returns></returns>
 		private bool IsSeason(Card card)
 		{
-			return card.DoKeywordsContain("season", false, false);
+			return card.DoKeywordsContain("season");
 		}
 	}
 }
