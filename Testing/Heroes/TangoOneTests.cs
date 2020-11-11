@@ -259,8 +259,8 @@ namespace CauldronTests
             Card mdp = FindCardInPlay("MobileDefensePlatform");
 
             DecisionSelectCard = FindCardInPlay("BacklashField");
-            //DecisionSelectTarget = mdp;
-            DecisionSelectTargets = new[] {mdp};
+            DecisionSelectTarget = mdp;
+            //DecisionSelectTargets = new[] {mdp};
             QuickHPStorage(mdp);
 
             // Act
@@ -269,7 +269,33 @@ namespace CauldronTests
             PlayCard(DisablingShotCardController.Identifier);
 
             // Assert
+            AssertNotInPlay(new []{ "BacklashField"});
+            QuickHPCheck(-2);
 
+        }
+
+        [Test]
+        public void TestFarsight()
+        {
+            // Arrange
+            SetupGameController("GloomWeaver", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            StartGame();
+
+            PlayCard("StrengthOfTheGrave"); // Reduce damage to zombies by 1
+            
+            Card zombie = FindCardInPlay("ZombieServant");
+            DecisionSelectTarget = zombie;
+            QuickHPStorage(zombie);
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PutInHand(FarsightCardController.Identifier);
+            PlayCard(FarsightCardController.Identifier);
+
+            UsePower(TangoOne);
+
+            // Assert
+            QuickHPCheck(-1); // Farsight allows Innate Power to deal 1 damage
         }
 
     }
