@@ -20,9 +20,9 @@ namespace Cauldron.LadyOfTheWood
 		public override IEnumerator UsePower(int index = 0)
 		{
 			//LadyOfTheWood deals up to 2 targets 1 lightning damage each.
-			int powerNumeral = base.GetPowerNumeral(0, 2);
-			int powerNumeral2 = base.GetPowerNumeral(1, 1);
-			IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), powerNumeral2, DamageType.Lightning, new int?(powerNumeral), false, new int?(0), false, false, false, null, null, null, null, null, false, null, null, false, null, base.GetCardSource(null));
+			int targets = base.GetPowerNumeral(0, 2);
+			int damage = base.GetPowerNumeral(1, 1);
+			IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), damage, DamageType.Lightning, new int?(targets), false, new int?(0), cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);

@@ -15,20 +15,21 @@ namespace Cauldron.LadyOfTheWood
 			//Increase damage dealt by LadyOfTheWood by 3 as long as her HP is 5 or less.
 			base.AddIncreaseDamageTrigger(delegate (DealDamageAction dealDamage)
 			{
-				if (dealDamage.DamageSource.IsSameCard(base.CharacterCard))
+				if (dealDamage.DamageSource != null && dealDamage.DamageSource.IsSameCard(base.CharacterCard))
 				{
 					int? hitPoints = base.CharacterCard.HitPoints;
 					int num = 5;
-					return hitPoints.GetValueOrDefault() <= num & hitPoints != null;
+					return hitPoints != null && hitPoints.GetValueOrDefault() <= num;
 				}
 				return false;
-			}, 3, null, null, false);
+			}, 3);
 		}
 
 		public override IEnumerator UsePower(int index = 0)
 		{
 			//LadyOfTheWood deals herself 1 fire damage
-			IEnumerator coroutine = base.DealDamage(base.CharacterCard, base.CharacterCard, base.GetPowerNumeral(0, 1), DamageType.Fire, false, false, false, null, null, null, false, null);
+			int selfDamage = base.GetPowerNumeral(0, 1);
+			IEnumerator coroutine = base.DealDamage(base.CharacterCard, base.CharacterCard, selfDamage, DamageType.Fire, cardSource: GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -39,9 +40,9 @@ namespace Cauldron.LadyOfTheWood
 			}
 
 			//LadyOfTheWood deals 1 target 4 fire damage
-			int powerNumeral = base.GetPowerNumeral(1, 1);
-			int powerNumeral2 = base.GetPowerNumeral(2, 4);
-			coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), powerNumeral2, DamageType.Fire, new int?(powerNumeral), false, new int?(powerNumeral), false, false, false, null, null, null, null, null, false, null, null, false, null, base.GetCardSource(null));
+			int targets = base.GetPowerNumeral(1, 1);
+			int damage = base.GetPowerNumeral(2, 4);
+			coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), damage, DamageType.Fire, new int?(targets), false, new int?(targets), cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);

@@ -45,13 +45,15 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
             StartGame();
 
-            //put a rune in hand
+            //put runes in hand
             PutInHand("MarkOfBinding");
+            PutInHand("MarkOfBreaking");
             Card binding = GetCardFromHand("MarkOfBinding");
 
             GoToUsePowerPhase(stranger);
             AssertInHand(binding);
-            DecisionSelectCards = new Card[] { binding, baron.CharacterCard };
+            DecisionSelectCard = binding;
+            DecisionNextToCard = baron.CharacterCard;
             //Play a rune
             UsePower(stranger.CharacterCard);
             AssertIsInPlay(binding);
@@ -769,9 +771,8 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
             StartGame();
-
-            Card innervation = GetCardInPlay("GlyphOfInnervation");
-            PlayCard(innervation);
+            
+            Card innervation = PlayCard("GlyphOfInnervation");
             //Power: Draw a card.
             GoToUsePowerPhase(stranger);
             QuickHandStorage(stranger);

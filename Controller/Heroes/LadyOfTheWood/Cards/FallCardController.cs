@@ -13,10 +13,11 @@ namespace Cauldron.LadyOfTheWood
 		public override void AddTriggers()
 		{
 			//Whenever LadyOfTheWood deals lightning damage to a target, reduce damage dealt by that target by 1 until the start of your next turn.
-			base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.DamageType == DamageType.Lightning, new Func<DealDamageAction, IEnumerator>(this.ReduceDamageResponse), new TriggerType[]
+			Func<DealDamageAction,bool> criteria = (DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.IsSameCard(base.CharacterCard) && dd.DamageType == DamageType.Lightning;
+			base.AddTrigger<DealDamageAction>(criteria, new Func<DealDamageAction, IEnumerator>(this.ReduceDamageResponse), new TriggerType[]
 			{
 				TriggerType.ReduceDamage
-			}, TriggerTiming.After, null, false, true, new bool?(false), false, null, null, false, false);
+			}, TriggerTiming.After);
 		}
 
 		private IEnumerator ReduceDamageResponse(DealDamageAction dd)
@@ -24,10 +25,10 @@ namespace Cauldron.LadyOfTheWood
 			//Reduce damage dealt by that target by 1 until the start of your next turn.
 			if (dd.DidDealDamage)
 			{
-				ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(base.GetPowerNumeral(2, 1));
+				ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(1);
 				reduceDamageStatusEffect.SourceCriteria.IsSpecificCard = dd.Target;
 				reduceDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-				IEnumerator coroutine = base.AddStatusEffect(reduceDamageStatusEffect, true);
+				IEnumerator coroutine = base.AddStatusEffect(reduceDamageStatusEffect);
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);
