@@ -14,7 +14,7 @@ namespace Cauldron.Malichae
         public override IEnumerator Play()
         {
             var coroutine = GameController.SelectAndGainHP(this.DecisionMaker, 2, false,
-                                additionalCriteria: c => c.IsChallenge && c.IsInPlay,
+                                additionalCriteria: c => c.IsCharacter && !c.IsIncapacitatedOrOutOfGame,
                                 numberOfTargets: 1,
                                 requiredDecisions: 1,
                                 cardSource: GetCardSource());

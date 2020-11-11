@@ -1270,5 +1270,46 @@ namespace CauldronTests
             AssertInTrash(high);
             AssertInTrash(grand);
         }
+
+        [Test]
+        public void FriendlyAdvice()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            DiscardAllCards(Malichae, ra, fanatic);
+            ShuffleTrashIntoDeck(Malichae);
+            ShuffleTrashIntoDeck(ra);
+            ShuffleTrashIntoDeck(fanatic);
+
+            SetHitPoints(Malichae, 17);
+            SetHitPoints(fanatic, 17);
+            SetHitPoints(ra, 17);
+
+            DiscardTopCards(ra, 1);
+            var moved = DiscardTopCards(ra, 1).First();
+            AssertNumberOfCardsInTrash(ra, 2);
+
+            var card = GetCard("FriendlyAdvice");
+            PutInHand(card);
+
+            GoToPlayCardPhase(Malichae);
+
+            DecisionGainHP = fanatic.CharacterCard;
+            DecisionSelectTurnTakers = new TurnTaker[] { Malichae.TurnTaker, ra.TurnTaker };
+            DecisionMoveCard = moved;
+
+            QuickHPStorage(baron, Malichae, ra, fanatic);
+            QuickHandStorage(Malichae, ra, fanatic);
+            PlayCard(card);
+            AssertInTrash(card);
+
+            QuickHPCheck(0, 0, 0, 2);
+            QuickHandCheck(0, 0, 0);
+
+            AssertNumberOfCardsInTrash(ra, 1);
+            AssertOnTopOfDeck(moved);
+        }
+
     }
 }
