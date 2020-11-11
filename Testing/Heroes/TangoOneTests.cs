@@ -248,5 +248,29 @@ namespace CauldronTests
             QuickHPCheck(0, -1, 2);
         }
 
+        [Test]
+        public void TestDisablingShot()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            StartGame();
+
+            PlayCard(baron, "BacklashField");
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+
+            DecisionSelectCard = FindCardInPlay("BacklashField");
+            //DecisionSelectTarget = mdp;
+            DecisionSelectTargets = new[] {mdp};
+            QuickHPStorage(mdp);
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PutInHand(DisablingShotCardController.Identifier);
+            PlayCard(DisablingShotCardController.Identifier);
+
+            // Assert
+
+        }
+
     }
 }

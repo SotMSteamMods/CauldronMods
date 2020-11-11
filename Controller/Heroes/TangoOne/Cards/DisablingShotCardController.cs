@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -14,6 +15,8 @@ namespace Cauldron.TangoOne
 
         public static string Identifier = "DisablingShot";
 
+        private const int DamageAmount = 2;
+
         public DisablingShotCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
@@ -21,7 +24,46 @@ namespace Cauldron.TangoOne
 
         public override IEnumerator Play()
         {
-            return base.Play();
+            // Destroy ongoing card option
+            IEnumerator destroyOngoingRoutine = this.GameController.SelectAndDestroyCard(this.HeroTurnTakerController,
+                new LinqCardCriteria(card => card.IsOngoing && card.IsInPlay),
+                true, cardSource: this.GetCardSource());
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(destroyOngoingRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(destroyOngoingRoutine);
+            }
+
+            List<SelectCardDecision> selectCardResults = new List<SelectCardDecision>();
+            IEnumerator selectOwnCharacterRoutine = base.SelectOwnCharacterCard(selectCardResults, SelectionType.HeroToDealDamage);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(selectOwnCharacterRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(selectOwnCharacterRoutine);
+            }
+
+            Card characterCard = GetSelectedCard(selectCardResults);
+            IEnumerator dealDamageRoutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, 
+                new DamageSource(base.GameController, characterCard), DamageAmount, 
+                DamageType.Projectile, 1, false, 0,
+                additionalCriteria: ((Func<Card, bool>)(c => c.IsTarget && c.IsInPlay)),
+                cardSource: base.GetCardSource());
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(dealDamageRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(dealDamageRoutine);
+            }
         }
     }
 }
