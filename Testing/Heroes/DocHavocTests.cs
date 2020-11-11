@@ -776,8 +776,9 @@ namespace CauldronTests
             QuickHPCheck(-4, -4);
         }
 
+        
         [Test]
-        public void TestCauterize()
+        public void TestCauterizeAcceptChangeToHeal()
         {
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
@@ -789,6 +790,12 @@ namespace CauldronTests
             });
 
             StartGame();
+            DealDamage(baron, bunker, 5, DamageType.Energy);
+            QuickHPStorage(bunker);
+
+            //DecisionsYesNo = new[] {true, false};
+            DecisionYesNo = true;
+            DecisionSelectTargets = new[] { bunker.CharacterCard, null };
 
             // Act
             PlayCardFromHand(DocHavoc, CauterizeCardController.Identifier);
@@ -796,7 +803,39 @@ namespace CauldronTests
             PlayCardFromHand(DocHavoc, SyringeDartsCardController.Identifier);
             UsePower(SyringeDartsCardController.Identifier);
 
-            // Arrange
+            // Assert
+            QuickHPCheck(2);
         }
+
+        [Test]
+        public void TestCauterizeDeclineChangeToHeal()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                CauterizeCardController.Identifier, SyringeDartsCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+            DealDamage(baron, bunker, 5, DamageType.Energy);
+            QuickHPStorage(bunker);
+
+            //DecisionsYesNo = new[] {true, false};
+            DecisionYesNo = false;
+            DecisionSelectTargets = new[] { bunker.CharacterCard, null };
+
+            // Act
+            PlayCardFromHand(DocHavoc, CauterizeCardController.Identifier);
+            GoToPlayCardPhase(DocHavoc);
+            PlayCardFromHand(DocHavoc, SyringeDartsCardController.Identifier);
+            UsePower(SyringeDartsCardController.Identifier);
+
+            // Assert
+            QuickHPCheck(-2);
+        }
+
     }
 }

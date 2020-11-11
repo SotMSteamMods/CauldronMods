@@ -24,7 +24,9 @@ namespace Cauldron.DocHavoc
 
         public override void AddTriggers()
         {
-            base.AddTrigger<DealDamageAction>(dealDamageAction => dealDamageAction.Target.IsTarget,
+
+            base.AddTrigger<DealDamageAction>(dealDamageAction => dealDamageAction.DamageSource != null 
+                    && dealDamageAction.DamageSource.IsSameCard(base.CharacterCard),
                 ChooseDamageOrHealResponse, TriggerType.DealDamage, TriggerTiming.Before);
 
             base.AddTriggers();
@@ -41,8 +43,9 @@ namespace Cauldron.DocHavoc
             Card card = dda.Target;
 
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
+
             IEnumerator routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.DealDamage, card, null, storedResults, null, base.GetCardSource(null));
+                SelectionType.GainHP, card, null, storedResults, null, base.GetCardSource(null));
 
             if (base.UseUnityCoroutines)
             {
@@ -53,31 +56,35 @@ namespace Cauldron.DocHavoc
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            if (base.DidPlayerAnswerYes(storedResults))
+            // If not true, just return and let the original damage happen
+            if (!base.DidPlayerAnswerYes(storedResults))
             {
-                // Gain HP instead of dealing damage
+                yield break;
+            }
+
+
+            // Cancel original damage
+            routine = base.CancelAction(dda);
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
             }
             else
             {
-                // Deal Damage
+                base.GameController.ExhaustCoroutine(routine);
+            }
 
-                routine = this.GameController.DealDamageToTarget(new DamageSource(this.GameController, this.CharacterCard),
-                    dda.Target,
-                    dda.Amount, dda.DamageType, dda.IsIrreducible, dda.WasOptional, cardSource: dda.CardSource);
+            // Gain HP instead of dealing damage
+            routine = this.GameController.GainHP(card, dda.Amount);
 
-               // routine = this.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
-               //     new DamageSource(this.GameController, this.CharacterCard), dda.Amount,
-               //     dda.DamageType, new int?(), dda.WasOptional, new int?(), dda.IsIrreducible, 
-               //     cardSource: dda.CardSource);
-
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(routine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(routine);
-                }
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
             }
 
             yield break;
