@@ -183,41 +183,38 @@ namespace CauldronTests
         [Test]
         public void BaitAndSwitch_Discard_PlayDjinn()
         {
-            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            SetupGameController(new[] { "BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis" } ,randomSeed: 1480459545);
             StartGame();
 
-            //Failed on seed:2079599467
+            //prevent power usage
+            PutIntoPlay("PaparazziOnTheScene");
 
-            //2nd discard for the UsePower innate
-            var discard1 = GetCard("GrandBathiel");
-            var discard2 = GetCardFromHand(Malichae);
-            Console.WriteLine($"TEST: {discard2.Identifier}:{discard2.InstanceIndex} selected for Power discard.");
-            PutInHand(Malichae, discard1);
-
+            var discard1 = PutInHand(Malichae, "GrandBathiel");
             var card = PutInHand(Malichae, "BaitAndSwitch");
             var trash = PutInTrash("Bathiel");
 
-            DiscardTopCards(Malichae, 10); //load other cards in the trash
+            //DiscardTopCards(Malichae, 10); //load other cards in the trash
 
             var trashCount = GetNumberOfCardsInTrash(Malichae);
 
             GoToPlayCardPhase(Malichae);
 
             QuickHandStorage(Malichae, ra, fanatic);
-
-            DecisionSelectCards = new Card[] { discard1, trash, discard2 };
+            DecisionDiscardCard = discard1;
+            DecisionMoveCard = trash;
+            //DecisionSelectCards = new Card[] { discard1, trash };
             DecisionSelectFunction = 0; //put djinn into play
             DecisionSelectPower = Malichae.CharacterCard;
 
+            AssertNextMessage($"{Malichae.Name} cannot currently use powers.");
             PlayCard(card);
             AssertInTrash(Malichae, card);
             AssertInTrash(Malichae, discard1);
             AssertInPlayArea(Malichae, trash);
-            AssertInTrash(Malichae, discard2);
-            AssertNumberOfCardsInTrash(Malichae, trashCount + 2);
-            //played a card, discarded a card, draw 2, discard 1
-            //-1 + -1 + 2 + -1 = -1
-            QuickHandCheck(-1, 0, 0);
+            AssertNumberOfCardsInTrash(Malichae, trashCount + 1);
+            //played a card, discarded a card
+            //-1 + -1  = -2
+            QuickHandCheck(-2, 0, 0);
         }
 
         [Test]
@@ -226,13 +223,10 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
-            //FAILED w/ 466873276
+            PutIntoPlay("PaparazziOnTheScene");
 
             //2nd discard for the UsePower innate
-            var discard1 = GetCard("GrandBathiel");
-            var discard2 = GetCardFromHand(Malichae);
-            PutInHand(Malichae, discard1);
-
+            var discard1 = PutInHand(Malichae, "GrandBathiel");
             var card = PutInHand(Malichae, "BaitAndSwitch");
             var trash = PutInTrash("Bathiel");
 
@@ -244,39 +238,35 @@ namespace CauldronTests
 
             QuickHandStorage(Malichae, ra, fanatic);
 
-            DecisionSelectCards = new Card[] { discard1, discard2 };
+            DecisionSelectCards = new Card[] { discard1, trash };
             DecisionSelectFunction = 1; //draw cards
             DecisionSelectPower = Malichae.CharacterCard;
 
+            AssertNextMessage($"{Malichae.Name} cannot currently use powers.");
             PlayCard(card);
             AssertInTrash(Malichae, card);
             AssertInTrash(Malichae, discard1);
             AssertInTrash(Malichae, trash);
-            AssertInTrash(Malichae, discard2);
-            AssertNumberOfCardsInTrash(Malichae, trashCount + 3);
-            //played a card, discarded a card, draw 2, draw 2, discard 1
-            //-1 + -1 + 2 + 2 + -1 = 1
-            QuickHandCheck(1, 0, 0);
+            AssertNumberOfCardsInTrash(Malichae, trashCount + 2);
+            //played a card, discarded a card, draw 2,
+            //-1 + -1 + 2 = 0
+            QuickHandCheck(0, 0, 0);
         }
 
 
         [Test]
-        public void BaitAndSwitch_NoDiscard()
+        public void BaitAndSwitch_NoDiscard(
+            [Values(588433992, null)] int? badSeeds
+            )
         {
-            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            SetupGameController(new[] { "BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis" }, randomSeed: badSeeds);
             StartGame();
 
-            //FAILED w/ 471631917
-            //FAILED w/ -1996836557
-
-            //2nd discard for the UsePower innate
-            var discard1 = GetCard("GrandBathiel");
-            var discard2 = GetCardFromHand(Malichae);
-            PutInHand(Malichae, discard1);
-
+            PutIntoPlay("PaparazziOnTheScene");
+            
+            var discard1 = PutInHand(Malichae, "GrandBathiel");
             var card = PutInHand(Malichae, "BaitAndSwitch");
             var trash = PutInTrash("Bathiel");
-
             DiscardTopCards(Malichae, 10); //load other cards in the trash
 
             var trashCount = GetNumberOfCardsInTrash(Malichae);
@@ -286,19 +276,17 @@ namespace CauldronTests
             QuickHandStorage(Malichae, ra, fanatic);
 
             DecisionDoNotSelectCard = SelectionType.DiscardCard;
-
-            DecisionSelectCards = new Card[] { null, discard2 };
+            //DecisionDiscardCard = null;
+            //DecisionSelectCards = new Card[3];
             DecisionSelectPower = Malichae.CharacterCard;
 
+            AssertNextMessage($"{Malichae.Name} cannot currently use powers.");
             PlayCard(card);
             AssertInTrash(Malichae, card);
             AssertInHand(Malichae, discard1);
             AssertInTrash(Malichae, trash);
-            AssertInTrash(Malichae, discard2);
-            AssertNumberOfCardsInTrash(Malichae, trashCount + 2);
-            //played a card, draw 2, discard 1
-            //-1 + 2 + -1 = 0
-            QuickHandCheck(0, 0, 0);
+            AssertNumberOfCardsInTrash(Malichae, trashCount + 1);
+            QuickHandCheck(-1, 0, 0);
         }
 
         [Test]
@@ -396,7 +384,7 @@ namespace CauldronTests
             AssertInPlayArea(Malichae, card);
             AssertInTrash(Malichae, high);
             AssertIsAtMaxHP(card);
-                        
+
             PrintSeparator("Setup");
             DecisionNextToCard = card;
             PlayCard(high);

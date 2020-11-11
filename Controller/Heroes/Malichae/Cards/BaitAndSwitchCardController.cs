@@ -16,8 +16,10 @@ namespace Cauldron.Malichae
 			List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
 			var coroutine = base.SelectAndDiscardCards(this.DecisionMaker, 1,
 								optional: false,
+								requiredDecisions: 0,
 								storedResults: storedResults,
-								cardCriteria: new LinqCardCriteria(c => IsDjinn(c), "djinn"));
+								cardCriteria: new LinqCardCriteria(c => IsDjinn(c), "djinn"),
+								selectionType: SelectionType.DiscardCard);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
