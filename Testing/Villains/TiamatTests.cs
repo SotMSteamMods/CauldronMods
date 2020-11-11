@@ -33,6 +33,11 @@ namespace CauldronTests
             this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
         }
 
+        private bool IsSpell(Card card)
+        {
+            return card != null && base.GameController.DoesCardContainKeyword(card, "spell");
+        }
+
         [Test()]
         public void TestTiamatLoad()
         {
@@ -844,23 +849,51 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            Card ward = GetCard("AncientWard");
-            Card frenzy = GetCard("ElementalFrenzy");
-            Card fire = GetCard("ElementOfFire", 1);
-            PutInTrash(fire);
-            PutInTrash(GetCard("ElementOfFire", 2));
-            PutInTrash(GetCard("ElementOfIce", 1));
-            PutInTrash(GetCard("ElementOfIce", 2));
-            PutInTrash(GetCard("ElementOfLightning", 1));
-            PutInTrash(GetCard("ElementOfLightning", 2));
-            PutInTrash(ward);
+            Card ward = PutInTrash("AncientWard");
+
+            List<Card> spellCards = (tiamat.TurnTaker.Deck.Cards.Where(c => this.IsSpell(c)).Take(6)).ToList();
+            PutInTrash(spellCards);
 
             //Elemental Frenzy puts all spells in trash face down under it
-            PlayCard(frenzy);
+            Card frenzy = PlayCard("ElementalFrenzy");
             AssertNumberOfCardsUnderCard(frenzy, 6);
             AssertNumberOfCardsInTrash(tiamat, 1);
             AssertInTrash(ward);
-            Assert.IsTrue(!fire.IsFaceUp);
+            foreach(Card card in spellCards)
+            {
+                Assert.IsTrue(!card.IsFaceUp, $"{card.Title} was face up.");
+                AssertUnderCard(frenzy, card);
+            }
+            
+        }
+
+        [Test()]
+        public void TestElementalFrenzyPutUnder_OnlyOwnTrash()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+            Card ward = PutInTrash("AncientWard");
+
+            //put in the wrong trash
+            Card otherSpell = GetCard("ElementOfIce");
+            PutInTrash(legacy, otherSpell);
+
+            List<Card> spellCards = (tiamat.TurnTaker.Deck.Cards.Where(c => this.IsSpell(c)).Take(6)).ToList();
+            PutInTrash(spellCards);
+
+            //Elemental Frenzy puts all spells in trash face down under it
+            Card frenzy = PlayCard("ElementalFrenzy");
+            AssertNumberOfCardsUnderCard(frenzy, 6);
+            AssertNumberOfCardsInTrash(tiamat, 1);
+            AssertInTrash(ward);
+            foreach (Card card in spellCards)
+            {
+                AssertUnderCard(frenzy, card);
+            }
+
+            //confirm other spell is still in the wrong trash
+            AssertInTrash(legacy, otherSpell);
+
         }
 
         [Test()]
@@ -868,19 +901,27 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            Card frenzy = GetCard("ElementalFrenzy");
-            PutInTrash(GetCard("ElementOfFire", 1));
-            PutInTrash(GetCard("ElementOfFire", 2));
+
+            List<Card> elementOfFires = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementOfFire").Take(2)).ToList();
+            PutInTrash(elementOfFires);
 
             //At end of turn play the top card of the pile under Elemental Frenzy
-            PlayCard(frenzy);
+            Card frenzy = PlayCard("ElementalFrenzy");
+
+            //check the trash and under card values before end of turn
+            AssertNumberOfCardsUnderCard(frenzy, 2);
+            AssertNumberOfCardsInTrash(tiamat, 0);
+
+
             QuickHPStorage(legacy, bunker, haka);
             GoToEndOfTurn(tiamat);
             //End of Turn effects of heads deal 2 to Haka and 1 to Legacy
             //The spell played deals 2 to each hero
             QuickHPCheck(-3, -2, -4);
 
+            //check the trash and under card values after end of turn
             AssertNumberOfCardsInTrash(tiamat, 1);
+            AssertNumberOfCardsUnderCard(frenzy, 1);
         }
 
         [Test()]
@@ -889,12 +930,30 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             Card frenzy = GetCard("ElementalFrenzy");
-            PutInTrash(GetCard("ElementOfFire", 1));
+
+            PutInTrash(GetCard("ElementOfFire"));
 
             //Elemental Frenzy destroys self when no more cards underneath it
             PlayCard(frenzy);
+            AssertInPlayArea(tiamat, frenzy);
             GoToEndOfTurn(tiamat);
             AssertInTrash(tiamat, frenzy);
+        }
+
+        [Test()]
+        public void TestElementalFrenzyPlayOnDestroy()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+            Card frenzy = GetCard("ElementalFrenzy");
+            Card ward = PutOnDeck("AncientWard");
+            PutInTrash(GetCard("ElementOfFire"));
+
+            //when this card is destroyed, play the top card of the villain deck
+            PlayCard(frenzy);
+            DestroyCard(frenzy, bunker.CharacterCard);
+            //top card of deck should have been played, which was ward
+            AssertInPlayArea(tiamat, ward);
         }
 
         [Test()]
