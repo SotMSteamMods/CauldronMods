@@ -1232,5 +1232,43 @@ namespace CauldronTests
 
             AssertInPlayArea(Malichae, target);
         }
+
+        [Test]
+        public void Unshackled()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(Malichae);
+
+            string djinn = "Bathiel";
+
+            var card = PlayCard("Unshackled");
+            var target = PlayCard(djinn);
+            var high = GetCard("High" + djinn);
+            var grand = GetCard("Grand" + djinn);
+
+            AssertInPlayArea(Malichae, card);
+            AssertInPlayArea(Malichae, target);
+
+            PlayCard(high);
+            AssertNextToCard(high, target);
+            PlayCard(grand);
+            AssertNextToCard(grand, target);
+
+            DecisionSelectTarget = ra.CharacterCard;
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, target);
+            GoToUsePowerPhase(Malichae);
+
+            AssertPhaseActionCount(2);
+
+            UsePower(grand);
+            UsePower(high);
+            QuickHPCheck(0, 0, -12, 0, 0); //6 + 1
+            AssertInPlayArea(Malichae, card);
+            AssertInPlayArea(Malichae, target);
+            AssertInTrash(high);
+            AssertInTrash(grand);
+        }
     }
 }

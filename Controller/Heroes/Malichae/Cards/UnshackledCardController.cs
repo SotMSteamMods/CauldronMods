@@ -11,9 +11,10 @@ namespace Cauldron.Malichae
 		public UnshackledCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
 		}
-		public override IEnumerator Play()
-		{
-			yield break;
-		}
-	}
+
+        public override void AddTriggers()
+        {
+            base.AddAdditionalPhaseActionTrigger(tt => tt == this.TurnTaker, Phase.UsePower, 1);
+        }
+    }
 }
