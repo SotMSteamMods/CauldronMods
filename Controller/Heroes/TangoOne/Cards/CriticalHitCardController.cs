@@ -2,8 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -28,10 +27,9 @@ namespace Cauldron.TangoOne
 
         public override void AddTriggers()
         {
-
             DamageSource heroDamageSource = new DamageSource(this.GameController, this.Card.Owner.CharacterCard);
 
-            base.AddTrigger<DealDamageAction>(dda => dda.DamageSource.IsHero,
+            base.AddTrigger<DealDamageAction>(dda => dda.DamageSource != null && dda.DamageSource.IsSameCard(base.CharacterCard),
                 new Func<DealDamageAction, IEnumerator>(this.RevealTopCardFromDeckResponse),
                 new TriggerType[]
                 {
@@ -78,24 +76,17 @@ namespace Cauldron.TangoOne
                 base.GameController.ExhaustCoroutine(discardCardRoutine);
             }
 
-            // Check to see if the card was moved and contains the keyword "critical", if it didn't, damage proceeds
+            // Check to see if the card was moved and contains the keyword "critical", if it didn't, break and damage proceeds normally
             if (moveCardActions.Count <= 0 || !moveCardActions.First().WasCardMoved ||
                 !IsCritical(moveCardActions.First().CardToMove))
             {
                 yield break;
             }
 
-            // Card had the "critical" keyword, cancel the damage
-            //IEnumerator cancelDamageRoutine = base.CancelAction(dda);
-            IEnumerator cancelDamageRoutine = base.GameController.SelectHeroAndIncreaseNextDamageDealt(this.HeroTurnTakerController, DamageIncrease, 1);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(cancelDamageRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(cancelDamageRoutine);
-            }
+            // Card had the "critical" keyword, increase the damage
+            ModifyDealDamageAction mdda = new IncreaseDamageAction(this.GameController, dda, DamageIncrease, false);
+            dda.AddDamageModifier(mdda);
+
         }
     }
 }
