@@ -494,10 +494,34 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestVortexInterference()
+        public void TestVortexInterferenceDestroyEquipment()
         {
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+            PlayCard("VortexInterference");
+            Card staff = GetCard("TheStaffOfRa");
+            Card ring = GetCard("TheLegacyRing");
+            PlayCards(staff, ring);
             //Whenever a hero uses a power, destroy 1 hero ongoing or equipment card.
-            Assert.IsTrue(false);
+            UsePower(legacy);
+            AssertInPlayArea(ra, staff);
+            AssertInTrash(ring);
+        }
+
+        [Test()]
+        public void TestVortexInterferenceDestroyOngoing()
+        {
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+            Card interference = GetCard("VortexInterference");
+            PlayCard(interference);
+            Card fort = GetCard("Fortitude");
+            Card moko = GetCard("TaMoko");
+            PlayCards(fort, moko);
+            //Whenever a hero uses a power, destroy 1 hero ongoing or equipment card.
+            UsePower(legacy);
+            AssertInPlayArea(haka, moko);
+            AssertInTrash(fort);
         }
 
         [Test()]
