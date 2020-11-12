@@ -4,14 +4,14 @@
     "expansionIdentifier": "Cauldron",
     "initialCardIdentifiers": [
         "WinterTiamatCharacter",
-        "InfrernoTiamatCharacter",
+        "InfernoTiamatCharacter",
         "StormTiamatCharacter"
     ],
     "cards": [
         {
             "identifier": "InfernoTiamatCharacter",
             "count": 1,
-            "title": "Tiamat",
+            "title": "Tiamat, The Mouth of the Inferno",
             "keywords": [
                 "villain",
                 "head"
@@ -65,7 +65,7 @@
         {
             "identifier": "StormTiamatCharacter",
             "count": 1,
-            "title": "Tiamat",
+            "title": "Tiamat, The Eye of the Storm",
             "keywords": [
                 "villain",
                 "head"
@@ -117,7 +117,7 @@
         {
             "identifier": "WinterTiamatCharacter",
             "count": 1,
-            "title": "Tiamat",
+            "title": "Tiamat, The Jaws of Winter",
             "keywords": [
                 "villain",
                 "head"
