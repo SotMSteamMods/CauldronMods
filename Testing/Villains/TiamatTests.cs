@@ -190,8 +190,26 @@ namespace CauldronTests
             SetupIncap(legacy, storm);
             QuickHPStorage(legacy);
             //Inferno deals damage at the end of turn if she did not already deal damage this turn
+            //inferno is the one dealing damage
+            AddCannotDealNextDamageTrigger(tiamat, storm);
+            AddCannotDealNextDamageTrigger(tiamat, winter);
             GoToEndOfTurn(tiamat);
             QuickHPCheck(-1);
+        }
+
+        [Test()]
+        public void TestInfernoEndOfTurnDontDealDamage()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Tachyon", "Megalopolis");
+            StartGame();
+            SetupIncap(legacy, winter);
+            SetupIncap(legacy, storm);
+            DealDamage(inferno, tachyon.CharacterCard, 3, DamageType.Fire);
+            QuickHPStorage(legacy);
+            //Inferno deals damage at the end of turn if she did not already deal damage this turn
+            //Inferno has already deal damage, so no damage should be dealt
+            GoToEndOfTurn(tiamat);
+            QuickHPCheck(0);
         }
 
         [Test()]
@@ -898,8 +916,10 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            PutInTrash(GetCard("ElementOfFire", 1));
-            PutInTrash(GetCard("ElementOfFire", 2));
+
+            List<Card> spellCards = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementOfFire").Take(2)).ToList();
+            PutInTrash(spellCards);
+
             SetupIncap(legacy, inferno);
             //Inferno increases Spell damage dealt by heads when Incapped for number of Element of Fires in trash
             QuickHPStorage(legacy, bunker, haka);

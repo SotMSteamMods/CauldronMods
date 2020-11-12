@@ -31,7 +31,7 @@ namespace Cauldron.Tiamat
 			return new ITrigger[] 
 			{ 
 				//Increase damage dealt by {Tiamat}, The Mouth of the Inferno by 1.
-				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.DamageSource.IsCard && dealDamage.DamageSource.Card == base.Card, 1)
+				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.DamageSource != null && dealDamage.DamageSource.IsCard && dealDamage.DamageSource.Card == base.Card, 1)
 			};
 		}
 
@@ -40,7 +40,7 @@ namespace Cauldron.Tiamat
 			return new ITrigger[] 
 			{
 				//When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Fire“ card in the villain trash.
-				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => IsSpell(dealDamage.CardSource.Card) && IsHead(dealDamage.DamageSource.Card), GetNumberOfElementOfFireInTrash())
+				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.CardSource != null && IsSpell(dealDamage.CardSource.Card) && IsHead(dealDamage.DamageSource.Card), GetNumberOfElementOfFireInTrash())
 			};
 		}
 
@@ -56,7 +56,7 @@ namespace Cauldron.Tiamat
 		//Deal H-2 Fire damage to highest hero target
 		private IEnumerator DealDamageResponse(PhaseChangeAction phaseChange)
 		{
-			IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero, (Card c) => new int?(base.H - 2), DamageType.Fire);
+			IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsTarget && c.IsHero, (Card c) => new int?(base.H - 2), DamageType.Fire);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
