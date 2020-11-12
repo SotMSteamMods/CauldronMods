@@ -11,7 +11,7 @@ namespace Cauldron.Starlight
         {
         }
 
-        public override IEnumerator play()
+        public override IEnumerator Play()
         {
             //"Reduce damage dealt to {Starlight} by 2.",
             //"At the start of your turn, destroy a constellation card or destroy this card."

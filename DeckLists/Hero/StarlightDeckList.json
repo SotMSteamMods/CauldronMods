@@ -268,8 +268,8 @@
             "flavorQuotes": [
                 {
                     "identifier": "Starlight",
-                    "text": "It doesn't tell *us* when the stars will align. It tells the stars."
-                }   //check how to bold this
+                    "text": "It doesn't tell [b]us[/b] when{BR}the stars will align. It tells the stars."
+                }
             ],
             "flavorReference": "Starlight, The Cauldron One-Shot"
         },
