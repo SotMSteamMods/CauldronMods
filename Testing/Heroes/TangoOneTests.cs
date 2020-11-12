@@ -55,6 +55,137 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestIncapacitateOption1()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+
+            StartGame();
+
+            SetHitPoints(TangoOne.CharacterCard, 1);
+            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+
+            DecisionSelectTarget = ra.CharacterCard;
+            QuickHandStorage(ra);
+
+            // Act
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            UseIncapacitatedAbility(TangoOne, 0);
+
+
+            // Assert
+            AssertIncapacitated(TangoOne);
+            QuickHandCheck(1);
+        }
+
+        [Test]
+        public void TestIncapacitateOption2ToDeck()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+
+            StartGame();
+
+            Card backlashField = GetCard("BacklashField");
+            PutOnDeck(baron, backlashField);
+
+            SetHitPoints(TangoOne.CharacterCard, 1);
+            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+
+            DecisionSelectLocation = new LocationChoice(baron.TurnTaker.Deck);
+            DecisionMoveCardDestination = new MoveCardDestination(baron.TurnTaker.Deck, false);
+
+            // Act
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            UseIncapacitatedAbility(TangoOne, 1);
+
+            // Assert
+            AssertIncapacitated(TangoOne);
+            AssertOnTopOfDeck(baron, backlashField);
+        }
+
+        [Test]
+        public void TestIncapacitateOption2ToTrash()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+
+            StartGame();
+
+            Card backlashField = GetCard("BacklashField");
+            PutOnDeck(baron, backlashField);
+
+            SetHitPoints(TangoOne.CharacterCard, 1);
+            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+
+            DecisionSelectLocation = new LocationChoice(baron.TurnTaker.Deck);
+            DecisionMoveCardDestination = new MoveCardDestination(baron.TurnTaker.Trash, false);
+
+            // Act
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            UseIncapacitatedAbility(TangoOne, 1);
+            
+            // Assert
+            AssertIncapacitated(TangoOne);
+            AssertOnTopOfTrash(baron, backlashField);
+        }
+
+        [Test]
+        public void TestIncapacitateOption3MakeChoices()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Legacy", "Megalopolis");
+
+            StartGame();
+
+            SetHitPoints(TangoOne.CharacterCard, 1);
+            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+
+            PutInHand("DangerSense");
+            Card dangerSense = GetCardFromHand("DangerSense");
+            PutInHand("NextEvolution");
+            Card nextEvolution = GetCardFromHand("NextEvolution");
+
+            DecisionSelectCards = new Card[] { dangerSense, nextEvolution };
+            DecisionYesNo = true;
+
+            // Act
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            UseIncapacitatedAbility(TangoOne, 2);
+
+            // Assert
+            AssertIncapacitated(TangoOne);
+            AssertIsInPlay(dangerSense, nextEvolution);
+        }
+
+        [Test]
+        public void TestIncapacitateOption3DontMakeChoices()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Legacy", "Megalopolis");
+
+            StartGame();
+
+            SetHitPoints(TangoOne.CharacterCard, 1);
+            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+
+            PutInHand("DangerSense");
+            Card dangerSense = GetCardFromHand("DangerSense");
+            PutInHand("NextEvolution");
+            Card nextEvolution = GetCardFromHand("NextEvolution");
+
+            DecisionYesNo = false;
+
+            // Act
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            UseIncapacitatedAbility(TangoOne, 2);
+
+            // Assert
+            AssertIncapacitated(TangoOne);
+            AssertNotInPlay(dangerSense, nextEvolution);
+        }
+
+        [Test]
         public void TestChameleonArmorDiscardCriticalCardSuccess()
         {
             // Arrange
