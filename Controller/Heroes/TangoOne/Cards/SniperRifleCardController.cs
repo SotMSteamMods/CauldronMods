@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -45,16 +47,19 @@ namespace Cauldron.TangoOne
             {
                 base.GameController.ExhaustCoroutine(powerRoutine);
             }
-
         }
 
         private IEnumerator GetPower1()
         {
             // Discard 2 Critical cards. If you do, destroy a non-character card in play
             List<DiscardCardAction> discardCardActions = new List<DiscardCardAction>();
-            IEnumerator discardCardsRoutine = this.GameController.SelectAndDiscardCards(this.HeroTurnTakerController, CardsToDiscard, false,
-                CardsToDiscard,
-                discardCardActions, cardCriteria: null
+            LinqCardCriteria cardCriteria = new LinqCardCriteria(IsCritical, "critical cards", false);
+
+            IEnumerator discardCardsRoutine = this.GameController.SelectAndDiscardCards(this.HeroTurnTakerController, 
+                CardsToDiscard, false,
+                null,
+                discardCardActions, false, null, null, null, 
+                cardCriteria, SelectionType.DiscardCard, this.TurnTaker, null
             );
 
             if (base.UseUnityCoroutines)
@@ -66,7 +71,23 @@ namespace Cauldron.TangoOne
                 base.GameController.ExhaustCoroutine(discardCardsRoutine);
             }
 
-            yield break;
+            if (discardCardActions.Count() != CardsToDiscard)
+            {
+                yield break;
+            }
+
+            // Discard requirement fulfilled, choose non character card to destroy
+            IEnumerator destroyCardRoutine 
+                = this.GameController.SelectAndDestroyCard(this.HeroTurnTakerController, 
+                    new LinqCardCriteria(card => !card.IsCharacter), false);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(destroyCardRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(destroyCardRoutine);
+            }
         }
 
         private IEnumerator GetPower2()

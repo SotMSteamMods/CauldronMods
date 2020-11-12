@@ -549,21 +549,30 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestSniperRiflePower1()
+        public void TestSniperRiflePower1Success()
         {
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.TangoOne", "Megalopolis");
 
             MakeCustomHeroHand(TangoOne, new List<string>()
             {
-                SniperRifleCardController.Identifier
+                SniperRifleCardController.Identifier,
+                GhostReactorCardController.Identifier,
+                GhostReactorCardController.Identifier,
+                DisablingShotCardController.Identifier
             });
 
             StartGame();
 
             Card mdp = FindCardInPlay("MobileDefensePlatform");
 
-            QuickHPStorage(mdp);
+            DecisionSelectCards = new[]
+            {
+                GetCardFromHand(GhostReactorCardController.Identifier), 
+                GetCardFromHand(DisablingShotCardController.Identifier), 
+                mdp
+            };
+            DecisionSelectTarget = mdp;
 
             // Act
             GoToStartOfTurn(TangoOne);
@@ -571,7 +580,42 @@ namespace CauldronTests
             UsePower(GetCardInPlay(SniperRifleCardController.Identifier), 0);
 
             // Assert
+            AssertNotInPlay(mdp); // MDP destroyed by Sniper Rifle power #1
+            Assert.AreEqual(2, GetNumberOfCardsInTrash(TangoOne)); // (Ghost Reactor, Disabling Shot)
+        }
 
+        [Test]
+        public void TestSniperRiflePower1Fail()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                SniperRifleCardController.Identifier, // Critical keyword
+                FarsightCardController.Identifier,
+                DisablingShotCardController.Identifier, // Critical keyword
+            });
+
+            StartGame();
+
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+
+            DecisionSelectCards = new[]
+            {
+                GetCardFromHand(DisablingShotCardController.Identifier),
+                mdp
+            };
+            DecisionSelectTarget = mdp;
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, SniperRifleCardController.Identifier);
+            UsePower(GetCardInPlay(SniperRifleCardController.Identifier), 0);
+
+            // Assert
+            AssertIsInPlay(mdp); // MDP was not destroyed by Sniper Rifle power #1 due to lack of discarded Critical cards
+            Assert.AreEqual(1, GetNumberOfCardsInTrash(TangoOne)); // (Disabling Shot)
         }
 
         [Test]
