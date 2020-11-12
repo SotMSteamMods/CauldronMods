@@ -22,7 +22,7 @@ namespace Cauldron.FSCContinuanceWanderer
             //Whenever a hero uses a power, destroy 1 hero ongoing or equipment card.
             base.AddTrigger<UsePowerAction>((UsePowerAction p) => true, this.DestroyHeroOngoingOrEquipmentResponse, new TriggerType[] { TriggerType.DestroyCard }, TriggerTiming.After);
             //When another environment card enters play, destroy this card.
-            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction p) => p.CardEnteringPlay.IsEnvironment, (base.DestroyThisCardResponse), TriggerType.DestroySelf, TriggerTiming.After);
+            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction p) => p.CardEnteringPlay.IsEnvironment && p.CardEnteringPlay.Identifier != base.Card.Identifier, (base.DestroyThisCardResponse), TriggerType.DestroySelf, TriggerTiming.After);
         }
 
         private IEnumerator DestroyHeroOngoingOrEquipmentResponse(UsePowerAction action)

@@ -405,7 +405,7 @@ namespace CauldronTests
             Card crest = GetCard("CosmicCrest");
             PlayCard(crest);
             DecisionSelectCard = cosmic.CharacterCard;
-            GoToEndOfTurn(capitan);
+            GoToPlayCardPhase(capitan);
             //Play this card next to a hero.
             PlayCard(slip);
             //That hero skips their turns...
@@ -431,11 +431,10 @@ namespace CauldronTests
             Card crest = GetCard("CosmicCrest");
             PlayCard(crest);
             DecisionSelectCard = cosmic.CharacterCard;
-            GoToPlayCardPhase(capitan);
+            GoToEndOfTurn(capitan);
             //Play this card next to a hero.
             PlayCard(slip);
             //That hero skips their turns...
-            this.RunCoroutine(GameController.EnterNextTurnPhase());
             AssertTurnPhaseDetails(game.ActiveTurnPhase, capitan, Phase.End);
             this.RunCoroutine(GameController.EnterNextTurnPhase());
             AssertTurnPhaseDetails(game.ActiveTurnPhase, parse, Phase.Start);
@@ -461,10 +460,20 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestVortexGlitch()
+        public void TestVortexGlitch() //This Test is known to fail
         {
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+            Card glitch = GetCard("VortexGlitch");
             //Players may not play one-shots.
-            Assert.IsTrue(false);
+            PlayCard(glitch);
+            GoToPlayCardPhase(legacy);
+            PlayCard("Thokk");
+            AssertNotInTrash(legacy, "Thokk");
+            //Currently the CannotPlayCards function doesn't only prevent certain cards. It's all or nothing
+            IEnumerable<Card> cards = GetCards("Fortitude", "TheLegacyRing");
+            PlayCards(cards);
+            AssertInPlayArea(legacy, cards);
         }
 
         [Test()]

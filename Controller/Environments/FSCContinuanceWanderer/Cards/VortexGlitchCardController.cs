@@ -19,9 +19,9 @@ namespace Cauldron.FSCContinuanceWanderer
         public override void AddTriggers()
         {
             //Players may not play one-shots.
-            base.CannotPlayCards((TurnTakerController turnTakerController) => turnTakerController.TurnTaker != null && turnTakerController.IsHero, (Card c) => c.IsHero && c.IsOneShot);
+            base.CannotPlayCards((TurnTakerController turnTakerController) => turnTakerController.TurnTaker != null && turnTakerController.IsHero, (Card c) => c.IsOneShot);
             //When another environment card enters play, destroy this card.
-            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction p) => p.CardEnteringPlay.IsEnvironment, (base.DestroyThisCardResponse), TriggerType.DestroySelf, TriggerTiming.After);
+            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction p) => p.CardEnteringPlay.IsEnvironment && p.CardEnteringPlay.Identifier != base.Card.Identifier, (base.DestroyThisCardResponse), TriggerType.DestroySelf, TriggerTiming.After);
         }
 
         #endregion Methods

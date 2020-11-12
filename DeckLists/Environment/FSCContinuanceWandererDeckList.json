@@ -184,6 +184,7 @@
             ],
             "body": [
                 "Players may not play one-shots.",
+                "[b]There is a known bug that blocks all cards and not just one-shots. This is an issue at the Handelabra-Engine level.[\b]",
                 "When another environment card enters play, destroy this card."
             ],
             "flavorText": "As the timeship's call resonated through the{BR}fabric of reality, those beings contaminated by{BR}temporal anomalies were pulled into it. Not all{BR}of them arrived in one piece."
