@@ -35,7 +35,8 @@ namespace Cauldron.Malichae
         {
             if (scd.SelectedCard != null)
             {
-                var number = scd.SelectedCard.NextToLocation.NumberOfCards + 1;
+                int plus = GetPowerNumeral(0, 1);
+                var number = scd.SelectedCard.NextToLocation.NumberOfCards + plus;
                 List<MoveCardAction> results = new List<MoveCardAction>();
                 var coroutine = GameController.MoveCard(DecisionMaker, scd.SelectedCard, DecisionMaker.HeroTurnTaker.Hand,
                                     decisionSources: scd.ToEnumerable(),
