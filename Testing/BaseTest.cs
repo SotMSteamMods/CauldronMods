@@ -4220,6 +4220,14 @@ namespace Handelabra.Sentinels.UnitTest
             AssertNotInPlay(keeper);
         }
 
+        protected void AssertCannotPlayCards(TurnTakerController ttc, Card testCard)
+        {
+            Assert.IsFalse(this.GameController.CanPerformAction<PlayCardAction>(ttc, null), ttc.Name + " should not be able to play cards.");
+            Console.WriteLine("Checking to make sure {0} cannot play cards by playing {1} from {2}", ttc.Name, testCard.Identifier, testCard.Location.GetFriendlyName());
+            PlayCard(testCard);
+            AssertNotInPlay(testCard);
+        }
+
         protected void AssertDamagePreviewResults(IEnumerable<DamagePreviewResult> results, int index, Card target, int amount, DamageType? damageType)
         {
             DamagePreviewResult result = results.ElementAt(index);
