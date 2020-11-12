@@ -27,9 +27,7 @@ namespace Cauldron.TangoOne
         public override IEnumerator Play()
         {
             // Increase the next damage dealt by {TangoOne} by 3
-            int powerNumeral = GetPowerNumeral(0, DamageIncrease);
-
-            IEnumerator increaseDamageRoutine = base.AddStatusEffect(new IncreaseDamageStatusEffect(powerNumeral)
+            IEnumerator increaseDamageRoutine = base.AddStatusEffect(new IncreaseDamageStatusEffect(DamageIncrease)
             {
                 SourceCriteria =
                 {
