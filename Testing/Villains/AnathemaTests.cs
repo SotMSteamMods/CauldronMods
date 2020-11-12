@@ -279,16 +279,17 @@ namespace CauldronTests
         [Test()]
         public void TestAnathemaAdvancedImmuneWhen3Targets()
         {
-            SetupGameController(new string[] { "Cauldron.Anathema", "Ra", "Megalopolis" },true,null,null,new string[] { "Cauldron.Anathema" },false,null,null,null);
+            SetupGameController(new string[] { "Cauldron.Anathema", "Ra", "Megalopolis" }, advanced: true,advancedIdentifiers: new string[] { "Cauldron.Anathema" });
             
             StartGame();
            
             GoToUsePowerPhase(ra);
 
-            List<Card> arms = GetListOfArmsInPlay(anathema);
+            List<Card> arms = (anathema.TurnTaker.PlayArea.Cards.Where(c => this.IsArm(c))).ToList();
+
 
             //destroy an arm to have 3 villain targets
-            DestroyCard(arms[0]);
+            DestroyCard(arms[0], ra.CharacterCard);
 
             //verify that there is only 1 arm in play now
             AssertNumberOfArmsInPlay(anathema, 1);
