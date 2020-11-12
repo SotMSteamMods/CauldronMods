@@ -239,6 +239,22 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestStormEndOfTurnDontDealDamage()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Tachyon", "Megalopolis");
+            StartGame();
+            SetupIncap(legacy, winter);
+            SetupIncap(legacy, inferno);
+            DealDamage(storm, tachyon.CharacterCard, 3, DamageType.Fire);
+            QuickHPStorage(legacy);
+            //storm deals damage at the end of turn if she did not already deal damage this turn
+            //storm has already deal damage, so no damage should be dealt
+            GoToEndOfTurn(tiamat);
+            QuickHPCheck(0);
+        }
+
+
+        [Test()]
         public void TestAllHeadsEndOfTurnDealDamage()
         {
             SetupGameController("Cauldron.Tiamat", "Haka", "Guise", "Parse", "Megalopolis");
@@ -916,14 +932,14 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-
+          
             List<Card> spellCards = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementOfFire").Take(2)).ToList();
             PutInTrash(spellCards);
 
             SetupIncap(legacy, inferno);
             //Inferno increases Spell damage dealt by heads when Incapped for number of Element of Fires in trash
             QuickHPStorage(legacy, bunker, haka);
-            PlayCard(tiamat, GetCard("ElementOfLightning"));
+            PlayCard(tiamat, GetCard("ElementOfIce"));
             QuickHPCheck(-4, -4, -4);
         }
 
@@ -944,12 +960,14 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            PutInTrash(GetCard("ElementOfLightning", 1));
-            PutInTrash(GetCard("ElementOfLightning", 2));
+
+            List<Card> spellCards = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementOfLightning").Take(2)).ToList();
+            PutInTrash(spellCards);
             SetupIncap(legacy, storm);
+
             //Storm increases Spell damage dealt by heads when Incapped for number of Element of Lightning in trash
             QuickHPStorage(legacy, bunker, haka);
-            PlayCard(tiamat, GetCard("ElementOfIce"));
+            PlayCard(tiamat, GetCard("ElementOfFire"));
             QuickHPCheck(-4, -4, -4);
         }
 
@@ -970,8 +988,9 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            PutInTrash(GetCard("ElementOfIce", 1));
-            PutInTrash(GetCard("ElementOfIce", 2));
+
+            List<Card> spellCards = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementOfIce").Take(2)).ToList();
+            PutInTrash(spellCards);
             SetupIncap(legacy, winter);
             //Winter increases Spell damage dealt by heads when Incapped for number of Element of Ice in trash
             QuickHPStorage(legacy, bunker, haka);
