@@ -12,9 +12,9 @@ namespace Cauldron
     {
         #region Constructors
 
-        public RuneCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public RuneCardController(Card card, TurnTakerController turnTakerController, LinqCardCriteria nextToCardCriteria) : base(card, turnTakerController)
         {
-
+            this.NextToCardCriteria = nextToCardCriteria;
         }
 
         #endregion Constructors
@@ -25,6 +25,10 @@ namespace Cauldron
         {
             //At the start of your turn you may destroy this card. If you do not, The Stranger deals himself 1 irreducible toxic damage.
             base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DestroyCardResponse), TriggerType.DestroySelf, null, false);
+           
+            //if the card this is next to leaves, have this card fall off
+            Card cardThisCardIsNextTo = base.GetCardThisCardIsNextTo(true);
+            base.AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(true, cardThisCardIsNextTo != null && !cardThisCardIsNextTo.IsHeroCharacterCard);
         }
 
         private IEnumerator DestroyCardResponse(PhaseChangeAction action)
@@ -58,6 +62,20 @@ namespace Cauldron
             yield break;
         }
 
+        public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
+        {
+            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => this.NextToCardCriteria.Criteria(c) && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), this.NextToCardCriteria.Description, true, false, null, null, false), storedResults, isPutIntoPlay, decisionSources);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+        public LinqCardCriteria NextToCardCriteria { get; private set; }
         #endregion Methods
     }
 }

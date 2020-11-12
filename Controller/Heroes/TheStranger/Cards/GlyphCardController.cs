@@ -66,6 +66,16 @@ namespace Cauldron
             base.CharacterCardController.SetCardProperty("PreventionUsed", false);
             yield break;
         }
+
+        protected bool IsRune(Card card)
+        {
+            return card != null && base.GameController.DoesCardContainKeyword(card, "rune", false, false);
+        }
+
+        protected bool IsGlyph(Card card)
+        {
+            return card != null && base.GameController.DoesCardContainKeyword(card, "glyph", false, false);
+        }
         #endregion Methods
     }
 }

@@ -14,7 +14,7 @@ namespace Cauldron.TheStranger
 		public override IEnumerator UsePower(int index = 0)
 		{
 			//Play a rune.
-			IEnumerator coroutine = base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, null, new LinqCardCriteria((Card c) => this.IsRune(c), "rune"), false, false, true, null);
+			IEnumerator coroutine = base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, null, new LinqCardCriteria((Card c) => this.IsRune(c), "rune"), false, false, true, null);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);

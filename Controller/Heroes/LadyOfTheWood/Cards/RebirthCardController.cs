@@ -11,7 +11,7 @@ namespace Cauldron.LadyOfTheWood
     {
 		public RebirthCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
-			base.SpecialStringMaker.ShowNumberOfCardsUnderCard(base.Card, null);
+			base.SpecialStringMaker.ShowNumberOfCardsUnderCard(base.Card);
 			this._primed = false;
 		}
 		public override IEnumerator Play()
@@ -19,8 +19,8 @@ namespace Cauldron.LadyOfTheWood
 			
 			//When this card enters play, put up to 3 cards from your trash beneath it.
 			List<MoveCardDestination> list = new List<MoveCardDestination>();
-			list.Add(new MoveCardDestination(base.Card.UnderLocation, false, false, false));
-			IEnumerator coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.DecisionMaker, base.TurnTaker.Trash, new int?(0), 3, new LinqCardCriteria((Card c) => true, "", true, false, null, null, false), list, false, true, false, false, null, null, false, false, false, null, false, false, null, null, base.GetCardSource(null));
+			list.Add(new MoveCardDestination(base.Card.UnderLocation));
+			IEnumerator coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.DecisionMaker, base.TurnTaker.Trash, new int?(0), 3, new LinqCardCriteria((Card c) => true), list, cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -36,13 +36,12 @@ namespace Cauldron.LadyOfTheWood
 		public override void AddTriggers()
 		{
 			//Whenever LadyOfTheWood destroys a target, put a card from beneath this one into your hand.
-			base.AddTrigger<DestroyCardAction>((DestroyCardAction destroy) => destroy.CardSource != null && destroy.CardToDestroy.CanBeDestroyed && destroy.WasCardDestroyed && destroy.CardSource.Card.Owner == base.TurnTaker && destroy.CardToDestroy.Card.IsTarget, new Func<DestroyCardAction, IEnumerator>(this.MoveCardResponse), new TriggerType[]
-			{
-				TriggerType.MoveCard
-			}, TriggerTiming.After, null, false, true, null, false, null, null, false, false);
+			Func<DestroyCardAction, bool> moveCriteria = (DestroyCardAction destroy) => destroy.CardSource != null && destroy.CardToDestroy.CanBeDestroyed && destroy.WasCardDestroyed && destroy.CardSource.Card.Owner == base.TurnTaker && destroy.CardToDestroy.Card.IsTarget;
+			base.AddTrigger<DestroyCardAction>(moveCriteria, new Func<DestroyCardAction, IEnumerator>(this.MoveCardResponse), new TriggerType[] { TriggerType.MoveCard }, TriggerTiming.After);
 
 			//When there are no cards beneath this one, destroy this card.
-			base.AddTrigger<GameAction>((GameAction action) => this._primed && base.Card.UnderLocation.Cards.Count<Card>() == 0, new Func<GameAction, IEnumerator>(this.DestroyThisCardResponse), TriggerType.DestroySelf, TriggerTiming.After, ActionDescription.Unspecified, false, true, null, false, null, null, false, false);
+			Func<GameAction, bool> destroyCriteria = (GameAction action) => this._primed && base.Card.UnderLocation.Cards.Count<Card>() == 0;
+			base.AddTrigger<GameAction>(destroyCriteria, new Func<GameAction, IEnumerator>(this.DestroyThisCardResponse), TriggerType.DestroySelf, TriggerTiming.After);
 
 			//If this card is destroyed, move all cards under it into the trash
 			base.AddBeforeLeavesPlayAction(new Func<GameAction, IEnumerator>(this.MoveCardsUnderThisCardToTrash), TriggerType.MoveCard);
@@ -51,7 +50,7 @@ namespace Cauldron.LadyOfTheWood
 		private IEnumerator MoveCardsUnderThisCardToTrash(GameAction ga)
 		{
 			//Move all cards under this to the trash
-			IEnumerator coroutine = base.GameController.MoveCards(base.TurnTakerController, base.Card.UnderLocation.Cards, base.TurnTaker.Trash, false, false, true, null, false, false, null, base.GetCardSource(null));
+			IEnumerator coroutine = base.GameController.MoveCards(base.TurnTakerController, base.Card.UnderLocation.Cards, base.TurnTaker.Trash, cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -66,7 +65,7 @@ namespace Cauldron.LadyOfTheWood
 		private IEnumerator MoveCardResponse(DestroyCardAction destroyCard)
 		{
 			//Move card from under this card into the hand
-			IEnumerator coroutine = base.GameController.SelectAndMoveCard(base.HeroTurnTakerController, (Card c) => base.Card.UnderLocation.HasCard(c), base.HeroTurnTaker.Hand, false, false, false, false, null, null);
+			IEnumerator coroutine = base.GameController.SelectAndMoveCard(base.HeroTurnTakerController, (Card c) => base.Card.UnderLocation.HasCard(c), base.HeroTurnTaker.Hand, cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
