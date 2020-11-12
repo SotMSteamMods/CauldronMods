@@ -1091,11 +1091,35 @@ namespace CauldronTests
             //Setup top of deck
             Card ward = GetCard("AncientWard");
             PutOnDeck(tiamat, ward);
-            DealDamage(legacy, inferno, 10, DamageType.Psychic);
+            SetHitPoints(inferno, 30);
             //The Head with the lowest HP regains {H} + X HP, where X is the number of Healing Magic cards in the villain trash.
             QuickHPStorage(inferno);
             PlayCard(tiamat, "HealingMagic");
             QuickHPCheck(3);
+            //The top card of the villain deck is played
+            AssertInPlayArea(tiamat, ward);
+        }
+
+        [Test()]
+        public void TestHealingMagic2InTrash()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+            //Setup top of deck
+            Card ward = GetCard("AncientWard");
+            PutOnDeck(tiamat, ward);
+            SetHitPoints(inferno, 30);
+
+            Card magic = GetCard("HealingMagic");
+
+            //put the other two copies of element of lightning in the trash
+            List<Card> magicCards = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "HealingMagic" && c != magic).Take(2)).ToList();
+            PutInTrash(magicCards);
+
+            //The Head with the lowest HP regains {H} + X HP, where X is the number of Healing Magic cards in the villain trash.
+            QuickHPStorage(inferno);
+            PlayCard(tiamat, magic);
+            QuickHPCheck(5);
             //The top card of the villain deck is played
             AssertInPlayArea(tiamat, ward);
         }
