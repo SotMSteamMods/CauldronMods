@@ -28,9 +28,9 @@
                 "Starlight"
             ],
             "incapacitatedAbilities": [
-                "One player may draw a card now.",
-                "Reveal the top card of a deck, then replace it or discard it.",
-                "Up to 2 ongoing hero cards may be played now."
+                "Until the start of your next turn, prevent all damage that would be dealt to or by the target with the lowest HP.",
+                "1 player may use a power now.",
+                "1 hero target regains 2 HP."
             ],
             "flippedIcons": [
                 "DrawCardNow",
