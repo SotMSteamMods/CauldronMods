@@ -548,5 +548,60 @@ namespace CauldronTests
 
         }
 
+        [Test]
+        public void TestSniperRiflePower1()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                SniperRifleCardController.Identifier
+            });
+
+            StartGame();
+
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+
+            QuickHPStorage(mdp);
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, SniperRifleCardController.Identifier);
+            UsePower(GetCardInPlay(SniperRifleCardController.Identifier), 0);
+
+            // Assert
+
+        }
+
+        [Test]
+        public void TestSniperRiflePower2()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                SniperRifleCardController.Identifier
+            });
+
+            StartGame();
+
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+
+            QuickHPStorage(mdp);
+
+            DecisionSelectTarget = mdp;
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, SniperRifleCardController.Identifier);
+            UsePower(GetCardInPlay(SniperRifleCardController.Identifier), 1);
+
+            // Assert
+            QuickHPCheck(-2);
+
+        }
+
     }
 }
