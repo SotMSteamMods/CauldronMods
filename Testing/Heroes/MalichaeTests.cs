@@ -1361,8 +1361,8 @@ namespace CauldronTests
             var card = PutIntoPlay("ShadowCatch");
             AssertInTrash(card);
 
-            QuickHandCheck(0, 0, 0);
-            QuickShuffleCheck(0, 0, 0);
+            QuickHandCheck(1, 0, 0);
+            QuickShuffleCheck(1, 0, 0);
         }
 
     }
