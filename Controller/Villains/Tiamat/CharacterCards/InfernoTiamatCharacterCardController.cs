@@ -40,7 +40,7 @@ namespace Cauldron.Tiamat
 			return new ITrigger[] 
 			{
 				//When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Fire“ card in the villain trash.
-				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.CardSource != null && IsSpell(dealDamage.CardSource.Card) && IsHead(dealDamage.DamageSource.Card), GetNumberOfElementOfFireInTrash())
+				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.CardSource != null && dealDamage.DamageSource != null && IsSpell(dealDamage.CardSource.Card) && IsHead(dealDamage.DamageSource.Card), GetNumberOfElementOfFireInTrash())
 			};
 		}
 
