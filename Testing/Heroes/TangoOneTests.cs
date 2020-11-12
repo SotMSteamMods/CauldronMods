@@ -328,15 +328,21 @@ namespace CauldronTests
             QuickHPCheck(-1);
         }
 
-        /*
+        
         [Test]
         public void TestCriticalHitWithNemesisDiscardCriticalCardSuccess()
         {
             // Arrange
             SetupGameController("Cauldron.Anathema", "Cauldron.TangoOne", "Ra", "Megalopolis");
 
+            PutOnDeck(Anathema, GetCard("KnuckleDragger"));
+            PutOnDeck(Anathema, GetCard("ThresherClaw"));
+            PutOnDeck(Anathema, GetCard("RazorScales"));
+            PutOnDeck(Anathema, GetCard("CarapaceHelmet"));
 
             StartGame();
+
+
             DecisionSelectCard = ra.CharacterCard;
 
             PutOnDeck(TangoOne, GetCard(DamnGoodGroundCardController.Identifier));
@@ -353,9 +359,9 @@ namespace CauldronTests
             UsePower(TangoOne);
 
             // Assert
-            //QuickHPCheck(-4);
+            QuickHPCheck(-5);
         }
-        */
+        
 
         [Test]
         public void TestDamnGoodGround()
@@ -462,7 +468,6 @@ namespace CauldronTests
             QuickHandCheck(0); // Discard Ghost Reactor (-1), Draw a card (+1)
         }
 
-        // TODO: Refine
         [Test]
         public void TestInfiltrate()
         {
@@ -474,14 +479,22 @@ namespace CauldronTests
                 InfiltrateCardController.Identifier, GhostReactorCardController.Identifier
             });
 
+            StartGame();
+
+            PutOnDeck(TangoOne, GetCard(CriticalHitCardController.Identifier));
+            PutOnDeck(TangoOne, GetCard(FarsightCardController.Identifier));
+
+
             DecisionSelectLocation = new LocationChoice(TangoOne.HeroTurnTaker.Deck);
-            DecisionSelectCardsIndex = 2;
+            DecisionSelectCard = GetCard(CriticalHitCardController.Identifier); // First drawn card to put back on deck
+            DecisionSelectCardToPlay = GetCard(FarsightCardController.Identifier);
 
             // Act
             GoToStartOfTurn(TangoOne);
             PlayCardFromHand(TangoOne, InfiltrateCardController.Identifier);
 
-
+            // Assert
+            AssertIsInPlay(GetCardInPlay(FarsightCardController.Identifier));
         }
 
         [Test]
@@ -512,9 +525,124 @@ namespace CauldronTests
 
             // Assert
             QuickHPCheck(-1);
-
         }
 
+        [Test]
+        public void TestOneShotShotOneKillSuccessfulDestruction()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                OneShotOneKillCardController.Identifier,
+                GhostReactorCardController.Identifier,
+                DisablingShotCardController.Identifier,
+                FarsightCardController.Identifier
+            });
+
+            StartGame();
+
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+            SetHitPoints(mdp, 4);
+            QuickHandStorage(TangoOne);
+
+            DecisionSelectCards = new[]
+            {
+                GetCardFromHand(TangoOne, GhostReactorCardController.Identifier),
+                GetCardFromHand(TangoOne, FarsightCardController.Identifier),
+                null,
+                mdp
+            };
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, OneShotOneKillCardController.Identifier);
+
+            // Assert
+            AssertNotInPlay(mdp); // 2 cards were discarded: 2 cards * 2 = 4 which MDP's HP qualifies for destruction
+            QuickHandCheck(-2); // (4 -1 for playing One Shot, -2 for the 2 discards, +1 for successfully destroying a target)
+        }
+
+        [Test]
+        public void TestOneShotShotOneKillMultipleEligibleTargetsForDestruction()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                OneShotOneKillCardController.Identifier,
+                GhostReactorCardController.Identifier,
+                DisablingShotCardController.Identifier,
+                FarsightCardController.Identifier
+            });
+
+            StartGame();
+
+            Card bb = GetCard("BladeBattalion");
+            PlayCard(bb);
+            SetHitPoints(bb, 3);
+
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+            SetHitPoints(mdp, 4);
+            
+            QuickHandStorage(TangoOne);
+
+            DecisionSelectCards = new[]
+            {
+                GetCardFromHand(TangoOne, GhostReactorCardController.Identifier),
+                GetCardFromHand(TangoOne, FarsightCardController.Identifier),
+                null,
+                mdp
+            };
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, OneShotOneKillCardController.Identifier);
+
+            // Assert
+            AssertNotInPlay(mdp); // 2 cards were discarded: 2 cards * 2 = 4 which MDP's HP qualifies for destruction
+            AssertIsInPlay(bb); // Blade Battalion was not chosen as the destruction target
+            QuickHandCheck(-2); // (4 -1 for playing One Shot, -2 for the 2 discards, +1 for successfully destroying a target)
+        }
+
+        [Test]
+        public void TestOneShotShotOneKillUnsuccessfulDestruction()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                OneShotOneKillCardController.Identifier,
+                GhostReactorCardController.Identifier,
+                DisablingShotCardController.Identifier,
+                FarsightCardController.Identifier
+            });
+
+            StartGame();
+
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+            SetHitPoints(mdp, 6);
+            QuickHandStorage(TangoOne);
+
+            DecisionSelectCards = new[]
+            {
+                GetCardFromHand(TangoOne, GhostReactorCardController.Identifier),
+                GetCardFromHand(TangoOne, FarsightCardController.Identifier),
+                null,
+                mdp
+            };
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, OneShotOneKillCardController.Identifier);
+
+            // Assert
+            AssertIsInPlay(mdp); // 2 cards were discarded: 2 cards * 2 = 4 which MDP's HP (6) *DOES NOT* qualify for destruction
+            QuickHandCheck(-3); // (4 -1 for playing One Shot, -2 for the 2 discards)
+        }
 
         [Test]
         public void TestOpportunistShuffleTrash()
