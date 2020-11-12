@@ -24,7 +24,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             base.AddTriggers();
 
             //Increase damage dealt by Test Subjects by 1.
-            base.AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && base.IsTestSubject(dd.DamageSource.Card), (DealDamageAction dd) => 1);
+            base.AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && base.IsTestSubject(dd.DamageSource.Card), 1);
         }
 
         public override IEnumerator Play()

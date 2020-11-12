@@ -15,7 +15,7 @@ namespace CauldronTests
 
         protected TurnTakerController halberd { get { return FindEnvironment(); } }
 
-        
+
 
         #endregion
 
@@ -25,7 +25,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
 
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
-            
+
         }
         [Test()]
         public void TestEmergencyProtocolsPlay()
@@ -39,11 +39,11 @@ namespace CauldronTests
             AssertInDeck(prophet);
             //At the end of the environment turn, play the top card of the environment deck.
 
-            PlayCard("EmergencyReleaseProtocol");
+            var emergency = PlayCard("EmergencyReleaseProtocol");
+            AssertInPlayArea(halberd, emergency);
             GoToEndOfTurn(halberd);
             //since the top card of the deck was played, prophet should be in play
-            AssertIsInPlay(prophet);
-
+            AssertInPlayArea(halberd, prophet);
         }
 
         [Test()]
@@ -54,14 +54,13 @@ namespace CauldronTests
 
             Card emergency = GetCard("EmergencyReleaseProtocol");
             PlayCard(emergency);
-            AssertIsInPlay(emergency);
+            AssertInPlayArea(halberd, emergency);
 
             //At the start of their turn, a player may skip the rest of their turn to destroy this card.
             //yes we want the player to skip their turn
             DecisionYesNo = true;
             GoToStartOfTurn(ra);
-            AssertInTrash(emergency);
-
+            AssertInTrash(halberd, emergency);
         }
 
         [Test()]
@@ -86,17 +85,17 @@ namespace CauldronTests
             AssertIsInPlay(alpha);
 
             //put another test subject in play
-            //zephyr just causes hp gain, so doesn't impact this test
+            //zephyr just causes hp gain on haka, so doesn't impact this test
             Card zephyr = GetCard("HalberdZephyr");
             PlayCard(zephyr);
             AssertIsInPlay(zephyr);
 
             //At the end of the environment turn, if there are no Chemical Triggers in play, each Test Subject deals the villain target with the highest HP 1 melee damage. 
-            QuickHPStorage(baron.CharacterCard, battalion);
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard);
             GoToEndOfTurn(halberd);
             //there are 2 test subjects in play, each deal baron 1 damage, 2 damage total
             //battalion should not have been dealt damage
-            QuickHPCheck(-2, 0);
+            QuickHPCheck(-2, 0, 0, 0);
 
         }
 
@@ -121,12 +120,11 @@ namespace CauldronTests
             PlayCard(omega);
             AssertIsInPlay(omega);
 
-
             //At the end of the environment turn, if there are no Chemical Triggers in play, this cards deals each villain target 2 infernal damage.
-            QuickHPStorage(baron.CharacterCard, battalion);
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
             GoToEndOfTurn(halberd);
             //deal baron and battalion 2 damage
-            QuickHPCheck(-2, -2);
+            QuickHPCheck(-2, -2, 0, 0, 0);
 
         }
 
@@ -136,7 +134,12 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
             StartGame();
 
+            //destroy mdp to make baron vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
             //Set hitpoints to start
+            SetHitPoints(baron.CharacterCard, 20);
             SetHitPoints(ra.CharacterCard, 20);
             SetHitPoints(legacy.CharacterCard, 15);
             SetHitPoints(haka.CharacterCard, 10);
@@ -158,19 +161,19 @@ namespace CauldronTests
             //destroy it
             Card omega = GetCardInPlay("HalberdOmega");
             DestroyCard(omega, baron.CharacterCard);
+            AssertInTrash(omega);
 
             //put another test subject in play
-            //zephyr just causes hp gain, so doesn't impact this test
+            //zephyr just causes hp gain on baron, accouted for below
             Card zephyr = GetCard("HalberdZephyr");
             PlayCard(zephyr);
             AssertIsInPlay(zephyr);
 
-
             //Otherwise, each Test Subject deals the hero target with the highest HP 1 melee damage.
             //ra is highest hp,  2 damage to it, 1 for each test subject in play
-            QuickHPStorage(ra, legacy, haka);
+            QuickHPStorage(baron, ra, legacy, haka);
             GoToEndOfTurn(halberd);
-            QuickHPCheck(-2, 0, 0);
+            QuickHPCheck(3, -2, 0, 0);
         }
 
         [Test()]
@@ -179,7 +182,12 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
             StartGame();
 
+            //destroy mdp to make baron vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
             //Set hitpoints to start
+            SetHitPoints(baron.CharacterCard, 20);
             SetHitPoints(ra.CharacterCard, 20);
             SetHitPoints(legacy.CharacterCard, 15);
             SetHitPoints(haka.CharacterCard, 10);
@@ -198,12 +206,11 @@ namespace CauldronTests
             Card omega = GetCardInPlay("HalberdOmega");
             AssertIsInPlay(omega);
 
-
             //Omega: Otherwise, this cards deals each hero target 2 infernal damage.
             //2 damage to all heroes
-            QuickHPStorage(ra, legacy, haka);
+            QuickHPStorage(baron, ra, legacy, haka);
             GoToEndOfTurn(halberd);
-            QuickHPCheck(-2, -2, -2);
+            QuickHPCheck(0, -2, -2, -2);
         }
 
         [Test()]
@@ -214,7 +221,6 @@ namespace CauldronTests
 
             //go to haka's end of turn to prime environment
             GoToEndOfTurn(haka);
-
 
             Card combat = GetCard("HrCombatPheromones");
             PlayCard(combat);
@@ -228,7 +234,6 @@ namespace CauldronTests
 
             //since there is a test subject in play, should not be destroyed
             AssertIsInPlay(combat);
-
         }
 
         [Test()]
@@ -237,10 +242,8 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
             StartGame();
 
-
             //go to haka's end of turn to prime environment
             GoToEndOfTurn(haka);
-
 
             Card combat = GetCard("HrCombatPheromones");
             PlayCard(combat);
@@ -249,13 +252,13 @@ namespace CauldronTests
             //Destroy omega so there are no test subjects in play
             Card omega = GetCardInPlay("HalberdOmega");
             DestroyCard(omega, baron.CharacterCard);
+            AssertInTrash(omega);
 
             //This card is indestructible if at least 1 Test Subject is in play. 
             //At the start of the environment turn, destroy this card.
             GoToStartOfTurn(halberd);
             //since no test subjects in play, this card will destroy itself
             AssertInTrash(combat);
-
         }
 
         [Test()]
@@ -274,7 +277,6 @@ namespace CauldronTests
             PlayCard(combat);
             AssertIsInPlay(omega);
             QuickShuffleCheck(1);
-
         }
 
         [Test()]
@@ -282,7 +284,6 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
             StartGame();
-
 
             Card combat = GetCard("HrCombatPheromones");
             PlayCard(combat);
@@ -293,12 +294,14 @@ namespace CauldronTests
             AssertIsInPlay(omega);
 
             //Reduce damage dealt to Test Subjects by 1.
-            QuickHPStorage(omega);
+            QuickHPStorage(legacy.CharacterCard, omega);
             DealDamage(ra.CharacterCard, omega, 3, DamageType.Fire);
-            QuickHPCheck(-2);
+            QuickHPCheck(0, -2);
 
-
-
+            //Damage dealt to other is not reduced
+            QuickHPStorage(legacy.CharacterCard, omega);
+            DealDamage(ra.CharacterCard, legacy.CharacterCard, 3, DamageType.Fire);
+            QuickHPCheck(-3, 0);
         }
 
         [Test()]
@@ -309,7 +312,6 @@ namespace CauldronTests
 
             //go to haka's end of turn to prime environment
             GoToEndOfTurn(haka);
-
 
             Card combat = GetCard("HtAggressionStimulant");
             PlayCard(combat);
@@ -323,19 +325,16 @@ namespace CauldronTests
 
             //since there is a test subject in play, should not be destroyed
             AssertIsInPlay(combat);
-
         }
 
         [Test()]
-        public void TestHtAggressionStimulant_StartOfTurnCanBeDestroye()
+        public void TestHtAggressionStimulant_StartOfTurnCanBeDestroyed()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
             StartGame();
 
-
             //go to haka's end of turn to prime environment
             GoToEndOfTurn(haka);
-
 
             Card stimulant = GetCard("HtAggressionStimulant");
             PlayCard(stimulant);
@@ -350,7 +349,6 @@ namespace CauldronTests
             GoToStartOfTurn(halberd);
             //since no test subjects in play, this card will destroy itself
             AssertInTrash(stimulant);
-
         }
 
         [Test()]
@@ -369,7 +367,6 @@ namespace CauldronTests
             PlayCard(stimulant);
             AssertIsInPlay(alpha);
             QuickShuffleCheck(1);
-
         }
 
         [Test()]
@@ -377,7 +374,6 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
             StartGame();
-
 
             Card stimulant = GetCard("HtAggressionStimulant");
             PlayCard(stimulant);
@@ -392,6 +388,10 @@ namespace CauldronTests
             DealDamage(alpha, ra.CharacterCard, 3, DamageType.Fire);
             QuickHPCheck(-4);
 
+            //damage dealt by others not increased
+            QuickHPStorage(ra);
+            DealDamage(legacy.CharacterCard, ra.CharacterCard, 3, DamageType.Fire);
+            QuickHPCheck(-3);
         }
 
         [Test()]
@@ -411,12 +411,13 @@ namespace CauldronTests
             PutOnDeck(halberd, omega);
             PutOnDeck("SubjectRecyclingProject");
 
-
             Card agent = GetCard("HcBSwarmingAgent");
             PlayCard(agent);
             AssertIsInPlay(agent);
 
             //when this was played, alpha and omega should have entered play
+            AssertInPlayArea(halberd, alpha);
+            AssertInPlayArea(halberd, omega);
 
             //This card is indestructible if at least 1 Test Subject is in play. 
             //At the start of the environment turn, destroy this card.
@@ -424,7 +425,6 @@ namespace CauldronTests
 
             //since there are 2 test subjects in play, should not be destroyed
             AssertIsInPlay(agent);
-
         }
 
         [Test()]
@@ -450,7 +450,9 @@ namespace CauldronTests
             AssertIsInPlay(agent);
 
             //Destroy alpha and omega so there are no test subjects in play
-            
+            AssertInPlayArea(halberd, alpha);
+            AssertInPlayArea(halberd, omega);
+
             DestroyCard(alpha, baron.CharacterCard);
             DestroyCard(omega, baron.CharacterCard);
 
@@ -459,7 +461,6 @@ namespace CauldronTests
             GoToStartOfTurn(halberd);
             //since no test subjects in play, this card will destroy itself
             AssertInTrash(agent);
-
         }
 
         [Test()]
@@ -483,10 +484,10 @@ namespace CauldronTests
             AssertInDeck(omega);
             PlayCard(agent);
             QuickShuffleCheck(1);
-            AssertIsInPlay(alpha);
-            AssertIsInPlay(omega);
-            AssertNumberOfCardsInRevealed(halberd, 0);
+            AssertInPlayArea(halberd, alpha);
+            AssertInPlayArea(halberd, omega);
 
+            AssertNumberOfCardsInRevealed(halberd, 0);
         }
 
 
@@ -495,8 +496,6 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
             StartGame();
-
-
 
             GoToPlayCardPhase(halberd);
 
@@ -513,7 +512,10 @@ namespace CauldronTests
             PutOnDeck(haka, mere);
 
             //we want to put cards on the bottom of the deck
-            DecisionMoveCardDestinations = new MoveCardDestination[] { new MoveCardDestination(ra.TurnTaker.Deck, true), new MoveCardDestination(legacy.TurnTaker.Deck, true), new MoveCardDestination(haka.TurnTaker.Deck, true) };
+            DecisionMoveCardDestinations = new MoveCardDestination[] {
+                new MoveCardDestination(ra.TurnTaker.Deck, true),
+                new MoveCardDestination(legacy.TurnTaker.Deck, true),
+                new MoveCardDestination(haka.TurnTaker.Deck, true) };
             AssertOnTopOfDeck(solar);
             AssertOnTopOfDeck(evolution);
             AssertOnTopOfDeck(mere);
@@ -522,7 +524,6 @@ namespace CauldronTests
             AssertOnBottomOfDeck(solar);
             AssertOnBottomOfDeck(evolution);
             AssertOnBottomOfDeck(mere);
-
         }
 
         [Test()]
@@ -531,7 +532,6 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
             StartGame();
 
-           
             GoToPlayCardPhase(halberd);
 
             //play halberd prophet
@@ -567,7 +567,6 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
             StartGame();
 
-
             //Set hitpoints to start
             SetHitPoints(ra.CharacterCard, 20);
             SetHitPoints(legacy.CharacterCard, 15);
@@ -576,8 +575,6 @@ namespace CauldronTests
             //destroy mdp so baron blade is vulnerable
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
-
-            
 
             GoToPlayCardPhase(halberd);
 
@@ -589,21 +586,21 @@ namespace CauldronTests
             //If there are no Chemical Triggers in play, the first time the hero target with the highest HP would be dealt damage each turn, redirect that damage to the villain target with the highest HP. 
             //ra is highest hp hero
             //baron is highest hp villain
-            QuickHPStorage(baron, ra);
+            QuickHPStorage(baron, ra, legacy, haka);
             DealDamage(haka, ra, 3, DamageType.Melee);
-            QuickHPCheck(-3, 0);
+            QuickHPCheck(-3, 0, 0, 0);
 
             //should only happen for the first damage
-            QuickHPStorage(baron, ra);
+            QuickHPStorage(baron, ra, legacy, haka);
             DealDamage(haka, ra, 2, DamageType.Melee);
-            QuickHPCheck(0, -2);
+            QuickHPCheck(0, -2, 0, 0);
 
             GoToNextTurn();
 
             //should be reset for the next turn
-            QuickHPStorage(baron, ra);
+            QuickHPStorage(baron, ra, legacy, haka);
             DealDamage(haka, ra, 3, DamageType.Melee);
-            QuickHPCheck(-3, 0);
+            QuickHPCheck(-3, 0, 0, 0);
         }
 
         [Test()]
@@ -639,21 +636,20 @@ namespace CauldronTests
 
             //Otherwise, the first time a non-hero target would be dealt damage each turn, redirect that damage to the hero target with the highest HP.
             //hero with highest hp is ra
-            QuickHPStorage(mdp, ra.CharacterCard);
+            QuickHPStorage(mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
             DealDamage(haka.CharacterCard, mdp, 2, DamageType.Melee);
-            QuickHPCheck(0, -2);
+            QuickHPCheck(0, -2, 0, 0);
 
             //only first a turn
-            QuickHPStorage(mdp, ra.CharacterCard);
+            QuickHPStorage(mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
             DealDamage(haka.CharacterCard, mdp, 2, DamageType.Melee);
-            QuickHPCheck(-2, 0);
+            QuickHPCheck(-2, 0, 0, 0);
 
             //reset for next turn
             GoToNextTurn();
-            QuickHPStorage(mdp, ra.CharacterCard);
+            QuickHPStorage(mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
             DealDamage(haka.CharacterCard, mdp, 2, DamageType.Melee);
-            QuickHPCheck(0, -2);
-
+            QuickHPCheck(0, -2, 0, 0);
         }
 
         [Test()]
@@ -678,22 +674,22 @@ namespace CauldronTests
 
             //If there are no Chemical Triggers in play, reduce damage dealt to the hero target with the lowest HP by 1.
             //haka has the lowest hitpoints
-            QuickHPStorage(haka);
+            QuickHPStorage(haka.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard);
             DealDamage(baron, haka, 4, DamageType.Melee);
             //damage should have been reduced by 1
-            QuickHPCheck(-3);
+            QuickHPCheck(-3, 0, 0, 0);
 
             //check that it is only for the lowest hp
-            QuickHPStorage(ra);
+            QuickHPStorage(haka.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard);
             DealDamage(baron, ra, 4, DamageType.Melee);
             //damage should not have been reduced
-            QuickHPCheck(-4);
+            QuickHPCheck(0, 0, -4, 0);
 
             //check that the other trigger isn't in effect
-            QuickHPStorage(mdp);
+            QuickHPStorage(haka.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard);
             DealDamage(haka.CharacterCard, mdp, 4, DamageType.Melee);
             //damage should not have been reduced
-            QuickHPCheck(-4);
+            QuickHPCheck(0, -4, 0, 0);
         }
 
         [Test()]
@@ -730,18 +726,17 @@ namespace CauldronTests
 
             //Otherwise, Reduce damage dealt to villain targets by 1.
 
-            QuickHPStorage(mdp);
+            QuickHPStorage(haka.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard);
             DealDamage(haka.CharacterCard, mdp, 4, DamageType.Melee);
             //damage should  have been reduced by 1
-            QuickHPCheck(-3);
+            QuickHPCheck(0, -3, 0, 0);
 
             ////check that the other trigger isn't in effect
             //haka has the lowest hitpoints
-            QuickHPStorage(haka);
+            QuickHPStorage(haka.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard);
             DealDamage(baron, haka, 4, DamageType.Melee);
             //damage should have not been reduced
-            QuickHPCheck(-4);
-
+            QuickHPCheck(-4, 0, 0, 0);
         }
 
         [Test()]
@@ -769,10 +764,10 @@ namespace CauldronTests
             //At the end of the environment turn, if there are no Chemical Triggers in play, this card deals the villain target with highest HP {H} energy damage.
             //highest hp hero is ra, highest villain is baron blade
             //H is 3
-            QuickHPStorage(ra, baron);
+            QuickHPStorage(ra, baron, legacy, haka);
             GoToEndOfTurn(halberd);
             //check that highest villain got dealt damage and highest hero did not
-            QuickHPCheck(0, -3);
+            QuickHPCheck(0, -3, 0, 0);
 
         }
 
@@ -813,11 +808,10 @@ namespace CauldronTests
             //Otherwise, this card deals the hero target with the highest HP {H} energy damage.
             //highest hp hero is ra, highest villain is baron blade
             //H is 3
-            QuickHPStorage(ra, baron);
+            QuickHPStorage(ra, baron, haka, legacy);
             GoToEndOfTurn(halberd);
             //check that highest hero got dealt damage and highest villain did not
-            QuickHPCheck(-3, 0);
-
+            QuickHPCheck(-3, 0, 0, 0);
         }
 
         [Test()]
@@ -827,6 +821,7 @@ namespace CauldronTests
             StartGame();
 
             //Set hitpoints to start
+            SetHitPoints(baron.CharacterCard, 30);
             SetHitPoints(ra.CharacterCard, 20);
             SetHitPoints(legacy.CharacterCard, 15);
             SetHitPoints(haka.CharacterCard, 10);
@@ -855,9 +850,9 @@ namespace CauldronTests
             //At the end of the environment turn, each Test Subject regains 1HP.
             //If there are no Chemical Triggers in play, the hero with the lowest HP regains 3HP
             //lowest hero is haka
-            QuickHPStorage(zephyr, siren, haka.CharacterCard, ra.CharacterCard);
+            QuickHPStorage(zephyr, siren, haka.CharacterCard, ra.CharacterCard, baron.CharacterCard);
             GoToEndOfTurn(halberd);
-            QuickHPCheck(1, 1, 3, 0);
+            QuickHPCheck(1, 1, 3, 0, 0);
         }
 
         [Test()]
@@ -866,10 +861,12 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
             StartGame();
 
-
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             //Set hitpoints to start
-            SetHitPoints(baron.CharacterCard, 20);
+            SetHitPoints(baron.CharacterCard, 30);
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(haka.CharacterCard, 10);
             SetHitPoints(mdp, 5);
 
             GoToPlayCardPhase(halberd);
@@ -904,11 +901,9 @@ namespace CauldronTests
             //At the end of the environment turn, each Test Subject regains 1HP.
             //Otherwise, the villain target with the lowest HP regains 3HP.
             //lowest villain is mdp
-            QuickHPStorage(zephyr, siren, mdp, baron.CharacterCard);
+            QuickHPStorage(zephyr, siren, mdp, baron.CharacterCard, ra.CharacterCard, haka.CharacterCard);
             GoToEndOfTurn(halberd);
-            QuickHPCheck(1, 1, 3, 0);
-
-
+            QuickHPCheck(1, 1, 3, 0, 0, 0);
         }
 
         [Test()]
@@ -1014,7 +1009,6 @@ namespace CauldronTests
             Card turret = GetCard("PoweredRemoteTurret");
             PlayCard(turret);
 
-
             GoToPlayCardPhase(halberd);
 
             //we play out splinter
@@ -1067,7 +1061,6 @@ namespace CauldronTests
             QuickHPStorage(ra, legacy, haka, tachyon);
             GoToEndOfTurn(halberd);
             QuickHPCheck(-1, -1, -1, 0);
-
         }
 
         [Test()]
@@ -1099,7 +1092,6 @@ namespace CauldronTests
             QuickHPStorage(ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, tachyon.CharacterCard, baron.CharacterCard, cleaner);
             GoToEndOfTurn(halberd);
             QuickHPCheck(0, -4, 0, 0, 0, 0);
-
         }
 
         [Test()]
@@ -1157,7 +1149,7 @@ namespace CauldronTests
 
             //Whenever this card destroys a Test Subject, play the top card of the environment deck.
             DestroyCard(alpha, baron.CharacterCard);
-            //alpha should have been destroyed, but since it was done by baron, not cards should be played
+            //alpha should have been destroyed, but since it was done by baron, no cards should be played
             AssertInTrash(alpha);
             AssertInDeck(omega);
         }
@@ -1169,7 +1161,6 @@ namespace CauldronTests
             StartGame();
 
             GoToPlayCardPhase(halberd);
-
 
             //we play out cleaner
             Card cleaner = GetCard("HalcyonCleaners");
@@ -1232,15 +1223,15 @@ namespace CauldronTests
 
             //otherwise destroy this card
 
+            int inPlay = GetNumberOfCardsInPlay(halberd);
 
             //we play out recycling
             Card recycling = GetCard("SubjectRecyclingProject");
             PlayCard(recycling);
 
-            //since there are no test subjects in the trash, this card should destroy itself
+            //since there are no test subjects in the trash, this card should destroy itself without playing any cards
             AssertInTrash(recycling);
-            
-
+            AssertNumberOfCardsInPlay(halberd, inPlay);
         }
 
         [Test()]
@@ -1269,12 +1260,8 @@ namespace CauldronTests
 
             //should have grabbed one of alpha or omega from the trash to put into play
 
-            Assert.IsTrue(alpha.IsInPlay || omega.IsInPlay, alpha.Title + "or " + omega.Title +" should be in play.");
+            Assert.IsTrue(alpha.IsInPlay || omega.IsInPlay, alpha.Title + "or " + omega.Title + " should be in play.");
             Assert.IsTrue(alpha.IsInTrash || omega.IsInTrash, alpha.Title + "or " + omega.Title + " should be in the trash.");
-
-
-
-
         }
 
         [Test()]
@@ -1347,8 +1334,6 @@ namespace CauldronTests
             //If that Test Subject leaves play, this card is destroyed
             DestroyCard(omega, baron.CharacterCard);
             AssertInTrash(recycling);
-
         }
-
     }
 }

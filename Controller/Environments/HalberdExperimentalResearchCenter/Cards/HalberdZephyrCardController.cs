@@ -52,7 +52,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             }
 
             //the hero/villain target with the lowest HP regains 3HP
-            IEnumerator coroutine2 = base.GameController.GainHP(this.DecisionMaker, targets, 3, cardSource: base.GetCardSource());
+            IEnumerator coroutine2 = base.GameController.GainHP(this.DecisionMaker, targets, 3, numberOfCardsToHeal: 1, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine2);

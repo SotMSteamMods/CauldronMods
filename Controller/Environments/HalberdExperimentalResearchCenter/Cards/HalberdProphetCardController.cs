@@ -65,7 +65,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             //get this turntaker's deck
             Location deck = ttc.TurnTaker.Deck;
             HeroTurnTakerController httc = base.FindHeroTurnTakerController(ttc.TurnTaker.ToHero());
-            List <Card> storedResultsCard = new List<Card>();
+            List<Card> storedResultsCard = new List<Card>();
             //reveal the top card of the deck
             IEnumerator coroutine = base.GameController.RevealCards(ttc, deck, 1, storedResultsCard, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)

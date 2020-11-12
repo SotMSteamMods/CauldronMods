@@ -22,16 +22,16 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             //Otherwise, increase damage dealt by villain targets by 1
 
             //criteria for finding hero target with the highest hp when no chemical triggers are in play
-            Func<DealDamageAction, bool>  heroCriteria = (DealDamageAction dd) => !base.IsChemicalTriggerInPlay() && dd.DamageSource != null && base.CanCardBeConsideredHighestHitPoints(dd.DamageSource.Card,(Card c) => c.IsTarget && c.IsHero);
-     
+            Func<DealDamageAction, bool> heroCriteria = (DealDamageAction dd) => !base.IsChemicalTriggerInPlay() && dd.DamageSource != null && base.CanCardBeConsideredHighestHitPoints(dd.DamageSource.Card, (Card c) => c.IsTarget && c.IsHero);
+
             //criteria for finding all villain targets when chemical triggers are in play
-            Func<DealDamageAction, bool> villainCriteria = (DealDamageAction dd) => base.IsChemicalTriggerInPlay() &&  dd.DamageSource != null && dd.DamageSource.Card.IsVillainTarget;
-            
+            Func<DealDamageAction, bool> villainCriteria = (DealDamageAction dd) => base.IsChemicalTriggerInPlay() && dd.DamageSource != null && dd.DamageSource.Card.IsVillainTarget;
+
             //increase damage dealt by villain targets by 1 if chemical trigger is in play
-            base.AddIncreaseDamageTrigger(villainCriteria, (DealDamageAction dd) => 1);
+            base.AddIncreaseDamageTrigger(villainCriteria, 1);
 
             //increase damage dealt by hero targets by 1 if no chemical trigger is in play
-            base.AddIncreaseDamageTrigger(heroCriteria, (DealDamageAction dd) => 1);
+            base.AddIncreaseDamageTrigger(heroCriteria, 1);
         }
         #endregion Methods
     }

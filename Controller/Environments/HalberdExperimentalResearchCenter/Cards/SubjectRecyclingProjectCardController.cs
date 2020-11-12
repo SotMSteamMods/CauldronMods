@@ -23,8 +23,8 @@ namespace Cauldron.HalberdExperimentalResearchCenter
         {
             //Reduce damage dealt to that Test Subject by 1.
             base.AddReduceDamageTrigger((Card c) => c == base.GetCardThisCardIsNextTo(true), 1);
-            //If that Test Subject leaves play, this card is destroyed.
-            base.AddTrigger<DestroyCardAction>((DestroyCardAction destroy) => destroy.CardToDestroy != null && destroy.CardToDestroy.Card == base.GetCardThisCardIsNextTo(true), (DestroyCardAction destroy) => base.DestroyThisCardResponse(destroy), TriggerType.DestroySelf, TriggerTiming.After);
+			//If that Test Subject leaves play, this card is destroyed.
+			base.AddTrigger<DestroyCardAction>((DestroyCardAction destroy) => destroy.CardToDestroy != null && destroy.CardToDestroy.Card == base.GetCardThisCardIsNextTo(true), (DestroyCardAction destroy) => base.DestroyThisCardResponse(destroy), TriggerType.DestroySelf, TriggerTiming.After);
 		}
 
         public override IEnumerator Play()

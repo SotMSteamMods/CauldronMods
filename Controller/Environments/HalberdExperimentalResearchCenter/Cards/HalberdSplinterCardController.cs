@@ -22,7 +22,6 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             //At the end of the environment turn, if there are no Chemical Triggers in play, this card deals the 3 villain targets with the lowest HP 1 projectile damage each. 
             //Otherwise, this card deal the 3 hero targets with the lowest HP 1 projectile damage each.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.EndOfTurnResponse), TriggerType.DealDamage);
-
         }
 
         private IEnumerator EndOfTurnResponse(PhaseChangeAction pca)
@@ -41,7 +40,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             }
 
             //deal the 3 hero/villain targets with the lowest HP 1 projectile damage each
-            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, targets, (Card c) => 1, DamageType.Projectile,numberOfTargets: 3);
+            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, targets, (Card c) => 1, DamageType.Projectile, numberOfTargets: 3);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
