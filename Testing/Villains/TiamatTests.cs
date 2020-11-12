@@ -1211,8 +1211,14 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
+            SetHitPoints(storm, 30);
+            SetHitPoints(inferno, 30);
+            SetHitPoints(winter, 35);
             //Sky Breaker deals H + 2 to all heroes
             QuickHPStorage(new Card[] { inferno, legacy.CharacterCard, bunker.CharacterCard, haka.CharacterCard });
+            //winter has highest HP, so should deal the damamage
+            AddCannotDealNextDamageTrigger(tiamat, storm);
+            AddCannotDealNextDamageTrigger(tiamat, inferno);
             PlayCard(tiamat, "SkyBreaker");
             QuickHPCheck(0, -5, -5, -5);
         }
