@@ -459,5 +459,66 @@ namespace CauldronTests
             QuickShuffleCheck(0); // Tango's deck was not shuffled by Opportunist card
         }
 
+        [Test]
+        public void TestPerfectFocusDrawCard()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                PerfectFocusCardController.Identifier,
+                DisablingShotCardController.Identifier,
+                FarsightCardController.Identifier
+            });
+
+            StartGame();
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+
+            QuickHPStorage(mdp);
+
+            DecisionSelectTarget = mdp;
+            DecisionSelectCard = GetCardFromHand(DisablingShotCardController.Identifier);
+            DecisionsYesNo = new[] {true, false};
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, PerfectFocusCardController.Identifier);
+            UsePower(TangoOne); // Snipe power
+
+            // Assert
+            QuickHPCheck(-6); // Disabling Shot (2 + Perfect Focus +3), Snipe (1)
+        }
+
+        [Test]
+        public void TestPerfectFocusDontDrawCard()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                PerfectFocusCardController.Identifier,
+                DisablingShotCardController.Identifier,
+                FarsightCardController.Identifier
+            });
+
+            StartGame();
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+
+            QuickHPStorage(mdp);
+
+            DecisionSelectTarget = mdp;
+            DecisionYesNo = false;
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, PerfectFocusCardController.Identifier);
+            UsePower(TangoOne); // Snipe power
+
+            // Assert
+            QuickHPCheck(-4); // Disabling Shot (2 + Perfect Focus +3), Snipe (1)
+        }
+
     }
 }
