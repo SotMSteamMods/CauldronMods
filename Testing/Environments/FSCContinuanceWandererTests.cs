@@ -276,6 +276,42 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestSuperimposedRealitiesOtherPlayPhase()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [Test()]
+        public void TestSuperimposedRealitiesOtherPowerPhase()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [Test()]
+        public void TestSuperimposedRealitiesOtherDrawPhase()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [Test()]
+        public void TestSuperimposedRealitiesPlayAction()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [Test()]
+        public void TestSuperimposedRealitiesPowerAction()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [Test()]
+        public void TestSuperimposedRealitiesDrawAction()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [Test()]
         public void TestTemporalAccelerationDestroySelf()
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
