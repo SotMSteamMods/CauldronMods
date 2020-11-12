@@ -331,6 +331,7 @@ namespace CauldronTests
             QuickHandCheck(0); // Discard Ghost Reactor (-1), Draw a card (+1)
         }
 
+        // TODO: Refine
         [Test]
         public void TestInfiltrate()
         {
@@ -349,6 +350,37 @@ namespace CauldronTests
             GoToStartOfTurn(TangoOne);
             PlayCardFromHand(TangoOne, InfiltrateCardController.Identifier);
 
+
+        }
+
+        [Test]
+        public void TestLineEmUp()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                LineEmUpCardController.Identifier
+            });
+
+            StartGame();
+
+            Card bb = PlayCard(baron, "BladeBattalion");
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+
+            SetHitPoints(bb, 1);
+            QuickHPStorage(mdp);
+            DecisionSelectTargets = new[] {bb, mdp};
+
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, LineEmUpCardController.Identifier);
+            UsePower(TangoOne);
+
+            // Assert
+            QuickHPCheck(-1);
 
         }
 
