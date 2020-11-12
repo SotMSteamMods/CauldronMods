@@ -277,66 +277,6 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestSuperimposedRealitiesOtherPlayPhase()
-        {
-            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
-            StartGame();
-            Card thokk = GetCard("Thokk");
-            PutInHand(thokk);
-            //Going to Legacy to prevent suprise Select Card Decisions from villain
-            GoToEndOfTurn(legacy);
-            PlayCard("SuperimposedRealities");
-
-            DecisionYesNo = true;
-            DecisionSelectCard = thokk;
-
-            GoToPlayCardPhase(ra);
-            AssertInTrash(thokk);
-            AssertCannotPerformPhaseAction();
-        }
-
-        [Test()]
-        public void TestSuperimposedRealitiesOtherPowerPhase()
-        {
-            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
-            StartGame();
-            Card thokk = GetCard("Thokk");
-            PutInHand(thokk);
-            //Going to Legacy to prevent suprise Decisions from villain
-            GoToEndOfTurn(legacy);
-            PlayCard("SuperimposedRealities");
-
-            //Legacy might play Inspiring Presence or Surge of Strength and throw off the HP check
-            DecisionYesNo = false;
-            GoToUsePowerPhase(ra);
-
-            QuickHPStorage(haka);
-            DealDamage(legacy, haka, 2, DamageType.Melee);
-            QuickHPCheck(-3);
-            AssertCannotPerformPhaseAction();
-        }
-
-        [Test()]
-        public void TestSuperimposedRealitiesOtherDrawPhase()
-        {
-            SetupGameController("BaronBlade", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
-            PutOnDeck("MobileDefensePlatform");
-            StartGame();
-            //Going to Legacy to prevent suprise Decisions from villain
-            GoToEndOfTurn(legacy);
-            Card thokk = GetCard("Thokk");
-            PutInHand(thokk);
-            PlayCard("SuperimposedRealities");
-            DecisionYesNo = true;
-            DecisionSelectCard = thokk;
-
-            QuickHandStorage(legacy);
-            GoToDrawCardPhase(ra);
-            //Since Ra did not play or power he gets to draw 2 cards
-            QuickHandCheck(2);
-        }
-
-        [Test()]
         public void TestSuperimposedRealitiesPlayAction()
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");

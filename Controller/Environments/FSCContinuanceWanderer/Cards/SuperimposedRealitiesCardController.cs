@@ -40,12 +40,12 @@ namespace Cauldron.FSCContinuanceWanderer
         {
             //Whenever another hero would play a card, use a power, or draw a card, instead the hero next to this card does that respective action.
             //When a Play Card/Use Power/Draw Card phase is entered then give the Superimposed target those actions instead
-            base.AddPhaseChangeTrigger((TurnTaker turnTaker) => turnTaker.IsHero && turnTaker != cardThisIsNextTo.NativeDeck.OwnerTurnTaker, (Phase phase) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(phase), (PhaseChangeAction action) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(action.ToPhase.Phase), this.SuperimposedPhaseResponse, new TriggerType[] { TriggerType.SetPhaseActionCount, TriggerType.PreventPhaseAction }, TriggerTiming.After);
-            //If something were to make a hero play. Instead the Superimposed plays.
+            //base.AddPhaseChangeTrigger((TurnTaker turnTaker) => turnTaker.IsHero && turnTaker != cardThisIsNextTo.NativeDeck.OwnerTurnTaker, (Phase phase) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(phase), (PhaseChangeAction action) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(action.ToPhase.Phase), this.SuperimposedPhaseResponse, new TriggerType[] { TriggerType.SetPhaseActionCount, TriggerType.PreventPhaseAction }, TriggerTiming.After);
+            //If a hero were to hero play. Instead the Superimposed plays.
             base.AddTrigger<PlayCardAction>((PlayCardAction action) => action.TurnTakerController != superimposedTurnTakerController && action.TurnTakerController.IsHero, SuperimposePlayResponse, TriggerType.PlayCard, TriggerTiming.Before);
-            //If something were to make a hero use a power. Instead the Superimposed plays.
+            //If a hero were to use a power. Instead the Superimposed plays.
             base.AddTrigger<UsePowerAction>((UsePowerAction action) => action.HeroUsingPower.TurnTaker != superimposedTurnTaker, SuperimposePowerResponse, TriggerType.UsePower, TriggerTiming.Before);
-            //If something were to make a hero draw a card. Instead the Superimposed does.
+            //If a hero were todraw a card. Instead the Superimposed does.
             base.AddTrigger<DrawCardAction>((DrawCardAction action) => action.HeroTurnTaker != superimposedTurnTaker, SuperimposeDrawResponse, TriggerType.DrawCard, TriggerTiming.Before);
 
             //At the start of the environment turn, destroy this card.
