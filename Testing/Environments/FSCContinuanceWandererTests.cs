@@ -1,34 +1,28 @@
-﻿using Cauldron.FSCContinuanceWanderer;
-
+﻿using Handelabra.Sentinels.Engine.Controller;
+using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
 using NUnit.Framework;
-using Handelabra.Sentinels.Engine.Controller;
-using Handelabra.Sentinels.Engine.Model;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CauldronTests
 {
     [TestFixture()]
     class FSCContinuanceWandererTests : BaseTest
     {
-        private string[] baseGame = new string[] { "Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer" };
-        private string[] envFirstGame = new string[] { "Cauldron.FSCContinuanceWanderer", "Spite", "Legacy", "Ra", "Haka" };
-        private string[] vengeanceGame = new string[] { "ErmineTeam", "Legacy", "BiomancerTeam", "Ra", "FrictionTeam", "Haka", "Cauldron.FSCContinuanceWanderer" };
         protected TurnTakerController fsc { get { return FindEnvironment(); } }
 
         [Test()]
         public void TestLoadFSC()
         {
-            SetupGameController(baseGame);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
         }
 
         [Test()]
         public void TestFSCDecklist()
         {
-            SetupGameController(baseGame);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             Card borg = GetCard("CombatCyborg");
             AssertIsTarget(borg, 4);
             AssertCardHasKeyword(borg, "time monster", false);
@@ -69,7 +63,7 @@ namespace CauldronTests
         [Test()]
         public void TestCombatCyborgEndDamageHero()
         {
-            SetupGameController(baseGame);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             GoToPlayCardPhase(env);
             QuickHPStorage(ra, legacy, haka, spite);
@@ -82,7 +76,7 @@ namespace CauldronTests
         [Test()]
         public void TestCombatCyborgEndNotDamageEnvironment()
         {
-            SetupGameController(baseGame);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             Card intrusion = GetCard("ParadoxIntrusion");
             GoToPlayCardPhase(env);
@@ -97,7 +91,7 @@ namespace CauldronTests
         [Test()]
         public void TestCombatCyborgReduceDamage()
         {
-            SetupGameController(baseGame);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             Card intrusion = GetCard("ParadoxIntrusion");
             Card borg = GetCard("CombatCyborg");
@@ -115,7 +109,7 @@ namespace CauldronTests
         [Test()]
         public void TestHeartOfTheWandererDestroySelf()
         {
-            SetupGameController(baseGame);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             Card heart = GetCard("HeartOfTheWanderer");
             PlayCard(heart);
@@ -129,7 +123,7 @@ namespace CauldronTests
         [Test()]
         public void TestHeartOfTheWandererDiscard()
         {
-            SetupGameController(baseGame);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             Card heart = GetCard("HeartOfTheWanderer");
             Card lab = GetCard("LabRaid");
@@ -153,7 +147,7 @@ namespace CauldronTests
         [Test()]
         public void TestHeartOfTheWandererReturn()
         {
-            SetupGameController(baseGame);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             Card heart = GetCard("HeartOfTheWanderer");
             DecisionMoveCardDestinations = new MoveCardDestination[] {
@@ -175,7 +169,7 @@ namespace CauldronTests
         [Test()]
         public void TestHeartOfTheWandererTeamVillainDiscard()
         {
-            SetupGameController(vengeanceGame);
+            SetupGameController("ErmineTeam", "Legacy", "BiomancerTeam", "Ra", "FrictionTeam", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             Card heart = GetCard("HeartOfTheWanderer");
             DecisionMoveCardDestinations = new MoveCardDestination[] {
@@ -270,7 +264,7 @@ namespace CauldronTests
         [Test()]
         public void TestTemporalAccelerationDestroySelf()
         {
-            SetupGameController(baseGame);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             Card accel = GetCard("TemporalAcceleration");
             GoToStartOfTurn(haka);
@@ -306,7 +300,7 @@ namespace CauldronTests
         [Test()]
         public void TestTemporalResetDestroySelf()
         {
-            SetupGameController(baseGame);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             Card reset = GetCard("TemporalReset");
             GoToStartOfTurn(haka);
@@ -353,7 +347,7 @@ namespace CauldronTests
         [Test()]
         public void TestTemporalReversalDestroySelf()
         {
-            SetupGameController(baseGame);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             Card rev = GetCard("TemporalReversal");
             GoToStartOfTurn(haka);
@@ -389,7 +383,7 @@ namespace CauldronTests
         [Test()]
         public void TestTemporalSlipstreamDestroySelf()
         {
-            SetupGameController(baseGame);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             Card slip = GetCard("TemporalSlipstream");
             GoToStartOfTurn(haka);
@@ -402,18 +396,49 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestTimeFreeze()
+        public void TestTimeFreezeNotTriggerPhase()
         {
-            SetupGameController("LaCapitan", "CaptainCosmic", "Parse", "Haka", "Cauldron.FSCContinuanceWanderer");
+            Game game = new Game(new string[] { "LaCapitan", "CaptainCosmic", "Parse", "Haka", "Cauldron.FSCContinuanceWanderer" });
+            SetupGameController(game);
             StartGame();
             Card slip = GetCard("TimeFreeze");
             Card crest = GetCard("CosmicCrest");
             PlayCard(crest);
             DecisionSelectCard = cosmic.CharacterCard;
+            GoToEndOfTurn(capitan);
             //Play this card next to a hero.
             PlayCard(slip);
             //That hero skips their turns...
-            GoToStartOfTurn(cosmic);
+            this.RunCoroutine(GameController.EnterNextTurnPhase());
+            AssertTurnPhaseDetails(game.ActiveTurnPhase, capitan, Phase.End);
+            this.RunCoroutine(GameController.EnterNextTurnPhase());
+            AssertTurnPhaseDetails(game.ActiveTurnPhase, parse, Phase.Start);
+            //...and targets in their play are are immune to damage.
+            QuickHPStorage(cosmic.CharacterCard, crest, parse.CharacterCard);
+            DealDamage(capitan, cosmic, 2, DamageType.Melee);
+            DealDamage(capitan, crest, 2, DamageType.Melee);
+            DealDamage(capitan, parse, 2, DamageType.Melee);
+            QuickHPCheck(0, 0, -2);
+        }
+
+        [Test()]
+        public void TestTimeFreezeTriggerPhase()
+        {
+            Game game = new Game(new string[] { "LaCapitan", "CaptainCosmic", "Parse", "Haka", "Cauldron.FSCContinuanceWanderer" });
+            SetupGameController(game);
+            StartGame();
+            Card slip = GetCard("TimeFreeze");
+            Card crest = GetCard("CosmicCrest");
+            PlayCard(crest);
+            DecisionSelectCard = cosmic.CharacterCard;
+            GoToPlayCardPhase(capitan);
+            //Play this card next to a hero.
+            PlayCard(slip);
+            //That hero skips their turns...
+            this.RunCoroutine(GameController.EnterNextTurnPhase());
+            AssertTurnPhaseDetails(game.ActiveTurnPhase, capitan, Phase.End);
+            this.RunCoroutine(GameController.EnterNextTurnPhase());
+            AssertTurnPhaseDetails(game.ActiveTurnPhase, parse, Phase.Start);
             //...and targets in their play are are immune to damage.
             QuickHPStorage(cosmic.CharacterCard, crest, parse.CharacterCard);
             DealDamage(capitan, cosmic, 2, DamageType.Melee);
@@ -425,7 +450,7 @@ namespace CauldronTests
         [Test()]
         public void TestTimeFreezeDestroySelf()
         {
-            SetupGameController(baseGame);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             Card freeze = GetCard("TimeFreeze");
             GoToStartOfTurn(haka);
@@ -445,7 +470,7 @@ namespace CauldronTests
         [Test()]
         public void TestVortexGlitchDestroySelf()
         {
-            SetupGameController(baseGame);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             Card glitch = GetCard("VortexGlitch");
             GoToStartOfTurn(haka);
@@ -469,7 +494,7 @@ namespace CauldronTests
         [Test()]
         public void TestVortexInterferenceDestroySelf()
         {
-            SetupGameController(baseGame);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             Card interference = GetCard("VortexInterference");
             GoToStartOfTurn(haka);
@@ -493,7 +518,7 @@ namespace CauldronTests
         [Test()]
         public void TestVortexSurgeDestroySelf()
         {
-            SetupGameController(baseGame);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             Card surge = GetCard("VortexSurge");
             GoToStartOfTurn(haka);
