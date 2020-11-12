@@ -1191,15 +1191,15 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestReptiliatnAspect()
+        public void TestReptilianAspect()
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            DealDamage(legacy, inferno, 5, DamageType.Melee);
-            DealDamage(legacy, storm, 5, DamageType.Melee);
-            DealDamage(legacy, winter, 5, DamageType.Melee);
-            DealDamage(legacy, haka, 5, DamageType.Melee);
-            QuickHPStorage(new Card[] { inferno, storm, winter, haka.CharacterCard });
+            SetHitPoints(inferno, 35);
+            SetHitPoints(storm, 35);
+            SetHitPoints(winter, 35);
+            SetHitPoints(haka.CharacterCard, 20);
+            QuickHPStorage(inferno, storm, winter, haka.CharacterCard);
             //Reptilian Aspect heals all heads for H - 2 at end of turn
             PlayCard(tiamat, "ReptilianAspect");
             GoToEndOfTurn(tiamat);
