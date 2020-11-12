@@ -1311,5 +1311,37 @@ namespace CauldronTests
             AssertOnTopOfDeck(moved);
         }
 
+
+        [Test]
+        public void SolomonsFire()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+            var mdp = GetMobileDefensePlatform().Card;
+            AssertInPlayArea(baron, mdp);
+
+            GoToPlayCardPhase(Malichae);
+
+            string djinn = "Reshiel";
+
+            var card = PlayCard(djinn);
+            AssertInPlayArea(Malichae, card);
+
+            DecisionNextToCard = mdp;
+
+            var fire = PlayCard("SolomonsFire");
+            AssertNextToCard(fire, mdp);
+
+            DecisionSelectCards = new Card[] { mdp, fanatic.CharacterCard };
+            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card, mdp);
+            GoToEndOfTurn(Malichae);
+            QuickHPCheck(0, 0, 0, -1, 0, -2);
+            AssertInPlayArea(Malichae, card);
+            AssertNextToCard(fire, mdp);
+
+            DestroyCard(mdp);
+            AssertInTrash(Malichae, fire);
+        }
+
     }
 }
