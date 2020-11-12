@@ -40,7 +40,7 @@ namespace Cauldron.FSCContinuanceWanderer
         {
             //Whenever another hero would play a card, use a power, or draw a card, instead the hero next to this card does that respective action.
             //When a Play Card/Use Power/Draw Card phase is entered then give the Superimposed target those actions instead
-            base.AddPhaseChangeTrigger((TurnTaker turnTaker) => turnTaker.IsHero && turnTaker != cardThisIsNextTo.NativeDeck.OwnerTurnTaker, (Phase phase) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(phase), null, this.SuperimposedPhaseResponse, new TriggerType[] { TriggerType.SetPhaseActionCount, TriggerType.PreventPhaseAction }, TriggerTiming.After);
+            base.AddPhaseChangeTrigger((TurnTaker turnTaker) => turnTaker.IsHero && turnTaker != cardThisIsNextTo.NativeDeck.OwnerTurnTaker, (Phase phase) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(phase), (PhaseChangeAction action) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(action.ToPhase.Phase), this.SuperimposedPhaseResponse, new TriggerType[] { TriggerType.SetPhaseActionCount, TriggerType.PreventPhaseAction }, TriggerTiming.After);
             //If something were to make a hero play. Instead the Superimposed plays.
             base.AddTrigger<PlayCardAction>((PlayCardAction action) => action.TurnTakerController != superimposedTurnTakerController && action.TurnTakerController.IsHero, SuperimposePlayResponse, TriggerType.PlayCard, TriggerTiming.Before);
             //If something were to make a hero use a power. Instead the Superimposed plays.
@@ -62,7 +62,7 @@ namespace Cauldron.FSCContinuanceWanderer
             {
                 coroutine = base.SelectAndPlayCardsFromHand(superimposedTurnTakerController, actionCount, true);
                 CannotPlayCardsStatusEffect cannotPlayCardsStatusEffect = new CannotPlayCardsStatusEffect();
-                cannotPlayCardsStatusEffect.TurnTakerCriteria.IsSpecificTurnTaker = superimposedTurnTaker;
+                cannotPlayCardsStatusEffect.TurnTakerCriteria.IsSpecificTurnTaker = action.FromPhase.TurnTaker;
                 cannotPlayCardsStatusEffect.UntilEndOfPhase(base.TurnTaker, turnPhase.Phase);
                 coroutine2 = base.AddStatusEffect(cannotPlayCardsStatusEffect);
             }
@@ -73,7 +73,7 @@ namespace Cauldron.FSCContinuanceWanderer
                     coroutine = base.SelectAndUsePower(base.FindCardController(cardThisIsNextTo), true);
                 }
                 CannotUsePowersStatusEffect cannotUsePowersStatusEffect = new CannotUsePowersStatusEffect();
-                cannotUsePowersStatusEffect.TurnTakerCriteria.IsSpecificTurnTaker = superimposedTurnTaker;
+                cannotUsePowersStatusEffect.TurnTakerCriteria.IsSpecificTurnTaker = action.FromPhase.TurnTaker;
                 cannotUsePowersStatusEffect.UntilEndOfPhase(base.TurnTaker, turnPhase.Phase);
                 coroutine2 = base.AddStatusEffect(cannotUsePowersStatusEffect);
             }
@@ -82,7 +82,7 @@ namespace Cauldron.FSCContinuanceWanderer
                 coroutine = base.DrawCards(superimposedTurnTakerController, actionCount, true);
                 PreventPhaseActionStatusEffect preventPhaseActionStatusEffect = new PreventPhaseActionStatusEffect();
                 preventPhaseActionStatusEffect.ToTurnPhaseCriteria.Phase = new Phase?(Phase.DrawCard);
-                preventPhaseActionStatusEffect.ToTurnPhaseCriteria.TurnTaker = superimposedTurnTaker;
+                preventPhaseActionStatusEffect.ToTurnPhaseCriteria.TurnTaker = action.FromPhase.TurnTaker;
                 preventPhaseActionStatusEffect.UntilEndOfPhase(base.TurnTaker, turnPhase.Phase);
                 coroutine2 = base.AddStatusEffect(preventPhaseActionStatusEffect);
             }
@@ -102,7 +102,7 @@ namespace Cauldron.FSCContinuanceWanderer
         private IEnumerator SuperimposePlayResponse(PlayCardAction action)
         {
             IEnumerator coroutine = CancelAction(action);
-            IEnumerator coroutine2 = base.SelectAndPlayCardFromHand(superimposedTurnTakerController);
+            IEnumerator coroutine2 = base.SelectAndPlayCardFromHand(superimposedTurnTakerController, false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -119,7 +119,7 @@ namespace Cauldron.FSCContinuanceWanderer
         private IEnumerator SuperimposePowerResponse(UsePowerAction action)
         {
             IEnumerator coroutine = CancelAction(action);
-            IEnumerator coroutine2 = base.SelectAndUsePower(base.FindCardController(cardThisIsNextTo), true);
+            IEnumerator coroutine2 = base.SelectAndUsePower(base.FindCardController(cardThisIsNextTo), false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -136,7 +136,7 @@ namespace Cauldron.FSCContinuanceWanderer
         private IEnumerator SuperimposeDrawResponse(DrawCardAction action)
         {
             IEnumerator coroutine = CancelAction(action);
-            IEnumerator coroutine2 = base.DrawCards(superimposedTurnTakerController, 1, true);
+            IEnumerator coroutine2 = base.DrawCards(superimposedTurnTakerController, 1, false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

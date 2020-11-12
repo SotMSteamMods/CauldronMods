@@ -2,6 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -278,37 +279,112 @@ namespace CauldronTests
         [Test()]
         public void TestSuperimposedRealitiesOtherPlayPhase()
         {
-            Assert.IsTrue(false);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+            Card thokk = GetCard("Thokk");
+            PutInHand(thokk);
+            //Going to Legacy to prevent suprise Select Card Decisions from villain
+            GoToEndOfTurn(legacy);
+            PlayCard("SuperimposedRealities");
+
+            DecisionYesNo = true;
+            DecisionSelectCard = thokk;
+
+            GoToPlayCardPhase(ra);
+            AssertInTrash(thokk);
+            AssertCannotPerformPhaseAction();
         }
 
         [Test()]
         public void TestSuperimposedRealitiesOtherPowerPhase()
         {
-            Assert.IsTrue(false);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+            Card thokk = GetCard("Thokk");
+            PutInHand(thokk);
+            //Going to Legacy to prevent suprise Decisions from villain
+            GoToEndOfTurn(legacy);
+            PlayCard("SuperimposedRealities");
+
+            //Legacy might play Inspiring Presence or Surge of Strength and throw off the HP check
+            DecisionYesNo = false;
+            GoToUsePowerPhase(ra);
+
+            QuickHPStorage(haka);
+            DealDamage(legacy, haka, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+            AssertCannotPerformPhaseAction();
         }
 
         [Test()]
         public void TestSuperimposedRealitiesOtherDrawPhase()
         {
-            Assert.IsTrue(false);
+            SetupGameController("BaronBlade", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+            PutOnDeck("MobileDefensePlatform");
+            StartGame();
+            //Going to Legacy to prevent suprise Decisions from villain
+            GoToEndOfTurn(legacy);
+            Card thokk = GetCard("Thokk");
+            PutInHand(thokk);
+            PlayCard("SuperimposedRealities");
+            DecisionYesNo = true;
+            DecisionSelectCard = thokk;
+
+            QuickHandStorage(legacy);
+            GoToDrawCardPhase(ra);
+            //Since Ra did not play or power he gets to draw 2 cards
+            QuickHandCheck(2);
         }
 
         [Test()]
         public void TestSuperimposedRealitiesPlayAction()
         {
-            Assert.IsTrue(false);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+            Card thokk = GetCard("Thokk");
+            Card blast = GetCard("FireBlast");
+            PutInHand(thokk);
+            //Going to Legacy to prevent suprise Select Card Decisions from villain
+            GoToEndOfTurn(legacy);
+            PlayCard("SuperimposedRealities");
+
+            DecisionSelectCard = thokk;
+            PlayCard(blast);
+            AssertInTrash(thokk);
+            AssertNotInTrash(blast);
         }
 
         [Test()]
         public void TestSuperimposedRealitiesPowerAction()
         {
-            Assert.IsTrue(false);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+            Card thokk = GetCard("Thokk");
+            PutInHand(thokk);
+            //Going to Legacy to prevent suprise Decisions from villain
+            GoToEndOfTurn(legacy);
+            PlayCard("SuperimposedRealities");
+
+            UsePower(ra);
+            //checking Spite because Ra's power should fail and deal no damage
+            QuickHPStorage(haka, spite);
+            DealDamage(legacy, haka, 2, DamageType.Melee);
+            QuickHPCheck(-3, 0);
         }
 
         [Test()]
         public void TestSuperimposedRealitiesDrawAction()
         {
-            Assert.IsTrue(false);
+            SetupGameController("BaronBlade", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+            PutOnDeck("MobileDefensePlatform");
+            StartGame();
+            PlayCard("SuperimposedRealities");
+            Card bolster = GetCard("BolsterAllies");
+            PutInHand(bolster);
+            QuickHandStorage(legacy);
+            PlayCard(bolster);
+            //Draw one per hero, but played Bolster Allies
+            QuickHandCheck(2);
         }
 
         [Test()]
