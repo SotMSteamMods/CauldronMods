@@ -644,6 +644,47 @@ namespace CauldronTests
 
             // Assert
             QuickHPCheck(-2);
+        }
+
+        [Test]
+        public void TestWetWork()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                WetWorkCardController.Identifier
+            });
+
+            // Fill trash with a few cards so we can assert trash has changed after we shuffle some of it into the deck
+            PutInTrash(TangoOne, GetCard(ChameleonArmorCardController.Identifier));
+            PutInTrash(TangoOne, GetCard(DisablingShotCardController.Identifier));
+            PutInTrash(TangoOne, GetCard(GhostReactorCardController.Identifier));
+
+
+            StartGame();
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+            QuickShuffleStorage(TangoOne, ra, baron, env);
+            QuickHPStorage(mdp);
+
+            DecisionSelectTarget = mdp;
+            DecisionSelectCards = new[]
+            {
+                GetCard(DisablingShotCardController.Identifier), 
+                GetCard(GhostReactorCardController.Identifier),
+                mdp
+            };
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, WetWorkCardController.Identifier);
+
+
+            // Assert
+            QuickHPCheck(-2); // Wet Work (2)
+            Assert.AreEqual(2, GetNumberOfCardsInTrash(TangoOne)); // (ChameleonArmorCard, WetWork)
+            QuickShuffleCheck(1, 1, 1, 1);
 
         }
 
