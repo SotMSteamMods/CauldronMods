@@ -85,7 +85,6 @@ namespace Cauldron.Malichae
             //me and you are both in play
             //you are moving to the hand or trash
             return (mca.CardToMove.Identifier == _requiredIdentifier || mca.CardToMove.Identifier == _attachIdentifier) &&
-                   mca.Origin == this.Card.Location &&
                    mca.Origin.IsHeroPlayAreaRecursive &&
                    (mca.Destination.IsHand || mca.Destination.IsTrash);
         }

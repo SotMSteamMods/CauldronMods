@@ -7,6 +7,7 @@ using Cauldron.Malichae;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cauldron.LadyOfTheWood;
 
 namespace CauldronTests
 {
@@ -1363,6 +1364,44 @@ namespace CauldronTests
 
             QuickHandCheck(1, 0, 0);
             QuickShuffleCheck(1, 0, 0);
+        }
+
+        [Test]
+        public void ZephaerensCompass()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            var ongoing = PlayCard("BacklashField");
+            var envCard = PlayCard("PlummetingMonorail");
+
+            GoToPlayCardPhase(Malichae);
+
+            var card = PlayCard("ZephaerensCompass");
+            AssertInPlayArea(Malichae, card);
+
+            string djinn = "Reshiel";
+
+            var target = PlayCard(djinn);
+            DecisionMoveCard = target;
+            var high = GetCard("High" + djinn);
+            PlayCard(high);
+            AssertNextToCard(high, target);
+
+            GoToUsePowerPhase(Malichae);
+
+            QuickHandStorage(Malichae, ra, fanatic);
+
+            DecisionMoveCard = target;
+            DecisionDestroyCards = new Card[] { ongoing, envCard };
+            
+            UsePower(card);
+
+            QuickHandCheck(1, 0, 0);
+            AssertInHand(target);
+            AssertInTrash(high);
+            AssertInTrash(ongoing);
+            AssertInTrash(envCard);
         }
 
     }
