@@ -1,0 +1,87 @@
+﻿using Handelabra.Sentinels.Engine.Controller;
+using Handelabra.Sentinels.Engine.Model;
+using Handelabra.Sentinels.UnitTest;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
+using Cauldron.StSimeonsCatacombs;
+
+namespace CauldronTests
+{
+    [TestFixture()]
+    public class StSimeonsCatacombsTests : BaseTest
+    {
+
+        #region StSimeonsCatacombsHelperFunctions
+
+        protected TurnTakerController catacombs { get { return FindEnvironment(); } }
+
+        private bool IsRoom(Card card)
+        {
+            return card != null && base.GameController.DoesCardContainKeyword(card, "room", false, false);
+        }
+
+        #endregion
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Room_IsRoom([Values("TwistingPassages", "SacrificialShrine", "TortureChamber", "CursedVault", "Aqueducts")] string room)
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+
+            GoToPlayCardPhase(catacombs);
+
+            Card card = PlayCard(room);
+            AssertInPlayArea(catacombs, card);
+            AssertCardHasKeyword(card, "room", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Ghost_IsGhost([Values("TerriblePresence", "DarkPassenger", "Possessor", "ScurryingEvil", "CoalKid", "BreathStealer", "Poltergeist", "LabyrinthGuide")] string ghost)
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+
+            GoToPlayCardPhase(catacombs);
+
+            Card card = PlayCard(ghost);
+            AssertInPlayArea(catacombs, card);
+            AssertCardHasKeyword(card, "ghost", false);
+        }
+
+        [Test()]
+        public void TestCatacombsWorks()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+
+            Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
+
+        }
+
+        [Test()]
+        public void TestCatacombsStartOfGame_MoveRoomsUnder()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            List<Card> roomCards = catacombs.TurnTaker.Deck.Cards.Where(c => this.IsRoom(c)).ToList();
+            List<Card> nonRoomCards = catacombs.TurnTaker.Deck.Cards.Where(c => !this.IsRoom(c)).ToList();
+
+
+            //check that all rooms have been moved to under the instructions card
+            foreach (Card c in roomCards)
+            {
+                AssertUnderCard(instructions, c);
+            }
+
+            //check that all non-rooms are still in the deck
+            foreach (Card c in nonRoomCards)
+            {
+                AssertInDeck(catacombs, c);
+            }
+
+        }
+    }
+}
