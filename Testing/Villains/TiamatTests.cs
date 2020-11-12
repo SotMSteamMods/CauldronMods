@@ -1135,6 +1135,7 @@ namespace CauldronTests
             Card lightning = GetCard("ElementOfLightning");
             Card ward = GetCard("AncientWard");
             PutOnDeck(tiamat, new Card[] { ice, ward, fire, lightning });
+
             AssertNumberOfCardsInTrash(tiamat, 0);
 
             //Mana Charge discards the first 3 spells from the deck and returns all other revealed cards
@@ -1152,7 +1153,10 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            PutInTrash(tiamat, new Card[] { GetCard("ElementalFrenzy"), GetCard("ElementalFrenzy", 1) });
+
+
+            List<Card> frenzyCards = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementalFrenzy").Take(2)).ToList();
+            PutInTrash(tiamat, frenzyCards);
 
             //Mana Charge shuffles all copies of Elemental Frenzy in the trash to the deck
             QuickShuffleStorage(tiamat);
@@ -1160,6 +1164,30 @@ namespace CauldronTests
             AssertNumberOfCardsInTrash(tiamat, 4);
             QuickShuffleCheck(2);
             AssertNumberOfCardsInRevealed(tiamat, 0);
+            AssertInDeck(tiamat, frenzyCards);
+        }
+
+        [Test()]
+        public void TestManaChargeElementalFrenzyShuffle_OnlyOwnDeck()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+
+            List<Card> frenzyCards = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementalFrenzy").Take(1)).ToList();
+            PutInTrash(tiamat, frenzyCards);
+
+            List<Card> frenzyCardsOther = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementalFrenzy" && !frenzyCards.Contains(c)).Take(1)).ToList();
+            PutInTrash(legacy, frenzyCardsOther);
+
+            //Mana Charge shuffles all copies of Elemental Frenzy in the trash to the deck
+            QuickShuffleStorage(tiamat);
+            PlayCard(tiamat, "ManaCharge");
+            AssertNumberOfCardsInTrash(tiamat, 4);
+            QuickShuffleCheck(2);
+            AssertNumberOfCardsInRevealed(tiamat, 0);
+            AssertInDeck(tiamat, frenzyCards);
+            AssertInTrash(legacy, frenzyCardsOther);
         }
 
         [Test()]
