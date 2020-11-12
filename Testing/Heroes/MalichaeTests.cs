@@ -1349,7 +1349,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
             StartGame();
-            
+
             GoToPlayCardPhase(Malichae);
 
             var moved = PutInDeck("Reshiel");
@@ -1394,7 +1394,7 @@ namespace CauldronTests
 
             DecisionMoveCard = target;
             DecisionDestroyCards = new Card[] { ongoing, envCard };
-            
+
             UsePower(card);
 
             QuickHandCheck(1, 0, 0);
@@ -1402,6 +1402,32 @@ namespace CauldronTests
             AssertInTrash(high);
             AssertInTrash(ongoing);
             AssertInTrash(envCard);
+        }
+
+
+        [Test]
+        public void PrismaticVision()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            DiscardAllCards(Malichae);
+
+            var cards = StackDeck(Malichae, new[] { "Bathiel", "Unshackled", "BaitAndSwitch" }).ToList();
+            var card = PutInHand("PrismaticVision");
+
+            var toPlay = cards.First(c => c.Identifier == "Bathiel");
+            var toHand = cards.First(c => c.Identifier == "Unshackled");
+            var toTrash = cards.First(c => c.Identifier == "BaitAndSwitch");
+
+            DecisionSelectCards = new Card[] { toPlay, toHand, toPlay };
+            QuickHandStorage(Malichae, ra, fanatic);
+            PlayCard(card);
+            AssertInTrash(card);
+            AssertInPlayArea(Malichae, toPlay);
+            AssertInHand(Malichae, toHand);
+            AssertInTrash(Malichae, toTrash);
+            QuickHandCheck(0, 0, 0);
         }
 
     }
