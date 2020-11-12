@@ -1,28 +1,48 @@
 # CauldronMods
-Mod adaptations of the Cauldron decks for Sentinels of the Multiverse for Steam Workshop
+
+**What is the Cauldron**
+The Cauldron is a custom fan expansion for the [Sentinels of the Multiverse](http://sentinelsofthemultiverse.com/)
+cooperative card game by Greater Than Games.  These decks were designed by Matthew Bishop (@Tosx), his roommate, and his brother.
+The base set was begun around 2013, and the last set was completed in 2019.
+
+This project will bring the fantastic Cauldron Decks to [Sentinels of the Multiverse Digital](https://store.steampowered.com/app/337150/Sentinels_of_the_Multiverse/) as a Steam Workshop Mod.
+
 ----------------------------------------------------------
 
-Link to Cauldron website: https://cauldron4.webnode.com/
+Links:
+- Get the Game: [Steam](https://store.steampowered.com/app/337150/Sentinels_of_the_Multiverse/)
+- Cauldron website: https://cauldron4.webnode.com/
+- Trello board: https://trello.com/b/Doyff7gB/cauldron-sotm-mod
+- BGG Forum: https://boardgamegeek.com/thread/2532898/mod-sentinels-digital 
 
-Link to Trello board: https://trello.com/b/Doyff7gB/cauldron-sotm-mod
+To get started helping out take a look at:
+- [Code of Conduct](./Docs/CODE_OF_CONDUCT.md)
+- [Contributing](./Docs/CONTRIBUTING.md)
 
-Link to BGG Forum: https://boardgamegeek.com/thread/2532898/mod-sentinels-digital 
+**How to I play this mod?**
 
-Currently included decks:
+You can't.
+Handelabra is implementing Mod support now.
+You can follow the development on [Handelabra's Discord](https://discordapp.com/invite/handelabra)
+channel with [Weekly Dev. Streams](https://www.youtube.com/playlist?list=PLGPBmjNUB43ick6QwxGIOMFFN5yKuTvQU).
 
-HEROES:
+**What are you working on them**
 
-Baccarat
+We are working to implement the core Cauldron decks so that they are ready to play out of the gate
+when mods are available.
 
-Lady of the Wood
+- HEROES:
+  - Baccarat
+  - Doc Havoc - In Progress
+  - Lady of the Wood
+  - Necro
+  - The Knight
+  - The Stranger
 
-Necro
+- VILLAINS:
+  - Anathema
+  - Tiamat - In Progress
 
-
-VILLAINS:
-
-Anathema
-
-ENVIRONMENTS:
-
-The Wandering Isle
+- ENVIRONMENTS:
+  - The Wandering Isle
+  - FSC Continuance Wanderer - In Progress

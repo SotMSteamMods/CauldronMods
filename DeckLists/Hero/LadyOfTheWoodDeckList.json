@@ -218,7 +218,7 @@
                 "DealDamageCold"
             ],
             "powers": [
-                "{LadyOfTheWood} deals 1 target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage."
+                "{LadyOfTheWood} deals one target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage."
             ],
             "flavorQuotes": [
                 {
@@ -277,6 +277,9 @@
                 "HasPower",
                 "DrawCardNow"
             ],
+            "body": [
+                   "The first time {LadyOfTheWood} would be dealt 1 damage each turn, she regains 1 HP instead."      
+			],
             "powers": [
                 "Draw a card."
             ],
@@ -302,8 +305,7 @@
                 "GainHP"
             ],
             "body": [
-                "Whenever {LadyOfTheWood} regains HP, you may select a target that hasn't been dealt damage this turn. {LadyOfTheWood} deals that target 1 cold damage.",
-                "Power: {LadyOfTheWood} regains 3HP."
+                "Whenever {LadyOfTheWood} regains HP, you may select a target that hasn't been dealt damage this turn. {LadyOfTheWood} deals that target 1 cold damage."
             ],
             "powers": [
                 "{LadyOfTheWood} regains 3HP."
@@ -375,6 +377,9 @@
                 "HasPower",
                 "DealDamageFire"
             ],
+            "body": [
+                "Increase damage dealt by {LadyOfTheWood} by 3 as long as her HP is 5 or less."
+			],
             "powers": [
                 "{LadyOfTheWood} deals herself 1 fire damage and 1 target 4 fire damage."
             ],
@@ -399,6 +404,9 @@
                 "HasPower",
                 "DealDamageLightning"
             ],
+            "body": [
+                "Whenever {LadyOfTheWood} deals 2 or less damage to a target, that damage is irreducible."
+			],
             "powers": [
                 "{LadyOfTheWood} deals up to 2 targets 1 lightning damage each."
             ],
@@ -518,7 +526,7 @@
         },
         {
             "identifier": "LadyOfTheWoodCharacter",
-            "promoIdentifier": "2199LadyOfTheWoodCharacter",
+            "promoIdentifier": "FutureLadyOfTheWoodCharacter",
             "count": 1,
             "title": "Lady Of The Wood",
             "promoTitle": "Lady of the Wood 2199",

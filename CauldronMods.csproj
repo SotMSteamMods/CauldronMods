@@ -3,20 +3,20 @@
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <RootNamespace>Cauldron</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Utility\**" />
-    <EmbeddedResource Remove="Utility\**" />
     <None Remove="DeckLists\**\*.json" />
-    <None Remove="Utility\**" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="DeckLists\**\*.json">
       <LogicalName>Cauldron.DeckLists.%(EmbeddedResource.FileName).json</LogicalName>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Utility\CardController\CardController.cs" />
   </ItemGroup>
 
   <ItemGroup>
