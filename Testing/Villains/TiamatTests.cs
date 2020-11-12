@@ -135,6 +135,16 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestDecapitatedHeadNotATarget()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+            SetupIncap(legacy, winter);
+            //Flipped heads are not targets
+            AssertNotTarget(winter);
+        }
+
+        [Test()]
         public void TestWinCondition()
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
@@ -217,13 +227,30 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Tachyon", "Megalopolis");
             StartGame();
-            SetupIncap(legacy, winter);
+            SetupIncap(legacy, inferno);
             SetupIncap(legacy, storm);
             QuickHPStorage(legacy);
             //Winter deals damage at the end of turn if she did not already deal damage this turn
+            AddCannotDealNextDamageTrigger(tiamat, storm);
+            AddCannotDealNextDamageTrigger(tiamat, inferno);
             GoToEndOfTurn(tiamat);
             QuickHPCheck(-1);
         }
+        [Test()]
+        public void TestWinterEndOfTurnDontDealDamage()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Tachyon", "Megalopolis");
+            StartGame();
+            SetupIncap(legacy, inferno);
+            SetupIncap(legacy, storm);
+            DealDamage(winter, tachyon.CharacterCard, 3, DamageType.Cold);
+            QuickHPStorage(legacy);
+            //Winter deals damage at the end of turn if she did not already deal damage this turn
+            //Winter has already deal damage, so no damage should be dealt
+            GoToEndOfTurn(tiamat);
+            QuickHPCheck(0);
+        }
+
 
         [Test()]
         public void TestStormEndOfTurnDealDamage()
@@ -231,9 +258,11 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Tachyon", "Megalopolis");
             StartGame();
             SetupIncap(legacy, winter);
-            SetupIncap(legacy, storm);
+            SetupIncap(legacy, inferno);
             QuickHPStorage(legacy);
             //Storm deals damage at the end of turn if she did not already deal damage this turn
+            AddCannotDealNextDamageTrigger(tiamat, winter);
+            AddCannotDealNextDamageTrigger(tiamat, inferno);
             GoToEndOfTurn(tiamat);
             QuickHPCheck(-1);
         }
