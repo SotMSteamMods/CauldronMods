@@ -384,5 +384,80 @@ namespace CauldronTests
 
         }
 
+
+        [Test]
+        public void TestOpportunistShuffleTrash()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                OpportunistCardController.Identifier
+            });
+
+            // Fill trash with a few cards so we can assert trash has changed if we shuffle it into the deck
+            PutInTrash(TangoOne, GetCard(ChameleonArmorCardController.Identifier));
+            PutInTrash(TangoOne, GetCard(GhostReactorCardController.Identifier));
+
+            StartGame();
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+
+            QuickHPStorage(mdp);
+            QuickHandStorage(TangoOne);
+            QuickShuffleStorage(TangoOne);
+
+            DecisionSelectTarget = mdp;
+            DecisionYesNo = true;
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, OpportunistCardController.Identifier);
+            UsePower(TangoOne); // Snipe power
+
+            // Assert
+            QuickHPCheck(-4); // Snipe (1) + Opportunist (+3)
+            QuickHandCheck(1);
+            Assert.AreEqual(1, GetNumberOfCardsInTrash(TangoOne)); // One card in trash (Opportunist)
+            QuickShuffleCheck(1); // Tango's deck was shuffled by Opportunist card
+        }
+
+        [Test]
+        public void TestOpportunistDontShuffleTrash()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                OpportunistCardController.Identifier
+            });
+
+            // Fill trash with a few cards so we can assert trash has changed after if we shuffle it into the deck
+            PutInTrash(TangoOne, GetCard(ChameleonArmorCardController.Identifier));
+            PutInTrash(TangoOne, GetCard(GhostReactorCardController.Identifier));
+
+            StartGame();
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+
+            QuickHPStorage(mdp);
+            QuickHandStorage(TangoOne);
+            QuickShuffleStorage(TangoOne);
+
+            DecisionSelectTarget = mdp;
+            DecisionYesNo = false;
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, OpportunistCardController.Identifier);
+            UsePower(TangoOne); // Snipe power
+
+            // Assert
+            QuickHPCheck(-4); // Snipe (1) + Opportunist (+3)
+            QuickHandCheck(1);
+            Assert.AreEqual(3, GetNumberOfCardsInTrash(TangoOne)); // (Opportunist, Ghost Reactor, Chameleon Armor)
+            QuickShuffleCheck(0); // Tango's deck was not shuffled by Opportunist card
+        }
+
     }
 }
