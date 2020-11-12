@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -10,5 +11,11 @@ namespace Cauldron.Starlight
         {
         }
 
+        public override IEnumerator Play()
+        {
+            //"Draw a card."
+            //"2 players may play 1 card."
+            yield break;
+        }
     }
 }

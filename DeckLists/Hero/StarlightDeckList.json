@@ -218,7 +218,10 @@
             "icons": [
                 "Destroy"
             ],
-            "body": "Destroy any number of constellation cards. For each card destroyed, destroy 1 ongoing or environment card.",
+            "body": [
+                "Destroy any number of constellation cards.", 
+                "For each card destroyed this way, destroy 1 ongoing or environment card."
+            ],
             "flavorText": "Want to see what a{BR}thermonuclear warhead looks like{BR}after it's been through a black hole?",
             "flavorReference": "Starlight To Baron Blade,{BR}Andromeda Tales #8"
         },
@@ -264,15 +267,11 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "Tachyon",
-                    "text": "It tells you when the stars align?"
-                },
-                {
                     "identifier": "Starlight",
-                    "text": "Nothing so quaint.{BR}It tells them [b]to[/b] align!"
-                }
+                    "text": "It doesn't tell *us* when the stars will align. It tells the stars."
+                }   //check how to bold this
             ],
-            "flavorReference": "The Cauldron One-Shot"
+            "flavorReference": "Starlight, The Cauldron One-Shot"
         },
         {
             "identifier": "NightloreArmor",
@@ -311,7 +310,7 @@
             "flavorQuotes": [
                 {
                     "identifier": "Bunker",
-                    "text": "And all I have is bullets..."
+                    "text": "And all I have are bullets..."
                 }
             ],
             "flavorReference": "Bunker, The Anvil #6"
@@ -442,10 +441,10 @@
             "flavorQuotes": [
                 {
                     "identifier": "ChronoRanger",
-                    "text": "A shootin' star! Our{BR}luck's about to change for the brighter."
+                    "text": "A shooting star! Our{BR}luck's burning bright."
                 }
             ],
-            "flavorReference": "Chrono-Ranger, Burnout #11"
+            "flavorReference": "Chrono-Ranger, The Dark Millenia #11"
         }
     ],
     "promoCards": [
@@ -499,12 +498,12 @@
             "foilBackgroundColor": "FEFEFE",
             "hitpointColor": "C94742",
             "setup": [
-                "At the start of the game, put the caharacter cards for the Starlight of Terra, Asheron, and Cryos-4 into play, active side up.",
+                "At the start of the game, put the character cards for the Starlight of Terra, Asheron, and Cryos-4 into play, active side up.",
                 "Shuffle the hero deck and draw 4 cards."
             ],
             "gameplay": [
                 "If you have no hero character targets in play, flip this card.",
-                "When your cards refer to “Starlight”, put it next to 1 of your active Starlights.",
+                "When your cards refer to “Starlight”, choose 1 of your active Starlights.",
                 "When a copy of “Retreat into the Nebula” enters play, put it next to 1 of your active Starlights. Only that Starlight is affected by it.",
                 "If Starlight of Terra has a Constellation next to her at the start of your turn, each Starlight regains 1 HP.",
                 "If Starlight of Asheron has a Constellation next to her and deals damage to a non-hero target, increase that damage by 1.",
@@ -588,7 +587,7 @@
                 "PlayCardNow",
                 "DealDamageRadiant"
             ],
-            "hitpoints": 13,
+            "hitpoints": 12,
             "nemesisIdentifiers": [
                 "Starlight"
             ],

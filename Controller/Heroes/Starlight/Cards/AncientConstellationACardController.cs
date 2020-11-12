@@ -10,5 +10,6 @@ namespace Cauldron.Starlight
         {
         }
 
+        //everything is inherited from the Generic, this is just for art purposes
     }
 }

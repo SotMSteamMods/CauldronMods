@@ -10,5 +10,10 @@ namespace Cauldron.Starlight
         {
         }
 
+        public override void AddTriggers()
+        {
+            //"Whenever a constellation enters play next to a target, Starlight deals that target 1 energy damage and regains 1 HP."
+        }
+
     }
 }

@@ -10,5 +10,10 @@ namespace Cauldron.Starlight
         {
         }
 
+        public override void AddTriggers()
+        {
+            //"At the start of your play phase, put a constellation card from your hand or trash into play."
+        }
+
     }
 }

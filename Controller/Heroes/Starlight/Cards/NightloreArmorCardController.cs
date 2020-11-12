@@ -10,5 +10,10 @@ namespace Cauldron.Starlight
         {
         }
 
+        public override void AddTriggers()
+        {
+            //"Whenever damage would be dealt to another hero target, you may destroy a constellation card in play to prevent that damage."
+        }
+
     }
 }

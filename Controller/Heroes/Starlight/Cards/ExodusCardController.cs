@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -10,5 +11,11 @@ namespace Cauldron.Starlight
         {
         }
 
+        public override IEnumerator Play()
+        {
+            //"Draw a card, or search your trash and deck for a constellation card, put it into play, then shuffle your deck."
+            //"You may play a card."
+            yield break;
+        }
     }
 }
