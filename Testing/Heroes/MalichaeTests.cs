@@ -183,7 +183,7 @@ namespace CauldronTests
         [Test]
         public void BaitAndSwitch_Discard_PlayDjinn()
         {
-            SetupGameController(new[] { "BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis" } ,randomSeed: 1480459545);
+            SetupGameController(new[] { "BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis" }, randomSeed: 1480459545);
             StartGame();
 
             //prevent power usage
@@ -263,7 +263,7 @@ namespace CauldronTests
             StartGame();
 
             PutIntoPlay("PaparazziOnTheScene");
-            
+
             var discard1 = PutInHand(Malichae, "GrandBathiel");
             var card = PutInHand(Malichae, "BaitAndSwitch");
             var trash = PutInTrash("Bathiel");
@@ -1341,6 +1341,28 @@ namespace CauldronTests
 
             DestroyCard(mdp);
             AssertInTrash(Malichae, fire);
+        }
+
+        [Test]
+        public void ShadowCatch()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+            
+            GoToPlayCardPhase(Malichae);
+
+            var moved = PutInDeck("Reshiel");
+
+            QuickHandStorage(Malichae, ra, fanatic);
+            QuickShuffleStorage(Malichae, ra, fanatic);
+
+            DecisionSelectCards = new Card[] { moved, moved };
+
+            var card = PutIntoPlay("ShadowCatch");
+            AssertInTrash(card);
+
+            QuickHandCheck(0, 0, 0);
+            QuickShuffleCheck(0, 0, 0);
         }
 
     }

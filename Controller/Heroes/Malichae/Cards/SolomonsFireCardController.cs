@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace Cauldron.Malichae
 {
-	public class SolomonsFireCardController : MalichaeCardController
-	{
-		public SolomonsFireCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
-		{
-		}
+    public class SolomonsFireCardController : MalichaeCardController
+    {
+        public SolomonsFireCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        {
+        }
 
         public override void AddTriggers()
         {
@@ -32,5 +32,5 @@ namespace Cauldron.Malichae
             }
             yield break;
         }
-	}
+    }
 }
