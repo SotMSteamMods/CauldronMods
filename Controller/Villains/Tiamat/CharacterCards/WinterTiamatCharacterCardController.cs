@@ -30,7 +30,7 @@ namespace Cauldron.Tiamat
 			return new ITrigger[]
 			{
 				//Increase damage dealt by {Tiamat}, The Jaws of Winter by 1.
-				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.DamageSource.IsCard && dealDamage.DamageSource.Card == base.Card, 1)
+				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.DamageSource != null && dealDamage.DamageSource.IsCard && dealDamage.DamageSource.Card == base.Card, 1)
 			};
 		}
 
@@ -48,14 +48,14 @@ namespace Cauldron.Tiamat
 			return new ITrigger[]
 			{
 				//When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Cold“ card in the villain trash.
-				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => IsSpell(dealDamage.CardSource.Card) && IsHead(dealDamage.DamageSource.Card), GetNumberOfElementOfIceInTrash()) 
+				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.DamageSource != null && dealDamage.CardSource != null && IsSpell(dealDamage.CardSource.Card) && IsHead(dealDamage.DamageSource.Card), GetNumberOfElementOfIceInTrash()) 
 			};
 		}
 
 		//Deal H-2 Cold damage to highest hero target
 		private IEnumerator DealDamageResponse(PhaseChangeAction phaseChange)
 		{
-			IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero, (Card c) => new int?(base.H - 2), DamageType.Cold);
+			IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsTarget && c.IsHero, (Card c) => new int?(base.H - 2), DamageType.Cold);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
