@@ -18,7 +18,7 @@ namespace Cauldron.Tiamat
 
         #region Methods
 
-        public int PlusNumberOfThisCardInTrash(int value)
+        protected int PlusNumberOfThisCardInTrash(int value)
         {
             return value + (from card in base.TurnTaker.Trash.Cards
                              where card.Identifier == this.Card.Identifier
