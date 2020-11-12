@@ -3173,6 +3173,11 @@ namespace Handelabra.Sentinels.UnitTest
             Assert.IsTrue(card.HasGameText, card.Title + " should have game text.");
         }
 
+        protected void AssertDoesNotHaveGameText(Card card)
+        {
+            Assert.IsTrue(!card.HasGameText, card.Title + " should not have game text.");
+        }
+
         protected void AssertCardHasKeyword(Card card, string keyword, bool isAdditional)
         {
             Assert.IsTrue(this.GameController.DoesCardContainKeyword(card, keyword), "{0} should have keyword: {1}", card.Identifier, keyword);

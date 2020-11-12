@@ -17,7 +17,7 @@ namespace Cauldron.StSimeonsCatacombs
 
 			//Find all rooms in the deck
 			List<Card> rooms = (from c in base.TurnTaker.GetAllCards(true)
-								   where this.IsRoom(c) && !c.Location.IsOutOfGame
+								   where c.IsRoom && !c.Location.IsOutOfGame
 								   select c).ToList<Card>();
 			
 			//Find the instruction card
@@ -40,10 +40,7 @@ namespace Cauldron.StSimeonsCatacombs
 			yield break;
 		}
 
-		protected bool IsRoom(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "room", false, false);
-		}
+		
 
 	}
 }

@@ -16,10 +16,6 @@ namespace CauldronTests
 
         protected TurnTakerController catacombs { get { return FindEnvironment(); } }
 
-        private bool IsRoom(Card card)
-        {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "room", false, false);
-        }
 
         #endregion
 
@@ -66,20 +62,22 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
             Card instructions = GetCardInPlay("StSimeonsCatacombs");
-            List<Card> roomCards = catacombs.TurnTaker.Deck.Cards.Where(c => this.IsRoom(c)).ToList();
-            List<Card> nonRoomCards = catacombs.TurnTaker.Deck.Cards.Where(c => !this.IsRoom(c)).ToList();
+            List<Card> roomCards = catacombs.TurnTaker.Deck.Cards.Where(c => c.IsRoom).ToList();
+            List<Card> nonRoomCards = catacombs.TurnTaker.Deck.Cards.Where(c => !c.IsRoom).ToList();
 
 
             //check that all rooms have been moved to under the instructions card
             foreach (Card c in roomCards)
             {
                 AssertUnderCard(instructions, c);
+                AssertDoesNotHaveGameText(c);
             }
 
             //check that all non-rooms are still in the deck
             foreach (Card c in nonRoomCards)
             {
                 AssertInDeck(catacombs, c);
+                AssertHasGameText(c);
             }
 
         }
