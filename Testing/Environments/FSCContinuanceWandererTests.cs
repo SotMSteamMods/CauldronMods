@@ -513,8 +513,7 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
-            Card interference = GetCard("VortexInterference");
-            PlayCard(interference);
+            PlayCard("VortexInterference");
             Card fort = GetCard("Fortitude");
             Card moko = GetCard("TaMoko");
             PlayCards(fort, moko);
@@ -542,10 +541,15 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestVortexSurgee()
+        public void TestVortexSurge()
         {
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+            PlayCard("VortexSurge");
             //Whenever a hero card is drawn, 1 player must discard a card.
-            Assert.IsTrue(false);
+            QuickHandStorage(ra, legacy);
+            DrawCard(ra);
+            QuickHandCheck(1, -1);
         }
 
         [Test()]

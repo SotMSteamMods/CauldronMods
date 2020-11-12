@@ -37,15 +37,6 @@ namespace Cauldron.FSCContinuanceWanderer
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
         }
 
         #endregion Methods
