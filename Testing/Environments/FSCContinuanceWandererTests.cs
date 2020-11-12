@@ -256,9 +256,23 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestSuperimposedRealities()
+        public void TestSuperimposedRealitiesTargetNoChange()
         {
-            Assert.IsTrue(false);
+            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+            PlayCard("SuperimposedRealities");
+            //The target should have no change to its actions
+            PlayCard("Thokk");
+            AssertInTrash("Thokk");
+
+            QuickHandStorage(legacy);
+            DrawCard(legacy);
+            QuickHandCheck(1);
+
+            UsePower(legacy);
+            QuickHPStorage(ra);
+            DealDamage(legacy, ra, 2, DamageType.Melee);
+            QuickHPCheck(-3);
         }
 
         [Test()]
@@ -322,7 +336,9 @@ namespace CauldronTests
             PlayCards(pi0, pi1);
             //When this card enters play, destroy all other environment cards. Then shuffle 2 cards from each trash pile back into their deck, and each non-character target regains {H} HP.
             Card reset = GetCard("TemporalReset");
+            QuickShuffleStorage(env);
             PlayCard(reset);
+            QuickShuffleCheck(1);
             AssertInDeck(env, pi0);
             AssertInDeck(env, pi1);
         }
