@@ -520,5 +520,33 @@ namespace CauldronTests
             QuickHPCheck(-4); // Disabling Shot (2 + Perfect Focus +3), Snipe (1)
         }
 
+        [Test]
+        public void TestPsionicSuppression()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                PsionicSuppressionCardController.Identifier
+            });
+
+            StartGame();
+            Card bb = PlayCard(baron, "BladeBattalion");
+            DecisionSelectTarget = bb;
+            QuickHPStorage(TangoOne);
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, PsionicSuppressionCardController.Identifier);
+            
+            GoToEndOfTurn(baron);
+            GoToStartOfTurn(TangoOne);
+
+            // Assert
+            QuickHPCheck(-5); // Battalion Blade hit prior to playing Psionic Suppression
+
+        }
+
     }
 }
