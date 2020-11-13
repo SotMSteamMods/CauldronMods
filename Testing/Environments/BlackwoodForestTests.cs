@@ -379,6 +379,38 @@ namespace CauldronTests
             AssertInDeck(GetCard(TheHoundCardController.Identifier)); // The Hound should be back in the deck
         }
 
+        [Test]
+        public void TestOvergrownCathedral()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+
+            Card overgrownCathedral = GetCard(OvergrownCathedralCardController.Identifier);
+
+            DecisionYesNo = true;
+
+            // Act
+            GoToStartOfTurn(BlackForest);
+            PlayCard(overgrownCathedral);
+
+            // Ra will be dealt damage first, then Cathedral will interject and deal damage to everyone else
+            PlayCard(baron, "SlashAndBurn");
+
+            GoToStartOfTurn(BlackForest);
+
+            // Assert
+
+            // Baron: 0 - (Immune), MDP: -1 (Cathedral), Ra: -3 (Slash and Burn)
+            // Legacy: -1 (Cathedral), Haka (Slash and Burn, Cathedral)
+            QuickHPCheck(0, -1, -3, -1, -6);
+            AssertNotInPlay(overgrownCathedral);
+        }
 
     }
 }
