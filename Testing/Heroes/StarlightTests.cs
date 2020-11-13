@@ -158,11 +158,69 @@ namespace CauldronTests
             DealDamage(ra, haka, 2, DamageType.Fire);
             QuickHPCheck(-2);
 
+            //Should change which target is affected when lowest HP changes
+            PutIntoPlay("BladeBattalion");
+            Card battalion = GetCardInPlay("BladeBattalion");
+            QuickHPStorage(mdp, battalion);
+            DealDamage(haka, mdp, 2, DamageType.Melee);
+            DealDamage(haka, battalion, 2, DamageType.Melee);
+            QuickHPCheck(-2, 0);
+
             //Should wear off at start of Starlight's turn
             GoToStartOfTurn(starlight);
-            QuickHPStorage(mdp);
-            DealDamage(haka, mdp, 2, DamageType.Melee);
+            QuickHPStorage(battalion);
+            DealDamage(haka, battalion, 2, DamageType.Melee);
             QuickHPCheck(-2);
+        }
+        [Test()]
+        public void TestStarlightIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(starlight);
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            //one hero may use a power - have Haka punch the MDP
+
+            GoToUseIncapacitatedAbilityPhase(starlight);
+            QuickHPStorage(mdp);
+            DecisionSelectTurnTaker = haka.TurnTaker;
+            DecisionSelectTarget = mdp;
+            AssertIncapLetsHeroUsePower(starlight, 1, haka);
+            QuickHPCheck(-2);
+
+        }
+        [Test()]
+        public void TestStarlightIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(starlight);
+            PutIntoPlay("DecoyProjection");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card decoy = GetCardInPlay("DecoyProjection");
+
+            //give some room for healing
+            SetHitPoints(ra, 10);
+            SetHitPoints(haka, 10);
+            SetHitPoints(mdp, 5);
+            SetHitPoints(decoy, 1);
+
+            //should be able to heal both hero characters and non-characters
+            DecisionSelectCards = new Card[] { ra.CharacterCard, decoy };
+            QuickHPStorage(ra.CharacterCard, decoy);
+            UseIncapacitatedAbility(starlight, 2);
+            UseIncapacitatedAbility(starlight, 2);
+            QuickHPCheck(2, 2);
+
+            //should not be able to heal villain targets - only options are Ra, Haka, Decoy, and Visionary
+            DecisionSelectCards = null;
+            AssertNumberOfChoicesInNextDecision(4);
+            UseIncapacitatedAbility(starlight, 2);
         }
     }
 }

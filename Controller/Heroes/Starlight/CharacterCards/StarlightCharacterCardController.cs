@@ -52,11 +52,29 @@ namespace Cauldron.Starlight
                 case 1:
                     {
                         //"1 player may use a power now.",
+                        IEnumerator coroutine2 = base.GameController.SelectHeroToUsePower(base.HeroTurnTakerController, optionalSelectHero: false, optionalUsePower: true, allowAutoDecide: false, null, null, null, omitHeroesWithNoUsablePowers: true, canBeCancelled: true, GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine2);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine2);
+                        }
                         break;
                     }
                 case 2:
                     {
                         //"1 hero target regains 2 HP."
+                        IEnumerator coroutine3 = base.GameController.SelectAndGainHP(DecisionMaker, 2, optional: false, (Card c) => c.IsInPlay && c.IsHero && c.IsTarget, 1, null, allowAutoDecide: false, null, GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine3);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine3);
+                        }
                         break;
                     }
             }
