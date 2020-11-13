@@ -208,6 +208,96 @@ namespace CauldronTests
             QuickHPCheck(0, -2); // Ra took no damage from baron's attack due to Dense Brambles, MDP was damaged after Dense Brambles was destroyed
         }
 
+        [Test]
+        public void TestTheHoundWithOngoing()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            QuickHPStorage(mdp);
+
+            Card backlashField = GetCard("BacklashField");
+            PutIntoPlay(backlashField.Identifier);
+
+            Card dangerSense = GetCard("DangerSense");
+            PutIntoPlay(dangerSense.Identifier);
+
+            // Act
+            PutIntoPlay(TheHoundCardController.Identifier);
+
+            // Assert
+            QuickHPCheck(-4); // (-4 HP from The Hound)
+            AssertIsInPlay(backlashField); // Still in play, The Hound only targets hero ongoing and equipment cards
+            AssertNotInPlay(dangerSense); // Destroyed by The Hound
+            AssertNotInPlay(GetCard(TheHoundCardController.Identifier)); // The Hound was shuffled back into the environment deck
+            AssertInDeck(GetCard(TheHoundCardController.Identifier)); // The Hound should be back in the deck
+        }
+
+        [Test]
+        public void TestTheHoundWithEquipment()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            QuickHPStorage(mdp);
+
+            Card backlashField = GetCard("BacklashField");
+            PutIntoPlay(backlashField.Identifier);
+
+            Card legacyRing = GetCard("TheLegacyRing");
+            PutIntoPlay(legacyRing.Identifier);
+
+            // Act
+            PutIntoPlay(TheHoundCardController.Identifier);
+
+            // Assert
+            QuickHPCheck(-4); // (-4 HP from The Hound)
+            AssertIsInPlay(backlashField); // Still in play, The Hound only targets hero ongoing and equipment cards
+            AssertNotInPlay(legacyRing); // Destroyed by The Hound
+            AssertNotInPlay(GetCard(TheHoundCardController.Identifier)); // The Hound was shuffled back into the environment deck
+            AssertInDeck(GetCard(TheHoundCardController.Identifier)); // The Hound should be back in the deck
+        }
+
+        [Test]
+        public void TestTheHoundWithOngoingAndEquipment()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            QuickHPStorage(mdp);
+
+            Card backlashField = GetCard("BacklashField");
+            PutIntoPlay(backlashField.Identifier);
+
+            Card legacyRing = GetCard("TheLegacyRing");
+            PutIntoPlay(legacyRing.Identifier);
+
+            Card dangerSense = GetCard("DangerSense");
+            PutIntoPlay(dangerSense.Identifier);
+
+            DecisionSelectCard = legacyRing;
+
+            // Act
+            PutIntoPlay(TheHoundCardController.Identifier);
+
+            // Assert
+            QuickHPCheck(-4); // (-4 HP from The Hound)
+            AssertIsInPlay(backlashField); // Still in play, The Hound only targets hero ongoing and equipment cards
+            AssertNotInPlay(legacyRing); // Destroyed by The Hound
+            AssertIsInPlay(dangerSense); // Still in play
+            AssertNotInPlay(GetCard(TheHoundCardController.Identifier)); // The Hound was shuffled back into the environment deck
+            AssertInDeck(GetCard(TheHoundCardController.Identifier)); // The Hound should be back in the deck
+        }
+
 
     }
 }
