@@ -7,12 +7,11 @@ using System.Linq;
 
 namespace Cauldron
 {
-    public class ChainReactionCardController : CardController
+    public class ChainReactionCardController : GrayCardController
     {
         public ChainReactionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowNumberOfCards(new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.DoKeywordsContain("radiation"), "radiation"));
-            base.SpecialStringMaker.ShowHeroTargetWithLowestHP(numberOfTargets: (new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.DoKeywordsContain("radiation"), false, null, false).Count<Card>()) ?? default));
+            base.SpecialStringMaker.ShowHeroTargetWithLowestHP(numberOfTargets: base.FindNumberOfRadiationCardsInPlay() ?? default));
         }
 
 
@@ -20,7 +19,7 @@ namespace Cauldron
         public override void AddTriggers()
         {
             //At the start of the villain turn, this card deals the X hero targets with the lowest HP 1 energy damage each, where X is the number of Radiation cards in play.
-            base.AddDealDamageAtStartOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText, TargetType.LowestHP, 0, DamageType.Energy, dynamicAmount: (Card card) => FindNumberOfRadiationCardsInPlay());
+            base.AddDealDamageAtStartOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText, TargetType.LowestHP, 0, DamageType.Energy, dynamicAmount: (Card card) => base.FindNumberOfRadiationCardsInPlay());
             //At the end of the villain turn, put a random Radiation card from the villain trash into play.
             base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.BringRadiationBackResponse), TriggerType.PutIntoPlay);
 
@@ -57,11 +56,6 @@ namespace Cauldron
                 }
             }
             yield break;
-        }
-
-        private int? FindNumberOfRadiationCardsInPlay()
-        {
-            return new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.DoKeywordsContain("radiation"), false, null, false).Count<Card>());
         }
     }
 }
