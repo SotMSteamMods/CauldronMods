@@ -100,7 +100,7 @@
                 "DealDamageToxic",
                 "GainHP"
             ],
-            "body": "At the end of the villain turn, this card deals each  non-villain target 2 toxic damage and each Radiation card regains 2HP.",
+            "body": "At the end of the villain turn, this card deals each non-villain target 2 toxic damage and each Radiation card regains 2HP.",
             "flavorQuotes": [
                 {
                     "identifier": "Gray",
