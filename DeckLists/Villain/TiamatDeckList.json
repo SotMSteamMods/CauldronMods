@@ -41,6 +41,7 @@
             "advancedIcons": [
                 "IncreaseDamageDealt"
             ],
+            "flippedShowHitpoints": false,
             "flippedBody": "Decapitated",
             "flippedGameplay": [
                 "When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Fire“ card in the villain trash"
@@ -95,6 +96,7 @@
             "advancedIcons": [
                 "IncreaseDamageDealt"
             ],
+            "flippedShowHitpoints": false,
             "flippedBody": "Decapitated",
             "flippedGameplay": [
                 "When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Lightning“ card in the villain trash"
@@ -147,6 +149,7 @@
             "advancedIcons": [
                 "IncreaseDamageDealt"
             ],
+            "flippedShowHitpoints": false,
             "flippedBody": "Decapitated",
             "flippedGameplay": [
                 "When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Ice“ card in the villain trash"
@@ -469,6 +472,7 @@
             "gameplay": [
                 "{Tiamat}, The Jaws of Winter is immune to cold damage."
             ],
+            "flippedShowHitpoints": false,
             "flippedBody": "Winter, Decapitated",
             "difficulty": 1,
             "openingLines": {
@@ -503,6 +507,7 @@
             "gameplay": [
                 "{Tiamat}, The Mouth of the Inferno is immune to fire damage."
             ],
+            "flippedShowHitpoints": false,
             "flippedBody": "Inferno, Decapitated",
             "flippedAdvanced": "Reduce damage dealt by heads by 1.",
             "flippedIcons": [],
@@ -542,6 +547,7 @@
             "gameplay": [
                 "{Tiamat}, The Eye of the Storm is immune to lightnining damage."
             ],
+            "flippedShowHitpoints": false,
             "flippedBody": "Storm, Decapitated",
             "difficulty": 1,
             "openingLines": {
@@ -577,6 +583,7 @@
                 "{Tiamat}, The Maw of the Earth is immune to melee damage.",
                 "Reduce damage dealt to other villain targets by 1."
             ],
+            "flippedShowHitpoints": false,
             "flippedBody": "Earth, Decapitated",
             "difficulty": 1,
             "openingLines": {
@@ -612,6 +619,7 @@
                 "{Tiamat}, The Breath of Decay is immune to toxic damage.",
                 "Increase damage dealt to hero targets by 1."
             ],
+            "flippedShowHitpoints": false,
             "flippedBody": "Decay, Decapitated",
             "difficulty": 1,
             "openingLines": {
@@ -648,6 +656,7 @@
                 "{Tiamat}, The Breath of Decay is immune to projectile damage.",
                 "At the end of the villain turn, each head regains 2 HP."
             ],
+            "flippedShowHitpoints": false,
             "flippedBody": "Wind, Decapitated",
             "difficulty": 1,
             "openingLines": {
