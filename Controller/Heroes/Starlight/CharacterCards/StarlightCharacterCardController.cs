@@ -29,12 +29,24 @@ namespace Cauldron.Starlight
 
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
-            IEnumerator coroutine;
             switch (index)
             {
                 case 0:
                     {
                         //"Until the start of your next turn, prevent all damage that would be dealt to or by the target with the lowest HP.",
+                        OnDealDamageStatusEffect lowestTargetImmunity = new OnDealDamageStatusEffect(base.Card, "LowestTargetImmunity", "The target with the lowest HP is immune to damage and cannot deal damage.", new TriggerType[1] { TriggerType.DealDamage }, DecisionMaker.TurnTaker, base.Card);
+                        lowestTargetImmunity.UntilStartOfNextTurn(base.TurnTaker);
+                        lowestTargetImmunity.SourceCriteria.IsTarget = true;
+                        lowestTargetImmunity.BeforeOrAfter = BeforeOrAfter.Before;
+                        IEnumerator coroutine = AddStatusEffect(lowestTargetImmunity);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case 1:
@@ -108,6 +120,53 @@ namespace Cauldron.Starlight
                 return GameController.DoesCardContainKeyword(card, "constellation");
             }
             return false;
+        }
+
+        public IEnumerator LowestTargetImmunity(DealDamageAction dealDamage, HeroTurnTaker hero = null, StatusEffect effect = null, int[] powerNumerals = null)
+        {
+            List<bool> storedResults = new List<bool>();
+
+            //Is the target of the damage the lowest HP target?
+            IEnumerator coroutine = DetermineIfGivenCardIsTargetWithLowestOrHighestHitPoints(dealDamage.Target, highest: false, (Card card) => base.GameController.IsCardVisibleToCardSource(card, GetCardSource()), dealDamage, storedResults);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //If not, is the source of the damage the lowest HP target?
+            if (!storedResults.First() && dealDamage.DamageSource.IsTarget)
+            {
+                IEnumerator coroutine2 = DetermineIfGivenCardIsTargetWithLowestOrHighestHitPoints(dealDamage.DamageSource.Card, highest: false, (Card card) => base.GameController.IsCardVisibleToCardSource(card, GetCardSource()), dealDamage, storedResults);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine2);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine2);
+                }
+            }
+
+            //If we answered yes to either question, prevent the damage.
+            if (storedResults.Contains(true))
+            {
+
+                IEnumerator coroutine3 = CancelAction(dealDamage, showOutput: true, cancelFutureRelatedDecisions: true, null, isPreventEffect: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine3);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine3);
+                }
+            }
+
+            yield break;
         }
     }
 }

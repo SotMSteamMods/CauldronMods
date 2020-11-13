@@ -15,6 +15,11 @@ namespace CauldronTests
     {
         #region StarlightHelperFunctions
         protected HeroTurnTakerController starlight { get { return FindHero("Starlight"); } }
+        private void SetupIncap(TurnTakerController villain)
+        {
+            SetHitPoints(starlight.CharacterCard, 1);
+            DealDamage(villain, starlight, 2, DamageType.Melee);
+        }
         #endregion
 
         [Test()]
@@ -125,7 +130,39 @@ namespace CauldronTests
             UsePower(starlight);
             AssertNumberOfCardsInTrash(starlight, 0);
             AssertNumberOfCardsInPlay(starlight, 2);
+        }
+        [Test()]
+        public void TestStarlightIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "Megalopolis");
+            StartGame();
 
+            SetupIncap(baron);
+            AssertIncapacitated(starlight);
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToUseIncapacitatedAbilityPhase(starlight);
+            UseIncapacitatedAbility(starlight, 0);
+
+            //as lowest HP target, Mobile Defense Platform should be immune to damage
+            QuickHPStorage(mdp);
+            DealDamage(haka, mdp, 2, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //But it should not be able to deal damage either.
+            QuickHPStorage(haka);
+            DealDamage(mdp, haka, 2, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //Other targets should be unaffected
+            DealDamage(ra, haka, 2, DamageType.Fire);
+            QuickHPCheck(-2);
+
+            //Should wear off at start of Starlight's turn
+            GoToStartOfTurn(starlight);
+            QuickHPStorage(mdp);
+            DealDamage(haka, mdp, 2, DamageType.Melee);
+            QuickHPCheck(-2);
         }
     }
 }
