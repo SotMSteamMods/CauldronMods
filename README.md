@@ -41,12 +41,16 @@ when mods are available.
   - The Stranger
   - Malichae
   - Tango One
+  - Starlight - In Progress
 
 - VILLAINS:
   - Anathema
   - Tiamat
+  - Gray - In Progress
 
 - ENVIRONMENTS:
   - The Wandering Isle
   - Halberd Experimental Research Center
-  - FSC Continuance Wanderer - In Progress
+  - FSC Continuance Wanderer
+  - Blackwood Forest - In Progress
+  - St Simeon's Catacombs - In Progress
