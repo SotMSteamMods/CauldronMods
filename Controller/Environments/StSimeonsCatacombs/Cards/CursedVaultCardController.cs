@@ -17,6 +17,12 @@ namespace Cauldron.StSimeonsCatacombs
 
         #region Methods
 
+        public override void AddTriggers()
+        {
+            //Reduce damage dealt to villain targets by 1.
+            AddReduceDamageTrigger((Card c) => c.IsVillainTarget, 1);
+        }
+
         #endregion Methods
     }
 }

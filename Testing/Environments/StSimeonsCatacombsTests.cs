@@ -345,7 +345,9 @@ namespace CauldronTests
         [Test()]
         public void TestAqueducts()
         {
-            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            //failing random seed 1963543475
+            //seems that sometimes aqueducts effect doesn't go off
+            SetupGameController(new string[] {"BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs"});
             StartGame();
             Card instructions = GetCardInPlay("StSimeonsCatacombs");
 
@@ -375,6 +377,44 @@ namespace CauldronTests
             QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
             GoToEndOfTurn(catacombs);
             QuickHPCheck(1, 1, 1, 1, 1);
+
+
+        }
+
+        [Test()]
+        public void TestCursedVault()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is cursed vault in play
+            if (playedRoom.Identifier != "CursedVault")
+            {
+                DecisionSelectCard = GetCard("CursedVault");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            //don't destroy CursedVault
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            GoToPlayCardPhase(catacombs);
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+            Card battalion = PlayCard("BladeBattalion");
+
+            //Reduce damage dealt to villain targets by 1.
+            PrintSeparator("check damage dealt to villains is reduced by 1");
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard );
+            DealDamage(ra.CharacterCard, (Card c) => c.IsTarget, 3, DamageType.Fire);
+            //only the damage to villains should have been reduced
+            QuickHPCheck(-2, -2, -3, -3, -3);
 
 
         }
