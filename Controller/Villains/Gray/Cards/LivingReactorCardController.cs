@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Cauldron
+namespace Cauldron.Gray
 {
     public class LivingReactorCardController : CardController
     {

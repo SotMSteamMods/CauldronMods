@@ -2,7 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 
-namespace Cauldron
+namespace Cauldron.Gray
 {
     public class AlistarWintersCardController : CardController
     {

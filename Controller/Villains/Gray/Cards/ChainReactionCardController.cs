@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using System.Linq;
 
-namespace Cauldron
+namespace Cauldron.Gray
 {
     public class ChainReactionCardController : GrayCardController
     {

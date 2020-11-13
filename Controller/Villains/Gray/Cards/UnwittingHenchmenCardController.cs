@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cauldron
+namespace Cauldron.Gray
 {
     public class UnwittingHenchmenCardController : CardController
     {

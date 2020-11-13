@@ -2,21 +2,14 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 
-namespace Cauldron
+namespace Cauldron.Gray
 {
-    public class GrayCharacterCardController : CardController
+    public class GrayCharacterCardController : VillainCharacterCardController
     {
-        #region Constructors
 
         public GrayCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
-
-        #endregion Constructors
-
-        #region Methods
-
-        #endregion Methods
     }
 }
