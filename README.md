@@ -40,7 +40,7 @@ when mods are available.
   - The Knight
   - The Stranger
   - Malichae
-  - Tango One - In Progress
+  - Tango One
 
 - VILLAINS:
   - Anathema
