@@ -21,7 +21,7 @@ namespace Cauldron.Gray
 
         private IEnumerator IncreaseOrDiscardResponse(DealDamageAction action)
         {
-            HeroTurnTakerController damageSource = base.FindHeroTurnTakerController(action.DamageSource.Card.Owner.ToHero();
+            HeroTurnTakerController damageSource = base.FindHeroTurnTakerController(action.DamageSource.Card.Owner.ToHero());
             //either increase that damage by 1 or that player must discard a card.
             IEnumerator coroutine = base.SelectAndPerformFunction(damageSource, new Function[]
             {

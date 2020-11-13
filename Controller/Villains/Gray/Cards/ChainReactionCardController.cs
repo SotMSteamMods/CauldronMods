@@ -11,7 +11,7 @@ namespace Cauldron.Gray
     {
         public ChainReactionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowHeroTargetWithLowestHP(numberOfTargets: base.FindNumberOfRadiationCardsInPlay() ?? default));
+            base.SpecialStringMaker.ShowHeroTargetWithLowestHP(numberOfTargets: base.FindNumberOfRadiationCardsInPlay() ?? default);
         }
 
 
