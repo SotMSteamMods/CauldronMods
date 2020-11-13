@@ -131,5 +131,38 @@ namespace CauldronTests
             AssertNotInPlay(theHound);
         }
 
+        [Test]
+        public void TestDenseBrambles()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.BlackwoodForest");
+
+            StartGame();
+
+            string statusEffectMessageRa = $"{ra.Name} is immune to damage.";
+
+            // Act
+            PutIntoPlay(DenseBramblesCardController.Identifier);
+            Card denseBrambles = GetCardInPlay(DenseBramblesCardController.Identifier);
+
+            QuickHPStorage(ra);
+
+            //AssertStatusEffectsContains("ImmuneToDamage");
+            //AssertStatusEffectAssociatedTurnTaker(0, wraith.TurnTaker);
+            //AssertStatusEffectsContains(messageText);
+
+
+
+            DealDamage(baron, ra, 3, DamageType.Toxic);
+            AssertStatusEffectsContains(statusEffectMessageRa);
+
+            GoToStartOfTurn(BlackForest);
+            AssertStatusEffects(statusEffectMessageRa);
+            // Assert
+            QuickHPCheck(0);
+
+
+        }
+
     }
 }
