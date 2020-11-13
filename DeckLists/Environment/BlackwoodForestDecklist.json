@@ -54,8 +54,7 @@
                 "creature"
             ],
             "icons": [
-                "????????????????????????????",
-                "DealDamageSonic",
+              "DealDamageSonic",
                 "DestroySelf"
             ],
             "body": "When this card enters play, it gains the text, keywords, and max HP of the non-character target with the lowest HP in play. If there are no other non-character targets in play when this card enters play, this card deals each target 2 sonic damage and is destroyed.",
