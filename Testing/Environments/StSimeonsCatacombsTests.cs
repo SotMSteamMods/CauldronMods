@@ -283,7 +283,10 @@ namespace CauldronTests
             Card initialRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
 
             PrintSeparator("Go to next end of turn");
-            DecisionSelectCards = new Card[] { initialRoom, instructions.UnderLocation.Cards.Where((Card c) => this.IsDefinitionRoom(c)).First() };
+            //specifically selecting cursed vault as it doesn't introduce any additonal selectcard effects
+            DecisionSelectCards = new Card[] { initialRoom, instructions.UnderLocation.Cards.Where((Card c) => c.Identifier != "CursedVault").First() };
+
+
             GoToEndOfTurn(catacombs);
 
             Card newRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
@@ -400,9 +403,6 @@ namespace CauldronTests
                 DestroyCard(playedRoom, ra.CharacterCard);
             }
 
-            //don't destroy CursedVault
-            DecisionDoNotSelectCard = SelectionType.DestroyCard;
-
             GoToPlayCardPhase(catacombs);
             //change villain targets in play to make baron blade vulnerable
             Card mdp = GetCardInPlay("MobileDefensePlatform");
@@ -415,6 +415,43 @@ namespace CauldronTests
             DealDamage(ra.CharacterCard, (Card c) => c.IsTarget, 3, DamageType.Fire);
             //only the damage to villains should have been reduced
             QuickHPCheck(-2, -2, -3, -3, -3);
+
+
+        }
+
+        [Test()]
+        public void TestSacrificialShrine()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is SacrificialShrine in play
+            if (playedRoom.Identifier != "SacrificialShrine")
+            {
+                DecisionSelectCard = GetCard("SacrificialShrine");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            //don't destroy SacrificialShrine
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            GoToPlayCardPhase(catacombs);
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+            Card battalion = PlayCard("BladeBattalion");
+
+            //At the end of the environment turn, this card deals each target 2 psychic damage.
+            PrintSeparator("check damage is dealt");
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            GoToEndOfTurn(catacombs);
+            QuickHPCheck(-2, -2, -2, -2, -2);
 
 
         }
