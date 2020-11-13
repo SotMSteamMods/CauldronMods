@@ -10,8 +10,10 @@ namespace Cauldron
     {
         public IrradiatedTouchCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP(2);
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
+
         public override void AddTriggers()
         {
             //At the end of the villain turn, {Gray} deals the hero target with the second highest HP {H - 2} melee and {H - 2} energy damage.
