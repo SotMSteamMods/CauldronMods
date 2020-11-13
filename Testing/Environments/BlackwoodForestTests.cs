@@ -160,6 +160,61 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestDontStrayFromThePathProcsOnFutureRoundNoHound()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            StartGame();
+
+            // Act
+            GoToStartOfTurn(BlackForest);
+            PutIntoPlay(DontStrayFromThePathCardController.Identifier);
+
+            GoToStartOfTurn(BlackForest);
+            GoToPlayCardPhase(BlackForest);
+            PlayCard(ShadowStalkerCardController.Identifier);
+
+            PutOnDeck(BlackForest, GetCard(OvergrownCathedralCardController.Identifier)); // Top deck something other than The Hound
+            GoToStartOfTurn(BlackForest);
+
+            // Assert
+            AssertNumberOfCardsInTrash(BlackForest, 1); // Overgrown Cathedral was not The Hound so it was placed in trash
+            
+        }
+
+        [Test]
+        public void TestDontStrayFromThePathProcsOnFutureRoundWithHound()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            StartGame();
+            QuickShuffleStorage(BlackForest);
+
+            // Act
+
+            GoToStartOfTurn(BlackForest);
+            PutIntoPlay(DontStrayFromThePathCardController.Identifier);
+
+            GoToStartOfTurn(BlackForest);
+            GoToPlayCardPhase(BlackForest);
+            PlayCard(ShadowStalkerCardController.Identifier);
+
+            Card theHound = GetCard(TheHoundCardController.Identifier);
+            PutOnDeck(BlackForest, theHound); // Top deck something other than The Hound
+            GoToStartOfTurn(BlackForest);
+
+            // Assert
+            QuickShuffleCheck(1); // The Hound caused an additional shuffle of the env. deck
+            AssertNotInPlay(theHound); // The Hound was shuffled back into the environment deck
+            AssertInDeck(theHound); // The Hound should be back in the deck
+            AssertNumberOfCardsInTrash(BlackForest, 0); // No cards should be in the trash
+
+        }
+
+
+        [Test]
         public void TestDenseBrambles()
         {
             // Arrange
