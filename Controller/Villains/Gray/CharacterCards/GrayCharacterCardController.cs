@@ -10,7 +10,8 @@ namespace Cauldron.Gray
 
         public GrayCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowNumberOfCards(new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.DoKeywordsContain("radiation"), "radiation"));
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
         public override void AddSideTriggers()
         {
@@ -19,7 +20,7 @@ namespace Cauldron.Gray
             {
                 //At the end of the villain turn, if there are 3 or more radiation cards in play, flip {Gray}'s villain character cards and destroy 1 environment card.
                 base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, FlipCardResponse, TriggerType.FlipCard, additionalCriteria: (PhaseChangeAction action) => this.FindNumberOfRadiationCardsInPlay() >= 3));
-                //At the end of the villain turn, {Gray} deals the hero target with the highest HP {H -1} energy damage.
+                //At the end of the villain turn, {Gray} deals the hero target with the highest HP {H - 1} energy damage.
                 base.AddSideTrigger(base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsHero, TargetType.HighestHP, Game.H - 1, DamageType.Energy));
                 //Whenever a radiation card is destroyed, destroy 1 hero ongoing or equipment card and gray deals each non-villain target {H - 1} energy damage.
                 //Advanced - Whenever a radiation card is destroyed, destroy a second hero ongoing or equipment card.
