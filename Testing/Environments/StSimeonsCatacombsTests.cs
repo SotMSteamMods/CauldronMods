@@ -268,5 +268,76 @@ namespace CauldronTests
             AssertUnderCard(instructions, playedRoom);
 
         }
+
+        [Test()]
+        public void TestCatacombsBackEndOfTurnFreeRoom()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            GoToEndOfTurn(catacombs);
+            Card initialRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            PrintSeparator("Go to next end of turn");
+            DecisionSelectCards = new Card[] { initialRoom, instructions.UnderLocation.Cards.First() };
+            GoToEndOfTurn(catacombs);
+
+            Card newRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            AssertUnderCard(instructions, initialRoom);
+            Assert.IsTrue(initialRoom != newRoom, "A new room did not come out");
+
+
+        }
+
+        [Test()]
+        public void TestCatacombsBackEndOfTurnFreeRoom_Optional()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            GoToEndOfTurn(catacombs);
+            Card initialRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            PrintSeparator("Go to next end of turn");
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+
+            AssertInPlayArea(catacombs, initialRoom);
+
+
+        }
+
+        [Test()]
+        public void TestCatacombsBackEndOfTurnFreeRoom_OnlyWhenNoRoomsChanges()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            PrintSeparator("Destroy a room this turn");
+            GoToStartOfTurn(catacombs);
+            PrintSeparator("Destroy Room 1");
+            //Whenever a room card would leave play, instead place it face up beneath this card.
+            DestroyCard(playedRoom, ra.CharacterCard);
+            AssertUnderCard(instructions, playedRoom);
+
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            PrintSeparator("Go to next end of turn");
+            GoToEndOfTurn(catacombs);
+            //no choice to destroy this card
+            AssertInPlayArea(catacombs, playedRoom);
+
+
+
+        }
     }
 }

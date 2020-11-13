@@ -62,7 +62,23 @@ namespace Cauldron.StSimeonsCatacombs
 				//If you change rooms this way three times in a turn, room cards become indestructible until the end of the turn.
 				base.AddTrigger<GameAction>((GameAction ga) => NumberOfRoomsEnteredPlayThisTurn() >= 3  && !base.IsPropertyTrue("Indestructible", null), new Func<GameAction, IEnumerator>(this.SetRoomsIndestructibleResponse), TriggerType.CreateStatusEffect, TriggerTiming.Before);
 				//At the end of the environment turn, if no room cards have entered play this turn, you may destroy a room card.
+				base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.FreeDestroyRoom), TriggerType.DestroyCard, (PhaseChangeAction pca) => NumberOfRoomsEnteredPlayThisTurn() == 0);
 			}
+		}
+
+        private IEnumerator FreeDestroyRoom(PhaseChangeAction pca)
+        {
+			//you may destroy a room card.
+			IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker,new LinqCardCriteria((Card c) => c.IsRoom, "room"), true, cardSource: base.GetCardSource());
+			if (base.UseUnityCoroutines)
+			{
+				yield return base.GameController.StartCoroutine(coroutine);
+			}
+			else
+			{
+				base.GameController.ExhaustCoroutine(coroutine);
+			}
+			yield break;
 		}
 
         private IEnumerator SetRoomsIndestructibleResponse(GameAction ga)
@@ -91,19 +107,21 @@ namespace Cauldron.StSimeonsCatacombs
 			//Then choose a different room beneath this card and put it into play.
 			IEnumerator cancel = base.CancelAction(mc);
 			IEnumerator under = base.GameController.MoveCard(base.TurnTakerController, mc.CardToMove, base.Card.UnderLocation, cardSource: base.GetCardSource());
-
+			IEnumerator shuffle = base.GameController.ShuffleLocation(base.Card.UnderLocation, cardSource: base.GetCardSource());
 			//Then choose a different room beneath this card and put it into play.
 			IEnumerator play = base.GameController.SelectAndPlayCard(this.DecisionMaker, base.Card.UnderLocation.Cards.Where(c => c != mc.CardToMove), isPutIntoPlay: true);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(cancel);
 				yield return base.GameController.StartCoroutine(under);
+				yield return base.GameController.StartCoroutine(shuffle);
 				yield return base.GameController.StartCoroutine(play);
 			}
 			else
 			{
 				base.GameController.ExhaustCoroutine(cancel);
 				base.GameController.ExhaustCoroutine(under);
+				base.GameController.ExhaustCoroutine(shuffle);
 				base.GameController.ExhaustCoroutine(play);
 			}
 			yield break;
