@@ -15,7 +15,10 @@ namespace CauldronTests
         #region StSimeonsCatacombsHelperFunctions
 
         protected TurnTakerController catacombs { get { return FindEnvironment(); } }
-
+        private bool IsDefinitionRoom(Card card)
+        {
+            return card != null && card.Definition.Keywords.Contains("room");
+        }
 
         #endregion
 
@@ -280,7 +283,7 @@ namespace CauldronTests
             Card initialRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
 
             PrintSeparator("Go to next end of turn");
-            DecisionSelectCards = new Card[] { initialRoom, instructions.UnderLocation.Cards.First() };
+            DecisionSelectCards = new Card[] { initialRoom, instructions.UnderLocation.Cards.Where((Card c) => this.IsDefinitionRoom(c)).First() };
             GoToEndOfTurn(catacombs);
 
             Card newRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));

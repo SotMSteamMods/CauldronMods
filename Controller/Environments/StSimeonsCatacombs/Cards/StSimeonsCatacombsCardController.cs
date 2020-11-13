@@ -77,7 +77,7 @@ namespace Cauldron.StSimeonsCatacombs
 			}
 
 			//puts a random room card from beneath this one into play
-			IEnumerator coroutine2 = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.Card.UnderLocation, false, true, false, new LinqCardCriteria((Card c) => true, "room"), new int?(1), shuffleBeforehand: true);
+			IEnumerator coroutine2 = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.Card.UnderLocation, false, true, false, new LinqCardCriteria((Card c) => this.IsDefinitionRoom(c), "room"), new int?(1), shuffleBeforehand: true);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine2);
@@ -236,7 +236,7 @@ namespace Cauldron.StSimeonsCatacombs
 		private int NumberOfRoomsEnteredPlayThisTurn()
         {
 			int result = (from e in base.GameController.Game.Journal.CardEntersPlayEntriesThisTurn()
-						 where e.Card.Definition.Keywords.Contains("room")
+						 where this.IsDefinitionRoom(e.Card)
 						  select e).Count();
 
 			return result;
@@ -247,7 +247,10 @@ namespace Cauldron.StSimeonsCatacombs
 			return card == base.Card || card.Location == base.Card.UnderLocation;
 		}
 
-
+		private bool IsDefinitionRoom(Card card)
+		{
+			return card != null && card.Definition.Keywords.Contains("room");
+		}
 		private List<StatusEffect> SideStatusEffects = new List<StatusEffect>();
 		  
         #endregion Methods
