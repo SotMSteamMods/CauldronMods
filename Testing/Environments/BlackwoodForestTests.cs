@@ -15,6 +15,8 @@ namespace CauldronTests
     [TestFixture]
     public class BlackwoodForestTests : BaseTest
     {
+        private const string DeckNamespace =  "Cauldron.BlackwoodForest";
+
         protected TurnTakerController BlackForest => FindEnvironment();
 
 
@@ -22,7 +24,7 @@ namespace CauldronTests
         public void TestBlackForestLoads()
         {
             // Arrange & Act
-            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.BlackwoodForest");
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
 
             // Assert
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
@@ -33,7 +35,7 @@ namespace CauldronTests
         public void TestOldBonesEmptyTrashPiles()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.BlackwoodForest");
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
 
             StartGame();
 
@@ -55,7 +57,7 @@ namespace CauldronTests
         public void TestOldBonesSeededTrashPiles()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.BlackwoodForest");
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
 
             StartGame();
 
@@ -89,7 +91,7 @@ namespace CauldronTests
         public void TestDontStrayFromThePathHoundRevealed()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.BlackwoodForest");
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
 
             StartGame();
             Card theHound = GetCard(TheHoundCardController.Identifier);
@@ -113,7 +115,7 @@ namespace CauldronTests
         public void TestDontStrayFromThePathHoundNotRevealed()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.BlackwoodForest");
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
 
             StartGame();
             Card theHound = GetCard(TheHoundCardController.Identifier);
@@ -135,33 +137,34 @@ namespace CauldronTests
         public void TestDenseBrambles()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.BlackwoodForest");
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
 
             StartGame();
 
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
             string statusEffectMessageRa = $"{ra.Name} is immune to damage.";
+            string statusEffectMessageMdp = $"{mdp.Title} is immune to damage.";
 
             // Act
             PutIntoPlay(DenseBramblesCardController.Identifier);
             Card denseBrambles = GetCardInPlay(DenseBramblesCardController.Identifier);
 
-            QuickHPStorage(ra);
+            QuickHPStorage(ra.CharacterCard, mdp);
 
-            //AssertStatusEffectsContains("ImmuneToDamage");
-            //AssertStatusEffectAssociatedTurnTaker(0, wraith.TurnTaker);
-            //AssertStatusEffectsContains(messageText);
+            AssertStatusEffectsContains(statusEffectMessageRa); // Ra has immune to damage status effect
+            AssertStatusEffectsContains(statusEffectMessageMdp); // MDP has immune to damage status effect
+            DealDamage(baron, ra, 3, DamageType.Toxic); // Ra is immune
+            
 
+            GoToStartOfTurn(BlackForest); // Dense Brambles is destroyed
 
+            DealDamage(ra, mdp, 2, DamageType.Fire);
 
-            DealDamage(baron, ra, 3, DamageType.Toxic);
-            AssertStatusEffectsContains(statusEffectMessageRa);
-
-            GoToStartOfTurn(BlackForest);
-            AssertStatusEffects(statusEffectMessageRa);
             // Assert
-            QuickHPCheck(0);
-
-
+            AssertStatusEffectsDoesNotContain(statusEffectMessageRa); // Ra no longer has immune to damage
+            AssertStatusEffectsDoesNotContain(statusEffectMessageMdp); // MDP no longer has immune to damage
+            QuickHPCheck(0, -2); // Ra took no damage from baron's attack due to Dense Brambles, MDP was damaged after Dense Brambles was destroyed
         }
 
     }
