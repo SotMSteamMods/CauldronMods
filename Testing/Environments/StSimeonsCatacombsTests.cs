@@ -510,7 +510,110 @@ namespace CauldronTests
                 
             }
 
+        }
 
+        [Test()]
+        public void TestTwistingPassages_FewerThan2EnvironmentTargets()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is TwistingPassages in play
+            if (playedRoom.Identifier != "TwistingPassages")
+            {
+                DecisionSelectCard = GetCard("TwistingPassages");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card envTarget = PlayCard("ScurryingEvil");
+
+
+            //Increase damage dealt by environment cards by 1.
+            //If there are fewer than 2 environment targets in play, increase damage dealt by hero targets by 1."
+            //there is only 1 environment target, so no increase to heroes
+
+            PrintSeparator("check damage dealt by environments is increased by 1");
+            Card[] targets = new Card[] { baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, envTarget };
+
+            int expectedDamage;
+            foreach (Card source in targets)
+            {
+                QuickHPStorage(ra);
+
+                if (source.IsEnvironmentTarget)
+                {
+                    expectedDamage = -3;
+                }
+                else
+                {
+                    expectedDamage = -2;
+                }
+
+                DealDamage(source, ra.CharacterCard, 2, DamageType.Melee);
+                QuickHPCheck(expectedDamage);
+
+            }
+
+        }
+
+        [Test()]
+        public void TestTwistingPassages_MoreThan2EnvironmentTargets()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is TwistingPassages in play
+            if (playedRoom.Identifier != "TwistingPassages")
+            {
+                DecisionSelectCard = GetCard("TwistingPassages");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card envTarget1 = PlayCard("ScurryingEvil");
+            Card envTarget2 = PlayCard("Possessor");
+
+
+            //Increase damage dealt by environment cards by 1.
+            //If there are fewer than 2 environment targets in play, increase damage dealt by hero targets by 1."
+            //there are 2 environment targets, so hero damage increased
+
+            PrintSeparator("check damage dealt by environments is increased by 1");
+            Card[] targets = new Card[] { baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, envTarget1, envTarget2 };
+
+            int expectedDamage;
+            foreach (Card source in targets)
+            {
+                QuickHPStorage(ra);
+
+                if (source.IsEnvironmentTarget || (source.IsHero && source.IsTarget))
+                {
+                    expectedDamage = -3;
+                }
+                else
+                {
+                    expectedDamage = -2;
+                }
+
+                DealDamage(source, ra.CharacterCard, 2, DamageType.Melee);
+                QuickHPCheck(expectedDamage);
+
+            }
 
         }
     }
