@@ -26,9 +26,13 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Cauldron.StSimeonsCatacombs");
             StartGame();
 
+            //flip instructions card so cards can be played
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            FlipCard(instructions);
+
             GoToPlayCardPhase(catacombs);
 
-            Card card = PlayCard(room);
+            Card card = MoveCard(catacombs, room, catacombs.TurnTaker.PlayArea);
             AssertInPlayArea(catacombs, card);
             AssertCardHasKeyword(card, "room", false);
         }
@@ -39,6 +43,10 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Cauldron.StSimeonsCatacombs");
             StartGame();
+
+            //flip instructions card so cards can be played
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            FlipCard(instructions);
 
             GoToPlayCardPhase(catacombs);
 
@@ -89,6 +97,20 @@ namespace CauldronTests
             StartGame();
             Card instructions = GetCardInPlay("StSimeonsCatacombs");
             Card testCard = GetCard("CoalKid");
+            AssertNotFlipped(instructions);
+            AssertCannotPlayCards(catacombs, testCard);
+
+        }
+
+        [Test()]
+        public void TestCatacombsCantPlayCardsOnFront_FlippedBack()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card testCard = GetCard("CoalKid");
+            FlipCard(instructions);
+            FlipCard(instructions);
             AssertNotFlipped(instructions);
             AssertCannotPlayCards(catacombs, testCard);
 

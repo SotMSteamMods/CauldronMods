@@ -29,7 +29,7 @@ namespace Cauldron.StSimeonsCatacombs
 			//on  front side
 			if (!base.Card.IsFlipped)
 			{
-					
+
 			}
 			else
 			{
@@ -38,6 +38,25 @@ namespace Cauldron.StSimeonsCatacombs
 			}
 		}
 
+		private IEnumerator AddCannotPlayEffect()
+		{
+			if (!base.Card.IsFlipped)
+			{
+				IEnumerator coroutine = ((StSimeonsCatacombsTurnTakerController)base.TurnTakerController).AddSideEffects(FindCardController(base.Card));
+
+				if (base.UseUnityCoroutines)
+				{
+					yield return base.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					base.GameController.ExhaustCoroutine(coroutine);
+
+				}
+			}
+
+			yield break;
+		}
 
 		public override bool AskIfCardIsIndestructible(Card card)
 		{
@@ -49,7 +68,16 @@ namespace Cauldron.StSimeonsCatacombs
 		{
 			this.RemoveSideTriggers();
 			this.AddSideTriggers();
-			yield return null;
+			IEnumerator cantPlayCards = this.AddCannotPlayEffect();
+			if (base.UseUnityCoroutines)
+			{
+				yield return base.GameController.StartCoroutine(cantPlayCards);
+			}
+			else
+			{
+				base.GameController.ExhaustCoroutine(cantPlayCards);
+
+			}
 			yield break;
 		}
 

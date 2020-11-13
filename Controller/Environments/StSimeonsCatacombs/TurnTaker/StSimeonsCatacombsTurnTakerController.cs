@@ -40,7 +40,32 @@ namespace Cauldron.StSimeonsCatacombs
 				base.GameController.ExhaustCoroutine(coroutine2);
 			}
 
-			//create status effect for cannot play cards
+			IEnumerator coroutine3 = AddSideEffects(cardController);
+			if (base.UseUnityCoroutines)
+			{
+				yield return base.GameController.StartCoroutine(coroutine3);
+			}
+			else
+			{
+				base.GameController.ExhaustCoroutine(coroutine3);
+
+			}
+
+
+			yield break;
+		}
+
+		public void RemoveSideEffects()
+		{
+			foreach (StatusEffect effect in this.SideStatusEffects)
+			{
+				base.GameController.StatusEffectManager.RemoveStatusEffect(effect);
+			}
+			this.SideStatusEffects.Clear();
+		}
+
+		public IEnumerator AddSideEffects(CardController cardController)
+		{
 			CannotPlayCardsStatusEffect cannotPlayCardsStatusEffect = new CannotPlayCardsStatusEffect();
 			cannotPlayCardsStatusEffect.TurnTakerCriteria.IsEnvironment = true;
 			IEnumerator coroutine3 = base.GameController.AddStatusEffect(cannotPlayCardsStatusEffect, true, cardController.GetCardSource());
@@ -55,15 +80,6 @@ namespace Cauldron.StSimeonsCatacombs
 			}
 
 			yield break;
-		}
-
-		public void RemoveSideEffects()
-		{
-			foreach (StatusEffect effect in this.SideStatusEffects)
-			{
-				base.GameController.StatusEffectManager.RemoveStatusEffect(effect);
-			}
-			this.SideStatusEffects.Clear();
 		}
 
 		private List<StatusEffect> SideStatusEffects = new List<StatusEffect>();
