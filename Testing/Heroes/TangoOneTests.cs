@@ -335,14 +335,18 @@ namespace CauldronTests
             // Arrange
             SetupGameController("Cauldron.Anathema", "Cauldron.TangoOne", "Ra", "Megalopolis");
 
-            PutOnDeck(Anathema, GetCard("KnuckleDragger"));
-            PutOnDeck(Anathema, GetCard("ThresherClaw"));
-            PutOnDeck(Anathema, GetCard("RazorScales"));
-            PutOnDeck(Anathema, GetCard("CarapaceHelmet"));
+            // Supress Anathema's ability to play cards to create ideal testing env.
+            CannotPlayCardsStatusEffect cannotPlayCardsStatusEffect = new CannotPlayCardsStatusEffect();
+            cannotPlayCardsStatusEffect.CardCriteria.IsVillain = true;
+            cannotPlayCardsStatusEffect.UntilTargetLeavesPlay(Anathema.CharacterCard);
+            RunCoroutine(this.GameController.AddStatusEffect(cannotPlayCardsStatusEffect, true, new CardSource(Anathema.CharacterCardController)));
 
             StartGame();
 
+            // Remove body part cards to create ideal testing env.
+            RemoveVillainCards();
 
+            
             DecisionSelectCard = ra.CharacterCard;
 
             PutOnDeck(TangoOne, GetCard(DamnGoodGroundCardController.Identifier));
@@ -359,10 +363,9 @@ namespace CauldronTests
             UsePower(TangoOne);
 
             // Assert
-            QuickHPCheck(-5);
+            QuickHPCheck(-5); // Snipe +1, Nemesis +1, Critical Hit + 3 = 5
         }
         
-
         [Test]
         public void TestDamnGoodGround()
         {
