@@ -79,6 +79,11 @@ namespace CauldronTests
             {
                 AssertUnderCard(instructions, c);
                 AssertDoesNotHaveGameText(c);
+
+                //check that indestructible
+                DestroyCard(c, haka.CharacterCard);
+                AssertNumberOfCardsInTrash(catacombs, 0);
+
             }
 
             //check that all non-rooms are still in the deck
@@ -87,6 +92,61 @@ namespace CauldronTests
                 AssertInDeck(catacombs, c);
                 AssertHasGameText(c);
             }
+
+        }
+
+
+        [Test()]
+        public void TestCatacombsCheckIndestructibleAndNoGameTextWhenFlipped()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            List<Card> roomCards = catacombs.TurnTaker.Deck.Cards.Where(c => c.IsRoom).ToList();
+
+            FlipCard(instructions);
+
+            //check that all rooms have been moved to under the instructions card
+            foreach (Card c in roomCards)
+            {
+                AssertUnderCard(instructions, c);
+                AssertDoesNotHaveGameText(c);
+
+                //check that indestructible
+                DestroyCard(c, haka.CharacterCard);
+                AssertNumberOfCardsInTrash(catacombs, 0);
+
+            }
+
+        }
+
+        [Test()]
+        public void TestCatacombsFrontEndOfTurn_PutRoomInPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            GoToEndOfTurn(catacombs);
+
+            Card playedRoom = catacombs.TurnTaker.PlayArea.Cards.Where(c => c != instructions).FirstOrDefault();
+            AssertHasGameText(playedRoom);
+            AssertDoesNotHaveGameText(instructions);
+            AssertNumberOfCardsInPlay((Card c) => catacombs.TurnTaker.PlayArea.Cards.Contains(c),1);
+            AssertNumberOfCardsUnderCard(instructions, 4);
+            AssertCardHasKeyword(playedRoom, "room", false);
+
+        }
+
+        [Test()]
+        public void TestCatacombsFrontEndOfTurn_Flip()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            GoToEndOfTurn(catacombs);
+
+            AssertFlipped(instructions);
 
         }
 

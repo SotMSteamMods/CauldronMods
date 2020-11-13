@@ -20,9 +20,20 @@ namespace Cauldron.StSimeonsCatacombs
 			List<Card> rooms = (from c in base.TurnTaker.GetAllCards(true)
 								   where c.IsRoom && !c.Location.IsOutOfGame
 								   select c).ToList<Card>();
-			
+
 			//Find the instruction card
 			Card card = base.TurnTaker.FindCard("StSimeonsCatacombs");
+
+			IEnumerator playCard = base.GameController.PlayCard(this, card);
+			if (base.UseUnityCoroutines)
+			{
+				yield return base.GameController.StartCoroutine(playCard);
+			}
+			else
+			{
+				base.GameController.ExhaustCoroutine(playCard);
+			}
+
 			CardController cardController = base.GameController.FindCardController(card);
 
 			//move all room cards to under the instruction card
@@ -40,49 +51,10 @@ namespace Cauldron.StSimeonsCatacombs
 				base.GameController.ExhaustCoroutine(coroutine2);
 			}
 
-			IEnumerator coroutine3 = AddSideEffects(cardController);
-			if (base.UseUnityCoroutines)
-			{
-				yield return base.GameController.StartCoroutine(coroutine3);
-			}
-			else
-			{
-				base.GameController.ExhaustCoroutine(coroutine3);
-
-			}
-
-
 			yield break;
 		}
 
-		public void RemoveSideEffects()
-		{
-			foreach (StatusEffect effect in this.SideStatusEffects)
-			{
-				base.GameController.StatusEffectManager.RemoveStatusEffect(effect);
-			}
-			this.SideStatusEffects.Clear();
-		}
-
-		public IEnumerator AddSideEffects(CardController cardController)
-		{
-			CannotPlayCardsStatusEffect cannotPlayCardsStatusEffect = new CannotPlayCardsStatusEffect();
-			cannotPlayCardsStatusEffect.TurnTakerCriteria.IsEnvironment = true;
-			IEnumerator coroutine3 = base.GameController.AddStatusEffect(cannotPlayCardsStatusEffect, true, cardController.GetCardSource());
-			this.SideStatusEffects.Add(cannotPlayCardsStatusEffect);
-			if (base.UseUnityCoroutines)
-			{
-				yield return base.GameController.StartCoroutine(coroutine3);
-			}
-			else
-			{
-				base.GameController.ExhaustCoroutine(coroutine3);
-			}
-
-			yield break;
-		}
-
-		private List<StatusEffect> SideStatusEffects = new List<StatusEffect>();
+		
 
 
 	}
