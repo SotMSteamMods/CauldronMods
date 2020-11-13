@@ -83,8 +83,52 @@ namespace CauldronTests
             Assert.AreEqual(2, legacy.TurnTaker.Trash.Cards.Count());
             Assert.AreEqual(0, haka.TurnTaker.Trash.Cards.Count());
             Assert.AreEqual(3, baron.TurnTaker.Trash.Cards.Count());
+        }
+
+        [Test]
+        public void TestDontStrayFromThePathHoundRevealed()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.BlackwoodForest");
+
+            StartGame();
+            Card theHound = GetCard(TheHoundCardController.Identifier);
+            PutOnDeck(BlackForest, theHound); // Top deck The Hound
+
+            // Act
+            PutIntoPlay(DontStrayFromThePathCardController.Identifier);
+            Card dontStray = GetCardInPlay(DontStrayFromThePathCardController.Identifier);
+
+            PutIntoPlay(ShadowWeaverCardController.Identifier);
+
+            GoToStartOfTurn(BlackForest);
 
 
+            // Assert
+            AssertIsInPlay(theHound);
+
+        }
+
+        [Test]
+        public void TestDontStrayFromThePathHoundNotRevealed()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.BlackwoodForest");
+
+            StartGame();
+            Card theHound = GetCard(TheHoundCardController.Identifier);
+            PutOnDeck(BlackForest, GetCard(OvergrownCathedralCardController.Identifier)); // Top deck something other than The Hound
+
+            // Act
+            PutIntoPlay(DontStrayFromThePathCardController.Identifier);
+            Card dontStray = GetCardInPlay(DontStrayFromThePathCardController.Identifier);
+
+            PutIntoPlay(ShadowWeaverCardController.Identifier);
+
+            GoToStartOfTurn(BlackForest);
+
+            // Assert
+            AssertNotInPlay(theHound);
         }
 
     }
