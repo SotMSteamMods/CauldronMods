@@ -15,7 +15,9 @@ namespace Cauldron.StSimeonsCatacombs
         {
             base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.IsUnderCard && c.Location == base.Card.UnderLocation, "under this card", false, true));
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
-        }
+			base.SetCardProperty("Indestructible", false);
+
+		}
 
 		#endregion Constructors
 
@@ -56,11 +58,32 @@ namespace Cauldron.StSimeonsCatacombs
 				//remove the environment cards can't be played status effect
 				this.RemoveSideEffects();
 				//Whenever a room card would leave play, instead place it face up beneath this card. Then choose a different room beneath this card and put it into play.
-				base.AddTrigger<MoveCardAction>((MoveCardAction mc) => mc.CardToMove.IsRoom && mc.Destination != base.TurnTaker.PlayArea && mc.Destination != base.Card.UnderLocation , new Func<MoveCardAction, IEnumerator>(this.ChangeRoomPostLeaveResponse), TriggerType.MoveCard, TriggerTiming.Before);
+				base.AddTrigger<MoveCardAction>((MoveCardAction mc) => mc.CardToMove.IsRoom && mc.Destination != base.TurnTaker.PlayArea && mc.Destination != base.Card.UnderLocation, new Func<MoveCardAction, IEnumerator>(this.ChangeRoomPostLeaveResponse), TriggerType.MoveCard, TriggerTiming.Before);
 				//If you change rooms this way three times in a turn, room cards become indestructible until the end of the turn.
+				base.AddTrigger<GameAction>((GameAction ga) => NumberOfRoomsEnteredPlayThisTurn() >= 3  && !base.IsPropertyTrue("Indestructible", null), new Func<GameAction, IEnumerator>(this.SetRoomsIndestructibleResponse), TriggerType.CreateStatusEffect, TriggerTiming.Before);
 				//At the end of the environment turn, if no room cards have entered play this turn, you may destroy a room card.
 			}
 		}
+
+        private IEnumerator SetRoomsIndestructibleResponse(GameAction ga)
+        {
+			//room cards become indestructible until the end of the turn
+			base.SetCardPropertyToTrueIfRealAction("Indestructible", null);
+			MakeIndestructibleStatusEffect makeIndestructibleStatusEffect = new MakeIndestructibleStatusEffect();
+			makeIndestructibleStatusEffect.CardsToMakeIndestructible.HasAnyOfTheseKeywords = new List<string>() { "room" };
+			makeIndestructibleStatusEffect.ToTurnPhaseExpiryCriteria.Phase = new Phase?(Phase.End);
+			IEnumerator coroutine = base.AddStatusEffect(makeIndestructibleStatusEffect, true);
+
+			if (base.UseUnityCoroutines)
+			{
+				yield return base.GameController.StartCoroutine(coroutine);
+			}
+			else
+			{
+				base.GameController.ExhaustCoroutine(coroutine);
+			}
+			yield break;
+        }
 
         private IEnumerator ChangeRoomPostLeaveResponse(MoveCardAction mc)
         {
@@ -68,7 +91,7 @@ namespace Cauldron.StSimeonsCatacombs
 			//Then choose a different room beneath this card and put it into play.
 			IEnumerator cancel = base.CancelAction(mc);
 			IEnumerator under = base.GameController.MoveCard(base.TurnTakerController, mc.CardToMove, base.Card.UnderLocation, cardSource: base.GetCardSource());
-			
+
 			//Then choose a different room beneath this card and put it into play.
 			IEnumerator play = base.GameController.SelectAndPlayCard(this.DecisionMaker, base.Card.UnderLocation.Cards.Where(c => c != mc.CardToMove), isPutIntoPlay: true);
 			if (base.UseUnityCoroutines)
@@ -127,7 +150,17 @@ namespace Cauldron.StSimeonsCatacombs
 			yield break;
 		}
 
+		private int NumberOfRoomsEnteredPlayThisTurn()
+        {
+			int result = (from e in base.GameController.Game.Journal.CardEntersPlayEntriesThisTurn()
+						 where e.Card.Definition.Keywords.Contains("room")
+						  select e).Count();
+
+			return result;
+		}
+
 		
+
 
 		private IEnumerator AddCannotPlayEffect()
 		{

@@ -212,12 +212,60 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
             Card instructions = GetCardInPlay("StSimeonsCatacombs");
-            FlipCard(instructions);
-            AssertFlipped(instructions);
 
-            Card playedRoom = catacombs.TurnTaker.PlayArea.Cards.Where(c => c.IsRoom).FirstOrDefault();
+            GoToEndOfTurn(catacombs);
+            Card playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
 
+            PrintSeparator("Destroy room in play to trigger next room coming out");
             //Then choose a different room beneath this card and put it into play.
+            DestroyCard(playedRoom, haka.CharacterCard);
+
+            Card newRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+            Assert.IsTrue(playedRoom != newRoom, "The same room was played out as before");
+
+        }
+
+        [Test()]
+        public void TestCatacombsIndestructibleOn3Changes()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            GoToEndOfTurn(catacombs);
+            Card playedRoom;
+
+            GoToStartOfTurn(legacy);
+            PrintSeparator("Destroy Room 1");
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+            //Whenever a room card would leave play, instead place it face up beneath this card.
+            DestroyCard(playedRoom, ra.CharacterCard);
+            AssertUnderCard(instructions, playedRoom);
+
+            PrintSeparator("Destroy Room 2");
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+            //Whenever a room card would leave play, instead place it face up beneath this card.
+            DestroyCard(playedRoom, ra.CharacterCard);
+            AssertUnderCard(instructions, playedRoom);
+
+            PrintSeparator("Destroy Room 3");
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+            //Whenever a room card would leave play, instead place it face up beneath this card.
+            DestroyCard(playedRoom, ra.CharacterCard);
+            AssertUnderCard(instructions, playedRoom);
+
+            PrintSeparator("Rooms should be indestructible");
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+            //Whenever a room card would leave play, instead place it face up beneath this card.
+            DestroyCard(playedRoom, ra.CharacterCard);
+            AssertInPlayArea(catacombs, playedRoom);
+
+            PrintSeparator("Able to be destroyed in the next turn");
+            GoToNextTurn();
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+            //Whenever a room card would leave play, instead place it face up beneath this card.
+            DestroyCard(playedRoom, ra.CharacterCard);
+            AssertUnderCard(instructions, playedRoom);
 
         }
     }
