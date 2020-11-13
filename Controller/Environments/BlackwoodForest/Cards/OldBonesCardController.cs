@@ -16,6 +16,8 @@ namespace Cauldron.BlackwoodForest
 
         public static string Identifier = "OldBones";
 
+        private const int CardsToMove = 1;
+
         public OldBonesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
@@ -23,6 +25,7 @@ namespace Cauldron.BlackwoodForest
 
         public override void AddTriggers()
         {
+            // Destroy self at start of next env. turn
             base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker,
                 new Func<PhaseChangeAction, IEnumerator>(base.DestroyThisCardResponse),
                 TriggerType.DestroySelf, null, false);
@@ -51,8 +54,7 @@ namespace Cauldron.BlackwoodForest
         private IEnumerator ShuffleTrashResponse(TurnTakerController turnTakerController)
         {
             TurnTaker turnTaker = turnTakerController.TurnTaker;
-            HeroTurnTakerController decisionMaker = turnTaker.IsHero ? turnTakerController.ToHero() : this.DecisionMaker;
-
+            //HeroTurnTakerController decisionMaker = turnTaker.IsHero ? turnTakerController.ToHero() : this.DecisionMaker;
 
             // Shuffle trash pile
             IEnumerator shuffleTrashRoutine = base.GameController.ShuffleLocation(turnTaker.Trash);
@@ -66,10 +68,8 @@ namespace Cauldron.BlackwoodForest
                 base.GameController.ExhaustCoroutine(shuffleTrashRoutine);
             }
 
-            // Reveal top card and place on TT's deck
-            List<RevealCardsAction> revealCardsActions = new List<RevealCardsAction>();
-            IEnumerator revealCardsRoutine = base.GameController.RevealCards(turnTakerController, turnTaker.Trash, 
-                card => true, 1, revealCardsActions, RevealedCardDisplay.ShowRevealedCards);
+            IEnumerator revealCardsRoutine = base.GameController.MoveCards(this.TurnTakerController, 
+                turnTaker.Trash, turnTaker.Deck, CardsToMove);
 
             if (base.UseUnityCoroutines)
             {
@@ -79,20 +79,6 @@ namespace Cauldron.BlackwoodForest
             {
                 base.GameController.ExhaustCoroutine(revealCardsRoutine);
             }
-
-            /*
-            IEnumerator selectCardsFromLocationRoutine = base.GameController.SelectCardsFromLocationAndMoveThem(decisionMaker, turnTaker.Trash,
-                1, CardsToMoveFromTrash,
-                new LinqCardCriteria(c => c.Location == turnTaker.Trash, "trash"),
-                list, shuffleAfterwards: false, cardSource: base.GetCardSource());
-
-            List<MoveCardDestination> list = new List<MoveCardDestination>
-            {
-                new MoveCardDestination(turnTaker.Deck)
-            };
-            */
-
-            yield break;
         }
     }
 }
