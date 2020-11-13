@@ -152,6 +152,7 @@ namespace CauldronTests
 
             QuickHPStorage(ra.CharacterCard, mdp);
 
+            // 2 lowest HP characters are Ra and MDP
             AssertStatusEffectsContains(statusEffectMessageRa); // Ra has immune to damage status effect
             AssertStatusEffectsContains(statusEffectMessageMdp); // MDP has immune to damage status effect
             DealDamage(baron, ra, 3, DamageType.Toxic); // Ra is immune
@@ -166,6 +167,47 @@ namespace CauldronTests
             AssertStatusEffectsDoesNotContain(statusEffectMessageMdp); // MDP no longer has immune to damage
             QuickHPCheck(0, -2); // Ra took no damage from baron's attack due to Dense Brambles, MDP was damaged after Dense Brambles was destroyed
         }
+
+        [Test]
+        public void TestDenseBramblesThreeWayTieForLowest()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            SetHitPoints(legacy, 10);
+            SetHitPoints(ra, 10);
+
+            string statusEffectMessageRa = $"{ra.Name} is immune to damage.";
+            string statusEffectMessageMdp = $"{mdp.Title} is immune to damage.";
+
+            DecisionSelectCards = new[] {mdp, ra.CharacterCard};
+
+            // Act
+            PutIntoPlay(DenseBramblesCardController.Identifier);
+            Card denseBrambles = GetCardInPlay(DenseBramblesCardController.Identifier);
+
+            QuickHPStorage(ra.CharacterCard, mdp);
+
+            // 2 lowest HP characters are Ra and MDP
+            AssertStatusEffectsContains(statusEffectMessageRa); // Ra has immune to damage status effect
+            AssertStatusEffectsContains(statusEffectMessageMdp); // MDP has immune to damage status effect
+            DealDamage(baron, ra, 3, DamageType.Toxic); // Ra is immune
+
+
+            GoToStartOfTurn(BlackForest); // Dense Brambles is destroyed
+
+            DealDamage(ra, mdp, 2, DamageType.Fire);
+
+            // Assert
+            AssertStatusEffectsDoesNotContain(statusEffectMessageRa); // Ra no longer has immune to damage
+            AssertStatusEffectsDoesNotContain(statusEffectMessageMdp); // MDP no longer has immune to damage
+            QuickHPCheck(0, -2); // Ra took no damage from baron's attack due to Dense Brambles, MDP was damaged after Dense Brambles was destroyed
+        }
+
 
     }
 }
