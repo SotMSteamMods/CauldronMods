@@ -94,6 +94,8 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
 
             StartGame();
+            QuickShuffleStorage(BlackForest);
+
             Card theHound = GetCard(TheHoundCardController.Identifier);
             PutOnDeck(BlackForest, theHound); // Top deck The Hound
 
@@ -101,14 +103,14 @@ namespace CauldronTests
             PutIntoPlay(DontStrayFromThePathCardController.Identifier);
             Card dontStray = GetCardInPlay(DontStrayFromThePathCardController.Identifier);
 
-            PutIntoPlay(ShadowWeaverCardController.Identifier);
+            PutIntoPlay(ShadowWeaverCardController.Identifier); // Has to be at least 1 other env card in play to proc Don't Stray
 
             GoToStartOfTurn(BlackForest);
 
-
             // Assert
-            AssertIsInPlay(theHound);
-
+            AssertNotInPlay(theHound); // The Hound was shuffled back into the environment deck
+            AssertInDeck(theHound); // The Hound should be back in the deck
+            QuickShuffleCheck(1); // The Hound caused an additional shuffle of the env. deck
         }
 
         [Test]
@@ -118,6 +120,9 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
 
             StartGame();
+            QuickShuffleStorage(BlackForest);
+
+
             Card theHound = GetCard(TheHoundCardController.Identifier);
             PutOnDeck(BlackForest, GetCard(OvergrownCathedralCardController.Identifier)); // Top deck something other than The Hound
 
@@ -125,12 +130,33 @@ namespace CauldronTests
             PutIntoPlay(DontStrayFromThePathCardController.Identifier);
             Card dontStray = GetCardInPlay(DontStrayFromThePathCardController.Identifier);
 
-            PutIntoPlay(ShadowWeaverCardController.Identifier);
+            PutIntoPlay(ShadowWeaverCardController.Identifier); // Has to be at least 1 other env card in play to proc Don't Stray
 
             GoToStartOfTurn(BlackForest);
 
             // Assert
             AssertNotInPlay(theHound);
+            QuickShuffleCheck(0); // No shuffles were done beyond the game start shuffle
+
+        }
+
+        [Test]
+        public void TestDontStrayFromThePathNotEnoughOtherEnvCardsOutToProc()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            StartGame();
+            QuickShuffleStorage(BlackForest);
+
+            // Act
+            PutIntoPlay(DontStrayFromThePathCardController.Identifier);
+            Card dontStray = GetCardInPlay(DontStrayFromThePathCardController.Identifier);
+
+            GoToStartOfTurn(BlackForest);
+
+            // Assert
+            QuickShuffleCheck(0); // No shuffles were done beyond the game start shuffle
         }
 
         [Test]
