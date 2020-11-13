@@ -187,5 +187,38 @@ namespace CauldronTests
             AssertCanPlayCards(catacombs);
 
         }
+
+
+        [Test()]
+        public void TestCatacombsCanOnRoomDestroy_MoveRoom()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            GoToEndOfTurn(catacombs);
+
+            PrintSeparator("Destroy Room");
+            Card playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+            //Whenever a room card would leave play, instead place it face up beneath this card.
+            DestroyCard(playedRoom, ra.CharacterCard);
+            AssertUnderCard(instructions, playedRoom);
+
+        }
+
+        [Test()]
+        public void TestCatacombsCanOnRoomDestroy_ChooseNewRoom()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            FlipCard(instructions);
+            AssertFlipped(instructions);
+
+            Card playedRoom = catacombs.TurnTaker.PlayArea.Cards.Where(c => c.IsRoom).FirstOrDefault();
+
+            //Then choose a different room beneath this card and put it into play.
+
+        }
     }
 }
