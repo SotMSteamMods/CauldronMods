@@ -340,6 +340,42 @@ namespace CauldronTests
             AssertInPlayArea(catacombs, playedRoom);
 
 
+        }
+
+        [Test()]
+        public void TestAqueducts()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is aqueducts in play
+            if(playedRoom.Identifier != "Aqueducts")
+            {
+                DecisionSelectCard = GetCard("Aqueducts");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            //don't destroy aqueducts
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            GoToPlayCardPhase(catacombs);
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            //set all hp so there is room to gain
+            SetHitPoints(new Card[] { baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard }, 5);
+
+
+            //At the end of the environment turn, each target regains 1 HP.
+            PrintSeparator("check all targets regain 1 HP");
+            QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            GoToEndOfTurn(catacombs);
+            QuickHPCheck(1, 1, 1, 1, 1);
+
 
         }
     }
