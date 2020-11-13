@@ -283,12 +283,17 @@ namespace CauldronTests
             Card initialRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
 
             PrintSeparator("Go to next end of turn");
-            //specifically selecting cursed vault as it doesn't introduce any additonal selectcard effects
-            DecisionSelectCards = new Card[] { initialRoom, instructions.UnderLocation.Cards.Where((Card c) => c.Identifier != "CursedVault").First() };
+            //specifically selecting cursed vault/torture chamber as it doesn't introduce any additonal selectcard effects
+            string identifier = "CursedVault";
+            if(initialRoom.Identifier == "CursedVault")
+            {
+                identifier = "TortureChamber";
+            }
+            DecisionSelectCards = new Card[] { initialRoom, instructions.UnderLocation.Cards.Where((Card c) => c.Identifier != identifier).First() };
 
 
             GoToEndOfTurn(catacombs);
-
+            
             Card newRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
 
             AssertUnderCard(instructions, initialRoom);
@@ -350,8 +355,15 @@ namespace CauldronTests
         {
             //failing random seed 1963543475
             //seems that sometimes aqueducts effect doesn't go off
+            //seems to be when the initial room is aqueducts, that is when it fails
             SetupGameController(new string[] {"BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs"});
             StartGame();
+
+            //set all hp so there is room to gain
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            SetHitPoints(new Card[] { baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard }, 5);
+
+
             Card instructions = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
@@ -366,14 +378,10 @@ namespace CauldronTests
                 DestroyCard(playedRoom, ra.CharacterCard);
             }
 
+            GoToPlayCardPhase(catacombs);
+
             //don't destroy aqueducts
             DecisionDoNotSelectCard = SelectionType.DestroyCard;
-
-            GoToPlayCardPhase(catacombs);
-            Card mdp = GetCardInPlay("MobileDefensePlatform");
-            //set all hp so there is room to gain
-            SetHitPoints(new Card[] { baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard }, 5);
-
 
             //At the end of the environment turn, each target regains 1 HP.
             PrintSeparator("check all targets regain 1 HP");
@@ -452,6 +460,56 @@ namespace CauldronTests
             QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
             GoToEndOfTurn(catacombs);
             QuickHPCheck(-2, -2, -2, -2, -2);
+
+
+        }
+
+        [Test()]
+        public void TestTortureChamber()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is TortureChamber in play
+            if (playedRoom.Identifier != "TortureChamber")
+            {
+                DecisionSelectCard = GetCard("TortureChamber");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+
+            //Increase damage dealt by villain targets by 1.
+            PrintSeparator("check damage dealt by villains is increased by 1");
+            Card[] targets = new Card[] { baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard };
+
+            int expectedDamage;
+            foreach (Card source in targets)
+            {
+                QuickHPStorage(ra);
+
+                if(source.IsVillainTarget)
+                {
+                    expectedDamage = -3;
+                }
+                else
+                {
+                    expectedDamage = -2;
+                }
+
+                DealDamage(source, ra.CharacterCard, 2, DamageType.Melee);
+                QuickHPCheck(expectedDamage);
+                
+            }
+
 
 
         }
