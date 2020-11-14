@@ -54,7 +54,7 @@ namespace Cauldron.Starlight
 				list.Add(new MoveCardDestination(heroTTC.TurnTaker.Deck, toBottom: true));
 				list.Add(new MoveCardDestination(heroTTC.TurnTaker.Deck, toBottom: true));
 				list.Add(new MoveCardDestination(heroTTC.TurnTaker.Deck, toBottom: true));
-				IEnumerator coroutine3 = RevealCardsFromDeckToMoveToOrderedDestinations(DecisionMaker, heroTTC.TurnTaker.Deck, list, fromBottom: false, sendCleanupMessageIfNecessary: true);
+				IEnumerator coroutine3 = RevealCardsFromDeckToMoveToOrderedDestinations(DecisionMaker, heroTTC.TurnTaker.Deck, list, numberOfCardsToReveal: 5);
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine3);

@@ -416,6 +416,155 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestExodusDrawCard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card constellation = GetCard("AncientConstellationA");
+            PutInHand("AncientConstellationA");
+
+            DecisionSelectFunctionsIndex = 0;
+            DecisionSelectCardToPlay = constellation;
+
+            Card exodus = GetCard("Exodus");
+            PutInHand(exodus);
+
+            QuickHandStorage(starlight);
+            PlayCard(exodus);
+            AssertIsInPlay(constellation);
+            //-1 for playing Exodus, +1 for drawing, -1 for playing the Constellation
+            QuickHandCheck(-1);
+        }
+        [Test()]
+        public void TestExodusSearchesDeck()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card aura = GetCard("CelestialAura");
+            Card constB = GetCard("AncientConstellationB");
+            PutInHand(aura);
+            PutOnDeck(starlight, constB, toBottom: true);
+
+            Card exodus = GetCard("Exodus");
+            PutInHand(starlight, exodus);
+
+            DecisionSelectFunction = 1;
+            DecisionSelectCards = new List<Card> { constB, baron.CharacterCard, aura };
+
+            QuickShuffleStorage(starlight.TurnTaker.Deck);
+            QuickHandStorage(starlight);
+            PlayCard(exodus);
+            AssertIsInPlay(aura, constB);
+            //-1 for playing Exodus, -1 for playing Celestial Aura
+            QuickHandCheck(-2);
+            //should shuffle deck
+            QuickShuffleCheck(1);
+        }
+        [Test()]
+        public void TestExodusSearchesTrash()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+
+            Card constE = GetCard("AncientConstellationE");
+            IEnumerable<Card> constellations = GameController.FindCardsWhere((Card c) => GameController.DoesCardContainKeyword(c, "constellation"));
+            PutInTrash(constellations);
+
+            Card aura = GetCard("CelestialAura");
+            Card exodus = GetCard("Exodus");
+            PutInHand(starlight, exodus);
+            PutInHand(starlight, aura);
+
+            DecisionSelectFunction = 1;
+            DecisionSelectCards = new List<Card> { constE, baron.CharacterCard, aura };
+
+            //if we get the chance, look in deck for constellations - would cause test to fail
+            DecisionSelectLocation = new LocationChoice(starlight.TurnTaker.Deck);
+
+            QuickShuffleStorage(starlight.TurnTaker.Deck);
+            QuickHandStorage(starlight);
+
+            PlayCard(exodus);
+            AssertIsInPlay(aura, constE);
+            //-1 for playing Exodus, -1 for playing Celestial Aura
+            QuickHandCheck(-2);
+            //5 constellations and an Exodus
+            AssertNumberOfCardsInTrash(starlight, 6);
+            //should shuffle even though we didn't look in deck
+            QuickShuffleCheck(1);
+        }
+        [Test()]
+        public void TestExodusAlwaysShufflesOnceWhenGivingSearchChoice()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            //set up cards for selections
+            Card aura = GetCard("CelestialAura");
+            Card halo = GetCard("WarpHalo");
+            Card constA = GetCard("AncientConstellationA");
+            Card constB = GetCard("AncientConstellationB");
+            Card constC = GetCard("AncientConstellationC");
+            Card constD = GetCard("AncientConstellationD");
+            PutInHand(aura);
+            PutInHand(halo);
+            PutOnDeck(starlight, constB, toBottom: true);
+            PutOnDeck(starlight, constA);
+            PutInTrash(constC);
+            //PutInTrash(constD);
+
+            QuickShuffleStorage(starlight.TurnTaker.Deck);
+
+            Card exodus = GetCard("Exodus");
+            PutInHand(starlight, exodus);
+
+            //set preferred decisions for first play
+            DecisionSelectFunction = 1;
+            DecisionSelectLocation = new LocationChoice(starlight.TurnTaker.Deck);
+            DecisionSelectCards = new List<Card> { constA, baron.CharacterCard, aura };
+
+            PlayCard(exodus);
+            AssertIsInPlay(constA, aura);
+
+            QuickShuffleCheck(1);
+
+            //set decisions for second play
+            DecisionSelectFunction = 1;
+            DecisionSelectLocation = new LocationChoice(starlight.TurnTaker.Trash);
+            DecisionSelectCardsIndex = 0;
+            //DecisionSelectCards = new List<Card>  { constC, starlight.CharacterCard, halo };
+            DecisionSelectCards = new List<Card> { starlight.CharacterCard, halo };
+
+            PlayCard(exodus);
+            AssertIsInPlay(constC, halo);
+
+            QuickShuffleCheck(1);
+        }
+        [Test()]
+        public void TestExodusCardPlayIsOptional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card exodus = GetCard("Exodus");
+            PutInHand(exodus);
+
+            DecisionSelectFunction = 0;
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+
+            QuickHandStorage(starlight);
+            PlayCard(exodus);
+
+            //play Exodus, draw card, play nothing else - should result in:
+            QuickHandCheck(0);
+            AssertNumberOfCardsInPlay(starlight, 1);
+            AssertNumberOfCardsInTrash(starlight, 1);
+
+        }
+        [Test()]
         public void TestWishSimpleSelf()
         {
             SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
@@ -438,7 +587,6 @@ namespace CauldronTests
 
             AssertOnTopOfDeck(starlight, constA);
             AssertIsInPlay(pillars);
-
         }
         [Test()]
         public void TestWishSimpleOther()
