@@ -565,6 +565,119 @@ namespace CauldronTests
 
         }
         [Test()]
+        public void TestGoldenAstrolabeSelfDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card astrolabe = GetCard("GoldenAstrolabe");
+            PlayCard(astrolabe);
+
+            QuickHPStorage(starlight);
+            UsePower(astrolabe);
+            QuickHPCheck(-2);
+        }
+        [Test()]
+        public void TestGoldenAstrolabeGivesPowerToHeroWithConstellation()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card astrolabe = GetCard("GoldenAstrolabe");
+            PlayCard(astrolabe);
+            Card constellation = GetCard("AncientConstellationA");
+            DecisionSelectCard = haka.CharacterCard;
+            PlayCard(constellation);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            DecisionSelectTarget = mdp;
+
+            QuickHPStorage(mdp);
+            UsePower(astrolabe);
+            QuickHPCheck(-2);
+            AssertNotUsablePower(haka, haka.CharacterCard);
+        }
+        [Test()]
+        public void TestGoldenAstrolabeGivesOnlyOnePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card astrolabe = GetCard("GoldenAstrolabe");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            PlayCard(astrolabe);
+            DecisionSelectCards = new List<Card> { haka.CharacterCard, ra.CharacterCard, mdp, mdp };
+            PlayCards("AncientConstellationA", "AncientConstellationB");
+
+
+            DecisionSelectTurnTakers = new List<TurnTaker> { haka.TurnTaker, ra.TurnTaker };
+
+
+            AssertNextDecisionChoices(included: new List<TurnTaker> { haka.TurnTaker, ra.TurnTaker }, notIncluded: new List<TurnTaker> { starlight.TurnTaker, visionary.TurnTaker });
+            QuickHPStorage(mdp);
+            UsePower(astrolabe);
+            QuickHPCheck(-2);
+            AssertNotUsablePower(haka, haka.CharacterCard);
+            AssertUsablePower(ra, ra.CharacterCard);
+        }
+        [Test()]
+        public void TestGoldenAstrolabeDoesNotAllowChoosingHeroWithNoPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card astrolabe = GetCard("GoldenAstrolabe");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            PlayCard(astrolabe);
+            DecisionSelectCards = new List<Card> { haka.CharacterCard, ra.CharacterCard, visionary.CharacterCard, mdp, mdp };
+            PlayCards("AncientConstellationA", "AncientConstellationB", "AncientConstellationC");
+
+
+            DecisionSelectTurnTakers = new List<TurnTaker> { ra.TurnTaker };
+
+            UsePower(haka);
+            AssertNotUsablePower(haka, haka.CharacterCard);
+
+            AssertNextDecisionChoices(included: new List<TurnTaker> { visionary.TurnTaker, ra.TurnTaker }, notIncluded: new List<TurnTaker> { starlight.TurnTaker, haka.TurnTaker });
+            QuickHPStorage(mdp);
+            UsePower(astrolabe);
+            QuickHPCheck(-2);
+            AssertNotUsablePower(ra, ra.CharacterCard);
+        }
+        [Test()]
+        public void TestGoldenAstrolabeDoesNotShareAcrossMultiCharHeroes()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "TheSentinels", "Megalopolis");
+            StartGame();
+
+            Card astrolabe = GetCard("GoldenAstrolabe");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            PlayCard(astrolabe);
+            DecisionSelectCards = new List<Card> { haka.CharacterCard, mainstay, mdp };
+            PlayCards("AncientConstellationA", "AncientConstellationB");
+
+            DecisionSelectTurnTakers = new List<TurnTaker> { sentinels.TurnTaker, sentinels.TurnTaker };
+            DecisionSelectPower = idealist;
+
+            QuickHPStorage(mdp);
+            UsePower(astrolabe);
+            QuickHPCheck(0);
+            AssertUsablePower(sentinels, idealist);
+            AssertNotUsablePower(sentinels, mainstay);
+
+            //now we will give the Sentinels more constellations and another power and see if Idealist can use it
+            DecisionSelectCards = new List<Card> { idealist, writhe, mdp };
+            DecisionSelectCardsIndex = 0;
+            PlayCards("AncientConstellationC", "AncientConstellationD");
+
+            UsePower(astrolabe);
+            QuickHPCheck(-2);
+            AssertNotUsablePower(sentinels, idealist);
+        }
+        //other possible tests: multi-char with power on other card (Kismet's Talisman? Oblivaeon Reward?)
+        //multi-char with extra power put on card (Cosmic Weapon) - should not be available unless affecting constellation'd card
+        [Test()]
         public void TestWishSimpleSelf()
         {
             SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
