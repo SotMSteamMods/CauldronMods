@@ -178,7 +178,7 @@ namespace CauldronTests
 
             //stack villain deck to not play hasten doom
             var topCard = PutOnDeck("MobileDefensePlatform");
-            
+
             //don't play a hero card
             GoToPlayCardPhase(ra);
 
@@ -227,15 +227,20 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("AncientParasite");
-            Card parasite = GetCardInPlay("AncientParasite");
-            //Whenever this card is dealt damage by a hero target, move it next to that target.
-            int numCardsNextToRaBefore = GetNumberOfCardsNextToCard(ra.CharacterCard);
-            DealDamage(ra, GetCardInPlay("AncientParasite"), 5, DamageType.Fire);
-            int numCardsNextToRaAfter = GetNumberOfCardsNextToCard(ra.CharacterCard);
+            Card parasite = PutIntoPlay("AncientParasite");
+            AssertInPlayArea(isle, parasite);
 
-            Assert.AreEqual(numCardsNextToRaBefore + 1, numCardsNextToRaAfter, "Number of cards next to Ra don't match");
+            //Whenever this card is dealt damage by a hero target, move it next to that target.
+            DealDamage(ra, parasite, 5, DamageType.Fire);
             AssertNextToCard(parasite, ra.CharacterCard);
+
+            //still next too
+            DealDamage(ra, parasite, 1, DamageType.Fire);
+            AssertNextToCard(parasite, ra.CharacterCard);
+
+            //different hero
+            DealDamage(fanatic, parasite, 1, DamageType.Fire);
+            AssertNextToCard(parasite, fanatic.CharacterCard);
         }
 
         [Test()]
@@ -244,15 +249,13 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("AncientParasite");
+            Card parasite = PutIntoPlay("AncientParasite");
+            AssertInPlayArea(isle, parasite);
 
             //Whenever this card is dealt damage by a hero target, move it next to that target.
-            int numCardsNextToBaronBladeBefore = GetNumberOfCardsNextToCard(baron.CharacterCard);
-            DealDamage(baron, GetCardInPlay("AncientParasite"), 5, DamageType.Fire);
-            int numCardsNextToBaronBladeAfter = GetNumberOfCardsNextToCard(baron.CharacterCard);
-
-            Assert.AreEqual(numCardsNextToBaronBladeBefore, numCardsNextToBaronBladeAfter, "Number of cards next to Baron Blade don't match");
-
+            DealDamage(baron, parasite, 5, DamageType.Fire);
+            //didn't move
+            AssertInPlayArea(isle, parasite);
         }
 
         [Test()]
@@ -261,21 +264,22 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("AncientParasite");
-            Card parasite = GetCardInPlay("AncientParasite");
+            Card teryx = PutIntoPlay("Teryx");
+            Card parasite = PutIntoPlay("AncientParasite");
+
             //move next to ra
-            DealDamage(ra, GetCardInPlay("AncientParasite"), 5, DamageType.Fire);
+            DealDamage(ra, parasite, 5, DamageType.Fire);
+            AssertNextToCard(parasite, ra.CharacterCard);
 
             //At the start of the environment turn, if this card is next to a target, it deals that target {H} toxic damage and moves back to the environment play area. 
             //H is 3, so 3 damage should be dealt
-            QuickHPStorage(ra);
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, haka.CharacterCard, parasite, teryx);
 
             GoToStartOfTurn(isle);
-            int numCardsInIslePlayAfter = GetNumberOfCardsInPlay(isle);
-            QuickHPCheck(-3);
+
+            QuickHPCheck(0, -3, 0, 0, 0, 0);
             AssertNotNextToCard(parasite, ra.CharacterCard);
-
-
+            AssertInPlayArea(isle, parasite);
         }
 
         [Test()]
@@ -284,19 +288,20 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("AncientParasite");
-            PutIntoPlay("Teryx");
-
-            Card teryx = GetCardInPlay("Teryx");
-
+            Card teryx = PutIntoPlay("Teryx");
+            Card parasite = PutIntoPlay("AncientParasite");
+            AssertInPlayArea(isle, teryx);
+            AssertInPlayArea(isle, parasite);
 
             //Otherwise it deals Teryx {H + 2} toxic damage.
             //H is 3, so 5 damage should be dealt
-            QuickHPStorage(teryx);
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, haka.CharacterCard, parasite, teryx);
 
             GoToStartOfTurn(isle);
-            QuickHPCheck(-5);
+            QuickHPCheck(0, 0, 0, 0, 0, -5);
 
+            AssertInPlayArea(isle, teryx);
+            AssertInPlayArea(isle, parasite);
         }
 
         [Test()]
@@ -305,20 +310,15 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("DecoyProjection");
-            Card decoy = GetCardInPlay("DecoyProjection");
+            Card decoy = PutIntoPlay("DecoyProjection");
+            Card parasite = PutIntoPlay("AncientParasite");
 
-            PutIntoPlay("AncientParasite");
-            DealDamage(decoy, GetCardInPlay("AncientParasite"), 5, DamageType.Fire);
+            DealDamage(decoy, parasite, 5, DamageType.Fire);
+            AssertNextToCard(parasite, decoy);
 
-            int numCardsInVisionaryPlayBefore = GetNumberOfCardsInPlay(visionary);
             DestroyCard(decoy);
-            int numCardsInVisionaryPlayAfter = GetNumberOfCardsInPlay(visionary);
 
-            //visionary should have 1 less card in play, not two
-            Assert.AreEqual(numCardsInVisionaryPlayBefore - 1, numCardsInVisionaryPlayAfter, "Visionary cards in play don't match");
-
-
+            AssertInPlayArea(visionary, parasite);
         }
 
         [Test()]
