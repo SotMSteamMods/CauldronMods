@@ -537,29 +537,99 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestVengefulSpirits()
+        public void TestVengefulSpiritsDiscardToDestroy()
         {
             // Arrange
             SetupGameController("BaronBlade", "Ra", "Legacy", DeckNamespace);
 
             StartGame();
+
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             PutInTrash(mdp);
 
+            Card bb = GetCard("BladeBattalion");
             PutInTrash(new[] {"BladeBattalion", "BacklashField"});
 
-            
             Card vengefulSpirit = GetCard(VengefulSpiritsCardController.Identifier);
             PlayCard(vengefulSpirit);
 
-            // Act
+            QuickHandStorage(ra, legacy);
+            QuickShuffleStorage(baron.TurnTaker.Trash);
 
+            // Act
             GoToStartOfTurn(BlackwoodForest);
 
+            DecisionSelectCards = new[]
+            {
+                GetCardFromHand(ra, 0),
+                GetCardFromHand(ra, 1),
+                GetCardFromHand(legacy, 0),
+                GetCardFromHand(legacy, 1),
+            };
+
+            GoToEndOfTurn(BlackwoodForest);
 
             // Assert
+            AssertInTrash(BlackwoodForest, vengefulSpirit); // Required cards were discard, Vengeful was trashed
+            QuickHandCheck(-2, -2); // 2 cards each discarded to get rid of Vengeful
+            QuickShuffleCheck(1); // Baron's trash shuffled due to Vengeful
+
+            // One of these targets should be in play due to Vengeful drawing them from the trash
+            // The other should be in the trash
+            Assert.AreEqual(1, 
+                this.GameController.FindCardsWhere(card => card.IsInPlay && (card.Equals(mdp) || card.Equals(bb))).Count());
+            Assert.AreEqual(1,
+                this.GameController.FindCardsWhere(card => card.IsInTrash && (card.Equals(mdp) || card.Equals(bb))).Count());
 
         }
+
+        [Test]
+        public void TestVengefulSpiritsNoDiscard()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", DeckNamespace);
+
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            PutInTrash(mdp);
+
+            Card bb = GetCard("BladeBattalion");
+            PutInTrash(new[] { "BladeBattalion", "BacklashField" });
+
+            Card vengefulSpirit = GetCard(VengefulSpiritsCardController.Identifier);
+            PlayCard(vengefulSpirit);
+
+            QuickHandStorage(ra, legacy);
+            QuickShuffleStorage(baron.TurnTaker.Trash);
+
+            // Act
+            GoToStartOfTurn(BlackwoodForest);
+
+            DecisionSelectCards = new[]
+            {
+                null,
+                GetCardFromHand(ra, 0),
+                GetCardFromHand(legacy, 0),
+                GetCardFromHand(legacy, 1),
+            };
+
+            GoToEndOfTurn(BlackwoodForest);
+
+            // Assert
+            AssertNotInTrash(BlackwoodForest, vengefulSpirit.Identifier); // Required cards were NOT discarded, Vengeful still in play
+            QuickHandCheck(-1, -2); // 2 cards each discarded to get rid of Vengeful
+            QuickShuffleCheck(1); // Baron's trash shuffled due to Vengeful
+
+            // One of these targets should be in play due to Vengeful drawing them from the trash
+            // The other should be in the trash
+            Assert.AreEqual(1,
+                this.GameController.FindCardsWhere(card => card.IsInPlay && (card.Equals(mdp) || card.Equals(bb))).Count());
+            Assert.AreEqual(1,
+                this.GameController.FindCardsWhere(card => card.IsInTrash && (card.Equals(mdp) || card.Equals(bb))).Count());
+
+        }
+
 
     }
 }

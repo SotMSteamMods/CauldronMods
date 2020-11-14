@@ -23,6 +23,7 @@ namespace Cauldron.BlackwoodForest
 
         private const int DamageToDeal = 2;
         private const int NumberOfCardMatches = 1;
+        private const int NumberOfCardsToDiscard = 2;
 
 
         public VengefulSpiritsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
@@ -93,8 +94,36 @@ namespace Cauldron.BlackwoodForest
 
         private IEnumerator EndOfTurnOptionalDestruction(PhaseChangeAction pca)
         {
-            yield break;
-        }
+            List<DiscardCardAction> discardedCards = new List<DiscardCardAction>();
+            IEnumerator discardCardsRoutine 
+                = this.GameController.EachPlayerDiscardsCards(0, NumberOfCardsToDiscard,
+                discardedCards);
 
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(discardCardsRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(discardCardsRoutine);
+            }
+
+            if (discardedCards.Count != (this.Game.H * NumberOfCardsToDiscard))
+            {
+                yield break;
+            }
+
+            // Required cards discarded, destroy this card
+            IEnumerator destroyRoutine = base.GameController.DestroyCard(this.HeroTurnTakerController, this.Card);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(destroyRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(destroyRoutine);
+            }
+        }
     }
 }
