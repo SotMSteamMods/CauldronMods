@@ -412,5 +412,37 @@ namespace CauldronTests
             AssertNotInPlay(overgrownCathedral);
         }
 
+        [Test]
+        public void TestShadowWeaver()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            StartGame();
+
+            Card shadowWeaver = GetCard(ShadowWeaverCardController.Identifier);
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            PlayCard(shadowWeaver);
+
+            QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+
+            // Act
+            GoToEndOfTurn(BlackForest);
+
+            GoToStartOfTurn(ra);
+            DealDamage(ra, shadowWeaver, 10, DamageType.Fire);
+
+            // Assert
+            AssertInTrash(BlackForest, shadowWeaver); // Shadow Weaver is in trash
+
+            // Baron: 0 (Immune)
+            // MDP: -1 (Shadow Weaver destruction trigger)
+            // Ra: -2 (Shadow Weaver end of env. turn, destruction trigger)
+            // Legacy: -1 (Shadow Weaver destruction trigger)
+            // Haka: -1 (Shadow Weaver destruction trigger)
+            QuickHPCheck(0, -1, -2, -1, -1);
+        }
+
     }
 }
