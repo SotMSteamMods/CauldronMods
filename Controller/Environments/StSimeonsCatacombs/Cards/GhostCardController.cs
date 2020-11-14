@@ -13,7 +13,7 @@ namespace Cauldron
         public GhostCardController(Card card, TurnTakerController turnTakerController, string affectedIdentifier) : base(card, turnTakerController)
         {
             this.AffectedIdentifier = affectedIdentifier;
-            //TODO: Add a conditional special string that says something like "Aqueduct is in play so it is affected by Hero cards" and the reverse
+            //TODO: Add a conditional special string that says something like "AffectedCard is in play so it is affected by Hero cards" and the reverse
             base.AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
         }
 

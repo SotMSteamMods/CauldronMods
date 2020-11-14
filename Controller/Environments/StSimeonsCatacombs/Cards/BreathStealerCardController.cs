@@ -61,6 +61,7 @@ namespace Cauldron.StSimeonsCatacombs
             IEnumerator dealDamage = base.DealDamage(base.Card, base.GetCardThisCardIsNextTo(), 1, DamageType.Toxic, cardSource: base.GetCardSource());
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, (PhaseChangeAction pca) => dealDamage, TriggerType.DealDamage);
 
+            //add unaffected triggers from GhostCardControllers
             base.AddTriggers();
 
         }
