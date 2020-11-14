@@ -492,5 +492,49 @@ namespace CauldronTests
             AssertStatusEffectsContains(statusEffectMessageBlackwoodForest); // Blackwood Forest skips its draw phase
         }
 
+        [Test]
+        public void TestMirrorWraithEligibleTargets()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            DealDamage(baron, mdp, 4, DamageType.Energy);
+
+            Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
+            PlayCard(mirrorWraith);
+
+            // Act
+            GoToEndOfTurn(BlackwoodForest);
+
+            // Assert
+
+        }
+
+        [Test]
+        public void TestMirrorWraithNoEligibleTargets()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            StartGame();
+
+            // Destroy MDP so Mirror Wraith has no valid targets to copy
+            DestroyCard("MobileDefensePlatform");
+            QuickHPStorage(baron, ra, legacy, haka);
+
+            Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
+            PlayCard(mirrorWraith);
+
+            // Act
+            GoToEndOfTurn(BlackwoodForest);
+
+            // Assert
+
+            // Mirror Wraith found no eligible target to copy, instead dealt 2 sonic damage to all targets
+            QuickHPCheck(-2, -2, -2, -2); 
+
+        }
+
     }
 }
