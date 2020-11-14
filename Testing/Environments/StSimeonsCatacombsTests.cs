@@ -54,7 +54,7 @@ namespace CauldronTests
             GoToPlayCardPhase(catacombs);
 
             Card card = PlayCard(ghost);
-            AssertInPlayArea(catacombs, card);
+            AssertIsInPlay(card);
             AssertCardHasKeyword(card, "ghost", false);
         }
 
@@ -275,7 +275,7 @@ namespace CauldronTests
         [Test()]
         public void TestCatacombsBackEndOfTurnFreeRoom()
         {
-            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            SetupGameController(new string[] {"BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs"});
             StartGame();
             Card instructions = GetCardInPlay("StSimeonsCatacombs");
 
@@ -289,7 +289,7 @@ namespace CauldronTests
             {
                 identifier = "TortureChamber";
             }
-            DecisionSelectCards = new Card[] { initialRoom, instructions.UnderLocation.Cards.Where((Card c) => c.Identifier != identifier).First() };
+            DecisionSelectCards = new Card[] { initialRoom, instructions.UnderLocation.Cards.Where((Card c) => c.Identifier == identifier).First() };
 
 
             GoToEndOfTurn(catacombs);
@@ -430,8 +430,16 @@ namespace CauldronTests
         [Test()]
         public void TestSacrificialShrine()
         {
-            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+            //failing random seed -1463795531
+            //seems that sometimes aqueducts effect doesn't go off
+            //seems to be when the initial room is sacrificial, that is when it fails
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
             StartGame();
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+            Card battalion = PlayCard("BladeBattalion");
+
             Card instructions = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
@@ -450,10 +458,7 @@ namespace CauldronTests
             DecisionDoNotSelectCard = SelectionType.DestroyCard;
 
             GoToPlayCardPhase(catacombs);
-            //change villain targets in play to make baron blade vulnerable
-            Card mdp = GetCardInPlay("MobileDefensePlatform");
-            DestroyCard(mdp, baron.CharacterCard);
-            Card battalion = PlayCard("BladeBattalion");
+
 
             //At the end of the environment turn, this card deals each target 2 psychic damage.
             PrintSeparator("check damage is dealt");
@@ -504,7 +509,7 @@ namespace CauldronTests
                 {
                     expectedDamage = -2;
                 }
-
+                
                 DealDamage(source, ra.CharacterCard, 2, DamageType.Melee);
                 QuickHPCheck(expectedDamage);
                 
@@ -614,6 +619,184 @@ namespace CauldronTests
                 QuickHPCheck(expectedDamage);
 
             }
+
+        }
+
+        [Test()]
+        public void TestBreathStealer_AquaductsInPlay_NextTo()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Set Hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 25);
+            SetHitPoints(haka.CharacterCard, 15);
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is aqueducts in play
+            if (playedRoom.Identifier != "Aqueducts")
+            {
+                DecisionSelectCard = GetCard("Aqueducts");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+
+            //Play this card next to the hero with the lowest HP. That hero cannot regain HP.
+            //haka is the lowest HP
+            Card breath = PlayCard("BreathStealer");
+            AssertNextToCard(breath, haka.CharacterCard);
+
+            //try to gain HP
+            QuickHPStorage(haka);
+            PlayCard("VitalitySurge");
+            QuickHPCheckZero();
+
+
+        }
+
+        [Test()]
+        public void TestBreathStealer_AquaductsInPlay_EndOfTurn()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Set Hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 25);
+            SetHitPoints(haka.CharacterCard, 15);
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is aqueducts in play
+            if (playedRoom.Identifier != "Aqueducts")
+            {
+                DecisionSelectCard = GetCard("Aqueducts");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            //haka is the lowest HP, so will be next to Haka
+            Card breath = PlayCard("BreathStealer");
+            AssertNextToCard(breath, haka.CharacterCard);
+            //At the end of the environment turn, this card deals that hero 1 toxic damage.
+            QuickHPStorage(haka);
+            GoToEndOfTurn(catacombs);
+            QuickHPCheck(-1);
+
+
+
+        }
+
+        [Test()]
+        public void TestBreathStealer_AquaductsInPlay_Affected()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Set Hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 25);
+            SetHitPoints(haka.CharacterCard, 15);
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is aqueducts in play
+            if (playedRoom.Identifier != "Aqueducts")
+            {
+                DecisionSelectCard = GetCard("Aqueducts");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            //haka is the lowest HP, so will be next to Haka
+            Card breath = PlayCard("BreathStealer");
+            AssertNextToCard(breath, haka.CharacterCard);
+
+            PrintSeparator("Check if breath stealer can be dealt damage from hero card");
+            //This card may not be affected by hero cards unless Aqueducts is in play.
+            QuickHPStorage(breath);
+            DealDamage(ra.CharacterCard, breath, 1, DamageType.Fire);
+            QuickHPCheck(-1);
+
+
+        }
+
+        [Test()]
+        public void TestBreathStealer_AquaductsNotInPlay_NotAffected()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Set Hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 25);
+            SetHitPoints(haka.CharacterCard, 15);
+
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is not aqueducts in play
+            if (playedRoom.Identifier == "Aqueducts")
+            {
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            //haka is the lowest HP, so will be next to Haka
+            Card breath = PlayCard("BreathStealer");
+            AssertNextToCard(breath, haka.CharacterCard);
+
+            PrintSeparator("Check if breath stealer can be dealt damage from hero card");
+            //This card may not be affected by hero cards unless Aqueducts is in play.
+            QuickHPStorage(breath);
+            DealDamage(ra.CharacterCard, breath, 1, DamageType.Fire);
+            QuickHPCheckZero();
+
+            Card[] targets = new Card[] { baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, breath };
+            
+            QuickHPStorage(targets);
+            DealDamage(ra.CharacterCard, (Card c) => c.IsTarget, 3, DamageType.Fire);
+            QuickHPCheck(-3, -3, -3, -3, 0);
+
+
+
 
         }
     }
