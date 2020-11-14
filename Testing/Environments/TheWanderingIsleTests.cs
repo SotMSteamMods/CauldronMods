@@ -48,7 +48,7 @@ namespace CauldronTests
             Card teryx = GetCard("Teryx");
             AssertIsTarget(teryx, 50);
             AssertCardHasKeyword(teryx, "living island", false);
-            
+
 
         }
 
@@ -104,7 +104,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
             Card teryx = PutIntoPlay("Teryx");
-            
+
             //set hp lower so something to gain
             SetHitPoints(teryx, 30);
 
@@ -119,20 +119,19 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
-            List<int?> hpBefore = new List<int?>() { ra.CharacterCard.HitPoints, fanatic.CharacterCard.HitPoints, haka.CharacterCard.HitPoints };
+
+            QuickHPStorage(baron, ra, fanatic, haka);
+
             //When this card enters play, the {H - 1} villain targets with the lowest HP each deal 3 lightning damage to a different hero target.
             //H = 3, so 2 villain targets hould deal damage
             //since we aren't selecting targets, it should default to ra, then fanatic being dealt damage
-            PutIntoPlay("AmphibiousAssault");
-            List<int?> hpAfter = new List<int?>() { ra.CharacterCard.HitPoints, fanatic.CharacterCard.HitPoints, haka.CharacterCard.HitPoints };
+            var card = PutIntoPlay("AmphibiousAssault");
+            AssertInPlayArea(isle, card);
 
-            Assert.AreEqual(hpBefore[0] - 3, hpAfter[0], "Ra's hitpoints doin't match.");
-            Assert.AreEqual(hpBefore[1] - 3, hpAfter[1], "Fanatic's hitpoints doin't match.");
-            Assert.AreEqual(hpBefore[2], hpAfter[2], "Haka's hitpoints doin't match.");
-
+            QuickHPCheck(0, -3, -3, 0);
         }
 
-        [Test()]
+        [Test]
         public void TestAmphibiousAssaultPlayWith1Villains()
         {
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
@@ -140,18 +139,35 @@ namespace CauldronTests
             //destroy mdp so there is only baron blade in play
             DestroyCard(GetCardInPlay("MobileDefensePlatform"));
 
-            List<int?> hpBefore = new List<int?>() { ra.CharacterCard.HitPoints, fanatic.CharacterCard.HitPoints, haka.CharacterCard.HitPoints };
-            //When this card enters play, the {H - 1} villain targets with the lowest HP each deal 3 lightning damage to a different hero target.
-            //H = 3, so 2 villain targets should deal damage
+            QuickHPStorage(baron, ra, fanatic, haka);
+
             //however, there is only 1 villain target in play, so only 1 instance of damage
             //since we aren't selecting targets, it should default to ra
-            PutIntoPlay("AmphibiousAssault");
-            List<int?> hpAfter = new List<int?>() { ra.CharacterCard.HitPoints, fanatic.CharacterCard.HitPoints, haka.CharacterCard.HitPoints };
+            var card = PutIntoPlay("AmphibiousAssault");
+            AssertInPlayArea(isle, card);
 
-            Assert.AreEqual(hpBefore[0] - 3, hpAfter[0], "Ra's hitpoints doin't match.");
-            Assert.AreEqual(hpBefore[1], hpAfter[1], "Fanatic's hitpoints doin't match.");
-            Assert.AreEqual(hpBefore[2], hpAfter[2], "Haka's hitpoints doin't match.");
+            QuickHPCheck(0, -3, 0, 0);
+        }
 
+        [Test()]
+        public void TestAmphibiousAssaultPlayWithNotEnoughHeros()
+        {
+            SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //incap fanatic and haka so there's not enough hero targets
+            DealDamage(baron.CharacterCard, fanatic.CharacterCard, 99, DamageType.Cold, true);
+            DealDamage(baron.CharacterCard, haka.CharacterCard, 99, DamageType.Cold, true);
+
+            QuickHPStorage(baron, ra);
+
+            //When this card enters play, the {H - 1} villain targets with the lowest HP each deal 3 lightning damage to a different hero target.
+            //H = 3, so 2 villain targets hould deal damage
+            //since we aren't selecting targets, it should default to ra, then fanatic being dealt damage
+            var card = PutIntoPlay("AmphibiousAssault");
+            AssertInPlayArea(isle, card);
+
+            QuickHPCheck(0, -3);
         }
 
         [Test()]
@@ -161,25 +177,22 @@ namespace CauldronTests
             StartGame();
 
             //stack villain deck to not play hasten doom
-            PutOnDeck("MobileDefensePlatform");
-
-            //play a hero card
+            var topCard = PutOnDeck("MobileDefensePlatform");
+            
+            //don't play a hero card
             GoToPlayCardPhase(ra);
-            PlayCard(GetCardFromHand(ra, 0));
+
             GoToPlayCardPhase(haka);
 
-            PutIntoPlay("AmphibiousAssault");
-            int numCardsInVillainDeckBefore = GetNumberOfCardsInDeck(baron);
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+            var card = PutIntoPlay("AmphibiousAssault");
+            AssertInPlayArea(isle, card);
+            AssertNotInPlay(topCard);
+
             //At the start of the environment turn, if any hero cards were played this round, play the top card of the villain deck. Then, destroy this card.
             GoToStartOfTurn(isle);
 
-            int numCardsInVillainDeckAfter = GetNumberOfCardsInDeck(baron);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
-
-            //should be 1 fewer card in villain deck, and amphibious assult should have been destroyed
-            Assert.AreEqual(numCardsInVillainDeckBefore - 1, numCardsInVillainDeckAfter, "Number of cards in Baron Blade's deck don't match.");
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore - 1, numCardsInEnvironmentPlayAfter, "Number of environment cards in play don't match.");
+            AssertNotInPlay(topCard);
+            AssertInTrash(card);
         }
 
         [Test()]
@@ -188,19 +201,24 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("AmphibiousAssault");
-            int numCardsInVillainDeckBefore = GetNumberOfCardsInDeck(baron);
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+            //stack villain deck to not play hasten doom
+            var topCard = PutOnDeck("MobileDefensePlatform");
+
+            //play a hero card
+            GoToPlayCardPhase(ra);
+            var random = GetCardFromHand(ra);
+            PlayCard(random);
+            GoToPlayCardPhase(haka);
+
+            var card = PutIntoPlay("AmphibiousAssault");
+            AssertInPlayArea(isle, card);
+            AssertNotInPlay(topCard);
+
             //At the start of the environment turn, if any hero cards were played this round, play the top card of the villain deck. Then, destroy this card.
-            //no hero cards were played, so no villain cards played and this card not discarded
             GoToStartOfTurn(isle);
 
-            int numCardsInVillainDeckAfter = GetNumberOfCardsInDeck(baron);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
-
-            //should be the same for both
-            Assert.AreEqual(numCardsInVillainDeckBefore, numCardsInVillainDeckAfter, "Number of cards in Baron Blade's deck don't match.");
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore, numCardsInEnvironmentPlayAfter, "Number of environment cards in play don't match.");
+            AssertInPlayArea(baron, topCard);
+            AssertInTrash(card);
         }
 
         [Test()]
