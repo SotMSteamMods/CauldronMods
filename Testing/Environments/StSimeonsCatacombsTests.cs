@@ -623,7 +623,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestBreathStealeNextTo()
+        public void TestBreathStealNextTo()
         {
 
             SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
@@ -770,7 +770,7 @@ namespace CauldronTests
             playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
 
             //make sure it is not aqueducts in play
-            //putting torture chamber in play to not reduce damage to villain
+            //putting torture chamber in play to simplify
             if (playedRoom.Identifier != "TortureChamber")
             {
                 DecisionSelectCard = GetCard("TortureChamber");
@@ -858,7 +858,7 @@ namespace CauldronTests
             playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
 
             //make sure it is not twisting passages in play
-            //putting torture chamber in play to not reduce damage to villain
+            //putting torture chamber in play to simplify
             if (playedRoom.Identifier != "TortureChamber")
             {
                 DecisionSelectCard = GetCard("TortureChamber");
@@ -920,6 +920,173 @@ namespace CauldronTests
             QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, kid);
             GoToEndOfTurn(catacombs);
             QuickHPCheck(0, -2, -2, -2, 0);
+
+
+        }
+
+        [Test()]
+        public void TestDarkPassenger_CursedVaultInPlay_Affected()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is cursed vault in play
+            if (playedRoom.Identifier != "CursedVault")
+            {
+                DecisionSelectCard = GetCard("CursedVault");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+
+            Card passenger = PlayCard("DarkPassenger");
+
+            PrintSeparator("Check if dark passenger can be dealt damage from hero card");
+            //This card may not be affected by hero cards unless cursed vault is in play.
+            QuickHPStorage(passenger);
+            DealDamage(ra.CharacterCard, passenger, 1, DamageType.Fire);
+            QuickHPCheck(-1);
+
+
+        }
+
+        [Test()]
+        public void TestDarkPassenger_CursedVaultNotInPlay_NotAffected()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is not cursed vault in play
+            //putting torture chamber in play to simplify
+            if (playedRoom.Identifier != "TortureChamber")
+            {
+                DecisionSelectCard = GetCard("TortureChamber");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card passenger = PlayCard("DarkPassenger");
+
+            PrintSeparator("Check if dark passenger can be dealt damage from hero card");
+            //This card may not be affected by hero cards unless dark passenger is in play.
+            QuickHPStorage(passenger);
+            DealDamage(ra.CharacterCard, passenger, 1, DamageType.Fire);
+            QuickHPCheckZero();
+
+            Card[] targets = new Card[] { baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, passenger };
+
+            QuickHPStorage(targets);
+            DealDamage(ra.CharacterCard, (Card c) => c.IsTarget, 3, DamageType.Fire);
+            QuickHPCheck(-3, -3, -3, -3, 0);
+
+        }
+
+        [Test()]
+        public void TestDarkPassengerNextTo()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Set Hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 25);
+            SetHitPoints(haka.CharacterCard, 15);
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is cursed vault in play
+            if (playedRoom.Identifier != "CursedVault")
+            {
+                DecisionSelectCard = GetCard("CursedVault");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+
+            //Play this card next to the hero with the second highest HP. Reduce damage dealt by that hero by 1.
+            //ra is the second highest
+            Card passenger = PlayCard("DarkPassenger");
+            AssertNextToCard(passenger, ra.CharacterCard);
+
+            //try to have ra deal damage
+            QuickHPStorage(haka);
+            DealDamage(ra, haka, 5, DamageType.Fire);
+            QuickHPCheck(-4);
+
+
+        }
+
+        [Test()]
+        public void TestDarkPassengerEndOfTurn()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Set Hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 25);
+            SetHitPoints(haka.CharacterCard, 15);
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is cursed vault in play
+            if (playedRoom.Identifier != "CursedVault")
+            {
+                DecisionSelectCard = GetCard("CursedVault");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            //ra is the second highest
+            Card passenger = PlayCard("DarkPassenger");
+            AssertNextToCard(passenger, ra.CharacterCard);
+
+            //At the end of the environment turn, this card deals that hero 2 melee damage.
+            QuickHPStorage(ra);
+            GoToEndOfTurn(catacombs);
+            QuickHPCheck(-2);
+
 
 
         }
