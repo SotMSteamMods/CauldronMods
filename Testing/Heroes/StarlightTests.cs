@@ -333,7 +333,7 @@ namespace CauldronTests
             QuickHPCheck(-1, -1, -1);
         }
         [Test()]
-        public void TestExodusNoConstellationsToDestroy()
+        public void TestEventHorizonNoConstellationsToDestroy()
         {
             SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
             StartGame();
@@ -346,7 +346,7 @@ namespace CauldronTests
             AssertIsInPlay(living);
         }
         [Test()]
-        public void TestExodusZeroConstellationsDestroyed()
+        public void TestEventHorizonZeroConstellationsDestroyed()
         {
             SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
             StartGame();
@@ -365,7 +365,7 @@ namespace CauldronTests
             AssertIsInPlay(constellation);
         }
         [Test()]
-        public void TestExodusOneConstellationDestroyed()
+        public void TestEventHorizonOneConstellationDestroyedAndHitsOngoings()
         {
             SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
             StartGame();
@@ -381,26 +381,27 @@ namespace CauldronTests
             AssertIsInPlay("AncientConstellationB");
         }
         [Test()]
-        public void TestExodusTwoConstellationsDestroyed()
+        public void TestEventHorizonTwoConstellationsDestroyedAndHitsEnvironment()
         {
             SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
             StartGame();
 
-            Card living = GetCard("LivingForceField");
-            PlayCard(living);
             PlayCards("AncientConstellationA", "AncientConstellationB");
-            PlayCard("PoliceBackup");
+            PlayCards("PoliceBackup", "TargetingInnocents", "TrafficPileup");
 
             PlayCard("EventHorizon");
-            AssertInTrash("LivingForceField", "AncientConstellationA", "AncientConstellationB", "PoliceBackup");
+            AssertNumberOfCardsInTrash(FindEnvironment(), 2);
+            AssertNumberOfCardsInTrash(starlight, 3);
+
         }
         [Test()]
-        public void TestExodusAfterConstellationsNoLongerOptional()
+        public void TestEventHorizonAfterConstellationsNoLongerOptional()
         {
             SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
             StartGame();
 
             PlayCards("AncientConstellationA", "TaMoko");
+            Card tamoko = GetCardInPlay("TaMoko");
 
             DecisionSelectCard = GetCardInPlay("AncientConstellationA");
 
@@ -409,8 +410,9 @@ namespace CauldronTests
             AssertMaxNumberOfDecisions(1);
             PlayCard("EventHorizon");
 
-            //Event Horizon and two Constellations
+            //Event Horizon and one Constellation
             AssertNumberOfCardsInTrash(starlight, 2);
+            AssertInTrash(tamoko); 
         }
     }
 }
