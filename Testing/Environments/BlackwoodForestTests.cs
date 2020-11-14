@@ -536,5 +536,30 @@ namespace CauldronTests
 
         }
 
+        [Test]
+        public void TestVengefulSpirits()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", DeckNamespace);
+
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            PutInTrash(mdp);
+
+            PutInTrash(new[] {"BladeBattalion", "BacklashField"});
+
+            
+            Card vengefulSpirit = GetCard(VengefulSpiritsCardController.Identifier);
+            PlayCard(vengefulSpirit);
+
+            // Act
+
+            GoToStartOfTurn(BlackwoodForest);
+
+
+            // Assert
+
+        }
+
     }
 }
