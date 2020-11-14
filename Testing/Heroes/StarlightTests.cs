@@ -222,5 +222,55 @@ namespace CauldronTests
             AssertNumberOfChoicesInNextDecision(4);
             UseIncapacitatedAbility(starlight, 2);
         }
+
+
+        [Test()]
+        public void TestAncientConstellationPlaysNextToTarget()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            Card consta = GetCard("AncientConstellationA");
+            Card constb = GetCard("AncientConstellationB");
+            Card constc = GetCard("AncientConstellationC");
+
+            DecisionSelectCards = new Card[] { baron.CharacterCard, haka.CharacterCard, mdp };
+            PlayCards(new Card[] { consta, constb, constc });
+
+            //should be able to play constellations next to targets whether hero or villain, character or not
+            AssertNextToCard(consta, baron.CharacterCard);
+            AssertNextToCard(constb, haka.CharacterCard);
+            AssertNextToCard(constc, mdp);
+        }
+
+        [Test()]
+        public void TestAncientConstellationDestroySelfTrigger()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            Card consta = GetCard("AncientConstellationA");
+            Card constb = GetCard("AncientConstellationB");
+            Card constc = GetCard("AncientConstellationC");
+
+            Card decoy = GetCard("DecoyProjection");
+            PlayCard(decoy);
+
+            DecisionSelectCards = new Card[] { mdp, haka.CharacterCard, decoy };
+            PlayCards(new Card[] { consta, constb, constc });
+
+            //constellations should self-destroy when target by them leaves play
+            //whether through destruction-into-trash
+            DealDamage(haka, mdp, 12, DamageType.Melee);
+            AssertInTrash(consta);
+            //character card flipping
+            DealDamage(baron, haka, 50, DamageType.Melee);
+            AssertInTrash(constb);
+            //or simply going somewhere else
+            PutInHand(decoy);
+            AssertInTrash(constc);
+        }
     }
 }

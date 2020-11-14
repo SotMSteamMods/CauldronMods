@@ -15,14 +15,21 @@ namespace Cauldron.Starlight
         public override void AddTriggers()
         {
             //"When the card next to this leaves play, destroy this card."
+            AddIfTheTargetThatThisCardIsNextToLeavesPlayDestroyThisCardTrigger();
         }
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             //"Play this card next to a target"
-
-            //this just kicks the can to the standard version, will be replaced
-            return base.DeterminePlayLocation(storedResults, isPutIntoPlay, decisionSources, overridePlayArea, additionalTurnTakerCriteria);
+            IEnumerator coroutine = SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsTarget, "targets", useCardsSuffix: false), storedResults, isPutIntoPlay, decisionSources);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
 
     }
