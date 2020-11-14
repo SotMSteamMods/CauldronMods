@@ -5,7 +5,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Starlight
 {
-    public class GoldenAstrolabeCardController : CardController
+    public class GoldenAstrolabeCardController : StarlightCardController
     {
         public GoldenAstrolabeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

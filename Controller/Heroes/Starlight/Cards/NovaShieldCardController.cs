@@ -4,7 +4,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Starlight
 {
-    public class NovaShieldCardController : CardController
+    public class NovaShieldCardController : StarlightCardController
     {
         public NovaShieldCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

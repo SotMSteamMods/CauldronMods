@@ -5,7 +5,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Starlight
 {
-    public class StellarWindCardController : CardController
+    public class StellarWindCardController : StarlightCardController
     {
         public StellarWindCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
