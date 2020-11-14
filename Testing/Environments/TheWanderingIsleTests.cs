@@ -45,10 +45,21 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            Card teryx = GetCard("Teryx");
-            AssertIsTarget(teryx, 50);
-            AssertCardHasKeyword(teryx, "living island", false);
+            Card card = GetCard("Teryx");
+            AssertIsTarget(card, 50);
+            AssertCardHasKeyword(card, "living island", false);
 
+            card = GetCard("AncientParasite");
+            AssertIsTarget(card, 20);
+            AssertCardHasKeyword(card, "creature", false);
+
+            card = GetCard("BarnacleHydra");
+            AssertIsTarget(card, 6);
+            AssertCardHasKeyword(card, "creature", false);
+
+            card = GetCard("TimedDetonator");
+            AssertIsTarget(card, 8);
+            AssertCardHasKeyword(card, "device", false);
 
         }
 
