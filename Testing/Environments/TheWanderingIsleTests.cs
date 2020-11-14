@@ -38,20 +38,36 @@ namespace CauldronTests
 
         }
 
+
+        [Test()]
+        public void TestDecklist()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            Card teryx = GetCard("Teryx");
+            AssertIsTarget(teryx, 50);
+            AssertCardHasKeyword(teryx, "living island", false);
+            
+
+        }
+
         [Test()]
         public void TestTeryxIndestructible()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            Card teryx = PutIntoPlay("Teryx");
+            AssertInPlayArea(env, teryx);
 
             //teryx is indestructible, so shouldn't be destroyed
-            int numCardsInPlayBefore = GetNumberOfCardsInPlay(isle);
             DestroyCard(teryx, baron.CharacterCard);
-            int numCardsInPlayAfter = GetNumberOfCardsInPlay(isle);
-            Assert.AreEqual(numCardsInPlayBefore, numCardsInPlayAfter, $"Teryx was destroyed when they shouldn't have. Expected {numCardsInPlayBefore}, actual {numCardsInPlayAfter}");
+            AssertInPlayArea(env, teryx);
 
+            //but not immune to damage
+            QuickHPStorage(teryx);
+            DealDamage(baron.CharacterCard, teryx, 3, DamageType.Cold);
+            QuickHPCheck(-3);
         }
 
         [Test()]
@@ -59,14 +75,12 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            Card teryx = PutIntoPlay("Teryx");
 
             //If this card reaches 0HP, the heroes lose.
             DealDamage(baron.CharacterCard, teryx, 50, DamageType.Melee, true);
 
             AssertGameOver(EndingResult.EnvironmentDefeat);
-
         }
 
         [Test()]
@@ -74,15 +88,14 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            Card teryx = PutIntoPlay("Teryx");
 
             //At the end of the environment turn, the villain target with the highest HP deals Teryx {H + 2} energy damage.
             //H = 3, should be dealt 5 damage
-            QuickHPStorage(teryx);
+            GoToStartOfTurn(isle);
+            QuickHPStorage(teryx, baron.CharacterCard, ra.CharacterCard);
             GoToEndOfTurn(isle);
-            QuickHPCheck(-5);
-
+            QuickHPCheck(-5, 0, 0);
         }
 
         [Test()]
@@ -90,17 +103,15 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
-
+            Card teryx = PutIntoPlay("Teryx");
+            
             //set hp lower so something to gain
             SetHitPoints(teryx, 30);
 
             //Whenever a hero target would deal damage to Teryx, Teryx Instead regains that much HP.
-            QuickHPStorage(teryx);
+            QuickHPStorage(teryx, baron.CharacterCard, ra.CharacterCard);
             DealDamage(ra, teryx, 5, DamageType.Fire);
-            QuickHPCheck(5);
-
+            QuickHPCheck(5, 0, 0);
         }
 
         [Test()]
