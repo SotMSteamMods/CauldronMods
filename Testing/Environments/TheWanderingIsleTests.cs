@@ -433,18 +433,17 @@ namespace CauldronTests
             StartGame();
 
             //put teryx into play
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            Card teryx = PutIntoPlay("Teryx");
+            AssertInPlayArea(isle, teryx);
 
-            PutIntoPlay("BarnacleHydra");
-            Card hydra = GetCardInPlay("BarnacleHydra");
+            Card hydra = PutIntoPlay("BarnacleHydra");
+            AssertInPlayArea(isle, hydra);
+            
             //When this card is destroyed, it deals Teryx {H} toxic damage.
             //H=3, so 3 damage should be dealt
-            QuickHPStorage(teryx);
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard, teryx);
             DestroyCard(hydra, baron.CharacterCard);
-            QuickHPCheck(-3);
-
-
+            QuickHPCheck(0, 0, 0, 0, -3);
         }
 
         [Test()]
@@ -453,17 +452,16 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
+            Card hydra = PutIntoPlay("BarnacleHydra");
+            AssertInPlayArea(isle, hydra);
 
-            PutIntoPlay("BarnacleHydra");
-            Card hydra = GetCardInPlay("BarnacleHydra");
             //When this card is destroyed, it deals Teryx {H} toxic damage.
-            //teryx is not in play so damage should be dealt, essentially checking for no crash
-
+            //teryx is not in play so no damage should be dealt, essentially checking for no crash
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard);
             DestroyCard(hydra, baron.CharacterCard);
+            QuickHPCheck(0, 0, 0, 0);
 
             AssertNotGameOver();
-
-
         }
 
         [Test()]
@@ -472,26 +470,18 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            SetHitPoints(ra.CharacterCard, 5);
-            SetHitPoints(visionary.CharacterCard, 7);
-            SetHitPoints(haka.CharacterCard, 9);
-
-
-            PutIntoPlay("BarnacleHydra");
-            Card hydra = GetCardInPlay("BarnacleHydra");
+            Card hydra = PutIntoPlay("BarnacleHydra");
 
             //set hitpoints so have room to gain things
             //this also checks to make sure that damage being dealt ignores hydra
             SetHitPoints(hydra, 1);
+            SetHitPoints(haka, 5); //ensure haka is the lowest target
 
             //At the end of the environment turn, this card deals the non-environment target with the lowest HP 2 projectile damage. Then, if Submerge is in play, this card regains 6HP
-            //lowest HP is ra
             //Submerge is not in play
-            QuickHPStorage(ra.CharacterCard, hydra);
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard, hydra);
             GoToEndOfTurn(isle);
-            QuickHPCheck(-2, 0);
-
-
+            QuickHPCheck(0, 0, 0, -2, 0);
         }
 
         [Test()]
@@ -500,35 +490,23 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
+            GoToStartOfTurn(isle);
 
-
-            SetHitPoints(ra.CharacterCard, 5);
-            SetHitPoints(visionary.CharacterCard, 7);
-            SetHitPoints(haka.CharacterCard, 9);
-
-
-            PutIntoPlay("BarnacleHydra");
-            Card hydra = GetCardInPlay("BarnacleHydra");
+            Card hydra = PutIntoPlay("BarnacleHydra");
+            //submerge reduces all damage by 2
+            PutIntoPlay("Submerge");
 
             //set hitpoints so have room to gain things
             //this also checks to make sure that damage being dealt ignores hydra
             SetHitPoints(hydra, 1);
-
-            GoToPlayCardPhase(isle);
-            //put submerge into play
-            PutIntoPlay("Submerge");
+            SetHitPoints(haka, 5); //ensure haka is the lowest target
 
             //At the end of the environment turn, this card deals the non-environment target with the lowest HP 2 projectile damage. Then, if Submerge is in play, this card regains 6HP
-            //lowest HP is ra
             //Submerge is in play
-            //submerge reduces damage by 2 so 0 damage should be dealt
-            QuickHPStorage(ra);
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard, hydra);
             GoToEndOfTurn(isle);
-            QuickHPCheck(0);
-
-            //hydra max Hp is 6, so should be at max Hp now
+            QuickHPCheck(0, 0, 0, 0, 5);
             AssertIsAtMaxHP(hydra);
-
         }
 
         [Test()]
