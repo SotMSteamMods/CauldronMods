@@ -416,7 +416,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestWishSimple()
+        public void TestWishSimpleSelf()
         {
             SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
             StartGame();
@@ -439,6 +439,23 @@ namespace CauldronTests
             AssertOnTopOfDeck(starlight, constA);
             AssertIsInPlay(pillars);
 
+        }
+        [Test()]
+        public void TestWishSimpleOther()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            var hakaCards = GetCards("TaMoko", "Mere", "Taiaha", "PunishTheWeak", "EnduringIntercession");
+            PutOnDeck(haka, hakaCards);
+
+            DecisionYesNo = true;
+            DecisionSelectTurnTaker = haka.TurnTaker;
+            AssertNumberOfCardsInPlay(haka, 1);
+
+            PlayCard("Wish");
+
+            AssertNumberOfCardsInPlay(haka, 2);
         }
     }
 }

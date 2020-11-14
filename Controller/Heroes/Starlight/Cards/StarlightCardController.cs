@@ -34,7 +34,7 @@ namespace Cauldron.Starlight
             if (IsMultiCharPromo())
             {
                 throw new Exception();
-                //will do stuff here
+                //TODO - get this working
             }
             else
             {
@@ -53,7 +53,7 @@ namespace Cauldron.Starlight
             List<Card> starlights = new List<Card> { };
             if (IsMultiCharPromo())
             {
-                //more futureproofing
+                //TODO - more futureproofing
             }
             else
             {
