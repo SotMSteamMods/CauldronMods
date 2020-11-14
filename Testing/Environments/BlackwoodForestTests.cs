@@ -444,5 +444,28 @@ namespace CauldronTests
             QuickHPCheck(0, -1, -2, -1, -1);
         }
 
+        [Test]
+        public void TestShadowStalker()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            StartGame();
+            Card backlashField = GetCard("BacklashField");
+            PlayCard(backlashField);
+
+            Card shadowStalker = GetCard(ShadowStalkerCardController.Identifier);
+            PlayCard(shadowStalker);
+            QuickHPStorage(ra, legacy, haka);
+
+            // Act
+            GoToEndOfTurn(BlackForest);
+
+            // Assert
+            QuickHPCheck(-1, -1, -1); // (Ra, Legacy, Haka: -1 from start of turn Shadow Stalker effect)
+            AssertNotInPlay(backlashField);
+            AssertInTrash(baron, backlashField);
+        }
+
     }
 }
