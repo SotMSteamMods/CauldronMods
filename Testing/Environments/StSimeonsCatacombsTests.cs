@@ -1087,8 +1087,221 @@ namespace CauldronTests
             GoToEndOfTurn(catacombs);
             QuickHPCheck(-2);
 
+        }
+
+        [Test()]
+        public void TestLabyrinthGuideEnvironmentTurn_TwistingPassagesInPlay_DoNotTakeDamage()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is twisting passages in play
+            if (playedRoom.Identifier != "TwistingPassages")
+            {
+                DecisionSelectCard = GetCard("TwistingPassages");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+            DecisionYesNo = false;
+            Card guide = PlayCard("LabyrinthGuide");
+            GoToEndOfTurn(haka);
+            //At the start of the environment turn, if Twisting Passages is not in play, this card deals each hero target 1 psychic damage or it is destroyed.
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            GoToStartOfTurn(catacombs);
+            //since twisted passages is not in play, no damage should have been dealt
+            QuickHPCheck(0, 0, 0, 0);
+            AssertInPlayArea(catacombs, guide);
+        }
 
 
+
+        [Test()]
+        public void TestLabyrinthGuideEnvironmentTurn_TwistingPassagesNotInPlay_TakeDamage()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is not twisting passages in play
+            if (playedRoom.Identifier == "TwistingPassages")
+            {
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            DecisionsYesNo = new bool[] { false, false, false, true };
+            Card guide = PlayCard("LabyrinthGuide");
+            GoToEndOfTurn(haka);
+            //At the start of the environment turn, if Twisting Passages is not in play, this card deals each hero target 1 psychic damage or it is destroyed.
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            GoToStartOfTurn(catacombs);
+            QuickHPCheck(0, -1, -1, -1);
+            AssertInPlayArea(catacombs, guide);
+        }
+
+        [Test()]
+        public void TestLabyrinthGuideEnvironmentTurn_TwistingPassagesNotInPlay_DontTakeDamage()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is not twisting passages in play
+            if (playedRoom.Identifier == "TwistingPassages")
+            {
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            DecisionsYesNo = new bool[] { false, false, false, false };
+            Card guide = PlayCard("LabyrinthGuide");
+            GoToEndOfTurn(haka);
+            //At the start of the environment turn, if Twisting Passages is not in play, this card deals each hero target 1 psychic damage or it is destroyed.
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            GoToStartOfTurn(catacombs);
+            QuickHPCheck(0, 0, 0, 0);
+            AssertInTrash(guide);
+        }
+
+        [Test()]
+        public void TestLabyrinthGuideHeroTurn()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+
+            GoToEndOfTurn(catacombs);
+            Card initialRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card guide = PlayCard("LabyrinthGuide");
+
+            //At the start of a hero's turn, that hero may discard 2 cards to destroy a Room in play.
+            PrintSeparator("check hero start of turn effect");
+            DecisionYesNo = true;
+            QuickHandStorage(ra);
+            GoToStartOfTurn(ra);
+            QuickHandCheck(-2);
+
+            Card newRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+            Assert.IsTrue(initialRoom != newRoom, "A room was not destroyed");
+            initialRoom = newRoom;
+            PrintSeparator("check on each hero start of turn effect");
+            QuickHandStorage(legacy);
+            GoToStartOfTurn(legacy);
+            QuickHandCheck(-2);
+
+            newRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+            Assert.IsTrue(initialRoom != newRoom, "A room was not destroyed");
+        }
+
+        [Test()]
+        public void TestLabyrinthGuideHeroTurnOptional()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+
+            GoToEndOfTurn(catacombs);
+            Card initialRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card guide = PlayCard("LabyrinthGuide");
+
+            //At the start of a hero's turn, that hero may discard 2 cards to destroy a Room in play.
+            PrintSeparator("check hero start of turn effect");
+            DecisionYesNo = false;
+            QuickHandStorage(ra);
+            GoToStartOfTurn(ra);
+            QuickHandCheck(0);
+
+            Card newRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+            Assert.IsTrue(initialRoom == newRoom, "A room was destroyed");
+        }
+
+        [Test()]
+        public void TestLabyrinthGuideHeroTurnNoCards()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+
+            GoToEndOfTurn(catacombs);
+            Card initialRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card guide = PlayCard("LabyrinthGuide");
+
+            //At the start of a hero's turn, that hero may discard 2 cards to destroy a Room in play.
+            PrintSeparator("check hero start of turn effect");
+            DecisionYesNo = true;
+
+            DiscardAllCards(ra);
+
+            QuickHandStorage(ra);
+            GoToStartOfTurn(ra);
+            QuickHandCheck(0);
+
+            Card newRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+            Assert.IsTrue(initialRoom == newRoom, "A room was destroyed");
         }
     }
 }
