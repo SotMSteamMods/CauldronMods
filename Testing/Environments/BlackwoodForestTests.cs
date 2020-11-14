@@ -17,7 +17,7 @@ namespace CauldronTests
     {
         private const string DeckNamespace =  "Cauldron.BlackwoodForest";
 
-        protected TurnTakerController BlackForest => FindEnvironment();
+        protected TurnTakerController BlackwoodForest => FindEnvironment();
 
 
         [Test]
@@ -43,7 +43,7 @@ namespace CauldronTests
             PutIntoPlay(OldBonesCardController.Identifier);
             Card oldBones = GetCardInPlay(OldBonesCardController.Identifier);
 
-            GoToStartOfTurn(BlackForest);
+            GoToStartOfTurn(BlackwoodForest);
 
             // Assert
             AssertNotInPlay(oldBones);
@@ -77,7 +77,7 @@ namespace CauldronTests
             PutIntoPlay(OldBonesCardController.Identifier);
             Card oldBones = GetCardInPlay(OldBonesCardController.Identifier);
 
-            GoToStartOfTurn(BlackForest);
+            GoToStartOfTurn(BlackwoodForest);
 
             // Assert
             AssertNotInPlay(oldBones);
@@ -94,10 +94,10 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
 
             StartGame();
-            QuickShuffleStorage(BlackForest);
+            QuickShuffleStorage(BlackwoodForest);
 
             Card theHound = GetCard(TheHoundCardController.Identifier);
-            PutOnDeck(BlackForest, theHound); // Top deck The Hound
+            PutOnDeck(BlackwoodForest, theHound); // Top deck The Hound
 
             // Act
             PutIntoPlay(DontStrayFromThePathCardController.Identifier);
@@ -105,7 +105,7 @@ namespace CauldronTests
 
             PutIntoPlay(ShadowWeaverCardController.Identifier); // Has to be at least 1 other env card in play to proc Don't Stray
 
-            GoToStartOfTurn(BlackForest);
+            GoToStartOfTurn(BlackwoodForest);
 
             // Assert
             AssertNotInPlay(theHound); // The Hound was shuffled back into the environment deck
@@ -120,11 +120,11 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
 
             StartGame();
-            QuickShuffleStorage(BlackForest);
+            QuickShuffleStorage(BlackwoodForest);
 
 
             Card theHound = GetCard(TheHoundCardController.Identifier);
-            PutOnDeck(BlackForest, GetCard(OvergrownCathedralCardController.Identifier)); // Top deck something other than The Hound
+            PutOnDeck(BlackwoodForest, GetCard(OvergrownCathedralCardController.Identifier)); // Top deck something other than The Hound
 
             // Act
             PutIntoPlay(DontStrayFromThePathCardController.Identifier);
@@ -132,7 +132,7 @@ namespace CauldronTests
 
             PutIntoPlay(ShadowWeaverCardController.Identifier); // Has to be at least 1 other env card in play to proc Don't Stray
 
-            GoToStartOfTurn(BlackForest);
+            GoToStartOfTurn(BlackwoodForest);
 
             // Assert
             AssertNotInPlay(theHound);
@@ -147,13 +147,13 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
 
             StartGame();
-            QuickShuffleStorage(BlackForest);
+            QuickShuffleStorage(BlackwoodForest);
 
             // Act
             PutIntoPlay(DontStrayFromThePathCardController.Identifier);
             Card dontStray = GetCardInPlay(DontStrayFromThePathCardController.Identifier);
 
-            GoToStartOfTurn(BlackForest);
+            GoToStartOfTurn(BlackwoodForest);
 
             // Assert
             QuickShuffleCheck(0); // No shuffles were done beyond the game start shuffle
@@ -168,18 +168,18 @@ namespace CauldronTests
             StartGame();
 
             // Act
-            GoToStartOfTurn(BlackForest);
+            GoToStartOfTurn(BlackwoodForest);
             PutIntoPlay(DontStrayFromThePathCardController.Identifier);
 
-            GoToStartOfTurn(BlackForest);
-            GoToPlayCardPhase(BlackForest);
+            GoToStartOfTurn(BlackwoodForest);
+            GoToPlayCardPhase(BlackwoodForest);
             PlayCard(ShadowStalkerCardController.Identifier);
 
-            PutOnDeck(BlackForest, GetCard(OvergrownCathedralCardController.Identifier)); // Top deck something other than The Hound
-            GoToStartOfTurn(BlackForest);
+            PutOnDeck(BlackwoodForest, GetCard(OvergrownCathedralCardController.Identifier)); // Top deck something other than The Hound
+            GoToStartOfTurn(BlackwoodForest);
 
             // Assert
-            AssertNumberOfCardsInTrash(BlackForest, 1); // Overgrown Cathedral was not The Hound so it was placed in trash
+            AssertNumberOfCardsInTrash(BlackwoodForest, 1); // Overgrown Cathedral was not The Hound so it was placed in trash
             
         }
 
@@ -190,26 +190,26 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
 
             StartGame();
-            QuickShuffleStorage(BlackForest);
+            QuickShuffleStorage(BlackwoodForest);
 
             // Act
 
-            GoToStartOfTurn(BlackForest);
+            GoToStartOfTurn(BlackwoodForest);
             PutIntoPlay(DontStrayFromThePathCardController.Identifier);
 
-            GoToStartOfTurn(BlackForest);
-            GoToPlayCardPhase(BlackForest);
+            GoToStartOfTurn(BlackwoodForest);
+            GoToPlayCardPhase(BlackwoodForest);
             PlayCard(ShadowStalkerCardController.Identifier);
 
             Card theHound = GetCard(TheHoundCardController.Identifier);
-            PutOnDeck(BlackForest, theHound); // Top deck something other than The Hound
-            GoToStartOfTurn(BlackForest);
+            PutOnDeck(BlackwoodForest, theHound); // Top deck something other than The Hound
+            GoToStartOfTurn(BlackwoodForest);
 
             // Assert
             QuickShuffleCheck(1); // The Hound caused an additional shuffle of the env. deck
             AssertNotInPlay(theHound); // The Hound was shuffled back into the environment deck
             AssertInDeck(theHound); // The Hound should be back in the deck
-            AssertNumberOfCardsInTrash(BlackForest, 0); // No cards should be in the trash
+            AssertNumberOfCardsInTrash(BlackwoodForest, 0); // No cards should be in the trash
 
         }
 
@@ -239,7 +239,7 @@ namespace CauldronTests
             DealDamage(baron, ra, 3, DamageType.Toxic); // Ra is immune
             
 
-            GoToStartOfTurn(BlackForest); // Dense Brambles is destroyed
+            GoToStartOfTurn(BlackwoodForest); // Dense Brambles is destroyed
 
             DealDamage(ra, mdp, 2, DamageType.Fire);
 
@@ -279,7 +279,7 @@ namespace CauldronTests
             DealDamage(baron, ra, 3, DamageType.Toxic); // Ra is immune
 
 
-            GoToStartOfTurn(BlackForest); // Dense Brambles is destroyed
+            GoToStartOfTurn(BlackwoodForest); // Dense Brambles is destroyed
 
             DealDamage(ra, mdp, 2, DamageType.Fire);
 
@@ -396,13 +396,13 @@ namespace CauldronTests
             DecisionYesNo = true;
 
             // Act
-            GoToStartOfTurn(BlackForest);
+            GoToStartOfTurn(BlackwoodForest);
             PlayCard(overgrownCathedral);
 
             // Ra will be dealt damage first, then Cathedral will interject and deal damage to everyone else
             PlayCard(baron, "SlashAndBurn");
 
-            GoToStartOfTurn(BlackForest);
+            GoToStartOfTurn(BlackwoodForest);
 
             // Assert
 
@@ -428,13 +428,13 @@ namespace CauldronTests
             QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
 
             // Act
-            GoToEndOfTurn(BlackForest);
+            GoToEndOfTurn(BlackwoodForest);
 
             GoToStartOfTurn(ra);
             DealDamage(ra, shadowWeaver, 10, DamageType.Fire);
 
             // Assert
-            AssertInTrash(BlackForest, shadowWeaver); // Shadow Weaver is in trash
+            AssertInTrash(BlackwoodForest, shadowWeaver); // Shadow Weaver is in trash
 
             // Baron: 0 (Immune)
             // MDP: -1 (Shadow Weaver destruction trigger)
@@ -459,12 +459,37 @@ namespace CauldronTests
             QuickHPStorage(ra, legacy, haka);
 
             // Act
-            GoToEndOfTurn(BlackForest);
+            GoToEndOfTurn(BlackwoodForest);
 
             // Assert
             QuickHPCheck(-1, -1, -1); // (Ra, Legacy, Haka: -1 from start of turn Shadow Stalker effect)
             AssertNotInPlay(backlashField);
             AssertInTrash(baron, backlashField);
+        }
+
+        [Test]
+        public void TestWillOTheWisp()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", DeckNamespace);
+
+            string statusEffectMessageBlackwoodForest = $"Skip {BlackwoodForest.Name}'s Draw Card phase.";
+
+            StartGame();
+
+            Card willOTheWisp = GetCard(WillOTheWispCardController.Identifier);
+
+            // Act
+            GoToStartOfTurn(BlackwoodForest);
+            PlayCard(willOTheWisp);
+
+            // Assert
+            AssertNumberOfCardsInPlay(card => card.IsEnvironment, 1);
+
+            GoToEndOfTurn(baron);
+            AssertNumberOfCardsInPlay(card => card.IsEnvironment, 3); // 2 cards drawn at the end of villain turn
+
+            AssertStatusEffectsContains(statusEffectMessageBlackwoodForest); // Blackwood Forest skips its draw phase
         }
 
     }
