@@ -35,7 +35,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheWanderingIsle");
 
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
-            
+
         }
 
         [Test()]
@@ -64,7 +64,7 @@ namespace CauldronTests
 
             //If this card reaches 0HP, the heroes lose.
             DealDamage(baron.CharacterCard, teryx, 50, DamageType.Melee, true);
-            
+
             AssertGameOver(EndingResult.EnvironmentDefeat);
 
         }
@@ -246,7 +246,7 @@ namespace CauldronTests
             QuickHPCheck(-3);
             AssertNotNextToCard(parasite, ra.CharacterCard);
 
-           
+
         }
 
         [Test()]
@@ -471,7 +471,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-       
+
 
             SetHitPoints(ra.CharacterCard, 5);
             SetHitPoints(visionary.CharacterCard, 7);
@@ -721,9 +721,9 @@ namespace CauldronTests
             SetHitPoints(visionary.CharacterCard, 18);
             SetHitPoints(haka.CharacterCard, 28);
 
-           // Whenever a target enters play, this card deals { H - 1}lightning damage to the target with the third highest HP.
-           // 3rd highest hp is ra
-           //H =3, 3-1 = 2
+            // Whenever a target enters play, this card deals { H - 1}lightning damage to the target with the third highest HP.
+            // 3rd highest hp is ra
+            //H =3, 3-1 = 2
             PutIntoPlay("ThroughTheHurricane");
 
             QuickHPStorage(ra);
@@ -740,7 +740,7 @@ namespace CauldronTests
             //stack deck for less variance
             PutOnDeck("Teryx");
             PutOnDeck("AncientParasite");
-            
+
             PutIntoPlay("ThroughTheHurricane");
 
             //At the start of the environment turn, you may play the top 2 cards of the environment deck. If you do, this card is destroyed.
@@ -839,7 +839,7 @@ namespace CauldronTests
             PutIntoPlay("TimedDetonator");
 
             //At the start of the environment turn, this card deals Teryx 10 fire damage and each hero target {H - 2} fire damage. Then, this card is destroyed.
-           
+
             int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
             GoToStartOfTurn(isle);
             int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
