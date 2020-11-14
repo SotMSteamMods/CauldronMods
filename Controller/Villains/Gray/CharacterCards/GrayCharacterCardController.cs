@@ -61,7 +61,7 @@ namespace Cauldron.Gray
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             //If flipping from front to back then destroy 1 environment after flipping
-            if (base.Card.IsFlipped)
+            if (base.Card.IsFlipped && FindNumberOfEnvironmentInPlay() > 0)
             {
                 coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsEnvironment), false);
                 if (base.UseUnityCoroutines)
@@ -109,6 +109,11 @@ namespace Cauldron.Gray
         private int? FindNumberOfHeroOngoingAndEquipmentInPlay()
         {
             return new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c)), false, null, false).Count<Card>());
+        }
+
+        private int? FindNumberOfEnvironmentInPlay()
+        {
+            return new int?(base.FindCardsWhere((Card c) => c.IsEnvironment && c.IsInPlay, false, null, false).Count<Card>());
         }
 
         private IEnumerator FlippedStartOfTurnResponse(PhaseChangeAction action)
