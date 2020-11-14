@@ -414,5 +414,31 @@ namespace CauldronTests
             AssertNumberOfCardsInTrash(starlight, 2);
             AssertInTrash(tamoko); 
         }
+
+        [Test()]
+        public void TestWishSimple()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card constA = GetCard("AncientConstellationA");
+            Card aura = GetCard("CelestialAura");
+            Card astrolabe = GetCard("GoldenAstrolabe");
+            Card armor = GetCard("NightloreArmor");
+            Card shield = GetCard("NovaShield");
+            Card pillars = GetCard("PillarsOfCreation");
+
+            PutOnDeck(starlight, new List<Card> { constA, aura, astrolabe, armor, shield, pillars });
+
+            DecisionYesNo = true;
+            DecisionSelectCards = new List<Card> { pillars, aura, astrolabe, shield, armor };
+            AssertOnTopOfDeck(pillars);
+
+            PlayCard("Wish");
+
+            AssertOnTopOfDeck(starlight, constA);
+            AssertIsInPlay(pillars);
+
+        }
     }
 }
