@@ -294,7 +294,7 @@ namespace CauldronTests
             QuickHandCheck(1);
         }
         [Test()]
-        public void TestCelestialAuraDamagetoHeal()
+        public void TestCelestialAuraDamageToHeal()
         {
             SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
             StartGame();
@@ -331,6 +331,86 @@ namespace CauldronTests
             DealDamage(haka, mdp, 1, DamageType.Radiant);
             DealDamage(haka, visionary, 1, DamageType.Radiant);
             QuickHPCheck(-1, -1, -1);
+        }
+        [Test()]
+        public void TestExodusNoConstellationsToDestroy()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card living = GetCard("LivingForceField");
+            PlayCard(living);
+
+            AssertMaxNumberOfDecisions(0);
+            PlayCard("EventHorizon");
+            AssertIsInPlay(living);
+        }
+        [Test()]
+        public void TestExodusZeroConstellationsDestroyed()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card living = GetCard("LivingForceField");
+            PlayCard(living);
+            Card constellation = GetCard("AncientConstellationA");
+            PlayCard(constellation);
+
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            AssertMaxNumberOfDecisions(1);
+
+            PlayCard("EventHorizon");
+            AssertIsInPlay(living);
+            AssertIsInPlay(constellation);
+        }
+        [Test()]
+        public void TestExodusOneConstellationDestroyed()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card living = GetCard("LivingForceField");
+            PlayCard(living);
+            PlayCards("AncientConstellationA", "AncientConstellationB");
+
+            DecisionSelectCards = new List<Card> { GetCardInPlay("AncientConstellationA"), null, living };
+
+            PlayCard("EventHorizon");
+            AssertInTrash(living);
+            AssertIsInPlay("AncientConstellationB");
+        }
+        [Test()]
+        public void TestExodusTwoConstellationsDestroyed()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card living = GetCard("LivingForceField");
+            PlayCard(living);
+            PlayCards("AncientConstellationA", "AncientConstellationB");
+            PlayCard("PoliceBackup");
+
+            PlayCard("EventHorizon");
+            AssertInTrash("LivingForceField", "AncientConstellationA", "AncientConstellationB", "PoliceBackup");
+        }
+        [Test()]
+        public void TestExodusAfterConstellationsNoLongerOptional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            PlayCards("AncientConstellationA", "TaMoko");
+
+            DecisionSelectCard = GetCardInPlay("AncientConstellationA");
+
+            //select first constellation to destroy
+            //then we should not get a choice, ta moko is the only ongoing or environment card
+            AssertMaxNumberOfDecisions(1);
+            PlayCard("EventHorizon");
+
+            //Event Horizon and two Constellations
+            AssertNumberOfCardsInTrash(starlight, 2);
         }
     }
 }
