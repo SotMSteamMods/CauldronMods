@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Cauldron.TheWanderingIsle
 {
-    public class ThroughTheHurricaneCardController : CardController
+    public class ThroughTheHurricaneCardController : TheWanderingIsleCardController
     {
         public ThroughTheHurricaneCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -72,7 +72,6 @@ namespace Cauldron.TheWanderingIsle
                     string message;
                     if (playedCards.Count<Card>() == 1)
                     {
-
                         message = "The environment only played 1 card, so " + base.Card.Title + " will not be destroyed.";
                     }
                     else

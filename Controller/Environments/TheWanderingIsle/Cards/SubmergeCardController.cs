@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace Cauldron.TheWanderingIsle
 {
-    public class SubmergeCardController : CardController
+    public class SubmergeCardController : TheWanderingIsleCardController
     {
         public SubmergeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

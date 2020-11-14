@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Cauldron.TheWanderingIsle
 {
-    public class AncientParasiteCardController : CardController
+    public class AncientParasiteCardController : TheWanderingIsleCardController
     {
         public AncientParasiteCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -91,10 +91,6 @@ namespace Cauldron.TheWanderingIsle
                 this.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
-        }
-        private bool IsTeryx(Card card)
-        {
-            return card.Identifier == "Teryx";
         }
     }
 }

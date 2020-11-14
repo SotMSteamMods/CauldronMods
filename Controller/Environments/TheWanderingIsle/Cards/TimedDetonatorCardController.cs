@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.TheWanderingIsle
 {
-    public class TimedDetonatorCardController : CardController
+    public class TimedDetonatorCardController : TheWanderingIsleCardController
     {
         public TimedDetonatorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

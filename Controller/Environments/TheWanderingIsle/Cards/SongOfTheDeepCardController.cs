@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.TheWanderingIsle
 {
-    public class SongOfTheDeepCardController : CardController
+    public class SongOfTheDeepCardController : TheWanderingIsleCardController
     {
         public SongOfTheDeepCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -80,10 +80,6 @@ namespace Cauldron.TheWanderingIsle
             var numCardsInPlay = cardsInPlay.Count();
 
             return numCardsInPlay > 0;
-        }
-        private bool IsTeryx(Card card)
-        {
-            return card.Identifier == "Teryx";
         }
     }
 }

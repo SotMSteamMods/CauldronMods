@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.TheWanderingIsle
 {
-    public class BarnacleHydraCardController : CardController
+    public class BarnacleHydraCardController : TheWanderingIsleCardController
     {
         public BarnacleHydraCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -15,15 +15,15 @@ namespace Cauldron.TheWanderingIsle
         public override void AddTriggers()
         {
             //When this card is destroyed, it deals Teryx { H} toxic damage
-            base.AddWhenDestroyedTrigger(new Func<DestroyCardAction, IEnumerator>(this.DestroyCardResponse), TriggerType.DealDamage);
+            base.AddWhenDestroyedTrigger(this.DestroySelfResponse, TriggerType.DealDamage);
             //At the end of the environment turn, this card deals the non-environment target with the lowest HP 2 projectile damage. Then, if Submerge is in play, this card regains 6HP.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageReponse), new TriggerType[] { TriggerType.DealDamage, TriggerType.GainHP }, null, false);
+            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageReponse, new TriggerType[] { TriggerType.DealDamage, TriggerType.GainHP });
         }
 
         private IEnumerator DealDamageReponse(PhaseChangeAction pca)
         {
             //this card deals the non-environment target with the lowest HP 2 projectile damage. 
-            IEnumerator dealDamage = base.DealDamageToLowestHP(base.Card, 1, (Card c) => c.IsTarget && !c.IsEnvironment, (Card c) => new int?(2), DamageType.Projectile);
+            IEnumerator dealDamage = base.DealDamageToLowestHP(base.Card, 1, (Card c) => c.IsTarget && !c.IsEnvironment, (Card c) => 2, DamageType.Projectile);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(dealDamage);
@@ -34,9 +34,9 @@ namespace Cauldron.TheWanderingIsle
             }
 
             //Then, if Submerge is in play, this card regains 6HP.
-            if (this.IsCardInPlay(base.TurnTakerController, "Submerge"))
+            if (GameController.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.Identifier == "Submerge").Any())
             {
-                IEnumerator gainHp = base.GameController.GainHP(base.Card, new int?(6));
+                IEnumerator gainHp = base.GameController.GainHP(base.Card, 6);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(gainHp);
@@ -46,11 +46,10 @@ namespace Cauldron.TheWanderingIsle
                     base.GameController.ExhaustCoroutine(gainHp);
                 }
             }
-
             yield break;
         }
 
-        private IEnumerator DestroyCardResponse(DestroyCardAction dca)
+        private IEnumerator DestroySelfResponse(DestroyCardAction dca)
         {
             if (this.IsCardInPlay(base.TurnTakerController, "Teryx"))
             {

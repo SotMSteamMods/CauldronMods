@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Cauldron.TheWanderingIsle
 {
-    public class ExposedLifeforceCardController : CardController
+    public class ExposedLifeforceCardController : TheWanderingIsleCardController
     {
         public ExposedLifeforceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -76,11 +76,6 @@ namespace Cauldron.TheWanderingIsle
                                               select e.Amount).Sum();
 
             return amountTeryxGainedThisRound >= 10;
-        }
-
-        private bool IsTeryx(Card card)
-        {
-            return card.Identifier == "Teryx";
         }
     }
 }
