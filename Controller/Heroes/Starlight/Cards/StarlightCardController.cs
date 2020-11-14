@@ -13,12 +13,12 @@ namespace Cauldron.Starlight
         {
         }
 
-        private bool IsConstellation(Card card)
+        protected bool IsConstellation(Card card)
         {
             return (card != null) && GameController.DoesCardContainKeyword(card, "constellation");
         }
 
-        private bool IsNextToConstellation(Card card)
+        protected bool IsNextToConstellation(Card card)
         {
             if (card != null && card.NextToLocation != null && card.NextToLocation.Cards != null)
             {
@@ -33,6 +33,7 @@ namespace Cauldron.Starlight
             //future-proofing for Nightlore Council
             if (IsMultiCharPromo())
             {
+                throw new Exception();
                 //will do stuff here
             }
             else
@@ -42,9 +43,23 @@ namespace Cauldron.Starlight
             yield break;
         }
 
-        private bool IsMultiCharPromo()
+        protected bool IsMultiCharPromo()
         {
             return TurnTaker.HasMultipleCharacterCards;
+        }
+
+        protected List<Card> ListStarlights()
+        {
+            List<Card> starlights = new List<Card> { };
+            if (IsMultiCharPromo())
+            {
+                //more futureproofing
+            }
+            else
+            {
+                starlights.Add(TurnTaker.CharacterCard);
+            }
+            return starlights;
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Cauldron.Starlight
                 case 0:
                     {
                         //"Until the start of your next turn, prevent all damage that would be dealt to or by the target with the lowest HP.",
-                        OnDealDamageStatusEffect lowestTargetImmunity = new OnDealDamageStatusEffect(base.Card, "LowestTargetImmunity", "The target with the lowest HP is immune to damage and cannot deal damage.", new TriggerType[1] { TriggerType.DealDamage }, DecisionMaker.TurnTaker, base.Card);
+                        OnDealDamageStatusEffect lowestTargetImmunity = new OnDealDamageStatusEffect(base.Card, "LowestTargetImmunity", "The target with the lowest HP is immune to damage and cannot deal damage.", new TriggerType[1] { TriggerType.MakeImmuneToDamage }, DecisionMaker.TurnTaker, base.Card);
                         lowestTargetImmunity.UntilStartOfNextTurn(base.TurnTaker);
                         lowestTargetImmunity.SourceCriteria.IsTarget = true;
                         lowestTargetImmunity.BeforeOrAfter = BeforeOrAfter.Before;

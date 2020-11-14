@@ -272,5 +272,65 @@ namespace CauldronTests
             PutInHand(decoy);
             AssertInTrash(constc);
         }
+        [Test()]
+        public void TestCelestialAuraPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            Card aura = GetCard("CelestialAura");
+            PlayCard(aura);
+
+            DecisionSelectPower = aura;
+            DecisionSelectTarget = mdp;
+
+            QuickHPStorage(mdp);
+            QuickHandStorage(starlight);
+            UsePower(aura);
+
+            //should deal 1 damage and draw 1 card
+            QuickHPCheck(-1);
+            QuickHandCheck(1);
+        }
+        [Test()]
+        public void TestCelestialAuraDamagetoHeal()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            Card aura = GetCard("CelestialAura");
+            PlayCard(aura);
+
+            //put constellations on things
+            Card consta = GetCard("AncientConstellationA");
+            Card constb = GetCard("AncientConstellationB");
+            Card constc = GetCard("AncientConstellationC");
+
+            DecisionSelectCards = new Card[] { mdp, haka.CharacterCard, ra.CharacterCard };
+            PlayCards(new Card[] { consta, constb, constc });
+
+            //room for healing
+            SetHitPoints(ra, 10);
+            SetHitPoints(mdp, 5);
+            SetHitPoints(visionary, 10);
+
+            QuickHPStorage(ra.CharacterCard, mdp, visionary.CharacterCard);
+
+            DealDamage(starlight, ra, 1, DamageType.Radiant);
+            DealDamage(starlight, mdp, 1, DamageType.Radiant);
+            DealDamage(starlight, visionary, 1, DamageType.Radiant);
+
+            //should heal Ra, but neither the MDP (not hero) nor Visionary (not next to constellation)
+            QuickHPCheck(1, -1, -1);
+
+            //should not affect damage from other sources
+            QuickHPStorage(ra.CharacterCard, mdp, visionary.CharacterCard);
+            DealDamage(haka, ra, 1, DamageType.Radiant);
+            DealDamage(haka, mdp, 1, DamageType.Radiant);
+            DealDamage(haka, visionary, 1, DamageType.Radiant);
+            QuickHPCheck(-1, -1, -1);
+        }
     }
 }
