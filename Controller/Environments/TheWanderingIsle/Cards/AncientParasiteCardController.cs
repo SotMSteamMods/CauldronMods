@@ -56,7 +56,7 @@ namespace Cauldron.TheWanderingIsle
             else
             {
                 //Otherwise it deals Teryx {H + 2} toxic damage.
-                Card teryx = base.TurnTaker.GetAllCards().FirstOrDefault(c => c.IsInPlayAndHasGameText && this.IsTeryx(c));
+                Card teryx = base.FindTeryx();
                 if (teryx != null)
                 {
                     IEnumerator damageTeryx = base.DealDamage(base.Card, teryx, base.H + 2, DamageType.Toxic, cardSource: base.GetCardSource());
