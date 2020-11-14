@@ -623,7 +623,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestBreathStealer_AquaductsInPlay_NextTo()
+        public void TestBreathStealeNextTo()
         {
 
             SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
@@ -664,7 +664,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestBreathStealer_AquaductsInPlay_EndOfTurn()
+        public void TestBreathStealerEndOfTurn()
         {
 
             SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
@@ -770,8 +770,10 @@ namespace CauldronTests
             playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
 
             //make sure it is not aqueducts in play
-            if (playedRoom.Identifier == "Aqueducts")
+            //putting torture chamber in play to not reduce damage to villain
+            if (playedRoom.Identifier != "TortureChamber")
             {
+                DecisionSelectCard = GetCard("TortureChamber");
                 DestroyCard(playedRoom, ra.CharacterCard);
             }
 
@@ -796,6 +798,128 @@ namespace CauldronTests
             QuickHPCheck(-3, -3, -3, -3, 0);
 
 
+
+
+        }
+
+        [Test()]
+        public void TestCoalKid_TwistingPassagesInPlay_Affected()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is twisting passages in play
+            if (playedRoom.Identifier != "TwistingPassages")
+            {
+                DecisionSelectCard = GetCard("TwistingPassages");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            
+            Card kid = PlayCard("CoalKid");
+
+            PrintSeparator("Check if coal kid can be dealt damage from hero card");
+            //This card may not be affected by hero cards unless twisting passages is in play.
+            QuickHPStorage(kid);
+            DealDamage(ra.CharacterCard, kid, 1, DamageType.Fire);
+            QuickHPCheck(-1);
+
+
+        }
+
+        [Test()]
+        public void TestCoalKid_TwistingPassagesNotInPlay_NotAffected()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is not twisting passages in play
+            //putting torture chamber in play to not reduce damage to villain
+            if (playedRoom.Identifier != "TortureChamber")
+            {
+                DecisionSelectCard = GetCard("TortureChamber");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card kid = PlayCard("CoalKid");
+
+            PrintSeparator("Check if coals kid can be dealt damage from hero card");
+            //This card may not be affected by hero cards unless twisting passages is in play.
+            QuickHPStorage(kid);
+            DealDamage(ra.CharacterCard, kid, 1, DamageType.Fire);
+            QuickHPCheckZero();
+
+            Card[] targets = new Card[] { baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, kid };
+
+            QuickHPStorage(targets);
+            DealDamage(ra.CharacterCard, (Card c) => c.IsTarget, 3, DamageType.Fire);
+            QuickHPCheck(-3, -3, -3, -3, 0);
+
+        }
+
+        [Test()]
+        public void TestCoalKid_EndOfTurn()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is CursedVault in play for simplicity
+            if (playedRoom.Identifier != "CursedVault")
+            {
+                DecisionSelectCard = GetCard("CursedVault");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card kid = PlayCard("CoalKid");
+
+            //At the end of the environment turn, this card deals each hero target 2 fire damage.
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, kid);
+            GoToEndOfTurn(catacombs);
+            QuickHPCheck(0, -2, -2, -2, 0);
 
 
         }
