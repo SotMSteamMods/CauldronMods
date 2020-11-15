@@ -412,7 +412,7 @@ namespace CauldronTests
 
             //Event Horizon and one Constellation
             AssertNumberOfCardsInTrash(starlight, 2);
-            AssertInTrash(tamoko); 
+            AssertInTrash(tamoko);
         }
 
         [Test()]
@@ -677,6 +677,133 @@ namespace CauldronTests
         }
         //other possible tests: multi-char with power on other card (Kismet's Talisman? Oblivaeon Reward?)
         //multi-char with extra power put on card (Cosmic Weapon) - should not be available unless affecting constellation'd card
+        [Test()]
+        public void TestNightloreArmorProtectAlly()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            DecisionSelectCard = haka.CharacterCard;
+            PlayCards("NightloreArmor", "AncientConstellationA");
+            Card constellation = GetCardInPlay("AncientConstellationA");
+
+            DecisionYesNo = true;
+
+            //should be able to prevent the damage
+            QuickHPStorage(haka);
+            DealDamage(baron, haka, 5, DamageType.Melee);
+            QuickHPCheck(0);
+            AssertInTrash(constellation);
+
+            //should not prevent a second whack
+            QuickHPStorage(haka);
+            DealDamage(baron, haka, 5, DamageType.Melee);
+            QuickHPCheck(-5);
+
+            //should not need to be on the target protected
+            PlayCard("AncientConstellationA");
+            QuickHPStorage(ra);
+            DealDamage(baron, ra, 5, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //should work on non-character targets
+            PlayCards("AncientConstellationA", "DecoyProjection");
+            Card decoy = GetCardInPlay("DecoyProjection");
+            QuickHPStorage(decoy);
+            DealDamage(baron, decoy, 2, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //should work on friendly fire
+            PlayCard("AncientConstellationA");
+            DealDamage(haka, decoy, 2, DamageType.Melee);
+            QuickHPCheck(0);
+        }
+        [Test()]
+        public void TestNightloreArmorNotProtectSelfOrNonHero()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            DecisionSelectCard = haka.CharacterCard;
+            PlayCards("NightloreArmor", "AncientConstellationA", "TrafficPileup");
+            Card constellation = GetCardInPlay("AncientConstellationA");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card traffic = GetCardInPlay("TrafficPileup");
+
+            DecisionYesNo = true;
+
+            //should not get option to prevent damage to Starlight, the MDP, or the traffic
+            QuickHPStorage(starlight.CharacterCard, mdp, traffic, haka.CharacterCard);
+            DealDamage(baron, starlight, 5, DamageType.Melee);
+            DealDamage(baron, mdp, 5, DamageType.Melee);
+            DealDamage(baron, traffic, 5, DamageType.Melee);
+            AssertIsInPlay(constellation);
+            DealDamage(baron, haka, 5, DamageType.Melee);
+            AssertInTrash(constellation);
+            QuickHPCheck(-5, -5, -5, 0);
+        }
+        [Test()]
+        public void TestNightloreArmorProtectionOptional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            DecisionSelectCard = haka.CharacterCard;
+            PlayCards("NightloreArmor", "AncientConstellationA");
+            Card constellation = GetCardInPlay("AncientConstellationA");
+
+            DecisionYesNo = false;
+            QuickHPStorage(haka);
+            DealDamage(baron, haka, 1, DamageType.Melee);
+            QuickHPCheck(-1);
+            AssertIsInPlay(constellation);
+
+            DecisionYesNo = true;
+            DealDamage(baron, haka, 10, DamageType.Melee);
+            QuickHPCheck(0);
+            AssertInTrash(constellation);
+        }
+        [Test()]
+        public void TestNightloreArmorDestructionNotOptionalOnceProtecting()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            DecisionSelectCard = haka.CharacterCard;
+            PlayCards("NightloreArmor", "AncientConstellationA", "AncientConstellationB");
+            Card constellation = GetCardInPlay("AncientConstellationA");
+
+            DecisionYesNo = true;
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+            DecisionSelectCard = null;
+
+            QuickHPStorage(haka);
+            DealDamage(baron, haka, 5, DamageType.Melee);
+            QuickHPCheck(0);
+            AssertNumberOfCardsInTrash(starlight, 1);
+            //character card, Nightlore Armor, and one Constellation
+            AssertNumberOfCardsInPlay(starlight, 3);
+        }
+        [Test()]
+        public void TestNightloreArmorDamageStillPreventedIfDestructionPrevented()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "TimeCataclysm");
+            StartGame();
+
+            DecisionSelectCard = haka.CharacterCard;
+            PlayCards("NightloreArmor", "AncientConstellationA", "FixedPoint");
+            Card constellation = GetCardInPlay("AncientConstellationA");
+
+            DecisionYesNo = true;
+            QuickHPStorage(haka);
+            DealDamage(baron, haka, 5, DamageType.Melee);
+            QuickHPCheck(0);
+            AssertIsInPlay(constellation);
+
+            DecisionYesNo = false;
+            DealDamage(baron, haka, 5, DamageType.Melee);
+            QuickHPCheck(-5);
+        }
         [Test()]
         public void TestWishSimpleSelf()
         {

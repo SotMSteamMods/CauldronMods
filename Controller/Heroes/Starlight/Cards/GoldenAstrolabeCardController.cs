@@ -9,7 +9,6 @@ namespace Cauldron.Starlight
 {
     public class GoldenAstrolabeCardController : StarlightCardController
     {
-        private bool _AllowMultiCharHeroToSharePowers = false;
         public GoldenAstrolabeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
