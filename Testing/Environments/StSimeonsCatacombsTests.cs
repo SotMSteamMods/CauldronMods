@@ -1404,5 +1404,145 @@ namespace CauldronTests
             QuickHPCheck(-4);
 
         }
+
+        [Test()]
+        public void TestPoltergeist_SacrificialShrineInPlay_Affected()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Set Hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 25);
+            SetHitPoints(haka.CharacterCard, 15);
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is sacrificial shrine in play
+            if (playedRoom.Identifier != "SacrificialShrine")
+            {
+                DecisionSelectCard = GetCard("SacrificialShrine");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card poltergeist = PlayCard("Poltergeist");
+
+            PrintSeparator("Check if poltergeist can be dealt damage from hero card");
+            //This card may not be affected by hero cards unless SacrificialShrine is in play.
+            QuickHPStorage(poltergeist);
+            DealDamage(ra.CharacterCard, poltergeist, 1, DamageType.Fire);
+            QuickHPCheck(-1);
+
+
+        }
+
+        [Test()]
+        public void TestPoltergeist_SacrificialShrineNotInPlay_NotAffected()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Set Hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 25);
+            SetHitPoints(haka.CharacterCard, 15);
+
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is not SacrificialShrine in play
+            //putting torture chamber in play to simplify
+            if (playedRoom.Identifier != "TortureChamber")
+            {
+                DecisionSelectCard = GetCard("TortureChamber");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card poltergeist = PlayCard("Poltergeist");
+
+            PrintSeparator("Check if poltergeist can be dealt damage from hero card");
+            //This card may not be affected by hero cards unless SacrificialShrine is in play.
+            QuickHPStorage(poltergeist);
+            DealDamage(ra.CharacterCard, poltergeist, 1, DamageType.Fire);
+            QuickHPCheckZero();
+
+            Card[] targets = new Card[] { baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, poltergeist };
+
+            QuickHPStorage(targets);
+            DealDamage(ra.CharacterCard, (Card c) => c.IsTarget, 3, DamageType.Fire);
+            QuickHPCheck(-3, -3, -3, -3, 0);
+
+        }
+
+        [Test()]
+        public void TestPoltergeist_EndOfTurn()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "TheWraith", "Stuntman", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            Card targetting = GetCard("MicroTargetingComputer");
+
+            //make sure it is not SacrificialShrine in play
+            //putting torture chamber in play to simplify
+            if (playedRoom.Identifier != "TortureChamber")
+            {
+                DecisionSelectCards =  new Card[] { GetCard("TortureChamber"), targetting };
+                DestroyCard(playedRoom, haka.CharacterCard);
+            }
+
+            DecisionSelectCards = new Card[] { targetting };
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card poltergeist = PlayCard("Poltergeist");
+
+            //put 2 wraith equipments, 1 stuntman equipment, and 0 haka equipment in play
+            PlayCard("RazorOrdnance");
+            PlayCard(targetting);
+            PlayCard("LanceFlammes");
+
+            //At the end of the environment turn, this card deals each hero 1 projectile damage for each equipment card they have in play. Then, destroy 1 equipment card.
+            QuickHPStorage(baron, wraith, stunt, haka);
+            int numEquipmentInPlayBefore = GetNumberOfCardsInPlay((Card c) => base.GameController.IsEquipment(c) && c.IsHero);
+            GoToEndOfTurn(catacombs);
+            QuickHPCheck(0, -2, -1, 0);
+            AssertNumberOfCardsInPlay((Card c) => base.GameController.IsEquipment(c) && c.IsHero, numEquipmentInPlayBefore - 1);
+        }
     }
 }
