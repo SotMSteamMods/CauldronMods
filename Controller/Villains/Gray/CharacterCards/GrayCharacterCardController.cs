@@ -130,9 +130,10 @@ namespace Cauldron.Gray
         private IEnumerator FlippedStartOfTurnResponse(PhaseChangeAction action)
         {
             //...destroy all but 2 hero ongoing or equipment cards. 
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), false);
+            IEnumerator coroutine;
             while (this.FindNumberOfHeroOngoingAndEquipmentInPlay() > 2)
             {
+                coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), false);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -161,24 +162,35 @@ namespace Cauldron.Gray
 
         private IEnumerator DestroyRadiationBackResponse(DestroyCardAction action)
         {
-            Card responsibleCharacterCard = action.ResponsibleCard.Owner.CharacterCard;
+            TurnTaker responsibleTurnTaker;
+            if (action.ResponsibleCard != null)
+            {
+                responsibleTurnTaker = action.ResponsibleCard.Owner;
+            }
+            else
+            {
+                responsibleTurnTaker = base.TurnTaker;
+            }
             //Whenever a radiation card is destroyed by a hero card, {Gray} deals that hero {H - 1} energy damage.
             IEnumerator coroutine;
             //if its not a hero destroying it do no damage
-            if (responsibleCharacterCard != null && responsibleCharacterCard.IsHero && responsibleCharacterCard.IsInPlayAndHasGameText)
+            if (responsibleTurnTaker != null && responsibleTurnTaker.IsHero)
             {
-                coroutine = base.DealDamage(base.Card, action.ResponsibleCard.Owner.CharacterCard, Game.H - 1, DamageType.Energy);
-                if (base.UseUnityCoroutines)
+                if (responsibleTurnTaker.CharacterCard.IsInPlayAndHasGameText && !responsibleTurnTaker.CharacterCard.IsIncapacitatedOrOutOfGame)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    coroutine = base.DealDamage(base.Card, action.ResponsibleCard.Owner.CharacterCard, Game.H - 1, DamageType.Energy);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
             //Whenever a copy of Radioactive Cascade is destroyed, {Gray} deals the hero with the highest HP {H - 1} energy damage.
-            if (action.CardToDestroy.Card.Identifier == "")
+            if (action.CardToDestroy.Card.Identifier == "RadioactiveCascade")
             {
                 coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero, (Card c) => new int?(Game.H - 1), DamageType.Energy);
                 if (base.UseUnityCoroutines)

@@ -230,10 +230,23 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Gray", "Legacy", "Haka", "Ra", "Megalopolis");
             StartGame();
-            //Blight the land deals non-villain 2 damage
+            Card ali = GetCard("AlistarWinters");
+            PutOnDeck(gray, ali);
             PlayCards(GetCard("BlightTheLand", 0), GetCard("BlightTheLand", 1));
+            GoToEndOfTurn(env);
+            DealDamage(legacy, GetCardInPlay("ChainReaction"), 3, DamageType.Energy);
+            IEnumerable<Card> trash = GetCards("Fortitude", "Mere");
+            IEnumerable<Card> play = GetCards("TaMoko", "BlazingTornado");
+            PlayCards(play);
+            PlayCards(trash);
+            //At the start of the villain turn, destroy all but 2 hero ongoing or equipment cards. {Gray} deals each hero target {H x 2} energy damage. Play the top card of the villain deck.
+            QuickHPStorage(legacy, haka, ra);
             GoToStartOfTurn(gray);
-            Assert.IsTrue(false);
+            //Ta Moko is in play for -1 damage
+            QuickHPCheck(-6, -5, -6);
+            AssertInTrash(trash);
+            AssertIsInPlay(play);
+            AssertIsInPlay(ali);
         }
 
         [Test()]
@@ -295,7 +308,7 @@ namespace CauldronTests
             DealDamage(roach, GetCardInPlay("ChainReaction"), 3, DamageType.Melee);
             AssertInTrash("ChainReaction");
             AssertInTrash("RadioactiveCascade");
-            QuickHPCheck(0, 0, -2);
+            QuickHPCheck(-2, 0, 0);
         }
 
         [Test()]
