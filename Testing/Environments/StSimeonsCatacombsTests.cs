@@ -1346,5 +1346,63 @@ namespace CauldronTests
             AssertInTrash(geometry);
 
         }
+
+        [Test()]
+        public void TestPanicNextTo()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Set Hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 25);
+            SetHitPoints(haka.CharacterCard, 15);
+
+            GoToEndOfTurn(catacombs);
+
+            GoToPlayCardPhase(catacombs);
+
+            //Play this next to the hero charcter with the highest HP.
+            //legacy is the highest HP
+            Card panic = PlayCard("Panic");
+            AssertNextToCard(panic, legacy.CharacterCard);
+
+        }
+
+        [Test()]
+        public void TestPanic_HeroStartOfTurn()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Set Hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 25);
+            SetHitPoints(haka.CharacterCard, 15);
+
+            GoToEndOfTurn(catacombs);
+
+            GoToPlayCardPhase(catacombs);
+
+            //panic attaches itself to legacy
+            Card panic = PlayCard("Panic");
+
+            //At the start of that hero's next turn, that hero uses their innate power twice, then immediately end their turn, draw a card, and destroy this card.
+            QuickHandStorage(legacy);
+            GoToStartOfTurn(legacy);
+            //this start of phase should not have any actions allowed
+            AssertPhaseActionCount(new int?(0));
+            EnterNextTurnPhase();
+            AssertCurrentTurnPhase(legacy, Phase.End);
+            QuickHandCheck(1);
+
+            QuickHPStorage(ra);
+            DealDamage(haka, ra, 2, DamageType.Melee);
+            //galvanize should have been used twice
+            QuickHPCheck(-4);
+
+        }
     }
 }
