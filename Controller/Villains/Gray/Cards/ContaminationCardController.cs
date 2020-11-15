@@ -12,7 +12,7 @@ namespace Cauldron.Gray
 
         public ContaminationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            this.GameActionCriteria = (DestroyCardAction action) => action.CardSource != null && action.CardSource.Card.ResponsibleTarget != null && (from e in this.GetHeroCardsDestroyedThisRound() where e.CardSource != null && e.ResponsibleCard == base.Card select e).Count<DestroyCardJournalEntry>() >= Game.H;
+            this.GameActionCriteria = (DestroyCardAction action) => action.CardSource != null && action.CardSource.Card.ResponsibleTarget != null && (from e in this.GetHeroCardsDestroyedThisRound() where e.CardSource != null && e.CardSource == base.Card select e).Count<DestroyCardJournalEntry>() >= Game.H;
         }
 
         private Func<DestroyCardAction, bool> GameActionCriteria;
@@ -27,7 +27,7 @@ namespace Cauldron.Gray
 
         private IEnumerator DestroyHeroCardResponse(DealDamageAction action)
         {
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(base.FindHeroTurnTakerController(action.DamageSource.TurnTaker.ToHero()), new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || IsEquipment(c))), false, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(base.FindHeroTurnTakerController(action.DamageSource.Card.Owner.ToHero()), new LinqCardCriteria((Card c) => (c.IsOngoing || IsEquipment(c)) && c.Owner == action.DamageSource.Card.Owner), false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -43,7 +43,7 @@ namespace Cauldron.Gray
         {
             return (from e in base.Journal.DestroyCardEntriesThisRound()
                     where e.Card.IsHero && (e.Card.IsOngoing || IsEquipment(e.Card))
-                    select e).Where(base.Journal.SinceCardWasMoved<DestroyCardJournalEntry>(base.Card, (MoveCardJournalEntry e) => e.ToLocation == base.TurnTaker.Deck));
+                    select e).Where(base.Journal.SinceCardWasMoved<DestroyCardJournalEntry>(base.Card, (MoveCardJournalEntry e) => e.ToLocation == base.TurnTaker.PlayArea)); ;
         }
     }
 }

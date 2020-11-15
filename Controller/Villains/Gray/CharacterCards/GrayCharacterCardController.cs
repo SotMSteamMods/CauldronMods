@@ -78,22 +78,33 @@ namespace Cauldron.Gray
 
         private IEnumerator DestroyRadiationFrontResponse(DestroyCardAction action)
         {
+            IEnumerator coroutine;
             //...destroy 1 hero ongoing or equipment card and {Gray} deals each non-villain target {H - 1} energy damage
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), false);
-            IEnumerator coroutine2 = base.DealDamage(base.Card, (Card c) => c.IsNonVillainTarget, Game.H - 1, DamageType.Energy);
+            if (FindNumberOfHeroOngoingAndEquipmentInPlay() > 0)
+            {
+                coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), false);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            coroutine = base.DealDamage(base.Card, (Card c) => c.IsNonVillainTarget, Game.H - 1, DamageType.Energy);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
-                yield return base.GameController.StartCoroutine(coroutine2);
             }
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
-                base.GameController.ExhaustCoroutine(coroutine2);
             }
             //Advanced - Whenever a radiation card is destroyed, destroy a second hero ongoing or equipment card.
-            if (Game.IsAdvanced)
+            if (Game.IsAdvanced && FindNumberOfHeroOngoingAndEquipmentInPlay() > 0)
             {
+                coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), false);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -150,15 +161,21 @@ namespace Cauldron.Gray
 
         private IEnumerator DestroyRadiationBackResponse(DestroyCardAction action)
         {
+            Card responsibleCharacterCard = action.ResponsibleCard.Owner.CharacterCard;
             //Whenever a radiation card is destroyed by a hero card, {Gray} deals that hero {H - 1} energy damage.
-            IEnumerator coroutine = base.DealDamage(base.Card, action.ResponsibleCard.Owner.CharacterCard, Game.H - 1, DamageType.Energy);
-            if (base.UseUnityCoroutines)
+            IEnumerator coroutine;
+            //if its not a hero destroying it do no damage
+            if (responsibleCharacterCard != null && responsibleCharacterCard.IsHero && responsibleCharacterCard.IsInPlayAndHasGameText)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                coroutine = base.DealDamage(base.Card, action.ResponsibleCard.Owner.CharacterCard, Game.H - 1, DamageType.Energy);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             //Whenever a copy of Radioactive Cascade is destroyed, {Gray} deals the hero with the highest HP {H - 1} energy damage.
             if (action.CardToDestroy.Card.Identifier == "")
