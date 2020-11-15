@@ -15,9 +15,9 @@ namespace Cauldron.Starlight
 
         public override IEnumerator Play()
         {
-			//"1 player..." 
+			//"1 player may..." 
 			List<SelectTurnTakerDecision> storedResults = new List<SelectTurnTakerDecision>();
-			IEnumerator coroutine = base.GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.RevealCardsFromDeck, optional: false, allowAutoDecide: false, storedResults, new LinqTurnTakerCriteria((TurnTaker tt) => !tt.IsIncapacitatedOrOutOfGame, "active heroes"));
+			IEnumerator coroutine = base.GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.RevealCardsFromDeck, optional: true, allowAutoDecide: false, storedResults, new LinqTurnTakerCriteria((TurnTaker tt) => GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) && !tt.IsIncapacitatedOrOutOfGame, "active heroes"), cardSource:GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -33,19 +33,7 @@ namespace Cauldron.Starlight
 			}
 			HeroTurnTakerController heroTTC = FindHeroTurnTakerController(hero.ToHero());
 
-			//"...may..."
-			YesNoDecision doesSelectedHeroAgree = new YesNoDecision(GameController, heroTTC, SelectionType.RevealCardsFromDeck, cardSource: GetCardSource());
-			IEnumerator coroutine2 = GameController.MakeDecisionEvent(doesSelectedHeroAgree);
-			if (UseUnityCoroutines)
-			{
-				yield return base.GameController.StartCoroutine(coroutine2);
-			}
-			else
-			{
-				base.GameController.ExhaustCoroutine(coroutine2);
-			}
-
-			if(GameController.DidAnswerYes(doesSelectedHeroAgree))
+			if(heroTTC != null)
             {
 				//"...look at the top 5 cards of their deck, put 1 of them into play, then put the rest on the bottom of their deck in any order."
 				List<MoveCardDestination> list = new List<MoveCardDestination>();
@@ -54,7 +42,7 @@ namespace Cauldron.Starlight
 				list.Add(new MoveCardDestination(heroTTC.TurnTaker.Deck, toBottom: true));
 				list.Add(new MoveCardDestination(heroTTC.TurnTaker.Deck, toBottom: true));
 				list.Add(new MoveCardDestination(heroTTC.TurnTaker.Deck, toBottom: true));
-				IEnumerator coroutine3 = RevealCardsFromDeckToMoveToOrderedDestinations(DecisionMaker, heroTTC.TurnTaker.Deck, list, numberOfCardsToReveal: 5);
+				IEnumerator coroutine3 = RevealCardsFromDeckToMoveToOrderedDestinations(heroTTC, heroTTC.TurnTaker.Deck, list, numberOfCardsToReveal: 5);
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine3);

@@ -33,7 +33,6 @@ namespace Cauldron.Starlight
             //future-proofing for Nightlore Council
             if (IsMultiCharPromo())
             {
-                throw new Exception();
                 //TODO - get this working
             }
             else

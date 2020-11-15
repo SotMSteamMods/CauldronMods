@@ -1316,5 +1316,19 @@ namespace CauldronTests
 
             AssertNumberOfCardsInPlay(haka, 2);
         }
+        [Test()]
+        public void TestWishCanOnlySelectActiveHeroAndIsOptional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            DealDamage(baron, ra, 50, DamageType.Melee);
+
+            AssertDecisionIsOptional(SelectionType.RevealCardsFromDeck);
+            AssertNextDecisionChoices(new List<TurnTaker> { starlight.TurnTaker, visionary.TurnTaker, haka.TurnTaker }, 
+                                        new List<TurnTaker> { baron.TurnTaker, ra.TurnTaker, FindEnvironment().TurnTaker } );
+            PlayCard("Wish");
+        }
+        //There are a bunch of other tests that could be done for Wish, but I'll assume Argent Adept has them covered.
     }
 }
