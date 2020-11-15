@@ -570,7 +570,7 @@ namespace CauldronTests
             GoToEndOfTurn(BlackwoodForest);
 
             // Assert
-            AssertInTrash(BlackwoodForest, vengefulSpirit); // Required cards were discard, Vengeful was trashed
+            AssertInTrash(BlackwoodForest, vengefulSpirit); // Required cards were discarded, Vengeful was trashed
             QuickHandCheck(-2, -2); // 2 cards each discarded to get rid of Vengeful
             QuickShuffleCheck(1); // Baron's trash shuffled due to Vengeful
 
@@ -606,9 +606,13 @@ namespace CauldronTests
             // Act
             GoToStartOfTurn(BlackwoodForest);
 
+            //DecisionSelectWord = SelectWordDecision.
+
+            DecisionDoNotSelectCard = SelectionType.DiscardCard;
+            
+
             DecisionSelectCards = new[]
             {
-                null,
                 GetCardFromHand(ra, 0),
                 GetCardFromHand(legacy, 0),
                 GetCardFromHand(legacy, 1),
@@ -618,7 +622,7 @@ namespace CauldronTests
 
             // Assert
             AssertNotInTrash(BlackwoodForest, vengefulSpirit.Identifier); // Required cards were NOT discarded, Vengeful still in play
-            QuickHandCheck(-1, -2); // 2 cards each discarded to get rid of Vengeful
+            QuickHandCheck(0, 0); // 2 cards each discarded to get rid of Vengeful
             QuickShuffleCheck(1); // Baron's trash shuffled due to Vengeful
 
             // One of these targets should be in play due to Vengeful drawing them from the trash
