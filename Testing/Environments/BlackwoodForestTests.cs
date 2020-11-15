@@ -671,15 +671,25 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", DeckNamespace);
 
             StartGame();
+            QuickHPStorage(ra, legacy);
+            QuickHandStorage(ra, legacy);
 
             DecisionsYesNo = new []{false, true};
 
+            // Act
             Card desolation = GetCard(DesolationCardController.Identifier);
             PlayCard(desolation);
 
-
             GoToEndOfTurn(BlackwoodForest);
 
+            // Assert
+            AssertInTrash(BlackwoodForest, DesolationCardController.Identifier);
+
+            // Ra opted not to discard required cards, so -3 HP, Legacy discarded so no damage taken
+            QuickHPCheck(-3, 0);
+
+            // Ra still has all of his hand, Legacy discard down to 1 card to avoid damage from Desolation
+            QuickHandCheck(0, -3);
 
         }
 
