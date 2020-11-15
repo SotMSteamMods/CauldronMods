@@ -71,7 +71,7 @@ namespace Cauldron.Starlight
 
         private IEnumerable<Card> GetPuttableConstellationsFromTrash(HeroTurnTakerController hero, TurnPhase turnPhase = null)
         {
-            return hero.TurnTaker.Trash.Cards.Where((Card card) => GameController.CanPlayCard(FindCardController(card), isPutIntoPlay: true, turnPhase, evenIfAlreadyInPlay: false, canBeCancelled: true) == CanPlayCardResult.CanPlay);
+            return hero.TurnTaker.Trash.Cards.Where((Card card) => IsConstellation(card) && GameController.CanPlayCard(FindCardController(card), isPutIntoPlay: true, turnPhase, evenIfAlreadyInPlay: false, canBeCancelled: true) == CanPlayCardResult.CanPlay);
         }
     }
 }
