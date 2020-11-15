@@ -1037,6 +1037,93 @@ namespace CauldronTests
             PlayCard(redshift);
         }
         [Test()]
+        public void TestRetreatIntoTheNebulaPlaysNormallyWithDefaultStarlight()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            PlayCard("RetreatIntoTheNebula");
+
+        }
+        [Test()]
+        public void TestRetreatIntoTheNebulaReducesDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            PlayCard("RetreatIntoTheNebula");
+            PlayCard("TaMoko");
+
+            var m = DamageType.Melee;
+            QuickHPStorage(starlight, haka);
+            DealDamage(baron, starlight, 3, m);
+            DealDamage(baron, starlight, 2, m);
+            DealDamage(baron, haka, 3, m);
+            QuickHPCheck(-1, -2);
+        }
+        [Test()]
+        public void TestRetreatIntoTheNebulaDestroysSelfIfNoConstellations()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card retreat = GetCard("RetreatIntoTheNebula");
+            PlayCard(retreat);
+
+            GoToStartOfTurn(starlight);
+
+            AssertInTrash(retreat);
+        }
+        [Test()]
+        public void TestRetreatIntoTheNebulaMayDestroyConstellationToStayInPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card constellation = GetCard("AncientConstellationA");
+            Card retreat = GetCard("RetreatIntoTheNebula");
+            Card[] cards = new Card[2] { retreat, constellation };
+            PlayCards(cards);
+
+            DecisionSelectCard = constellation;
+            GoToStartOfTurn(starlight);
+
+            AssertNextDecisionChoices(cards);
+            AssertInTrash(constellation);
+            AssertIsInPlay(retreat);
+        }
+        [Test()]
+        public void TestRetreatIntoTheNebulaTriggerHappensBeforePillars()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card retreat = GetCard("RetreatIntoTheNebula");
+            Card constellation = GetCard("AncientConstellationA");
+            PlayCard(retreat);
+            PutInTrash(constellation);
+            PlayCard("PillarsOfCreation");
+
+            //so Pillars will definitely play from trash
+            PutOnDeck(starlight, starlight.HeroTurnTaker.Hand.Cards);
+            PutInHand("WarpHalo");
+
+            //Retreat should destroy itself before Pillars gets a chance to play the constellation
+            AssertNextDecisionSelectionType(SelectionType.MoveCardNextToCard);
+            GoToPlayCardPhase(starlight);
+            AssertIsInPlay(constellation);
+            AssertInTrash(retreat);
+
+            DecisionSelectCards = new List<Card> { constellation, starlight.CharacterCard };
+            PlayCard(retreat);
+
+            //now it should be able to blow up the constellation which immediately gets replayed
+            AssertNextDecisionSelectionType(SelectionType.DestroyCard);
+            GoToPlayCardPhase(starlight);
+            AssertIsInPlay(retreat);
+            AssertIsInPlay(constellation);
+        }
+        [Test()]
         public void TestWishSimpleSelf()
         {
             SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
