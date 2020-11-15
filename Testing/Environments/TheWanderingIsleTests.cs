@@ -736,7 +736,7 @@ namespace CauldronTests
 
             //At the start of the environment turn, you may play the top 2 cards of the environment deck. If you do, this card is destroyed.
             DecisionYesNo = true;
-            
+
             GoToStartOfTurn(isle);
             //assert stacked cards got played
             AssertInPlayArea(isle, c1);
@@ -761,7 +761,7 @@ namespace CauldronTests
 
             //At the start of the environment turn, you may play the top 2 cards of the environment deck. If you do, this card is destroyed.
             DecisionYesNo = false;
-            
+
             GoToStartOfTurn(isle);
 
             //stacked cards are not played
@@ -779,25 +779,16 @@ namespace CauldronTests
             StartGame();
 
             //stack deck to reduce variance
-            PutOnDeck("Teryx");
+            var c1 = PutOnDeck("Teryx");
+
+            //Play timed detonator
+            var card = PutIntoPlay("TimedDetonator");
+            AssertInPlayArea(isle, card);
 
             //When this card enters play, play the top card of the environment deck.
-
-            int numCardsInEnvironmentDeckBefore = GetNumberOfCardsInDeck(isle);
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
-            //Play timed detonator
-            PutIntoPlay("TimedDetonator");
-
-            int numCardsInEnvironmentDeckAfter = GetNumberOfCardsInDeck(isle);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
-
-
-            //should be 2 fewer cards in the deck, one for timed detonator, 1 for top card of the deck
-            Assert.AreEqual(numCardsInEnvironmentDeckBefore - 2, numCardsInEnvironmentDeckAfter, "The number of cards in the environment deck don't match.");
-            //should be 2 more cards in play, one for 1 for timed detonator, 1 for top card of deck
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore + 2, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play area don't match.");
-
+            AssertInPlayArea(isle, c1);
         }
+
         [Test()]
         public void TestTimedDetonatorStartofTurnDamage()
         {
@@ -805,23 +796,24 @@ namespace CauldronTests
             StartGame();
 
             //stack deck for less variance
-            PutOnDeck("BarnacleHydra");
+            var c1 = PutOnDeck("BarnacleHydra");
 
             //play teryx
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            var teryx = PutIntoPlay("Teryx");
 
             //Play timed detonator
-            PutIntoPlay("TimedDetonator");
+            var card = PutIntoPlay("TimedDetonator");
+            AssertInPlayArea(isle, card);
+            AssertInPlayArea(isle, c1);
 
             //pause before environment to collect effects
             GoToEndOfTurn(haka);
 
             //At the start of the environment turn, this card deals Teryx 10 fire damage and each hero target {H - 2} fire damage. Then, this card is destroyed.
             //H = 3, so H-2 = 1
-            QuickHPStorage(teryx, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard);
+            QuickHPStorage(teryx, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard, c1);
             GoToStartOfTurn(isle);
-            QuickHPCheck(-10, -1, -1, -1);
+            QuickHPCheck(-10, -1, -1, -1, 0);
         }
 
         [Test()]
@@ -830,20 +822,16 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
             //stack deck for less variance
-            PutOnDeck("BarnacleHydra");
+            var c1 = PutOnDeck("BarnacleHydra");
 
             //play timed detonator
-            PutIntoPlay("TimedDetonator");
+            var card = PutIntoPlay("TimedDetonator");
 
             //At the start of the environment turn, this card deals Teryx 10 fire damage and each hero target {H - 2} fire damage. Then, this card is destroyed.
 
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
             GoToStartOfTurn(isle);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
 
-            //this card should be destroyed, so 1 less
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore - 1, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play do not match.");
+            AssertInTrash(card);
         }
-
     }
 }
