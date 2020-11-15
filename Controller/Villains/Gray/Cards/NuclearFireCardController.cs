@@ -9,7 +9,8 @@ namespace Cauldron.Gray
     {
         public NuclearFireCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP(1, 2);
+            base.SpecialStringMaker.ShowHeroTargetWithLowestHP(1, 2);
         }
 
         public override IEnumerator Play()

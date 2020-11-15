@@ -12,6 +12,7 @@ namespace Cauldron.Gray
         public ChainReactionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowHeroTargetWithLowestHP(numberOfTargets: base.FindNumberOfRadiationCardsInPlay() ?? default);
+            base.SpecialStringMaker.ShowListOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.DoKeywordsContain("radiation")));
         }
 
 

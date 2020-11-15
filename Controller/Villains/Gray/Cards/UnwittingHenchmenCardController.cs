@@ -7,11 +7,11 @@ using System.Linq;
 
 namespace Cauldron.Gray
 {
-    public class UnwittingHenchmenCardController : CardController
+    public class UnwittingHenchmenCardController : GrayCardController
     {
         public UnwittingHenchmenCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
         public override void AddTriggers()
@@ -23,21 +23,25 @@ namespace Cauldron.Gray
         {
             List<DestroyCardAction> storedResults = new List<DestroyCardAction>();
             //At the end of the villain turn, destroy 1 equipment card.
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c)), false, storedResults, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
+            IEnumerator coroutine;
+            if (this.FindNumberOfHeroEquipmentInPlay() > 0)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            //If a card is destroyed this way 
-            DestroyCardAction destroyAction = storedResults.FirstOrDefault<DestroyCardAction>();
-            if (destroyAction.WasCardDestroyed)
-            {
-                //...{Gray} regains 3 HP...
-                coroutine = base.GameController.GainHP(base.CharacterCard, new int?(3), cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c)), false, storedResults, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                //If a card is destroyed this way 
+                DestroyCardAction destroyAction = storedResults.FirstOrDefault<DestroyCardAction>();
+                if (destroyAction.WasCardDestroyed)
+                {
+                    //...{Gray} regains 3 HP...
+                    coroutine = base.GameController.GainHP(base.CharacterCard, new int?(3), cardSource: base.GetCardSource());
+                }
             }
             else
             {

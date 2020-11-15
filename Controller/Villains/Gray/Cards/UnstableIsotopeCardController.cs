@@ -14,19 +14,6 @@ namespace Cauldron.Gray
 
         }
 
-        public IEnumerator asd()
-        {
-            IEnumerator coroutine = base.RevealCards_PutSomeIntoPlay_DiscardRemaining(this.DecisionMaker, base.TurnTaker.Deck, null, new LinqCardCriteria((Card c) => c.DoKeywordsContain("radiation")), revealUntilNumberOfMatchingCards: new int?(2));
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
-        }
         public override IEnumerator Play()
         {
             //Reveal cards from the top of the villain deck until 2 Radiation cards are revealed. 
