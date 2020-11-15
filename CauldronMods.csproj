@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <None Remove="CodingBugs" />
+    <None Remove="Docs\Manifest.json" />
   </ItemGroup>
 
   <ItemGroup>

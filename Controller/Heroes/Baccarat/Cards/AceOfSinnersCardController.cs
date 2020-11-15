@@ -10,13 +10,10 @@ namespace Cauldron.Baccarat
 {
     public class AceOfSinnersCardController : CardController
     {
-        #region Constructors
-
-        public AceOfSinnersCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController) { }
-
-        #endregion Constructors
-
-        #region Methods
+        public AceOfSinnersCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        {
+            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => TwoOrMoreCopiesInTrash(c)));
+        }
 
         public override void AddTriggers()
         {
@@ -90,7 +87,5 @@ namespace Cauldron.Baccarat
             return num >= 2;
 
         }
-
-        #endregion Methods
     }
 }

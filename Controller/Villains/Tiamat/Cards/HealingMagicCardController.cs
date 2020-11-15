@@ -9,16 +9,10 @@ namespace Cauldron.Tiamat
 {
     public class HealingMagicCardController : SpellCardController
     {
-        #region Constructors
-
         public HealingMagicCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowVillainTargetWithLowestHP();
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public override IEnumerator Play()
         {
@@ -54,7 +48,5 @@ namespace Cauldron.Tiamat
             }
             yield break;
         }
-
-        #endregion Methods
     }
 }

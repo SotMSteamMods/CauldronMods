@@ -7,16 +7,10 @@ namespace Cauldron.Baccarat
 {
     public class AbyssalSolitaireCardController : CardController
     {
-        #region Constructors
-
         public AbyssalSolitaireCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public override IEnumerator Play()
         {
@@ -35,7 +29,5 @@ namespace Cauldron.Baccarat
                 base.GameController.ExhaustCoroutine(coroutine);
             }
         }
-
-       #endregion Methods
     }
 }

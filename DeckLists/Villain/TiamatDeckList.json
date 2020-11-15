@@ -90,7 +90,7 @@
             "advanced": "Increase damage dealt by {Tiamat}, The Eye of the Storm by 1.",
             "icons": [
                 "ImmuneToDamageLightning",
-                "StartOfTurnAction",
+                "EndOfTurnAction",
                 "DealDamageLightning"
             ],
             "advancedIcons": [
@@ -397,8 +397,8 @@
                 "one-shot"
             ],
             "icons": [
-                "Discard",
-                "Manipulate"
+                "Manipulate",
+                "Discard"
             ],
             "body": [
                 "Reveal cards from the top of the villain deck until 3 Spell cards are revealed. Discard those cards. Shuffle the rest of the revealed cards back into the villain deck.",
@@ -460,7 +460,6 @@
             "icons": [
                 "ImmuneToDamageCold"
             ],
-            "advancedIcons": [],
             "body": "The Jaws of Winter",
             "backgroundColor": "D99FC5",
             "foilBackgroundColor": "CD96C0",
@@ -495,7 +494,6 @@
             "icons": [
                 "ImmuneToDamageFire"
             ],
-            "advancedIcons": [],
             "body": "The Mouth of the Inferno",
             "backgroundColor": "D99FC5",
             "foilBackgroundColor": "CD96C0",
@@ -509,9 +507,6 @@
             ],
             "flippedShowHitpoints": false,
             "flippedBody": "Inferno, Decapitated",
-            "flippedAdvanced": "Reduce damage dealt by heads by 1.",
-            "flippedIcons": [],
-            "flippedAdvancedIcons": [],
             "difficulty": 1,
             "openingLines": {
                 "default": "default placeholder",
@@ -605,7 +600,7 @@
             ],
             "icons": [
                 "ImmuneToDamageToxic",
-                "IncreaseDamageTaken"
+                "IncreaseDamageDealt"
             ],
             "body": "The Breath of Decay",
             "backgroundColor": "D99FC5",
@@ -686,8 +681,7 @@
             ],
             "advanced": "The first time {Tiamat}, The Eye of the Storm deals damage each turn, increase that damage by 2.",
             "icons": [
-                "StartOfTurnAction",
-                "EndOfTurnAction",
+                "StartAndEndOfTurnAction",
                 "DealDamageLightning"
             ],
             "advancedIcons": [
@@ -701,12 +695,10 @@
             ],
             "flippedAdvanced": "Decapitated heads are restored to 3 times {H} HP when they become active.",
             "flippedIcons": [
-                "StartOfTurnAction",
+                "StartAndEndOfTurnAction",
                 "DealDamageProjectile",
-                "EndOfTurnAction",
                 "DealDamageLightning"
             ],
-            "flippedAdvancedIcons": [],
             "difficulty": 1
         },
         {
@@ -719,7 +711,7 @@
             "backgroundColor": "D99FC5",
             "foilBackgroundColor": "CD96C0",
             "setup": [
-                "At the start of the game, put {Tiamat}'s villain character cards into play, “Mouth of the Inferno” side up (after putting all other villain character cards into play). Put “{Tiamat}, The Breath of Decay”, face down beneath this card."
+                "At the start of the game, put {Tiamat}'s villain character cards into play, “Mouth of the Inferno” side up. Put “{Tiamat}, The Breath of Decay”, face down beneath this card."
             ],
             "gameplay": [
                 "The heroes may not win the game.",
@@ -730,8 +722,7 @@
             "advanced": "The first time {Tiamat}, Mouth of the Inferno deals damage each turn, increase that damage by 2.",
             "icons": [
                 "CannotWin",
-                "StartOfTurnAction",
-                "EndOfTurnAction",
+                "StartAndEndOfTurnAction",
                 "DealDamageFire"
             ],
             "advancedIcons": [
@@ -740,18 +731,15 @@
             "flippedBody": "The Noxious Fire",
             "flippedGameplay": [
                 "The heroes win the game when 6 heads are decapitated.",
-                "At the start of the villain turn, flip 1 decapitated head to its active side and restore it to 2 times {H} HP.",
                 "Whenever Element of Fire enters play and {Tiamat}, Mouth of the Inferno is decapitated, if {Tiamat}, The Breath of Decay is active she deals each hero target X toxic damage, where X = 2 plus the number of Acid Breaths in the villain trash.",
                 "At the end of the villain turn, if {Tiamat}, Mouth of the Inferno is active, she deals the hero target with the second highest HP 1 fire damage."
             ],
             "flippedAdvanced": "Decapitated heads are restored to 3 times {H} HP when they become active.",
             "flippedIcons": [
-                "StartOfTurnAction",
+                "StartAndEndOfTurnAction",
                 "DealDamageToxic",
-                "EndOfTurnAction",
                 "DealDamageFire"
             ],
-            "flippedAdvancedIcons": [],
             "difficulty": 1
         },
         {
@@ -764,7 +752,7 @@
             "backgroundColor": "D99FC5",
             "foilBackgroundColor": "CD96C0",
             "setup": [
-                "At the start of the game, put {Tiamat}'s villain character cards into play, “Mouth of the Inferno” side up (after putting all other villain character cards into play). Put “{Tiamat}, The Maw of the Earth”, face down beneath this card."
+                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Jaws of Winter” side up. Put “{Tiamat}, The Maw of the Earth”, face down beneath this card."
             ],
             "gameplay": [
                 "Face down heads are indestructible and have no game text.",
@@ -774,15 +762,13 @@
             ],
             "advanced": "At the end of the villain turn, 1 player must discard 1 card.",
             "icons": [
-                "Indestructible",
-                "StartOfTurnAction",
-                "EndOfTurnAction",
+                "StartAndEndOfTurnAction",
                 "Discard"
             ],
             "advancedIcons": [
                 "Discard"
             ],
-            "flippedBody": "The Noxious Fire",
+            "flippedBody": "The Frigid Earth",
             "flippedGameplay": [
                 "Face down heads are indestructible and have no game text.",
                 "If a head would be destroyed, flip it instead.",
@@ -791,12 +777,10 @@
             ],
             "flippedAdvanced": "Decapitated heads are restored to 3 times {H} HP when they become active.",
             "flippedIcons": [
-                "StartOfTurnAction",
                 "DealDamageMelee",
                 "EndOfTurnAction",
-                "DealDamageIce"
+                "DealDamageCold"
             ],
-            "flippedAdvancedIcons": [],
             "difficulty": 1
         }
     ]

@@ -7,13 +7,10 @@ namespace Cauldron.Baccarat
 {
     public class CardTossCardController : CardController
     {
-        #region Constructors
+        public CardTossCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        {
 
-        public CardTossCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController) { }
-
-        #endregion Constructors
-
-        #region Methods
+        }
 
         public override IEnumerator Play()
         {
@@ -41,7 +38,5 @@ namespace Cauldron.Baccarat
 
             yield break;
         }
-
-        #endregion Methods
     }
 }

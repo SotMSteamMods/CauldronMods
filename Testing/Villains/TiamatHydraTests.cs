@@ -14,12 +14,15 @@ using System.Management.Instrumentation;
 namespace CauldronTests
 {
     [TestFixture()]
-    class TiamatTests : BaseTest
+    class TiamatHydraTests : BaseTest
     {
         protected TurnTakerController tiamat { get { return FindVillain("Tiamat"); } }
         protected Card inferno { get { return GetCardInPlay("InfernoTiamatCharacter"); } }
         protected Card storm { get { return GetCardInPlay("StormTiamatCharacter"); } }
         protected Card winter { get { return GetCardInPlay("WinterTiamatCharacter"); } }
+        protected Card decay { get { return GetCardInPlay("DecayTiamatCharacter"); } }
+        protected Card wind { get { return GetCardInPlay("windTiamatCharacter"); } }
+        protected Card earth { get { return GetCardInPlay("EarthTiamatCharacter"); } }
 
         private void SetupIncap(TurnTakerController source, Card target)
         {
@@ -48,12 +51,12 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestTiamatLoad()
+        public void TestHydraTiamatLoad()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/ElementalHydraTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
 
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
-
+            var a = tiamat.CharacterCardController;
             Assert.IsNotNull(tiamat);
             Assert.IsInstanceOf(typeof(WinterTiamatCharacterCardController), tiamat.CharacterCardController);
             AssertNumberOfCardsInPlay(tiamat, 3);
