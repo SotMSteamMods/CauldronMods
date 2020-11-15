@@ -338,12 +338,14 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
+            QuickShuffleStorage(isle);
             // When this card enters play, search the environment deck and trash for Teryx and put it into play, then shuffle the deck.
             PutIntoPlay("ExposedLifeforce");
 
             //teryx should now be in play
-            Assert.IsTrue(this.IsTeryxInPlay(isle), "Teryx is not in play");
+            AssertIsInPlay("Teryx");
 
+            QuickShuffleCheck(1);
         }
 
         [Test()]
@@ -360,8 +362,6 @@ namespace CauldronTests
 
             //damge should be increase, so will be 5
             QuickHPCheck(-5);
-
-
         }
 
         [Test()]
@@ -388,25 +388,18 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            Card teryx = PutIntoPlay("Teryx");
 
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
 
-            PutIntoPlay("ExposedLifeforce");
-
-
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+            Card card = PutIntoPlay("ExposedLifeforce");
+            AssertInPlayArea(isle, card);
 
             //Destroy this card if Teryx regains 10HP in a single round.
             GainHP(teryx, 10);
 
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
-
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore - 1, numCardsInEnvironmentPlayAfter, "Number of environment cards in play don't match");
-
-
+            AssertInTrash(card);
         }
 
         [Test()]
@@ -415,26 +408,18 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            Card teryx = PutIntoPlay("Teryx");
 
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
 
-            PutIntoPlay("ExposedLifeforce");
-
-
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+            Card card = PutIntoPlay("ExposedLifeforce");
+            AssertInPlayArea(isle, card);
 
             //Destroy this card if Teryx regains 10HP in a single round.
             GainHP(teryx, 9);
 
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
-
-            //Since teryx only gained 9 hp should not destroy
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore, numCardsInEnvironmentPlayAfter, "Number of environment cards in play don't match");
-
-
+            AssertInPlayArea(isle, card);
         }
 
         [Test()]
@@ -449,7 +434,7 @@ namespace CauldronTests
 
             Card hydra = PutIntoPlay("BarnacleHydra");
             AssertInPlayArea(isle, hydra);
-            
+
             //When this card is destroyed, it deals Teryx {H} toxic damage.
             //H=3, so 3 damage should be dealt
             QuickHPStorage(baron.CharacterCard, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard, teryx);

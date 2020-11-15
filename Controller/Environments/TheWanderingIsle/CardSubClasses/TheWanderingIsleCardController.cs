@@ -9,6 +9,8 @@ namespace Cauldron.TheWanderingIsle
 {
     public abstract class TheWanderingIsleCardController : CardController
     {
+        public static readonly string TeryxIdentifier = "Teryx";
+
         protected TheWanderingIsleCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
@@ -20,7 +22,7 @@ namespace Cauldron.TheWanderingIsle
 
         protected bool IsTeryx(Card card)
         {
-            return card.IsInPlayAndHasGameText && card.Identifier == "Teryx";
+            return card.IsInPlayAndHasGameText && card.Identifier == TeryxIdentifier;
         }
     }
 }
