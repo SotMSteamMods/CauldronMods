@@ -510,6 +510,14 @@ namespace CauldronTests
 
             // Assert
 
+            IEnumerable<string> btest = this.GameController.GetAdditionalKeywords(mirrorWraith);
+
+
+            AssertHitPoints(mirrorWraith, 10); // Mirror Wraith now has max HP of MDP
+            AssertCardHasKeyword(mirrorWraith, "device", true);
+
+            Assert.IsTrue(false); // TODO: Implement the rest of this card
+
         }
 
         [Test]
@@ -532,6 +540,7 @@ namespace CauldronTests
             // Assert
 
             // Mirror Wraith found no eligible target to copy, instead dealt 2 sonic damage to all targets
+            AssertInTrash(BlackwoodForest, mirrorWraith); 
             QuickHPCheck(-2, -2, -2, -2); 
 
         }
@@ -631,6 +640,25 @@ namespace CauldronTests
                 this.GameController.FindCardsWhere(card => card.IsInPlay && (card.Equals(mdp) || card.Equals(bb))).Count());
             Assert.AreEqual(1,
                 this.GameController.FindCardsWhere(card => card.IsInTrash && (card.Equals(mdp) || card.Equals(bb))).Count());
+
+        }
+
+        [Test]
+        public void TestDesolation()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", DeckNamespace);
+
+            StartGame();
+
+            DecisionsYesNo = new []{false, true};
+
+            Card desolation = GetCard(DesolationCardController.Identifier);
+            PlayCard(desolation);
+
+
+            GoToEndOfTurn(BlackwoodForest);
+
 
         }
 
