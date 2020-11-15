@@ -37,9 +37,6 @@ namespace Cauldron.Starlight
 
             var constellation = ce.CardEnteringPlay;
 
-            var testmessage = GameController.SendMessageAction("Damage-and-heal-response triggers", Priority.Low, GetCardSource());
-            GameController.ExhaustCoroutine(testmessage);
-
             if (constellation == null)
             {
                 yield break;
@@ -80,9 +77,6 @@ namespace Cauldron.Starlight
                     base.GameController.ExhaustCoroutine(damageAction);
                 }
             }
-
-            testmessage = GameController.SendMessageAction("Damage-and-heal-response does not stop after constellation dies", Priority.Low, GetCardSource());
-            GameController.ExhaustCoroutine(testmessage);
 
             //"...and regains 1 HP."
             var gainHPAction = GameController.GainHP(actingStarlight, 1, cardSource: GetCardSource());
