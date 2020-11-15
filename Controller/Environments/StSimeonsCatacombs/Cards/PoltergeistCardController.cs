@@ -56,15 +56,17 @@ namespace Cauldron.StSimeonsCatacombs
             {
                 for (int i = 0; i < cardAttacks[target]; i++)
                 {
-
-                    IEnumerator coroutine = base.DealDamage(base.Card, target, 1, DamageType.Projectile);
-                    if (base.UseUnityCoroutines)
+                    if (!target.IsIncapacitatedOrOutOfGame)
                     {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
+                        IEnumerator coroutine = base.DealDamage(base.Card, target, 1, DamageType.Projectile);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                     }
                 }
             }

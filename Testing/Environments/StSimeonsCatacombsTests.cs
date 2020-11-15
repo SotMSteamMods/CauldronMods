@@ -587,8 +587,8 @@ namespace CauldronTests
 
             GoToPlayCardPhase(catacombs);
             Card mdp = GetCardInPlay("MobileDefensePlatform");
-            Card envTarget1 = PlayCard("ScurryingEvil");
-            Card envTarget2 = PlayCard("Possessor");
+            Card envTarget1 = PlayCard("CoalKid");
+            Card envTarget2 = PlayCard("Poltergeist");
 
 
             //Increase damage dealt by environment cards by 1.
@@ -1523,9 +1523,10 @@ namespace CauldronTests
             {
                 DecisionSelectCards =  new Card[] { GetCard("TortureChamber"), targetting };
                 DestroyCard(playedRoom, haka.CharacterCard);
+            } else
+            {
+                DecisionSelectCards = new Card[] { targetting };
             }
-
-            DecisionSelectCards = new Card[] { targetting };
             GoToPlayCardPhase(catacombs);
             //don't mess with the room in play
             DecisionDoNotSelectCard = SelectionType.DestroyCard;
@@ -1543,6 +1544,149 @@ namespace CauldronTests
             GoToEndOfTurn(catacombs);
             QuickHPCheck(0, -2, -1, 0);
             AssertNumberOfCardsInPlay((Card c) => base.GameController.IsEquipment(c) && c.IsHero, numEquipmentInPlayBefore - 1);
+        }
+
+        [Test()]
+        public void TestPoltergeist_EndOfTurn_FirstDamageIncaps()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "TheWraith", "Stuntman", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            SetHitPoints(wraith, 1);
+
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            Card lance = GetCard("LanceFlammes");
+
+            //make sure it is not SacrificialShrine in play
+            //putting torture chamber in play to simplify
+            if (playedRoom.Identifier != "TortureChamber")
+            {
+                DecisionSelectCards = new Card[] { GetCard("TortureChamber"), lance };
+                DestroyCard(playedRoom, haka.CharacterCard);
+            }
+
+            DecisionSelectCards = new Card[] { lance };
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card poltergeist = PlayCard("Poltergeist");
+
+            //put 2 wraith equipments, 1 stuntman equipment, and 0 haka equipment in play
+            PlayCard("RazorOrdnance");
+            PlayCard("MicroTargetingComputer");
+            PlayCard(lance);
+
+            //At the end of the environment turn, this card deals each hero 1 projectile damage for each equipment card they have in play. Then, destroy 1 equipment card.
+            QuickHPStorage(baron, stunt, haka);
+            int numEquipmentInPlayBefore = GetNumberOfCardsInPlay((Card c) => base.GameController.IsEquipment(c) && c.IsHero);
+            GoToEndOfTurn(catacombs);
+            QuickHPCheck(0, -1, 0);
+            AssertIncapacitated(wraith);
+            //all of wraith's equipment disappeared when she was incapped + stuntman's being destroyed
+            AssertNumberOfCardsInPlay((Card c) => base.GameController.IsEquipment(c) && c.IsHero, numEquipmentInPlayBefore - 3);
+        }
+
+        [Test()]
+        public void TestPossessor_TortureChamberInPlay_Affected()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Set Hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 25);
+            SetHitPoints(haka.CharacterCard, 15);
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is Torture Chamber in play
+            if (playedRoom.Identifier != "TortureChamber")
+            {
+                DecisionSelectCard = GetCard("TortureChamber");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card possessor = PlayCard("Possessor");
+
+            PrintSeparator("Check if possessor can be dealt damage from hero card");
+            //This card may not be affected by hero cards unless Torture Chamber is in play.
+            QuickHPStorage(possessor);
+            DealDamage(ra.CharacterCard, possessor, 1, DamageType.Fire);
+            QuickHPCheck(-1);
+
+
+        }
+
+        [Test()]
+        public void TestPossessor_TortureChamberNotInPlay_NotAffected()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Set Hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 25);
+            SetHitPoints(haka.CharacterCard, 15);
+
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is not Torture Chamber in play
+            //putting aqueducts in play to simplify
+            if (playedRoom.Identifier != "Aqueducts")
+            {
+                DecisionSelectCard = GetCard("Aqueducts");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card possessor = PlayCard("Possessor");
+
+            PrintSeparator("Check if Possessor can be dealt damage from hero card");
+            //This card may not be affected by hero cards unless Torture Chamber is in play.
+            QuickHPStorage(possessor);
+            DealDamage(ra.CharacterCard, possessor, 1, DamageType.Fire);
+            QuickHPCheckZero();
+
+            Card[] targets = new Card[] { baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, possessor };
+
+            QuickHPStorage(targets);
+            DealDamage(ra.CharacterCard, (Card c) => c.IsTarget, 3, DamageType.Fire);
+            QuickHPCheck(-3, -3, -3, -3, 0);
+
         }
     }
 }
