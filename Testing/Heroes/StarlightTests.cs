@@ -805,6 +805,34 @@ namespace CauldronTests
             QuickHPCheck(-5);
         }
         [Test()]
+        public void TestNovaShield()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetMobileDefensePlatform().Card;
+            PutIntoPlay("NovaShield");
+
+            DecisionSelectCards = new List<Card> { haka.CharacterCard, mdp, baron.CharacterCard, ra.CharacterCard };
+
+            SetHitPoints(starlight, 28);
+            QuickHPStorage(starlight.CharacterCard, haka.CharacterCard, mdp, baron.CharacterCard, ra.CharacterCard);
+
+            PlayCard("AncientConstellationA");
+            QuickHPCheck(1, -1, 0, 0, 0);
+
+            PlayCard("AncientConstellationB");
+            QuickHPCheck(1, 0, -1, 0, 0);
+
+            //healing should still happen if damage can't
+            PlayCard("AncientConstellationC");
+            QuickHPCheck(1, 0, 0, 0, 0);
+
+            //damage should still happen even if healing can't
+            PlayCard("AncientConstellationD");
+            QuickHPCheck(0, 0, 0, 0, -1);
+        }
+        [Test()]
         public void TestWishSimpleSelf()
         {
             SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");

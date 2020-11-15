@@ -23,7 +23,7 @@ namespace Cauldron.Starlight
 
             var constellationSearchAndPlay = SearchForConstellationAndShuffleDeck(HeroTurnTakerController, hasConstellationInDeck, hasConstellationInTrash);
 
-            actionList.Add(new Function(HeroTurnTakerController, "Draw a card", SelectionType.DrawCard, () => DrawCard(HeroTurnTaker, false), HeroTurnTakerController != null && CanDrawCards(TurnTaker), heroName + " has no constellations in their deck or trash, so they must draw a card."));
+            actionList.Add(new Function(HeroTurnTakerController, "Draw a card", SelectionType.DrawCard, () => DrawCard(HeroTurnTaker, false), HeroTurnTakerController != null && CanDrawCards(HeroTurnTakerController), heroName + " has no constellations in their deck or trash, so they must draw a card."));
             actionList.Add(new Function(HeroTurnTakerController, "Search for a constellation", SelectionType.SearchLocation, () => constellationSearchAndPlay, HeroTurnTakerController != null && (hasConstellationInDeck || hasConstellationInTrash), heroName + " cannot draw any cards, so they must search for a constellation."));
             SelectFunctionDecision selectFunction = new SelectFunctionDecision(GameController, base.HeroTurnTakerController, actionList, false, noSelectableFunctionMessage: heroName + " can neither draw nor search for a constellation, so nothing happens.", cardSource: GetCardSource());
             IEnumerator drawOrSearch = GameController.SelectAndPerformFunction(selectFunction);
