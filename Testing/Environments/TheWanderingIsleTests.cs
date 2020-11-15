@@ -657,12 +657,14 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
+            QuickShuffleStorage(isle);
             // When this card enters play, search the environment deck and trash for Teryx and put it into play, then shuffle the deck.
             PutIntoPlay("Submerge");
 
             //teryx should now be in play
-            Assert.IsTrue(this.IsTeryxInPlay(isle), "Teryx is not in play");
+            AssertIsInPlay("Teryx");
 
+            QuickShuffleCheck(1);
         }
 
         [Test()]
@@ -671,14 +673,14 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("Submerge");
+            var card = PutIntoPlay("Submerge");
+            AssertInPlayArea(isle, card);
             //Reduce all damage dealt by 2
 
             QuickHPStorage(ra);
             DealDamage(baron, ra, 5, DamageType.Lightning);
             //since 5 damage dealt - 2 = should be 3 less now
             QuickHPCheck(-3);
-
         }
 
         [Test()]
@@ -687,16 +689,17 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("Submerge");
+            var card = PutIntoPlay("Submerge");
+            AssertInPlayArea(isle, card);
+
             //At the start of the environment turn, this card is destroyed.
 
-            int numCardsInPlayBefore = GetNumberOfCardsInPlay(isle);
             GoToStartOfTurn(isle);
-            int numCardsInPlayAfter = GetNumberOfCardsInPlay(isle);
 
             //Submerge should have destroyed itself so 1 fewer env cards in play
-            Assert.AreEqual(numCardsInPlayBefore - 1, numCardsInPlayAfter, "The number of environment cards in play don't match");
+            AssertInTrash(card);
         }
+
         [Test()]
         public void TestThroughTheHurricaneTargetIsPlayed()
         {

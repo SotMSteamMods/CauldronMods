@@ -42,34 +42,7 @@ namespace Cauldron.TheWanderingIsle
 
         public override IEnumerator Play()
         {
-            var locations = new Location[]
-            {
-                base.TurnTaker.Deck,
-                base.TurnTaker.Trash
-            };
-
-            //When this card enters play, search the environment deck and trash for Teryx and put it into play, then shuffle the deck.
-            IEnumerator coroutine = base.PlayCardFromLocations(locations, TeryxIdentifier, isPutIntoPlay: true, showMessageIfFailed: false, shuffleAfterwardsIfDeck: false);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            coroutine = base.GameController.ShuffleLocation(base.TurnTaker.Deck, cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            yield break;
+            return PlayTeryxFromDeckOrTrashThenShuffle();
         }
 
         private bool DidTeryxGain10OrMoreHpThisRound()
