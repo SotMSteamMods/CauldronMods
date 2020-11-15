@@ -353,9 +353,7 @@ namespace CauldronTests
         [Test()]
         public void TestAqueducts()
         {
-            //failing random seed 1963543475
-            //seems that sometimes aqueducts effect doesn't go off
-            //seems to be when the initial room is aqueducts, that is when it fails
+          
             SetupGameController(new string[] {"BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs"});
             StartGame();
 
@@ -382,11 +380,13 @@ namespace CauldronTests
 
             //don't destroy aqueducts
             DecisionDoNotSelectCard = SelectionType.DestroyCard;
-
+            GoToPlayCardPhase(catacombs);
             //At the end of the environment turn, each target regains 1 HP.
             PrintSeparator("check all targets regain 1 HP");
             QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+
             GoToEndOfTurn(catacombs);
+
             QuickHPCheck(1, 1, 1, 1, 1);
 
 
@@ -430,9 +430,6 @@ namespace CauldronTests
         [Test()]
         public void TestSacrificialShrine()
         {
-            //failing random seed -1463795531
-            //seems that sometimes aqueducts effect doesn't go off
-            //seems to be when the initial room is sacrificial, that is when it fails
             SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
             StartGame();
             //change villain targets in play to make baron blade vulnerable

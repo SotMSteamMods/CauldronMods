@@ -21,8 +21,23 @@ namespace Cauldron.StSimeonsCatacombs
         public override void AddTriggers()
         {
             //At the end of the environment turn, each target regains 1 HP
+            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, (PhaseChangeAction pca) => this.AllTargetsGainHP(), TriggerType.GainHP);
+        }
+
+        private IEnumerator AllTargetsGainHP()
+        {
             IEnumerator allTargetsGainHP = base.GameController.GainHP(this.DecisionMaker, (Card c) => true, 1, cardSource: base.GetCardSource());
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, (PhaseChangeAction pca) => allTargetsGainHP, TriggerType.GainHP);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(allTargetsGainHP);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(allTargetsGainHP);
+            }
+
+            yield break;
+
         }
 
         #endregion Methods
