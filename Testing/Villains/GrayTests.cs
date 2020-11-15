@@ -491,8 +491,8 @@ namespace CauldronTests
             StartGame();
             PlayCard("LivingReactor");
             //Increase damage
-            QuickHandStorage(ra);
             QuickHPStorage(ra);
+            QuickHandStorage(ra);
             DealDamage(gray, ra, 2, DamageType.Melee);
             QuickHPCheck(-3);
             QuickHandCheck(0);
@@ -526,6 +526,7 @@ namespace CauldronTests
             QuickHandStorage(ra);
             QuickHPStorage(ra);
             DealDamage(gray, ra, 2, DamageType.Melee);
+            PrintJournal();
             QuickHPCheck(-3);
             QuickHandCheck(0);
         }
@@ -549,6 +550,24 @@ namespace CauldronTests
             QuickHPStorage(haka, gray);
             DealDamage(roach, gray, 2, DamageType.Melee);
             QuickHPCheck(-3, 0);
+        }
+
+        [Test()]
+        public void TestNuclearFire()
+        {
+            SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
+            StartGame();
+            //{Gray} deals the 2 hero targets with the highest HP {H - 1} energy damage each.
+            //{Gray} deals the 2 hero targets with the lowest HP {H - 2} fire damage each.
+            QuickHPStorage(legacy, haka, ra);
+            PlayCard("NuclearFire");
+            QuickHPCheck(-3, -2, -1);
+        }
+
+        [Test()]
+        public void TestRadioactiveCascade()
+        {
+
         }
     }
 }
