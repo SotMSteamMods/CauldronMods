@@ -21,14 +21,14 @@ namespace Cauldron.Gray
 
         private IEnumerator IncreaseOrDiscardResponse(DealDamageAction action)
         {
-            HeroTurnTakerController damageSource = base.FindHeroTurnTakerController(action.DamageSource.Card.Owner.ToHero());
+            HeroTurnTakerController target = base.FindHeroTurnTakerController(action.Target.Owner.ToHero());
             //either increase that damage by 1 or that player must discard a card.
-            IEnumerator coroutine = base.SelectAndPerformFunction(damageSource, new Function[]
+            IEnumerator coroutine = base.SelectAndPerformFunction(target, new Function[]
             {
                 //increase that damage by 1
-                new Function(this.DecisionMaker, "increase this damage by 1", SelectionType.IncreaseDamage, () => base.GameController.IncreaseDamage(action, (DealDamageAction dda) => 1, base.GetCardSource())),
+                new Function(this.DecisionMaker, "increase this damage by 1", SelectionType.IncreaseDamage, () => base.GameController.IncreaseDamage(action, 1, cardSource: base.GetCardSource())),
                 //that player must discard a card
-                new Function(damageSource, "discard a card", SelectionType.DiscardCard, () => base.SelectAndDiscardCards(damageSource, new int?(1)), damageSource.HasCardsInHand)
+                new Function(target, "discard a card", SelectionType.DiscardCard, () => base.GameController.SelectAndDiscardCards(target, new int?(1), false, new int?(1), cardSource: base.GetCardSource()), target.HasCardsInHand)
             });
             if (base.UseUnityCoroutines)
             {

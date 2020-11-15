@@ -482,5 +482,44 @@ namespace CauldronTests
             //Gray deals everyone 2 energy damage when a radiation card is destroyed
             QuickHPCheck(-4);
         }
+
+        [Test()]
+        public void TestLivingReactorCardsInHand()
+        {
+            //Whenever {Gray} deals damage to a hero target, either increase that damage by 1 or that player must discard a card.
+            SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
+            StartGame();
+            PlayCard("LivingReactor");
+            //Discard card
+            DecisionSelectFunction = 1;
+            QuickHandStorage(ra);
+            QuickHPStorage(ra);
+            DealDamage(gray, ra, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+            QuickHandCheck(-1);
+            //Increase damage
+            DecisionSelectFunction = 0;
+            QuickHandStorage(ra);
+            QuickHPStorage(ra);
+            DealDamage(gray, ra, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+            QuickHandCheck(0);
+        }
+
+        [Test()]
+        public void TestLivingReactorEmptyHand()
+        {
+            //Whenever {Gray} deals damage to a hero target, either increase that damage by 1 or that player must discard a card.
+            SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
+            StartGame();
+            PlayCard("LivingReactor");
+            DiscardAllCards(ra);
+            //Increase damage
+            QuickHandStorage(ra);
+            QuickHPStorage(ra);
+            DealDamage(gray, ra, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+            QuickHandCheck(0);
+        }
     }
 }
