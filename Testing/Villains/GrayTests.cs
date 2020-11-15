@@ -491,6 +491,7 @@ namespace CauldronTests
             StartGame();
             PlayCard("LivingReactor");
             //Increase damage
+            DecisionDoNotSelectCard = SelectionType.DiscardCard;
             QuickHPStorage(ra);
             QuickHandStorage(ra);
             DealDamage(gray, ra, 2, DamageType.Melee);
@@ -506,7 +507,6 @@ namespace CauldronTests
             StartGame();
             PlayCard("LivingReactor");
             //Discard card
-            DecisionSelectFunction = 1;
             QuickHandStorage(ra);
             QuickHPStorage(ra);
             DealDamage(gray, ra, 2, DamageType.Melee);

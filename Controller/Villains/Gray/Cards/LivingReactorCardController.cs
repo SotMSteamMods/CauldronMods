@@ -22,14 +22,34 @@ namespace Cauldron.Gray
         private IEnumerator IncreaseOrDiscardResponse(DealDamageAction action)
         {
             HeroTurnTakerController target = base.FindHeroTurnTakerController(action.Target.Owner.ToHero());
-            //either increase that damage by 1 or that player must discard a card.
-            IEnumerator coroutine2 = base.SelectAndPerformFunction(target, new Function[]
+            List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
+            IEnumerator coroutine = base.GameController.SelectAndDiscardCards(base.FindHeroTurnTakerController(action.Target.Owner.ToHero()), new int?(1), true, new int?(1), storedResults: storedResults);
+            if (base.UseUnityCoroutines)
             {
-                //increase that damage by 1
-                new Function(this.DecisionMaker, "increase this damage by 1", SelectionType.IncreaseDamage, () => base.GameController.IncreaseDamage(action, 1, cardSource: base.GetCardSource())),
-                //that player must discard a card
-                new Function(target, "discard a card", SelectionType.DiscardCard, () => base.GameController.SelectAndDiscardCards(target, new int?(1), false, new int?(1), cardSource: base.GetCardSource()), target.HasCardsInHand)
-            });
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            if (DidDiscardCards(storedResults, 0))
+            {
+                coroutine = base.GameController.IncreaseDamage(action, 1, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
+        }
+
+        private IEnumerator OldResponse(DealDamageAction action)
+        {
+            HeroTurnTakerController target = base.FindHeroTurnTakerController(action.Target.Owner.ToHero());
             List<Function> functions = new List<Function> {
                 new Function(target, "increase this damage by 1", SelectionType.IncreaseDamage, () => base.GameController.IncreaseDamage(action, 1, cardSource: base.GetCardSource())),
                new Function(target, "discard a card", SelectionType.DiscardCard, () => base.GameController.SelectAndDiscardCards(target, new int?(1), false, new int?(1), cardSource: base.GetCardSource()), target.HasCardsInHand)
