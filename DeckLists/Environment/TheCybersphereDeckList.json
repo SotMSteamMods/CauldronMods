@@ -1,5 +1,6 @@
 {
     "name": "The Cybersphere",
+    "sortName": "Cybersphere",
     "kind": "Environment",
     "expansionIdentifier": "CauldronExperimental",
     "backgroundColor": "FB5455",

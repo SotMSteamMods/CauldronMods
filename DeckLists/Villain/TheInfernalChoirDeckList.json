@@ -1,5 +1,6 @@
 {
     "name": "The Infernal Choir",
+    "sortName": "Infernal Choir",
     "kind": "Villain",
     "expansionIdentifier": "CauldronAdrift",
     "initialCardIdentifiers": [
