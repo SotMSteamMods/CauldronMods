@@ -1124,6 +1124,84 @@ namespace CauldronTests
             AssertIsInPlay(constellation);
         }
         [Test()]
+        public void TestStellarWindDrawsTwoCards()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card wind = GetCard("StellarWind");
+            PutInHand(wind);
+
+            QuickHandStorage(starlight);
+            PlayCard(wind);
+            //-1 for card play, +2 for draws
+            QuickHandCheck(1);
+        }
+        [Test()]
+        public void TestStellarWindDealsDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card wind = GetCard("StellarWind");
+            PutInHand(wind);
+
+            DecisionSelectCard = mdp;
+            DecisionSelectTarget = mdp;
+            PlayCard("AncientConstellationA");
+
+            QuickHPStorage(mdp);
+            ExpectedDecisionChoiceCount = 1;
+            AssertDecisionIsOptional(SelectionType.SelectTarget);
+            PlayCard(wind);
+            QuickHPCheck(-2);
+        }
+        [Test()]
+        public void TestStellarWindCanDamageMultipleTargetsButOnlyNextToConstellation()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card wind = GetCard("StellarWind");
+            PutInHand(wind);
+
+            Card[] targets = new Card[3] { mdp, ra.CharacterCard, haka.CharacterCard };
+            DecisionSelectCards = targets;
+            PlayCards("AncientConstellationA", "AncientConstellationB", "AncientConstellationC");
+            DecisionSelectCardsIndex = 0;
+
+            QuickHPStorage(mdp, ra.CharacterCard, haka.CharacterCard, starlight.CharacterCard);
+            AssertDecisionIsOptional(SelectionType.SelectTarget);
+            AssertNextDecisionChoices(targets, new List<Card> { starlight.CharacterCard, baron.CharacterCard, visionary.CharacterCard });
+            PlayCard(wind);
+            QuickHPCheck(-2, -2, -2, 0);
+        }
+        [Test()]
+        public void TestStellarWindCanBeSelective()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card wind = GetCard("StellarWind");
+            PutInHand(wind);
+
+            Card[] targets = new Card[3] { mdp, ra.CharacterCard, haka.CharacterCard };
+            DecisionSelectCards = targets;
+            PlayCards("AncientConstellationA", "AncientConstellationB", "AncientConstellationC");
+            DecisionSelectCards = new List<Card> { mdp, null };
+            DecisionSelectCardsIndex = 0;
+
+            QuickHPStorage(mdp, ra.CharacterCard, haka.CharacterCard, starlight.CharacterCard);
+            AssertDecisionIsOptional(SelectionType.SelectTarget);
+            AssertNextDecisionChoices(targets, new List<Card> { starlight.CharacterCard, baron.CharacterCard, visionary.CharacterCard });
+            PlayCard(wind);
+            QuickHPCheck(-2, 0, 0, 0);
+        }
+
+        [Test()]
         public void TestWishSimpleSelf()
         {
             SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
