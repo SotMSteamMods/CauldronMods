@@ -22,7 +22,7 @@ namespace Cauldron.Anathema
 				new TriggerType[] { TriggerType.GainHP },TriggerTiming.After,null,false,true,null,false,null,null,false,false);
 
 			//Whenever an arm, body, or head is destroyed by a Hero target, Anathema deals himself 2 psychic damage.
-			base.AddTrigger<DestroyCardAction>((DestroyCardAction dca) => this.IsArmHeadOrBody(dca.CardToDestroy.Card) && dca.CardSource.Card.IsTarget && dca.CardSource != null && dca.CardSource.Card.IsHero,
+			base.AddTrigger<DestroyCardAction>((DestroyCardAction dca) => this.IsArmHeadOrBody(dca.CardToDestroy.Card) && dca.CardSource != null && dca.CardSource.Card.IsTarget  && dca.CardSource.Card.IsHero,
 				(DestroyCardAction dca) => base.DealDamage(base.CharacterCard, base.CharacterCard, 2, DamageType.Psychic, false, false, false, null, null, null, false, base.GetCardSource(null)),
 				new TriggerType[] { TriggerType.DealDamage }, TriggerTiming.After, null, false, false, null, false, null, null, false, false);
 		}

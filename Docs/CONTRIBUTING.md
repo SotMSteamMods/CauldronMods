@@ -48,6 +48,17 @@ You will also want one or more .Net Decompilers
 
 * [Coding Notes](./CODE_WISDOM.md)
 
+1. Create a local github Branch for your develeopment.
+1. Implement!
+   1. Follow the existing structure for folders, files, and code
+   1. Create or modify tests first
+   1. Create or modify the cards
+   1. Test
+   1. Review any related tests and expand if you can.
+1. Let the Discord know that you have code you are ready to share. You'll be given write access to push your branch.
+1. Push your branch, and open a Pull Request for review.
+1. Success!
+
 ## How to contribute art
 
 ## How to contribute music

@@ -1,6 +1,7 @@
 # CauldronMods
 
-**What is the Cauldron**
+**What is the Cauldron?**
+
 The Cauldron is a custom fan expansion for the [Sentinels of the Multiverse](http://sentinelsofthemultiverse.com/)
 cooperative card game by Greater Than Games.  These decks were designed by Matthew Bishop (@Tosx), his roommate, and his brother.
 The base set was begun around 2013, and the last set was completed in 2019.
@@ -26,23 +27,30 @@ Handelabra is implementing Mod support now.
 You can follow the development on [Handelabra's Discord](https://discordapp.com/invite/handelabra)
 channel with [Weekly Dev. Streams](https://www.youtube.com/playlist?list=PLGPBmjNUB43ick6QwxGIOMFFN5yKuTvQU).
 
-**What are you working on them**
+**What are you working on then?**
 
 We are working to implement the core Cauldron decks so that they are ready to play out of the gate
 when mods are available.
 
 - HEROES:
   - Baccarat
-  - Doc Havoc - In Progress
+  - Doc Havoc
   - Lady of the Wood
   - Necro
   - The Knight
   - The Stranger
+  - Malichae
+  - Tango One
+  - Starlight - In Progress
 
 - VILLAINS:
   - Anathema
-  - Tiamat - In Progress
+  - Tiamat
+  - Gray - In Progress
 
 - ENVIRONMENTS:
   - The Wandering Isle
-  - FSC Continuance Wanderer - In Progress
+  - Halberd Experimental Research Center
+  - FSC Continuance Wanderer
+  - Blackwood Forest - In Progress
+  - St Simeon's Catacombs - In Progress
