@@ -42,7 +42,7 @@ namespace Cauldron.Starlight
             Card damageSource = storedResults.FirstOrDefault();
 
             //"Starlight deals 1 target 1 radiant damage."
-            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, damageSource), powerNumeral2, DamageType.Radiant, powerNumeral, optional: false, powerNumeral, isIrreducible: false, allowAutoDecide: false, autoDecide: false, null, null, null, null, null, selectTargetsEvenIfCannotDealDamage: false, null, null, ignoreBattleZone: false, null, GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(HeroTurnTakerController, new DamageSource(base.GameController, damageSource), powerNumeral2, DamageType.Radiant, powerNumeral, optional: false, powerNumeral, isIrreducible: false, allowAutoDecide: false, autoDecide: false, null, null, null, null, null, selectTargetsEvenIfCannotDealDamage: false, null, null, ignoreBattleZone: false, null, GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -53,7 +53,7 @@ namespace Cauldron.Starlight
             }
 
             //"Draw a card"
-            IEnumerator coroutine2 = DrawCard(base.HeroTurnTakerController.HeroTurnTaker);
+            IEnumerator coroutine2 = DrawCard(HeroTurnTaker);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine2);

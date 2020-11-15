@@ -16,7 +16,7 @@ namespace Cauldron.Starlight
         {
             //"Destroy any number of constellation cards." 
             List<DestroyCardAction> storedResults = new List<DestroyCardAction>();
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => IsConstellation(c), "constellation"), null, optional: false, 0, null, storedResults, null, ignoreBattleZone: false, null, null, null, GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCards(HeroTurnTakerController, new LinqCardCriteria((Card c) => IsConstellation(c), "constellation"), null, optional: false, 0, null, storedResults, null, ignoreBattleZone: false, null, null, null, GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -32,7 +32,7 @@ namespace Cauldron.Starlight
             if (numberOfConstellationsDestroyed > 0)
             {
                 List<DestroyCardAction> storedResults2 = new List<DestroyCardAction>();
-                coroutine2 = base.GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing || c.IsEnvironment, "environment or ongoing"), numberOfConstellationsDestroyed, optional: false, numberOfConstellationsDestroyed, null, storedResults2, null, ignoreBattleZone: false, null, null, null, GetCardSource());
+                coroutine2 = base.GameController.SelectAndDestroyCards(HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsOngoing || c.IsEnvironment, "environment or ongoing"), numberOfConstellationsDestroyed, optional: false, numberOfConstellationsDestroyed, null, storedResults2, null, ignoreBattleZone: false, null, null, null, GetCardSource());
             }
             else
             {

@@ -39,7 +39,7 @@ namespace Cauldron.Starlight
 
             //"...you may..."
             List<YesNoCardDecision> yesNoDecision = new List<YesNoCardDecision> { };
-            IEnumerator askPrevent = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.DestroyCard, base.Card, dd, yesNoDecision, constellationsInPlay, GetCardSource());
+            IEnumerator askPrevent = GameController.MakeYesNoCardDecision(HeroTurnTakerController, SelectionType.DestroyCard, base.Card, dd, yesNoDecision, constellationsInPlay, GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(askPrevent);
@@ -54,7 +54,7 @@ namespace Cauldron.Starlight
             }
 
             //"...destroy a constellation in play..."
-            IEnumerator destroyConstellation = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria(constellationInPlayCriteria), optional:false, cardSource: GetCardSource());
+            IEnumerator destroyConstellation = GameController.SelectAndDestroyCard(HeroTurnTakerController, new LinqCardCriteria(constellationInPlayCriteria), optional:false, cardSource: GetCardSource());
             //"...to prevent that damage."
             IEnumerator preventDamage = GameController.CancelAction(dd, isPreventEffect: true, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)

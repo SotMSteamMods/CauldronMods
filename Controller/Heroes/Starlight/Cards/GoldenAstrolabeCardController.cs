@@ -50,7 +50,7 @@ namespace Cauldron.Starlight
             //B: character card next to constellation
 
             var storedTurnTakerDecision = new List<SelectTurnTakerDecision> { };
-            IEnumerator pickHeroToUsePower = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.UsePower, optional: false, allowAutoDecide: false, storedResults: storedTurnTakerDecision, heroCriteria: ttCriteria);
+            IEnumerator pickHeroToUsePower = GameController.SelectHeroTurnTaker(HeroTurnTakerController, SelectionType.UsePower, optional: false, allowAutoDecide: false, storedResults: storedTurnTakerDecision, heroCriteria: ttCriteria);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(pickHeroToUsePower);
