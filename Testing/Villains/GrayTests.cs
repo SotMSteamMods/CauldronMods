@@ -484,7 +484,22 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestLivingReactorCardsInHand()
+        public void TestLivingReactorCardsInHandIncrease()
+        {
+            //Whenever {Gray} deals damage to a hero target, either increase that damage by 1 or that player must discard a card.
+            SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
+            StartGame();
+            PlayCard("LivingReactor");
+            //Increase damage
+            QuickHandStorage(ra);
+            QuickHPStorage(ra);
+            DealDamage(gray, ra, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+            QuickHandCheck(0);
+        }
+
+        [Test()]
+        public void TestLivingReactorCardsInHandDiscard()
         {
             //Whenever {Gray} deals damage to a hero target, either increase that damage by 1 or that player must discard a card.
             SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
@@ -497,13 +512,6 @@ namespace CauldronTests
             DealDamage(gray, ra, 2, DamageType.Melee);
             QuickHPCheck(-2);
             QuickHandCheck(-1);
-            //Increase damage
-            DecisionSelectFunction = 0;
-            QuickHandStorage(ra);
-            QuickHPStorage(ra);
-            DealDamage(gray, ra, 2, DamageType.Melee);
-            QuickHPCheck(-3);
-            QuickHandCheck(0);
         }
 
         [Test()]
@@ -520,6 +528,27 @@ namespace CauldronTests
             DealDamage(gray, ra, 2, DamageType.Melee);
             QuickHPCheck(-3);
             QuickHandCheck(0);
+        }
+
+        [Test()]
+        public void TestMutatedWildlife()
+        {
+            SetupGameController(new string[] { "Cauldron.Gray", "Parse", "Haka", "Ra", "TimeCataclysm" });
+            StartGame();
+            Card roach = GetCard("GiantMutatedSpecimen");
+            PutOnDeck(env, roach);
+            PlayCard("MutatedWildlife");
+            //At the end of the villain turn, play the top card of the environment deck.
+            GoToEndOfTurn(gray);
+            AssertIsInPlay(roach);
+            //Increase damage dealt by environment cards by 1. 
+            QuickHPStorage(ra);
+            DealDamage(roach, ra, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+            //Whenever a villain target would be dealt damage by an environment card, redirect that damage to the hero target with the highest HP.
+            QuickHPStorage(haka, gray);
+            DealDamage(roach, gray, 2, DamageType.Melee);
+            QuickHPCheck(-3, 0);
         }
     }
 }
