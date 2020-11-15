@@ -17,21 +17,20 @@ namespace Cauldron.TheWanderingIsle
         public override void AddTriggers()
         {
             //Whenever a target enters play, this card deals {H - 1} lightning damage to the target with the third highest HP.
-            base.AddTargetEntersPlayTrigger((Card c) => true, (Card c) => base.DealDamageToHighestHP(base.Card, 3, (Card card) => true, (Card card) => new int?(base.H - 1), DamageType.Lightning), TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTargetEntersPlayTrigger((Card c) => true, (Card c) => base.DealDamageToHighestHP(base.Card, 3, (Card card) => true, (Card card) => base.H - 1, DamageType.Lightning), TriggerType.DealDamage, TriggerTiming.After);
             //At the start of the environment turn, you may play the top 2 cards of the environment deck. If you do, this card is destroyed.
-            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.PlayCardsToDestroyResponse), new TriggerType[]
+            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.PlayCardsToDestroyResponse, new TriggerType[]
             {
                 TriggerType.PlayCard,
                 TriggerType.DestroySelf
-            }, null, false);
+            });
         }
 
         private IEnumerator PlayCardsToDestroyResponse(PhaseChangeAction phaseChange)
         {
-
             //you may play the top 2 cards of the environment deck. If you do, this card is destroyed.
-            YesNoDecision yesNo = new YesNoDecision(base.GameController, this.DecisionMaker, SelectionType.PlayTopCardOfEnvironmentDeck, true, null, null, base.GetCardSource(null));
-            IEnumerator coroutine = base.GameController.MakeDecisionAction(yesNo, true);
+            YesNoDecision yesNo = new YesNoDecision(base.GameController, this.DecisionMaker, SelectionType.PlayTopCardOfEnvironmentDeck, requireUnanimous: true, cardSource: GetCardSource());
+            IEnumerator coroutine = base.GameController.MakeDecisionAction(yesNo);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -44,7 +43,7 @@ namespace Cauldron.TheWanderingIsle
             {
                 //play the top 2 cards of the environment deck
                 List<Card> playedCards = new List<Card>();
-                coroutine = base.GameController.PlayTopCard(this.DecisionMaker, base.FindEnvironment(null), false, 2, false, playedCards, null, null, false, null, false, false, false, null, null, base.GetCardSource(null));
+                coroutine = base.GameController.PlayTopCard(this.DecisionMaker, base.FindEnvironment(), numberOfCards: 2, playedCards: playedCards, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -54,16 +53,16 @@ namespace Cauldron.TheWanderingIsle
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
                 //if you did destroy this card
-                if (playedCards.Count<Card>() == 2)
+                if (playedCards.Count() >= 2)
                 {
-                    IEnumerator destroy = base.GameController.DestroyCard(this.DecisionMaker, base.Card, false, null, null, null, null, null, null, null, null, base.GetCardSource(null));
+                    coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
-                        yield return base.GameController.StartCoroutine(destroy);
+                        yield return base.GameController.StartCoroutine(coroutine);
                     }
                     else
                     {
-                        base.GameController.ExhaustCoroutine(destroy);
+                        base.GameController.ExhaustCoroutine(coroutine);
                     }
                 }
                 else
@@ -72,20 +71,20 @@ namespace Cauldron.TheWanderingIsle
                     string message;
                     if (playedCards.Count<Card>() == 1)
                     {
-                        message = "The environment only played 1 card, so " + base.Card.Title + " will not be destroyed.";
+                        message = $"The environment only played 1 card, so {base.Card.Title} will not be destroyed.";
                     }
                     else
                     {
-                        message = "The environment did not play a card, so " + base.Card.Title + " will not be destroyed.";
+                        message = $"The environment did not play a card, so {base.Card.Title} will not be destroyed.";
                     }
-                    IEnumerator sendMessage = base.GameController.SendMessageAction(message, Priority.High, base.GetCardSource(null), null, true);
+                    coroutine = base.GameController.SendMessageAction(message, Priority.High, base.GetCardSource(), showCardSource: true);
                     if (base.UseUnityCoroutines)
                     {
-                        yield return base.GameController.StartCoroutine(sendMessage);
+                        yield return base.GameController.StartCoroutine(coroutine);
                     }
                     else
                     {
-                        base.GameController.ExhaustCoroutine(sendMessage);
+                        base.GameController.ExhaustCoroutine(coroutine);
                     }
                 }
             }

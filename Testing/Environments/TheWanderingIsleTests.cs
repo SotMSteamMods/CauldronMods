@@ -713,55 +713,63 @@ namespace CauldronTests
             // Whenever a target enters play, this card deals { H - 1}lightning damage to the target with the third highest HP.
             // 3rd highest hp is ra
             //H =3, 3-1 = 2
-            PutIntoPlay("ThroughTheHurricane");
+            var card = PutIntoPlay("ThroughTheHurricane");
+            AssertInPlayArea(isle, card);
 
-            QuickHPStorage(ra);
+            QuickHPStorage(baron, ra, visionary, haka);
             PlayCard("DecoyProjection");
-            QuickHPCheck(-2);
+            QuickHPCheck(0, -2, 0, 0);
         }
 
         [Test()]
-        public void TestThroughTheHurricaneStartOfTurnPlay()
+        public void TestThroughTheHurricaneStartOfTurnPlayCards()
         {
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
             //stack deck for less variance
-            PutOnDeck("Teryx");
-            PutOnDeck("AncientParasite");
+            var c1 = PutOnDeck("Teryx");
+            var c2 = PutOnDeck("AncientParasite");
 
-            PutIntoPlay("ThroughTheHurricane");
+            var card = PutIntoPlay("ThroughTheHurricane");
+            AssertInPlayArea(isle, card);
 
             //At the start of the environment turn, you may play the top 2 cards of the environment deck. If you do, this card is destroyed.
             DecisionYesNo = true;
-            int numCardsInEnvironmentDeckBefore = GetNumberOfCardsInDeck(isle);
+            
             GoToStartOfTurn(isle);
-            int numCardsInEnvironmentDeckAfter = GetNumberOfCardsInDeck(isle);
+            //assert stacked cards got played
+            AssertInPlayArea(isle, c1);
+            AssertInPlayArea(isle, c2);
 
-            //should be 2 cards played, so 2 fewer cards in deck
-            Assert.AreEqual(numCardsInEnvironmentDeckBefore - 2, numCardsInEnvironmentDeckAfter, "The number of cards in the environment deck do not match.");
+            //and then this card was destroyed
+            AssertInTrash(card);
         }
 
         [Test()]
-        public void TestThroughTheHurricaneStartOfTurnDestroy()
+        public void TestThroughTheHurricaneStartOfTurnNoPlayCard()
         {
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
             //stack deck for less variance
-            PutOnDeck("Teryx");
-            PutOnDeck("AncientParasite");
+            var c1 = PutOnDeck("Teryx");
+            var c2 = PutOnDeck("AncientParasite");
 
-            PutIntoPlay("ThroughTheHurricane");
+            var card = PutIntoPlay("ThroughTheHurricane");
+            AssertInPlayArea(isle, card);
 
             //At the start of the environment turn, you may play the top 2 cards of the environment deck. If you do, this card is destroyed.
-            DecisionYesNo = true;
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+            DecisionYesNo = false;
+            
             GoToStartOfTurn(isle);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
 
-            //should be 2 cards played, but this card destroyed, so 1 more
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore + 1, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play do not match.");
+            //stacked cards are not played
+            AssertInDeck(c1);
+            AssertInDeck(c2);
+
+            //card not destroyed
+            AssertInPlayArea(isle, card);
         }
 
         [Test()]
