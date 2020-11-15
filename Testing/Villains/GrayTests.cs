@@ -567,7 +567,27 @@ namespace CauldronTests
         [Test()]
         public void TestRadioactiveCascade()
         {
+            SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
+            StartGame();
+            //When this card enters play, {Gray} deals the hero with the highest HP X energy damage, where X is 2 plus the number of Radiation cards in play.",
+            QuickHPStorage(haka);
+            PlayCard("RadioactiveCascade");
+            QuickHPCheck(-4);
+            //When another villain card is destroyed, destroy this card.
+            DealDamage(haka, GetCardInPlay("ChainReaction"), 3, DamageType.Cold);
+            AssertInTrash("RadioactiveCascade");
+        }
 
+        [Test()]
+        public void TestUnstableIsotope()
+        {
+            Assert.IsTrue(false);
+        }
+
+        [Test()]
+        public void TestUnwittingHenchmen()
+        {
+            Assert.IsTrue(false);
         }
     }
 }
