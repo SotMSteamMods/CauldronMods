@@ -38,6 +38,13 @@ namespace Cauldron.BlackwoodForest
             base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker, 
                 StartOfTurnDealDamageResponse, TriggerType.DealDamage);
 
+            // Whenever an environment card is destroyed, deal the target with the highest HP 5 psychic damage
+            base.AddTrigger<DestroyCardAction>(dca => dca.CardToDestroy.Card.IsEnvironment,
+                this.DestroyEnvironmentResponse,
+                new TriggerType[]
+                {
+                    TriggerType.DestroyCard
+                }, TriggerTiming.After, null, false, true, true);
 
             base.AddTriggers();
         }
@@ -79,5 +86,38 @@ namespace Cauldron.BlackwoodForest
             }
         }
 
+        private IEnumerator DestroyEnvironmentResponse(DestroyCardAction dca)
+        {
+            List<Card> highestHpTarget = new List<Card>();
+            IEnumerator highestHpRoutine 
+                = base.GameController.FindTargetWithHighestHitPoints(1, card => card.IsTarget, highestHpTarget);
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(highestHpRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(highestHpRoutine);
+            }
+
+            if (!highestHpTarget.Any())
+            {
+                yield break;
+            }
+
+            // Deal 5 psychic damage
+            IEnumerator dealDamageRoutine = this.DealDamage(this.Card, highestHpTarget.First(), 
+                PsychicDamageToDeal, DamageType.Psychic, cardSource: this.GetCardSource());
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(dealDamageRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(dealDamageRoutine);
+            }
+        }
     }
 }

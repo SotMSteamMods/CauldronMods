@@ -451,20 +451,41 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
 
             StartGame();
+
+            QuickHPStorage(ra, legacy, haka, baron);
+
+
+            DestroyCard("MobileDefensePlatform");
+
             Card backlashField = GetCard("BacklashField");
             PlayCard(backlashField);
 
             Card shadowStalker = GetCard(ShadowStalkerCardController.Identifier);
             PlayCard(shadowStalker);
-            QuickHPStorage(ra, legacy, haka);
+
+            Card shadowWeaver = GetCard(ShadowWeaverCardController.Identifier);
+            PlayCard(shadowWeaver);
+
+            GoToStartOfTurn(legacy);
+            DealDamage(legacy, shadowWeaver, 20, DamageType.Melee);
+
 
             // Act
             GoToEndOfTurn(BlackwoodForest);
 
             // Assert
-            QuickHPCheck(-1, -1, -1); // (Ra, Legacy, Haka: -1 from start of turn Shadow Stalker effect)
+
+            /*
+             * Ra: -1 Shadow Weaver destruction, -1 start of turn Shadow Stalker effect
+             * Legacy: -1 Shadow Weaver destruction, -1 start of turn Shadow Stalker effect
+             * Haka: -1 Shadow Weaver destruction, -1 start of turn Shadow Stalker effect
+             * Baron: -1 Shadow Weaver destruction, -5 from Shadow Stalker when another env card was destroyed as he was highest HP
+             */
+            QuickHPCheck(-2, -2, -2, -6);
+
             AssertNotInPlay(backlashField);
             AssertInTrash(baron, backlashField);
+            AssertInTrash(BlackwoodForest, shadowWeaver);
         }
 
         [Test]
