@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Cauldron.Gray;
 using System.Linq;
 using Handelabra.Sentinels.Engine.Model;
+using System.Collections.Generic;
 
 namespace CauldronTests
 {
@@ -581,7 +582,18 @@ namespace CauldronTests
         [Test()]
         public void TestUnstableIsotope()
         {
-            Assert.IsTrue(false);
+            SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
+            StartGame();
+            Card mutie = GetCard("MutatedWildlife", 0);
+            Card mutie2 = GetCard("MutatedWildlife", 1);
+            Card fire = GetCard("NuclearFire");
+            PutOnDeck(gray, mutie);
+            PutOnDeck(gray, mutie2);
+            PutOnDeck(gray, fire);
+            //Reveal cards from the top of the villain deck until 2 Radiation cards are revealed. Put those cards into play and discard the rest.
+            PlayCard("UnstableIsotope");
+            AssertIsInPlay(mutie, mutie2);
+            AssertInTrash(fire);
         }
 
         [Test()]
