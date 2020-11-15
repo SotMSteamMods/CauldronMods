@@ -1200,6 +1200,80 @@ namespace CauldronTests
             PlayCard(wind);
             QuickHPCheck(-2, 0, 0, 0);
         }
+        [Test()]
+        public void TestWarpHaloIncreasesWhenShould()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            var m = DamageType.Melee;
+
+            PlayCard("WarpHalo");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card battalion = GetCard("BladeBattalion");
+            Card traffic = GetCard("TrafficPileup");
+            PlayCard(traffic);
+            PlayCard(battalion);
+            Card[] constellationed = new Card[5] { mdp, baron.CharacterCard, haka.CharacterCard, ra.CharacterCard, traffic};
+            DecisionSelectCards = constellationed;
+            PlayCards("AncientConstellationA", "AncientConstellationB", "AncientConstellationC", "AncientConstellationD", "AncientConstellationE");
+
+            QuickHPStorage(starlight.CharacterCard, haka.CharacterCard, ra.CharacterCard, mdp, battalion, traffic);
+            //Combos that SHOULD increase damage: 
+            //Constellation on hero, constellation on villain
+            //Constellation on hero, constellation on environment
+            //Damage type shouldn't matter
+            DealDamage(haka, mdp, 1, m);
+            QuickHPCheck(0, 0, 0, -2, 0, 0);
+            DealDamage(ra, traffic, 1, DamageType.Fire);
+            QuickHPCheck(0, 0, 0, 0, 0, -2);
+        }
+        [Test()] 
+        public void TestWarpHaloDoesNotIncreaseWhenShouldnt()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            var m = DamageType.Melee;
+
+            PlayCard("WarpHalo");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card battalion = GetCard("BladeBattalion");
+            Card traffic = GetCard("TrafficPileup");
+            PlayCard(traffic);
+            PlayCard(battalion);
+            Card[] constellationed = new Card[5] { mdp, baron.CharacterCard, haka.CharacterCard, ra.CharacterCard, traffic };
+            DecisionSelectCards = constellationed;
+            PlayCards("AncientConstellationA", "AncientConstellationB", "AncientConstellationC", "AncientConstellationD", "AncientConstellationE");
+
+            QuickHPStorage(starlight.CharacterCard, haka.CharacterCard, ra.CharacterCard, mdp, battalion, traffic);
+            //Combos that SHOULD NOT increase damage: 
+            //No constellation on hero -> constellation on villain
+            DealDamage(starlight, mdp, 1, m);
+            QuickHPCheck(0, 0, 0, -1, 0, 0);
+            //No constellation on hero -> constellation on environment
+            DealDamage(starlight, traffic, 1, DamageType.Fire);
+            QuickHPCheck(0, 0, 0, 0, 0, -1);
+            //Constellation on hero -> no constellation on villain
+            DealDamage(haka, battalion, 1, m);
+            QuickHPCheck(0, 0, 0, 0, -1, 0);
+            //Constellation on villain -> constellation on hero
+            DealDamage(baron, haka, 1, m);
+            QuickHPCheck(0, -1, 0, 0, 0, 0);
+            //Constellation on villain -> no constellation on hero
+            DealDamage(baron, starlight, 1, m);
+            QuickHPCheck(-1, 0, 0, 0, 0, 0);
+            //Constellation on villain -> villain, regardless of constellation status
+            DealDamage(baron, mdp, 1, m);
+            DealDamage(baron, battalion, 1, m);
+            QuickHPCheck(0, 0, 0, -1, -1, 0);
+            //Constellation on hero -> hero, regardless of constellation status
+            DealDamage(haka, starlight, 1, m);
+            DealDamage(haka, ra, 1, m);
+            QuickHPCheck(-1, 0, -1, 0, 0, 0);
+
+            //Not completely exhaustive, but this is enough for me.
+        }
 
         [Test()]
         public void TestWishSimpleSelf()
