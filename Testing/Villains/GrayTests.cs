@@ -433,5 +433,36 @@ namespace CauldronTests
             AssertIsInPlay("ChainReaction", 3);
             AssertInDeck(iso);
         }
+
+        [Test()]
+        public void TestHeavyRadiation1RadCard()
+        {
+            SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
+            StartGame();
+            PutOnDeck("Contamination");
+            PlayCard("HeavyRadiation");
+            //Reduce damage dealt to {Gray} by 1 for each Radiation card in play.
+            QuickHPStorage(gray);
+            DealDamage(ra, gray, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+            //Ensure no Radiations in play
+            DealDamage(ra, GetCardInPlay("ChainReaction"), 3, DamageType.Melee);
+            //At the end of the villain turn, if there are no Radiation cards in play, play the top card of the villain deck.
+            GoToEndOfTurn(gray);
+            AssertIsInPlay("Contamination");
+        }
+
+        [Test()]
+        public void TestHeavyRadiation3RadCard()
+        {
+            SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
+            StartGame();
+            PlayCards((Card c) => c.Identifier == "ChainReaction");
+            PlayCard("HeavyRadiation");
+            //Reduce damage dealt to {Gray} by 1 for each Radiation card in play.
+            QuickHPStorage(gray);
+            DealDamage(ra, gray, 4, DamageType.Melee);
+            QuickHPCheck(-1);
+        }
     }
 }
