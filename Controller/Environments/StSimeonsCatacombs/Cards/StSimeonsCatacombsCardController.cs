@@ -108,21 +108,33 @@ namespace Cauldron.StSimeonsCatacombs
 			IEnumerator cancel = base.CancelAction(mc);
 			IEnumerator under = base.GameController.MoveCard(base.TurnTakerController, mc.CardToMove, base.Card.UnderLocation, cardSource: base.GetCardSource());
 			IEnumerator shuffle = base.GameController.ShuffleLocation(base.Card.UnderLocation, cardSource: base.GetCardSource());
-			//Then choose a different room beneath this card and put it into play.
-			IEnumerator play = base.GameController.SelectAndPlayCard(this.DecisionMaker, base.Card.UnderLocation.Cards.Where(c => c != mc.CardToMove), isPutIntoPlay: true);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(cancel);
 				yield return base.GameController.StartCoroutine(under);
 				yield return base.GameController.StartCoroutine(shuffle);
-				yield return base.GameController.StartCoroutine(play);
 			}
 			else
 			{
 				base.GameController.ExhaustCoroutine(cancel);
 				base.GameController.ExhaustCoroutine(under);
 				base.GameController.ExhaustCoroutine(shuffle);
-				base.GameController.ExhaustCoroutine(play);
+			}
+
+			//only do immediate play action if its not living geometry, which will take care of room response
+			if(mc.ActionSource == null || mc.ActionSource.CardSource == null || mc.ActionSource.CardSource.Card.Identifier != "LivingGeometry")
+            {
+				//Then choose a different room beneath this card and put it into play.
+				IEnumerator play = base.GameController.SelectAndPlayCard(this.DecisionMaker, base.Card.UnderLocation.Cards.Where(c => c != mc.CardToMove), isPutIntoPlay: true);
+
+				if (base.UseUnityCoroutines)
+				{
+					yield return base.GameController.StartCoroutine(play);
+				}
+				else
+				{
+					base.GameController.ExhaustCoroutine(play);
+				}
 			}
 			yield break;
 		}

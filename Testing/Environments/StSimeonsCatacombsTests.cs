@@ -1300,5 +1300,51 @@ namespace CauldronTests
             Card newRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
             Assert.IsTrue(initialRoom == newRoom, "A room was destroyed");
         }
+
+        [Test()]
+        public void TestLivingGeometry_Play()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+
+            GoToEndOfTurn(catacombs);
+            Card initialRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            GoToPlayCardPhase(catacombs);
+
+            //When this card enters play, destroy a room card. Its replacement is selected randomly from the 5 room cards, not chosen by the players.
+            QuickShuffleStorage(instructions.UnderLocation);
+            Card geometry = PlayCard("LivingGeometry");
+            //should be 3 shuffles: once after instructions card moves it under itself, before this card plays a room and after it plays a room
+            QuickShuffleCheck(3);
+            AssertNoDecision();
+
+        }
+
+        [Test()]
+        public void TestLivingGeometry_EndOfTurn()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            GoToEndOfTurn(catacombs);
+
+            GoToPlayCardPhase(catacombs);
+
+            Card topCard = PutOnDeck("LabyrinthGuide");
+            
+            Card geometry = PlayCard("LivingGeometry");
+            //At the end of the environment turn, play the top card of the environment deck and destroy this card.
+            GoToEndOfTurn(catacombs);
+            AssertInPlayArea(catacombs, topCard);
+            AssertInTrash(geometry);
+
+        }
     }
 }
