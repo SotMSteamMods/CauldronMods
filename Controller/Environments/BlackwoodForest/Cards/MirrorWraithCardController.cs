@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -18,13 +19,31 @@ namespace Cauldron.BlackwoodForest
         // target 2 sonic damage and is destroyed.
         //==============================================================
 
+
+        //==============================================================
+        // Possible cards that may cause issue if copied?
+        //==============================================================
+        /*
+         * Imbued Vitality (Realm of Discord) - Each Ongoing and Equipment card now has a maximum HP of 6.
+         * This would allow Mirror Wraith to select an ongoing or equipment as a target
+         *
+         * Huginn & Muninn (Harpy) - Double boosting Harpy?
+         */
+        //==============================================================
+
+
         public static string Identifier = "MirrorWraith";
 
         private const int DamageToDeal = 2;
 
+        private IEnumerable<string> _copiedKeywords;
+
         public MirrorWraithCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            _copiedKeywords = Enumerable.Empty<string>();
 
+            // Identify this card controller as one who can modify keyword query answers
+            base.AddThisCardControllerToList(CardControllerListType.ModifiesKeywords);
         }
 
         public override IEnumerator Play()
@@ -49,23 +68,32 @@ namespace Cauldron.BlackwoodForest
                     = this.DealDamage(this.Card, card => card.IsTarget && !card.Equals(this.Card), DamageToDeal,
                         DamageType.Sonic);
 
+                // Destroy self
+                IEnumerator destroyRoutine = base.GameController.DestroyCard(this.HeroTurnTakerController, this.Card);
+
+
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(dealDamageRoutine);
+                    yield return base.GameController.StartCoroutine(destroyRoutine);
                 }
                 else
                 {
                     base.GameController.ExhaustCoroutine(dealDamageRoutine);
+                    base.GameController.ExhaustCoroutine(destroyRoutine);
                 }
             }
             else
             {
                 // Gains the text, keywords, and max HP of found target
                 Card cardToCopy = storedResults.First();
-                
+
                 IEnumerator setHpRoutine = base.GameController.SetHP(this.Card, cardToCopy.MaximumHitPoints.Value, this.GetCardSource());
 
-                //base.TurnTakerController.
+                // TODO: gain text
+
+                // Add the target's keywords to our copied list which will be returned on keyword queries
+                _copiedKeywords = cardToCopy.Definition.Keywords;
 
                 if (base.UseUnityCoroutines)
                 {
@@ -75,15 +103,29 @@ namespace Cauldron.BlackwoodForest
                 {
                     base.GameController.ExhaustCoroutine(setHpRoutine);
                 }
-
-                int i = 0;
             }
         }
 
-        private IEnumerator DealDamageResponse()
+        public override bool AskIfCardContainsKeyword(Card card, string keyword, bool evenIfUnderCard = false, bool evenIfFaceDown = false)
         {
-            yield break;
+            // If the card being queried is this card and we have the copied keyword, return true
+            // otherwise let the base method handle the query
 
+            return (card == this.Card &&_copiedKeywords.Contains(keyword) 
+                    || base.AskIfCardContainsKeyword(card, keyword, evenIfUnderCard, evenIfFaceDown));
+        }
+
+        public override IEnumerable<string> AskForCardAdditionalKeywords(Card card)
+        {
+            // If the card being queried is this card and we have a non empty copied keyword list, return it
+            // otherwise let the base method handle the return
+
+            if (card == this.Card && _copiedKeywords.Any())
+            {
+                return _copiedKeywords;
+            }
+
+            return base.AskForCardAdditionalKeywords(card);
         }
     }
 }
