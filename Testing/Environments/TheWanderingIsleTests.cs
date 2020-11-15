@@ -511,23 +511,17 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            Card teryx = PutIntoPlay("Teryx");
 
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
 
-            PutIntoPlay("Islandquake");
-
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+            var card = PutIntoPlay("Islandquake");
+            AssertInPlayArea(isle, card);
 
             //Then, this card is destroyed.
             GoToStartOfTurn(isle);
-
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
-
-            //this card should have destroyed itself
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore - 1, numCardsInEnvironmentPlayAfter, "Number of environment cards in play don't match");
+            AssertInTrash(card);
         }
 
         [Test()]
@@ -539,8 +533,7 @@ namespace CauldronTests
             //destroy mdp so baron blade is not immune to damage
             DestroyCard(GetCardInPlay("MobileDefensePlatform"));
 
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            Card teryx = PutIntoPlay("Teryx");
 
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
@@ -549,8 +542,8 @@ namespace CauldronTests
             //ra deals damage to teryx to cause hp gain and to be immune to islandquake damage
             DealDamage(ra.CharacterCard, teryx, 5, DamageType.Fire);
 
-            PutIntoPlay("Islandquake");
-
+            var card = PutIntoPlay("Islandquake");
+            AssertInPlayArea(isle, card);
 
             //At the start of the environment turn, this card deals each target other than Teryx 4 sonic damage. Hero targets which caused Teryx to regain HP since the end of the last environment turn are immune to this damage.
             QuickHPStorage(baron.CharacterCard, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard, teryx);
