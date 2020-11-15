@@ -19,8 +19,8 @@ namespace Cauldron.Gray
             IEnumerator coroutine = base.PlayCardsFromLocation(base.TurnTaker.Deck, new LinqCardCriteria((Card c) => c.Identifier == "ChainReaction"));
             IEnumerator coroutine2 = base.PlayCardsFromLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "ChainReaction"));
             //Move 1 copy of Unstable Isotope from the villain trash to the villain deck. 
-            MoveCardDestination villainTrash = new MoveCardDestination(base.TurnTaker.Trash);
-            IEnumerator coroutine3 = base.GameController.SelectCardFromLocationAndMoveIt(base.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "UnstableIsotope"), villainTrash.ToEnumerable<MoveCardDestination>(), cardSource: base.GetCardSource());
+            MoveCardDestination villianDeck = new MoveCardDestination(base.TurnTaker.Deck);
+            IEnumerator coroutine3 = base.GameController.SelectCardFromLocationAndMoveIt(base.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "UnstableIsotope"), villianDeck.ToEnumerable<MoveCardDestination>(), cardSource: base.GetCardSource());
             //Shuffle the villain deck.
             IEnumerator coroutine4 = base.ShuffleDeck(this.DecisionMaker, base.TurnTaker.Deck);
             if (base.UseUnityCoroutines)

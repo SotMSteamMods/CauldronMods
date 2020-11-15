@@ -414,5 +414,24 @@ namespace CauldronTests
             //Destroy this card when {H} hero cards are destroyed this way in one round.
             AssertInTrash(mere, contamination);
         }
+
+        [Test()]
+        public void TestCriticalMass()
+        {
+            SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
+            StartGame();
+            PutInTrash("ChainReaction");
+            Card iso = GetCard("UnstableIsotope");
+            PutInTrash(iso);
+            //Search the villain deck and trash for all copies of Chain Reaction and put them into play. Move 1 copy of Unstable Isotope from the villain trash to the villain deck. Shuffle the villain deck.
+            //{Gray} deals himself 2 energy damage.
+            QuickHPStorage(gray);
+            QuickShuffleStorage(gray);
+            PlayCard("CriticalMass");
+            QuickHPCheck(-2);
+            QuickShuffleCheck(1);
+            AssertIsInPlay("ChainReaction", 3);
+            AssertInDeck(iso);
+        }
     }
 }
