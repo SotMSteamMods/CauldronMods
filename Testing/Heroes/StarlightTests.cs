@@ -805,7 +805,7 @@ namespace CauldronTests
             QuickHPCheck(-5);
         }
         [Test()]
-        public void TestNovaShield()
+        public void TestNovaShieldBasic()
         {
             SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
             StartGame();
@@ -831,6 +831,134 @@ namespace CauldronTests
             //damage should still happen even if healing can't
             PlayCard("AncientConstellationD");
             QuickHPCheck(0, 0, 0, 0, -1);
+        }
+        [Test()]
+        public void TestNovaShieldHealEvenIfTargetIsDestroyedByEffect()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetMobileDefensePlatform().Card;
+            PutIntoPlay("NovaShield");
+            DecisionSelectCard = mdp;
+
+            //set it up to die
+            SetHitPoints(mdp, 1);
+            SetHitPoints(starlight, 15);
+
+            QuickHPStorage(starlight);
+            PutIntoPlay("AncientConstellationA");
+            AssertInTrash(mdp);
+            QuickHPCheck(1);
+        }
+        [Test()]
+        public void TestPillarsOfCreationPlaysFromHand()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            PutInHand("AncientConstellationA");
+            PutInHand("AncientConstellationB");
+            PutInTrash("WarpHalo");
+            PutIntoPlay("PillarsOfCreation");
+            QuickHandStorage(starlight);
+
+            GoToStartOfTurn(starlight);
+
+            //with no constellations in trash, shouldn't get to pick
+            //and putting it in shouldn't be optional
+            AssertNoDecision(SelectionType.SelectFunction);
+            DecisionDoNotSelectCard = SelectionType.PutIntoPlay;
+
+            //Pillars of Creation and Starlight's character should be in play, trigger should not have happened yet.
+            QuickHandCheck(0);
+            AssertNumberOfCardsInPlay(starlight, 2);
+            GoToPlayCardPhase(starlight);
+            QuickHandCheck(-1);
+            AssertNumberOfCardsInPlay(starlight, 3);
+
+            GoToDrawCardPhase(starlight);
+            //should not count as card play, so double-draw should be possible
+            AssertPhaseActionCount(2);
+        }
+        [Test()]
+        public void TestPillarsOfCreationPlaysFromTrash()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            PutInTrash("AncientConstellationA");
+            DiscardAllCards(starlight);
+            PutIntoPlay("PillarsOfCreation");
+
+            //needed to avoid skipping play phase
+            //PutInHand("WarpHalo");
+
+            //given that it should trigger even with play phase skipped...
+
+            int startingCardsInTrash = starlight.TurnTaker.Trash.Cards.Count();
+
+            //with no constellations in hand, shouldn't get to pick
+            AssertNoDecision(SelectionType.SelectFunction);
+            DecisionDoNotSelectCard = SelectionType.SearchTrash;
+
+            GoToStartOfTurn(starlight);
+
+
+            //Pillars of Creation and Starlight's character should be in play, trigger should not have happened yet.
+            AssertNumberOfCardsInTrash(starlight, startingCardsInTrash);
+            AssertNumberOfCardsInPlay(starlight, 2);
+            GoToUsePowerPhase(starlight);
+            AssertNumberOfCardsInTrash(starlight, startingCardsInTrash - 1);
+            AssertNumberOfCardsInPlay(starlight, 3);
+
+            GoToDrawCardPhase(starlight);
+            //should not count as card play, so double-draw should be possible
+            AssertPhaseActionCount(2);
+
+        }
+        [Test()]
+        public void TestPillarsOfCreationMayChooseHandOrTrash()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            PutInTrash("AncientConstellationA", "AncientConstellationC");
+            PutInHand("AncientConstellationB");
+            PutInHand("AncientConstellationD");
+            PutIntoPlay("PillarsOfCreation");
+
+            //should have a choice, should not be optional
+            //does not seem to be a good way to do that, though...
+            //the fact that there's no SelectFunctionDecision in the "only hand" or "only trash" conditions does imply it though
+            AssertNextDecisionSelectionType(SelectionType.SelectFunction);
+            //hand or trash, no skip option
+
+            int handAndTrash = starlight.NumberOfCardsInHand + starlight.TurnTaker.Trash.Cards.Count();
+            AssertNumberOfCardsInPlay(starlight, 2);
+
+            GoToPlayCardPhase(starlight);
+
+            AssertNumberOfCardsInPlay(starlight, 3);
+
+            string failmessage = string.Format("Starlight's hand and trash should have had {0} cards combined, but did not.", handAndTrash - 1);
+            Assert.AreEqual(handAndTrash - 1, starlight.NumberOfCardsInHand + starlight.TurnTaker.Trash.Cards.Count(), failmessage);
+
+        }
+        [Test()]
+        public void TestPillarsOfCreationNoConstellationMessage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            PutIntoPlay("PillarsOfCreation");
+            PutOnDeck(starlight, starlight.HeroTurnTaker.Hand.Cards);
+            PutInHand("WarpHalo");
+
+            AssertNumberOfCardsInPlay(starlight, 2);
+            AssertNextMessage("Starlight had no constellations to put into play from their hand or trash.");
+            GoToUsePowerPhase(starlight);
+            AssertNumberOfCardsInPlay(starlight, 2);
         }
         [Test()]
         public void TestWishSimpleSelf()

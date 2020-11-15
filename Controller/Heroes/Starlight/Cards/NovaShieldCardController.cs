@@ -36,47 +36,65 @@ namespace Cauldron.Starlight
         {
 
             var constellation = ce.CardEnteringPlay;
+
+            var testmessage = GameController.SendMessageAction("Damage-and-heal-response triggers", Priority.Low, GetCardSource());
+            GameController.ExhaustCoroutine(testmessage);
+
             if (constellation == null)
             {
                 yield break;
             }
+
+            //pick Starlight to act with
+            List<Card> storedResults = new List<Card> { };
+            IEnumerator chooseDamageSource = SelectActiveCharacterCardToDealDamage(storedResults, 1, DamageType.Energy);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(chooseDamageSource);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(chooseDamageSource);
+            }
+            Card actingStarlight = storedResults.FirstOrDefault();
+
+            if (actingStarlight == null)
+            {
+                yield break;
+            }
+
             var target = FindCardsWhere((Card c) => c.IsInPlay && c.IsTarget && c.GetAllNextToCards(false).Contains(constellation), visibleToCard: GetCardSource()).FirstOrDefault();
+            
 
             if (target != null)
             {
-                //pick Starlight to act with
-                List<Card> storedResults = new List<Card> { };
-                IEnumerator chooseDamageSource = SelectActiveCharacterCardToDealDamage(storedResults, 1, DamageType.Energy);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(chooseDamageSource);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(chooseDamageSource);
-                }
-                Card actingStarlight = storedResults.FirstOrDefault();
-
-                if (actingStarlight == null)
-                {
-                    yield break;
-                }
-
                 //"...Starlight deals that target 1 energy damage..."
                 var damageAction = DealDamage(actingStarlight, target, 1, DamageType.Energy);
-                //"...and regains 1 HP."
-                var gainHPAction = GameController.GainHP(actingStarlight, 1, cardSource: GetCardSource());
+
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(damageAction);
-                    yield return base.GameController.StartCoroutine(gainHPAction);
                 }
                 else
                 {
                     base.GameController.ExhaustCoroutine(damageAction);
-                    base.GameController.ExhaustCoroutine(gainHPAction);
                 }
             }
+
+            testmessage = GameController.SendMessageAction("Damage-and-heal-response does not stop after constellation dies", Priority.Low, GetCardSource());
+            GameController.ExhaustCoroutine(testmessage);
+
+            //"...and regains 1 HP."
+            var gainHPAction = GameController.GainHP(actingStarlight, 1, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(gainHPAction);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(gainHPAction);
+            }
+
             yield break;
         }
     }
