@@ -464,5 +464,23 @@ namespace CauldronTests
             DealDamage(ra, gray, 4, DamageType.Melee);
             QuickHPCheck(-1);
         }
+
+        [Test()]
+        public void TestIrradiatedTouch()
+        {
+            SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
+            StartGame();
+            PlayCard("IrradiatedTouch");
+            DealDamage(ra, GetCardInPlay("ChainReaction"), 4, DamageType.Melee);
+            //At the end of the villain turn, {Gray} deals the hero target with the second highest HP {H - 2} melee and {H - 2} energy damage.
+            QuickHPStorage(legacy);
+            GoToEndOfTurn(gray);
+            QuickHPCheck(-2);
+            //When this card is destroyed, {Gray} deals the hero target with the highest HP 2 energy damage.
+            QuickHPStorage(haka);
+            DestroyCard("IrradiatedTouch");
+            //Gray deals everyone 2 energy damage when a radiation card is destroyed
+            QuickHPCheck(-4);
+        }
     }
 }
