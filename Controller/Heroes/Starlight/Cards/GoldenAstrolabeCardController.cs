@@ -69,9 +69,8 @@ namespace Cauldron.Starlight
                 HeroTurnTakerController powerUser = GameController.FindHeroTurnTakerController(turnTaker as HeroTurnTaker);
 
                 if (powerUser != null)
-                {
-                    Func<Power, bool> powerCriteria = (Power p) => !p.CardSource.Card.IsHeroCharacterCard || IsNextToConstellation(p.CardSource.Card);
-                    var usePower = GameController.SelectAndUsePower(powerUser, optional:true, powerCriteria);
+                { 
+                    var usePower = GameController.SelectAndUsePower(powerUser, optional:true, PowerCriteria);
                     if(base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(usePower);
@@ -88,8 +87,13 @@ namespace Cauldron.Starlight
         private List<Power> GetUsablePowersFromAllowedSource(HeroTurnTakerController powerUser)
         {
             List<Power> allUsablePowers = GameController.GetUsablePowersThisTurn(powerUser).ToList();
-            List<Power> powerOnGoodCard = (from p in allUsablePowers where !p.CardSource.Card.IsHeroCharacterCard || IsNextToConstellation(p.CardSource.Card) select p).ToList();
+            List<Power> powerOnGoodCard = (from p in allUsablePowers where PowerCriteria(p) select p).ToList();
             return powerOnGoodCard;
+        }
+
+        private bool PowerCriteria(Power p)
+        {
+            return !p.CardController.Card.IsHeroCharacterCard || IsNextToConstellation(p.CardController.Card);
         }
     }
 }

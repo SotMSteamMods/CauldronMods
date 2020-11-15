@@ -675,6 +675,72 @@ namespace CauldronTests
             QuickHPCheck(-2);
             AssertNotUsablePower(sentinels, idealist);
         }
+        [Test()]
+        public void TestGoldenAstrolabeAllowsMultiCharHerosToSelectNonCharacterPower()
+        {
+            SetupGameController("Kismet", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "TheSentinels", "Megalopolis");
+            StartGame();
+
+            //don't want Jinxes messing things up
+            DestroyNonCharacterVillainCards();
+
+            Card astrolabe = GetCard("GoldenAstrolabe");
+            Card talisman = GetCardInPlay("TheTalisman");
+            PlayCard(astrolabe);
+
+            SetHitPoints(new List<TurnTakerController> { starlight, haka, ra, visionary }, 10);
+
+            DecisionSelectCards = new List<Card> { haka.CharacterCard, mainstay };
+            PlayCards("AncientConstellationA", "AncientConstellationB");
+
+            DecisionSelectTurnTakers = new List<TurnTaker> { sentinels.TurnTaker, sentinels.TurnTaker };
+
+            DealDamage(mainstay, talisman, 10, DamageType.Melee);
+
+            UsePower(mainstay);
+ 
+            AssertUsablePower(sentinels, talisman);
+            AssertNotUsablePower(sentinels, mainstay);
+
+            DecisionSelectCards = null;
+
+            UsePower(astrolabe);
+
+            AssertNotUsablePower(sentinels, talisman);
+        }
+        [Test()]
+        public void TestGoldenAstrolabeAllowsMultiCharHeroToSelectGrantedPowerButDoesNotShare()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "CaptainCosmic", "TheSentinels", "Megalopolis");
+            StartGame();
+
+            Card astrolabe = GetCard("GoldenAstrolabe");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            PlayCard(astrolabe);
+            UsePower(idealist);
+            AssertNotUsablePower(sentinels, idealist);
+            DecisionSelectCards = new List<Card> { haka.CharacterCard, mainstay, idealist, mainstay, mdp };
+
+            PlayCards("AncientConstellationA", "AncientConstellationB", "CosmicWeapon");
+
+            AssertUsablePower(sentinels, idealist);
+
+            DecisionSelectTurnTaker = sentinels.TurnTaker;
+            DecisionSelectPower = idealist;
+
+            QuickHPStorage(mdp);
+            UsePower(astrolabe);
+            QuickHPCheck(0);
+            AssertUsablePower(sentinels, idealist);
+            AssertNotUsablePower(sentinels, mainstay);
+
+            PlayCard("CosmicWeapon");
+            AssertUsablePower(sentinels, mainstay);
+            UsePower(astrolabe);
+            AssertUsablePower(sentinels, idealist);
+            AssertNotUsablePower(sentinels, mainstay);
+            QuickHPCheck(-3);
+        }
         //other possible tests: multi-char with power on other card (Kismet's Talisman? Oblivaeon Reward?)
         //multi-char with extra power put on card (Cosmic Weapon) - should not be available unless affecting constellation'd card
         [Test()]
@@ -1091,6 +1157,24 @@ namespace CauldronTests
             AssertNextDecisionChoices(cards);
             AssertInTrash(constellation);
             AssertIsInPlay(retreat);
+        }
+        [Test()]
+        public void TestRetreatIntoTheNebulaMayDestroySelfEvenIfConstellationExists()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card constellation = GetCard("AncientConstellationA");
+            Card retreat = GetCard("RetreatIntoTheNebula");
+            Card[] cards = new Card[2] { retreat, constellation };
+            PlayCards(cards);
+
+            DecisionSelectCard = retreat;
+            GoToStartOfTurn(starlight);
+
+            AssertNextDecisionChoices(cards);
+            AssertInTrash(retreat);
+            AssertIsInPlay(constellation);
         }
         [Test()]
         public void TestRetreatIntoTheNebulaTriggerHappensBeforePillars()
