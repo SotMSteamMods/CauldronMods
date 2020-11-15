@@ -24,5 +24,10 @@ namespace Cauldron.TheWanderingIsle
         {
             return card.IsInPlayAndHasGameText && card.Identifier == TeryxIdentifier;
         }
+
+        protected bool IsCreature(Card card)
+        {
+            return card.DoKeywordsContain("creature");
+        }
     }
 }

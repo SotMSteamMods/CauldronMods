@@ -558,24 +558,14 @@ namespace CauldronTests
             StartGame();
 
             //stack deck to reduce variance
-            PutOnDeck("Teryx");
+            var teryx = PutOnDeck("Teryx");
 
             //When this card enters play, play the top card of the environment deck.
 
-            int numCardsInEnvironmentDeckBefore = GetNumberOfCardsInDeck(isle);
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
             //Play song of the deep
-            PutIntoPlay("SongOfTheDeep");
-
-            int numCardsInEnvironmentDeckAfter = GetNumberOfCardsInDeck(isle);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
-
-
-            //should be 2 fewer cards in the deck, one for song of the deep, 1 for top card of the deck
-            Assert.AreEqual(numCardsInEnvironmentDeckBefore - 2, numCardsInEnvironmentDeckAfter, "The number of cards in the environment deck don't match.");
-            //should be 2 more cards in play, one for song of the deep, 1 for top card of deck
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore + 2, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play area don't match.");
-
+            var card = PutIntoPlay("SongOfTheDeep");
+            AssertInPlayArea(isle, card);
+            AssertInPlayArea(isle, teryx);
         }
 
         [Test()]
@@ -587,21 +577,21 @@ namespace CauldronTests
             PutOnDeck("AncientParasite");
             PutIntoPlay("Teryx");
             //Play song of the deep
-            PutIntoPlay("SongOfTheDeep");
+            var card = PutIntoPlay("SongOfTheDeep");
+            AssertInPlayArea(isle, card);
 
             //collect the appropriate values for all hands
             GoToEndOfTurn(haka);
             //At the start of the environment turn, if Teryx is in play, each player may draw a card. Then, if there are at least 2 creatures in play, destroy this card.
             QuickHandStorage(ra, visionary, haka);
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+
             //setting all players to draw a card
             DecisionYesNo = true;
             GoToStartOfTurn(isle);
             QuickHandCheck(1, 1, 1);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
 
             //since no creatures in play, should not be destroyed
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play area don't match.");
+            AssertInPlayArea(isle, card);
         }
 
         [Test()]
@@ -614,23 +604,23 @@ namespace CauldronTests
             PutOnDeck("BarnacleHydra");
 
             //Play song of the deep
-            PutIntoPlay("SongOfTheDeep");
+            var card = PutIntoPlay("SongOfTheDeep");
             PutIntoPlay("BarnacleHydra");
             PutIntoPlay("AncientParasite");
             PutIntoPlay("Teryx");
+            AssertInPlayArea(isle, card);
 
             //collect the appropriate values for all hands
             GoToEndOfTurn(haka);            //At the start of the environment turn, if Teryx is in play, each player may draw a card. Then, if there are at least 2 creatures in play, destroy this card.
             QuickHandStorage(ra, visionary, haka);
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+
             //setting all players to draw a card
             DecisionYesNo = true;
             GoToStartOfTurn(isle);
+            //since 2 creatures in play, song of the deep destroyed
             QuickHandCheck(1, 1, 1);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
-
-            //since 2 creatures in play, 1 destroyed
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore - 1, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play area don't match.");
+            AssertNotInPlay(card);
+            AssertInTrash(card);
         }
 
         [Test()]
@@ -641,24 +631,24 @@ namespace CauldronTests
 
             PutOnDeck("AncientParasite");
             //Play song of the deep
-            PutIntoPlay("SongOfTheDeep");
+            var card = PutIntoPlay("SongOfTheDeep");
             PutIntoPlay("BarnacleHydra");
             PutIntoPlay("AncientParasite");
+            AssertInPlayArea(isle, card);
 
             //collect the appropriate values for all hands
             GoToEndOfTurn(haka);
             //At the start of the environment turn, if Teryx is in play, each player may draw a card. Then, if there are at least 2 creatures in play, destroy this card.
             QuickHandStorage(ra, visionary, haka);
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+
             //setting all players to draw a card
             DecisionYesNo = true;
             GoToStartOfTurn(isle);
             //since teryx is not in play, nothing will be drawn
             QuickHandCheck(0, 0, 0);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
 
             //since no creatures in play, should not be destroyed
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play area don't match.");
+            AssertInPlayArea(isle, card);
         }
 
         [Test()]
