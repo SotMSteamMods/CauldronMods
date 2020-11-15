@@ -961,6 +961,82 @@ namespace CauldronTests
             AssertNumberOfCardsInPlay(starlight, 2);
         }
         [Test()]
+        public void TestRedshiftDrawsCardAndCanSkipPlays()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+            Card redshift = GetCard("Redshift");
+            PutInHand(starlight, redshift);
+
+            QuickHandStorage(starlight, haka, ra, visionary);
+            AssertNumberOfCardsInTrash(starlight, 0);
+
+            PlayCard(redshift);
+            //-1 from card play, +1 from draw
+            QuickHandCheckZero();
+            AssertNumberOfCardsInTrash(starlight, 1);
+        }
+        [Test()]
+        public void TestRedshiftAllowsAtMostTwoPlays()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card redshift = GetCard("Redshift");
+            PutInHand(starlight, redshift);
+
+            var cardsToPlay = new Card[3] { GetCard("TaMoko"), GetCard("FlameBarrier"), GetCard("DecoyProjection") };
+
+            DecisionSelectTurnTakers = new TurnTaker[3] { haka.TurnTaker, ra.TurnTaker, visionary.TurnTaker };
+            PutInHand(cardsToPlay);
+            DecisionSelectCards = cardsToPlay;
+
+            QuickHandStorage(starlight, haka, ra, visionary);
+            PlayCard(redshift);
+            QuickHandCheck(0, -1, -1, 0);
+            AssertIsInPlay(cardsToPlay[0], cardsToPlay[1]);
+            AssertNotInPlay(cardsToPlay[2]);
+
+        }
+        [Test()]
+        public void TestRedshiftAllowsExactlyOnePlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card redshift = GetCard("Redshift");
+            PutInHand(starlight, redshift);
+
+            var cardsInHand = new Card[3] { GetCard("TaMoko"), GetCard("FlameBarrier"), GetCard("DecoyProjection") };
+            var cardsToPlay = new Card[2] { cardsInHand[0], null };
+
+            DecisionSelectTurnTakers = new TurnTaker[3] { haka.TurnTaker, ra.TurnTaker, visionary.TurnTaker };
+            PutInHand(cardsInHand);
+            DecisionSelectCards = cardsToPlay;
+
+            QuickHandStorage(starlight, haka, ra, visionary);
+            PlayCard(redshift);
+            QuickHandCheck(0, -1, 0, 0);
+            AssertNotInPlay(cardsInHand[1]);
+        }
+        [Test()]
+        public void TestRedshiftDoesNotAllowIncapacitatedOrNoPlaysChoice()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card redshift = GetCard("Redshift");
+            PutInHand(starlight, redshift);
+
+            DealDamage(baron, visionary, 40, DamageType.Melee);
+            DiscardAllCards(ra);
+
+            AssertNextDecisionChoices(new List<TurnTaker> { starlight.TurnTaker, haka.TurnTaker }, new List<TurnTaker> { ra.TurnTaker, visionary.TurnTaker });
+            PlayCard(redshift);
+        }
+        [Test()]
         public void TestWishSimpleSelf()
         {
             SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
