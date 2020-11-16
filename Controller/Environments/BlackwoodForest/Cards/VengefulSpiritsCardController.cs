@@ -57,7 +57,6 @@ namespace Cauldron.BlackwoodForest
             IEnumerator revealCardsRoutine = base.GameController.RevealCards(this.TurnTakerController,
                 villainTrash, card => card.IsTarget, NumberOfCardMatches, revealedCards);
 
-
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(shuffleTrashRoutine);
@@ -69,14 +68,31 @@ namespace Cauldron.BlackwoodForest
                 base.GameController.ExhaustCoroutine(revealCardsRoutine);
             }
 
-            if (!revealedCards.Any() || !revealedCards.First().FoundMatchingCards)
+            Card matchedCard = GetRevealedCards(revealedCards).FirstOrDefault(c => c.IsTarget);
+            List<Card> otherCards = GetRevealedCards(revealedCards).Where(c => !c.IsTarget).ToList();
+
+            if (otherCards.Any())
+            {
+                // Put non matching revealed cards back in the trash
+                IEnumerator returnCardsRoutine = base.GameController.MoveCards(this.DecisionMaker, otherCards, villainTrash,
+                    cardSource: base.GetCardSource());
+
+                if (this.UseUnityCoroutines)
+                {
+                    yield return this.GameController.StartCoroutine(returnCardsRoutine);
+                }
+                else
+                {
+                    this.GameController.ExhaustCoroutine(returnCardsRoutine);
+                }
+            }
+
+            if (matchedCard == null)
             {
                 yield break;
             }
 
             // Eligible card found, put it into play and deal it 2 infernal damage
-            Card matchedCard = revealedCards.First().MatchingCards.First();
-
             IEnumerator playCardRoutine = this.GameController.PlayCard(this.TurnTakerController, matchedCard, true);
             IEnumerator dealDamageRoutine = this.DealDamage(this.Card, matchedCard, DamageToDeal, DamageType.Infernal);
 
