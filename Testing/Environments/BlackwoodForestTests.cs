@@ -202,7 +202,7 @@ namespace CauldronTests
             PlayCard(ShadowStalkerCardController.Identifier);
 
             Card theHound = GetCard(TheHoundCardController.Identifier);
-            PutOnDeck(BlackwoodForest, theHound); // Top deck something other than The Hound
+            PutOnDeck(BlackwoodForest, theHound); 
             GoToStartOfTurn(BlackwoodForest);
 
             // Assert
@@ -210,7 +210,6 @@ namespace CauldronTests
             AssertNotInPlay(theHound); // The Hound was shuffled back into the environment deck
             AssertInDeck(theHound); // The Hound should be back in the deck
             AssertNumberOfCardsInTrash(BlackwoodForest, 0); // No cards should be in the trash
-
         }
 
 
@@ -639,14 +638,6 @@ namespace CauldronTests
             //DecisionSelectWord = SelectWordDecision.
 
             DecisionDoNotSelectCard = SelectionType.DiscardCard;
-            
-
-            DecisionSelectCards = new[]
-            {
-                GetCardFromHand(ra, 0),
-                GetCardFromHand(legacy, 0),
-                GetCardFromHand(legacy, 1),
-            };
 
             GoToEndOfTurn(BlackwoodForest);
 
@@ -711,14 +702,15 @@ namespace CauldronTests
             Card theBlackTree = GetCard(TheBlackTreeCardController.Identifier);
             PlayCard(theBlackTree);
 
-            GoToEndOfTurn(BlackwoodForest);
-
-            // Assert
-
             // All decks should have 1 less card due to being placed under The Black Tree
             Assert.AreEqual(baronDeckCount - 1, GetNumberOfCardsInDeck(baron));
             Assert.AreEqual(raDeckCount - 1, GetNumberOfCardsInDeck(ra));
             Assert.AreEqual(legacyDeckCount - 1, GetNumberOfCardsInDeck(legacy));
+
+
+            GoToEndOfTurn(BlackwoodForest);
+
+            // Assert
 
             // 2 cards left under The Black Tree after playing one
             Assert.AreEqual(2, GetCardsUnderCard(theBlackTree).Count());
@@ -733,12 +725,7 @@ namespace CauldronTests
 
             StartGame();
 
-            int baronDeckCount = GetNumberOfCardsInDeck(baron);
-            int raDeckCount = GetNumberOfCardsInDeck(ra);
-            int legacyDeckCount = GetNumberOfCardsInDeck(legacy);
-
-
-            // Act
+           // Act
             GoToStartOfTurn(BlackwoodForest);
             Card theBlackTree = GetCard(TheBlackTreeCardController.Identifier);
             PlayCard(theBlackTree);
