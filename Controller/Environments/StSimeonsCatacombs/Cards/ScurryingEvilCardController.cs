@@ -14,8 +14,15 @@ namespace Cauldron.StSimeonsCatacombs
         public ScurryingEvilCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
-            base.SetCardProperty("ImmuneToDamage", false);
+            base.SpecialStringMaker.ShowSpecialString(() => "Scurrying Evil has not been dealt damage since it has entered play.", new Func<bool>(base.IsFirstOrOnlyCopyOfThisCardInPlay), null).Condition = (() => !this.HasBeenDealtDamageSinceEnteringPlay());
+            base.SpecialStringMaker.ShowSpecialString(() => "Scurrying Evil is immune to damage as long as " + this.FindCorrelatedRoom().ToString() + " is in play.", new Func<bool>(base.IsFirstOrOnlyCopyOfThisCardInPlay), () => new Card[]
+            {
+                base.Card
+            }).Condition = (() => this.IsImmuneToDamage());
         }
+
+        
+
 
         #endregion Constructors
 
@@ -130,6 +137,36 @@ namespace Cauldron.StSimeonsCatacombs
             }
 
             return false;
+        }
+
+        private bool HasBeenDealtDamageSinceEnteringPlay()
+        {
+            PlayCardJournalEntry playCardJournalEntry = base.GameController.Game.Journal.QueryJournalEntries<PlayCardJournalEntry>((PlayCardJournalEntry e) => e.CardPlayed == base.Card).LastOrDefault<PlayCardJournalEntry>();
+            int? playCardIndex = base.GameController.Game.Journal.GetEntryIndex(playCardJournalEntry);
+            IEnumerable<DealDamageJournalEntry> damageEntries = from e in base.GameController.Game.Journal.DealDamageEntries()
+                                                                  where e.TargetCard == base.Card && base.GameController.Game.Journal.GetEntryIndex(e) > playCardIndex
+                                                                  select e;
+            if(damageEntries.Count() > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private Card FindCorrelatedRoom()
+        {
+            IEnumerable<CardEntersPlayJournalEntry> roomEntries = from e in base.GameController.Game.Journal.CardEntersPlayEntries()
+                                                                  where this.IsDefinitionRoom(e.Card)
+                                                                  select e;
+            int numEntries = roomEntries.Count();
+            if (numEntries > 0)
+            {
+                Card currentRoom = roomEntries.ElementAt(numEntries - 1).Card;
+                return currentRoom;
+            }
+
+            return null;
         }
 
 
