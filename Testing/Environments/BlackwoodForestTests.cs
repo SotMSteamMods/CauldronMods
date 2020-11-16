@@ -693,6 +693,22 @@ namespace CauldronTests
 
         }
 
+        [Test]
+        public void TestTheBlackTree()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", DeckNamespace);
+            
+            StartGame();
+
+            // Act
+            GoToStartOfTurn(BlackwoodForest);
+            Card theBlackTree = GetCard(TheBlackTreeCardController.Identifier);
+            PlayCard(theBlackTree);
+
+            // Assert
+
+        }
 
     }
 }
