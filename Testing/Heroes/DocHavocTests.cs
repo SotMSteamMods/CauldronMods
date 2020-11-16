@@ -36,21 +36,28 @@ namespace CauldronTests
         public void TestDocHavocInnatePowerSuccess()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "Haka", "Megalopolis");
             StartGame();
+
+            //Setup to reduce variance
+            Card cardToPlay = PutInHand("FlameBarrier");
 
             GoToUsePowerPhase(DocHavoc);
             DecisionSelectTarget = ra.CharacterCard;
+            DecisionSelectCard = cardToPlay;
 
             QuickHandStorage(ra);
             QuickHPStorage(ra);
 
             // Act
+
+            //{DocHavoc} deals 1 hero 3 toxic damage. If that hero took damage this way, they may play a card now.
             UsePower(DocHavoc.CharacterCard);
 
             // Assert
             QuickHPCheck(-3);
-            QuickHandCheck(1);
+            QuickHandCheck(-1);
+            AssertInPlayArea(ra, cardToPlay);
 
         }
 
@@ -58,7 +65,7 @@ namespace CauldronTests
         public void TestDocHavocInnatePowerFail()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Legacy", "Cauldron.DocHavoc", "Megalopolis");
+            SetupGameController("BaronBlade", "Legacy", "Cauldron.DocHavoc", "Haka", "Megalopolis");
             StartGame();
 
             GoToPlayCardPhase(legacy);
@@ -77,11 +84,12 @@ namespace CauldronTests
             QuickHPStorage(legacy);
 
             // Act
+            //{ DocHavoc} deals 1 hero 3 toxic damage. If that hero took damage this way, they may play a card now.
             UsePower(DocHavoc.CharacterCard);
 
             // Assert
             QuickHPCheck(0); // Legacy immune to toxic, no change to HP
-            QuickHandCheck(0); // Hand size should still be 4 as Legacy could only draw a card if he sustained damage
+            QuickHandCheck(0); // Hand size should still be 4 as Legacy could only play a card if he sustained damage
         }
 
         [Test]

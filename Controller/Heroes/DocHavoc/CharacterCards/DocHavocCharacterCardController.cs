@@ -21,46 +21,53 @@ namespace Cauldron.DocHavoc
             // Adrenaline: Deals 1 hero 3 toxic damage. If that hero took damage this way, they may play a card now.
             //==============================================================
 
-            List<DealDamageAction> storedDamageResults = new List<DealDamageAction>();
-
+            //Deals 1 hero 3 toxic damage.
             DamageSource damageSource = new DamageSource(base.GameController, base.CharacterCard);
-            int powerNumeral = base.GetPowerNumeral(0, PowerDamageAmount);
+            int numTargets = base.GetPowerNumeral(1, 1);
+            int amount = base.GetPowerNumeral(1, PowerDamageAmount);
 
-            IEnumerator routine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, damageSource, powerNumeral,
-                DamageType.Toxic, new int?(1), false, new int?(1),
-                additionalCriteria: ((Func<Card, bool>)(c => c.IsHero)),
-                storedResultsDamage: storedDamageResults, cardSource: base.GetCardSource(null));
-
+            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
+                damageSource,
+                amount,
+                DamageType.Toxic,
+                new int?(numTargets), 
+                false,
+                new int?(numTargets),
+                additionalCriteria: ((Func<Card, bool>)(c => c.IsHeroCharacterCard)),
+                addStatusEffect: new Func<DealDamageAction, IEnumerator>(this.OnHeroDamageResponse),
+                cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(routine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(routine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
+        }
 
-            if (!this.DidIntendedTargetTakeDamage((IEnumerable<DealDamageAction>)storedDamageResults,
-                storedDamageResults.First().Target))
+        private IEnumerator OnHeroDamageResponse(DealDamageAction dd)
+        {
+            //If that hero took damage this way, they may play a card now.
+            if (dd != null && dd.OriginalTarget == dd.Target && dd.DidDealDamage)
             {
-                yield break;
+                Card targetHero = dd.Target;
+                HeroTurnTakerController heroController = null;
+                if (targetHero.Owner.IsHero)
+                {
+                    heroController = base.FindHeroTurnTakerController(targetHero.Owner.ToHero());
+                }
+                IEnumerator coroutine = base.SelectAndPlayCardFromHand(heroController,overrideName: targetHero.Title);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
-
-            // Intended damage taken, allow hero to draw a card
-            Card targetCard = storedDamageResults.First().Target;
-
-            IEnumerator drawCardRoutine = base.GameController.DrawCard(
-                base.GameController.HeroTurnTakerControllers.First(httc 
-                    => httc.CharacterCard.Equals(targetCard)).HeroTurnTaker);
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(drawCardRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(drawCardRoutine);
-            }
+            yield break;
         }
 
         public override IEnumerator UseIncapacitatedAbility(int index)
