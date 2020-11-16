@@ -34,7 +34,7 @@ namespace Cauldron.DocHavoc
                 false,
                 new int?(numTargets),
                 additionalCriteria: ((Func<Card, bool>)(c => c.IsHeroCharacterCard)),
-                addStatusEffect: new Func<DealDamageAction, IEnumerator>(this.OnHeroDamageResponse),
+                addStatusEffect: new Func<DealDamageAction, IEnumerator>(this.OnIntendedHeroDamageResponse),
                 cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
@@ -46,7 +46,7 @@ namespace Cauldron.DocHavoc
             }
         }
 
-        private IEnumerator OnHeroDamageResponse(DealDamageAction dd)
+        private IEnumerator OnIntendedHeroDamageResponse(DealDamageAction dd)
         {
             //If that hero took damage this way, they may play a card now.
             if (dd != null && dd.OriginalTarget == dd.Target && dd.DidDealDamage)
@@ -72,56 +72,56 @@ namespace Cauldron.DocHavoc
 
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
-            IEnumerator routine = null;
+            IEnumerator coroutine = null;
             switch (index)
             {
                 case 0:
 
-                    routine = GetIncapacitateOption1();
+                    coroutine = DoIncapacitateOption1();
 
                     if (base.UseUnityCoroutines)
                     {
-                        yield return base.GameController.StartCoroutine(routine);
+                        yield return base.GameController.StartCoroutine(coroutine);
                     }
                     else
                     {
-                        base.GameController.ExhaustCoroutine(routine);
+                        base.GameController.ExhaustCoroutine(coroutine);
                     }
 
                     break;
 
                 case 1:
 
-                    routine = DoIncapacitateOption2();
+                    coroutine = DoIncapacitateOption2();
 
                     if (base.UseUnityCoroutines)
                     {
-                        yield return base.GameController.StartCoroutine(routine);
+                        yield return base.GameController.StartCoroutine(coroutine);
                     }
                     else
                     {
-                        base.GameController.ExhaustCoroutine(routine);
+                        base.GameController.ExhaustCoroutine(coroutine);
                     }
                     break;
 
                 case 2:
 
-                    routine = DoIncapacitateOption3();
+                    coroutine = DoIncapacitateOption3();
 
                     if (base.UseUnityCoroutines)
                     {
-                        yield return base.GameController.StartCoroutine(routine);
+                        yield return base.GameController.StartCoroutine(coroutine);
                     }
                     else
                     {
-                        base.GameController.ExhaustCoroutine(routine);
+                        base.GameController.ExhaustCoroutine(coroutine);
                     }
 
                     break;
             }
         }
 
-        private IEnumerator GetIncapacitateOption1()
+        private IEnumerator DoIncapacitateOption1()
         {
             //==============================================================
             // Up to 3 hero targets regain 1 HP each.

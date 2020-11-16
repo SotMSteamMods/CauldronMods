@@ -93,21 +93,27 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestIncapacitateOption1()
+        public void TestIncapacitateOption1_3Targets()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Legacy", "Ra", "Cauldron.DocHavoc", "Megalopolis");
+            SetupGameController("BaronBlade", "Legacy", "Ra", "Haka", "Cauldron.DocHavoc", "Megalopolis");
             StartGame();
 
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            //incap doc havoc
             SetHitPoints(DocHavoc.CharacterCard, 1);
             DealDamage(baron, DocHavoc, 2, DamageType.Melee);
 
-            DealDamage(baron, legacy, 2, DamageType.Melee);
-            DealDamage(baron, ra, 2, DamageType.Melee);
+            //give room to gain hp
+            SetHitPoints(baron.CharacterCard, 20);
+            SetHitPoints(mdp, 5);
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(ra.CharacterCard, 18);
+            SetHitPoints(haka.CharacterCard, 18);
 
-            Card[] healTargets = new Card[] { legacy.CharacterCard, ra.CharacterCard };
-            QuickHPStorage(healTargets);
-            QuickHPUpdate();
+            Card[] healTargets = new Card[] { legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard };
+            QuickHPStorage(baron.CharacterCard, mdp, legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard);
 
             DecisionSelectCards = healTargets;
             GoToUseIncapacitatedAbilityPhase(DocHavoc);
@@ -118,7 +124,110 @@ namespace CauldronTests
 
             // Assert
             AssertIncapacitated(DocHavoc);
-            QuickHPCheck(1, 1);
+            QuickHPCheck(0,0,1,1,1);
+
+        }
+
+        [Test]
+        public void TestIncapacitateOption1_2Targets()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Legacy", "Ra", "Haka", "Cauldron.DocHavoc", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            //incap doc havoc
+            SetHitPoints(DocHavoc.CharacterCard, 1);
+            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+
+            //give room to gain hp
+            SetHitPoints(baron.CharacterCard, 20);
+            SetHitPoints(mdp, 5);
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(ra.CharacterCard, 18);
+
+            Card[] healTargets = new Card[] { legacy.CharacterCard, ra.CharacterCard, null};
+            QuickHPStorage(baron.CharacterCard, mdp, legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard);
+
+            DecisionSelectCards = healTargets;
+            GoToUseIncapacitatedAbilityPhase(DocHavoc);
+
+            // Act
+            UseIncapacitatedAbility(DocHavoc, 0);
+
+
+            // Assert
+            AssertIncapacitated(DocHavoc);
+            QuickHPCheck(0, 0, 1, 1, 0);
+
+        }
+
+        [Test]
+        public void TestIncapacitateOption1_1Target()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Legacy", "Ra", "Haka", "Cauldron.DocHavoc", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            //incap doc havoc
+            SetHitPoints(DocHavoc.CharacterCard, 1);
+            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+
+            //give room to gain hp
+            SetHitPoints(baron.CharacterCard, 20);
+            SetHitPoints(mdp, 5);
+            SetHitPoints(legacy.CharacterCard, 15);
+
+            Card[] healTargets = new Card[] { legacy.CharacterCard, null};
+            QuickHPStorage(baron.CharacterCard, mdp, legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard);
+
+            DecisionSelectCards = healTargets;
+            GoToUseIncapacitatedAbilityPhase(DocHavoc);
+
+            // Act
+            UseIncapacitatedAbility(DocHavoc, 0);
+
+
+            // Assert
+            AssertIncapacitated(DocHavoc);
+            QuickHPCheck(0, 0, 1, 0, 0);
+
+        }
+
+        [Test()]
+        public void TestIncapacitateOption1_0Targets()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Legacy", "Ra", "Haka", "Cauldron.DocHavoc", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            //incap doc havoc
+            SetHitPoints(DocHavoc.CharacterCard, 1);
+            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+
+            //give room to gain hp
+            SetHitPoints(baron.CharacterCard, 20);
+            SetHitPoints(mdp, 5);
+
+
+            
+            QuickHPStorage(baron.CharacterCard, mdp, legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard);
+
+            DecisionDoNotSelectCard = SelectionType.GainHP;
+            GoToUseIncapacitatedAbilityPhase(DocHavoc);
+
+            // Act
+            UseIncapacitatedAbility(DocHavoc, 0);
+
+
+            // Assert
+            AssertIncapacitated(DocHavoc);
+            QuickHPCheck(0, 0, 0, 0, 0);
 
         }
 
