@@ -14,7 +14,7 @@ namespace Cauldron.Tiamat
 
         public override IEnumerator StartGame()
         {
-            if (!(base.CharacterCardController is WinterTiamatCharacterCardController))
+            if (base.TurnTaker.GetCardByIdentifier("WinterTiamatCharacter").MaximumHitPoints == 15)
             {
                 Card earth = base.TurnTaker.GetCardByIdentifier("EarthTiamatCharacter");
                 Card decay = base.TurnTaker.GetCardByIdentifier("DecayTiamatCharacter");

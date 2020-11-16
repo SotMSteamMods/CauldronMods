@@ -50,7 +50,7 @@ namespace CauldronTests
         [Test()]
         public void TestHydraTiamatLoad()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
 
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
