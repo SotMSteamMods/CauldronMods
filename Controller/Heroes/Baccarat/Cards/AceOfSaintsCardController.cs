@@ -10,13 +10,10 @@ namespace Cauldron.Baccarat
 {
     public class AceOfSaintsCardController : CardController
     {
-        #region Constructors
-
-        public AceOfSaintsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController) { }
-
-        #endregion Constructors
-
-        #region Methods
+        public AceOfSaintsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        {
+            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => TwoOrMoreCopiesInTrash(c)));
+        }
 
         public override void AddTriggers()
         {
@@ -77,7 +74,7 @@ namespace Cauldron.Baccarat
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-                yield break;
+            yield break;
         }
 
         private bool TwoOrMoreCopiesInTrash(Card c)
@@ -86,9 +83,6 @@ namespace Cauldron.Baccarat
                        where card.Identifier == c.Identifier
                        select card).Count<Card>();
             return num >= 2;
-
         }
-
-        #endregion Methods
     }
 }

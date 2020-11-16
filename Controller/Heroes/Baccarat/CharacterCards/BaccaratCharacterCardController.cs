@@ -13,22 +13,12 @@ namespace Cauldron.Baccarat
 
     public class BaccaratCharacterCardController : HeroCharacterCardController
     {
-        #region Constructors
-
         public BaccaratCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
 
-        #endregion Constructors
-
-        #region Properties
-
         private List<Card> actedHeroes;
-
-        #endregion Properties
-
-        #region Methods
 
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
@@ -262,7 +252,5 @@ namespace Cauldron.Baccarat
             }
             yield break;
         }
-
-        #endregion Methods
     }
 }

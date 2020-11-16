@@ -10,13 +10,10 @@ namespace Cauldron.Baccarat
 {
     public class BringDownTheHouseCardController : CardController
     {
-        #region Constructors
-
-        public BringDownTheHouseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController) { }
-
-        #endregion Constructors
-
-        #region Methods
+        public BringDownTheHouseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        {
+            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => TwoOrMoreCopiesInTrash(c)));
+        }
 
         public override IEnumerator Play()
         {
@@ -42,7 +39,7 @@ namespace Cauldron.Baccarat
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             //move second card of pairs to deck
-            foreach(SelectCardDecision cardDecision in storedSelectResults)
+            foreach (SelectCardDecision cardDecision in storedSelectResults)
             {
                 coroutine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == cardDecision.SelectedCard.Identifier, "second card with the same name"), moveCardDestination, false, true, true, true, null, false, true, null, false, true, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
@@ -75,9 +72,6 @@ namespace Cauldron.Baccarat
                        where card.Identifier == c.Identifier
                        select card).Count<Card>();
             return num >= 2;
-
         }
-
-        #endregion Methods
     }
 }
