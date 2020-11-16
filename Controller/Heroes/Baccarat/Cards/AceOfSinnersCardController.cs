@@ -85,7 +85,6 @@ namespace Cauldron.Baccarat
                        where card.Identifier == c.Identifier
                        select card).Count<Card>();
             return num >= 2;
-
         }
     }
 }

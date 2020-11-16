@@ -55,7 +55,6 @@ namespace Cauldron.Baccarat
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
             yield break;
         }
     }
