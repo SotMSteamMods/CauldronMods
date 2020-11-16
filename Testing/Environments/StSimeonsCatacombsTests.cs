@@ -1843,5 +1843,158 @@ namespace CauldronTests
             GoToStartOfTurn(haka);
             AssertNumberOfCardsInHand(haka, 0);
         }
+
+        [Test()]
+        public void TestScurryingEvil_IndestructibleUnlessLessThan0()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            GoToEndOfTurn(catacombs);
+
+            GoToPlayCardPhase(catacombs);
+
+            Card scurrying = PlayCard("ScurryingEvil");
+
+            //This card is indestructible until it has 0 or fewer HP.
+
+            DestroyCard(scurrying, ra.CharacterCard);
+            AssertInPlayArea(catacombs, scurrying);
+
+            DealDamage(ra.CharacterCard, scurrying, 5, DamageType.Fire);
+
+            AssertInTrash(scurrying);
+
+        }
+
+        [Test()]
+        public void TestScurryingEvil_EndOfTurn()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            GoToEndOfTurn(catacombs);
+
+            GoToPlayCardPhase(catacombs);
+
+            PlayCard("ScurryingEvil");
+
+            //At the end of the environment turn, play the top card of the environment deck.
+            Card guide = PutOnDeck("LabyrinthGuide");
+            GoToEndOfTurn(catacombs);
+            AssertInPlayArea(catacombs, guide);
+
+        }
+
+        [Test()]
+        public void TestScurryingEvil_DamageImmunity()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+
+            GoToPlayCardPhase(catacombs);
+
+            Card scurrying = PlayCard("ScurryingEvil");
+            //Whenever this card is dealt damage, it becomes immune to damage until a different Room card enters play.
+            QuickHPStorage(scurrying);
+            DealDamage(ra.CharacterCard, scurrying, 1, DamageType.Fire);
+            QuickHPCheck(-1);
+            
+            //scurrying evil should now be immune
+            QuickHPStorage(scurrying);
+            DealDamage(haka.CharacterCard, scurrying, 1, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //force a room change
+            DestroyCard(playedRoom, ra.CharacterCard);
+            QuickHPStorage(scurrying);
+            DealDamage(haka.CharacterCard, scurrying, 1, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            //stack deck to prevent living geometry from destroying more rooms
+            Card guide = PutOnDeck("LabyrinthGuide");
+
+            GoToNextTurn();
+            //scurrying evil should now be immune
+            //check that it persists through turns
+            QuickHPStorage(scurrying);
+            DealDamage(ra.CharacterCard, scurrying, 1, DamageType.Fire);
+            QuickHPCheck(0);
+
+        }
+
+        [Test()]
+        public void TestScurryingEvil_DamageImmunity_LivingGeometry()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+
+            GoToPlayCardPhase(catacombs);
+
+            Card scurrying = PlayCard("ScurryingEvil");
+            //Whenever this card is dealt damage, it becomes immune to damage until a different Room card enters play.
+            QuickHPStorage(scurrying);
+            DealDamage(ra.CharacterCard, scurrying, 1, DamageType.Fire);
+            QuickHPCheck(-1);
+
+            //scurrying evil should now be immune
+            QuickHPStorage(scurrying);
+            DealDamage(haka.CharacterCard, scurrying, 1, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //force a room change
+            DestroyCard(playedRoom, ra.CharacterCard);
+            QuickHPStorage(scurrying);
+            DealDamage(haka.CharacterCard, scurrying, 1, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            Card guide = PutOnDeck("LivingGeometry");
+            Card oldRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+            GoToNextTurn();
+            Card currentRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            if(oldRoom != currentRoom)
+            {
+                //living geometry destroyed a room at the end of the turn so should be non-immune
+                QuickHPStorage(scurrying);
+                DealDamage(ra.CharacterCard, scurrying, 1, DamageType.Fire);
+                QuickHPCheck(-1);
+
+                //should now be immune
+                QuickHPStorage(scurrying);
+                DealDamage(haka.CharacterCard, scurrying, 1, DamageType.Melee);
+                QuickHPCheck(0);
+            } else
+            {
+                //living geometry played the same room so should be immune
+                QuickHPStorage(scurrying);
+                DealDamage(haka.CharacterCard, scurrying, 1, DamageType.Melee);
+                QuickHPCheck(0);
+            }
+            
+
+        }
     }
 }
