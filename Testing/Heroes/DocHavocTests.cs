@@ -280,6 +280,15 @@ namespace CauldronTests
             // Assert
             AssertIncapacitated(DocHavoc);
             QuickHPCheck(0, 0);
+
+            //check that hero and villains can still deal damage
+            QuickHPStorage(ra);
+            DealDamage(baron, ra, 3, DamageType.Lightning);
+            QuickHPCheck(-3);
+
+            QuickHPStorage(ra);
+            DealDamage(legacy, ra, 3, DamageType.Melee);
+            QuickHPCheck(-3);
         }
 
         [Test]
