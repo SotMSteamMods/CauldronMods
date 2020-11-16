@@ -11,7 +11,7 @@ namespace Cauldron.StSimeonsCatacombs
     {
         #region Constructors
 
-        public PoltergeistCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "SacrificialShrine")
+        public PoltergeistCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { "SacrificialShrine" })
         {
 
         }

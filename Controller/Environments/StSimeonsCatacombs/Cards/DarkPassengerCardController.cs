@@ -10,7 +10,7 @@ namespace Cauldron.StSimeonsCatacombs
     {
         #region Constructors
 
-        public DarkPassengerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "CursedVault")
+        public DarkPassengerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { "CursedVault" })
         {
 
         }

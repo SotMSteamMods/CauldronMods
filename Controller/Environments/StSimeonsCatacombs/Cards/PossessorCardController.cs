@@ -10,7 +10,7 @@ namespace Cauldron.StSimeonsCatacombs
     {
         #region Constructors
 
-        public PossessorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "TortureChamber")
+        public PossessorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { "TortureChamber" })
         {
 
         }

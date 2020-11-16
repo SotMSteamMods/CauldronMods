@@ -10,9 +10,9 @@ namespace Cauldron
     {
         #region Constructors
 
-        public GhostCardController(Card card, TurnTakerController turnTakerController, string affectedIdentifier) : base(card, turnTakerController)
+        public GhostCardController(Card card, TurnTakerController turnTakerController, string[] affectedIdentifiers) : base(card, turnTakerController)
         {
-            this.AffectedIdentifier = affectedIdentifier;
+            this.AffectedIdentifiers = affectedIdentifiers;
             //TODO: Add a conditional special string that says something like "AffectedCard is in play so it is affected by Hero cards" and the reverse
             base.AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
         }
@@ -62,10 +62,10 @@ namespace Cauldron
         }
         private bool IsAffectedCardInPlay()
         {
-            return base.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.Identifier == AffectedIdentifier).Count() > 0;
+            return base.FindCardsWhere(c => c.IsInPlayAndHasGameText && AffectedIdentifiers.Contains(c.Identifier)).Count() > 0;
         }
 
-        public string AffectedIdentifier { get; private set; }
+        public string[] AffectedIdentifiers { get; private set; }
         #endregion Methods
     }
 }
