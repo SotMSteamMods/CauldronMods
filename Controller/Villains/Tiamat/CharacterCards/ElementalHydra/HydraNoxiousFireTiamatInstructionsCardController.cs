@@ -44,7 +44,7 @@ namespace Cauldron.Tiamat
                 //The heroes win the game when 6 heads are decapitated.
                 base.AddTrigger<GameAction>(delegate (GameAction action)
                 {
-                    if (base.GameController.HasGameStarted && !(action is GameOverAction) && !(g is IncrementAchievementAction))
+                    if (base.GameController.HasGameStarted && !(action is GameOverAction) && !(action is IncrementAchievementAction))
                     {
                         return base.FindCardsWhere((Card c) => c.DoKeywordsContain("head") && c.IsFlipped).Count<Card>() == 6;
                     }

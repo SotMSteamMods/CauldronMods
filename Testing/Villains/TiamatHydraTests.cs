@@ -1,15 +1,12 @@
 ﻿using Cauldron.Tiamat;
 using Handelabra.Sentinels.Engine.Controller;
-using Handelabra.Sentinels.Engine.Controller.AbsoluteZero;
 using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
 using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Management.Instrumentation;
 
 namespace CauldronTests
 {
@@ -21,11 +18,8 @@ namespace CauldronTests
         protected Card storm { get { return GetCardInPlay("StormTiamatCharacter"); } }
         protected Card winter { get { return GetCardInPlay("WinterTiamatCharacter"); } }
         protected Card decay { get { return GetCardInPlay("DecayTiamatCharacter"); } }
-        protected Card wind { get { return GetCardInPlay("windTiamatCharacter"); } }
+        protected Card wind { get { return GetCardInPlay("WindTiamatCharacter"); } }
         protected Card earth { get { return GetCardInPlay("EarthTiamatCharacter"); } }
-        protected Dictionary<string, string> winterDict = new Dictionary<string, string>() { { "WinterTiamatCharacter", "HydraWinterTiamatCharacter" } };
-
-
 
         private void SetupIncap(TurnTakerController source, Card target)
         {
@@ -56,7 +50,8 @@ namespace CauldronTests
         [Test()]
         public void TestHydraTiamatLoad()
         {
-            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis" });
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
 
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
             var a = tiamat.CharacterCardController;
@@ -1297,54 +1292,11 @@ namespace CauldronTests
             QuickHPCheck(0, -5, -5, -5);
         }
 
-
         [Test()]
         [Sequential]
-        public void DecklistTest_OneShot_IsOneShot([Values("ElementOfFire", "ElementOfIce", "ElementOfLightning", "AcidBreath", "ManaCharge", "SkyBreaker", "HealingMagic", "Alteration")] string oneshot)
+        public void DecklistTest_Head_IsHead([Values("InfernoTiamatCharacter", "StormTiamatCharacter", "WinterTiamatCharacter", "EarthTiamatCharacter", "DecayTiamatCharacter", "WindTiamatCharacter")] string head)
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Ra", "Fanatic", "Megalopolis");
-            StartGame();
-
-            GoToPlayCardPhase(tiamat);
-
-            Card card = PlayCard(oneshot);
-            AssertInTrash(tiamat, card);
-            AssertCardHasKeyword(card, "one-shot", false);
-        }
-
-        [Test()]
-        [Sequential]
-        public void DecklistTest_Spell_IsSpell([Values("ElementOfFire", "ElementOfIce", "ElementOfLightning")] string spell)
-        {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Ra", "Fanatic", "Megalopolis");
-            StartGame();
-
-            GoToPlayCardPhase(tiamat);
-
-            Card card = PlayCard(spell);
-            AssertCardHasKeyword(card, "spell", false);
-        }
-
-        [Test()]
-        [Sequential]
-        public void DecklistTest_Ongoing_IsOngoing([Values("ElementalForm", "AncientWard", "DragonsWrath", "ReptilianAspect", "ElementalFrenzy")] string ongoing)
-        {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Ra", "Fanatic", "Megalopolis");
-            StartGame();
-            //put a spell in trash so ElementalFrenzy doesn't nuke itself
-            PutInTrash("ElementOfFire");
-            GoToPlayCardPhase(tiamat);
-
-            Card card = PlayCard(ongoing);
-            AssertInPlayArea(tiamat, card);
-            AssertCardHasKeyword(card, "ongoing", false);
-        }
-
-        [Test()]
-        [Sequential]
-        public void DecklistTest_Head_IsHead([Values("InfernoTiamatCharacter", "StormTiamatCharacter", "WinterTiamatCharacter")] string head)
-        {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Ra", "Fanatic", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
             Card card = GetCard(head);
@@ -1354,9 +1306,9 @@ namespace CauldronTests
 
         [Test()]
         [Sequential]
-        public void DecklistTest_Villain_IsVillain([Values("InfernoTiamatCharacter", "StormTiamatCharacter", "WinterTiamatCharacter")] string villain)
+        public void DecklistTest_Villain_IsVillain([Values("InfernoTiamatCharacter", "StormTiamatCharacter", "WinterTiamatCharacter", "EarthTiamatCharacter", "DecayTiamatCharacter", "WindTiamatCharacter")] string villain)
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Ra", "Fanatic", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
             Card card = GetCard(villain);
