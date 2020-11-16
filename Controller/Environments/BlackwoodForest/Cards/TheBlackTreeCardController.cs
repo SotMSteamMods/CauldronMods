@@ -86,9 +86,7 @@ namespace Cauldron.BlackwoodForest
         private IEnumerator EndOfTurnPlayCardBeneathResponse(PhaseChangeAction pca)
         {
             // Play a random card from beneath
-
-            // TODO: Creating a Random instance each call ok? Or a thread safe static instance?
-            var r = new Random();
+            var r = Game.RNG; // Using Random() here will desync multiplayer, always use Game.RNG
             Card[] enumerable = this.Card.UnderLocation.Cards as Card[] ?? this.Card.UnderLocation.Cards.ToArray();
             Card cardToPlay = enumerable.ElementAt(r.Next(0, enumerable.Count()));
 
