@@ -1982,9 +1982,13 @@ namespace CauldronTests
                 DealDamage(ra.CharacterCard, scurrying, 1, DamageType.Fire);
                 if(currentRoom.Identifier == "TwistingPassages")
                 {
+                    //damage has been increased by 1
                     QuickHPCheck(-2);
-                }
-                else
+                } else if(currentRoom.Identifier == "SacrificialShrine")
+                {
+                    //extra damage has been dealt, so will be immune to damage
+                    QuickHPCheck(0);
+                } else
                 {
                     QuickHPCheck(-1);
                 }
