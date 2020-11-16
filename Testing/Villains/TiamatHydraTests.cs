@@ -23,6 +23,9 @@ namespace CauldronTests
         protected Card decay { get { return GetCardInPlay("DecayTiamatCharacter"); } }
         protected Card wind { get { return GetCardInPlay("windTiamatCharacter"); } }
         protected Card earth { get { return GetCardInPlay("EarthTiamatCharacter"); } }
+        protected Dictionary<string, string> winterDict = new Dictionary<string, string>() { { "WinterTiamatCharacter", "HydraWinterTiamatCharacter" } };
+
+
 
         private void SetupIncap(TurnTakerController source, Card target)
         {
@@ -53,16 +56,16 @@ namespace CauldronTests
         [Test()]
         public void TestHydraTiamatLoad()
         {
-            SetupGameController("Cauldron.Tiamat/ElementalHydraTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis" });
 
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
             var a = tiamat.CharacterCardController;
             Assert.IsNotNull(tiamat);
             Assert.IsInstanceOf(typeof(WinterTiamatCharacterCardController), tiamat.CharacterCardController);
             AssertNumberOfCardsInPlay(tiamat, 3);
-            Assert.AreEqual(40, inferno.HitPoints);
-            Assert.AreEqual(40, storm.HitPoints);
-            Assert.AreEqual(40, winter.HitPoints);
+            Assert.AreEqual(15, inferno.HitPoints);
+            Assert.AreEqual(15, storm.HitPoints);
+            Assert.AreEqual(15, winter.HitPoints);
         }
 
         [Test()]
