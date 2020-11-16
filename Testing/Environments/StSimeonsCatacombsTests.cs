@@ -1980,7 +1980,15 @@ namespace CauldronTests
                 //living geometry destroyed a room at the end of the turn so should be non-immune
                 QuickHPStorage(scurrying);
                 DealDamage(ra.CharacterCard, scurrying, 1, DamageType.Fire);
-                QuickHPCheck(-1);
+                if(currentRoom.Identifier == "TwistingPassages")
+                {
+                    QuickHPCheck(-2);
+                }
+                else
+                {
+                    QuickHPCheck(-1);
+                }
+
 
                 //should now be immune
                 QuickHPStorage(scurrying);
@@ -1993,7 +2001,171 @@ namespace CauldronTests
                 DealDamage(haka.CharacterCard, scurrying, 1, DamageType.Melee);
                 QuickHPCheck(0);
             }
+
+        }
+
+        [Test()]
+        public void TestTerriblePresence_TortureChamberInPlay_Affected()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is Torture Chamber in play
+            if (playedRoom.Identifier != "TortureChamber")
+            {
+                DecisionSelectCard = GetCard("TortureChamber");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card terrible = PlayCard("TerriblePresence");
+
+            PrintSeparator("Check if terrible presence can be dealt damage from hero card");
+            //This card may not be affected by hero cards unless Torture Chamber is in play.
+            QuickHPStorage(terrible);
+            DealDamage(ra.CharacterCard, terrible, 1, DamageType.Fire);
+            QuickHPCheck(-1);
+
+
+        }
+
+        [Test()]
+        public void TestTerriblePresence_AqueductsInPlay_Affected()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is Aqueducts in play
+            if (playedRoom.Identifier != "Aqueducts")
+            {
+                DecisionSelectCard = GetCard("Aqueducts");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card terrible = PlayCard("TerriblePresence");
+
+            PrintSeparator("Check if terrible presence can be dealt damage from hero card");
+            //This card may not be affected by hero cards unless aqueducts is in play.
+            QuickHPStorage(terrible);
+            DealDamage(ra.CharacterCard, terrible, 1, DamageType.Fire);
+            QuickHPCheck(-1);
+
+
+        }
+
+        [Test()]
+        public void TestTerriblePresence_TortureChamberAndAqueductNotInPlay_NotAffected()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Set Hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 25);
+            SetHitPoints(haka.CharacterCard, 15);
+
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is not Torture Chamber in play
+            //putting aqueducts in play to simplify
+            if (playedRoom.Identifier != "SacrificialShrine")
+            {
+                DecisionSelectCard = GetCard("SacrificialShrine");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card terrible = PlayCard("TerriblePresence");
+
+            PrintSeparator("Check if Terrible Presence can be dealt damage from hero card");
+            //This card may not be affected by hero cards unless Torture Chamber or aqueducts is in play.
+            QuickHPStorage(terrible);
+            DealDamage(ra.CharacterCard, terrible, 1, DamageType.Fire);
+            QuickHPCheckZero();
+
+            Card[] targets = new Card[] { baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, terrible };
+
+            QuickHPStorage(targets);
+            DealDamage(ra.CharacterCard, (Card c) => c.IsTarget, 3, DamageType.Fire);
+            QuickHPCheck(-3, -3, -3, -3, 0);
+
+        }
+
+        [Test()]
+        public void TestTerriblePresenceEndOfTurn()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Set Hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 25);
+            SetHitPoints(haka.CharacterCard, 15);
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is torture chamber in play
+            if (playedRoom.Identifier != "TortureChamber")
+            {
+                DecisionSelectCard = GetCard("TortureChamber");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            // At the end of the environment turn, this card deals the 2 non - ghost targets with the lowest HP 2 cold damage each.
+            Card terrible = PlayCard("TerriblePresence");
+
+            //2 lowest non ghosts are haka and mdp
+            QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, terrible);
+            GoToEndOfTurn(catacombs);
+            QuickHPCheck(0, -2, 0, 0, -2, 0);
             
+           
 
         }
     }
