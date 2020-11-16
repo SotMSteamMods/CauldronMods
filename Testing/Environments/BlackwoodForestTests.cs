@@ -694,21 +694,66 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestTheBlackTree()
+        public void TestTheBlackTreeCheckCardProcedures()
         {
             // Arrange
             SetupGameController("BaronBlade", "Ra", "Legacy", DeckNamespace);
             
             StartGame();
 
+            int baronDeckCount = GetNumberOfCardsInDeck(baron);
+            int raDeckCount = GetNumberOfCardsInDeck(ra);
+            int legacyDeckCount = GetNumberOfCardsInDeck(legacy);
+
+
             // Act
             GoToStartOfTurn(BlackwoodForest);
             Card theBlackTree = GetCard(TheBlackTreeCardController.Identifier);
             PlayCard(theBlackTree);
 
+            GoToEndOfTurn(BlackwoodForest);
+
             // Assert
 
+            // All decks should have 1 less card due to being placed under The Black Tree
+            Assert.AreEqual(baronDeckCount - 1, GetNumberOfCardsInDeck(baron));
+            Assert.AreEqual(raDeckCount - 1, GetNumberOfCardsInDeck(ra));
+            Assert.AreEqual(legacyDeckCount - 1, GetNumberOfCardsInDeck(legacy));
+
+            // 2 cards left under The Black Tree after playing one
+            Assert.AreEqual(2, GetCardsUnderCard(theBlackTree).Count());
+
         }
+
+        [Test]
+        public void TestTheBlackTreeExhaustCardsUnderneath()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", DeckNamespace);
+
+            StartGame();
+
+            int baronDeckCount = GetNumberOfCardsInDeck(baron);
+            int raDeckCount = GetNumberOfCardsInDeck(ra);
+            int legacyDeckCount = GetNumberOfCardsInDeck(legacy);
+
+
+            // Act
+            GoToStartOfTurn(BlackwoodForest);
+            Card theBlackTree = GetCard(TheBlackTreeCardController.Identifier);
+            PlayCard(theBlackTree);
+
+            // Run thru the env. turn 3 times to exhaust the cards beneath it
+            GoToEndOfTurn(BlackwoodForest);
+            GoToEndOfTurn(BlackwoodForest);
+            GoToEndOfTurn(BlackwoodForest);
+
+            // Assert
+
+            // Played all 3 cards underneath, The Black Tree should now have destroyed itself
+            AssertInTrash(BlackwoodForest, theBlackTree);
+        }
+
 
     }
 }

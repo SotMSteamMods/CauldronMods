@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -18,6 +21,8 @@ namespace Cauldron.BlackwoodForest
 
         public static string Identifier = "TheBlackTree";
 
+        private const int CardsToDrawFromEachDeck = 1;
+
         public TheBlackTreeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
@@ -30,25 +35,94 @@ namespace Cauldron.BlackwoodForest
             base.AddEndOfTurnTrigger(tt => tt == base.TurnTaker, EndOfTurnPlayCardBeneathResponse,
                 TriggerType.PlayCard, null, false);
 
-            // When this card is destroyed, discard any remaining cards beneath it.
-            base.AddWhenDestroyedTrigger(DestroyCardResponse, TriggerType.DestroyCard);
 
             base.AddTriggers();
         }
 
         public override IEnumerator Play()
         {
-            return base.Play();
+            IEnumerator drawCardsRoutine = base.DoActionToEachTurnTakerInTurnOrder(
+                ttc => !ttc.Equals(this.TurnTakerController) && !ttc.IsIncapacitatedOrOutOfGame,
+                DrawCardFromEachDeckResponse);
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(drawCardsRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(drawCardsRoutine);
+            }
+        }
+
+        private IEnumerator DrawCardFromEachDeckResponse(TurnTakerController ttc)
+        {
+            List<Card> revealedCards = new List<Card>();
+            IEnumerator revealCardRoutine = this.GameController.RevealCards(ttc, ttc.CharacterCard.Owner.Deck, CardsToDrawFromEachDeck, revealedCards);
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(revealCardRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(revealCardRoutine);
+            }
+
+            //IEnumerator bulkMoveRoutine = base.GameController.BulkMoveCards(this.TurnTakerController, revealedCards, this.Card.UnderLocation);
+            foreach (var moveCardsRoutine in revealedCards.Select(revealedCard => this.GameController.MoveCard(ttc, revealedCard, this.Card.UnderLocation, flipFaceDown: true)))
+            {
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(moveCardsRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(moveCardsRoutine);
+                }
+            }
         }
 
         private IEnumerator EndOfTurnPlayCardBeneathResponse(PhaseChangeAction pca)
         {
-            yield break;
+            // Play a random card from beneath
+
+            // TODO: Creating a Random instance each call ok? Or a thread safe static instance?
+            var r = new Random();
+            Card[] enumerable = this.Card.UnderLocation.Cards as Card[] ?? this.Card.UnderLocation.Cards.ToArray();
+            Card cardToPlay = enumerable.ElementAt(r.Next(0, enumerable.Count()));
+
+            IEnumerator playCardRoutine = this.PlayCardFromLocation(this.Card.UnderLocation, cardToPlay.Identifier, shuffleAfterwardsIfDeck: false);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(playCardRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(playCardRoutine);
+            }
+
+            if (AreCardsRemainingBelowSelf())
+            {
+                // Still cards remaining underneath, return
+                yield break;
+            }
+
+            // No cards left underneath, destroy this card
+            IEnumerator destroyRoutine = base.GameController.DestroyCard(this.HeroTurnTakerController, this.Card);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(destroyRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(destroyRoutine);
+            }
         }
 
-        private IEnumerator DestroyCardResponse(DestroyCardAction dca)
+        private bool AreCardsRemainingBelowSelf()
         {
-            yield break;
+            return this.Card.UnderLocation.Cards.Any();
         }
     }
 }
