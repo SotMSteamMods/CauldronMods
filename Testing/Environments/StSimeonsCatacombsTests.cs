@@ -1553,7 +1553,7 @@ namespace CauldronTests
             SetupGameController(new string[] { "BaronBlade", "TheWraith", "Stuntman", "Haka", "Cauldron.StSimeonsCatacombs" });
             StartGame();
 
-            SetHitPoints(wraith, 1);
+           
 
             //change villain targets in play to make baron blade vulnerable
             Card mdp = GetCardInPlay("MobileDefensePlatform");
@@ -1562,10 +1562,14 @@ namespace CauldronTests
             Card instructions = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
-
+            SetHitPoints(wraith, 3);
             GoToEndOfTurn(catacombs);
             playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
-
+            //account for if Sacrificial Shrine was the initial room
+            if(playedRoom.Identifier != "SacrificialShrine")
+            {
+                SetHitPoints(wraith, 1);
+            }
             Card lance = GetCard("LanceFlammes");
 
             //make sure it is not SacrificialShrine in play
@@ -1575,8 +1579,11 @@ namespace CauldronTests
                 DecisionSelectCards = new Card[] { GetCard("TortureChamber"), lance };
                 DestroyCard(playedRoom, haka.CharacterCard);
             }
+            else
+            {
+                DecisionSelectCards = new Card[] { lance };
+            }
 
-            DecisionSelectCards = new Card[] { lance };
             GoToPlayCardPhase(catacombs);
             //don't mess with the room in play
             DecisionDoNotSelectCard = SelectionType.DestroyCard;
@@ -1687,6 +1694,154 @@ namespace CauldronTests
             DealDamage(ra.CharacterCard, (Card c) => c.IsTarget, 3, DamageType.Fire);
             QuickHPCheck(-3, -3, -3, -3, 0);
 
+        }
+
+        [Test()]
+        public void TestPossessorNextTo()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Draw an extra card for Haka
+             DrawCard(haka);
+            
+
+            GoToEndOfTurn(catacombs);
+
+            GoToPlayCardPhase(catacombs);
+
+            //Play this card next to the hero with the most cards in hand.
+            //haka has the most cards in play
+            Card possessor = PlayCard("Possessor");
+            AssertNextToCard(possessor, haka.CharacterCard);
+
+        }
+
+        [Test()]
+        public void TestPossessorNextTo_NoPowersOrPlays()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Draw an extra card for Haka
+            DrawCard(haka);
+
+
+            GoToEndOfTurn(catacombs);
+
+            GoToPlayCardPhase(catacombs);
+
+            //Play this card next to the hero with the most cards in hand.
+            //haka has the most cards in play
+            Card possessor = PlayCard("Possessor");
+            AssertNextToCard(possessor, haka.CharacterCard);
+
+            //That hero may not play cards or use powers.
+            AssertCannotPlayCards(haka);
+            AssertNotUsablePower(haka, haka.CharacterCard);
+
+            //check that others can still play cards and use powers
+            AssertCanPlayCards(ra);
+            AssertCanPlayCards(legacy);
+            AssertCanPlayCards(baron);
+            AssertCanPlayCards(catacombs);
+            AssertUsablePower(ra, ra.CharacterCard);
+            AssertUsablePower(legacy, legacy.CharacterCard);
+
+        }
+
+        [Test()]
+        public void TestPossessorStartOfHero_2CardsInHand()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Draw an extra card for Haka
+            DrawCard(haka);
+
+
+
+            GoToEndOfTurn(catacombs);
+
+            GoToPlayCardPhase(catacombs);
+
+            //Play this card next to the hero with the most cards in hand.
+            //haka has the most cards in play
+            Card possessor = PlayCard("Possessor");
+
+            //set up haka's hand
+            DiscardAllCards(haka);
+            Card haka1 = PutInHand("Mere");
+            Card haka2 = PutInHand("PunishTheWeak");
+
+            //At the start of that hero's turn, put 2 cards from their hand into play at random.
+            GoToStartOfTurn(haka);
+            AssertInPlayArea(haka, haka1);
+            AssertInPlayArea(haka, haka2);
+
+        }
+
+        [Test()]
+        public void TestPossessorStartOfHero_1CardInHand()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Draw an extra card for Haka
+            DrawCard(haka);
+
+
+
+            GoToEndOfTurn(catacombs);
+
+            GoToPlayCardPhase(catacombs);
+
+            //Play this card next to the hero with the most cards in hand.
+            //haka has the most cards in play
+            Card possessor = PlayCard("Possessor");
+
+            //set up haka's hand
+            DiscardAllCards(haka);
+            Card haka1 = PutInHand("Mere");
+
+
+            //At the start of that hero's turn, put 2 cards from their hand into play at random.
+            GoToStartOfTurn(haka);
+            AssertInPlayArea(haka, haka1);
+
+        }
+
+        [Test()]
+        public void TestPossessorStartOfHero_0CardsInHand()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Draw an extra card for Haka
+            DrawCard(haka);
+
+
+
+            GoToEndOfTurn(catacombs);
+
+            GoToPlayCardPhase(catacombs);
+
+            //Play this card next to the hero with the most cards in hand.
+            //haka has the most cards in play
+            Card possessor = PlayCard("Possessor");
+
+            //set up haka's hand
+            DiscardAllCards(haka);
+
+
+            //At the start of that hero's turn, put 2 cards from their hand into play at random.
+            GoToStartOfTurn(haka);
+            AssertNumberOfCardsInHand(haka, 0);
         }
     }
 }
