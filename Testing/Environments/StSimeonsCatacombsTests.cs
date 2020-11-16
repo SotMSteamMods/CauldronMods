@@ -588,7 +588,7 @@ namespace CauldronTests
             GoToPlayCardPhase(catacombs);
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             Card envTarget1 = PlayCard("CoalKid");
-            Card envTarget2 = PlayCard("Poltergeist");
+            Card envTarget2 = PlayCard("ScurryingEvil");
 
 
             //Increase damage dealt by environment cards by 1.
