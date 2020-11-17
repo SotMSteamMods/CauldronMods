@@ -25,9 +25,9 @@ namespace Cauldron.BlackwoodForest
         public override void AddTriggers()
         {
             // Destroy self at start of next env. turn
-            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker,
+            base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker,
                 new Func<PhaseChangeAction, IEnumerator>(base.DestroyThisCardResponse),
-                TriggerType.DestroySelf, null, false);
+                TriggerType.DestroySelf);
 
             base.AddTriggers();
         }
@@ -37,7 +37,7 @@ namespace Cauldron.BlackwoodForest
 
             List<Card> storedResults = new List<Card>();
             IEnumerator findTargetsWithLowestHpRoutine = base.GameController.FindTargetsWithLowestHitPoints(1, numberOfTargets, 
-                (Card c) => c.IsTarget, storedResults, null, null, false, false, null, false);
+                c => c.IsTarget, storedResults);
 
             //IEnumerator immuneToDamageRoutine = base.AddStatusEffect(immuneToDamageStatusEffect, true);
             if (base.UseUnityCoroutines)
@@ -52,12 +52,14 @@ namespace Cauldron.BlackwoodForest
             // (H - 1) targets with the lowest HP are immune to damage
             foreach (Card card in storedResults)
             {
-                ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect();
-                immuneToDamageStatusEffect.TargetCriteria.IsSpecificCard = card;
+                ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect
+                {
+                    TargetCriteria = {IsSpecificCard = card}
+                };
                 immuneToDamageStatusEffect.UntilCardLeavesPlay(this.Card);
                 immuneToDamageStatusEffect.CardDestroyedExpiryCriteria.Card = this.Card;
 
-                IEnumerator immuneToDamageRoutine = base.AddStatusEffect(immuneToDamageStatusEffect, true);
+                IEnumerator immuneToDamageRoutine = base.AddStatusEffect(immuneToDamageStatusEffect);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(immuneToDamageRoutine);

@@ -525,13 +525,12 @@ namespace CauldronTests
             Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
             PlayCard(mirrorWraith);
 
+            Card dangerSense = GetCard("DangerSense");
+
             // Act
             GoToEndOfTurn(BlackwoodForest);
 
             // Assert
-
-            IEnumerable<string> btest = this.GameController.GetAdditionalKeywords(mirrorWraith);
-
 
             AssertHitPoints(mirrorWraith, 10); // Mirror Wraith now has max HP of MDP
             AssertCardHasKeyword(mirrorWraith, "device", true);

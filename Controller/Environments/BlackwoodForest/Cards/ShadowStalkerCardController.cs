@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -32,7 +32,7 @@ namespace Cauldron.BlackwoodForest
         {
             // At the end of the environment turn, destroy 1 ongoing card.
             base.AddEndOfTurnTrigger(tt => tt == base.TurnTaker, EndOfTurnDestroyOngoingResponse,
-                TriggerType.DestroyCard, null, false);
+                TriggerType.DestroyCard);
 
             // At the start of the environment turn this card deals each hero target {H - 2} melee damage.
             base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker, 
@@ -41,7 +41,7 @@ namespace Cauldron.BlackwoodForest
             // Whenever an environment card is destroyed, deal the target with the highest HP 5 psychic damage
             base.AddTrigger<DestroyCardAction>(dca => dca.CardToDestroy.Card.IsEnvironment,
                 this.DestroyEnvironmentResponse,
-                new TriggerType[]
+                new[]
                 {
                     TriggerType.DestroyCard
                 }, TriggerTiming.After, null, false, true, true);

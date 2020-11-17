@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -33,7 +32,7 @@ namespace Cauldron.BlackwoodForest
             // At the end of the environment turn, play a random card from beneath this one.
             // Then if there are no cards remaining, this card is destroyed.
             base.AddEndOfTurnTrigger(tt => tt == base.TurnTaker, EndOfTurnPlayCardBeneathResponse,
-                TriggerType.PlayCard, null, false);
+                TriggerType.PlayCard, null);
 
 
             base.AddTriggers();
@@ -58,7 +57,8 @@ namespace Cauldron.BlackwoodForest
         private IEnumerator DrawCardFromEachDeckResponse(TurnTakerController ttc)
         {
             List<Card> revealedCards = new List<Card>();
-            IEnumerator revealCardRoutine = this.GameController.RevealCards(ttc, ttc.CharacterCard.Owner.Deck, CardsToDrawFromEachDeck, revealedCards);
+            IEnumerator revealCardRoutine = this.GameController.RevealCards(ttc, ttc.CharacterCard.Owner.Deck, 
+                CardsToDrawFromEachDeck, revealedCards);
 
             if (base.UseUnityCoroutines)
             {
@@ -70,7 +70,8 @@ namespace Cauldron.BlackwoodForest
             }
 
             //IEnumerator bulkMoveRoutine = base.GameController.BulkMoveCards(this.TurnTakerController, revealedCards, this.Card.UnderLocation);
-            foreach (var moveCardsRoutine in revealedCards.Select(revealedCard => this.GameController.MoveCard(ttc, revealedCard, this.Card.UnderLocation, flipFaceDown: true)))
+            foreach (var moveCardsRoutine in revealedCards.Select(revealedCard 
+                => this.GameController.MoveCard(ttc, revealedCard, this.Card.UnderLocation, flipFaceDown: true)))
             {
                 if (base.UseUnityCoroutines)
                 {

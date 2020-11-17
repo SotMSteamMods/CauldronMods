@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,7 +33,7 @@ namespace Cauldron.BlackwoodForest
             base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, DestructionChoiceResponse, TriggerType.DestroySelf);
 
             // Deal damage reaction
-            base.AddTrigger<DealDamageAction>(p => !base.IsPropertyTrue(FirstTimeDamageDealtPropName, null), 
+            base.AddTrigger<DealDamageAction>(p => !base.IsPropertyTrue(FirstTimeDamageDealtPropName), 
                 this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After, 
                 ActionDescription.Unspecified, false, true, null, 
                 false, null, null);
@@ -48,7 +47,7 @@ namespace Cauldron.BlackwoodForest
 
             // Ask if player wants to destroy this card
             IEnumerator routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.DiscardFromDeck, this.Card, null, storedYesNoResults, null, GetCardSource(null));
+                SelectionType.DiscardFromDeck, this.Card, null, storedYesNoResults, null, GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -78,9 +77,10 @@ namespace Cauldron.BlackwoodForest
 
         private IEnumerator DealDamageResponse(DealDamageAction dda)
         {
-            base.SetCardPropertyToTrueIfRealAction(FirstTimeDamageDealtPropName, null);
+            base.SetCardPropertyToTrueIfRealAction(FirstTimeDamageDealtPropName);
 
-            IEnumerator dealDamageRoutine = base.DealDamage(this.Card, card => !dda.AllTargets.Contains(card), DamageToDeal, DamageType.Psychic);
+            IEnumerator dealDamageRoutine = base.DealDamage(this.Card, card => !dda.AllTargets.Contains(card), 
+                DamageToDeal, DamageType.Psychic);
 
             if (base.UseUnityCoroutines)
             {
