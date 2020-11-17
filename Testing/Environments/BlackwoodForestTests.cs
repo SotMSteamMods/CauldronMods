@@ -530,9 +530,6 @@ namespace CauldronTests
 
             // Assert
 
-            IEnumerable<string> btest = this.GameController.GetAdditionalKeywords(mirrorWraith);
-
-
             AssertHitPoints(mirrorWraith, 10); // Mirror Wraith now has max HP of MDP
             AssertCardHasKeyword(mirrorWraith, "device", true);
 

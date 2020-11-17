@@ -24,8 +24,6 @@ namespace Cauldron.BlackwoodForest
         // Possible cards that may cause issue if copied?
         //==============================================================
         /*
-         * Imbued Vitality (Realm of Discord) - Each Ongoing and Equipment card now has a maximum HP of 6.
-         * This would allow Mirror Wraith to select an ongoing or equipment as a target
          *
          * Huginn & Muninn (Harpy) - Double boosting Harpy?
          */
@@ -37,6 +35,8 @@ namespace Cauldron.BlackwoodForest
         private const int DamageToDeal = 2;
 
         private IEnumerable<string> _copiedKeywords;
+        private List<Card> _copiedOngoings;
+
 
         public MirrorWraithCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -70,7 +70,6 @@ namespace Cauldron.BlackwoodForest
 
                 // Destroy self
                 IEnumerator destroyRoutine = base.GameController.DestroyCard(this.HeroTurnTakerController, this.Card);
-
 
                 if (base.UseUnityCoroutines)
                 {
@@ -126,6 +125,11 @@ namespace Cauldron.BlackwoodForest
             }
 
             return base.AskForCardAdditionalKeywords(card);
+        }
+
+        private void CopyGameText(Card sourceCard)
+        {
+
         }
     }
 }
