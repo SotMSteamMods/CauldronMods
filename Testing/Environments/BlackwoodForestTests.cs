@@ -199,7 +199,7 @@ namespace CauldronTests
 
             GoToStartOfTurn(BlackwoodForest);
             GoToPlayCardPhase(BlackwoodForest);
-            PlayCard(ShadowStalkerCardController.Identifier);
+            PlayCard(ShadowWeaverCardController.Identifier);
 
             Card theHound = GetCard(TheHoundCardController.Identifier);
             PutOnDeck(BlackwoodForest, theHound); 
