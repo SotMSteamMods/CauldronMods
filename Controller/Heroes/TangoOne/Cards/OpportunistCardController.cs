@@ -40,38 +40,62 @@ namespace Cauldron.TangoOne
                 }
             });
 
-
-            List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
-
-            // Ask if player wants to shuffle trash into deck
-            IEnumerator decideTrashShuffleRoutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.ShuffleTrashIntoDeck, this.Card, null, storedYesNoResults, null, GetCardSource());
-
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(increaseDamageRoutine);
-                yield return base.GameController.StartCoroutine(decideTrashShuffleRoutine);
             }
             else
             {
                 base.GameController.ExhaustCoroutine(increaseDamageRoutine);
-                base.GameController.ExhaustCoroutine(decideTrashShuffleRoutine);
             }
 
-            if (base.DidPlayerAnswerYes(storedYesNoResults))
+
+            if (!base.HeroTurnTakerController.HasCardsWhere(card => card.IsInTrash))
             {
-                // Shuffle trash into deck
-                IEnumerator shuffleTrashIntoDeckRoutine
-                    = base.GameController.ShuffleTrashIntoDeck(base.TurnTakerController, false, 
-                        null, base.GetCardSource());
+                IEnumerator sendMessage = base.GameController.SendMessageAction("No cards in trash to shuffle into deck, skipping",
+                    Priority.High, base.GetCardSource(), null, true);
 
                 if (base.UseUnityCoroutines)
                 {
-                    yield return base.GameController.StartCoroutine(shuffleTrashIntoDeckRoutine);
+                    yield return base.GameController.StartCoroutine(sendMessage);
                 }
                 else
                 {
-                    base.GameController.ExhaustCoroutine(shuffleTrashIntoDeckRoutine);
+                    base.GameController.ExhaustCoroutine(sendMessage);
+                }
+            }
+            else
+            {
+                List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
+
+                // Ask if player wants to shuffle trash into deck
+                IEnumerator decideTrashShuffleRoutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
+                    SelectionType.ShuffleTrashIntoDeck, this.Card, null, storedYesNoResults, null, GetCardSource());
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(decideTrashShuffleRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(decideTrashShuffleRoutine);
+                }
+
+                if (base.DidPlayerAnswerYes(storedYesNoResults))
+                {
+                    // Shuffle trash into deck
+                    IEnumerator shuffleTrashIntoDeckRoutine
+                        = base.GameController.ShuffleTrashIntoDeck(base.TurnTakerController, false,
+                            null, base.GetCardSource());
+
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(shuffleTrashIntoDeckRoutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(shuffleTrashIntoDeckRoutine);
+                    }
                 }
             }
 

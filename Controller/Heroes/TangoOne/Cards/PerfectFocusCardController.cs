@@ -39,6 +39,33 @@ namespace Cauldron.TangoOne
                 }
             });
 
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(increaseDamageRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(increaseDamageRoutine);
+            }
+
+
+            if (!base.HeroTurnTakerController.HasCardsInHand)
+            {
+                IEnumerator sendMessage = base.GameController.SendMessageAction("No cards in hand to play, skipping", 
+                    Priority.High, base.GetCardSource(), null, true);
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(sendMessage);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(sendMessage);
+                }
+
+                yield break;
+            }
+
             // Ask if player wants to play a card
             List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
             IEnumerator decidePlayCard = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
@@ -46,15 +73,12 @@ namespace Cauldron.TangoOne
 
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(increaseDamageRoutine);
                 yield return base.GameController.StartCoroutine(decidePlayCard);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(increaseDamageRoutine);
                 base.GameController.ExhaustCoroutine(decidePlayCard);
             }
-
 
             if (!base.DidPlayerAnswerYes(storedYesNoResults))
             {

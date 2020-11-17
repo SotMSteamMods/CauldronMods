@@ -36,7 +36,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestInnatePower()
+        public void TestInnatePower_Villain()
         {
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
@@ -57,12 +57,36 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestInnatePower_Hero()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
+
+            StartGame();
+            QuickHPStorage(ra);
+
+            DecisionSelectTarget = ra.CharacterCard;
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            UsePower(TangoOne);
+
+            // Assert
+            QuickHPCheck(-1);
+        }
+
+
+
+        [Test]
         public void TestIncapacitateOption1()
         {
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             StartGame();
+
+            Card staffOfRa = GetCard("TheStaffOfRa");
+            PutOnDeck(ra, staffOfRa);
 
             SetHitPoints(TangoOne.CharacterCard, 1);
             DealDamage(baron, TangoOne, 2, DamageType.Melee);
@@ -78,10 +102,11 @@ namespace CauldronTests
             // Assert
             AssertIncapacitated(TangoOne);
             QuickHandCheck(1);
+            AssertInHand(staffOfRa);
         }
 
         [Test]
-        public void TestIncapacitateOption2ToDeck()
+        public void TestIncapacitateOption2ToDeck_Villain()
         {
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
@@ -107,7 +132,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestIncapacitateOption2ToTrash()
+        public void TestIncapacitateOption2ToTrash_Villain()
         {
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
@@ -130,6 +155,58 @@ namespace CauldronTests
             // Assert
             AssertIncapacitated(TangoOne);
             AssertOnTopOfTrash(baron, backlashField);
+        }
+
+        [Test]
+        public void TestIncapacitateOption2ToDeck_Hero()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
+
+            StartGame();
+
+            Card dangerSense = GetCard("DangerSense");
+            PutOnDeck(legacy, dangerSense);
+
+            SetHitPoints(TangoOne.CharacterCard, 1);
+            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+
+            DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
+            DecisionMoveCardDestination = new MoveCardDestination(legacy.TurnTaker.Deck);
+
+            // Act
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            UseIncapacitatedAbility(TangoOne, 1);
+
+            // Assert
+            AssertIncapacitated(TangoOne);
+            AssertOnTopOfDeck(legacy, dangerSense);
+        }
+
+        [Test]
+        public void TestIncapacitateOption2ToTrash_Hero()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
+
+            StartGame();
+
+            Card dangerSense = GetCard("DangerSense");
+            PutOnDeck(legacy, dangerSense);
+
+            SetHitPoints(TangoOne.CharacterCard, 1);
+            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+
+            DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
+            DecisionMoveCardDestination = new MoveCardDestination(legacy.TurnTaker.Trash, false);
+
+            // Act
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            UseIncapacitatedAbility(TangoOne, 1);
+
+            // Assert
+            AssertIncapacitated(TangoOne);
+            AssertOnTopOfTrash(legacy, dangerSense);
         }
 
         [Test]
@@ -724,7 +801,42 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestPerfectFocusDrawCard()
+        public void TestOpportunistNoTrash()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                OpportunistCardController.Identifier
+            });
+
+            StartGame();
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+
+            QuickHPStorage(mdp);
+            QuickHandStorage(TangoOne);
+            QuickShuffleStorage(TangoOne);
+
+            DecisionSelectTarget = mdp;
+            DecisionYesNo = false;
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, OpportunistCardController.Identifier);
+            UsePower(TangoOne); // Snipe power
+
+            // Assert
+            QuickHPCheck(-4); // Snipe (1) + Opportunist (+3)
+            QuickHandCheck(1);
+            Assert.AreEqual(1, GetNumberOfCardsInTrash(TangoOne)); // (Opportunist)
+            QuickShuffleCheck(0); // Tango's deck was not shuffled by Opportunist card
+        }
+
+
+
+        [Test]
+        public void TestPerfectFocusPlayCard()
         {
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
@@ -755,7 +867,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestPerfectFocusDontDrawCard()
+        public void TestPerfectFocusDontPlayCard()
         {
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
@@ -781,19 +893,49 @@ namespace CauldronTests
             UsePower(TangoOne); // Snipe power
 
             // Assert
-            QuickHPCheck(-4); // Disabling Shot (2 + Perfect Focus +3), Snipe (1)
+            QuickHPCheck(-4); // (Perfect Focus +3), Snipe (1)
+        }
+
+        [Test]
+        public void TestPerfectFocusNoCardsToPlay()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                PerfectFocusCardController.Identifier
+            });
+
+            StartGame();
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+
+            QuickHPStorage(mdp);
+
+            DecisionSelectTarget = mdp;
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, PerfectFocusCardController.Identifier);
+            UsePower(TangoOne); // Snipe power
+
+            // Assert
+            QuickHPCheck(-4); // (Perfect Focus +3), Snipe (1)
         }
 
         [Test]
         public void TestPsionicSuppression()
         {
             // Arrange
-            SetupGameController("BaronBlade", DeckNamespace, "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             MakeCustomHeroHand(TangoOne, new List<string>()
             {
                 PsionicSuppressionCardController.Identifier
             });
+
+            SetHitPoints(ra, 20);
+            SetHitPoints(legacy, 20);
 
             StartGame();
             Card bb = PlayCard(baron, "BladeBattalion");
@@ -883,6 +1025,37 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestSniperRiflePower1NoCardsInHand()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Legacy", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                SniperRifleCardController.Identifier // Critical keyword
+            });
+
+            StartGame();
+
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+
+            DecisionSelectCards = new[]
+            {
+                mdp
+            };
+            DecisionSelectTarget = mdp;
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, SniperRifleCardController.Identifier);
+            UsePower(GetCardInPlay(SniperRifleCardController.Identifier), 0);
+
+            // Assert
+            AssertIsInPlay(mdp); // MDP was not destroyed by Sniper Rifle power #1 due to lack of discarded Critical cards
+            Assert.AreEqual(0, GetNumberOfCardsInTrash(TangoOne));
+        }
+
+        [Test]
         public void TestSniperRiflePower2()
         {
             // Arrange
@@ -948,6 +1121,36 @@ namespace CauldronTests
             // Assert
             QuickHPCheck(-2); // Wet Work (2)
             Assert.AreEqual(2, GetNumberOfCardsInTrash(TangoOne)); // (ChameleonArmorCard, WetWork)
+            QuickShuffleCheck(1, 1, 1, 1);
+
+        }
+
+        [Test]
+        public void TestWetWorkEmptyTrashes()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                WetWorkCardController.Identifier
+            });
+
+            StartGame();
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+            QuickShuffleStorage(TangoOne, ra, baron, env);
+            QuickHPStorage(mdp);
+
+            DecisionSelectTarget = mdp;
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, WetWorkCardController.Identifier);
+
+
+            // Assert
+            QuickHPCheck(-2); // Wet Work (2)
+            Assert.AreEqual(1, GetNumberOfCardsInTrash(TangoOne)); // (WetWork)
             QuickShuffleCheck(1, 1, 1, 1);
 
         }

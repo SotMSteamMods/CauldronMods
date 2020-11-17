@@ -25,7 +25,7 @@ namespace Cauldron.TangoOne
             // Select target
             List<SelectCardDecision> selectCardResults = new List<SelectCardDecision>();
             IEnumerator selectCardRoutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.SelectTarget,
-                new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlay, "targets in play", false),
+                new LinqCardCriteria(c => c.IsTarget && c.IsInPlay, "targets in play", false),
                 selectCardResults, false, false, null, true, base.GetCardSource());
 
             if (base.UseUnityCoroutines)
