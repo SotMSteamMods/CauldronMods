@@ -1,14 +1,12 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
 namespace Cauldron.Anathema
 {
-	public class DoppelgangerStrikeCardController : CardController
+    public class DoppelgangerStrikeCardController : CardController
     {
 		public DoppelgangerStrikeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
@@ -20,7 +18,7 @@ namespace Cauldron.Anathema
 
 			//Find the hero target with the most HP
 			List<Card> storedResults = new List<Card>();
-			IEnumerator coroutine = base.GameController.FindTargetsWithHighestHitPoints(1, 1, (Card card) => card.IsHero, storedResults, null, null, false, false, null, false, base.GetCardSource(null));
+			IEnumerator coroutine = base.GameController.FindTargetsWithHighestHitPoints(1, 1, (Card card) => card.IsHero && card.IsTarget, storedResults, cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -29,14 +27,14 @@ namespace Cauldron.Anathema
 			{
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
-			Card heroTarget = storedResults.FirstOrDefault<Card>();
+			Card heroTarget = storedResults.FirstOrDefault();
 			if (heroTarget != null)
 			{
 
 				//The Hero target with the highest HP deals the Hero Character with the lowest HP X toxic damage, where X is the number of villain targets in play. 
 				int X = this.NumberOfVillainTargetsInPlay;
 				List<DealDamageAction> targetResults = new List<DealDamageAction>();
-				IEnumerator coroutine2 = base.DealDamageToLowestHP(heroTarget, 1, (Card c) => c.IsHeroCharacterCard, (Card c) => new int?(X), DamageType.Toxic, false, false, targetResults, 1, null, null, false);
+				IEnumerator coroutine2 = base.DealDamageToLowestHP(heroTarget, 1, (Card c) => c.IsHeroCharacterCard, (Card c) => new int?(X), DamageType.Toxic, storedResults: targetResults);
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine2);
@@ -49,11 +47,11 @@ namespace Cauldron.Anathema
 				//A Hero dealt damage this way must discard {H-2} cards.
 
 				//currently only discards 1 card
-				DealDamageAction dealDamageAction = targetResults.FirstOrDefault<DealDamageAction>();
-				if (dealDamageAction != null && dealDamageAction.Target != null && dealDamageAction.Target.IsHero && dealDamageAction.DidDealDamage)
+				DealDamageAction dealDamageAction = targetResults.FirstOrDefault();
+				if (dealDamageAction != null && dealDamageAction.Target != null && dealDamageAction.Target.IsHeroCharacterCard && dealDamageAction.DidDealDamage)
 				{
-					HeroTurnTakerController hero = base.FindHeroTurnTakerController(dealDamageAction.Target.Owner.ToHero());
-					IEnumerator discard = base.GameController.SelectAndDiscardCards(hero, (base.H - 2), false, (base.H - 2), null, false, null, null, null, null, SelectionType.DiscardCard, null, base.GetCardSource(null));
+					HeroTurnTakerController httc = base.FindHeroTurnTakerController(dealDamageAction.Target.Owner.ToHero());
+					IEnumerator discard = base.GameController.SelectAndDiscardCards(httc, base.H - 2, false, base.H - 2,cardSource: base.GetCardSource());
 
 					if (base.UseUnityCoroutines)
 					{
