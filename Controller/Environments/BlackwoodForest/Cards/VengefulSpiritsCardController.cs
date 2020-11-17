@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -36,11 +35,11 @@ namespace Cauldron.BlackwoodForest
             // At the start of the environment turn, shuffle the villain trash and reveal cards until a target is revealed.
             // Put that target into play, then this card deals that target 2 infernal damage.
             base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker, StartOfTurnShuffleVillianTrashResponse,
-                TriggerType.ShuffleDeck, null, false);
+                TriggerType.ShuffleDeck);
 
             // At the end of the environment turn, each player may discard 2 cards to destroy this card.
             base.AddEndOfTurnTrigger(tt => tt == base.TurnTaker, EndOfTurnOptionalDestruction,
-                TriggerType.DestroyCard, null, false);
+                TriggerType.DestroyCard);
 
             base.AddTriggers();
         }

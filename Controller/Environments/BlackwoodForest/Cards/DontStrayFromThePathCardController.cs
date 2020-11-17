@@ -29,9 +29,9 @@ namespace Cauldron.BlackwoodForest
 
         public override void AddTriggers()
         {
-            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker,
-                new Func<PhaseChangeAction, IEnumerator>(StartOfTurnResponse),
-                TriggerType.RevealCard, null, false);
+            base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker,
+                StartOfTurnResponse,
+                TriggerType.RevealCard);
 
             base.AddTriggers();
         }
@@ -55,7 +55,7 @@ namespace Cauldron.BlackwoodForest
 
             // At least one other env. card is in play that isn't this card, proceed
             List<Card> revealedCards = new List<Card>();
-            IEnumerator revealCardsRoutine = base.GameController.RevealCards(this.TurnTakerController, base.FindEnvironment(null).TurnTaker.Deck, 
+            IEnumerator revealCardsRoutine = base.GameController.RevealCards(this.TurnTakerController, base.FindEnvironment().TurnTaker.Deck, 
                 CardsToReveal, revealedCards, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
@@ -93,7 +93,7 @@ namespace Cauldron.BlackwoodForest
         private bool IsHound(Card card)
         {
             return card != null 
-                && card.Identifier.Equals("TheHound") 
+                && card.Identifier.Equals(TheHoundCardController.Identifier) 
                 && base.GameController.DoesCardContainKeyword(card, "grim", false, false);
         }
     }

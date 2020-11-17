@@ -1,8 +1,9 @@
-﻿using Handelabra.Sentinels.Engine.Controller;
-using Handelabra.Sentinels.Engine.Model;
-using System;
+﻿using System;
 using System.Collections;
-using System.Collections.Generic;
+
+using Handelabra.Sentinels.Engine.Controller;
+using Handelabra.Sentinels.Engine.Model;
+
 
 namespace Cauldron.BlackwoodForest
 {
@@ -27,8 +28,8 @@ namespace Cauldron.BlackwoodForest
         {
             // Destroy self at start of next env. turn
             base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker,
-                new Func<PhaseChangeAction, IEnumerator>(base.DestroyThisCardResponse),
-                TriggerType.DestroySelf, null, false);
+                base.DestroyThisCardResponse,
+                TriggerType.DestroySelf);
 
             base.AddTriggers();
         }

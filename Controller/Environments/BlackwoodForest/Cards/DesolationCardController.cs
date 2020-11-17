@@ -28,9 +28,9 @@ namespace Cauldron.BlackwoodForest
         public override void AddTriggers()
         {
             // Destroy self at end of env. turn
-            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker,
-                new Func<PhaseChangeAction, IEnumerator>(base.DestroyThisCardResponse),
-                TriggerType.DestroySelf, null, false);
+            base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker,
+                base.DestroyThisCardResponse,
+                TriggerType.DestroySelf);
 
             base.AddTriggers();
         }

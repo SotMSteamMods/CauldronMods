@@ -30,10 +30,10 @@ namespace Cauldron.BlackwoodForest
         {
             // At the end of the environment turn, this card deals the hero with the lowest HP {H - 2} toxic damage.
             base.AddEndOfTurnTrigger(tt => tt == base.TurnTaker, EndOfTurnDealDamageResponse,
-                TriggerType.DealDamage, null, false);
+                TriggerType.DealDamage);
 
             // When this card is destroyed, it deals each target 1 psychic damage.
-            base.AddWhenDestroyedTrigger(new Func<DestroyCardAction, IEnumerator>(DestroyCardResponse), TriggerType.DealDamage);
+            base.AddWhenDestroyedTrigger(DestroyCardResponse, TriggerType.DealDamage);
 
             base.AddTriggers();
         }
@@ -42,7 +42,7 @@ namespace Cauldron.BlackwoodForest
         {
             List<Card> storedResults = new List<Card>();
             IEnumerator findTargetWithLowestHpRoutine = base.GameController.FindTargetsWithLowestHitPoints(1, 1,
-                (Card c) => c.IsHero && !c.IsIncapacitatedOrOutOfGame, storedResults);
+                c => c.IsHero && !c.IsIncapacitatedOrOutOfGame, storedResults);
 
             if (base.UseUnityCoroutines)
             {

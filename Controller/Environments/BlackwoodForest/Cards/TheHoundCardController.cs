@@ -31,7 +31,7 @@ namespace Cauldron.BlackwoodForest
         {
             List<Card> storedResults = new List<Card>();
             IEnumerator findTargetWithLowestHpRoutine = base.GameController.FindTargetsWithLowestHitPoints(1, TargetsToHit,
-                (Card c) => c.IsTarget && !c.Owner.IsEnvironment, storedResults);
+                c => c.IsTarget && !c.Owner.IsEnvironment, storedResults);
 
             if (base.UseUnityCoroutines)
             {
