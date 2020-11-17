@@ -35,16 +35,14 @@ namespace Cauldron.BlackwoodForest
         private const int DamageToDeal = 2;
 
         private IEnumerable<string> _copiedKeywords;
-        private Dictionary<string, List<ITrigger>> _copiedTriggers;
+        private Card _copiedCard;
+        private List<ITrigger> _copiedTriggers;
 
 
         public MirrorWraithCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             _copiedKeywords = Enumerable.Empty<string>();
-            _copiedTriggers = new Dictionary<string, List<ITrigger>>();
-
-            // Identify this card controller as one who can modify keyword query answers
-            base.AddThisCardControllerToList(CardControllerListType.ModifiesKeywords);
+            _copiedTriggers = new List<ITrigger>();
         }
 
         public override IEnumerator Play()
@@ -86,15 +84,26 @@ namespace Cauldron.BlackwoodForest
             else
             {
                 // Gains the text, keywords, and max HP of found target
-                Card cardToCopy = storedResults.First();
 
-                IEnumerator setHpRoutine = base.GameController.SetHP(this.Card, cardToCopy.MaximumHitPoints.Value, this.GetCardSource());
+                // Identify this card controller as one who can modify keyword query answers
+                base.AddThisCardControllerToList(CardControllerListType.ModifiesKeywords);
+                //base.AddThisCardControllerToList(CardControllerListType.ActivatesEffects);
+                base.AddThisCardControllerToList(CardControllerListType.ReplacesCards);
+                base.AddThisCardControllerToList(CardControllerListType.ReplacesTurnTakerController);
+                base.AddThisCardControllerToList(CardControllerListType.ReplacesCardSource);
 
-                // TODO: gain text
-                CopyGameText(cardToCopy);
+
+                //Card cardToCopy = storedResults.First();
+                _copiedCard = storedResults.First();
+
+                // Set HP
+                IEnumerator setHpRoutine = base.GameController.SetHP(this.Card, _copiedCard.MaximumHitPoints.Value, this.GetCardSource());
+
+                // Set card text
+                CopyGameText(_copiedCard);
 
                 // Add the target's keywords to our copied list which will be returned on keyword queries
-                _copiedKeywords = cardToCopy.Definition.Keywords;
+                _copiedKeywords = _copiedCard.Definition.Keywords;
 
                 if (base.UseUnityCoroutines)
                 {
@@ -129,12 +138,174 @@ namespace Cauldron.BlackwoodForest
             return base.AskForCardAdditionalKeywords(card);
         }
 
+        public override CardSource AskIfCardSourceIsReplaced(CardSource cardSource, GameAction gameAction = null,
+            ITrigger trigger = null)
+        {
+            if (cardSource != null && cardSource.AllowReplacements && this._copiedCard != null 
+                && this._copiedCard.Equals(cardSource.Card) 
+                && cardSource.AssociatedCardSources.Any(acs => acs.Card == this.Card)
+                && ShouldSwapCardSources(cardSource, trigger))
+            {
+
+                
+
+                //cardSource.AssociatedCardSources.Count(acs => acs.CardController == this.FindCardController(this.Card))
+                int i = 0;
+                
+                CardSource cardSource2 = (from cs in cardSource.AssociatedCardSources
+                    where cs.CardController == this
+                    select cs).LastOrDefault<CardSource>();
+
+                if (cardSource2.AssociatedCardSources.All(cs => cs.CardController != cardSource.CardController))
+                {
+                    cardSource2.AddAssociatedCardSource(cardSource);
+                }
+
+                cardSource.RemoveAssociatedCardSourcesWhere(cs => cs.CardController == this);
+
+                return cardSource2;
+                
+            }
+
+            /*
+            if (cardSource != null && cardSource.AllowReplacements && this._copiedCard != null && this.ShouldSwapCardSources(cardSource, trigger))
+            {
+                CardSource cardSource2 = (from cs in cardSource.AssociatedCardSources
+                    where cs.CardController == this
+                    select cs).LastOrDefault<CardSource>();
+
+                if (!cardSource2.AssociatedCardSources.Any((CardSource cs) => cs.CardController == cardSource.CardController))
+                {
+                    cardSource2.AddAssociatedCardSource(cardSource);
+                }
+
+                cardSource.RemoveAssociatedCardSourcesWhere((CardSource cs) => cs.CardController == this);
+                
+                return cardSource2;
+            }
+            */
+            return null;
+        }
+
+        public override TurnTakerController AskIfTurnTakerControllerIsReplaced(TurnTakerController ttc, CardSource cardSource)
+        {
+
+
+            int i = 0;
+
+            if (cardSource != null && cardSource.AllowReplacements && this._copiedCard != null &&
+                cardSource.CardController == this)
+            {
+
+            }
+
+            /*
+            if (cardSource != null && cardSource.AllowReplacements && this._ongoings != null && cardSource.CardController == this)
+            {
+                Card card = (from cs in cardSource.AssociatedCardSources
+                    select cs.Card into a
+                    where this._ongoings.Contains(a)
+                    select a).FirstOrDefault<Card>();
+                if (card != null && ttc.TurnTaker == card.Owner)
+                {
+                    return base.TurnTakerController;
+                }
+            }
+            */
+
+            return null;
+        }
+
+        public override Card AskIfCardIsReplaced(Card card, CardSource cardSource)
+        {
+            if (cardSource == null || !cardSource.AllowReplacements || this._copiedCard == null ||
+                cardSource.CardController != this || card == base.CardWithoutReplacements)
+            {
+                return null;
+            }
+
+            CardController cardController = cardSource.AssociatedCardSources.Select(cs => cs.CardController)
+                .FirstOrDefault(cc => cc.CardWithoutReplacements == this._copiedCard);
+
+            if (cardController == null)
+            {
+                return null;
+            }
+
+            Card result = null;
+            if (cardController.CharacterCardsWithoutReplacements.Contains(card))
+            {
+                result = base.CharacterCard;
+            }
+            else if (cardController.CardWithoutReplacements == card)
+            {
+                result = base.CardWithoutReplacements;
+            }
+
+            return result;
+
+        }
+
         private void CopyGameText(Card sourceCard)
         {
-            //IEnumerable<ITrigger> trigger =
-//                FindTriggersWhere(t => t.CardSource.CardController, CardWithoutReplacements == sourceCard);
+            IEnumerable<ITrigger> triggers =
+                FindTriggersWhere(t => t.CardSource.CardController.CardWithoutReplacements == sourceCard);
 
+            //_copiedTriggers = new List<ITrigger>();
+            foreach (ITrigger trigger in triggers)
+            {
+                if (trigger.IsStatusEffect)
+                {
+                    continue;
+                }
 
+                ITrigger clonedTrigger = (ITrigger)trigger.Clone();
+                clonedTrigger.CardSource = base.FindCardController(sourceCard).GetCardSource();
+                clonedTrigger.CardSource.AddAssociatedCardSource(base.GetCardSource());
+                clonedTrigger.SetCopyingCardController(this);
+                base.AddTrigger(clonedTrigger);
+                this._copiedTriggers.Add(clonedTrigger);
+            }
+        }
+
+        private bool ShouldSwapCardSources(CardSource cardSource, ITrigger trigger = null)
+        {
+            
+            var cardSources = cardSource.AssociatedCardSources.ToList();
+            
+            CardSource cardSource2 = (from cs in cardSources
+                where cs != null && cs.CardController == this
+                select cs).LastOrDefault<CardSource>();
+
+            if (cardSource2 != null)
+            {
+                bool flag = this._copiedCard == (cardSource.CardController.CardWithoutReplacements);
+                bool flag2 = (from cs in cardSources
+                    select cs.CardController).Contains(this);
+                if (flag && flag2)
+                {
+                    bool flag3 = cardSource.SourceLimitation != null;
+                    CardSource.Limitation? cardSourceLimitation = base.CardSourceLimitation;
+                    CardSource.Limitation limitation = CardSource.Limitation.BeforeDestroyed;
+                    if (cardSourceLimitation.GetValueOrDefault() == limitation & cardSourceLimitation != null)
+                    {
+                        cardSource2.SourceLimitation = new CardSource.Limitation?(CardSource.Limitation.BeforeDestroyed);
+                    }
+                    else
+                    {
+                        cardSourceLimitation = base.CardSourceLimitation;
+                        limitation = CardSource.Limitation.AfterDestroyed;
+                        if (cardSourceLimitation.GetValueOrDefault() == limitation & cardSourceLimitation != null)
+                        {
+                            cardSource2.SourceLimitation = new CardSource.Limitation?(CardSource.Limitation.AfterDestroyed);
+                        }
+                    }
+                    bool flag4 = cardSource2.SourceLimitation != null;
+                    return !flag3 || !flag4 || cardSource.SourceLimitation.Value == cardSource2.SourceLimitation.Value;
+                }
+            }
+            return false;
+            
         }
     }
 }

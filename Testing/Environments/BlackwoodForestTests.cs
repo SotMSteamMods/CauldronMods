@@ -519,16 +519,17 @@ namespace CauldronTests
 
             StartGame();
             Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card bb = GetCard("BladeBattalion");
+            PlayCard(bb);
 
-            DealDamage(baron, mdp, 4, DamageType.Energy);
+            //Card dangerSense = GetCard("DangerSense");
 
+            // Act
+            GoToStartOfTurn(BlackwoodForest);
             Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
             PlayCard(mirrorWraith);
 
-            Card dangerSense = GetCard("DangerSense");
-
-            // Act
-            GoToEndOfTurn(BlackwoodForest);
+            GoToStartOfTurn(ra);
 
             // Assert
 
