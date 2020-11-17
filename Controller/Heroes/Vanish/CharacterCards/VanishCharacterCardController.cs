@@ -13,6 +13,9 @@ namespace Cauldron.Vanish
         }
         public override IEnumerator UsePower(int index = 0)
         {
+            int targets = GetPowerNumeral(0, 1);
+            int damages = GetPowerNumeral(1, 1);
+
             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
             var coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.SelectTarget, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsTarget, "target to deal damage", false), storedResults, false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
@@ -26,7 +29,7 @@ namespace Cauldron.Vanish
             if (DidSelectCard(storedResults))
             {
                 Card selectedCard = base.GetSelectedCard(storedResults);
-                coroutine = GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(GameController, selectedCard), 1, DamageType.Projectile, 1, false, 1, cardSource: GetCardSource());
+                coroutine = GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(GameController, selectedCard), damages, DamageType.Projectile, targets, false, targets, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
