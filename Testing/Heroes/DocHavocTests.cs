@@ -1426,5 +1426,79 @@ namespace CauldronTests
             QuickHPCheck(-2);
         }
 
+        [Test()]
+        [Sequential]
+        public void DecklistTest_OneShot_IsOneShot([Values("SearchAndRescue", "FieldDressing", "StimShot", "ImmediateEvac", "PhosphorBlast")] string oneshot)
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
+            StartGame();
+
+
+            GoToPlayCardPhase(DocHavoc);
+
+            Card card = PlayCard(oneshot);
+            AssertInTrash(card);
+            AssertCardHasKeyword(card, "one-shot", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Ongoing_IsOngoing([Values("Painkillers", "RapidRegen", "Brawler", "RecklessCharge", "Cauterize")] string ongoing)
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
+            StartGame();
+
+            GoToPlayCardPhase(DocHavoc);
+
+            Card card = PlayCard(ongoing);
+            AssertIsInPlay(card);
+            AssertCardHasKeyword(card, "ongoing", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Equipment_IsEquipment([Values("SyringeDarts", "UnstableSerum", "ImprovisedMine", "GasMask", "DocsFlask")] string equipment)
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
+            StartGame();
+
+            //put flask in hand so that mine is not auto destroyed
+            PutInHand("DocsFlask");
+
+            GoToPlayCardPhase(DocHavoc);
+
+            Card card = PlayCard(equipment);
+            AssertIsInPlay(card);
+            AssertCardHasKeyword(card, "equipment", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Limited_IsLimited([Values("SyringeDarts", "RapidRegen", "RecklessCharge", "Cauterize", "GasMask", "DocsFlask")] string limited)
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
+            StartGame();
+
+            GoToPlayCardPhase(DocHavoc);
+
+            Card card = PlayCard(limited);
+            AssertIsInPlay(card);
+            AssertCardHasKeyword(card, "limited", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Relic_IsRelic([Values("DocsFlask")] string relic)
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
+            StartGame();
+
+            GoToPlayCardPhase(DocHavoc);
+
+            Card card = PlayCard(relic);
+            AssertIsInPlay(card);
+            AssertCardHasKeyword(card, "relic", false);
+        }
+
     }
 }
