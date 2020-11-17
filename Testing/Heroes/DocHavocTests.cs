@@ -415,15 +415,17 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Legacy", "Ra", "Megalopolis");
             StartGame();
             Card mdp = GetCardInPlay("MobileDefensePlatform");
-            Card bladeBattalion = GetCard("BladeBattalion");
-            PlayCard(bladeBattalion);
+            Card bladeBattalion =PlayCard("BladeBattalion");
+
             QuickHPStorage(baron.CharacterCard, mdp, bladeBattalion, DocHavoc.CharacterCard, legacy.CharacterCard, ra.CharacterCard);
 
 
             // Act
-            Card phosphorBlast = GetCard(PhosphorBlastCardController.Identifier);
-            PutInHand(phosphorBlast);
+            Card phosphorBlast = PutInHand(PhosphorBlastCardController.Identifier);
             GoToPlayCardPhase(DocHavoc);
+
+            QuickHPStorage(baron.CharacterCard, mdp, bladeBattalion, DocHavoc.CharacterCard, legacy.CharacterCard, ra.CharacterCard);
+
             PlayCard(phosphorBlast);
 
 
@@ -435,11 +437,11 @@ namespace CauldronTests
              * MDP (-1: Phosphor Blast)
              * Blade Battalion (-1: Phosphor Blast)
              * Doc Havoc (-1: Phosphor Blast)
-             * Legacy (-6: Blade Battalion, Phosphor Blast)
+             * Legacy (-1: Phosphor Blast)
              * Ra (-1: Phosphor Blast)
              *
              */
-            QuickHPCheck(0, -1, -1, -1, -6, -1);
+            QuickHPCheck(0, -1, -1, -1, -1, -1);
 
             // 2 status effects in play (MDP, Blade Battalion)
             AssertNumberOfStatusEffectsInPlay(2);

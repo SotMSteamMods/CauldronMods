@@ -25,6 +25,7 @@ namespace Cauldron.DocHavoc
 
         public override IEnumerator Play()
         {
+            //{DocHavoc} deals each target 1 radiant damage.
             List<DealDamageAction> storedDamageResults = new List<DealDamageAction>();
 
             IEnumerator routine = base.GameController.DealDamage(this.HeroTurnTakerController, this.Card, (Func<Card, bool>) (c => c.IsTarget),
@@ -41,16 +42,16 @@ namespace Cauldron.DocHavoc
 
 
             // Check non hero targets to see if they took the intended damage
-            foreach (DealDamageAction dda in storedDamageResults.Where(dda => !dda.Target.IsHero && dda.DidDealDamage))
+            foreach (DealDamageAction dd in storedDamageResults.Where(dda => !dda.Target.IsHero && dda.DidDealDamage))
             {
                 // Apply CannotGainHPStatusEffect until start of this hero's next turn
                 CannotGainHPStatusEffect cannotGainHpStatusEffect = new CannotGainHPStatusEffect
                 {
-                    TargetCriteria = {IsSpecificCard = dda.Target}
+                    TargetCriteria = {IsSpecificCard = dd.Target}
                 };
                 cannotGainHpStatusEffect.UntilStartOfNextTurn(this.TurnTaker);
 
-                IEnumerator statusEffectRoutine = base.AddStatusEffect(cannotGainHpStatusEffect, true);
+                IEnumerator statusEffectRoutine = base.AddStatusEffect(cannotGainHpStatusEffect);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(statusEffectRoutine);
