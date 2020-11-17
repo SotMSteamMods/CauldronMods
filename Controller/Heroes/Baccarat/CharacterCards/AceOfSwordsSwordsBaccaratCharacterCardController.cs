@@ -80,7 +80,7 @@ namespace Cauldron.Baccarat
         {
             if (card != null)
             {
-                IEnumerator coroutine = base.DealDamage(card, card, 1, DamageType.Toxic, false, false, false, null, null, null, false, null);
+                IEnumerator coroutine = base.DealDamage(card, card, 1, DamageType.Toxic, cardSource: base.GetCardSource());
                 IEnumerator coroutine2 = base.DrawCard(card.Owner.ToHero());
                 if (base.UseUnityCoroutines)
                 {
