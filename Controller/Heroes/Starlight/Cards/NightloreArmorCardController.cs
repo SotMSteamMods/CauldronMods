@@ -29,7 +29,7 @@ namespace Cauldron.Starlight
 
         private IEnumerator DestroyConstellationToPreventDamage(DealDamageAction dd)
         {
-            var constellationsInPlay = GameController.FindCardsWhere(IsConstellationInPlay);
+            var constellationsInPlay = FindCardsWhere(IsConstellationInPlay);
             if (constellationsInPlay.Count() == 0)
             {
                 //don't bother player with trigger they can't do anything about
@@ -57,7 +57,7 @@ namespace Cauldron.Starlight
             //"...destroy a constellation in play..."
             IEnumerator destroyConstellation = GameController.SelectAndDestroyCard(HeroTurnTakerController, new LinqCardCriteria(IsConstellationInPlay, "constellation"), optional:false, cardSource: GetCardSource());
             //"...to prevent that damage."
-            IEnumerator preventDamage = GameController.CancelAction(dd, isPreventEffect: true, cardSource: GetCardSource());
+            IEnumerator preventDamage = CancelAction(dd, isPreventEffect: true);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(destroyConstellation);

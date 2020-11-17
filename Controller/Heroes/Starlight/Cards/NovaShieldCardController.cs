@@ -79,7 +79,7 @@ namespace Cauldron.Starlight
             }
 
             //"...and regains 1 HP."
-            var gainHPAction = GameController.GainHP(actingStarlight, 1, cardSource: GetCardSource());
+            IEnumerator gainHPAction = GameController.GainHP(actingStarlight, 1, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(gainHPAction);

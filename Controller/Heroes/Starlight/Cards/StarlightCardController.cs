@@ -33,7 +33,7 @@ namespace Cauldron.Starlight
             //future-proofing for Nightlore Council
             if (IsMultiCharPromo())
             {
-                //TODO - get this working, look at SentinelsCardController
+                //TODO - get this working, look at SentinelCardController
             }
             else
             {
