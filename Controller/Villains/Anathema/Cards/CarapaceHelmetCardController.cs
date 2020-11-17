@@ -1,11 +1,9 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-using System.Collections;
-using System.Linq;
 
 namespace Cauldron.Anathema
 {
-	public class CarapaceHelmetCardController : HeadCardController
+    public class CarapaceHelmetCardController : HeadCardController
     {
 		public CarapaceHelmetCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
@@ -16,12 +14,7 @@ namespace Cauldron.Anathema
 			//Reduce damage dealt to this card by 1.
 			base.AddReduceDamageTrigger((Card c) => c == base.Card, 1);
 			//Villain targets are immune to damage dealt by environment cards. 
-			base.AddImmuneToDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsEnvironmentCard && base.IsVillainTarget(dd.Target), false);
+			base.AddImmuneToDamageTrigger((DealDamageAction dd) => dd.DamageSource != null &&  dd.DamageSource.IsEnvironmentCard && base.IsVillainTarget(dd.Target));
 		}
-
-
-
-		
-
 	}
 }
