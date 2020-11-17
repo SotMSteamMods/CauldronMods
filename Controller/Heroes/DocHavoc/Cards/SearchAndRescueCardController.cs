@@ -40,26 +40,47 @@ namespace Cauldron.DocHavoc
             foreach (DiscardCardAction dca in storedResults.Where(dca => dca.WasCardDiscarded))
             {
                 Debug.WriteLine("card was discarded");
-                
-                IEnumerator orderedDestinationsRoutine = this.RevealCardsFromDeckToMoveToOrderedDestinations(
-                    (TurnTakerController)dca.HeroTurnTakerController, 
-                    dca.ResponsibleTurnTaker.Deck, 
-                    (IEnumerable<MoveCardDestination>)new List<MoveCardDestination>()
-                {
-                    new MoveCardDestination(dca.HeroTurnTakerController.HeroTurnTaker.Hand),
-                    new MoveCardDestination(dca.ResponsibleTurnTaker.Deck, true),
-                    new MoveCardDestination(dca.ResponsibleTurnTaker.Trash)
-                }, sendCleanupMessageIfNecessary: true);
 
-                if (this.UseUnityCoroutines)
+                List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
+                HeroTurnTakerController httc = FindHeroTurnTakerController(dca.CardToDiscard.Owner.ToHero());
+                //ask player if they want to reveal cards
+                IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(httc,
+                    SelectionType.RevealCardsFromDeck, base.Card, storedResults: storedYesNoResults, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
                 {
-                    yield return this.GameController.StartCoroutine(orderedDestinationsRoutine);
+                    yield return base.GameController.StartCoroutine(coroutine);
                 }
                 else
                 {
-                    this.GameController.ExhaustCoroutine(orderedDestinationsRoutine);
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+
+                if (base.DidPlayerAnswerYes(storedYesNoResults))
+                {
+
+                    //reveal the top 3 cards of their deck, put 1 in their hand, 1 on the bottom of their deck, and 1 in their trash.
+                    IEnumerator orderedDestinationsRoutine = this.RevealCardsFromDeckToMoveToOrderedDestinations(
+                        (TurnTakerController)dca.HeroTurnTakerController,
+                        dca.ResponsibleTurnTaker.Deck,
+                        (IEnumerable<MoveCardDestination>)new List<MoveCardDestination>()
+                    {
+                    new MoveCardDestination(dca.HeroTurnTakerController.HeroTurnTaker.Hand),
+                    new MoveCardDestination(dca.ResponsibleTurnTaker.Deck, true),
+                    new MoveCardDestination(dca.ResponsibleTurnTaker.Trash)
+                    }, sendCleanupMessageIfNecessary: true);
+
+                    if (this.UseUnityCoroutines)
+                    {
+                        yield return this.GameController.StartCoroutine(orderedDestinationsRoutine);
+                    }
+                    else
+                    {
+                        this.GameController.ExhaustCoroutine(orderedDestinationsRoutine);
+                    }
                 }
             }
+            yield break;
         }
     }
 }

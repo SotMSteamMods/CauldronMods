@@ -673,7 +673,7 @@ namespace CauldronTests
         public void TestSearchAndRescue()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
 
             MakeCustomHeroHand(DocHavoc, new List<string>()
             {
@@ -681,39 +681,144 @@ namespace CauldronTests
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
             });
 
-            PutOnDeck(DocHavoc, GetCard(BrawlerCardController.Identifier));
-            PutOnDeck(DocHavoc, GetCard(StimShotCardController.Identifier));
-            PutOnDeck(DocHavoc, GetCard(DocsFlaskCardController.Identifier));
+            Card reckless = GetCardFromHand(DocHavoc, RecklessChargeCardController.Identifier);
+            Card brawler = PutOnDeck(DocHavoc, GetCard(BrawlerCardController.Identifier));
+            Card stimshot = PutOnDeck(DocHavoc, GetCard(StimShotCardController.Identifier));
+            Card flask = PutOnDeck(DocHavoc, GetCard(DocsFlaskCardController.Identifier));
 
             StartGame();
 
-            QuickHandStorage(DocHavoc, tempest);
+            QuickHandStorage(DocHavoc, tempest, haka);
 
             DecisionSelectCards = new[] 
             {
-                GetCardFromHand(RecklessChargeCardController.Identifier), 
+               reckless, 
                 null,
-                GetCard(DocsFlaskCardController.Identifier),
-                GetCard(BrawlerCardController.Identifier),
-                GetCard(StimShotCardController.Identifier)
+                null,
+               brawler,
+               stimshot,
+               flask
             };
 
             // Act
             GoToPlayCardPhase(DocHavoc);
+            DecisionYesNo = true;
             PlayCardFromHand(DocHavoc, SearchAndRescueCardController.Identifier);
 
             // Assert
 
             // DocHavoc started with 4, played Search & Rescue (-1), discarded Reckless Charge (-1), put Docs Flask into hand (+1)
             // Tempest did not discard so Search and Rescue did not proc for him
-            QuickHandCheck(-1, 0);
+            // Haka did not discard so Search and Rescue did not proc for him
+            QuickHandCheck(-1, 0, 0);
 
-            // Reckless charge and Stim shot should be in Doc's trash
-            Assert.IsNotNull(GetCardFromTrash(DocHavoc, RecklessChargeCardController.Identifier) != null);
-            Assert.IsNotNull(GetCardFromTrash(DocHavoc, StimShotCardController.Identifier) != null);
+            //check all locations
+            AssertInHand(brawler);
+            AssertOnBottomOfDeck(stimshot);
+            AssertInTrash(flask);
+            AssertInTrash(reckless);
+            AssertNumberOfCardsInRevealed(DocHavoc, 0);
 
-            // Bottom of Doc's deck should be Brawler
-            Assert.AreEqual(BrawlerCardController.Identifier, GetBottomCardOfDeck(DocHavoc).Identifier);
+        }
+
+        [Test]
+        public void TestSearchAndRescue_RevealOptional()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                SearchAndRescueCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            Card reckless = GetCardFromHand(DocHavoc, RecklessChargeCardController.Identifier);
+            Card brawler = PutOnDeck(DocHavoc, GetCard(BrawlerCardController.Identifier));
+            Card stimshot = PutOnDeck(DocHavoc, GetCard(StimShotCardController.Identifier));
+            Card flask = PutOnDeck(DocHavoc, GetCard(DocsFlaskCardController.Identifier));
+
+            StartGame();
+
+            QuickHandStorage(DocHavoc, tempest, haka);
+
+            DecisionSelectCards = new[]
+            {
+               reckless,
+                null,
+                null,
+               brawler,
+               stimshot,
+               flask
+            };
+
+            // Act
+            GoToPlayCardPhase(DocHavoc);
+            DecisionYesNo = false;
+            PlayCardFromHand(DocHavoc, SearchAndRescueCardController.Identifier);
+
+            // Assert
+
+            // DocHavoc started with 4, played Search & Rescue (-1), discarded Reckless Charge (-1)
+            // Tempest did not discard so Search and Rescue did not proc for him
+            // Haka did not discard so Search and Rescue did not proc for him
+            QuickHandCheck(-2, 0, 0);
+
+            //check all locations
+            //reckless was discarded but opted to not reveal
+            AssertInTrash(reckless);
+            AssertInDeck(brawler);
+            AssertInDeck(stimshot);
+            AssertInDeck(flask);
+
+        }
+        [Test]
+        public void TestSearchAndRescue_1CardInDeck()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                SearchAndRescueCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            Card reckless = GetCardFromHand(DocHavoc, RecklessChargeCardController.Identifier);
+
+            DiscardTopCards(DocHavoc, 36);
+            Card brawler = PutOnDeck(DocHavoc, GetCard(BrawlerCardController.Identifier));
+
+            StartGame();
+
+            QuickHandStorage(DocHavoc, tempest, haka);
+
+            DecisionSelectCards = new[]
+            {
+               reckless,
+                null,
+                null,
+               brawler
+            };
+
+            // Act
+            GoToPlayCardPhase(DocHavoc);
+            DecisionYesNo = true;
+            PlayCardFromHand(DocHavoc, SearchAndRescueCardController.Identifier);
+
+            // Assert
+
+            // DocHavoc started with 4, played Search & Rescue (-1), discarded Reckless Charge (-1), put Docs Flask into hand (+1)
+            // Tempest did not discard so Search and Rescue did not proc for him
+            // Haka did not discard so Search and Rescue did not proc for him
+            QuickHandCheck(-1, 0, 0);
+
+            //check all locations
+            AssertInHand(brawler);
+            AssertInTrash(reckless);
+            AssertNumberOfCardsInDeck(DocHavoc, 0);
+
+            AssertNumberOfCardsInRevealed(DocHavoc, 0);
 
         }
 
