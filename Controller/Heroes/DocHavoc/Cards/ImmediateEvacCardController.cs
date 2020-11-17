@@ -34,18 +34,18 @@ namespace Cauldron.DocHavoc
                 new Function(h, ChoiceTextSelectTrashIntoHand, SelectionType.MoveCardToHandFromTrash, 
                     () => base.GameController.SelectCardFromLocationAndMoveIt(h, h.TurnTaker.Trash, 
                         new LinqCardCriteria((Card c) => c.Location.Equals(h.TurnTaker.Trash)), 
-                        new MoveCardDestination[] { new MoveCardDestination(h.HeroTurnTaker.Hand, 
-                            false, false, false) }), null, null, ChoiceTextSelectTrashIntoHand),
+                        new MoveCardDestination[] { new MoveCardDestination(h.HeroTurnTaker.Hand) }),
+                    repeatDecisionText: ChoiceTextSelectTrashIntoHand),
 
                 new Function(h, ChoiceTextDiscardAndDraw, SelectionType.DiscardAndDrawCard, () => DiscardCardAndDrawCardsResponse(h.CharacterCard)),
             };
             
             List<SelectFunctionDecision> choicesMade = new List<SelectFunctionDecision>();
             IEnumerator playerSelectRoutine = this.EachPlayerSelectsFunction(
-                (Func<HeroTurnTakerController, bool>) (h => h.IsHero && !h.IsIncapacitatedOrOutOfGame),
+                (h => h.IsHero && !h.IsIncapacitatedOrOutOfGame),
                 Functions,
                 storedResults: choicesMade,
-                outputIfCannotChooseFunction: ((Func<HeroTurnTakerController, string>)(h => $"{h.Name} has no valid choices")));
+                outputIfCannotChooseFunction: (h => $"{h.Name} has no valid choices"));
             
 
             if (this.UseUnityCoroutines)
@@ -80,15 +80,14 @@ namespace Cauldron.DocHavoc
                 yield break;
             }
 
+            //discard a card and draw 2 cards
             CardController cc = base.FindCardController(card);
 
             List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
 
             IEnumerator discardCardRoutine = this.GameController.SelectAndDiscardCard(cc.HeroTurnTakerController, storedResults: storedResults);
 
-            //IEnumerator discardCardRoutine
-                //= this.GameController.EachPlayerDiscardsCards(CardsToDiscard, CardsToDiscard, storedResults);
-
+         
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(discardCardRoutine);

@@ -686,7 +686,7 @@ namespace CauldronTests
         public void TestImmediateEvac()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
 
             MakeCustomHeroHand(DocHavoc, new List<string>()
             {
@@ -694,29 +694,32 @@ namespace CauldronTests
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
             });
 
-            SetHitPoints(baron, 35);
 
             StartGame();
 
+            SetHitPoints(baron.CharacterCard, 35);
+
             PutInTrash(DocHavoc, new List<Card>() { GetCard(DocsFlaskCardController.Identifier), GetCard(BrawlerCardController.Identifier) });
             PutInTrash(tempest, new List<Card>() { GetCard("ChainLightning"), GetCard("FlashFlood") });
+            PutInTrash(haka, new List<Card>() { GetCard("Mere"), GetCard("GroundPound") });
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
-            DealDamage(DocHavoc, mdp, 5, DamageType.Lightning);
-            QuickHPStorage(baron.CharacterCard, mdp);
-            QuickHandStorage(DocHavoc, tempest);
+            SetHitPoints(mdp, 5);
 
-            DecisionSelectFunctions = new int?[]{ 1, 0};
+            QuickHPStorage(baron.CharacterCard, mdp, DocHavoc.CharacterCard, tempest.CharacterCard, haka.CharacterCard);
+            QuickHandStorage(DocHavoc, tempest, haka);
 
-            DecisionSelectCards = new[] {GetCardFromHand(DocHavoc, RecklessChargeCardController.Identifier), GetCardFromTrash(tempest, "FlashFlood") };
+            DecisionSelectFunctions = new int?[]{ 1, 0, 1};
+
+            DecisionSelectCards = new[] {GetCardFromHand(DocHavoc, RecklessChargeCardController.Identifier), GetCardFromTrash(tempest, "FlashFlood"), GetCardFromHand(haka) };
 
             // Act
             GoToPlayCardPhase(DocHavoc);
             PlayCardFromHand(DocHavoc, ImmediateEvacCardController.Identifier);
 
             // Assert
-            QuickHPCheck(2, 2); // Villain HP gain check
-            QuickHandCheck(0, 1);
+            QuickHPCheck(2, 2, 0, 0,0); // Villain HP gain check
+            QuickHandCheck(0, 1, 1);
 
         }
 
