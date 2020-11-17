@@ -77,7 +77,7 @@ namespace CauldronTests
             Assert.IsInstanceOf(typeof(NightloreCouncilStarlightCharacterCardController), FindCardController(starlightInstructions));
 
             Assert.IsFalse(starlightInstructions.IsRealCard);
-            AssertNumberOfCardsInPlay(starlight, 0);
+            AssertNumberOfCardsInPlay(starlight, 3);
         }
         [Test()]
         public void TestNightloreCouncilIndividualsLoad()

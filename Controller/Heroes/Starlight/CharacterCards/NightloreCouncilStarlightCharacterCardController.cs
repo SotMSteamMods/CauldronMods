@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Handelabra;
 
 namespace Cauldron.Starlight
 {
@@ -10,8 +11,23 @@ namespace Cauldron.Starlight
     {
         public NightloreCouncilStarlightCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
         }
 
+        public override void AddStartOfGameTriggers()
+        {
+            Log.Debug("Loading sub-characters...");
+            (HeroTurnTakerController as StarlightTurnTakerController).LoadSubCharactersNoEnumerator();
+            Log.Debug("Load routine complete...");
+            //if (UseUnityCoroutines)
+            //{
+            //    yield return GameController.StartCoroutine(loadCharacters);
+            //}
+            //else
+            //{
+            //    GameController.ExhaustCoroutine(loadCharacters);
+            //}
+        }
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
             switch (index)
