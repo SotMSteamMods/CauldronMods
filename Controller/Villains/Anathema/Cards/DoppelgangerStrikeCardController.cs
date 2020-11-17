@@ -65,7 +65,7 @@ namespace Cauldron.Anathema
 			}
 
 			//Play the top card of the Villain Deck
-			IEnumerator play = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, false, 1, false, null, null, null, false, null, false, false, false, null, null, base.GetCardSource(null));
+			IEnumerator play = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(play);
@@ -82,7 +82,7 @@ namespace Cauldron.Anathema
 		{
 			get
 			{
-				return base.FindCardsWhere((Card c) => base.IsVillainTarget(c) && c.IsInPlay, false, null, false).Count<Card>();
+				return base.FindCardsWhere((Card c) => base.IsVillainTarget(c) && c.IsInPlay).Count();
 			}
 		}
 
