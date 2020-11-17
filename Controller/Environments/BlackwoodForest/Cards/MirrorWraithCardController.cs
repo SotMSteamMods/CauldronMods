@@ -35,12 +35,13 @@ namespace Cauldron.BlackwoodForest
         private const int DamageToDeal = 2;
 
         private IEnumerable<string> _copiedKeywords;
-        private List<Card> _copiedOngoings;
+        private Dictionary<string, List<ITrigger>> _copiedTriggers;
 
 
         public MirrorWraithCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             _copiedKeywords = Enumerable.Empty<string>();
+            _copiedTriggers = new Dictionary<string, List<ITrigger>>();
 
             // Identify this card controller as one who can modify keyword query answers
             base.AddThisCardControllerToList(CardControllerListType.ModifiesKeywords);
@@ -90,6 +91,7 @@ namespace Cauldron.BlackwoodForest
                 IEnumerator setHpRoutine = base.GameController.SetHP(this.Card, cardToCopy.MaximumHitPoints.Value, this.GetCardSource());
 
                 // TODO: gain text
+                CopyGameText(cardToCopy);
 
                 // Add the target's keywords to our copied list which will be returned on keyword queries
                 _copiedKeywords = cardToCopy.Definition.Keywords;
@@ -129,6 +131,9 @@ namespace Cauldron.BlackwoodForest
 
         private void CopyGameText(Card sourceCard)
         {
+            //IEnumerable<ITrigger> trigger =
+//                FindTriggersWhere(t => t.CardSource.CardController, CardWithoutReplacements == sourceCard);
+
 
         }
     }

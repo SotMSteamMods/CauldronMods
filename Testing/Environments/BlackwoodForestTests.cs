@@ -525,6 +525,8 @@ namespace CauldronTests
             Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
             PlayCard(mirrorWraith);
 
+            Card dangerSense = GetCard("DangerSense");
+
             // Act
             GoToEndOfTurn(BlackwoodForest);
 
