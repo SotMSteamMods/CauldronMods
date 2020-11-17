@@ -877,7 +877,7 @@ namespace CauldronTests
         public void TestBrawler()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "Haka", "RuinsOfAtlantis");
 
             MakeCustomHeroHand(DocHavoc, new List<string>()
             {
@@ -888,18 +888,24 @@ namespace CauldronTests
             StartGame();
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
-            QuickHPStorage(DocHavoc.CharacterCard, mdp);
+
+            GoToStartOfTurn(DocHavoc);
+            //have mdp deal 3 damage earlier in the turn
+            DealDamage(mdp, DocHavoc.CharacterCard, 3, DamageType.Melee);
+
+            QuickHPStorage(DocHavoc.CharacterCard, mdp, bunker.CharacterCard, haka.CharacterCard);
             
             // Act
             DecisionSelectTarget = mdp;
 
             GoToPlayCardPhase(DocHavoc);
-            PlayCardFromHand(DocHavoc, BrawlerCardController.Identifier);
-            UsePower(BrawlerCardController.Identifier);
+            Card brawler = PlayCardFromHand(DocHavoc, BrawlerCardController.Identifier);
+            //One non-hero target deals {DocHavoc} 4 melee damage. Then {DocHavoc} deals that target X melee damage, where X is the amount of damage that target dealt {DocHavoc} this turn.
+            UsePower(brawler);
             GoToEndOfTurn(DocHavoc);
 
             // Assert
-            QuickHPCheck(-4, -4);
+            QuickHPCheck(-4, -7, 0, 0);
         }
 
         
