@@ -15,7 +15,7 @@ namespace Cauldron.Anathema
 		public override void AddTriggers()
 		{
 			//At the end of the Villain Turn, play the top card of the Villain Deck.
-			base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(base.PlayTheTopCardOfTheVillainDeckWithMessageResponse), TriggerType.PlayCard, null, false);
+			base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, base.PlayTheTopCardOfTheVillainDeckWithMessageResponse, TriggerType.PlayCard);
 		}
 
 	}
