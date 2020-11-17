@@ -28,7 +28,7 @@ namespace Cauldron.TangoOne
         {
             // Shuffle 2 cards from each trash back into their decks
             IEnumerator shuffleRoutine 
-                = base.DoActionToEachTurnTakerInTurnOrder((TurnTakerController turnTakerController) => true, MoveCardToDeckResponse);
+                = base.DoActionToEachTurnTakerInTurnOrder(turnTakerController => true, MoveCardToDeckResponse);
 
             List<SelectCardDecision> selectCardResults = new List<SelectCardDecision>();
             IEnumerator selectOwnCharacterRoutine = base.SelectOwnCharacterCard(selectCardResults, SelectionType.HeroToDealDamage);
@@ -39,7 +39,7 @@ namespace Cauldron.TangoOne
             IEnumerator dealDamageRoutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
                 new DamageSource(base.GameController, characterCard), DamageAmount,
                 DamageType.Melee, 1, false, 0,
-                additionalCriteria: ((Func<Card, bool>)(c => c.IsTarget && c.IsInPlay)),
+                additionalCriteria: c => c.IsTarget && c.IsInPlay,
                 cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
@@ -67,7 +67,7 @@ namespace Cauldron.TangoOne
             HeroTurnTakerController decisionMaker = turnTaker.IsHero ? turnTakerController.ToHero() : this.DecisionMaker;
 
             IEnumerator selectCardsFromLocationRoutine = base.GameController.SelectCardsFromLocationAndMoveThem(decisionMaker, turnTaker.Trash, 
-                    new int?(0), CardsToMoveFromTrash, 
+                    0, CardsToMoveFromTrash, 
                     new LinqCardCriteria(c => c.Location == turnTaker.Trash, "trash"), 
                     list, shuffleAfterwards: false, cardSource: base.GetCardSource());
 

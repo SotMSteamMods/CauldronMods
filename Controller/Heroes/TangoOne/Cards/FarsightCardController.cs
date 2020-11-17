@@ -21,7 +21,7 @@ namespace Cauldron.TangoOne
         public override void AddTriggers()
         {
 
-            base.AddMakeDamageIrreducibleTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(this.Card.Owner.CharacterCard));
+            base.AddMakeDamageIrreducibleTrigger(dd => dd.DamageSource.IsSameCard(this.Card.Owner.CharacterCard));
 
             base.AddTriggers();
         }

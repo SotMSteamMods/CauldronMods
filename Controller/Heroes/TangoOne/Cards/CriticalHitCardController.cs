@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,7 +29,7 @@ namespace Cauldron.TangoOne
             DamageSource heroDamageSource = new DamageSource(this.GameController, this.Card.Owner.CharacterCard);
 
             base.AddTrigger<DealDamageAction>(dda => dda.DamageSource != null && dda.DamageSource.IsSameCard(base.CharacterCard),
-                new Func<DealDamageAction, IEnumerator>(this.RevealTopCardFromDeckResponse),
+                this.RevealTopCardFromDeckResponse,
                 new TriggerType[]
                 {
                     TriggerType.DealDamage

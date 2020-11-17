@@ -25,7 +25,7 @@ namespace Cauldron.TangoOne
         public override void AddTriggers()
         {
             base.AddTrigger<DealDamageAction>(dda => dda.Target.Equals(this.CharacterCard),
-                new Func<DealDamageAction, IEnumerator>(this.RevealTopCardFromDeckResponse),
+                this.RevealTopCardFromDeckResponse,
                 new TriggerType[]
                 {
 
@@ -40,7 +40,7 @@ namespace Cauldron.TangoOne
 
             // Ask if player wants to discard off the top of their deck
             IEnumerator routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.DiscardFromDeck, this.Card, null, storedYesNoResults, null, GetCardSource(null));
+                SelectionType.DiscardFromDeck, this.Card, null, storedYesNoResults, null, GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -59,7 +59,8 @@ namespace Cauldron.TangoOne
 
             // Move card from top of their deck to the trash
             List<MoveCardAction> moveCardActions = new List<MoveCardAction>();
-            IEnumerator discardCardRoutine = base.GameController.DiscardTopCard(this.TurnTaker.Deck, moveCardActions, null, this.TurnTaker, base.GetCardSource());
+            IEnumerator discardCardRoutine 
+                = base.GameController.DiscardTopCard(this.TurnTaker.Deck, moveCardActions, null, this.TurnTaker, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(discardCardRoutine);

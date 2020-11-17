@@ -28,7 +28,7 @@ namespace Cauldron.TangoOne
             immuneToDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
             immuneToDamageStatusEffect.CardDestroyedExpiryCriteria.Card = base.CharacterCard;
 
-            IEnumerator immuneToDamageRoutine = base.AddStatusEffect(immuneToDamageStatusEffect, true);
+            IEnumerator immuneToDamageRoutine = base.AddStatusEffect(immuneToDamageStatusEffect);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(immuneToDamageRoutine);
@@ -62,7 +62,7 @@ namespace Cauldron.TangoOne
                 {
                     IsSpecificCard = base.Card.Owner.CharacterCard
                 },
-                NumberOfUses = new int?(1),
+                NumberOfUses = 1,
                 CardDestroyedExpiryCriteria =
                 {
                     Card = base.Card

@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -33,19 +33,19 @@ namespace Cauldron.TangoOne
                 {
                     IsSpecificCard = base.Card.Owner.CharacterCard
                 },
-                NumberOfUses = new int?(1),
+                NumberOfUses = 1,
                 CardDestroyedExpiryCriteria =
                 {
                     Card = base.Card
                 }
-            }, true);
+            });
 
 
             List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
 
             // Ask if player wants to shuffle trash into deck
             IEnumerator decideTrashShuffleRoutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.ShuffleTrashIntoDeck, this.Card, null, storedYesNoResults, null, GetCardSource(null));
+                SelectionType.ShuffleTrashIntoDeck, this.Card, null, storedYesNoResults, null, GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -63,7 +63,7 @@ namespace Cauldron.TangoOne
                 // Shuffle trash into deck
                 IEnumerator shuffleTrashIntoDeckRoutine
                     = base.GameController.ShuffleTrashIntoDeck(base.TurnTakerController, false, 
-                        null, base.GetCardSource(null));
+                        null, base.GetCardSource());
 
                 if (base.UseUnityCoroutines)
                 {

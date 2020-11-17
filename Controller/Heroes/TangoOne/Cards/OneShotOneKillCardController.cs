@@ -28,7 +28,7 @@ namespace Cauldron.TangoOne
         {
             List<DiscardCardAction> discardCardActions = new List<DiscardCardAction>();
             IEnumerator discardCardsRoutine = base.SelectAndDiscardCards(base.HeroTurnTakerController, null, false, 
-                new int?(0), discardCardActions, false, null, null, null, SelectionType.DiscardCard, null);
+                new int?(0), discardCardActions, false);
 
             if (base.UseUnityCoroutines)
             {

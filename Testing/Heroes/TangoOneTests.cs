@@ -19,11 +19,13 @@ namespace CauldronTests
         protected HeroTurnTakerController TangoOne => FindHero("TangoOne");
         protected TurnTakerController Anathema => FindVillain("Anathema");
 
+        private const string DeckNamespace = "Cauldron.TangoOne";
+
         [Test]
         public void TestTangoOneLoads()
         {
             // Arrange & Act
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Megalopolis");
 
             // Assert
             Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
@@ -37,7 +39,7 @@ namespace CauldronTests
         public void TestInnatePower()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             StartGame();
 
@@ -58,7 +60,7 @@ namespace CauldronTests
         public void TestIncapacitateOption1()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             StartGame();
 
@@ -82,7 +84,7 @@ namespace CauldronTests
         public void TestIncapacitateOption2ToDeck()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             StartGame();
 
@@ -108,7 +110,7 @@ namespace CauldronTests
         public void TestIncapacitateOption2ToTrash()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             StartGame();
 
@@ -134,7 +136,7 @@ namespace CauldronTests
         public void TestIncapacitateOption3MakeChoices()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             StartGame();
 
@@ -162,7 +164,7 @@ namespace CauldronTests
         public void TestIncapacitateOption3DontMakeChoices()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             StartGame();
 
@@ -189,7 +191,7 @@ namespace CauldronTests
         public void TestChameleonArmorDiscardCriticalCardSuccess()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
             StartGame();
             PutOnDeck(TangoOne, GetCard(DamnGoodGroundCardController.Identifier));
 
@@ -211,7 +213,7 @@ namespace CauldronTests
         public void TestChameleonArmorDiscardCriticalCardFail()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
             StartGame();
             PutOnDeck(TangoOne, GetCard(FarsightCardController.Identifier));
 
@@ -233,7 +235,7 @@ namespace CauldronTests
         public void TestChameleonArmorDontDiscard()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
             StartGame();
 
             DecisionYesNo = false;
@@ -254,7 +256,7 @@ namespace CauldronTests
         public void TestCriticalHitDiscardCriticalCardSuccess()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
             StartGame();
 
             PutOnDeck(TangoOne, GetCard(DamnGoodGroundCardController.Identifier));
@@ -280,7 +282,7 @@ namespace CauldronTests
         public void TestCriticalHitDiscardCriticalCardFail()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
             StartGame();
 
             PutOnDeck(TangoOne, GetCard(FarsightCardController.Identifier));
@@ -306,7 +308,7 @@ namespace CauldronTests
         public void TestCriticalHitDontDiscard()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
             StartGame();
 
             PutOnDeck(TangoOne, GetCard(FarsightCardController.Identifier));
@@ -333,7 +335,7 @@ namespace CauldronTests
         public void TestCriticalHitWithNemesisDiscardCriticalCardSuccess()
         {
             // Arrange
-            SetupGameController("Cauldron.Anathema", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("Cauldron.Anathema", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             // Supress Anathema's ability to play cards to create ideal testing env.
             CannotPlayCardsStatusEffect cannotPlayCardsStatusEffect = new CannotPlayCardsStatusEffect();
@@ -370,7 +372,7 @@ namespace CauldronTests
         public void TestDamnGoodGround()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
             StartGame();
 
             DealDamage(baron, TangoOne, 5, DamageType.Cold);
@@ -392,7 +394,7 @@ namespace CauldronTests
         public void TestDisablingShot()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
             StartGame();
 
             PlayCard(baron, "BacklashField");
@@ -417,7 +419,7 @@ namespace CauldronTests
         public void TestFarsight()
         {
             // Arrange
-            SetupGameController("GloomWeaver", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("GloomWeaver", DeckNamespace, "Ra", "Legacy", "Megalopolis");
             StartGame();
 
             PlayCard("StrengthOfTheGrave"); // Reduce damage to zombies by 1
@@ -441,7 +443,7 @@ namespace CauldronTests
         public void TestGhostReactor()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             MakeCustomHeroHand(TangoOne, new List<string>()
             {
@@ -475,7 +477,7 @@ namespace CauldronTests
         public void TestInfiltrate()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             MakeCustomHeroHand(TangoOne, new List<string>()
             {
@@ -504,7 +506,7 @@ namespace CauldronTests
         public void TestLineEmUp()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             MakeCustomHeroHand(TangoOne, new List<string>()
             {
@@ -534,7 +536,7 @@ namespace CauldronTests
         public void TestOneShotShotOneKillSuccessfulDestruction()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             MakeCustomHeroHand(TangoOne, new List<string>()
             {
@@ -571,7 +573,7 @@ namespace CauldronTests
         public void TestOneShotShotOneKillMultipleEligibleTargetsForDestruction()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             MakeCustomHeroHand(TangoOne, new List<string>()
             {
@@ -614,7 +616,7 @@ namespace CauldronTests
         public void TestOneShotShotOneKillUnsuccessfulDestruction()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             MakeCustomHeroHand(TangoOne, new List<string>()
             {
@@ -651,7 +653,7 @@ namespace CauldronTests
         public void TestOpportunistShuffleTrash()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             MakeCustomHeroHand(TangoOne, new List<string>()
             {
@@ -688,7 +690,7 @@ namespace CauldronTests
         public void TestOpportunistDontShuffleTrash()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             MakeCustomHeroHand(TangoOne, new List<string>()
             {
@@ -725,7 +727,7 @@ namespace CauldronTests
         public void TestPerfectFocusDrawCard()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             MakeCustomHeroHand(TangoOne, new List<string>()
             {
@@ -756,7 +758,7 @@ namespace CauldronTests
         public void TestPerfectFocusDontDrawCard()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             MakeCustomHeroHand(TangoOne, new List<string>()
             {
@@ -786,7 +788,7 @@ namespace CauldronTests
         public void TestPsionicSuppression()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Megalopolis");
 
             MakeCustomHeroHand(TangoOne, new List<string>()
             {
@@ -814,7 +816,7 @@ namespace CauldronTests
         public void TestSniperRiflePower1Success()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Legacy", "Megalopolis");
 
             MakeCustomHeroHand(TangoOne, new List<string>()
             {
@@ -850,7 +852,7 @@ namespace CauldronTests
         public void TestSniperRiflePower1Fail()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Legacy", "Megalopolis");
 
             MakeCustomHeroHand(TangoOne, new List<string>()
             {
@@ -884,7 +886,7 @@ namespace CauldronTests
         public void TestSniperRiflePower2()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Legacy", "Megalopolis");
 
             MakeCustomHeroHand(TangoOne, new List<string>()
             {
@@ -912,7 +914,7 @@ namespace CauldronTests
         public void TestWetWork()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.TangoOne", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
             MakeCustomHeroHand(TangoOne, new List<string>()
             {

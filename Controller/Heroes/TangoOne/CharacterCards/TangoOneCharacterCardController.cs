@@ -29,8 +29,8 @@ namespace Cauldron.TangoOne
 
             IEnumerator routine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, damageSource,
                 powerNumeral,
-                DamageType.Projectile, new int?(1), false, new int?(1),
-                cardSource: base.GetCardSource(null));
+                DamageType.Projectile, 1, false, 1,
+                cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -94,7 +94,7 @@ namespace Cauldron.TangoOne
                     }
 
                     IEnumerator cardActionRoutine = this.RevealCard_PutItBackOrDiscardIt(base.TurnTakerController, deck, null, null,
-                        true, base.TurnTaker, true);
+                        true, base.TurnTaker);
 
                     if (base.UseUnityCoroutines)
                     {
@@ -170,7 +170,7 @@ namespace Cauldron.TangoOne
 
             List<Card> revealedCards = new List<Card>();
             IEnumerator revealCardRoutine = this.GameController.RevealCards(revealingTurnTaker, deck, 1, revealedCards, false, 
-                revealedCardDisplay, null, this.GetCardSource(null));
+                revealedCardDisplay, null, this.GetCardSource());
 
             if (this.UseUnityCoroutines)
             {
@@ -195,10 +195,9 @@ namespace Cauldron.TangoOne
             CardController cardController = this.FindCardController(card);
             TurnTaker ownerTurnTaker = deck.OwnerTurnTaker;
 
-            MoveCardDestination[] possibleDestinations = new[]
-            {
-                new MoveCardDestination(card.Owner.Deck, false, false, false),
-                new MoveCardDestination(cardController.GetTrashDestination(), false, false, false)
+            MoveCardDestination[] possibleDestinations = {
+                new MoveCardDestination(card.Owner.Deck),
+                new MoveCardDestination(cardController.GetTrashDestination())
             };
                 
             IEnumerator setLocationAndMoveRoutine = this.GameController.SelectLocationAndMoveCard(this.HeroTurnTakerController, card, 

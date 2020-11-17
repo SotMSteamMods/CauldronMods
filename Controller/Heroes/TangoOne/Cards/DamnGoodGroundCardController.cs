@@ -25,8 +25,8 @@ namespace Cauldron.TangoOne
 
             IEnumerator dealDamageRoutine = this.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
                 new DamageSource(this.GameController, this.CharacterCard), DamageAmount, DamageType.Projectile,
-                new int?(3), false,
-                new int?(0), cardSource: this.GetCardSource());
+                3, false,
+                0, cardSource: this.GetCardSource());
 
             if (this.UseUnityCoroutines)
             {

@@ -24,14 +24,14 @@ namespace Cauldron.TangoOne
 
         public override void AddTriggers()
         {
-            base.AddTrigger<DestroyCardAction>((DestroyCardAction destroyCard) => destroyCard.WasCardDestroyed
-                    && destroyCard.ResponsibleCard.Equals(this.Card.Owner.CharacterCard)
-                    && base.GameController.IsCardVisibleToCardSource(destroyCard.CardToDestroy.Card,
-                        base.GetCardSource(null)), 
-                new Func<DestroyCardAction, IEnumerator>(this.DealDamageResponse),
+            base.AddTrigger<DestroyCardAction>(destroyCard => destroyCard.WasCardDestroyed
+                && destroyCard.ResponsibleCard.Equals(this.Card.Owner.CharacterCard)
+                && base.GameController.IsCardVisibleToCardSource(destroyCard.CardToDestroy.Card,
+                    base.GetCardSource()), 
+                this.DealDamageResponse,
                 TriggerType.DealDamage, TriggerTiming.After, ActionDescription.Unspecified,
                 false, true, null, false, null,
-                null, false, false);
+                null);
 
             base.AddTriggers();
         }
@@ -54,7 +54,7 @@ namespace Cauldron.TangoOne
             IEnumerator dealDamageRoutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
                 new DamageSource(base.GameController, characterCard), DamageAmount,
                 DamageType.Projectile, 1, false, 0,
-                additionalCriteria: ((Func<Card, bool>)(c => c.IsTarget && c.IsInPlay)),
+                additionalCriteria: c => c.IsTarget && c.IsInPlay,
                 cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)

@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -32,17 +32,17 @@ namespace Cauldron.TangoOne
                 {
                     IsSpecificCard = base.Card.Owner.CharacterCard
                 },
-                NumberOfUses = new int?(1),
+                NumberOfUses = 1,
                 CardDestroyedExpiryCriteria =
                 {
                     Card = base.Card
                 }
-            }, true);
+            });
 
             // Ask if player wants to play a card
             List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
             IEnumerator decidePlayCard = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.PlayCard, this.Card, null, storedYesNoResults, null, GetCardSource(null));
+                SelectionType.PlayCard, this.Card, null, storedYesNoResults, null, GetCardSource());
 
             if (base.UseUnityCoroutines)
             {

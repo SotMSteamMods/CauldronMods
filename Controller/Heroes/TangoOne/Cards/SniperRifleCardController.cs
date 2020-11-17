@@ -59,7 +59,7 @@ namespace Cauldron.TangoOne
                 CardsToDiscard, false,
                 null,
                 discardCardActions, false, null, null, null, 
-                cardCriteria, SelectionType.DiscardCard, this.TurnTaker, null
+                cardCriteria, SelectionType.DiscardCard, this.TurnTaker
             );
 
             if (base.UseUnityCoroutines)
@@ -111,7 +111,7 @@ namespace Cauldron.TangoOne
             IEnumerator dealDamageRoutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
                 new DamageSource(base.GameController, selectedCard), powerNumeral,
                 DamageType.Projectile, 1, false, 0,
-                additionalCriteria: ((Func<Card, bool>)(c => c.IsTarget && c.IsInPlay)),
+                additionalCriteria: c => c.IsTarget && c.IsInPlay,
                 cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
