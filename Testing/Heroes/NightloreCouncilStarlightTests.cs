@@ -48,6 +48,8 @@ namespace CauldronTests
 
             Assert.AreEqual(29, starlight.CharacterCard.HitPoints);
             Assert.AreEqual("Starlight: Genesis", starlight.CharacterCard.Title);
+
+            Assert.AreEqual((starlight.IncapacitationCardController).Card.Title, "Starlight: Genesis");
         }
         [Test()]
         public void TestGuiseCanGetOtherStarlight()
@@ -98,9 +100,93 @@ namespace CauldronTests
             Assert.AreEqual(12, asheron.HitPoints);
             Assert.AreEqual(15, cryos.HitPoints);
 
+            Assert.AreEqual(terra.Title, "Starlight of Terra");
+            Assert.AreEqual(asheron.Title, "Starlight of Asheron");
+            Assert.AreEqual(cryos.Title, "Starlight of Cryos-4");
+
             Assert.IsNull(starlight.CharacterCard);
             AssertNumberOfCardsInPlay(starlight, 3);
         }
+        [Test()]
+        public void TestNightloreCouncilTerraTrigger()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheSentinels", "Megalopolis" }, false, nightloreDict);
 
+            StartGame();
+
+            Card constellation = GetCard("AncientConstellationA");
+            DecisionSelectCard = terra;
+            PlayCard(constellation);
+
+            AssertNextToCard(constellation, terra);
+            AssertNumberOfCardsNextToCard(terra, 1);
+
+            DecisionSelectCard = null;
+            SetHitPoints(terra, 10);
+            SetHitPoints(asheron, 10);
+            SetHitPoints(cryos, 10);
+
+            QuickHPStorage(terra, asheron, cryos);
+
+            GoToStartOfTurn(starlight);
+            QuickHPCheck(1, 1, 1);
+
+            DestroyCard(constellation);
+
+            GoToStartOfTurn(starlight);
+            QuickHPCheck(0, 0, 0);
+        }
+        [Test()]
+        public void TestNightloreCouncilAsheronTrigger()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+            var m = DamageType.Melee;
+            Card constellation = GetCard("AncientConstellationA");
+            Card mdp = GetMobileDefensePlatform().Card;
+            DecisionSelectCard = asheron;
+            PlayCard(constellation);
+            DecisionSelectCard = terra;
+            PlayCard("AncientConstellationB");
+            QuickHPStorage(mdp, asheron, idealist);
+            DealDamage(asheron, mdp, 1, m);
+            DealDamage(asheron, asheron, 1, m);
+            DealDamage(asheron, idealist, 1, m);
+            QuickHPCheck(-2, -1, -1);
+            DealDamage(terra, mdp, 1, m);
+            DealDamage(terra, asheron, 1, m);
+            DealDamage(terra, idealist, 1, m);
+            QuickHPCheck(-1, -2, -1); //nemesis bonus!
+            DestroyCard(constellation);
+            DealDamage(asheron, mdp, 1, m);
+            DealDamage(asheron, asheron, 1, m);
+            DealDamage(asheron, idealist, 1, m);
+            QuickHPCheck(-1, -1, -1);
+        }
+        [Test()]
+        public void TestNightloreCouncilCryosTrigger()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+
+            DiscardAllCards(starlight); //so we don't accidentally play a card in hand
+            DecisionSelectCards = new List<Card> { mainstay, terra, baron.CharacterCard, cryos };
+            QuickHandStorage(starlight);
+            PlayCard("AncientConstellationA");
+            PlayCard("AncientConstellationB");
+            PlayCard("AncientConstellationC");
+            QuickHandCheck(0);
+            PlayCard("AncientConstellationD");
+            QuickHandCheck(1);
+            
+        }
     }
 }

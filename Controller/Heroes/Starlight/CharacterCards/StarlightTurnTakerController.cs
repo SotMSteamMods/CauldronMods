@@ -12,7 +12,6 @@ namespace Cauldron.Starlight
     {
         private CharacterCardController _instructions = null;
         private bool? hasInstructionCard = null;
-        private bool _inSetup = true;
 
         public StarlightTurnTakerController(TurnTaker tt, GameController gc) : base(tt, gc)
         {
@@ -69,8 +68,9 @@ namespace Cauldron.Starlight
             yield break;
         }
 
-        public void LoadSubCharactersNoEnumerator()
+        public List<Card> LoadSubCharactersAndReturnThem()
         {
+            List<Card> characterCards = new List<Card> { };
             Log.Debug(TurnTaker == null ? "No TurnTaker yet" : "TurnTaker found...");
             DeckDefinition starlightDeck = TurnTaker.DeckDefinition;
             foreach (string charID in nightloreCouncilIdentifiers)
@@ -84,6 +84,7 @@ namespace Cauldron.Starlight
                     TurnTaker.PlayArea.AddCard(newCard);
                     CardController newCC = CardControllerFactory.CreateInstance(newCard, this, "Cauldron.Starlight");
                     AddCardController(newCC);
+                    characterCards.Add(newCard);
                     
                 }
                 else
@@ -91,6 +92,7 @@ namespace Cauldron.Starlight
                     Log.Warning("Failed to load a Nightlore Council sub-starlight: " + charID + "!");
                 }
             }
+            return characterCards;
         }
         private CharacterCardController InstructionCardController
         {
@@ -116,28 +118,6 @@ namespace Cauldron.Starlight
                 }
                 return (bool)hasInstructionCard ? _instructions : null;
             }
-        }
-        public override IEnumerator StartGame()
-        {
-            _inSetup = false;
-            if ((bool)hasInstructionCard || CharacterCardController is NightloreCouncilStarlightCharacterCardController)
-            {
-                IEnumerator loadCharacters = null;
-                //loadCharacters = LoadSubCharacters(true);
-                if (loadCharacters != null)
-                {
-                    if (UseUnityCoroutines)
-                    {
-                        yield return GameController.StartCoroutine(loadCharacters);
-                    }
-                    else
-                    {
-                        GameController.ExhaustCoroutine(loadCharacters);
-                    }
-                }
-            }
-            yield return base.StartGame();
-            yield break;
         }
         public override Card CharacterCard
         {

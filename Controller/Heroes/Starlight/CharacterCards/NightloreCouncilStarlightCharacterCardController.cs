@@ -14,19 +14,92 @@ namespace Cauldron.Starlight
 
         }
 
+        private Card _terra = null;
+        private Card _asheron = null;
+        private Card _cryos = null;
+
+        private Card terra
+        {
+            get
+            {
+                if (_terra == null)
+                {
+                    _terra = GameController.FindCard("StarlightOfTerraCharacter");
+                }
+                return _terra;
+            }
+        }
+        private Card asheron
+        {
+            get
+            {
+                if (_asheron == null)
+                {
+                    _asheron = GameController.FindCard("StarlightOfAsheronCharacter");
+                }
+                return _asheron;
+            }
+        }
+        private Card cryos
+        {
+            get
+            {
+                if (_cryos == null)
+                {
+                    _cryos = GameController.FindCard("StarlightOfCryosFourCharacter");
+                }
+                return _cryos;
+            }
+        }
         public override void AddStartOfGameTriggers()
         {
             Log.Debug("Loading sub-characters...");
-            (HeroTurnTakerController as StarlightTurnTakerController).LoadSubCharactersNoEnumerator();
+            var cards = (HeroTurnTakerController as StarlightTurnTakerController).LoadSubCharactersAndReturnThem();
             Log.Debug("Load routine complete...");
-            //if (UseUnityCoroutines)
-            //{
-            //    yield return GameController.StartCoroutine(loadCharacters);
-            //}
-            //else
-            //{
-            //    GameController.ExhaustCoroutine(loadCharacters);
-            //}
+
+            _terra = cards.Where((Card c) => c.Identifier == "StarlightOfTerraCharacter").FirstOrDefault();
+            Log.Debug(_terra.Title + " stored in _terra");
+            _asheron = cards.Where((Card c) => c.Identifier == "StarlightOfAsheronCharacter").FirstOrDefault();
+            Log.Debug(_asheron.Title + " stored in _asheron");
+            _cryos = cards.Where((Card c) => c.Identifier == "StarlightOfCryosFourCharacter").FirstOrDefault();
+            Log.Debug(_cryos.Title + " stored in _cryos");
+
+            AddStartOfTurnTrigger((TurnTaker tt) => TurnTaker == this.TurnTaker,
+                            (PhaseChangeAction pca) => TerraHealTeamResponse(),
+                            TriggerType.GainHP);
+            AddIncreaseDamageTrigger(AsheronBoostDamageCriteria, 1);
+            AddTrigger<CardEntersPlayAction>(CryosCardDrawCriteria, (CardEntersPlayAction cep) => DrawCard(), new List<TriggerType> { TriggerType.DrawCard }, TriggerTiming.After);
+        }
+
+        public IEnumerator TerraHealTeamResponse()
+        {
+            Log.Debug("TerraHealTeamResponse activates");
+            if (IsNextToConstellation(terra))
+            {
+                IEnumerator heal = GameController.SelectAndGainHP(ToHeroTurnTakerController(TurnTaker), 1, false, (Card c) => c == terra || c == asheron || c == cryos, 3, 3, cardSource: GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(heal);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(heal);
+                }
+            }
+            yield break;
+        }
+        public bool AsheronBoostDamageCriteria(DealDamageAction dda)
+        {
+            return dda.DamageSource.IsSameCard(asheron) && IsNextToConstellation(asheron) && !dda.Target.IsHero;
+        }
+        public bool CryosCardDrawCriteria(CardEntersPlayAction cep)
+        {
+            if (IsConstellation(cep.CardEnteringPlay))
+            {
+                var enteringBy = FindCardsWhere((Card c) => c.IsInPlay && c.GetAllNextToCards(false).Contains(cep.CardEnteringPlay)).FirstOrDefault();
+                return enteringBy == cryos;
+            }
+            return false;
         }
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
@@ -78,6 +151,18 @@ namespace Cauldron.Starlight
 
             yield break;
         }
-
+        private bool IsConstellation(Card c)
+        {
+            return GameController.DoesCardContainKeyword(c, "constellation");
+        }
+        protected bool IsNextToConstellation(Card card)
+        {
+            if (card != null && card.NextToLocation != null && card.NextToLocation.Cards != null)
+            {
+                int num = card.NextToLocation.Cards.Where((Card c) => IsConstellation(c) && c.IsInPlayAndHasGameText).Count();
+                return num > 0;
+            }
+            return false;
+        }
     }
 }
