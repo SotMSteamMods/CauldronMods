@@ -295,24 +295,31 @@ namespace CauldronTests
         public void TestDocsFlask()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "Haka", "Megalopolis");
             StartGame();
 
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
             // Reduce Ra's, Havoc's  HP by 2
-            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
-            DealDamage(baron, ra, 2, DamageType.Melee);
-            QuickHPStorage(ra, DocHavoc);
+            SetHitPoints(baron.CharacterCard, 35);
+            SetHitPoints(mdp, 5);
+            SetHitPoints(DocHavoc.CharacterCard, 20);
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(haka.CharacterCard, 20);
+
+            QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, DocHavoc.CharacterCard, haka.CharacterCard);
 
             // Act
             PutInHand(DocsFlaskCardController.Identifier);
             Card docsFlask = GetCardFromHand(DocsFlaskCardController.Identifier);
-            //GoToPlayCardPhase(DocHavoc);
             PlayCard(docsFlask);
 
             DecisionSelectCard = ra.CharacterCard;
-
             // Procs flask to heal Ra +1 HP
             GoToStartOfTurn(DocHavoc);
+
+            QuickHPCheck(0, 0, 1, 0, 0);
+            QuickHPUpdate();
 
             // Now use power portion of Doc's Flask
             GoToUsePowerPhase(DocHavoc);
@@ -320,7 +327,8 @@ namespace CauldronTests
 
             // Assert
             AssertTriggersWhere((Func<ITrigger, bool>)(t => t.Types.Contains(TriggerType.GainHP)));
-            QuickHPCheck(2, 1);
+
+            QuickHPCheck(0, 0, 1, 1, 1);
         }
 
         [Test]
