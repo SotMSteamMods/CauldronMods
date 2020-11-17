@@ -1382,6 +1382,7 @@ namespace CauldronTests
 
             AssertOnTopOfDeck(starlight, constA);
             AssertIsInPlay(pillars);
+            AssertOnBottomOfDeck(starlight, aura);
         }
         [Test()]
         public void TestWishSimpleOther()
@@ -1414,5 +1415,120 @@ namespace CauldronTests
             PlayCard("Wish");
         }
         //There are a bunch of other tests that could be done for Wish, but I'll assume Argent Adept has them covered.
+        //...well, I did until I wrote custom logic. Less reliable, more consistent with other versions of the effect
+        //Especially the order, which with AA code goes "put on very bottom, put on very bottom again, and again..."
+        //but in the typical version goes "very bottom, second from bottom, third from bottom..."
+        [Test()]
+        [Sequential]
+        public void TestWishNCardsLeft([Values(4, 3, 2, 1, 0)] int numCardsLeft)
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            DiscardAllCards(starlight);
+            PutInTrash(starlight, starlight.TurnTaker.Deck.Cards);
+
+            Card[] cardsToPut = new Card[4] { GetCard("CelestialAura"), GetCard("WarpHalo"), GetCard("NightloreArmor"), GetCard("PillarsOfCreation") };
+            for (int i = 0; i < numCardsLeft; i++)
+            {
+                PutOnDeck(starlight, cardsToPut[i]);
+            }
+
+            AssertNumberOfCardsInDeck(starlight, numCardsLeft);
+
+            DecisionSelectTurnTaker = starlight.TurnTaker;
+            DecisionSelectCards = cardsToPut;
+
+            //one to pick TurnTaker, one for each card in the deck except the last
+
+            string expectedMessage = null;
+            int maxDecisions = numCardsLeft;
+            if (numCardsLeft == 0)
+            {
+                maxDecisions = 1;
+                expectedMessage = "No cards were revealed! There is no further effect.";
+            }
+            else if (numCardsLeft == 1)
+            {
+                expectedMessage = "Only one card was revealed! It will automatically be put into play.";
+            }
+            else
+            {
+                expectedMessage = String.Format("Only {0} cards were revealed!", numCardsLeft);
+            }
+
+
+            PlayCard("Wish");
+
+            if (numCardsLeft == 0)
+            {
+                AssertNumberOfCardsInPlay(starlight, 1);
+            }
+            else
+            {
+                AssertIsInPlay("CelestialAura");
+                AssertNumberOfCardsInDeck(starlight, numCardsLeft - 1);
+                if (numCardsLeft != 1)
+                {
+                    //first card chosen after Celestial Aura should be on bottom of deck
+                    AssertOnBottomOfDeck("WarpHalo");
+                    //last card chosen should be on top
+                    AssertOnTopOfDeck(cardsToPut[numCardsLeft - 1]);
+                }
+            }
+        }
+        [Test()]
+        public void TestWishNinjaInterruption()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "TheTempleOfZhuLong");
+            StartGame();
+
+            Card ninja = GetCard("ShinobiAssassin");
+            PutOnDeck(starlight, ninja);
+            PutOnDeck("WarpHalo");
+
+            AssertMaxNumberOfDecisions(5);
+            AssertNextMessages("Starlight would have revealed Shinobi Assassin! It will be put into play instead, then the next card will be revealed.");
+
+            PlayCard("Wish");
+
+            AssertIsInPlay(ninja);
+            AssertIsInPlay("WarpHalo");
+        }
+        [Test()]
+        public void TestWishNinjaVisionaryComparison()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "TheTempleOfZhuLong");
+            StartGame();
+
+            Card ninja = GetCard("ShinobiAssassin");
+            PutOnDeck(visionary, ninja);
+            PutOnDeck("WarpHalo");
+
+            PutIntoPlay("Foresight");
+
+            //just to make sure Wish is dealing with ninjas right, we compare with Visionary
+            //Wish still pulls 5 cards, Foresight's power should pull 3
+            AssertMaxNumberOfDecisions(2);
+            UsePower("Foresight");
+        }
+        [Test()]
+        public void TestWishOnlyUnplayableCards()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "TheTempleOfZhuLong");
+            StartGame();
+
+            string[] limitedCards = new string[5] { "CelestialAura", "GoldenAstrolabe", "NightloreArmor", "NovaShield", "WarpHalo" };
+            PutIntoPlay(starlight, limitedCards);
+            limitedCards.ForEach((string id) => PutOnDeck(id));
+            Card wish = GetCard("Wish");
+            PutInHand(wish);
+
+            int deckSize = starlight.TurnTaker.Deck.NumberOfCards;
+            AssertNumberOfCardsInPlay(starlight, 6);
+            PlayCard(wish);
+            AssertNumberOfCardsInPlay(starlight, 6);
+            AssertNumberOfCardsInDeck(starlight, deckSize);
+        }
     }
 }
