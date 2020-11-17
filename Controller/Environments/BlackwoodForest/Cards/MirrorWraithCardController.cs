@@ -87,13 +87,17 @@ namespace Cauldron.BlackwoodForest
 
                 // Identify this card controller as one who can modify keyword query answers
                 base.AddThisCardControllerToList(CardControllerListType.ModifiesKeywords);
-                //base.AddThisCardControllerToList(CardControllerListType.ActivatesEffects);
+                
+                // Identify this card controller as one who can modify card query answers
                 base.AddThisCardControllerToList(CardControllerListType.ReplacesCards);
-                base.AddThisCardControllerToList(CardControllerListType.ReplacesTurnTakerController);
+
+                // Identify this card controller as one who can modify card source query answers
                 base.AddThisCardControllerToList(CardControllerListType.ReplacesCardSource);
 
+                // TODO: Determine if these are needed - don't think so
+                //base.AddThisCardControllerToList(CardControllerListType.ActivatesEffects);
+                //base.AddThisCardControllerToList(CardControllerListType.ReplacesTurnTakerController);
 
-                //Card cardToCopy = storedResults.First();
                 _copiedCard = storedResults.First();
 
                 // Set HP
@@ -141,56 +145,37 @@ namespace Cauldron.BlackwoodForest
         public override CardSource AskIfCardSourceIsReplaced(CardSource cardSource, GameAction gameAction = null,
             ITrigger trigger = null)
         {
-            if (cardSource != null && cardSource.AllowReplacements && this._copiedCard != null 
-                && this._copiedCard.Equals(cardSource.Card) 
-                && cardSource.AssociatedCardSources.Any(acs => acs.Card == this.Card)
-                && ShouldSwapCardSources(cardSource, trigger))
+            if (cardSource == null || !cardSource.AllowReplacements || this._copiedCard == null 
+                || !this._copiedCard.Equals(cardSource.Card) 
+                || cardSource.AssociatedCardSources.All(acs => acs.Card != this.Card) 
+                || !ShouldSwapCardSources(cardSource, trigger))
             {
-
-                
-
-                //cardSource.AssociatedCardSources.Count(acs => acs.CardController == this.FindCardController(this.Card))
-                int i = 0;
-                
-                CardSource cardSource2 = (from cs in cardSource.AssociatedCardSources
-                    where cs.CardController == this
-                    select cs).LastOrDefault<CardSource>();
-
-                if (cardSource2.AssociatedCardSources.All(cs => cs.CardController != cardSource.CardController))
-                {
-                    cardSource2.AddAssociatedCardSource(cardSource);
-                }
-
-                cardSource.RemoveAssociatedCardSourcesWhere(cs => cs.CardController == this);
-
-                return cardSource2;
-                
+                return null;
             }
 
-            /*
-            if (cardSource != null && cardSource.AllowReplacements && this._copiedCard != null && this.ShouldSwapCardSources(cardSource, trigger))
+            CardSource newCardSource = (from cs in cardSource.AssociatedCardSources
+                where cs.CardController == this
+                select cs).LastOrDefault<CardSource>();
+
+            if (newCardSource == null)
             {
-                CardSource cardSource2 = (from cs in cardSource.AssociatedCardSources
-                    where cs.CardController == this
-                    select cs).LastOrDefault<CardSource>();
-
-                if (!cardSource2.AssociatedCardSources.Any((CardSource cs) => cs.CardController == cardSource.CardController))
-                {
-                    cardSource2.AddAssociatedCardSource(cardSource);
-                }
-
-                cardSource.RemoveAssociatedCardSourcesWhere((CardSource cs) => cs.CardController == this);
-                
-                return cardSource2;
+                return null;
             }
-            */
-            return null;
+
+            if (newCardSource.AssociatedCardSources.All(cs => cs.CardController != cardSource.CardController))
+            {
+                newCardSource.AddAssociatedCardSource(cardSource);
+            }
+
+            cardSource.RemoveAssociatedCardSourcesWhere(cs => cs.CardController == this);
+
+            return newCardSource;
         }
 
         public override TurnTakerController AskIfTurnTakerControllerIsReplaced(TurnTakerController ttc, CardSource cardSource)
         {
 
-
+            // TODO: Don't think this override is necessary.  More testing needed
             int i = 0;
 
             if (cardSource != null && cardSource.AllowReplacements && this._copiedCard != null &&
@@ -243,7 +228,6 @@ namespace Cauldron.BlackwoodForest
             }
 
             return result;
-
         }
 
         private void CopyGameText(Card sourceCard)
@@ -251,7 +235,6 @@ namespace Cauldron.BlackwoodForest
             IEnumerable<ITrigger> triggers =
                 FindTriggersWhere(t => t.CardSource.CardController.CardWithoutReplacements == sourceCard);
 
-            //_copiedTriggers = new List<ITrigger>();
             foreach (ITrigger trigger in triggers)
             {
                 if (trigger.IsStatusEffect)
@@ -270,14 +253,13 @@ namespace Cauldron.BlackwoodForest
 
         private bool ShouldSwapCardSources(CardSource cardSource, ITrigger trigger = null)
         {
-            
             var cardSources = cardSource.AssociatedCardSources.ToList();
             
-            CardSource cardSource2 = (from cs in cardSources
+            CardSource thisCardSource = (from cs in cardSources
                 where cs != null && cs.CardController == this
                 select cs).LastOrDefault<CardSource>();
 
-            if (cardSource2 != null)
+            if (thisCardSource != null)
             {
                 bool flag = this._copiedCard == (cardSource.CardController.CardWithoutReplacements);
                 bool flag2 = (from cs in cardSources
@@ -289,7 +271,7 @@ namespace Cauldron.BlackwoodForest
                     CardSource.Limitation limitation = CardSource.Limitation.BeforeDestroyed;
                     if (cardSourceLimitation.GetValueOrDefault() == limitation & cardSourceLimitation != null)
                     {
-                        cardSource2.SourceLimitation = new CardSource.Limitation?(CardSource.Limitation.BeforeDestroyed);
+                        thisCardSource.SourceLimitation = new CardSource.Limitation?(CardSource.Limitation.BeforeDestroyed);
                     }
                     else
                     {
@@ -297,15 +279,14 @@ namespace Cauldron.BlackwoodForest
                         limitation = CardSource.Limitation.AfterDestroyed;
                         if (cardSourceLimitation.GetValueOrDefault() == limitation & cardSourceLimitation != null)
                         {
-                            cardSource2.SourceLimitation = new CardSource.Limitation?(CardSource.Limitation.AfterDestroyed);
+                            thisCardSource.SourceLimitation = new CardSource.Limitation?(CardSource.Limitation.AfterDestroyed);
                         }
                     }
-                    bool flag4 = cardSource2.SourceLimitation != null;
-                    return !flag3 || !flag4 || cardSource.SourceLimitation.Value == cardSource2.SourceLimitation.Value;
+                    bool flag4 = thisCardSource.SourceLimitation != null;
+                    return !flag3 || !flag4 || cardSource.SourceLimitation.Value == thisCardSource.SourceLimitation.Value;
                 }
             }
             return false;
-            
         }
     }
 }
