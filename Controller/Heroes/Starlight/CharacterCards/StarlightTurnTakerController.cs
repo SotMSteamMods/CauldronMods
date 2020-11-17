@@ -30,22 +30,25 @@ namespace Cauldron.Starlight
                 if (hasInstructionCard == null)
                 {
                     Card card = base.TurnTaker.FindCard("StarlightCharacter", realCardsOnly: false);
-                    if (card != null && card.PromoIdentifierOrIdentifier == "NightloreCouncilStarlightCharacterCard")
+                    Log.Debug("Card found, promo-ID is " + card.PromoIdentifierOrIdentifier);
+                    if (card != null && card.PromoIdentifierOrIdentifier == "NightloreCouncilStarlightCharacter")
                     {
+                        Log.Debug("Have found instruction card");
                         _instructions = (CharacterCardController)FindCardController(card);
                         hasInstructionCard = true;
                     }
                     else
                     {
+                        Log.Debug("No instruction card found");
                         hasInstructionCard = false;
                     }
                 }
-                return _instructions;
+                return (bool)hasInstructionCard ? _instructions : null;
             }
         }
         public override IEnumerator StartGame()
         {
-            if(CharacterCardController is NightloreCouncilStarlightCharacterCardController)
+            if((bool)hasInstructionCard || CharacterCardController is NightloreCouncilStarlightCharacterCardController)
             {
                 DeckDefinition starlightDeck = TurnTaker.DeckDefinition;
                 foreach (string charID in nightloreCouncilIdentifiers)
@@ -54,7 +57,9 @@ namespace Cauldron.Starlight
                     CardDefinition definer = starlightDeck.PromoCardDefinitions.Where((CardDefinition cd) => cd.Identifier == charID).FirstOrDefault();
                     if (definer != null)
                     {
-                        Card newCard = new Card(definer, TurnTaker, 0, this.CharacterCard.IsFoilVersion);
+                        Card newCard = new Card(definer, TurnTaker, 0, InstructionCardController.Card.IsFoilVersion);
+                        TurnTaker.AddOwnedCard(newCard);
+                        TurnTaker.OffToTheSide.AddCard(newCard);
 //                        Log.Debug("Created card for " + charID);
 //                        string lookingFor = String.Format("Handelabra.Sentinels.Engine.Controller.{0}.{1}CardController", "Cauldron.Starlight", newCard.Definition.Identifier);
 //
@@ -81,7 +86,6 @@ namespace Cauldron.Starlight
                         Log.Warning("Failed to load a Nightlore Council sub-starlight: " + charID + "!");
                     }
                 }
-                var initialize = InstructionCardController;
                 yield break;
             }
             yield return base.StartGame();
@@ -108,7 +112,10 @@ namespace Cauldron.Starlight
                 {
                     return base.IncapacitationCardController;
                 }
-                return InstructionCardController;
+                else
+                {
+                    return InstructionCardController;
+                }
             }
         }
 
@@ -125,6 +132,10 @@ namespace Cauldron.Starlight
                     if (FindCardsWhere((Card c) => c.Owner == base.TurnTaker && c.IsActive && c.IsInPlayAndHasGameText).Count() != 0)
                     {
                         return IncapacitationCardController.Card.IsFlipped;
+                    }
+                    if (this.TurnTaker.GetAllCards(false).Where((Card c) => c.IsCharacter && c.IsInPlay).Count() <= 1)
+                    {
+                        return false;
                     }
                     return true;
                 }

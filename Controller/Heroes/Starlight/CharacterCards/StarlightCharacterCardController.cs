@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Handelabra;
 
 namespace Cauldron.Starlight
 {
@@ -10,6 +11,7 @@ namespace Cauldron.Starlight
     {
         public StarlightCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            Log.Debug("Created base Starlight card controller");
         }
 
         public override IEnumerator UsePower(int index = 0)
