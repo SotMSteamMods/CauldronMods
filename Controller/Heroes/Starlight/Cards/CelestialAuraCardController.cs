@@ -16,10 +16,10 @@ namespace Cauldron.Starlight
         public override void AddTriggers()
         {
             //"Whenever {Starlight} would deal damage to a hero target next to a constellation, instead that target regains that much HP.",
-            AddPreventDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsOneOfTheseCards(ListStarlights()) && dd.Target.IsHero && IsNextToConstellation(dd.Target), (DealDamageAction dd) => base.GameController.GainHP(dd.Target, dd.Amount, null, null, GetCardSource()), new TriggerType[1]
-            {    
-                TriggerType.GainHP
-            }, isPreventEffect: true);
+            AddPreventDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsOneOfTheseCards(ListStarlights()) && dd.Target.IsHero && IsNextToConstellation(dd.Target), 
+                        (DealDamageAction dd) => GameController.GainHP(dd.Target, dd.Amount, null, null, GetCardSource()), 
+                        new TriggerType[1] { TriggerType.GainHP }, 
+                        isPreventEffect: true);
         }
 
         public override IEnumerator UsePower(int index = 0)
@@ -31,36 +31,36 @@ namespace Cauldron.Starlight
 
             List<Card> storedResults = new List<Card> { }; 
             IEnumerator chooseDamageSource = SelectActiveCharacterCardToDealDamage(storedResults, powerNumeral2, DamageType.Radiant);
-            if (base.UseUnityCoroutines)
+            if (UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(chooseDamageSource);
+                yield return GameController.StartCoroutine(chooseDamageSource);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(chooseDamageSource);
+                GameController.ExhaustCoroutine(chooseDamageSource);
             }
             Card damageSource = storedResults.FirstOrDefault();
 
             //"Starlight deals 1 target 1 radiant damage."
-            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(HeroTurnTakerController, new DamageSource(base.GameController, damageSource), powerNumeral2, DamageType.Radiant, powerNumeral, optional: false, powerNumeral, isIrreducible: false, allowAutoDecide: false, autoDecide: false, null, null, null, null, null, selectTargetsEvenIfCannotDealDamage: false, null, null, ignoreBattleZone: false, null, GetCardSource());
-            if (base.UseUnityCoroutines)
+            IEnumerator coroutine = GameController.SelectTargetsAndDealDamage(HeroTurnTakerController, new DamageSource(GameController, damageSource), powerNumeral2, DamageType.Radiant, powerNumeral, optional: false, powerNumeral, isIrreducible: false, allowAutoDecide: false, autoDecide: false, null, null, null, null, null, selectTargetsEvenIfCannotDealDamage: false, null, null, ignoreBattleZone: false, null, GetCardSource());
+            if (UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                yield return GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine);
+                GameController.ExhaustCoroutine(coroutine);
             }
 
             //"Draw a card"
             IEnumerator coroutine2 = DrawCard(HeroTurnTaker);
-            if (base.UseUnityCoroutines)
+            if (UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(coroutine2);
+                yield return GameController.StartCoroutine(coroutine2);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine2);
+                GameController.ExhaustCoroutine(coroutine2);
             }
             yield break;
         }

@@ -22,13 +22,13 @@ namespace Cauldron.Starlight
         {
             //"Play this card next to a target"
             IEnumerator coroutine = SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsTarget, "targets", useCardsSuffix: false), storedResults, isPutIntoPlay, decisionSources);
-            if (base.UseUnityCoroutines)
+            if (UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                yield return GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine);
+                GameController.ExhaustCoroutine(coroutine);
             }
         }
 

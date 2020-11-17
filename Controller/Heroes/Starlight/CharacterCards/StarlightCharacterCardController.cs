@@ -16,13 +16,13 @@ namespace Cauldron.Starlight
         {
             //Draw a card, or play a Constellation from your trash
             IEnumerator coroutine = DrawACardOrPlayConstellationFromTrash();
-            if (base.UseUnityCoroutines)
+            if (UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                yield return GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine);
+                GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
         }
@@ -34,46 +34,46 @@ namespace Cauldron.Starlight
                 case 0:
                     {
                         //"Until the start of your next turn, prevent all damage that would be dealt to or by the target with the lowest HP.",
-                        OnDealDamageStatusEffect lowestTargetImmunity = new OnDealDamageStatusEffect(base.Card, "LowestTargetImmunity", "The target with the lowest HP is immune to damage and cannot deal damage.", new TriggerType[1] { TriggerType.MakeImmuneToDamage }, TurnTaker, base.Card);
-                        lowestTargetImmunity.UntilStartOfNextTurn(base.TurnTaker);
+                        OnDealDamageStatusEffect lowestTargetImmunity = new OnDealDamageStatusEffect(Card, "LowestTargetImmunity", "The target with the lowest HP is immune to damage and cannot deal damage.", new TriggerType[1] { TriggerType.MakeImmuneToDamage }, TurnTaker, Card);
+                        lowestTargetImmunity.UntilStartOfNextTurn(TurnTaker);
                         lowestTargetImmunity.SourceCriteria.IsTarget = true;
                         lowestTargetImmunity.BeforeOrAfter = BeforeOrAfter.Before;
                         IEnumerator coroutine = AddStatusEffect(lowestTargetImmunity);
-                        if (base.UseUnityCoroutines)
+                        if (UseUnityCoroutines)
                         {
-                            yield return base.GameController.StartCoroutine(coroutine);
+                            yield return GameController.StartCoroutine(coroutine);
                         }
                         else
                         {
-                            base.GameController.ExhaustCoroutine(coroutine);
+                            GameController.ExhaustCoroutine(coroutine);
                         }
                         break;
                     }
                 case 1:
                     {
                         //"1 player may use a power now.",
-                        IEnumerator coroutine2 = base.GameController.SelectHeroToUsePower(base.HeroTurnTakerController, optionalSelectHero: false, optionalUsePower: true, allowAutoDecide: false, null, null, null, omitHeroesWithNoUsablePowers: true, canBeCancelled: true, GetCardSource());
-                        if (base.UseUnityCoroutines)
+                        IEnumerator coroutine2 = GameController.SelectHeroToUsePower(HeroTurnTakerController, optionalSelectHero: false, optionalUsePower: true, allowAutoDecide: false, null, null, null, omitHeroesWithNoUsablePowers: true, canBeCancelled: true, GetCardSource());
+                        if (UseUnityCoroutines)
                         {
-                            yield return base.GameController.StartCoroutine(coroutine2);
+                            yield return GameController.StartCoroutine(coroutine2);
                         }
                         else
                         {
-                            base.GameController.ExhaustCoroutine(coroutine2);
+                            GameController.ExhaustCoroutine(coroutine2);
                         }
                         break;
                     }
                 case 2:
                     {
                         //"1 hero target regains 2 HP."
-                        IEnumerator coroutine3 = base.GameController.SelectAndGainHP(HeroTurnTakerController, 2, optional: false, (Card c) => c.IsInPlay && c.IsHero && c.IsTarget, 1, null, allowAutoDecide: false, null, GetCardSource());
-                        if (base.UseUnityCoroutines)
+                        IEnumerator coroutine3 = GameController.SelectAndGainHP(HeroTurnTakerController, 2, optional: false, (Card c) => c.IsInPlay && c.IsHero && c.IsTarget, 1, null, allowAutoDecide: false, null, GetCardSource());
+                        if (UseUnityCoroutines)
                         {
-                            yield return base.GameController.StartCoroutine(coroutine3);
+                            yield return GameController.StartCoroutine(coroutine3);
                         }
                         else
                         {
-                            base.GameController.ExhaustCoroutine(coroutine3);
+                            GameController.ExhaustCoroutine(coroutine3);
                         }
                         break;
                     }
@@ -86,21 +86,16 @@ namespace Cauldron.Starlight
         private IEnumerator DrawACardOrPlayConstellationFromTrash()
         {
             List<Function> list = new List<Function>();
-            string str = "so they must draw a card.";
-            string str2 = "so they must play a constellation from their trash.";
-            string str3 = ", so the power has no effect.";
-            string str4 = ((TurnTaker == null) ? Card.Title : TurnTaker.Name);
-            if ((TurnTaker != null && TurnTaker.Identifier == "Guise") || Card.Identifier == "GuiseCharacter")
-            {
-                str = "so he's gotta draw one. Woo! Free card!";
-                str2 = "so he's gotta play one. Make sure it's a good one!";
-                str3 = ". Bummer!";
-            }
-            list.Add(new Function(HeroTurnTakerController, "Draw a card", SelectionType.DrawCard, () => DrawCard(HeroTurnTaker, false), HeroTurnTakerController != null && CanDrawCards(HeroTurnTakerController), str4 + " cannot play any cards, " + str));
-            
-            list.Add(new Function(HeroTurnTakerController, "Play a constellation from your trash", SelectionType.PlayCard, () => SelectAndPlayConstellationFromTrash(HeroTurnTakerController, false), HeroTurnTakerController != null && GetPlayableConstellationsInTrash().Count() > 0, str4 + " cannot draw any cards, " + str2));
+            string forceDrawCardEnder = " cannot play a constellations from their trash, so they must draw a card.";
+            string forcePlayConstellationEnder = " cannot draw any cards, so they must play a constellation from their trash.";
+            string forceDoNothingEnder = " cannot draw nor play any cards, so the power has no effect.";
+            string heroName = ((TurnTaker == null) ? Card.Title : TurnTaker.Name);
 
-            SelectFunctionDecision selectFunction = new SelectFunctionDecision(GameController, HeroTurnTakerController, list, false, null, str4 + " cannot draw nor play any cards" + str3, null, GetCardSource());
+            list.Add(new Function(HeroTurnTakerController, "Draw a card", SelectionType.DrawCard, () => DrawCard(HeroTurnTaker, false), HeroTurnTakerController != null && CanDrawCards(HeroTurnTakerController), heroName + forceDrawCardEnder));
+            
+            list.Add(new Function(HeroTurnTakerController, "Play a constellation from your trash", SelectionType.PlayCard, () => SelectAndPlayConstellationFromTrash(HeroTurnTakerController), HeroTurnTakerController != null && GetPlayableConstellationsInTrash().Count() > 0, heroName + forcePlayConstellationEnder));
+
+            SelectFunctionDecision selectFunction = new SelectFunctionDecision(GameController, HeroTurnTakerController, list, false, null, heroName + forceDoNothingEnder, null, GetCardSource());
             IEnumerator coroutine = GameController.SelectAndPerformFunction(selectFunction);
             if (UseUnityCoroutines)
             {
@@ -112,9 +107,9 @@ namespace Cauldron.Starlight
             }
         }
 
-        private IEnumerator SelectAndPlayConstellationFromTrash(HeroTurnTakerController hero, bool optional)
+        private IEnumerator SelectAndPlayConstellationFromTrash(HeroTurnTakerController hero)
         {
-            IEnumerator coroutine = GameController.SelectAndPlayCard(hero, GetPlayableConstellationsInTrash());
+            IEnumerator coroutine = GameController.SelectAndPlayCard(hero, GetPlayableConstellationsInTrash(), cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -145,27 +140,27 @@ namespace Cauldron.Starlight
             List<bool> storedResults = new List<bool>();
 
             //Is the target of the damage the lowest HP target?
-            IEnumerator coroutine = DetermineIfGivenCardIsTargetWithLowestOrHighestHitPoints(dealDamage.Target, highest: false, (Card card) => base.GameController.IsCardVisibleToCardSource(card, GetCardSource()), dealDamage, storedResults);
-            if (base.UseUnityCoroutines)
+            IEnumerator coroutine = DetermineIfGivenCardIsTargetWithLowestOrHighestHitPoints(dealDamage.Target, highest: false, (Card card) => GameController.IsCardVisibleToCardSource(card, GetCardSource()), dealDamage, storedResults);
+            if (UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                yield return GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine);
+                GameController.ExhaustCoroutine(coroutine);
             }
 
             //If not, is the source of the damage the lowest HP target?
             if (!storedResults.First() && dealDamage.DamageSource.IsTarget)
             {
-                IEnumerator coroutine2 = DetermineIfGivenCardIsTargetWithLowestOrHighestHitPoints(dealDamage.DamageSource.Card, highest: false, (Card card) => base.GameController.IsCardVisibleToCardSource(card, GetCardSource()), dealDamage, storedResults);
-                if (base.UseUnityCoroutines)
+                IEnumerator coroutine2 = DetermineIfGivenCardIsTargetWithLowestOrHighestHitPoints(dealDamage.DamageSource.Card, highest: false, (Card card) => GameController.IsCardVisibleToCardSource(card, GetCardSource()), dealDamage, storedResults);
+                if (UseUnityCoroutines)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine2);
+                    yield return GameController.StartCoroutine(coroutine2);
                 }
                 else
                 {
-                    base.GameController.ExhaustCoroutine(coroutine2);
+                    GameController.ExhaustCoroutine(coroutine2);
                 }
             }
 
@@ -174,13 +169,13 @@ namespace Cauldron.Starlight
             {
 
                 IEnumerator coroutine3 = CancelAction(dealDamage, showOutput: true, cancelFutureRelatedDecisions: true, null, isPreventEffect: true);
-                if (base.UseUnityCoroutines)
+                if (UseUnityCoroutines)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine3);
+                    yield return GameController.StartCoroutine(coroutine3);
                 }
                 else
                 {
-                    base.GameController.ExhaustCoroutine(coroutine3);
+                    GameController.ExhaustCoroutine(coroutine3);
                 }
             }
 

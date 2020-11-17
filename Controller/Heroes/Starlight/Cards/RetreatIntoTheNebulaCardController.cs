@@ -27,15 +27,15 @@ namespace Cauldron.Starlight
             //do we need to pick one of our multi-character promo to protect?
             if (IsMultiCharPromo())
             {
+                //TODO - Retreat's find-character-to-play-next-to multichar logic
                 coroutine = GameController.SendMessageAction("Thinks we're in MultiCharPromo", Priority.Low, GetCardSource());
-                //TODO
+
             }
             else
             {
                 //let the default handle it if not
                 coroutine = base.DeterminePlayLocation(storedResults, isPutIntoPlay, decisionSources, overridePlayArea, additionalTurnTakerCriteria);
             }
-
 
             if (UseUnityCoroutines)
             {
@@ -55,8 +55,14 @@ namespace Cauldron.Starlight
 
             if (IsMultiCharPromo())
             {
-                //TODO;
+                //TODO - Retreat's multichar protection logic
                 return false;
+                //proper logic:
+                //if EITHER it is next to the character card being damaged
+                //      (because it was put there when we played it)
+                //OR it is not next to any of them - even incapacitated ones
+                //      (and therefore it is being borrowed by someone else)
+                //THEN prevent the damage
             }
             else
             {
@@ -71,7 +77,7 @@ namespace Cauldron.Starlight
         private IEnumerator DestroyThisOrConstellation(PhaseChangeAction pc)
         {
             var criteria = new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && (IsConstellation(c) || base.Card == c));
-            IEnumerator coroutine = GameController.SelectAndDestroyCard(HeroTurnTakerController, criteria, false);
+            IEnumerator coroutine = GameController.SelectAndDestroyCard(HeroTurnTakerController, criteria, false, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

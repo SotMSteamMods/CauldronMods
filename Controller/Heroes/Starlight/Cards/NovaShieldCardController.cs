@@ -25,7 +25,7 @@ namespace Cauldron.Starlight
         private bool IsCardEnteringPlayAsConstellationNextToTarget(CardEntersPlayAction ce)
         {
             //"Whenever a constellation enters play next to a target..."
-            if (IsConstellation(ce.CardEnteringPlay) && ce.CardEnteringPlay.BattleZone == base.BattleZone)
+            if (IsConstellation(ce.CardEnteringPlay) && ce.CardEnteringPlay.BattleZone == this.BattleZone)
             {
                 var enteringBy = FindCardsWhere((Card c) => c.IsInPlay && c.GetAllNextToCards(false).Contains(ce.CardEnteringPlay)).FirstOrDefault();
                 return enteringBy != null && enteringBy.IsTarget;
@@ -45,13 +45,13 @@ namespace Cauldron.Starlight
             //pick Starlight to act with
             List<Card> storedResults = new List<Card> { };
             IEnumerator chooseDamageSource = SelectActiveCharacterCardToDealDamage(storedResults, 1, DamageType.Energy);
-            if (base.UseUnityCoroutines)
+            if (UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(chooseDamageSource);
+                yield return GameController.StartCoroutine(chooseDamageSource);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(chooseDamageSource);
+                GameController.ExhaustCoroutine(chooseDamageSource);
             }
             Card actingStarlight = storedResults.FirstOrDefault();
 
@@ -68,25 +68,25 @@ namespace Cauldron.Starlight
                 //"...Starlight deals that target 1 energy damage..."
                 var damageAction = DealDamage(actingStarlight, target, 1, DamageType.Energy);
 
-                if (base.UseUnityCoroutines)
+                if (UseUnityCoroutines)
                 {
-                    yield return base.GameController.StartCoroutine(damageAction);
+                    yield return GameController.StartCoroutine(damageAction);
                 }
                 else
                 {
-                    base.GameController.ExhaustCoroutine(damageAction);
+                    GameController.ExhaustCoroutine(damageAction);
                 }
             }
 
             //"...and regains 1 HP."
             var gainHPAction = GameController.GainHP(actingStarlight, 1, cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
+            if (UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(gainHPAction);
+                yield return GameController.StartCoroutine(gainHPAction);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(gainHPAction);
+                GameController.ExhaustCoroutine(gainHPAction);
             }
 
             yield break;

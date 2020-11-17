@@ -17,14 +17,14 @@ namespace Cauldron.Starlight
         {
 			//"1 player may..." 
 			List<SelectTurnTakerDecision> storedResults = new List<SelectTurnTakerDecision>();
-			IEnumerator coroutine = base.GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.RevealCardsFromDeck, optional: true, allowAutoDecide: false, storedResults, new LinqTurnTakerCriteria((TurnTaker tt) => GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) && !tt.IsIncapacitatedOrOutOfGame, "active heroes"), cardSource:GetCardSource());
-			if (base.UseUnityCoroutines)
+			IEnumerator coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.RevealCardsFromDeck, optional: true, allowAutoDecide: false, storedResults, new LinqTurnTakerCriteria((TurnTaker tt) => GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) && !tt.IsIncapacitatedOrOutOfGame, "active heroes"), cardSource:GetCardSource());
+			if (UseUnityCoroutines)
 			{
-				yield return base.GameController.StartCoroutine(coroutine);
+				yield return GameController.StartCoroutine(coroutine);
 			}
 			else
 			{
-				base.GameController.ExhaustCoroutine(coroutine);
+				GameController.ExhaustCoroutine(coroutine);
 			}
 			TurnTaker hero = GetSelectedTurnTaker(storedResults);
 			if (hero == null || !hero.IsHero)
@@ -38,13 +38,13 @@ namespace Cauldron.Starlight
 				//"...look at the top 5 cards of their deck, put 1 of them into play, then put the rest on the bottom of their deck in any order."
 
 				IEnumerator coroutine3 = RevealCardsWithCustomLogic(heroTTC);
-				if (base.UseUnityCoroutines)
+				if (UseUnityCoroutines)
 				{
-					yield return base.GameController.StartCoroutine(coroutine3);
+					yield return GameController.StartCoroutine(coroutine3);
 				}
 				else
 				{
-					base.GameController.ExhaustCoroutine(coroutine3);
+					GameController.ExhaustCoroutine(coroutine3);
 				}
 			}
 
@@ -53,17 +53,19 @@ namespace Cauldron.Starlight
 
 		private IEnumerator RevealCardsWithCustomLogic(HeroTurnTakerController heroTTC)
         {
+			//"reveal 5 cards from the top of their deck..."
 			List<Card> revealedCards = new List<Card> { };
 			IEnumerator reveal = GameController.RevealCards(heroTTC, heroTTC.TurnTaker.Deck, 5, revealedCards, cardSource: GetCardSource());
-			if (base.UseUnityCoroutines)
+			if (UseUnityCoroutines)
 			{
-				yield return base.GameController.StartCoroutine(reveal);
+				yield return GameController.StartCoroutine(reveal);
 			}
 			else
 			{
-				base.GameController.ExhaustCoroutine(reveal);
+				GameController.ExhaustCoroutine(reveal);
 			}
 
+			//if there aren't enough cards, warn the player
 			string message = null;
 			switch (revealedCards.Count())
             {
@@ -74,7 +76,7 @@ namespace Cauldron.Starlight
 				case 0:
 					{
 						message = "No cards were revealed! There is no further effect.";
-						yield break;
+						break;
 					}
 				case 1:
                     {
@@ -91,25 +93,31 @@ namespace Cauldron.Starlight
 			if (message != null)
             {
 				IEnumerator warnNotEnoughCards = GameController.SendMessageAction(message, Priority.High, this.GetCardSource());
-				if (base.UseUnityCoroutines)
+				if (UseUnityCoroutines)
 				{
-					yield return base.GameController.StartCoroutine(warnNotEnoughCards);
+					yield return GameController.StartCoroutine(warnNotEnoughCards);
 				}
 				else
 				{
-					base.GameController.ExhaustCoroutine(warnNotEnoughCards);
+					GameController.ExhaustCoroutine(warnNotEnoughCards);
 				}
+
+				if (revealedCards.Count() == 0)
+                {
+					yield break;
+                }
 			}
 
+			//"...put 1 into play..."
 			var playCardStorage = new List<PlayCardAction> { };
 			IEnumerator playCard = GameController.SelectAndPlayCard(heroTTC, revealedCards, false, isPutIntoPlay: true, playCardStorage, GetCardSource());
-			if (base.UseUnityCoroutines)
+			if (UseUnityCoroutines)
 			{
-				yield return base.GameController.StartCoroutine(playCard);
+				yield return GameController.StartCoroutine(playCard);
 			}
 			else
 			{
-				base.GameController.ExhaustCoroutine(playCard);
+				GameController.ExhaustCoroutine(playCard);
 			}
 
 			Card playedCard = null;
@@ -122,6 +130,7 @@ namespace Cauldron.Starlight
 			int numCardsLeft = revealedCards.Count();
 			if (numCardsLeft > 0)
             {
+				//"...and the rest on the bottom of their deck in any order"
 				Location heroRevealedLocation = heroTTC.TurnTaker.Revealed;
 				List<MoveCardDestination> bottomOfDeck = new List<MoveCardDestination> { new MoveCardDestination(heroTTC.TurnTaker.Deck, toBottom: true) };
 				var moveRest = GameController.SelectCardsFromLocationAndMoveThem(heroTTC,
@@ -132,13 +141,13 @@ namespace Cauldron.Starlight
 																	bottomOfDeck,
 																	allowAutoDecide: true,
 																	cardSource: this.GetCardSource());
-				if (base.UseUnityCoroutines)
+				if (UseUnityCoroutines)
 				{
-					yield return base.GameController.StartCoroutine(moveRest);
+					yield return GameController.StartCoroutine(moveRest);
 				}
 				else
 				{
-					base.GameController.ExhaustCoroutine(moveRest);
+					GameController.ExhaustCoroutine(moveRest);
 				}
 			}
 
@@ -161,21 +170,28 @@ namespace Cauldron.Starlight
 
 		private IEnumerator RevealCardsWithArgentAdept(HeroTurnTakerController heroTTC)
         {
-			//"...look at the top 5 cards of their deck, put 1 of them into play, then put the rest on the bottom of their deck in any order."
-			List<MoveCardDestination> list = new List<MoveCardDestination>();
-			list.Add(new MoveCardDestination(heroTTC.TurnTaker.PlayArea));
-			list.Add(new MoveCardDestination(heroTTC.TurnTaker.Deck, toBottom: true));
-			list.Add(new MoveCardDestination(heroTTC.TurnTaker.Deck, toBottom: true));
-			list.Add(new MoveCardDestination(heroTTC.TurnTaker.Deck, toBottom: true));
-			list.Add(new MoveCardDestination(heroTTC.TurnTaker.Deck, toBottom: true));
-			IEnumerator coroutine3 = RevealCardsFromDeckToMoveToOrderedDestinations(heroTTC, heroTTC.TurnTaker.Deck, list, numberOfCardsToReveal: 5);
-			if (base.UseUnityCoroutines)
+            //This appropriates the function used for Argent Adept's Arcane Cadence.
+            //It is likely to have better error handling that my custom logic,
+            //but the "put the rest on the bottom of their deck" routine works differently from most such cards.
+            //Usually the *first* card you pick ends up on the bottom of the deck after everything is done, here it is the *last* card.
+
+            //I'm keeping this around in case the custom logic ends up breaking horribly
+            List<MoveCardDestination> list = new List<MoveCardDestination>
+            {
+                new MoveCardDestination(heroTTC.TurnTaker.PlayArea),
+                new MoveCardDestination(heroTTC.TurnTaker.Deck, toBottom: true),
+                new MoveCardDestination(heroTTC.TurnTaker.Deck, toBottom: true),
+                new MoveCardDestination(heroTTC.TurnTaker.Deck, toBottom: true),
+                new MoveCardDestination(heroTTC.TurnTaker.Deck, toBottom: true)
+            };
+            IEnumerator coroutine3 = RevealCardsFromDeckToMoveToOrderedDestinations(heroTTC, heroTTC.TurnTaker.Deck, list, numberOfCardsToReveal: 5);
+			if (UseUnityCoroutines)
 			{
-				yield return base.GameController.StartCoroutine(coroutine3);
+				yield return GameController.StartCoroutine(coroutine3);
 			}
 			else
 			{
-				base.GameController.ExhaustCoroutine(coroutine3);
+				GameController.ExhaustCoroutine(coroutine3);
 			}
 			yield break;
 		}

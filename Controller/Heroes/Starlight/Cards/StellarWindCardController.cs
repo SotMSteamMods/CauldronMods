@@ -17,13 +17,13 @@ namespace Cauldron.Starlight
             //for multi-char promo
             List<Card> storedResults = new List<Card> { };
             IEnumerator chooseDamageSource = SelectActiveCharacterCardToDealDamage(storedResults, 2, DamageType.Cold);
-            if (base.UseUnityCoroutines)
+            if (UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(chooseDamageSource);
+                yield return GameController.StartCoroutine(chooseDamageSource);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(chooseDamageSource);
+                GameController.ExhaustCoroutine(chooseDamageSource);
             }
             Card actingStarlight = storedResults.FirstOrDefault();
 
@@ -40,15 +40,15 @@ namespace Cauldron.Starlight
 
             //"Draw 2 cards."
             IEnumerator draw = DrawCards(HeroTurnTakerController, 2);
-            if (base.UseUnityCoroutines)
+            if (UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(damageRoutine);
-                yield return base.GameController.StartCoroutine(draw);
+                yield return GameController.StartCoroutine(damageRoutine);
+                yield return GameController.StartCoroutine(draw);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(damageRoutine);
-                base.GameController.ExhaustCoroutine(draw);
+                GameController.ExhaustCoroutine(damageRoutine);
+                GameController.ExhaustCoroutine(draw);
             }
             yield break;
         }

@@ -17,7 +17,7 @@ namespace Cauldron.Starlight
         {
             //"At the start of your play phase, put a constellation card from your hand or trash into play."
             //because of how the game handles play phase with no cards in hand, this is actually "end of start phase"
-            AddPhaseChangeTrigger((TurnTaker tt) => tt == base.TurnTaker,
+            AddPhaseChangeTrigger((TurnTaker tt) => tt == TurnTaker,
                                 (Phase p) => true,
                                 (PhaseChangeAction pc) => pc.FromPhase.Phase == Phase.Start,
                                 PlayConstellationFromHandOrTrash,
@@ -34,7 +34,7 @@ namespace Cauldron.Starlight
             actions.Add(new Function(HeroTurnTakerController,
                                     "Play constellation from hand",
                                      SelectionType.PutIntoPlay,
-                                     () => SelectAndPlayCardFromHand(HeroTurnTakerController, false, null, new LinqCardCriteria((Card c) => IsConstellation(c)), true),
+                                     () => SelectAndPlayCardFromHand(HeroTurnTakerController, false, null, new LinqCardCriteria((Card c) => IsConstellation(c), "constellation"), true),
                                      GetPlayableCardsInHand(HeroTurnTakerController, true, pc.ToPhase).Where(IsConstellation).Count() > 0));
             actions.Add(new Function(HeroTurnTakerController,
                                     "Play constellation from trash",
@@ -71,7 +71,7 @@ namespace Cauldron.Starlight
 
         private IEnumerable<Card> GetPuttableConstellationsFromTrash(HeroTurnTakerController hero, TurnPhase turnPhase = null)
         {
-            return hero.TurnTaker.Trash.Cards.Where((Card card) => IsConstellation(card) && GameController.CanPlayCard(FindCardController(card), isPutIntoPlay: true, turnPhase, evenIfAlreadyInPlay: false, canBeCancelled: true) == CanPlayCardResult.CanPlay);
+            return hero.TurnTaker.Trash.Cards.Where((Card card) => IsConstellation(card) && GameController.CanPlayCard(FindCardController(card), isPutIntoPlay: true, turnPhase) == CanPlayCardResult.CanPlay);
         }
     }
 }
