@@ -10,6 +10,7 @@ namespace Cauldron.TangoOne
     public class TangoOneCharacterCardController : HeroCharacterCardController
     {
         private const int PowerDamageAmount = 1;
+        private const int PowerTargetAmount = 1;
         private const int Incapacitate3OngoingCardCount = 2;
 
         public TangoOneCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card,
@@ -17,7 +18,6 @@ namespace Cauldron.TangoOne
         {
 
         }
-
         public override IEnumerator UsePower(int index = 0)
         {
             //==============================================================
@@ -25,11 +25,12 @@ namespace Cauldron.TangoOne
             //==============================================================
 
             DamageSource damageSource = new DamageSource(base.GameController, base.CharacterCard);
-            int powerNumeral = base.GetPowerNumeral(0, PowerDamageAmount);
+            int targetsNumeral = base.GetPowerNumeral(0, PowerTargetAmount);
+            int damageNumeral = base.GetPowerNumeral(1, PowerDamageAmount);
 
             IEnumerator routine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, damageSource,
-                powerNumeral,
-                DamageType.Projectile, 1, false, 1,
+                damageNumeral,
+                DamageType.Projectile, targetsNumeral, false, targetsNumeral,
                 cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
@@ -115,12 +116,12 @@ namespace Cauldron.TangoOne
 
                     // Choose up to 2 cards
                     List<SelectCardsDecision> storedCardResults = new List<SelectCardsDecision>();
-                    
-                    IEnumerator selectCardsRoutine 
-                        = base.GameController.SelectCardsAndStoreResults(base.HeroTurnTakerController, 
-                            SelectionType.PlayCard, c => c.IsInHand && c.Location.IsHero && c.IsOngoing, Incapacitate3OngoingCardCount, 
+
+                    IEnumerator selectCardsRoutine
+                        = base.GameController.SelectCardsAndStoreResults(base.HeroTurnTakerController,
+                            SelectionType.PlayCard, c => c.IsInHand && c.Location.IsHero && c.IsOngoing, Incapacitate3OngoingCardCount,
                             storedCardResults, true, 0);
-                    
+
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(selectCardsRoutine);
@@ -129,7 +130,7 @@ namespace Cauldron.TangoOne
                     {
                         base.GameController.ExhaustCoroutine(selectCardsRoutine);
                     }
-                    
+
                     if (storedCardResults[0].NumberOfCards > 0)
                     {
                         // Play each selected card
@@ -138,8 +139,8 @@ namespace Cauldron.TangoOne
                             Card selectedCard = scd.SelectedCard;
 
                             HeroTurnTakerController hero = (base.FindTurnTakerController(selectedCard.Location.OwnerTurnTaker)).ToHero();
-                            
-                            IEnumerator selectCardRoutine = this.SelectAndPlayCardFromHand(hero, false, null, 
+
+                            IEnumerator selectCardRoutine = this.SelectAndPlayCardFromHand(hero, false, null,
                                 new LinqCardCriteria(c => c == selectedCard), true);
 
                             if (base.UseUnityCoroutines)
@@ -158,8 +159,8 @@ namespace Cauldron.TangoOne
         }
 
 
-        private IEnumerator RevealCard_PutItBackOrDiscardIt(TurnTakerController revealingTurnTaker, Location deck, 
-            LinqCardCriteria autoPlayCriteria = null, List<MoveCardAction> storedResults = null, bool showRevealedCards = true, 
+        private IEnumerator RevealCard_PutItBackOrDiscardIt(TurnTakerController revealingTurnTaker, Location deck,
+            LinqCardCriteria autoPlayCriteria = null, List<MoveCardAction> storedResults = null, bool showRevealedCards = true,
             TurnTaker responsibleTurnTaker = null, bool isDiscard = true)
         {
             RevealedCardDisplay revealedCardDisplay = RevealedCardDisplay.None;
@@ -169,7 +170,7 @@ namespace Cauldron.TangoOne
             }
 
             List<Card> revealedCards = new List<Card>();
-            IEnumerator revealCardRoutine = this.GameController.RevealCards(revealingTurnTaker, deck, 1, revealedCards, false, 
+            IEnumerator revealCardRoutine = this.GameController.RevealCards(revealingTurnTaker, deck, 1, revealedCards, false,
                 revealedCardDisplay, null, this.GetCardSource());
 
             if (this.UseUnityCoroutines)
@@ -199,10 +200,10 @@ namespace Cauldron.TangoOne
                 new MoveCardDestination(card.Owner.Deck),
                 new MoveCardDestination(cardController.GetTrashDestination())
             };
-                
-            IEnumerator setLocationAndMoveRoutine = this.GameController.SelectLocationAndMoveCard(this.HeroTurnTakerController, card, 
+
+            IEnumerator setLocationAndMoveRoutine = this.GameController.SelectLocationAndMoveCard(this.HeroTurnTakerController, card,
                 possibleDestinations, false, true, null, null, storedResults, false, false, responsibleTurnTaker, isDiscard, this.GetCardSource(null));
-                
+
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(setLocationAndMoveRoutine);
@@ -217,7 +218,7 @@ namespace Cauldron.TangoOne
             {
                 deck.OwnerTurnTaker.Revealed
             }, deck, false, true, false, false, false, true, revealedCards);
-                
+
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(cleanupRoutine);

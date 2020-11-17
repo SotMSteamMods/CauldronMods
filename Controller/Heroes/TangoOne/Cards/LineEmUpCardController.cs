@@ -27,11 +27,9 @@ namespace Cauldron.TangoOne
             base.AddTrigger<DestroyCardAction>(destroyCard => destroyCard.WasCardDestroyed
                 && destroyCard.ResponsibleCard.Equals(this.Card.Owner.CharacterCard)
                 && base.GameController.IsCardVisibleToCardSource(destroyCard.CardToDestroy.Card,
-                    base.GetCardSource()), 
+                    base.GetCardSource()),
                 this.DealDamageResponse,
-                TriggerType.DealDamage, TriggerTiming.After, ActionDescription.Unspecified,
-                false, true, null, false, null,
-                null);
+                TriggerType.DealDamage, TriggerTiming.After);
 
             base.AddTriggers();
         }

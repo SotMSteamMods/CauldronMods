@@ -20,23 +20,9 @@ namespace Cauldron.TangoOne
 
         }
 
-        public override IEnumerator Play()
+        public override void AddTriggers()
         {
-            ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect();
-            immuneToDamageStatusEffect.DamageTypeCriteria.AddType(DamageType.Psychic);
-            immuneToDamageStatusEffect.TargetCriteria.IsSpecificCard = base.CharacterCard;
-            immuneToDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-            immuneToDamageStatusEffect.CardDestroyedExpiryCriteria.Card = base.CharacterCard;
-
-            IEnumerator immuneToDamageRoutine = base.AddStatusEffect(immuneToDamageStatusEffect);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(immuneToDamageRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(immuneToDamageRoutine);
-            }
+            base.AddImmuneToDamageTrigger((DealDamageAction action) => action.DamageType == DamageType.Psychic && action.Target == base.CharacterCard);
         }
 
         public override IEnumerator UsePower(int index = 0)

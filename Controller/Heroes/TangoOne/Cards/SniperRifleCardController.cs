@@ -18,6 +18,7 @@ namespace Cauldron.TangoOne
         public static string Identifier = "SniperRifle";
 
         private const int CardsToDiscard = 2;
+        private const int TargetAmount = 1;
         private const int DamageAmount = 2;
 
         public SniperRifleCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
@@ -55,10 +56,10 @@ namespace Cauldron.TangoOne
             List<DiscardCardAction> discardCardActions = new List<DiscardCardAction>();
             LinqCardCriteria cardCriteria = new LinqCardCriteria(IsCritical, "critical cards", false);
 
-            IEnumerator discardCardsRoutine = this.GameController.SelectAndDiscardCards(this.HeroTurnTakerController, 
+            IEnumerator discardCardsRoutine = this.GameController.SelectAndDiscardCards(this.HeroTurnTakerController,
                 CardsToDiscard, false,
                 null,
-                discardCardActions, false, null, null, null, 
+                discardCardActions, false, null, null, null,
                 cardCriteria, SelectionType.DiscardCard, this.TurnTaker
             );
 
@@ -77,8 +78,8 @@ namespace Cauldron.TangoOne
             }
 
             // Discard requirement fulfilled, choose non character card to destroy
-            IEnumerator destroyCardRoutine 
-                = this.GameController.SelectAndDestroyCard(this.HeroTurnTakerController, 
+            IEnumerator destroyCardRoutine
+                = this.GameController.SelectAndDestroyCard(this.HeroTurnTakerController,
                     new LinqCardCriteria(card => !card.IsCharacter), false);
             if (base.UseUnityCoroutines)
             {
@@ -106,11 +107,12 @@ namespace Cauldron.TangoOne
             }
 
             Card selectedCard = GetSelectedCard(selectCardResults);
-            int powerNumeral = GetPowerNumeral(0, DamageAmount);
+            int targetNumeral = GetPowerNumeral(0, TargetAmount);
+            int damageNumeral = GetPowerNumeral(1, DamageAmount);
 
             IEnumerator dealDamageRoutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
                 new DamageSource(base.GameController, selectedCard), powerNumeral,
-                DamageType.Projectile, 1, false, 0,
+                DamageType.Projectile, targetNumeral, false, 0,
                 additionalCriteria: c => c.IsTarget && c.IsInPlay,
                 cardSource: base.GetCardSource());
 

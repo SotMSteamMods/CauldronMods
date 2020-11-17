@@ -22,6 +22,8 @@ namespace Cauldron.TangoOne
 
         public override IEnumerator Play()
         {
+            IEnumerator gainHpRoutine = this.GameController.GainHP(this.CharacterCard,
+                HpGain, cardSource: this.GetCardSource());
 
             IEnumerator dealDamageRoutine = this.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
                 new DamageSource(this.GameController, this.CharacterCard), DamageAmount, DamageType.Projectile,
@@ -30,23 +32,13 @@ namespace Cauldron.TangoOne
 
             if (this.UseUnityCoroutines)
             {
+                yield return this.GameController.StartCoroutine(gainHpRoutine);
                 yield return this.GameController.StartCoroutine(dealDamageRoutine);
             }
             else
             {
-                this.GameController.ExhaustCoroutine(dealDamageRoutine);
-            }
-
-            IEnumerator gainHpRoutine = this.GameController.GainHP(this.CharacterCard, 
-                HpGain, cardSource: this.GetCardSource());
-
-            if (this.UseUnityCoroutines)
-            {
-                yield return this.GameController.StartCoroutine(gainHpRoutine);
-            }
-            else
-            {
                 this.GameController.ExhaustCoroutine(gainHpRoutine);
+                this.GameController.ExhaustCoroutine(dealDamageRoutine);
             }
         }
     }

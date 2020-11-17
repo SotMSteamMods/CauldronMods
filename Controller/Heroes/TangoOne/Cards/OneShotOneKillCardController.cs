@@ -27,8 +27,7 @@ namespace Cauldron.TangoOne
         public override IEnumerator Play()
         {
             List<DiscardCardAction> discardCardActions = new List<DiscardCardAction>();
-            IEnumerator discardCardsRoutine = base.SelectAndDiscardCards(base.HeroTurnTakerController, null, false, 
-                new int?(0), discardCardActions, false);
+            IEnumerator discardCardsRoutine = base.SelectAndDiscardCards(base.HeroTurnTakerController, null, false, new int?(0), discardCardActions);
 
             if (base.UseUnityCoroutines)
             {
@@ -45,14 +44,14 @@ namespace Cauldron.TangoOne
             }
 
             // If we got this far, at least one card was selected
-            
+
             // Determine the max HP of eligible targets
             int maxHpThresholdForTarget = discardCardActions.Count * HpMultiplier;
 
             LinqCardCriteria cardCriteria = new LinqCardCriteria(card => card.HitPoints <= maxHpThresholdForTarget && card.IsTarget && card.IsInPlayAndHasGameText);
             List<DestroyCardAction> destroyCardActions = new List<DestroyCardAction>();
 
-            IEnumerator destroyCardRoutine = this.GameController.SelectAndDestroyCard(this.HeroTurnTakerController, cardCriteria, true, 
+            IEnumerator destroyCardRoutine = this.GameController.SelectAndDestroyCard(this.HeroTurnTakerController, cardCriteria, true,
                 destroyCardActions, cardSource: this.GetCardSource());
 
             if (base.UseUnityCoroutines)

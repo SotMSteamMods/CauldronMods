@@ -44,10 +44,10 @@ namespace Cauldron.TangoOne
 
             if (deck != null)
             {
-                IEnumerator routine = base.RevealCardsFromTopOfDeck_DetermineTheirLocation(this.DecisionMaker, base.TurnTakerController, deck, 
-                    new MoveCardDestination(deck), 
+                IEnumerator routine = base.RevealCardsFromTopOfDeck_DetermineTheirLocation(this.DecisionMaker, base.TurnTakerController, deck,
                     new MoveCardDestination(deck),
-                    CardsToReveal, CardsToReveal, CardsToReveal, 
+                    new MoveCardDestination(deck),
+                    CardsToReveal, CardsToReveal, CardsToReveal,
                     base.TurnTaker, revealedCards);
 
                 if (base.UseUnityCoroutines)
@@ -62,8 +62,7 @@ namespace Cauldron.TangoOne
 
             // You may draw a card, You may play a card
             IEnumerator drawCardRoutine = base.DrawCard(base.HeroTurnTaker, true);
-            IEnumerator playCardRoutine = this.SelectAndPlayCardFromHand(this.HeroTurnTakerController, true, 
-                null, null, true);
+            IEnumerator playCardRoutine = this.SelectAndPlayCardFromHand(this.HeroTurnTakerController);
 
             if (base.UseUnityCoroutines)
             {
