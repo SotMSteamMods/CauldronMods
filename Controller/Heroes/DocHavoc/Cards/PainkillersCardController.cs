@@ -29,15 +29,15 @@ namespace Cauldron.DocHavoc
             List<IDecision> decisionSources,
             Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
+            //When this card enters play, place it next to a hero target.
             LinqCardCriteria validTargets = new LinqCardCriteria(
                 c => c.IsHero && c.IsTarget && !c.IsIncapacitatedOrOutOfGame,
-                "targets", false, false, null, null, false);
+                "hero target");
 
             IEnumerator routine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria(
                     (Card c) => validTargets.Criteria(c) &&
                                 (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)),
-                    validTargets.Description, true, false, null, null, false), storedResults, isPutIntoPlay,
-                decisionSources);
+                    validTargets.Description), storedResults, isPutIntoPlay, decisionSources);
 
             if (base.UseUnityCoroutines)
             {
@@ -53,51 +53,47 @@ namespace Cauldron.DocHavoc
 
         public override void AddTriggers()
         {
+            //Damage dealt by that target is irreducible.
             base.AddMakeDamageIrreducibleTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(base.GetCardThisCardIsNextTo()));
 
+            //At the start of that hero's turn, that target may deal itself 2 toxic damage. If no damage is taken this way, this card is destroyed.
             this.AddStartOfTurnTrigger(
                 (TurnTaker tt) =>
-                    tt == base.FindTurnTakersWhere(stt => stt.CharacterCard.Equals(base.GetCardThisCardIsNextTo())).FirstOrDefault(),
+                    tt == base.GetCardThisCardIsNextTo().Owner,
                 new Func<PhaseChangeAction, IEnumerator>(this.DamageOrDestroyResponse), new TriggerType[]
                 {
                     TriggerType.DealDamage,
                     TriggerType.DestroySelf
-                }, null, false);
+                });
 
             base.AddIfTheTargetThatThisCardIsNextToLeavesPlayDestroyThisCardTrigger(null);
-
-            base.AddTriggers();
         }
 
         private IEnumerator DamageOrDestroyResponse(PhaseChangeAction phaseChange)
         {
+            //that target may deal itself 2 toxic damage. 
             List<DealDamageAction> storedDamageResults = new List<DealDamageAction>();
 
             CardController cc = base.FindCardController(base.GetCardThisCardIsNextTo());
-
-            IEnumerator selectTargetsToSelfDamageRoutine = base.GameController.DealDamageToSelf(cc.HeroTurnTakerController, 
-                (card => card.Equals(cc.CharacterCard)), DamageAmount,
-                DamageType.Toxic, false, requiredDecisions: 1,
-                storedResults: storedDamageResults, isOptional: true, cardSource: cc.GetCardSource());
+            IEnumerator coroutine = base.GameController.DealDamage(cc.HeroTurnTakerController, cc.CharacterCard, (Card c) => c.Equals(cc.CharacterCard), DamageAmount, DamageType.Toxic, optional: true, storedResults: storedDamageResults, cardSource: cc.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(selectTargetsToSelfDamageRoutine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(selectTargetsToSelfDamageRoutine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
 
+           // If no damage is taken this way, this card is destroyed.
             if (base.DidIntendedTargetTakeDamage(storedDamageResults, cc.CharacterCard))
             {
                 yield break;
             }
 
 
-            IEnumerator destroyCardRoutine = base.GameController.DestroyCard(this.DecisionMaker, this.Card, 
-                false, null, null, null, null, null, 
-                null, null, null, base.GetCardSource(null));
+            IEnumerator destroyCardRoutine = base.DestroyThisCardResponse(phaseChange);
             
             if (base.UseUnityCoroutines)
             {

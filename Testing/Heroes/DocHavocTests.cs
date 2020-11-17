@@ -726,7 +726,7 @@ namespace CauldronTests
         [Test]
         public void TestPainkillersAcceptSelfDamage()
         {
-            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka","RuinsOfAtlantis");
 
             MakeCustomHeroHand(DocHavoc, new List<string>()
             {
@@ -747,8 +747,8 @@ namespace CauldronTests
 
             GoToStartOfTurn(tempest);
 
-            PutInHand(tempest, "LightningSlash");
-            PlayCardFromHand(tempest, "LightningSlash");
+            Card slash = PutInHand(tempest, "LightningSlash");
+            PlayCard(slash);
             
             // Assert
             QuickHPCheck(-2, -5); // Tempest lost 2 HP for keeping Painkillers, -5 HP on MDP from Lightning Slash
@@ -758,9 +758,9 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestPainkillersDeclineSelfDamage()
+        public void TestPainkillers_Irreducible()
         {
-            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
 
             MakeCustomHeroHand(DocHavoc, new List<string>()
             {
@@ -773,7 +773,45 @@ namespace CauldronTests
 
             // Act
             DecisionNextToCard = tempest.CharacterCard;
-            DecisionSelectTarget = GetCardInPlay("MobileDefensePlatform");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DecisionSelectTarget = mdp;
+            DecisionYesNo = true;
+
+            //add reduce damage trigger to mdp
+            ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(3);
+            reduceDamageStatusEffect.TargetCriteria.IsSpecificCard = mdp;
+            RunCoroutine(base.GameController.AddStatusEffect(reduceDamageStatusEffect, true, FindCardController(baron.CharacterCard).GetCardSource()));
+
+            GoToPlayCardPhase(DocHavoc);
+            Card painkillers = PlayCardFromHand(DocHavoc, PainkillersCardController.Identifier);
+            AssertNextToCard(painkillers, tempest.CharacterCard);
+
+            QuickHPStorage(mdp);
+            Card slash = PutInHand(tempest, "LightningSlash");
+            PlayCard(slash);
+
+            // Assert
+            QuickHPCheck(-5); // should be -5 still because irreducible
+
+        }
+
+        [Test]
+        public void TestPainkillersDeclineSelfDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                PainkillersCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+            QuickHPStorage(tempest.CharacterCard, GetCardInPlay("MobileDefensePlatform"));
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            // Act
+            DecisionNextToCard = tempest.CharacterCard;
+            DecisionSelectTarget = mdp;
             DecisionYesNo = false;
 
             GoToPlayCardPhase(DocHavoc);
@@ -781,11 +819,18 @@ namespace CauldronTests
 
             GoToStartOfTurn(tempest);
 
-            PutInHand(tempest, "LightningSlash");
-            PlayCardFromHand(tempest, "LightningSlash");
+
+            //add reduce damage trigger to mdp
+            ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(3);
+            reduceDamageStatusEffect.TargetCriteria.IsSpecificCard = mdp;
+            RunCoroutine(base.GameController.AddStatusEffect(reduceDamageStatusEffect, true, FindCardController(baron.CharacterCard).GetCardSource()));
+
+
+            Card slash = PutInHand(tempest, "LightningSlash");
+            PlayCard(slash);
 
             // Assert
-            QuickHPCheck(0, -5); // Tempest lost 0 HP for discarding Painkillers, -5 HP on MDP from Lightning Slash
+            QuickHPCheck(0, -2); // Tempest lost 0 HP for discarding Painkillers, -2 HP on MDP from Lightning Slash
             AssertNumberOfCardsNextToCard(tempest.CharacterCard, 0); // Painkillers not next to Tempest
 
             AssertTriggersWhere(trigger => !trigger.CardSource.Card.Identifier.Equals(PainkillersCardController.Identifier));
