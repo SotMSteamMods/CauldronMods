@@ -70,6 +70,7 @@ namespace CauldronTests
         {
             var nightloreDict = new Dictionary<string, string> { };
             nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            nightloreDict["Legacy"] = "GreatestLegacyCharacter";
             SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "Megalopolis" }, false, nightloreDict);
 
             Assert.AreEqual(4, this.GameController.TurnTakerControllers.Count());
@@ -79,10 +80,12 @@ namespace CauldronTests
 
             return;
             Log.Debug("But before all that, let's see if we can make a base Starlight!");
-            var baseType = ModHelper.GetTypeForCardController("Starlight", "StarlightCharacter");
-            var baseDefinition = starlight.TurnTaker.DeckDefinition.CardDefinitions.Where((CardDefinition cd) => cd.Identifier == "StarlightCharacter").FirstOrDefault();
-            var baseCard = new Card(baseDefinition, starlight.TurnTaker, 0);
-            var acceptableCard = Activator.CreateInstance(baseType, baseCard, starlight);
+
+
+            var baseType = ModHelper.GetTypeForCardController("Legacy", "LegacyCharacter");
+            var baseDefinition = starlight.TurnTaker.DeckDefinition.CardDefinitions.Where((CardDefinition cd) => cd.Identifier == "LegacyCharacter").FirstOrDefault();
+            var baseCard = new Card(baseDefinition, legacy.TurnTaker, 0);
+            var acceptableCard = Activator.CreateInstance(baseType, baseCard, legacy);
 
 
             var terraType = ModHelper.GetTypeForCardController("Starlight", "StarlightOfTerraCharacter");
