@@ -25,17 +25,171 @@ namespace CauldronTests
         #endregion HelperFunctions
 
         [Test()]
-        public void TestLoadVanish()
+        public void VanishLoad()
         {
-            SetupGameController("BaronBlade", "Cauldron.Vanish", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Haka", "Bunker", "TheScholar", "Megalopolis");
 
             Assert.AreEqual(6, this.GameController.TurnTakerControllers.Count());
 
             Assert.IsNotNull(vanish);
             Assert.IsInstanceOf(typeof(VanishCharacterCardController), vanish.CharacterCardController);
 
+            foreach (var card in vanish.HeroTurnTaker.GetAllCards())
+            {
+                var cc = GetCardController(card);
+                Assert.IsTrue(cc.GetType() != typeof(CardController), $"{card.Identifier} is does not have a CardController");
+            }
+
             Assert.AreEqual(26, vanish.CharacterCard.HitPoints);
         }
 
+        [Test]
+        public void VanishInnatePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            var minion = PlayCard("BladeBattalion");
+
+            var mode = PlayCard("TurretMode");
+            AssertInPlayArea(bunker, mode);
+
+            QuickHPStorage(baron.CharacterCard, vanish.CharacterCard, haka.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, minion);
+            DecisionSelectTargets = new Card[] { haka.CharacterCard, minion };
+            UsePower(vanish);
+
+            QuickHPCheck(0, 0, 0, 0, 0, -1);
+
+            QuickHPStorage(baron.CharacterCard, vanish.CharacterCard, haka.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, minion);
+            DecisionSelectTargets = new Card[] { bunker.CharacterCard, minion };
+            UsePower(vanish);
+            //check that bunker dealt the damage, if he did it will be increased by 1
+            QuickHPCheck(0, 0, 0, 0, 0, -2);
+        }
+
+        [Test]
+        public void VanishIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            SetupIncap(baron);
+            AssertIncapacitated(vanish);
+
+            GoToUseIncapacitatedAbilityPhase(vanish);
+
+            QuickHandStorage(haka, bunker, scholar);
+            DecisionSelectTurnTaker = haka.TurnTaker;
+            UseIncapacitatedAbility(vanish, 0);
+
+            QuickHandCheck(1, 0, 0);
+        }
+
+        [Test]
+        public void VanishIncap2_Replace()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            SetupIncap(baron);
+            AssertIncapacitated(vanish);
+
+            GoToUseIncapacitatedAbilityPhase(vanish);
+
+            var topCard = baron.TurnTaker.Deck.TopCard;
+            var bottomCard = baron.TurnTaker.Deck.BottomCard;
+            DecisionSelectLocation = new LocationChoice(baron.TurnTaker.Deck);
+            DecisionMoveCardDestination = new MoveCardDestination(baron.TurnTaker.Deck, true);
+
+            UseIncapacitatedAbility(vanish, 1);
+
+            AssertNumberOfCardsInRevealed(baron, 0);
+
+            AssertOnTopOfDeck(topCard);
+            AssertOnBottomOfDeck(bottomCard);
+        }
+
+
+        [Test]
+        public void VanishIncap2_MoveToTop()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            SetupIncap(baron);
+            AssertIncapacitated(vanish);
+
+            GoToUseIncapacitatedAbilityPhase(vanish);
+
+            var topCard = haka.TurnTaker.Deck.TopCard;
+            var bottomCard = haka.TurnTaker.Deck.BottomCard;
+            DecisionSelectLocation = new LocationChoice(haka.TurnTaker.Deck);
+            DecisionMoveCardDestination = new MoveCardDestination(haka.TurnTaker.Deck, false);
+
+            UseIncapacitatedAbility(vanish, 1);
+
+            AssertNumberOfCardsInRevealed(haka, 0);
+            AssertOnTopOfDeck(bottomCard);
+            AssertOnTopOfDeck(topCard, 1);
+            
+        }
+
+        [Test]
+        public void VanishIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+
+            SetupIncap(baron);
+            AssertIncapacitated(vanish);
+
+            GoToUseIncapacitatedAbilityPhase(vanish);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            DecisionSelectCard = wraith.CharacterCard;
+            UseIncapacitatedAbility(vanish, 2);
+
+            string messageText = $"Reduce damage dealt to {wraith.Name} by 1.";
+
+            AssertNumberOfStatusEffectsInPlay(1);
+            AssertStatusEffectAssociatedTurnTaker(0, wraith.TurnTaker);
+            AssertStatusEffectsContains(messageText);
+
+            //Test that the reducing effect works as expected
+            QuickHPStorage(wraith);
+            DealDamage(baron, wraith, 3, DamageType.Melee);
+            //should have been reduced by 1
+            QuickHPCheck(-2);
+
+            PrintSeparator("Change turns");
+            GoToEndOfTurn(wraith);
+
+            PrintSeparator("Effect still applied");
+            AssertNumberOfStatusEffectsInPlay(1);
+            AssertStatusEffectAssociatedTurnTaker(0, wraith.TurnTaker);
+            AssertStatusEffectsContains(messageText);
+            //Test that the reducing effect works as expected
+            QuickHPStorage(wraith);
+            DealDamage(baron, wraith, 3, DamageType.Melee);
+            //should have been reduced by 1
+            QuickHPCheck(-2);
+
+            PrintSeparator("Effect expires");
+            AssertNextMessageContains(messageText);
+            GoToStartOfTurn(vanish);
+            AssertNumberOfStatusEffectsInPlay(0);
+            //Test that the reducing effect has disappeared
+            QuickHPStorage(wraith);
+            DealDamage(baron, wraith, 3, DamageType.Melee);
+            //should have not have been reduced
+            QuickHPCheck(-3);
+        }
     }
 }
