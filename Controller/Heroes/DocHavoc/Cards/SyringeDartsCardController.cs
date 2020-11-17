@@ -20,11 +20,14 @@ namespace Cauldron.DocHavoc
 
         public override IEnumerator UsePower(int index = 0)
         {
-            int powerNumeral = this.GetPowerNumeral(0, DamageAmount);
+
+            // Deal up to 2 targets 2 projectile damage each.
+            int targets = this.GetPowerNumeral(0, 2);
+            int damage = this.GetPowerNumeral(1, DamageAmount);
 
             IEnumerator dealDamageRoutine = this.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, 
-                new DamageSource(this.GameController, this.CharacterCard), powerNumeral, DamageType.Projectile, 
-                new int?(2), false, 
+                new DamageSource(this.GameController, this.CharacterCard), damage, DamageType.Projectile, 
+                new int?(targets), false, 
                 new int?(0), cardSource: this.GetCardSource());
 
             if (this.UseUnityCoroutines)

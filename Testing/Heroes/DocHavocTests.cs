@@ -642,7 +642,7 @@ namespace CauldronTests
         public void TestSyringeDarts()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
 
             MakeCustomHeroHand(DocHavoc, new List<string>()
             {
@@ -652,21 +652,52 @@ namespace CauldronTests
 
             StartGame();
             Card mdp = GetCardInPlay("MobileDefensePlatform");
-            QuickHPStorage(mdp);
+            QuickHPStorage(mdp, tempest.CharacterCard, haka.CharacterCard);
             
-            DecisionSelectTargets = new[] {mdp, null};
+            DecisionSelectTargets = new[] {mdp, tempest.CharacterCard};
             DecisionSelectWordSkip = true;
 
             // Act
             GoToPlayCardPhase(DocHavoc);
-            PlayCardFromHand(DocHavoc, SyringeDartsCardController.Identifier);
+            Card syringe = PlayCardFromHand(DocHavoc, SyringeDartsCardController.Identifier);
             GoToUsePowerPhase(DocHavoc);
-            UsePower(SyringeDartsCardController.Identifier);
+            UsePower(syringe);
 
             GoToEndOfTurn(env);
 
             // Assert
-            QuickHPCheck(-2);
+            QuickHPCheck(-2, -2, 0);
+        }
+
+        [Test]
+        public void TestSyringeDarts_UpTo()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                SyringeDartsCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            QuickHPStorage(mdp, tempest.CharacterCard, haka.CharacterCard);
+
+            DecisionSelectTargets = new[] { mdp, null };
+            DecisionSelectWordSkip = true;
+
+            // Act
+            GoToPlayCardPhase(DocHavoc);
+            Card syringe = PlayCardFromHand(DocHavoc, SyringeDartsCardController.Identifier);
+            GoToUsePowerPhase(DocHavoc);
+            UsePower(syringe);
+
+            GoToEndOfTurn(env);
+
+            // Assert
+            QuickHPCheck(-2,0,0);
         }
 
         [Test]
