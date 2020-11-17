@@ -5339,9 +5339,9 @@ namespace Handelabra.Sentinels.UnitTest
             PutOnDeck(ttc, card.Card, toBottom);
         }
 
-        public void PutOnDeck(TurnTakerController ttc, Card card, bool toBottom = false)
+        public Card PutOnDeck(TurnTakerController ttc, Card card, bool toBottom = false)
         {
-            MoveCard(ttc, card, ttc.TurnTaker.Deck, toBottom);
+            return MoveCard(ttc, card, ttc.TurnTaker.Deck, toBottom);
         }
 
         public void PutOnDeck(TurnTakerController ttc, IEnumerable<Card> cards)

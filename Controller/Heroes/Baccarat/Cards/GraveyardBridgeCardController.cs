@@ -11,13 +11,10 @@ namespace Cauldron.Baccarat
 {
     public class GraveyardBridgeCardController : CardController
     {
-        #region Constructors
+        public GraveyardBridgeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        {
 
-        public GraveyardBridgeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController) { }
-
-        #endregion Constructors
-
-        #region Methods
+        }
 
         public override IEnumerator Play()
         {
@@ -26,7 +23,7 @@ namespace Cauldron.Baccarat
             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
 
             //You may shuffle a card from your trash into your deck... 
-            IEnumerator coroutine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.IsInTrash), turnTakerDeck.ToEnumerable<MoveCardDestination>(), false, true, true, true, storedResults,showOutput: true,allowAutoDecide: true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.IsInTrash), turnTakerDeck.ToEnumerable<MoveCardDestination>(), false, true, true, true, storedResults, showOutput: true, allowAutoDecide: true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -51,9 +48,9 @@ namespace Cauldron.Baccarat
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-                
+
                 //Shuffle all copies of that card from your trash into your deck.
-                coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.HeroTurnTakerController, base.TurnTaker.Trash, list.Count<Card>(), this.TurnTaker.Trash.NumberOfCards, cardCriteria, turnTakerDeck.ToEnumerable<MoveCardDestination>(),responsibleTurnTaker: this.TurnTaker,selectionType: SelectionType.MoveCardOnDeck,cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.HeroTurnTakerController, base.TurnTaker.Trash, list.Count<Card>(), this.TurnTaker.Trash.NumberOfCards, cardCriteria, turnTakerDeck.ToEnumerable<MoveCardDestination>(), responsibleTurnTaker: this.TurnTaker, selectionType: SelectionType.MoveCardOnDeck, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -73,10 +70,7 @@ namespace Cauldron.Baccarat
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-
             yield break;
         }
-
-        #endregion Methods
     }
 }
