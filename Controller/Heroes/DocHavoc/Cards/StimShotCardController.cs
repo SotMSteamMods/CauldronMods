@@ -21,6 +21,8 @@ namespace Cauldron.DocHavoc
 
         public override IEnumerator Play()
         {
+
+            // Draw a card.
             IEnumerator drawCardsRoutine = this.DrawCards(this.HeroTurnTakerController, CardDrawCount);
 
             if (this.UseUnityCoroutines)
@@ -32,7 +34,8 @@ namespace Cauldron.DocHavoc
                 this.GameController.ExhaustCoroutine(drawCardsRoutine);
             }
 
-            IEnumerator usePowerRoutine = this.GameController.SelectHeroToUsePower(this.HeroTurnTakerController, cardSource: this.GetCardSource());
+            //One player may use a power now
+            IEnumerator usePowerRoutine = this.GameController.SelectHeroToUsePower(this.HeroTurnTakerController, cardSource: base.GetCardSource());
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(usePowerRoutine);
