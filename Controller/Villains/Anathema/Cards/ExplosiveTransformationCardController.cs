@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Cauldron.Anathema
 {
-	public class ExplosiveTransformationCardController : CardController
+	public class ExplosiveTransformationCardController : AnathemaCardController
     {
 		public ExplosiveTransformationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
@@ -88,21 +88,6 @@ namespace Cauldron.Anathema
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
 			yield break;
-		}
-
-		private bool IsArm(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "arm", false, false);
-		}
-
-		private bool IsHead(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "head", false, false);
-		}
-
-		private bool IsBody(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "body", false, false);
 		}
 
 	}

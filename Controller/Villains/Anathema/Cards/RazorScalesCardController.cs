@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.Anathema
 {
-	public class RazorScalesCardController : CardController
+	public class RazorScalesCardController : BodyCardController
     {
 		public RazorScalesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
@@ -21,7 +21,7 @@ namespace Cauldron.Anathema
 		private IEnumerator FirstDamageDealtResponse(DealDamageAction dd)
 		{
 			//this card deals the source of that damage 2 melee damage.
-			base.SetCardPropertyToTrueIfRealAction("FirstDamageToVillainTargetThisTurn", null);
+			base.SetCardPropertyToTrueIfRealAction(FirstDamageToVillainTargetThisTurn);
 			IEnumerator coroutine = base.DealDamage(base.Card, dd.DamageSource.Card, 2, DamageType.Melee, false, false, true, null, null, null, false, null);
 			if (base.UseUnityCoroutines)
 			{
@@ -35,35 +35,6 @@ namespace Cauldron.Anathema
 		}
 
 		private const string FirstDamageToVillainTargetThisTurn = "FirstDamageToVillainTargetThisTurn";
-
-		public override IEnumerator Play()
-		{
-			//When this card enters play, destroy all other body cards.
-			if(GetNumberOfBodyInPlay() > 1)
-			{
-				IEnumerator coroutine = base.GameController.DestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => this.IsBody(c) && c != base.Card, "body", true, false, null, null, false), false, null, null, null, SelectionType.DestroyCard, base.GetCardSource(null));
-				if (base.UseUnityCoroutines)
-				{
-					yield return base.GameController.StartCoroutine(coroutine);
-				}
-				else
-				{
-					base.GameController.ExhaustCoroutine(coroutine);
-				}
-			}
-			
-			yield break;
-		}
-
-		private bool IsBody(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "body", false, false);
-		}
-
-		private int GetNumberOfBodyInPlay()
-		{
-			return base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && this.IsBody(c), false, null, false).Count<Card>();
-		}
 
 	}
 }

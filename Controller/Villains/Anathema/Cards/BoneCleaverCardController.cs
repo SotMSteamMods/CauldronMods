@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Cauldron.Anathema
 {
-	public class BoneCleaverCardController : CardController
+	public class BoneCleaverCardController : ArmCardController
     {
 		public BoneCleaverCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
@@ -35,48 +35,7 @@ namespace Cauldron.Anathema
 			}
 			yield break;
 		}
-
-		public override IEnumerator Play()
-		{
-			if(GetNumberOfArmsInPlay() > 2)
-			{
-				//Determine the arm with the highest HP
-				List<Card> highestArm = new List<Card>();
-				IEnumerator coroutine = base.GameController.FindTargetWithHighestHitPoints(1, (Card c) => this.IsArm(c) && c.IsInPlay && c != base.Card, highestArm, null, null, false, false, null, false, base.GetCardSource(null));
-
-				if (base.UseUnityCoroutines)
-				{
-					yield return base.GameController.StartCoroutine(coroutine);
-				}
-				else
-				{
-					base.GameController.ExhaustCoroutine(coroutine);
-				}
-				//Destroy all other arm cards except for the one with the highest HP.
-
-				IEnumerator coroutine2 = base.GameController.DestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => this.IsArm(c) && !highestArm.Contains(c) && c != base.Card, "arm", true, false, null, null, false), false, null, null, null, SelectionType.DestroyCard, base.GetCardSource(null));
-				if (base.UseUnityCoroutines)
-				{
-					yield return base.GameController.StartCoroutine(coroutine2);
-				}
-				else
-				{
-					base.GameController.ExhaustCoroutine(coroutine2);
-				}
-			}
-			
-			yield break;
-		}
-
-		private bool IsArm(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "arm", false, false);
-		}
-
-		private int GetNumberOfArmsInPlay()
-		{
-			return base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && this.IsArm(c), false, null, false).Count<Card>();
-		}
+				
 
 	}
 }

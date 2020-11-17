@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Cauldron.Anathema
 {
-	public class BiofeedbackCardController : CardController
+	public class BiofeedbackCardController : AnathemaCardController
     {
 		public BiofeedbackCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
@@ -22,32 +22,11 @@ namespace Cauldron.Anathema
 				new TriggerType[] { TriggerType.GainHP },TriggerTiming.After,null,false,true,null,false,null,null,false,false);
 
 			//Whenever an arm, body, or head is destroyed by a Hero target, Anathema deals himself 2 psychic damage.
-			base.AddTrigger<DestroyCardAction>((DestroyCardAction dca) => this.IsArmHeadOrBody(dca.CardToDestroy.Card) && dca.CardSource != null && dca.CardSource.Card.IsTarget  && dca.CardSource.Card.IsHero,
+			base.AddTrigger<DestroyCardAction>((DestroyCardAction dca) => base.IsArmHeadOrBody(dca.CardToDestroy.Card) && dca.CardSource != null && dca.CardSource.Card.IsTarget  && dca.CardSource.Card.IsHero,
 				(DestroyCardAction dca) => base.DealDamage(base.CharacterCard, base.CharacterCard, 2, DamageType.Psychic, false, false, false, null, null, null, false, base.GetCardSource(null)),
 				new TriggerType[] { TriggerType.DealDamage }, TriggerTiming.After, null, false, false, null, false, null, null, false, false);
 		}
 		
-
-		private bool IsArm(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "arm", false, false);
-		}
-
-		private bool IsHead(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "head", false, false);
-		}
-
-		private bool IsBody(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "body", false, false);
-		}
-
-		private bool IsArmHeadOrBody(Card c)
-		{
-			return IsArm(c) || IsHead(c) || IsBody(c);
-		}
-
 
 
 	}
