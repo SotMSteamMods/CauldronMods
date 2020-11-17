@@ -40,6 +40,19 @@ namespace CauldronTests
             Assert.AreEqual("Starlight: Genesis", starlight.CharacterCard.Title);
         }
         [Test()]
+        public void TestStarlightHasCardsInOffToTheSide()
+        {
+            var promoDict = new Dictionary<string, string> { };
+            promoDict["Cauldron.Starlight"] = "GenesisStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "Megalopolis" }, false, promoDict);
+            StartGame();
+
+            AssertNumberOfCardsAtLocation(starlight.TurnTaker.OffToTheSide, 3, (Card c) => c.IsCharacter);
+
+            MoveAllCards(starlight, starlight.TurnTaker.OffToTheSide, starlight.TurnTaker.PlayArea);
+            Assert.AreEqual(terra.HitPoints, 13);
+        }
+        [Test()]
         public void TestGuiseCanGetOtherStarlight()
         {
             var promoDict = new Dictionary<string, string> { };
@@ -64,7 +77,7 @@ namespace CauldronTests
             Assert.IsInstanceOf(typeof(NightloreCouncilStarlightCharacterCardController), starlight.CharacterCardController);
 
 
-
+            return;
             Log.Debug("But before all that, let's see if we can make a base Starlight!");
             var baseType = ModHelper.GetTypeForCardController("Starlight", "StarlightCharacter");
             var baseDefinition = starlight.TurnTaker.DeckDefinition.CardDefinitions.Where((CardDefinition cd) => cd.Identifier == "StarlightCharacter").FirstOrDefault();
