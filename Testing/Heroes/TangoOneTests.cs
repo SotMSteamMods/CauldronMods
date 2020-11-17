@@ -151,7 +151,7 @@ namespace CauldronTests
             // Act
             GoToUseIncapacitatedAbilityPhase(TangoOne);
             UseIncapacitatedAbility(TangoOne, 1);
-            
+
             // Assert
             AssertIncapacitated(TangoOne);
             AssertOnTopOfTrash(baron, backlashField);
@@ -407,7 +407,7 @@ namespace CauldronTests
             QuickHPCheck(-1);
         }
 
-        
+
         [Test]
         public void TestCriticalHitWithNemesisDiscardCriticalCardSuccess()
         {
@@ -425,7 +425,7 @@ namespace CauldronTests
             // Remove body part cards to create ideal testing env.
             RemoveVillainCards();
 
-            
+
             DecisionSelectCard = ra.CharacterCard;
 
             PutOnDeck(TangoOne, GetCard(DamnGoodGroundCardController.Identifier));
@@ -444,7 +444,7 @@ namespace CauldronTests
             // Assert
             QuickHPCheck(-5); // Snipe +1, Nemesis +1, Critical Hit + 3 = 5
         }
-        
+
         [Test]
         public void TestDamnGoodGround()
         {
@@ -455,7 +455,7 @@ namespace CauldronTests
             DealDamage(baron, TangoOne, 5, DamageType.Cold);
 
             Card mdp = FindCardInPlay("MobileDefensePlatform");
-            DecisionSelectTargets = new[] {baron.CharacterCard, mdp, null};
+            DecisionSelectTargets = new[] { baron.CharacterCard, mdp, null };
             QuickHPStorage(baron.CharacterCard, mdp, TangoOne.CharacterCard);
 
             // Act
@@ -488,7 +488,7 @@ namespace CauldronTests
             PlayCard(DisablingShotCardController.Identifier);
 
             // Assert
-            AssertNotInPlay(new []{ "BacklashField"});
+            AssertNotInPlay(new[] { "BacklashField" });
             QuickHPCheck(-2);
         }
 
@@ -500,7 +500,7 @@ namespace CauldronTests
             StartGame();
 
             PlayCard("StrengthOfTheGrave"); // Reduce damage to zombies by 1
-            
+
             Card zombie = FindCardInPlay("ZombieServant");
             DecisionSelectTarget = zombie;
             QuickHPStorage(zombie);
@@ -548,6 +548,14 @@ namespace CauldronTests
             // Assert
             QuickHPCheck(0, -4); // Tango One (0) due to Ghost Reactor immunity, MDP -4 
             QuickHandCheck(0); // Discard Ghost Reactor (-1), Draw a card (+1)
+
+            //Act - Ensure not until start of next turn
+            GoToStartOfTurn(TangoOne);
+            QuickHPStorage(TangoOne);
+            DealDamage(baron, TangoOne, 10, DamageType.Psychic);
+
+            //Assert
+            QuickHPCheckZero();
         }
 
         [Test]
@@ -597,7 +605,7 @@ namespace CauldronTests
 
             SetHitPoints(bb, 1);
             QuickHPStorage(mdp);
-            DecisionSelectTargets = new[] {bb, mdp};
+            DecisionSelectTargets = new[] { bb, mdp };
 
 
             // Act
@@ -668,7 +676,7 @@ namespace CauldronTests
 
             Card mdp = FindCardInPlay("MobileDefensePlatform");
             SetHitPoints(mdp, 4);
-            
+
             QuickHandStorage(TangoOne);
 
             DecisionSelectCards = new[]
@@ -855,7 +863,7 @@ namespace CauldronTests
 
             DecisionSelectTarget = mdp;
             DecisionSelectCard = GetCardFromHand(DisablingShotCardController.Identifier);
-            DecisionsYesNo = new[] {true, false};
+            DecisionsYesNo = new[] { true, false };
 
             // Act
             GoToStartOfTurn(TangoOne);
@@ -945,7 +953,7 @@ namespace CauldronTests
             // Act
             GoToStartOfTurn(TangoOne);
             PlayCardFromHand(TangoOne, PsionicSuppressionCardController.Identifier);
-            
+
             GoToEndOfTurn(baron);
             GoToStartOfTurn(TangoOne);
 
@@ -974,8 +982,8 @@ namespace CauldronTests
 
             DecisionSelectCards = new[]
             {
-                GetCardFromHand(GhostReactorCardController.Identifier), 
-                GetCardFromHand(DisablingShotCardController.Identifier), 
+                GetCardFromHand(GhostReactorCardController.Identifier),
+                GetCardFromHand(DisablingShotCardController.Identifier),
                 mdp
             };
             DecisionSelectTarget = mdp;
@@ -1108,7 +1116,7 @@ namespace CauldronTests
             DecisionSelectTarget = mdp;
             DecisionSelectCards = new[]
             {
-                GetCard(DisablingShotCardController.Identifier), 
+                GetCard(DisablingShotCardController.Identifier),
                 GetCard(GhostReactorCardController.Identifier),
                 mdp
             };

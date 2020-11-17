@@ -112,7 +112,7 @@ namespace Cauldron.TangoOne
             int damageNumeral = GetPowerNumeral(1, DamageAmount);
 
             IEnumerator dealDamageRoutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
-                new DamageSource(base.GameController, selectedCard), powerNumeral,
+                new DamageSource(base.GameController, selectedCard), damageNumeral,
                 DamageType.Projectile, targetNumeral, false, 0,
                 additionalCriteria: c => c.IsTarget && c.IsInPlay,
                 cardSource: base.GetCardSource());
