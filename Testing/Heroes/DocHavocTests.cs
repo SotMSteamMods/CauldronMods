@@ -300,7 +300,6 @@ namespace CauldronTests
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
 
-            // Reduce Ra's, Havoc's  HP by 2
             SetHitPoints(baron.CharacterCard, 35);
             SetHitPoints(mdp, 5);
             SetHitPoints(DocHavoc.CharacterCard, 20);
@@ -335,7 +334,7 @@ namespace CauldronTests
         public void TestFieldDressing()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "Haka", "Megalopolis");
 
             // We need to make an explicit hand so two FieldDressings aren't in hand so it doesn't play another FieldDressing which will throw off the Asserts
             MakeCustomHeroHand(DocHavoc, new List<string>()
@@ -345,14 +344,19 @@ namespace CauldronTests
 
             StartGame();
 
-            // Reduce Ra's, Havoc's  HP by 2
-            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
-            DealDamage(baron, ra, 2, DamageType.Melee);
-            QuickHPStorage(ra, DocHavoc);
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            SetHitPoints(baron.CharacterCard, 35);
+            SetHitPoints(mdp, 5);
+            SetHitPoints(DocHavoc.CharacterCard, 20);
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(haka.CharacterCard, 20);
+
+            QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, DocHavoc.CharacterCard, haka.CharacterCard);
             QuickHandStorage(DocHavoc);
 
             // Act
-            Card recklessCharge = GetCard(RecklessChargeCardController.Identifier);
+            Card recklessCharge = GetCardFromHand(RecklessChargeCardController.Identifier);
             DecisionSelectCardToPlay = recklessCharge;
 
             GoToPlayCardPhase(DocHavoc);
@@ -360,8 +364,48 @@ namespace CauldronTests
             PlayCard(fieldDressing);
 
             // Assert
-            QuickHPCheck(1, 1);
+            QuickHPCheck(0,0,1,1,1);
             QuickHandCheck(-2);
+            AssertInPlayArea(DocHavoc, recklessCharge);
+        }
+
+        [Test]
+        public void TestFieldDressing_NoPlay()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "Haka", "Megalopolis");
+
+            // We need to make an explicit hand so two FieldDressings aren't in hand so it doesn't play another FieldDressing which will throw off the Asserts
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                FieldDressingCardController.Identifier, RecklessChargeCardController.Identifier, RecklessChargeCardController.Identifier
+            });
+
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            SetHitPoints(baron.CharacterCard, 35);
+            SetHitPoints(mdp, 5);
+            SetHitPoints(DocHavoc.CharacterCard, 20);
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(haka.CharacterCard, 20);
+
+            QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, DocHavoc.CharacterCard, haka.CharacterCard);
+            QuickHandStorage(DocHavoc);
+
+            // Act
+            Card recklessCharge = GetCardFromHand(RecklessChargeCardController.Identifier);
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+
+            GoToPlayCardPhase(DocHavoc);
+            Card fieldDressing = GetCardFromHand(FieldDressingCardController.Identifier);
+            PlayCard(fieldDressing);
+
+            // Assert
+            QuickHPCheck(0, 0, 1, 1, 1);
+            QuickHandCheck(-1);
+            AssertInHand(DocHavoc, recklessCharge);
         }
 
         [Test]
