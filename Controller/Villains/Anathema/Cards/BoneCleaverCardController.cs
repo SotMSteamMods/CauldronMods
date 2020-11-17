@@ -17,14 +17,14 @@ namespace Cauldron.Anathema
 		{
 			//At the end of the Villain Turn, Anathema deals the Hero target with the lowest HP {H-2} melee damage. If that target took damage this way, it cannot deal damage until the start of the next Villain Turn.
 
-			base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, null, false);
+			base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
 		}
 
 		private IEnumerator DealDamageResponse(PhaseChangeAction phaseChange)
 		{
 			//Anathema deals the Hero target with the lowest HP {H-2} melee damage.
 			//If that target took damage this way, it cannot deal damage until the start of the next Villain Turn.
-			IEnumerator coroutine = base.DealDamageToLowestHP(base.CharacterCard, 1, (Card c) => c.IsHero, (Card c) => new int?(base.H - 2), DamageType.Melee, false, false, null, 1, null, new Func<DealDamageAction, IEnumerator>(base.TargetsDealtDamageCannotDealDamageUntilTheStartOfNextTurnResponse), false);
+			IEnumerator coroutine = base.DealDamageToLowestHP(base.CharacterCard, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => new int?(base.H - 2), DamageType.Melee,addStatusEffect: base.TargetsDealtDamageCannotDealDamageUntilTheStartOfNextTurnResponse);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
