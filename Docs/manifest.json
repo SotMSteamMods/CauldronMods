@@ -1,8 +1,8 @@
 {
 	"title": "Cauldron",
-	"author": "Cualdron Mod Team",
+	"author": "Cauldron Mod Team",
 	"description": "Fanmade expansions converted to the digital tabletop.",
-	"namespace":"Cualdron",
+	"namespace":"Cauldron",
 	"dll":"CauldronMods.dll",
 	"decks":{
 		"heroes":{
@@ -13,7 +13,8 @@
 			"Necro",
 			"Malichae",
 			"TheStranger",
-			"TangoOne"
+			"TangoOne",
+			"Starlight"
 		},
 		"villains":{
 			"Anathema",
