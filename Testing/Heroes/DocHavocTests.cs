@@ -493,10 +493,10 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestRecklessCharge()
+        public void TestRecklessCharge_Triggers()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "RuinsOfAtlantis");
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "Haka", "RuinsOfAtlantis");
 
             MakeCustomHeroHand(DocHavoc, new List<string>()
             {
@@ -510,7 +510,7 @@ namespace CauldronTests
 
             // Act
             GoToPlayCardPhase(DocHavoc);
-            PlayCardFromHand(DocHavoc, RecklessChargeCardController.Identifier);
+            Card reckless = PlayCardFromHand(DocHavoc, RecklessChargeCardController.Identifier);
 
             GoToDrawCardPhase(DocHavoc);
             GoToEndOfTurn(DocHavoc);
@@ -532,8 +532,39 @@ namespace CauldronTests
                 && t.ActionType == typeof(PhaseChangeAction)
                 )).Count());
 
+            GoToDrawCardPhase(DocHavoc);
+            //should be 3 -> 1 normal, 1 for not playing or using power, 1 from reckless
+            AssertPhaseActionCount(new int?(3));
+
+            GoToDrawCardPhase(ra);
+            //should only be 2 -> 1 normal, 1 for not playing or using power
+            AssertPhaseActionCount(new int?(2));
 
             QuickHPCheck(-3, -2); // 1 Mystical Defenses dmg + 1 from Reckless Charge for Doc Havoc
+
+        }
+
+        [Test]
+        public void TestRecklessCharge_Power()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "Haka", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                FieldDressingCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+
+
+            // Act
+            GoToPlayCardPhase(DocHavoc);
+            Card reckless = PlayCardFromHand(DocHavoc, RecklessChargeCardController.Identifier);
+            GoToUsePowerPhase(DocHavoc);
+            UsePower(reckless);
+            AssertInTrash(DocHavoc, reckless);
 
         }
 

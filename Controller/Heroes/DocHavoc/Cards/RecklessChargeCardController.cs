@@ -22,27 +22,15 @@ namespace Cauldron.DocHavoc
 
         public override void AddTriggers()
         {
-            this.AddIncreaseDamageTrigger((Func<DealDamageAction, bool>)(d => d.Target == this.CharacterCard), DamageDealtIncrease);
+            //Increase damage dealt to DocHavoc by 1
+            this.AddIncreaseDamageTrigger(d => d.Target == this.CharacterCard, DamageDealtIncrease);
+
+            //You may draw an extra card during your draw phase.
+            this.AddAdditionalPhaseActionTrigger(this.ShouldIncreasePhaseActionCount, Phase.DrawCard, ExtraDrawPhaseCount);
             
-            this.AddAdditionalPhaseActionTrigger((Func<TurnTaker, bool>)(this.ShouldIncreasePhaseActionCount), Phase.DrawCard, ExtraDrawPhaseCount);
-            
-            base.AddTriggers();
         }
 
-        public override IEnumerator Play()
-        {
-            IEnumerator increasePhaseActionRoutine 
-                = this.IncreasePhaseActionCountIfInPhase(new Func<TurnTaker, bool>(ttc => ttc == this.TurnTaker), Phase.DrawCard, ExtraDrawPhaseCount);
-
-            if (this.UseUnityCoroutines)
-            {
-                yield return this.GameController.StartCoroutine(increasePhaseActionRoutine);
-            }
-            else
-            {
-                this.GameController.ExhaustCoroutine(increasePhaseActionRoutine);
-            }
-        }
+        
 
         public override IEnumerator UsePower(int index = 0)
         {
