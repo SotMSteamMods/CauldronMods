@@ -910,10 +910,10 @@ namespace CauldronTests
 
         
         [Test]
-        public void TestCauterizeAcceptChangeToHeal()
+        public void TestCauterizeAcceptChangeToHeal_Hero()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "Haka", "RuinsOfAtlantis");
 
             MakeCustomHeroHand(DocHavoc, new List<string>()
             {
@@ -922,7 +922,7 @@ namespace CauldronTests
             });
 
             StartGame();
-            DealDamage(baron, bunker, 5, DamageType.Energy);
+            SetHitPoints(bunker.CharacterCard, 15);
             QuickHPStorage(bunker);
 
             //DecisionsYesNo = new[] {true, false};
@@ -932,8 +932,40 @@ namespace CauldronTests
             // Act
             PlayCardFromHand(DocHavoc, CauterizeCardController.Identifier);
             GoToPlayCardPhase(DocHavoc);
-            PlayCardFromHand(DocHavoc, SyringeDartsCardController.Identifier);
-            UsePower(SyringeDartsCardController.Identifier);
+            Card syringe = PlayCardFromHand(DocHavoc, SyringeDartsCardController.Identifier);
+            UsePower(syringe);
+
+            // Assert
+            QuickHPCheck(2);
+        }
+
+        [Test]
+        public void TestCauterizeAcceptChangeToHeal_Villain()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "Haka", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                CauterizeCardController.Identifier, SyringeDartsCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            SetHitPoints(mdp, 4);
+
+            QuickHPStorage(mdp);
+
+            DecisionYesNo = true;
+            DecisionSelectTargets = new[] {mdp, null };
+
+            // Act
+            PlayCardFromHand(DocHavoc, CauterizeCardController.Identifier);
+            GoToPlayCardPhase(DocHavoc);
+            Card syringe = PlayCardFromHand(DocHavoc, SyringeDartsCardController.Identifier);
+            UsePower(syringe);
 
             // Assert
             QuickHPCheck(2);
@@ -955,15 +987,14 @@ namespace CauldronTests
             DealDamage(baron, bunker, 5, DamageType.Energy);
             QuickHPStorage(bunker);
 
-            //DecisionsYesNo = new[] {true, false};
             DecisionYesNo = false;
             DecisionSelectTargets = new[] { bunker.CharacterCard, null };
 
             // Act
             PlayCardFromHand(DocHavoc, CauterizeCardController.Identifier);
             GoToPlayCardPhase(DocHavoc);
-            PlayCardFromHand(DocHavoc, SyringeDartsCardController.Identifier);
-            UsePower(SyringeDartsCardController.Identifier);
+            Card syringe = PlayCardFromHand(DocHavoc, SyringeDartsCardController.Identifier);
+            UsePower(syringe);
 
             // Assert
             QuickHPCheck(-2);

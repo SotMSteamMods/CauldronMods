@@ -38,22 +38,22 @@ namespace Cauldron.DocHavoc
             return base.Play();
         }
 
-        private IEnumerator ChooseDamageOrHealResponse(DealDamageAction dda)
+        private IEnumerator ChooseDamageOrHealResponse(DealDamageAction dd)
         {
-            Card card = dda.Target;
+            Card card = dd.Target;
 
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
 
-            IEnumerator routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.GainHP, card, null, storedResults, null, base.GetCardSource(null));
+            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(this.DecisionMaker,
+                SelectionType.GainHP, card, storedResults: storedResults,cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(routine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(routine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
 
             // If not true, just return and let the original damage happen
@@ -64,27 +64,27 @@ namespace Cauldron.DocHavoc
 
 
             // Cancel original damage
-            routine = base.CancelAction(dda);
+            coroutine = base.CancelAction(dd);
 
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(routine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(routine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
 
             // Gain HP instead of dealing damage
-            routine = this.GameController.GainHP(card, dda.Amount);
+            coroutine = this.GameController.GainHP(card, dd.Amount);
 
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(routine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(routine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
 
             yield break;
