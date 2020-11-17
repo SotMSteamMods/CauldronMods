@@ -25,5 +25,12 @@
 			"HalberdExperimentalResearchFacility",
 			"TheWanderingIsle"
 		}
+	},
+	"variants": {
+		"heroes":{
+			"Baccarat":[
+				"AceOfSwordsBaccarat"
+			]
+		}
 	}
 }
