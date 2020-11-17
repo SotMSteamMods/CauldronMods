@@ -22,16 +22,10 @@ namespace Cauldron.DocHavoc
 
         public override void AddTriggers()
         {
-            this.AddTrigger<GainHPAction>((Func<GainHPAction, bool>)(hp => hp.CardSource != null), 
-                (Func<GainHPAction, IEnumerator>)(hp 
-                    => this.GameController.IncreaseHPGain(hp, HpGainIncrease, this.GetCardSource())), 
-                (IEnumerable<TriggerType>)new TriggerType[2]
-            {
-                TriggerType.IncreaseHPGain,
-                TriggerType.ModifyHPGain
-            }, TriggerTiming.Before);
-
-            base.AddTriggers();
+            //Increase all HP recovery by 1.
+            this.AddTrigger<GainHPAction>(hp => true,
+                hp => this.GameController.IncreaseHPGain(hp, HpGainIncrease, this.GetCardSource()), 
+                TriggerType.IncreaseHPGain, TriggerTiming.Before);
         }
     }
 }

@@ -541,7 +541,7 @@ namespace CauldronTests
         public void TestRapidRegen()
         {
             // Arrange
-            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
 
             MakeCustomHeroHand(DocHavoc, new List<string>()
             {
@@ -549,10 +549,12 @@ namespace CauldronTests
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
             });
 
-            //PlayCard("CustomHandCannon");
-            DealDamage(tempest, baron, 20, DamageType.Lightning);
-            DealDamage(baron, DocHavoc, 4, DamageType.Projectile);
-            DealDamage(baron, tempest, 4, DamageType.Projectile);
+
+            //set initial hp
+            SetHitPoints(baron, 20);
+            SetHitPoints(DocHavoc, 10);
+            SetHitPoints(tempest, 10);
+            SetHitPoints(haka, 10);
 
             StartGame();
 
@@ -561,7 +563,7 @@ namespace CauldronTests
 
             PlayCardFromHand(DocHavoc, RapidRegenCardController.Identifier);
 
-            QuickHPStorage(DocHavoc, tempest, baron);
+            QuickHPStorage(DocHavoc, tempest, haka, baron);
 
             GoToPlayCardPhase(tempest);
             PutInHand("CleansingDownpour");
@@ -573,7 +575,7 @@ namespace CauldronTests
             PlayCard(baron, "FleshRepairNanites");
 
             // Assert
-            QuickHPCheck(3, 3, 11); // Heroes: Cleansing Rains +2 (+1 with Rapid Regen), // Baron: Flesh-Repair Nanites +10 (+1 with Rapid Regen)
+            QuickHPCheck(3, 3,3, 11); // Heroes: Cleansing Rains +2 (+1 with Rapid Regen), // Baron: Flesh-Repair Nanites +10 (+1 with Rapid Regen)
 
         }
 
