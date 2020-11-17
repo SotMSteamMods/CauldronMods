@@ -120,6 +120,7 @@ namespace CauldronTests
             PutInTrash("AfterlifeEuchre", 1);
             PutInTrash("AfterlifeEuchre", 2);
             PutInTrash("AfterlifeEuchre", 3);
+            //SelectAndMoveACard's optional paramter does not work
             DecisionDoNotSelectCard = SelectionType.MoveCard;
             QuickHPStorage(spite);
             UsePower(baccarat.CharacterCard);
