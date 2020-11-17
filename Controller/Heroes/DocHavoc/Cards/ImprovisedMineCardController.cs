@@ -26,25 +26,104 @@ namespace Cauldron.DocHavoc
 
         public override void AddTriggers()
         {
-            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction c) => c.CardEnteringPlay != base.Card 
-                && base.IsVillain(c.CardEnteringPlay) && !c.Origin.IsInPlay 
-                && base.GetCardPropertyJournalEntryCard("CardBlocked") == null 
-                && base.GameController.IsCardVisibleToCardSource(c.CardEnteringPlay, base.GetCardSource(null)), 
-                new Func<CardEntersPlayAction, IEnumerator>(this.DiscardAndDestroyResponse), new TriggerType[]
+           
+            base.AddTrigger<PlayCardAction>((PlayCardAction pc) => base.IsVillain(pc.CardToPlay) && !pc.IsPutIntoPlay, new Func<PlayCardAction, IEnumerator>(this.DiscardAndDestroyCardResponse), new TriggerType[]
             {
-                TriggerType.CancelAction
-            }, TriggerTiming.Before, null, false, true, 
-                null, false, null, null, false, false);
+                TriggerType.DestroySelf
+            }, TriggerTiming.Before);
 
-            base.AddTriggers();
+            base.AddWhenDestroyedTrigger(new Func<DestroyCardAction, IEnumerator>(this.WhenDestroyedResponse), new TriggerType[]
+                {
+                    TriggerType.CancelAction,
+                    TriggerType.DealDamage
+                });
         }
+
+        private IEnumerator WhenDestroyedResponse(DestroyCardAction dca)
+        {
+            PlayCardAction action = this._playCardToCancel;
+            this._playCardToCancel = null;
+            if (action == null)
+            {
+                yield break;
+            }
+            Card card = action.CardToPlay;
+            IEnumerator coroutine = base.CancelAction(action, isPreventEffect: true);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            
+
+            // Deal 1 target 2 Fire damage
+            coroutine = this.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
+                new DamageSource(this.GameController, this.CharacterCard), DamageAmount, DamageType.Fire,
+                new int?(1), false,
+                new int?(1), cardSource: this.GetCardSource());
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            yield break;
+        }
+
+        private IEnumerator DiscardAndDestroyCardResponse(PlayCardAction pca)
+        {
+            List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
+
+            //ask player if they want to destroy this card
+            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
+                SelectionType.DestroySelf, base.Card, storedResults: storedResults, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            // Return if they chose to not cancel the destruction
+            if (!base.DidPlayerAnswerYes(storedResults))
+            {
+                yield break;
+            }
+
+            //set the playCardToCancel
+            this._playCardToCancel = pca;
+
+            // Destroy this card
+            coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card, false, null, null, null, null, null, null, null, null, base.GetCardSource(null));
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            yield break;
+        }
+
 
         public override IEnumerator Play()
         {
+            //equipment must be discarded upon entering play
             List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
-
-            IEnumerator discardCardRoutine = base.GameController.SelectAndDiscardCard(this.HeroTurnTakerController, true, card => IsEquipment(card),
-                storedResults, cardSource: this.GetCardSource());
+            IEnumerator discardCardRoutine = base.GameController.SelectAndDiscardCard(this.HeroTurnTakerController, additionalCriteria: card => IsEquipment(card),
+                storedResults: storedResults, cardSource: this.GetCardSource());
 
             if (this.UseUnityCoroutines)
             {
@@ -73,91 +152,8 @@ namespace Cauldron.DocHavoc
             }
         }
 
-        private IEnumerator DiscardAndDestroyResponse(CardEntersPlayAction action)
-        {
-            Card card = action.CardEnteringPlay;
-            List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
-
-            IEnumerator routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, 
-                SelectionType.MoveCardOnDeck, card, null, storedResults, null, base.GetCardSource(null));
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-
-            // Return if they chose not to cancel the villain card from being played
-            if (!base.DidPlayerAnswerYes(storedResults))
-            {
-                yield break;
-            }
-
-            base.AddCardPropertyJournalEntry("CardBlocked", card);
-
-            // Cancel the villain card from being played
-            routine = base.CancelAction(action, true, true, null, false);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-
-            // Move villain card back to deck
-            CardController cc = base.FindCardController(card);
-            routine = base.GameController.MoveCard(base.TurnTakerController, card, cc.TurnTaker.Deck, 
-                false, false, true, null, false, 
-                null, base.TurnTaker, null, true, false, null, 
-                true, false, false, 
-                false, base.GetCardSource(null));
-            
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-
-            // 1 target 2 Fire damage
-            routine = this.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
-                new DamageSource(this.GameController, this.CharacterCard), DamageAmount, DamageType.Fire,
-                new int?(1), false,
-                new int?(1), cardSource: this.GetCardSource());
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-
-            // Destroy this card
-            routine = base.GameController.DestroyCard(this.DecisionMaker, base.Card, false, null, null, null, null, null, null, null, null, base.GetCardSource(null));
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-
-            if (base.Card.IsInPlay)
-            {
-                Card card2 = null;
-                base.AddCardPropertyJournalEntry("CardBlocked", card2);
-            }
-            yield break;
-        }
+        //local variable to store the PlayCardAction in
+        private PlayCardAction _playCardToCancel = null;
+   
     }
 }
