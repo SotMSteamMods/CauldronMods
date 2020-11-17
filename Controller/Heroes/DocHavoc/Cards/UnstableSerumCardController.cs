@@ -24,6 +24,7 @@ namespace Cauldron.DocHavoc
 
         public override void AddTriggers()
         {
+            //At the end of your turn, you may destroy 1 ongoing or environment card. If you do, destroy this card.
             this.AddEndOfTurnTrigger(
                 (TurnTaker tt) =>
                     tt == base.TurnTaker,
@@ -31,15 +32,14 @@ namespace Cauldron.DocHavoc
                 {
                     TriggerType.DestroyCard,
                     TriggerType.DestroySelf
-                }, null, false);
+                });
 
-            base.AddTriggers();
         }
 
         public override IEnumerator Play()
         {
-            IEnumerator gainHpRoutine = this.GameController.SelectAndGainHP(this.HeroTurnTakerController, HpGain, 
-                false, null, 1, cardSource: this.GetCardSource());
+            //When this card enters play, 1 target regains 2HP.
+            IEnumerator gainHpRoutine = this.GameController.SelectAndGainHP(this.HeroTurnTakerController, HpGain, cardSource: this.GetCardSource());
 
             if (UseUnityCoroutines)
             {
@@ -53,10 +53,11 @@ namespace Cauldron.DocHavoc
 
         private IEnumerator DestroyCardAndDestroyResponse(PhaseChangeAction phaseChange)
         {
+            //you may destroy 1 ongoing or environment card.
             List<DestroyCardAction> storedDestroyResults = new List<DestroyCardAction>();
 
             IEnumerator destroyCardRoutine = base.GameController.SelectAndDestroyCard(this.HeroTurnTakerController,
-                new LinqCardCriteria(c => c.IsEnvironment || c.IsOngoing), true, storedDestroyResults, null, 
+                new LinqCardCriteria(c => c.IsEnvironment || c.IsOngoing), true, storedDestroyResults,cardSource: 
                 this.GetCardSource());
 
             if (base.UseUnityCoroutines)
@@ -73,9 +74,8 @@ namespace Cauldron.DocHavoc
                 yield break;
             }
 
-            IEnumerator destroySelfRoutine = base.GameController.DestroyCard(this.DecisionMaker, this.Card,
-                false, null, null, null, null, null,
-                null, null, null, base.GetCardSource(null));
+            //If you do, destroy this card.
+            IEnumerator destroySelfRoutine = base.DestroyThisCardResponse(phaseChange);
 
             if (base.UseUnityCoroutines)
             {

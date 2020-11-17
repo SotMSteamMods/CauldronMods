@@ -1020,22 +1020,53 @@ namespace CauldronTests
             });
 
             StartGame();
-            PlayCard(baron, "BacklashField");
+            Card backlash = PlayCard(baron, "BacklashField");
 
             DealDamage(baron, tempest, 4, DamageType.Projectile);
             QuickHPStorage(tempest);
 
             // Act
-            DecisionSelectCards = new [] { tempest.CharacterCard, GetCardInPlay("BacklashField") };
+            DecisionSelectCards = new [] { tempest.CharacterCard, backlash };
 
             GoToPlayCardPhase(DocHavoc);
-            PlayCardFromHand(DocHavoc, UnstableSerumCardController.Identifier);
+            Card serum = PlayCardFromHand(DocHavoc, UnstableSerumCardController.Identifier);
             GoToEndOfTurn(DocHavoc);
 
             // Assert
             QuickHPCheck(2);
-            Assert.IsNull(FindCardInPlay(UnstableSerumCardController.Identifier));
-            Assert.IsNull(FindCardInPlay("BacklashField"));
+            AssertInTrash(DocHavoc, serum);
+            AssertInTrash(backlash);
+        }
+
+        [Test]
+        public void TestUnstableSerumDestroyEnvironment()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(DocHavoc, new List<string>()
+            {
+                UnstableSerumCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+            StartGame();
+            Card defenses = PlayCard("MysticalDefenses");
+
+            DealDamage(baron, tempest, 4, DamageType.Projectile);
+            QuickHPStorage(tempest);
+
+            // Act
+            DecisionSelectCards = new[] { tempest.CharacterCard, defenses };
+
+            GoToPlayCardPhase(DocHavoc);
+            Card serum = PlayCardFromHand(DocHavoc, UnstableSerumCardController.Identifier);
+            GoToEndOfTurn(DocHavoc);
+
+            // Assert
+            QuickHPCheck(2);
+            AssertInTrash(DocHavoc, serum);
+            AssertInTrash(defenses);
         }
 
         [Test]
@@ -1051,7 +1082,7 @@ namespace CauldronTests
             });
 
             StartGame();
-            PlayCard(baron, "BacklashField");
+           Card backlash =  PlayCard(baron, "BacklashField");
 
             DealDamage(baron, tempest, 4, DamageType.Projectile);
             QuickHPStorage(tempest);
@@ -1060,13 +1091,14 @@ namespace CauldronTests
             DecisionSelectCards = new[] { tempest.CharacterCard, null };
 
             GoToPlayCardPhase(DocHavoc);
-            PlayCardFromHand(DocHavoc, UnstableSerumCardController.Identifier);
+            Card serum = PlayCardFromHand(DocHavoc, UnstableSerumCardController.Identifier);
             GoToEndOfTurn(DocHavoc);
 
             // Assert
             QuickHPCheck(2);
-            Assert.NotNull(FindCardInPlay(UnstableSerumCardController.Identifier));
-            Assert.NotNull(FindCardInPlay("BacklashField"));
+            AssertInPlayArea(DocHavoc, serum);
+            AssertInPlayArea(baron, backlash);
+           
         }
 
         [Test]
