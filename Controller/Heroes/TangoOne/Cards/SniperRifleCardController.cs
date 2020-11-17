@@ -56,8 +56,9 @@ namespace Cauldron.TangoOne
             List<DiscardCardAction> discardCardActions = new List<DiscardCardAction>();
             LinqCardCriteria cardCriteria = new LinqCardCriteria(IsCritical, "critical cards", false);
 
+            int discardNumeral = base.GetPowerNumeral(0, 2);
             IEnumerator discardCardsRoutine = this.GameController.SelectAndDiscardCards(this.HeroTurnTakerController,
-                CardsToDiscard, false,
+                discardNumeral, false,
                 null,
                 discardCardActions, false, null, null, null,
                 cardCriteria, SelectionType.DiscardCard, this.TurnTaker
