@@ -447,6 +447,17 @@
             "flavorReference": "Chrono-Ranger, The Dark Millenia #11"
         }
     ],
+    "subdecks": [
+        {
+            "identifier": "PromoSubCharacters",
+            "name": "Promo Sub-Characters",
+            "expansionIdentifier": "Cauldron",
+            "kind": "Other",
+            "cards" : [
+
+            ]
+        }
+    ],
     "promoCards": [
         {
             "identifier": "StarlightCharacter",
@@ -485,133 +496,6 @@
                 "default": "default placeholder",
                 "MenagerieCharacter": "Menagerie placeholder"
             },
-            "complexity": 1
-        },
-        {
-            "identifier": "StarlightCharacter",
-            "promoIdentifier": "NightloreCouncilStarlightCharacter",
-            "count": 1,
-            "title": "Starlight",
-            "promoTitle": "Nightlore Council Starlight",
-            "shortPromoTitle": "Nightlore Council",
-            "backgroundColor": "FBF8F9",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
-            "setup": [
-                "At the start of the game, put the character cards for the Starlight of Terra, Asheron, and Cryos-4 into play, active side up.",
-                "Shuffle the hero deck and draw 4 cards."
-            ],
-            "gameplay": [
-                "If you have no hero character targets in play, flip this card.",
-                "When your cards refer to “Starlight”, choose 1 of your active Starlights.",
-                "When a copy of “Retreat into the Nebula” enters play, put it next to 1 of your active Starlights. Only that Starlight is affected by it.",
-                "If Starlight of Terra has a Constellation next to her at the start of your turn, each Starlight regains 1 HP.",
-                "If Starlight of Asheron has a Constellation next to her and deals damage to a non-hero target, increase that damage by 1.",
-                "Whenever a constellation enters play next to Starlight of Cryos-4, draw a card."
-            ],
-            "icons": [
-                "GainHP",
-                "IncreaseDamageDealt",
-                "DrawCardNow"
-            ],
-            "flippedTitle": "Incapacitated",
-            "incapacitatedAbilities": [
-                "One player may play a card now.",
-                "One play may use a power now.",
-                "The next time a hero target deals damage, choose the type of that damage."
-            ],
-            "flippedIcons": [
-                "PlayCardNow",
-                "UsePowerNow"
-            ],
-            "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
-            },
-            "complexity": 1
-        },
-        {
-            "identifier": "StarlightOfTerraCharacter",
-            "promoIdentifier": "StarlightOfTerraCharacter",
-            "count": 1,
-            "title": "Starlight",
-            "promoTitle": "Starlight of Terra",
-            "shortPromoTitle": "Terra",
-            "body": "Radiance",
-            "backgroundColor": "FBF8F9",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
-            "character": true,
-            "powers": [
-                "Discard a card. Search your deck for a copy of Exodus and put it in your hand. Shuffle your deck."
-            ],
-            "icons": [
-                "HasPower",
-                "Discard",
-                "Search"
-            ],
-            "hitpoints": 13,
-            "nemesisIdentifiers": [
-                "Starlight"
-            ],
-            "flippedTitle": "Incapacitated",
-            "complexity": 1
-        },
-        {
-            "identifier": "StarlightOfAsheronCharacter",
-            "promoIdentifier": "NightloreCouncilStarlightCharacter",
-            "count": 1,
-            "title": "Starlight",
-            "promoTitle": "Starlight of Asheron",
-            "shortPromoTitle": "Asheron",
-            "body": "Binary Burst",
-            "backgroundColor": "FBF8F9",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
-            "character": true,
-            "powers": [
-                "Play a Constellation. One Starlight deals 1 target 1 radiant damage."
-            ],
-            "icons": [
-                "HasPower",
-                "PlayCardNow",
-                "DealDamageRadiant"
-            ],
-            "hitpoints": 12,
-            "nemesisIdentifiers": [
-                "Starlight"
-            ],
-            "flippedTitle": "Incapacitated",
-            "complexity": 1
-        },
-        {
-            "identifier": "StarlightOfCryosFourCharacter",
-            "promoIdentifier": "StarlightOfCryosFourCharacter",
-            "count": 1,
-            "title": "Starlight",
-            "promoTitle": "Starlight of Cryos-4",
-            "shortPromoTitle": "Cryos-4",
-            "body": "Voidgaze",
-            "backgroundColor": "FBF8F9",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
-            "character": true,
-            "powers": [
-                "This Starlight deals herself 2 irreducible cold damage. If she takes damage this way, play 2 constellations from your trash."
-            ],
-            "icons": [
-                "HasPower",
-                "DealDamageCold",
-                "PlayCardNow"
-            ],
-            "hitpoints": 15,
-            "nemesisIdentifiers": [
-                "Starlight"
-            ],
-            "flippedTitle": "Incapacitated",
             "complexity": 1
         }
     ]

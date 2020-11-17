@@ -37,6 +37,20 @@ namespace CauldronTests
             Assert.IsInstanceOf(typeof(GenesisStarlightCharacterCardController), starlight.CharacterCardController);
 
             Assert.AreEqual(29, starlight.CharacterCard.HitPoints);
+            Assert.AreEqual("Starlight: Genesis", starlight.CharacterCard.Title);
+        }
+        [Test()]
+        public void TestGuiseCanGetOtherStarlight()
+        {
+            var promoDict = new Dictionary<string, string> { };
+            promoDict["Cauldron.Starlight"] = "GenesisStarlightCharacter";
+            promoDict["Guise"] = "CompletionistGuiseCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Guise", "Legacy", "Megalopolis" }, false, promoDict);
+            StartGame();
+
+            Assert.AreEqual(guise.CharacterCard.Title, "Completionist Guise");
+            UsePower(guise);
+
         }
         [Test()]
         public void TestNightloreCouncilLoads()
