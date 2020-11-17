@@ -534,8 +534,8 @@
             "complexity": 1
         },
         {
-            "identifier": "StarlightCharacter",
-            "promoIdentifier": "NightloreCouncilStarlightCharacter",
+            "identifier": "StarlightOfTerraCharacter",
+            "promoIdentifier": "StarlightOfTerraCharacter",
             "count": 1,
             "title": "Starlight",
             "promoTitle": "Starlight of Terra",
@@ -558,17 +558,10 @@
                 "Starlight"
             ],
             "flippedTitle": "Incapacitated",
-            "openingLines": {
-                "default": "default placeholder",
-                "DendronCharacter": "Dendron placeholder",
-                "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
-            },
             "complexity": 1
         },
         {
-            "identifier": "StarlightCharacter",
+            "identifier": "StarlightOfAsheronCharacter",
             "promoIdentifier": "NightloreCouncilStarlightCharacter",
             "count": 1,
             "title": "Starlight",
@@ -592,15 +585,11 @@
                 "Starlight"
             ],
             "flippedTitle": "Incapacitated",
-            "openingLines": {
-                "default": "default placeholder",
-                "MenagerieCharacter": "Menagerie placeholder"
-            },
             "complexity": 1
         },
         {
-            "identifier": "StarlightCharacter",
-            "promoIdentifier": "NightloreCouncilStarlightCharacter",
+            "identifier": "StarlightOfCryosFourCharacter",
+            "promoIdentifier": "StarlightOfCryosFourCharacter",
             "count": 1,
             "title": "Starlight",
             "promoTitle": "Starlight of Cryos-4",
@@ -623,10 +612,6 @@
                 "Starlight"
             ],
             "flippedTitle": "Incapacitated",
-            "openingLines": {
-                "default": "default placeholder",
-                "MenagerieCharacter": "Menagerie placeholder"
-            },
             "complexity": 1
         }
     ]
