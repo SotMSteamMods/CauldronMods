@@ -13,22 +13,12 @@ namespace Cauldron.Baccarat
 
     public class BaccaratCharacterCardController : HeroCharacterCardController
     {
-        #region Constructors
-
         public BaccaratCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
 
-        #endregion Constructors
-
-        #region Properties
-
         private List<Card> actedHeroes;
-
-        #endregion Properties
-
-        #region Methods
 
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
@@ -99,7 +89,7 @@ namespace Cauldron.Baccarat
                             {
                                 IsHero = new bool?(true)
                             },
-                            TargetCriteria = 
+                            TargetCriteria =
                             {
                                 IsTarget = new bool?(true)
                             },
@@ -194,6 +184,7 @@ namespace Cauldron.Baccarat
         {
             //...or put up to 2 trick cards with the same name from your trash into play.
             List<SelectCardDecision> list = new List<SelectCardDecision>();
+            int upTo = base.GetPowerNumeral(0, 2);
             IEnumerator coroutine = SelectAndMoveCardOptional(base.HeroTurnTakerController, (Card c) => c.IsInTrash && c.DoKeywordsContain("trick"), base.TurnTaker.PlayArea, false, true, true, true, list, base.GetCardSource(null));
             if (base.UseUnityCoroutines)
             {
@@ -203,17 +194,36 @@ namespace Cauldron.Baccarat
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            //play second card
-            if (list.FirstOrDefault() != null && list.FirstOrDefault().SelectedCard != null)
+            if (upTo > 1)
             {
-                coroutine = SelectAndMoveCardOptional(base.HeroTurnTakerController, (Card c) => c.IsInTrash && c.DoKeywordsContain("trick") && c.Identifier == list.FirstOrDefault().SelectedCard.Identifier && c.InstanceIndex != list.FirstOrDefault().SelectedCard.InstanceIndex, base.TurnTaker.PlayArea, false, true, true, true, list, base.GetCardSource(null));
-                if (base.UseUnityCoroutines)
+                //play second card
+                if (list.FirstOrDefault() != null && list.FirstOrDefault().SelectedCard != null)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
+                    coroutine = SelectAndMoveCardOptional(base.HeroTurnTakerController, (Card c) => c.IsInTrash && c.DoKeywordsContain("trick") && c.Identifier == list.FirstOrDefault().SelectedCard.Identifier && c.InstanceIndex != list.FirstOrDefault().SelectedCard.InstanceIndex, base.TurnTaker.PlayArea, false, true, true, true, list, base.GetCardSource(null));
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
-                else
+            }
+            if (upTo > 2)
+            {
+                //play third card if Guise uses Power Numerals
+                if (list.FirstOrDefault() != null && list.FirstOrDefault().SelectedCard != null)
                 {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    coroutine = SelectAndMoveCardOptional(base.HeroTurnTakerController, (Card c) => c.IsInTrash && c.DoKeywordsContain("trick") && c.Identifier == list.FirstOrDefault().SelectedCard.Identifier && c.InstanceIndex != list.FirstOrDefault().SelectedCard.InstanceIndex, base.TurnTaker.PlayArea, false, true, true, true, list, base.GetCardSource(null));
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
             yield break;
@@ -242,7 +252,5 @@ namespace Cauldron.Baccarat
             }
             yield break;
         }
-
-        #endregion Methods
     }
 }

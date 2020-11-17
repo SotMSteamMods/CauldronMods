@@ -4389,6 +4389,11 @@ namespace Handelabra.Sentinels.UnitTest
             var strings = this.GameController.StatusEffectControllers.Select(s => s.StatusEffect.ToString());
             Assert.IsTrue(strings.Any(ss => ss.Contains(statusEffect)), "Status Effects were expected to contain string \"" + statusEffect + "\".");
         }
+        protected void AssertStatusEffectsDoesNotContain(string statusEffect)
+        {
+            var strings = this.GameController.StatusEffectControllers.Select(s => s.StatusEffect.ToString());
+            Assert.IsFalse(strings.Any(ss => ss.Contains(statusEffect)), "Status Effects were not expected to contain string \"" + statusEffect + "\".");
+        }
 
         protected void PrintHand(HeroTurnTakerController hero)
         {
@@ -5334,9 +5339,9 @@ namespace Handelabra.Sentinels.UnitTest
             PutOnDeck(ttc, card.Card, toBottom);
         }
 
-        public void PutOnDeck(TurnTakerController ttc, Card card, bool toBottom = false)
+        public Card PutOnDeck(TurnTakerController ttc, Card card, bool toBottom = false)
         {
-            MoveCard(ttc, card, ttc.TurnTaker.Deck, toBottom);
+            return MoveCard(ttc, card, ttc.TurnTaker.Deck, toBottom);
         }
 
         public void PutOnDeck(TurnTakerController ttc, IEnumerable<Card> cards)

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -10,10 +10,77 @@ namespace Cauldron.DocHavoc
 {
     public class SearchAndRescueCardController : CardController
     {
+
+        //==============================================================
+        // Each player may discard a card.
+        // Any player that does may reveal the top 3 cards of their deck, put 1 in their hand, 1 on the bottom of their deck, and 1 in their trash.
+        //==============================================================
+
         public static string Identifier = "SearchAndRescue";
 
         public SearchAndRescueCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
+
+        public override IEnumerator Play()
+        {
+            List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
+            IEnumerator discardCardRoutine 
+                = this.GameController.EachPlayerDiscardsCards(0, 1, storedResults);
+
+            if (this.UseUnityCoroutines)
+            {
+                yield return this.GameController.StartCoroutine(discardCardRoutine);
+            }
+            else
+            {
+                this.GameController.ExhaustCoroutine(discardCardRoutine);
+            }
+
+            foreach (DiscardCardAction dca in storedResults.Where(dca => dca.WasCardDiscarded))
+            {
+                Debug.WriteLine("card was discarded");
+
+                List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
+                HeroTurnTakerController httc = FindHeroTurnTakerController(dca.CardToDiscard.Owner.ToHero());
+                //ask player if they want to reveal cards
+                IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(httc,
+                    SelectionType.RevealCardsFromDeck, base.Card, storedResults: storedYesNoResults, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+
+                if (base.DidPlayerAnswerYes(storedYesNoResults))
+                {
+
+                    //reveal the top 3 cards of their deck, put 1 in their hand, 1 on the bottom of their deck, and 1 in their trash.
+                    IEnumerator orderedDestinationsRoutine = this.RevealCardsFromDeckToMoveToOrderedDestinations(
+                        (TurnTakerController)dca.HeroTurnTakerController,
+                        dca.ResponsibleTurnTaker.Deck,
+                        (IEnumerable<MoveCardDestination>)new List<MoveCardDestination>()
+                    {
+                    new MoveCardDestination(dca.HeroTurnTakerController.HeroTurnTaker.Hand),
+                    new MoveCardDestination(dca.ResponsibleTurnTaker.Deck, true),
+                    new MoveCardDestination(dca.ResponsibleTurnTaker.Trash)
+                    }, sendCleanupMessageIfNecessary: true);
+
+                    if (this.UseUnityCoroutines)
+                    {
+                        yield return this.GameController.StartCoroutine(orderedDestinationsRoutine);
+                    }
+                    else
+                    {
+                        this.GameController.ExhaustCoroutine(orderedDestinationsRoutine);
+                    }
+                }
+            }
+            yield break;
         }
     }
 }
