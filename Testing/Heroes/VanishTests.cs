@@ -191,5 +191,134 @@ namespace CauldronTests
             //should have not have been reduced
             QuickHPCheck(-3);
         }
+
+
+        [Test]
+        public void ConcussiveBurst_EffectApplied()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+
+            GoToPlayCardPhase(vanish);
+            var card = PlayCard("ConcussiveBurst");
+            AssertInPlayArea(vanish, card);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            DealDamage(vanish, baron.CharacterCard, 1, DamageType.Melee);
+
+            string messageText = $"Reduce damage dealt by {baron.Name} by 1.";
+
+            AssertNumberOfStatusEffectsInPlay(1);
+            AssertStatusEffectAssociatedTurnTaker(0, baron.TurnTaker);
+            AssertStatusEffectsContains(messageText);
+
+            //Test that the reducing effect works as expected
+            QuickHPStorage(wraith);
+            DealDamage(baron, wraith, 3, DamageType.Melee);
+            //should have been reduced by 1
+            QuickHPCheck(-2);
+
+            PrintSeparator("Change turns");
+            GoToEndOfTurn(wraith);
+
+            PrintSeparator("Effect still applied");
+            AssertNumberOfStatusEffectsInPlay(1);
+            AssertStatusEffectAssociatedTurnTaker(0, baron.TurnTaker);
+            AssertStatusEffectsContains(messageText);
+            //Test that the reducing effect works as expected
+            QuickHPStorage(ra);
+            DealDamage(baron, ra, 3, DamageType.Melee);
+            //should have been reduced by 1
+            QuickHPCheck(-2);
+
+            PrintSeparator("Effect expires");
+            AssertNextMessageContains(messageText);
+            GoToStartOfTurn(vanish);
+            AssertNumberOfStatusEffectsInPlay(0);
+            //Test that the reducing effect has disappeared
+            QuickHPStorage(vanish);
+            DealDamage(baron, vanish, 3, DamageType.Melee);
+            //should have not have been reduced
+            QuickHPCheck(-3);
+        }
+
+        [Test]
+        public void ConcussiveBurst_OnlyFirstDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            var minion = PlayCard("BladeBattalion");
+
+            GoToPlayCardPhase(vanish);
+            var card = PlayCard("ConcussiveBurst");
+            AssertInPlayArea(vanish, card);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            DealDamage(vanish, baron.CharacterCard, 1, DamageType.Melee);
+
+            string messageText = $"Reduce damage dealt by {baron.Name} by 1.";
+
+            AssertNumberOfStatusEffectsInPlay(1);
+            AssertStatusEffectAssociatedTurnTaker(0, baron.TurnTaker);
+            AssertStatusEffectsContains(messageText);
+
+            DealDamage(vanish, minion, 1, DamageType.Melee);
+
+            //no status effect applied
+            AssertNumberOfStatusEffectsInPlay(1);
+        }
+
+        [Test]
+        public void ConcussiveBurst_NotAppliedOnNoDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(vanish);
+            var card = PlayCard("ConcussiveBurst");
+            AssertInPlayArea(vanish, card);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            DealDamage(vanish, baron.CharacterCard, 1, DamageType.Melee);
+
+            //baron immune to damage, no status effect
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            DestroyCard("MobileDefensePlatform");
+
+            //first damage dealt, apply
+            DealDamage(vanish, baron.CharacterCard, 1, DamageType.Melee);
+
+            string messageText = $"Reduce damage dealt by {baron.Name} by 1.";
+
+            AssertNumberOfStatusEffectsInPlay(1);
+            AssertStatusEffectAssociatedTurnTaker(0, baron.TurnTaker);
+            AssertStatusEffectsContains(messageText);
+        }
+
+        [Test]
+        public void ConcussiveBurst_NotAppliedToHeroTargets()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(vanish);
+            var card = PlayCard("ConcussiveBurst");
+            AssertInPlayArea(vanish, card);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            DealDamage(vanish, ra.CharacterCard, 1, DamageType.Melee);
+
+            //baron immune to damage, no status effect
+            AssertNumberOfStatusEffectsInPlay(0);
+        }
     }
 }
