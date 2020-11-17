@@ -267,5 +267,35 @@ namespace CauldronTests
             QuickHandCheck(0, 0, 0);
             QuickHPCheck(0, 0, 0);
         }
+
+        [Test()]
+        public void TestAceInTheHoleTwoPowerPhase()
+        {
+            SetupGameController("Spite", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            Card ace = GetCard("AceInTheHole");
+            //Pick deal damage on Afterlife Euchre
+            DecisionSelectFunction = 1;
+            PutInTrash("AfterlifeEuchre", 0);
+            PutInTrash("AfterlifeEuchre", 1);
+            //Ensuring the first card discarded isn't another Afterlife Euchre
+            PutOnDeck("AceOfSaints");
+            //Don't play card
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+
+            //You may use {Baccarat}'s innate power twice during your phase this turn.
+            QuickHPStorage(spite);
+            GoToPlayCardPhase(baccarat);
+            AssertNumberOfUsablePowers(baccarat, 1);
+            PlayCard(ace);
+            GoToUsePowerPhase(baccarat);
+            UsePower(baccarat);
+            AssertNumberOfUsablePowers(baccarat, 1);
+            UsePower(baccarat);
+            AssertNumberOfUsablePowers(baccarat, 0);
+            QuickHPCheck(-8);
+            //Ace In The Hole, 2 Afterlife Euchre, 2 Discard
+            AssertNumberOfCardsInTrash(baccarat, 5);
+        }
     }
 }
