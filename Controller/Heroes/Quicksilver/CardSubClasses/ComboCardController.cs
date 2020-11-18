@@ -37,7 +37,8 @@ namespace Cauldron.Quicksilver
         public IEnumerator ContinueComboResponse()
         {
             //...{Quicksilver} may deal herself 2 melee damage...
-            IEnumerator coroutine = base.DealDamage(base.CharacterCard, base.CharacterCard, 2, DamageType.Melee, cardSource: base.GetCardSource());
+            ComboDamageAction action = new ComboDamageAction(new DealDamageAction(base.GameController, new DamageSource(base.GameController, base.CharacterCard), base.CharacterCard, 2, DamageType.Melee));
+            IEnumerator coroutine = base.DoAction(action);
             //...play a Combo.
             IEnumerator coroutine2 = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("combo")), cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
