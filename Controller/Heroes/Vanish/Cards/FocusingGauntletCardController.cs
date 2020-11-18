@@ -10,7 +10,11 @@ namespace Cauldron.Vanish
     {
         public FocusingGauntletCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
 
+        public override void AddTriggers()
+        {
+            AddIncreaseDamageTrigger(dda => dda.DamageSource.IsSameCard(CharacterCard) && dda.DamageType == DamageType.Energy, 1);
         }
     }
 }
