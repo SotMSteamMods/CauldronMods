@@ -513,9 +513,11 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestMirrorWraithEligibleTargets()
+        public void TestMirrorWraithEligibleTargets_CloneVillainTarget()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            QuickHPStorage(legacy, ra);
 
             StartGame();
             Card mdp = GetCardInPlay("MobileDefensePlatform");
@@ -533,12 +535,120 @@ namespace CauldronTests
 
             // Assert
 
-            AssertHitPoints(mirrorWraith, 10); // Mirror Wraith now has max HP of MDP
-            AssertCardHasKeyword(mirrorWraith, "device", true);
+            AssertHitPoints(mirrorWraith, 5); // Mirror Wraith now has max HP of BB
+            AssertCardHasKeyword(mirrorWraith, "minion", true);
+            QuickHPCheck(-5, -5); // Legacy hit for 5 by real BB, Ra then hit for 5 from Mirror Wraith (BB game text)
+        }
 
-            Assert.IsTrue(false); // TODO: Implement the rest of this card
+        [Test]
+        public void TestMirrorWraithEligibleTargets_CloneUnityRaptorBot()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Unity", DeckNamespace);
+
+
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card raptor = GetCard("RaptorBot");
+            PlayCard(raptor);
+
+            DecisionSelectTarget = mdp;
+            QuickHPStorage(mdp);
+
+            // Act
+            GoToStartOfTurn(unity);
+
+            GoToStartOfTurn(BlackwoodForest);
+            Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
+            PlayCard(mirrorWraith);
+
+            GoToEndOfTurn(unity);
+
+            // Assert
+
+            AssertHitPoints(mirrorWraith, 2); // Mirror Wraith now has max HP of Raptor Bot
+            AssertCardHasKeyword(mirrorWraith, "mechanical golem", true);
+            QuickHPCheck(-8); // Raptor 1st hit (2), 2nd hit (3 Mirror wraith clone boosting it by 1), 3rd hit by MW for 3
+        }
+
+        [Test]
+        public void TestMirrorWraithEligibleTargets_CloneUnityChampionBot()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Unity", DeckNamespace);
+
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card raptor = GetCard("RaptorBot");
+            Card championBot = GetCard("ChampionBot");
+            PlayCard(championBot);
+
+            DecisionSelectTarget = mdp;
+            QuickHPStorage(mdp);
+
+            // Act
+
+            GoToPlayCardPhase(BlackwoodForest);
+            Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
+            PlayCard(mirrorWraith);
+
+            GoToPlayCardPhase(unity);
+            PlayCard(raptor);
+            GoToEndOfTurn(unity);
+
+            // Assert
+
+            AssertHitPoints(mirrorWraith, 8); // Mirror Wraith now has max HP of Champion Bot
+            AssertCardHasKeyword(mirrorWraith, "mechanical golem", true);
+
+            /* Raptor
+             * 6 Damage dealt
+             * 1 x 3 golems in play +1 (Raptor, ChampBot, Mirror Wraith) = 4 dmg
+             * +1 from Champion Bot
+             * +1 from Mirror Wraith
+             */
+
+            QuickHPCheck(-6); 
+        }
+
+        [Test]
+        public void TestMirrorWraithEligibleTargets_CloneUnitySwiftBot()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Unity", DeckNamespace);
+
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card swiftBot = GetCard("SwiftBot");
+            Card modularWorkbench = GetCard("ModularWorkbench");
+
+            // Act
+            GoToPlayCardPhase(unity);
+            PlayCard(swiftBot);
+            GoToDrawCardPhase(unity);
+            
+            AssertPhaseActionCount(2); // Normal draw + 1 from swiftbot
+
+            GoToEndOfTurn(unity);
+
+            PrintHand(unity);
+
+            GoToPlayCardPhase(BlackwoodForest);
+            Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
+            PlayCard(mirrorWraith);
+
+            GoToPlayCardPhase(unity);
+            PlayCard(modularWorkbench);
+            GoToDrawCardPhase(unity);
+            AssertPhaseActionCount(3); // Normal draw + 1 from swiftbot + 1 from mirror wraith
+            GoToEndOfTurn(unity);
+
+            // Assert
+            AssertHitPoints(mirrorWraith, 6); // Mirror Wraith now has max HP of Swift Bot
+            AssertCardHasKeyword(mirrorWraith, "mechanical golem", true);
 
         }
+
 
         [Test]
         public void TestMirrorWraithNoEligibleTargets()
