@@ -58,7 +58,7 @@
             ],
             "difficulty": 1,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Give it up, heroes - what chance do you have against the pinnacle of evolution?",
                 "TangoOneCharacter": "Tango One placeholder",
                 "GhostOpsTangoOneCharacter": "Ghost Ops Tango One placeholder",
                 "1929TangoOneCharacter": "1929 Tango One placeholder"
@@ -481,7 +481,7 @@
             "challengeText": [],
             "challengeIcons": [],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "I've picked up a few new tricks - and limbs. Care to see?",
                 "TangoOneCharacter": "Tango One placeholder",
                 "GhostOpsTangoOneCharacter": "Ghost Ops Tango One placeholder",
                 "1929TangoOneCharacter": "1929 Tango One placeholder"

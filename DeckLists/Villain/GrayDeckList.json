@@ -55,7 +55,7 @@
             ],
             "difficulty": 1,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Out of my way.",
                 "VanishCharacter": "Vanish placeholder",
                 "FirstResponseVanishCharacter": "First Response Vanish  placeholder",
                 "1929VanishCharacter": "Vanish 1929 placeholder",
