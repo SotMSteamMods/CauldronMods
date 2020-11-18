@@ -16,14 +16,14 @@ namespace Cauldron.Anathema
 		public override void AddTriggers()
 		{
 			//At the end of the Villain Turn, Anathema deals each Hero target 2 projectile damage. Heroes that take damage this way must destroy 1 of their equipment cards.
-			base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, null, false);
+			base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
 		}
 
 		private IEnumerator DealDamageResponse(PhaseChangeAction phaseChange)
 		{
 			//Anathema deals each Hero target 2 projectile damage. 
 			List<DealDamageAction> storedResults = new List<DealDamageAction>();
-			IEnumerator coroutine = base.DealDamage(base.Card, (Card card) => card.IsHero, 2, DamageType.Projectile, false, false, storedResults, null, null, false, null, null, false, false);
+			IEnumerator coroutine = base.DealDamage(base.Card, (Card card) => card.IsHero && card.IsTarget, 2, DamageType.Projectile, storedResults: storedResults);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -37,7 +37,8 @@ namespace Cauldron.Anathema
 			{
 				if(dd.DidDealDamage && dd.Target.IsHeroCharacterCard)
 				{
-					coroutine = base.GameController.SelectAndDestroyCard(base.FindHeroTurnTakerController(dd.Target.Owner.ToHero()), new LinqCardCriteria((Card c) => base.IsEquipment(c, false) && c.Owner == dd.Target.Owner, "equipment", true, false, null, null, false), false, null, null, base.GetCardSource(null));
+					HeroTurnTakerController httc = base.FindHeroTurnTakerController(dd.Target.Owner.ToHero());
+					coroutine = base.GameController.SelectAndDestroyCard(httc, new LinqCardCriteria((Card c) => base.IsEquipment(c) && c.Owner == dd.Target.Owner, "equipment"), false, cardSource: base.GetCardSource());
 					if (base.UseUnityCoroutines)
 					{
 						yield return base.GameController.StartCoroutine(coroutine);
