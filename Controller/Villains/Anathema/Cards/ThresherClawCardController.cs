@@ -16,7 +16,7 @@ namespace Cauldron.Anathema
 		public override void AddTriggers()
 		{
 			//At the end of the Villain Turn, Anathema deals the {H-2} heroes with the highest HP 3 toxic damage each.
-			base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.CharacterCard, (Card c) => c.IsHeroCharacterCard, TargetType.HighestHP, 3, DamageType.Toxic, false, false, 1, (base.H - 2), null, null);
+			base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.CharacterCard, (Card c) => c.IsHeroCharacterCard, TargetType.HighestHP, 3, DamageType.Toxic, numberOfTargets: base.H - 2);
 		}
 
 	}
