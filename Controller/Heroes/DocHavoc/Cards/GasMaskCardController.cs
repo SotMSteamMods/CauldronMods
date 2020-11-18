@@ -22,14 +22,14 @@ namespace Cauldron.DocHavoc
             // Whenever an environment card is destroyed, {DocHavoc} regains 2 HP.
             //==============================================================
 
-            this.AddTrigger<DestroyCardAction>((Func<DestroyCardAction, bool>) (destroyCard =>
+            Func<DestroyCardAction, bool> criteria = (destroyCard =>
                     destroyCard.WasCardDestroyed
+                    && destroyCard.CardToDestroy != null
                     && destroyCard.CardToDestroy.Card.IsEnvironment
                     && this.GameController.IsCardVisibleToCardSource(destroyCard.CardToDestroy.Card,
-                        this.GetCardSource())),
-                new Func<DestroyCardAction, IEnumerator>(this.GainHpResponse), TriggerType.GainHP, TriggerTiming.After);
-            
-            base.AddTriggers();
+                        this.GetCardSource()));
+            this.AddTrigger<DestroyCardAction>(criteria, new Func<DestroyCardAction, IEnumerator>(this.GainHpResponse), TriggerType.GainHP, TriggerTiming.After);
+
         }
 
         private IEnumerator GainHpResponse(DestroyCardAction destroyCard)
