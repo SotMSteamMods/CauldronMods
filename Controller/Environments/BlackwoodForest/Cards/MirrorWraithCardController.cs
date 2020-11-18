@@ -38,7 +38,6 @@ namespace Cauldron.BlackwoodForest
         private Card _copiedCard;
         private List<ITrigger> _copiedTriggers;
 
-
         public MirrorWraithCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             _copiedKeywords = Enumerable.Empty<string>();
@@ -106,6 +105,8 @@ namespace Cauldron.BlackwoodForest
 
                 // Set card text
                 CopyGameText(_copiedCard);
+                CardController copiedCardController = base.FindCardController(_copiedCard);
+                CopyWhenDestroyedTriggers(copiedCardController);
 
                 // Add the target's keywords to our copied list which will be returned on keyword queries
                 _copiedKeywords = _copiedCard.Definition.Keywords;
@@ -288,6 +289,35 @@ namespace Cauldron.BlackwoodForest
                 }
             }
             return false;
+        }
+
+        private IEnumerator SetCardSourceLimitationsWhenDestroy(DestroyCardAction dc, SelfDestructTrigger destroyTrigger)
+        {
+            destroyTrigger.CardSource?.CardController?.SetCardSourceLimitation(this, CardSource.Limitation.WhenDestroyed);
+
+            IEnumerator routine = destroyTrigger.Response(dc);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
+
+            destroyTrigger.CardSource?.CardController?.RemoveCardSourceLimitation(this);
+
+            yield break;
+        }
+
+        private void CopyWhenDestroyedTriggers(CardController cc)
+        {
+            foreach (ITrigger trigger in cc.GetWhenDestroyedTriggers())
+            {
+                //SelfDestructTrigger destroyTrigger = trigger as SelfDestructTrigger;
+                //base.AddWhenDestroyedTrigger(dc => this.SetCardSourceLimitationsWhenDestroy(dc, destroyTrigger), 
+                    //destroyTrigger.Types.ToArray(), null, null).CardSource.AddAssociatedCardSource(cc.GetCardSource());
+            }
         }
     }
 }

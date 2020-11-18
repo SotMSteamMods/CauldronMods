@@ -660,6 +660,7 @@ namespace CauldronTests
             SetupGameController("ProletariatTeam", "Ra", "FrightTrainTeam", "Legacy", DeckNamespace);
 
 
+            Card regroupAndRecover = GetCard("RegroupAndRecover");
             
             StartGame();
             Card proletariatClone = GetCardInPlay("Proletariat");
@@ -670,8 +671,50 @@ namespace CauldronTests
             Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
             PlayCard(mirrorWraith);
 
+            GoToStartOfTurn(proleTeam);
+            PlayCard(regroupAndRecover);
+
+            // Assert
+            AssertCardHasKeyword(mirrorWraith, "clone", false);
+            AssertInTrash(mirrorWraith);
 
         }
+
+        [Test]
+        public void TestMirrorWraithEligibleTargets_CloneAkashSeed()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "AkashThriya", DeckNamespace);
+
+            Card healingPollen = GetCard("HealingPollen");
+            Card healingPollen2 = GetCard("HealingPollen", 1);
+            PutInHand(thriya, healingPollen);
+            PutInHand(thriya, healingPollen2);
+
+            StartGame();
+            DecisionLowestHP = healingPollen;
+
+            Card verdantExplosion = GetCard("VerdantExplosion");
+
+            GoToPlayCardPhase(thriya);
+            PlayCardFromHand(thriya, "HealingPollen");
+            PlayCardFromHand(thriya, "HealingPollen");
+
+            GoToStartOfTurn(BlackwoodForest);
+            Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
+            PlayCard(mirrorWraith);
+
+            GoToPlayCardPhase(thriya);
+            PlayCard(verdantExplosion);
+
+            // Assert
+            AssertCardHasKeyword(mirrorWraith, "primordial seed", false);
+            
+
+        }
+
+
+
 
         [Test]
         public void TestMirrorWraithNoEligibleTargets()
