@@ -497,6 +497,10 @@ namespace CauldronTests
 
             StartGame();
 
+            // Arrange top of deck so our asserts work reliably
+            PutOnDeck(BlackwoodForest, GetCard(ShadowWeaverCardController.Identifier));
+            PutOnDeck(BlackwoodForest, GetCard(DontStrayFromThePathCardController.Identifier));
+
             Card willOTheWisp = GetCard(WillOTheWispCardController.Identifier);
 
             // Act
