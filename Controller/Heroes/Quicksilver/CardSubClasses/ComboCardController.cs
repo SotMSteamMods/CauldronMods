@@ -13,7 +13,7 @@ namespace Cauldron.Quicksilver
 
         }
 
-        public IEnumerator ComboOrFinish()
+        public override IEnumerator Play()
         {
             //You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo.
             List<Function> functions = new List<Function> {

@@ -37,5 +37,19 @@ namespace Cauldron.Quicksilver
             }
             yield break;
         }
+
+        public override IEnumerator UsePower(int index = 0)
+        {
+            IEnumerator coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
     }
 }
