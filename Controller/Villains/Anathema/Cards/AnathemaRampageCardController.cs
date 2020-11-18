@@ -18,7 +18,7 @@ namespace Cauldron.Anathema
 
 			//Find the hero with the most cards in hand
 			List<TurnTaker> storedResults = new List<TurnTaker>();
-			IEnumerator coroutine = base.FindHeroWithMostCardsInHand(storedResults, 1, 1, null, null, false, false);
+			IEnumerator coroutine = base.FindHeroWithMostCardsInHand(storedResults);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -27,12 +27,12 @@ namespace Cauldron.Anathema
 			{
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
-			TurnTaker turnTaker = storedResults.FirstOrDefault<TurnTaker>();
+			TurnTaker turnTaker = storedResults.FirstOrDefault();
 			if (turnTaker != null)
 			{
 				//Anathema deals the Hero target with the most cards in hand {H-1} melee damage.
-				HeroTurnTakerController hero = base.FindHeroTurnTakerController(turnTaker as HeroTurnTaker);
-				IEnumerator coroutine2 = base.DealDamage(base.CharacterCard, hero.CharacterCard, base.H - 1, DamageType.Melee, false, false, false, null, null, null, false, base.GetCardSource(null));
+				HeroTurnTakerController hero = base.FindHeroTurnTakerController(turnTaker.ToHero());
+				IEnumerator coroutine2 = base.DealDamage(base.CharacterCard, hero.CharacterCard, base.H - 1, DamageType.Melee,cardSource: base.GetCardSource());
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine2);
@@ -46,12 +46,12 @@ namespace Cauldron.Anathema
 			ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(1);
 			reduceDamageStatusEffect.TargetCriteria.IsVillain = true; ;
 			reduceDamageStatusEffect.UntilStartOfNextTurn(this.TurnTaker);
-			IEnumerator reduceCoroutine = this.AddStatusEffect(reduceDamageStatusEffect, true);
+			IEnumerator reduceCoroutine = this.AddStatusEffect(reduceDamageStatusEffect);
 
 			IncreaseDamageStatusEffect increaseDamageStatusEffect = new IncreaseDamageStatusEffect(1);
 			increaseDamageStatusEffect.SourceCriteria.IsVillain = true; ;
 			increaseDamageStatusEffect.UntilStartOfNextTurn(this.TurnTaker);
-			IEnumerator increaseCoroutine = this.AddStatusEffect(increaseDamageStatusEffect, true);
+			IEnumerator increaseCoroutine = this.AddStatusEffect(increaseDamageStatusEffect);
 			if (this.UseUnityCoroutines)
 			{
 				yield return this.GameController.StartCoroutine(reduceCoroutine);
