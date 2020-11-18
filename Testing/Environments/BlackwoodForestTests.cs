@@ -649,6 +649,25 @@ namespace CauldronTests
 
         }
 
+        [Test]
+        public void TestMirrorWraithEligibleTargets_CloneProletariatClone()
+        {
+            // Arrange
+            SetupGameController("ProletariatTeam", "Ra", "FrightTrainTeam", "Legacy", DeckNamespace);
+
+
+            
+            StartGame();
+            Card proletariatClone = GetCardInPlay("Proletariat");
+            DecisionLowestHP = proletariatClone;
+
+            // Act
+            GoToPlayCardPhase(BlackwoodForest);
+            Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
+            PlayCard(mirrorWraith);
+
+
+        }
 
         [Test]
         public void TestMirrorWraithNoEligibleTargets()
