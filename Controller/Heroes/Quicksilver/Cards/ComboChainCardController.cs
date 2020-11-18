@@ -14,13 +14,12 @@ namespace Cauldron.Quicksilver
 
         private const string FirstTimeDamageDealt = "FirstTimeDamageDealt";
 
-        private ITrigger _preventDamage;
-
         public override void AddTriggers()
         {
             //The first time each turn that {Quicksilver} would deal herself damage to play a Combo card, prevent that damage.
             base.AddTrigger(base.AddTrigger<ComboDamageAction>((ComboDamageAction action) => !base.HasBeenSetToTrueThisTurn("FirstTimeDamageDealt"), (ComboDamageAction action) => this.PreventDamageResponse(action), TriggerType.CancelAction, TriggerTiming.Before));
         }
+
         private IEnumerator PreventDamageResponse(ComboDamageAction action)
         {
             base.SetCardPropertyToTrueIfRealAction("FirstTimeDamageDealt", null);
