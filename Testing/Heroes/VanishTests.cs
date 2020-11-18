@@ -135,7 +135,7 @@ namespace CauldronTests
             AssertNumberOfCardsInRevealed(haka, 0);
             AssertOnTopOfDeck(bottomCard);
             AssertOnTopOfDeck(topCard, 1);
-            
+
         }
 
         [Test]
@@ -320,5 +320,93 @@ namespace CauldronTests
             //baron immune to damage, no status effect
             AssertNumberOfStatusEffectsInPlay(0);
         }
+
+        [Test]
+        public void FlickeringStrike_Discard0()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            var mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToPlayCardPhase(vanish);
+
+
+            DecisionSelectWordSkip = true;
+            DecisionDoNotSelectCard = SelectionType.DiscardCard;
+            QuickHandStorage(vanish, ra, wraith);
+            QuickHPStorage(baron.CharacterCard, vanish.CharacterCard, ra.CharacterCard, wraith.CharacterCard, mdp);
+            var card = PlayCard("FlickeringStrike");
+            AssertInTrash(vanish, card);
+
+            //two cards drawn
+            QuickHandCheck(2, 0, 0);
+            //no damage dealt
+            QuickHPCheck(0, 0, 0, 0, 0);
+        }
+
+        [Test]
+        public void FlickeringStrike_Discard1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            var mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToPlayCardPhase(vanish);
+
+            DecisionSelectCards = new Card[] { vanish.HeroTurnTaker.Hand.Cards.First(), mdp, null };
+            QuickHandStorage(vanish, ra, wraith);
+            QuickHPStorage(baron.CharacterCard, vanish.CharacterCard, ra.CharacterCard, wraith.CharacterCard, mdp);
+            var card = PlayCard("FlickeringStrike");
+            AssertInTrash(vanish, card);
+
+            //two cards drawn, 1 discarded
+            QuickHandCheck(1, 0, 0);
+            //1 unit of damage dealt
+            QuickHPCheck(0, 0, 0, 0, -1);
+        }
+
+        [Test]
+        public void FlickeringStrike_DiscardAll()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            var mdp = GetCardInPlay("MobileDefensePlatform");
+
+            //stack deck & hand
+            var card = GetCard("FlickeringStrike");
+            MoveCard(vanish, card, vanish.HeroTurnTaker.Deck, true);
+            AssertInDeck(card); //just to ensure our setup is working
+
+            var sequence = new Card[]
+            {
+                GetTopCardOfDeck(vanish, 0),
+                ra.CharacterCard,
+                GetTopCardOfDeck(vanish, 1),
+                wraith.CharacterCard,
+                GetCardFromHand(vanish, 0),
+                mdp,
+                GetCardFromHand(vanish, 1),
+                mdp,
+                GetCardFromHand(vanish, 2),
+                mdp,
+                GetCardFromHand(vanish, 3),
+                mdp,
+                null
+            };
+
+            GoToPlayCardPhase(vanish);
+
+            DecisionSelectCards = sequence;
+            QuickHandStorage(vanish, ra, wraith);
+            QuickHPStorage(baron.CharacterCard, vanish.CharacterCard, ra.CharacterCard, wraith.CharacterCard, mdp);
+            PlayCard(card);
+            AssertInTrash(vanish, card);
+
+            //two cards drawn, 6 discarded
+            QuickHandCheck(-4, 0, 0);
+            //1 unit of damage dealt
+            QuickHPCheck(0, 0, -1, -1, -4);
+        }
+
     }
 }
