@@ -11,13 +11,11 @@ namespace Cauldron.Quicksilver
         {
 
         }
-        //{Quicksilver} deals 1 target 3 projectile damage.",
-        //You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo."
 
         public override IEnumerator Play()
         {
             //{Quicksilver} deals 1 target 3 projectile damage.
-            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => !c.IsHero, 1, DamageType.Projectile);
+            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), 3, DamageType.Projectile, 1, false, 1, cardSource: base.GetCardSource());
             //You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo.
             IEnumerator coroutine2 = base.ComboOrFinish();
             if (base.UseUnityCoroutines)
