@@ -408,5 +408,28 @@ namespace CauldronTests
             QuickHPCheck(0, 0, -1, -1, -4);
         }
 
+        [Test]
+        public void FocusingGauntlet()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            var mdp = GetCardInPlay("MobileDefensePlatform");
+
+            var card = PlayCard("FocusingGauntlet");
+            AssertInPlayArea(vanish, card);
+
+            QuickHPStorage(baron.CharacterCard, vanish.CharacterCard, ra.CharacterCard, wraith.CharacterCard, mdp);
+            DealDamage(vanish, mdp, 1, DamageType.Energy);
+            QuickHPCheck(0, 0, 0, 0, -2);
+
+            QuickHPStorage(baron.CharacterCard, vanish.CharacterCard, ra.CharacterCard, wraith.CharacterCard, mdp);
+            DealDamage(vanish, mdp, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, -1);
+
+            QuickHPStorage(baron.CharacterCard, vanish.CharacterCard, ra.CharacterCard, wraith.CharacterCard, mdp);
+            DealDamage(baron, vanish, 1, DamageType.Energy);
+            QuickHPCheck(0, -1, 0, 0, 0);
+        }
+
     }
 }
