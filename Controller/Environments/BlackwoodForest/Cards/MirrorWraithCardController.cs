@@ -48,8 +48,9 @@ namespace Cauldron.BlackwoodForest
         public override IEnumerator Play()
         {
             List<Card> storedResults = new List<Card>();
-            IEnumerator findTargetWithLowestHpRoutine = base.GameController.FindTargetsWithLowestHitPoints(1, 1,
-                c => c.IsTarget && c.IsInPlay && !c.IsCharacter && !c.Equals(this.Card), storedResults);
+            IEnumerator findTargetWithLowestHpRoutine = base.GameController.FindTargetWithLowestHitPoints(1,
+                c => c.IsTarget && c.IsInPlay && !c.IsCharacter 
+                     && !c.Equals(this.Card), storedResults, cardSource: this.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
