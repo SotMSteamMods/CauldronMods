@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -25,7 +24,7 @@ namespace Cauldron.DocHavoc
         public override void AddTriggers()
         {
 
-            base.AddTrigger<DealDamageAction>(dealDamageAction => dealDamageAction.DamageSource != null 
+            base.AddTrigger<DealDamageAction>(dealDamageAction => dealDamageAction.DamageSource != null
                     && dealDamageAction.DamageSource.IsSameCard(base.CharacterCard),
                 ChooseDamageOrHealResponse, TriggerType.DealDamage, TriggerTiming.Before);
 
@@ -45,7 +44,7 @@ namespace Cauldron.DocHavoc
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
 
             IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(this.DecisionMaker,
-                SelectionType.GainHP, card, storedResults: storedResults,cardSource: base.GetCardSource());
+                SelectionType.GainHP, card, storedResults: storedResults, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
