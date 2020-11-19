@@ -22,12 +22,12 @@ namespace Cauldron.Dendron
 
         public override void AddTriggers()
         {
-            base.AddTrigger<DealDamageAction>(dda => IsTattoo(dda.Target),
+            base.AddTrigger<DealDamageAction>(dda => IsTattoo(dda.Target) && !dda.DamageSource.IsVillainTarget,
                 this.DealDamageResponse,
                 new[]
                 {
                     TriggerType.DealDamage
-                }, TriggerTiming.Before, null, false, true, true);
+                }, TriggerTiming.Before, null, false, true, true, orderMatters: true);
 
             base.AddTriggers();
         }
@@ -36,8 +36,7 @@ namespace Cauldron.Dendron
         {
             int damageToDeal = this.Game.H - 2;
 
-            IEnumerator dealDamageRoutine = this.GameController.DealDamage(this.HeroTurnTakerController, dda.Target,
-                card => card.Equals(dda.DamageSource), damageToDeal, DamageType.Radiant);
+            IEnumerator dealDamageRoutine = this.DealDamage(dda.Target, dda.DamageSource.Card, damageToDeal, DamageType.Radiant);
 
             if (base.UseUnityCoroutines)
             {

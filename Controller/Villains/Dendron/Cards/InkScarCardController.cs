@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -31,8 +31,13 @@ namespace Cauldron.Dendron
             List<MoveCardDestination> moveCardDestination = new List<MoveCardDestination>();
             moveCardDestination.Add(new MoveCardDestination(base.TurnTaker.Deck));
 
+            this.RevealCards_MoveMatching_ReturnNonMatchingCards(this.TurnTakerController, this.TurnTaker.Trash, false,
+                false, false, new LinqCardCriteria(IsTattoo), TattooCardsInDeck, TattooCardsInDeck);
+
+
+
             IEnumerator moveCardsRoutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.DecisionMaker, this.TurnTaker.Trash, 0, TattooCardsInDeck,
-                new LinqCardCriteria(IsTattoo), moveCardDestination);
+                new LinqCardCriteria(IsTattoo), moveCardDestination, autoDecideCard: true);
 
             // Shuffle the villain deck
             IEnumerator shuffleDeckRoutine = base.GameController.ShuffleLocation(this.TurnTaker.Deck, cardSource: this.GetCardSource());

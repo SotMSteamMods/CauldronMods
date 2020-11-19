@@ -34,6 +34,61 @@ namespace CauldronTests
             Assert.AreEqual(50, Dendron.CharacterCard.HitPoints);
         }
 
+        [Test()]
+        public void TestDendronStartGame()
+        {
+            SetupGameController(DeckNamespace, "Legacy", "Megalopolis");
+
+            StartGame();
+
+            // Should be 3 cards in play total (Dendron, 1 Stained Wolf, 1 Painted Viper)
+            AssertNumberOfCardsInPlay(Dendron, 3);
+
+        }
+
+        [Test]
+        public void TestAdornedOak()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            StartGame();
+
+            Card adornedOwl = GetCard(AdornedOakCardController.Identifier);
+            PlayCard(adornedOwl);
+
+            QuickHPStorage(GetStainedWolf(), GetPaintedViper());
+
+            // Act
+            DealDamage(ra, GetStainedWolf(), 3, DamageType.Fire);
+            DealDamage(ra, GetPaintedViper(), 3, DamageType.Fire);
+
+
+            // Assert
+            QuickHPCheck(-2, -2);
+        }
+
+        [Test]
+        public void TestBloodThornAura()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            StartGame();
+
+            Card bloodThornAura = GetCard(BloodThornAuraCardController.Identifier);
+            PlayCard(bloodThornAura);
+
+            QuickHPStorage(GetStainedWolf(), GetPaintedViper(), ra.CharacterCard);
+
+            // Act
+            DealDamage(ra, GetStainedWolf(), 3, DamageType.Fire);
+            DealDamage(ra, GetPaintedViper(), 3, DamageType.Fire);
+
+            // Assert
+            QuickHPCheck(-3, -3, -2);
+        }
+
         [Test]
         public void TestChokingInscription()
         {
@@ -49,25 +104,6 @@ namespace CauldronTests
             Assert.True(false, "Finish this test");
         }
 
-        [Test]
-        public void TestAdornedOwl()
-        {
-            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
-
-            StartGame();
-
-            Card chokingInscription = GetCard(AdornedOakCardController.Identifier);
-            Card stainedWolf = GetCard(StainedWolfCardController.Identifier);
-            Card obsidianSkin = GetCard(ObsidianSkinCardController.Identifier);
-            PlayCard(stainedWolf);
-            PlayCard(chokingInscription);
-            PlayCard(obsidianSkin);
-
-            DealDamage(ra, stainedWolf, 4, DamageType.Fire);
-            DealDamage(ra, Dendron, 4, DamageType.Fire);
-
-            Assert.True(false, "Finish this test");
-        }
 
         [Test]
         public void TestDarkDesign()
@@ -89,6 +125,70 @@ namespace CauldronTests
 
             Assert.True(false, "Finish this test");
 
+        }
+
+        [Test]
+        public void TestInkScar()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            PutInTrash(TintedStagCardController.Identifier);
+            PutInTrash(LivingInkCardController.Identifier);
+
+            Card bloodThornAura = GetCard(BloodThornAuraCardController.Identifier);
+            PutInTrash(bloodThornAura);
+
+            StartGame();
+            QuickShuffleStorage(Dendron.TurnTaker.Deck);
+
+
+            GoToPlayCardPhase(Dendron);
+            Card inkScar = GetCard(InkScarCardController.Identifier);
+            PlayCard(inkScar);
+
+            // Act
+
+
+            // Assert
+            AssertInTrash(Dendron, bloodThornAura);
+            QuickShuffleCheck(1);
+        }
+
+        [Test]
+        public void TestLivingInk()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card bloodThornAura = GetCard(BloodThornAuraCardController.Identifier);
+            PutInTrash(bloodThornAura);
+            
+            Card livingInk = GetCard(LivingInkCardController.Identifier);
+
+            StartGame();
+
+            SetHitPoints(Dendron.CharacterCard, 40);
+            SetHitPoints(GetStainedWolf(), 1);
+            SetHitPoints(GetPaintedViper(), 1);
+            QuickHPStorage(Dendron.CharacterCard, GetStainedWolf(), GetPaintedViper());
+
+            // Act
+            PlayCard(livingInk);
+            GoToEndOfTurn(Dendron);
+
+            // Assert
+            QuickHPCheck(3, 3, 3);
+        }
+
+        private Card GetStainedWolf()
+        {
+            return GetCardInPlay(StainedWolfCardController.Identifier);
+        }
+
+        private Card GetPaintedViper()
+        {
+            return GetCardInPlay(PaintedViperCardController.Identifier);
         }
 
     }
