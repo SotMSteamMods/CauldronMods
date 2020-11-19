@@ -68,13 +68,20 @@ namespace Cauldron.Starlight
             yield break;
         }
 
-        protected bool IsMultiCharPromo()
+        protected bool IsMultiCharPromo(bool allowReplacements = true)
         {
+            if (!allowReplacements)
+            {
+                return HeroTurnTakerControllerWithoutReplacements.HasMultipleCharacterCards;
+            }
             return HeroTurnTakerController.HasMultipleCharacterCards;
         }
-
-        protected List<Card> ListStarlights()
+        protected List<Card> ListStarlights(bool allowReplacements = true)
         {
+            if (!allowReplacements)
+            {
+                return HeroTurnTakerControllerWithoutReplacements.CharacterCards.ToList();
+            }
             return this.CharacterCards.ToList();
         }
     }

@@ -234,7 +234,6 @@ namespace CauldronTests
 
             StartGame();
             Card mdp = FindCardInPlay("MobileDefensePlatform");
-            var m = DamageType.Melee;
 
             PlayCard("CelestialAura");
             QuickHPStorage(mdp);
@@ -255,6 +254,63 @@ namespace CauldronTests
                 QuickHPCheck(-2);
                 QuickHandCheck(2);
             }
+        }
+        [Test()]
+        public void TestNightloreCouncilRetreatPlaysNextToAStarlight()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+            Card retreat = GetCard("RetreatIntoTheNebula");
+            DecisionSelectCard = terra;
+            PlayCard(retreat);
+            AssertNextToCard(retreat, terra);
+        }
+        [Test()]
+        public void TestNightloreCouncilRetreatProtectsOnlyStarlightItIsNextTo()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+            Card retreat = GetCard("RetreatIntoTheNebula");
+            DecisionSelectCard = terra;
+            PlayCard(retreat);
+
+            QuickHPStorage(terra, asheron);
+            DealDamage(baron, terra, 3, DamageType.Melee);
+            DealDamage(baron, asheron, 3, DamageType.Melee);
+            QuickHPCheck(-1, -3);
+
+            DecisionSelectCard = asheron;
+            DestroyCard(retreat);
+            PlayCard(retreat);
+
+            DealDamage(baron, terra, 3, DamageType.Melee);
+            DealDamage(baron, asheron, 3, DamageType.Melee);
+            QuickHPCheck(-3, -1);
+        }
+        [Test()]
+        public void TestNightloreCouncilRetreatPicksCharacterWhenPlayedOddly()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+            Card retreat = GetCard("RetreatIntoTheNebula");
+            DecisionSelectCard = terra;
+
+            PutInHand(legacy, retreat);
+            PlayCardFromHand(legacy, "RetreatIntoTheNebula");
+            AssertNextToCard(retreat, terra);
+
+            PutInHand(sentinels, retreat);
+            PlayCardFromHand(sentinels, "RetreatIntoTheNebula");
+            AssertNextToCard(retreat, terra);
         }
     }
 }

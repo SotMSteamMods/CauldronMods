@@ -447,16 +447,6 @@
             "flavorReference": "Chrono-Ranger, The Dark Millenia #11"
         }
     ],
-    "subdecks": [
-        {
-            "identifier": "PromoSubCharacters",
-            "name": "Promo Sub-Characters",
-            "expansionIdentifier": "Cauldron",
-            "kind": "Other",
-            "cards" : [                     
-            ]
-        }
-    ],
     "promoCards": [
         {
             "identifier": "StarlightCharacter",
