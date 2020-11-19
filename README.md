@@ -53,4 +53,4 @@ when mods are available.
   - Halberd Experimental Research Center
   - FSC Continuance Wanderer
   - Blackwood Forest - In Progress
-  - St Simeon's Catacombs - In Progress
+  - St Simeon's Catacombs
