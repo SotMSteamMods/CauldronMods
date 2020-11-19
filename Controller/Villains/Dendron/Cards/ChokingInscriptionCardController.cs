@@ -41,11 +41,11 @@ namespace Cauldron.Dendron
 
             if (mostCardsInHandResults.Any())
             {
-                // This hero may not draw cards until the start of their next turn.
+                // This hero may not draw cards during their next turn.
                 PreventPhaseActionStatusEffect preventPhaseActionStatusEffect = new PreventPhaseActionStatusEffect();
                 preventPhaseActionStatusEffect.ToTurnPhaseCriteria.Phase = Phase.DrawCard;
                 preventPhaseActionStatusEffect.ToTurnPhaseCriteria.TurnTaker = mostCardsInHandResults.First();
-                preventPhaseActionStatusEffect.UntilStartOfNextTurn(mostCardsInHandResults.First());
+                preventPhaseActionStatusEffect.UntilEndOfNextTurn(mostCardsInHandResults.First());
                 IEnumerator preventDrawPhaseRoutine = base.AddStatusEffect(preventPhaseActionStatusEffect);
                 if (base.UseUnityCoroutines)
                 {
@@ -72,11 +72,11 @@ namespace Cauldron.Dendron
 
             if (mostCardsInPlayResults.Any())
             {
-                // This hero may not draw cards until the start of their next turn.
+                // This hero may not play cards during their next turn.
                 PreventPhaseActionStatusEffect preventPhaseActionStatusEffect = new PreventPhaseActionStatusEffect();
                 preventPhaseActionStatusEffect.ToTurnPhaseCriteria.Phase = Phase.PlayCard;
                 preventPhaseActionStatusEffect.ToTurnPhaseCriteria.TurnTaker = mostCardsInPlayResults.First();
-                preventPhaseActionStatusEffect.UntilStartOfNextTurn(mostCardsInPlayResults.First());
+                preventPhaseActionStatusEffect.UntilEndOfNextTurn(mostCardsInPlayResults.First());
                 IEnumerator preventDrawPhaseRoutine = base.AddStatusEffect(preventPhaseActionStatusEffect);
                 if (base.UseUnityCoroutines)
                 {

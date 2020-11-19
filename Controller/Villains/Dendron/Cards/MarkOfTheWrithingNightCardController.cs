@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -21,7 +22,7 @@ namespace Cauldron.Dendron
         public static string Identifier = "MarkOfTheWrithingNight";
 
         private const int DamageToDealHighestHp = 5;
-        private const int DamageToDealLowesttHp = 2;
+        private const int DamageToDealLowestHp = 2;
         private const int CardsToDestroyFewestCards = 1;
         private const int CardsToDestroyMostCards = 2;
 
@@ -37,14 +38,95 @@ namespace Cauldron.Dendron
             IEnumerator getHighestHpRoutine = this.GameController.FindTargetWithHighestHitPoints(1,
                 card => card.IsHero && !card.IsIncapacitatedOrOutOfGame, storedHighestHp);
 
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(getHighestHpRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(getHighestHpRoutine);
+            }
+
+            if (storedHighestHp.Any())
+            {
+                // Deal the hero with the highest HP 5 projectile damage
+                IEnumerator dealDamageToHighestHpRoutine
+                    = this.DealDamage(this.TurnTaker.CharacterCard, storedHighestHp.First(), DamageToDealHighestHp, DamageType.Projectile);
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(dealDamageToHighestHpRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(dealDamageToHighestHpRoutine);
+                }
+            }
+
+
             // Find hero with the lowest HP
             List<Card> storedLowestHp = new List<Card>();
-            IEnumerator getLowestHpRoutine = this.GameController.FindTargetWithHighestHitPoints(1,
+            IEnumerator getLowestHpRoutine = this.GameController.FindTargetWithLowestHitPoints(1,
                 card => card.IsHero && !card.IsIncapacitatedOrOutOfGame, storedLowestHp);
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(getLowestHpRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(getLowestHpRoutine);
+            }
+
+            if (storedLowestHp.Any())
+            {
+                // Deal the hero with the lowest HP 2 irreducible infernal damage
+                IEnumerator dealDamageToLowestHpRoutine
+                    = this.DealDamage(this.TurnTaker.CharacterCard, storedLowestHp.First(), DamageToDealLowestHp, DamageType.Infernal, true);
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(dealDamageToLowestHpRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(dealDamageToLowestHpRoutine);
+                }
+            }
 
             // Find hero with fewest cards in play
             List<TurnTaker> leastCardsInPlayResults = new List<TurnTaker>();
-            IEnumerator heroWithLeastCardsInPlayRoutine = base.FindHeroWithMostCardsInPlay(leastCardsInPlayResults);
+            IEnumerator heroWithLeastCardsInPlayRoutine = base.FindHeroWithFewestCardsInPlay(leastCardsInPlayResults);
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(heroWithLeastCardsInPlayRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(heroWithLeastCardsInPlayRoutine);
+            }
+
+            if (leastCardsInPlayResults.Any())
+            {
+                // Destroy 1 equipment and 1 ongoing from the hero with the fewest cards in play
+
+                HeroTurnTakerController fewestCardsHttc = FindTurnTakerController(leastCardsInPlayResults.First().CharacterCard.Owner).ToHero();
+
+                IEnumerator destroyOneOngoingRoutine = base.GameController.SelectAndDestroyCards(fewestCardsHttc, new LinqCardCriteria(card => card.IsOngoing), CardsToDestroyFewestCards, cardSource: this.GetCardSource());
+                IEnumerator destroyOneEquipmentRoutine = base.GameController.SelectAndDestroyCards(fewestCardsHttc, new LinqCardCriteria(card => IsEquipment(card)), CardsToDestroyFewestCards, cardSource: this.GetCardSource());
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(destroyOneOngoingRoutine);
+                    yield return base.GameController.StartCoroutine(destroyOneEquipmentRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(destroyOneOngoingRoutine);
+                    base.GameController.ExhaustCoroutine(destroyOneEquipmentRoutine);
+                }
+            }
 
             // Find hero with most cards in play
             List<TurnTaker> mostCardsInPlayResults = new List<TurnTaker>();
@@ -52,19 +134,34 @@ namespace Cauldron.Dendron
 
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(getHighestHpRoutine);
-                yield return base.GameController.StartCoroutine(getLowestHpRoutine);
-                yield return base.GameController.StartCoroutine(heroWithLeastCardsInPlayRoutine);
                 yield return base.GameController.StartCoroutine(heroWithMostCardsInPlayRoutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(getHighestHpRoutine);
-                base.GameController.ExhaustCoroutine(getLowestHpRoutine);
-                base.GameController.ExhaustCoroutine(heroWithLeastCardsInPlayRoutine);
                 base.GameController.ExhaustCoroutine(heroWithMostCardsInPlayRoutine);
             }
 
+            if (mostCardsInPlayResults.Any())
+            {
+                // Destroy 2 equipment and 2 ongoing from the hero with the fewest cards in play
+
+                HeroTurnTakerController mostCardsHttc = FindTurnTakerController(mostCardsInPlayResults.First().CharacterCard.Owner).ToHero();
+
+                IEnumerator destroyTwoOngoingRoutine = base.GameController.SelectAndDestroyCards(mostCardsHttc, new LinqCardCriteria(card => card.IsOngoing), CardsToDestroyMostCards, cardSource: this.GetCardSource());
+                IEnumerator destroyTwoEquipmentRoutine = base.GameController.SelectAndDestroyCards(mostCardsHttc, new LinqCardCriteria(card => IsEquipment(card)), CardsToDestroyMostCards, cardSource: this.GetCardSource());
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(destroyTwoOngoingRoutine);
+                    yield return base.GameController.StartCoroutine(destroyTwoEquipmentRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(destroyTwoOngoingRoutine);
+                    base.GameController.ExhaustCoroutine(destroyTwoEquipmentRoutine);
+                }
+
+            }
 
         }
     }

@@ -37,6 +37,7 @@ namespace Cauldron.Dendron
          */
 
         private const int AdvancedTattooDamageIncrease = 1;
+        private const int AdvancedHpGain = 1;
 
 
         public DendronCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
@@ -45,11 +46,9 @@ namespace Cauldron.Dendron
             base.SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(IsTattoo, "tattoo")).Condition = (() => true);
         }
 
-
-
         public override void AddSideTriggers()
         {
-            // Front side
+            // Front side (Mural of the Forest)
             if (!base.Card.IsFlipped)
             {
                 // At the start and end of the villain turn, if there are fewer than {H - 2} tattoos in play,
@@ -69,7 +68,13 @@ namespace Cauldron.Dendron
             }
             else
             {
-                
+                // At the start and end of the villain turn, play the top card of the villain deck.
+
+                if (this.IsGameAdvanced)
+                {
+                    // At the start of the villain turn, {Dendron} regains 5 HP.
+                    base.AddStartOfTurnTrigger(tt => tt.Equals(this.TurnTaker), GainHpResponse, TriggerType.GainHP);
+                }
             }
 
             base.AddDefeatedIfDestroyedTriggers();
@@ -144,6 +149,19 @@ namespace Cauldron.Dendron
         private bool IsTattoo(Card card)
         {
             return card != null && base.GameController.DoesCardContainKeyword(card, "tattoo");
+        }
+
+        private IEnumerator GainHpResponse(PhaseChangeAction pca)
+        {
+            IEnumerator gainHpRoutine = this.GameController.GainHP(this.Card, AdvancedHpGain, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(gainHpRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(gainHpRoutine);
+            }
         }
     }
 }

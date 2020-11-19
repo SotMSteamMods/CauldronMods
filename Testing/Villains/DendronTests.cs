@@ -92,22 +92,38 @@ namespace CauldronTests
         [Test]
         public void TestChokingInscription()
         {
+            // Arrange
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
 
             StartGame();
+            QuickShuffleStorage(legacy, ra, haka);
 
             Card chokingInscription = GetCard(ChokingInscriptionCardController.Identifier);
             Card flameBarrier = GetCard("FlameBarrier");
-            PlayCard(flameBarrier);
-
+            
+            
+            // Act
+            PlayCard(flameBarrier); // Put Flame Barrier into play so Ra will incur the most cards in play penalty
+            GoToPlayCardPhase(Dendron);
             PlayCard(chokingInscription);
-            Assert.True(false, "Finish this test");
+
+            GoToDrawCardPhase(legacy);
+            AssertCannotPerformPhaseAction();
+            GoToPlayCardPhase(ra);
+            AssertCannotPerformPhaseAction();
+
+            // Assert
+
+            // Legacy and Ra were both affected with phase penalties.  Haka was the only one unaffected so he shuffles his trash into his deck
+            QuickShuffleCheck(0, 0, 1);
+            
         }
 
 
         [Test]
         public void TestDarkDesign()
         {
+            // Arrange
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
 
             StartGame();
@@ -115,15 +131,18 @@ namespace CauldronTests
             GoToStartOfTurn(legacy);
             DealDamage(legacy, Dendron, 4, DamageType.Melee);
             
-            DealDamage(ra, Dendron, 4, DamageType.Fire);
+            DealDamage(ra, Dendron, 4, DamageType.Fire); // Ra will be the last person to deal damage to Dendron
 
+            QuickHandStorage(legacy, ra, haka);
 
+            // Act
 
             GoToStartOfTurn(Dendron);
             Card darkDesign = GetCard(DarkDesignCardController.Identifier);
             PlayCard(darkDesign);
 
-            Assert.True(false, "Finish this test");
+            // Assert
+            QuickHandCheck(0, -3, 0); // Ra had to discard <H> cards (3) due to Dark Design
 
         }
 
@@ -179,6 +198,59 @@ namespace CauldronTests
 
             // Assert
             QuickHPCheck(3, 3, 3);
+        }
+
+        [Test]
+        public void TestMarkOfTheWrithingNightNoOngoingsOrEquipment()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card markOfTheWritingNight = GetCard(MarkOfTheWrithingNightCardController.Identifier);
+
+            StartGame();
+            QuickHPStorage(legacy, ra, haka);
+
+            // Act
+            PlayCard(markOfTheWritingNight);
+            GoToEndOfTurn(Dendron);
+
+            // Assert
+
+            // Legacy: -2 fr Stained Wolf,
+            // Ra: -2 for hero with lowest HP (Mark), -1 from Painted Viper
+            // Haka: -5 for hero with highest HP (Mark)
+            QuickHPCheck(-2, -3, -5); 
+        }
+
+        [Test]
+        public void TestMarkOfTheWrithingNightWithEquipmentOnly()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card markOfTheWritingNight = GetCard(MarkOfTheWrithingNightCardController.Identifier);
+
+            StartGame();
+
+            Card legacyRing = GetCard("TheLegacyRing");
+            Card mere = GetCard("Mere");
+
+            PlayCard(legacyRing);
+            PlayCard(mere);
+
+            QuickHPStorage(legacy, ra, haka);
+
+            // Act
+            PlayCard(markOfTheWritingNight);
+            GoToEndOfTurn(Dendron);
+
+            // Assert
+
+            // Legacy: -2 fr Stained Wolf,
+            // Ra: -2 for hero with lowest HP (Mark), -1 from Painted Viper
+            // Haka: -5 for hero with highest HP (Mark)
+            QuickHPCheck(-2, -3, -5);
         }
 
 
