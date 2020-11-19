@@ -51,31 +51,33 @@ namespace Cauldron.Starlight
             yield break;
         }
 
-        private bool IsProtectedCard(Card c)
+        private bool IsProtectedCard(Card target)
         {
             bool shouldProtect = false;
 
-            if (GetCardThisCardIsNextTo(allowReplacements: false) != null)
+            if (IsMultiCharPromo(allowReplacements: false))
             {
-                //proper logic:
-                //if EITHER it is next to the character card being damaged
-                //      (because it was put there when we played it)
-                bool isNextToTarget = c == GetCardThisCardIsNextTo(false);
 
-                //OR it is not next to any character card owned by the same player - even incapacitated ones
-                //      (and therefore it is being borrowed by someone else like Guise)
-                bool isNotBeingBorrowed = ListStarlights().Contains(GetCardThisCardIsNextTo(false));
+                //proper logic:
+                //if EITHER this is next to the character card being damaged
+                //      (because it was put there when we played it)
+                bool isNextToTarget = target == GetCardThisCardIsNextTo();
+
+                //OR this is next to a character card, and that character is not owned by this card's (replacements-allowed) owner
+                //      (and therefore its effect is being borrowed by someone else in future-mod land)
+                Card nextTo = GetCardThisCardIsNextTo(false);
+                bool isBeingBorrowedByTarget = nextTo != null && this.TurnTaker != nextTo.Owner;
 
                 //THEN prevent the damage
-                shouldProtect = isNextToTarget && isNotBeingBorrowed;
+                shouldProtect = isNextToTarget || isBeingBorrowedByTarget;
             }
             else
             {
-                shouldProtect = ListStarlights().Contains(c);
+                shouldProtect = ListStarlights().Contains(target);
 
             }
 
-            return c.IsTarget && shouldProtect;
+            return shouldProtect;
         }
 
         private IEnumerator DestroyThisOrConstellation(PhaseChangeAction pc)
