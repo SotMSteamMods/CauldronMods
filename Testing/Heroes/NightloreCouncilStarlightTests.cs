@@ -153,6 +153,8 @@ namespace CauldronTests
             PlayCard(constellation);
             DecisionSelectCard = terra;
             PlayCard("AncientConstellationB");
+            DecisionSelectCard = idealist;
+            PlayCard("AncientConstellationC");
             QuickHPStorage(mdp, asheron, idealist);
             DealDamage(asheron, mdp, 1, m);
             DealDamage(asheron, asheron, 1, m);
