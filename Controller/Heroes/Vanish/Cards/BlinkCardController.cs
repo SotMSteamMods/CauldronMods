@@ -10,7 +10,39 @@ namespace Cauldron.Vanish
     {
         public BlinkCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
+
+        public override IEnumerator Play()
+        {
+            var coroutine = base.DrawCard();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            coroutine = base.SelectAndPlayCardFromHand(DecisionMaker);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            coroutine = GameController.SelectAndUsePower(DecisionMaker, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
     }
 }
