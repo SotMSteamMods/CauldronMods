@@ -29,6 +29,7 @@ namespace Cauldron.DocHavoc
                     && this.GameController.IsCardVisibleToCardSource(destroyCard.CardToDestroy.Card,
                         this.GetCardSource()));
             this.AddTrigger<DestroyCardAction>(criteria, new Func<DestroyCardAction, IEnumerator>(this.GainHpResponse), TriggerType.GainHP, TriggerTiming.After);
+
         }
 
         private IEnumerator GainHpResponse(DestroyCardAction destroyCard)
