@@ -464,5 +464,26 @@ namespace CauldronTests
             AssertNumberOfCardsInRevealed(env, 0);
         }
 
+
+
+        [Test]
+        public void Blink()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            var drawn = vanish.TurnTaker.Deck.TopCard;
+            var played = PutInHand("ConcussiveBurst");
+
+            DecisionSelectCardToPlay = played;
+
+            //will use the base power and deal some damage or something, don't matter. we just check it was used.
+            var card = PlayCard("Blink");
+            AssertInTrash(vanish, card);
+
+            AssertNotUsablePower(vanish, vanish.CharacterCard);
+            AssertInHand(drawn);
+            AssertInPlayArea(vanish, played);
+        }
     }
 }
