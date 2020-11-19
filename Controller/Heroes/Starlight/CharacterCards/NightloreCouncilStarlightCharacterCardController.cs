@@ -159,14 +159,15 @@ namespace Cauldron.Starlight
                     {
                         //"The next time a hero target deals damage, choose the type of that damage."
                         OnDealDamageStatusEffect chooseNextHeroDamageType = new OnDealDamageStatusEffect(this.Card,
-                                                                            "ChooseDamageTypeResponse",
-                                                                            "The next time a hero target deals damage, Starlight chooses the type of that damage.",
-                                                                            new TriggerType[1] { TriggerType.ChangeDamageType },
-                                                                            TurnTaker,
-                                                                            this.Card);
+                                                                                    "ChooseDamageTypeResponse",
+                                                                                    "The next time a hero target deals damage, Starlight chooses the type of that damage.",
+                                                                                    new TriggerType[1] { TriggerType.ChangeDamageType },
+                                                                                    TurnTaker,
+                                                                                    this.Card);
                         chooseNextHeroDamageType.NumberOfUses = 1;
                         chooseNextHeroDamageType.SourceCriteria.IsHero = true;
                         chooseNextHeroDamageType.SourceCriteria.IsTarget = true;
+                        chooseNextHeroDamageType.BeforeOrAfter = BeforeOrAfter.Before;
                         IEnumerator coroutine3 = AddStatusEffect(chooseNextHeroDamageType);
                         if (UseUnityCoroutines)
                         {

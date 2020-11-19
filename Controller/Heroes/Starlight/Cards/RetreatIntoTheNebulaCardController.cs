@@ -53,7 +53,7 @@ namespace Cauldron.Starlight
 
         private bool IsProtectedCard(Card target)
         {
-            bool shouldProtect = false;
+            bool shouldProtect = true;
 
             if (IsMultiCharPromo(allowReplacements: false))
             {
@@ -64,20 +64,16 @@ namespace Cauldron.Starlight
                 bool isNextToTarget = target == GetCardThisCardIsNextTo();
 
                 //OR this is next to a character card, and that character is not owned by this card's (replacements-allowed) owner
-                //      (and therefore its effect is being borrowed by someone else in future-mod land)
+                //      (and therefore its effect is being borrowed by someone else in Guise-shenanigans-or-future-mod land)
                 Card nextTo = GetCardThisCardIsNextTo(false);
                 bool isBeingBorrowedByTarget = nextTo != null && this.TurnTaker != nextTo.Owner;
 
                 //THEN prevent the damage
                 shouldProtect = isNextToTarget || isBeingBorrowedByTarget;
             }
-            else
-            {
-                shouldProtect = ListStarlights().Contains(target);
 
-            }
-
-            return shouldProtect;
+            //even considering the multi-char check, still needs to be one of the 'starlights' or appropriate replacement
+            return shouldProtect && ListStarlights().Contains(target);
         }
 
         private IEnumerator DestroyThisOrConstellation(PhaseChangeAction pc)

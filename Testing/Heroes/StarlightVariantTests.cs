@@ -280,10 +280,11 @@ namespace CauldronTests
             DecisionSelectCard = terra;
             PlayCard(retreat);
 
-            QuickHPStorage(terra, asheron);
+            QuickHPStorage(terra, asheron, mainstay);
             DealDamage(baron, terra, 3, DamageType.Melee);
             DealDamage(baron, asheron, 3, DamageType.Melee);
-            QuickHPCheck(-1, -3);
+            DealDamage(baron, mainstay, 3, DamageType.Melee);
+            QuickHPCheck(-1, -3, -3);
 
             DecisionSelectCard = asheron;
             DestroyCard(retreat);
@@ -291,8 +292,35 @@ namespace CauldronTests
 
             DealDamage(baron, terra, 3, DamageType.Melee);
             DealDamage(baron, asheron, 3, DamageType.Melee);
-            QuickHPCheck(-3, -1);
+            DealDamage(baron, mainstay, 3, DamageType.Melee);
+            QuickHPCheck(-3, -1, -3);
         }
+        [Test]
+        public void TestNightloreCouncilRetreatProtectsCorrectlyWithShenanigans()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Guise", "TheSentinels", "FreedomTower" }, false, nightloreDict);
+
+            StartGame();
+            Card retreat = GetCard("RetreatIntoTheNebula");
+            DecisionSelectCard = terra;
+            PlayCard(retreat);
+            PlayCard("CaspitsPlayground");
+            DecisionSelectCard = retreat;
+            PlayCard("LemmeSeeThat");
+
+            //now that Guise is stealing Retreat Into the Nebula's effect, let's see if it's protecting who it should
+            DecisionSelectCard = null;
+            List<Card> targets = new List<Card> { terra, asheron, guise.CharacterCard, mainstay };
+            QuickHPStorage(terra, asheron, guise.CharacterCard, mainstay);
+            foreach (Card target in targets)
+            {
+                DealDamage(baron, target, 3, DamageType.Melee);
+            }
+            QuickHPCheck(-3, -3, -1, -3);
+        }
+        //possible fail case: Caspit's Playground out, Guise has LemmeSeeThat on Retreat, damage goes to Mainstay
         [Test()]
         public void TestNightloreCouncilRetreatPicksCharacterWhenPlayedOddly()
         {
