@@ -96,11 +96,14 @@ namespace Cauldron.Starlight
         {
             if (IsConstellation(cep.CardEnteringPlay))
             {
-                var enteringBy = FindCardsWhere((Card c) => c.IsInPlay && c.GetAllNextToCards(false).Contains(cep.CardEnteringPlay)).FirstOrDefault();
-                return enteringBy == cryos;
+                var location = cep.CardEnteringPlay.Location;
+                if (location != null && location.IsNextToCard && location.OwnerCard != null)
+                    return location.OwnerCard == cryos;
             }
             return false;
         }
+
+
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
             switch (index)
