@@ -534,86 +534,86 @@
             "isReal": false,
             "complexity": 1
         },
-                        {
-                    "identifier": "StarlightOfTerraCharacter",
-                    "promoIdentifier": "StarlightOfTerraCharacter",
-                    "count": 1,
-                    "title": "Starlight",
-                    "promoTitle": "Starlight of Terra",
-                    "shortPromoTitle": "Terra",
-                    "body": "Radiance",
-                    "backgroundColor": "FBF8F9",
-                    "foilBackgroundColor": "FEFEFE",
-                    "hitpointColor": "C94742",
-                    "character": true,
-                    "powers": [
-                        "Discard a card. Search your deck for a copy of Exodus and put it in your hand. Shuffle your deck."
-                    ],
-                    "icons": [
-                        "HasPower",
-                        "Discard",
-                        "Search"
-                    ],
-                    "hitpoints": 13,
-                    "nemesisIdentifiers": [
-                        "Starlight"
-                    ],
-                    "flippedTitle": "Incapacitated",
-                    "complexity": 1
-                },
-                {
-                    "identifier": "StarlightOfAsheronCharacter",
-                    "promoIdentifier": "StarlightOfAsheronCharacter",
-                    "count": 1,
-                    "title": "Starlight",
-                    "promoTitle": "Starlight of Asheron",
-                    "shortPromoTitle": "Asheron",
-                    "body": "Binary Burst",
-                    "backgroundColor": "FBF8F9",
-                    "foilBackgroundColor": "FEFEFE",
-                    "hitpointColor": "C94742",
-                    "character": true,
-                    "powers": [
-                        "Play a Constellation. One Starlight deals 1 target 1 radiant damage."
-                    ],
-                    "icons": [
-                        "HasPower",
-                        "PlayCardNow",
-                        "DealDamageRadiant"
-                    ],
-                    "hitpoints": 12,
-                    "nemesisIdentifiers": [
-                        "Starlight"
-                    ],
-                    "flippedTitle": "Incapacitated",
-                    "complexity": 1
-                },
-                {
-                    "identifier": "StarlightOfCryosFourCharacter",
-                    "promoIdentifier": "StarlightOfCryosFourCharacter",
-                    "count": 1,
-                    "title": "Starlight",
-                    "promoTitle": "Starlight of Cryos-4",
-                    "shortPromoTitle": "Cryos-4",
-                    "body": "Voidgaze",
-                    "backgroundColor": "FBF8F9",
-                    "foilBackgroundColor": "FEFEFE",
-                    "hitpointColor": "C94742",
-                    "character": true,
-                    "powers": [
-                        "This Starlight deals herself 2 irreducible cold damage. If she takes damage this way, play 2 constellations from your trash."
-                    ],
-                    "icons": [
-                        "HasPower",
-                        "DealDamageCold",
-                        "PlayCardNow"
-                    ],
-                    "hitpoints": 15,
-                    "nemesisIdentifiers": [
-                        "Starlight"
-                    ],
-                    "flippedTitle": "Incapacitated",
-                    "complexity": 1
-                }
+        {
+            "identifier": "StarlightOfTerraCharacter",
+            "promoIdentifier": "StarlightOfTerraCharacter",
+            "count": 1,
+            "title": "Starlight",
+            "promoTitle": "Starlight of Terra",
+            "shortPromoTitle": "Terra",
+            "body": "Radiance",
+            "backgroundColor": "FBF8F9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C94742",
+            "character": true,
+            "powers": [
+                "Discard a card. Search your deck for a copy of Exodus and put it in your hand. Shuffle your deck."
+            ],
+            "icons": [
+                "HasPower",
+                "Discard",
+                "Search"
+            ],
+            "hitpoints": 13,
+            "nemesisIdentifiers": [
+                "Starlight"
+            ],
+            "flippedTitle": "Incapacitated",
+            "complexity": 1
+         },
+         {
+             "identifier": "StarlightOfAsheronCharacter",
+             "promoIdentifier": "StarlightOfAsheronCharacter",
+             "count": 1,
+             "title": "Starlight",
+             "promoTitle": "Starlight of Asheron",
+             "shortPromoTitle": "Asheron",
+             "body": "Binary Burst",
+             "backgroundColor": "FBF8F9",
+             "foilBackgroundColor": "FEFEFE",
+             "hitpointColor": "C94742",
+             "character": true,
+             "powers": [
+                 "Play a Constellation. One Starlight deals 1 target 1 radiant damage."
+             ],
+             "icons": [
+                 "HasPower",
+                 "PlayCardNow",
+                 "DealDamageRadiant"
+             ],
+             "hitpoints": 12,
+             "nemesisIdentifiers": [
+                 "Starlight"
+             ],
+             "flippedTitle": "Incapacitated",
+             "complexity": 1
+         },
+         {
+             "identifier": "StarlightOfCryosFourCharacter",
+             "promoIdentifier": "StarlightOfCryosFourCharacter",
+             "count": 1,
+             "title": "Starlight",
+             "promoTitle": "Starlight of Cryos-4",
+             "shortPromoTitle": "Cryos-4",
+             "body": "Voidgaze",
+             "backgroundColor": "FBF8F9",
+             "foilBackgroundColor": "FEFEFE",
+             "hitpointColor": "C94742",
+             "character": true,
+             "powers": [
+                 "This Starlight deals herself 2 irreducible cold damage. If she takes damage this way, play 2 constellations from your trash."
+             ],
+             "icons": [
+                 "HasPower",
+                 "DealDamageCold",
+                 "PlayCardNow"
+             ],
+             "hitpoints": 15,
+             "nemesisIdentifiers": [
+                 "Starlight"
+             ],
+             "flippedTitle": "Incapacitated",
+             "complexity": 1
+         }
     ]
 }

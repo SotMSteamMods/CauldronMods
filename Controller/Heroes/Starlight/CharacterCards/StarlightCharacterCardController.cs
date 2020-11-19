@@ -7,11 +7,10 @@ using Handelabra;
 
 namespace Cauldron.Starlight
 {
-    public class StarlightCharacterCardController : HeroCharacterCardController
+    public class StarlightCharacterCardController : StarlightSubCharacterCardController
     {
         public StarlightCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            Log.Debug("Created base Starlight card controller");
         }
 
         public override IEnumerator UsePower(int index = 0)
@@ -126,15 +125,6 @@ namespace Cauldron.Starlight
         private IEnumerable<Card> GetPlayableConstellationsInTrash()
         {
             return HeroTurnTaker.Trash.Cards.Where((Card card) => IsConstellation(card) && GameController.CanPlayCard(FindCardController(card), false, null, false, true) == CanPlayCardResult.CanPlay);  
-        }
-
-        private bool IsConstellation(Card card)
-        {
-            if (card != null)
-            {
-                return GameController.DoesCardContainKeyword(card, "constellation");
-            }
-            return false;
         }
 
         public IEnumerator LowestTargetImmunity(DealDamageAction dealDamage, HeroTurnTaker hero = null, StatusEffect effect = null, int[] powerNumerals = null)

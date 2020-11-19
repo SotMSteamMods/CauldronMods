@@ -7,7 +7,7 @@ using Handelabra;
 
 namespace Cauldron.Starlight
 {
-    public class NightloreCouncilStarlightCharacterCardController : HeroCharacterCardController
+    public class NightloreCouncilStarlightCharacterCardController : StarlightSubCharacterCardController
     {
         public NightloreCouncilStarlightCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -179,20 +179,6 @@ namespace Cauldron.Starlight
 
 
             yield break;
-        }
-
-        private bool IsConstellation(Card c)
-        {
-            return GameController.DoesCardContainKeyword(c, "constellation");
-        }
-        protected bool IsNextToConstellation(Card card)
-        {
-            if (card != null && card.NextToLocation != null && card.NextToLocation.Cards != null)
-            {
-                int num = card.NextToLocation.Cards.Where((Card c) => IsConstellation(c) && c.IsInPlayAndHasGameText).Count();
-                return num > 0;
-            }
-            return false;
         }
     }
 }

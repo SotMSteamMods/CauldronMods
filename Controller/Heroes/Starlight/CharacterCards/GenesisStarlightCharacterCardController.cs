@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.Starlight
 {
-    public class GenesisStarlightCharacterCardController : HeroCharacterCardController
+    public class GenesisStarlightCharacterCardController : StarlightSubCharacterCardController
     {
         public GenesisStarlightCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
