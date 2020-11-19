@@ -27,8 +27,9 @@ namespace Cauldron.Starlight
             //"Whenever a constellation enters play next to a target..."
             if (IsConstellation(ce.CardEnteringPlay) && ce.CardEnteringPlay.BattleZone == this.BattleZone)
             {
-                var enteringBy = FindCardsWhere((Card c) => c.IsInPlay && c.GetAllNextToCards(false).Contains(ce.CardEnteringPlay)).FirstOrDefault();
-                return enteringBy != null && enteringBy.IsTarget;
+                var location = ce.CardEnteringPlay.Location;
+                if (location != null && location.IsNextToCard && location.OwnerCard != null)
+                return location.OwnerCard.IsTarget;
             }
             return false;
         }
