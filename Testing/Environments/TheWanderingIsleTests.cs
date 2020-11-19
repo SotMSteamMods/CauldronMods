@@ -134,7 +134,7 @@ namespace CauldronTests
             QuickHPStorage(baron, ra, fanatic, haka);
 
             //When this card enters play, the {H - 1} villain targets with the lowest HP each deal 3 lightning damage to a different hero target.
-            //H = 3, so 2 villain targets hould deal damage
+            //H = 3, so 2 villain targets should deal damage
             //since we aren't selecting targets, it should default to ra, then fanatic being dealt damage
             var card = PutIntoPlay("AmphibiousAssault");
             AssertInPlayArea(isle, card);
@@ -173,8 +173,8 @@ namespace CauldronTests
             QuickHPStorage(baron, ra);
 
             //When this card enters play, the {H - 1} villain targets with the lowest HP each deal 3 lightning damage to a different hero target.
-            //H = 3, so 2 villain targets hould deal damage
-            //since we aren't selecting targets, it should default to ra, then fanatic being dealt damage
+            //H = 3, so 2 villain targets should deal damage
+            //since we aren't selecting targets, it should default to ra (only one available)
             var card = PutIntoPlay("AmphibiousAssault");
             AssertInPlayArea(isle, card);
 
@@ -182,7 +182,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestAmphibiousAssaultStartOfTurnHeroCardsPlayed()
+        public void TestAmphibiousAssaultStartOfTurnNoHeroCardsPlayed()
         {
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
@@ -207,7 +207,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestAmphibiousAssaultStartOfTurnNoHeroCardsPlayed()
+        public void TestAmphibiousAssaultStartOfTurnHeroCardsPlayed()
         {
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
@@ -333,17 +333,37 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestExposedLifeforcePlay()
+        public void TestExposedLifeforcePlay_SearchFromDeck()
         {
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
             QuickShuffleStorage(isle);
+            //start with teryx in the deck
+            Card teryx = PutOnDeck("Teryx");
             // When this card enters play, search the environment deck and trash for Teryx and put it into play, then shuffle the deck.
             PutIntoPlay("ExposedLifeforce");
 
             //teryx should now be in play
-            AssertIsInPlay("Teryx");
+            AssertIsInPlay(teryx);
+
+            QuickShuffleCheck(1);
+        }
+
+        [Test()]
+        public void TestExposedLifeforcePlay_SearchFromTrash()
+        {
+            SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            QuickShuffleStorage(isle);
+            //start with teryx in trash
+            Card teryx = PutInTrash("Teryx");
+            // When this card enters play, search the environment deck and trash for Teryx and put it into play, then shuffle the deck.
+            PutIntoPlay("ExposedLifeforce");
+
+            //teryx should now be in play
+            AssertIsInPlay(teryx);
 
             QuickShuffleCheck(1);
         }
@@ -400,6 +420,56 @@ namespace CauldronTests
             GainHP(teryx, 10);
 
             AssertInTrash(card);
+        }
+
+        [Test()]
+        public void TestExposedLifeforceDestroyWhen10_OverRound()
+        {
+            SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            Card teryx = PutIntoPlay("Teryx");
+
+            //set hitpoints so there is room to gain
+            SetHitPoints(teryx, 30);
+
+            Card card = PutIntoPlay("ExposedLifeforce");
+            AssertInPlayArea(isle, card);
+
+            //Destroy this card if Teryx regains 10HP in a single round.
+            GoToStartOfTurn(ra);
+            //5 now
+            GainHP(teryx, 5);
+            GoToNextTurn();
+            //5 later
+            GainHP(teryx, 5);
+
+            AssertInTrash(card);
+        }
+
+        [Test()]
+        public void TestExposedLifeforceDestroyWhen10_ResetsOverRoundBreak()
+        {
+            SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            Card teryx = PutIntoPlay("Teryx");
+
+            //set hitpoints so there is room to gain
+            SetHitPoints(teryx, 30);
+
+            Card card = PutIntoPlay("ExposedLifeforce");
+            AssertInPlayArea(isle, card);
+
+            //Destroy this card if Teryx regains 10HP in a single round.
+            GoToStartOfTurn(ra);
+            //5 now
+            GainHP(teryx, 5);
+            GoToStartOfTurn(baron);
+            //5 later
+            GainHP(teryx, 5);
+            //because split over a round break, should not be destroyed
+            AssertInPlayArea(isle, card);
         }
 
         [Test()]
@@ -501,6 +571,7 @@ namespace CauldronTests
             //Submerge is in play
             QuickHPStorage(baron.CharacterCard, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard, hydra);
             GoToEndOfTurn(isle);
+            //haka should not be dealt any damage because of submerge reduction
             QuickHPCheck(0, 0, 0, 0, 5);
             AssertIsAtMaxHP(hydra);
         }
@@ -590,7 +661,7 @@ namespace CauldronTests
             GoToStartOfTurn(isle);
             QuickHandCheck(1, 1, 1);
 
-            //since no creatures in play, should not be destroyed
+            //since only 1 creature in play, should not be destroyed
             AssertInPlayArea(isle, card);
         }
 
@@ -611,7 +682,8 @@ namespace CauldronTests
             AssertInPlayArea(isle, card);
 
             //collect the appropriate values for all hands
-            GoToEndOfTurn(haka);            //At the start of the environment turn, if Teryx is in play, each player may draw a card. Then, if there are at least 2 creatures in play, destroy this card.
+            GoToEndOfTurn(haka);            
+            //At the start of the environment turn, if Teryx is in play, each player may draw a card. Then, if there are at least 2 creatures in play, destroy this card.
             QuickHandStorage(ra, visionary, haka);
 
             //setting all players to draw a card
@@ -652,17 +724,37 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestSubmergePlay()
+        public void TestSubmergePlay_SearchFromDeck()
         {
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
             QuickShuffleStorage(isle);
+            Card teryx = PutOnDeck("Teryx");
+
             // When this card enters play, search the environment deck and trash for Teryx and put it into play, then shuffle the deck.
             PutIntoPlay("Submerge");
 
             //teryx should now be in play
-            AssertIsInPlay("Teryx");
+            AssertIsInPlay(teryx);
+
+            QuickShuffleCheck(1);
+        }
+
+        [Test()]
+        public void TestSubmergePlay_SearchFromTrash()
+        {
+            SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            QuickShuffleStorage(isle);
+            Card teryx = PutInTrash("Teryx");
+
+            // When this card enters play, search the environment deck and trash for Teryx and put it into play, then shuffle the deck.
+            PutIntoPlay("Submerge");
+
+            //teryx should now be in play
+            AssertIsInPlay(teryx);
 
             QuickShuffleCheck(1);
         }
@@ -677,10 +769,19 @@ namespace CauldronTests
             AssertInPlayArea(isle, card);
             //Reduce all damage dealt by 2
 
+            //check villain damage
             QuickHPStorage(ra);
             DealDamage(baron, ra, 5, DamageType.Lightning);
             //since 5 damage dealt - 2 = should be 3 less now
             QuickHPCheck(-3);
+
+            //check hero damage
+            QuickHPStorage(ra);
+            DealDamage(haka, ra, 5, DamageType.Melee);
+            //since 5 damage dealt - 2 = should be 3 less now
+            QuickHPCheck(-3);
+
+
         }
 
         [Test()]
