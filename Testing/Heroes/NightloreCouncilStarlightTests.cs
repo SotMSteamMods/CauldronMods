@@ -312,5 +312,22 @@ namespace CauldronTests
             PlayCardFromHand(sentinels, "RetreatIntoTheNebula");
             AssertNextToCard(retreat, terra);
         }
+        [Test()]
+        public void TestNightloreCouncilIncapsOnlyWhenAllThreeCharactersDo()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+
+            foreach (Card charCard in EachStarlight)
+            {
+                AssertNotIncapacitatedOrOutOfGame(starlight);
+                DealDamage(baron, charCard, 40, DamageType.Melee);
+            }
+
+            AssertIncapacitated(starlight);
+        }
     }
 }

@@ -103,6 +103,32 @@ namespace Cauldron.Starlight
             return false;
         }
 
+        public override void AddSideTriggers()
+        {
+            if (!base.Card.IsFlipped)
+            {
+                AddSideTrigger(AddTrigger(FlipCriteria, (GameAction ga) => base.GameController.FlipCard(FindCardController(base.Card), treatAsPlayed: false, treatAsPutIntoPlay: false, null, null, GetCardSource()), TriggerType.FlipCard, TriggerTiming.After));
+            }
+            else
+            {
+                AddSideTriggers(AddTargetEntersPlayTrigger((Card c) => base.Card.IsFlipped && base.CharacterCards.Contains(c), (Card c) => base.GameController.FlipCard(FindCardController(base.Card), treatAsPlayed: false, treatAsPutIntoPlay: false, null, null, GetCardSource()), TriggerType.Hidden, TriggerTiming.After, isConditional: false, outOfPlayTrigger: true));
+            }
+        }
+
+        private bool FlipCriteria(GameAction ga)
+        {
+            return((ga is FlipCardAction || ga is BulkRemoveTargetsAction || ga is MoveCardAction) && !base.Card.IsFlipped && FindCardsWhere((Card c) => c.Owner == base.TurnTaker && c.IsHeroCharacterCard && c.IsActive && c != base.Card).Count() == 0) ? true : false;
+        }
+
+        public override IEnumerator AfterFlipCardImmediateResponse()
+        {
+            RemoveAllTriggers();
+            AddSideTriggers();
+            yield return null;
+        }
+
+
+
 
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
@@ -154,6 +180,7 @@ namespace Cauldron.Starlight
 
             yield break;
         }
+
         private bool IsConstellation(Card c)
         {
             return GameController.DoesCardContainKeyword(c, "constellation");
