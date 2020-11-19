@@ -25,6 +25,8 @@ namespace CauldronTests
         protected Card asheron { get { return GetCard("StarlightOfAsheronCharacter"); } }
         protected Card cryos { get { return GetCard("StarlightOfCryosFourCharacter"); } }
 
+        protected List<Card> EachStarlight { get { return new List<Card> { terra, asheron, cryos }; } }
+
         private CardController MakeCardWithActivator(Type baseType, Card baseCard, TurnTakerController ttc)
         {
             var newObj = Activator.CreateInstance(baseType, baseCard, ttc);
@@ -189,6 +191,70 @@ namespace CauldronTests
             PlayCard("AncientConstellationD");
             QuickHandCheck(1);
             
+        }
+        [Test()]
+        public void TestNightloreCouncilCelestialAuraTriggersOnAnyStarlightDamage()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+            var m = DamageType.Melee;
+
+            var targets = new List<Card> { mainstay, terra, mdp, idealist };
+            DecisionSelectCards = targets;
+
+            SetHitPoints(mainstay, 2);
+            SetHitPoints(terra, 2);
+            SetHitPoints(mdp, 5);
+
+            PlayCard("AncientConstellationA");
+            PlayCard("AncientConstellationB");
+            PlayCard("AncientConstellationC");
+            PlayCard("CelestialAura");
+
+            QuickHPStorage(mainstay, terra, mdp, idealist);
+            foreach (Card source in EachStarlight)
+            {
+                foreach (Card target in targets)
+                {
+                    DealDamage(source, target, 1, m);
+                }
+                QuickHPCheck(1, source == terra ? 1 : 2, -1, -1);
+            } 
+        }
+        [Test()]
+        public void TestnightloreCouncilCelestialAuraPowerUsableWithAny()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+            var m = DamageType.Melee;
+
+            PlayCard("CelestialAura");
+            QuickHPStorage(mdp);
+            QuickHandStorage(starlight);
+
+            foreach(Card character in EachStarlight)
+            {
+                DecisionSelectCards = new List<Card> { character, mdp };
+                foreach(Card otherchar in EachStarlight)
+                {
+                    if (otherchar != character)
+                    {
+                        DecisionSelectCardsIndex = 0;
+                        AssertNotDamageSource(otherchar);
+                        UsePower("CelestialAura");
+                    }
+                }
+                QuickHPCheck(-2);
+                QuickHandCheck(2);
+            }
         }
     }
 }
