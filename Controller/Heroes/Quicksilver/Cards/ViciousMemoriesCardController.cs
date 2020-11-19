@@ -3,7 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
 
-namespace Cauldron
+namespace Cauldron.Quicksilver
 {
     public class ViciousMemoriesCardController : CardController
     {
