@@ -50,7 +50,8 @@ namespace Cauldron.Starlight
             IEnumerator playRoutine = GameController.SelectAndPlayCard(HeroTurnTakerController,
                                                         (Card c) => c.Owner == TurnTaker && c.IsInTrash && IsConstellation(c),
                                                         cardSource: GetCardSource(),
-                                                        noValidCardsMessage: "There were no playable constellations in the trash.");
+                                                        noValidCardsMessage: "There were no playable constellations in the trash.",
+                                                        storedResults: playedCards);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(playRoutine);
@@ -60,22 +61,20 @@ namespace Cauldron.Starlight
                 GameController.ExhaustCoroutine(playRoutine);
             }
 
-            if(!DidPlayCards(playedCards))
+            if(DidPlayCards(playedCards))
             {
-                yield break;
-            }
-
-            playRoutine = GameController.SelectAndPlayCard(HeroTurnTakerController,
-                                            (Card c) => c.Owner == TurnTaker && c.IsInTrash && IsConstellation(c),
-                                            cardSource: GetCardSource(),
-                                            noValidCardsMessage: "There were no more playable constellation in the trash.");
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(playRoutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(playRoutine);
+                playRoutine = GameController.SelectAndPlayCard(HeroTurnTakerController,
+                                                (Card c) => c.Owner == TurnTaker && c.IsInTrash && IsConstellation(c),
+                                                cardSource: GetCardSource(),
+                                                noValidCardsMessage: "There were no more playable constellations in the trash.");
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(playRoutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(playRoutine);
+                }
             }
             yield break;
         }

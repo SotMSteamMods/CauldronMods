@@ -11,7 +11,7 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class NightloreCouncilStarlightTests : BaseTest
+    public class StarlightVariantTests : BaseTest
     {
         #region StarlightHelperFunctions
         protected HeroTurnTakerController starlight { get { return FindHero("Starlight"); } }
@@ -226,7 +226,7 @@ namespace CauldronTests
             } 
         }
         [Test()]
-        public void TestnightloreCouncilCelestialAuraPowerUsableWithAny()
+        public void TestNightloreCouncilCelestialAuraPowerUsableWithAny()
         {
             var nightloreDict = new Dictionary<string, string> { };
             nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
@@ -328,6 +328,229 @@ namespace CauldronTests
             }
 
             AssertIncapacitated(starlight);
+        }
+        [Test]
+        public void TestNightloreCouncilAsheronPowerDamage()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            //don't want a stray select-constellation-to-play to mess things up
+            DiscardAllCards(starlight);
+
+            QuickHPStorage(mdp);
+
+            foreach (Card character in EachStarlight)
+            {
+                DecisionSelectCards = new List<Card> { character, mdp };
+                foreach (Card otherchar in EachStarlight)
+                {
+                    if (otherchar != character)
+                    {
+                        DecisionSelectCardsIndex = 0;
+                        AssertNotDamageSource(otherchar);
+                        UsePower(asheron);
+                    }
+                }
+                QuickHPCheck(-2);
+            }
+        }
+        [Test]
+        public void TestNightloreCouncilAsheronPowerPlay()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            //avoid stray constellations messing up the test
+            DiscardAllCards(starlight);
+
+            Card constA = GetCard("AncientConstellationA");
+            Card constB = GetCard("AncientConstellationB");
+            PutInHand(new Card[2] { constA, constB });
+
+            DecisionSelectCards = new List<Card> { constA, asheron, asheron, mdp };
+            QuickHPStorage(mdp);
+            QuickHandStorage(starlight);
+            UsePower(asheron);
+            //constellation play should happen before the damage, giving Asheron +1
+            QuickHPCheck(-2);
+            QuickHandCheck(-1);
+
+            DecisionSelectCards = new List<Card> { baron.CharacterCard, terra, mdp };
+            DecisionSelectCardsIndex = 0;
+            AssertMaxNumberOfDecisions(3);
+            //should not have a choice whether to play next constellation, only where
+            //then damage source and damage target
+            UsePower(asheron);
+            QuickHPCheck(-1);
+            QuickHandCheck(-1);
+        }
+        [Test]
+        public void TestNightloreCouncilAsheronPowerIsActualPlay()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            //avoid stray constellations messing up the test
+            DiscardAllCards(starlight);
+
+            Card constA = GetCard("AncientConstellationA");
+            Card constB = GetCard("AncientConstellationB");
+            PutInHand(new Card[2] { constA, constB });
+
+            PutIntoPlay("HostageSituation");
+
+            QuickHandStorage(starlight);
+            UsePower(asheron);
+            QuickHandCheck(0);
+        }
+        [Test]
+        public void TestNightloreCouncilTerraPowerBasic()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+            //just in case we start with all copies of Exodus in hand
+            MoveCards(starlight, (Card c) => c.Identifier == "Exodus", starlight.TurnTaker.Deck);
+
+            int startingHand = starlight.NumberOfCardsInHand;
+
+            AssertMaxNumberOfDecisions(1);
+            QuickHandStorage(starlight);
+            AssertNumberOfChoicesInNextDecision(startingHand);
+            QuickShuffleStorage(starlight);
+
+            UsePower(terra);
+            QuickHandCheck(0); //-1 discard, +1 exodus-in-hand
+            try
+            {
+                GetCardFromHand("Exodus");
+            }
+            catch
+            {
+                Assert.Fail("Could not find an Exodus in Starlight's hand.");
+            }
+            QuickShuffleCheck(1);
+        }
+        [Test]
+        public void TestNightloreCouncilTerraPowerNoDiscardOrNoFind()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+            //just in case we start with all copies of Exodus in hand
+            MoveCards(starlight, (Card c) => c.Identifier == "Exodus", starlight.TurnTaker.Deck);
+            DiscardAllCards(starlight);
+
+            int startingTrashSize = starlight.TurnTaker.Trash.Cards.Count();
+            AssertNumberOfCardsInHand(starlight, 0);
+            QuickShuffleStorage(starlight);
+
+            //at all times we should have an auto-decided outcome
+            AssertMaxNumberOfDecisions(0);
+
+            for(int i = 0; i < 4; i++)
+            {
+                UsePower(terra);
+                //first use should not discard, as there are no cards in hand at that time
+                AssertNumberOfCardsInTrash(starlight, startingTrashSize + i); 
+                AssertNumberOfCardsInHand(starlight, 1);
+                QuickShuffleCheck(1);
+            }
+            UsePower(terra);
+            AssertNumberOfCardsInHand(starlight, 0);
+            AssertNumberOfCardsInTrash(starlight, startingTrashSize + 4);
+            QuickShuffleCheck(1);
+        }
+        [Test]
+        public void TestNightloreCouncilCryosPowerBasic()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "TheScholar", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+            Card constA = GetCard("AncientConstellationA");
+            Card constB = GetCard("AncientConstellationB");
+            PutInTrash(new Card[2] { constA, constB });
+            DecisionSelectCards = new List<Card> { constA, mainstay, idealist };
+
+            QuickHPStorage(cryos);
+            UsePower(cryos);
+            QuickHPCheck(-2);
+            AssertNumberOfCardsInTrash(starlight, 0);
+            AssertIsInPlay(constA, constB);
+        }
+        [Test]
+        public void TestNightloreCouncilCryosPowerNotEnoughConstellations()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "TheScholar", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+            Card constA = GetCard("AncientConstellationA");
+            Card constB = GetCard("AncientConstellationB");
+
+            DecisionSelectCards = new List<Card> { mainstay, idealist };
+
+            QuickHPStorage(cryos);
+            AssertNextMessages("There were no playable constellations in the trash.", "There were no more playable constellations in the trash.");
+            UsePower(cryos);
+            QuickHPCheck(-2);
+            PutInTrash(constA);
+            UsePower(cryos);
+            QuickHPCheck(-2);
+            AssertIsInPlay(constA);
+        }
+        [Test()]
+        public void TestNightloreCouncilCryosPowerIsActualPlay()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "TheScholar", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+
+            Card constA = GetCard("AncientConstellationA");
+            Card constB = GetCard("AncientConstellationB");
+            PutInTrash(new Card[2] { constA, constB });
+
+            PutIntoPlay("HostageSituation");
+
+            UsePower(cryos);
+            AssertNumberOfCardsInTrash(starlight, 2);
+        }
+        [Test]
+        public void TestNightloreCouncilCryosPowerRequiresSelfDamage()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "TheScholar", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+
+            Card constA = GetCard("AncientConstellationA");
+            Card constB = GetCard("AncientConstellationB");
+            PutInTrash(new Card[2] { constA, constB });
+
+            PutIntoPlay("AlchemicalRedirection");
+            UsePower(cryos);
+            AssertNumberOfCardsInTrash(starlight, 2);
         }
     }
 }

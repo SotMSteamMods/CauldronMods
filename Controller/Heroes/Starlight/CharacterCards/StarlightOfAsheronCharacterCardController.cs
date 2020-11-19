@@ -17,20 +17,38 @@ namespace Cauldron.Starlight
 
             int targets = GetPowerNumeral(0, 1);
             int amount = GetPowerNumeral(1, 1);
-            List<Card> storedResults = new List<Card> { };
-            IEnumerator pickStarlight = SelectActiveCharacterCardToDealDamage(storedResults, amount, DamageType.Radiant);
+            
+            //Play a constellation.
+            IEnumerator playRoutine = SelectAndPlayCardFromHand(HeroTurnTakerController, false, null, new LinqCardCriteria((Card c) => IsConstellation(c)));
             if (UseUnityCoroutines)
             {
+                yield return GameController.StartCoroutine(playRoutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(playRoutine);
+            }
+
+            List<Card> storedResults = new List<Card> { };
+            IEnumerator pickStarlight = SelectActiveCharacterCardToDealDamage(storedResults, amount, DamageType.Radiant);
+
+            if (UseUnityCoroutines)
+            {
+
                 yield return GameController.StartCoroutine(pickStarlight);
             }
             else
             {
+
                 GameController.ExhaustCoroutine(pickStarlight);
             }
-            Card chosenStarlight = storedResults.FirstOrDefault();
 
-            //Play a constellation.
-            IEnumerator playRoutine = SelectAndPlayCardFromHand(HeroTurnTakerController, false, null, new LinqCardCriteria((Card c) => IsConstellation(c)));
+            Card chosenStarlight = storedResults.FirstOrDefault();
+            if (chosenStarlight == null)
+            {
+                yield break;
+            }
+
             //One Starlight deals 1 target 1 radiant damage.
             IEnumerator damageRoutine = GameController.SelectTargetsAndDealDamage(HeroTurnTakerController,
                                                                         new DamageSource(GameController, chosenStarlight),
@@ -42,12 +60,10 @@ namespace Cauldron.Starlight
                                                                         cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
-                yield return GameController.StartCoroutine(playRoutine);
                 yield return GameController.StartCoroutine(damageRoutine);
             }
             else
             {
-                GameController.ExhaustCoroutine(playRoutine);
                 GameController.ExhaustCoroutine(damageRoutine);
             }
             yield break;
