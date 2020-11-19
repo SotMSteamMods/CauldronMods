@@ -267,7 +267,10 @@
                 "DealDamageMelee",
                 "PlayCardNow"
             ],
-            "body": "{Quicksilver} deals 1 target 2 melee damage, then 1 target 1 melee damage. You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo.",
+            "body": [
+                "{Quicksilver} deals 1 target 2 melee damage, then 1 target 1 melee damage.",
+                "You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "Quicksilver",
