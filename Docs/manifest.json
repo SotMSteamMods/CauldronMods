@@ -5,7 +5,7 @@
 	"namespace":"Cualdron",
 	"dll":"CauldronMods.dll",
 	"decks":{
-		"heroes":{
+		"heroes":[
 			"Baccarat",
 			"DocHavoc",
 			"TheKnight",
@@ -14,17 +14,17 @@
 			"Malichae",
 			"TheStranger",
 			"TangoOne"
-		},
-		"villains":{
+		],
+		"villains":[
 			"Anathema",
 			"Gray",
 			"Tiamat"
-		},
-		"environments":{
+		],
+		"environments":[
 			"FSCContinuanceWanderer",
 			"HalberdExperimentalResearchFacility",
 			"StSimeonsCatacombs",
 			"TheWanderingIsle"
-		}
+		]
 	}
 }
