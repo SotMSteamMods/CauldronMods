@@ -431,5 +431,38 @@ namespace CauldronTests
             QuickHPCheck(0, -1, 0, 0, 0);
         }
 
+        [Test]
+        public void FlashRecon()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            //stack decks with harmless cards
+            var played = StackDeck(baron, "MobileDefensePlatform");
+            StackDeck(vanish, "FocusingGauntlet");
+            StackDeck(ra, "FleshOfTheSunGod");
+            StackDeck(wraith, "StunBolt");
+            StackDeck(env, "PoliceBackup");
+
+            DecisionSelectLocations = new[]
+            {
+                new LocationChoice(baron.TurnTaker.Deck),
+                new LocationChoice(vanish.TurnTaker.Deck),
+                new LocationChoice(ra.TurnTaker.Deck),
+                new LocationChoice(wraith.TurnTaker.Deck),
+                //new LocationChoice(env.TurnTaker.Deck), env deck is selected automatically since it's the last selection, yuck
+                new LocationChoice(baron.TurnTaker.Deck)
+            };
+            var card = PlayCard("FlashRecon");
+            AssertInTrash(vanish, card);
+
+            AssertInPlayArea(baron, played);
+            AssertNumberOfCardsInRevealed(baron, 0);
+            AssertNumberOfCardsInRevealed(vanish, 0);
+            AssertNumberOfCardsInRevealed(ra, 0);
+            AssertNumberOfCardsInRevealed(wraith, 0);
+            AssertNumberOfCardsInRevealed(env, 0);
+        }
+
     }
 }
