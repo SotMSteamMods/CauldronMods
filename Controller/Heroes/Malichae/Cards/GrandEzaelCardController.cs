@@ -24,7 +24,7 @@ namespace Cauldron.Malichae
             int hp = GetPowerNumeral(0, 3);
 
             var card = GetCardThisCardIsNextTo();
-            var coroutine = base.GameController.GainHP(DecisionMaker, c => c.IsTarget && c.IsHero, hp, cardSource: GetCardSource());
+            var coroutine = base.GameController.GainHP(DecisionMaker, c => c.IsTarget && c.IsHero && c.IsInPlayAndHasGameText, hp, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
