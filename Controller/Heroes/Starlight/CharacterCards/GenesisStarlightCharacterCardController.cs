@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Cauldron.Starlight
 {
@@ -12,13 +13,60 @@ namespace Cauldron.Starlight
         {
         }
 
+        public override IEnumerator UsePower(int index = 0)
+        {
+            //"Starlight deals each hero target 1 radiant damage."
+            IEnumerator damageHeroes = DealDamage(this.Card, (Card c) => c.IsInPlayAndHasGameText && c.IsHero, 1, DamageType.Radiant);
+            if(UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(damageHeroes);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(damageHeroes);
+            }
+
+            //"Search your deck for up to 2 constellation cards and play them. Shuffle your deck."
+            List<MoveCardDestination> intoPlay = new List<MoveCardDestination> { new MoveCardDestination(TurnTaker.PlayArea) };
+            IEnumerator searchAndPlay = GameController.SelectCardsFromLocationAndMoveThem(HeroTurnTakerController,
+                                                                            TurnTaker.Deck,
+                                                                            minNumberOfCards: 0, maxNumberOfCards: 2,
+                                                                            new LinqCardCriteria((Card c) => IsConstellation(c)),
+                                                                            intoPlay,
+                                                                            shuffleAfterwards: true,
+                                                                            cardSource: GetCardSource());
+            if(UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(searchAndPlay);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(searchAndPlay);
+            }
+            yield break;
+        }
+
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
             switch (index)
             {
                 case 0:
                     {
-                        var coroutine = GameController.SendMessageAction("Temporarily out of order, very sorry.", Priority.High, GetCardSource());
+                        //"One player may put an ongoing card from their trash into their hand.",
+                        List<TurnTaker> visibleHeroes = FindTurnTakersWhere((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && (bool)AskIfTurnTakerIsVisibleToCardSource(tt, GetCardSource())).ToList();
+                        List<TurnTaker> usableHeroes = visibleHeroes.Where((TurnTaker tt) => tt.Trash.Cards.Where((Card c) => c.IsOngoing).Count() > 0).ToList();
+                        SelectTurnTakerDecision whoGetsCard = new SelectTurnTakerDecision(GameController, 
+                                                                            HeroTurnTakerController, 
+                                                                            usableHeroes, 
+                                                                            SelectionType.MoveCardToHandFromTrash, 
+                                                                            isOptional: true, 
+                                                                            cardSource: GetCardSource());
+                        Func<TurnTaker, IEnumerator> getOngoingFromTrash = (TurnTaker tt) => GameController.SelectAndMoveCard(GameController.FindHeroTurnTakerController(tt.ToHero()),
+                                                                                                                        (Card c) => c.IsInTrash && c.IsOngoing && c.Location == tt.Trash,
+                                                                                                                        tt.ToHero().Hand,
+                                                                                                                        optional:true,
+                                                                                                                        cardSource:GetCardSource());
+                        IEnumerator coroutine = GameController.SelectTurnTakerAndDoAction(whoGetsCard, getOngoingFromTrash);
                         if (UseUnityCoroutines)
                         {
                             yield return GameController.StartCoroutine(coroutine);
@@ -31,7 +79,7 @@ namespace Cauldron.Starlight
                     }
                 case 1:
                     {
-                        //"1 player may use a power now.",
+                        //"One player may use a power now.",
                         IEnumerator coroutine2 = GameController.SelectHeroToUsePower(HeroTurnTakerController, optionalSelectHero: false, optionalUsePower: true, allowAutoDecide: false, null, null, null, omitHeroesWithNoUsablePowers: true, canBeCancelled: true, GetCardSource());
                         if (UseUnityCoroutines)
                         {
@@ -45,15 +93,31 @@ namespace Cauldron.Starlight
                     }
                 case 2:
                     {
-                        //"1 hero target regains 2 HP."
-                        IEnumerator coroutine3 = GameController.SelectAndGainHP(HeroTurnTakerController, 2, optional: false, (Card c) => c.IsInPlay && c.IsHero && c.IsTarget, 1, null, allowAutoDecide: false, null, GetCardSource());
+                        //"Look at the top card of a deck, and replace it or discard it."
+                        List<SelectLocationDecision> storedDeck = new List<SelectLocationDecision> { };
+                        IEnumerator pickDeck = GameController.SelectADeck(HeroTurnTakerController, SelectionType.RevealTopCardOfDeck, (Location loc) => true, storedDeck, cardSource: GetCardSource());
                         if (UseUnityCoroutines)
                         {
-                            yield return GameController.StartCoroutine(coroutine3);
+                            yield return GameController.StartCoroutine(pickDeck);
                         }
                         else
                         {
-                            GameController.ExhaustCoroutine(coroutine3);
+                            GameController.ExhaustCoroutine(pickDeck);
+                        }
+
+                        if (!DidSelectDeck(storedDeck))
+                        {
+                            yield break;
+                        }
+                        Location chosenDeck = storedDeck.FirstOrDefault().SelectedLocation.Location;
+                        IEnumerator revealTopCard = RevealCard_DiscardItOrPutItOnDeck(HeroTurnTakerController, HeroTurnTakerController, chosenDeck, false);
+                        if (UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(revealTopCard);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(revealTopCard);
                         }
                         break;
                     }
