@@ -54,6 +54,8 @@ namespace Cauldron.Vanish
 
         public override IEnumerator UsePower(int index = 0)
         {
+            int draws = GetPowerNumeral(0, 2);
+
             //Calling Destroy Card, then Draw Card(2) didn't work.  Only a single card would be drawn for I'm sure great reasons.
             //instead I check that Card is destroyable first.
             if (GameController.IsCardIndestructible(Card))
@@ -70,7 +72,7 @@ namespace Cauldron.Vanish
             }
             else
             {
-                var coroutine = DrawCards(DecisionMaker, 2);
+                var coroutine = DrawCards(DecisionMaker, draws);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
