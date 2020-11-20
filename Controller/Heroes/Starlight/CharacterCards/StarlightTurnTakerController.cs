@@ -83,19 +83,19 @@ namespace Cauldron.Starlight
                 {
 
 
-                    Log.Debug("Looking for destination...");
+                    //Log.Debug("Looking for destination...");
                     if (banish)
                     {
-                        Log.Debug("Attempting to banish...");
+                        //Log.Debug("Attempting to banish...");
                         if (TurnTaker == null) Log.Warning("No TurnTaker!");
                         destination = TurnTaker.InTheBox;
                         if (destination == null)
                         {
-                            Log.Warning("No destination set!");
+                            //Log.Warning("No destination set!");
                         }
                         else
                         {
-                            Log.Debug($"Found {destination.Name} location for {TurnTaker.Name}");
+                           // Log.Debug($"Found {destination.Name} location for {TurnTaker.Name}");
                         }
                     }
                     else
@@ -103,6 +103,19 @@ namespace Cauldron.Starlight
                         destination = TurnTaker.PlayArea;
                     }
                     destination.AddCard(target);
+                    if (target.Location.Name == LocationName.PlayArea && !GameController.Game.OrderedCardsInPlay.Contains(target))
+                    {
+                        //Log.Debug("But the game does not know that it is in play");
+                        GameController.Game.AssignPlayCardIndex(target);
+                        //Log.Debug($"Given index {target.PlayIndex}");
+                        //GameController.Game.AssignCardPlayIndex(target);
+                    }
+                    //Game.AssignPlayCardIndex(target);
+                    //var moveToPlace = new MoveCardAction(GameController, target, destination, false, null, null, TurnTaker, false, null, false, false, false, true);
+                    //GameController.ExhaustCoroutine(GameController.DoAction(moveToPlace));
+                    //GameController.ExhaustCoroutine(GameController.FindCardController(target).Play());
+                    //Log.Debug($"{target.Title} is now in {target.Location}");
+                    //Log.Debug($"CardController is {GameController.FindCardController(target).GetType()}");
                 }
 
             }
