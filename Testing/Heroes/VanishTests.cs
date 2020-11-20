@@ -640,7 +640,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void AbductAndAbandom_Play()
+        public void AbductAndAbandon_Play()
         {
             SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
             StartGame();
@@ -656,24 +656,22 @@ namespace CauldronTests
         [Test]
         public void AbductAndAbandon_IndestructibleCard()
         {
-            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "TimeCataclysm");
             StartGame();
 
             var target = GetCardInPlay("MobileDefensePlatform");
 
-            var effect = new MakeIndestructibleStatusEffect();
-            effect.CardsToMakeIndestructible.IsSpecificCard = target;
-            effect.UntilThisTurnIsOver(base.GameController.Game);
-            base.RunCoroutine(GameController.AddStatusEffect(effect, false, base.GetCardController(target).GetCardSource()));
-
+            PlayCard("FixedPoint");
+            
             DecisionSelectCard = target;
 
             var card = PlayCard("AbductAndAbandon");
+            
+            //AssertInTrash(vanish, card);
+            //AssertOnTopOfDeck(target);
+
             AssertInTrash(vanish, card);
             AssertInPlayArea(baron, target);
-
-            
-
         }
 
     }
