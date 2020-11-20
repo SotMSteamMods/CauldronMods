@@ -827,5 +827,62 @@ namespace CauldronTests
             QuickHPCheck(-1, -1, -1, -1);
 
         }
+
+        [Test]
+        public void TeleportBarrage_PowerDiscard0()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            RemoveMobileDefensePlatform();
+
+            var card = PlayCard("TeleportBarrage");
+            AssertInPlayArea(vanish, card);
+
+            QuickHPStorage(baron, vanish, ra, wraith);
+            DecisionDoNotSelectCard = SelectionType.DiscardCard;
+            DecisionSelectTarget = baron.CharacterCard;
+            UsePower(card);
+
+            QuickHPCheck(-2, 0, 0, 0);
+
+
+
+        }
+
+        [Test]
+        public void TeleportBarrage_PowerDiscard3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            RemoveMobileDefensePlatform();
+
+            var card = PlayCard("TeleportBarrage");
+            AssertInPlayArea(vanish, card);
+
+            var sequence = new Card[]
+            {
+                baron.CharacterCard,
+                GetCardFromHand(vanish, 0),
+                baron.CharacterCard,
+                GetCardFromHand(vanish, 1),
+                baron.CharacterCard,
+                GetCardFromHand(vanish, 2),
+                baron.CharacterCard,
+                GetCardFromHand(vanish, 3),
+                baron.CharacterCard,
+                null
+            };
+
+            QuickHPStorage(baron, vanish, ra, wraith);
+            DecisionSelectCards = sequence;
+            
+            UsePower(card);
+
+            QuickHPCheck(-5, 0, 0, 0);
+        }
+
+
     }
 }
