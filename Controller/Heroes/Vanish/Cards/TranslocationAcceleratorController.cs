@@ -10,7 +10,26 @@ namespace Cauldron.Vanish
     {
         public TranslocationAcceleratorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
 
+        public override void AddTriggers()
+        {
+            base.AddTrigger<UsePowerAction>(upa => upa.HeroUsingPower == this.HeroTurnTakerController && upa.IsSuccessful, UsePowerResponse, TriggerType.DealDamage, TriggerTiming.After);
+        }
+
+        private IEnumerator UsePowerResponse(UsePowerAction action)
+        {
+            var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 1, DamageType.Energy, 1, false, 0,
+                                additionalCriteria: c => !c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText,
+                                cardSource: GetCardSource());
+            if (this.UseUnityCoroutines)
+            {
+                yield return this.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                this.GameController.ExhaustCoroutine(coroutine);
+            }
         }
     }
 }
