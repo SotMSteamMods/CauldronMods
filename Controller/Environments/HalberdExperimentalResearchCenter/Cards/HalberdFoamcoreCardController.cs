@@ -19,7 +19,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
         public override void AddTriggers()
         {
             //criteria for finding hero target with the lowest hp when no chemical triggers are in play
-            Func<DealDamageAction, bool> heroCriteria = (DealDamageAction dd) => !base.IsChemicalTriggerInPlay() && base.CanCardBeConsideredLowestHitPoints(dd.Target, (Card c) => c.IsTarget && c.IsHero);
+            Func<DealDamageAction, bool> heroCriteria = (DealDamageAction dd) => !base.IsChemicalTriggerInPlay() && base.CanCardBeConsideredLowestHitPoints(dd.Target, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText);
 
             //criteria for finding all villain targets when chemical triggers are in play
             Func<DealDamageAction, bool> villainCriteria = (DealDamageAction dd) => base.IsChemicalTriggerInPlay() && dd.Target.IsVillainTarget;

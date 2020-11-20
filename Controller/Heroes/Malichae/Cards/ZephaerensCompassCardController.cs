@@ -16,7 +16,7 @@ namespace Cauldron.Malichae
         public override IEnumerator UsePower(int index = 0)
         {
             var scd = new SelectCardDecision(GameController, DecisionMaker, SelectionType.MoveCardToHand, DecisionMaker.HeroTurnTaker.PlayArea.Cards,
-                            additionalCriteria: c => c.IsTarget && IsDjinn(c),
+                            additionalCriteria: c => c.IsTarget && c.IsInPlayAndHasGameText && IsDjinn(c),
                             cardSource: GetCardSource());
             var coroutine = base.GameController.SelectCardAndDoAction(scd, CompassPowerResponse);
             if (base.UseUnityCoroutines)
@@ -52,7 +52,7 @@ namespace Cauldron.Malichae
                 }
                 if (DidMoveCard(results))
                 {
-                    coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria(c => c.IsEnvironment || c.IsOngoing, "ongoing or enviroment"), number,
+                    coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria(c => c.IsInPlay && (c.IsEnvironment || c.IsOngoing), "ongoing or enviroment"), number,
                                         requiredDecisions: 0,
                                         responsibleCard: DecisionMaker.CharacterCard,
                                         cardSource: GetCardSource());

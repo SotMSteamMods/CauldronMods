@@ -39,7 +39,7 @@ namespace Cauldron.TheWanderingIsle
                 List<SelectCardDecision> selectCards = new List<SelectCardDecision>();
 
                 coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(GameController, villainSource), 3, DamageType.Lightning, 1, false, 1,
-                    additionalCriteria: c => c.IsHero && c.IsTarget && !heroTargets.Contains(c),
+                    additionalCriteria: c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText && !heroTargets.Contains(c),
                     storedResultsDecisions: selectCards,
                     cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
