@@ -674,5 +674,36 @@ namespace CauldronTests
             AssertInPlayArea(baron, target);
         }
 
+        [Test]
+        public void TranslocationAccelerator()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "TimeCataclysm");
+            StartGame();
+
+            var target = GetCardInPlay("MobileDefensePlatform");
+
+            DecisionSelectCard = target;
+
+            var card = PlayCard("TranslocationAccelerator");
+            AssertInPlayArea(vanish, card);
+            Assert.IsTrue(card.IsLimited);
+
+            var power = PlayCard("JauntingReflex"); //use this power since it doesn't deal damage itself
+
+            DecisionSelectTarget = target;
+            QuickHPStorage(baron.CharacterCard, vanish.CharacterCard, ra.CharacterCard, wraith.CharacterCard, target);
+            UsePower(power);
+
+            QuickHPCheck(0, 0, 0, 0, -1);
+
+            //check that ra's power useage doesn't trigger the effect
+            GoToUsePowerPhase(ra);
+
+            QuickHPUpdate();
+            UsePower(ra);
+            QuickHPCheck(0, 0, 0, 0, -2);
+        }
+
+
     }
 }
