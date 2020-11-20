@@ -59,7 +59,7 @@ namespace Cauldron.Starlight
             _asheron = cards.Where((Card c) => c.Identifier == "StarlightOfAsheronCharacter").FirstOrDefault();
             _cryos = cards.Where((Card c) => c.Identifier == "StarlightOfCryosFourCharacter").FirstOrDefault();
 
-            AddStartOfTurnTrigger((TurnTaker tt) => TurnTaker == this.TurnTaker,
+            AddStartOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker,
                             (PhaseChangeAction pca) => TerraHealTeamResponse(),
                             TriggerType.GainHP);
             AddIncreaseDamageTrigger(AsheronBoostDamageCriteria, 1);
@@ -71,7 +71,7 @@ namespace Cauldron.Starlight
             //"If Starlight of Terra has a constellation next to her at the start of your turn, each Starlight regains 1 HP."
             if (IsNextToConstellation(terra))
             {
-                IEnumerator heal = GameController.SelectAndGainHP(ToHeroTurnTakerController(TurnTaker), 1, false, (Card c) => c == terra || c == asheron || c == cryos, 3, 3, cardSource: GetCardSource());
+                IEnumerator heal = GameController.GainHP(ToHeroTurnTakerController(TurnTaker), (Card c) => c == terra || c == asheron || c == cryos, 1, optional:false, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(heal);
