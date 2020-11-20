@@ -766,5 +766,66 @@ namespace CauldronTests
             AssertInPlayArea(vanish, card);
         }
 
+        [Test]
+        public void Elusive_PowerDraw()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            RemoveMobileDefensePlatform();
+
+            var card = PlayCard("Elusive");
+            AssertInPlayArea(vanish, card);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+            QuickHandStorage(vanish, ra, wraith);
+            DecisionSelectFunction = 1;
+            UsePower(card);
+
+            AssertNumberOfStatusEffectsInPlay(1);
+            QuickHandCheck(1, 0, 0);
+
+            QuickHPStorage(baron, vanish, ra, wraith);
+            DealDamage(baron.CharacterCard, new Card[] { baron.CharacterCard, vanish.CharacterCard, ra.CharacterCard, wraith.CharacterCard }, 1, DamageType.Cold);
+            QuickHPCheck(-1, 0, -1, -1);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            QuickHPUpdate();
+            DealDamage(baron.CharacterCard, new Card[] { baron.CharacterCard, vanish.CharacterCard, ra.CharacterCard, wraith.CharacterCard }, 1, DamageType.Cold);
+            QuickHPCheck(-1, -1, -1, -1);
+
+        }
+
+        [Test]
+        public void Elusive_PowerPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            RemoveMobileDefensePlatform();
+
+            var card = PlayCard("Elusive");
+            AssertInPlayArea(vanish, card);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+            QuickHandStorage(vanish, ra, wraith);
+            DecisionSelectFunction = 0;
+            UsePower(card);
+
+            AssertNumberOfStatusEffectsInPlay(1);
+            QuickHandCheck(-1, 0, 0);
+
+            QuickHPStorage(baron, vanish, ra, wraith);
+            DealDamage(baron.CharacterCard, new Card[] { baron.CharacterCard, vanish.CharacterCard, ra.CharacterCard, wraith.CharacterCard }, 1, DamageType.Cold);
+            QuickHPCheck(-1, 0, -1, -1);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            QuickHPUpdate();
+            DealDamage(baron.CharacterCard, new Card[] { baron.CharacterCard, vanish.CharacterCard, ra.CharacterCard, wraith.CharacterCard }, 1, DamageType.Cold);
+            QuickHPCheck(-1, -1, -1, -1);
+
+        }
     }
 }
