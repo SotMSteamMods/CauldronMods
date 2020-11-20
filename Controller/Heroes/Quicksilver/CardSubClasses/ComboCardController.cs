@@ -13,7 +13,7 @@ namespace Cauldron.Quicksilver
 
         }
 
-        public override IEnumerator Play()
+        public IEnumerator ComboResponse()
         {
             //You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo.
             List<Function> functions = new List<Function> {
@@ -22,7 +22,7 @@ namespace Cauldron.Quicksilver
                 //...{Quicksilver} may deal herself 2 melee damage and play a Combo.
                 new Function(base.HeroTurnTakerController, "Deal yourself 2 melee damage and play a combo", SelectionType.PlayCard, () => ContinueComboResponse())
             };
-            IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, functions);
+            IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, functions, true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

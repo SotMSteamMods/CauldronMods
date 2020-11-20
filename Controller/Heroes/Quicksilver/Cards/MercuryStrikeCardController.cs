@@ -29,7 +29,15 @@ namespace Cauldron.Quicksilver
                 base.GameController.ExhaustCoroutine(coroutine2);
             }
             //You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo.
-            base.Play();
+            coroutine = this.ComboResponse();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
     }
