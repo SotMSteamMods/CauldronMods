@@ -46,7 +46,7 @@ namespace Cauldron.Necro
                 if (nonSelectedCard != null)
                 {
                     //and put 1 into the trash.
-                    coroutine = base.GameController.MoveCard(this.DecisionMaker, nonSelectedCard, base.FindCardController(nonSelectedCard).GetTrashDestination(), showMessage: true, cardSource: base.GetCardSource());
+                    coroutine = base.GameController.MoveCard(this.DecisionMaker, nonSelectedCard, base.FindCardController(nonSelectedCard).GetTrashDestination().Location, showMessage: true, cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
