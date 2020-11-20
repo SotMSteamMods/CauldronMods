@@ -483,7 +483,7 @@ namespace CauldronTests
         [Test]
         public void Blink()
         {
-            SetupGameController("Gloomweaver", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             var drawn = vanish.TurnTaker.Deck.TopCard;
@@ -513,7 +513,7 @@ namespace CauldronTests
 
 
         [Test]
-        public void JauntingReflex_ReactionPower()
+        public void JauntingReflex_ReactionPowerDeclined()
         {
             SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
             StartGame();
@@ -521,12 +521,81 @@ namespace CauldronTests
 
             var card = PlayCard("JauntingReflex");
             AssertInPlayArea(vanish, card);
+            AssertNumberOfUsablePowers(vanish, 2); //base + reflex
+
+            DecisionDoNotSelectCard = SelectionType.DiscardCard;
+
+            DealDamage(baron, ra, 1, DamageType.Energy);
+
+            //no power used
+            AssertNumberOfUsablePowers(vanish, 2); //base + reflex
+        }
+
+        [Test]
+        public void JauntingReflex_ReactionPowerAccepted()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
 
 
+            var card = PlayCard("JauntingReflex");
+            AssertInPlayArea(vanish, card);
+            AssertNumberOfUsablePowers(vanish, 2); //base + reflex
+
+            DealDamage(baron, ra, 1, DamageType.Energy);
+
+            AssertNumberOfUsablePowers(vanish, 1);
+        }
+
+        [Test]
+        public void JauntingReflex_ReactionPowerOncePerTurn()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
 
 
+            var card = PlayCard("JauntingReflex");
+            AssertInPlayArea(vanish, card);
+            AssertNumberOfUsablePowers(vanish, 2); //base + reflex
+
+            DealDamage(baron, ra, 1, DamageType.Energy);
+
+            AssertNumberOfUsablePowers(vanish, 1);
+
+            DealDamage(baron, ra, 1, DamageType.Energy);
+
+            AssertNumberOfUsablePowers(vanish, 1);
+
+            GoToStartOfTurn(vanish);
+
+            AssertNumberOfUsablePowers(vanish, 2); //base + reflex
+
+            DealDamage(baron, ra, 1, DamageType.Energy);
+
+            AssertNumberOfUsablePowers(vanish, 1);
 
         }
+
+        [Test]
+        public void JauntingReflex_ReactionPowerNotHeroDamageNotOthers()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+
+            var card = PlayCard("JauntingReflex");
+            AssertInPlayArea(vanish, card);
+            AssertNumberOfUsablePowers(vanish, 2); //base + reflex
+            AssertNumberOfUsablePowers(ra, 1);
+            AssertNumberOfUsablePowers(wraith, 1);
+
+            DealDamage(wraith, ra, 1, DamageType.Energy);
+
+            AssertNumberOfUsablePowers(vanish, 2); //base + reflex
+            AssertNumberOfUsablePowers(ra, 1);
+            AssertNumberOfUsablePowers(wraith, 1);
+        }
+
 
         [Test]
         public void JauntingReflex_UsePower()
@@ -534,17 +603,23 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
+            GoToPlayCardPhase(vanish);
+
             var card = PlayCard("JauntingReflex");
             AssertInPlayArea(vanish, card);
+
+            GoToUsePowerPhase(vanish);
 
             QuickHandStorage(vanish, ra, wraith);
             UsePower(card);
             AssertInTrash(card);
             QuickHandCheck(2, 0, 0);
+
+
         }
 
         [Test]
-        public void JauntingReflex_UsePowerIndesructible()
+        public void JauntingReflex_UsePowerIndestructible()
         {
             SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
             StartGame();
