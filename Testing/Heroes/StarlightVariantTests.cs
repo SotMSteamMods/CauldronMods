@@ -580,5 +580,68 @@ namespace CauldronTests
             UsePower(cryos);
             AssertNumberOfCardsInTrash(starlight, 2);
         }
+        [Test]
+        public void TestNightloreCouncilIncap1()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "TheScholar", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+            foreach(Card character in EachStarlight)
+            {
+                DealDamage(baron, character, 20, DamageType.Melee);
+            }
+
+            AssertIncapacitated(starlight);
+            PutInHand("FleshToIron");
+
+            AssertIncapLetsHeroPlayCard(starlight, 0, scholar, "FleshToIron");
+        }
+        [Test]
+        public void TestNightloreCouncilIncap2()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "TheScholar", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            StartGame();
+            foreach (Card character in EachStarlight)
+            {
+                DealDamage(baron, character, 20, DamageType.Melee);
+            }
+
+            AssertIncapacitated(starlight);
+
+            AssertIncapLetsHeroUsePower(starlight, 1, scholar);
+        }
+        [Test]
+        public void TestNightloreCouncilIncap3()
+        {
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "TheScholar", "TheSentinels", "TheCourtOfBlood" }, false, nightloreDict);
+
+            StartGame();
+            foreach (Card character in EachStarlight)
+            {
+                DealDamage(baron, character, 20, DamageType.Melee);
+            }
+
+            AssertIncapacitated(starlight);
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card vamp = PlayCard("BloodCountessBathory");
+
+            UseIncapacitatedAbility(starlight, 2);
+            QuickHPStorage(vamp);
+
+            DecisionSelectDamageType = DamageType.Infernal;
+            DealDamage(scholar, vamp, 1, DamageType.Radiant);
+            QuickHPCheck(-1);
+            DealDamage(scholar, vamp, 1, DamageType.Radiant);
+            QuickHPCheck(-2);
+
+
+        }
     }
 }

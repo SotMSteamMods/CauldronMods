@@ -185,7 +185,7 @@ namespace Cauldron.Starlight
             yield break;
         }
 
-        private IEnumerator ChooseDamageTypeResponse(DealDamageAction dd)
+        public IEnumerator ChooseDamageTypeResponse(DealDamageAction dd, HeroTurnTaker hero = null, StatusEffect effect = null, int[] powerNumerals = null)
         {
             var coroutine = SelectDamageTypeForDealDamageAction(dd);
             if (UseUnityCoroutines)
