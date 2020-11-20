@@ -67,7 +67,7 @@ namespace Cauldron.TangoOne
             HeroTurnTakerController decisionMaker = turnTaker.IsHero ? turnTakerController.ToHero() : this.DecisionMaker;
 
             IEnumerator selectCardsFromLocationRoutine = base.GameController.SelectCardsFromLocationAndMoveThem(decisionMaker, turnTaker.Trash, 
-                    0, CardsToMoveFromTrash, 
+                    2, CardsToMoveFromTrash, 
                     new LinqCardCriteria(c => c.Location == turnTaker.Trash, "trash"), 
                     list, shuffleAfterwards: false, cardSource: base.GetCardSource());
 
