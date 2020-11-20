@@ -33,18 +33,21 @@ namespace Cauldron.Quicksilver
 
         public override void AddTriggers()
         {
-            //When {Quicksilver} is dealt damage, you may destroy this card...
-            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.Target == base.CharacterCard && !dd.IsPretend && dd.Amount > 0 && dd.DamageSource.IsInPlayAndHasGameText && !base.IsBeingDestroyed, new Func<DealDamageAction, IEnumerator>(this.DestroySelfResponse), new TriggerType[]
+            //When {Quicksilver} is dealt damage.
+            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.Target == base.CharacterCard && !dd.IsPretend && dd.Amount > 0 && dd.DamageSource.IsInPlayAndHasGameText && !base.IsBeingDestroyed, DestroySelfResponse, new TriggerType[]
              {
                 TriggerType.WouldBeDealtDamage,
                 TriggerType.DestroySelf
-             }, TriggerTiming.Before, null, false, true, null, false, null, null, false, false);
-            //... If you do, you may play a card.
-            base.AddWhenDestroyedTrigger((DestroyCardAction action) => base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true), TriggerType.PlayCard);
+             }, TriggerTiming.Before);
         }
         private IEnumerator DestroySelfResponse(DealDamageAction action)
         {
-            IEnumerator coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card, cardSource: base.GetCardSource());
+            //... you may destroy this card..
+            IEnumerator coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card,
+                //... If you do, you may play a card.
+                postDestroyAction: () => base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true),
+                optional: true,
+                cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

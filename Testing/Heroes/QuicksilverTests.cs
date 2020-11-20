@@ -336,13 +336,11 @@ namespace CauldronTests
             Card melee = PutInHand("FrenziedMelee");
             Card retort = PlayCard("IronRetort");
 
-            //When {Quicksilver} is dealt damage, you may destroy this card. If you do, you may play a card.
-            DecisionDoNotSelectFunction = true;
-            DecisionDoNotSelectCard = SelectionType.DestroySelf;
-            //DecisionSelectCardToPlay = melee;
+            DecisionSelectCardToPlay = melee;
             DecisionYesNo = false;
             DealDamage(apostate, quicksilver, 2, DamageType.Cold);
             AssertIsInPlay(retort);
+            AssertInHand(quicksilver, melee); //card wasn't played
         }
 
         [Test()]
@@ -357,9 +355,36 @@ namespace CauldronTests
 
             //When {Quicksilver} is dealt damage, you may destroy this card. If you do, you may play a card.
             DecisionSelectCardToPlay = melee;
+            DecisionYesNo = true;
             DealDamage(apostate, quicksilver, 2, DamageType.Cold);
             AssertInTrash(retort);
             AssertIsInPlay(melee);
+        }
+
+        [Test()]
+        public void TestIronRetortDestroyIndestructible()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            DealDamage(apostate, quicksilver, 10, DamageType.Cold);
+            Card melee = PutInHand("FrenziedMelee");
+            Card retort = PlayCard("IronRetort");
+            AssertInPlayArea(quicksilver, retort);
+
+            var effect = new MakeIndestructibleStatusEffect();
+            effect.CardSource = quicksilver.CharacterCard;
+            effect.UntilEndOfNextTurn(quicksilver.TurnTaker);
+            effect.CardsToMakeIndestructible.IsSpecificCard = retort;
+            base.RunCoroutine(GameController.AddStatusEffect(effect, false, GetCardController(quicksilver.CharacterCard).GetCardSource()));
+
+            //When {Quicksilver} is dealt damage, you may destroy this card. If you do, you may play a card.
+            //we want to destroy, but it fails, so no card is played
+            DecisionSelectCardToPlay = melee;
+            DecisionYesNo = true;
+            DealDamage(apostate, quicksilver, 2, DamageType.Cold);
+            AssertInPlayArea(quicksilver, retort);
+            AssertInHand(quicksilver, melee);
         }
     }
 }
