@@ -563,6 +563,63 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestTakAhab_NoCardsUnder()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            Card takAhab = PutInTrash("TakAhab");
+
+            Card baronTop = baron.TurnTaker.Deck.TopCard;
+            Card raTop = ra.TurnTaker.Deck.TopCard;
+            Card legacyTop = legacy.TurnTaker.Deck.TopCard;
+            Card hakaTop = haka.TurnTaker.Deck.TopCard;
+            Card northsparTop = northspar.TurnTaker.Deck.TopCard;
+
+            // Whenever this card has no cards beneath it, place the top card of each hero deck beneath this one.
+            PlayCard(takAhab);
+            AssertUnderCard(takAhab, raTop);
+            AssertUnderCard(takAhab, hakaTop);
+            AssertUnderCard(takAhab, legacyTop);
+            AssertOnTopOfDeck(baronTop);
+            AssertOnTopOfDeck(northsparTop);
+
+            //grab new top cards  for when we will move all cards from under him later
+           baronTop = baron.TurnTaker.Deck.TopCard;
+           raTop = ra.TurnTaker.Deck.TopCard;
+           legacyTop = legacy.TurnTaker.Deck.TopCard;
+           hakaTop = haka.TurnTaker.Deck.TopCard;
+           northsparTop = northspar.TurnTaker.Deck.TopCard;
+
+            MoveAllCards(northspar, takAhab.UnderLocation, northspar.TurnTaker.Trash);
+
+            AssertUnderCard(takAhab, raTop);
+            AssertUnderCard(takAhab, hakaTop);
+            AssertUnderCard(takAhab, legacyTop);
+
+            AssertOnTopOfDeck(baronTop);
+            AssertOnTopOfDeck(northsparTop);
+
+
+        }
+
+        [Test()]
+        public void TestTakAhab_EndOfTurnDiscard()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+            // At the end of the environment turn, discard a card from beneath this one. This card deals the target from that deck with the highest HP X irreducible sonic damage, where X = the number of Waypoints in play plus 2.
+        }
+
+        [Test()]
+        public void TestTakAhab_EndOfTurnDamage()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+            // At the end of the environment turn, discard a card from beneath this one. This card deals the target from that deck with the highest HP X irreducible sonic damage, where X = the number of Waypoints in play plus 2.
+        }
+
 
     }
 }
