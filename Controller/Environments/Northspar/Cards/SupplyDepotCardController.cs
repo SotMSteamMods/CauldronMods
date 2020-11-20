@@ -11,9 +11,13 @@ namespace Cauldron.Northspar
 
         public SupplyDepotCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
         }
 
+        public override bool AskIfCardIsIndestructible(Card card)
+        {
+            return base.IsThirdWaypoint(card);
+        }
 
     }
 }

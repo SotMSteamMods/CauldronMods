@@ -8,6 +8,8 @@ namespace Cauldron.Northspar
     public class NorthsparCardController : CardController
     {
         public static readonly string FrozenKeyword = "frozen";
+        public static readonly string ThirdWaypointKeyword = "third waypoint";
+        public static readonly string TakAhabIdentifier = "TakAhab";
 
         public NorthsparCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -21,12 +23,21 @@ namespace Cauldron.Northspar
 
         protected bool IsTakAhabInPlay()
         {
-            return base.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.Identifier == "TakAhab").Count() > 0;
+            return base.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.Identifier == TakAhabIdentifier).Count() > 0;
         }
 
-        protected IEnumerable FindTakAhabInPlay()
+        protected bool IsThirdWaypoint(Card card)
         {
-            return base.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.Identifier == "TakAhab");
+            return card.DoKeywordsContain(ThirdWaypointKeyword);
+        }
+
+        protected Card FindTakAhabInPlay()
+        {
+            if(!IsTakAhabInPlay())
+            {
+                return null;
+            }
+            return base.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.Identifier == "TakAhab").First();
         }
     }
 }
