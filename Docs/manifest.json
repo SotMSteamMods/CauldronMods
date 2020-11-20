@@ -1,11 +1,11 @@
 {
 	"title": "Cauldron",
-	"author": "Cauldron Mod Team",
+	"author": "Cualdron Mod Team",
 	"description": "Fanmade expansions converted to the digital tabletop.",
-	"namespace":"Cauldron",
+	"namespace":"Cualdron",
 	"dll":"CauldronMods.dll",
 	"decks":{
-		"heroes":[
+		"heroes":{
 			"Baccarat",
 			"DocHavoc",
 			"TheKnight",
@@ -13,18 +13,19 @@
 			"Necro",
 			"Malichae",
 			"TheStranger",
-			"TangoOne"
-		],
-		"villains":[
+			"TangoOne",
+			"Vanish"
+		},
+		"villains":{
 			"Anathema",
 			"Gray",
 			"Tiamat"
-		],
-		"environments":[
+		},
+		"environments":{
 			"FSCContinuanceWanderer",
-			"HalberdExperimentalResearchCenter",
+			"HalberdExperimentalResearchFacility",
 			"StSimeonsCatacombs",
 			"TheWanderingIsle"
-		]
+		}
 	}
 }
