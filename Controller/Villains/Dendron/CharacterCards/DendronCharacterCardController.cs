@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
@@ -53,11 +55,12 @@ namespace Cauldron.Dendron
             {
                 // At the start and end of the villain turn, if there are fewer than {H - 2} tattoos in play,
                 // play the top card of the villain deck
-                base.SideTriggers.Add(base.AddEndOfTurnTrigger(taker => taker == base.TurnTaker, 
-                    StartOfTurnResponse, new TriggerType[]
-                {
-                    TriggerType.PlayCard
-                }));
+
+                base.SideTriggers.Add(base.AddStartOfTurnTrigger(taker => taker == base.TurnTaker,
+                    CheckTattooCountResponse, TriggerType.PlayCard));
+
+                base.SideTriggers.Add(base.AddEndOfTurnTrigger(taker => taker == base.TurnTaker,
+                    CheckTattooCountResponse, TriggerType.PlayCard));
 
                 if (this.IsGameAdvanced)
                 {
@@ -65,20 +68,29 @@ namespace Cauldron.Dendron
                     base.AddIncreaseDamageTrigger(dda => dda.DamageSource != null && IsTattoo(dda.DamageSource.Card),
                         AdvancedTattooDamageIncrease);
                 }
+
+                base.AddDefeatedIfMovedOutOfGameTriggers();
             }
             else
             {
                 // At the start and end of the villain turn, play the top card of the villain deck.
+                base.SideTriggers.Add(base.AddStartOfTurnTrigger(taker => taker == base.TurnTaker,
+                    PlayCardResponse, TriggerType.PlayCard));
+
+                base.SideTriggers.Add(base.AddEndOfTurnTrigger(taker => taker == base.TurnTaker,
+                    PlayCardResponse, TriggerType.PlayCard));
 
                 if (this.IsGameAdvanced)
                 {
                     // At the start of the villain turn, {Dendron} regains 5 HP.
                     base.AddStartOfTurnTrigger(tt => tt.Equals(this.TurnTaker), GainHpResponse, TriggerType.GainHP);
                 }
-            }
 
-            base.AddDefeatedIfDestroyedTriggers();
+                base.AddDefeatedIfDestroyedTriggers();
+            }
         }
+
+        public override bool CanBeDestroyed => base.CharacterCard.IsFlipped;
 
         public override IEnumerator DestroyAttempted(DestroyCardAction destroyCard)
         {
@@ -141,14 +153,41 @@ namespace Cauldron.Dendron
             yield break;
         }
 
-        private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
+        private IEnumerator CheckTattooCountResponse(PhaseChangeAction pca)
         {
-            yield break;
+            // If there are fewer than {H - 2} tattoos in play, play the top card of the villain deck
+
+            int tattooThreshold = this.Game.H - 2;
+
+            IEnumerable<Card> tattoosInPlay = base.GameController.FindCardsWhere(card => IsTattoo(card) && card.IsInPlay);
+            if (tattoosInPlay.Count() < tattooThreshold)
+            {
+                yield break;
+            }
+
+            // Tattoos in play don't meet the cutoff, play the top card of the villain deck
+            IEnumerator playCardRoutine = base.GameController.PlayTopCardOfLocation(this.TurnTakerController, this.TurnTaker.Deck);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(playCardRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(playCardRoutine);
+            }
         }
 
-        private bool IsTattoo(Card card)
+        private IEnumerator PlayCardResponse(PhaseChangeAction pca)
         {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "tattoo");
+            IEnumerator playCardRoutine = base.GameController.PlayTopCardOfLocation(this.TurnTakerController, this.TurnTaker.Deck);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(playCardRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(playCardRoutine);
+            }
         }
 
         private IEnumerator GainHpResponse(PhaseChangeAction pca)
@@ -162,6 +201,11 @@ namespace Cauldron.Dendron
             {
                 base.GameController.ExhaustCoroutine(gainHpRoutine);
             }
+        }
+
+        private bool IsTattoo(Card card)
+        {
+            return card != null && base.GameController.DoesCardContainKeyword(card, "tattoo");
         }
     }
 }
