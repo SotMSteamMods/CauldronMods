@@ -11,7 +11,6 @@ namespace Cauldron.Vanish
     {
         public JauntingReflexCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddTriggers()
@@ -90,8 +89,6 @@ namespace Cauldron.Vanish
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-
-            
         }
     }
 }
