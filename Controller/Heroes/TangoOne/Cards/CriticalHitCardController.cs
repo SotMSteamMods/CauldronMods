@@ -65,8 +65,8 @@ namespace Cauldron.TangoOne
 
             // Move card from top of their deck to the trash
             List<MoveCardAction> moveCardActions = new List<MoveCardAction>();
-            IEnumerator discardCardRoutine = base.GameController.DiscardTopCard(this.TurnTaker.Deck, moveCardActions,
-                null, this.TurnTaker, base.GetCardSource());
+            IEnumerator discardCardRoutine = base.GameController.DiscardTopCard(this.TurnTaker.Deck, moveCardActions, 
+                card => true, this.TurnTaker, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(discardCardRoutine);
