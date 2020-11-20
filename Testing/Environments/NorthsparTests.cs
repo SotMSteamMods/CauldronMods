@@ -385,7 +385,86 @@ namespace CauldronTests
             DestroyCard(mdp, haka.CharacterCard);
             AssertInTrash(mdp);
 
+        }
 
+        [Test()]
+        public void TestMakeshiftShelter_Indestrucible()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            Card makeshift = PlayCard("MakeshiftShelter");
+            //This card and Supply Depot are indestructible.
+            DestroyCard(makeshift, ra.CharacterCard);
+            AssertInPlayArea(northspar, makeshift);
+        }
+
+        [Test()]
+        public void TestMakeshiftShelter_MakesSupplyDepotIndestructible()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            Card makeshift = PlayCard("MakeshiftShelter");
+            Card supply = PlayCard("SupplyDepot");
+            //This card and Supply Depot are indestructible.
+            DestroyCard(supply, ra.CharacterCard);
+            AssertInPlayArea(northspar, supply);
+        }
+
+        [Test()]
+        public void TestMakeshiftShelterStartOfTurn_NoTakAhabInTrash()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            Card makeshift = PlayCard("MakeshiftShelter");
+            
+            Card bitter = PutInTrash("BitterCold");
+            //At the start of the environment turn, you may shuffle a card from the environment trash into the deck. if Tak Ahab is in the environment trash, shuffle him into the deck."
+            DecisionYesNo = true;
+            QuickShuffleStorage(northspar.TurnTaker.Deck);
+            GoToStartOfTurn(northspar);
+            AssertInDeck(bitter);
+            QuickShuffleCheck(1);
+        }
+
+        [Test()]
+        public void TestMakeshiftShelterStartOfTurn_WithTakAhabInTrash()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            Card makeshift = PlayCard("MakeshiftShelter");
+            Card bitter = PutInTrash("BitterCold");
+            Card takAhab = PutInTrash("TakAhab");
+
+            //At the start of the environment turn, you may shuffle a card from the environment trash into the deck. if Tak Ahab is in the environment trash, shuffle him into the deck."
+            DecisionYesNo = true;
+            QuickShuffleStorage(northspar.TurnTaker.Deck);
+            GoToStartOfTurn(northspar);
+            AssertInDeck(bitter);
+            AssertInDeck(takAhab);
+            QuickShuffleCheck(2);
+        }
+
+        [Test()]
+        public void TestMakeshiftShelterStartOfTurn_WithTakAhabInTrash_OptionalShuffle()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            Card makeshift = PlayCard("MakeshiftShelter");
+            Card bitter = PutInTrash("BitterCold");
+            Card takAhab = PutInTrash("TakAhab");
+
+            //At the start of the environment turn, you may shuffle a card from the environment trash into the deck. if Tak Ahab is in the environment trash, shuffle him into the deck."
+            DecisionYesNo = false;
+            QuickShuffleStorage(northspar.TurnTaker.Deck);
+            GoToStartOfTurn(northspar);
+            AssertInTrash(bitter);
+            AssertInDeck(takAhab);
+            QuickShuffleCheck(1);
         }
 
 
