@@ -25,6 +25,7 @@ namespace Cauldron.TangoOne
         public override void AddTriggers()
         {
             base.AddTrigger<DestroyCardAction>(destroyCard => destroyCard.WasCardDestroyed
+                && destroyCard.ResponsibleCard != null 
                 && destroyCard.ResponsibleCard.Equals(this.Card.Owner.CharacterCard)
                 && base.GameController.IsCardVisibleToCardSource(destroyCard.CardToDestroy.Card,
                     base.GetCardSource()),
