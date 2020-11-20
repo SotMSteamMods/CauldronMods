@@ -464,7 +464,21 @@ namespace CauldronTests
             AssertNumberOfCardsInRevealed(env, 0);
         }
 
+        public void TacticalRelocation_()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
 
+            DecisionSelectTurnTakers = new TurnTaker[] { ra.TurnTaker, wraith.TurnTaker };
+            QuickHPStorage(baron, vanish, ra, wraith);
+            //will use the base power and deal some damage or something, don't matter. we just check it was used.
+            var card = PlayCard("TacticalRelocation");
+            AssertInTrash(vanish, card);
+
+            QuickHPCheck(0, 0, -3, -3);
+
+            Assert.Fail("Test not implemented");
+        }
 
         [Test]
         public void Blink()
@@ -485,5 +499,70 @@ namespace CauldronTests
             AssertInHand(drawn);
             AssertInPlayArea(vanish, played);
         }
+
+        [Test]
+        public void JauntingReflex_Play()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            var card = PlayCard("JauntingReflex");
+            AssertInPlayArea(vanish, card);
+
+        }
+
+
+        [Test]
+        public void JauntingReflex_ReactionPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+
+            var card = PlayCard("JauntingReflex");
+            AssertInPlayArea(vanish, card);
+
+
+
+
+
+        }
+
+        [Test]
+        public void JauntingReflex_UsePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            var card = PlayCard("JauntingReflex");
+            AssertInPlayArea(vanish, card);
+
+            QuickHandStorage(vanish, ra, wraith);
+            UsePower(card);
+            AssertInTrash(card);
+            QuickHandCheck(2, 0, 0);
+        }
+
+        [Test]
+        public void JauntingReflex_UsePowerIndesructible()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            var card = PlayCard("JauntingReflex");
+            AssertInPlayArea(vanish, card);
+
+            var effect = new MakeIndestructibleStatusEffect();
+            effect.CardsToMakeIndestructible.IsSpecificCard = card;
+            effect.UntilThisTurnIsOver(base.GameController.Game);
+            base.RunCoroutine(GameController.AddStatusEffect(effect, false, base.GetCardController(card).GetCardSource()));
+
+            QuickHandStorage(vanish, ra, wraith);
+            UsePower(card);
+            //card not destroyed, no cards drawn
+            AssertInPlayArea(vanish, card);
+            QuickHandCheck(0, 0, 0);
+        }
+
     }
 }
