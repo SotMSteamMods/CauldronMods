@@ -877,12 +877,89 @@ namespace CauldronTests
 
             QuickHPStorage(baron, vanish, ra, wraith);
             DecisionSelectCards = sequence;
-            
+
             UsePower(card);
 
             QuickHPCheck(-5, 0, 0, 0);
         }
 
+        [Test]
+        public void Forewarned_Yes()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
 
+            RemoveMobileDefensePlatform();
+
+            DiscardAllCards(vanish, ra, wraith);
+
+            var card = PlayCard("Forewarned");
+            AssertInPlayArea(vanish, card);
+
+            DecisionYesNo = true;
+
+            QuickHandStorage(vanish, ra, wraith);
+            GoToStartOfTurn(vanish);
+
+            QuickHandCheck(3, 3, 3);
+            AssertInTrash(vanish, card);
+        }
+
+        [Test]
+        public void Forewarned_No()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            RemoveMobileDefensePlatform();
+
+            DiscardAllCards(vanish, ra, wraith);
+
+            var card = PlayCard("Forewarned");
+            AssertInPlayArea(vanish, card);
+
+            DecisionYesNo = false;
+
+            QuickHandStorage(vanish, ra, wraith);
+            GoToStartOfTurn(vanish);
+            QuickHandCheck(0, 0, 0);
+            AssertInPlayArea(vanish, card);
+
+            //check that the decision doesn't trigger on other starts
+            DecisionYesNo = true;
+            GoToStartOfTurn(ra);
+            QuickHandCheck(0, 0, 0);
+
+            AssertInPlayArea(vanish, card);
+        }
+
+        [Test]
+        public void Forewarned_YesIndestructible()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            RemoveMobileDefensePlatform();
+
+            DiscardAllCards(vanish, ra, wraith);
+
+            var card = PlayCard("Forewarned");
+            AssertInPlayArea(vanish, card);
+
+            DecisionYesNo = true;
+
+            var effect = new MakeIndestructibleStatusEffect();
+            effect.UntilCardLeavesPlay(card);
+            effect.CardsToMakeIndestructible.IsSpecificCard = card;
+            effect.CardSource = card;
+            var cardSource = GetCardController(card).GetCardSource();
+            RunCoroutine(GameController.AddStatusEffect(effect, true, cardSource));
+
+            QuickHandStorage(vanish, ra, wraith);
+            GoToStartOfTurn(vanish);
+
+            QuickHandCheck(0, 0, 0);
+            AssertInPlayArea(vanish, card);
+        }
     }
 }

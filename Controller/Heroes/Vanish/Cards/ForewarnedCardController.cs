@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using Handelabra.Sentinels.Engine.Controller;
@@ -10,7 +11,62 @@ namespace Cauldron.Vanish
     {
         public ForewarnedCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
 
+        public override void AddTriggers()
+        {
+            AddStartOfTurnTrigger(tt => tt == this.TurnTaker, StartOfTurnResponse, new TriggerType[]
+                {
+                    TriggerType.DestroySelf,
+                    TriggerType.DrawCard,
+                });
+        }
+
+        private IEnumerator StartOfTurnResponse(PhaseChangeAction action)
+        {
+            var results = new List<YesNoCardDecision>();
+
+            var coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.DestroyCard, Card, action: action, storedResults: results, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            if (DidPlayerAnswerYes(results))
+            {
+                coroutine = GameController.DestroyCard(DecisionMaker, Card,
+                                actionSource: action,
+                                postDestroyAction: DestroyCardReponse,
+                                cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+        }
+
+        private IEnumerator DestroyCardReponse()
+        {
+            var cardSource = GetCardSource();
+            foreach (var httc in GameController.HeroTurnTakerControllers.Where(httc => GameController.CanDrawCards(httc, cardSource) && httc.HeroTurnTaker.NumberOfCardsInHand < 3))
+            {
+                var coroutine = DrawCardsUntilHandSizeReached(httc, 3);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
         }
     }
 }
