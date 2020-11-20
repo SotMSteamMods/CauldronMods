@@ -22,9 +22,19 @@ namespace CauldronTests
             DealDamage(villain, vanish, 2, DamageType.Melee);
         }
 
+        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
+        {
+            foreach (var id in identifiers)
+            {
+                var card = GetCard(id);
+                AssertCardHasKeyword(card, keyword, false);
+            }
+        }
+
         #endregion HelperFunctions
 
         [Test()]
+        [Order(0)]
         public void VanishLoad()
         {
             SetupGameController("BaronBlade", "Cauldron.Vanish", "Haka", "Bunker", "TheScholar", "Megalopolis");
@@ -41,6 +51,48 @@ namespace CauldronTests
             }
 
             Assert.AreEqual(26, vanish.CharacterCard.HitPoints);
+        }
+
+        [Test()]
+        public void VanishDecklist()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            AssertHasKeyword("ongoing", new[]
+            {
+                "ConcussiveBurst",
+                "JauntingReflex",
+                "Elusive",
+                "TeleportBarrage",
+                "Forewarned",
+                "BlindsideJump",
+            });
+
+            AssertHasKeyword("equipment", new[]
+            {
+                "FocusingGauntlet",
+                "TranslocationAccelerator",
+            });
+
+            AssertHasKeyword("limited", new[]
+            {
+                "ConcussiveBurst",
+                "FocusingGauntlet",
+                "JauntingReflex",
+                "TranslocationAccelerator",
+                "TeleportBarrage",
+                "BlindsideJump",
+            });
+
+            AssertHasKeyword("one-shot", new[]
+            {
+                "FlickeringStrike",
+                "FlashRecon",
+                "TacticalRelocation",
+                "Blink",
+                "AbductAndAbandon",
+            });
         }
 
         [Test]
@@ -662,11 +714,11 @@ namespace CauldronTests
             var target = GetCardInPlay("MobileDefensePlatform");
 
             PlayCard("FixedPoint");
-            
+
             DecisionSelectCard = target;
 
             var card = PlayCard("AbductAndAbandon");
-            
+
             //AssertInTrash(vanish, card);
             //AssertOnTopOfDeck(target);
 
@@ -704,6 +756,15 @@ namespace CauldronTests
             QuickHPCheck(0, 0, 0, 0, -2);
         }
 
+        [Test]
+        public void Elusive_Play()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            var card = PlayCard("Elusive");
+            AssertInPlayArea(vanish, card);
+        }
 
     }
 }
