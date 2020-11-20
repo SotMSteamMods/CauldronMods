@@ -26,7 +26,7 @@ namespace Cauldron.Vanish
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            var selectCardsDecision = new SelectCardsDecision(GameController, DecisionMaker, c => c.IsInLocation(DecisionMaker.HeroTurnTaker.Hand), SelectionType.DiscardCard, null, false, 0, cardSource: GetCardSource());
+            var selectCardsDecision = new SelectCardsDecision(GameController, DecisionMaker, c => c.IsInLocation(DecisionMaker.HeroTurnTaker.Hand), SelectionType.DiscardCard, null, false, 0, eliminateOptions: true, cardSource: GetCardSource());
             coroutine = GameController.SelectCardsAndDoAction(selectCardsDecision, (SelectCardDecision d) => DiscardAndDealDamage(d), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
