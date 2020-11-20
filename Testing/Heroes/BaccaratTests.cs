@@ -624,6 +624,7 @@ namespace CauldronTests
             Card saint = GetCard("AceOfSaints");
             IEnumerable<Card> trashCards = new Card[] { trick1, trick2, saint };
             PutInTrash(trashCards);
+            DecisionsYesNo = new bool[] { true };
 
             Card house = GetCard("BringDownTheHouse");
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
@@ -680,7 +681,7 @@ namespace CauldronTests
             Card house = GetCard("BringDownTheHouse");
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
             PlayCard(house);
-            QuickShuffleCheck(0);
+            QuickShuffleCheck(3);
             //should have 2 cards in the trash, bring down the house and saints
             AssertNumberOfCardsInTrash(baccarat, 2);
             AssertInTrash(saint);
