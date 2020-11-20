@@ -411,5 +411,68 @@ namespace CauldronTests
             AssertInPlayArea(quicksilver, retort);
             AssertInHand(quicksilver, melee);
         }
+
+        [Test()]
+        public void TestLiquidMetalSkipCombo1Finisher()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+            //Reveal cards from the top of your deck until you reveal a Combo and a Finisher and put them into your hand. Shuffle the other revealed cards back into your deck.
+
+            Card spear = PutOnDeck("CoalescingSpear");
+            Card retort = PutOnDeck("IronRetort");
+            Card forest = PutOnDeck("ForestOfNeedles");
+            Card breaker = PutOnDeck("GuardBreaker");
+            //AlloyStorm
+            DecisionDoNotSelectFunction = true;
+
+            PlayCard("LiquidMetal");
+            AssertInHand(forest, spear);
+            AssertInDeck(quicksilver, new Card[] { retort, breaker });
+        }
+
+        [Test()]
+        public void TestLiquidMetalSkipCombo1Combo()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+            //Reveal cards from the top of your deck until you reveal a Combo and a Finisher and put them into your hand. Shuffle the other revealed cards back into your deck.
+
+            Card forest = PutOnDeck("ForestOfNeedles");
+            Card retort = PutOnDeck("IronRetort");
+            Card storm = PutOnDeck("AlloyStorm");
+            Card spear = PutOnDeck("CoalescingSpear");
+            DecisionDoNotSelectFunction = true;
+
+            PlayCard("LiquidMetal");
+            AssertInHand(forest, spear);
+            AssertInDeck(quicksilver, new Card[] { retort, storm });
+        }
+
+        [Test()]
+        public void TestMalleableArmor()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            //If {Quicksilver} would be reduced from greater than 1 HP to 0 or fewer HP, restore her to 1HP.
+            PlayCard("MalleableArmor");
+
+            //Starting HP: 2 - Target HP: 0
+            SetHitPoints(quicksilver.CharacterCard, 2);
+            QuickHPStorage(quicksilver);
+            DealDamage(apostate, quicksilver, 2, DamageType.Melee);
+            AssertHitPoints(quicksilver, 1);
+
+            //Starting HP: 2 - Target HP: -1
+            SetHitPoints(quicksilver.CharacterCard, 2);
+            QuickHPStorage(quicksilver);
+            DealDamage(apostate, quicksilver, 3, DamageType.Melee);
+            AssertHitPoints(quicksilver, 1);
+
+            //Starting HP: 1 - Target HP: -2
+            DealDamage(apostate, quicksilver, 3, DamageType.Melee);
+            AssertIncapacitated(quicksilver);
+        }
     }
 }

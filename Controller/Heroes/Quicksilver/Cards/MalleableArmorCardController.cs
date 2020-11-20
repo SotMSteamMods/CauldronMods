@@ -14,13 +14,36 @@ namespace Cauldron.Quicksilver
         public override void AddTriggers()
         {
             //If {Quicksilver} would be reduced from greater than 1 HP to 0 or fewer HP...
-            base.AddTrigger(base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Target == base.CharacterCard && action.Target.HitPoints > 1 && action.Target.HitPoints - action.Amount <= 0, (DealDamageAction action) => DealDamageResponse(action), TriggerType.GainHP, TriggerTiming.After));
+            base.AddTrigger<DealDamageAction>(delegate (DealDamageAction action)
+            {
+                if (action.Target == base.CharacterCard && base.CharacterCard.HitPoints > 1)
+                {
+                    int amount = action.Amount;
+                    int? hitPoints = action.Target.HitPoints;
+                    return amount >= hitPoints.GetValueOrDefault() & hitPoints != null;
+                }
+                return false;
+            }, new Func<DealDamageAction, IEnumerator>(this.DealDamageResponse), new TriggerType[]
+            {
+                TriggerType.WouldBeDealtDamage,
+                TriggerType.GainHP
+            }, TriggerTiming.Before);
         }
 
         private IEnumerator DealDamageResponse(DealDamageAction action)
         {
             //...restore her to 1HP.
-            base.CharacterCard.SetHitPoints(1);
+            IEnumerator coroutine = base.CancelAction(action);
+            base.CharacterCard.SetHitPoints(action.Amount + 1);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            //base.CharacterCard.SetHitPoints(action.Amount + 1);
             yield break;
         }
     }
