@@ -11,6 +11,10 @@ namespace Cauldron.TheWanderingIsle
     {
         public AmphibiousAssaultCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
+
+        public override void AddTriggers()
+        {
             //At the start of the environment turn, if any hero cards were played this round, play the top card of the villain deck. Then, destroy this card.
             base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.StartOfTurnResponse, new TriggerType[] { TriggerType.PlayCard, TriggerType.DestroySelf });
         }

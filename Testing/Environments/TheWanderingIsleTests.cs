@@ -233,6 +233,31 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestAmphibiousAssaultNotInPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //stack villain deck to not play hasten doom
+            var topCard = PutOnDeck("MobileDefensePlatform");
+
+            //don't play a hero card
+            GoToPlayCardPhase(ra);
+
+            GoToPlayCardPhase(haka);
+                        
+            //Issue #109 - villain deck is playing a card at the beginning of the turn
+            AssertNotInPlay(topCard);
+            //AmphibiousAssult isn't in play, so the top card of the villain shouldn't be played
+            
+            GoToStartOfTurn(isle);
+
+            //and still no
+            AssertNotInPlay(topCard);
+        }
+
+
+        [Test()]
         public void TestAncientParasiteHeroDamageMoveCard()
         {
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
