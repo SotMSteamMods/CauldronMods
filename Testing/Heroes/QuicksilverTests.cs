@@ -203,7 +203,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestFrenziedMelee()
+        public void TestFrenziedMeleeYesRedirect()
         {
             SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
             StartGame();
@@ -226,15 +226,10 @@ namespace CauldronTests
             QuickHPCheck(-3);
 
             //The first time a hero target would be dealt damage by a non-hero target during the villain turn, you may redirect that damage to {Quicksilver}.
+            DecisionYesNo = true;
             QuickHPStorage(ra.CharacterCard, quicksilver.CharacterCard);
             DealDamage(tony, ra, 2, DamageType.Melee);
             QuickHPCheck(0, -3);
-
-            QuickHPStorage(ra.CharacterCard, quicksilver.CharacterCard);
-            DealDamage(apostate, ra, 2, DamageType.Melee);
-            QuickHPCheck(-3, 0);
-
-            GoToDrawCardPhase(ra);
 
             QuickHPStorage(ra.CharacterCard, quicksilver.CharacterCard);
             DealDamage(apostate, ra, 2, DamageType.Melee);
@@ -248,6 +243,36 @@ namespace CauldronTests
 
             QuickHPStorage(ra.CharacterCard, quicksilver.CharacterCard);
             DealDamage(apostate, ra, 2, DamageType.Melee);
+            QuickHPCheck(-3, 0);
+        }
+
+        [Test()]
+        public void TestFrenziedMeleeNoRedirect()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+            GoToPlayCardPhase(apostate);
+
+            Card tony = PlayCard("TonyTaurus");
+            PlayCard("FrenziedMelee");
+
+            //Increase all damage dealt by 1.
+            QuickHPStorage(apostate);
+            DealDamage(ra, apostate, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            QuickHPStorage(apostate);
+            DealDamage(apostate, apostate, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            QuickHPStorage(ra);
+            DealDamage(ra, ra, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            //The first time a hero target would be dealt damage by a non-hero target during the villain turn, you may redirect that damage to {Quicksilver}.
+            DecisionYesNo = false;
+            QuickHPStorage(ra.CharacterCard, quicksilver.CharacterCard);
+            DealDamage(tony, ra, 2, DamageType.Melee);
             QuickHPCheck(-3, 0);
         }
 
