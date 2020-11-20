@@ -92,7 +92,7 @@ namespace CauldronTests
             //prep trash
             PutInTrash(trashCards);
             DecisionSelectFunction = 1;
-            DecisionDoNotSelectCard = SelectionType.MoveCard;
+            DecisionDoNotSelectCard = SelectionType.PutIntoPlay;
             GoToUsePowerPhase(baccarat);
 
             //By discarding 3 cards then drawing 0 from the two Hold Em's net -3
@@ -675,7 +675,7 @@ namespace CauldronTests
             IEnumerable<Card> trashCards = new Card[] { trick1, trick2, saint, toss1, toss2, ace1, ace2 };
             PutInTrash(trashCards);
 
-            DecisionsYesNo = new bool[]{ true, true, true };
+            DecisionsYesNo = new bool[] { true, true, true };
             QuickShuffleStorage(baccarat.TurnTaker.Deck);
             Card house = GetCard("BringDownTheHouse");
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
@@ -974,7 +974,7 @@ namespace CauldronTests
             //Discard the top card of your deck.
             //Reveal cards from the top of your deck until you reveal a trick. Shuffle the other cards back into your deck and put the trick into play.
             AssertNumberOfCardsInTrash(baccarat, 3);
-            foreach(Card c in baccarat.TurnTaker.Trash.Cards)
+            foreach (Card c in baccarat.TurnTaker.Trash.Cards)
             {
                 if (c.DoKeywordsContain("trick"))
                 {
@@ -988,7 +988,7 @@ namespace CauldronTests
             AssertNumberOfCardsInRevealed(baccarat, 0);
             Assert.IsTrue(cheaps == 1 && tricks == 2);
 
-            
+
         }
 
         [Test()]
