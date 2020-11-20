@@ -95,8 +95,8 @@ namespace Cauldron.Dendron
             }
 
             // Find hero with fewest cards in play
-            List<TurnTaker> leastCardsInPlayResults = new List<TurnTaker>();
-            IEnumerator heroWithLeastCardsInPlayRoutine = base.FindHeroWithFewestCardsInPlay(leastCardsInPlayResults);
+            List<TurnTaker> fewestCardsInPlayResults = new List<TurnTaker>();
+            IEnumerator heroWithLeastCardsInPlayRoutine = base.FindHeroWithFewestCardsInPlay(fewestCardsInPlayResults);
 
             if (base.UseUnityCoroutines)
             {
@@ -107,14 +107,17 @@ namespace Cauldron.Dendron
                 base.GameController.ExhaustCoroutine(heroWithLeastCardsInPlayRoutine);
             }
 
-            if (leastCardsInPlayResults.Any())
+            if (fewestCardsInPlayResults.Any())
             {
                 // Destroy 1 equipment and 1 ongoing from the hero with the fewest cards in play
 
-                HeroTurnTakerController fewestCardsHttc = FindTurnTakerController(leastCardsInPlayResults.First().CharacterCard.Owner).ToHero();
+                HeroTurnTakerController fewestCardsHttc = FindTurnTakerController(fewestCardsInPlayResults.First().CharacterCard.Owner).ToHero();
 
-                IEnumerator destroyOneOngoingRoutine = base.GameController.SelectAndDestroyCards(fewestCardsHttc, new LinqCardCriteria(card => card.IsOngoing), CardsToDestroyFewestCards, cardSource: this.GetCardSource());
-                IEnumerator destroyOneEquipmentRoutine = base.GameController.SelectAndDestroyCards(fewestCardsHttc, new LinqCardCriteria(card => IsEquipment(card)), CardsToDestroyFewestCards, cardSource: this.GetCardSource());
+                IEnumerator destroyOneOngoingRoutine = base.GameController.SelectAndDestroyCards(fewestCardsHttc, 
+                    new LinqCardCriteria(card => card.IsOngoing && card.Owner == fewestCardsHttc.HeroTurnTaker), CardsToDestroyFewestCards, cardSource: this.GetCardSource());
+
+                IEnumerator destroyOneEquipmentRoutine = base.GameController.SelectAndDestroyCards(fewestCardsHttc, 
+                    new LinqCardCriteria(card => IsEquipment(card) && card.Owner == fewestCardsHttc.HeroTurnTaker), CardsToDestroyFewestCards, cardSource: this.GetCardSource());
 
                 if (base.UseUnityCoroutines)
                 {
@@ -143,12 +146,15 @@ namespace Cauldron.Dendron
 
             if (mostCardsInPlayResults.Any())
             {
-                // Destroy 2 equipment and 2 ongoing from the hero with the fewest cards in play
+                // Destroy 2 equipment and 2 ongoing from the hero with the most cards in play
 
                 HeroTurnTakerController mostCardsHttc = FindTurnTakerController(mostCardsInPlayResults.First().CharacterCard.Owner).ToHero();
 
-                IEnumerator destroyTwoOngoingRoutine = base.GameController.SelectAndDestroyCards(mostCardsHttc, new LinqCardCriteria(card => card.IsOngoing), CardsToDestroyMostCards, cardSource: this.GetCardSource());
-                IEnumerator destroyTwoEquipmentRoutine = base.GameController.SelectAndDestroyCards(mostCardsHttc, new LinqCardCriteria(card => IsEquipment(card)), CardsToDestroyMostCards, cardSource: this.GetCardSource());
+                IEnumerator destroyTwoOngoingRoutine = base.GameController.SelectAndDestroyCards(mostCardsHttc, 
+                    new LinqCardCriteria(card => card.IsOngoing && card.Owner == mostCardsHttc.HeroTurnTaker), CardsToDestroyMostCards, cardSource: this.GetCardSource());
+
+                IEnumerator destroyTwoEquipmentRoutine = base.GameController.SelectAndDestroyCards(mostCardsHttc, 
+                    new LinqCardCriteria(card => IsEquipment(card) && card.Owner == mostCardsHttc.HeroTurnTaker), CardsToDestroyMostCards, cardSource: this.GetCardSource());
 
                 if (base.UseUnityCoroutines)
                 {
