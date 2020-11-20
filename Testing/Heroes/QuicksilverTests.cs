@@ -474,5 +474,103 @@ namespace CauldronTests
             DealDamage(apostate, quicksilver, 3, DamageType.Melee);
             AssertIncapacitated(quicksilver);
         }
+
+        [Test()]
+        public void TestMercuryStrikeSkipCombo()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            Card sword = GetCardInPlay("Condemnation");
+            DecisionSelectTargets = new Card[] { sword, apostate.CharacterCard };
+            DecisionDoNotSelectFunction = true;
+
+            //{Quicksilver} deals 1 target 2 melee damage, then 1 target 1 melee damage.
+            QuickHPStorage(apostate.CharacterCard, sword);
+            PlayCard("MercuryStrike");
+            QuickHPCheck(-1, -1);
+
+            //Same Target
+            DecisionSelectTargets = new Card[] { apostate.CharacterCard, apostate.CharacterCard };
+            QuickHPStorage(apostate.CharacterCard, sword);
+            PlayCard("MercuryStrike");
+            QuickHPCheck(-3, 0);
+        }
+
+        [Test()]
+        public void TestStressHardening()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+            PlayCard("StressHardening");
+            //No damage no increase
+            QuickHPStorage(apostate);
+            DealDamage(quicksilver, apostate, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //If {Quicksilver} currently has less than her max HP, increase damage she deals to non-hero targets by 1.
+            DealDamage(apostate, quicksilver, 3, DamageType.Melee);
+            QuickHPStorage(apostate);
+            DealDamage(quicksilver, apostate, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            //If {Quicksilver} has 10 or fewer HP, increase damage she deals to non-hero targets by an additional 1.
+            SetHitPoints(quicksilver, 10);
+            QuickHPStorage(apostate);
+            DealDamage(quicksilver, apostate, 2, DamageType.Melee);
+            QuickHPCheck(-4);
+        }
+
+        [Test()]
+        public void TestTestSubjectHalberd()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            DealDamage(apostate, quicksilver, 15, DamageType.Melee);
+            GoToPlayCardPhase(quicksilver);
+
+            QuickHPStorage(quicksilver);
+            PlayCard("TestSubjectHalberd");
+            //{Quicksilver} regains 6HP.
+            QuickHPCheck(6);
+            //Immediately end your turn.
+            AssertPhaseActionCount(-1);
+            EnterNextTurnPhase();
+            AssertCurrentTurnPhase(quicksilver, Phase.End);
+        }
+
+        [Test()]
+        public void TestViciousMemories()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            GoToPlayCardPhase(quicksilver);
+            PlayCard("ViciousMemories");
+            GoToDrawCardPhase(quicksilver);
+            //You may draw an extra card during your draw phase.
+            AssertPhaseActionCount(2);
+
+            //Don't play or power then get 3rd draw
+            GoToDrawCardPhase(quicksilver);
+            //You may draw an extra card during your draw phase.
+            AssertPhaseActionCount(3);
+        }
+
+        [Test()]
+        public void TestWhisperingSteelSkipCombo()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            Card sword = GetCardInPlay("Condemnation");
+            DecisionSelectTarget = sword;
+            DecisionDoNotSelectFunction = true;
+            //{Quicksilver} deals 1 target 2 irreducible melee damage.
+            QuickHPStorage(sword);
+            PlayCard("WhisperingSteel");
+            QuickHPCheck(-2);
+        }
     }
 }
