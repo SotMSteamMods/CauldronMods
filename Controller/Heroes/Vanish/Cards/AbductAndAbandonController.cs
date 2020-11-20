@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using Handelabra.Sentinels.Engine.Controller;
@@ -10,7 +11,46 @@ namespace Cauldron.Vanish
     {
         public AbductAndAbandonCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
 
+        public override IEnumerator Play()
+        {
+            var scd = new SelectCardDecision(GameController, DecisionMaker, SelectionType.MoveCardOnDeck, GameController.GetAllCards(),
+                additionalCriteria: c => !c.IsCharacter && c.IsInPlay,
+                cardSource: GetCardSource());
+            var coroutine = GameController.SelectCardAndDoAction(scd, SelectCardReponse);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        private IEnumerator SelectCardReponse(SelectCardDecision scd)
+        {
+            if (scd.SelectedCard != null)
+            {
+                var card = scd.SelectedCard;
+
+                var coroutine = GameController.MoveCard(DecisionMaker, card, card.Owner.Deck,
+                                    showMessage: true,
+                                    decisionSources: new IDecision[] { scd },
+                                    evenIfIndestructible: false,
+                                    cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
         }
     }
 }
