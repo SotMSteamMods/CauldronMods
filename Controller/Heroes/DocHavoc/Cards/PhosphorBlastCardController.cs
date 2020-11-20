@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,8 +27,8 @@ namespace Cauldron.DocHavoc
             //{DocHavoc} deals each target 1 radiant damage.
             List<DealDamageAction> storedDamageResults = new List<DealDamageAction>();
 
-            IEnumerator routine = base.GameController.DealDamage(this.HeroTurnTakerController, this.Card, (Func<Card, bool>) (c => c.IsTarget),
-                DamageAmount, DamageType.Radiant, storedResults: storedDamageResults, cardSource: this.GetCardSource());
+            IEnumerator routine =  base.DealDamage(this.CharacterCard, c => c.IsTarget && c.IsInPlayAndHasGameText, 
+                DamageAmount, DamageType.Radiant, storedResults: storedDamageResults);
 
             if (base.UseUnityCoroutines)
             {

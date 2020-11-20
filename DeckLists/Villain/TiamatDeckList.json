@@ -55,7 +55,7 @@
             ],
             "difficulty": 1,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Screeee! Raoooargh! Khhhaaazzt!",
                 "TheKnightCharacter": "The Knight placeholder",
                 "BerzerkerTheKnightCharacter": "The Berzerker Knight placeholder",
                 "FairTheKnightCharacter": "The Fair Knight placeholder",
@@ -476,7 +476,7 @@
             "flippedBody": "Winter, Decapitated",
             "difficulty": 1,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "DrooooooHhhhhreaaaAAAAGHH!",
                 "NecroCharacter": "Necro placeholder",
                 "WardenOfChaosNecroCharacter": "Warden of Chaos Necro placeholder",
                 "1929NecroCharacter": "Necro 1929 placeholder"

@@ -27,7 +27,7 @@ namespace Cauldron.Necro
 
             //Option: 2 Daeal 1 Undead Target 2 Toxic damage (Hide if no Undead Targets)
             var response2 = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), op2Damage, DamageType.Toxic, op2Targets, false, op2Targets,
-                additionalCriteria: (Card c) => IsUndead(c) && c.IsTarget,
+                additionalCriteria: (Card c) => IsUndead(c) && c.IsTarget && c.IsInPlayAndHasGameText,
                 cardSource: base.GetCardSource());
             var op2 = new Function(this.DecisionMaker, $"Deal {op2Targets} Undead target {op2Damage} toxic damage", SelectionType.DealDamage, () => response2,
                 onlyDisplayIfTrue: base.GameController.GetAllCards().Any(c => IsUndead(c) && c.IsTarget && c.IsInPlayAndHasGameText));
@@ -153,7 +153,7 @@ namespace Cauldron.Necro
 
                         //Select a hero
                         List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                        IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.IncreaseDamage, new LinqCardCriteria((Card c) => !c.IsIncapacitatedOrOutOfGame && c.IsHeroCharacterCard, "hero character"), storedResults, false, cardSource: base.GetCardSource(null));
+                        IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.IncreaseDamage, new LinqCardCriteria((Card c) => !c.IsIncapacitatedOrOutOfGame && c.IsHeroCharacterCard && c.IsInPlayAndHasGameText, "hero character"), storedResults, false, cardSource: base.GetCardSource(null));
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

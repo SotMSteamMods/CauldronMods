@@ -108,7 +108,7 @@
                 "Manipulate"
             ],
             "body": [
-                "At the end of your turn, 2 hero targets each regain 1HP.",
+                "At the end of your turn, 1 hero target regains 2HP.",
                 "This card is immune to radiant damage.",
                 "When this card would be destroyed, destroy a Djinn ongoing attached to it and restore it to 5HP, otherwise put it in your hand."
             ],

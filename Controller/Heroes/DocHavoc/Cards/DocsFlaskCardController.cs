@@ -29,7 +29,7 @@ namespace Cauldron.DocHavoc
         {
             //1 hero target regains 1 HP
             IEnumerator coroutine = this.GameController.SelectAndGainHP(this.DecisionMaker, 1,
-                        additionalCriteria: ((Func<Card, bool>)(c => c.IsHero && c.IsTarget)),
+                        additionalCriteria: ((Func<Card, bool>)(c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText)),
                         numberOfTargets: 1, requiredDecisions: new int?(1), cardSource: this.GetCardSource());
             if (base.UseUnityCoroutines)
             {
@@ -49,7 +49,7 @@ namespace Cauldron.DocHavoc
             //==============================================================
 
             int gainHpAmount = this.GetPowerNumeral(0, HpGain);
-            IEnumerator coroutine = this.GameController.GainHP(this.HeroTurnTakerController, (Func<Card, bool>)(c => c.IsHero && c.IsTarget), gainHpAmount, cardSource: this.GetCardSource());
+            IEnumerator coroutine = this.GameController.GainHP(this.HeroTurnTakerController, (Func<Card, bool>)(c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText), gainHpAmount, cardSource: this.GetCardSource());
             if (this.UseUnityCoroutines)
             {
 

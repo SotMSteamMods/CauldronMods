@@ -66,10 +66,12 @@ namespace Cauldron.TangoOne
                 yield break;
             }
 
+
             // Ask if player wants to play a card
-            List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
-            IEnumerator decidePlayCard = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.PlayCard, this.Card, null, storedYesNoResults, null, GetCardSource());
+            YesNoDecision yesNo = new YesNoDecision(base.GameController, base.HeroTurnTakerController, 
+                SelectionType.PlayCard, false, cardSource: GetCardSource());
+
+            IEnumerator decidePlayCard = base.GameController.MakeDecisionAction(yesNo, true);
 
             if (base.UseUnityCoroutines)
             {
@@ -80,13 +82,15 @@ namespace Cauldron.TangoOne
                 base.GameController.ExhaustCoroutine(decidePlayCard);
             }
 
-            if (!base.DidPlayerAnswerYes(storedYesNoResults))
+            if (yesNo.Answer == null || !yesNo.Answer.Value)
             {
                 yield break;
             }
+            
+
 
             // Play a card
-            IEnumerator playCardRoutine = base.SelectAndPlayCardFromHand(this.HeroTurnTakerController);
+            IEnumerator playCardRoutine = base.SelectAndPlayCardFromHand(this.HeroTurnTakerController, true);
 
             if (base.UseUnityCoroutines)
             {

@@ -15,9 +15,9 @@ namespace Cauldron.Anathema
 		{
 			if (base.CharacterCardController is AnathemaCharacterCardController)
 			{
-				IEnumerator arms = base.PutCardsIntoPlay(new LinqCardCriteria((Card c) => this.IsArm(c), "arm", true, false, null, null, false), 2, false);
-				IEnumerator body = base.PutCardsIntoPlay(new LinqCardCriteria((Card c) => this.IsBody(c), "body", true, false, null, null, false), 1, false);
-				IEnumerator head = base.PutCardsIntoPlay(new LinqCardCriteria((Card c) => this.IsHead(c), "head", true, false, null, null, false), 1, true);
+				IEnumerator arms = base.PutCardsIntoPlay(new LinqCardCriteria((Card c) => this.IsArm(c), "arm"), 2, false);
+				IEnumerator body = base.PutCardsIntoPlay(new LinqCardCriteria((Card c) => this.IsBody(c), "body"), 1, false);
+				IEnumerator head = base.PutCardsIntoPlay(new LinqCardCriteria((Card c) => this.IsHead(c), "head"), 1, true);
 
 
 				if (base.UseUnityCoroutines)
@@ -39,17 +39,17 @@ namespace Cauldron.Anathema
 
 		private bool IsArm(Card card)
 		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "arm", false, false);
+			return card != null && base.GameController.DoesCardContainKeyword(card, "arm");
 		}
 
 		private bool IsHead(Card card)
 		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "head", false, false);
+			return card != null && base.GameController.DoesCardContainKeyword(card, "head");
 		}
 
 		private bool IsBody(Card card)
 		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "body", false, false);
+			return card != null && base.GameController.DoesCardContainKeyword(card, "body");
 		}
 	}
 }
