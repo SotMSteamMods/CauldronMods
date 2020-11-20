@@ -16,9 +16,9 @@ Deck(s):
 
 **To Reproduce**
 Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
+1. Use this setup
+2. Play these cards to setup
+3. Play the problem card
 4. See error
 
 **Expected behavior**
