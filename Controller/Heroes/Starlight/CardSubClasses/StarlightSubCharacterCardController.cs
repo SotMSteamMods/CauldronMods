@@ -8,8 +8,17 @@ namespace Cauldron.Starlight
 {
     public class StarlightSubCharacterCardController : HeroCharacterCardController
     {
+        protected bool IsCoreCharacterCard = true;
         public StarlightSubCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
+
+        public override void AddStartOfGameTriggers()
+        {
+            if(IsCoreCharacterCard)
+            {
+                (TurnTakerController as StarlightTurnTakerController).ManageCharactersOffToTheSide(true);
+            }
         }
 
         protected bool IsConstellation(Card c)

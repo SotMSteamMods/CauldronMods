@@ -53,7 +53,7 @@ namespace Cauldron.Starlight
         }
         public override void AddStartOfGameTriggers()
         {
-            var cards = (HeroTurnTakerController as StarlightTurnTakerController).LoadSubCharactersAndReturnThem();
+            var cards = (HeroTurnTakerController as StarlightTurnTakerController).ManageCharactersOffToTheSide(false);
 
             _terra = cards.Where((Card c) => c.Identifier == "StarlightOfTerraCharacter").FirstOrDefault();
             _asheron = cards.Where((Card c) => c.Identifier == "StarlightOfAsheronCharacter").FirstOrDefault();

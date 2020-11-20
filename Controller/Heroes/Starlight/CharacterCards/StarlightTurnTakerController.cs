@@ -13,6 +13,8 @@ namespace Cauldron.Starlight
         private CharacterCardController _instructions = null;
         private bool? hasInstructionCard = null;
 
+        private bool _offToTheSideHandled = false;
+
         public StarlightTurnTakerController(TurnTaker tt, GameController gc) : base(tt, gc)
         {
    
@@ -68,6 +70,44 @@ namespace Cauldron.Starlight
             yield break;
         }
 
+        public List<Card> ManageCharactersOffToTheSide(bool banish = true)
+        {
+            List<Card> characterCards = new List<Card> { };
+            foreach (string charID in nightloreCouncilIdentifiers)
+            {
+                Card target = TurnTaker.FindCard(charID);
+                characterCards.Add(target);
+
+                Location destination = target.Location;
+                if (destination.Name == LocationName.OffToTheSide)
+                {
+
+
+                    Log.Debug("Looking for destination...");
+                    if (banish)
+                    {
+                        Log.Debug("Attempting to banish...");
+                        if (TurnTaker == null) Log.Warning("No TurnTaker!");
+                        destination = TurnTaker.InTheBox;
+                        if (destination == null)
+                        {
+                            Log.Warning("No destination set!");
+                        }
+                        else
+                        {
+                            Log.Debug($"Found {destination.Name} location for {TurnTaker.Name}");
+                        }
+                    }
+                    else
+                    {
+                        destination = TurnTaker.PlayArea;
+                    }
+                    destination.AddCard(target);
+                }
+
+            }
+            return characterCards;
+        }
         public List<Card> LoadSubCharactersAndReturnThem()
         {
             List<Card> characterCards = new List<Card> { };

@@ -5,6 +5,11 @@
     "initialCardIdentifiers": [
         "StarlightCharacter"
     ],
+    "initialOffToTheSideCardIdentifiers": [
+        "StarlightOfTerraCharacter",
+        "StarlightOfAsheronCharacter",
+        "StarlightOfCryosFourCharacter"
+    ],
     "cards": [
         {
             "identifier": "StarlightCharacter",
@@ -445,94 +450,6 @@
                 }
             ],
             "flavorReference": "Chrono-Ranger, The Dark Millenia #11"
-        }
-    ],
-    "promoCards": [
-        {
-            "identifier": "StarlightCharacter",
-            "promoIdentifier": "GenesisStarlightCharacter",
-            "count": 1,
-            "title": "Starlight",
-            "promoTitle": "Starlight: Genesis",
-            "shortPromoTitle": "Genesis Starlight",
-            "body": "Radiance",
-            "backgroundColor": "FBF8F9",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
-            "character": true,
-            "powers": [
-                "{Starlight} deals each hero target 1 energy damage. Search your deck for up to 2 constellation cards and play them. Shuffle your deck."
-            ],
-            "icons": [
-                "HasPower",
-                "DealDamageEnergy",
-                "Search"
-            ],
-            "hitpoints": 29,
-            "nemesisIdentifiers": [
-                "Starlight"
-            ],
-            "incapacitatedAbilities": [
-                "One player may put an ongoing card from their trash into their hand.",
-                "One player may use a power now.",
-                "Look at the top card of a deck, and replace it or discard it."
-            ],
-            "flippedIcons": [
-                "Manipulate",
-                "UsePowerNow"
-            ],
-            "openingLines": {
-                "default": "default placeholder",
-                "MenagerieCharacter": "Menagerie placeholder"
-            },
-            "complexity": 1
-        },
-        {
-            "identifier": "StarlightCharacter",
-            "promoIdentifier": "NightloreCouncilStarlightCharacter",
-            "count": 1,
-            "title": "Starlight",
-            "promoTitle": "Nightlore Council Starlight",
-            "shortPromoTitle": "Nightlore Council",
-            "backgroundColor": "FBF8F9",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
-            "setup": [
-                "At the start of the game, put the character cards for the Starlight of Terra, Asheron, and Cryos-4 into play, active side up.",
-                "Shuffle the hero deck and draw 4 cards."
-            ],
-            "gameplay": [
-                "If you have no hero character targets in play, flip this card.",
-                "When your cards refer to “Starlight”, choose 1 of your active Starlights.",
-                "When a copy of “Retreat into the Nebula” enters play, put it next to 1 of your active Starlights. Only that Starlight is affected by it.",
-                "If Starlight of Terra has a Constellation next to her at the start of your turn, each Starlight regains 1 HP.",
-                "If Starlight of Asheron has a Constellation next to her and deals damage to a non-hero target, increase that damage by 1.",
-                "Whenever a constellation enters play next to Starlight of Cryos-4, draw a card."
-            ],
-            "icons": [
-                "GainHP",
-                "IncreaseDamageDealt",
-                "DrawCardNow"
-            ],
-            "flippedTitle": "Incapacitated",
-            "incapacitatedAbilities": [
-                "One player may play a card now.",
-                "One play may use a power now.",
-                "The next time a hero target deals damage, choose the type of that damage."
-            ],
-            "flippedIcons": [
-                "PlayCardNow",
-                "UsePowerNow"
-            ],
-            "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
-            },
-            "isReal": false,
-            "complexity": 1
         },
         {
             "identifier": "StarlightOfTerraCharacter",
@@ -615,5 +532,93 @@
              "flippedTitle": "Incapacitated",
              "complexity": 1
          }
+    ],
+    "promoCards": [
+        {
+            "identifier": "StarlightCharacter",
+            "promoIdentifier": "GenesisStarlightCharacter",
+            "count": 1,
+            "title": "Starlight",
+            "promoTitle": "Starlight: Genesis",
+            "shortPromoTitle": "Genesis Starlight",
+            "body": "Radiance",
+            "backgroundColor": "FBF8F9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C94742",
+            "character": true,
+            "powers": [
+                "{Starlight} deals each hero target 1 energy damage. Search your deck for up to 2 constellation cards and play them. Shuffle your deck."
+            ],
+            "icons": [
+                "HasPower",
+                "DealDamageEnergy",
+                "Search"
+            ],
+            "hitpoints": 29,
+            "nemesisIdentifiers": [
+                "Starlight"
+            ],
+            "incapacitatedAbilities": [
+                "One player may put an ongoing card from their trash into their hand.",
+                "One player may use a power now.",
+                "Look at the top card of a deck, and replace it or discard it."
+            ],
+            "flippedIcons": [
+                "Manipulate",
+                "UsePowerNow"
+            ],
+            "openingLines": {
+                "default": "default placeholder",
+                "MenagerieCharacter": "Menagerie placeholder"
+            },
+            "complexity": 1
+        },
+        {
+            "identifier": "StarlightCharacter",
+            "promoIdentifier": "NightloreCouncilStarlightCharacter",
+            "count": 1,
+            "title": "Starlight",
+            "promoTitle": "Nightlore Council Instructions",
+            "shortPromoTitle": "Nightlore Council",
+            "backgroundColor": "FBF8F9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C94742",
+            "setup": [
+                "At the start of the game, put the character cards for the Starlight of Terra, Asheron, and Cryos-4 into play, active side up.",
+                "Shuffle the hero deck and draw 4 cards."
+            ],
+            "gameplay": [
+                "If you have no hero character targets in play, flip this card.",
+                "When your cards refer to “Starlight”, choose 1 of your active Starlights.",
+                "When a copy of “Retreat into the Nebula” enters play, put it next to 1 of your active Starlights. Only that Starlight is affected by it.",
+                "If Starlight of Terra has a Constellation next to her at the start of your turn, each Starlight regains 1 HP.",
+                "If Starlight of Asheron has a Constellation next to her and deals damage to a non-hero target, increase that damage by 1.",
+                "Whenever a constellation enters play next to Starlight of Cryos-4, draw a card."
+            ],
+            "icons": [
+                "GainHP",
+                "IncreaseDamageDealt",
+                "DrawCardNow"
+            ],
+            "flippedTitle": "Incapacitated",
+            "incapacitatedAbilities": [
+                "One player may play a card now.",
+                "One play may use a power now.",
+                "The next time a hero target deals damage, choose the type of that damage."
+            ],
+            "flippedIcons": [
+                "PlayCardNow",
+                "UsePowerNow"
+            ],
+            "openingLines": {
+                "default": "default placeholder",
+                "OutlanderCharacter": "Outlander placeholder",
+                "1929RamCharacter": "1929 Ram placeholder",
+                "TiamatCharacter": "Tiamat placeholder",
+                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+            },
+            "isReal": false,
+            "complexity": 1
+        }
     ]
 }

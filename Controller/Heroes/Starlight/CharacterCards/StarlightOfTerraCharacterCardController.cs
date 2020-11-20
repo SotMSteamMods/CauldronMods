@@ -10,6 +10,7 @@ namespace Cauldron.Starlight
     {
         public StarlightOfTerraCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            IsCoreCharacterCard = false;
         }
 
         public override IEnumerator UsePower(int index = 0)
