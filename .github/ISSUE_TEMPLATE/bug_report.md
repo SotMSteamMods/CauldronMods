@@ -10,7 +10,7 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
-**What does it effect**
+**What does it affect**
 Card(s):
 Deck(s):
 
