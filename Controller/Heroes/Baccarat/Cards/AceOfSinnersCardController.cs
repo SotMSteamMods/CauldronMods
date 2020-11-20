@@ -12,7 +12,7 @@ namespace Cauldron.Baccarat
     {
         public AceOfSinnersCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => TwoOrMoreCopiesInTrash(c)));
+            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => TwoOrMoreCopiesInTrash(c) && c.IsInTrash));
         }
 
         public override void AddTriggers()
