@@ -44,7 +44,7 @@ namespace Cauldron.Quicksilver
         }
         private IEnumerator DestroySelfResponse(DealDamageAction action)
         {
-            IEnumerator coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card, true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
