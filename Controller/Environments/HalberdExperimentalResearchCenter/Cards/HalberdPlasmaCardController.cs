@@ -31,12 +31,12 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             if (base.IsChemicalTriggerInPlay())
             {
                 //find all hero targets
-                targets = (Card c) => c.IsHero && c.IsTarget;
+                targets = (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText;
             }
             else
             {
                 //find all villain targets
-                targets = (Card c) => c.IsVillainTarget;
+                targets = (Card c) => c.IsVillainTarget && c.IsInPlayAndHasGameText;
             }
 
             //deals the hero/villain target with the highest HP {H} energy damage

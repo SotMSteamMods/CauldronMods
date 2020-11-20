@@ -28,7 +28,7 @@ namespace Cauldron.DocHavoc
             //{DocHavoc} deals each target 1 radiant damage.
             List<DealDamageAction> storedDamageResults = new List<DealDamageAction>();
 
-            IEnumerator routine = base.GameController.DealDamage(this.HeroTurnTakerController, this.Card, (Func<Card, bool>) (c => c.IsTarget),
+            IEnumerator routine = base.GameController.DealDamage(this.HeroTurnTakerController, this.Card, (Func<Card, bool>) (c => c.IsTarget && c.IsInPlayAndHasGameText),
                 DamageAmount, DamageType.Radiant, storedResults: storedDamageResults, cardSource: this.GetCardSource());
 
             if (base.UseUnityCoroutines)

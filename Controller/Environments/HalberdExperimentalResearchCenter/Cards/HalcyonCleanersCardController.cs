@@ -27,7 +27,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             base.AddIncreaseDamageTrigger(increaseCriteria, 5);
 
             //At the end of the environment turn, this card deals the target other than itself with the second lowest HP {H} fire damage. 
-            base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsTarget && c != base.Card, TargetType.LowestHP, base.H, DamageType.Fire, highestLowestRanking: 2);
+            base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsTarget && c.IsInPlayAndHasGameText && c != base.Card, TargetType.LowestHP, base.H, DamageType.Fire, highestLowestRanking: 2);
 
             //Whenever this card destroys a Test Subject, play the top card of the environment deck.
             //criteria for this card destroying a test subject
