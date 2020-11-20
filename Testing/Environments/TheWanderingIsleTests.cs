@@ -263,6 +263,8 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
+            var mdp = GetCardInPlay("MobileDefensePlatform");
+
             Card parasite = PutIntoPlay("AncientParasite");
             AssertInPlayArea(isle, parasite);
 
@@ -276,6 +278,10 @@ namespace CauldronTests
 
             //different hero
             DealDamage(fanatic, parasite, 1, DamageType.Fire);
+            AssertNextToCard(parasite, fanatic.CharacterCard);
+
+            //doesn't move next to haka, still next to fanatic
+            DealDamage(haka, mdp, 1, DamageType.Melee);
             AssertNextToCard(parasite, fanatic.CharacterCard);
         }
 
