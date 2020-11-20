@@ -9,8 +9,10 @@ namespace Cauldron.Quicksilver
     {
         public QuicksilverCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SetCardProperty(base.GeneratePerTargetKey("ComboSelfDamage", base.CharacterCard), false);
         }
+
+        private const string ComboSelfDamage = "ComboSelfDamage";
 
         public override IEnumerator UseIncapacitatedAbility(int index)
         {

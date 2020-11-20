@@ -32,7 +32,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestDeckList()
+        public void TestQuicksilverDeckList()
         {
             SetupGameController("BaronBlade", "Cauldron.Quicksilver", "Ra", "TheWraith", "Megalopolis");
 
@@ -49,8 +49,8 @@ namespace CauldronTests
             Assert.IsTrue(chain.DoKeywordsContain("limited"));
 
             Card forest = GetCard("ForestOfNeedles");
-            Assert.IsTrue(storm.DoKeywordsContain("one-shot"));
-            Assert.IsTrue(storm.DoKeywordsContain("finisher"));
+            Assert.IsTrue(forest.DoKeywordsContain("one-shot"));
+            Assert.IsTrue(forest.DoKeywordsContain("finisher"));
 
             Card frenzy = GetCard("FrenziedMelee");
             Assert.IsTrue(frenzy.DoKeywordsContain("ongoing"));
@@ -170,8 +170,71 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
             StartGame();
+            DiscardAllCards(quicksilver);
+            DecisionSelectFunction = 1;
+
+            //The first time each turn that {Quicksilver} would deal herself damage to play a Combo card, prevent that damage.
+            QuickHPStorage(quicksilver);
             PlayCard("ComboChain");
             PlayCard("AlloyStorm");
+            QuickHPCheck(0);
+            PlayCard("AlloyStorm");
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestForestOfNeedlesSkipCombo()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+            DiscardAllCards(quicksilver);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DecisionSelectFunction = 1;
+            DecisionSelectTarget = mdp;
+            //{Quicksilver} may deal 6 melee damage to a target with more than 8HP, or 3 melee damage to a target with 8 or fewer HP.
+            QuickHPStorage(mdp);
+            PlayCard("ForestOfNeedles");
+            QuickHPCheck(-6);
+            //mdp HP is 4 after the first damage
+            QuickHPStorage(mdp);
+            PlayCard("ForestOfNeedles");
+            QuickHPCheck(-3);
+        }
+
+        [Test()]
+        public void TestFrenziedMelee()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            Card tony = PlayCard("TonyTaurus");
+            PlayCard("FrenziedMelee");
+
+            //Increase all damage dealt by 1.
+            QuickHPStorage(apostate);
+            DealDamage(ra, apostate, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            QuickHPStorage(apostate);
+            DealDamage(apostate, apostate, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            QuickHPStorage(ra);
+            DealDamage(ra, ra, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            QuickHPStorage(ra);
+            DealDamage(tony, ra, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            QuickHPStorage(ra.CharacterCard, quicksilver.CharacterCard);
+            DealDamage(tony, ra, 2, DamageType.Melee);
+            QuickHPCheck(0, -3);
+
+            QuickHPStorage(ra.CharacterCard, quicksilver.CharacterCard);
+            DealDamage(tony, ra, 2, DamageType.Melee);
+            QuickHPCheck(-3, 0);
         }
     }
 }

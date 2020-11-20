@@ -17,13 +17,13 @@ namespace Cauldron.Quicksilver
         public override void AddTriggers()
         {
             //The first time each turn that {Quicksilver} would deal herself damage to play a Combo card, prevent that damage.
-            base.AddTrigger(base.AddTrigger<ComboDamageAction>((ComboDamageAction action) => !base.HasBeenSetToTrueThisTurn("FirstTimeDamageDealt"), (ComboDamageAction action) => this.PreventDamageResponse(action), TriggerType.CancelAction, TriggerTiming.Before));
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn("FirstTimeDamageDealt") && base.CharacterCardController.IsPropertyTrue("ComboSelfDamage"), (DealDamageAction action) => this.PreventDamageResponse(action), TriggerType.CancelAction, TriggerTiming.Before, isActionOptional: false);
         }
 
-        private IEnumerator PreventDamageResponse(ComboDamageAction action)
+        private IEnumerator PreventDamageResponse(DealDamageAction action)
         {
-            base.SetCardPropertyToTrueIfRealAction("FirstTimeDamageDealt", null);
-            IEnumerator coroutine = base.CancelAction(action);
+            base.SetCardPropertyToTrueIfRealAction("FirstTimeDamageDealt");
+            IEnumerator coroutine = base.CancelAction(action, isPreventEffect: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

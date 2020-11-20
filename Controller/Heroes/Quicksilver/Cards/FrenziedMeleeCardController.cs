@@ -26,7 +26,7 @@ namespace Cauldron.Quicksilver
             //The first time...
             base.SetCardPropertyToTrueIfRealAction("FirstTimeDamageDealt", null);
             //...redirect that damage to {Quicksilver}.
-            IEnumerator coroutine = base.RedirectDamage(action, TargetType.All, (Card c) => c == base.CharacterCard);
+            IEnumerator coroutine = base.RedirectDamage(action, TargetType.HighestHP, (Card c) => c == base.CharacterCard);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

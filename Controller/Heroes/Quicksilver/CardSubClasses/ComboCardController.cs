@@ -13,6 +13,8 @@ namespace Cauldron.Quicksilver
 
         }
 
+        public bool ContinueComboDamage;
+
         public IEnumerator ComboResponse()
         {
             //You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo.
@@ -36,20 +38,27 @@ namespace Cauldron.Quicksilver
 
         public IEnumerator ContinueComboResponse()
         {
+            base.CharacterCardController.SetCardPropertyToTrueIfRealAction("ComboSelfDamage");
             //...{Quicksilver} may deal herself 2 melee damage...
-            ComboDamageAction action = new ComboDamageAction(new DealDamageAction(base.GameController, new DamageSource(base.GameController, base.CharacterCard), base.CharacterCard, 2, DamageType.Melee));
-            IEnumerator coroutine = base.DoAction(action);
-            //...play a Combo.
-            IEnumerator coroutine2 = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("combo")), cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.DealDamage(base.CharacterCard, base.CharacterCard, 2, DamageType.Melee, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
-                yield return base.GameController.StartCoroutine(coroutine2);
             }
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
-                base.GameController.ExhaustCoroutine(coroutine2);
+            }
+            base.CharacterCardController.SetCardProperty("ComboSelfDamage", false);
+            //...play a Combo.
+            coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("combo")), cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
         }
