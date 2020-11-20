@@ -207,6 +207,7 @@ namespace CauldronTests
         {
             SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
             StartGame();
+            GoToPlayCardPhase(apostate);
 
             Card tony = PlayCard("TonyTaurus");
             PlayCard("FrenziedMelee");
@@ -224,17 +225,141 @@ namespace CauldronTests
             DealDamage(ra, ra, 2, DamageType.Melee);
             QuickHPCheck(-3);
 
-            QuickHPStorage(ra);
-            DealDamage(tony, ra, 2, DamageType.Melee);
-            QuickHPCheck(-3);
-
+            //The first time a hero target would be dealt damage by a non-hero target during the villain turn, you may redirect that damage to {Quicksilver}.
             QuickHPStorage(ra.CharacterCard, quicksilver.CharacterCard);
             DealDamage(tony, ra, 2, DamageType.Melee);
             QuickHPCheck(0, -3);
 
             QuickHPStorage(ra.CharacterCard, quicksilver.CharacterCard);
+            DealDamage(apostate, ra, 2, DamageType.Melee);
+            QuickHPCheck(-3, 0);
+
+            GoToDrawCardPhase(ra);
+
+            QuickHPStorage(ra.CharacterCard, quicksilver.CharacterCard);
+            DealDamage(apostate, ra, 2, DamageType.Melee);
+            QuickHPCheck(-3, 0);
+            GoToPlayCardPhase(apostate);
+
+            //The first time a hero target would be dealt damage by a non-hero target during the villain turn, you may redirect that damage to {Quicksilver}.
+            QuickHPStorage(ra.CharacterCard, quicksilver.CharacterCard);
+            DealDamage(tony, ra, 2, DamageType.Melee);
+            QuickHPCheck(0, -3);
+
+            QuickHPStorage(ra.CharacterCard, quicksilver.CharacterCard);
+            DealDamage(apostate, ra, 2, DamageType.Melee);
+            QuickHPCheck(-3, 0);
+        }
+
+        [Test()]
+        public void TestFrenziedMeleeSkip()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+            GoToPlayCardPhase(apostate);
+
+            Card tony = PlayCard("TonyTaurus");
+            PlayCard("FrenziedMelee");
+
+            //The first time a hero target would be dealt damage by a non-hero target during the villain turn, you may redirect that damage to {Quicksilver}.
+            QuickHPStorage(ra.CharacterCard, quicksilver.CharacterCard);
             DealDamage(tony, ra, 2, DamageType.Melee);
             QuickHPCheck(-3, 0);
+        }
+
+        [Test()]
+        public void TestFrenziedMeleePower()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            Card melee = PlayCard("FrenziedMelee");
+
+            //Destroy this card.
+            AssertIsInPlay(melee);
+            UsePower(melee);
+            AssertInTrash(melee);
+        }
+
+        [Test()]
+        public void TestGuardBreakerDestroy()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            Card imp = PlayCard("ImpPilferer");
+
+            //Destroy a target with 3 or fewer HP, or deal 1 target 3 irreducible melee damage.
+            PlayCard("GuardBreaker");
+            AssertInTrash(imp);
+        }
+
+        [Test()]
+        public void TestGuardBreakerDealDamage()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            DecisionSelectFunction = 1;
+            Card sword = GetCardInPlay("Condemnation");
+            DecisionSelectTarget = sword;
+
+            //Destroy a target with 3 or fewer HP, or deal 1 target 3 irreducible melee damage.
+            QuickHPStorage(sword);
+            PlayCard("GuardBreaker");
+            QuickHPCheck(-3);
+        }
+
+        [Test()]
+        public void TestIronRetort()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            DealDamage(apostate, quicksilver, 10, DamageType.Cold);
+
+            //When this card enters play, draw a card and {Quicksilver} regains 2HP.
+            QuickHandStorage(quicksilver);
+            QuickHPStorage(quicksilver);
+            Card retort = PlayCard("IronRetort");
+            QuickHandCheck(1);
+            QuickHPCheck(2);
+        }
+
+        [Test()]
+        public void TestIronRetortDoNotDestroy()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            DealDamage(apostate, quicksilver, 10, DamageType.Cold);
+            Card melee = PutInHand("FrenziedMelee");
+            Card retort = PlayCard("IronRetort");
+
+            //When {Quicksilver} is dealt damage, you may destroy this card. If you do, you may play a card.
+            DecisionDoNotSelectFunction = true;
+            DecisionDoNotSelectCard = SelectionType.DestroySelf;
+            //DecisionSelectCardToPlay = melee;
+            DecisionYesNo = false;
+            DealDamage(apostate, quicksilver, 2, DamageType.Cold);
+            AssertIsInPlay(retort);
+        }
+
+        [Test()]
+        public void TestIronRetortDestroy()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            DealDamage(apostate, quicksilver, 10, DamageType.Cold);
+            Card melee = PutInHand("FrenziedMelee");
+            Card retort = PlayCard("IronRetort");
+
+            //When {Quicksilver} is dealt damage, you may destroy this card. If you do, you may play a card.
+            DecisionSelectCardToPlay = melee;
+            DealDamage(apostate, quicksilver, 2, DamageType.Cold);
+            AssertInTrash(retort);
+            AssertIsInPlay(melee);
         }
     }
 }

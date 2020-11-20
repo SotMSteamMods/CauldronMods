@@ -34,13 +34,13 @@ namespace Cauldron.Quicksilver
         public override void AddTriggers()
         {
             //When {Quicksilver} is dealt damage, you may destroy this card...
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Target == base.CharacterCard && !action.IsPretend && action.Amount > 0 && !base.IsBeingDestroyed, new Func<DealDamageAction, IEnumerator>(this.DestroySelfResponse), new TriggerType[]
-            {
+            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.Target == base.CharacterCard && !dd.IsPretend && dd.Amount > 0 && dd.DamageSource.IsInPlayAndHasGameText && !base.IsBeingDestroyed, new Func<DealDamageAction, IEnumerator>(this.DestroySelfResponse), new TriggerType[]
+             {
                 TriggerType.WouldBeDealtDamage,
                 TriggerType.DestroySelf
-            }, TriggerTiming.Before);
+             }, TriggerTiming.Before, null, false, true, null, false, null, null, false, false);
             //... If you do, you may play a card.
-            base.AddWhenDestroyedTrigger((DestroyCardAction action) => base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true), TriggerType.DealDamage);
+            base.AddWhenDestroyedTrigger((DestroyCardAction action) => base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true), TriggerType.PlayCard);
         }
         private IEnumerator DestroySelfResponse(DealDamageAction action)
         {
