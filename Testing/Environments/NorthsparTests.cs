@@ -409,7 +409,7 @@ namespace CauldronTests
             Card supply = PlayCard("SupplyDepot");
             //This card and Supply Depot are indestructible.
             DestroyCard(supply, ra.CharacterCard);
-            AssertInPlayArea(northspar, supply);
+            AssertIsInPlay(supply);
         }
 
         [Test()]
@@ -465,6 +465,102 @@ namespace CauldronTests
             AssertInTrash(bitter);
             AssertInDeck(takAhab);
             QuickShuffleCheck(1);
+        }
+
+
+        [Test()]
+        public void TestSupplyDepot_MakesThirdWaypointsIndestructible_LandingSite()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            //play makeshift shelter so supply depot doesn't auto blow up
+            Card makeshift = PlayCard("MakeshiftShelter");
+            Card supply = PlayCard("SupplyDepot");
+            Card landing = PlayCard("LandingSite");
+            //Third Waypoint cards are indestructible.
+            DestroyCard(landing, ra.CharacterCard);
+            AssertInPlayArea(northspar, landing);
+        }
+
+        [Test()]
+        public void TestSupplyDepot_MakesThirdWaypointsIndestructible_DemolishedCamp()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            //play makeshift shelter so supply depot doesn't auto blow up
+            Card makeshift = PlayCard("MakeshiftShelter");
+            Card supply = PlayCard("SupplyDepot");
+            Card demolished = PlayCard("DemolishedCamp");
+            //Third Waypoint cards are indestructible.
+            DestroyCard(demolished, ra.CharacterCard);
+            AssertInPlayArea(northspar, demolished);
+        }
+
+        [Test()]
+        public void TestSupplyDepot_NoMakeshift()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            //stack deck
+            Card bitter = PutOnDeck("BitterCold");
+
+            //When this card enters play, destroy it and play the top card of the environment deck if Makeshift Shelter is not in play. Otherwise place it next to a hero. 
+            Card supply = PlayCard("SupplyDepot");
+            AssertInPlayArea(northspar, bitter);
+            AssertInTrash(supply);
+        
+        }
+
+        [Test()]
+        public void TestSupplyDepot_WithMakeshift()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            //stack deck
+            Card bitter = PutOnDeck("BitterCold");
+
+            //play makeshift shelter so supply depot doesn't auto blow up
+            Card makeshift = PlayCard("MakeshiftShelter");
+
+            //When this card enters play, destroy it and play the top card of the environment deck if Makeshift Shelter is not in play. Otherwise place it next to a hero. 
+            DecisionSelectCard = legacy.CharacterCard;
+            Card supply = PlayCard("SupplyDepot");
+
+            AssertNextToCard(supply, legacy.CharacterCard);
+            AssertInDeck(bitter);
+
+        }
+
+        [Test()]
+        public void TestSupplyDepot_GrantedPower()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            //play makeshift shelter so supply depot doesn't auto blow up
+            Card makeshift = PlayCard("MakeshiftShelter");
+
+            //should be next to legacy
+            DecisionSelectCard = legacy.CharacterCard;
+            Card supply = PlayCard("SupplyDepot");
+            AssertNextToCard(supply, legacy.CharacterCard);
+
+            //"Power: this hero deals 1 target 1 fire damage."
+            //AssertNumberOfUsablePowers(legacy, 2);
+            QuickHPStorage(haka);
+            DecisionSelectTarget = haka.CharacterCard;
+            DecisionSelectPower = legacy.CharacterCard;
+            DecisionSelectPowerIndex = 1;
+            bool skipped;
+            SelectAndUsePower(legacy, out skipped);
+            QuickHPCheck(-1);
+
+
+
         }
 
 
