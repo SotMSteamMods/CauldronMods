@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 
 using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.Engine.Controller;
@@ -21,7 +21,55 @@ namespace CauldronTests
 
         private const string DeckNamespace = "Cauldron.Dendron";
 
-        [Test()]
+        [Test]
+        public void TestDendronDeckList()
+        {
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card adornedOak = GetCard(AdornedOakCardController.Identifier);
+            Assert.IsTrue(adornedOak.DoKeywordsContain("tattoo"));
+
+            Card bloodThornAura = GetCard(BloodThornAuraCardController.Identifier);
+            Assert.IsTrue(bloodThornAura.DoKeywordsContain("ongoing"));
+
+            Card chokingInscription = GetCard(ChokingInscriptionCardController.Identifier);
+            Assert.IsTrue(chokingInscription.DoKeywordsContain("one-shot"));
+
+            Card darkDesign = GetCard(DarkDesignCardController.Identifier);
+            Assert.IsTrue(darkDesign.DoKeywordsContain("one-shot"));
+
+            Card inkScar = GetCard(InkScarCardController.Identifier);
+            Assert.IsTrue(inkScar.DoKeywordsContain("one-shot"));
+
+            Card livingInk = GetCard(LivingInkCardController.Identifier);
+            Assert.IsTrue(livingInk.DoKeywordsContain("tattoo"));
+
+            Card markOfTheWrithingNight = GetCard(MarkOfTheWrithingNightCardController.Identifier);
+            Assert.IsTrue(markOfTheWrithingNight.DoKeywordsContain("one-shot"));
+
+            Card obsidianSkin = GetCard(ObsidianSkinCardController.Identifier);
+            Assert.IsTrue(obsidianSkin.DoKeywordsContain("ongoing"));
+
+            Card paintedViper = GetCard(PaintedViperCardController.Identifier);
+            Assert.IsTrue(paintedViper.DoKeywordsContain("tattoo"));
+
+            Card restoration = GetCard(RestorationCardController.Identifier);
+            Assert.IsTrue(restoration.DoKeywordsContain("one-shot"));
+
+            Card shadedOwl = GetCard(ShadedOwlCardController.Identifier);
+            Assert.IsTrue(shadedOwl.DoKeywordsContain("tattoo"));
+
+            Card stainedWolf = GetCard(StainedWolfCardController.Identifier);
+            Assert.IsTrue(stainedWolf.DoKeywordsContain("tattoo"));
+
+            Card tintedStag = GetCard(TintedStagCardController.Identifier);
+            Assert.IsTrue(tintedStag.DoKeywordsContain("tattoo"));
+
+            Card ursaMajor = GetCard(UrsaMajorCardController.Identifier);
+            Assert.IsTrue(ursaMajor.DoKeywordsContain("tattoo"));
+        }
+
+        [Test]
         public void TestDendronLoads()
         {
             SetupGameController(DeckNamespace, "Legacy", "Megalopolis");
@@ -34,7 +82,7 @@ namespace CauldronTests
             Assert.AreEqual(50, Dendron.CharacterCard.HitPoints);
         }
 
-        [Test()]
+        [Test]
         public void TestDendronStartGame()
         {
             SetupGameController(DeckNamespace, "Legacy", "Megalopolis");
@@ -43,6 +91,62 @@ namespace CauldronTests
 
             // Should be 3 cards in play total (Dendron, 1 Stained Wolf, 1 Painted Viper)
             AssertNumberOfCardsInPlay(Dendron, 3);
+            AssertNotFlipped(Dendron);
+
+        }
+
+
+        [Test]
+        public void TestDendronFlipsWhenReducedToZeroHp()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            SetHitPoints(Dendron, 1);
+            StartGame();
+
+            PutInTrash(Dendron, GetCard(AdornedOakCardController.Identifier));
+            DecisionSelectTarget = Dendron.CharacterCard;
+            AssertNumberOfCardsInTrash(Dendron, 1);
+
+            QuickShuffleStorage(Dendron);
+
+            // Act
+            AssertNotFlipped(Dendron);
+
+            
+            GoToUsePowerPhase(ra);
+            UsePower(ra);
+            
+            // Assert
+            AssertFlipped(Dendron); // Dendron flipped once reduced to 0 HP
+            AssertHitPoints(Dendron, 50); // Dendron's HP was restored to 50
+            QuickShuffleCheck(1); // Villain deck was shuffled
+            AssertNumberOfCardsInTrash(Dendron, 0); // Trash was shuffled into deck
+        }
+
+        [Test]
+        public void TestDendronPlaysCardIfBelowTattoosInPlayThreshold()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            
+            StartGame();
+
+
+            SetHitPoints(GetStainedWolfInPlay(), 1);
+            DecisionSelectTarget = GetStainedWolfInPlay();
+            
+            // Act
+
+            GoToUsePowerPhase(ra);
+            UsePower(ra);
+
+            // Loop back around to Dendron and she should play an extra card from the deck due to only 1 tattoo out
+            GoToStartOfTurn(Dendron); 
+
+            // Assert
 
         }
 
@@ -218,9 +322,9 @@ namespace CauldronTests
             // Assert
 
             // Legacy: -2 fr Stained Wolf,
-            // Ra: -2 for hero with lowest HP (Mark), -1 from Painted Viper
-            // Haka: -5 for hero with highest HP (Mark)
-            QuickHPCheck(-2, -3, -5); 
+            // Ra: 0
+            // Haka: -5 for hero with highest HP (Mark), -2 for hero with lowest HP (Mark - became lowest after highest HP damage), -1 from Painted Viper
+            QuickHPCheck(-2, 0, -8); 
         }
 
         [Test]
@@ -248,10 +352,60 @@ namespace CauldronTests
             // Assert
 
             // Legacy: -2 fr Stained Wolf,
-            // Ra: -2 for hero with lowest HP (Mark), -1 from Painted Viper
-            // Haka: -5 for hero with highest HP (Mark)
-            QuickHPCheck(-2, -3, -5);
+            // Ra: 0
+            // Haka: -5 for hero with highest HP (Mark), -2 for hero with lowest HP (Mark - became lowest after highest HP damage), -1 from Painted Viper
+            QuickHPCheck(-2, 0, -8);
+            AssertInTrash(legacy, legacyRing);
+            AssertNotInTrash(haka, mere.Identifier); // Character with least cards in play is Ra (0) 
         }
+
+        [Test]
+        public void TestMarkOfTheWrithingNightWithMixedTypes()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card markOfTheWritingNight = GetCard(MarkOfTheWrithingNightCardController.Identifier);
+
+            StartGame();
+
+
+            Card dangerSense = GetCard("DangerSense");
+            Card fortitude = GetCard("Fortitude");
+            Card legacyRing = GetCard("TheLegacyRing");
+            Card nextEvolution = GetCard("NextEvolution");
+
+            Card dominion = GetCard("Dominion");
+
+            DecisionSelectCards = new[] {dangerSense, fortitude};
+
+
+            PlayCard(dangerSense);
+            PlayCard(fortitude);
+            PlayCard(legacyRing);
+            PlayCard(nextEvolution);
+
+            PlayCard(dominion);
+
+            QuickHPStorage(legacy, ra, haka);
+
+            // Act
+            PlayCard(markOfTheWritingNight);
+            GoToEndOfTurn(Dendron);
+
+            // Assert
+
+            // Legacy: -2 fr Stained Wolf,
+            // Ra: 0
+            // Haka: -5 for hero with highest HP (Mark), -2 for hero with lowest HP (Mark - became lowest after highest HP damage), -1 from Painted Viper
+            QuickHPCheck(-2, 0, -8);
+            AssertInTrash(legacy, new [] {dangerSense, fortitude, legacyRing }); // 2 ongoings, 1 equip (Most cards in play)
+            AssertInPlayArea(legacy, new [] { nextEvolution}); // 1 ongoing that wasn't destroyed
+            AssertNotInTrash(haka, dominion.Identifier); // Character with least cards in play is Ra (0) 
+
+            
+        }
+
 
 
         [Test]
@@ -286,7 +440,8 @@ namespace CauldronTests
             QuickHPStorage(ra);
 
             // Act
-            PlayCard(GetPaintedViperInPlay());
+
+            // Painted Viper will be in play @ game start
 
             GoToEndOfTurn(Dendron);
 
@@ -360,8 +515,6 @@ namespace CauldronTests
 
             // Assert
             QuickHPCheck(0, -1, -2); // 0 for Legacy, -1 Ra from Painted Viper (lowest hp hero), -2 Haka from Stained Wolf (highest hp hero)
-
-
         }
 
         [Test]
