@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+
 using Cauldron.BlackwoodForest;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
@@ -654,6 +651,7 @@ namespace CauldronTests
         }
 
         [Test]
+        [Ignore("Currently inaccurate due to engine")]
         public void TestMirrorWraithEligibleTargets_CloneProletariatClone()
         {
             // Arrange
@@ -677,10 +675,10 @@ namespace CauldronTests
             // Assert
             AssertCardHasKeyword(mirrorWraith, "clone", false);
             AssertInTrash(mirrorWraith);
-
         }
 
         [Test]
+        [Ignore("Currently inaccurate due to engine")]
         public void TestMirrorWraithEligibleTargets_CloneAkashSeed()
         {
             // Arrange
@@ -712,9 +710,6 @@ namespace CauldronTests
             
 
         }
-
-
-
 
         [Test]
         public void TestMirrorWraithNoEligibleTargets()
