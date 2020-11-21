@@ -28,7 +28,6 @@ namespace Cauldron.Starlight
             int powerNumeral = GetPowerNumeral(0, 1);
             int powerNumeral2 = GetPowerNumeral(1, 1);
 
-
             List<Card> storedResults = new List<Card> { };
             IEnumerator chooseDamageSource = SelectActiveCharacterCardToDealDamage(storedResults, powerNumeral2, DamageType.Radiant);
             if (UseUnityCoroutines)
