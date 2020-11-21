@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Cauldron.Anathema
 {
-	public class ExplosiveTransformationCardController : CardController
+	public class ExplosiveTransformationCardController : AnathemaCardController
     {
 		public ExplosiveTransformationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
@@ -16,7 +16,7 @@ namespace Cauldron.Anathema
 		public override IEnumerator Play()
 		{
 			//Anathema deals each Hero target 1 projectile damage.
-			IEnumerator coroutine = base.DealDamage(base.Card, (Card card) => card.IsHero, 1, DamageType.Projectile, false, false, null, null, null, false, null, null, false, false);
+			IEnumerator coroutine = base.DealDamage(base.Card, (Card card) => card.IsHero && card.IsTarget, 1, DamageType.Projectile);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -28,7 +28,7 @@ namespace Cauldron.Anathema
 
 			//Reveal the top {H} cards of the Villain Deck. 
 			List<Card> revealedCards = new List<Card>();
-			coroutine = base.GameController.RevealCards(base.TurnTakerController, base.Card.Owner.Deck, 4, revealedCards, false, RevealedCardDisplay.ShowRevealedCards, null, base.GetCardSource(null));
+			coroutine = base.GameController.RevealCards(base.TurnTakerController, base.Card.Owner.Deck, base.H, revealedCards,revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -46,15 +46,15 @@ namespace Cauldron.Anathema
 			List<Card> cardsToShuffle = new List<Card>();
 			foreach(Card c in revealedCards)
 			{
-				if(this.IsArm(c) && firstArm)
+				if(base.IsArm(c) && firstArm)
 				{
 					firstArm = false;
 					cardsToPlay.Add(c);
-				}else if (this.IsHead(c) && firstHead)
+				}else if (base.IsHead(c) && firstHead)
 				{
 					firstHead = false;
 					cardsToPlay.Add(c);
-				} else if (this.IsBody(c) && firstBody)
+				} else if (base.IsBody(c) && firstBody)
 				{
 					firstBody = false;
 					cardsToPlay.Add(c);
@@ -66,7 +66,7 @@ namespace Cauldron.Anathema
 
 			foreach(Card c in cardsToPlay)
 			{
-				coroutine = base.GameController.PlayCard(base.TurnTakerController, c, true, null, false, null, null, false, null, null, null, false, false, true, base.GetCardSource(null));
+				coroutine = base.GameController.PlayCard(base.TurnTakerController, c, true, cardSource: base.GetCardSource());
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);
@@ -78,7 +78,7 @@ namespace Cauldron.Anathema
 			}
 
 			//Shuffle the remaining cards back into the Villain Deck.
-			coroutine = base.GameController.ShuffleCardsIntoLocation(this.DecisionMaker, cardsToShuffle, this.TurnTaker.Deck, false, base.GetCardSource(null));
+			coroutine = base.GameController.ShuffleCardsIntoLocation(this.DecisionMaker, cardsToShuffle, this.TurnTaker.Deck, cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -88,21 +88,6 @@ namespace Cauldron.Anathema
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
 			yield break;
-		}
-
-		private bool IsArm(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "arm", false, false);
-		}
-
-		private bool IsHead(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "head", false, false);
-		}
-
-		private bool IsBody(Card card)
-		{
-			return card != null && base.GameController.DoesCardContainKeyword(card, "body", false, false);
 		}
 
 	}

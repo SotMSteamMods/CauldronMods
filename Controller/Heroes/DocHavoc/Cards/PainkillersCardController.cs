@@ -31,7 +31,7 @@ namespace Cauldron.DocHavoc
         {
             //When this card enters play, place it next to a hero target.
             LinqCardCriteria validTargets = new LinqCardCriteria(
-                c => c.IsHero && c.IsTarget && !c.IsIncapacitatedOrOutOfGame,
+                c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText,
                 "hero target");
 
             IEnumerator routine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria(

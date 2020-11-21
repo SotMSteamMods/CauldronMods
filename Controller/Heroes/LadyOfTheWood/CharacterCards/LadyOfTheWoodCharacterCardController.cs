@@ -108,7 +108,7 @@ namespace Cauldron.LadyOfTheWood
 				case 2:
 					{
 						//Destroy an environment card.
-						LinqCardCriteria criteria = new LinqCardCriteria((Card c) => c.IsEnvironment, "environment");
+						LinqCardCriteria criteria = new LinqCardCriteria((Card c) => c.IsEnvironment && c.IsInPlay, "environment");
 						IEnumerator coroutine4 = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, criteria, false, cardSource: base.GetCardSource());
 						if (base.UseUnityCoroutines)
 						{

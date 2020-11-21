@@ -54,7 +54,7 @@
             ],
             "difficulty": 1,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "You're too late, heroes! Soon I will break the veil between our worlds, and rule over both!",
                 "MailchaeCharacter": "Mailchae placeholder",
                 "ShardmasterMailchaeCharacter": "Shardmaster Mailchae placeholder",
                 "MinistryOfStrategicScienceMailchaeCharacter": "Ministry Of Strategic Science Mailchae placeholder"

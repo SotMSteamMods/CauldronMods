@@ -8,13 +8,25 @@ namespace Cauldron.Necro
 {
     public abstract class UndeadCardController : NecroCardController
     {
-        protected UndeadCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected UndeadCardController(Card card, TurnTakerController turnTakerController, int baseHP) : base(card, turnTakerController)
         {
+            this.BaseHP = baseHP;
         }
 
-        protected void SetMaximumHPWithRituals(int baseHP)
+        public override IEnumerator Play()
         {
-            this.Card.SetMaximumHP(GetNumberOfRitualsInPlay() + baseHP, true);
+            IEnumerator coroutine = base.GameController.ChangeMaximumHP(base.Card, BaseHP + GetNumberOfRitualsInPlay(), true, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
+
+        protected int BaseHP { get; private set; }
     }
 }
