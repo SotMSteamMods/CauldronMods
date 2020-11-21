@@ -108,7 +108,7 @@
             ],
             "flavorReference": "War Journal #355",
             "powers": [
-                "Each 1 hero target regains 1HP."
+                "Each hero target regains 1HP."
             ]
         },
         {
@@ -389,7 +389,7 @@
             "flavorReference": "War Journal #80"
         }
     ],
-    "promoCardards": [
+    "promoCards": [
         {
             "identifier": "DocHavocCharacter",
             "promoIdentifier": "FirstResponseDocHavocCharacter",

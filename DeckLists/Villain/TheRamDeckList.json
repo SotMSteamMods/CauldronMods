@@ -55,7 +55,7 @@
             ],
             "difficulty": 1,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Target Aquired//Status//Hostile//Initiate Neutralization Protocol",
                 "QuicksilverCharacter": "Quicksilver placeholder",
                 "UncannyQuicksilverCharacter": "Uncanny Quicksilver placeholder",
                 "RenegadeQuicksilverCharacter": "Renegade Quicksilver placeholder"

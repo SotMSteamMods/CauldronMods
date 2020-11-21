@@ -8,15 +8,8 @@ namespace Cauldron.Necro
 {
     public class DemonicImpCardController : UndeadCardController
     {
-        public DemonicImpCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public DemonicImpCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, 2)
         {
-        }
-        public override IEnumerator Play()
-        {
-            //When this card enters play, # = the number of rituals in play plus 2.
-            SetMaximumHPWithRituals(2);
-
-            yield break;
         }
 
         public override void AddTriggers()

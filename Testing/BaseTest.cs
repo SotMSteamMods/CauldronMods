@@ -1027,7 +1027,8 @@ namespace Handelabra.Sentinels.UnitTest
                     {
                         damage.SelectedDamageType = this.DecisionSelectDamageType;
                         Console.WriteLine("Selected: " + damage.SelectedDamageType);
-                    } else if (this.DecisionSelectDamageTypes != null)
+                    }
+                    else if (this.DecisionSelectDamageTypes != null)
                     {
                         // Select each of the given targets in order
                         damage.SelectedDamageType = this.DecisionSelectDamageTypes.ElementAt(this.DecisionSelectDamageTypesIndex);
@@ -4928,7 +4929,7 @@ namespace Handelabra.Sentinels.UnitTest
                 {
                     var dllpath = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
                     path = Path.GetDirectoryName(dllpath.Replace("file://", "")).Replace("\\D:", "D:").Replace("\\C:", "C:");
-                    path = Path.Combine(path, "..", "..", "DataFiles", name);
+                    //path = Path.Combine(path, "..", "..", "DataFiles", name);
                 }
                 else if (addTempPath)
                 {
@@ -4965,7 +4966,7 @@ namespace Handelabra.Sentinels.UnitTest
 
                 var dllpath = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
                 var path = Path.GetDirectoryName(dllpath.Replace("file://", "")).Replace("\\D:", "D:").Replace("\\C:", "C:");
-                path = Path.Combine(path, "..", "..", "DataFiles", name);
+                //path = Path.Combine(path, "..", "..", "DataFiles", name);
                 var savedGame = LoadGamePath(path);
 
                 if (savedGame != null)
@@ -5339,9 +5340,9 @@ namespace Handelabra.Sentinels.UnitTest
             PutOnDeck(ttc, card.Card, toBottom);
         }
 
-        public void PutOnDeck(TurnTakerController ttc, Card card, bool toBottom = false)
+        public Card PutOnDeck(TurnTakerController ttc, Card card, bool toBottom = false)
         {
-            MoveCard(ttc, card, ttc.TurnTaker.Deck, toBottom);
+            return MoveCard(ttc, card, ttc.TurnTaker.Deck, toBottom);
         }
 
         public void PutOnDeck(TurnTakerController ttc, IEnumerable<Card> cards)
