@@ -29,7 +29,6 @@ namespace Cauldron.Starlight
             {
                 //TODO - Retreat's find-character-to-play-next-to multichar logic
                 coroutine = GameController.SendMessageAction("Thinks we're in MultiCharPromo", Priority.Low, GetCardSource());
-
             }
             else
             {
@@ -68,7 +67,6 @@ namespace Cauldron.Starlight
             {
                 Card ownCharCard = ListStarlights().FirstOrDefault();
                 shouldProtect = c == ownCharCard;
-
             }
 
             return c.IsTarget && shouldProtect;
