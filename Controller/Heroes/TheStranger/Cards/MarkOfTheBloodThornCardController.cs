@@ -9,7 +9,7 @@ namespace Cauldron.TheStranger
     {
         #region Constructors
 
-        public MarkOfTheBloodThornCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new LinqCardCriteria((Card c) => c.IsHero && c.IsTarget && !c.IsIncapacitatedOrOutOfGame, "hero targets", false, false, null, null, false))
+        public MarkOfTheBloodThornCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new LinqCardCriteria((Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame, "hero targets", false, false, null, null, false))
         {
             base.SpecialStringMaker.ShowHasBeenUsedThisTurn("FirstTimeWouldBeDealtDamage", null, null, null);
         }

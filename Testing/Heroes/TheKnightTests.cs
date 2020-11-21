@@ -590,7 +590,7 @@ namespace CauldronTests
         [Description("TheKnight - DefenderOfTheRealm")]
         public void DefenderOfTheRealm()
         {
-            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
+            SetupGameController("BaronBlade", HeroNamespace, "Unity", "TheWraith", "Megalopolis");
             StartGame();
 
             PrintSeparator("Setup");
@@ -606,7 +606,7 @@ namespace CauldronTests
             string messageText = $"Reduce damage dealt to {wraith.Name} by 1.";
 
             DecisionSelectCards = card.ToEnumerable().Concat(wraith.CharacterCard.ToEnumerable());
-
+            
             GoToPlayCardPhase(HeroController);
             QuickShuffleStorage(HeroController.TurnTaker.Deck);
             PlayCard(HeroController, realm);
