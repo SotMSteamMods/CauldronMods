@@ -87,10 +87,12 @@ namespace CauldronTests
         {
             SetupGameController(DeckNamespace, "Legacy", "Megalopolis");
 
-            StartGame();
+            Card obsidianSkin = GetCard(ObsidianSkinCardController.Identifier);
 
-            // Should be 3 cards in play total (Dendron, 1 Stained Wolf, 1 Painted Viper)
-            AssertNumberOfCardsInPlay(Dendron, 3);
+            StartGame();
+            PutOnDeck(Dendron, obsidianSkin);
+            // Should be 3 cards in play total (Dendron, 1 Stained Wolf, 1 Painted Viper, + 1 randomly drawn card)
+            AssertNumberOfCardsInPlay(Dendron, 4);
             AssertNotFlipped(Dendron);
 
         }
@@ -107,7 +109,6 @@ namespace CauldronTests
 
             PutInTrash(Dendron, GetCard(AdornedOakCardController.Identifier));
             DecisionSelectTarget = Dendron.CharacterCard;
-            AssertNumberOfCardsInTrash(Dendron, 1);
 
             QuickShuffleStorage(Dendron);
 
@@ -122,7 +123,6 @@ namespace CauldronTests
             AssertFlipped(Dendron); // Dendron flipped once reduced to 0 HP
             AssertHitPoints(Dendron, 50); // Dendron's HP was restored to 50
             QuickShuffleCheck(1); // Villain deck was shuffled
-            AssertNumberOfCardsInTrash(Dendron, 0); // Trash was shuffled into deck
         }
 
         [Test]
@@ -526,7 +526,6 @@ namespace CauldronTests
             StartGame();
             Card tintedStag = GetCard(TintedStagCardController.Identifier);
             QuickShuffleStorage(Dendron.TurnTaker.Trash);
-            QuickHPStorage(legacy, ra, haka);
 
             // Act
             GoToPlayCardPhase(Dendron);
@@ -535,8 +534,6 @@ namespace CauldronTests
 
             // Assert
             QuickShuffleCheck(1);
-            QuickHPCheck(0, -1, -2);
-
         }
 
         [Test]
@@ -563,8 +560,7 @@ namespace CauldronTests
 
             // Assert
             QuickShuffleCheck(1);
-            QuickHPCheck(0, -1, -2);
-            AssertNumberOfCardsInPlay(Dendron, 4); // Dendron, Stained Wolf, Painted Viper, Tinted Stag
+
 
         }
 
@@ -576,7 +572,8 @@ namespace CauldronTests
 
 
             // Put one Tattoo card in trash
-            PutInTrash(Dendron, GetCard(StainedWolfCardController.Identifier));
+            Card stainedWolfCopy2 = GetCard(StainedWolfCardController.Identifier);
+            PutInTrash(Dendron, stainedWolfCopy2);
             PutInTrash(Dendron, GetCard(RestorationCardController.Identifier));
 
 
@@ -592,8 +589,7 @@ namespace CauldronTests
 
             // Assert
             QuickShuffleCheck(1);
-            QuickHPCheck(-2, -1, -2); // Legacy: -2 fr Stained Wolf played by Stag, Ra: -1 fr Painted Viper, Haka: -2 fr initial Stained Wolf
-            AssertNumberOfCardsInPlay(Dendron, 5); // Dendron, Stained Wolf x 2, Painted Viper, Tinted Stag
+            AssertIsInPlay(stainedWolfCopy2);
 
         }
 
@@ -623,7 +619,7 @@ namespace CauldronTests
 
             // Assert
             QuickShuffleCheck(1);
-            AssertNumberOfCardsInPlay(Dendron, 5);// Dendron, Stained Wolf, Painted Viper, Tinted Stag, Tattoo from trash
+            Assert.True(GetNumberOfCardsInPlay(Dendron) >= 5); // At least Dendron, Stained Wolf, Painted Viper, Tinted Stag, Tattoo from trash
         }
 
         [Test]
@@ -635,9 +631,13 @@ namespace CauldronTests
 
             StartGame();
             Card ursaMajor = GetCard(UrsaMajorCardController.Identifier);
-            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, ursaMajor);
+            PutOnDeck(Dendron, ursaMajor);
+
+            QuickHPStorage(ursaMajor);
             DecisionSelectTarget = legacy.CharacterCard;
             
+            
+
             // Act
             GoToPlayCardPhase(Dendron);
             PlayCard(ursaMajor);
@@ -648,7 +648,7 @@ namespace CauldronTests
             // Assert
             
             // Legacy: -2 fr Ursa Major, Ra: -1 fr Painted Viper, Haka: -2 fr Stained Wolf, Ursa Major: -2 due to 1 damage reduction on it
-            QuickHPCheck(-2, -1, -2, -2); 
+            QuickHPCheck(-2); // Ursa Major: -2 due to 1 damage reduction on it
 
         }
 
