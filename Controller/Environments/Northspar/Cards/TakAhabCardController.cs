@@ -44,7 +44,7 @@ namespace Cauldron.Northspar
         private IEnumerator EndOfTurnResponse(PhaseChangeAction arg)
         {
             //Discard a card from beneath this one. 
-            if (this.FindCardsWhere((Card c) => c.Location == base.Card.UnderLocation).Any((Card c) => this.DoesAnyCardControllerMakeAnotherCardIndestructible(c) == null))
+            if (this.FindCardsWhere((Card c) => c.Location == base.Card.UnderLocation).Any())
             {
 
                 //have players select a card to move
