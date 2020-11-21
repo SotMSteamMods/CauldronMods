@@ -16,7 +16,7 @@ namespace Cauldron.DocHavoc
         // Any player that does may reveal the top 3 cards of their deck, put 1 in their hand, 1 on the bottom of their deck, and 1 in their trash.
         //==============================================================
 
-        public static string Identifier = "SearchAndRescue";
+        public static readonly string Identifier = "SearchAndRescue";
 
         public SearchAndRescueCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

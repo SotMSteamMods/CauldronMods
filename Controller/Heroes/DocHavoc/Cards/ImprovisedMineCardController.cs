@@ -16,7 +16,7 @@ namespace Cauldron.DocHavoc
         // If you do, prevent that card from entering play, and {DocHavoc} deals 1 target 2 fire damage.
         //==============================================================
 
-        public static string Identifier = "ImprovisedMine";
+        public static readonly string Identifier = "ImprovisedMine";
 
         private const int DamageAmount = 2;
 

@@ -14,7 +14,7 @@ namespace Cauldron.DocHavoc
         // damage this way may not regain HP until the start of your next turn.
         //==============================================================
 
-        public static string Identifier = "PhosphorBlast";
+        public static readonly string Identifier = "PhosphorBlast";
         private const int DamageAmount = 1;
 
         public PhosphorBlastCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)

@@ -13,7 +13,7 @@ namespace Cauldron.DocHavoc
         // Increase all HP recovery by 1.
         //==============================================================
 
-        public static string Identifier = "RapidRegen";
+        public static readonly string Identifier = "RapidRegen";
         private const int HpGainIncrease = 1;
 
         public RapidRegenCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)

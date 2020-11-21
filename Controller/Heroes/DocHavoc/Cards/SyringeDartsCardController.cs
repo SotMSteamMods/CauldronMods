@@ -11,7 +11,7 @@ namespace Cauldron.DocHavoc
         // Deals up to 2 targets 2 projectile damage each.
         //==============================================================
 
-        public static string Identifier = "SyringeDarts";
+        public static readonly string Identifier = "SyringeDarts";
         private const int DamageAmount = 2;
 
         public SyringeDartsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)

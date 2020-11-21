@@ -15,7 +15,7 @@ namespace Cauldron.DocHavoc
         // Each villain target regains 2HP.
         //==============================================================
 
-        public static string Identifier = "ImmediateEvac";
+        public static readonly string Identifier = "ImmediateEvac";
 
         private const int HpGain = 2;
         private const int CardsToDrawFromDeck = 2;

@@ -14,7 +14,7 @@ namespace Cauldron.DocHavoc
         // At the end of your turn, you may destroy 1 ongoing or environment card. If you do, destroy this card.
         //==============================================================
 
-        public static string Identifier = "UnstableSerum";
+        public static readonly string Identifier = "UnstableSerum";
 
         private const int HpGain = 2;
 

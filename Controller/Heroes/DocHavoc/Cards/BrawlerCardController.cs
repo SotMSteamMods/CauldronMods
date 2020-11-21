@@ -17,7 +17,7 @@ namespace Cauldron.DocHavoc
         // where X is the amount of damage that target dealt {DocHavoc} this turn.
         //==============================================================
 
-        public static string Identifier = "Brawler";
+        public static readonly string Identifier = "Brawler";
 
         private const int DamageAmountToNonHeroTarget = 4;
 

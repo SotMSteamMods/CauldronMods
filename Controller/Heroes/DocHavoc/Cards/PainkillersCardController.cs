@@ -16,7 +16,7 @@ namespace Cauldron.DocHavoc
         // turn, that target may deal itself 2 toxic damage. If no damage is taken this way, this card is destroyed.
         //==============================================================
 
-        public static string Identifier = "Painkillers";
+        public static readonly string Identifier = "Painkillers";
 
         private const int DamageAmount = 2;
 
