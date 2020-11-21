@@ -12,5 +12,53 @@ namespace Cauldron.TheRam
         public TheRamTurnTakerController(TurnTaker tt, GameController gameController) : base(tt, gameController)
         {
         }
+
+        public override IEnumerator StartGame()
+        {
+            if (CharacterCardController is TheRamCharacterCardController)
+            {
+                IEnumerator coroutine = HandleWinters(banish: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                coroutine = MoveUpCloseToTrash();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                coroutine = GameController.PlayCard(this, FindCardsWhere((Card c) => c.Identifier == "GrapplingClaw").FirstOrDefault(), cardSource: new CardSource(CharacterCardController));
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
+        }
+
+        private IEnumerator MoveUpCloseToTrash()
+        {
+            BulkMoveCardsAction upCloseToTrash = new BulkMoveCardsAction(GameController, FindCardsWhere((Card c) => c.Identifier == "UpClose"), TurnTaker.Trash, false, TurnTaker, false, false);
+            return GameController.DoAction(upCloseToTrash);
+        }
+
+        private IEnumerator HandleWinters(bool banish = true)
+        {
+            yield break;
+        }
     }
 }

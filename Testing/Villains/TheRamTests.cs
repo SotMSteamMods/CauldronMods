@@ -30,7 +30,18 @@ namespace CauldronTests
             Assert.IsInstanceOf(typeof(TheRamCharacterCardController), ram.CharacterCardController);
 
             Assert.AreEqual(80, ram.CharacterCard.HitPoints);
+        }
+        [Test]
+        public void TestRamSetsUp()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Megalopolis");
 
+            StartGame();
+
+            AssertNumberOfCardsInPlay(ram, 2);
+            AssertIsInPlay("GrapplingClaw");
+            AssertNumberOfCardsInTrash(ram, 5, (Card c) => c.Identifier == "UpClose");
+            AssertNotFlipped(ram.CharacterCard);
         }
     }
 }
