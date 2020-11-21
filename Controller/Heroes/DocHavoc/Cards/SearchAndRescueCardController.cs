@@ -25,7 +25,7 @@ namespace Cauldron.DocHavoc
         public override IEnumerator Play()
         {
             List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
-            IEnumerator discardCardRoutine 
+            IEnumerator discardCardRoutine
                 = this.GameController.EachPlayerDiscardsCards(0, 1, storedResults);
 
             if (this.UseUnityCoroutines)

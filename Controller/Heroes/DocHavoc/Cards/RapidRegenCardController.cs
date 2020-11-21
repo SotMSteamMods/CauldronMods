@@ -24,7 +24,7 @@ namespace Cauldron.DocHavoc
         {
             //Increase all HP recovery by 1.
             this.AddTrigger<GainHPAction>(hp => true,
-                hp => this.GameController.IncreaseHPGain(hp, HpGainIncrease, this.GetCardSource()), 
+                hp => this.GameController.IncreaseHPGain(hp, HpGainIncrease, this.GetCardSource()),
                 TriggerType.IncreaseHPGain, TriggerTiming.Before);
         }
     }

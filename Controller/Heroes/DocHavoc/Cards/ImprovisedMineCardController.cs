@@ -26,7 +26,7 @@ namespace Cauldron.DocHavoc
 
         public override void AddTriggers()
         {
-           
+
             base.AddTrigger<PlayCardAction>((PlayCardAction pc) => base.IsVillain(pc.CardToPlay) && !pc.IsPutIntoPlay, new Func<PlayCardAction, IEnumerator>(this.DiscardAndDestroyCardResponse), new TriggerType[]
             {
                 TriggerType.DestroySelf
@@ -58,7 +58,7 @@ namespace Cauldron.DocHavoc
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            
+
 
             // Deal 1 target 2 Fire damage
             coroutine = this.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
@@ -154,6 +154,6 @@ namespace Cauldron.DocHavoc
 
         //local variable to store the PlayCardAction in
         private PlayCardAction _playCardToCancel = null;
-   
+
     }
 }

@@ -27,10 +27,10 @@ namespace Cauldron.DocHavoc
 
             //You may draw an extra card during your draw phase.
             this.AddAdditionalPhaseActionTrigger(this.ShouldIncreasePhaseActionCount, Phase.DrawCard, ExtraDrawPhaseCount);
-            
+
         }
 
-        
+
 
         public override IEnumerator UsePower(int index = 0)
         {

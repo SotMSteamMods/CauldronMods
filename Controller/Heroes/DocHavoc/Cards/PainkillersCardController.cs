@@ -86,7 +86,7 @@ namespace Cauldron.DocHavoc
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-           // If no damage is taken this way, this card is destroyed.
+            // If no damage is taken this way, this card is destroyed.
             if (base.DidIntendedTargetTakeDamage(storedDamageResults, cc.CharacterCard))
             {
                 yield break;
@@ -94,7 +94,7 @@ namespace Cauldron.DocHavoc
 
 
             IEnumerator destroyCardRoutine = base.DestroyThisCardResponse(phaseChange);
-            
+
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(destroyCardRoutine);

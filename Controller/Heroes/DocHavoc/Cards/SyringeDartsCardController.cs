@@ -25,9 +25,9 @@ namespace Cauldron.DocHavoc
             int targets = this.GetPowerNumeral(0, 2);
             int damage = this.GetPowerNumeral(1, DamageAmount);
 
-            IEnumerator dealDamageRoutine = this.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, 
-                new DamageSource(this.GameController, this.CharacterCard), damage, DamageType.Projectile, 
-                new int?(targets), false, 
+            IEnumerator dealDamageRoutine = this.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
+                new DamageSource(this.GameController, this.CharacterCard), damage, DamageType.Projectile,
+                new int?(targets), false,
                 new int?(0), cardSource: this.GetCardSource());
 
             if (this.UseUnityCoroutines)
