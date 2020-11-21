@@ -32,12 +32,12 @@ namespace Cauldron.TheRam
             return false;
         }
 
-        protected IEnumerator PlayGivenUpCloseByGivenCard(Card upClose, Card target)
+        protected IEnumerator PlayGivenUpCloseByGivenCard(Card upClose, Card target, bool isPutIntoPlay = false)
         {
             CardController upCloseController = FindCardController(upClose);
             if (upCloseController is UpCloseCardController)
             {
-                IEnumerator play = (upCloseController as UpCloseCardController).PlayBySpecifiedHero(target, GetCardSource());
+                IEnumerator play = (upCloseController as UpCloseCardController).PlayBySpecifiedHero(target, isPutIntoPlay, GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(play);

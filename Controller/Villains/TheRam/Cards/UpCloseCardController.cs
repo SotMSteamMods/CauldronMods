@@ -81,18 +81,15 @@ namespace Cauldron.TheRam
             return null;
         }
 
-        public IEnumerator PlayBySpecifiedHero(Card hero, CardSource cardSource)
+        public IEnumerator PlayBySpecifiedHero(Card hero, bool isPutIntoPlay, CardSource cardSource)
         {
             Location targetLocation = null;
             if (hero != null && hero.Owner.IsHero && hero.IsHeroCharacterCard && !hero.Owner.IsIncapacitatedOrOutOfGame && !IsUpClose(hero))
             {
                 targetLocation = hero.NextToLocation;
             }
-            else
-            {
-                targetLocation = null;
-            }
-            IEnumerator play = GameController.PlayCard(TurnTakerController, this.Card, wasCardPlayed: new List<bool> { true }, overridePlayLocation: targetLocation, cardSource: cardSource);
+
+            IEnumerator play = GameController.PlayCard(TurnTakerController, this.Card, wasCardPlayed: new List<bool> { !isPutIntoPlay }, isPutIntoPlay: isPutIntoPlay, overridePlayLocation: targetLocation, cardSource: cardSource);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(play);

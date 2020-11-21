@@ -15,6 +15,20 @@ namespace Cauldron.TheRam
         {
         }
 
+        protected Card GetRam
+        {
+            get
+            {
+                if(TurnTaker.HasMultipleCharacterCards)
+                {
+                    return TurnTaker.CharacterCards.Where((Card c) => c.Identifier == "TheRamCharacter").FirstOrDefault();
+                }
+                else
+                {
+                    return TurnTaker.CharacterCard;
+                }
+            }
+        }
         protected bool IsUpClose(Card c)
         {
             return c.IsTarget && IsUpClose(c.Owner);
@@ -34,12 +48,12 @@ namespace Cauldron.TheRam
             return false;
         }
 
-        protected IEnumerator PlayGivenUpCloseByGivenCard(Card upClose, Card target)
+        protected IEnumerator PlayGivenUpCloseByGivenCard(Card upClose, Card target, bool isPutIntoPlay = false)
         {
             CardController upCloseController = FindCardController(upClose);
             if (upCloseController is UpCloseCardController)
             {
-                IEnumerator play = (upCloseController as UpCloseCardController).PlayBySpecifiedHero(target, GetCardSource());
+                IEnumerator play = (upCloseController as UpCloseCardController).PlayBySpecifiedHero(target, isPutIntoPlay, GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(play);
