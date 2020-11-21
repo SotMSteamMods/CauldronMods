@@ -29,7 +29,7 @@ namespace Cauldron.Starlight
             {
                 var location = ce.CardEnteringPlay.Location;
                 if (location != null && location.IsNextToCard && location.OwnerCard != null)
-                return location.OwnerCard.IsTarget;
+                    return location.OwnerCard.IsTarget;
             }
             return false;
         }
@@ -62,7 +62,7 @@ namespace Cauldron.Starlight
             }
 
             var target = FindCardsWhere((Card c) => c.IsInPlay && c.IsTarget && c.GetAllNextToCards(false).Contains(constellation), visibleToCard: GetCardSource()).FirstOrDefault();
-            
+
 
             if (target != null)
             {

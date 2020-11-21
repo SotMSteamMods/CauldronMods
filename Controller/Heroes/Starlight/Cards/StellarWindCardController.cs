@@ -35,7 +35,7 @@ namespace Cauldron.Starlight
             else
             {
                 //"{Starlight} may deal 2 cold damage to each target next to a constellation.",
-                damageRoutine = GameController.SelectTargetsAndDealDamage(HeroTurnTakerController, new DamageSource(GameController, actingStarlight), 2, DamageType.Cold, null, false, 0, additionalCriteria: (Card c) => IsNextToConstellation(c), cardSource:GetCardSource());
+                damageRoutine = GameController.SelectTargetsAndDealDamage(HeroTurnTakerController, new DamageSource(GameController, actingStarlight), 2, DamageType.Cold, null, false, 0, additionalCriteria: (Card c) => IsNextToConstellation(c), cardSource: GetCardSource());
             }
 
             //"Draw 2 cards."

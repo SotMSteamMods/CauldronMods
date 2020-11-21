@@ -55,7 +55,7 @@ namespace Cauldron.Starlight
             }
 
             //"...destroy a constellation in play..."
-            IEnumerator destroyConstellation = GameController.SelectAndDestroyCard(HeroTurnTakerController, new LinqCardCriteria(IsConstellationInPlay, "constellation"), optional:false, cardSource: GetCardSource());
+            IEnumerator destroyConstellation = GameController.SelectAndDestroyCard(HeroTurnTakerController, new LinqCardCriteria(IsConstellationInPlay, "constellation"), optional: false, cardSource: GetCardSource());
             //"...to prevent that damage."
             IEnumerator preventDamage = CancelAction(dd, isPreventEffect: true);
             if (UseUnityCoroutines)

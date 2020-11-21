@@ -16,9 +16,9 @@ namespace Cauldron.Starlight
         public override void AddTriggers()
         {
             //"Whenever {Starlight} would deal damage to a hero target next to a constellation, instead that target regains that much HP.",
-            AddPreventDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsOneOfTheseCards(ListStarlights()) && dd.Target.IsHero && IsNextToConstellation(dd.Target), 
-                        (DealDamageAction dd) => GameController.GainHP(dd.Target, dd.Amount, null, null, GetCardSource()), 
-                        new TriggerType[1] { TriggerType.GainHP }, 
+            AddPreventDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsOneOfTheseCards(ListStarlights()) && dd.Target.IsHero && IsNextToConstellation(dd.Target),
+                        (DealDamageAction dd) => GameController.GainHP(dd.Target, dd.Amount, null, null, GetCardSource()),
+                        new TriggerType[1] { TriggerType.GainHP },
                         isPreventEffect: true);
         }
 
@@ -27,9 +27,9 @@ namespace Cauldron.Starlight
             //set stuff up for PowerNumerals and multi-character promo
             int powerNumeral = GetPowerNumeral(0, 1);
             int powerNumeral2 = GetPowerNumeral(1, 1);
-            
 
-            List<Card> storedResults = new List<Card> { }; 
+
+            List<Card> storedResults = new List<Card> { };
             IEnumerator chooseDamageSource = SelectActiveCharacterCardToDealDamage(storedResults, powerNumeral2, DamageType.Radiant);
             if (UseUnityCoroutines)
             {

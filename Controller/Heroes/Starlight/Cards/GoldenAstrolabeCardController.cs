@@ -40,10 +40,10 @@ namespace Cauldron.Starlight
                 GameController.ExhaustCoroutine(selfDamage);
             }
 
-            LinqTurnTakerCriteria ttCriteria = new LinqTurnTakerCriteria((TurnTaker tt) => 
-                                                        tt is HeroTurnTaker && 
-                                                        !tt.IsIncapacitatedOrOutOfGame && 
-                                                        tt.HasCardsWhere((Card c) => c.IsHeroCharacterCard && IsNextToConstellation(c)) && 
+            LinqTurnTakerCriteria ttCriteria = new LinqTurnTakerCriteria((TurnTaker tt) =>
+                                                        tt is HeroTurnTaker &&
+                                                        !tt.IsIncapacitatedOrOutOfGame &&
+                                                        tt.HasCardsWhere((Card c) => c.IsHeroCharacterCard && IsNextToConstellation(c)) &&
                                                         GetUsablePowersFromAllowedSource(GameController.FindHeroTurnTakerController(tt.ToHero())).Count() > 0);
 
             //because of Nightlore Council Starlight, Sentinels, and others, restricting power use to either:
@@ -53,7 +53,7 @@ namespace Cauldron.Starlight
 
             //"One hero character next to a constellation..." 
             var storedTurnTakerDecision = new List<SelectTurnTakerDecision> { };
-            IEnumerator pickHeroToUsePower = GameController.SelectHeroTurnTaker(HeroTurnTakerController, SelectionType.UsePower, optional: false, allowAutoDecide: false, storedResults: storedTurnTakerDecision, heroCriteria: ttCriteria, cardSource:GetCardSource());
+            IEnumerator pickHeroToUsePower = GameController.SelectHeroTurnTaker(HeroTurnTakerController, SelectionType.UsePower, optional: false, allowAutoDecide: false, storedResults: storedTurnTakerDecision, heroCriteria: ttCriteria, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(pickHeroToUsePower);
@@ -74,8 +74,8 @@ namespace Cauldron.Starlight
                 if (powerUser != null)
                 {
                     //"...may use a power now."
-                    var usePower = GameController.SelectAndUsePower(powerUser, optional:true, PowerCriteria);
-                    if(UseUnityCoroutines)
+                    var usePower = GameController.SelectAndUsePower(powerUser, optional: true, PowerCriteria);
+                    if (UseUnityCoroutines)
                     {
                         yield return GameController.StartCoroutine(usePower);
                     }
