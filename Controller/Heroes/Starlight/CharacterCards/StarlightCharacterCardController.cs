@@ -34,8 +34,9 @@ namespace Cauldron.Starlight
                 case 0:
                     {
                         //"Until the start of your next turn, prevent all damage that would be dealt to or by the target with the lowest HP.",
-                        OnDealDamageStatusEffect lowestTargetImmunity = new OnDealDamageStatusEffect(Card, "LowestTargetImmunity", "The target with the lowest HP is immune to damage and cannot deal damage.", new TriggerType[1] { TriggerType.MakeImmuneToDamage }, TurnTaker, Card);
+                        OnDealDamageStatusEffect lowestTargetImmunity = new OnDealDamageStatusEffect(Card, "LowestTargetImmunity", "The target with the lowest HP is immune to damage and cannot deal damage.", new TriggerType[] { TriggerType.MakeImmuneToDamage }, TurnTaker, Card);
                         lowestTargetImmunity.UntilStartOfNextTurn(TurnTaker);
+                        lowestTargetImmunity.CardSource = Card;
                         lowestTargetImmunity.SourceCriteria.IsTarget = true;
                         lowestTargetImmunity.BeforeOrAfter = BeforeOrAfter.Before;
                         IEnumerator coroutine = AddStatusEffect(lowestTargetImmunity);
@@ -92,7 +93,7 @@ namespace Cauldron.Starlight
             string heroName = ((TurnTaker == null) ? Card.Title : TurnTaker.Name);
 
             list.Add(new Function(HeroTurnTakerController, "Draw a card", SelectionType.DrawCard, () => DrawCard(HeroTurnTaker, false), HeroTurnTakerController != null && CanDrawCards(HeroTurnTakerController), heroName + forceDrawCardEnder));
-            
+
             list.Add(new Function(HeroTurnTakerController, "Play a constellation from your trash", SelectionType.PlayCard, () => SelectAndPlayConstellationFromTrash(HeroTurnTakerController), HeroTurnTakerController != null && GetPlayableConstellationsInTrash().Count() > 0, heroName + forcePlayConstellationEnder));
 
             SelectFunctionDecision selectFunction = new SelectFunctionDecision(GameController, HeroTurnTakerController, list, false, null, heroName + forceDoNothingEnder, null, GetCardSource());
@@ -123,7 +124,7 @@ namespace Cauldron.Starlight
 
         private IEnumerable<Card> GetPlayableConstellationsInTrash()
         {
-            return HeroTurnTaker.Trash.Cards.Where((Card card) => IsConstellation(card) && GameController.CanPlayCard(FindCardController(card), false, null, false, true) == CanPlayCardResult.CanPlay);  
+            return HeroTurnTaker.Trash.Cards.Where((Card card) => IsConstellation(card) && GameController.CanPlayCard(FindCardController(card), false, null, false, true) == CanPlayCardResult.CanPlay);
         }
 
         private bool IsConstellation(Card card)
@@ -167,7 +168,6 @@ namespace Cauldron.Starlight
             //If we answered yes to either question, prevent the damage.
             if (storedResults.Contains(true))
             {
-
                 IEnumerator coroutine3 = CancelAction(dealDamage, showOutput: true, cancelFutureRelatedDecisions: true, null, isPreventEffect: true);
                 if (UseUnityCoroutines)
                 {
