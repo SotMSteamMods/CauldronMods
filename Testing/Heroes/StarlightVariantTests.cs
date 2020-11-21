@@ -641,7 +641,191 @@ namespace CauldronTests
             DealDamage(scholar, vamp, 1, DamageType.Radiant);
             QuickHPCheck(-2);
 
+            PlayCard("UnhallowedHalls");
+            UseIncapacitatedAbility(starlight, 2);
+            DealDamage(scholar, vamp, 1, DamageType.Radiant);
+            QuickHPCheck(-2);
+            DealDamage(scholar, vamp, 1, DamageType.Radiant);
+            QuickHPCheck(0);
 
+        }
+        [Test]
+        public void TestGenesisPowerBasic()
+        {
+            var promoDict = new Dictionary<string, string> { };
+            promoDict["Cauldron.Starlight"] = "GenesisStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheHarpy", "Megalopolis" }, false, promoDict);
+
+            StartGame();
+            Card birds = PlayCard("HuginnAndMuninn");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card traffic = PlayCard("TrafficPileup");
+            QuickHPStorage(starlight.CharacterCard, legacy.CharacterCard, harpy.CharacterCard, birds, mdp, traffic);
+
+            UsePower(starlight);
+
+            QuickHPCheck(-1, -1, -1, -1, 0, 0);
+            AssertNumberOfCardsInPlay(starlight, 3);
+        }
+        [Test]
+        public void TestGenesisPowerDoesNotRequireDamage()
+        {
+            var promoDict = new Dictionary<string, string> { };
+            promoDict["Cauldron.Starlight"] = "GenesisStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheHarpy", "Megalopolis" }, false, promoDict);
+
+            StartGame();
+            Card birds = PlayCard("HuginnAndMuninn");
+            PlayCard("AppliedNumerology");
+            DecisionYesNo = true;
+            QuickHPStorage(starlight.CharacterCard, legacy.CharacterCard, harpy.CharacterCard, birds);
+
+            UsePower(starlight);
+
+            QuickHPCheck(0, 0, 0, 0);
+            AssertNumberOfCardsInPlay(starlight, 3);
+        }
+        [Test]
+        public void TestGenesisPowerPlayIsOptional()
+        {
+            var promoDict = new Dictionary<string, string> { };
+            promoDict["Cauldron.Starlight"] = "GenesisStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheHarpy", "Megalopolis" }, false, promoDict);
+
+            StartGame();
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+
+            UsePower(starlight);
+            AssertNumberOfCardsInPlay(starlight, 1);
+        }
+        [Test]
+        public void TestGenesisPowerNoConstellationsInDeck()
+        {
+            var promoDict = new Dictionary<string, string> { };
+            promoDict["Cauldron.Starlight"] = "GenesisStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheHarpy", "Megalopolis" }, false, promoDict);
+
+            StartGame();
+            MoveCards(starlight, (Card c) => GameController.DoesCardContainKeyword(c, "constellation"), starlight.HeroTurnTaker.Hand);
+
+            UsePower(starlight);
+            AssertNumberOfCardsInPlay(starlight, 1);
+        }
+        [Test()]
+        public void TestGenesisPowerIsActualPlay()
+        {
+            var promoDict = new Dictionary<string, string> { };
+            promoDict["Cauldron.Starlight"] = "GenesisStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheHarpy", "Megalopolis" }, false, promoDict);
+
+            StartGame();
+            PlayCard("HostageSituation");
+
+            UsePower(starlight);
+            AssertNumberOfCardsInPlay(starlight, 1);
+        }
+        [Test]
+        public void TestGenesisIncap1Basic()
+        {
+            var promoDict = new Dictionary<string, string> { };
+            promoDict["Cauldron.Starlight"] = "GenesisStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheHarpy", "Megalopolis" }, false, promoDict);
+
+            StartGame();
+            SetupIncap(baron);
+
+            Card takedown = PutInTrash("TakeDown");
+            QuickHandStorage(legacy, harpy);
+
+            UseIncapacitatedAbility(starlight, 0);
+            QuickHandCheck(1, 0);
+            AssertInHand(takedown);
+        }
+        [Test]
+        public void TestGenesisIncap1OnlyOneCard()
+        {
+            var promoDict = new Dictionary<string, string> { };
+            promoDict["Cauldron.Starlight"] = "GenesisStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheHarpy", "Megalopolis" }, false, promoDict);
+
+            StartGame();
+            SetupIncap(baron);
+
+            PutInTrash("TakeDown", "AppliedNumerology", "Fortitude", "HarpyHex");
+
+            QuickHandStorage(legacy, harpy);
+            DecisionSelectTurnTakers = new List<TurnTaker> { legacy.TurnTaker, harpy.TurnTaker };
+
+            UseIncapacitatedAbility(starlight, 0);
+            QuickHandCheck(1, 0);
+            AssertNumberOfCardsInTrash(legacy, 1);
+
+            UseIncapacitatedAbility(starlight, 0);
+            QuickHandCheck(0, 1);
+            AssertNumberOfCardsInTrash(harpy, 1);
+        }
+        [Test]
+        public void TestGenesisIncap2()
+        {
+            var promoDict = new Dictionary<string, string> { };
+            promoDict["Cauldron.Starlight"] = "GenesisStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheHarpy", "Megalopolis" }, false, promoDict);
+
+            StartGame();
+            SetupIncap(baron);
+
+            AssertIncapLetsHeroUsePower(starlight, 1, legacy);
+        }
+        [Test]
+        public void TestGenesisIncap3PicksAnyDeck()
+        {
+            var promoDict = new Dictionary<string, string> { };
+            promoDict["Cauldron.Starlight"] = "GenesisStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheHarpy", "Megalopolis" }, false, promoDict);
+
+            StartGame();
+            SetupIncap(baron);
+
+            AssertNextDecisionChoices(new List<Location> { legacy.TurnTaker.Deck, harpy.TurnTaker.Deck, baron.TurnTaker.Deck, FindEnvironment().TurnTaker.Deck}.Select((Location deck) => new LocationChoice(deck)));
+        }
+        [Test]
+        public void TestGenesisIncap3Replace()
+        {
+            var promoDict = new Dictionary<string, string> { };
+            promoDict["Cauldron.Starlight"] = "GenesisStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheHarpy", "Megalopolis" }, false, promoDict);
+
+            StartGame();
+            SetupIncap(baron);
+
+            Card takedown = PutOnDeck("TakeDown");
+            DecisionMoveCardDestination = new MoveCardDestination(legacy.TurnTaker.Deck);
+
+            DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
+
+            UseIncapacitatedAbility(starlight, 2);
+
+            AssertOnTopOfDeck(legacy, takedown);
+        }
+        [Test]
+        public void TestGenesisIncap3Discard()
+        {
+            var promoDict = new Dictionary<string, string> { };
+            promoDict["Cauldron.Starlight"] = "GenesisStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "TheHarpy", "Megalopolis" }, false, promoDict);
+
+            StartGame();
+            SetupIncap(baron);
+
+            Card takedown = PutOnDeck("TakeDown");
+            DecisionMoveCardDestination = new MoveCardDestination(legacy.TurnTaker.Trash);
+
+            DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
+
+            UseIncapacitatedAbility(starlight, 2);
+
+            AssertNotOnTopOfDeck(legacy, takedown);
+            AssertInTrash(takedown);
         }
     }
 }

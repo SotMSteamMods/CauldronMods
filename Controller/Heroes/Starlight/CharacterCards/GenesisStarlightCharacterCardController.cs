@@ -31,7 +31,7 @@ namespace Cauldron.Starlight
             IEnumerator searchAndPlay = GameController.SelectCardsFromLocationAndMoveThem(HeroTurnTakerController,
                                                                             TurnTaker.Deck,
                                                                             minNumberOfCards: 0, maxNumberOfCards: 2,
-                                                                            new LinqCardCriteria((Card c) => IsConstellation(c)),
+                                                                            new LinqCardCriteria((Card c) => IsConstellation(c), "constellation"),
                                                                             intoPlay,
                                                                             shuffleAfterwards: true,
                                                                             cardSource: GetCardSource());
@@ -53,8 +53,12 @@ namespace Cauldron.Starlight
                 case 0:
                     {
                         //"One player may put an ongoing card from their trash into their hand.",
-                        List<TurnTaker> visibleHeroes = FindTurnTakersWhere((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && (bool)AskIfTurnTakerIsVisibleToCardSource(tt, GetCardSource())).ToList();
-                        List<TurnTaker> usableHeroes = visibleHeroes.Where((TurnTaker tt) => tt.Trash.Cards.Where((Card c) => c.IsOngoing).Count() > 0).ToList();
+                        List<TurnTaker> usableHeroes = GameController.AllTurnTakers.Where(
+                                                                            (TurnTaker tt) => tt.IsHero &&
+                                                                                            !tt.IsIncapacitatedOrOutOfGame && 
+                                                                                            GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) &&
+                                                                                            tt.Trash.Cards.Where((Card c) => c.IsOngoing).Count() > 0
+                                                                     ).ToList();
                         SelectTurnTakerDecision whoGetsCard = new SelectTurnTakerDecision(GameController, 
                                                                             HeroTurnTakerController, 
                                                                             usableHeroes, 
