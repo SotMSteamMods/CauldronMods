@@ -18,33 +18,33 @@ namespace Cauldron.TheRam
             if (CharacterCardController is TheRamCharacterCardController)
             {
                 IEnumerator coroutine = HandleWinters(banish: true);
-                if (base.UseUnityCoroutines)
+                if (UseUnityCoroutines)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
+                    yield return GameController.StartCoroutine(coroutine);
                 }
                 else
                 {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    GameController.ExhaustCoroutine(coroutine);
                 }
 
                 coroutine = MoveUpCloseToTrash();
-                if (base.UseUnityCoroutines)
+                if (UseUnityCoroutines)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
+                    yield return GameController.StartCoroutine(coroutine);
                 }
                 else
                 {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    GameController.ExhaustCoroutine(coroutine);
                 }
 
                 coroutine = GameController.PlayCard(this, FindCardsWhere((Card c) => c.Identifier == "GrapplingClaw").FirstOrDefault(), cardSource: new CardSource(CharacterCardController));
                 if (base.UseUnityCoroutines)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
+                    yield return GameController.StartCoroutine(coroutine);
                 }
                 else
                 {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    GameController.ExhaustCoroutine(coroutine);
                 }
             }
             yield break;

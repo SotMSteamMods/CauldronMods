@@ -33,5 +33,23 @@ namespace Cauldron.TheRam
             }
             return false;
         }
+
+        protected IEnumerator PlayGivenUpCloseByGivenCard(Card upClose, Card target)
+        {
+            CardController upCloseController = FindCardController(upClose);
+            if (upCloseController is UpCloseCardController)
+            {
+                IEnumerator play = (upCloseController as UpCloseCardController).PlayBySpecifiedHero(target, GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(play);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(play);
+                }
+            }
+            yield break;
+        }
     }
 }

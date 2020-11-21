@@ -315,9 +315,6 @@
                 "Play this card next to an active hero who is not Up Close. That hero and all their targets are Up Close. That hero gains:",
                 "Power: Destroy this card."
             ],
-            "powers": [
-                "Destroy this card."
-            ],
             "flavorQuotes": [
                 {
                     "identifier": "Quicksilver",
