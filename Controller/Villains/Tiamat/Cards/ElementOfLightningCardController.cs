@@ -18,7 +18,15 @@ namespace Cauldron.Tiamat
         public override IEnumerator Play()
         {
             IEnumerator coroutine;
-            Card characterCard = base.TurnTaker.FindCard("StormTiamatCharacter");
+            Card characterCard = null;
+            if (base.CharacterCard.MaximumHitPoints == 40)
+            {
+                characterCard = base.TurnTaker.FindCard("StormTiamatCharacter");
+            }
+            else if (base.CharacterCard.MaximumHitPoints == 15)
+            {
+                characterCard = base.TurnTaker.FindCard("HydraStormTiamatCharacter");
+            };
             //If {Tiamat}, The Eye of the Storm is active, she deals each hero target 2+X lightning damage, where X is the number of Element of Lightning cards in the villain trash.
             if (characterCard.IsInPlayAndHasGameText && !characterCard.IsFlipped)
             {

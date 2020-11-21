@@ -29,7 +29,7 @@ namespace Cauldron.Tiamat
             if (!base.Card.IsFlipped)
             {
                 //At the start of the villain turn, if firstHead is decapitated, flip this card and put secondHead into play with 15 HP.
-                base.AddSideTrigger(base.AddStartOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, this.FlipThisCardResponse, TriggerType.FlipCard));
+                base.AddSideTrigger(base.AddStartOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker && this.firstHead.Card.IsFlipped, this.FlipThisCardResponse, TriggerType.FlipCard));
                 base.AddSideTriggers(this.AddFrontTriggers());
                 if (Game.IsAdvanced)
                 {

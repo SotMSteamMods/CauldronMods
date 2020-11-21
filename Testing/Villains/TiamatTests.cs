@@ -51,7 +51,7 @@ namespace CauldronTests
         public void TestTiamatLoad()
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
-
+            StartGame();
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
 
             Assert.IsNotNull(tiamat);
@@ -127,10 +127,10 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            SetupIncap(legacy, winter);
+            SetupIncap(legacy, inferno);
             //Flipped heads cannot deal damage
             QuickHPStorage(legacy);
-            DealDamage(winter, legacy, 2, DamageType.Cold);
+            DealDamage(inferno, legacy, 2, DamageType.Cold);
             QuickHPCheck(0);
         }
 
@@ -400,10 +400,12 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "AbsoluteZero", "Ra", "Haka", "TheBlock");
             StartGame();
 
+            GoToPlayCardPhase(tiamat);
+
             //set hp of heads
-            SetHitPoints(inferno, 20);
-            SetHitPoints(storm, 15);
-            SetHitPoints(winter, 25);
+            SetHitPoints(winter, 10);
+            SetHitPoints(storm, 5);
+            SetHitPoints(inferno, 14);
 
             Card glacial = GetCard("GlacialStructure");
             PlayCards(new Card[] {
@@ -425,8 +427,8 @@ namespace CauldronTests
 
             //damage should be dealt by highest hp, which is winter
             //adding cannot deal damage status effects to storm and inferno
-            AddCannotDealNextDamageTrigger(tiamat, inferno);
-            AddCannotDealNextDamageTrigger(tiamat, storm);
+            AddCannotDealNextDamageTrigger(ra, winter);
+            AddCannotDealNextDamageTrigger(ra, storm);
             PlayCard(GetCard("AcidBreath"));
             QuickHPCheck(-3, -3, 0);
         }

@@ -1,13 +1,11 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-using System;
-using System.Collections;
 
 namespace Cauldron.Tiamat
 {
-    public class HydraWinterCharacterCardController : HydraTiamatCharacterCardController
+    public class HydraWinterTiamatCharacterCardController : HydraTiamatCharacterCardController
     {
-        public HydraWinterCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public HydraWinterTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }

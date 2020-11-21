@@ -8,7 +8,6 @@
     "cards": [
         {
             "identifier": "InfernoTiamatCharacter",
-            "sharedIdentifier": "TiamatCharacter",
             "count": 1,
             "title": "Tiamat, The Mouth of the Inferno",
             "keywords": [
@@ -70,7 +69,6 @@
         },
         {
             "identifier": "StormTiamatCharacter",
-            "sharedIdentifier": "TiamatCharacter",
             "count": 1,
             "title": "Tiamat, The Eye of the Storm",
             "keywords": [
@@ -117,7 +115,6 @@
         },
         {
             "identifier": "WinterTiamatCharacter",
-            "sharedIdentifier": "TiamatCharacter",
             "count": 1,
             "title": "Tiamat, The Jaws of Winter",
             "keywords": [
@@ -713,7 +710,7 @@
     ],
     "promoCards": [
         {
-            "identifier": "WinterTiamatCharacter",
+            "identifier": "WinterTiamatCharacter", 
             "promoIdentifier": "HydraWinterTiamatCharacter",
             "count": 1,
             "title": "Tiamat, The Jaws of Winter",

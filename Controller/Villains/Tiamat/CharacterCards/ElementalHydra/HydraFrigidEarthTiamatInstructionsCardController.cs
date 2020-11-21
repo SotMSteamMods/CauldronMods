@@ -52,7 +52,8 @@ namespace Cauldron.Tiamat
         private IEnumerator DiscardResponse(PhaseChangeAction action)
         {
             //At the end of the villain turn, 1 player must discard 1 card.
-            IEnumerator coroutine = base.SelectAndDiscardCards(this.DecisionMaker, 1);
+            IEnumerator coroutine = base.GameController.SelectHeroToDiscardCard(this.DecisionMaker, optionalDiscardCard: false, cardSource: base.GetCardSource());
+            //base.SelectAndDiscardCards(this.DecisionMaker, 1);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

@@ -18,7 +18,15 @@ namespace Cauldron.Tiamat
         public override IEnumerator Play()
         {
             IEnumerator coroutine;
-            Card characterCard = base.TurnTaker.FindCard("InfernoTiamatCharacter");
+            Card characterCard = null;
+            if (base.CharacterCard.MaximumHitPoints == 40)
+            {
+                characterCard = base.TurnTaker.FindCard("InfernoTiamatCharacter");
+            }
+            else if (base.CharacterCard.MaximumHitPoints == 15)
+            {
+                characterCard = base.TurnTaker.FindCard("HydraInfernoTiamatCharacter");
+            };
             //If {Tiamat}, The Mouth of the Inferno is active, she deals each hero target 2+X fire damage, where X is the number of Element of Fire cards in the villain trash.
             if (characterCard.IsInPlayAndHasGameText && !characterCard.IsFlipped)
             {

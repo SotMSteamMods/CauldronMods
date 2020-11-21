@@ -13,7 +13,26 @@ namespace Cauldron.Tiamat
         {
 
         }
+
+        //Face down heads are indestructible
+        public override bool CanBeDestroyed
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         protected abstract ITrigger[] AddFrontTriggers();
+
+        public bool IsSpell(Card card)
+        {
+            return card != null && base.GameController.DoesCardContainKeyword(card, "spell");
+        }
+        public bool IsHead(Card card)
+        {
+            return card != null && base.GameController.DoesCardContainKeyword(card, "head");
+        }
 
         public override void AddSideTriggers()
         {
@@ -21,6 +40,11 @@ namespace Cauldron.Tiamat
             if (!base.Card.IsFlipped)
             {
                 base.AddSideTriggers(this.AddFrontTriggers());
+            }
+            else
+            {
+                //Decapitated heads cannot deal damage
+                base.AddSideTrigger(base.AddCannotDealDamageTrigger((Card c) => c == base.Card));
             }
         }
 
@@ -40,10 +64,27 @@ namespace Cauldron.Tiamat
             yield break;
         }
 
-        //Face down heads are indestructible
-        public override bool AskIfCardIsIndestructible(Card card)
+        public override IEnumerator BeforeFlipCardImmediateResponse(FlipCardAction flip)
         {
-            return card.IsFlipped && card.DoKeywordsContain("head");
+            CardSource cardSource = flip.CardSource;
+            if (cardSource == null && flip.ActionSource != null)
+            {
+                cardSource = flip.ActionSource.CardSource;
+            }
+            if (cardSource == null)
+            {
+                cardSource = base.GetCardSource(null);
+            }
+            IEnumerator coroutine = base.GameController.RemoveTarget(base.Card, cardSource: cardSource);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
     }
 }

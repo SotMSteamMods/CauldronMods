@@ -14,17 +14,17 @@ namespace CauldronTests
     class TiamatHydraTests : BaseTest
     {
         protected TurnTakerController tiamat { get { return FindVillain("Tiamat"); } }
-        protected Card inferno { get { return GetCardInPlay("InfernoTiamatCharacter"); } }
-        protected Card storm { get { return GetCardInPlay("StormTiamatCharacter"); } }
+        protected Card inferno { get { return GetCardInPlay("HydraInfernoTiamatCharacter"); } }
+        protected Card storm { get { return GetCardInPlay("HydraStormTiamatCharacter"); } }
         protected Card winter { get { return GetCardInPlay("WinterTiamatCharacter"); } }
-        protected Card decay { get { return GetCardInPlay("DecayTiamatCharacter"); } }
-        protected Card wind { get { return GetCardInPlay("WindTiamatCharacter"); } }
-        protected Card earth { get { return GetCardInPlay("EarthTiamatCharacter"); } }
+        protected Card decay { get { return GetCardInPlay("HydraDecayTiamatCharacter"); } }
+        protected Card wind { get { return GetCardInPlay("HydraWindTiamatCharacter"); } }
+        protected Card earth { get { return GetCardInPlay("HydraEarthTiamatCharacter"); } }
 
         private void SetupIncap(TurnTakerController source, Card target)
         {
             SetHitPoints(target, 1);
-            DealDamage(source, target, 2, DamageType.Melee);
+            DealDamage(source, target, 2, DamageType.Radiant);
         }
 
         protected void AddCannotDealNextDamageTrigger(TurnTakerController ttc, Card card)
@@ -66,7 +66,7 @@ namespace CauldronTests
         [Test()]
         public void TestInfernoFlipOnDestroyIncap()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, inferno);
             //Head flips on incap
@@ -76,7 +76,7 @@ namespace CauldronTests
         [Test()]
         public void TestDidNotWinOnInfernoIncap()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, inferno);
             //Should only win when all 3 heads are destroyed
@@ -86,7 +86,7 @@ namespace CauldronTests
         [Test()]
         public void TestStormFlipOnDestroyIncap()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, storm);
             //Head flips on incap
@@ -96,7 +96,7 @@ namespace CauldronTests
         [Test()]
         public void TestDidNotWinOnStormIncap()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, storm);
             //Should only win when all 3 heads are destroyed
@@ -106,7 +106,7 @@ namespace CauldronTests
         [Test()]
         public void TestWinterFlipOnDestroyIncap()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, winter);
             //Head flips on incap
@@ -116,7 +116,7 @@ namespace CauldronTests
         [Test()]
         public void TestDidNotWinOnWinterIncap()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, winter);
             //Should only win when all 3 heads are destroyed
@@ -126,19 +126,19 @@ namespace CauldronTests
         [Test()]
         public void TestDecapitatedHeadCannotDealDamage()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            SetupIncap(legacy, winter);
+            SetupIncap(haka, inferno);
             //Flipped heads cannot deal damage
             QuickHPStorage(legacy);
-            DealDamage(winter, legacy, 2, DamageType.Cold);
+            DealDamage(inferno, legacy, 2, DamageType.Cold);
             QuickHPCheck(0);
         }
 
         [Test()]
         public void TestDecapitatedHeadNotATarget()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, winter);
             //Flipped heads are not targets
@@ -148,7 +148,7 @@ namespace CauldronTests
         [Test()]
         public void TestWinCondition()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, winter);
             AssertNotGameOver();
@@ -162,7 +162,7 @@ namespace CauldronTests
         [Test()]
         public void TestInfernoImmuneToFire()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             QuickHPStorage(inferno);
             //Inferno Tiamat should be immune to fire damage
@@ -173,7 +173,7 @@ namespace CauldronTests
         [Test()]
         public void TestStormImmuneToLightning()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             QuickHPStorage(storm);
             //Storm Tiamat should be immune to lightning damage
@@ -184,7 +184,7 @@ namespace CauldronTests
         [Test()]
         public void TestWinterImmuneToCold()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             QuickHPStorage(winter);
             //Inferno Tiamat should be immune to cold damage
@@ -195,7 +195,7 @@ namespace CauldronTests
         [Test()]
         public void TestInfernoEndOfTurnDealDamage()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Tachyon", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Tachyon", "Megalopolis");
             StartGame();
             SetupIncap(legacy, winter);
             SetupIncap(legacy, storm);
@@ -211,7 +211,7 @@ namespace CauldronTests
         [Test()]
         public void TestInfernoEndOfTurnDontDealDamage()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Tachyon", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Tachyon", "Megalopolis");
             StartGame();
             SetupIncap(legacy, winter);
             SetupIncap(legacy, storm);
@@ -226,7 +226,7 @@ namespace CauldronTests
         [Test()]
         public void TestWinterEndOfTurnDealDamage()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Tachyon", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Tachyon", "Megalopolis");
             StartGame();
             SetupIncap(legacy, inferno);
             SetupIncap(legacy, storm);
@@ -240,7 +240,7 @@ namespace CauldronTests
         [Test()]
         public void TestWinterEndOfTurnDontDealDamage()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Tachyon", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Tachyon", "Megalopolis");
             StartGame();
             SetupIncap(legacy, inferno);
             SetupIncap(legacy, storm);
@@ -256,7 +256,7 @@ namespace CauldronTests
         [Test()]
         public void TestStormEndOfTurnDealDamage()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Tachyon", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Tachyon", "Megalopolis");
             StartGame();
             SetupIncap(legacy, winter);
             SetupIncap(legacy, inferno);
@@ -271,7 +271,7 @@ namespace CauldronTests
         [Test()]
         public void TestStormEndOfTurnDontDealDamage()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Tachyon", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Tachyon", "Megalopolis");
             StartGame();
             SetupIncap(legacy, winter);
             SetupIncap(legacy, inferno);
@@ -285,20 +285,20 @@ namespace CauldronTests
 
 
         [Test()]
-        public void TestAllHeadsEndOfTurnDealDamage()
+        public void TestAllHeadsEndOfTurnFront()
         {
-            SetupGameController("Cauldron.Tiamat", "Haka", "Guise", "Parse", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Haka", "Ra", "Parse", "Megalopolis");
             StartGame();
-            QuickHPStorage(haka);
+            QuickHPStorage(haka, ra, parse);
             //End of turn damage checking happens per head
             GoToEndOfTurn(tiamat);
-            QuickHPCheck(-3);
+            QuickHPCheck(-3, -1, -1);
         }
 
         [Test()]
         public void TestInfernoAdvancedEffect()
         {
-            SetupGameController(new string[] { "Cauldron.Tiamat", "Legacy", "Guise", "Parse", "Megalopolis" }, true);
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Guise", "Parse", "Megalopolis" }, true);
             StartGame();
             QuickHPStorage(legacy);
             //Advanced heads deal 1 extra damage
@@ -309,7 +309,7 @@ namespace CauldronTests
         [Test()]
         public void TestStormAdvancedEffect()
         {
-            SetupGameController(new string[] { "Cauldron.Tiamat", "Legacy", "Guise", "Parse", "Megalopolis" }, true);
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Guise", "Parse", "Megalopolis" }, true);
             StartGame();
             QuickHPStorage(legacy);
             //Advanced heads deal 1 extra damage
@@ -320,7 +320,7 @@ namespace CauldronTests
         [Test()]
         public void TestWinterAdvancedEffect()
         {
-            SetupGameController(new string[] { "Cauldron.Tiamat", "Legacy", "Guise", "Parse", "Megalopolis" }, true);
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Guise", "Parse", "Megalopolis" }, true);
             StartGame();
             QuickHPStorage(legacy);
             //Advanced heads deal 1 extra damage
@@ -331,7 +331,7 @@ namespace CauldronTests
         [Test()]
         public void TestInfernoIncapAdvancedEffect()
         {
-            SetupGameController(new string[] { "Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis" }, true);
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis" }, true);
             StartGame();
             SetupIncap(legacy, inferno);
             QuickHPStorage(storm);
@@ -343,7 +343,7 @@ namespace CauldronTests
         [Test()]
         public void TestStormIncapAdvancedEffect()
         {
-            SetupGameController(new string[] { "Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis" }, true);
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis" }, true);
             StartGame();
             SetupIncap(legacy, storm);
             QuickHPStorage(winter);
@@ -355,7 +355,7 @@ namespace CauldronTests
         [Test()]
         public void TestWinterIncapAdvancedEffect()
         {
-            SetupGameController(new string[] { "Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis" }, true);
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis" }, true);
             StartGame();
             SetupIncap(legacy, winter);
             QuickHPStorage(inferno);
@@ -367,7 +367,7 @@ namespace CauldronTests
         [Test()]
         public void TestAcidBreathDestroy2HeroOngoing2HeroEquipment()
         {
-            SetupGameController("Cauldron.Tiamat", "AbsoluteZero", "Ra", "Haka", "TheBlock");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "AbsoluteZero", "Ra", "Haka", "TheBlock");
             StartGame();
             Card glacial = GetCard("GlacialStructure");
             PlayCards(new Card[] {
@@ -392,19 +392,20 @@ namespace CauldronTests
             //Environment shouldn't be destroyed
             AssertNumberOfCardsInPlay(env, 1);
             //Villain cards should be skipped
-            AssertNumberOfCardsInPlay(tiamat, 4);
+            AssertNumberOfCardsInPlay(tiamat, 7);
         }
 
         [Test()]
         public void TestAcidBreathDamage()
         {
-            SetupGameController("Cauldron.Tiamat", "AbsoluteZero", "Ra", "Haka", "TheBlock");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "AbsoluteZero", "Ra", "Haka", "TheBlock");
             StartGame();
+            GoToPlayCardPhase(tiamat);
 
             //set hp of heads
-            SetHitPoints(inferno, 20);
-            SetHitPoints(storm, 15);
-            SetHitPoints(winter, 25);
+            SetHitPoints(inferno, 5);
+            SetHitPoints(storm, 4);
+            SetHitPoints(winter, 6);
 
             Card glacial = GetCard("GlacialStructure");
             PlayCards(new Card[] {
@@ -426,8 +427,8 @@ namespace CauldronTests
 
             //damage should be dealt by highest hp, which is winter
             //adding cannot deal damage status effects to storm and inferno
-            AddCannotDealNextDamageTrigger(tiamat, inferno);
-            AddCannotDealNextDamageTrigger(tiamat, storm);
+            AddCannotDealNextDamageTrigger(ra, inferno);
+            AddCannotDealNextDamageTrigger(ra, storm);
             PlayCard(GetCard("AcidBreath"));
             QuickHPCheck(-3, -3, 0);
         }
@@ -435,13 +436,13 @@ namespace CauldronTests
         [Test()]
         public void TestAlteration()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             //Setup top of decks
             Card ward = PutOnDeck("AncientWard");
             Card traffic = PutOnDeck("TrafficPileup");
             //Assert nothing in play
-            AssertNumberOfCardsInPlay(tiamat, 3);
+            AssertNumberOfCardsInPlay(tiamat, 6);
             AssertNumberOfCardsInPlay(env, 0);
             //Play card and make sure top of env and villain played
             PlayCard(tiamat, "Alteration");
@@ -452,7 +453,7 @@ namespace CauldronTests
         [Test()]
         public void TestAncientWard()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             Card ward = PlayCard(tiamat, "AncientWard");
 
@@ -497,7 +498,7 @@ namespace CauldronTests
         [Test()]
         public void TestDragonsWrath()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             Card wrath = PlayCard(tiamat, "DragonsWrath");
             //Heads deal 1 extra damage
@@ -541,7 +542,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementalFormSameTypes()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             PlayCard(tiamat, "ElementalForm");
 
@@ -577,9 +578,9 @@ namespace CauldronTests
         [Test()]
         public void TestElementalFormZeroDamageDealt()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            PlayCard(tiamat, "ElementalForm");
+            PlayCard("ElementalForm");
 
             //Until start of next turn heads become immune to a damage type when they take that damage
             PrintSeparator("check for inferno");
@@ -596,9 +597,9 @@ namespace CauldronTests
         [Test()]
         public void TestElementalFormDifferentTypes()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            PlayCard(tiamat, "ElementalForm");
+            PlayCard("ElementalForm");
 
             QuickHPStorage(inferno);
             DealDamage(legacy, inferno, 2, DamageType.Psychic);
@@ -628,7 +629,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementalFormUntilStart()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             PlayCard(tiamat, "ElementalForm");
 
@@ -645,7 +646,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementalFormRemainsAfterDestruction()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             Card form = PlayCard(tiamat, "ElementalForm");
 
@@ -670,7 +671,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementalFormMultipleImmune()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             PlayCard(tiamat, "ElementalForm");
 
@@ -689,7 +690,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementOfFireDamage0InTrash()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             //Inferno deals 2+X damage to each hero where X is the number of Element of Fires in trash
             QuickHPStorage(legacy, bunker, haka);
@@ -705,7 +706,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementOfFireDamage2InTrash()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
 
             Card fire = GetCard("ElementOfFire");
@@ -725,7 +726,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementOfFireDamage2InTrash_DynamicValues()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
 
             Card fire = GetCard("ElementOfFire");
@@ -748,7 +749,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementOfFireCantPlayCards()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             PlayCard("OmniCannon");
             PlayCard(tiamat, GetCard("ElementOfFire"));
@@ -761,7 +762,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementOfFireCanPlayCardsNextTurn()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             PlayCard("OmniCannon");
             //The hero with most cards in play cannot play cards until start of next villain turn
@@ -773,7 +774,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementOfIceDamage0InTrash()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             //Winter deals 2+X damage to each hero where X is the number of Element of Ices in trash
             QuickHPStorage(legacy, bunker, haka);
@@ -788,7 +789,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementOfIceDamage2InTrash()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             Card ice = GetCard("ElementOfIce");
 
@@ -809,7 +810,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementOfIceDamage2InTrash_DynamicValues()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
 
             Card ice = GetCard("ElementOfIce");
@@ -833,7 +834,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementOfIceCantUsePowers()
         {
-            SetupGameController("Cauldron.Tiamat", "Parse", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Parse", "Bunker", "Haka", "Megalopolis");
             StartGame();
             //Highest HP cannot use powers until start of next villain turn
             PlayCard(tiamat, GetCard("ElementOfIce"));
@@ -848,7 +849,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementOfIceCanUsePowersNextTurn()
         {
-            SetupGameController("Cauldron.Tiamat", "Parse", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Parse", "Bunker", "Haka", "Megalopolis");
             StartGame();
             //Highest HP cannot use powers until start of next villain turn
             PlayCard(tiamat, GetCard("ElementOfIce"));
@@ -860,7 +861,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementOfLightningDamage0InTrash()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             //Storm deals 2+X damage to each hero where X is the number of Element of Lightnings in trash
             QuickHPStorage(legacy, bunker, haka);
@@ -874,7 +875,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementOfLightningDamage2InTrash()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
 
             Card lightning = GetCard("ElementOfLightning");
@@ -895,7 +896,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementOfLightningDamage2InTrash_DynamicValues()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
 
             Card lightning = GetCard("ElementOfLightning");
@@ -919,7 +920,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementOfLightningCantDrawCards()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             DrawCard(bunker);
             //The hero with most cards in hand cannot draw cards until start of next villain turn
@@ -935,7 +936,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementOfLightningCanDrawCardsNextTurn()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             DrawCard(bunker);
             //The hero with most cards in hand cannot draw cards until start of next villain turn
@@ -948,7 +949,7 @@ namespace CauldronTests
         [Test()]
         public void TestInfernoIncapEffect0InTrash()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, inferno);
             //Inferno increases Spell damage dealt by heads when Incapped for number of Element of Fires in trash
@@ -960,7 +961,7 @@ namespace CauldronTests
         [Test()]
         public void TestInfernoIncapEffect2InTrash()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
 
             List<Card> spellCards = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementOfFire").Take(2)).ToList();
@@ -976,7 +977,7 @@ namespace CauldronTests
         [Test()]
         public void TestStormIncapEffect0InTrash()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, storm);
             //Storm increases Spell damage dealt by heads when Incapped for number of Element of Lightning in trash
@@ -988,7 +989,7 @@ namespace CauldronTests
         [Test()]
         public void TestStormIncapEffect2InTrash()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
 
             List<Card> spellCards = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementOfLightning").Take(2)).ToList();
@@ -1004,7 +1005,7 @@ namespace CauldronTests
         [Test()]
         public void TestWinterIncapEffect0InTrash()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, winter);
             //Winter increases Spell damage dealt by heads when Incapped for number of Element of Ice in trash
@@ -1016,7 +1017,7 @@ namespace CauldronTests
         [Test()]
         public void TestWinterIncapEffect2InTrash()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
 
             List<Card> spellCards = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementOfIce").Take(2)).ToList();
@@ -1031,7 +1032,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementalFrenzyPutUnder()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             Card ward = PutInTrash("AncientWard");
 
@@ -1054,7 +1055,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementalFrenzyPutUnder_OnlyOwnTrash()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             Card ward = PutInTrash("AncientWard");
 
@@ -1083,7 +1084,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementalFrenzyPlayUnder()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
 
             List<Card> elementOfFires = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementOfFire").Take(2)).ToList();
@@ -1096,12 +1097,11 @@ namespace CauldronTests
             AssertNumberOfCardsUnderCard(frenzy, 2);
             AssertNumberOfCardsInTrash(tiamat, 0);
 
-
             QuickHPStorage(legacy, bunker, haka);
             GoToEndOfTurn(tiamat);
-            //End of Turn effects of heads deal 2 to Haka and 1 to Legacy
+            //End of Turn effects of heads deal 3 to Haka and 1 to Legacy and 1 to Bunker
             //The spell played deals 2 to each hero
-            QuickHPCheck(-3, -2, -4);
+            QuickHPCheck(-3, -3, -5);
 
             //check the trash and under card values after end of turn
             AssertNumberOfCardsInTrash(tiamat, 1);
@@ -1111,7 +1111,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementalFrenzyDestroySelf()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             Card frenzy = GetCard("ElementalFrenzy");
 
@@ -1127,7 +1127,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementalFrenzyPlayOnDestroy()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             Card frenzy = GetCard("ElementalFrenzy");
             Card ward = PutOnDeck("AncientWard");
@@ -1143,7 +1143,7 @@ namespace CauldronTests
         [Test()]
         public void TestElementalFrenzy0CardInTrashDestroySelf()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             Card frenzy = GetCard("ElementalFrenzy");
 
@@ -1155,7 +1155,7 @@ namespace CauldronTests
         [Test()]
         public void TestHealingMagic0InTrash()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             //Setup top of deck
             Card ward = GetCard("AncientWard");
@@ -1172,7 +1172,7 @@ namespace CauldronTests
         [Test()]
         public void TestHealingMagic2InTrash()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             //Setup top of deck
             Card ward = GetCard("AncientWard");
@@ -1196,7 +1196,7 @@ namespace CauldronTests
         [Test()]
         public void TestManaChargeDiscard()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             Card charge = GetCard("ManaCharge");
             Card fire = GetCard("ElementOfFire");
@@ -1220,7 +1220,7 @@ namespace CauldronTests
         [Test()]
         public void TestManaChargeElementalFrenzyShuffle()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
 
 
@@ -1239,7 +1239,7 @@ namespace CauldronTests
         [Test()]
         public void TestManaChargeElementalFrenzyShuffle_OnlyOwnDeck()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
 
 
@@ -1262,7 +1262,7 @@ namespace CauldronTests
         [Test()]
         public void TestReptilianAspect()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetHitPoints(inferno, 35);
             SetHitPoints(storm, 35);
@@ -1278,7 +1278,7 @@ namespace CauldronTests
         [Test()]
         public void TestSkyBreaker()
         {
-            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetHitPoints(storm, 30);
             SetHitPoints(inferno, 30);
@@ -1294,25 +1294,25 @@ namespace CauldronTests
 
         [Test()]
         [Sequential]
-        public void DecklistTest_Head_IsHead([Values("InfernoTiamatCharacter", "StormTiamatCharacter", "WinterTiamatCharacter", "EarthTiamatCharacter", "DecayTiamatCharacter", "WindTiamatCharacter")] string head)
+        public void DecklistTest_Head_IsHead([Values("HydraInfernoTiamatCharacter", "HydraStormTiamatCharacter", "WinterTiamatCharacter", "HydraEarthTiamatCharacter", "HydraDecayTiamatCharacter", "HydraWindTiamatCharacter")] string head)
         {
             SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Ra", "Fanatic", "Megalopolis");
-            StartGame();
+            //StartGame();
 
             Card card = GetCard(head);
-            AssertInPlayArea(tiamat, card);
+            //AssertInPlayArea(tiamat, card);
             AssertCardHasKeyword(card, "head", false);
         }
 
         [Test()]
         [Sequential]
-        public void DecklistTest_Villain_IsVillain([Values("InfernoTiamatCharacter", "StormTiamatCharacter", "WinterTiamatCharacter", "EarthTiamatCharacter", "DecayTiamatCharacter", "WindTiamatCharacter")] string villain)
+        public void DecklistTest_Villain_IsVillain([Values("HydraInfernoTiamatCharacter", "HydraStormTiamatCharacter", "WinterTiamatCharacter", "HydraEarthTiamatCharacter", "HydraDecayTiamatCharacter", "HydraWindTiamatCharacter")] string villain)
         {
             SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Ra", "Fanatic", "Megalopolis");
-            StartGame();
+            //StartGame();
 
             Card card = GetCard(villain);
-            AssertInPlayArea(tiamat, card);
+            //AssertInPlayArea(tiamat, card);
             AssertCardHasKeyword(card, "villain", false);
         }
     }

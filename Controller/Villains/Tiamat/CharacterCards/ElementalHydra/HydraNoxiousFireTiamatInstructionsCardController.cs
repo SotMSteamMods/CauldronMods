@@ -29,7 +29,7 @@ namespace Cauldron.Tiamat
             {
                 //The heroes may not win the game.
                 base.AddTrigger<GameOverAction>((GameOverAction action) => action.ResultIsVictory, (GameOverAction action) => base.CancelAction(action), TriggerType.GameOver, TriggerTiming.Before),
-                //At the end of the villain turn, {InfernoTiamatCharacter} deals the hero target with the highest HP 1 fire damage.
+                //At the end of the villain turn, {InfernoTiamatCharacter} deals the hero target with the highest HP 2 fire damage.
                 base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, DealDamageResponse, TriggerType.DealDamage, (PhaseChangeAction action) => !firstHead.Card.IsFlipped)
             };
         }
@@ -63,8 +63,8 @@ namespace Cauldron.Tiamat
 
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
-            //...{InfernoTiamatCharacter} deals the hero target with the highest HP 1 fire damage.
-            IEnumerator coroutine = base.DealDamageToHighestHP(this.firstHead.Card, 1, (Card c) => c.IsHero, (Card c) => new int?(1), DamageType.Fire);
+            //...{InfernoTiamatCharacter} deals the hero target with the highest HP 2 fire damage.
+            IEnumerator coroutine = base.DealDamageToHighestHP(this.firstHead.Card, 1, (Card c) => c.IsHero, (Card c) => new int?(2), DamageType.Fire);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

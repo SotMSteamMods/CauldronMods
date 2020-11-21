@@ -5,9 +5,9 @@ using System.Collections;
 
 namespace Cauldron.Tiamat
 {
-    public class HydraWindCharacterCardController : HydraTiamatCharacterCardController
+    public class HydraWindTiamatCharacterCardController : HydraTiamatCharacterCardController
     {
-        public HydraWindCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public HydraWindTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }

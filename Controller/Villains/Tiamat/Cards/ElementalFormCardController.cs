@@ -17,14 +17,20 @@ namespace Cauldron.Tiamat
         public override void AddTriggers()
         {
             //Whenever a Head takes damage, it becomes immune to damage of that type until the start of the next villain turn.
-            CreateTriggers(base.TurnTaker.FindCard("InfernoTiamatCharacter"));
-            CreateTriggers(base.TurnTaker.FindCard("StormTiamatCharacter"));
             CreateTriggers(base.TurnTaker.FindCard("WinterTiamatCharacter"));
-            if (!(base.CharacterCardController is WinterTiamatCharacterCardController))
+            if (base.CharacterCard.MaximumHitPoints == 40)
             {
-                CreateTriggers(base.TurnTaker.FindCard("EarthTiamatCharacter"));
-                CreateTriggers(base.TurnTaker.FindCard("DecayTiamatCharacter"));
-                CreateTriggers(base.TurnTaker.FindCard("WindTiamatCharacter"));
+                CreateTriggers(base.TurnTaker.FindCard("InfernoTiamatCharacter"));
+                CreateTriggers(base.TurnTaker.FindCard("StormTiamatCharacter"));
+            }
+            else
+            if (base.CharacterCard.MaximumHitPoints == 15)
+            {
+                CreateTriggers(base.TurnTaker.FindCard("HydraInfernoTiamatCharacter"));
+                CreateTriggers(base.TurnTaker.FindCard("HydraStormTiamatCharacter"));
+                CreateTriggers(base.TurnTaker.FindCard("HydraEarthTiamatCharacter"));
+                CreateTriggers(base.TurnTaker.FindCard("HydraDecayTiamatCharacter"));
+                CreateTriggers(base.TurnTaker.FindCard("HydraWindTiamatCharacter"));
             }
         }
 
