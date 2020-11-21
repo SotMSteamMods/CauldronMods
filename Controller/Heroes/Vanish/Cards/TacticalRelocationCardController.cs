@@ -10,7 +10,6 @@ namespace Cauldron.Vanish
     {
         public TacticalRelocationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
     }
 }

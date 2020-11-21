@@ -17,6 +17,7 @@ namespace Cauldron.Vanish
             int reduces = GetPowerNumeral(0, 1);
             var effect = new ReduceDamageStatusEffect(reduces);
             effect.CardSource = Card;
+            effect.Identifier = Card.Title;
             effect.NumberOfUses = 1;
             effect.TargetCriteria.IsSpecificCard = CharacterCard;
 
