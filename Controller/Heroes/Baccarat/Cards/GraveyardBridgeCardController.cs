@@ -23,7 +23,7 @@ namespace Cauldron.Baccarat
             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
 
             //You may shuffle a card from your trash into your deck... 
-            IEnumerator coroutine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.IsInTrash), turnTakerDeck.ToEnumerable<MoveCardDestination>(), false, true, true, true, storedResults, showOutput: true, allowAutoDecide: true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.IsInTrash), turnTakerDeck.ToEnumerable<MoveCardDestination>(), false, true, true, true, storedResults, showOutput: true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
