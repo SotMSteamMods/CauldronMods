@@ -666,7 +666,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestSearchAndRescue()
+        public void TestSearchAndRescue_DocHavoc()
         {
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
@@ -713,6 +713,57 @@ namespace CauldronTests
             AssertOnBottomOfDeck(stimshot);
             AssertInTrash(flask);
             AssertInTrash(reckless);
+            AssertNumberOfCardsInRevealed(DocHavoc, 0);
+
+        }
+
+        [Test]
+        public void TestSearchAndRescue_Tempest()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(tempest, new[]
+            {
+                "LightningSlash", "LightningSlash", "LightningSlash", "OtherworldlyResilience"
+            });
+
+            Card discard = GetCardFromHand(tempest, "OtherworldlyResilience");
+            Card d1 = PutOnDeck(tempest, GetCard("GeneBoundShackles"));
+            Card d2 = PutOnDeck(tempest, GetCard("ElectricalStorm"));
+            Card d3 = PutOnDeck(tempest, GetCard("FlashFlood"));
+
+            StartGame();
+
+            QuickHandStorage(DocHavoc, tempest, haka);
+
+            DecisionSelectCards = new[]
+            {
+                null,
+                discard,
+                null,
+                d1,
+                d2,
+                d3
+            };
+
+            // Act
+            GoToPlayCardPhase(DocHavoc);
+            DecisionYesNo = true;
+            PlayCard(SearchAndRescueCardController.Identifier);
+
+            // Assert
+
+            // DocHavoc started with 4
+            // Tempest discard 1, draw 1
+            // Haka did not discard so Search and Rescue did not proc for him
+            QuickHandCheck(0, 0, 0);
+
+            //check all locations
+            AssertInHand(d1);
+            AssertOnBottomOfDeck(d2);
+            AssertInTrash(d3);
+            AssertInTrash(discard);
             AssertNumberOfCardsInRevealed(DocHavoc, 0);
 
         }
