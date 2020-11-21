@@ -10,6 +10,7 @@ namespace Cauldron.Vanish
     {
         public ConcussiveBurstCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => $"{Card.Title} has been used this turn.", () => base.HasBeenSetToTrueThisTurn("FirstTimeDamageDealt"));
         }
 
         public override void AddTriggers()

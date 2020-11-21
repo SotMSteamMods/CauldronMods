@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using Handelabra.Sentinels.Engine.Controller;
@@ -10,6 +11,10 @@ namespace Cauldron.Vanish
     {
         public TacticalRelocationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocations(
+                    () => GameController.HeroTurnTakerControllers.Select(httc => httc.HeroTurnTaker.Trash),
+                    new LinqCardCriteria(c => c.IsOngoing && IsEquipment(c) && c.IsInTrash, "equipment or ongoings in trash")
+                );
         }
     }
 }

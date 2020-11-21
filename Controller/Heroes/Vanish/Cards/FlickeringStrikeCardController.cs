@@ -12,6 +12,7 @@ namespace Cauldron.Vanish
     {
         public FlickeringStrikeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(HeroTurnTaker.Hand);
         }
 
         public override IEnumerator Play()

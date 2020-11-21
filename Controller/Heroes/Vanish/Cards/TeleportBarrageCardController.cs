@@ -10,6 +10,7 @@ namespace Cauldron.Vanish
     {
         public TeleportBarrageCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(HeroTurnTaker.Hand);
         }
 
         public override IEnumerator UsePower(int index = 0)

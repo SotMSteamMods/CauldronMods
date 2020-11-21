@@ -11,6 +11,7 @@ namespace Cauldron.Vanish
     {
         public JauntingReflexCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => $"{Card.Title} has been used this turn.", () => !WasNotUsedThisTurn());
         }
 
         public override void AddTriggers()
