@@ -72,7 +72,7 @@ namespace Cauldron.Northspar
                     {
                         List<MoveCardAction> storedResultsMove = new List<MoveCardAction>();
                         MoveCardDestination trashDestination = this.FindCardController(selectCardDecision.SelectedCard).GetTrashDestination();
-                        coroutine = this.GameController.MoveCard(base.DecisionMaker, selectCardDecision.SelectedCard, trashDestination.Location, trashDestination.ToBottom, showMessage: true, decisionSources: storedResults.CastEnumerable<SelectCardDecision, IDecision>(), storedResults: storedResultsMove, cardSource: base.GetCardSource());
+                        coroutine = this.GameController.MoveCard(base.DecisionMaker, selectCardDecision.SelectedCard, trashDestination.Location, trashDestination.ToBottom, showMessage: true,evenIfIndestructible: true, decisionSources: storedResults.CastEnumerable<SelectCardDecision, IDecision>(), storedResults: storedResultsMove, cardSource: base.GetCardSource());
                         if (this.UseUnityCoroutines)
                         {
                             yield return this.GameController.StartCoroutine(coroutine);
