@@ -33,6 +33,7 @@ namespace Cauldron.Starlight
             //future-proofing for Nightlore Council
             if (IsMultiCharPromo())
             {
+                throw new NotImplementedException();
                 //TODO - get this working, look at SentinelCardController
             }
             else
@@ -52,6 +53,7 @@ namespace Cauldron.Starlight
             List<Card> starlights = new List<Card> { };
             if (IsMultiCharPromo())
             {
+                throw new NotImplementedException();
                 //TODO - get list of all character cards belonging to HeroTurnTakerController
             }
             else
