@@ -67,27 +67,19 @@ namespace Cauldron.Starlight
 
             //if there aren't enough cards, warn the player
             string message = null;
-            switch (revealedCards.Count())
+            switch (revealedCards.Count)
             {
                 case 5:
-                    {
-                        break;
-                    }
+                    break;
                 case 0:
-                    {
-                        message = "No cards were revealed! There is no further effect.";
-                        break;
-                    }
+                    message = "No cards were revealed! There is no further effect.";
+                    break;
                 case 1:
-                    {
-                        message = "Only one card was revealed! It will automatically be put into play.";
-                        break;
-                    }
+                    message = "Only one card was revealed! It will automatically be put into play.";
+                    break;
                 default:
-                    {
-                        message = String.Format("Only {0} cards were revealed!", revealedCards.Count());
-                        break;
-                    }
+                    message = $"Only {revealedCards.Count} cards were revealed!";
+                    break;
             }
 
             if (message != null)
@@ -127,18 +119,17 @@ namespace Cauldron.Starlight
                 revealedCards.Remove(playedCard);
             }
 
-            int numCardsLeft = revealedCards.Count();
+            int numCardsLeft = revealedCards.Count;
             if (numCardsLeft > 0)
             {
                 //"...and the rest on the bottom of their deck in any order"
                 Location heroRevealedLocation = heroTTC.TurnTaker.Revealed;
-                List<MoveCardDestination> bottomOfDeck = new List<MoveCardDestination> { new MoveCardDestination(heroTTC.TurnTaker.Deck, toBottom: true) };
                 var moveRest = GameController.SelectCardsFromLocationAndMoveThem(heroTTC,
                                                                     heroRevealedLocation,
                                                                     numCardsLeft,
                                                                     numCardsLeft,
                                                                     new LinqCardCriteria((Card c) => revealedCards.Contains(c), "remaining"),
-                                                                    bottomOfDeck,
+                                                                    new[] { new MoveCardDestination(heroTTC.TurnTaker.Deck, toBottom: true) },
                                                                     allowAutoDecide: true,
                                                                     cardSource: this.GetCardSource());
                 if (UseUnityCoroutines)
@@ -164,10 +155,10 @@ namespace Cauldron.Starlight
                 GameController.ExhaustCoroutine(cleanupRoutine);
             }
 
-
             yield break;
         }
 
+        /*
         private IEnumerator RevealCardsWithArgentAdept(HeroTurnTakerController heroTTC)
         {
             //This appropriates the function used for Argent Adept's Arcane Cadence.
@@ -195,5 +186,6 @@ namespace Cauldron.Starlight
             }
             yield break;
         }
+        */
     }
 }
