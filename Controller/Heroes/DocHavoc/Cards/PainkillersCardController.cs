@@ -30,9 +30,7 @@ namespace Cauldron.DocHavoc
             Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             //When this card enters play, place it next to a hero target.
-            LinqCardCriteria validTargets = new LinqCardCriteria(
-                c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText,
-                "hero target");
+            LinqCardCriteria validTargets = new LinqCardCriteria(c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText, "hero target");
 
             IEnumerator routine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria(
                     (Card c) => validTargets.Criteria(c) &&
@@ -59,8 +57,7 @@ namespace Cauldron.DocHavoc
             //At the start of that hero's turn, that target may deal itself 2 toxic damage. If no damage is taken this way, this card is destroyed.
             this.AddStartOfTurnTrigger(
                 (TurnTaker tt) =>
-                    tt == base.GetCardThisCardIsNextTo().Owner,
-                new Func<PhaseChangeAction, IEnumerator>(this.DamageOrDestroyResponse), new TriggerType[]
+                    tt == base.GetCardThisCardIsNextTo().Owner, this.DamageOrDestroyResponse, new TriggerType[]
                 {
                     TriggerType.DealDamage,
                     TriggerType.DestroySelf
@@ -74,9 +71,8 @@ namespace Cauldron.DocHavoc
             //that target may deal itself 2 toxic damage. 
             List<DealDamageAction> storedDamageResults = new List<DealDamageAction>();
 
-            CardController cc = base.FindCardController(base.GetCardThisCardIsNextTo());
-            IEnumerator coroutine = base.GameController.DealDamage(cc.HeroTurnTakerController, cc.CharacterCard, (Card c) => c.Equals(cc.CharacterCard), DamageAmount, DamageType.Toxic, optional: true, storedResults: storedDamageResults, cardSource: cc.GetCardSource());
-
+            Card nextTo = base.GetCardThisCardIsNextTo();
+            IEnumerator coroutine = base.DealDamage(nextTo, nextTo, DamageAmount, DamageType.Toxic, optional: true, storedResults: storedDamageResults, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -87,21 +83,17 @@ namespace Cauldron.DocHavoc
             }
 
             // If no damage is taken this way, this card is destroyed.
-            if (base.DidIntendedTargetTakeDamage(storedDamageResults, cc.CharacterCard))
+            if (!this.DidDealDamage(storedDamageResults, nextTo))
             {
-                yield break;
-            }
-
-
-            IEnumerator destroyCardRoutine = base.DestroyThisCardResponse(phaseChange);
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(destroyCardRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(destroyCardRoutine);
+                coroutine = base.DestroyThisCardResponse(phaseChange);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
         }
     }
