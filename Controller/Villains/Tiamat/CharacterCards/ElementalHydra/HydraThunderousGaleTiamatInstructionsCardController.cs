@@ -11,11 +11,17 @@ namespace Cauldron.Tiamat
     {
         public HydraThunderousGaleTiamatInstructionsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
+        }
+
+        public override IEnumerator Play()
+        {
             this.firstHead = base.GameController.FindCardController("HydraStormTiamatCharacter");
             this.secondHead = base.GameController.FindCardController("HydraWindTiamatCharacter");
             this.element = "ElementOfLightning";
             //Whenever Element of Lightning enters play and {StormTiamatCharacter} is decapitated, if {WindTiamatCharacter} is active she deals the X hero targets with the Highest HP {H - 1} projectile damage each, where X = 1 plus the number of ongoing cards in the villain trash.
             this.alternateElementCoroutine = base.DealDamageToHighestHP(this.secondHead.Card, 1, (Card c) => c.IsHero, (Card c) => new int?(Game.H - 1), DamageType.Projectile, numberOfTargets: () => NumberOfOngoingsInTrash());
+            yield break;
         }
 
         protected override ITrigger[] AddFrontTriggers()

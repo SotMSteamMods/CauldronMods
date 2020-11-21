@@ -3,9 +3,7 @@
     "kind": "Villain",
     "expansionIdentifier": "Cauldron",
     "initialCardIdentifiers": [
-        "WinterTiamatCharacter",
-        "InfernoTiamatCharacter",
-        "StormTiamatCharacter"
+        "WinterTiamatCharacter"
     ],
     "cards": [
         {
@@ -61,7 +59,13 @@
                 "BerzerkerTheKnightCharacter": "The Berzerker Knight placeholder",
                 "FairTheKnightCharacter": "The Fair Knight placeholder",
                 "WastelandRoninTheKnightCharacter": "Wasteland Ronin The Knight placeholder",
-                "1929TheKnightCharacter": "The Knight 1929 placeholder"
+                "1929TheKnightCharacter": "The Knight 1929 placeholder",
+                "NecroCharacter": "Necro placeholder",
+                "WardenOfChaosNecroCharacter": "Warden of Chaos Necro placeholder",
+                "1929NecroCharacter": "Necro 1929 placeholder",
+                "EchelonCharacter": "Echelon placeholder",
+                "FirstResponseEchelonCharacter": "First Response Echelon placeholder",
+                "2199EchelonCharacter": "Echelon 2199 placeholder"
             }
         },
         {
@@ -109,14 +113,7 @@
             ],
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
-            ],
-            "difficulty": 1,
-            "openingLines": {
-                "default": "default placeholder",
-                "EchelonCharacter": "Echelon placeholder",
-                "FirstResponseEchelonCharacter": "First Response Echelon placeholder",
-                "2199EchelonCharacter": "Echelon 2199 placeholder"
-            }
+            ]
         },
         {
             "identifier": "WinterTiamatCharacter",
@@ -163,14 +160,7 @@
             ],
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
-            ],
-            "difficulty": 1,
-            "openingLines": {
-                "default": "default placeholder",
-                "NecroCharacter": "Necro placeholder",
-                "WardenOfChaosNecroCharacter": "Warden of Chaos Necro placeholder",
-                "1929NecroCharacter": "Necro 1929 placeholder"
-            }
+            ]
         },
         {
             "identifier": "AcidBreath",
@@ -446,13 +436,285 @@
             ],
             "body": "The Head with the highest HP deals each hero target {H + 2} infernal damage.",
             "flavorText": "This world's end brought{BR}on by pieces of another."
+        },
+        {
+            "identifier": "HydraInfernoTiamatCharacter",
+            "count": 1,
+            "title": "Tiamat, The Mouth of the Inferno",
+            "keywords": [
+                "villain",
+                "head"
+            ],
+            "icons": [
+                "ImmuneToDamageFire"
+            ],
+            "body": "The Mouth of the Inferno",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 15,
+            "nemesisIdentifiers": [
+                "TheKnight"
+            ],
+            "gameplay": [
+                "{InfernoTiamatCharacter} is immune to fire damage."
+            ],
+            "flippedShowHitpoints": false,
+            "flippedBody": "Inferno, Decapitated",
+            "flippedKeywords": [
+                "villain",
+                "head"
+            ]
+        },
+        {
+            "identifier": "HydraStormTiamatCharacter",
+            "count": 1,
+            "title": "Tiamat, The Eye of the Storm",
+            "keywords": [
+                "villain",
+                "head"
+            ],
+            "icons": [
+                "ImmuneToDamageLightning"
+            ],
+            "advancedIcons": [],
+            "body": "The Eye of the Storm",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 15,
+            "nemesisIdentifiers": [
+                "Echelon"
+            ],
+            "gameplay": [
+                "{StormTiamatCharacter} is immune to lightnining damage."
+            ],
+            "flippedShowHitpoints": false,
+            "flippedBody": "Storm, Decapitated",
+            "flippedKeywords": [
+                "villain",
+                "head"
+            ]
+        },
+        {
+            "identifier": "HydraEarthTiamatCharacter",
+            "count": 1,
+            "title": "Tiamat, The Maw of the Earth",
+            "keywords": [
+                "villain",
+                "head"
+            ],
+            "icons": [
+                "ImmuneToDamageMelee",
+                "ReduceDamageTaken"
+            ],
+            "body": "The Maw of the Earth",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 15,
+            "nemesisIdentifiers": [
+                "Malichae"
+            ],
+            "gameplay": [
+                "{Tiamat}, The Maw of the Earth is immune to melee damage.",
+                "Reduce damage dealt to other villain targets by 1."
+            ],
+            "flippedShowHitpoints": false,
+            "flippedBody": "Earth, Decapitated",
+            "flippedKeywords": [
+                "villain",
+                "head"
+            ]
+        },
+        {
+            "identifier": "HydraDecayTiamatCharacter",
+            "count": 1,
+            "title": "Tiamat, The Breath of Decay",
+            "keywords": [
+                "villain",
+                "head"
+            ],
+            "icons": [
+                "ImmuneToDamageToxic",
+                "IncreaseDamageDealt"
+            ],
+            "body": "The Breath of Decay",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 15,
+            "nemesisIdentifiers": [
+                "TheStranger"
+            ],
+            "gameplay": [
+                "{HydraDecayTiamatCharacter} is immune to toxic damage.",
+                "Increase damage dealt to hero targets by 1."
+            ],
+            "flippedShowHitpoints": false,
+            "flippedBody": "Decay, Decapitated",
+            "flippedKeywords": [
+                "villain",
+                "head"
+            ],
+            "difficulty": 1
+        },
+        {
+            "identifier": "HydraWindTiamatCharacter",
+            "count": 1,
+            "title": "Tiamat, The Voice of the Wind",
+            "keywords": [
+                "villain",
+                "head"
+            ],
+            "icons": [
+                "ImmuneToDamageProjectile",
+                "GainHP"
+            ],
+            "body": "The Voice of the Wind",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 15,
+            "nemesisIdentifiers": [
+                "LadyOfTheWood"
+            ],
+            "gameplay": [
+                "{HydraWindTiamatCharacter} is immune to projectile damage.",
+                "At the end of the villain turn, each head regains 2 HP."
+            ],
+            "flippedShowHitpoints": false,
+            "flippedBody": "Wind, Decapitated",
+            "flippedKeywords": [
+                "villain",
+                "head"
+            ]
+        },
+        {
+            "identifier": "HydraThunderousGaleTiamatInstructions",
+            "count": 1,
+            "title": "Tiamat: Thunderous Gale Instructions",
+            "body": "The Eye of the Storm",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "setup": [
+                "At the start of the game, put {Tiamat}'s villain character card into play, “The Eye of the Storm” side up (after putting all other villain character cards into play). Put “{HydraWindTiamatCharacter}”, face down beneath this card."
+            ],
+            "gameplay": [
+                "At the start of the villain turn, if {StormTiamatCharacter} is decapitated, flip this card and put {HydraWindTiamatCharacter} into play with 15 HP.",
+                "At the start of the villain turn, flip 1 decapitated head to its active side and restore it to {H * 2} HP.",
+                "At the end of the villain turn, {StormTiamatCharacter} deals each hero target 1 lightning damage."
+            ],
+            "advanced": "The first time {StormTiamatCharacter} deals damage each turn, increase that damage by 2.",
+            "icons": [
+                "StartAndEndOfTurnAction",
+                "DealDamageLightning"
+            ],
+            "advancedIcons": [
+                "IncreaseDamageDealt"
+            ],
+            "flippedBody": "The Thunderous Gale",
+            "flippedGameplay": [
+                "At the start of the villain turn, flip 1 decapitated head to its active side and restore it to {H * 2} HP.",
+                "Whenever Element of Lightning enters play and {StormTiamatCharacter} is decapitated, if {HydraWindTiamatCharacter} is active she deals the X hero targets with the Highest HP {H - 1} projectile damage each, where X = 1 plus the number of ongoing cards in the villain trash.",
+                "At the end of the villain turn, if {StormTiamatCharacter} is active, she deals the hero target with the highest HP 1 lightning damage."
+            ],
+            "flippedAdvanced": "Decapitated heads are restored to {H * 3} HP when they become active.",
+            "flippedIcons": [
+                "StartAndEndOfTurnAction",
+                "DealDamageProjectile",
+                "DealDamageLightning"
+            ],
+            "isReal": false,
+            "difficulty": 1
+        },
+        {
+            "identifier": "HydraNoxiousFireTiamatInstructions",
+            "count": 1,
+            "title": "Tiamat: Noxious Fire Instructions",
+            "body": "The Mouth of the Inferno",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "setup": [
+                "At the start of the game, put {Tiamat}'s villain character card into play, “Mouth of the Inferno” side up. Put “{HydraDecayTiamatCharacter}”, face down beneath this card."
+            ],
+            "gameplay": [
+                "The heroes may not win the game.",
+                "At the start of the villain turn, if {InfernoTiamatCharacter} is decapitated, flip this card and put {HydraDecayTiamatCharacter} into play with 15 HP.",
+                "At the end of the villain turn, {InfernoTiamatCharacter} deals the hero target with the highest HP 1 fire damage."
+            ],
+            "advanced": "The first time {InfernoTiamatCharacter} deals damage each turn, increase that damage by 2.",
+            "icons": [
+                "CannotWin",
+                "StartAndEndOfTurnAction",
+                "DealDamageFire"
+            ],
+            "advancedIcons": [
+                "IncreaseDamageDealt"
+            ],
+            "flippedBody": "The Noxious Fire",
+            "flippedGameplay": [
+                "The heroes win the game when 6 heads are decapitated.",
+                "Whenever Element of Fire enters play and {InfernoTiamatCharacter} is decapitated, if {HydraDecayTiamatCharacter} is active she deals each hero target X toxic damage, where X = 2 plus the number of Acid Breaths in the villain trash.",
+                "At the end of the villain turn, if {InfernoTiamatCharacter} is active, she deals the hero target with the second highest HP 1 fire damage."
+            ],
+            "flippedAdvanced": "Decapitated heads are restored to {H * 3} HP when they become active.",
+            "flippedIcons": [
+                "StartAndEndOfTurnAction",
+                "DealDamageToxic",
+                "DealDamageFire"
+            ],
+            "isReal": false,
+            "difficulty": 1
+        },
+        {
+            "identifier": "HydraFrigidEarthTiamatInstructions",
+            "count": 1,
+            "title": "Tiamat: Frigid Earth Instructions",
+            "body": "The Jaws of Winter",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "setup": [
+                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Jaws of Winter” side up. Put “{HydraEarthTiamatCharacter}”, face down beneath this card."
+            ],
+            "gameplay": [
+                "Face down heads are indestructible and have no game text.",
+                "If a head would be destroyed, flip it instead.",
+                "At the start of the villain turn, if {WinterTiamatCharacter} is decapitated, flip this card and put {HydraEarthTiamatCharacter} into play with 15 HP.",
+                "At the end of the villain turn, 1 player must discard 1 card."
+            ],
+            "advanced": "At the end of the villain turn, 1 player must discard 1 card.",
+            "icons": [
+                "StartAndEndOfTurnAction",
+                "Discard"
+            ],
+            "advancedIcons": [
+                "Discard"
+            ],
+            "flippedBody": "The Frigid Earth",
+            "flippedGameplay": [
+                "Face down heads are indestructible and have no game text.",
+                "If a head would be destroyed, flip it instead.",
+                "Whenever Element of Ice enters play and {WinterTiamatCharacter} is decapitated, if {HydraEarthTiamatCharacter} is active she deals the hero target with the highest HP X melee damage, where X = {H} plus the number of Sky Breaker cards in the villain trash.",
+                "At the end of the villain turn, if {WinterTiamatCharacter} is active, she deals the hero target with the lowest HP 1 cold damage."
+            ],
+            "flippedAdvanced": "Decapitated heads are restored to {H * 3} HP when they become active.",
+            "flippedIcons": [
+                "DealDamageMelee",
+                "EndOfTurnAction",
+                "DealDamageCold"
+            ],
+            "isReal": false,
+            "difficulty": 1
         }
     ],
     "promoCards": [
         {
             "identifier": "WinterTiamatCharacter",
             "promoIdentifier": "HydraWinterTiamatCharacter",
-            "sharedIdentifier": "HydraTiamatCharacter",
             "count": 1,
             "title": "Tiamat, The Jaws of Winter",
             "promoTitle": "Tiamat, The Jaws of Winter",
@@ -485,340 +747,27 @@
                 "default": "DrooooooHhhhhreaaaAAAAGHH!",
                 "NecroCharacter": "Necro placeholder",
                 "WardenOfChaosNecroCharacter": "Warden of Chaos Necro placeholder",
-                "1929NecroCharacter": "Necro 1929 placeholder"
-            }
-        },
-        {
-            "identifier": "InfernoTiamatCharacter",
-            "promoIdentifier": "HydraInfernoTiamatCharacter",
-            "sharedIdentifier": "HydraTiamatCharacter",
-            "count": 1,
-            "title": "Tiamat, The Mouth of the Inferno",
-            "promoTitle": "Tiamat, The Mouth of the Inferno",
-            "keywords": [
-                "villain",
-                "head"
-            ],
-            "icons": [
-                "ImmuneToDamageFire"
-            ],
-            "body": "The Mouth of the Inferno",
-            "backgroundColor": "D99FC5",
-            "foilBackgroundColor": "CD96C0",
-            "character": true,
-            "hitpoints": 15,
-            "nemesisIdentifiers": [
-                "TheKnight"
-            ],
-            "gameplay": [
-                "{InfernoTiamatCharacter} is immune to fire damage."
-            ],
-            "flippedShowHitpoints": false,
-            "flippedBody": "Inferno, Decapitated",
-            "flippedKeywords": [
-                "villain",
-                "head"
-            ],
-            "difficulty": 1,
-            "openingLines": {
-                "default": "default placeholder",
+                "1929NecroCharacter": "Necro 1929 placeholder",
                 "TheKnightCharacter": "The Knight placeholder",
                 "BerzerkerTheKnightCharacter": "The Berzerker Knight placeholder",
                 "FairTheKnightCharacter": "The Fair Knight placeholder",
                 "WastelandRoninTheKnightCharacter": "Wasteland Ronin The Knight placeholder",
-                "1929TheKnightCharacter": "The Knight 1929 placeholder"
-            }
-        },
-        {
-            "identifier": "StormTiamatCharacter",
-            "promoIdentifier": "HydraStormTiamatCharacter",
-            "sharedIdentifier": "HydraTiamatCharacter",
-            "count": 1,
-            "title": "Tiamat, The Eye of the Storm",
-            "promoTitle": "Tiamat, The Eye of the Storm",
-            "keywords": [
-                "villain",
-                "head"
-            ],
-            "icons": [
-                "ImmuneToDamageLightning"
-            ],
-            "advancedIcons": [],
-            "body": "The Eye of the Storm",
-            "backgroundColor": "D99FC5",
-            "foilBackgroundColor": "CD96C0",
-            "character": true,
-            "hitpoints": 15,
-            "nemesisIdentifiers": [
-                "Echelon"
-            ],
-            "gameplay": [
-                "{StormTiamatCharacter} is immune to lightnining damage."
-            ],
-            "flippedShowHitpoints": false,
-            "flippedBody": "Storm, Decapitated",
-            "flippedKeywords": [
-                "villain",
-                "head"
-            ],
-            "difficulty": 1,
-            "openingLines": {
-                "default": "default placeholder",
+                "1929TheKnightCharacter": "The Knight 1929 placeholder",
+                "LadyOfTheWoodCharacter": "Lady Of The Wood placeholder",
+                "SeasonsOfChangeLadyOfTheWoodCharacter": "Lady Of The Wood: Seasons of Change placeholder",
+                "MinistryOfStrategicSciencesLadyOfTheWoodCharacter": "Ministry Of Strategic Sciences: Lady Of The Wood placeholder",
+                "2199LadyOfTheWoodCharacter": "Lady Of The Wood 2199 placeholder",
+                "MailchaeCharacter": "Mailchae placeholder",
+                "ShardmasterMailchaeCharacter": "Shardmaster Mailchae placeholder",
+                "MinistryOfStrategicScienceMailchaeCharacter": "Ministry Of Strategic Science Mailchae placeholder",
+                "TheStrangerCharacter": "The Stranger placeholder",
+                "RitualCarvedTheStrangerCharacter": "The Stranger: Ritual Carved placeholder",
+                "1929TheStrangerCharacter": "The Stranger 1929 placeholder",
+                "WastelandRoninTheStrangerCharacter": "Wasteland Ronin: The Stranger placeholder",
                 "EchelonCharacter": "Echelon placeholder",
                 "FirstResponseEchelonCharacter": "First Response Echelon placeholder",
                 "2199EchelonCharacter": "Echelon 2199 placeholder"
             }
-        },
-        {
-            "identifier": "HydraEarthTiamatCharacter",
-            "promoIdentifier": "HydraEarthTiamatCharacter",
-            "sharedIdentifier": "HydraTiamatCharacter",
-            "count": 1,
-            "title": "Tiamat, The Maw of the Earth",
-            "promoTitle": "Tiamat, The Maw of the Earth",
-            "keywords": [
-                "villain",
-                "head"
-            ],
-            "icons": [
-                "ImmuneToDamageMelee",
-                "ReduceDamageTaken"
-            ],
-            "body": "The Maw of the Earth",
-            "backgroundColor": "D99FC5",
-            "foilBackgroundColor": "CD96C0",
-            "character": true,
-            "hitpoints": 15,
-            "nemesisIdentifiers": [
-                "Malichae"
-            ],
-            "gameplay": [
-                "{Tiamat}, The Maw of the Earth is immune to melee damage.",
-                "Reduce damage dealt to other villain targets by 1."
-            ],
-            "flippedShowHitpoints": false,
-            "flippedBody": "Earth, Decapitated",
-            "flippedKeywords": [
-                "villain",
-                "head"
-            ],
-            "difficulty": 1,
-            "openingLines": {
-                "default": "default placeholder",
-                "MailchaeCharacter": "Mailchae placeholder",
-                "ShardmasterMailchaeCharacter": "Shardmaster Mailchae placeholder",
-                "MinistryOfStrategicScienceMailchaeCharacter": "Ministry Of Strategic Science Mailchae placeholder"
-            }
-        },
-        {
-            "identifier": "HydraDecayTiamatCharacter",
-            "promoIdentifier": "HydraDecayTiamatCharacter",
-            "sharedIdentifier": "HydraTiamatCharacter",
-            "count": 1,
-            "title": "Tiamat, The Breath of Decay",
-            "promoTitle": "Tiamat, The Breath of Decay",
-            "keywords": [
-                "villain",
-                "head"
-            ],
-            "icons": [
-                "ImmuneToDamageToxic",
-                "IncreaseDamageDealt"
-            ],
-            "body": "The Breath of Decay",
-            "backgroundColor": "D99FC5",
-            "foilBackgroundColor": "CD96C0",
-            "character": true,
-            "hitpoints": 15,
-            "nemesisIdentifiers": [
-                "TheStranger"
-            ],
-            "gameplay": [
-                "{DecayTiamatCharacter} is immune to toxic damage.",
-                "Increase damage dealt to hero targets by 1."
-            ],
-            "flippedShowHitpoints": false,
-            "flippedBody": "Decay, Decapitated",
-            "flippedKeywords": [
-                "villain",
-                "head"
-            ],
-            "difficulty": 1,
-            "openingLines": {
-                "default": "default placeholder",
-                "TheStrangerCharacter": "The Stranger placeholder",
-                "RitualCarvedTheStrangerCharacter": "The Stranger: Ritual Carved placeholder",
-                "1929TheStrangerCharacter": "The Stranger 1929 placeholder",
-                "WastelandRoninTheStrangerCharacter": "Wasteland Ronin: The Stranger placeholder"
-            }
-        },
-        {
-            "identifier": "HydraWindTiamatCharacter",
-            "promoIdentifier": "HydraWindTiamatCharacter",
-            "sharedIdentifier": "HydraTiamatCharacter",
-            "count": 1,
-            "title": "Tiamat, The Voice of the Wind",
-            "promoTitle": "Tiamat, The Voice of the Wind",
-            "keywords": [
-                "villain",
-                "head"
-            ],
-            "icons": [
-                "ImmuneToDamageProjectile",
-                "GainHP"
-            ],
-            "body": "The Voice of the Wind",
-            "backgroundColor": "D99FC5",
-            "foilBackgroundColor": "CD96C0",
-            "character": true,
-            "hitpoints": 15,
-            "nemesisIdentifiers": [
-                "LadyOfTheWood"
-            ],
-            "gameplay": [
-                "{WindTiamatCharacter} is immune to projectile damage.",
-                "At the end of the villain turn, each head regains 2 HP."
-            ],
-            "flippedShowHitpoints": false,
-            "flippedBody": "Wind, Decapitated",
-            "flippedKeywords": [
-                "villain",
-                "head"
-            ],
-            "difficulty": 1,
-            "openingLines": {
-                "default": "default placeholder",
-                "LadyOfTheWoodCharacter": "Lady Of The Wood placeholder",
-                "SeasonsOfChangeLadyOfTheWoodCharacter": "Lady Of The Wood: Seasons of Change placeholder",
-                "MinistryOfStrategicSciencesLadyOfTheWoodCharacter": "Ministry Of Strategic Sciences: Lady Of The Wood placeholder",
-                "2199LadyOfTheWoodCharacter": "Lady Of The Wood 2199 placeholder"
-            }
-        },
-        {
-            "identifier": "HydraThunderousGaleTiamatInstructionss",
-            "promoIdentifier": "HydraThunderousGaleTiamatInstructionss",
-            "sharedIdentifier": "HydraTiamatCharacter",
-            "count": 1,
-            "title": "Tiamat: Thunderous Gale Instructions",
-            "promoTitle": "Tiamat: Thunderous Gale Instructions",
-            "body": "The Eye of the Storm",
-            "backgroundColor": "D99FC5",
-            "foilBackgroundColor": "CD96C0",
-            "setup": [
-                "At the start of the game, put {Tiamat}'s villain character card into play, “The Eye of the Storm” side up (after putting all other villain character cards into play). Put “{WindTiamatCharacter}”, face down beneath this card."
-            ],
-            "gameplay": [
-                "At the start of the villain turn, if {StormTiamatCharacter} is decapitated, flip this card and put {WindTiamatCharacter} into play with 15 HP.",
-                "At the start of the villain turn, flip 1 decapitated head to its active side and restore it to {H * 2} HP.",
-                "At the end of the villain turn, {StormTiamatCharacter} deals each hero target 1 lightning damage."
-            ],
-            "advanced": "The first time {StormTiamatCharacter} deals damage each turn, increase that damage by 2.",
-            "icons": [
-                "StartAndEndOfTurnAction",
-                "DealDamageLightning"
-            ],
-            "advancedIcons": [
-                "IncreaseDamageDealt"
-            ],
-            "flippedBody": "The Thunderous Gale",
-            "flippedGameplay": [
-                "At the start of the villain turn, flip 1 decapitated head to its active side and restore it to {H * 2} HP.",
-                "Whenever Element of Lightning enters play and {StormTiamatCharacter} is decapitated, if {WindTiamatCharacter} is active she deals the X hero targets with the Highest HP {H - 1} projectile damage each, where X = 1 plus the number of ongoing cards in the villain trash.",
-                "At the end of the villain turn, if {StormTiamatCharacter} is active, she deals the hero target with the highest HP 1 lightning damage."
-            ],
-            "flippedAdvanced": "Decapitated heads are restored to {H * 3} HP when they become active.",
-            "flippedIcons": [
-                "StartAndEndOfTurnAction",
-                "DealDamageProjectile",
-                "DealDamageLightning"
-            ],
-            "isReal": false,
-            "difficulty": 1
-        },
-        {
-            "identifier": "HydraNoxiousFireTiamatInstructions",
-            "promoIdentifier": "HydraNoxiousFireTiamatInstructions",
-            "sharedIdentifier": "HydraTiamatCharacter",
-            "count": 1,
-            "title": "Tiamat: Noxious Fire Instructions",
-            "promoTitle": "Tiamat: Noxious Fire Instructions",
-            "body": "The Mouth of the Inferno",
-            "backgroundColor": "D99FC5",
-            "foilBackgroundColor": "CD96C0",
-            "setup": [
-                "At the start of the game, put {Tiamat}'s villain character card into play, “Mouth of the Inferno” side up. Put “{DecayTiamatCharacter}”, face down beneath this card."
-            ],
-            "gameplay": [
-                "The heroes may not win the game.",
-                "At the start of the villain turn, if {InfernoTiamatCharacter} is decapitated, flip this card and put {DecayTiamatCharacter} into play with 15 HP.",
-                "At the end of the villain turn, {InfernoTiamatCharacter} deals the hero target with the highest HP 1 fire damage."
-            ],
-            "advanced": "The first time {InfernoTiamatCharacter} deals damage each turn, increase that damage by 2.",
-            "icons": [
-                "CannotWin",
-                "StartAndEndOfTurnAction",
-                "DealDamageFire"
-            ],
-            "advancedIcons": [
-                "IncreaseDamageDealt"
-            ],
-            "flippedBody": "The Noxious Fire",
-            "flippedGameplay": [
-                "The heroes win the game when 6 heads are decapitated.",
-                "Whenever Element of Fire enters play and {InfernoTiamatCharacter} is decapitated, if {DecayTiamatCharacter} is active she deals each hero target X toxic damage, where X = 2 plus the number of Acid Breaths in the villain trash.",
-                "At the end of the villain turn, if {InfernoTiamatCharacter} is active, she deals the hero target with the second highest HP 1 fire damage."
-            ],
-            "flippedAdvanced": "Decapitated heads are restored to {H * 3} HP when they become active.",
-            "flippedIcons": [
-                "StartAndEndOfTurnAction",
-                "DealDamageToxic",
-                "DealDamageFire"
-            ],
-            "isReal": false,
-            "difficulty": 1
-        },
-        {
-            "identifier": "HydraFrigidEarthTiamatInstructions",
-            "promoIdentifier": "HydraFrigidEarthTiamatInstructions",
-            "sharedIdentifier": "HydraTiamatCharacter",
-            "count": 1,
-            "title": "Tiamat: Frigid Earth Instructions",
-            "promoTitle": "Tiamat: Frigid Earth Instructions",
-            "body": "The Jaws of Winter",
-            "backgroundColor": "D99FC5",
-            "foilBackgroundColor": "CD96C0",
-            "setup": [
-                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Jaws of Winter” side up. Put “{EarthTiamatCharacter}”, face down beneath this card."
-            ],
-            "gameplay": [
-                "Face down heads are indestructible and have no game text.",
-                "If a head would be destroyed, flip it instead.",
-                "At the start of the villain turn, if {WinterTiamatCharacter} is decapitated, flip this card and put {EarthTiamatCharacter} into play with 15 HP.",
-                "At the end of the villain turn, 1 player must discard 1 card."
-            ],
-            "advanced": "At the end of the villain turn, 1 player must discard 1 card.",
-            "icons": [
-                "StartAndEndOfTurnAction",
-                "Discard"
-            ],
-            "advancedIcons": [
-                "Discard"
-            ],
-            "flippedBody": "The Frigid Earth",
-            "flippedGameplay": [
-                "Face down heads are indestructible and have no game text.",
-                "If a head would be destroyed, flip it instead.",
-                "Whenever Element of Ice enters play and {WinterTiamatCharacter} is decapitated, if {EarthTiamatCharacter} is active she deals the hero target with the highest HP X melee damage, where X = {H} plus the number of Sky Breaker cards in the villain trash.",
-                "At the end of the villain turn, if {WinterTiamatCharacter} is active, she deals the hero target with the lowest HP 1 cold damage."
-            ],
-            "flippedAdvanced": "Decapitated heads are restored to {H * 3} HP when they become active.",
-            "flippedIcons": [
-                "DealDamageMelee",
-                "EndOfTurnAction",
-                "DealDamageCold"
-            ],
-            "isReal": false,
-            "difficulty": 1
         }
     ]
 }

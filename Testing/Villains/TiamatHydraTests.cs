@@ -56,8 +56,8 @@ namespace CauldronTests
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
             var a = tiamat.CharacterCardController;
             Assert.IsNotNull(tiamat);
-            Assert.IsInstanceOf(typeof(WinterTiamatCharacterCardController), tiamat.CharacterCardController);
-            AssertNumberOfCardsInPlay(tiamat, 3);
+            //Assert.IsInstanceOf(typeof(WinterTiamatCharacterCardController), tiamat.CharacterCardController);
+            AssertNumberOfCardsInPlay(tiamat, 6);
             Assert.AreEqual(15, inferno.HitPoints);
             Assert.AreEqual(15, storm.HitPoints);
             Assert.AreEqual(15, winter.HitPoints);
