@@ -39,51 +39,66 @@ namespace Cauldron.DocHavoc
 
         private IEnumerator ChooseDamageOrHealResponse(DealDamageAction dd)
         {
-            Card card = dd.Target;
-
-            List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
-
-            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(this.DecisionMaker,
-                SelectionType.GainHP, card, storedResults: storedResults, cardSource: base.GetCardSource());
-
-            if (base.UseUnityCoroutines)
+            if (dd.IsPretend)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                IEnumerator pretend = base.CancelAction(dd);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(pretend);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(pretend);
+                }
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
+                Card card = dd.Target;
 
-            // If not true, just return and let the original damage happen
-            if (!base.DidPlayerAnswerYes(storedResults))
-            {
-                yield break;
-            }
+                List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
+
+                IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(this.DecisionMaker,
+                    SelectionType.GainHP, card, storedResults: storedResults, cardSource: base.GetCardSource());
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                // If not true, just return and let the original damage happen
+                if (!base.DidPlayerAnswerYes(storedResults))
+                {
+                    yield break;
+                }
 
 
-            // Cancel original damage
-            coroutine = base.CancelAction(dd);
+                // Cancel original damage
+                coroutine = base.CancelAction(dd);
 
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
 
-            // Gain HP instead of dealing damage
-            coroutine = this.GameController.GainHP(card, dd.Amount);
+                // Gain HP instead of dealing damage
+                coroutine = this.GameController.GainHP(card, dd.Amount);
 
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
 
             yield break;
