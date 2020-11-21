@@ -269,6 +269,31 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestRuneFallsOff()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToEndOfTurn(haka);
+            DecisionSelectCard = mdp;
+            Card rune = PutIntoPlay("MarkOfBinding");
+            AssertNextToCard(rune, mdp);
+
+            DestroyCard(mdp, baron.CharacterCard);
+            AssertInPlayArea(baron, rune);
+
+            DecisionYesNo = true;
+            QuickHPStorage(stranger);
+            GoToStartOfTurn(stranger);
+            //should have been destroyed and no damage dealt
+            AssertInTrash(rune);
+            QuickHPCheckZero();
+
+        }
+
+        [Test()]
         public void TestCorruptionDraw4()
         {
             SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
