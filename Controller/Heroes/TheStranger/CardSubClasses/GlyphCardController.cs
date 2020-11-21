@@ -13,9 +13,10 @@ namespace Cauldron
 
         public GlyphCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SetCardProperty(base.GeneratePerTargetKey("PreventionUsed", base.CharacterCard, null), false);
-
-        }
+            base.SetCardProperty("PreventionUsed", false);
+			this.AllowFastCoroutinesDuringPretend = false;
+			this.RunModifyDamageAmountSimulationForThisCard = false;
+		}
 
         #endregion Constructors
 
@@ -23,7 +24,7 @@ namespace Cauldron
         public override void AddTriggers()
         {
             // Once during your turn when The Stranger would deal himself damage, prevent that damage.
-            base.AddTrigger<DealDamageAction>((DealDamageAction dealDamage) => dealDamage.DamageSource.IsSameCard(base.CharacterCard) && dealDamage.Target == base.CharacterCard && !base.CharacterCardController.IsPropertyTrue("PreventionUsed"), this.DamagePreventionResponse, TriggerType.CancelAction, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>((DealDamageAction dealDamage) => dealDamage.DamageSource.IsSameCard(base.CharacterCard) && dealDamage.Target == base.CharacterCard && !base.IsPropertyTrue("PreventionUsed"), this.DamagePreventionResponse, TriggerType.CancelAction, TriggerTiming.Before);
 
             //Reset the PreventionUsed property to false at the start of the turn
             base.AddStartOfTurnTrigger((TurnTaker tt) => tt.CharacterCard == base.CharacterCard, new Func<PhaseChangeAction, IEnumerator>(this.ResetPreventionUsed), TriggerType.Other, null, false);
@@ -31,25 +32,24 @@ namespace Cauldron
 
 		private IEnumerator DamagePreventionResponse(DealDamageAction dd)
 		{
-			if (dd.IsPretend)
+
+			List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
+			List<Card> list = new List<Card>();
+			list.Add(base.Card);
+			IEnumerator coroutine2 = base.GameController.MakeYesNoCardDecision(this.DecisionMaker, SelectionType.PreventDamage, base.Card, dd, storedResults, list, base.GetCardSource());
+			if (base.UseUnityCoroutines)
 			{
-				IEnumerator coroutine = base.CancelAction(dd, isPreventEffect: true);
-				if (base.UseUnityCoroutines)
-				{
-					yield return base.GameController.StartCoroutine(coroutine);
-				}
-				else
-				{
-					base.GameController.ExhaustCoroutine(coroutine);
-				}
+				yield return base.GameController.StartCoroutine(coroutine2);
 			}
 			else
 			{
-				//ask the player if they want to make
-				List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
-				List<Card> list = new List<Card>();
-				list.Add(base.Card);
-				IEnumerator coroutine2 = base.GameController.MakeYesNoCardDecision(this.DecisionMaker, SelectionType.PreventDamage, base.Card, dd, storedResults, list, base.GetCardSource());
+				base.GameController.ExhaustCoroutine(coroutine2);
+			}
+			YesNoCardDecision yesNoCardDecision = storedResults.FirstOrDefault<YesNoCardDecision>();
+			if (yesNoCardDecision.Answer != null && yesNoCardDecision.Answer.Value)
+			{
+                base.SetCardPropertyToTrueIfRealAction("PreventionUsed");
+                coroutine2 = base.CancelAction(dd, true, true, null, true);
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine2);
@@ -58,22 +58,9 @@ namespace Cauldron
 				{
 					base.GameController.ExhaustCoroutine(coroutine2);
 				}
-				YesNoCardDecision yesNoCardDecision = storedResults.FirstOrDefault<YesNoCardDecision>();
-				if (yesNoCardDecision.Answer != null && yesNoCardDecision.Answer.Value)
-				{
-                    base.CharacterCardController.SetCardPropertyToTrueIfRealAction("PreventionUsed", null);
-                    coroutine2 = base.CancelAction(dd, true, true, null, true);
-					if (base.UseUnityCoroutines)
-					{
-						yield return base.GameController.StartCoroutine(coroutine2);
-					}
-					else
-					{
-						base.GameController.ExhaustCoroutine(coroutine2);
-					}
 					
-				}
 			}
+		
 			yield break;
 		}
 
