@@ -609,15 +609,66 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
             StartGame();
-            // At the end of the environment turn, discard a card from beneath this one. This card deals the target from that deck with the highest HP X irreducible sonic damage, where X = the number of Waypoints in play plus 2.
+            // At the end of the environment turn, discard a card from beneath this one. 
+            Card takAhab = PlayCard("TakAhab");
+            int numCardsUnderTakAhabBefore = GetNumberOfCardsUnderCard(takAhab);
+            GoToEndOfTurn(northspar);
+            AssertNumberOfCardsUnderCard(takAhab, numCardsUnderTakAhabBefore - 1);
         }
 
         [Test()]
-        public void TestTakAhab_EndOfTurnDamage()
+        public void TestTakAhab_EndOfTurnDamage_OWaypoints()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
             StartGame();
-            // At the end of the environment turn, discard a card from beneath this one. This card deals the target from that deck with the highest HP X irreducible sonic damage, where X = the number of Waypoints in play plus 2.
+            // At the end of the environment turn,  discard a card from beneath this one. this card deals the target from that deck with the highest HP X irreducible sonic damage, where X = the number of Waypoints in play plus 2.
+            Card takAhab = PlayCard("TakAhab");
+            MoveAllCards(northspar, takAhab.UnderLocation, northspar.TurnTaker.Trash, leaveSomeCards: 1);
+            Card underCard = takAhab.UnderLocation.TopCard;
+            Card underCardOwnerCharacterCard = underCard.Owner.CharacterCard;
+            QuickHPStorage(underCardOwnerCharacterCard);
+            GoToEndOfTurn(northspar);
+            QuickHPCheck(-2);
+
+        }
+
+        [Test()]
+        public void TestTakAhab_EndOfTurnDamage_1Waypoint()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            PlayCard("MakeshiftShelter");
+
+            // At the end of the environment turn,  discard a card from beneath this one. this card deals the target from that deck with the highest HP X irreducible sonic damage, where X = the number of Waypoints in play plus 2.
+            Card takAhab = PlayCard("TakAhab");
+            MoveAllCards(northspar, takAhab.UnderLocation, northspar.TurnTaker.Trash, leaveSomeCards: 1);
+            Card underCard = takAhab.UnderLocation.TopCard;
+            Card underCardOwnerCharacterCard = underCard.Owner.CharacterCard;
+            QuickHPStorage(underCardOwnerCharacterCard);
+            GoToEndOfTurn(northspar);
+            QuickHPCheck(-3);
+
+        }
+
+        [Test()]
+        public void TestTakAhab_EndOfTurnDamage_2Waypoints()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            PlayCard("MakeshiftShelter");
+            PlayCard("SupplyDepot");
+
+            // At the end of the environment turn,  discard a card from beneath this one. this card deals the target from that deck with the highest HP X irreducible sonic damage, where X = the number of Waypoints in play plus 2.
+            Card takAhab = PlayCard("TakAhab");
+            MoveAllCards(northspar, takAhab.UnderLocation, northspar.TurnTaker.Trash, leaveSomeCards: 1);
+            Card underCard = takAhab.UnderLocation.TopCard;
+            Card underCardOwnerCharacterCard = underCard.Owner.CharacterCard;
+            QuickHPStorage(underCardOwnerCharacterCard);
+            GoToEndOfTurn(northspar);
+            QuickHPCheck(-4);
+
         }
 
 
