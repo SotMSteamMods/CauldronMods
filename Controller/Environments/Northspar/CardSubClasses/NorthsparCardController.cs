@@ -43,6 +43,11 @@ namespace Cauldron.Northspar
             return base.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.Identifier == "TakAhab").First();
         }
 
+        protected Card FindTakAhabAnywhere()
+        {
+            return base.FindCardsWhere(c => c.Identifier == "TakAhab").First();
+        }
+
         protected int GetNumberOfWaypointsInPlay()
         {
             return base.FindCardsWhere(c => c.IsInPlayAndHasGameText && this.IsWaypoint(c)).Count();

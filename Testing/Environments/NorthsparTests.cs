@@ -671,6 +671,96 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestAethiumVein_DestroyedByHero_TakAhabInPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            Card vein = PlayCard("AethiumVein");
+            Card villainTopCard = baron.TurnTaker.Deck.TopCard;
+            Card takAhab = PlayCard("TakAhab");
+            AssertOnTopOfDeck(villainTopCard);
+            //    If this card is destroyed by a hero card and Tak Ahab is in play, place the top card of the villain deck beneath him.",
+            
+            DestroyCard(vein, ra.CharacterCard);
+            AssertUnderCard(takAhab, villainTopCard);
+        }
+
+        [Test()]
+        public void TestAethiumVein_DestroyedByNonHero_TakAhabInPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            Card vein = PlayCard("AethiumVein");
+            Card villainTopCard = baron.TurnTaker.Deck.TopCard;
+            Card takAhab = PlayCard("TakAhab");
+            AssertOnTopOfDeck(villainTopCard);
+            //    If this card is destroyed by a hero card and Tak Ahab is in play, place the top card of the villain deck beneath him.",
+
+            DestroyCard(vein, baron.CharacterCard);
+            AssertOnTopOfDeck(villainTopCard);
+        }
+
+        [Test()]
+        public void TestAethiumVein_DestroyedByHero_TakAhabNotInPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            Card vein = PlayCard("AethiumVein");
+            Card villainTopCard = baron.TurnTaker.Deck.TopCard;
+            AssertOnTopOfDeck(villainTopCard);
+            //  If this card is destroyed by a hero card and Tak Ahab is in play, place the top card of the villain deck beneath him.
+            DestroyCard(vein, ra.CharacterCard);
+            AssertOnTopOfDeck(villainTopCard);
+        }
+
+        [Test()]
+        public void TestAethiumVein_StartOfTurn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Bunker", "Cauldron.Northspar");
+            StartGame();
+
+            Card vein = PlayCard("AethiumVein");
+            Card takAhab = PlayCard("TakAhab");
+            // At the start of the environment turn, destroy this card and Tak Ahab's end of turn effect acts twice this turn.
+            AssertInPlayArea(northspar, vein);
+            GoToStartOfTurn(northspar);
+            AssertInTrash(vein);
+            int numCardsUnderTakAhabBefore = GetNumberOfCardsUnderCard(takAhab);
+            GoToEndOfTurn(northspar);
+            AssertNumberOfCardsUnderCard(takAhab, numCardsUnderTakAhabBefore - 2);
+
+            //check that it is only for this turn
+            numCardsUnderTakAhabBefore = GetNumberOfCardsUnderCard(takAhab);
+            GoToEndOfTurn(northspar);
+            AssertNumberOfCardsUnderCard(takAhab, numCardsUnderTakAhabBefore - 1);
+        }
+
+        [Test()]
+        public void TestAethiumVein_StartOfTurn_PlayTakAfter()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Bunker", "Cauldron.Northspar");
+            StartGame();
+
+            Card vein = PlayCard("AethiumVein");
+            // At the start of the environment turn, destroy this card and Tak Ahab's end of turn effect acts twice this turn.
+            AssertInPlayArea(northspar, vein);
+            GoToStartOfTurn(northspar);
+            AssertInTrash(vein);
+            Card takAhab = PlayCard("TakAhab");
+            int numCardsUnderTakAhabBefore = GetNumberOfCardsUnderCard(takAhab);
+            GoToEndOfTurn(northspar);
+            AssertNumberOfCardsUnderCard(takAhab, numCardsUnderTakAhabBefore - 2);
+
+            //check that it is only for this turn
+            numCardsUnderTakAhabBefore = GetNumberOfCardsUnderCard(takAhab);
+            GoToEndOfTurn(northspar);
+            AssertNumberOfCardsUnderCard(takAhab, numCardsUnderTakAhabBefore - 1);
+        }
+
 
     }
 }

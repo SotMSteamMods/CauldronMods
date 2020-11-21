@@ -13,7 +13,7 @@ namespace Cauldron.Northspar
 
         public TakAhabCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            
+            base.SetCardProperty("aethiumTriggers", false);
         }
 
         public override void AddTriggers()
@@ -30,6 +30,14 @@ namespace Cauldron.Northspar
                 TriggerType.MoveCard,
                 TriggerType.DealDamage
             });
+
+            //add duplicate trigger if aethium vein causes extra end of turn trigger
+            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.EndOfTurnResponse, new TriggerType[]
+           {
+                TriggerType.MoveCard,
+                TriggerType.DealDamage
+             },(PhaseChangeAction pca) => base.IsPropertyTrue("aethiumTriggers"));
+
 
         }
 
