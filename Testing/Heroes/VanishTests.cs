@@ -845,9 +845,6 @@ namespace CauldronTests
             UsePower(card);
 
             QuickHPCheck(-2, 0, 0, 0);
-
-
-
         }
 
         [Test]
@@ -961,5 +958,41 @@ namespace CauldronTests
             QuickHandCheck(0, 0, 0);
             AssertInPlayArea(vanish, card);
         }
+
+
+        [Test]
+        public void BlindsideJump()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            RemoveMobileDefensePlatform();
+
+            var card = PlayCard("BlindsideJump");
+            AssertInPlayArea(vanish, card);
+
+            GoToStartOfTurn(vanish);
+
+            QuickHPStorage(baron, vanish, ra, wraith);
+            DecisionSelectTarget = baron.CharacterCard;
+
+            UsePower(card);
+
+            QuickHPCheck(-1, 0, 0, 0);
+
+            QuickHPUpdate();
+            DealDamage(vanish, baron, 1, DamageType.Melee);
+            QuickHPCheck(-2, 0, 0, 0);
+
+            QuickHPUpdate();
+            DealDamage(ra, baron, 1, DamageType.Melee);
+            QuickHPCheck(-2, 0, 0, 0);
+
+            QuickHPUpdate();
+            DealDamage(wraith, ra, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, -1, 0);
+
+        }
+
     }
 }
