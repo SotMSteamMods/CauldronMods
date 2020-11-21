@@ -30,7 +30,10 @@ namespace Cauldron.Necro
         {
             //That target is immune to damage from undead targets.
             base.AddImmuneToDamageTrigger((DealDamageAction dd) => this.IsUndead(dd.DamageSource.Card) && base.IsThisCardNextToCard(dd.Target));
-            base.AddTrigger<DestroyCardAction>(dca => IsThisCardNextToCard(dca.CardToDestroy.Card), dca => dca.GameController.MoveCard(dca.DecisionMaker, this.Card, this.Card.Owner.PlayArea, actionSource: dca, playCardIfMovingToPlayArea: false, doesNotEnterPlay: true), TriggerType.MoveCard, TriggerTiming.After, ignoreBattleZone: true);
+
+            //if the card this is next to leaves, have this card fall off
+            Card cardThisCardIsNextTo = base.GetCardThisCardIsNextTo(true);
+            base.AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(false, cardThisCardIsNextTo != null && !cardThisCardIsNextTo.IsHeroCharacterCard);
         }
     }
 }

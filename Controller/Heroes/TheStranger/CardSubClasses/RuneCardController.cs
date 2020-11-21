@@ -28,7 +28,7 @@ namespace Cauldron
            
             //if the card this is next to leaves, have this card fall off
             Card cardThisCardIsNextTo = base.GetCardThisCardIsNextTo(true);
-            base.AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(true, cardThisCardIsNextTo != null && !cardThisCardIsNextTo.IsHeroCharacterCard);
+            base.AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(false, cardThisCardIsNextTo != null && !cardThisCardIsNextTo.IsHeroCharacterCard);
         }
 
         private IEnumerator DestroyCardResponse(PhaseChangeAction action)

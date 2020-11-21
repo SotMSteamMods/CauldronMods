@@ -19,7 +19,12 @@ namespace Cauldron.Malichae
             AddDestroyAtEndOfTurnTrigger();
         }
 
-        public override IEnumerator UsePower(int index = 0)
+        public override Power GetGrantedPower(CardController cardController)
+        {
+            return new Power(cardController.HeroTurnTakerController, cardController, "All hero targets regain 3HP.", UseGrantedPower(), 0, null, GetCardSource());
+        }
+
+        private IEnumerator UseGrantedPower()
         {
             int hp = GetPowerNumeral(0, 3);
 

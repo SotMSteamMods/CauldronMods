@@ -36,57 +36,74 @@ namespace Cauldron.TangoOne
 
         private IEnumerator RevealTopCardFromDeckResponse(DealDamageAction dda)
         {
-            List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
-
-            // Ask if player wants to discard off the top of their deck
-            IEnumerator routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.DiscardFromDeck, this.Card, null, storedYesNoResults, null, GetCardSource());
-
-            if (base.UseUnityCoroutines)
+            if (dda.IsPretend)
             {
-                yield return base.GameController.StartCoroutine(routine);
+                IEnumerator coroutine = base.CancelAction(dda, isPreventEffect: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             else
             {
-                base.GameController.ExhaustCoroutine(routine);
+                List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
+
+                // Ask if player wants to discard off the top of their deck
+                IEnumerator routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
+                    SelectionType.DiscardFromDeck, this.Card, null, storedYesNoResults, null, GetCardSource());
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
+
+                // Return if they chose not to discard from their deck
+                if (!base.DidPlayerAnswerYes(storedYesNoResults))
+                {
+                    yield break;
+                }
+
+                // Move card from top of their deck to the trash
+                List<MoveCardAction> moveCardActions = new List<MoveCardAction>();
+                IEnumerator discardCardRoutine
+                    = base.GameController.DiscardTopCard(this.TurnTaker.Deck, moveCardActions, card => true, this.TurnTaker, base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(discardCardRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(discardCardRoutine);
+                }
+
+                // Check to see if the card was moved and contains the keyword "critical", if it didn't, damage proceeds
+                if (moveCardActions.Count <= 0 || !moveCardActions.First().WasCardMoved ||
+                    !IsCritical(moveCardActions.First().CardToMove))
+                {
+                    yield break;
+                }
+
+                // Card had the "critical" keyword, cancel the damage
+                IEnumerator cancelDamageRoutine = base.CancelAction(dda);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(cancelDamageRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(cancelDamageRoutine);
+                }
             }
 
-            // Return if they chose not to discard from their deck
-            if (!base.DidPlayerAnswerYes(storedYesNoResults))
-            {
-                yield break;
-            }
-
-            // Move card from top of their deck to the trash
-            List<MoveCardAction> moveCardActions = new List<MoveCardAction>();
-            IEnumerator discardCardRoutine 
-                = base.GameController.DiscardTopCard(this.TurnTaker.Deck, moveCardActions, card => true, this.TurnTaker, base.GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(discardCardRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(discardCardRoutine);
-            }
-
-            // Check to see if the card was moved and contains the keyword "critical", if it didn't, damage proceeds
-            if (moveCardActions.Count <= 0 || !moveCardActions.First().WasCardMoved ||
-                !IsCritical(moveCardActions.First().CardToMove) )
-            {
-                yield break;
-            }
-
-            // Card had the "critical" keyword, cancel the damage
-            IEnumerator cancelDamageRoutine = base.CancelAction(dda);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(cancelDamageRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(cancelDamageRoutine);
-            }
+            yield break;
         }
     }
 }
