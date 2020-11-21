@@ -53,12 +53,12 @@ namespace Cauldron.Starlight
                 case 0:
                     {
                         //"One player may put an ongoing card from their trash into their hand.",
-                        List<TurnTaker> usableHeroes = GameController.AllTurnTakers.Where(
-                                                                            (TurnTaker tt) => tt.IsHero &&
+                        List<TurnTaker> usableHeroes = GameController.AllTurnTakers
+                                                                     .Where((TurnTaker tt) => tt.IsHero &&
                                                                                             !tt.IsIncapacitatedOrOutOfGame && 
                                                                                             GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) &&
-                                                                                            tt.Trash.Cards.Where((Card c) => c.IsOngoing).Count() > 0
-                                                                     ).ToList();
+                                                                                            tt.Trash.Cards.Where((Card c) => c.IsOngoing).Count() > 0)
+                                                                     .ToList();
                         SelectTurnTakerDecision whoGetsCard = new SelectTurnTakerDecision(GameController, 
                                                                             HeroTurnTakerController, 
                                                                             usableHeroes, 
