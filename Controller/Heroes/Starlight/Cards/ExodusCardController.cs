@@ -16,16 +16,16 @@ namespace Cauldron.Starlight
         public override IEnumerator Play()
         {
             //"Draw a card, or search your trash and deck for a constellation card, put it into play, then shuffle your deck."
-            var actionList = new List<Function> { };
-            bool hasConstellationInDeck = HeroTurnTakerController.HasCardsWhere((Card c) => c.IsInDeck && IsConstellation(c));
-            bool hasConstellationInTrash = HeroTurnTakerController.HasCardsWhere((Card c) => c.IsInTrash && IsConstellation(c));
-            string heroName = TurnTaker.Name;
+            var httc = HeroTurnTakerController;
+            var actionList = new List<Function>()
+            {
+                new Function(httc, "Draw a card", SelectionType.DrawCard, () => DrawCard(HeroTurnTaker, false), httc != null && CanDrawCards(httc), $"{TurnTaker.Name} has no constellations in their deck or trash, so they must draw a card."),
+                new Function(httc, "Search for a constellation", SelectionType.SearchLocation, () => SearchForConstellationAndShuffleDeck(httc), httc != null && HasFindableConstellations(httc), $"{TurnTaker.Name} cannot draw any cards, so they must search for a constellation.")
+            };
 
-            var constellationSearchAndPlay = SearchForConstellationAndShuffleDeck(HeroTurnTakerController, hasConstellationInDeck, hasConstellationInTrash);
-
-            actionList.Add(new Function(HeroTurnTakerController, "Draw a card", SelectionType.DrawCard, () => DrawCard(HeroTurnTaker, false), HeroTurnTakerController != null && CanDrawCards(HeroTurnTakerController), heroName + " has no constellations in their deck or trash, so they must draw a card."));
-            actionList.Add(new Function(HeroTurnTakerController, "Search for a constellation", SelectionType.SearchLocation, () => constellationSearchAndPlay, HeroTurnTakerController != null && (hasConstellationInDeck || hasConstellationInTrash), heroName + " cannot draw any cards, so they must search for a constellation."));
-            SelectFunctionDecision selectFunction = new SelectFunctionDecision(GameController, HeroTurnTakerController, actionList, false, noSelectableFunctionMessage: heroName + " can neither draw nor search for a constellation, so nothing happens.", cardSource: GetCardSource());
+            SelectFunctionDecision selectFunction = new SelectFunctionDecision(GameController, httc, actionList, false,
+                noSelectableFunctionMessage: $"{TurnTaker.Name} can neither draw nor search for a constellation, so nothing happens.",
+                cardSource: GetCardSource());
             IEnumerator drawOrSearch = GameController.SelectAndPerformFunction(selectFunction);
             if (UseUnityCoroutines)
             {
@@ -37,8 +37,7 @@ namespace Cauldron.Starlight
             }
 
             //"You may play a card."
-            IEnumerator mayPlayCard = SelectAndPlayCardFromHand(HeroTurnTakerController);
-
+            IEnumerator mayPlayCard = SelectAndPlayCardFromHand(httc);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(mayPlayCard);
@@ -51,11 +50,23 @@ namespace Cauldron.Starlight
             yield break;
         }
 
-        private IEnumerator SearchForConstellationAndShuffleDeck(HeroTurnTakerController heroTurnTakerController, bool hasConstellationInDeck, bool hasConstellationInTrash)
+        private bool HasFindableConstellations(HeroTurnTakerController httc)
         {
+            return httc.HasCardsWhere(c => IsConstellation(c) && (c.IsInDeck || c.IsInTrash));
+        }
 
-            IEnumerator search = SearchForCards(heroTurnTakerController, searchDeck: hasConstellationInDeck, searchTrash: hasConstellationInTrash, 1, 1, new LinqCardCriteria((Card c) => IsConstellation(c)), putIntoPlay: true, putInHand: false, putOnDeck: false, shuffleAfterwards: false);
-            IEnumerator shuffle = ShuffleDeck(heroTurnTakerController, heroTurnTakerController.TurnTaker.Deck);
+        private IEnumerator SearchForConstellationAndShuffleDeck(HeroTurnTakerController httc)
+        {
+            //we pre search the decks to control the locations, otherwise SearchForCard will ask which you to search locations that don't have the card, and Exodus doesn't have the restriction.
+            bool hasConstellationInTrash = httc.HasCardsWhere(c => IsConstellation(c) && c.IsInTrash);
+            bool hasConstellationInDeck = httc.HasCardsWhere(c => IsConstellation(c) && c.IsInDeck);
+
+            //if not anywhere, set deck to true so we get the nice no cards found message
+            if (!hasConstellationInTrash && !hasConstellationInDeck)
+                hasConstellationInDeck = true;
+
+            IEnumerator search = SearchForCards(httc, hasConstellationInDeck, hasConstellationInTrash, 1, 1, new LinqCardCriteria((Card c) => IsConstellation(c)), putIntoPlay: true, putInHand: false, putOnDeck: false, shuffleAfterwards: false);
+            IEnumerator shuffle = ShuffleDeck(httc, httc.TurnTaker.Deck);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(search);
