@@ -54,7 +54,7 @@
             ],
             "difficulty": 1,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "The world will know the mark of Dendron.",
                 "TheStrangerCharacter": "The Stranger placeholder",
                 "RitualCarvedTheStrangerCharacter": "The Stranger: Ritual Carved placeholder",
                 "1929TheStrangerCharacter": "The Stranger 1929 placeholder",
@@ -415,7 +415,7 @@
             "challengeText": [],
             "challengeIcons": [],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Do you feel it coming in the air? My art now knows no boundaries.",
                 "TheStrangerCharacter": "The Stranger placeholder",
                 "RitualCarvedTheStrangerCharacter": "The Stranger: Ritual Carved placeholder",
                 "1929TheStrangerCharacter": "The Stranger 1929 placeholder",

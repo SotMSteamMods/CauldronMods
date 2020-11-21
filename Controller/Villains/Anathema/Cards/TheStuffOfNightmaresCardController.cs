@@ -14,15 +14,31 @@ namespace Cauldron.Anathema
 		}
 
 		public override void AddTriggers()
-		{
+        {
 
-			//Whenever a Villain target enters play, that target deals the hero target with the second lowest HP 2 psychic damage.
+            //Whenever a Villain target enters play, that target deals the hero target with the second lowest HP 2 psychic damage.
 
-			base.AddTargetEntersPlayTrigger((Card c) => c.IsVillainTarget, (Card c) => base.DealDamageToLowestHP(c,2,(Card h) => h.IsHero,(Card n) => new int?(2),DamageType.Psychic,false,false,null,1,null,null,false), TriggerType.DealDamage, TriggerTiming.After, false, false);
-		}
+            base.AddTargetEntersPlayTrigger((Card c) => c.IsVillainTarget, (Card c) => DealDamageResponse(c), TriggerType.DealDamage, TriggerTiming.After);
+        }
 
-	
-		
+        private IEnumerator DealDamageResponse(Card c)
+        {
+            //that target deals the hero target with the second lowest HP 2 psychic damage
+            IEnumerator coroutine =  base.DealDamageToLowestHP(c, 2, (Card h) => h.IsHero, (Card n) => new int?(2), DamageType.Psychic);
 
-	}
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            yield break;
+        }
+
+
+
+    }
 }
