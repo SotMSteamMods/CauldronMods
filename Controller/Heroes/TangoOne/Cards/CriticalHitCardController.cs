@@ -41,11 +41,12 @@ namespace Cauldron.TangoOne
 
         private IEnumerator RevealTopCardFromDeckResponse(DealDamageAction dda)
         {
-            List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
-
             // Ask if player wants to discard off the top of their deck
-            IEnumerator routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.DiscardFromDeck, this.Card, null, storedYesNoResults, null, GetCardSource(null));
+
+            YesNoDecision yesNo = new YesNoDecision(base.GameController, base.HeroTurnTakerController,
+                SelectionType.DiscardFromDeck, false, cardSource: GetCardSource());
+            
+            IEnumerator routine = base.GameController.MakeDecisionAction(yesNo, true);
 
             if (base.UseUnityCoroutines)
             {
@@ -57,15 +58,15 @@ namespace Cauldron.TangoOne
             }
 
             // Return if they chose not to discard from their deck
-            if (!base.DidPlayerAnswerYes(storedYesNoResults))
+            if (yesNo.Answer == null || !yesNo.Answer.Value)
             {
                 yield break;
             }
 
             // Move card from top of their deck to the trash
             List<MoveCardAction> moveCardActions = new List<MoveCardAction>();
-            IEnumerator discardCardRoutine = base.GameController.DiscardTopCard(this.TurnTaker.Deck, moveCardActions,
-                null, this.TurnTaker, base.GetCardSource());
+            IEnumerator discardCardRoutine = base.GameController.DiscardTopCard(this.TurnTaker.Deck, moveCardActions, 
+                card => true, this.TurnTaker, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(discardCardRoutine);

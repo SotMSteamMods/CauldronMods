@@ -28,6 +28,7 @@ namespace Cauldron.LadyOfTheWood
 		{
 			//Increase the damage by 2
 			IEnumerator coroutine = base.GameController.IncreaseDamage(this.DealDamageAction, 2, cardSource: base.GetCardSource());
+						
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -45,9 +46,8 @@ namespace Cauldron.LadyOfTheWood
 			//This currently doesn't have any text on the decision other than yes/no, room for improvement
 			this.DealDamageAction = dd;
 			List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
-
-			IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(this.DecisionMaker, SelectionType.IncreaseNextDamage, base.Card, storedResults: storedResults, cardSource: base.GetCardSource());
-
+			
+			IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.IncreaseNextDamage, base.Card,storedResults: storedResults,cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -56,27 +56,24 @@ namespace Cauldron.LadyOfTheWood
 			{
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
-
-			if (storedResults != null)
+			if (base.DidPlayerAnswerYes(storedResults))
 			{
-				YesNoCardDecision yesNo = storedResults.First();
-				//if player said yes, set BuffUsed to true and Increase Damage
-				if (yesNo.Answer.Value == true)
-				{
-					base.CharacterCardController.SetCardPropertyToTrueIfRealAction("BuffUsed");
-					IEnumerator coroutine2 = this.IncreaseFunction();
-					if (base.UseUnityCoroutines)
-					{
-						yield return base.GameController.StartCoroutine(coroutine2);
-					}
-					else
-					{
-						base.GameController.ExhaustCoroutine(coroutine2);
-					}
-				}
+                //if player said yes, set BuffUsed to true and Increase Damage
 
-			}
+                base.CharacterCardController.SetCardPropertyToTrueIfRealAction("BuffUsed");
+                IEnumerator coroutine2 = this.IncreaseFunction();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine2);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine2);
+                }
+            }
 			yield break;
+
+			
 		}
 	}
 }

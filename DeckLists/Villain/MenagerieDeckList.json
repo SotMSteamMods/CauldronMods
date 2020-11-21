@@ -60,7 +60,7 @@
             ],
             "difficulty": 1,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Oh, hello, heroes! Care to see my latest catch?",
                 "StarlightCharacter": "Starlight placeholder",
                 "GenesisStarlightCharacter": "Starlight: Genesis placeholder",
                 "NightloreCouncilStarlightCharacter": "Nightlore Council Starlight placeholder"

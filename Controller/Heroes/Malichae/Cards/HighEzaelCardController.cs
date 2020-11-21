@@ -21,7 +21,7 @@ namespace Cauldron.Malichae
 
         private IEnumerator EndOfTurnReponse(PhaseChangeAction pca)
         {
-            var coroutine = GameController.GainHP(this.DecisionMaker, c => c.IsTarget && IsDjinn(c), 1, cardSource: GetCardSource());
+            var coroutine = GameController.GainHP(this.DecisionMaker, c => c.IsTarget && c.IsInPlayAndHasGameText && IsDjinn(c), 1, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -39,7 +39,7 @@ namespace Cauldron.Malichae
             int otherHP = GetPowerNumeral(1, 1);
 
             var card = GetCardThisCardIsNextTo();
-            var coroutine = base.GameController.GainHP(DecisionMaker, c => c.IsTarget && (c.IsHero || IsDjinn(c)), c => IsDjinn(c) ? djinnHP : otherHP, cardSource: GetCardSource());
+            var coroutine = base.GameController.GainHP(DecisionMaker, c => c.IsTarget && c.IsInPlayAndHasGameText && (c.IsHero || IsDjinn(c)), c => IsDjinn(c) ? djinnHP : otherHP, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

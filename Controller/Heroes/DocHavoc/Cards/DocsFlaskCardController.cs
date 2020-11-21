@@ -28,9 +28,11 @@ namespace Cauldron.DocHavoc
         private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
         {
             //1 hero target regains 1 HP
-            IEnumerator coroutine = this.GameController.SelectAndGainHP(this.DecisionMaker, 1,
-                        additionalCriteria: ((Func<Card, bool>)(c => c.IsHero && c.IsTarget)),
-                        numberOfTargets: 1, requiredDecisions: new int?(1), cardSource: this.GetCardSource());
+            IEnumerator coroutine = GameController.SelectAndGainHP(DecisionMaker, 1,
+                        additionalCriteria: c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText,
+                        numberOfTargets: 1,
+                        requiredDecisions: 1,
+                        cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -49,7 +51,7 @@ namespace Cauldron.DocHavoc
             //==============================================================
 
             int gainHpAmount = this.GetPowerNumeral(0, HpGain);
-            IEnumerator coroutine = this.GameController.GainHP(this.HeroTurnTakerController, (Func<Card, bool>)(c => c.IsHero && c.IsTarget), gainHpAmount, cardSource: this.GetCardSource());
+            IEnumerator coroutine = this.GameController.GainHP(DecisionMaker, c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText, gainHpAmount, cardSource: GetCardSource());
             if (this.UseUnityCoroutines)
             {
 
