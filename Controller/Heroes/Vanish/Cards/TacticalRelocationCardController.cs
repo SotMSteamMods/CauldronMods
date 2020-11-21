@@ -16,5 +16,10 @@ namespace Cauldron.Vanish
                     new LinqCardCriteria(c => c.IsOngoing && IsEquipment(c) && c.IsInTrash, "equipment or ongoings in trash")
                 );
         }
+
+        public override IEnumerator Play()
+        {
+            return base.Play();
+        }
     }
 }

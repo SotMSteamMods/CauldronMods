@@ -994,5 +994,43 @@ namespace CauldronTests
 
         }
 
+        [Test]
+        public void TacticalRelocation()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            RemoveMobileDefensePlatform();
+
+            var t1 = GetCard("StunBolt");
+            PutInTrash(wraith, t1);
+
+            var t2 = GetCardFromHand(vanish);
+            var t3 = GetTopCardOfDeck(vanish);
+
+            DecisionSelectCards = new Card[]
+            {
+                //heros to damage
+                ra.CharacterCard,
+                wraith.CharacterCard,
+
+                //cards to put into play
+                t1,
+
+                //card to discard,
+                t2
+            };
+
+            QuickHPStorage(baron, vanish, ra, wraith);
+            var card = PlayCard("TacticalRelocation");
+            AssertInTrash(vanish, card);
+
+            QuickHPCheck(0, 0, 3, 3);
+
+            AssertInPlayArea(wraith, t1);
+            AssertInTrash(vanish, t2);
+            AssertInHand(vanish, t3);
+        }
+
     }
 }
