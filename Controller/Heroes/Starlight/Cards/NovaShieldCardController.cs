@@ -18,7 +18,7 @@ namespace Cauldron.Starlight
             //"Whenever a constellation enters play next to a target, Starlight deals that target 1 energy damage and regains 1 HP."
             AddTrigger<CardEntersPlayAction>(criteria: IsCardEnteringPlayAsConstellationNextToTarget,
                        response: DamageAndHealResponse,
-                       new TriggerType[2] { TriggerType.DealDamage, TriggerType.GainHP },
+                       new TriggerType[] { TriggerType.DealDamage, TriggerType.GainHP },
                        TriggerTiming.After);
         }
 
@@ -35,9 +35,7 @@ namespace Cauldron.Starlight
         }
         private IEnumerator DamageAndHealResponse(CardEntersPlayAction ce)
         {
-
             var constellation = ce.CardEnteringPlay;
-
             if (constellation == null)
             {
                 yield break;
@@ -62,13 +60,10 @@ namespace Cauldron.Starlight
             }
 
             var target = FindCardsWhere((Card c) => c.IsInPlay && c.IsTarget && c.GetAllNextToCards(false).Contains(constellation), visibleToCard: GetCardSource()).FirstOrDefault();
-
-
             if (target != null)
             {
                 //"...Starlight deals that target 1 energy damage..."
-                var damageAction = DealDamage(actingStarlight, target, 1, DamageType.Energy);
-
+                var damageAction = DealDamage(actingStarlight, target, 1, DamageType.Energy, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(damageAction);
