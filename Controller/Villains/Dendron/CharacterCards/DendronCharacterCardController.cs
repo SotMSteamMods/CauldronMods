@@ -160,7 +160,7 @@ namespace Cauldron.Dendron
             int tattooThreshold = this.Game.H - 2;
 
             IEnumerable<Card> tattoosInPlay = base.GameController.FindCardsWhere(card => IsTattoo(card) && card.IsInPlay);
-            if (tattoosInPlay.Count() < tattooThreshold)
+            if (tattoosInPlay.Count() >= tattooThreshold)
             {
                 yield break;
             }
