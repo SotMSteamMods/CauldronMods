@@ -18,12 +18,13 @@ namespace Cauldron.Starlight
             //"Whenever damage would be dealt to another hero target, you may destroy a constellation card in play to prevent that damage."
             AddTrigger((DealDamageAction dd) => dd.Target.IsHero && !ListStarlights().Contains(dd.Target) && dd.Amount > 0,
                 DestroyConstellationToPreventDamage,
-                new TriggerType[3]
+                new TriggerType[]
                     {
                         TriggerType.DestroyCard,
                         TriggerType.WouldBeDealtDamage,
                         TriggerType.CancelAction
                     },
+                isActionOptional: true,
                 timing: TriggerTiming.Before);
         }
 
