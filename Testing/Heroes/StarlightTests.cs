@@ -20,6 +20,16 @@ namespace CauldronTests
             SetHitPoints(starlight.CharacterCard, 1);
             DealDamage(villain, starlight, 2, DamageType.Melee);
         }
+
+        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
+        {
+            foreach (var id in identifiers)
+            {
+                var card = GetCard(id);
+                AssertCardHasKeyword(card, keyword, false);
+            }
+        }
+
         #endregion
 
         [Test()]
@@ -34,6 +44,61 @@ namespace CauldronTests
 
             Assert.AreEqual(31, starlight.CharacterCard.HitPoints);
         }
+
+        [Test()]
+        public void TestStarlightDecklist()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            AssertHasKeyword("constellation", new[]
+            {
+                "AncientConstellationA",
+                "AncientConstellationB",
+                "AncientConstellationC",
+                "AncientConstellationE",
+                "AncientConstellationF",
+            });
+
+            AssertHasKeyword("ongoing", new[]
+            {
+                "AncientConstellationA",
+                "AncientConstellationB",
+                "AncientConstellationC",
+                "AncientConstellationE",
+                "AncientConstellationF",
+                "PillarsOfCreation",
+                "NovaShield",
+                "CelestialAura",
+                "RetreatIntoTheNebula",
+            });
+
+            AssertHasKeyword("equipment", new[]
+            {
+                "NightloreArmor",
+                "WarpHalo",
+                "GoldenAstrolabe",
+            });
+
+            AssertHasKeyword("limited", new[]
+            {
+                "NightloreArmor",
+                "WarpHalo",
+                "NovaShield",
+                "CelestialAura",
+                "GoldenAstrolabe",
+            });
+
+            AssertHasKeyword("one-shot", new[]
+            {
+                "Redshift",
+                "EventHorizon",
+                "Exodus",
+                "StellarWind",
+                "Wish",
+            });
+        }
+
         [Test()]
         public void TestStarlightPowerMayDrawCards()
         {
