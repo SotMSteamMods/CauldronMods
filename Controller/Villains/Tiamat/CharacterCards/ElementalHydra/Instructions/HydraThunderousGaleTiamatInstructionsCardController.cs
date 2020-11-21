@@ -84,7 +84,7 @@ namespace Cauldron.Tiamat
             //...flip 1 decapitated head to its active side...
             IEnumerator coroutine = base.GameController.FlipCard(base.FindCardController(decision.SelectedCard), cardSource: base.GetCardSource()); ;
             //...and restore it to 2 times {H} HP.
-            IEnumerator coroutine2 = base.GameController.MakeTargettable(secondHead.Card, decision.SelectedCard.MaximumHitPoints ?? default, HP, base.GetCardSource());
+            IEnumerator coroutine2 = base.GameController.MakeTargettable(decision.SelectedCard, 15, HP, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

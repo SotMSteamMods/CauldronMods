@@ -36,6 +36,19 @@ namespace Cauldron.Tiamat
 
         public override void AddSideTriggers()
         {
+            //Win Condition
+            base.AddSideTrigger(base.AddTrigger<GameAction>(delegate (GameAction g)
+            {
+                if (base.GameController.HasGameStarted && !(g is GameOverAction) && !(g is IncrementAchievementAction))
+                {
+                    return base.FindCardsWhere((Card c) => c.IsFlipped && c.IsVillain && c.DoKeywordsContain("head")).Count<Card>() == 6;
+                }
+                return false;
+            }, (GameAction g) => base.DefeatedResponse(g), new TriggerType[]
+            {
+                TriggerType.GameOver,
+                TriggerType.Hidden
+            }, TriggerTiming.After));
             //Front Triggers
             if (!base.Card.IsFlipped)
             {
@@ -73,16 +86,20 @@ namespace Cauldron.Tiamat
             }
             if (cardSource == null)
             {
-                cardSource = base.GetCardSource(null);
+                cardSource = base.GetCardSource();
             }
-            IEnumerator coroutine = base.GameController.RemoveTarget(base.Card, cardSource: cardSource);
-            if (base.UseUnityCoroutines)
+
+            if (!flip.CardToFlip.Card.IsFlipped)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                IEnumerator coroutine = base.GameController.RemoveTarget(base.Card, cardSource: cardSource);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }

@@ -49,7 +49,7 @@ namespace Cauldron.Tiamat
             //At the start of the villain turn, if firstHead is decapitated, flip this card and put secondHead into play with 15 HP.
             IEnumerator coroutine = base.GameController.MoveIntoPlay(base.TurnTakerController, secondHead.Card, base.TurnTaker, base.GetCardSource());
             IEnumerator coroutine2 = base.GameController.FlipCard(secondHead, cardSource: base.GetCardSource()); ;
-            IEnumerator coroutine3 = base.GameController.MakeTargettable(secondHead.Card, secondHead.Card.MaximumHitPoints ?? default, 15, base.GetCardSource());
+            IEnumerator coroutine3 = base.GameController.MakeTargettable(secondHead.Card, 15, 15, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

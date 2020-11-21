@@ -50,22 +50,7 @@
             ],
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
-            ],
-            "difficulty": 1,
-            "openingLines": {
-                "default": "Screeee! Raoooargh! Khhhaaazzt!",
-                "TheKnightCharacter": "The Knight placeholder",
-                "BerzerkerTheKnightCharacter": "The Berzerker Knight placeholder",
-                "FairTheKnightCharacter": "The Fair Knight placeholder",
-                "WastelandRoninTheKnightCharacter": "Wasteland Ronin The Knight placeholder",
-                "1929TheKnightCharacter": "The Knight 1929 placeholder",
-                "NecroCharacter": "Necro placeholder",
-                "WardenOfChaosNecroCharacter": "Warden of Chaos Necro placeholder",
-                "1929NecroCharacter": "Necro 1929 placeholder",
-                "EchelonCharacter": "Echelon placeholder",
-                "FirstResponseEchelonCharacter": "First Response Echelon placeholder",
-                "2199EchelonCharacter": "Echelon 2199 placeholder"
-            }
+            ]
         },
         {
             "identifier": "StormTiamatCharacter",
@@ -157,7 +142,22 @@
             ],
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
-            ]
+            ],
+            "difficulty": 1,
+            "openingLines": {
+                "default": "Screeee! Raoooargh! Khhhaaazzt!",
+                "TheKnightCharacter": "The Knight placeholder",
+                "BerzerkerTheKnightCharacter": "The Berzerker Knight placeholder",
+                "FairTheKnightCharacter": "The Fair Knight placeholder",
+                "WastelandRoninTheKnightCharacter": "Wasteland Ronin The Knight placeholder",
+                "1929TheKnightCharacter": "The Knight 1929 placeholder",
+                "NecroCharacter": "Necro placeholder",
+                "WardenOfChaosNecroCharacter": "Warden of Chaos Necro placeholder",
+                "1929NecroCharacter": "Necro 1929 placeholder",
+                "EchelonCharacter": "Echelon placeholder",
+                "FirstResponseEchelonCharacter": "First Response Echelon placeholder",
+                "2199EchelonCharacter": "Echelon 2199 placeholder"
+            }
         },
         {
             "identifier": "AcidBreath",

@@ -17,7 +17,7 @@ namespace Cauldron.Tiamat
             return new ITrigger[]
             { 
 				//{Tiamat}, The Voice of the Wind is immune to Projectile damage.
-				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Lightning, false),
+				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Projectile, false),
                 //At the end of the villain turn, each head regains 2 HP.
                 base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, GainHPResponse, TriggerType.GainHP)
             };
