@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,11 +20,21 @@ namespace Cauldron.BlackwoodForest
 
 
         //==============================================================
-        // Possible cards that may cause issue if copied?
+        // Current: Issues
         //==============================================================
         /*
+         * Unable to respond to keyword queries for cards that ask
+         * for keywords via Definition.Keywords rather than the newer
+         * GameController.DoesHaveKeywords which allows cards to tap into
+         * the queries to generate desired responses
          *
-         * Huginn & Muninn (Harpy) - Double boosting Harpy?
+         * Examples:
+         *
+         * Proletariat: A copied clone will not be destroyed by 'Regroup & Recover'
+         *
+         * Akash'Thriya: Copying a primordial seed will not be an available choice of cards
+         * if Akash plays 'Verdant Explosion'
+         *
          */
         //==============================================================
 
@@ -42,6 +51,9 @@ namespace Cauldron.BlackwoodForest
         {
             _copiedKeywords = Enumerable.Empty<string>();
             _copiedTriggers = new List<ITrigger>();
+
+            base.SpecialStringMaker.ShowSpecialString(() =>
+                _copiedCard == null ? "Not copying a card" : "Copying card: TODO");
         }
 
         public override IEnumerator Play()
