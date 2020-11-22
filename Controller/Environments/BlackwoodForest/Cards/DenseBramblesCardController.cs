@@ -31,7 +31,7 @@ namespace Cauldron.BlackwoodForest
                 new Func<PhaseChangeAction, IEnumerator>(base.DestroyThisCardResponse),
                 TriggerType.DestroySelf);
             // (H - 1) targets with the lowest HP are immune to damage
-            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => !dd.Target.IsHero, new Func<DealDamageAction, IEnumerator>(this.MaybeImmuneToDamageResponse), TriggerType.ImmuneToDamage, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => true, new Func<DealDamageAction, IEnumerator>(this.MaybeImmuneToDamageResponse), TriggerType.ImmuneToDamage, TriggerTiming.Before);
         }
 
         private IEnumerator MaybeImmuneToDamageResponse(DealDamageAction action)
