@@ -364,5 +364,22 @@ namespace CauldronTests
                 expectedDamage += i + 1;
             }
         }
+        [Test]
+        public void TestFallingMeteorBasic()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "Ra", "Unity", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+
+            PlayCard("UpClose");
+
+            SetHitPoints(haka, 20);
+
+            QuickHPStorage(legacy, haka, unity, ra);
+            PlayCard("FallingMeteor");
+            Assert.IsTrue(IsUpClose(unity));
+            QuickHPCheck(-4, -4, -4, -4);
+        }
     }
 }
