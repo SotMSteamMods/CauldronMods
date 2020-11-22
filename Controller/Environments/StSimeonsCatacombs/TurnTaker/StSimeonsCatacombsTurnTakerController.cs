@@ -21,25 +21,25 @@ namespace Cauldron.StSimeonsCatacombs
 								   where c.IsRoom && !c.Location.IsOutOfGame
 								   select c).ToList<Card>();
 
-			//Find the instruction card
-			Card card = base.TurnTaker.FindCard("StSimeonsCatacombs");
 
-			IEnumerator playCard = base.GameController.PlayCard(this, card);
+			//Card instructions = base.TurnTaker.FindCard("StSimeonsCatacombsInstructions");
+			Card catacombs = base.TurnTaker.FindCard("StSimeonsCatacombs");
+			IEnumerator playCatacombs = base.GameController.PlayCard(this, catacombs);
 			if (base.UseUnityCoroutines)
 			{
-				yield return base.GameController.StartCoroutine(playCard);
+				yield return base.GameController.StartCoroutine(playCatacombs);
 			}
 			else
 			{
-				base.GameController.ExhaustCoroutine(playCard);
+				base.GameController.ExhaustCoroutine(playCatacombs);
 			}
 
-			CardController cardController = base.GameController.FindCardController(card);
+			CardController cardController = base.GameController.FindCardController(catacombs);
 
-			//move all room cards to under the instruction card
-			//shuffle the cards under the instruction card
-			IEnumerator coroutine = base.GameController.BulkMoveCards(this, rooms, card.UnderLocation, cardSource: cardController.GetCardSource());
-			IEnumerator coroutine2 = base.GameController.ShuffleLocation(card.UnderLocation);
+			//move all room cards to under the catacombs card
+			//shuffle the cards under the catacombs card
+			IEnumerator coroutine = base.GameController.BulkMoveCards(this, rooms, catacombs.UnderLocation, cardSource: cardController.GetCardSource());
+			IEnumerator coroutine2 = base.GameController.ShuffleLocation(catacombs.UnderLocation);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);

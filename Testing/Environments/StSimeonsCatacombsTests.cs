@@ -29,8 +29,9 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Cauldron.StSimeonsCatacombs");
             StartGame();
 
-            //flip instructions card so cards can be played
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            //flip catacomb card so cards can be played
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
+            Card instructions = GetCard("StSimeonsCatacombsInstructions");
             FlipCard(instructions);
 
             GoToPlayCardPhase(catacombs);
@@ -47,8 +48,9 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Cauldron.StSimeonsCatacombs");
             StartGame();
 
-            //flip instructions card so cards can be played
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            //flip catacomb card so cards can be played
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
+            Card instructions = GetCard("StSimeonsCatacombsInstructions");
             FlipCard(instructions);
 
             GoToPlayCardPhase(catacombs);
@@ -72,15 +74,15 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
             List<Card> roomCards = catacombs.TurnTaker.Deck.Cards.Where(c => c.IsRoom).ToList();
             List<Card> nonRoomCards = catacombs.TurnTaker.Deck.Cards.Where(c => !c.IsRoom).ToList();
 
 
-            //check that all rooms have been moved to under the instructions card
+            //check that all rooms have been moved to under the catacomb card
             foreach (Card c in roomCards)
             {
-                AssertUnderCard(instructions, c);
+                AssertUnderCard(catacomb, c);
                 AssertDoesNotHaveGameText(c);
 
                 //check that indestructible
@@ -104,15 +106,15 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
             List<Card> roomCards = catacombs.TurnTaker.Deck.Cards.Where(c => c.IsRoom).ToList();
 
-            FlipCard(instructions);
+            FlipCard(catacomb);
 
-            //check that all rooms have been moved to under the instructions card
+            //check that all rooms have been moved to under the catacomb card
             foreach (Card c in roomCards)
             {
-                AssertUnderCard(instructions, c);
+                AssertUnderCard(catacomb, c);
                 AssertDoesNotHaveGameText(c);
 
                 //check that indestructible
@@ -128,15 +130,14 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             GoToEndOfTurn(catacombs);
 
-            Card playedRoom = catacombs.TurnTaker.PlayArea.Cards.Where(c => c != instructions).FirstOrDefault();
+            Card playedRoom = catacombs.TurnTaker.PlayArea.Cards.Where(c => c != catacomb && c.IsRealCard).FirstOrDefault();
             AssertHasGameText(playedRoom);
-            AssertDoesNotHaveGameText(instructions);
-            AssertNumberOfCardsInPlay((Card c) => catacombs.TurnTaker.PlayArea.Cards.Contains(c),1);
-            AssertNumberOfCardsUnderCard(instructions, 4);
+            AssertNumberOfCardsInPlay((Card c) => catacombs.TurnTaker.PlayArea.Cards.Contains(c),2);
+            AssertNumberOfCardsUnderCard(catacomb, 4);
             AssertCardHasKeyword(playedRoom, "room", false);
 
         }
@@ -146,7 +147,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card instructions = GetCard("StSimeonsCatacombsInstructions");
             GoToEndOfTurn(catacombs);
 
             AssertFlipped(instructions);
@@ -158,7 +159,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card instructions = GetCard("StSimeonsCatacombsInstructions");
             Card testCard = GetCard("CoalKid");
             AssertNotFlipped(instructions);
             AssertCannotPlayCards(catacombs, testCard);
@@ -170,8 +171,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
-            Card testCard = GetCard("CoalKid");
+            Card instructions = GetCard("StSimeonsCatacombsInstructions"); Card testCard = GetCard("CoalKid");
             FlipCard(instructions);
             FlipCard(instructions);
             AssertNotFlipped(instructions);
@@ -184,7 +184,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card instructions = GetCard("StSimeonsCatacombsInstructions"); 
             FlipCard(instructions);
             AssertFlipped(instructions);
             AssertCanPlayCards(catacombs);
@@ -197,7 +197,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             GoToEndOfTurn(catacombs);
 
@@ -205,7 +205,7 @@ namespace CauldronTests
             Card playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
             //Whenever a room card would leave play, instead place it face up beneath this card.
             DestroyCard(playedRoom, ra.CharacterCard);
-            AssertUnderCard(instructions, playedRoom);
+            AssertUnderCard(catacomb, playedRoom);
 
         }
 
@@ -214,7 +214,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             GoToEndOfTurn(catacombs);
             Card playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
@@ -233,7 +233,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             GoToEndOfTurn(catacombs);
             Card playedRoom;
@@ -243,19 +243,19 @@ namespace CauldronTests
             playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
             //Whenever a room card would leave play, instead place it face up beneath this card.
             DestroyCard(playedRoom, ra.CharacterCard);
-            AssertUnderCard(instructions, playedRoom);
+            AssertUnderCard(catacomb, playedRoom);
 
             PrintSeparator("Destroy Room 2");
             playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
             //Whenever a room card would leave play, instead place it face up beneath this card.
             DestroyCard(playedRoom, ra.CharacterCard);
-            AssertUnderCard(instructions, playedRoom);
+            AssertUnderCard(catacomb, playedRoom);
 
             PrintSeparator("Destroy Room 3");
             playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
             //Whenever a room card would leave play, instead place it face up beneath this card.
             DestroyCard(playedRoom, ra.CharacterCard);
-            AssertUnderCard(instructions, playedRoom);
+            AssertUnderCard(catacomb, playedRoom);
 
             PrintSeparator("Rooms should be indestructible");
             playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
@@ -268,7 +268,7 @@ namespace CauldronTests
             playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
             //Whenever a room card would leave play, instead place it face up beneath this card.
             DestroyCard(playedRoom, ra.CharacterCard);
-            AssertUnderCard(instructions, playedRoom);
+            AssertUnderCard(catacomb, playedRoom);
 
         }
 
@@ -277,7 +277,7 @@ namespace CauldronTests
         {
             SetupGameController(new string[] {"BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs"});
             StartGame();
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             GoToEndOfTurn(catacombs);
             Card initialRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
@@ -289,14 +289,14 @@ namespace CauldronTests
             {
                 identifier = "TortureChamber";
             }
-            DecisionSelectCards = new Card[] { initialRoom, instructions.UnderLocation.Cards.Where((Card c) => c.Identifier == identifier).First() };
+            DecisionSelectCards = new Card[] { initialRoom, catacomb.UnderLocation.Cards.Where((Card c) => c.Identifier == identifier).First() };
 
 
             GoToEndOfTurn(catacombs);
             
             Card newRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
 
-            AssertUnderCard(instructions, initialRoom);
+            AssertUnderCard(catacomb, initialRoom);
             Assert.IsTrue(initialRoom != newRoom, "A new room did not come out");
 
 
@@ -307,7 +307,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             GoToEndOfTurn(catacombs);
             Card initialRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
@@ -326,7 +326,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -338,7 +338,7 @@ namespace CauldronTests
             PrintSeparator("Destroy Room 1");
             //Whenever a room card would leave play, instead place it face up beneath this card.
             DestroyCard(playedRoom, ra.CharacterCard);
-            AssertUnderCard(instructions, playedRoom);
+            AssertUnderCard(catacomb, playedRoom);
 
             playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
 
@@ -362,7 +362,7 @@ namespace CauldronTests
             SetHitPoints(new Card[] { baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard }, 5);
 
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -397,7 +397,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -437,7 +437,7 @@ namespace CauldronTests
             DestroyCard(mdp, baron.CharacterCard);
             Card battalion = PlayCard("BladeBattalion");
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -471,7 +471,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -519,7 +519,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -571,7 +571,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -631,7 +631,7 @@ namespace CauldronTests
             SetHitPoints(legacy.CharacterCard, 25);
             SetHitPoints(haka.CharacterCard, 15);
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -671,7 +671,7 @@ namespace CauldronTests
             SetHitPoints(ra.CharacterCard, 20);
             SetHitPoints(legacy.CharacterCard, 25);
             SetHitPoints(haka.CharacterCard, 15);
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -712,7 +712,7 @@ namespace CauldronTests
             SetHitPoints(ra.CharacterCard, 20);
             SetHitPoints(legacy.CharacterCard, 25);
             SetHitPoints(haka.CharacterCard, 15);
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -759,7 +759,7 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -806,7 +806,7 @@ namespace CauldronTests
             SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
             StartGame();
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -847,7 +847,7 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -893,7 +893,7 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -928,7 +928,7 @@ namespace CauldronTests
             SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
             StartGame();
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -969,7 +969,7 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -1016,7 +1016,7 @@ namespace CauldronTests
             SetHitPoints(legacy.CharacterCard, 25);
             SetHitPoints(haka.CharacterCard, 15);
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -1057,7 +1057,7 @@ namespace CauldronTests
             SetHitPoints(legacy.CharacterCard, 25);
             SetHitPoints(haka.CharacterCard, 15);
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -1097,7 +1097,7 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -1135,7 +1135,7 @@ namespace CauldronTests
             StartGame();
 
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -1170,7 +1170,7 @@ namespace CauldronTests
             StartGame();
 
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -1205,7 +1205,7 @@ namespace CauldronTests
             StartGame();
 
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
 
             GoToEndOfTurn(catacombs);
@@ -1244,7 +1244,7 @@ namespace CauldronTests
             StartGame();
 
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
 
             GoToEndOfTurn(catacombs);
@@ -1275,7 +1275,7 @@ namespace CauldronTests
             StartGame();
 
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
 
             GoToEndOfTurn(catacombs);
@@ -1309,7 +1309,7 @@ namespace CauldronTests
             StartGame();
 
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
 
             GoToEndOfTurn(catacombs);
@@ -1318,9 +1318,9 @@ namespace CauldronTests
             GoToPlayCardPhase(catacombs);
 
             //When this card enters play, destroy a room card. Its replacement is selected randomly from the 5 room cards, not chosen by the players.
-            QuickShuffleStorage(instructions.UnderLocation);
+            QuickShuffleStorage(catacomb.UnderLocation);
             Card geometry = PlayCard("LivingGeometry");
-            //should be 3 shuffles: once after instructions card moves it under itself, before this card plays a room and after it plays a room
+            //should be 3 shuffles: once after catacomb card moves it under itself, before this card plays a room and after it plays a room
             QuickShuffleCheck(3);
             AssertNoDecision();
 
@@ -1416,7 +1416,7 @@ namespace CauldronTests
             SetHitPoints(ra.CharacterCard, 20);
             SetHitPoints(legacy.CharacterCard, 25);
             SetHitPoints(haka.CharacterCard, 15);
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -1461,7 +1461,7 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -1508,7 +1508,7 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -1559,7 +1559,7 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
             SetHitPoints(wraith, 3);
@@ -1616,7 +1616,7 @@ namespace CauldronTests
             SetHitPoints(ra.CharacterCard, 20);
             SetHitPoints(legacy.CharacterCard, 25);
             SetHitPoints(haka.CharacterCard, 15);
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -1661,7 +1661,7 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -1896,7 +1896,7 @@ namespace CauldronTests
             StartGame();
 
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -1943,7 +1943,7 @@ namespace CauldronTests
             StartGame();
 
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -2015,7 +2015,7 @@ namespace CauldronTests
             SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
             StartGame();
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -2051,7 +2051,7 @@ namespace CauldronTests
             SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
             StartGame();
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -2096,7 +2096,7 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
 
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
@@ -2143,7 +2143,7 @@ namespace CauldronTests
             SetHitPoints(legacy.CharacterCard, 25);
             SetHitPoints(haka.CharacterCard, 15);
             Card mdp = GetCardInPlay("MobileDefensePlatform");
-            Card instructions = GetCardInPlay("StSimeonsCatacombs");
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
 
