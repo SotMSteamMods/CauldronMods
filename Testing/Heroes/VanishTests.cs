@@ -538,13 +538,15 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
+            var card = GetCard("Blink");
+            PutInHand(card);
             var drawn = vanish.TurnTaker.Deck.TopCard;
             var played = PutInHand("ConcussiveBurst");
 
             DecisionSelectCardToPlay = played;
 
             //will use the base power and deal some damage or something, don't matter. we just check it was used.
-            var card = PlayCard("Blink");
+            PlayCard(card);
             AssertInTrash(vanish, card);
 
             AssertNotUsablePower(vanish, vanish.CharacterCard);
@@ -805,13 +807,18 @@ namespace CauldronTests
 
             RemoveMobileDefensePlatform();
 
+            //preload a harmless card to play
+            var play = PutInHand(vanish, "Forewarned");
+
             var card = PlayCard("Elusive");
             AssertInPlayArea(vanish, card);
 
             AssertNumberOfStatusEffectsInPlay(0);
             QuickHandStorage(vanish, ra, wraith);
             DecisionSelectFunction = 0;
+            DecisionSelectCard = play;
             UsePower(card);
+            AssertInPlayArea(vanish, play);
 
             AssertNumberOfStatusEffectsInPlay(1);
             QuickHandCheck(-1, 0, 0);
@@ -1002,17 +1009,29 @@ namespace CauldronTests
 
             RemoveMobileDefensePlatform();
 
+            //wraith should play stunbolt, set that in trash
+            //record hard as it should not change
             var t1 = GetCard("StunBolt");
             PutInTrash(wraith, t1);
+            var hand1 = wraith.HeroTurnTaker.Hand.Cards.ToList();
 
+            //vanish takes no damage, so draws and discards, set those up
             var t2 = GetCardFromHand(vanish);
+            var card = PutInHand("TacticalRelocation");
             var t3 = GetTopCardOfDeck(vanish);
+
+            var f1 = GetCard("FocusingGauntlet");
+            PutInTrash(vanish, f1); //should not be played
+
+            //ra takes damage, but has no valid cards, nothing should happen
+            var hand2 = ra.HeroTurnTaker.Hand.Cards.ToList();
 
             DecisionSelectCards = new Card[]
             {
                 //heros to damage
                 ra.CharacterCard,
                 wraith.CharacterCard,
+                null,
 
                 //cards to put into play
                 t1,
@@ -1020,16 +1039,21 @@ namespace CauldronTests
                 //card to discard,
                 t2
             };
+            DecisionYesNo = true;
 
             QuickHPStorage(baron, vanish, ra, wraith);
-            var card = PlayCard("TacticalRelocation");
+            PlayCard(card);
             AssertInTrash(vanish, card);
 
-            QuickHPCheck(0, 0, 3, 3);
+            QuickHPCheck(0, 0, -3, -3);
 
             AssertInPlayArea(wraith, t1);
             AssertInTrash(vanish, t2);
             AssertInHand(vanish, t3);
+            AssertInTrash(vanish, f1);
+
+            AssertInHand(hand1);
+            AssertInHand(hand2);
         }
 
     }
