@@ -169,14 +169,18 @@ namespace CauldronTests
 
         }
 
+
         [Test()]
-        public void TestGlyphPrevention_FirstDamage()
+        [Sequential]
+        public void TestGlyphPrevention_FirstDamage(
+            [Values("GlyphOfInnervation", "GlyphOfCombustion", "GlyphOfPerception", "GlyphOfDecay")] string gylph
+            )
         {
             SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
             StartGame();
 
             GoToPlayCardPhase(stranger);
-            PutIntoPlay("GlyphOfPerception");
+            PutIntoPlay(gylph);
 
             //Once during your turn when TheStranger would deal himself damage, prevent that damage.
             QuickHPStorage(stranger);
@@ -197,14 +201,41 @@ namespace CauldronTests
             //since new round, damage was prevented, no change in health
             QuickHPCheckZero();
         }
+
         [Test()]
-        public void TestGlyphPrevention_SecondDamage()
+        [Sequential]
+        public void TestGlyphPrevention_OutOfTurnDamage(
+            [Values("GlyphOfInnervation", "GlyphOfCombustion", "GlyphOfPerception", "GlyphOfDecay")] string gylph
+            )
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            PutIntoPlay(gylph);
+
+            GoToPlayCardPhase(haka);
+
+            //Once during your turn when TheStranger would deal himself damage, prevent that damage.
+            QuickHPStorage(stranger);
+            DecisionYesNo = true; //we say yes, but shouldn't be prompted at all
+            DealDamage(stranger, stranger, 5, DamageType.Sonic);
+            AssertNoDecision();
+            //since damage was prevented, no change in health
+            QuickHPCheck(-5);
+        }
+
+
+        [Test()]
+        [Sequential]
+        public void TestGlyphPrevention_SecondDamage(
+            [Values("GlyphOfInnervation", "GlyphOfCombustion", "GlyphOfPerception", "GlyphOfDecay")] string gylph
+            )
         {
             SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
             StartGame();
 
             GoToPlayCardPhase(stranger);
-            PutIntoPlay("GlyphOfDecay");
+            PutIntoPlay(gylph);
 
             //Once during your turn when TheStranger would deal himself damage, prevent that damage.
             QuickHPStorage(stranger);
@@ -515,63 +546,6 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestGlyphOfCombustionPrevention_FirstDamage()
-        {
-            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
-            StartGame();
-
-            GoToPlayCardPhase(stranger);
-            PutIntoPlay("GlyphOfCombustion");
-
-            //Once during your turn when TheStranger would deal himself damage, prevent that damage.
-            QuickHPStorage(stranger);
-            DecisionYesNo = true;
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since damage was prevented, no change in health
-            QuickHPCheckZero();
-
-            QuickHPStorage(stranger);
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since already used this turn, damage should be dealt
-            QuickHPCheck(-5);
-
-            GoToStartOfTurn(stranger);
-            QuickHPStorage(stranger);
-            DecisionYesNo = true;
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since new round, damage was prevented, no change in health
-            QuickHPCheckZero();
-        }
-        [Test()]
-        public void TestGlyphOfCombustionPrevention_SecondDamage()
-        {
-            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
-            StartGame();
-
-            GoToPlayCardPhase(stranger);
-            PutIntoPlay("GlyphOfCombustion");
-
-            //Once during your turn when TheStranger would deal himself damage, prevent that damage.
-            QuickHPStorage(stranger);
-            DecisionsYesNo = new bool[] { false, true, true };
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since said no, -5
-            QuickHPCheck(-5);
-
-            QuickHPStorage(stranger);
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since said yes, damage should be prevented
-            QuickHPCheckZero();
-
-            GoToStartOfTurn(stranger);
-            QuickHPStorage(stranger);
-            DecisionYesNo = true;
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since new round, damage was prevented, no change in health
-            QuickHPCheckZero();
-        }
-
-        [Test()]
         public void TestGlyphOfCombustion_DestroyGlyph()
         {
             SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
@@ -617,62 +591,6 @@ namespace CauldronTests
             QuickHPCheck(-1);
         }
 
-        [Test()]
-        public void TestGlyphOfDecayPrevention_FirstDamage()
-        {
-            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
-            StartGame();
-
-            GoToPlayCardPhase(stranger);
-            PutIntoPlay("GlyphOfDecay");
-
-            //Once during your turn when TheStranger would deal himself damage, prevent that damage.
-            QuickHPStorage(stranger);
-            DecisionYesNo = true;
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since damage was prevented, no change in health
-            QuickHPCheckZero();
-
-            QuickHPStorage(stranger);
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since already used this turn, damage should be dealt
-            QuickHPCheck(-5);
-
-            GoToStartOfTurn(stranger);
-            QuickHPStorage(stranger);
-            DecisionYesNo = true;
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since new round, damage was prevented, no change in health
-            QuickHPCheckZero();
-        }
-        [Test()]
-        public void TestGlyphOfDecayPrevention_SecondDamage()
-        {
-            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
-            StartGame();
-
-            GoToPlayCardPhase(stranger);
-            PutIntoPlay("GlyphOfDecay");
-
-            //Once during your turn when TheStranger would deal himself damage, prevent that damage.
-            QuickHPStorage(stranger);
-            DecisionsYesNo = new bool[] { false, true, true };
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since said no, -5
-            QuickHPCheck(-5);
-
-            QuickHPStorage(stranger);
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since said yes, damage should be prevented
-            QuickHPCheckZero();
-
-            GoToStartOfTurn(stranger);
-            QuickHPStorage(stranger);
-            DecisionYesNo = true;
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since new round, damage was prevented, no change in health
-            QuickHPCheckZero();
-        }
 
         [Test()]
         public void TestGlyphOfDecayPower_Play()
@@ -735,133 +653,17 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestGlyphOfInnervationPrevention_FirstDamage()
-        {
-            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
-            StartGame();
-
-            GoToPlayCardPhase(stranger);
-            PutIntoPlay("GlyphOfInnervation");
-
-            //Once during your turn when TheStranger would deal himself damage, prevent that damage.
-            QuickHPStorage(stranger);
-            DecisionYesNo = true;
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since damage was prevented, no change in health
-            QuickHPCheckZero();
-
-            QuickHPStorage(stranger);
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since already used this turn, damage should be dealt
-            QuickHPCheck(-5);
-
-            GoToStartOfTurn(stranger);
-            QuickHPStorage(stranger);
-            DecisionYesNo = true;
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since new round, damage was prevented, no change in health
-            QuickHPCheckZero();
-        }
-
-        [Test()]
-        public void TestGlyphOfInnervationPrevention_SecondDamage()
-        {
-            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
-            StartGame();
-
-            GoToPlayCardPhase(stranger);
-            PutIntoPlay("GlyphOfInnervation");
-
-            //Once during your turn when TheStranger would deal himself damage, prevent that damage.
-            QuickHPStorage(stranger);
-            DecisionsYesNo = new bool[] { false, true, true };
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since said no, -5
-            QuickHPCheck(-5);
-
-            QuickHPStorage(stranger);
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since said yes, damage should be prevented
-            QuickHPCheckZero();
-
-            GoToStartOfTurn(stranger);
-            QuickHPStorage(stranger);
-            DecisionYesNo = true;
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since new round, damage was prevented, no change in health
-            QuickHPCheckZero();
-        }
-
-        [Test()]
         public void TestGlyphOfInnervationPower()
         {
             SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
             StartGame();
-            
+
             Card innervation = PlayCard("GlyphOfInnervation");
             //Power: Draw a card.
             GoToUsePowerPhase(stranger);
             QuickHandStorage(stranger);
             UsePower(innervation);
             QuickHandCheck(1);
-        }
-
-        [Test()]
-        public void TestGlyphOfPerceptionPrevention_FirstDamage()
-        {
-            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
-            StartGame();
-
-            GoToPlayCardPhase(stranger);
-            PutIntoPlay("GlyphOfPerception");
-
-            //Once during your turn when TheStranger would deal himself damage, prevent that damage.
-            QuickHPStorage(stranger);
-            DecisionYesNo = true;
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since damage was prevented, no change in health
-            QuickHPCheckZero();
-
-            QuickHPStorage(stranger);
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since already used this turn, damage should be dealt
-            QuickHPCheck(-5);
-
-            GoToStartOfTurn(stranger);
-            QuickHPStorage(stranger);
-            DecisionYesNo = true;
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since new round, damage was prevented, no change in health
-            QuickHPCheckZero();
-        }
-
-        [Test()]
-        public void TestGlyphOfPerceptionPrevention_SecondDamage()
-        {
-            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
-            StartGame();
-
-            GoToPlayCardPhase(stranger);
-            PutIntoPlay("GlyphOfPerception");
-
-            //Once during your turn when TheStranger would deal himself damage, prevent that damage.
-            QuickHPStorage(stranger);
-            DecisionsYesNo = new bool[] { false, true, true };
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since said no, -5
-            QuickHPCheck(-5);
-
-            QuickHPStorage(stranger);
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since said yes, damage should be prevented
-            QuickHPCheckZero();
-
-            GoToStartOfTurn(stranger);
-            QuickHPStorage(stranger);
-            DecisionYesNo = true;
-            DealDamage(stranger, stranger, 5, DamageType.Sonic);
-            //since new round, damage was prevented, no change in health
-            QuickHPCheckZero();
         }
 
         [Test()]
