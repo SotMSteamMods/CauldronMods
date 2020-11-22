@@ -15,11 +15,13 @@ namespace CauldronTests
     public class BaccaratVariantTests : BaseTest
     {
         #region BaccaratHelperFunctions
+
         protected HeroTurnTakerController baccarat { get { return FindHero("Baccarat"); } }
-        private void SetupIncap(TurnTakerController villain)
+
+        private void SetupIncap(TurnTakerController source)
         {
             SetHitPoints(baccarat.CharacterCard, 1);
-            DealDamage(villain, baccarat, 2, DamageType.Melee);
+            DealDamage(source, baccarat, 2, DamageType.Melee);
         }
 
         #endregion BaccaratHelperFunctions
@@ -85,7 +87,7 @@ namespace CauldronTests
             QuickHPStorage(spite);
             UsePower(baccarat.CharacterCard);
             QuickHPCheck(-6);
-            AssertNumberOfCardsInTrash(baccarat, 4);
+            AssertNumberOfCardsInTrash(baccarat, 3);
         }
 
         [Test()]
@@ -104,10 +106,11 @@ namespace CauldronTests
             QuickHPStorage(spite);
             UsePower(baccarat.CharacterCard);
             QuickHPCheck(-6);
-            AssertNumberOfCardsInTrash(baccarat, 3);
+            AssertNumberOfCardsInTrash(baccarat, 4);
         }
 
         [Test()]
+        [Ignore("SelectAndMoveACard's optional paramter does not work")]
         public void TestBaccaratAceOfSwordsInnatePowerSelect0Euchre()
         {
             SetupGameController("Spite", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
@@ -125,7 +128,7 @@ namespace CauldronTests
             QuickHPStorage(spite);
             UsePower(baccarat.CharacterCard);
             QuickHPCheck(0);
-            AssertNumberOfCardsInTrash(baccarat, 3);
+            AssertNumberOfCardsInTrash(baccarat, 4);
         }
 
         [Test()]
@@ -269,7 +272,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestAceInTheHoleTwoPowerPhase()
+        public void TestBaccaratAceOfSwordsAceInTheHoleTwoPowerPhase()
         {
             SetupGameController("Spite", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -296,6 +299,244 @@ namespace CauldronTests
             QuickHPCheck(-8);
             //Ace In The Hole, 2 Afterlife Euchre, 2 Discard
             AssertNumberOfCardsInTrash(baccarat, 5);
+        }
+
+        [Test()]
+        public void TestLoadBaccaratAceOfSorrows()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            Assert.AreEqual(6, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(baccarat);
+            Assert.IsInstanceOf(typeof(AceOfSorrowsBaccaratCharacterCardController), baccarat.CharacterCardController);
+
+            Assert.AreEqual(28, baccarat.CharacterCard.HitPoints);
+        }
+
+        [Test()]
+        public void TestBaccaratAceOfSorrowsInnatePowerPlay0Trick()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DiscardAllCards(baccarat);
+            Card hold0 = PutInHand(baccarat, "UnderworldHoldEm");
+            Card solitare = PutInHand(baccarat, "AbyssalSolitaire");
+            Card euchre = PutInHand(baccarat, "AfterlifeEuchre");
+            Card hold1 = PutInHand(baccarat, "UnderworldHoldEm", 1);
+
+            //Play 0 tricks
+            DecisionYesNo = false;
+            //Play any number of tricks from your hand
+            UsePower(baccarat);
+            AssertInHand(new Card[] { hold0, hold1, solitare, euchre });
+        }
+
+        [Test()]
+        public void TestBaccaratAceOfSorrowsInnatePowerPlay1Trick()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DiscardAllCards(baccarat);
+            Card hold0 = PutInHand(baccarat, "UnderworldHoldEm");
+            Card solitare = PutInHand(baccarat, "AbyssalSolitaire");
+            Card euchre = PutInHand(baccarat, "AfterlifeEuchre");
+            Card hold1 = PutInHand(baccarat, "UnderworldHoldEm", 1);
+
+            //Play 1 trick
+            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { hold0, null };
+            //Play any number of tricks from your hand
+            UsePower(baccarat);
+            AssertInHand(new Card[] { hold1, solitare, euchre });
+            AssertInTrash(new Card[] { hold0 });
+        }
+
+        [Test()]
+        public void TestBaccaratAceOfSorrowsInnatePowerPlay2Trick()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DiscardAllCards(baccarat);
+            Card hold0 = PutInHand(baccarat, "UnderworldHoldEm");
+            Card solitare = PutInHand(baccarat, "AbyssalSolitaire");
+            Card euchre = PutInHand(baccarat, "AfterlifeEuchre");
+            Card hold1 = PutInHand(baccarat, "UnderworldHoldEm", 1);
+
+            //Play 2 tricks
+            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { hold0, hold1, null };
+            //Play any number of tricks from your hand
+            UsePower(baccarat);
+            AssertInHand(new Card[] { solitare, euchre });
+            AssertInTrash(new Card[] { hold1, hold0 });
+        }
+
+        [Test()]
+        public void TestBaccaratAceOfSorrowsInnatePowerPlay3Trick()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DiscardAllCards(baccarat);
+            Card hold0 = PutInHand(baccarat, "UnderworldHoldEm");
+            Card solitare = PutInHand(baccarat, "AbyssalSolitaire");
+            Card euchre = PutInHand(baccarat, "AfterlifeEuchre");
+            Card hold1 = PutInHand(baccarat, "UnderworldHoldEm", 1);
+
+            //Play 3 tricks
+            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { solitare, hold0, hold1, null };
+            //Play any number of tricks from your hand
+            UsePower(baccarat);
+            AssertInHand(new Card[] { euchre });
+            AssertInTrash(new Card[] { solitare, hold1, hold0 });
+        }
+
+        [Test()]
+        public void TestBaccaratAceOfSorrowsInnatePowerPlay4Trick()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DiscardAllCards(baccarat);
+            Card hold0 = PutInHand(baccarat, "UnderworldHoldEm");
+            Card solitare = PutInHand(baccarat, "AbyssalSolitaire");
+            Card euchre = PutInHand(baccarat, "AfterlifeEuchre");
+            Card hold1 = PutInHand(baccarat, "UnderworldHoldEm", 1);
+
+            //Play 4 tricks
+            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { solitare, hold0, hold1, euchre, null };
+            //Play any number of tricks from your hand
+            UsePower(baccarat);
+            AssertInTrash(new Card[] { solitare, hold1, hold0, euchre });
+        }
+
+        [Test()]
+        public void TestBaccaratAceOfSorrowsInnatePowerTricksToHand0TricksInTrash()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DecisionSelectFunction = 1;
+            //Put 2 tricks from your trash into your hand.
+            UsePower(baccarat);
+        }
+
+        [Test()]
+        public void TestBaccaratAceOfSorrowsInnatePowerTricksToHand1TrickInTrash()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card hold = PutInTrash("UnderworldHoldEm");
+            Card saint = PutInTrash("AceOfSaints");
+
+            DecisionSelectFunction = 1;
+            //Put 2 tricks from your trash into your hand.
+            UsePower(baccarat);
+            AssertInHand(hold);
+            AssertInTrash(new Card[] { saint });
+        }
+
+        [Test()]
+        public void TestBaccaratAceOfSorrowsInnatePowerTricksToHand2TricksInTrash()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card hold = PutInTrash("UnderworldHoldEm");
+            Card saint = PutInTrash("AceOfSaints");
+            Card euchre = PutInTrash("AfterlifeEuchre");
+
+            DecisionSelectFunction = 1;
+            //Put 2 tricks from your trash into your hand.
+            UsePower(baccarat);
+            AssertInHand(hold, euchre);
+            AssertInTrash(new Card[] { saint });
+        }
+
+        [Test()]
+        public void TestBaccaratAceOfSorrowsInnatePowerTricksToHand3TricksInTrash()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card hold = PutInTrash("UnderworldHoldEm");
+            Card saint = PutInTrash("AceOfSaints");
+            Card euchre = PutInTrash("AfterlifeEuchre");
+            Card solitare = PutInTrash("AbyssalSolitaire");
+
+            DecisionSelectFunction = 1;
+            //Put 2 tricks from your trash into your hand.
+            UsePower(baccarat);
+            AssertInHand(solitare, euchre);
+            AssertInTrash(saint, hold);
+        }
+
+        [Test()]
+        public void TestBaccaratAceOfSorrowsIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(baccarat);
+            //One player may shuffle a card from their trash into their deck, then put all cards with the same name from their trash into their hand.
+        }
+
+        [Test()]
+        public void TestBaccaratAceOfSorrowsIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(baccarat);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            DealDamage(baron, mdp, 2, DamageType.Melee);
+            DealDamage(baron, legacy, 2, DamageType.Melee);
+            DealDamage(baron, bunker, 2, DamageType.Melee);
+            DealDamage(baron, scholar, 2, DamageType.Melee);
+
+            //Each target regains 1 HP.
+            QuickHPStorage(mdp, bunker.CharacterCard, legacy.CharacterCard, scholar.CharacterCard);
+            UseIncapacitatedAbility(baccarat, 1);
+            QuickHPCheck(1, 1, 1, 1);
+        }
+
+        [Test()]
+        public void TestBaccaratAceOfSorrowsIncap3Yes()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(baccarat);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            DealDamage(baron, mdp, 2, DamageType.Melee);
+            DealDamage(baron, legacy, 2, DamageType.Melee);
+            DealDamage(baron, bunker, 2, DamageType.Melee);
+            DealDamage(baron, scholar, 2, DamageType.Melee);
+
+            //Each target regains 1 HP.
+            QuickHPStorage(mdp, bunker.CharacterCard, legacy.CharacterCard, scholar.CharacterCard);
+            UseIncapacitatedAbility(baccarat, 2);
+            QuickHPCheck(0, -3, -3, -3);
+        }
+
+        [Test()]
+        public void TestBaccaratAceOfSorrowsIncap3No()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(baccarat);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            DecisionDoNotSelectFunction = true;
+
+            //Each target regains 1 HP.
+            QuickHPStorage(mdp, bunker.CharacterCard, legacy.CharacterCard, scholar.CharacterCard);
+            UseIncapacitatedAbility(baccarat, 2);
+            QuickHPCheck(0, 0, 0, 0);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Cauldron.Baccarat
 				new Function(base.HeroTurnTakerController, "Baccarat deals 1 target 2 toxic damage", SelectionType.TurnTaker, () => base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 2, DamageType.Toxic, new int?(1), false, new int?(1),cardSource: base.GetCardSource()))
             };
             SelectFunctionDecision selectFunction = new SelectFunctionDecision(base.GameController, base.HeroTurnTakerController, functionChoices, false);
-            IEnumerator coroutine = base.GameController.SelectAndPerformFunction(selectFunction, null, null);
+            IEnumerator coroutine = base.GameController.SelectAndPerformFunction(selectFunction);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
