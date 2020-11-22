@@ -78,6 +78,17 @@ namespace Cauldron.TangoOne
                 yield break;
             }
 
+            Card discardedCard = moveCardActions.First().CardToMove;
+            IEnumerator sendMessage = base.GameController.SendMessageAction(discardedCard.Title + " is a critical card, so damage is prevented!", Priority.Medium, base.GetCardSource(), associatedCards: new Card[] { discardedCard });
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(sendMessage);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(sendMessage);
+            }
+
             // Card had the "critical" keyword, cancel the damage
             IEnumerator cancelDamageRoutine = base.CancelAction(dda);
             if (base.UseUnityCoroutines)
