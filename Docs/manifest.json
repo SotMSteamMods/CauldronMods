@@ -18,13 +18,10 @@
 		],
 		"villains":[
 			"Anathema",
-			"Gray",
 			"Tiamat"
 		],
 		"environments":[
-			"FSCContinuanceWanderer",
 			"HalberdExperimentalResearchCenter",
-			"StSimeonsCatacombs",
 			"TheWanderingIsle",
 			"BlackwoodForest"
 		]
