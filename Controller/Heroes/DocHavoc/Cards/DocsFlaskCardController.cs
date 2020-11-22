@@ -8,7 +8,7 @@ namespace Cauldron.DocHavoc
 {
     public class DocsFlaskCardController : CardController
     {
-        public static string Identifier = "DocsFlask";
+        public static readonly string Identifier = "DocsFlask";
         private const int HpGain = 1;
 
         public DocsFlaskCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)

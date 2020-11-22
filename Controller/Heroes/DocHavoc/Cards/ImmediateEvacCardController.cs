@@ -15,8 +15,8 @@ namespace Cauldron.DocHavoc
         // Each villain target regains 2HP.
         //==============================================================
 
-        public static string Identifier = "ImmediateEvac";
-        
+        public static readonly string Identifier = "ImmediateEvac";
+
         private const int HpGain = 2;
         private const int CardsToDrawFromDeck = 2;
 
@@ -31,22 +31,22 @@ namespace Cauldron.DocHavoc
         {
             IEnumerable<Function> Functions(HeroTurnTakerController h) => new List<Function>()
             {
-                new Function(h, ChoiceTextSelectTrashIntoHand, SelectionType.MoveCardToHandFromTrash, 
-                    () => base.GameController.SelectCardFromLocationAndMoveIt(h, h.TurnTaker.Trash, 
-                        new LinqCardCriteria((Card c) => c.Location.Equals(h.TurnTaker.Trash)), 
+                new Function(h, ChoiceTextSelectTrashIntoHand, SelectionType.MoveCardToHandFromTrash,
+                    () => base.GameController.SelectCardFromLocationAndMoveIt(h, h.TurnTaker.Trash,
+                        new LinqCardCriteria((Card c) => c.Location.Equals(h.TurnTaker.Trash)),
                         new MoveCardDestination[] { new MoveCardDestination(h.HeroTurnTaker.Hand) }),
                     repeatDecisionText: ChoiceTextSelectTrashIntoHand),
 
                 new Function(h, ChoiceTextDiscardAndDraw, SelectionType.DiscardAndDrawCard, () => DiscardCardAndDrawCardsResponse(h.CharacterCard)),
             };
-            
+
             List<SelectFunctionDecision> choicesMade = new List<SelectFunctionDecision>();
             IEnumerator playerSelectRoutine = this.EachPlayerSelectsFunction(
                 (h => h.IsHero && !h.IsIncapacitatedOrOutOfGame),
                 Functions,
                 storedResults: choicesMade,
                 outputIfCannotChooseFunction: (h => $"{h.Name} has no valid choices"));
-            
+
 
             if (this.UseUnityCoroutines)
             {
@@ -58,7 +58,7 @@ namespace Cauldron.DocHavoc
             }
 
             // Villain targets gain 2 HP
-            IEnumerator gainHpRoutine = this.GameController.GainHP(this.HeroTurnTakerController, 
+            IEnumerator gainHpRoutine = this.GameController.GainHP(this.HeroTurnTakerController,
                 (Func<Card, bool>)(c => c.IsVillainTarget), HpGain,
                 cardSource: this.GetCardSource());
 
@@ -87,7 +87,7 @@ namespace Cauldron.DocHavoc
 
             IEnumerator discardCardRoutine = this.GameController.SelectAndDiscardCard(cc.HeroTurnTakerController, storedResults: storedResults);
 
-         
+
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(discardCardRoutine);

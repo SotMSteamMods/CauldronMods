@@ -646,6 +646,8 @@ namespace CauldronTests
             };
 
             // Act
+            
+            AssertCardSpecialString(GetCardFromHand(OneShotOneKillCardController.Identifier), 0, $"Tango One's hand has {GetNumberOfCardsInHand(TangoOne)} cards.");
             GoToStartOfTurn(TangoOne);
             PlayCardFromHand(TangoOne, OneShotOneKillCardController.Identifier);
 

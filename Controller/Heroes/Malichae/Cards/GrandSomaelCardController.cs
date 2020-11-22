@@ -19,13 +19,19 @@ namespace Cauldron.Malichae
             AddDestroyAtEndOfTurnTrigger();
         }
 
-        public override IEnumerator UsePower(int index = 0)
+        public override Power GetGrantedPower(CardController cardController)
+        {
+            return new Power(cardController.HeroTurnTakerController, cardController, "Reduce damage dealt to hero targets by 2 until the start of your next turn.", UseGrantedPower(), 0, null, GetCardSource());
+        }
+
+        private IEnumerator UseGrantedPower()
         {
             int reduces = GetPowerNumeral(0, 2);
 
             var card = GetCardThisCardIsNextTo();
             ReduceDamageStatusEffect effect = new ReduceDamageStatusEffect(reduces);
             effect.CardSource = card; //TODO - PROMO - CardSource can be Malichae
+            effect.Identifier = card.Identifier;
             effect.UntilStartOfNextTurn(this.DecisionMaker.TurnTaker);
             effect.TargetCriteria.IsInPlayAndNotUnderCard = true;
             effect.TargetCriteria.IsHero = true;
