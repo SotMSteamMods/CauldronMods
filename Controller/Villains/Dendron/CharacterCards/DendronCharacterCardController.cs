@@ -71,6 +71,7 @@ namespace Cauldron.Dendron
 
                 base.AddDefeatedIfMovedOutOfGameTriggers();
             }
+            // Flipped side (Unmarked Dryad)
             else
             {
                 // At the start and end of the villain turn, play the top card of the villain deck.

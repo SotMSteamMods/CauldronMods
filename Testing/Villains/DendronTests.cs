@@ -157,6 +157,51 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestNonFlippedAdvancedIncreaseTattooDamage()
+        {
+            // Advanced: Increase damage dealt by tattoos by 1.
+
+            // Arrange
+            SetupGameController(new[] { DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis" }, 
+                advanced: true, advancedIdentifiers: new[] { DeckNamespace });
+
+            QuickHPStorage(legacy, ra, haka);
+            StartGame();
+
+            GoToEndOfTurn(Dendron);
+
+            // Act
+
+            // Arrange
+
+            // Tattoos deal +1 damage: -2 on Ra from Painted Viper (normally -1), -3 on Haka from Stained Wolf (normally -2)
+            QuickHPCheck(0, -2, -3);
+        }
+
+        [Test]
+        public void TestFlippedAdvancedIncreaseTattooDamage()
+        {
+            // Advanced: At the start of the villain turn, {Dendron} regains 5 HP.
+
+            // Arrange
+            SetupGameController(new[] { DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis" },
+                advanced: true, advancedIdentifiers: new[] { DeckNamespace });
+
+            QuickHPStorage(legacy, ra, haka);
+            StartGame();
+
+            GoToEndOfTurn(Dendron);
+
+            // Act
+
+            // Arrange
+
+            // Tattoos deal +1 damage: -2 on Ra from Painted Viper (normally -1), -3 on Haka from Stained Wolf (normally -2)
+            QuickHPCheck(0, -2, -3);
+        }
+
+
+        [Test]
         public void TestAdornedOak()
         {
             // Arrange
