@@ -41,8 +41,9 @@ namespace Cauldron.Starlight
             //"...you may..."
             List<YesNoCardDecision> yesNoDecision = new List<YesNoCardDecision> { };
 
-            //TODO - what does the associatedCards argument actually do here? Should/should not be passing in the list of constellations?
-            IEnumerator askPrevent = GameController.MakeYesNoCardDecision(HeroTurnTakerController, SelectionType.DestroyCard, Card, dd, yesNoDecision, constellationsInPlay, GetCardSource());
+            //What does the associatedCards argument actually do here? Should/should not be passing in the list of constellations?
+            //Looks like it puts a constellation on the other side of the decision. Probably a good idea.
+            IEnumerator askPrevent = GameController.MakeYesNoCardDecision(HeroTurnTakerController, SelectionType.PreventDamage, Card, dd, yesNoDecision, constellationsInPlay, GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(askPrevent);
