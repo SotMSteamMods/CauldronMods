@@ -14,7 +14,10 @@
         "StartOfTurnAction",
         "DestroySelf"
       ],
-      "body": "The {H - 1} targets with the lowest HP are immune to damage. At the start of the environment turn destroy this card.",
+      "body": [
+        "The {H - 1} targets with the lowest HP are immune to damage.",
+        "At the start of the environment turn destroy this card."]
+       ,
       "flavorText": "The earth mother towered over the{BR}blasted trees, but nothing was{BR}visible in the forest below."
     },
     {
@@ -27,7 +30,10 @@
         "EndOfTurnAction",
         "DestroySelf"
       ],
-      "body": "When this card enters play, each hero must discard all but 1 card, or this card deals that hero {H + 1} psychic damage. At the end of the environment turn, destroy this card.",
+      "body": [
+        "When this card enters play, each hero must discard all but 1 card, or this card deals that hero {H + 1} psychic damage.",
+        "At the end of the environment turn, destroy this card."
+       ],
       "flavorText": "Malichae fell to his knees, as the{BR}baying of an unearthly hound{BR}caused all hope to flee."
     },
     {
@@ -57,7 +63,10 @@
         "DealDamageSonic",
         "DestroySelf"
       ],
-      "body": "When this card enters play, it gains the text, keywords, and max HP of the non-character target with the lowest HP in play. If there are no other non-character targets in play when this card enters play, this card deals each target 2 sonic damage and is destroyed.",
+      "body": [
+        "When this card enters play, it gains the text, keywords, and max HP of the non-character target with the lowest HP in play.",
+        "If there are no other non-character targets in play when this card enters play, this card deals each target 2 sonic damage and is destroyed."
+       ],
       "flavorText": "Those that get lost in the woods{BR}sometimes return three days later and{BR}considerably hungrier.",
       "hitpoints": -99
     },
@@ -70,7 +79,10 @@
         "StartOfTurnAction",
         "DestroySelf"
       ],
-      "body": "When this card enters play, shuffle each trash pile other than the environment and reveal a card from it. Put the revealed cards on top of each deck. At the start of the environment turn destroy this card.",
+      "body": [
+        "When this card enters play, shuffle each trash pile other than the environment and reveal a card from it. Put the revealed cards on top of each deck.",
+        "At the start of the environment turn destroy this card."
+       ],
       "flavorText": "“This is a place of the past. Nothing{BR}stays buried,” said Chrono-Ranger,{BR}watching the soil begin to move. “Not{BR}for long, anyways.”"
     },
     {
@@ -82,7 +94,10 @@
         "StartOfTurnAction",
         "DestroySelf"
       ],
-      "body": "The first time damage is dealt each turn, this card deals each target that has not been dealt damage 1 psychic damage.{BR}At the start of the environment turn, you may destroy this card.",
+      "body": [
+        "The first time damage is dealt each turn, this card deals each target that has not been dealt damage 1 psychic damage.",
+        "At the start of the environment turn, you may destroy this card."
+       ],
       "flavorText": "Once upon a time, the town of{BR}Blackwood had extended into the forest{BR}itself. Defensive magic still permeated{BR}the ruins."
     },
     {
@@ -93,13 +108,16 @@
         "creature"
       ],
       "icons": [
-        "EndOfTurnAction",
+        "StartAndEndOfTurnAction",
         "DestroyOngoing",
-        "StartOfTurnAction",
         "DealDamageMelee",
         "DealDamagePsychic"
       ],
-      "body": "At the end of the environment turn, destroy 1 ongoing card. At the start of the environment turn this card deals each hero target {H - 2} melee damage. Whenever an environment card is destroyed, this card deals the target with the highest HP 5 psychic damage.",
+      "body": [
+        "At the end of the environment turn, destroy 1 ongoing card.",
+        "At the start of the environment turn this card deals each hero target {H - 2} melee damage.",
+        "Whenever an environment card is destroyed, this card deals the target with the highest HP 5 psychic damage."
+       ],
       "flavorText": "Darkness descended upon the{BR}bleeding heroes. One of the{BR}Blackwood’s shadows had arrived{BR}to feed.",
       "hitpoints": 15
     },
@@ -114,7 +132,10 @@
         "DealDamageToxic",
         "DealDamagePsychic"
       ],
-      "body": "At the end of the environment turn, this card deals the hero with the lowest HP {H - 2} toxic damage. When this card is destroyed, it deals each target 1 psychic damage.",
+      "body": [
+        "At the end of the environment turn, this card deals the hero with the lowest HP {H - 2} toxic damage.",
+        "When this card is destroyed, it deals each target 1 psychic damage."
+       ],
       "flavorText": "Vanish caught something out of the{BR}corner of her eye. “Did that tree{BR}just move?”",
       "hitpoints": 4
     },
@@ -129,8 +150,7 @@
         "Manipulate",
         "EndOfTurnAction",
         "PlayCardNow",
-        "DestroySelf",
-        "Discard"
+        "DestroySelf"
       ],
       "body": [
         "When this card enters play, place the top card of each hero and villain deck face-down beneath it. At the end of the environment turn, play a random card from beneath this one. Then if there are no cards remaining, this card is destroyed.",
@@ -147,12 +167,14 @@
       ],
       "icons": [
         "DealDamageMelee",
-        "DestroyOngoing",
-        "DestroyEquipment",
+        "Destroy",
         "PlayCardNow",
         "Manipulate"
       ],
-      "body": "When this card enters play, it deals the non-environment target with the lowest HP {H + 1} melee damage and destroys 1 hero ongoing or equipment card. Then, play the top card of the environment deck and shuffle this card back into the environment deck.",
+      "body": [
+        "When this card enters play, it deals the non-environment target with the lowest HP {H + 1} melee damage and destroys 1 hero ongoing or equipment card.",
+        "Then, play the top card of the environment deck and shuffle this card back into the environment deck."
+       ],
       "flavorText": "Even outside the haunted forest, locals{BR}occasionally reported seeing an{BR}enormous hound under the full moon."
     },
     {
@@ -160,14 +182,15 @@
       "count": 1,
       "title": "Vengeful Spirits",
       "icons": [
-        "StartOfTurnAction",
+        "StartAndEndOfTurnAction",
         "Manipulate",
         "DealDamageInfernal",
-        "EndOfTurnAction",
-        "Discard",
         "DestroySelf"
       ],
-      "body": "At the start of the environment turn, shuffle the villain trash and reveal cards until a target is revealed. Put that target into play, then this card deals that target 2 infernal damage. At the end of the environment turn, each player may discard 2 cards to destroy this card.",
+      "body": [
+        "At the start of the environment turn, shuffle the villain trash and reveal cards until a target is revealed. Put that target into play, then this card deals that target 2 infernal damage.",
+        "At the end of the environment turn, each player may discard 2 cards to destroy this card."
+       ],
       "flavorText": "Mindless afterimages of the fallen{BR}flock swirled around the Matriarch.{BR}With a shrill laugh she sent them diving{BR}toward the heroes."
     },
     {
@@ -182,7 +205,10 @@
         "EndOfTurnAction",
         "PlayCardNow"
       ],
-      "body": "Environment cards may not be played during the environment turn. At the end of the villain turn play the top 2 cards of the environment deck.",
+      "body": [
+        "Environment cards may not be played during the environment turn.",
+        "At the end of the villain turn play the top 2 cards of the environment deck."
+       ],
       "flavorText": "Nightmist ignored the floating lights,{BR}pulling Ra onward. They won't take you{BR}where you want to go.'",
       "hitpoints": 1
     }

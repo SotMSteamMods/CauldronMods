@@ -12,7 +12,7 @@ namespace CauldronTests
     [TestFixture]
     public class BlackwoodForestTests : BaseTest
     {
-        private const string DeckNamespace =  "Cauldron.BlackwoodForest";
+        private const string DeckNamespace = "Cauldron.BlackwoodForest";
 
         protected TurnTakerController BlackwoodForest => FindEnvironment();
 
@@ -177,7 +177,7 @@ namespace CauldronTests
 
             // Assert
             AssertNumberOfCardsInTrash(BlackwoodForest, 1); // Overgrown Cathedral was not The Hound so it was placed in trash
-            
+
         }
 
         [Test]
@@ -199,7 +199,8 @@ namespace CauldronTests
             PlayCard(ShadowWeaverCardController.Identifier);
 
             Card theHound = GetCard(TheHoundCardController.Identifier);
-            PutOnDeck(BlackwoodForest, theHound); 
+            PutOnDeck("WillOTheWisp");
+            PutOnDeck(BlackwoodForest, theHound);
             GoToStartOfTurn(BlackwoodForest);
 
             // Assert
@@ -233,7 +234,7 @@ namespace CauldronTests
             AssertStatusEffectsContains(statusEffectMessageRa); // Ra has immune to damage status effect
             AssertStatusEffectsContains(statusEffectMessageMdp); // MDP has immune to damage status effect
             DealDamage(baron, ra, 3, DamageType.Toxic); // Ra is immune
-            
+
 
             GoToStartOfTurn(BlackwoodForest); // Dense Brambles is destroyed
 
@@ -261,7 +262,7 @@ namespace CauldronTests
             string statusEffectMessageRa = $"{ra.Name} is immune to damage.";
             string statusEffectMessageMdp = $"{mdp.Title} is immune to damage.";
 
-            DecisionSelectCards = new[] {mdp, ra.CharacterCard};
+            DecisionSelectCards = new[] { mdp, ra.CharacterCard };
 
             // Act
             PutIntoPlay(DenseBramblesCardController.Identifier);
@@ -609,7 +610,7 @@ namespace CauldronTests
              * +1 from Mirror Wraith
              */
 
-            QuickHPCheck(-6); 
+            QuickHPCheck(-6);
         }
 
         [Test]
@@ -627,7 +628,7 @@ namespace CauldronTests
             GoToPlayCardPhase(unity);
             PlayCard(swiftBot);
             GoToDrawCardPhase(unity);
-            
+
             AssertPhaseActionCount(2); // Normal draw + 1 from swiftbot
 
             GoToEndOfTurn(unity);
@@ -659,7 +660,7 @@ namespace CauldronTests
 
 
             Card regroupAndRecover = GetCard("RegroupAndRecover");
-            
+
             StartGame();
             Card proletariatClone = GetCardInPlay("Proletariat");
             DecisionLowestHP = proletariatClone;
@@ -707,7 +708,7 @@ namespace CauldronTests
 
             // Assert
             AssertCardHasKeyword(mirrorWraith, "primordial seed", false);
-            
+
 
         }
 
@@ -731,8 +732,8 @@ namespace CauldronTests
             // Assert
 
             // Mirror Wraith found no eligible target to copy, instead dealt 2 sonic damage to all targets
-            AssertInTrash(BlackwoodForest, mirrorWraith); 
-            QuickHPCheck(-2, -2, -2, -2); 
+            AssertInTrash(BlackwoodForest, mirrorWraith);
+            QuickHPCheck(-2, -2, -2, -2);
 
         }
 
@@ -748,7 +749,7 @@ namespace CauldronTests
             PutInTrash(mdp);
 
             Card bb = GetCard("BladeBattalion");
-            PutInTrash(new[] {"BladeBattalion", "BacklashField"});
+            PutInTrash(new[] { "BladeBattalion", "BacklashField" });
 
             Card vengefulSpirit = GetCard(VengefulSpiritsCardController.Identifier);
             PlayCard(vengefulSpirit);
@@ -776,7 +777,7 @@ namespace CauldronTests
 
             // One of these targets should be in play due to Vengeful drawing them from the trash
             // The other should be in the trash
-            Assert.AreEqual(1, 
+            Assert.AreEqual(1,
                 this.GameController.FindCardsWhere(card => card.IsInPlay && (card.Equals(mdp) || card.Equals(bb))).Count());
             Assert.AreEqual(1,
                 this.GameController.FindCardsWhere(card => card.IsInTrash && (card.Equals(mdp) || card.Equals(bb))).Count());
@@ -836,7 +837,7 @@ namespace CauldronTests
             QuickHPStorage(ra, legacy);
             QuickHandStorage(ra, legacy);
 
-            DecisionsYesNo = new []{false, true};
+            DecisionsYesNo = new[] { false, true };
 
             // Act
             Card desolation = GetCard(DesolationCardController.Identifier);
@@ -860,7 +861,7 @@ namespace CauldronTests
         {
             // Arrange
             SetupGameController("BaronBlade", "Ra", "Legacy", DeckNamespace);
-            
+
             StartGame();
 
             int baronDeckCount = GetNumberOfCardsInDeck(baron);
@@ -896,7 +897,7 @@ namespace CauldronTests
 
             StartGame();
 
-           // Act
+            // Act
             GoToStartOfTurn(BlackwoodForest);
             Card theBlackTree = GetCard(TheBlackTreeCardController.Identifier);
             PlayCard(theBlackTree);
