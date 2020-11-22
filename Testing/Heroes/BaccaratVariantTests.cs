@@ -510,16 +510,17 @@ namespace CauldronTests
             SetupIncap(baccarat);
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card flak = PutInHand("FlakCannon");
+            Card ring = PutInHand("TheLegacyRing");
+            Card iron = PutInHand("FleshToIron");
 
-            DealDamage(baron, mdp, 2, DamageType.Melee);
-            DealDamage(baron, legacy, 2, DamageType.Melee);
-            DealDamage(baron, bunker, 2, DamageType.Melee);
-            DealDamage(baron, scholar, 2, DamageType.Melee);
+            DecisionSelectCards = new Card[] { legacy.CharacterCard, ring, bunker.CharacterCard, flak, iron };
 
-            //Each target regains 1 HP.
+            //Each hero character may deal themselves 3 toxic damage to play a card now.
             QuickHPStorage(mdp, bunker.CharacterCard, legacy.CharacterCard, scholar.CharacterCard);
             UseIncapacitatedAbility(baccarat, 2);
             QuickHPCheck(0, -3, -3, -3);
+            AssertIsInPlay(new Card[] { ring, flak, iron });
         }
 
         [Test()]
@@ -531,12 +532,40 @@ namespace CauldronTests
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
 
+            //Don't use this effect
             DecisionDoNotSelectFunction = true;
 
-            //Each target regains 1 HP.
+            //Each hero character may deal themselves 3 toxic damage to play a card now.
             QuickHPStorage(mdp, bunker.CharacterCard, legacy.CharacterCard, scholar.CharacterCard);
             UseIncapacitatedAbility(baccarat, 2);
             QuickHPCheck(0, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestBaccaratAceOfSorrowssAceInTheHoleTwoPowerPhase()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DiscardAllCards(baccarat);
+            Card hold0 = PutInHand(baccarat, "UnderworldHoldEm");
+            Card solitare = PutInHand(baccarat, "AbyssalSolitaire");
+            Card euchre = PutInHand(baccarat, "AfterlifeEuchre");
+            Card hold1 = PutInHand(baccarat, "UnderworldHoldEm", 1);
+
+
+            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { null, hold0, null, solitare, null };
+            //Play any number of tricks from your hand
+            GoToUsePowerPhase(baccarat);
+            //Ace in the Hole allows Baccarat to use his power twice
+            PlayCard("AceInTheHole");
+            AssertNumberOfUsablePowers(baccarat, 1);
+            UsePower(baccarat);
+            AssertNumberOfUsablePowers(baccarat, 1);
+            UsePower(baccarat);
+            AssertNumberOfUsablePowers(baccarat, 0);
+            AssertInHand(new Card[] { hold1, euchre });
+            AssertInTrash(new Card[] { solitare, hold0 });
         }
     }
 }
