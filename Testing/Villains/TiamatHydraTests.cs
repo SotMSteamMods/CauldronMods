@@ -1181,17 +1181,116 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void ATest()
+        public void TestGrowEarth()
         {
             SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            SetupHead(haka, earth);
-            SetupIncap(legacy, earth);
-            //Head is flipped
-            Assert.IsTrue(earth.IsFlipped);
-            Assert.IsTrue(!winter.IsFlipped);
-            Assert.IsTrue(wind.IsFlipped);
+
+            SetupIncap(legacy, winter);
+
+            //Start of Turn if Winter is decap put Earth into play with 15 HP
+            GoToStartOfTurn(tiamat);
+            Assert.IsTrue(!earth.IsFlipped);
+            AssertHitPoints(earth, 15);
+            //Storm regrows 1 head at start of turn
             AssertHitPoints(winter, 6);
+        }
+
+        [Test()]
+        public void TestGrowDecay()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(legacy, inferno);
+
+            //Start of Turn if Winter is decap put Earth into play with 15 HP
+            GoToStartOfTurn(tiamat);
+            Assert.IsTrue(!decay.IsFlipped);
+            AssertHitPoints(decay, 15);
+            //Storm regrows 1 head at start of turn
+            AssertHitPoints(inferno, 6);
+        }
+
+        [Test()]
+        public void TestGrowWind()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(legacy, storm);
+
+            //Start of Turn if Winter is decap put Earth into play with 15 HP
+            GoToStartOfTurn(tiamat);
+            Assert.IsTrue(!wind.IsFlipped);
+            AssertHitPoints(wind, 15);
+            //If Thunderous Gale Instruction card flips then we do not regrow another decapitated head
+            Assert.IsTrue(storm.IsFlipped);
+        }
+
+        [Test()]
+        public void TestRegrowHeadFront()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(legacy, inferno);
+            //At start of turn Storm regrows 1 head at start of turn with H * 2 HP
+            GoToStartOfTurn(tiamat);
+            AssertHitPoints(inferno, 6);
+        }
+
+        [Test()]
+        public void TestInstructionsFrontAdvanced()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis" }, true);
+            StartGame();
+            //First time Storm or Inferno deal damage each turn increase that damage by 2
+            QuickHPStorage(legacy);
+            DealDamage(inferno, legacy, 2, DamageType.Melee);
+            DealDamage(storm, legacy, 2, DamageType.Melee);
+            QuickHPCheck(-8);
+            //Only first time
+            QuickHPStorage(legacy);
+            DealDamage(inferno, legacy, 2, DamageType.Melee);
+            DealDamage(storm, legacy, 2, DamageType.Melee);
+            QuickHPCheck(-4);
+
+            //Winter makes players discard a second card
+            QuickHandStorage(legacy);
+            GoToEndOfTurn(tiamat);
+            QuickHandCheck(-2);
+        }
+
+        [Test()]
+        public void TestRegrowHeadBack()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(legacy, storm);
+            GoToStartOfTurn(tiamat);
+
+            //First start of turn flips Thunderous Gale instructions causing no head to regrow
+            GoToStartOfTurn(tiamat);
+            GoToEndOfTurn(tiamat);
+            //At start of turn where Thunderous Gale side up regrow 1 head at start of turn with H * 2 HP
+            AssertHitPoints(storm, 6);
+        }
+
+        [Test()]
+        public void TestNoxiousFireBackEndOfTurn()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(legacy, inferno);
+            GoToStartOfTurn(tiamat);
+            SetupIncap(legacy, storm);
+            //At the end of the villain turn, if {InfernoTiamatCharacter} is active, she deals the hero target with the second highest HP 1 fire damage.
+            QuickHPStorage(legacy);
+            GoToEndOfTurn(tiamat);
+            QuickHPCheck(-1);
         }
     }
 }

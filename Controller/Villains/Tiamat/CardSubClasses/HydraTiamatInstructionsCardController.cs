@@ -36,9 +36,9 @@ namespace Cauldron.Tiamat
                     base.AddSideTriggers(this.AddFrontAdvancedTriggers());
                 }
             }
-            //Back Triggers
-            else
+            else //Back Triggers
             {
+                //Each card has an alternate response if its firstHead's element enters play when the firstHead is incap'd
                 base.AddSideTrigger(base.AddTrigger<PlayCardAction>((PlayCardAction action) => action.WasCardPlayed && action.CardToPlay.Identifier == this.element && this.firstHead.Card.IsFlipped && !this.secondHead.Card.IsFlipped, (PlayCardAction action) => this.AlternateElementRepsonse(action), TriggerType.DealDamage, TriggerTiming.After));
                 base.AddSideTriggers(this.AddBackTriggers());
             };
@@ -90,11 +90,11 @@ namespace Cauldron.Tiamat
                 Log.Warning("DamageDealtThisTurn overflowed: " + ex.Message);
                 result = int.MaxValue;
             }
-            return result == 0;
+            return result != 0;
         }
         private IEnumerator AlternateElementRepsonse(PlayCardAction action)
         {
-            //Whenever Element of Fire enters play and {InfernoTiamatCharacter} is decapitated, if {DecayTiamatCharacter} is active she deals each hero target X toxic damage, where X = 2 plus the number of Acid Breaths in the villain trash.
+            //Whenever the corresponding "Element of" Card enters play and the firstHead is decapitated, if the secondHead is active do the alterante response.
             IEnumerator coroutine = alternateElementCoroutine;
             if (base.UseUnityCoroutines)
             {

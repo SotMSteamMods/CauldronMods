@@ -484,7 +484,7 @@
                 "Echelon"
             ],
             "gameplay": [
-                "{StormTiamatCharacter} is immune to lightnining damage."
+                "{StormTiamatCharacter} is immune to lightning damage."
             ],
             "flippedShowHitpoints": false,
             "flippedBody": "Storm, Decapitated",
