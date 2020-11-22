@@ -1433,19 +1433,128 @@ namespace CauldronTests
         [Test()]
         public void TestAlternateElementOfFire1InTrash()
         {
-            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis" });
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
             SetupIncap(legacy, inferno);
             GoToStartOfTurn(tiamat);
             SetupIncap(legacy, inferno);
 
             PutInTrash("AcidBreath", 0);
-
             //Whenever Element of Fire enters play and {InfernoTiamatCharacter} is decapitated, if {HydraDecayTiamatCharacter} is active she deals each hero target X toxic damage, where X = 2 plus the number of Acid Breaths in the villain trash.
             QuickHPStorage(legacy, haka, bunker);
             PlayCard("ElementOfFire");
             //Breath of Decay increase damage dealt by heads by 1
             QuickHPCheck(-4, -4, -4);
+        }
+
+        [Test()]
+        public void TestAlternateElementOfFire2InTrash()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+            SetupIncap(legacy, inferno);
+            GoToStartOfTurn(tiamat);
+            SetupIncap(legacy, inferno);
+
+            PutInTrash("AcidBreath", 0);
+            PutInTrash("AcidBreath", 1);
+            //Whenever Element of Fire enters play and {InfernoTiamatCharacter} is decapitated, if {HydraDecayTiamatCharacter} is active she deals each hero target X toxic damage, where X = 2 plus the number of Acid Breaths in the villain trash.
+            QuickHPStorage(legacy, haka, bunker);
+            PlayCard("ElementOfFire");
+            //Breath of Decay increase damage dealt by heads by 1
+            QuickHPCheck(-5, -5, -5);
+        }
+
+        [Test()]
+        public void TestAlternateElementOfIce0InTrash()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Parse", "Guise", "Haka", "Megalopolis" });
+            StartGame();
+            SetupIncap(haka, winter);
+            GoToStartOfTurn(tiamat);
+            SetupIncap(haka, winter);
+            //Whenever Element of Ice enters play and {WinterTiamatCharacter} is decapitated, if {HydraEarthTiamatCharacter} is active she deals the hero target with the highest HP X melee damage, where X = {H} plus the number of Sky Breaker cards in the villain trash.
+            QuickHPStorage(parse, haka, guise);
+            PlayCard("ElementOfIce");
+            QuickHPCheck(0, -3, 0);
+        }
+
+        [Test()]
+        public void TestAlternateElementOfIce1InTrash()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Parse", "Guise", "Haka", "Megalopolis" });
+            StartGame();
+            SetupIncap(haka, winter);
+            GoToStartOfTurn(tiamat);
+            SetupIncap(haka, winter);
+
+            PutInTrash("SkyBreaker", 0);
+            //Whenever Element of Ice enters play and {WinterTiamatCharacter} is decapitated, if {HydraEarthTiamatCharacter} is active she deals the hero target with the highest HP X melee damage, where X = {H} plus the number of Sky Breaker cards in the villain trash.
+            QuickHPStorage(parse, haka, guise);
+            PlayCard("ElementOfIce");
+            QuickHPCheck(0, -4, 0);
+        }
+
+        [Test()]
+        public void TestAlternateElementOfIce2InTrash()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Parse", "Guise", "Haka", "Megalopolis" });
+            StartGame();
+            SetupIncap(haka, winter);
+            GoToStartOfTurn(tiamat);
+            SetupIncap(haka, winter);
+
+            PutInTrash("SkyBreaker", 0);
+            PutInTrash("SkyBreaker", 1);
+            //Whenever Element of Ice enters play and {WinterTiamatCharacter} is decapitated, if {HydraEarthTiamatCharacter} is active she deals the hero target with the highest HP X melee damage, where X = {H} plus the number of Sky Breaker cards in the villain trash.
+            QuickHPStorage(parse, haka, guise);
+            PlayCard("ElementOfIce");
+            QuickHPCheck(0, -5, 0);
+        }
+
+        [Test()]
+        public void TestAlternateElementOfLightning0InTrash()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Parse", "Bunker", "Haka", "Megalopolis" });
+            StartGame();
+            SetupIncap(haka, storm);
+            GoToStartOfTurn(tiamat);
+            SetupIncap(haka, storm);
+            //Whenever Element of Lightning enters play and {StormTiamatCharacter} is decapitated, if {HydraWindTiamatCharacter} is active she deals the X hero targets with the Highest HP {H - 1} projectile damage each, where X = 1 plus the number of ongoing cards in the villain trash.
+            QuickHPStorage(parse, haka, bunker);
+            PlayCard("ElementOfLightning");
+            QuickHPCheck(0, -2, 0);
+        }
+
+        [Test()]
+        public void TestAlternateElementOfLightning1InTrash()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Parse", "Bunker", "Haka", "Megalopolis" });
+            StartGame();
+            SetupIncap(haka, storm);
+            GoToStartOfTurn(tiamat);
+            SetupIncap(haka, storm);
+            PutInTrash("AncientWard", 0);
+            //Whenever Element of Lightning enters play and {StormTiamatCharacter} is decapitated, if {HydraWindTiamatCharacter} is active she deals the X hero targets with the Highest HP {H - 1} projectile damage each, where X = 1 plus the number of ongoing cards in the villain trash.
+            QuickHPStorage(parse, haka, bunker);
+            PlayCard("ElementOfLightning");
+            QuickHPCheck(0, -2, -2);
+        }
+
+        [Test()]
+        public void TestAlternateElementOfLightning2InTrash()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Parse", "Bunker", "Haka", "Megalopolis" });
+            StartGame();
+            SetupIncap(haka, storm);
+            GoToStartOfTurn(tiamat);
+            SetupIncap(haka, storm);
+            PutInTrash("AncientWard", 0);
+            PutInTrash("ReptilianAspect", 0);
+            //Whenever Element of Lightning enters play and {StormTiamatCharacter} is decapitated, if {HydraWindTiamatCharacter} is active she deals the X hero targets with the Highest HP {H - 1} projectile damage each, where X = 1 plus the number of ongoing cards in the villain trash.
+            QuickHPStorage(parse, haka, bunker);
+            PlayCard("ElementOfLightning");
+            QuickHPCheck(-2, -2, -2);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Cauldron.Tiamat
             this.secondHead = base.GameController.FindCardController("HydraDecayTiamatCharacter");
             this.element = "ElementOfFire";
             //Whenever Element of Fire enters play and {InfernoTiamatCharacter} is decapitated, if {DecayTiamatCharacter} is active she deals each hero target X toxic damage, where X = 2 plus the number of Acid Breaths in the villain trash.
-            this.alternateElementCoroutine = base.DealDamage(this.secondHead.Card, (Card c) => c.IsHero, this.PlusNumberOfACardInTrash(2, "AcidBreath"), DamageType.Toxic);
+            this.alternateElementCoroutine = base.DealDamage(this.secondHead.Card, (Card c) => c.IsHero, (Card c) => this.PlusNumberOfACardInTrash(2, "AcidBreath"), DamageType.Toxic);
             yield break;
         }
 
