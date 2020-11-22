@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -22,53 +22,54 @@ namespace Cauldron.BlackwoodForest
 
         }
 
+        public bool? PerformImmune;
+
         public override void AddTriggers()
         {
             // Destroy self at start of next env. turn
             base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker,
                 new Func<PhaseChangeAction, IEnumerator>(base.DestroyThisCardResponse),
                 TriggerType.DestroySelf);
-
-            base.AddTriggers();
+            // (H - 1) targets with the lowest HP are immune to damage
+            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => !dd.Target.IsHero, new Func<DealDamageAction, IEnumerator>(this.MaybeImmuneToDamageResponse), TriggerType.ImmuneToDamage, TriggerTiming.Before);
         }
-        public override IEnumerator Play()
+
+        private IEnumerator MaybeImmuneToDamageResponse(DealDamageAction action)
         {
             int numberOfTargets = Game.H - 1;
 
-            List<Card> storedResults = new List<Card>();
-            IEnumerator findTargetsWithLowestHpRoutine = base.GameController.FindTargetsWithLowestHitPoints(1, numberOfTargets, 
-                c => c.IsTarget, storedResults);
-
-            //IEnumerator immuneToDamageRoutine = base.AddStatusEffect(immuneToDamageStatusEffect, true);
-            if (base.UseUnityCoroutines)
+            if (base.GameController.PretendMode)
             {
-                yield return base.GameController.StartCoroutine(findTargetsWithLowestHpRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(findTargetsWithLowestHpRoutine);
-            }
-
-            // (H - 1) targets with the lowest HP are immune to damage
-            foreach (Card card in storedResults)
-            {
-                ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect
-                {
-                    TargetCriteria = {IsSpecificCard = card}
-                };
-                immuneToDamageStatusEffect.UntilCardLeavesPlay(this.Card);
-                immuneToDamageStatusEffect.CardDestroyedExpiryCriteria.Card = this.Card;
-
-                IEnumerator immuneToDamageRoutine = base.AddStatusEffect(immuneToDamageStatusEffect);
+                List<Card> storedResults = new List<Card>();
+                IEnumerator coroutine = base.GameController.FindTargetsWithLowestHitPoints(1, numberOfTargets, c => c.IsTarget, storedResults);
                 if (base.UseUnityCoroutines)
                 {
-                    yield return base.GameController.StartCoroutine(immuneToDamageRoutine);
+                    yield return base.GameController.StartCoroutine(coroutine);
                 }
                 else
                 {
-                    base.GameController.ExhaustCoroutine(immuneToDamageRoutine);
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                this.PerformImmune = new bool?(storedResults.Contains(action.Target));
+                storedResults = null;
+            }
+            if (this.PerformImmune != null && this.PerformImmune.Value)
+            {
+                IEnumerator coroutine2 = base.GameController.ImmuneToDamage(action, base.GetCardSource(null));
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine2);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine2);
                 }
             }
+            if (!base.GameController.PretendMode)
+            {
+                this.PerformImmune = null;
+            }
+            yield break;
         }
     }
 }
