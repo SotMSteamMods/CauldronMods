@@ -583,6 +583,7 @@
             "backgroundColor": "FBF8F9",
             "foilBackgroundColor": "FEFEFE",
             "hitpointColor": "C94742",
+            "character": true,
             "setup": [
                 "At the start of the game, put the character cards for the Starlight of Terra, Asheron, and Cryos-4 into play, active side up.",
                 "Shuffle the hero deck and draw 4 cards."
