@@ -535,7 +535,7 @@ namespace CauldronTests
         [Test]
         public void Blink()
         {
-            SetupGameController("Gloomweaver", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
             var drawn = vanish.TurnTaker.Deck.TopCard;
