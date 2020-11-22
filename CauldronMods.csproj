@@ -29,14 +29,14 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="EngineCommon">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\Sentinels_Data\Managed\EngineCommon.dll</HintPath>
-    </Reference>
-    <Reference Include="SentinelsEngine">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\Sentinels_Data\Managed\SentinelsEngine.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="EngineCommon">
+			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\Sentinels_Data\Managed\EngineCommon.dll</HintPath>
+		</Reference>
+		<Reference Include="SentinelsEngine">
+			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\Sentinels_Data\Managed\SentinelsEngine.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controller\Heroes\LadyOfTheWood\Cards\" />
