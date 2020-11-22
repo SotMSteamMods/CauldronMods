@@ -21,7 +21,7 @@ namespace Cauldron.TangoOne
 
         public OneShotOneKillCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            this.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.HeroTurnTaker.Hand);
         }
 
         public override IEnumerator Play()
