@@ -24,7 +24,7 @@ namespace Cauldron.Vanish
             bool done = false;
             IEnumerator coroutine;
 
-            var choices = GameController.GetAllCards().Where(c => c.IsHeroCharacterCard && c.IsInPlay && !c.IsIncapacitatedOrOutOfGame && !selected.Contains(c.Owner.ToHero())).ToArray();
+            var choices = GameController.GetAllCards().Where(c => c.IsHeroCharacterCard && c.IsInPlay && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()) &&!selected.Contains(c.Owner.ToHero())).ToArray();
             while (choices.Length > 0 && !done)
             {
                 var dda = new DealDamageAction(GameController, new DamageSource(GameController, CharacterCard), null, 3, DamageType.Energy);

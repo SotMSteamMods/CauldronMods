@@ -16,7 +16,7 @@ namespace Cauldron.Vanish
         public override IEnumerator Play()
         {
             var scd = new SelectCardDecision(GameController, DecisionMaker, SelectionType.MoveCardOnDeck, GameController.GetAllCards(),
-                additionalCriteria: c => !c.IsCharacter && c.IsInPlay && !c.IsOneShot,
+                additionalCriteria: c => c.IsInPlay && !c.IsCharacter && !GameController.IsCardIndestructible(c) && !c.IsOneShot && GameController.IsCardVisibleToCardSource(c, GetCardSource()),
                 cardSource: GetCardSource());
             var coroutine = GameController.SelectCardAndDoAction(scd, SelectCardResponse);
             if (base.UseUnityCoroutines)
