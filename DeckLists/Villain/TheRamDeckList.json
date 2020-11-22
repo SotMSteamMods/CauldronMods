@@ -120,8 +120,8 @@
                 "DealDamageProjectile"
             ],
             "body": [
-                "Search the villain deck and trash for {H - 2} copies of Up Close and play them next to the {H - 2} heroes with the highest HP that are not up close. If you searched the deck, shuffle it.","
-                {TheRam} deals each non-villain target {H} projectile damage."
+                "Search the villain deck and trash for {H - 2} copies of Up Close and play them next to the {H - 2} heroes with the highest HP that are not up close. If you searched the deck, shuffle it.",
+                "{TheRam} deals each non-villain target {H} projectile damage."
             ],
             "flavorQuotes": [
                 {
@@ -227,7 +227,7 @@
             ],
             "body": [
                 "This card is immune to damage from hero targets that are not Up Close.",
-                "At the end of the villain turn, play the top card of the villain deck." 
+                "At the end of the villain turn, play the top card of the villain deck.",
                 "At the end of the villain turn, all Devices and Nodes regain 1HP."
             ],
             "flavorQuotes": [

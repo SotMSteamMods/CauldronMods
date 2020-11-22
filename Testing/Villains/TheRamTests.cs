@@ -322,5 +322,47 @@ namespace CauldronTests
             //Assassin does not actually get destroyed, so only 3 damage
             QuickHPCheck(-3, -3, -3);
         }
+        [Test]
+        public void TestFallBackDamageAndDestroy()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "Unity", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            Assert.IsTrue(IsUpClose(legacy));
+
+            QuickHPStorage(legacy.CharacterCard, haka.CharacterCard, unity.CharacterCard);
+            PlayCard("FallBack");
+            QuickHPCheck(-2, -2, -0);
+            Assert.IsFalse(IsUpClose(legacy));
+            AssertNumberOfCardsInPlay(ram, 2); //character card and fall back
+        }
+        [Test]
+        public void TestFallBackDamageImmunity()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "Unity", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+
+            PlayCard("FallBack");
+            QuickHPStorage(ram);
+            Card bot = PlayCard("PlatformBot");
+
+            int expectedDamage = 0;
+            for(int i = 0; i < 4; i++)
+            {
+                DealDamage(legacy, ram, 1, DamageType.Melee);
+                DealDamage(haka, ram, 2, DamageType.Melee);
+                DealDamage(bot, ram, 3, DamageType.Melee);
+
+                QuickHPCheck(-expectedDamage);
+
+                PlayCard("UpClose");
+                expectedDamage += i + 1;
+            }
+        }
     }
 }
