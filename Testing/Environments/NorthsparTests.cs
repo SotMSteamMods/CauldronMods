@@ -762,5 +762,46 @@ namespace CauldronTests
         }
 
 
+        [Test()]
+        public void TestAlienFungus_FrozenEntersPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Bunker", "Cauldron.Northspar");
+            StartGame();
+
+
+            Card fungus = PlayCard("AlienFungus");
+            Card takAhab = PlayCard("TakAhab");
+
+            //set all targets to have a hitpoint of 1
+            SetHitPoints((Card c) => c.IsTarget, 1);
+
+            //Whenever a Frozen card enters play, this card and Tak Ahab each regain 3HP.
+            QuickHPStorage(fungus, takAhab, baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, tachyon.CharacterCard, bunker.CharacterCard);
+            PlayCard("BitterCold");
+            QuickHPCheck(3, 3, 0, 0, 0, 0, 0, 0);
+
+            //only for frozen
+            QuickHPStorage(fungus, takAhab, baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, tachyon.CharacterCard, bunker.CharacterCard);
+            PlayCard("AethiumVein");
+            QuickHPCheck(0, 0, 0, 0, 0, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestAlienFungus_EndOfTurn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Bunker", "Cauldron.Northspar");
+            StartGame();
+
+            //destroy mdp so theoretically baron could be dealt damage
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            Card fungus = PlayCard("AlienFungus");
+            //At the end of the environment turn this card deals each hero target 2 toxic damage."
+            QuickHPStorage(baron, ra, legacy, haka, tachyon, bunker);
+            GoToEndOfTurn(northspar);
+            QuickHPCheck(0, -2, -2, -2, -2, -2);
+        }
+
+
     }
 }
