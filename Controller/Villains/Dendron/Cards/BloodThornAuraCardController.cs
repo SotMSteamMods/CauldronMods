@@ -26,8 +26,9 @@ namespace Cauldron.Dendron
                 this.DealDamageResponse,
                 new[]
                 {
+                    TriggerType.CancelAction,
                     TriggerType.DealDamage
-                }, TriggerTiming.Before, null, false, true, true, orderMatters: true);
+                }, TriggerTiming.Before);
 
             base.AddTriggers();
         }
@@ -62,8 +63,6 @@ namespace Cauldron.Dendron
                     base.GameController.ExhaustCoroutine(dealDamageRoutine);
                 }
             }
-
-
         }
     }
 }
