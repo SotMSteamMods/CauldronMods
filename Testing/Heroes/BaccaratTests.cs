@@ -1006,7 +1006,7 @@ namespace CauldronTests
             GoToPlayCardPhase(baccarat);
             QuickShuffleStorage(baccarat);
             PlayCard(bridge);
-            QuickShuffleCheck(1);
+            QuickShuffleCheck(2);
             AssertNumberOfCardsInTrash(baccarat, 37);
             //check that all 3 copies are in the deck
             AssertInDeck(GetCard("AbyssalSolitaire", 0));
