@@ -16,9 +16,9 @@ namespace Cauldron.Vanish
         public override IEnumerator Play()
         {
             var scd = new SelectCardDecision(GameController, DecisionMaker, SelectionType.MoveCardOnDeck, GameController.GetAllCards(),
-                additionalCriteria: c => !c.IsCharacter && c.IsInPlay,
+                additionalCriteria: c => !c.IsCharacter && c.IsInPlay && !c.IsOneShot,
                 cardSource: GetCardSource());
-            var coroutine = GameController.SelectCardAndDoAction(scd, SelectCardReponse);
+            var coroutine = GameController.SelectCardAndDoAction(scd, SelectCardResponse);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -30,7 +30,7 @@ namespace Cauldron.Vanish
             yield break;
         }
 
-        private IEnumerator SelectCardReponse(SelectCardDecision scd)
+        private IEnumerator SelectCardResponse(SelectCardDecision scd)
         {
             if (scd.SelectedCard != null)
             {
