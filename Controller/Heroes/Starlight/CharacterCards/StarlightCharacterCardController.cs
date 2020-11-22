@@ -10,6 +10,7 @@ namespace Cauldron.Starlight
     {
         public StarlightCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria((Card c) => IsConstellation(c), "constellation"));
         }
 
         public override IEnumerator UsePower(int index = 0)

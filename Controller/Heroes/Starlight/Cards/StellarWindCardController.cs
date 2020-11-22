@@ -11,6 +11,7 @@ namespace Cauldron.Starlight
     {
         public StellarWindCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.IsTarget && IsNextToConstellation(c), useCardsSuffix: false, singular: "target next to a constellation", plural: "targets next to a constellation"));
         }
         public override IEnumerator Play()
         {

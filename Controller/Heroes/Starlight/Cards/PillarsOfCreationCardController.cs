@@ -11,8 +11,16 @@ namespace Cauldron.Starlight
     {
         public PillarsOfCreationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocations(ImportantLocations,
+                                new LinqCardCriteria((Card c) => IsConstellation(c), "constellation"));
         }
 
+        private IEnumerable<Location> ImportantLocations()
+        {
+            yield return TurnTaker.Trash;
+            yield return (TurnTaker as HeroTurnTaker).Hand;
+            yield break;
+        }
         public override void AddTriggers()
         {
             //"At the start of your play phase, put a constellation card from your hand or trash into play."
