@@ -15,7 +15,6 @@ namespace Cauldron
         {
             base.SetCardProperty("PreventionUsed", false);
 			this.AllowFastCoroutinesDuringPretend = false;
-			this.RunModifyDamageAmountSimulationForThisCard = false;
 		}
 
         #endregion Constructors
