@@ -19,11 +19,11 @@ namespace Cauldron.Tiamat
         {
             IEnumerator coroutine;
             Card characterCard = null;
-            if (base.CharacterCard.MaximumHitPoints == 40)
+            if (base.CharacterCard.PromoIdentifierOrIdentifier == "WinterTiamatCharacter")
             {
                 characterCard = base.TurnTaker.FindCard("InfernoTiamatCharacter");
             }
-            else if (base.CharacterCard.MaximumHitPoints == 15)
+            else if (base.CharacterCard.PromoIdentifierOrIdentifier == "HydraWinterTiamatCharacter")
             {
                 characterCard = base.TurnTaker.FindCard("HydraInfernoTiamatCharacter");
             };
