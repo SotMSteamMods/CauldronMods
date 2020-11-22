@@ -777,7 +777,7 @@ namespace CauldronTests
 
             //Whenever a Frozen card enters play, this card and Tak Ahab each regain 3HP.
             QuickHPStorage(fungus, takAhab, baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, tachyon.CharacterCard, bunker.CharacterCard);
-            PlayCard("BitterCold");
+            PlayCard("Frostbite");
             QuickHPCheck(3, 3, 0, 0, 0, 0, 0, 0);
 
             //only for frozen
@@ -800,6 +800,62 @@ namespace CauldronTests
             QuickHPStorage(baron, ra, legacy, haka, tachyon, bunker);
             GoToEndOfTurn(northspar);
             QuickHPCheck(0, -2, -2, -2, -2, -2);
+        }
+
+        [Test()]
+        public void TestBitterCold_EnvironmentCardEntersPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 25);
+            SetHitPoints(haka.CharacterCard, 30);
+
+
+            Card bitter = PlayCard("BitterCold");
+            //Whenever an environment card enters play, this card deals the target with the third highest HP 2 cold damage.
+            //3rd highest is legacy
+            QuickHPStorage(baron, ra, legacy, haka);
+            PlayCard("AethiumVein");
+            QuickHPCheck(0, 0, -2, 0);
+
+            //check no damage on hero
+            QuickHPUpdate();
+            PlayCard("Mere");
+            QuickHPCheckZero();
+
+            //check no damage on villain
+            QuickHPUpdate();
+            PlayCard("MobileDefensePlatform");
+            QuickHPCheckZero();
+
+        }
+
+        [Test()]
+        public void TestBitterCold_EndOfTurnEachTurn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            Card bitter = PlayCard("BitterCold");
+
+            //At the end of each turn, all targets that were dealt cold damage during that turn deal themselves 1 psychic damage.
+            GoToPlayCardPhase(ra);
+            DealDamage(haka, baron, 5, DamageType.Cold);
+            DealDamage(baron, ra, 5, DamageType.Cold);
+            QuickHPStorage(baron, ra, legacy, haka);
+            GoToEndOfTurn(ra);
+            QuickHPCheck(-1, -1, 0, 0);
+
+            GoToPlayCardPhase(northspar);
+            DealDamage(haka, legacy, 5, DamageType.Cold);
+            DealDamage(ra, haka, 5, DamageType.Fire);
+            QuickHPStorage(baron, ra, legacy, haka);
+            GoToEndOfTurn(northspar);
+            QuickHPCheck(0, 0, -1, 0);
         }
 
 
