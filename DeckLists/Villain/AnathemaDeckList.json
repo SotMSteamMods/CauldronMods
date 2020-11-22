@@ -225,7 +225,7 @@
             ],
             "body": [
                 "When this card enters play, destroy all other body cards.",
-                "The first time a villain target is dealt damage each turn, this card deals the source of that damage 2 melee damage."
+                "Reduce damage dealt to villain targets by 2."
             ],
             "flavorText": "I can increase outer{BR}biomass density all day{BR}long. What's your trick, meatsack?",
             "flavorReference": "Anathema to the Scholar, Vagabond's Tale #143",
@@ -246,7 +246,7 @@
             ],
             "body": [
                 "When this card enters play, destroy all other arm cards except the one with the highest HP.",
-                "At the end of the villain turn, {Anathema} deals the hero target with the highest HP {H + 1} melee damage. If that hero takes damage this way, they must destroy 1 of their ongoing cards."
+                "At the end of the villain turn, {Anathema} deals the hero character with the highest HP {H + 1} melee damage. If that hero takes damage this way, they must destroy 1 of their ongoing cards."
             ],
             "flavorQuotes": [
                 {
