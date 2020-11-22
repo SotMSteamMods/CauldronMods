@@ -1349,6 +1349,53 @@ namespace CauldronTests
             PlayCard(wind);
             QuickHPCheck(-2, 0, 0, 0);
         }
+        [Test]
+        public void TestStellarWindCanAutodecideWhenShould()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card wind = GetCard("StellarWind");
+            PutInHand(wind);
+
+            DecisionSelectCards = new Card[] { mdp, baron.CharacterCard };
+            PlayCards("AncientConstellationA", "AncientConstellationB");
+
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            PlayCard(wind);
+
+            DecisionSelectCards = null;
+            DecisionSelectCard = haka.CharacterCard;
+            PlayCard("AncientConstellationC");
+            DecisionSelectCard = null;
+
+            PlayCards("CelestialAura", "StellarWind");
+        }
+        [Test]
+        public void TestStellarWindCannotAutodecideWhenShouldnt()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card wind = GetCard("StellarWind");
+            PutInHand(wind);
+
+            DecisionSelectCards = new Card[] { mdp, baron.CharacterCard, haka.CharacterCard };
+            PlayCards("AncientConstellationA", "AncientConstellationB", "AncientConstellationC");
+
+            DecisionAutoDecideIfAble = true;
+            DecisionSelectCards = null;
+
+            PlayCard(wind);
+
+            AssertRecordedDecisionAnswer("4-1", 0, false, autodecided: false);
+
+            PlayCards("CelestialAura", "StellarWind");
+
+            AssertRecordedDecisionAnswer("5-1", 0, false, true);
+        }
         [Test()]
         public void TestWarpHaloIncreasesWhenShould()
         {
