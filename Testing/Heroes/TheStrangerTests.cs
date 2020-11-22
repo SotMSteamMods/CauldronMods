@@ -507,7 +507,7 @@ namespace CauldronTests
             GoToPlayCardPhase(stranger);
             //You may play up to 3 Runes now.
             //play 0 cards
-            DecisionsYesNo = new bool[] { false };
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
 
             PlayCard("FlickeringWeb");
             AssertInHand(boneLeech, faded, twistedShadow);
@@ -727,6 +727,7 @@ namespace CauldronTests
             //{TheStranger} deals 1 target 1 toxic damage.
             GoToUsePowerPhase(stranger);
             DecisionSelectTarget = haka.CharacterCard;
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
             QuickHPStorage(haka);
             UsePower(decay);
             //1 damage should be dealt
