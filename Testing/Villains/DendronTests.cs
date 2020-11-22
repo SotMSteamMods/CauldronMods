@@ -85,15 +85,21 @@ namespace CauldronTests
         [Test]
         public void TestDendronStartGame()
         {
-            SetupGameController(DeckNamespace, "Legacy", "Megalopolis");
-
-            Card obsidianSkin = GetCard(ObsidianSkinCardController.Identifier);
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
 
             StartGame();
-            PutOnDeck(Dendron, obsidianSkin);
-            // Should be 3 cards in play total (Dendron, 1 Stained Wolf, 1 Painted Viper, + 1 randomly drawn card)
-            AssertNumberOfCardsInPlay(Dendron, 4);
+
+            GoToStartOfTurn(Dendron);
+
             AssertNotFlipped(Dendron);
+
+
+            // Stained Wolf and Painted Viper are put in play at game start
+            Assert.IsNotEmpty(FindCardsWhere(card => card.Identifier.Equals(StainedWolfCardController.Identifier) 
+                                                     && card.Location.Name == LocationName.PlayArea ));
+
+            Assert.IsNotEmpty(FindCardsWhere(card => card.Identifier.Equals(PaintedViperCardController.Identifier)
+                                                     && card.Location.Name == LocationName.PlayArea));
 
         }
 
