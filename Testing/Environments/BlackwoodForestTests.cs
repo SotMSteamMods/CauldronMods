@@ -491,14 +491,13 @@ namespace CauldronTests
             // Act
             GoToStartOfTurn(BlackwoodForest);
             PlayCard(willOTheWisp);
-
+            Card staff = PlayCard("TheStaffOfRa");
             // Assert
+            AssertIsInPlay(staff);
             AssertNumberOfCardsInPlay(card => card.IsEnvironment, 1);
 
             GoToEndOfTurn(baron);
             AssertNumberOfCardsInPlay(card => card.IsEnvironment, 3); // 2 cards drawn at the end of villain turn
-
-            AssertStatusEffectsContains(statusEffectMessageBlackwoodForest); // Blackwood Forest skips its draw phase
         }
 
         [Test]
