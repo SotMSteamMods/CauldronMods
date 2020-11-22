@@ -215,6 +215,8 @@ namespace CauldronTests
             SetupIncap(legacy, inferno);
             AssertNotGameOver();
             GoToStartOfTurn(tiamat);
+            //Reincap Inferno after regrowing at start of turn
+            SetupIncap(legacy, inferno);
             SetupIncap(legacy, decay);
             AssertNotGameOver();
             SetupIncap(legacy, earth);
@@ -1224,8 +1226,8 @@ namespace CauldronTests
             GoToStartOfTurn(tiamat);
             Assert.IsTrue(!wind.IsFlipped);
             AssertHitPoints(wind, 15);
-            //If Thunderous Gale Instruction card flips then we do not regrow another decapitated head
-            Assert.IsTrue(storm.IsFlipped);
+            //Thunderous Gale regrows 1 head at start of turn
+            AssertHitPoints(storm, 6);
         }
 
         [Test()]
@@ -1270,12 +1272,61 @@ namespace CauldronTests
 
             SetupIncap(legacy, storm);
             GoToStartOfTurn(tiamat);
-
-            //First start of turn flips Thunderous Gale instructions causing no head to regrow
-            GoToStartOfTurn(tiamat);
-            GoToEndOfTurn(tiamat);
             //At start of turn where Thunderous Gale side up regrow 1 head at start of turn with H * 2 HP
             AssertHitPoints(storm, 6);
+        }
+
+        [Test()]
+        public void TestDecayEffect()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(legacy, inferno);
+            GoToStartOfTurn(tiamat);
+
+            QuickHPStorage(legacy, bunker, haka);
+            DealDamage(decay, legacy.CharacterCard, 2, DamageType.Melee);
+            DealDamage(storm, bunker.CharacterCard, 2, DamageType.Melee);
+            DealDamage(winter, haka.CharacterCard, 2, DamageType.Melee);
+            //Breath of Decay makes all heads do +1 damage
+            QuickHPCheck(-3, -3, -3);
+        }
+
+        [Test()]
+        public void TestEarthEffect()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(legacy, winter);
+            GoToStartOfTurn(tiamat);
+
+            QuickHPStorage(earth, storm, inferno);
+            DealDamage(legacy.CharacterCard, earth, 2, DamageType.Radiant);
+            DealDamage(haka.CharacterCard, storm, 2, DamageType.Radiant);
+            DealDamage(bunker.CharacterCard, inferno, 2, DamageType.Radiant);
+            //Earth makes all other heads take -1 damage
+            QuickHPCheck(-2, -1, -1);
+        }
+
+        [Test()]
+        public void TestWindHealEndOfTurn()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(legacy, storm);
+            GoToStartOfTurn(tiamat);
+
+            DealDamage(legacy.CharacterCard, wind, 10, DamageType.Radiant);
+            DealDamage(haka.CharacterCard, winter, 10, DamageType.Radiant);
+            DealDamage(bunker.CharacterCard, inferno, 10, DamageType.Radiant);
+
+            QuickHPStorage(wind, winter, inferno);
+            //Wind makes all heads regain 2 HP at end of turn
+            GoToEndOfTurn(tiamat);
+            QuickHPCheck(2, 2, 2);
         }
 
         [Test()]
@@ -1288,9 +1339,113 @@ namespace CauldronTests
             GoToStartOfTurn(tiamat);
             SetupIncap(legacy, storm);
             //At the end of the villain turn, if {InfernoTiamatCharacter} is active, she deals the hero target with the second highest HP 1 fire damage.
-            QuickHPStorage(legacy);
+            QuickHPStorage(legacy, bunker, haka);
             GoToEndOfTurn(tiamat);
-            QuickHPCheck(-1);
+            //Breath of Decay makes all heads do +1 damage
+            QuickHPCheck(-2, 0, 0);
+        }
+
+        [Test()]
+        public void TestThunderousGaleBackEndOfTurn()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(legacy, storm);
+            GoToStartOfTurn(tiamat);
+            SetupIncap(legacy, inferno);
+            //At the end of the villain turn, if {StormTiamatCharacter} is active, she deals the hero target with the highest HP 1 lightning damage.
+            QuickHPStorage(legacy, bunker, haka);
+            GoToEndOfTurn(tiamat);
+            QuickHPCheck(-1, 0, 0);
+        }
+
+        [Test()]
+        public void TestFrigidEarthBackEndOfTurn()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(legacy, winter);
+            GoToStartOfTurn(tiamat);
+            SetupIncap(legacy, inferno);
+            SetupIncap(legacy, storm);
+            //At the end of the villain turn, if {WinterTiamatCharacter} is active, she deals the hero target with the lowest HP 1 cold damage.
+            QuickHPStorage(legacy, bunker, haka);
+            GoToEndOfTurn(tiamat);
+            QuickHPCheck(0, -1, 0);
+        }
+
+        [Test()]
+        public void TestAdvanced1FlippedRegrow()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis" }, true);
+            StartGame();
+
+            SetupIncap(legacy, winter);
+            GoToStartOfTurn(tiamat);
+            //Advanced - Decapitated heads are restored to {H * 3} HP when they become active.
+            AssertHitPoints(winter, 9);
+        }
+
+        [Test()]
+        public void TestAdvanced2FlippedRegrow()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis" }, true);
+            StartGame();
+
+            SetupIncap(legacy, winter);
+            SetupIncap(legacy, inferno);
+            GoToStartOfTurn(tiamat);
+            //Advanced - Decapitated heads are restored to {H * 3} HP when they become active.
+            AssertHitPoints(inferno, 9);
+        }
+
+        [Test()]
+        public void TestAdvanced3FlippedRegrow()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis" }, true);
+            StartGame();
+
+            SetupIncap(legacy, winter);
+            SetupIncap(legacy, inferno);
+            SetupIncap(legacy, storm);
+            GoToStartOfTurn(tiamat);
+            //Advanced - Decapitated heads are restored to {H * 3} HP when they become active.
+            AssertHitPoints(inferno, 9);
+        }
+
+        [Test()]
+        public void TestAlternateElementOfFire0InTrash()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis" });
+            StartGame();
+            SetupIncap(legacy, inferno);
+            GoToStartOfTurn(tiamat);
+            SetupIncap(legacy, inferno);
+            //Whenever Element of Fire enters play and {InfernoTiamatCharacter} is decapitated, if {HydraDecayTiamatCharacter} is active she deals each hero target X toxic damage, where X = 2 plus the number of Acid Breaths in the villain trash.
+            QuickHPStorage(legacy, haka, bunker);
+            PlayCard("ElementOfFire");
+            //Breath of Decay increase damage dealt by heads by 1
+            QuickHPCheck(-3, -3, -3);
+        }
+
+        [Test()]
+        public void TestAlternateElementOfFire1InTrash()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis" });
+            StartGame();
+            SetupIncap(legacy, inferno);
+            GoToStartOfTurn(tiamat);
+            SetupIncap(legacy, inferno);
+
+            PutInTrash("AcidBreath", 0);
+
+            //Whenever Element of Fire enters play and {InfernoTiamatCharacter} is decapitated, if {HydraDecayTiamatCharacter} is active she deals each hero target X toxic damage, where X = 2 plus the number of Acid Breaths in the villain trash.
+            QuickHPStorage(legacy, haka, bunker);
+            PlayCard("ElementOfFire");
+            //Breath of Decay increase damage dealt by heads by 1
+            QuickHPCheck(-4, -4, -4);
         }
     }
 }

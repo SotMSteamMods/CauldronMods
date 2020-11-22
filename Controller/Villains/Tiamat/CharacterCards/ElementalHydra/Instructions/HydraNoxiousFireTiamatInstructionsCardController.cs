@@ -63,8 +63,17 @@ namespace Cauldron.Tiamat
 
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
-            //...{InfernoTiamatCharacter} deals the hero target with the highest HP 2 fire damage.
-            IEnumerator coroutine = base.DealDamageToHighestHP(this.firstHead.Card, 1, (Card c) => c.IsHero, (Card c) => new int?(2), DamageType.Fire);
+            IEnumerator coroutine = null;
+            if (!base.Card.IsFlipped)
+            {//Front End of Turn Damage
+                //...{InfernoTiamatCharacter} deals the hero target with the highest HP 2 fire damage.
+                coroutine = base.DealDamageToHighestHP(this.firstHead.Card, 1, (Card c) => c.IsHero, (Card c) => new int?(2), DamageType.Fire);
+            }
+            else
+            {//Back End of Turn Damage
+                //At the end of the villain turn, if {InfernoTiamatCharacter} is active, she deals the hero target with the second highest HP 1 fire damage.
+                coroutine = base.DealDamageToHighestHP(this.firstHead.Card, 2, (Card c) => c.IsHero, (Card c) => new int?(1), DamageType.Fire);
+            }
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

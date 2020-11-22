@@ -100,8 +100,17 @@ namespace Cauldron.Tiamat
 
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
-            //...{StormTiamatCharacter} deals each hero target 1 lightning damage.
-            IEnumerator coroutine = base.DealDamage(this.firstHead.Card, (Card c) => c.IsHero, 1, DamageType.Lightning);
+            IEnumerator coroutine = null;
+            if (!base.Card.IsFlipped)
+            {//Front End of Turn Damage
+                //...{StormTiamatCharacter} deals each hero target 1 lightning damage.
+                coroutine = base.DealDamage(this.firstHead.Card, (Card c) => c.IsHero, 1, DamageType.Lightning);
+            }
+            else
+            {//Back End of Turn Damage
+                //At the end of the villain turn, if {StormTiamatCharacter} is active, she deals the hero target with the highest HP 1 lightning damage.
+                coroutine = base.DealDamageToHighestHP(this.firstHead.Card, 1, (Card c) => c.IsHero, (Card c) => new int?(1), DamageType.Lightning);
+            }
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
