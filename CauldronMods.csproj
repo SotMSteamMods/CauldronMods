@@ -43,4 +43,11 @@
     <Folder Include="Controller\Heroes\LadyOfTheWood\CharacterCards\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Docs\manifest.json">
+	  <Link>manifest.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

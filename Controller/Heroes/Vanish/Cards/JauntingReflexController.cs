@@ -9,9 +9,12 @@ namespace Cauldron.Vanish
 {
     public class JauntingReflexCardController : CardController
     {
+        private readonly static string TrackingKey = "UsedJauntingReflex";
+
         public JauntingReflexCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowSpecialString(() => $"{Card.Title} has been used this turn.", () => !WasNotUsedThisTurn());
+            var ss = SpecialStringMaker.ShowSpecialString(() => $"{Card.Title} has been used this turn.");
+            ss.Condition = () => Card.IsInPlayAndHasGameText && !WasNotUsedThisTurn();
         }
 
         public override void AddTriggers()
@@ -21,7 +24,7 @@ namespace Cauldron.Vanish
 
         private bool WasNotUsedThisTurn()
         {
-            return !base.Journal.CardPropertiesEntriesThisTurn(Card).Any(j => j.Key == "UsedJauntingReflex");
+            return !base.HasBeenSetToTrueThisTurn(TrackingKey);
         }
 
         private IEnumerator HeroDamagedResponse(DealDamageAction action)
@@ -39,7 +42,7 @@ namespace Cauldron.Vanish
 
             if (DidDiscardCards(results, 1))
             {
-                base.SetCardPropertyToTrueIfRealAction("UsedJauntingReflex");
+                base.SetCardPropertyToTrueIfRealAction(TrackingKey);
 
                 coroutine = GameController.SelectAndUsePower(DecisionMaker, optional: true, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)

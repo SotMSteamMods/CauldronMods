@@ -11,10 +11,18 @@ namespace Cauldron.Vanish
     {
         public TacticalRelocationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowNumberOfCardsAtLocations(
-                    () => GameController.HeroTurnTakerControllers.Select(httc => httc.HeroTurnTaker.Trash),
-                    new LinqCardCriteria(c => c.IsOngoing && IsEquipment(c) && c.IsInTrash, "equipment or ongoings in trash")
-                );
+            var query = GameController.HeroTurnTakerControllers.Select(httc => httc.HeroTurnTaker.Trash)
+                                                               .Where(loc => loc.Cards.Any(IsEquipmentOrOngoing));
+            var ss = SpecialStringMaker.ShowNumberOfCardsAtLocations(() => query, new LinqCardCriteria(c => IsEquipmentOrOngoing(c) && c.IsInTrash, "equipment or ongoing"));
+            ss.Condition = () => GameController.HeroTurnTakerControllers.Any(httc => httc.HeroTurnTaker.Trash.Cards.Any(IsEquipmentOrOngoing));
+
+            ss = SpecialStringMaker.ShowSpecialString(() => "No hero's Trash has any equipment or ongoing cards");
+            ss.Condition = () => GameController.HeroTurnTakerControllers.All(httc => !httc.HeroTurnTaker.Trash.Cards.Any(IsEquipmentOrOngoing));
+        }
+
+        private bool IsEquipmentOrOngoing(Card c)
+        {
+            return c.IsOngoing || IsEquipment(c);
         }
 
         public override IEnumerator Play()
@@ -109,7 +117,7 @@ namespace Cauldron.Vanish
             return new SelectCardDecision(httc.GameController, httc, SelectionType.MoveCardToPlayArea, httc.GetCardsAtLocation(httc.HeroTurnTaker.Trash),
                             isOptional: true,
                             allowAutoDecide: true,
-                            additionalCriteria: c => IsEquipment(c) || c.IsOngoing,
+                            additionalCriteria: IsEquipmentOrOngoing,
                             cardSource: GetCardSource());
         }
 

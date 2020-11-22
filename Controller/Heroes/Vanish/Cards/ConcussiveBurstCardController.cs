@@ -8,14 +8,17 @@ namespace Cauldron.Vanish
 {
     public class ConcussiveBurstCardController : CardController
     {
+        private readonly static string TrackingKey = "UsedConcussiveBurst";
+
         public ConcussiveBurstCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowSpecialString(() => $"{Card.Title} has been used this turn.", () => base.HasBeenSetToTrueThisTurn("FirstTimeDamageDealt"));
+            var ss = SpecialStringMaker.ShowSpecialString(() => $"{Card.Title} has been used this turn.");
+            ss.Condition = () => Card.IsInPlayAndHasGameText && base.HasBeenSetToTrueThisTurn(TrackingKey);
         }
 
         public override void AddTriggers()
         {
-            AddTrigger<DealDamageAction>(dda => dda.DamageSource.IsSameCard(this.CharacterCard) && !dda.Target.IsHero && !base.HasBeenSetToTrueThisTurn("FirstTimeDamageDealt"), DealDamageResponse, TriggerType.AddStatusEffectToDamage, TriggerTiming.Before);
+            AddTrigger<DealDamageAction>(dda => dda.DamageSource.IsSameCard(this.CharacterCard) && !dda.Target.IsHero && !base.HasBeenSetToTrueThisTurn(TrackingKey), DealDamageResponse, TriggerType.AddStatusEffectToDamage, TriggerTiming.Before);
         }
 
         private IEnumerator DealDamageResponse(DealDamageAction dda)
@@ -28,7 +31,7 @@ namespace Cauldron.Vanish
         {
             if (dda.DidDealDamage)
             {
-                base.SetCardPropertyToTrueIfRealAction("FirstTimeDamageDealt");
+                base.SetCardPropertyToTrueIfRealAction(TrackingKey);
                 return base.ReduceDamageDealtByThatTargetUntilTheStartOfYourNextTurnResponse(dda, 1);
             }
             else

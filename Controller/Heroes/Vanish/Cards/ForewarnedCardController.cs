@@ -11,6 +11,14 @@ namespace Cauldron.Vanish
     {
         public ForewarnedCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            var query = GameController.HeroTurnTakerControllers.Select(httc => httc.HeroTurnTaker)
+                                                               .Where(htt => htt.NumberOfCardsInHand < 3)
+                                                               .Select(htt => htt.Hand);
+            var ss = SpecialStringMaker.ShowNumberOfCardsAtLocations(() => query);
+            ss.Condition = () => GameController.HeroTurnTakerControllers.Any(HeroTurnTakerController => HeroTurnTakerController.HeroTurnTaker.NumberOfCardsInHand < 3);
+
+            ss = SpecialStringMaker.ShowSpecialString(() => "No hero has fewer than 3 cards in hard");
+            ss.Condition = () => GameController.HeroTurnTakerControllers.All(HeroTurnTakerController => HeroTurnTakerController.HeroTurnTaker.NumberOfCardsInHand >= 3);
         }
 
         public override void AddTriggers()
@@ -25,7 +33,6 @@ namespace Cauldron.Vanish
         private IEnumerator StartOfTurnResponse(PhaseChangeAction action)
         {
             var results = new List<YesNoCardDecision>();
-
             var coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.DestroyCard, Card, action: action, storedResults: results, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
