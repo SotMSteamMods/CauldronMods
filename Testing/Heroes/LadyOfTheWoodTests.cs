@@ -233,7 +233,7 @@ namespace CauldronTests
             //should have 1 less card in hand and should have gained 3 HP
             QuickHandCheck(-1);
             QuickHPCheck(3);
-
+            
         }
 
         [Test()]
@@ -301,7 +301,7 @@ namespace CauldronTests
             GoToPlayCardPhase(ladyOfTheWood);
             QuickHandStorage(ladyOfTheWood);
 
-            DecisionSelectCards = new Card[] { cardsInHand.ElementAt(0), cardsInHand.ElementAt(1), cardsInHand.ElementAt(2), cardsInHand.ElementAt(3) };
+            DecisionSelectCards = new Card[] { cardsInHand.ElementAt(0), cardsInHand.ElementAt(1), cardsInHand.ElementAt(2), cardsInHand.ElementAt(3)};
             PlayCard(calm);
             //should be -5, 1 for calm before storm, and 4 others discarded
             QuickHandCheck(-5);
@@ -429,7 +429,7 @@ namespace CauldronTests
             // Increase the next damage dealt by LadyOfTheWood by X, where X is 2 plus the number of cards discarded this way.
             GoToPlayCardPhase(ladyOfTheWood);
             QuickHandStorage(ladyOfTheWood);
-
+            
             //there shouldn't be any cards to discard
             PlayCard(calm);
             //should be -1, 1 for calm before storm, and 0 others discarded
@@ -482,10 +482,10 @@ namespace CauldronTests
             GoToUsePowerPhase(ladyOfTheWood);
             QuickHPStorage(baron, ladyOfTheWood, ra, haka);
             DecisionSelectCards = new Card[] {
+                baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard, 
                 baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard,
                 baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard,
-                baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard,
-                baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard
+                baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard 
             };
             PrintSeparator("Check for Toxic");
             AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Toxic, 1);
@@ -593,7 +593,7 @@ namespace CauldronTests
             //Whenever LadyOfTheWood deals lightning damage to a target, reduce damage dealt by that target by 1 until the start of your next turn.
             GoToPlayCardPhase(ladyOfTheWood);
             PlayCard("Fall");
-
+           
             DealDamage(ladyOfTheWood, haka, 8, DamageType.Lightning);
 
             QuickHPStorage(ra);
@@ -641,7 +641,7 @@ namespace CauldronTests
             QuickHPStorage(mdp);
             PlayCard("FireInTheClouds");
             QuickHPCheck(-3);
-
+            
         }
 
         [Test()]
@@ -768,7 +768,7 @@ namespace CauldronTests
             QuickHPStorage(mdp);
             PlayCard("FrostOnThePetals");
             QuickHPCheck(-3);
-
+            
 
         }
 
@@ -896,7 +896,7 @@ namespace CauldronTests
 
             //choose to not play a card and not to search
             DecisionDoNotSelectCard = SelectionType.PlayCard;
-
+ 
             PlayCard(meadow);
             //spring - which was stacked on top of deck, should be now in the hand
             AssertInHand(spring);
@@ -1083,7 +1083,7 @@ namespace CauldronTests
             //When this card enters play, put up to 3 cards from your trash beneath it.
 
             DecisionSelectCards = new Card[] { spring, fall, summer };
-            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
+            Card rebirth = PlayCard("Rebirth");
 
             //check that there are 3 cards under and that they are the cards under are correct
             AssertNumberOfCardsUnderCard(rebirth, 3);
@@ -1107,7 +1107,7 @@ namespace CauldronTests
             //When this card enters play, put up to 3 cards from your trash beneath it.
 
             DecisionSelectCards = new Card[] { spring, fall, null };
-            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
+            Card rebirth = PlayCard("Rebirth");
 
             //check that there are 2 cards under and that they are the cards under are correct
             AssertNumberOfCardsUnderCard(rebirth, 2);
@@ -1131,7 +1131,7 @@ namespace CauldronTests
             //When this card enters play, put up to 3 cards from your trash beneath it.
 
             DecisionSelectCards = new Card[] { spring, null };
-            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
+            Card rebirth = PlayCard("Rebirth");
 
             //check that there is 1 card under and that it is correct
             AssertNumberOfCardsUnderCard(rebirth, 1);
@@ -1154,7 +1154,7 @@ namespace CauldronTests
             //When this card enters play, put up to 3 cards from your trash beneath it.
 
             DecisionDoNotSelectCard = SelectionType.MoveCard;
-            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
+            Card rebirth = PlayCard("Rebirth");
 
             //since there are 0 cards moved under this card, it should immediately destroy itself
             AssertInTrash(rebirth);
@@ -1167,7 +1167,7 @@ namespace CauldronTests
             StartGame();
 
             //When this card enters play, put up to 3 cards from your trash beneath it.
-            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
+            Card rebirth = PlayCard("Rebirth");
 
             //since there are no cards to be moved under this card, it should immediately destroy itself
             AssertInTrash(rebirth);
@@ -1189,7 +1189,7 @@ namespace CauldronTests
 
             //Whenever LadyOfTheWood destroys a target, put a card from beneath this one into your hand.
             DecisionSelectCards = new Card[] { spring, fall, summer, summer };
-            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
+            Card rebirth = PlayCard("Rebirth");
 
             QuickHandStorage(ladyOfTheWood);
             //have lady of the wood destroy mdp
@@ -1226,8 +1226,8 @@ namespace CauldronTests
 
             //When there are no cards beneath this one, destroy this card.
             DecisionSelectCards = new Card[] { spring, fall, summer };
-            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
-
+            Card rebirth = PlayCard("Rebirth");
+            
             MoveCards(ladyOfTheWood, new Card[] { spring, fall, summer }, ladyOfTheWood.HeroTurnTaker.Hand);
             AssertNotInPlay(rebirth);
             AssertInTrash(rebirth);
@@ -1239,7 +1239,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
             //If LadyOfTheWood deals 3 or more damage to a target, destroy this card.
-            Card serenity = PlayCard("SerenityOfDawn");
+            Card serenity =  PlayCard("SerenityOfDawn");
 
             DealDamage(ladyOfTheWood, haka, 2, DamageType.Cold);
 
@@ -1290,7 +1290,7 @@ namespace CauldronTests
             //since no damage dealt, gain 2 HP, draw 1 card
             QuickHPCheck(2);
             QuickHandCheck(1);
-
+            
         }
 
         [Test()]
@@ -1746,7 +1746,7 @@ namespace CauldronTests
 
         [Test()]
         [Sequential]
-        public void DecklistTest_Ongoing_IsOngoing([Values("Spring", "Summer", "Fall", "Winter", "LadyOfTheWoodsRebirth", "EnchantedClearing", "SerenityOfDawn", "NobilityOfDusk")] string ongoing)
+        public void DecklistTest_Ongoing_IsOngoing([Values("Spring", "Summer", "Fall", "Winter", "Rebirth", "EnchantedClearing", "SerenityOfDawn", "NobilityOfDusk")] string ongoing)
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Megalopolis");
             StartGame();
@@ -1775,7 +1775,7 @@ namespace CauldronTests
 
         [Test()]
         [Sequential]
-        public void DecklistTest_Limited_IsLimited([Values("RainpetalCloak", "SuncastMantle", "ThundergreyShawl", "SnowshadeGown", "Spring", "Summer", "Fall", "Winter", "EnchantedClearing", "SerenityOfDawn", "NobilityOfDusk", "CrownOfTheFourWinds")] string limited)
+        public void DecklistTest_Limited_IsLimited([Values("RainpetalCloak", "SuncastMantle", "ThundergreyShawl", "SnowshadeGown","Spring", "Summer","Fall","Winter","EnchantedClearing","SerenityOfDawn","NobilityOfDusk", "CrownOfTheFourWinds")] string limited)
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Megalopolis");
             StartGame();

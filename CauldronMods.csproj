@@ -39,6 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controller\Heroes\LadyOfTheWood\Cards\" />
     <Folder Include="Controller\Heroes\LadyOfTheWood\CharacterCards\" />
   </ItemGroup>
 
