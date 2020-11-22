@@ -11,16 +11,33 @@ namespace Cauldron.LadyOfTheWood
 	{
 		public NobilityOfDuskCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
-			this.AllowFastCoroutinesDuringPretend = false;
 			this.RunModifyDamageAmountSimulationForThisCard = false;
-			base.SetCardProperty(base.GeneratePerTargetKey("BuffUsed", base.CharacterCard), false);
 		}
 		public override void AddTriggers()
 		{
 			//Once per turn when LadyOfTheWood would deal damage you may increase that damage by 2
-			Func<DealDamageAction, bool> criteria = (DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.IsSameCard(base.CharacterCard) && !base.CharacterCardController.IsPropertyTrue("BuffUsed");
-			base.AddTrigger<DealDamageAction>(criteria, new Func<DealDamageAction, IEnumerator>(this.IncreaseDamageDecision), TriggerType.ModifyDamageAmount, TriggerTiming.Before);
+			Func<DealDamageAction, bool> criteria = (DealDamageAction dd) => IsBuffAvailable() && dd.DamageSource != null && dd.DamageSource.IsSameCard(base.CharacterCard);
+			base.AddTrigger<DealDamageAction>(criteria, this.IncreaseDamageDecision, TriggerType.ModifyDamageAmount, TriggerTiming.Before);
 		}
+
+		private bool IsBuffAvailable()
+		{
+			return Game.Journal.CardPropertiesEntriesThisTurn(Card).Any(j => j.Key == base.GeneratePerTargetKey("BuffUsed", base.CharacterCard)) != true;
+		}
+
+		public override bool AllowFastCoroutinesDuringPretend
+		{
+			get
+			{
+				if (IsBuffAvailable())
+				{
+					return false;
+				}
+				//if it's not lady of the woods turn or we've used the triggers then we can use the default
+				return base.AllowFastCoroutinesDuringPretend;
+			}
+		}
+
 
 		private DealDamageAction DealDamageAction { get; set; }
 
