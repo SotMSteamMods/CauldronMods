@@ -11,7 +11,7 @@ namespace Cauldron.DocHavoc
         // Draw a card. One player may use a power now.
         //==============================================================
 
-        public static string Identifier = "StimShot";
+        public static readonly string Identifier = "StimShot";
 
         private const int CardDrawCount = 1;
 

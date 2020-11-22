@@ -12,19 +12,18 @@
 			"LadyOfTheWood",
 			"Necro",
 			"Malichae",
+			"Starlight",
 			"TheStranger",
 			"TangoOne"
 		],
 		"villains":[
 			"Anathema",
-			"Gray",
 			"Tiamat"
 		],
 		"environments":[
-			"FSCContinuanceWanderer",
 			"HalberdExperimentalResearchCenter",
-			"StSimeonsCatacombs",
-			"TheWanderingIsle"
+			"TheWanderingIsle",
+			"BlackwoodForest"
 		]
 	}
 }

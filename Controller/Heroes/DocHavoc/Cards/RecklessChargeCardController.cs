@@ -12,7 +12,7 @@ namespace Cauldron.DocHavoc
         // Increase damage dealt to Doc Havoc by 1. You may draw an extra card during your draw phase.
         //==============================================================
 
-        public static string Identifier = "RecklessCharge";
+        public static readonly string Identifier = "RecklessCharge";
         private const int DamageDealtIncrease = 1;
         private const int ExtraDrawPhaseCount = 1;
 
@@ -27,10 +27,10 @@ namespace Cauldron.DocHavoc
 
             //You may draw an extra card during your draw phase.
             this.AddAdditionalPhaseActionTrigger(this.ShouldIncreasePhaseActionCount, Phase.DrawCard, ExtraDrawPhaseCount);
-            
+
         }
 
-        
+
 
         public override IEnumerator UsePower(int index = 0)
         {
