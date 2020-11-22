@@ -55,8 +55,10 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.TheRam", "Legacy", "Megalopolis");
 
+            QuickShuffleStorage(ram.TurnTaker.Deck);
             StartGame();
 
+            QuickShuffleCheck(1);
             AssertNumberOfCardsInPlay(ram, 2);
             AssertIsInPlay("GrapplingClaw");
             AssertNumberOfCardsInTrash(ram, 5, (Card c) => c.Identifier == "UpClose");
@@ -270,6 +272,55 @@ namespace CauldronTests
             QuickHPCheck(-2);
             AssertNumberOfCardsInPlay(ram, 2);
             CheckFinalMessage();
+        }
+        [Test]
+        public void TestBarrierBusterNoEnvironmentCards()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "CaptainCosmic", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+
+            //should hit non-character targets
+            Card crest = PlayCard("CosmicCrest");
+            
+            QuickHPStorage(legacy.CharacterCard, haka.CharacterCard, cosmic.CharacterCard, crest);
+            PlayCard("BarrierBuster");
+            QuickHPCheck(-3, -3, -3, -3);
+        }
+        [Test]
+        public void TestBarrierBuster2EnvironmentCards()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "CaptainCosmic", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+
+            //should hit non-character targets
+            Card crest = PlayCard("CosmicCrest");
+
+            PlayCards("PoliceBackup", "HostageSituation");
+
+            QuickHPStorage(legacy.CharacterCard, haka.CharacterCard, cosmic.CharacterCard);
+            PlayCard("BarrierBuster");
+            QuickHPCheck(-5, -5, -5);
+            AssertInTrash(crest);
+            AssertNumberOfCardsInPlay(FindEnvironment(), 0);
+        }
+        [Test]
+        public void TestBarrierBusterOnlyCountsActuallyDestroyed()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "Unity", "TheTempleOfZhuLong");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+
+            PlayCards("ShinobiAssassin");
+
+            QuickHPStorage(legacy.CharacterCard, haka.CharacterCard, unity.CharacterCard);
+            PlayCard("BarrierBuster");
+            //Assassin does not actually get destroyed, so only 3 damage
+            QuickHPCheck(-3, -3, -3);
         }
     }
 }

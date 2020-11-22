@@ -46,6 +46,17 @@ namespace Cauldron.TheRam
                 {
                     GameController.ExhaustCoroutine(coroutine);
                 }
+
+                var shuffleAction = new ShuffleCardsAction(new CardSource(CharacterCardController), this.TurnTaker.Deck);
+                coroutine = GameController.DoAction(shuffleAction);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }
