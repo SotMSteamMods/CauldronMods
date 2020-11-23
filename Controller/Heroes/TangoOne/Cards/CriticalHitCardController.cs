@@ -48,7 +48,7 @@ namespace Cauldron.TangoOne
 
             // Ask if player wants to discard off the top of their deck
             IEnumerator routine = base.GameController.MakeYesNoCardDecision(DecisionMaker,
-                SelectionType.DiscardFromDeck, this.Card, dda, storedYesNoResults, null, GetCardSource());
+                SelectionType.RevealTopCardOfDeck, this.Card, dda, storedYesNoResults, null, GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
