@@ -656,7 +656,7 @@ namespace CauldronTests
             DecisionSelectTarget = ra.CharacterCard;
             QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
             GoToUsePowerPhase(Malichae);
-            UsePower(high);
+            UsePower(djinn, 0);
             QuickHPCheck(0, 0, -5, 0, 0); //4 + 1
             AssertInPlayArea(Malichae, card);
             AssertInTrash(Malichae, high);
@@ -741,7 +741,7 @@ namespace CauldronTests
             AssertNextToCard(high, card);
 
             GoToUsePowerPhase(Malichae);
-            UsePower(high);
+            UsePower(djinn, 0);
             AssertInTrash(high);
 
             QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card, blade);
@@ -821,8 +821,8 @@ namespace CauldronTests
             DecisionSelectTargets = new Card[] { ra.CharacterCard, fanatic.CharacterCard, Malichae.CharacterCard };
             QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
             GoToUsePowerPhase(Malichae);
-            UsePower(high);
-            QuickHPCheck(0, -3, -3, -3, 0); //4 + 1
+            UsePower(djinn, 0);
+            QuickHPCheck(0, -3, -3, -3, 0); //2 + 1
             AssertInPlayArea(Malichae, card);
             AssertInTrash(Malichae, high);
         }
@@ -884,7 +884,7 @@ namespace CauldronTests
             GoToUsePowerPhase(Malichae);
             QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card, otherCard);
 
-            UsePower(high);
+            UsePower(djinn, 0);
 
             QuickHPCheck(0, 1, 1, 1, 2, 2);
             AssertInPlayArea(Malichae, card);
@@ -1067,7 +1067,7 @@ namespace CauldronTests
             DecisionSelectTarget = ra.CharacterCard;
             QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
             GoToUsePowerPhase(Malichae);
-            UsePower(grand);
+            UsePower(djinn, 1);
             QuickHPCheck(0, 0, -7, 0, 0); //6 + 1
             AssertInPlayArea(Malichae, card);
             AssertNextToCard(high, card);
@@ -1106,7 +1106,7 @@ namespace CauldronTests
             GoToUsePowerPhase(Malichae);
             QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card, otherCard);
 
-            UsePower(grand);
+            UsePower(djinn, 1);
 
             QuickHPCheck(0, 3, 3, 3, 3, 3);
             AssertInPlayArea(Malichae, card);
@@ -1142,7 +1142,7 @@ namespace CauldronTests
             QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card, blade, mdp);
             GoToUsePowerPhase(Malichae);
 
-            UsePower(grand);
+            UsePower(djinn, 1);
             QuickHPCheck(0, 0, 0, 0, 0, -3, -3); //2 + 1
             AssertInPlayArea(Malichae, card);
             AssertNextToCard(high, card);
@@ -1171,7 +1171,7 @@ namespace CauldronTests
             AssertNextToCard(grand, card);
 
             GoToUsePowerPhase(Malichae);
-            UsePower(grand);
+            UsePower(djinn, 1);
 
             QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card, blade);
             DealDamage(baron.CharacterCard, Malichae.CharacterCard, 2, DamageType.Cold);
@@ -1263,9 +1263,9 @@ namespace CauldronTests
 
             AssertPhaseActionCount(2);
 
-            UsePower(grand);
-            UsePower(high);
-            QuickHPCheck(0, 0, -12, 0, 0); //6 + 1
+            UsePower(djinn, 1);
+            UsePower(djinn, 0);
+            QuickHPCheck(0, 0, -12, 0, 0); //6 + 1 + 4 + 1
             AssertInPlayArea(Malichae, card);
             AssertInPlayArea(Malichae, target);
             AssertInTrash(high);

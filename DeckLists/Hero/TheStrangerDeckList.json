@@ -1,5 +1,6 @@
 {
     "name": "The Stranger",
+    "sortName":"Stranger",
     "kind": "Hero",
     "expansionIdentifier": "Cauldron",
     "initialCardIdentifiers": [

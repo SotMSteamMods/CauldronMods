@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>net35</TargetFramework>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+	<Deterministic>true</Deterministic>
+	<DebugType>pdbonly</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,6 +23,14 @@
 
   <ItemGroup>
     <None Remove="CodingBugs" />
+    <None Remove="Docs\manifest.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Docs\manifest.json">
+	  <Link>manifest.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -36,11 +46,6 @@
     <Reference Include="SentinelsEngine">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\Sentinels_Data\Managed\SentinelsEngine.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controller\Heroes\LadyOfTheWood\Cards\" />
-    <Folder Include="Controller\Heroes\LadyOfTheWood\CharacterCards\" />
   </ItemGroup>
 
 </Project>

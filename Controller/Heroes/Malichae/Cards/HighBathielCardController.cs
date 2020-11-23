@@ -19,7 +19,12 @@ namespace Cauldron.Malichae
             base.AddTriggers();
         }
 
-        public override IEnumerator UsePower(int index = 0)
+        public override Power GetGrantedPower(CardController cardController)
+        {
+            return new Power(cardController.HeroTurnTakerController, cardController, $"{cardController.Card.Title} deals 1 target 4 energy damage. Destroy {this.Card.Title}.", UseGrantedPower(), 0, null, GetCardSource());
+        }
+
+        private IEnumerator UseGrantedPower()
         {
             int targets = GetPowerNumeral(0, 1);
             int damages = GetPowerNumeral(1, 4);

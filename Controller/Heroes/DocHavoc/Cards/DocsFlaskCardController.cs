@@ -8,7 +8,7 @@ namespace Cauldron.DocHavoc
 {
     public class DocsFlaskCardController : CardController
     {
-        public static string Identifier = "DocsFlask";
+        public static readonly string Identifier = "DocsFlask";
         private const int HpGain = 1;
 
         public DocsFlaskCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
@@ -21,32 +21,45 @@ namespace Cauldron.DocHavoc
             // At the start of your turn, 1 hero target regains 1 HP
             //==============================================================
 
-            this.AddStartOfTurnTrigger((Func<TurnTaker, bool>)(tt => tt == this.TurnTaker),
-                (Func<PhaseChangeAction, IEnumerator>)(p =>
-                    this.GameController.SelectAndGainHP(this.DecisionMaker, 1,
-                        additionalCriteria: ((Func<Card, bool>) (c => c.IsHero)),
-                        numberOfTargets: 1, requiredDecisions: new int?(1), cardSource: this.GetCardSource())),
-                TriggerType.GainHP);
+            this.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.StartOfTurnResponse), TriggerType.GainHP);
 
-                base.AddTriggers();
+        }
+
+        private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
+        {
+            //1 hero target regains 1 HP
+            IEnumerator coroutine = GameController.SelectAndGainHP(DecisionMaker, 1,
+                        additionalCriteria: c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText,
+                        numberOfTargets: 1,
+                        requiredDecisions: 1,
+                        cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
 
         public override IEnumerator UsePower(int index = 0)
         {
             //==============================================================
-            // Each 1 hero target regains 1 HP.
+            // Each  hero target regains 1 HP.
             //==============================================================
 
-            int powerNumeral = this.GetPowerNumeral(0, HpGain);
-            IEnumerator routine = this.GameController.GainHP(this.HeroTurnTakerController, (Func<Card, bool>)(c => c.IsHero), powerNumeral, cardSource: this.GetCardSource());
+            int gainHpAmount = this.GetPowerNumeral(0, HpGain);
+            IEnumerator coroutine = this.GameController.GainHP(DecisionMaker, c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText, gainHpAmount, cardSource: GetCardSource());
             if (this.UseUnityCoroutines)
             {
 
-                yield return this.GameController.StartCoroutine(routine);
+                yield return this.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                this.GameController.ExhaustCoroutine(routine);
+                this.GameController.ExhaustCoroutine(coroutine);
             }
         }
     }

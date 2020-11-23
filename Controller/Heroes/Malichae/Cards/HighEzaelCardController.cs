@@ -21,7 +21,7 @@ namespace Cauldron.Malichae
 
         private IEnumerator EndOfTurnReponse(PhaseChangeAction pca)
         {
-            var coroutine = GameController.GainHP(this.DecisionMaker, c => c.IsTarget && IsDjinn(c), 1, cardSource: GetCardSource());
+            var coroutine = GameController.GainHP(this.DecisionMaker, c => c.IsTarget && c.IsInPlayAndHasGameText && IsDjinn(c), 1, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -33,13 +33,18 @@ namespace Cauldron.Malichae
             yield break;
         }
 
-        public override IEnumerator UsePower(int index = 0)
+        public override Power GetGrantedPower(CardController cardController)
+        {
+            return new Power(cardController.HeroTurnTakerController, cardController, $"All Djinn regain 2HP. All other hero targets regain 1HP. Destroy {this.Card.Title}.", UseGrantedPower(), 0, null, GetCardSource());
+        }
+
+        private IEnumerator UseGrantedPower()
         {
             int djinnHP = GetPowerNumeral(0, 2);
             int otherHP = GetPowerNumeral(1, 1);
 
             var card = GetCardThisCardIsNextTo();
-            var coroutine = base.GameController.GainHP(DecisionMaker, c => c.IsTarget && (c.IsHero || IsDjinn(c)), c => IsDjinn(c) ? djinnHP : otherHP, cardSource: GetCardSource());
+            var coroutine = base.GameController.GainHP(DecisionMaker, c => c.IsTarget && c.IsInPlayAndHasGameText && (c.IsHero || IsDjinn(c)), c => IsDjinn(c) ? djinnHP : otherHP, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

@@ -1,5 +1,6 @@
 {
     "name": "The Ram",
+    "sortName":"Ram",
     "kind": "Villain",
     "expansionIdentifier": "Cauldron",
     "initialCardIdentifiers": [
@@ -54,7 +55,7 @@
             ],
             "difficulty": 1,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Target Aquired//Status//Hostile//Initiate Neutralization Protocol",
                 "QuicksilverCharacter": "Quicksilver placeholder",
                 "UncannyQuicksilverCharacter": "Uncanny Quicksilver placeholder",
                 "RenegadeQuicksilverCharacter": "Renegade Quicksilver placeholder"

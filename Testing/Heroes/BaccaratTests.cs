@@ -92,7 +92,7 @@ namespace CauldronTests
             //prep trash
             PutInTrash(trashCards);
             DecisionSelectFunction = 1;
-            DecisionDoNotSelectCard = SelectionType.MoveCard;
+            DecisionDoNotSelectCard = SelectionType.PutIntoPlay;
             GoToUsePowerPhase(baccarat);
 
             //By discarding 3 cards then drawing 0 from the two Hold Em's net -3
@@ -621,6 +621,7 @@ namespace CauldronTests
             Card saint = GetCard("AceOfSaints");
             IEnumerable<Card> trashCards = new Card[] { trick1, trick2, saint };
             PutInTrash(trashCards);
+            DecisionsYesNo = new bool[] { true };
 
             Card house = GetCard("BringDownTheHouse");
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
@@ -677,7 +678,7 @@ namespace CauldronTests
             Card house = GetCard("BringDownTheHouse");
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
             PlayCard(house);
-            QuickShuffleCheck(0);
+            QuickShuffleCheck(3);
             //should have 2 cards in the trash, bring down the house and saints
             AssertNumberOfCardsInTrash(baccarat, 2);
             AssertInTrash(saint);
@@ -1002,7 +1003,7 @@ namespace CauldronTests
             GoToPlayCardPhase(baccarat);
             QuickShuffleStorage(baccarat);
             PlayCard(bridge);
-            QuickShuffleCheck(1);
+            QuickShuffleCheck(2);
             AssertNumberOfCardsInTrash(baccarat, 37);
             //check that all 3 copies are in the deck
             AssertInDeck(GetCard("AbyssalSolitaire", 0));
