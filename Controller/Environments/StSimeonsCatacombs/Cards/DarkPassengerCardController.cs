@@ -42,6 +42,14 @@ namespace Cauldron.StSimeonsCatacombs
             {
                 List<SelectCardsDecision> storedSecondHero = new List<SelectCardsDecision>();
                 coroutine = base.GameController.SelectCardsAndStoreResults(this.DecisionMaker, SelectionType.LowestHP, (Card c) => secondHighestHP.Contains(c), 1, storedSecondHero, false, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
                 secondHighest = storedSecondHero.FirstOrDefault().SelectedCard;
             }
             else

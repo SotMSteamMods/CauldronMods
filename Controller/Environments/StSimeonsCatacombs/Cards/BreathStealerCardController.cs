@@ -28,6 +28,14 @@ namespace Cauldron.StSimeonsCatacombs
             {
                 List<SelectCardsDecision> storedLowestHero = new List<SelectCardsDecision>();
                 coroutine = base.GameController.SelectCardsAndStoreResults(this.DecisionMaker, SelectionType.LowestHP, (Card c) => lowestHPHeroes.Contains(c), 1, storedLowestHero, false, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
                 lowestHero = storedLowestHero.FirstOrDefault().SelectedCard;
             }
             else
