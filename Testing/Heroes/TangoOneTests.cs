@@ -865,7 +865,6 @@ namespace CauldronTests
 
             DecisionSelectTarget = mdp;
             DecisionSelectCard = GetCardFromHand(DisablingShotCardController.Identifier);
-            DecisionsYesNo = new[] { true, false };
 
             // Act
             GoToStartOfTurn(TangoOne);
@@ -895,7 +894,7 @@ namespace CauldronTests
             QuickHPStorage(mdp);
 
             DecisionSelectTarget = mdp;
-            DecisionYesNo = false;
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
 
             // Act
             GoToStartOfTurn(TangoOne);
