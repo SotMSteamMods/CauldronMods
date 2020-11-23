@@ -6,9 +6,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TangoOne
 {
-    public class TangoOneBaseCardController : CardController
+    public abstract class TangoOneBaseCardController : CardController
     {
-        public TangoOneBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected TangoOneBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
