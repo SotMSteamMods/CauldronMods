@@ -15,7 +15,7 @@ namespace Cauldron.TangoOne
         // the top card of your deck. If it is a Critical card, prevent that damage.
         //==============================================================
 
-        public static string Identifier = "ChameleonArmor";
+        public static readonly string Identifier = "ChameleonArmor";
 
         public ChameleonArmorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

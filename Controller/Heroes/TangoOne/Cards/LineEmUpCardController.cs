@@ -14,7 +14,7 @@ namespace Cauldron.TangoOne
         // she may deal 1 target 1 projectile damage.
         //==============================================================
 
-        public static string Identifier = "LineEmUp";
+        public static readonly string Identifier = "LineEmUp";
 
         private const int DamageAmount = 1;
 

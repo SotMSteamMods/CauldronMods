@@ -13,7 +13,7 @@ namespace Cauldron.TangoOne
         // You may play a card.
         //==============================================================
 
-        public static string Identifier = "PerfectFocus";
+        public static readonly string Identifier = "PerfectFocus";
 
         private const int DamageIncrease = 3;
 

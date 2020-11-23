@@ -14,7 +14,7 @@ namespace Cauldron.TangoOne
         // If it is a Critical card, increase that damage by 3.
         //==============================================================
 
-        public static string Identifier = "CriticalHit";
+        public static readonly string Identifier = "CriticalHit";
 
         private const int DamageIncrease = 3;
 

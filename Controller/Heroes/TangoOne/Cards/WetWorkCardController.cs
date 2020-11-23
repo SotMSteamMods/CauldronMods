@@ -14,7 +14,7 @@ namespace Cauldron.TangoOne
         // You may deal 1 target 2 melee damage.
         //==============================================================
 
-        public static string Identifier = "WetWork";
+        public static readonly string Identifier = "WetWork";
 
         private const int CardsToMoveFromTrash = 2;
         private const int DamageAmount = 2;

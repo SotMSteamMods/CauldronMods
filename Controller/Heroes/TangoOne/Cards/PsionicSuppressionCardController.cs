@@ -13,7 +13,7 @@ namespace Cauldron.TangoOne
         // That target may not deal damage until the start of your next turn.
         //==============================================================
 
-        public static string Identifier = "PsionicSuppression";
+        public static readonly string Identifier = "PsionicSuppression";
 
         public PsionicSuppressionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

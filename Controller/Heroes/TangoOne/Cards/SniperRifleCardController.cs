@@ -15,7 +15,7 @@ namespace Cauldron.TangoOne
         // Power 2: Deal 1 target 2 projectile damage.
         //==============================================================
 
-        public static string Identifier = "SniperRifle";
+        public static readonly string Identifier = "SniperRifle";
 
         private const int CardsToDiscard = 2;
         private const int TargetAmount = 1;

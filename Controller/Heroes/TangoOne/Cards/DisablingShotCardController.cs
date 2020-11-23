@@ -13,7 +13,7 @@ namespace Cauldron.TangoOne
         // {TangoOne} may deal 1 target 2 projectile damage.
         //==============================================================
 
-        public static string Identifier = "DisablingShot";
+        public static readonly string Identifier = "DisablingShot";
 
         private const int DamageAmount = 2;
 

@@ -13,7 +13,7 @@ namespace Cauldron.TangoOne
         // You may draw a card. You may play a card.
         //==============================================================
 
-        public static string Identifier = "Infiltrate";
+        public static readonly string Identifier = "Infiltrate";
 
         private const int CardsToReveal = 2;
 

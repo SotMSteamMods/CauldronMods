@@ -14,7 +14,7 @@ namespace Cauldron.TangoOne
         // Draw 2 cards.
         //==============================================================
 
-        public static string Identifier = "Opportunist";
+        public static readonly string Identifier = "Opportunist";
 
         private const int CardsToDraw = 2;
         private const int DamageIncrease = 3;

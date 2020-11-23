@@ -11,7 +11,7 @@ namespace Cauldron.TangoOne
         // Power: Draw a card. Increase the next damage dealt by {TangoOne} by 2.
         //==============================================================
 
-        public static string Identifier = "GhostReactor";
+        public static readonly string Identifier = "GhostReactor";
 
         private const int DamageIncrease = 2;
 
