@@ -27,19 +27,13 @@ namespace Cauldron.TangoOne
         public override IEnumerator Play()
         {
             // Increase the next damage dealt by {TangoOne} by 3
-            IEnumerator increaseDamageRoutine = base.AddStatusEffect(new IncreaseDamageStatusEffect(DamageIncrease)
-            {
-                SourceCriteria =
-                {
-                    IsSpecificCard = base.Card.Owner.CharacterCard
-                },
-                NumberOfUses = 1,
-                CardDestroyedExpiryCriteria =
-                {
-                    Card = base.Card
-                }
-            });
+            var effect = new IncreaseDamageStatusEffect(DamageIncrease);
+            effect.SourceCriteria.IsSpecificCard = base.CharacterCard;
+            effect.CardSource = Card;
+            effect.Identifier = IncreaseDamageIdentifier;
+            effect.NumberOfUses = 1;
 
+            IEnumerator increaseDamageRoutine = base.AddStatusEffect(effect, true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(increaseDamageRoutine);

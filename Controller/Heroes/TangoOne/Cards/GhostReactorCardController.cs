@@ -43,7 +43,7 @@ namespace Cauldron.TangoOne
             var effect = new IncreaseDamageStatusEffect(powerNumeral);
             effect.SourceCriteria.IsSpecificCard = base.CharacterCard;
             effect.CardSource = Card;
-            effect.Identifier = Card.Identifier;
+            effect.Identifier = IncreaseDamageIdentifier;
             effect.NumberOfUses = 1;
 
             IEnumerator increaseDamageRoutine = base.AddStatusEffect(effect, true);

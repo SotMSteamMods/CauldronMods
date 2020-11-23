@@ -8,6 +8,8 @@ namespace Cauldron.TangoOne
 {
     public abstract class TangoOneBaseCardController : CardController
     {
+        protected static readonly string IncreaseDamageIdentifier = "TangoOneIncreaseDamageId";
+
         protected TangoOneBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
