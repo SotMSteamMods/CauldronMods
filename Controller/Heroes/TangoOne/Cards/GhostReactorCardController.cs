@@ -17,7 +17,6 @@ namespace Cauldron.TangoOne
 
         public GhostReactorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddTriggers()
@@ -41,20 +40,13 @@ namespace Cauldron.TangoOne
 
             // Increase the next damage dealt by {TangoOne} by 2
             int powerNumeral = GetPowerNumeral(0, DamageIncrease);
+            var effect = new IncreaseDamageStatusEffect(powerNumeral);
+            effect.SourceCriteria.IsSpecificCard = base.CharacterCard;
+            effect.CardSource = Card;
+            effect.Identifier = Card.Identifier;
+            effect.NumberOfUses = 1;
 
-            IEnumerator increaseDamageRoutine = base.AddStatusEffect(new IncreaseDamageStatusEffect(powerNumeral)
-            {
-                SourceCriteria =
-                {
-                    IsSpecificCard = base.Card.Owner.CharacterCard
-                },
-                NumberOfUses = 1,
-                CardDestroyedExpiryCriteria =
-                {
-                    Card = base.Card
-                }
-            }, true);
-
+            IEnumerator increaseDamageRoutine = base.AddStatusEffect(effect, true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(increaseDamageRoutine);
