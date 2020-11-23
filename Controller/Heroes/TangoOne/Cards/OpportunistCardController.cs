@@ -21,7 +21,6 @@ namespace Cauldron.TangoOne
 
         public OpportunistCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override IEnumerator Play()
