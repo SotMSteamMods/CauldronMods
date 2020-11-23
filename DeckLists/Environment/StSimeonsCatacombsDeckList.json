@@ -2,39 +2,55 @@
     "name": "St. Simeon's Catacombs",
     "kind": "Environment",
     "expansionIdentifier": "Cauldron",
-    "initialCardIdentifiers": [
-        "StSimeonsCatacombs"
-    ],
     "backgroundColor": "FB5455",
     "difficulty": 1,
+    "initialCardIdentifiers":[
+      "StSimeonsCatacombsInstructions"
+    ],
     "cards": [
         {
-            "identifier": "StSimeonsCatacombs",
+            "identifier": "StSimeonsCatacombsInstructions",
             "count": 1,
-            "title": "St. Simeon's Catacombs",
+            "title": "St. Simeon's Catacombs Instructions",
+            "body":"The Catacombs",
+            "backgroundColor":"58bdec",
+            "foilBackgroundColor":"DAA465",
+            "character": true,
             "setup": "At the start of the game search the environment deck for all room cards and put them face up beneath this card. Shuffle the environment deck.",
             "gameplay": [
                 "The environment deck may not play cards.",
                 "Cards beneath this one are indestructible and have no game text.",
                 "At the end of the environment turn, put a random room card from beneath this one into play and flip this card."
             ],
-            "icons": [
+           "icons": [
                 "CannotPlayCards",
                 "PlayCardNow"
             ],
-            "flippedGameplay": [
-                "Cards beneath this one are indestructible and have no game text.",
-                "Whenever a room card would leave play, instead place it face up beneath this card. Then choose a different room beneath this card and put it into play.",
+           "flippedGameplay": [
+                "Cards beneath St. Simeon's Catacombs are indestructible and have no game text.",
+                "Whenever a room card would leave play, instead place it face up beneath St. Simeon's Catacombs. Then choose a different room beneath St. Simeon's Catacombs and put it into play.",
                 "If you change rooms this way three times in a turn, room cards become indestructible until the end of the turn.",
                 "At the end of the environment turn, if no room cards have entered play this turn, you may destroy a room card."
             ],
-            "flippedIcons": [
+           "flippedIcons": [
                 "PlayCardNow",
                 "Indestructible",
                 "EndOfTurnAction",
                 "Destroy"
-            ]
+            ],
+            "isReal": false
         },
+        {
+         "identifier":"StSimeonsCatacombs",
+         "count":1,
+         "title":"St. Simeon's Catacombs",
+         "body":[
+            "This card and all cards beneath this card are indestructible."
+         ],
+         "icons":[
+            "Indestructible"
+         ]
+      },
         {
             "identifier": "Aqueducts",
             "count": 1,
@@ -131,8 +147,7 @@
                 "StartOfTurnAction",
                 "Discard",
                 "Destroy",
-                "DealDamagePsychic",
-                "DestroySelf"
+                "DealDamagePsychic"
             ],
             "body": [
                 "At the start of a hero's turn, that hero may discard 2 cards to destroy a Room in play.",
@@ -287,7 +302,7 @@
                 "IncreaseDamageDealt"
             ],
             "body": [
-                "Increase damage dealt by environment cards by 1.",
+                "Increase damage dealt by environment targets by 1.",
                 "If there are fewer than 2 environment targets in play, increase damage dealt by hero targets by 1."
             ],
             "flavorText": "With a burst of light, Vanish appeared at{BR}his elbow. “We can use this maze to our{BR}advantage. Dawn won't know what hit{BR}her.”"
