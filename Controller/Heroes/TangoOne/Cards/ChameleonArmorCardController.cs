@@ -36,7 +36,7 @@ namespace Cauldron.TangoOne
 
         private IEnumerator RevealTopCardFromDeckResponse(DealDamageAction dda)
         {
-           
+
             List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
 
             // Ask if player wants to discard off the top of their deck
@@ -99,7 +99,7 @@ namespace Cauldron.TangoOne
             {
                 base.GameController.ExhaustCoroutine(cancelDamageRoutine);
             }
-            
+
 
             yield break;
         }

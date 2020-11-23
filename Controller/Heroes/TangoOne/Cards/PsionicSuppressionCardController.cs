@@ -42,7 +42,7 @@ namespace Cauldron.TangoOne
             // Apply cannot deal damage status effect to chosen card
             CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new CannotDealDamageStatusEffect
             {
-                SourceCriteria = { IsSpecificCard = selectedCard}
+                SourceCriteria = { IsSpecificCard = selectedCard }
             };
             cannotDealDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
             cannotDealDamageStatusEffect.CardDestroyedExpiryCriteria.Card = base.CharacterCard;

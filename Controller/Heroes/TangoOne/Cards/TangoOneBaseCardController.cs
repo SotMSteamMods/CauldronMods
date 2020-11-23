@@ -28,7 +28,7 @@ namespace Cauldron.TangoOne
             if (base.HeroTurnTakerController.HasMultipleCharacterCards)
             {
                 LinqCardCriteria criteria = new LinqCardCriteria(IsOwnCharacterCard, "hero character cards");
-                var routine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, selectionType, 
+                var routine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, selectionType,
                     criteria, results, false, cardSource: base.GetCardSource());
 
                 if (base.UseUnityCoroutines)
@@ -42,7 +42,7 @@ namespace Cauldron.TangoOne
             }
             else
             {
-                var result = new SelectCardDecision(this.GameController, this.DecisionMaker, selectionType, 
+                var result = new SelectCardDecision(this.GameController, this.DecisionMaker, selectionType,
                     new[] { base.CharacterCard }, false, true, cardSource: base.GetCardSource());
                 result.ChooseIndex(0);
                 result.AutoDecide();

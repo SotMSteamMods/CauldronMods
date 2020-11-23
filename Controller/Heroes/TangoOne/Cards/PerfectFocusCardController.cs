@@ -51,7 +51,7 @@ namespace Cauldron.TangoOne
 
             if (!base.HeroTurnTakerController.HasCardsInHand)
             {
-                IEnumerator sendMessage = base.GameController.SendMessageAction("No cards in hand to play, skipping", 
+                IEnumerator sendMessage = base.GameController.SendMessageAction("No cards in hand to play, skipping",
                     Priority.High, base.GetCardSource(), null, true);
 
                 if (base.UseUnityCoroutines)
@@ -68,7 +68,7 @@ namespace Cauldron.TangoOne
 
 
             // Ask if player wants to play a card
-            YesNoDecision yesNo = new YesNoDecision(base.GameController, base.HeroTurnTakerController, 
+            YesNoDecision yesNo = new YesNoDecision(base.GameController, base.HeroTurnTakerController,
                 SelectionType.PlayCard, false, cardSource: GetCardSource());
 
             IEnumerator decidePlayCard = base.GameController.MakeDecisionAction(yesNo, true);
@@ -86,7 +86,7 @@ namespace Cauldron.TangoOne
             {
                 yield break;
             }
-            
+
 
 
             // Play a card
