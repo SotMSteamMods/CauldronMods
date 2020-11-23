@@ -10,6 +10,9 @@ namespace Cauldron.TangoOne
 {
     public class PastTangoOneCharacterCardController : HeroCharacterCardController
     {
+        private const int PowerDamageToDeal = 3;
+        private const int Incapacitate1CardsToDraw = 2;
+        private const int Incapacitate2CardsToPlay = 2;
         private const int Incapacitate3CardsToDestroy = 1;
 
         public PastTangoOneCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
@@ -23,7 +26,26 @@ namespace Cauldron.TangoOne
             // {TangoOne} deals that target 3 projectile damage.
             //==============================================================
 
-            return base.UsePower(index);
+            List<SelectTargetDecision> storedDecision = new List<SelectTargetDecision>();
+            IEnumerable<Card> cardTargets = FindCardsWhere(card => card.IsTarget && card.IsInPlay);
+
+            IEnumerator selectTargetRoutine = this.GameController.SelectTargetAndStoreResults(this.HeroTurnTakerController, cardTargets, storedDecision);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(selectTargetRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(selectTargetRoutine);
+            }
+
+            if (!storedDecision.Any())
+            {
+                yield break;
+            }
+
+
+
         }
 
         public override IEnumerator UseIncapacitatedAbility(int index)
