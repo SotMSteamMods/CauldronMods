@@ -21,7 +21,20 @@ namespace Cauldron.StSimeonsCatacombs
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             //Play this card next to the hero with the lowest HP
-            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => base.CanCardBeConsideredLowestHitPoints(c, (Card card) => card.IsHero && card.IsTarget) && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), "hero target with the lowest HP"), storedResults, isPutIntoPlay, decisionSources);
+            IEnumerable<Card> lowestHPHeroes = FindCardsWhere(new LinqCardCriteria((Card c) => base.CanCardBeConsideredLowestHitPoints(c, (Card card) => card.IsHero && card.IsTarget)));
+            Card lowestHero;
+            IEnumerator coroutine = null;
+            if (lowestHPHeroes.Count() > 1)
+            {
+                List<SelectCardsDecision> storedLowestHero = new List<SelectCardsDecision>();
+                coroutine = base.GameController.SelectCardsAndStoreResults(this.DecisionMaker, SelectionType.LowestHP, (Card c) => lowestHPHeroes.Contains(c), 1, storedLowestHero, false, cardSource: base.GetCardSource());
+                lowestHero = storedLowestHero.FirstOrDefault().SelectedCard;
+            }
+            else
+            {
+                lowestHero = lowestHPHeroes.FirstOrDefault();
+            }
+            coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c == lowestHero && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), "hero target with the lowest HP"), storedResults, isPutIntoPlay, decisionSources);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -30,7 +43,6 @@ namespace Cauldron.StSimeonsCatacombs
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
             yield break;
         }
 
@@ -63,10 +75,7 @@ namespace Cauldron.StSimeonsCatacombs
 
             //add unaffected triggers from GhostCardControllers
             base.AddTriggers();
-
         }
-
-       
 
         #endregion Methods
     }
