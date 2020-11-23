@@ -8,22 +8,24 @@
 		"heroes":[
 			"Baccarat",
 			"DocHavoc",
-			"TheKnight",
 			"LadyOfTheWood",
-			"Necro",
 			"Malichae",
+			"Necro",
 			"Starlight",
-			"TheStranger",
-			"TangoOne"
+			"TangoOne",
+			"TheKnight",
+			"TheStranger"
 		],
 		"villains":[
 			"Anathema",
+			"Gray",
 			"Tiamat"
 		],
 		"environments":[
+			"BlackwoodForest",
 			"HalberdExperimentalResearchCenter",
-			"TheWanderingIsle",
-			"BlackwoodForest"
+			"StSimeonsCatacombs",
+			"TheWanderingIsle"
 		]
 	}
 }
