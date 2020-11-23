@@ -11,8 +11,8 @@ namespace Cauldron.Starlight
     {
         public NightloreCouncilStarlightCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowIfElseSpecialString(() => IsNextToConstellation(terra), () => $"{terra.Title} is next to a constellation", () => $"{terra.Title} is not next to a constellation");
-            SpecialStringMaker.ShowIfElseSpecialString(() => IsNextToConstellation(asheron), () => $"{asheron.Title} is next to a constellation", () => $"{terra.Title} is next to a constellation");
+            SpecialStringMaker.ShowSpecialString(() => $"{terra.Title} is next to a constellation", relatedCards: () => new Card[] { terra }).Condition = () => IsNextToConstellation(terra);
+            SpecialStringMaker.ShowSpecialString( () => $"{asheron.Title} is next to a constellation", relatedCards: () => new Card[] { asheron }).Condition = () => IsNextToConstellation(asheron);
             SpecialStringMaker.ShowListOfCards(new LinqCardCriteria(
                                                         (Card c) => (c == terra || c == asheron || c == cryos) &&
                                                                         c.NextToLocation.Cards.Any((Card nextTo) => nextTo.Identifier == "RetreatIntoTheNebula"),
@@ -68,7 +68,7 @@ namespace Cauldron.Starlight
             _asheron = cards.Where((Card c) => c.Identifier == "StarlightOfAsheronCharacter").FirstOrDefault();
             _cryos = cards.Where((Card c) => c.Identifier == "StarlightOfCryosFourCharacter").FirstOrDefault();
 
-            AddStartOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker && IsNextToConstellation(terra),
+            AddStartOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker,
                             (PhaseChangeAction pca) => TerraHealTeamResponse(),
                             TriggerType.GainHP);
             AddIncreaseDamageTrigger(AsheronBoostDamageCriteria, 1);
