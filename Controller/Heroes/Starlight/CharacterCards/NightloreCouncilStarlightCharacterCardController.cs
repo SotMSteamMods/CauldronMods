@@ -11,8 +11,16 @@ namespace Cauldron.Starlight
     {
         public NightloreCouncilStarlightCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowIfElseSpecialString(() => IsNextToConstellation(terra), () => $"{terra.Title} is next to a constellation", () => null);
-            SpecialStringMaker.ShowIfElseSpecialString(() => IsNextToConstellation(asheron), () => $"{asheron.Title} is next to a constellation", () => null);
+            SpecialStringMaker.ShowIfElseSpecialString(() => IsNextToConstellation(terra), () => $"{terra.Title} is next to a constellation", () => $"{terra.Title} is not next to a constellation");
+            SpecialStringMaker.ShowIfElseSpecialString(() => IsNextToConstellation(asheron), () => $"{asheron.Title} is next to a constellation", () => $"{terra.Title} is next to a constellation");
+            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria(
+                                                        (Card c) => (c == terra || c == asheron || c == cryos) &&
+                                                                        c.NextToLocation.Cards.Any((Card nextTo) => nextTo.Identifier == "RetreatIntoTheNebula"),
+                                                        "", 
+                                                        useCardsSuffix: false, 
+                                                        singular: "Starlight being protected by Retreat into the Nebula", 
+                                                        plural: "Starlights being protected by Retreat into the Nebula"))
+                                    .Condition = () => FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "RetreatIntoTheNebula")).Any();
         }
 
         private Card _terra = null;
@@ -60,7 +68,7 @@ namespace Cauldron.Starlight
             _asheron = cards.Where((Card c) => c.Identifier == "StarlightOfAsheronCharacter").FirstOrDefault();
             _cryos = cards.Where((Card c) => c.Identifier == "StarlightOfCryosFourCharacter").FirstOrDefault();
 
-            AddStartOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker,
+            AddStartOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker && IsNextToConstellation(terra),
                             (PhaseChangeAction pca) => TerraHealTeamResponse(),
                             TriggerType.GainHP);
             AddIncreaseDamageTrigger(AsheronBoostDamageCriteria, 1);

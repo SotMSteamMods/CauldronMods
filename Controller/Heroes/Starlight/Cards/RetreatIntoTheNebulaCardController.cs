@@ -12,7 +12,6 @@ namespace Cauldron.Starlight
         public RetreatIntoTheNebulaCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => IsConstellation(c), "constellation"));
-            SpecialStringMaker.ShowIfElseSpecialString(() => GetCardThisCardIsNextTo() != null, () => $"This card is protecting {GetCardThisCardIsNextTo().Title}", () => null);
         }
 
         public override void AddTriggers()
