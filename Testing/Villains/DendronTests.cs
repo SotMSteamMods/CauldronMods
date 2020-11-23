@@ -170,16 +170,12 @@ namespace CauldronTests
 
             GoToEndOfTurn(Dendron);
 
-            // Act
-
-            // Arrange
-
             // Tattoos deal +1 damage: -2 on Ra from Painted Viper (normally -1), -3 on Haka from Stained Wolf (normally -2)
             QuickHPCheck(0, -2, -3);
         }
 
         [Test]
-        public void TestFlippedAdvancedIncreaseTattooDamage()
+        public void TestFlippedAdvancedDendronGainsHealth()
         {
             // Advanced: At the start of the villain turn, {Dendron} regains 5 HP.
 
@@ -187,17 +183,29 @@ namespace CauldronTests
             SetupGameController(new[] { DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis" },
                 advanced: true, advancedIdentifiers: new[] { DeckNamespace });
 
+            Card staffOfRa = GetCard("TheStaffOfRa");
+
             QuickHPStorage(legacy, ra, haka);
+            SetHitPoints(Dendron, 1);
+
             StartGame();
 
             GoToEndOfTurn(Dendron);
 
             // Act
+            GoToPlayCardPhase(ra);
+            PlayCard(staffOfRa);
+            GoToUsePowerPhase(ra);
+            UsePower(ra);
+            UsePower(ra);
+            UsePower(ra);
 
-            // Arrange
+            QuickHPStorage(Dendron);
 
-            // Tattoos deal +1 damage: -2 on Ra from Painted Viper (normally -1), -3 on Haka from Stained Wolf (normally -2)
-            QuickHPCheck(0, -2, -3);
+            GoToStartOfTurn(Dendron);
+
+            // Assert
+            QuickHPCheck(5);
         }
 
 

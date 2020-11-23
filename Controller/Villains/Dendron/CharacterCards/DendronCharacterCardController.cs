@@ -39,7 +39,7 @@ namespace Cauldron.Dendron
          */
 
         private const int AdvancedTattooDamageIncrease = 1;
-        private const int AdvancedHpGain = 1;
+        private const int AdvancedHpGain = 5;
 
 
         public DendronCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
