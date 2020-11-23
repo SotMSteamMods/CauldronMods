@@ -26,7 +26,7 @@ namespace Cauldron.TangoOne
 
         public override void AddTriggers()
         {
-            base.AddTrigger<DealDamageAction>(dda => dda.Target.Equals(this.CharacterCard),
+            base.AddTrigger<DealDamageAction>(dda => dda.Target.Equals(this.CharacterCard) && dda.Amount > 0,
                 this.RevealTopCardFromDeckResponse,
                 new TriggerType[]
                 {
@@ -36,7 +36,6 @@ namespace Cauldron.TangoOne
 
         private IEnumerator RevealTopCardFromDeckResponse(DealDamageAction dda)
         {
-
             List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
 
             // Ask if player wants to discard off the top of their deck
