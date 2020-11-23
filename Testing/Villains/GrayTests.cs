@@ -137,9 +137,9 @@ namespace CauldronTests
             SetupGameController("Cauldron.Gray", "Parse", "Haka", "Guise", "Megalopolis");
             StartGame();
             //At the end of the villain turn, {Gray} deals the hero target with the highest HP {H - 1} energy damage.
-            QuickHPStorage(haka);
+            QuickHPStorage(gray, parse, haka, guise);
             GoToEndOfTurn(gray);
-            QuickHPCheck(-2);
+            QuickHPCheck(0, 0, -2, 0);
         }
 
         [Test()]
@@ -149,14 +149,11 @@ namespace CauldronTests
             StartGame();
             Card monorail = GetCard("PlummetingMonorail");
             PlayCard(monorail);
-            //PlayCards(new string[] { "TaMoko", "Mere" });
             //Whenever a radiation card is destroyed, destroy 1 hero ongoing or equipment card and gray deals each non-villain target {H - 1} energy damage.
             QuickHPStorage(legacy.CharacterCard, haka.CharacterCard, ra.CharacterCard, monorail);
             DestroyCard("ChainReaction");
-            //Ta Moko is in play so Haka takes 1 less
             QuickHPCheck(-2, -2, -2, -2);
-            //AssertInTrash("Mere");
-            //AssertIsInPlay("TaMoko");
+
         }
 
         [Test()]
@@ -168,10 +165,10 @@ namespace CauldronTests
             PlayCard(monorail);
             PlayCards(new string[] { "TaMoko", "Mere" });
             //Whenever a radiation card is destroyed, destroy 1 hero ongoing or equipment card and gray deals each non-villain target {H - 1} energy damage.
-            QuickHPStorage(legacy.CharacterCard, haka.CharacterCard, ra.CharacterCard, monorail);
+            QuickHPStorage(gray.CharacterCard, legacy.CharacterCard, haka.CharacterCard, ra.CharacterCard, monorail);
             DestroyCard("ChainReaction");
             //Ta Moko is in play so Haka takes 1 less
-            QuickHPCheck(-2, -1, -2, -2);
+            QuickHPCheck(0, -2, -1, -2, -2);
             AssertInTrash("Mere");
             AssertIsInPlay("TaMoko");
         }
@@ -185,10 +182,10 @@ namespace CauldronTests
             PlayCard(monorail);
             PlayCards(new string[] { "TaMoko", "Mere" });
             //Whenever a radiation card is destroyed, destroy 1 hero ongoing or equipment card and gray deals each non-villain target {H - 1} energy damage.
-            QuickHPStorage(legacy.CharacterCard, haka.CharacterCard, ra.CharacterCard, monorail);
+            QuickHPStorage(gray.CharacterCard, legacy.CharacterCard, haka.CharacterCard, ra.CharacterCard, monorail);
             DecisionSelectCards = new Card[] { GetCardInPlay("TaMoko"), legacy.CharacterCard, haka.CharacterCard, ra.CharacterCard, monorail };
             DestroyCard("ChainReaction");
-            QuickHPCheck(-2, -2, -2, -2);
+            QuickHPCheck(0, -2, -2, -2, -2);
             AssertInTrash("TaMoko");
             AssertIsInPlay("Mere");
         }
@@ -204,8 +201,7 @@ namespace CauldronTests
             //Whenever a radiation card is destroyed, destroy 1 hero ongoing or equipment card and gray deals each non-villain target {H - 1} energy damage.
             QuickHPStorage(legacy.CharacterCard, haka.CharacterCard, ra.CharacterCard, monorail);
             DestroyCard("ChainReaction");
-            //Ta Moko is in play so Haka takes 1 less
-            QuickHPCheck(-2, -1, -2, -2);
+            QuickHPCheck(-2, -2, -2, -2);
             AssertInTrash("TaMoko");
             AssertInTrash("Mere");
         }
@@ -320,10 +316,12 @@ namespace CauldronTests
             Card ali = GetCard("AlistarWinters");
             PlayCard(ali);
             //Advanced - Reduce damage dealt to villain targets by 1.
-            QuickHPStorage(gray.CharacterCard, ali);
+            QuickHPStorage(gray.CharacterCard, ali, haka.CharacterCard);
             DealDamage(legacy, gray, 2, DamageType.Melee);
             DealDamage(ra, ali, 2, DamageType.Melee);
-            QuickHPCheck(-1, -1);
+            DealDamage(ra, haka, 2, DamageType.Fire);
+            QuickHPCheck(-1, -1, -3);
+
         }
 
         [Test()]
@@ -399,9 +397,9 @@ namespace CauldronTests
             //At the start of the villain turn, this card deals the X hero targets with the lowest HP 1 energy damage each, where X is the number of Radiation cards in play.
             //Chain Reaction and Irradiated Touch makes 2
             AssertNumberOfCardsInPlay((Card c) => c.DoKeywordsContain("radiation"), 2);
-            QuickHPStorage(parse, ra);
+            QuickHPStorage(parse, ra, haka);
             GoToStartOfTurn(gray);
-            QuickHPCheck(-1, -1);
+            QuickHPCheck(-1, -1, 0);
         }
 
         [Test()]
@@ -410,18 +408,20 @@ namespace CauldronTests
             SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
             StartGame();
             Card contamination = GetCard("Contamination");
+            Card blight = GetCard("BlightTheLand");
             Card ring = GetCard("TheLegacyRing");
             Card moko = GetCard("TaMoko");
             Card mere = GetCard("Mere");
             //Whenever a hero deals damage to a villain target, that hero must destroy 1 of their ongoing or equipment cards.
-            PlayCards(contamination, ring, mere, moko);
+            PlayCards(contamination, blight, ring, mere, moko);
             DealDamage(legacy, gray, 2, DamageType.Melee);
             AssertInTrash(ring);
             AssertIsInPlay(contamination);
             //Ra has none, so none are destroyed
             DealDamage(ra, gray, 2, DamageType.Melee);
             AssertIsInPlay(mere, moko, contamination);
-            DealDamage(haka, gray, 2, DamageType.Melee);
+            //check that it is to all villain targets
+            DealDamage(haka.CharacterCard, blight, 2, DamageType.Melee);
             AssertInTrash(mere);
             AssertIsInPlay(contamination);
             DealDamage(haka, gray, 2, DamageType.Melee);
@@ -439,10 +439,10 @@ namespace CauldronTests
             PutInTrash(iso);
             //Search the villain deck and trash for all copies of Chain Reaction and put them into play. Move 1 copy of Unstable Isotope from the villain trash to the villain deck. Shuffle the villain deck.
             //{Gray} deals himself 2 energy damage.
-            QuickHPStorage(gray);
+            QuickHPStorage(gray, legacy, haka, ra);
             QuickShuffleStorage(gray);
             PlayCard("CriticalMass");
-            QuickHPCheck(-2);
+            QuickHPCheck(-2, 0, 0, 0);
             QuickShuffleCheck(1);
             AssertIsInPlay("ChainReaction", 3);
             AssertInDeck(iso);
@@ -487,14 +487,15 @@ namespace CauldronTests
             PlayCard("IrradiatedTouch");
             DealDamage(ra, GetCardInPlay("ChainReaction"), 4, DamageType.Melee);
             //At the end of the villain turn, {Gray} deals the hero target with the second highest HP {H - 2} melee and {H - 2} energy damage.
-            QuickHPStorage(legacy);
+            //Gray deals highest target (Haka) H-1 damage
+            QuickHPStorage(legacy, gray, haka, ra);
             GoToEndOfTurn(gray);
-            QuickHPCheck(-2);
+            QuickHPCheck(-2, 0, -2, 0);
             //When this card is destroyed, {Gray} deals the hero target with the highest HP 2 energy damage.
-            QuickHPStorage(haka);
+            QuickHPUpdate();
             DestroyCard("IrradiatedTouch");
             //Gray deals everyone 2 energy damage when a radiation card is destroyed
-            QuickHPCheck(-4);
+            QuickHPCheck(-2,0,-4,-2);
         }
 
         [Test()]
@@ -573,9 +574,9 @@ namespace CauldronTests
             StartGame();
             //{Gray} deals the 2 hero targets with the highest HP {H - 1} energy damage each.
             //{Gray} deals the 2 hero targets with the lowest HP {H - 2} fire damage each.
-            QuickHPStorage(legacy, haka, ra);
+            QuickHPStorage(gray, legacy, haka, ra);
             PlayCard("NuclearFire");
-            QuickHPCheck(-3, -2, -1);
+            QuickHPCheck(0, -3, -2, -1);
         }
 
         [Test()]
@@ -584,6 +585,7 @@ namespace CauldronTests
             SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
             StartGame();
             //When this card enters play, {Gray} deals the hero with the highest HP X energy damage, where X is 2 plus the number of Radiation cards in play.",
+            //X=2, radioactive cascade and chain reaction
             QuickHPStorage(haka);
             PlayCard("RadioactiveCascade");
             QuickHPCheck(-4);
@@ -607,6 +609,7 @@ namespace CauldronTests
             PlayCard("UnstableIsotope");
             AssertIsInPlay(mutie, mutie2);
             AssertInTrash(fire);
+            AssertNumberOfCardsInRevealed(gray, 0);
         }
 
         [Test()]
