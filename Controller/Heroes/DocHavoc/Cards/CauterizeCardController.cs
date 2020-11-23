@@ -15,10 +15,11 @@ namespace Cauldron.DocHavoc
         // that target may instead regain that much HP.
         //==============================================================
 
-        public static string Identifier = "Cauterize";
+        public static readonly string Identifier = "Cauterize";
 
         public CauterizeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            this.AllowFastCoroutinesDuringPretend = false;
         }
 
         public override void AddTriggers()
@@ -85,6 +86,7 @@ namespace Cauldron.DocHavoc
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+        
 
             yield break;
         }

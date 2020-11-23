@@ -11,14 +11,15 @@ namespace Cauldron.Starlight
     {
         public GoldenAstrolabeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && IsNextToConstellation(c), useCardsSuffix: false, singular: "hero character next to a constellation", plural: "hero characters next to a constellation"));
         }
 
         public override IEnumerator UsePower(int index = 0)
         {
             //"Starlight deals herself 2 energy damage. One hero character next to a constellation may use a power now."
-            int powerNumeral = GetPowerNumeral(0, 2);
+            int damages = GetPowerNumeral(0, 2);
             List<Card> storedResults = new List<Card> { };
-            IEnumerator chooseDamageSource = SelectActiveCharacterCardToDealDamage(storedResults, powerNumeral, DamageType.Energy);
+            IEnumerator chooseDamageSource = SelectActiveCharacterCardToDealDamage(storedResults, damages, DamageType.Energy);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(chooseDamageSource);
@@ -30,7 +31,7 @@ namespace Cauldron.Starlight
             Card damageSource = storedResults.FirstOrDefault();
 
             //"Starlight deals herself 2 energy damage."
-            IEnumerator selfDamage = DealDamage(damageSource, damageSource, powerNumeral, DamageType.Energy);
+            IEnumerator selfDamage = DealDamage(damageSource, damageSource, damages, DamageType.Energy);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(selfDamage);
@@ -40,20 +41,21 @@ namespace Cauldron.Starlight
                 GameController.ExhaustCoroutine(selfDamage);
             }
 
-            LinqTurnTakerCriteria ttCriteria = new LinqTurnTakerCriteria((TurnTaker tt) => 
-                                                        tt is HeroTurnTaker && 
-                                                        !tt.IsIncapacitatedOrOutOfGame && 
-                                                        tt.HasCardsWhere((Card c) => c.IsHeroCharacterCard && IsNextToConstellation(c)) && 
-                                                        GetUsablePowersFromAllowedSource(GameController.FindHeroTurnTakerController(tt.ToHero())).Count() > 0);
+            LinqTurnTakerCriteria ttCriteria = new LinqTurnTakerCriteria((TurnTaker tt) =>
+                                                        tt is HeroTurnTaker htt &&
+                                                        !tt.IsIncapacitatedOrOutOfGame &&
+                                                        tt.HasCardsWhere((Card c) => c.IsHeroCharacterCard && IsNextToConstellation(c)) &&
+                                                        GetUsablePowersFromAllowedSource(GameController.FindHeroTurnTakerController(htt)).Any());
 
             //because of Nightlore Council Starlight, Sentinels, and others, restricting power use to either:
             //A: non-character card
             //B: character card next to constellation
 
-
             //"One hero character next to a constellation..." 
             var storedTurnTakerDecision = new List<SelectTurnTakerDecision> { };
-            IEnumerator pickHeroToUsePower = GameController.SelectHeroTurnTaker(HeroTurnTakerController, SelectionType.UsePower, optional: false, allowAutoDecide: false, storedResults: storedTurnTakerDecision, heroCriteria: ttCriteria, cardSource:GetCardSource());
+            IEnumerator pickHeroToUsePower = GameController.SelectHeroTurnTaker(HeroTurnTakerController, SelectionType.UsePower, false, false, storedTurnTakerDecision,
+                                                heroCriteria: ttCriteria,
+                                                cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(pickHeroToUsePower);
@@ -63,19 +65,17 @@ namespace Cauldron.Starlight
                 GameController.ExhaustCoroutine(pickHeroToUsePower);
             }
 
-            TurnTaker turnTaker = (from d in storedTurnTakerDecision
-                                   where d.Completed
-                                   select d.SelectedTurnTaker).FirstOrDefault();
-
-            if (turnTaker != null && turnTaker is HeroTurnTaker)
+            if (DidSelectTurnTaker(storedTurnTakerDecision))
             {
-                HeroTurnTakerController powerUser = GameController.FindHeroTurnTakerController(turnTaker.ToHero());
+                var turnTaker = GetSelectedTurnTaker(storedTurnTakerDecision).ToHero();
+
+                HeroTurnTakerController powerUser = GameController.FindHeroTurnTakerController(turnTaker);
 
                 if (powerUser != null)
                 {
                     //"...may use a power now."
-                    var usePower = GameController.SelectAndUsePower(powerUser, optional:true, PowerCriteria);
-                    if(UseUnityCoroutines)
+                    var usePower = GameController.SelectAndUsePower(powerUser, optional: true, PowerCriteria);
+                    if (UseUnityCoroutines)
                     {
                         yield return GameController.StartCoroutine(usePower);
                     }

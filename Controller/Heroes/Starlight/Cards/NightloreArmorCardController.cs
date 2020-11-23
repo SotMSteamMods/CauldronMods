@@ -11,6 +11,7 @@ namespace Cauldron.Starlight
     {
         public NightloreArmorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => IsConstellation(c), "constellation"));
         }
 
         public override void AddTriggers()
@@ -18,12 +19,13 @@ namespace Cauldron.Starlight
             //"Whenever damage would be dealt to another hero target, you may destroy a constellation card in play to prevent that damage."
             AddTrigger((DealDamageAction dd) => dd.Target.IsHero && !ListStarlights().Contains(dd.Target) && dd.Amount > 0,
                 DestroyConstellationToPreventDamage,
-                new TriggerType[3]
+                new TriggerType[]
                     {
                         TriggerType.DestroyCard,
                         TriggerType.WouldBeDealtDamage,
                         TriggerType.CancelAction
                     },
+                isActionOptional: true,
                 timing: TriggerTiming.Before);
         }
 
@@ -39,8 +41,9 @@ namespace Cauldron.Starlight
             //"...you may..."
             List<YesNoCardDecision> yesNoDecision = new List<YesNoCardDecision> { };
 
-            //TODO - what does the associatedCards argument actually do here? Should/should not be passing in the list of constellations?
-            IEnumerator askPrevent = GameController.MakeYesNoCardDecision(HeroTurnTakerController, SelectionType.DestroyCard, Card, dd, yesNoDecision, constellationsInPlay, GetCardSource());
+            //What does the associatedCards argument actually do here? Should/should not be passing in the list of constellations?
+            //Looks like it puts a constellation on the other side of the decision. Probably a good idea.
+            IEnumerator askPrevent = GameController.MakeYesNoCardDecision(HeroTurnTakerController, SelectionType.PreventDamage, Card, dd, yesNoDecision, constellationsInPlay, GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(askPrevent);
@@ -55,7 +58,7 @@ namespace Cauldron.Starlight
             }
 
             //"...destroy a constellation in play..."
-            IEnumerator destroyConstellation = GameController.SelectAndDestroyCard(HeroTurnTakerController, new LinqCardCriteria(IsConstellationInPlay, "constellation"), optional:false, cardSource: GetCardSource());
+            IEnumerator destroyConstellation = GameController.SelectAndDestroyCard(HeroTurnTakerController, new LinqCardCriteria(IsConstellationInPlay, "constellation"), optional: false, cardSource: GetCardSource());
             //"...to prevent that damage."
             IEnumerator preventDamage = CancelAction(dd, isPreventEffect: true);
             if (UseUnityCoroutines)

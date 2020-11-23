@@ -21,7 +21,7 @@ namespace Cauldron.Starlight
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             //"Play this card next to a target"
-            IEnumerator coroutine = SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsTarget, "targets", useCardsSuffix: false), storedResults, isPutIntoPlay, decisionSources);
+            IEnumerator coroutine = SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlay, "targets", useCardsSuffix: false), storedResults, isPutIntoPlay, decisionSources);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

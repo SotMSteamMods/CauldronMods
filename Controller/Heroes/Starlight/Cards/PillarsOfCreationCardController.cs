@@ -11,6 +11,8 @@ namespace Cauldron.Starlight
     {
         public PillarsOfCreationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocations(() => new Location[] { TurnTaker.Trash, HeroTurnTaker.Hand },
+                                new LinqCardCriteria((Card c) => IsConstellation(c), "constellation"));
         }
 
         public override void AddTriggers()
@@ -21,28 +23,28 @@ namespace Cauldron.Starlight
                                 (Phase p) => true,
                                 (PhaseChangeAction pc) => pc.FromPhase.Phase == Phase.Start,
                                 PlayConstellationFromHandOrTrash,
-                                new TriggerType[1] { TriggerType.PutIntoPlay },
+                                new TriggerType[] { TriggerType.PutIntoPlay },
                                 TriggerTiming.Before);
         }
 
         private IEnumerator PlayConstellationFromHandOrTrash(PhaseChangeAction pc)
         {
-            List<Function> actions = new List<Function> { };
             string heroName = TurnTaker.Name;
-
-
-            actions.Add(new Function(HeroTurnTakerController,
+            List<Function> actions = new List<Function>()
+            {
+                new Function(HeroTurnTakerController,
                                     "Play constellation from hand",
-                                     SelectionType.PutIntoPlay,
-                                     () => SelectAndPlayCardFromHand(HeroTurnTakerController, false, null, new LinqCardCriteria((Card c) => IsConstellation(c), "constellation"), true),
-                                     GetPlayableCardsInHand(HeroTurnTakerController, true, pc.ToPhase).Where(IsConstellation).Count() > 0));
-            actions.Add(new Function(HeroTurnTakerController,
+                                    SelectionType.PutIntoPlay,
+                                    () => SelectAndPlayCardFromHand(HeroTurnTakerController, false, null, new LinqCardCriteria((Card c) => IsConstellation(c), "constellation"), true),
+                                    GetPlayableCardsInHand(HeroTurnTakerController, true, pc.ToPhase).Any(IsConstellation)),
+                new Function(HeroTurnTakerController,
                                     "Play constellation from trash",
                                     SelectionType.SearchTrash,
                                     () => SelectAndPutInPlayConstellationFromTrash(HeroTurnTakerController, pc.ToPhase),
-                                    GetPuttableConstellationsFromTrash(HeroTurnTakerController, pc.ToPhase).Count() > 0));
+                                    GetPuttableConstellationsFromTrash(HeroTurnTakerController, pc.ToPhase).Any()),
+            };
 
-            SelectFunctionDecision selectFunction = new SelectFunctionDecision(GameController, HeroTurnTakerController, actions, optional: false, pc, heroName + " had no constellations to put into play from their hand or trash.", cardSource: GetCardSource());
+            SelectFunctionDecision selectFunction = new SelectFunctionDecision(GameController, HeroTurnTakerController, actions, optional: false, pc, $"{heroName} had no constellations to put into play from their hand or trash.", cardSource: GetCardSource());
             var coroutine = GameController.SelectAndPerformFunction(selectFunction);
             if (UseUnityCoroutines)
             {

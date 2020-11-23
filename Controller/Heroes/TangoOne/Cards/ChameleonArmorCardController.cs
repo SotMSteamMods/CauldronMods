@@ -19,7 +19,7 @@ namespace Cauldron.TangoOne
 
         public ChameleonArmorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            this.AllowFastCoroutinesDuringPretend = false;
         }
 
         public override void AddTriggers()
@@ -36,6 +36,7 @@ namespace Cauldron.TangoOne
 
         private IEnumerator RevealTopCardFromDeckResponse(DealDamageAction dda)
         {
+           
             List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
 
             // Ask if player wants to discard off the top of their deck
@@ -59,7 +60,7 @@ namespace Cauldron.TangoOne
 
             // Move card from top of their deck to the trash
             List<MoveCardAction> moveCardActions = new List<MoveCardAction>();
-            IEnumerator discardCardRoutine 
+            IEnumerator discardCardRoutine
                 = base.GameController.DiscardTopCard(this.TurnTaker.Deck, moveCardActions, card => true, this.TurnTaker, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
@@ -72,9 +73,20 @@ namespace Cauldron.TangoOne
 
             // Check to see if the card was moved and contains the keyword "critical", if it didn't, damage proceeds
             if (moveCardActions.Count <= 0 || !moveCardActions.First().WasCardMoved ||
-                !IsCritical(moveCardActions.First().CardToMove) )
+                !IsCritical(moveCardActions.First().CardToMove))
             {
                 yield break;
+            }
+
+            Card discardedCard = moveCardActions.First().CardToMove;
+            IEnumerator sendMessage = base.GameController.SendMessageAction(discardedCard.Title + " is a critical card, so damage is prevented!", Priority.Medium, base.GetCardSource(), associatedCards: new Card[] { discardedCard });
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(sendMessage);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(sendMessage);
             }
 
             // Card had the "critical" keyword, cancel the damage
@@ -87,6 +99,9 @@ namespace Cauldron.TangoOne
             {
                 base.GameController.ExhaustCoroutine(cancelDamageRoutine);
             }
+            
+
+            yield break;
         }
     }
 }

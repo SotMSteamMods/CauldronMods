@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
 using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
@@ -17,7 +16,7 @@ namespace Cauldron.DocHavoc
         // where X is the amount of damage that target dealt {DocHavoc} this turn.
         //==============================================================
 
-        public static string Identifier = "Brawler";
+        public static readonly string Identifier = "Brawler";
 
         private const int DamageAmountToNonHeroTarget = 4;
 
@@ -30,7 +29,7 @@ namespace Cauldron.DocHavoc
             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
 
             IEnumerator selectCardRoutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.SelectTargetNoDamage,
-                new LinqCardCriteria((Card c) => c.IsTarget && !c.IsHero && c.IsInPlayAndHasGameText, "non-hero targets in play"), 
+                new LinqCardCriteria((Card c) => c.IsTarget && !c.IsHero && c.IsInPlayAndHasGameText, "non-hero targets in play"),
                 storedResults, false, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)

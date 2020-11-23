@@ -21,7 +21,7 @@ namespace Cauldron.TangoOne
         public CriticalHitCardController(Card card, TurnTakerController turnTakerController) : base(card,
             turnTakerController)
         {
-
+            this.AllowFastCoroutinesDuringPretend = false;
         }
 
         public override void AddTriggers()
@@ -41,11 +41,12 @@ namespace Cauldron.TangoOne
 
         private IEnumerator RevealTopCardFromDeckResponse(DealDamageAction dda)
         {
+
             // Ask if player wants to discard off the top of their deck
 
             YesNoDecision yesNo = new YesNoDecision(base.GameController, base.HeroTurnTakerController,
-                SelectionType.DiscardFromDeck, false, cardSource: GetCardSource());
-            
+            SelectionType.DiscardFromDeck, false, cardSource: GetCardSource());
+
             IEnumerator routine = base.GameController.MakeDecisionAction(yesNo, true);
 
             if (base.UseUnityCoroutines)
@@ -65,7 +66,7 @@ namespace Cauldron.TangoOne
 
             // Move card from top of their deck to the trash
             List<MoveCardAction> moveCardActions = new List<MoveCardAction>();
-            IEnumerator discardCardRoutine = base.GameController.DiscardTopCard(this.TurnTaker.Deck, moveCardActions, 
+            IEnumerator discardCardRoutine = base.GameController.DiscardTopCard(this.TurnTaker.Deck, moveCardActions,
                 card => true, this.TurnTaker, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
@@ -87,6 +88,19 @@ namespace Cauldron.TangoOne
             ModifyDealDamageAction mdda = new IncreaseDamageAction(this.GameController, dda, DamageIncrease, false);
             dda.AddDamageModifier(mdda);
 
+            Card discardedCard = moveCardActions.First().CardToMove;
+            IEnumerator sendMessage = base.GameController.SendMessageAction(discardedCard.Title + " is a critical card, so damage is increased by 3!", Priority.Medium, base.GetCardSource(), associatedCards: new Card[] { discardedCard });
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(sendMessage);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(sendMessage);
+            }
+
+
+            yield break;
         }
     }
 }

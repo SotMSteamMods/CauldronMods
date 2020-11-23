@@ -23,7 +23,7 @@ namespace Cauldron.Baccarat
             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
 
             //You may shuffle a card from your trash into your deck... 
-            IEnumerator coroutine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.IsInTrash), turnTakerDeck.ToEnumerable<MoveCardDestination>(), false, true, true, true, storedResults, showOutput: true, allowAutoDecide: true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.IsInTrash), turnTakerDeck.ToEnumerable<MoveCardDestination>(), false, true, true, true, storedResults, showOutput: true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -50,7 +50,8 @@ namespace Cauldron.Baccarat
                 }
 
                 //Shuffle all copies of that card from your trash into your deck.
-                coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.HeroTurnTakerController, base.TurnTaker.Trash, list.Count<Card>(), this.TurnTaker.Trash.NumberOfCards, cardCriteria, turnTakerDeck.ToEnumerable<MoveCardDestination>(), responsibleTurnTaker: this.TurnTaker, selectionType: SelectionType.MoveCardOnDeck, cardSource: base.GetCardSource());
+                IEnumerable<Card> cardsWithSameName = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Identifier == selectCardDecision.SelectedCard.Identifier && c.Location.IsTrash));
+                coroutine = base.GameController.ShuffleCardsIntoLocation(base.HeroTurnTakerController, cardsWithSameName, base.TurnTaker.Deck, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

@@ -20,6 +20,16 @@ namespace CauldronTests
             SetHitPoints(starlight.CharacterCard, 1);
             DealDamage(villain, starlight, 2, DamageType.Melee);
         }
+
+        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
+        {
+            foreach (var id in identifiers)
+            {
+                var card = GetCard(id);
+                AssertCardHasKeyword(card, keyword, false);
+            }
+        }
+
         #endregion
 
         [Test()]
@@ -34,6 +44,61 @@ namespace CauldronTests
 
             Assert.AreEqual(31, starlight.CharacterCard.HitPoints);
         }
+
+        [Test()]
+        public void TestStarlightDecklist()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            AssertHasKeyword("constellation", new[]
+            {
+                "AncientConstellationA",
+                "AncientConstellationB",
+                "AncientConstellationC",
+                "AncientConstellationE",
+                "AncientConstellationF",
+            });
+
+            AssertHasKeyword("ongoing", new[]
+            {
+                "AncientConstellationA",
+                "AncientConstellationB",
+                "AncientConstellationC",
+                "AncientConstellationE",
+                "AncientConstellationF",
+                "PillarsOfCreation",
+                "NovaShield",
+                "CelestialAura",
+                "RetreatIntoTheNebula",
+            });
+
+            AssertHasKeyword("equipment", new[]
+            {
+                "NightloreArmor",
+                "WarpHalo",
+                "GoldenAstrolabe",
+            });
+
+            AssertHasKeyword("limited", new[]
+            {
+                "NightloreArmor",
+                "WarpHalo",
+                "NovaShield",
+                "CelestialAura",
+                "GoldenAstrolabe",
+            });
+
+            AssertHasKeyword("one-shot", new[]
+            {
+                "Redshift",
+                "EventHorizon",
+                "Exodus",
+                "StellarWind",
+                "Wish",
+            });
+        }
+
         [Test()]
         public void TestStarlightPowerMayDrawCards()
         {
@@ -698,7 +763,7 @@ namespace CauldronTests
             DealDamage(mainstay, talisman, 10, DamageType.Melee);
 
             UsePower(mainstay);
- 
+
             AssertUsablePower(sentinels, talisman);
             AssertNotUsablePower(sentinels, mainstay);
 
@@ -1284,6 +1349,53 @@ namespace CauldronTests
             PlayCard(wind);
             QuickHPCheck(-2, 0, 0, 0);
         }
+        [Test]
+        public void TestStellarWindCanAutodecideWhenShould()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card wind = GetCard("StellarWind");
+            PutInHand(wind);
+
+            DecisionSelectCards = new Card[] { mdp, baron.CharacterCard };
+            PlayCards("AncientConstellationA", "AncientConstellationB");
+
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            PlayCard(wind);
+
+            DecisionSelectCards = null;
+            DecisionSelectCard = haka.CharacterCard;
+            PlayCard("AncientConstellationC");
+            DecisionSelectCard = null;
+
+            PlayCards("CelestialAura", "StellarWind");
+        }
+        [Test]
+        public void TestStellarWindCannotAutodecideWhenShouldnt()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card wind = GetCard("StellarWind");
+            PutInHand(wind);
+
+            DecisionSelectCards = new Card[] { mdp, baron.CharacterCard, haka.CharacterCard };
+            PlayCards("AncientConstellationA", "AncientConstellationB", "AncientConstellationC");
+
+            DecisionAutoDecideIfAble = true;
+            DecisionSelectCards = null;
+
+            PlayCard(wind);
+
+            AssertRecordedDecisionAnswer("4-1", 0, false, autodecided: false);
+
+            PlayCards("CelestialAura", "StellarWind");
+
+            AssertRecordedDecisionAnswer("5-1", 0, false, true);
+        }
         [Test()]
         public void TestWarpHaloIncreasesWhenShould()
         {
@@ -1298,7 +1410,7 @@ namespace CauldronTests
             Card traffic = GetCard("TrafficPileup");
             PlayCard(traffic);
             PlayCard(battalion);
-            Card[] constellationed = new Card[5] { mdp, baron.CharacterCard, haka.CharacterCard, ra.CharacterCard, traffic};
+            Card[] constellationed = new Card[5] { mdp, baron.CharacterCard, haka.CharacterCard, ra.CharacterCard, traffic };
             DecisionSelectCards = constellationed;
             PlayCards("AncientConstellationA", "AncientConstellationB", "AncientConstellationC", "AncientConstellationD", "AncientConstellationE");
 
@@ -1312,7 +1424,7 @@ namespace CauldronTests
             DealDamage(ra, traffic, 1, DamageType.Fire);
             QuickHPCheck(0, 0, 0, 0, 0, -2);
         }
-        [Test()] 
+        [Test()]
         public void TestWarpHaloDoesNotIncreaseWhenShouldnt()
         {
             SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
@@ -1410,8 +1522,8 @@ namespace CauldronTests
             DealDamage(baron, ra, 50, DamageType.Melee);
 
             AssertDecisionIsOptional(SelectionType.RevealCardsFromDeck);
-            AssertNextDecisionChoices(new List<TurnTaker> { starlight.TurnTaker, visionary.TurnTaker, haka.TurnTaker }, 
-                                        new List<TurnTaker> { baron.TurnTaker, ra.TurnTaker, FindEnvironment().TurnTaker } );
+            AssertNextDecisionChoices(new List<TurnTaker> { starlight.TurnTaker, visionary.TurnTaker, haka.TurnTaker },
+                                        new List<TurnTaker> { baron.TurnTaker, ra.TurnTaker, FindEnvironment().TurnTaker });
             PlayCard("Wish");
         }
         //There are a bunch of other tests that could be done for Wish, but I'll assume Argent Adept has them covered.

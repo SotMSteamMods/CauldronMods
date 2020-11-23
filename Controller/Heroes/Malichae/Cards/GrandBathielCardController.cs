@@ -19,8 +19,12 @@ namespace Cauldron.Malichae
             AddDestroyAtEndOfTurnTrigger();
         }
 
+        public override Power GetGrantedPower(CardController cardController)
+        {
+            return new Power(cardController.HeroTurnTakerController, cardController, $"{cardController.Card.Title} deals 1 target 6 energy damage.", UseGrantedPower(), 0, null, GetCardSource());
+        }
 
-        public override IEnumerator UsePower(int index = 0)
+        private IEnumerator UseGrantedPower()
         {
             int targets = GetPowerNumeral(0, 1);
             int damages = GetPowerNumeral(1, 6);

@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace Cauldron.LadyOfTheWood
 {
-	public class RebirthCardController : CardController
+	public class LadyOfTheWoodsRebirthCardController : CardController
     {
-		public RebirthCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+		public LadyOfTheWoodsRebirthCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
 			base.SpecialStringMaker.ShowNumberOfCardsUnderCard(base.Card);
 			this._primed = false;

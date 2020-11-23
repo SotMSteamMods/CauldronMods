@@ -30,14 +30,9 @@ namespace Cauldron.TangoOne
             IEnumerator shuffleRoutine 
                 = base.DoActionToEachTurnTakerInTurnOrder(turnTakerController => true, MoveCardToDeckResponse);
 
-            List<SelectCardDecision> selectCardResults = new List<SelectCardDecision>();
-            IEnumerator selectOwnCharacterRoutine = base.SelectOwnCharacterCard(selectCardResults, SelectionType.HeroToDealDamage);
-
-
             // You may deal 1 target 2 melee damage
-            Card characterCard = GetSelectedCard(selectCardResults);
             IEnumerator dealDamageRoutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
-                new DamageSource(base.GameController, characterCard), DamageAmount,
+                new DamageSource(base.GameController, this.TurnTaker.CharacterCard), DamageAmount,
                 DamageType.Melee, 1, false, 0,
                 additionalCriteria: c => c.IsTarget && c.IsInPlayAndHasGameText,
                 cardSource: base.GetCardSource());
@@ -45,13 +40,13 @@ namespace Cauldron.TangoOne
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(shuffleRoutine);
-                yield return base.GameController.StartCoroutine(selectOwnCharacterRoutine);
+                //yield return base.GameController.StartCoroutine(selectOwnCharacterRoutine);
                 yield return base.GameController.StartCoroutine(dealDamageRoutine);
             }
             else
             {
                 base.GameController.ExhaustCoroutine(shuffleRoutine);
-                base.GameController.ExhaustCoroutine(selectOwnCharacterRoutine);
+                //base.GameController.ExhaustCoroutine(selectOwnCharacterRoutine);
                 base.GameController.ExhaustCoroutine(dealDamageRoutine);
             }
         }
