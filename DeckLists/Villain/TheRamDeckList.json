@@ -1,5 +1,6 @@
 {
     "name": "The Ram",
+    "sortName":"Ram",
     "kind": "Villain",
     "expansionIdentifier": "Cauldron",
     "initialCardIdentifiers": [
