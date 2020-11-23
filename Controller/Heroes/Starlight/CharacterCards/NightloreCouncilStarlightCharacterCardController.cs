@@ -11,7 +11,8 @@ namespace Cauldron.Starlight
     {
         public NightloreCouncilStarlightCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowIfElseSpecialString(() => IsNextToConstellation(terra), () => $"{terra.Title} is next to a constellation", () => null);
+            SpecialStringMaker.ShowIfElseSpecialString(() => IsNextToConstellation(asheron), () => $"{asheron.Title} is next to a constellation", () => null);
         }
 
         private Card _terra = null;

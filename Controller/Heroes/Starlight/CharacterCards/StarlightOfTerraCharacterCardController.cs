@@ -11,6 +11,7 @@ namespace Cauldron.Starlight
         public StarlightOfTerraCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             IsCoreCharacterCard = false;
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria((Card c) => c.Identifier == "Exodus", "", useCardsSuffix: false, singular: "copy of Exodus", plural:"copies of Exodus"));
         }
 
         public override IEnumerator UsePower(int index = 0)

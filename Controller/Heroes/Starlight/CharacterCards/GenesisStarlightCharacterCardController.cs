@@ -11,6 +11,7 @@ namespace Cauldron.Starlight
     {
         public GenesisStarlightCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria((Card c) => IsConstellation(c), "constellation"));
         }
 
         public override IEnumerator UsePower(int index = 0)
