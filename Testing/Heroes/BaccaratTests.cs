@@ -283,7 +283,6 @@ namespace CauldronTests
             GoToEndOfTurn(baccarat);
             DealDamage(baron, baccarat, 2, DamageType.Melee);
             QuickHPCheck(-1);
-            PrintJournal();
         }
 
         [Test()]
@@ -301,8 +300,6 @@ namespace CauldronTests
             DealDamage(baron, baccarat, 2, DamageType.Melee);
 
             QuickHPCheck(-2);
-
-            PrintJournal();
         }
 
         [Test()]
