@@ -21,6 +21,8 @@ namespace Cauldron.TangoOne
         public CriticalHitCardController(Card card, TurnTakerController turnTakerController) : base(card,
             turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(this.HeroTurnTaker.Deck, new LinqCardCriteria(c => IsCritical(c), "critical"));
+
             this.AllowFastCoroutinesDuringPretend = false;
             this.RunModifyDamageAmountSimulationForThisCard = true;
         }
