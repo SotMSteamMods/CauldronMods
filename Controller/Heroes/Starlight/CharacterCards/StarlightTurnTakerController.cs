@@ -15,7 +15,6 @@ namespace Cauldron.Starlight
 
         public StarlightTurnTakerController(TurnTaker tt, GameController gc) : base(tt, gc)
         {
-   
         }
         private List<string> nightloreCouncilIdentifiers
         {
@@ -36,28 +35,15 @@ namespace Cauldron.Starlight
                 Location destination = target.Location;
                 if (destination.Name == LocationName.OffToTheSide)
                 {
-
-
                     //Log.Debug("Looking for destination...");
                     if (banish)
                     {
                         //Log.Debug("Attempting to banish...");
-                        if (TurnTaker == null)
-                        {
-                            Log.Warning("No TurnTaker!");
-                        }
                         destination = TurnTaker.InTheBox;
-                        if (destination == null)
-                        {
-                            //Log.Warning("No destination set!");
-                        }
-                        else
-                        {
-                           // Log.Debug($"Found {destination.Name} location for {TurnTaker.Name}");
-                        }
                     }
                     else
                     {
+                        //Log.Debug("Putting in play...");
                         destination = TurnTaker.PlayArea;
                     }
                     destination.AddCard(target);
@@ -83,9 +69,8 @@ namespace Cauldron.Starlight
                     if (card != null && card.PromoIdentifierOrIdentifier == "NightloreCouncilStarlightCharacter")
                     {
                         //Log.Debug("Have found instruction card");
-
-                            _instructions = (CharacterCardController)FindCardController(card);
-                            hasInstructionCard = true;
+                        _instructions = (CharacterCardController)FindCardController(card);
+                        hasInstructionCard = true;
 
                     }
                     else

@@ -33,7 +33,6 @@ namespace Cauldron.Starlight
 
             List<Card> storedResults = new List<Card> { };
             IEnumerator pickStarlight = SelectActiveCharacterCardToDealDamage(storedResults, amount, DamageType.Radiant);
-
             if (UseUnityCoroutines)
             {
 
@@ -48,6 +47,7 @@ namespace Cauldron.Starlight
             Card chosenStarlight = storedResults.FirstOrDefault();
             if (chosenStarlight == null)
             {
+                IEnumerator message = GameController.SendMessageAction("No Starlight was picked!", Priority.High, GetCardSource());
                 yield break;
             }
 

@@ -127,10 +127,7 @@ namespace Cauldron.Starlight
                         break;
                     }
             }
-
-
             yield break;
         }
-
     }
 }

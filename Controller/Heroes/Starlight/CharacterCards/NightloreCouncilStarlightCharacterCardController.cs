@@ -68,7 +68,7 @@ namespace Cauldron.Starlight
             _asheron = cards.Where((Card c) => c.Identifier == "StarlightOfAsheronCharacter").FirstOrDefault();
             _cryos = cards.Where((Card c) => c.Identifier == "StarlightOfCryosFourCharacter").FirstOrDefault();
 
-            AddStartOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker,
+            AddStartOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker && IsNextToConstellation(terra),
                             (PhaseChangeAction pca) => TerraHealTeamResponse(),
                             TriggerType.GainHP);
             AddIncreaseDamageTrigger(AsheronBoostDamageCriteria, 1);
@@ -78,17 +78,14 @@ namespace Cauldron.Starlight
         public IEnumerator TerraHealTeamResponse()
         {
             //"If Starlight of Terra has a constellation next to her at the start of your turn, each Starlight regains 1 HP."
-            if (IsNextToConstellation(terra))
+            IEnumerator heal = GameController.GainHP(ToHeroTurnTakerController(TurnTaker), (Card c) => c == terra || c == asheron || c == cryos, 1, optional:false, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
             {
-                IEnumerator heal = GameController.GainHP(ToHeroTurnTakerController(TurnTaker), (Card c) => c == terra || c == asheron || c == cryos, 1, optional:false, cardSource: GetCardSource());
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(heal);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(heal);
-                }
+                yield return GameController.StartCoroutine(heal);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(heal);
             }
             yield break;
         }
@@ -123,7 +120,7 @@ namespace Cauldron.Starlight
 
         private bool FlipCriteria(GameAction ga)
         {
-            return((ga is FlipCardAction || ga is BulkRemoveTargetsAction || ga is MoveCardAction) && !base.Card.IsFlipped && FindCardsWhere((Card c) => c.Owner == base.TurnTaker && c.IsHeroCharacterCard && c.IsActive && c != base.Card).Count() == 0) ? true : false;
+            return((ga is FlipCardAction || ga is BulkRemoveTargetsAction || ga is MoveCardAction) && !base.Card.IsFlipped && FindCardsWhere((Card c) => c.Owner == base.TurnTaker && c.IsHeroCharacterCard && c.IsActive && c != base.Card).Count() == 0);
         }
 
         public override IEnumerator AfterFlipCardImmediateResponse()

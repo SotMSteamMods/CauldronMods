@@ -63,6 +63,7 @@ namespace Cauldron.Starlight
                 GameController.ExhaustCoroutine(playRoutine);
             }
 
+            //there is no plural version of SelectAndPlayCard, only SelectAndPlayCardsFromHand, so we just run it again
             if(DidPlayCards(playedCards))
             {
                 playRoutine = GameController.SelectAndPlayCard(HeroTurnTakerController,
