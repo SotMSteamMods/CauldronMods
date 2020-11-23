@@ -35,29 +35,8 @@ namespace Cauldron.StSimeonsCatacombs
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
-            IEnumerable<Card> secondHighestHP = FindCardsWhere(new LinqCardCriteria((Card c) => base.CanCardBeConsideredHighestHitPoints(c, (Card card) => card.IsHero && card.IsTarget, 2)));
-            Card secondHighest;
-            IEnumerator coroutine = null;
-            if (secondHighestHP.Count() > 1)
-            {
-                List<SelectCardsDecision> storedSecondHero = new List<SelectCardsDecision>();
-                coroutine = base.GameController.SelectCardsAndStoreResults(this.DecisionMaker, SelectionType.LowestHP, (Card c) => secondHighestHP.Contains(c), 1, storedSecondHero, false, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-                secondHighest = storedSecondHero.FirstOrDefault().SelectedCard;
-            }
-            else
-            {
-                secondHighest = secondHighestHP.FirstOrDefault();
-            }
-            //Play this card next to the hero with the second highest HP.
-            coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c == secondHighest && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), "hero target with the lowest HP"), storedResults, isPutIntoPlay, decisionSources);
+            List<Card> foundTarget = new List<Card>();
+            IEnumerator coroutine = base.GameController.FindTargetWithHighestHitPoints(2, (Card c) => c.IsHero && (overridePlayArea == null || c.IsAtLocationRecursive(overridePlayArea)), foundTarget, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -66,7 +45,12 @@ namespace Cauldron.StSimeonsCatacombs
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
+            Card secondHighest = foundTarget.FirstOrDefault<Card>();
+            if (secondHighest != null && storedResults != null)
+            {
+                //Play this card next to the hero with the second highest HP.
+                storedResults.Add(new MoveCardDestination(secondHighest.NextToLocation, false, false, false));
+            }
             yield break;
         }
 

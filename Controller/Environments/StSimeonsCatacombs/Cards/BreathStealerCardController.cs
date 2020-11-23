@@ -21,28 +21,8 @@ namespace Cauldron.StSimeonsCatacombs
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             //Play this card next to the hero with the lowest HP
-            IEnumerable<Card> lowestHPHeroes = FindCardsWhere(new LinqCardCriteria((Card c) => base.CanCardBeConsideredLowestHitPoints(c, (Card card) => card.IsHero && card.IsTarget)));
-            Card lowestHero;
-            IEnumerator coroutine = null;
-            if (lowestHPHeroes.Count() > 1)
-            {
-                List<SelectCardsDecision> storedLowestHero = new List<SelectCardsDecision>();
-                coroutine = base.GameController.SelectCardsAndStoreResults(this.DecisionMaker, SelectionType.LowestHP, (Card c) => lowestHPHeroes.Contains(c), 1, storedLowestHero, false, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-                lowestHero = storedLowestHero.FirstOrDefault().SelectedCard;
-            }
-            else
-            {
-                lowestHero = lowestHPHeroes.FirstOrDefault();
-            }
-            coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c == lowestHero && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), "hero target with the lowest HP"), storedResults, isPutIntoPlay, decisionSources);
+            List<Card> foundTarget = new List<Card>();
+            IEnumerator coroutine = base.GameController.FindTargetWithLowestHitPoints(1, (Card c) => c.IsHero && (overridePlayArea == null || c.IsAtLocationRecursive(overridePlayArea)), foundTarget, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -50,6 +30,12 @@ namespace Cauldron.StSimeonsCatacombs
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
+            }
+            Card lowestHero = foundTarget.FirstOrDefault<Card>();
+            if (lowestHero != null && storedResults != null)
+            {
+                //Play this card next to the hero with the lowest HP
+                storedResults.Add(new MoveCardDestination(lowestHero.NextToLocation, false, false, false));
             }
             yield break;
         }
