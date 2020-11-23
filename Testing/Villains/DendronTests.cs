@@ -132,28 +132,89 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestDendronFlipsWhenDestroyedByEffect()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Tachyon", "Megalopolis");
+
+            SetHitPoints(Dendron, 1);
+            StartGame();
+
+            PutInTrash(Dendron, GetCard(AdornedOakCardController.Identifier));
+            DecisionSelectCard = Dendron.CharacterCard;
+
+            QuickShuffleStorage(Dendron);
+
+            // Act
+            AssertNotFlipped(Dendron);
+
+
+            GoToPlayCardPhase(tachyon);
+            PlayCard("SuckerPunch");
+
+            // Assert
+            AssertFlipped(Dendron); // Dendron flipped once reduced to 0 HP
+            AssertHitPoints(Dendron, 50); // Dendron's HP was restored to 50
+            QuickShuffleCheck(1); // Villain deck was shuffled
+        }
+
+        [Test]
         public void TestDendronPlaysCardIfBelowTattoosInPlayThreshold()
         {
             // Arrange
-            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Tachyon", "Megalopolis");
 
             
             StartGame();
 
+            Card stag = PutOnDeck("TintedStag");
+            Card owl = PutOnDeck("ShadedOwl");
 
-            SetHitPoints(GetStainedWolfInPlay(), 1);
-            DecisionSelectTarget = GetStainedWolfInPlay();
-            
+            GoToEndOfTurn(FindEnvironment());
             // Act
 
-            GoToUsePowerPhase(ra);
-            UsePower(ra);
+            DestroyCard(GetStainedWolfInPlay(), ra.CharacterCard);
+            DestroyCard(GetPaintedViperInPlay(), ra.CharacterCard);
 
-            // Loop back around to Dendron and she should play an extra card from the deck due to only 1 tattoo out
-            GoToStartOfTurn(Dendron); 
+
+            // Loop back around to Dendron and she should play an extra card from the deck due to no tattoos being out
+            GoToStartOfTurn(Dendron);
 
             // Assert
+            AssertInPlayArea(Dendron, owl);
 
+            GoToEndOfTurn(Dendron);
+            AssertInPlayArea(Dendron, stag);
+        }
+
+        [Test]
+        public void TestDendronBackPlaysCardStartAndEnd()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Tachyon", "Megalopolis");
+
+
+            StartGame();
+
+
+            GoToEndOfTurn(FindEnvironment());
+            // Act
+
+            FlipCard(Dendron);
+            AssertFlipped(Dendron.CharacterCard);
+
+
+            Card stag = PutOnDeck("TintedStag");
+            Card owl = PutOnDeck("ShadedOwl");
+
+            // Loop back around to Dendron and she should play an extra card from the deck due to no tattoos being out
+            GoToStartOfTurn(Dendron);
+
+            // Assert
+            AssertInPlayArea(Dendron, owl);
+
+            GoToEndOfTurn(Dendron);
+            AssertInPlayArea(Dendron, stag);
         }
 
         [Test]
