@@ -278,18 +278,19 @@ namespace CauldronTests
 
             StartGame();
 
-            Card adornedOwl = GetCard(AdornedOakCardController.Identifier);
-            PlayCard(adornedOwl);
+            Card adornedOwl = PlayCard(AdornedOakCardController.Identifier);
 
-            QuickHPStorage(GetStainedWolfInPlay(), GetPaintedViperInPlay());
+            QuickHPStorage(GetStainedWolfInPlay(), GetPaintedViperInPlay(),Dendron.CharacterCard);
 
             // Act
             DealDamage(ra, GetStainedWolfInPlay(), 3, DamageType.Fire);
             DealDamage(ra, GetPaintedViperInPlay(), 3, DamageType.Fire);
+            //check that it only reduces for tattoos
+            DealDamage(ra, Dendron, 3, DamageType.Fire);
 
 
             // Assert
-            QuickHPCheck(-2, -2);
+            QuickHPCheck(-2, -2, -3);
         }
 
         [Test]
@@ -300,46 +301,61 @@ namespace CauldronTests
 
             StartGame();
 
-            Card bloodThornAura = GetCard(BloodThornAuraCardController.Identifier);
-            PlayCard(bloodThornAura);
-
-            QuickHPStorage(GetStainedWolfInPlay(), GetPaintedViperInPlay(), ra.CharacterCard);
+            Card bloodThornAura = PlayCard(BloodThornAuraCardController.Identifier);
+            Card monorail = PlayCard("PlummetingMonorail");
+            QuickHPStorage(GetStainedWolfInPlay(), GetPaintedViperInPlay(), ra.CharacterCard, monorail, Dendron.CharacterCard);
 
             // Act
-            DealDamage(ra, GetStainedWolfInPlay(), 3, DamageType.Fire);
-            DealDamage(ra, GetPaintedViperInPlay(), 3, DamageType.Fire);
+            DealDamage(ra, GetStainedWolfInPlay(), 1, DamageType.Fire);
+            DealDamage(ra, GetPaintedViperInPlay(), 1, DamageType.Fire);
+            DealDamage(monorail, GetPaintedViperInPlay(), 1, DamageType.Projectile);
+            DealDamage(Dendron, GetStainedWolfInPlay(), 1, DamageType.Projectile);
 
             // Assert
-            QuickHPCheck(-3, -3, -2);
+            QuickHPCheck(-2, -2, -2, -1, 0);
         }
 
         [Test]
         public void TestChokingInscription()
         {
             // Arrange
-            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            SetupGameController(DeckNamespace, "Legacy", "Expatriette", "Haka", "Megalopolis");
 
             StartGame();
-            QuickShuffleStorage(legacy, ra, haka);
+            QuickShuffleStorage(legacy, expatriette, haka);
 
             Card chokingInscription = GetCard(ChokingInscriptionCardController.Identifier);
-            Card flameBarrier = GetCard("FlameBarrier");
-            
-            
+            Card assaultRifle = GetCard("AssaultRifle");
+            Card jacket = PutInHand("FlakJacket");
+            Card bolsterAllies = PutInHand("BolsterAllies");
+
             // Act
-            PlayCard(flameBarrier); // Put Flame Barrier into play so Ra will incur the most cards in play penalty
+            PlayCard(assaultRifle); // Put Assault Rifle into play so expatriette will incur the most cards in play penalty
+            //have legacy draw a card to ensure they have the most cards in hand
+            DrawCard(legacy);
+
             GoToPlayCardPhase(Dendron);
             PlayCard(chokingInscription);
 
-            GoToDrawCardPhase(legacy);
-            AssertCannotPerformPhaseAction();
-            GoToPlayCardPhase(ra);
-            AssertCannotPerformPhaseAction();
-
             // Assert
 
-            // Legacy and Ra were both affected with phase penalties.  Haka was the only one unaffected so he shuffles his trash into his deck
+            // Legacy and Expatriette were both affected with phase penalties.  Haka was the only one unaffected so he shuffles his trash into his deck
             QuickShuffleCheck(0, 0, 1);
+            QuickHandStorage(legacy);
+            GoToPlayCardPhase(legacy);
+            RunCoroutine(base.GameController.DrawCard(legacy.HeroTurnTaker, cardSource: legacy.CharacterCardController.GetCardSource()));
+            QuickHandCheck(0);
+
+            PlayCard(bolsterAllies);
+            QuickHandCheck(-1);
+            GoToDrawCardPhase(legacy);
+            AssertCannotPerformPhaseAction();
+            GoToPlayCardPhase(expatriette);
+            AssertCannotPerformPhaseAction();
+            GoToUsePowerPhase(expatriette);
+            DecisionSelectCard = jacket;
+            UsePower(expatriette.CharacterCard);
+            AssertInHand(jacket);
             
         }
 
