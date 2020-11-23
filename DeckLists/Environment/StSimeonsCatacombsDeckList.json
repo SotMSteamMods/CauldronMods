@@ -147,8 +147,7 @@
                 "StartOfTurnAction",
                 "Discard",
                 "Destroy",
-                "DealDamagePsychic",
-                "DestroySelf"
+                "DealDamagePsychic"
             ],
             "body": [
                 "At the start of a hero's turn, that hero may discard 2 cards to destroy a Room in play.",
@@ -303,7 +302,7 @@
                 "IncreaseDamageDealt"
             ],
             "body": [
-                "Increase damage dealt by environment cards by 1.",
+                "Increase damage dealt by environment targets by 1.",
                 "If there are fewer than 2 environment targets in play, increase damage dealt by hero targets by 1."
             ],
             "flavorText": "With a burst of light, Vanish appeared at{BR}his elbow. “We can use this maze to our{BR}advantage. Dawn won't know what hit{BR}her.”"

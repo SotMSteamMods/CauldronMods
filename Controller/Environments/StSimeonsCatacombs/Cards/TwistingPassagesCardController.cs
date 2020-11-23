@@ -20,8 +20,8 @@ namespace Cauldron.StSimeonsCatacombs
 
         public override void AddTriggers()
         {
-            //Increase damage dealt by environment cards by 1.
-            Func<DealDamageAction, bool> envCriteria = (DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card.IsEnvironment;
+            //Increase damage dealt by environment targets by 1.
+            Func<DealDamageAction, bool> envCriteria = (DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card.IsEnvironmentTarget;
             base.AddIncreaseDamageTrigger(envCriteria, (DealDamageAction dd) => 1);
 
             //If there are fewer than 2 environment targets in play, increase damage dealt by hero targets by 1.
