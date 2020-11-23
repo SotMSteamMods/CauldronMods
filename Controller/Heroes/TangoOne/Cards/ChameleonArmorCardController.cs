@@ -30,9 +30,8 @@ namespace Cauldron.TangoOne
                 this.RevealTopCardFromDeckResponse,
                 new TriggerType[]
                 {
-                    TriggerType.WouldBeDealtDamage,
                     TriggerType.ImmuneToDamage
-                }, TriggerTiming.Before, isConditional: false, requireActionSuccess: true, isActionOptional: true);
+                }, TriggerTiming.Before, orderMatters: true, isConditional: false, requireActionSuccess: true, isActionOptional: true);
         }
 
         private IEnumerator RevealTopCardFromDeckResponse(DealDamageAction dda)
