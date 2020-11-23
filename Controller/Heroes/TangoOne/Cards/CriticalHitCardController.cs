@@ -22,6 +22,7 @@ namespace Cauldron.TangoOne
             turnTakerController)
         {
             this.AllowFastCoroutinesDuringPretend = false;
+            this.RunModifyDamageAmountSimulationForThisCard = true;
         }
 
         public override void AddTriggers()
@@ -32,22 +33,20 @@ namespace Cauldron.TangoOne
                 this.RevealTopCardFromDeckResponse,
                 new TriggerType[]
                 {
-                    TriggerType.DealDamage
+                    TriggerType.IncreaseDamage
 
-                }, TriggerTiming.Before, null, false, true, true);
+                }, TriggerTiming.Before, null, isConditional: false, requireActionSuccess: true, isActionOptional: true);
 
             base.AddTriggers();
         }
 
         private IEnumerator RevealTopCardFromDeckResponse(DealDamageAction dda)
         {
+            List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
 
             // Ask if player wants to discard off the top of their deck
-
-            YesNoDecision yesNo = new YesNoDecision(base.GameController, base.HeroTurnTakerController,
-            SelectionType.DiscardFromDeck, false, cardSource: GetCardSource());
-
-            IEnumerator routine = base.GameController.MakeDecisionAction(yesNo, true);
+            IEnumerator routine = base.GameController.MakeYesNoCardDecision(DecisionMaker,
+                SelectionType.DiscardFromDeck, this.Card, dda, storedYesNoResults, null, GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -59,15 +58,14 @@ namespace Cauldron.TangoOne
             }
 
             // Return if they chose not to discard from their deck
-            if (yesNo.Answer == null || !yesNo.Answer.Value)
+            if (!base.DidPlayerAnswerYes(storedYesNoResults))
             {
                 yield break;
             }
 
             // Move card from top of their deck to the trash
             List<MoveCardAction> moveCardActions = new List<MoveCardAction>();
-            IEnumerator discardCardRoutine = base.GameController.DiscardTopCard(this.TurnTaker.Deck, moveCardActions,
-                card => true, this.TurnTaker, base.GetCardSource());
+            IEnumerator discardCardRoutine = base.GameController.DiscardTopCard(this.TurnTaker.Deck, moveCardActions, card => true, this.TurnTaker, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(discardCardRoutine);
@@ -77,29 +75,36 @@ namespace Cauldron.TangoOne
                 base.GameController.ExhaustCoroutine(discardCardRoutine);
             }
 
-            // Check to see if the card was moved and contains the keyword "critical", if it didn't, break and damage proceeds normally
-            if (moveCardActions.Count <= 0 || !moveCardActions.First().WasCardMoved ||
-                !IsCritical(moveCardActions.First().CardToMove))
+            if (DidMoveCard(moveCardActions))
             {
-                yield break;
+                Card discardedCard = moveCardActions.First().CardToMove;
+                if (IsCritical(discardedCard))
+                {
+                    // Card had the "critical" keyword, increase the damage
+                    //ModifyDealDamageAction mdda = new IncreaseDamageAction(this.GameController, dda, DamageIncrease, false);
+                    //dda.AddDamageModifier(mdda);
+
+                    IEnumerator sendMessage = base.GameController.SendMessageAction(discardedCard.Title + " is a critical card, so damage is increased by 3!", Priority.Medium, base.GetCardSource(), associatedCards: new Card[] { discardedCard });
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(sendMessage);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(sendMessage);
+                    }
+
+                    var coroutine = GameController.IncreaseDamage(dda, DamageIncrease, false, GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(sendMessage);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(sendMessage);
+                    }
+                }
             }
-
-            // Card had the "critical" keyword, increase the damage
-            ModifyDealDamageAction mdda = new IncreaseDamageAction(this.GameController, dda, DamageIncrease, false);
-            dda.AddDamageModifier(mdda);
-
-            Card discardedCard = moveCardActions.First().CardToMove;
-            IEnumerator sendMessage = base.GameController.SendMessageAction(discardedCard.Title + " is a critical card, so damage is increased by 3!", Priority.Medium, base.GetCardSource(), associatedCards: new Card[] { discardedCard });
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(sendMessage);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(sendMessage);
-            }
-
-
             yield break;
         }
     }
