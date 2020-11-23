@@ -10,29 +10,24 @@ namespace Cauldron.Baccarat
 {
     public class BringDownTheHouseCardController : CardController
     {
-        #region Constructors
+        public BringDownTheHouseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        {
+            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => TwoOrMoreCopiesInTrash(c) && c.IsInTrash, "pairs of"));
+            X = 0;
+        }
 
-        public BringDownTheHouseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController) { }
-
-        #endregion Constructors
-
-        #region Methods
+        private int X;
 
         public override IEnumerator Play()
         {
-            LinqCardCriteria cardCriteria = new LinqCardCriteria((Card c) => TwoOrMoreCopiesInTrash(c), "two cards with the same name");
             int maxNumberOfPairs = (from c in base.TurnTaker.Trash.Cards
                                     where TwoOrMoreCopiesInTrash(c)
                                     select c).Count<Card>() / 2;
-            List<MoveCardDestination> moveCardDestination = new List<MoveCardDestination>();
-            moveCardDestination.Add(new MoveCardDestination(base.TurnTaker.Deck, true));
-            List<SelectCardDecision> storedSelectResults = new List<SelectCardDecision>();
-            List<MoveCardAction> storedMoveResults = new List<MoveCardAction>();
-            int X = 0;
 
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
-            //move first card of pairs
-            IEnumerator coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.DecisionMaker, base.TurnTaker.Trash, new int?(0), maxNumberOfPairs, cardCriteria, moveCardDestination, false, false, false, true, storedSelectResults, storedMoveResults, responsibleTurnTaker: this.TurnTaker, cardSource: base.GetCardSource());
+            SelectCardsDecision selectCardsDecision = new SelectCardsDecision(base.GameController, base.HeroTurnTakerController, (Card c) => TwoOrMoreCopiesInTrash(c) && c.IsInTrash, SelectionType.ShuffleCardIntoDeck, maxNumberOfPairs, true, new int?(0), true, false, false, null, null, null, null, base.GetCardSource(null));
+            //Pick first Card
+            IEnumerator coroutine = base.GameController.SelectCardsAndDoAction(selectCardsDecision, this.ShufflePairIntoDeckResponse, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -40,20 +35,6 @@ namespace Cauldron.Baccarat
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
-            }
-            //move second card of pairs to deck
-            foreach(SelectCardDecision cardDecision in storedSelectResults)
-            {
-                coroutine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == cardDecision.SelectedCard.Identifier, "second card with the same name"), moveCardDestination, false, true, true, true, null, false, true, null, false, true, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-                X++;
             }
 
             //You may destroy up to X ongoing or environment cards, where X is the number of pairs you shuffled this way.
@@ -69,15 +50,38 @@ namespace Cauldron.Baccarat
             yield break;
         }
 
-        private bool TwoOrMoreCopiesInTrash(Card c)
+        private IEnumerator ShufflePairIntoDeckResponse(SelectCardDecision decision)
         {
-            int num = (from card in base.TurnTaker.Trash.Cards
-                       where card.Identifier == c.Identifier
-                       select card).Count<Card>();
-            return num >= 2;
-
+            List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
+            //Pick second card
+            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.ShuffleCardIntoDeck, new LinqCardCriteria((Card c) => c.Identifier == decision.SelectedCard.Identifier && c.InstanceIndex != decision.SelectedCard.InstanceIndex && c.IsInTrash, "two cards with the same name"), storedResults, false);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            //Actually shuffle cards into deck
+            coroutine = base.GameController.ShuffleCardsIntoLocation(base.HeroTurnTakerController, new Card[] { decision.SelectedCard, storedResults.FirstOrDefault().SelectedCard }, base.TurnTaker.Deck, false, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            X++;
+            yield break;
         }
 
-        #endregion Methods
+        private bool TwoOrMoreCopiesInTrash(Card c)
+        {
+            return (from card in base.TurnTaker.Trash.Cards
+                    where card.Identifier == c.Identifier
+                    select card).Count<Card>() >= 2;
+        }
     }
 }

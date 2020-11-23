@@ -20,7 +20,7 @@ namespace Cauldron.TheStranger
         public override IEnumerator Play()
         {
             //You may play up to 3 Runes now
-            IEnumerator coroutine = base.GameController.SelectAndPlayCardsFromHand(this.DecisionMaker, 3, true, new int?(0), new LinqCardCriteria((Card c) => this.IsRune(c), "rune"), true);
+            IEnumerator coroutine = base.GameController.SelectAndPlayCardsFromHand(this.DecisionMaker, 3, false, new int?(0), new LinqCardCriteria((Card c) => this.IsRune(c), "rune"));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

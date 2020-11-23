@@ -9,6 +9,8 @@ namespace Cauldron.DocHavoc
 {
     public class DocHavocCharacterCardController : HeroCharacterCardController
     {
+        private const int PowerDamageAmount = 3;
+
         public DocHavocCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
@@ -19,95 +21,107 @@ namespace Cauldron.DocHavoc
             // Adrenaline: Deals 1 hero 3 toxic damage. If that hero took damage this way, they may play a card now.
             //==============================================================
 
-            List<DealDamageAction> storedDamageResults = new List<DealDamageAction>();
-
+            //Deals 1 hero 3 toxic damage.
             DamageSource damageSource = new DamageSource(base.GameController, base.CharacterCard);
-            int powerNumeral = base.GetPowerNumeral(0, 3);
+            int numTargets = base.GetPowerNumeral(1, 1);
+            int amount = base.GetPowerNumeral(1, PowerDamageAmount);
 
-            IEnumerator routine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, damageSource, powerNumeral,
-                DamageType.Toxic, new int?(1), false, new int?(1),
-                additionalCriteria: ((Func<Card, bool>)(c => c.IsHero)),
-                storedResultsDamage: storedDamageResults, cardSource: base.GetCardSource(null));
-
+            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
+                damageSource,
+                amount,
+                DamageType.Toxic,
+                new int?(numTargets),
+                false,
+                new int?(numTargets),
+                additionalCriteria: ((Func<Card, bool>)(c => c.IsHeroCharacterCard)),
+                addStatusEffect: new Func<DealDamageAction, IEnumerator>(this.OnIntendedHeroDamageResponse),
+                cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(routine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(routine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
+        }
 
-            if (!this.DidIntendedTargetTakeDamage((IEnumerable<DealDamageAction>)storedDamageResults,
-                storedDamageResults.First().Target))
+        private IEnumerator OnIntendedHeroDamageResponse(DealDamageAction dd)
+        {
+            //If that hero took damage this way, they may play a card now.
+            if (dd != null && dd.OriginalTarget == dd.Target && dd.DidDealDamage)
             {
-                yield break;
+                Card targetHero = dd.Target;
+                HeroTurnTakerController heroController = null;
+                if (targetHero.Owner.IsHero)
+                {
+                    heroController = base.FindHeroTurnTakerController(targetHero.Owner.ToHero());
+                }
+                IEnumerator coroutine = base.SelectAndPlayCardFromHand(heroController, overrideName: targetHero.Title);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
-
-            // Intended damage taken, allow hero to draw a card
-            IEnumerator drawCardRoutine = base.GameController.SelectHeroToDrawCard(this.DecisionMaker);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(drawCardRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(drawCardRoutine);
-            }
+            yield break;
         }
 
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
-            IEnumerator routine = null;
+            IEnumerator coroutine = null;
             switch (index)
             {
                 case 0:
 
-                    routine = GetIncapacitateOption1();
+                    coroutine = DoIncapacitateOption1();
 
                     if (base.UseUnityCoroutines)
                     {
-                        yield return base.GameController.StartCoroutine(routine);
+                        yield return base.GameController.StartCoroutine(coroutine);
                     }
                     else
                     {
-                        base.GameController.ExhaustCoroutine(routine);
+                        base.GameController.ExhaustCoroutine(coroutine);
                     }
 
                     break;
 
                 case 1:
 
-                    routine = DoIncapacitateOption2();
+                    coroutine = DoIncapacitateOption2();
 
                     if (base.UseUnityCoroutines)
                     {
-                        yield return base.GameController.StartCoroutine(routine);
+                        yield return base.GameController.StartCoroutine(coroutine);
                     }
                     else
                     {
-                        base.GameController.ExhaustCoroutine(routine);
+                        base.GameController.ExhaustCoroutine(coroutine);
                     }
                     break;
 
                 case 2:
 
-                    routine = DoIncapacitateOption3();
+                    coroutine = DoIncapacitateOption3();
 
                     if (base.UseUnityCoroutines)
                     {
-                        yield return base.GameController.StartCoroutine(routine);
+                        yield return base.GameController.StartCoroutine(coroutine);
                     }
                     else
                     {
-                        base.GameController.ExhaustCoroutine(routine);
+                        base.GameController.ExhaustCoroutine(coroutine);
                     }
 
                     break;
             }
         }
 
-        private IEnumerator GetIncapacitateOption1()
+        private IEnumerator DoIncapacitateOption1()
         {
             //==============================================================
             // Up to 3 hero targets regain 1 HP each.
