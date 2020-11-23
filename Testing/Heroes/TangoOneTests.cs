@@ -588,7 +588,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestLineEmUp()
+        public void TestLineEmUp_DestroyByDamage()
         {
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
@@ -616,6 +616,111 @@ namespace CauldronTests
             // Assert
             QuickHPCheck(-1);
         }
+
+        [Test]
+        public void TestLineEmUp_DestroyByDestroyEffect()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                LineEmUpCardController.Identifier
+            });
+
+            StartGame();
+
+            Card bb = PlayCard(baron, "BladeBattalion");
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+
+            QuickHPStorage(mdp);
+            DecisionSelectTargets = new[] { mdp };
+
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, LineEmUpCardController.Identifier);
+            DestroyCard(bb, TangoOne.CharacterCard);
+
+
+            // Assert
+            QuickHPCheck(-1);
+        }
+
+        [Test]
+        public void TestLineEmUp_DestroyBySniperRifle()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                LineEmUpCardController.Identifier,
+                SniperRifleCardController.Identifier,
+                OneShotOneKillCardController.Identifier,
+                OneShotOneKillCardController.Identifier
+            });
+
+            StartGame();
+
+            Card bb = PlayCard(baron, "BladeBattalion");
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+
+            QuickHPStorage(mdp);
+            DecisionSelectCards = new[] {
+                GetCardFromHand(OneShotOneKillCardController.Identifier, 0),
+                //GetCardFromHand(OneShotOneKillCardController.Identifier, 1), //secondcard autoselected
+                bb,
+                mdp
+            };
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, LineEmUpCardController.Identifier);
+            var card = PlayCardFromHand(TangoOne, SniperRifleCardController.Identifier);
+            GoToUsePowerPhase(TangoOne);
+            UsePower(card, 0);
+
+            // Assert
+            QuickHPCheck(-1);
+        }
+
+
+        [Test]
+        public void TestLineEmUp_DestroyByDisablingShot()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
+
+            MakeCustomHeroHand(TangoOne, new List<string>()
+            {
+                LineEmUpCardController.Identifier,
+                DisablingShotCardController.Identifier,
+            });
+
+            StartGame();
+
+            Card ongoing = PlayCard(baron, "LivingForceField");
+            Card mdp = FindCardInPlay("MobileDefensePlatform");
+
+            QuickHPStorage(mdp);
+            DecisionSelectCards = new[] {
+                ongoing,
+                mdp,
+                mdp
+            };
+
+            // Act
+            GoToStartOfTurn(TangoOne);
+            PlayCardFromHand(TangoOne, LineEmUpCardController.Identifier);
+            PlayCardFromHand(TangoOne, DisablingShotCardController.Identifier);
+            
+
+            // Assert
+            QuickHPCheck(-3);
+        }
+
+
 
         [Test]
         public void TestOneShotShotOneKillSuccessfulDestruction()
@@ -646,7 +751,7 @@ namespace CauldronTests
             };
 
             // Act
-            
+
             AssertCardSpecialString(GetCardFromHand(OneShotOneKillCardController.Identifier), 0, $"Tango One's hand has {GetNumberOfCardsInHand(TangoOne)} cards.");
             GoToStartOfTurn(TangoOne);
             PlayCardFromHand(TangoOne, OneShotOneKillCardController.Identifier);

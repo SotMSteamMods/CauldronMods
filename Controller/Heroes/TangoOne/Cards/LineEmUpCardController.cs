@@ -22,15 +22,19 @@ namespace Cauldron.TangoOne
         {
         }
 
+        private bool LineEmUpTriggerCondition(DestroyCardAction destroyCard)
+        {
+            return destroyCard.WasCardDestroyed &&
+                    base.GameController.IsCardVisibleToCardSource(destroyCard.CardToDestroy.Card, base.GetCardSource()) &&
+                    (
+                        (destroyCard.ResponsibleCard != null && destroyCard.ResponsibleCard.Owner == this.TurnTaker) ||
+                        (destroyCard.CardSource != null && destroyCard.CardSource.Card != null && destroyCard.CardSource.Card.Owner == this.TurnTaker)
+                    );
+        }
+
         public override void AddTriggers()
         {
-            base.AddTrigger<DestroyCardAction>(destroyCard => destroyCard.WasCardDestroyed
-                && destroyCard.ResponsibleCard != null
-                && destroyCard.ResponsibleCard.Equals(this.Card.Owner.CharacterCard)
-                && base.GameController.IsCardVisibleToCardSource(destroyCard.CardToDestroy.Card,
-                    base.GetCardSource()),
-                this.DealDamageResponse,
-                TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTrigger<DestroyCardAction>(LineEmUpTriggerCondition, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
         }
 
         private IEnumerator DealDamageResponse(DestroyCardAction destroyCard)
