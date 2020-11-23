@@ -19,6 +19,8 @@ namespace Cauldron.TangoOne
 
         public ChameleonArmorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(this.HeroTurnTaker.Deck, new LinqCardCriteria(c => IsCritical(c), "critical"));
+
             this.AllowFastCoroutinesDuringPretend = false;
         }
 
@@ -28,10 +30,9 @@ namespace Cauldron.TangoOne
                 this.RevealTopCardFromDeckResponse,
                 new TriggerType[]
                 {
-
-                }, TriggerTiming.Before, null, false, true, true);
-
-            base.AddTriggers();
+                    TriggerType.WouldBeDealtDamage,
+                    TriggerType.ImmuneToDamage
+                }, TriggerTiming.Before, isConditional: false, requireActionSuccess: true, isActionOptional: true);
         }
 
         private IEnumerator RevealTopCardFromDeckResponse(DealDamageAction dda)
@@ -40,8 +41,8 @@ namespace Cauldron.TangoOne
             List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
 
             // Ask if player wants to discard off the top of their deck
-            IEnumerator routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.DiscardFromDeck, this.Card, null, storedYesNoResults, null, GetCardSource());
+            IEnumerator routine = base.GameController.MakeYesNoCardDecision(DecisionMaker,
+                SelectionType.DiscardFromDeck, this.Card, dda, storedYesNoResults, null, GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -72,34 +73,33 @@ namespace Cauldron.TangoOne
             }
 
             // Check to see if the card was moved and contains the keyword "critical", if it didn't, damage proceeds
-            if (moveCardActions.Count <= 0 || !moveCardActions.First().WasCardMoved ||
-                !IsCritical(moveCardActions.First().CardToMove))
+            if (DidMoveCard(moveCardActions))
             {
-                yield break;
-            }
+                Card discardedCard = moveCardActions.First().CardToMove;
+                if (IsCritical(discardedCard))
+                {
+                    IEnumerator sendMessage = base.GameController.SendMessageAction(discardedCard.Title + " is a critical card, so damage is prevented!", Priority.Medium, base.GetCardSource(), associatedCards: new Card[] { discardedCard });
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(sendMessage);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(sendMessage);
+                    }
 
-            Card discardedCard = moveCardActions.First().CardToMove;
-            IEnumerator sendMessage = base.GameController.SendMessageAction(discardedCard.Title + " is a critical card, so damage is prevented!", Priority.Medium, base.GetCardSource(), associatedCards: new Card[] { discardedCard });
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(sendMessage);
+                    // Card had the "critical" keyword, cancel the damage
+                    IEnumerator cancelDamageRoutine = base.CancelAction(dda, isPreventEffect: true);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(cancelDamageRoutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(cancelDamageRoutine);
+                    }
+                }
             }
-            else
-            {
-                base.GameController.ExhaustCoroutine(sendMessage);
-            }
-
-            // Card had the "critical" keyword, cancel the damage
-            IEnumerator cancelDamageRoutine = base.CancelAction(dda);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(cancelDamageRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(cancelDamageRoutine);
-            }
-
 
             yield break;
         }
