@@ -37,24 +37,25 @@ namespace Cauldron.TangoOne
                 base.GameController.ExhaustCoroutine(selectCardRoutine);
             }
 
-            Card selectedCard = GetSelectedCard(selectCardResults);
+            if (DidSelectCard(selectCardResults))
+            {
+                Card selectedCard = GetSelectedCard(selectCardResults);
 
-            // Apply cannot deal damage status effect to chosen card
-            CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new CannotDealDamageStatusEffect
-            {
-                SourceCriteria = { IsSpecificCard = selectedCard }
-            };
-            cannotDealDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-            cannotDealDamageStatusEffect.CardDestroyedExpiryCriteria.Card = base.CharacterCard;
+                // Apply cannot deal damage status effect to chosen card
+                CannotDealDamageStatusEffect effect = new CannotDealDamageStatusEffect();
+                effect.CardSource = Card;
+                effect.SourceCriteria.IsSpecificCard = selectedCard;
+                effect.UntilStartOfNextTurn(base.TurnTaker);
 
-            IEnumerator cannotDealDamageRoutine = base.AddStatusEffect(cannotDealDamageStatusEffect);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(cannotDealDamageRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(cannotDealDamageRoutine);
+                IEnumerator cannotDealDamageRoutine = base.AddStatusEffect(effect);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(cannotDealDamageRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(cannotDealDamageRoutine);
+                }
             }
         }
     }
