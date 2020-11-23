@@ -31,8 +31,6 @@ namespace Cauldron.TangoOne
                     base.GetCardSource()),
                 this.DealDamageResponse,
                 TriggerType.DealDamage, TriggerTiming.After);
-
-            base.AddTriggers();
         }
 
         private IEnumerator DealDamageResponse(DestroyCardAction destroyCard)
