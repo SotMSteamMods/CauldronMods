@@ -44,6 +44,8 @@ namespace Cauldron.TangoOne
 
             if (deck != null)
             {
+                
+
                 IEnumerator routine = base.RevealCardsFromTopOfDeck_DetermineTheirLocation(this.DecisionMaker, base.TurnTakerController, deck,
                     new MoveCardDestination(deck),
                     new MoveCardDestination(deck),
