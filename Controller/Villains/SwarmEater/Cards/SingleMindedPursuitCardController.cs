@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cauldron
+namespace Cauldron.SwarmEater
 {
     public class SingleMindedPursuitCardController : CardController
     {
