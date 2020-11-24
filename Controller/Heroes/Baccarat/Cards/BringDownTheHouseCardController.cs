@@ -12,7 +12,7 @@ namespace Cauldron.Baccarat
     {
         public BringDownTheHouseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => TwoOrMoreCopiesInTrash(c) && c.IsInTrash));
+            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => TwoOrMoreCopiesInTrash(c) && c.IsInTrash, "pairs of"));
             X = 0;
         }
 
