@@ -14,32 +14,25 @@ namespace Cauldron.TangoOne
         // Draw 2 cards.
         //==============================================================
 
-        public static string Identifier = "Opportunist";
+        public static readonly string Identifier = "Opportunist";
 
         private const int CardsToDraw = 2;
         private const int DamageIncrease = 3;
 
         public OpportunistCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override IEnumerator Play()
         {
             // Increase the next damage dealt by {TangoOne} by 3
-            IEnumerator increaseDamageRoutine = base.AddStatusEffect(new IncreaseDamageStatusEffect(DamageIncrease)
-            {
-                SourceCriteria =
-                {
-                    IsSpecificCard = base.Card.Owner.CharacterCard
-                },
-                NumberOfUses = 1,
-                CardDestroyedExpiryCriteria =
-                {
-                    Card = base.Card
-                }
-            });
+            var effect = new IncreaseDamageStatusEffect(DamageIncrease);
+            effect.SourceCriteria.IsSpecificCard = base.CharacterCard;
+            effect.CardSource = Card;
+            effect.Identifier = IncreaseDamageIdentifier;
+            effect.NumberOfUses = 1;
 
+            IEnumerator increaseDamageRoutine = base.AddStatusEffect(effect, true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(increaseDamageRoutine);
