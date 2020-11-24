@@ -6,18 +6,14 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class PanicCardController : CardController
+    public class PanicCardController : StSimeonsBaseCardController
     {
-        #region Constructors
+        public static readonly string Identifier = "Panic";
 
         public PanicCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
@@ -31,14 +27,13 @@ namespace Cauldron.StSimeonsCatacombs
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
             yield break;
         }
 
         public override void AddTriggers()
         {
             //At the start of that hero's next turn, that hero uses their innate power twice, then immediately end their turn, draw a card, and destroy this card.
-            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.GetCardThisCardIsNextTo().Owner, new Func<PhaseChangeAction, IEnumerator>(this.StartOfHeroResponse), new TriggerType[]
+            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.GetCardThisCardIsNextTo().Owner, this.StartOfHeroResponse, new TriggerType[]
             {
                 TriggerType.UsePower,
                 TriggerType.SkipTurn,
@@ -78,7 +73,5 @@ namespace Cauldron.StSimeonsCatacombs
             }
             yield break;
         }
-
-        #endregion Methods
     }
 }

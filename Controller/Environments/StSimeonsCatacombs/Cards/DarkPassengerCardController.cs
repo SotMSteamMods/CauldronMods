@@ -7,18 +7,13 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class DarkPassengerCardController : GhostCardController
+    public class DarkPassengerCardController : StSimeonsGhostCardController
     {
-        #region Constructors
+        public static readonly string Identifier = "DarkPassenger";
 
-        public DarkPassengerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { "CursedVault" })
+        public DarkPassengerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { CursedVaultCardController.Identifier }, false)
         {
-
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public override void AddTriggers()
         {
@@ -45,7 +40,7 @@ namespace Cauldron.StSimeonsCatacombs
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            Card secondHighest = foundTarget.FirstOrDefault<Card>();
+            Card secondHighest = foundTarget.FirstOrDefault();
             if (secondHighest != null && storedResults != null)
             {
                 //Play this card next to the hero with the second highest HP.
@@ -53,7 +48,5 @@ namespace Cauldron.StSimeonsCatacombs
             }
             yield break;
         }
-
-        #endregion Methods
     }
 }

@@ -7,23 +7,18 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class PoltergeistCardController : GhostCardController
+    public class PoltergeistCardController : StSimeonsGhostCardController
     {
-        #region Constructors
+        public static readonly string Identifier = "Poltergeist";
 
-        public PoltergeistCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { "SacrificialShrine" })
+        public PoltergeistCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { SacrificialShrineCardController.Identifier }, false)
         {
 
         }
-
-        #endregion Constructors
-
-        #region Methods
-
         public override void AddTriggers()
         {
             //At the end of the environment turn, this card deals each hero 1 projectile damage for each equipment card they have in play. Then, destroy 1 equipment card.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.EndOfTurnResponse), new TriggerType[]
+            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.EndOfTurnResponse, new TriggerType[]
             {
                 TriggerType.DealDamage,
                 TriggerType.DestroyCard
@@ -33,32 +28,31 @@ namespace Cauldron.StSimeonsCatacombs
         private IEnumerator EndOfTurnResponse(PhaseChangeAction pca)
         {
             //this card deals each hero 1 projectile damage for each equipment card they have in play
-           
-            //find out how many instances of damage to do to each hero
-            Dictionary<Card, int> cardAttacks = new Dictionary<Card, int>();
-            using (IEnumerator<Card> enumerator = base.FindCardsWhere((Card c) => c.IsHeroCharacterCard && c.IsTarget && c.IsInPlay).GetEnumerator())
+            foreach (var httc in GameController.FindHeroTurnTakerControllers().Where(httc => !httc.IsIncapacitatedOrOutOfGame))
             {
-                while (enumerator.MoveNext())
+                int count = httc.TurnTaker.PlayArea.Cards.Where(c => c.IsInPlay && IsEquipment(c)).Count();
+                for (int index = 0; index < count; index++)
                 {
-                    Card card = enumerator.Current;
-                    int num = (from d in FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInPlay && c.IsHero && base.IsEquipment(c)))
-                               where d.Owner == card.Owner
-                               select d).Count();
-                    if (num > 0)
+                    //get potential targets
+                    var characterTargets = httc.CharacterCards.Where(ch => ch.IsInPlay && !ch.IsIncapacitatedOrOutOfGame).ToArray();
+                    if (characterTargets.Length == 1) //only a single target, deal damage
                     {
-                        cardAttacks.Add(card, num);
+                        var coroutine = base.DealDamage(base.Card, characterTargets.First(), 1, DamageType.Projectile, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                     }
-                }
-            }
-
-            //deal the appropiate number of instances to each hero
-            foreach(Card target in cardAttacks.Keys)
-            {
-                for (int i = 0; i < cardAttacks[target]; i++)
-                {
-                    if (!target.IsIncapacitatedOrOutOfGame)
+                    else if (characterTargets.Length > 1)
                     {
-                        IEnumerator coroutine = base.DealDamage(base.Card, target, 1, DamageType.Projectile);
+                        //multiple targets, let the hero choose the victim
+                        var coroutine = GameController.SelectTargetsAndDealDamage(httc, new DamageSource(GameController, Card), 1, DamageType.Projectile, 1, false, 1,
+                            additionalCriteria: c => c.IsHeroCharacterCard && c.IsInPlay && !c.IsIncapacitatedOrOutOfGame,
+                            cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -74,7 +68,7 @@ namespace Cauldron.StSimeonsCatacombs
             //destroy 1 equipment card
             LinqCardCriteria criteria = new LinqCardCriteria((Card c) => base.IsEquipment(c), "equipment");
             IEnumerator coroutine2 = base.GameController.SelectAndDestroyCard(this.DecisionMaker, criteria, false, cardSource: base.GetCardSource());
-            
+
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine2);
@@ -85,7 +79,5 @@ namespace Cauldron.StSimeonsCatacombs
             }
             yield break;
         }
-
-        #endregion Methods
     }
 }

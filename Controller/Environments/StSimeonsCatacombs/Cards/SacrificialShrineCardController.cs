@@ -5,23 +5,21 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class SacrificialShrineCardController : CardController
+    public class SacrificialShrineCardController : StSimeonsRoomCardController
     {
-        #region Constructors
+        public static readonly string Identifier = "SacrificialShrine";
 
         public SacrificialShrineCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
 
-        #endregion Constructors
-
-        #region Methods
-
         public override void AddTriggers()
         {
             //At the end of the environment turn, this card deals each target 2 psychic damage.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, (PhaseChangeAction pca) => this.DealAllTargetsDamage(), TriggerType.DealDamage);
+
+            base.AddTriggers();
         }
 
         private IEnumerator DealAllTargetsDamage()
@@ -37,9 +35,6 @@ namespace Cauldron.StSimeonsCatacombs
             }
 
             yield break;
-
         }
-
-        #endregion Methods
     }
 }

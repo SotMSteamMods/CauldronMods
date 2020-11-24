@@ -7,19 +7,21 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class StSimeonsCatacombsCardController : CardController
-    {
+    public class StSimeonsCatacombsCardController : StSimeonsBaseCardController
+	{
+
+		public static readonly string Identifier = "StSimeonsCatacombs";
 
         public StSimeonsCatacombsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.IsUnderCard && c.Location == base.Card.UnderLocation, "under this card"));
+            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.IsUnderCard && c.Location == base.Card.UnderLocation, "under this card", false));
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
 		}
 
 		public override IEnumerator Play()
 		{
 			//Environment cards cannot be played
-			StSimeonsCatacombsInstructionsCardController instructions = FindCardController(FindCardsWhere((Card c) => c.Identifier == "StSimeonsCatacombsInstructions",realCardsOnly: false).First()) as StSimeonsCatacombsInstructionsCardController;
+			StSimeonsCatacombsInstructionsCardController instructions = FindCardController(FindCardsWhere((Card c) => c.Identifier == StSimeonsCatacombsInstructionsCardController.Identifier, realCardsOnly: false).First()) as StSimeonsCatacombsInstructionsCardController;
 			IEnumerator coroutine = instructions.AddCannotPlayCardsEffect(instructions);
 			if (base.UseUnityCoroutines)
 			{
@@ -37,7 +39,5 @@ namespace Cauldron.StSimeonsCatacombs
 		{
 			return card == base.Card || card.Location == base.Card.UnderLocation;
 		}
-
-
     }
 }
