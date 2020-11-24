@@ -42,6 +42,7 @@ namespace Cauldron.Gray
                     base.AddSideTrigger(base.AddReduceDamageTrigger((Card c) => c.IsVillain, 1));
                 }
             }
+            AddDefeatedIfDestroyedTriggers();
         }
 
         private int? FindNumberOfRadiationCardsInPlay()
