@@ -291,6 +291,30 @@ namespace CauldronTests
             DealDamage(tony, ra, 2, DamageType.Melee);
             QuickHPCheck(-3, 0);
         }
+        [Test()]
+        public void TestFrenziedMeleeRedirectOnlyOnVillainTurn()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+            GoToPlayCardPhase(apostate);
+
+            Card tony = PlayCard("TonyTaurus");
+            PlayCard("FrenziedMelee");
+
+            GoToStartOfTurn(quicksilver);
+
+            AssertNoDecision();
+            //During a hero turn, the redirect shouldn't apply.
+            QuickHPStorage(ra.CharacterCard, quicksilver.CharacterCard);
+            DealDamage(tony, ra, 2, DamageType.Melee);
+            QuickHPCheck(-3, 0);
+
+            GoToStartOfTurn(FindEnvironment());
+            //And during environment turn.
+            QuickHPStorage(ra.CharacterCard, quicksilver.CharacterCard);
+            DealDamage(tony, ra, 2, DamageType.Melee);
+            QuickHPCheck(-3, 0);
+        }
 
         [Test()]
         public void TestFrenziedMeleePower()
@@ -313,6 +337,11 @@ namespace CauldronTests
             StartGame();
 
             Card imp = PlayCard("ImpPilferer");
+
+            //make sure it's not destroying through damage
+            AssertNotDamageSource(quicksilver.CharacterCard);
+            //so a stray combo doesn't mess things up
+            DiscardAllCards(quicksilver);
 
             //Destroy a target with 3 or fewer HP, or deal 1 target 3 irreducible melee damage.
             PlayCard("GuardBreaker");
@@ -427,8 +456,8 @@ namespace CauldronTests
             DecisionDoNotSelectFunction = true;
 
             PlayCard("LiquidMetal");
-            AssertInHand(forest, spear);
-            AssertInDeck(quicksilver, new Card[] { retort, breaker });
+            AssertInHand(breaker, spear);
+            AssertInDeck(quicksilver, new Card[] { retort, forest });
         }
 
         [Test()]
@@ -474,6 +503,24 @@ namespace CauldronTests
             DealDamage(apostate, quicksilver, 3, DamageType.Melee);
             AssertIncapacitated(quicksilver);
         }
+        [Test]
+        public void TestMalleableArmorDoesNotModifyDamageAmount()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            //If {Quicksilver} would be reduced from greater than 1 HP to 0 or fewer HP, restore her to 1HP.
+            PlayCard("MalleableArmor");
+
+            //assuming, for the moment, that this card works
+            PlayCard("MirrorShard");
+
+            DecisionYesNo = true;
+            SetHitPoints(quicksilver, 3);
+            QuickHPStorage(apostate);
+            DealDamage(ra, apostate, 4, DamageType.Melee);
+            QuickHPCheck(-5);
+        }
 
         [Test()]
         public void TestMercuryStrikeSkipCombo()
@@ -495,6 +542,63 @@ namespace CauldronTests
             QuickHPStorage(apostate.CharacterCard, sword);
             PlayCard("MercuryStrike");
             QuickHPCheck(-3, 0);
+        }
+        [Test]
+        public void TestMirrorShard()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            //"When [Mirror Shard] enters play, draw a card."
+            QuickHandStorage(quicksilver);
+            PlayCard("MirrorShard");
+            QuickHandCheck(1);
+
+            DecisionYesNo = true;
+            DecisionSelectTarget = apostate.CharacterCard;
+
+            QuickHPStorage(quicksilver, apostate);
+            DealDamage(ra, apostate, 2, DamageType.Melee);
+
+            //should be ridirected to Quicksilver, who then punches Apostate for 3
+            QuickHPCheck(-2, -3);
+        }
+        [Test]
+        public void TestMirrorShardOptional()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            PlayCard("MirrorShard");
+
+            DecisionYesNo = false;
+            DecisionSelectTarget = apostate.CharacterCard;
+
+            QuickHPStorage(quicksilver, apostate);
+            DealDamage(ra, apostate, 2, DamageType.Melee);
+
+            //should go straight to Apostate
+            QuickHPCheck(0, -2);
+        }
+        [Test]
+        public void TestMirrorShardKeepsDamageType()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "TheCourtOfBlood");
+            StartGame();
+
+            PlayCard("MirrorShard");
+
+            DecisionYesNo = true;
+            DecisionSelectTarget = apostate.CharacterCard;
+
+            PlayCard("UnhallowedHalls");
+
+            QuickHPStorage(quicksilver, apostate);
+            DealDamage(ra, apostate, 2, DamageType.Infernal);
+
+            //should be redirected to Quicksilver, given +1 for 3 damage
+            //the punch to Apostate should be 4 infernal increased to 5
+            QuickHPCheck(-3, -5);
         }
 
         [Test()]

@@ -2,6 +2,9 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Handelabra;
 
 namespace Cauldron.Quicksilver
 {
@@ -9,11 +12,9 @@ namespace Cauldron.Quicksilver
     {
         public MirrorShardCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            this.RedirectedDamage = 0;
         }
 
-        private int RedirectedDamage;
-        private DamageType RedirectedType;
+        private bool redirectPrimed = false;
 
         public override IEnumerator Play()
         {
@@ -33,42 +34,65 @@ namespace Cauldron.Quicksilver
         public override void AddTriggers()
         {
             //You may redirect any damage dealt by other hero targets to {Quicksilver}.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.IsHero && action.DamageSource.Card != base.CharacterCard && action.IsRedirectable, this.MaybeRedirectResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.IsHero && action.DamageSource.Card != base.CharacterCard && action.IsRedirectable, this.MaybeRedirectResponse, TriggerType.RedirectDamage, TriggerTiming.Before, isActionOptional: true);
             //Whenever {Quicksilver} takes damage this way, she deals 1 non-hero target X damage of the same type, where X is the damage that was dealt to {Quicksilver} plus 1.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Target == base.CharacterCard && this.RedirectedDamage > 0, (DealDamageAction action) => this.DealDamageResponse(action), TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => redirectPrimed, (DealDamageAction action) => this.DealDamageResponse(action), TriggerType.DealDamage, TriggerTiming.After);
         }
 
         private IEnumerator MaybeRedirectResponse(DealDamageAction action)
         {
-            IEnumerator coroutine = base.GameController.RedirectDamage(action, base.CharacterCard, true, base.GetCardSource());
+            if (action.IsRedirectable == false)
+            {
+                yield break;
+            }
+
+            List<YesNoCardDecision> didRedirect = new List<YesNoCardDecision> { };
+            IEnumerator askForRedirect = GameController.MakeYesNoCardDecision(HeroTurnTakerController, SelectionType.RedirectDamage, this.Card, action: action, storedResults: didRedirect, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                yield return base.GameController.StartCoroutine(askForRedirect);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine);
+                base.GameController.ExhaustCoroutine(askForRedirect);
             }
-            if (action.DidDealDamage && action.Target == base.CharacterCard)
+
+            if (DidPlayerAnswerYes(didRedirect))
             {
-                this.RedirectedDamage = action.Amount + 1;
-                this.RedirectedType = action.DamageType;
+                IEnumerator coroutine = base.GameController.RedirectDamage(action, base.CharacterCard, false, base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                redirectPrimed = true;
+                yield return null;
             }
             yield break;
         }
 
         private IEnumerator DealDamageResponse(DealDamageAction action)
         {
-            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), this.RedirectedDamage, this.RedirectedType, 1, false, 1, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
+            //there is possibly a chance of false positive here, but it's what I can do for now            
+            if (action.NumberOfTimesRedirected > 0 && action.AllTargets.Contains(this.CharacterCard))
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                redirectPrimed = false;
+                if (action.Target == base.CharacterCard && action.DidDealDamage)
+                {
+                    IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), action.Amount + 1, action.DamageType, 1, false, 1, cardSource: base.GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
             }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            this.RedirectedDamage = 0;
             yield break;
         }
     }
