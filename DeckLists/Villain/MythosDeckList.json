@@ -58,7 +58,7 @@
                 "DealDamageInfernal"
             ],
             "flippedAdvancedIcons": [],
-            "difficulty": 1,
+            "difficulty": 3,
             "openingLines": {
                 "default": "default placeholder",
                 "TitanCharacter": "Titan placeholder",

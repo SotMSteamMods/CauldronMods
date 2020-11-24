@@ -40,7 +40,7 @@
                 "default": "default placeholder",
                 "VectorCharacter": "Vector placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "AbsorbAndUnleash",
@@ -446,7 +446,7 @@
                 "default": "default placeholder",
                 "VectorCharacter": "Vector placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "GargoyleCharacter",
@@ -488,7 +488,7 @@
                 "default": "default placeholder",
                 "VectorCharacter": "Vector placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

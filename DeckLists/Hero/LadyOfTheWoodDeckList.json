@@ -37,7 +37,7 @@
                 "CalderochCharacter": "Calderoch placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "CalmBeforeTheStorm",
@@ -480,7 +480,7 @@
                 "CalderochCharacter": "Calderoch placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "LadyOfTheWoodCharacter",
@@ -522,7 +522,7 @@
                 "CalderochCharacter": "Calderoch placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "LadyOfTheWoodCharacter",
@@ -563,7 +563,7 @@
                 "CalderochCharacter": "Calderoch placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         }
     ]
 }

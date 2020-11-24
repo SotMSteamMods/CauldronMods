@@ -52,7 +52,7 @@
                 "DestroyOngoing",
                 "DestroyEquipment"
             ],
-            "difficulty": 1,
+            "difficulty": 3,
             "openingLines": {
                 "default": "default placeholder",
                 "TheKnightCharacter": "The Knight placeholder",

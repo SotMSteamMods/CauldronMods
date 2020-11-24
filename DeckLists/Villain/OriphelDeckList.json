@@ -52,7 +52,7 @@
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
             ],
-            "difficulty": 1,
+            "difficulty": 2,
             "openingLines": {
                 "default": "You're too late, heroes! Soon I will break the veil between our worlds, and rule over both!",
                 "MailchaeCharacter": "Mailchae placeholder",

@@ -41,7 +41,7 @@
                 "default": "default placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "Abracadabra",
@@ -431,7 +431,7 @@
                 "default": "default placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "MagnificentMaraCharacter",
@@ -471,7 +471,7 @@
                 "default": "default placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         }
     ]
 }

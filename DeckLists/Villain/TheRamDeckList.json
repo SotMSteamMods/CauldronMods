@@ -53,7 +53,7 @@
             "flippedAdvancedIcons": [
                 "PlayCardNow"
             ],
-            "difficulty": 1,
+            "difficulty": 2,
             "openingLines": {
                 "default": "Target Aquired//Status//Hostile//Initiate Neutralization Protocol",
                 "QuicksilverCharacter": "Quicksilver placeholder",
@@ -455,7 +455,7 @@
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
             ],
-            "difficulty": 1,
+            "difficulty": 3,
             "openingLines": {
                 "default": "default placeholder",
                 "TheKnightCharacter": "The Knight placeholder",

@@ -40,7 +40,7 @@
                 "default": "default placeholder",
                 "MythosCharacter": "Mythos placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "CombatPragmatism",
@@ -405,7 +405,7 @@
                 "default": "default placeholder",
                 "MythosCharacter": "Mythos placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "TitanCharacter",
@@ -445,7 +445,7 @@
                 "default": "default placeholder",
                 "MythosCharacter": "Mythos placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }
