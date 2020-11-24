@@ -330,6 +330,33 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestCriticalHitDamageFail()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
+            StartGame();
+
+            RemoveMobileDefensePlatform();
+            PlayCard("LivingForceField");
+            var topDeck = PutOnDeck(TangoOne, GetCard(DamnGoodGroundCardController.Identifier));
+
+            QuickHPStorage(baron);
+
+            DecisionYesNo = true;
+            DecisionSelectTarget = baron.CharacterCard;
+
+            // Act
+            GoToPlayCardPhase(TangoOne);
+            PlayCard(CriticalHitCardController.Identifier);
+            DealDamage(TangoOne.CharacterCard.ResponsibleTarget, baron.CharacterCard, 0, DamageType.Infernal);
+
+            // Assert
+            QuickHPCheck(0);
+
+            AssertOnTopOfDeck(TangoOne, topDeck);
+        }
+
+        [Test]
         public void TestCriticalHitDiscardCriticalCardSuccess()
         {
             // Arrange
@@ -577,14 +604,14 @@ namespace CauldronTests
 
             DecisionSelectLocation = new LocationChoice(TangoOne.HeroTurnTaker.Deck);
             DecisionSelectCard = GetCard(CriticalHitCardController.Identifier); // First drawn card to put back on deck
-            DecisionSelectCardToPlay = GetCard(FarsightCardController.Identifier);
+            DecisionSelectCardToPlay = GetCard(CriticalHitCardController.Identifier);
 
             // Act
             GoToStartOfTurn(TangoOne);
             PlayCardFromHand(TangoOne, InfiltrateCardController.Identifier);
 
             // Assert
-            AssertIsInPlay(GetCardInPlay(FarsightCardController.Identifier));
+            AssertIsInPlay(GetCardInPlay(CriticalHitCardController.Identifier));
         }
 
         [Test]

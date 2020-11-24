@@ -29,17 +29,10 @@ namespace Cauldron.TangoOne
 
         public override void AddTriggers()
         {
-            DamageSource heroDamageSource = new DamageSource(this.GameController, this.Card.Owner.CharacterCard);
-
-            base.AddTrigger<DealDamageAction>(dda => dda.DamageSource != null && dda.DamageSource.IsSameCard(base.CharacterCard),
+            base.AddTrigger<DealDamageAction>(dda => dda.DamageSource != null && dda.DamageSource.IsSameCard(base.CharacterCard) && dda.Amount > 0,
                 this.RevealTopCardFromDeckResponse,
-                new TriggerType[]
-                {
-                    TriggerType.IncreaseDamage
-
-                }, TriggerTiming.Before, null, isConditional: false, requireActionSuccess: true, isActionOptional: true);
-
-            base.AddTriggers();
+                new TriggerType[] { TriggerType.IncreaseDamage },
+                TriggerTiming.Before, null, isConditional: false, requireActionSuccess: true, isActionOptional: true);
         }
 
         private IEnumerator RevealTopCardFromDeckResponse(DealDamageAction dda)
@@ -47,16 +40,15 @@ namespace Cauldron.TangoOne
             List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
 
             // Ask if player wants to discard off the top of their deck
-            IEnumerator routine = base.GameController.MakeYesNoCardDecision(DecisionMaker,
-                SelectionType.RevealTopCardOfDeck, this.Card, dda, storedYesNoResults, null, GetCardSource());
+            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.RevealTopCardOfDeck, this.Card, dda, storedYesNoResults, null, GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(routine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(routine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
 
             // Return if they chose not to discard from their deck
@@ -67,14 +59,14 @@ namespace Cauldron.TangoOne
 
             // Move card from top of their deck to the trash
             List<MoveCardAction> moveCardActions = new List<MoveCardAction>();
-            IEnumerator discardCardRoutine = base.GameController.DiscardTopCard(this.TurnTaker.Deck, moveCardActions, card => true, this.TurnTaker, base.GetCardSource());
+            coroutine = base.GameController.DiscardTopCard(this.TurnTaker.Deck, moveCardActions, card => true, this.TurnTaker, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(discardCardRoutine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(discardCardRoutine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
 
             if (DidMoveCard(moveCardActions))
@@ -86,14 +78,14 @@ namespace Cauldron.TangoOne
                     ModifyDealDamageAction mdda = new IncreaseDamageAction(this.GameController, dda, DamageIncrease, false);
                     dda.AddDamageModifier(mdda);
 
-                    IEnumerator sendMessage = base.GameController.SendMessageAction(discardedCard.Title + " is a critical card, so damage is increased by 3!", Priority.Medium, base.GetCardSource(), associatedCards: new Card[] { discardedCard });
+                    coroutine = base.GameController.SendMessageAction(discardedCard.Title + " is a critical card, so damage is increased by 3!", Priority.Medium, base.GetCardSource(), associatedCards: new Card[] { discardedCard });
                     if (base.UseUnityCoroutines)
                     {
-                        yield return base.GameController.StartCoroutine(sendMessage);
+                        yield return base.GameController.StartCoroutine(coroutine);
                     }
                     else
                     {
-                        base.GameController.ExhaustCoroutine(sendMessage);
+                        base.GameController.ExhaustCoroutine(coroutine);
                     }
                 }
             }
