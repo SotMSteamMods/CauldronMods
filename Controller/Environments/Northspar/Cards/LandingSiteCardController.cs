@@ -30,24 +30,12 @@ namespace Cauldron.Northspar
 
         private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
         {
-            /// ...you may destroy 1 hero ongoing or equipment card...
-            List<DestroyCardAction> storedResults = new List<DestroyCardAction>();
-            LinqCardCriteria criteria = new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c)), "hero ongoing or equipment");
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(base.DecisionMaker, criteria, true, storedResultsAction: storedResults, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
+            if (FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c))).Count() > 0)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            // ...if you do, place the top card of any deck beneath Tak Ahab
-            if(storedResults != null && base.DidDestroyCard(storedResults.First()))
-            {
-                List<SelectLocationDecision> selectDeckResults = new List<SelectLocationDecision>();
-                coroutine = base.GameController.SelectADeck(base.DecisionMaker, SelectionType.MoveCardToUnderCard, (Location l) => true, selectDeckResults, cardSource: base.GetCardSource());
+                /// ...you may destroy 1 hero ongoing or equipment card...
+                List<DestroyCardAction> storedResults = new List<DestroyCardAction>();
+                LinqCardCriteria criteria = new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c)), "hero ongoing or equipment");
+                IEnumerator coroutine = base.GameController.SelectAndDestroyCard(base.DecisionMaker, criteria, true, storedResultsAction: storedResults, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -56,10 +44,12 @@ namespace Cauldron.Northspar
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-                if(selectDeckResults != null && base.DidSelectDeck(selectDeckResults))
+
+                // ...if you do, place the top card of any deck beneath Tak Ahab
+                if (storedResults != null && base.DidDestroyCard(storedResults.First()))
                 {
-                    Location deck = selectDeckResults.First().SelectedLocation.Location;
-                    coroutine = base.GameController.MoveCard(base.DecisionMaker, deck.TopCard, base.FindTakAhabInPlay().UnderLocation, showMessage: true, cardSource: base.GetCardSource());
+                    List<SelectLocationDecision> selectDeckResults = new List<SelectLocationDecision>();
+                    coroutine = base.GameController.SelectADeck(base.DecisionMaker, SelectionType.MoveCardToUnderCard, (Location l) => true, selectDeckResults, cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -68,8 +58,33 @@ namespace Cauldron.Northspar
                     {
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
+                    if (selectDeckResults != null && base.DidSelectDeck(selectDeckResults))
+                    {
+                        Location deck = selectDeckResults.First().SelectedLocation.Location;
+                        coroutine = base.GameController.MoveCard(base.DecisionMaker, deck.TopCard, base.FindTakAhabInPlay().UnderLocation, showMessage: true, cardSource: base.GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                    }
+                }
+            } else
+            {
+                IEnumerator coroutine2 = base.GameController.SendMessageAction(base.Card.Title + " has no hero ongoing or equipment to destroy.", Priority.Medium, GetCardSource(), null, showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine2);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine2);
                 }
             }
+           
             yield break;
         }
     }
