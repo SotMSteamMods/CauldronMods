@@ -4215,7 +4215,7 @@ namespace Handelabra.Sentinels.UnitTest
         protected void AssertCannotPlayCards(TurnTakerController ttc)
         {
             Assert.IsFalse(this.GameController.CanPerformAction<PlayCardAction>(ttc, null), ttc.Name + " should not be able to play cards.");
-            var keeper = ttc.TurnTaker.GetAllCards().Where(c => !c.IsCharacter && c.IsKeeper).FirstOrDefault();
+            var keeper = ttc.TurnTaker.GetAllCards().Where(c => !c.IsInPlay && !c.IsCharacter && c.IsKeeper).FirstOrDefault();
             Console.WriteLine("Checking to make sure {0} cannot play cards by playing {1} from {2}", ttc.Name, keeper.Identifier, keeper.Location.GetFriendlyName());
             PlayCard(keeper);
             AssertNotInPlay(keeper);
