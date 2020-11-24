@@ -238,7 +238,6 @@ namespace CauldronTests
         [Test]
         public void TestFlippedAdvancedDendronGainsHealth()
         {
-            //bad seed: 2117776357
             // Advanced: At the start of the villain turn, {Dendron} regains 5 HP.
 
             // Arrange
@@ -251,6 +250,10 @@ namespace CauldronTests
             SetHitPoints(Dendron, 1);
 
             StartGame();
+
+            StackDeck(Dendron, "ShadedOwl");
+            //keep from messing up the test with random healing
+            PutInTrash(Dendron, Dendron.TurnTaker.Deck.Cards.Where(c => c.Identifier == "Restoration"));
 
             GoToEndOfTurn(Dendron);
 
@@ -411,29 +414,35 @@ namespace CauldronTests
         [Test]
         public void TestInkScar()
         {
-            //bad seed: -734203179
             // Arrange
-            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
-
-            PutInTrash(TintedStagCardController.Identifier);
-            PutInTrash(LivingInkCardController.Identifier);
-
-            Card bloodThornAura = GetCard(BloodThornAuraCardController.Identifier);
-            PutInTrash(bloodThornAura);
+            SetupGameController(new[] { DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis" });
 
             StartGame();
+
+            var c1 = PutInTrash(TintedStagCardController.Identifier);
+            var c2 = PutInTrash(LivingInkCardController.Identifier);
+
+            //put all non targets in the trash
+            MoveCards(Dendron, c => c.Owner == Dendron.TurnTaker && !c.IsTarget, Dendron.TurnTaker.Trash);
+            Card bloodThornAura = GetCard(BloodThornAuraCardController.Identifier);
+
+            //then load an inkscar as the top card
+            Card inkScar = GetCard(InkScarCardController.Identifier);
+            PutOnDeck(Dendron, inkScar);
+
+            AssertNumberOfCardsInPlay(Dendron, 3); //dendron, viper, wolf
+
             QuickShuffleStorage(Dendron.TurnTaker.Deck);
 
-
             GoToPlayCardPhase(Dendron);
-            Card inkScar = GetCard(InkScarCardController.Identifier);
-            PlayCard(inkScar);
-
-            // Act
-
-
+            //plays inkscar
+            RunActiveTurnPhase();
             // Assert
-            AssertInTrash(Dendron, bloodThornAura);
+
+            AssertInTrash(Dendron, bloodThornAura); //still in trach
+            AssertInTrash(Dendron, inkScar); //in trash after being played
+            AssertNotInTrash(c1, c2); //could be in the deck or playarea
+            AssertNumberOfCardsInPlay(Dendron, 5); //base plus 2 more from inkscar
             QuickShuffleCheck(1);
         }
 
