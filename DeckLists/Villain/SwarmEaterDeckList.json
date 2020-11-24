@@ -44,7 +44,7 @@
             "flippedAdvanced": "Whenever {SwarmEater} destroys a villain target, play the top card of the villain deck.",
             "flippedIcons": [],
             "flippedAdvancedIcons": [],
-            "difficulty": 1,
+            "difficulty": 4,
             "openingLines": {
                 "default": "default placeholder",
                 "CypherCharacter": "Cypher placeholder",
@@ -496,7 +496,7 @@
             "flippedAdvancedIcons": [
                 "GainHP"
             ],
-            "difficulty": 1,
+            "difficulty": 2,
             "openingLines": {
                 "default": "default placeholder",
                 "CypherCharacter": "Cypher placeholder",

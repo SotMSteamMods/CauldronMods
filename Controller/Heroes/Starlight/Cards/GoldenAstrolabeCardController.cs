@@ -11,6 +11,7 @@ namespace Cauldron.Starlight
     {
         public GoldenAstrolabeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && IsNextToConstellation(c), useCardsSuffix: false, singular: "hero character next to a constellation", plural: "hero characters next to a constellation"));
         }
 
         public override IEnumerator UsePower(int index = 0)

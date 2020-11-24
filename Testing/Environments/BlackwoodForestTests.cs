@@ -48,6 +48,7 @@ namespace CauldronTests
             Assert.AreEqual(0, legacy.TurnTaker.Trash.Cards.Count());
             Assert.AreEqual(0, haka.TurnTaker.Trash.Cards.Count());
             Assert.AreEqual(0, baron.TurnTaker.Trash.Cards.Count());
+            AssertNumberOfCardsInRevealed(BlackwoodForest, 0);
         }
 
         [Test]
@@ -82,6 +83,7 @@ namespace CauldronTests
             Assert.AreEqual(2, legacy.TurnTaker.Trash.Cards.Count());
             Assert.AreEqual(0, haka.TurnTaker.Trash.Cards.Count());
             Assert.AreEqual(3, baron.TurnTaker.Trash.Cards.Count());
+            AssertNumberOfCardsInRevealed(BlackwoodForest, 0);
         }
 
         [Test]

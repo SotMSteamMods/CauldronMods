@@ -10,6 +10,7 @@ namespace Cauldron.Starlight
     {
         public EventHorizonCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => IsConstellation(c), "constellation"));
         }
 
         public override IEnumerator Play()

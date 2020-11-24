@@ -529,6 +529,11 @@ namespace CauldronTests
             DecisionSelectFunction = 0;
             //Increase the next damage dealt by {Baccarat} by 1,
             PlayCard(euchre);
+            //Damage is only increased for Baccarat
+            QuickHPStorage(baccarat);
+            DealDamage(mdp, baccarat, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+            //+1 damage
             QuickHPStorage(mdp);
             DealDamage(baccarat, mdp, 2, DamageType.Melee);
             QuickHPCheck(-3);
@@ -1006,7 +1011,7 @@ namespace CauldronTests
             GoToPlayCardPhase(baccarat);
             QuickShuffleStorage(baccarat);
             PlayCard(bridge);
-            QuickShuffleCheck(1);
+            QuickShuffleCheck(2);
             AssertNumberOfCardsInTrash(baccarat, 37);
             //check that all 3 copies are in the deck
             AssertInDeck(GetCard("AbyssalSolitaire", 0));

@@ -18,13 +18,13 @@ namespace Cauldron.BlackwoodForest
         // When this card is destroyed, discard any remaining cards beneath it.
         //==============================================================
 
-        public static string Identifier = "TheBlackTree";
+        public static readonly string Identifier = "TheBlackTree";
 
         private const int CardsToDrawFromEachDeck = 1;
 
         public TheBlackTreeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowNumberOfCardsUnderCard(base.Card);
         }
 
         public override void AddTriggers()
@@ -71,7 +71,7 @@ namespace Cauldron.BlackwoodForest
 
             //IEnumerator bulkMoveRoutine = base.GameController.BulkMoveCards(this.TurnTakerController, revealedCards, this.Card.UnderLocation);
             foreach (var moveCardsRoutine in revealedCards.Select(revealedCard 
-                => this.GameController.MoveCard(ttc, revealedCard, this.Card.UnderLocation, flipFaceDown: true)))
+                => this.GameController.MoveCard(ttc, revealedCard, this.Card.UnderLocation, flipFaceDown: true, cardSource: base.GetCardSource())))
             {
                 if (base.UseUnityCoroutines)
                 {
@@ -91,14 +91,28 @@ namespace Cauldron.BlackwoodForest
             Card[] enumerable = this.Card.UnderLocation.Cards as Card[] ?? this.Card.UnderLocation.Cards.ToArray();
             Card cardToPlay = enumerable.ElementAt(r.Next(0, enumerable.Count()));
 
-            IEnumerator playCardRoutine = this.PlayCardFromLocation(this.Card.UnderLocation, cardToPlay.Identifier, shuffleAfterwardsIfDeck: false);
+
+            IEnumerator routine = base.GameController.MoveCard(base.TurnTakerController, cardToPlay, cardToPlay.Owner.Revealed, false, 
+                false, true, null, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(playCardRoutine);
+                yield return base.GameController.StartCoroutine(routine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(playCardRoutine);
+                base.GameController.ExhaustCoroutine(routine);
+            }
+
+            routine = base.GameController.PlayCard(base.TurnTakerController, cardToPlay, true, null, false, 
+                null, null, false, null, cardSource: base.GetCardSource());
+            
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
             }
 
             if (AreCardsRemainingBelowSelf())

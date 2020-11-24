@@ -43,7 +43,7 @@
                 "SwarmEaterCharacter": "Swarm Eater placeholder",
                 "SwarmEaterDistributedHivemindCharacter": "Swarm Eater Distributed Hivemind placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "BackupPlan",
@@ -529,7 +529,7 @@
                 "SwarmEaterCharacter": "Swarm Eater placeholder",
                 "SwarmEaterDistributedHivemindCharacter": "Swarm Eater Distributed Hivemind placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "CypherCharacter",
@@ -569,7 +569,7 @@
                 "SwarmEaterCharacter": "Swarm Eater placeholder",
                 "SwarmEaterDistributedHivemindCharacter": "Swarm Eater Distributed Hivemind placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         }
     ]
 }

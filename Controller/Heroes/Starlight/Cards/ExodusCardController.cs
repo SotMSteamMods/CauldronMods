@@ -11,6 +11,8 @@ namespace Cauldron.Starlight
     {
         public ExodusCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocations(() => new Location[] {TurnTaker.Deck, TurnTaker.Trash },
+                                            new LinqCardCriteria((Card c) => IsConstellation(c), "constellation"));
         }
 
         public override IEnumerator Play()

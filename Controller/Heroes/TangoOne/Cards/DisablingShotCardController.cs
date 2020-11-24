@@ -13,7 +13,7 @@ namespace Cauldron.TangoOne
         // {TangoOne} may deal 1 target 2 projectile damage.
         //==============================================================
 
-        public static string Identifier = "DisablingShot";
+        public static readonly string Identifier = "DisablingShot";
 
         private const int DamageAmount = 2;
 
@@ -26,7 +26,7 @@ namespace Cauldron.TangoOne
         {
             // Destroy ongoing card option
             IEnumerator destroyOngoingRoutine = this.GameController.SelectAndDestroyCard(this.HeroTurnTakerController,
-                new LinqCardCriteria(card => card.IsOngoing && card.IsInPlay),
+                new LinqCardCriteria(card => card.IsOngoing && card.IsInPlay, "ongoing"),
                 true, cardSource: this.GetCardSource());
 
             if (base.UseUnityCoroutines)
@@ -50,8 +50,8 @@ namespace Cauldron.TangoOne
             }
 
             Card characterCard = GetSelectedCard(selectCardResults);
-            IEnumerator dealDamageRoutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, 
-                new DamageSource(base.GameController, characterCard), DamageAmount, 
+            IEnumerator dealDamageRoutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
+                new DamageSource(base.GameController, characterCard), DamageAmount,
                 DamageType.Projectile, 1, false, 0,
                 additionalCriteria: c => c.IsTarget && c.IsInPlayAndHasGameText,
                 cardSource: base.GetCardSource());

@@ -23,7 +23,7 @@ namespace Cauldron.Anathema
 		{
 			//Anathema deals each Hero target 2 projectile damage. 
 			List<DealDamageAction> storedResults = new List<DealDamageAction>();
-			IEnumerator coroutine = base.DealDamage(base.Card, (Card card) => card.IsHero && card.IsTarget, 2, DamageType.Projectile, storedResults: storedResults);
+			IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card card) => card.IsHero && card.IsTarget, 2, DamageType.Projectile, storedResults: storedResults);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
