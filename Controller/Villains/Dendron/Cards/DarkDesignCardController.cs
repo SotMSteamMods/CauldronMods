@@ -17,7 +17,6 @@ namespace Cauldron.Dendron
 
         public DarkDesignCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override IEnumerator Play()
@@ -44,10 +43,9 @@ namespace Cauldron.Dendron
 
         private Card GetLastHeroToDamageVillainTarget()
         {
-            DealDamageJournalEntry lastHeroToDamageVillainTarget
-                = base.GameController.Game.Journal.DealDamageEntries().LastOrDefault(j => j.TargetCard.IsVillainTarget && j.CardThatCausedDamageToOccur.IsHero);
+            DealDamageJournalEntry journalEntry = base.GameController.Game.Journal.DealDamageEntries().LastOrDefault(j => j.TargetCard.IsVillainTarget && j.CardThatCausedDamageToOccur.IsHero);
 
-            return lastHeroToDamageVillainTarget?.CardThatCausedDamageToOccur;
+            return journalEntry?.CardThatCausedDamageToOccur;
         }
     }
 }

@@ -113,10 +113,10 @@ namespace Cauldron.Dendron
 
                 HeroTurnTakerController fewestCardsHttc = FindTurnTakerController(fewestCardsInPlayResults.First().CharacterCard.Owner).ToHero();
 
-                IEnumerator destroyOneOngoingRoutine = base.GameController.SelectAndDestroyCards(fewestCardsHttc, 
+                IEnumerator destroyOneOngoingRoutine = base.GameController.SelectAndDestroyCards(fewestCardsHttc,
                     new LinqCardCriteria(card => card.IsOngoing && card.Owner == fewestCardsHttc.HeroTurnTaker), CardsToDestroyFewestCards, cardSource: this.GetCardSource());
 
-                IEnumerator destroyOneEquipmentRoutine = base.GameController.SelectAndDestroyCards(fewestCardsHttc, 
+                IEnumerator destroyOneEquipmentRoutine = base.GameController.SelectAndDestroyCards(fewestCardsHttc,
                     new LinqCardCriteria(card => IsEquipment(card) && card.Owner == fewestCardsHttc.HeroTurnTaker), CardsToDestroyFewestCards, cardSource: this.GetCardSource());
 
                 if (base.UseUnityCoroutines)
@@ -150,10 +150,10 @@ namespace Cauldron.Dendron
 
                 HeroTurnTakerController mostCardsHttc = FindTurnTakerController(mostCardsInPlayResults.First().CharacterCard.Owner).ToHero();
 
-                IEnumerator destroyTwoOngoingRoutine = base.GameController.SelectAndDestroyCards(mostCardsHttc, 
+                IEnumerator destroyTwoOngoingRoutine = base.GameController.SelectAndDestroyCards(mostCardsHttc,
                     new LinqCardCriteria(card => card.IsOngoing && card.Owner == mostCardsHttc.HeroTurnTaker), CardsToDestroyMostCards, cardSource: this.GetCardSource());
 
-                IEnumerator destroyTwoEquipmentRoutine = base.GameController.SelectAndDestroyCards(mostCardsHttc, 
+                IEnumerator destroyTwoEquipmentRoutine = base.GameController.SelectAndDestroyCards(mostCardsHttc,
                     new LinqCardCriteria(card => IsEquipment(card) && card.Owner == mostCardsHttc.HeroTurnTaker), CardsToDestroyMostCards, cardSource: this.GetCardSource());
 
                 if (base.UseUnityCoroutines)

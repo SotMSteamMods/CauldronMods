@@ -90,9 +90,9 @@ namespace Cauldron.Dendron
             if (mostCardsInPlayResults.Any())
             {
                 // This hero may not play cards during their next turn.
-                
 
-                OnPhaseChangeStatusEffect onPhaseChangeStatusEffect = new OnPhaseChangeStatusEffect(base.CardWithoutReplacements, "PreventPlaysThisTurnEffect", mostCardsInPlayResults.First().CharacterCard.Title +  " cannot play cards on their turn.", new TriggerType[] { TriggerType.CreateStatusEffect }, base.Card);
+
+                OnPhaseChangeStatusEffect onPhaseChangeStatusEffect = new OnPhaseChangeStatusEffect(base.CardWithoutReplacements, "PreventPlaysThisTurnEffect", mostCardsInPlayResults.First().CharacterCard.Title + " cannot play cards on their turn.", new TriggerType[] { TriggerType.CreateStatusEffect }, base.Card);
                 onPhaseChangeStatusEffect.TurnTakerCriteria.IsSpecificTurnTaker = mostCardsInPlayResults.First();
                 onPhaseChangeStatusEffect.TurnPhaseCriteria.Phase = Phase.Start;
                 onPhaseChangeStatusEffect.UntilEndOfNextTurn(mostCardsInPlayResults.First());
@@ -110,12 +110,12 @@ namespace Cauldron.Dendron
             }
 
             // All other heroes shuffle their trash into their decks
-        IEnumerator shuffleRoutine
-                = base.DoActionToEachTurnTakerInTurnOrder(
-                    ttc => ttc.IsHero 
-                               && !mostCardsInHandResults.Any(tt => tt.Equals(ttc.TurnTaker))
-                               && !mostCardsInPlayResults.Any(tt => tt.Equals(ttc.TurnTaker)),
-                    ShuffleTrashResponse);
+            IEnumerator shuffleRoutine
+                    = base.DoActionToEachTurnTakerInTurnOrder(
+                        ttc => ttc.IsHero
+                                   && !mostCardsInHandResults.Any(tt => tt.Equals(ttc.TurnTaker))
+                                   && !mostCardsInPlayResults.Any(tt => tt.Equals(ttc.TurnTaker)),
+                        ShuffleTrashResponse);
 
             if (base.UseUnityCoroutines)
             {
@@ -127,7 +127,7 @@ namespace Cauldron.Dendron
             }
         }
 
-        public IEnumerator PreventPlaysThisTurnEffect(PhaseChangeAction p ,OnPhaseChangeStatusEffect effect)
+        public IEnumerator PreventPlaysThisTurnEffect(PhaseChangeAction p, OnPhaseChangeStatusEffect effect)
         {
             CannotPlayCardsStatusEffect cannotPlayCardsStatusEffect = new CannotPlayCardsStatusEffect();
             cannotPlayCardsStatusEffect.TurnTakerCriteria.IsSpecificTurnTaker = base.Game.ActiveTurnTaker;
@@ -170,7 +170,7 @@ namespace Cauldron.Dendron
 
         public IEnumerator CancelDraws(DrawCardAction dc, HeroTurnTaker htt, OnDrawCardStatusEffect effect)
         {
-            if(dc.HeroTurnTaker != htt)
+            if (dc.HeroTurnTaker != htt)
             {
                 yield break;
             }

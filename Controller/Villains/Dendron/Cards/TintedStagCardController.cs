@@ -69,9 +69,9 @@ namespace Cauldron.Dendron
             if (tattooCards.Any())
             {
                 // Put tattoo into play
-                IEnumerator playCardRoutine = base.GameController.PlayCards(this.DecisionMaker, 
+                IEnumerator playCardRoutine = base.GameController.PlayCards(this.DecisionMaker,
                     c => tattooCards.Contains(c), false, true, 1, cardSource: base.GetCardSource());
-                
+
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(playCardRoutine);
@@ -89,7 +89,7 @@ namespace Cauldron.Dendron
 
             // Put remaining revealed cards back into the villain trash
             IEnumerator returnCardsToTrashRoutine = base.GameController.MoveCards(this.DecisionMaker, otherCards, this.TurnTaker.Trash, cardSource: base.GetCardSource());
-                
+
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(returnCardsToTrashRoutine);

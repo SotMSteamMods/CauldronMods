@@ -23,7 +23,7 @@ namespace Cauldron.Dendron
         public override void AddTriggers()
         {
             base.AddReduceDamageTrigger(IsTattoo, DamageAmountToReduce);
-            
+
             base.AddTriggers();
         }
     }

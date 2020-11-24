@@ -101,7 +101,7 @@ namespace Cauldron.Dendron
             }
 
             // Flip Dendron
-            IEnumerator flipRoutine = base.GameController.FlipCard(this, treatAsPlayed: false, treatAsPutIntoPlay: 
+            IEnumerator flipRoutine = base.GameController.FlipCard(this, treatAsPlayed: false, treatAsPutIntoPlay:
                 false, destroyCard.ActionSource, null, GetCardSource());
 
             if (base.UseUnityCoroutines)

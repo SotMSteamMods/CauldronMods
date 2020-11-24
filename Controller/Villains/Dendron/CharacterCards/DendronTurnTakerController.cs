@@ -18,7 +18,7 @@ namespace Cauldron.Dendron
             {
                 yield break;
             }
-            
+
             // Search the deck for 1 copy of Stained Wolf and 1 copy of Painted Viper and put them into play.
             IEnumerator stainedWolfRoutine = this.PutCardIntoPlay(StainedWolfCardController.Identifier, shuffleDeckAfter: false);
             IEnumerator paintedViperRoutine = this.PutCardIntoPlay(PaintedViperCardController.Identifier);

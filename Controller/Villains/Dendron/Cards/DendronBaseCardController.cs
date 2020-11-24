@@ -10,7 +10,6 @@ namespace Cauldron.Dendron
 
         public DendronBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         protected bool IsTattoo(Card card)
