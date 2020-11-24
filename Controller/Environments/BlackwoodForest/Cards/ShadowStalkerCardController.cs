@@ -18,14 +18,14 @@ namespace Cauldron.BlackwoodForest
         // the target with the highest HP 5 psychic damage
         //==============================================================
 
-        public static string Identifier = "ShadowStalker";
+        public static readonly string Identifier = "ShadowStalker";
 
         private const int PsychicDamageToDeal = 5;
 
 
         public ShadowStalkerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowHighestHP();
         }
 
         public override void AddTriggers()

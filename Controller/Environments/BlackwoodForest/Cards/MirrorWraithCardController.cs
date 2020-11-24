@@ -39,7 +39,7 @@ namespace Cauldron.BlackwoodForest
         //==============================================================
 
 
-        public static string Identifier = "MirrorWraith";
+        public static readonly string Identifier = "MirrorWraith";
 
         private const int DamageToDeal = 2;
 
