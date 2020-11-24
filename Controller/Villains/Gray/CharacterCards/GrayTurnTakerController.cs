@@ -28,7 +28,6 @@ namespace Cauldron.Gray
                 base.GameController.ExhaustCoroutine(coroutine);
                 base.GameController.ExhaustCoroutine(coroutine2);
             }
-            coroutine2 = null;
             yield break;
         }
     }

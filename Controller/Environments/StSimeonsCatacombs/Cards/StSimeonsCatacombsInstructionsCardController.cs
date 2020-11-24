@@ -249,7 +249,7 @@ namespace Cauldron.StSimeonsCatacombs
             return card != null && card.Definition.Keywords.Contains("room");
         }
 
-        private List<StatusEffect> _sideStatusEffects = new List<StatusEffect>();
+        private readonly List<StatusEffect> _sideStatusEffects = new List<StatusEffect>();
 
         private Card Catacombs
         {

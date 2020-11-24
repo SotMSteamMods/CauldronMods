@@ -72,7 +72,7 @@ namespace Cauldron.DocHavoc
 
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
-            IEnumerator coroutine = null;
+            IEnumerator coroutine;
             switch (index)
             {
                 case 0:
