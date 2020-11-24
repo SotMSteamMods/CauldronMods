@@ -117,9 +117,8 @@
                 "radiation"
             ],
             "icons": [
-                "StartOfTurnAction",
+                "StartAndEndOfTurnAction",
                 "DealDamageEnergy",
-                "EndOfTurnAction",
                 "PlayCardNow"
             ],
             "body": [
