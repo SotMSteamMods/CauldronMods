@@ -25,6 +25,7 @@ namespace Cauldron.SwarmEater
             base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, cardThisIsUnder, (Card c) => c != cardThisIsUnder, TargetType.All, 1, DamageType.Energy, true);
             yield break;
         }
+
         private IEnumerator DealDamageExceptLowestResponse(PhaseChangeAction action)
         {
             IEnumerator coroutine = base.DealDamage(base.Card, (Card card) => card.IsHero, Game.H - 2, DamageType.Energy, damageSourceInfo: new TargetInfo(HighestLowestHP.LowestHP, 1, 1, new LinqCardCriteria((Card c) => c.IsHero, "the hero target with the lowest HP")));
