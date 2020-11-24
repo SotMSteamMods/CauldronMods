@@ -48,14 +48,13 @@ namespace Cauldron.Quicksilver
             IEnumerator coroutine2 = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, true, new LinqCardCriteria((Card c) => c.DoKeywordsContain(missingKeywords)), 1);
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
                 yield return base.GameController.StartCoroutine(coroutine2);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine);
                 base.GameController.ExhaustCoroutine(coroutine2);
             }
+
             //{Quicksilver} may deal herself 2 melee damage and play a Combo now.
             coroutine = this.ComboResponse();
             if (base.UseUnityCoroutines)
