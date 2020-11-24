@@ -2253,5 +2253,28 @@ namespace CauldronTests
 
 
         }
+
+        [Test()]
+        public void TestRoomsNotVisibleBeforeFlip()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy/FreedomFiveLegacy", "Tachyon", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
+
+            Card twisting = GetCard("TwistingPassages");
+
+
+            DecisionSelectCard = twisting;
+
+            AssertionException e = new AssertionException("dummy message");
+            Assert.Throws(e.GetType(), () => UsePower(legacy, 0), "Was able to target a room under Catacombs", null);
+
+
+
+
+        }
     }
 }
