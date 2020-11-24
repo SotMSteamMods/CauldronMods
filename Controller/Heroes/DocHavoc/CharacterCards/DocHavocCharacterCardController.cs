@@ -137,7 +137,7 @@ namespace Cauldron.DocHavoc
             // One player may draw a card now.
             //==============================================================
 
-            return this.GameController.SelectHeroToDrawCard(this.DecisionMaker);
+            return this.GameController.SelectHeroToDrawCard(this.DecisionMaker, cardSource: GetCardSource());
         }
 
         private IEnumerator DoIncapacitateOption3()
