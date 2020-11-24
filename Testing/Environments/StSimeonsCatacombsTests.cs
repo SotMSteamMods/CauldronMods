@@ -2276,5 +2276,40 @@ namespace CauldronTests
 
 
         }
+
+        [Test()]
+        public void TestBreathStealerBug()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy/FreedomFiveLegacy", "Cauldron.DocHavoc", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+             HeroTurnTakerController docHavoc = FindHero("DocHavoc");
+            SetHitPoints(docHavoc, 10);
+
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
+
+
+            GoToEndOfTurn(catacombs);
+            Card playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+            Card breath = PlayCard("BreathStealer");
+            //make sure it is aqueducts in play
+            if (playedRoom.Identifier != "Aqueducts")
+            {
+                DecisionSelectCards = new Card[] { GetCard("Aqueducts"), breath };
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+            else
+            {
+                DecisionSelectCards = new Card[] { breath };
+            }
+
+
+            GoToUsePowerPhase(docHavoc);
+            Card brawler = PlayCard("Brawler");
+            UsePower(brawler);
+            AssertNotGameOver();
+
+        }
     }
 }

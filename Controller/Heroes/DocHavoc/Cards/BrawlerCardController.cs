@@ -70,7 +70,7 @@ namespace Cauldron.DocHavoc
 
             IEnumerator dealDamageRoutine2 = base.GameController.DealDamageToTarget(
                 new DamageSource(this.GameController, this.Card.Owner.CharacterCard), selectedCard,
-                damageDealtToDocHavocByTargetThisTurn, DamageType.Melee);
+                damageDealtToDocHavocByTargetThisTurn, DamageType.Melee, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
