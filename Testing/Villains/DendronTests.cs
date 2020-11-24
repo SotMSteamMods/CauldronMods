@@ -238,6 +238,7 @@ namespace CauldronTests
         [Test]
         public void TestFlippedAdvancedDendronGainsHealth()
         {
+            //bad seed: 2117776357
             // Advanced: At the start of the villain turn, {Dendron} regains 5 HP.
 
             // Arrange
@@ -327,6 +328,7 @@ namespace CauldronTests
             Card chokingInscription = GetCard(ChokingInscriptionCardController.Identifier);
             Card assaultRifle = GetCard("AssaultRifle");
             Card jacket = PutInHand("FlakJacket");
+            PutInHand("Unload"); //so Expariatte has cards in hand that she shouldn't be able to play
             Card bolsterAllies = PutInHand("BolsterAllies");
 
             // Act
@@ -335,28 +337,48 @@ namespace CauldronTests
             DrawCard(legacy);
 
             GoToPlayCardPhase(Dendron);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            //Chocking Inscription applies a series of status effects to targets.
             PlayCard(chokingInscription);
 
-            // Assert
+            AssertNumberOfStatusEffectsInPlay(2);
 
             // Legacy and Expatriette were both affected with phase penalties.  Haka was the only one unaffected so he shuffles his trash into his deck
             QuickShuffleCheck(0, 0, 1);
             QuickHandStorage(legacy);
             GoToPlayCardPhase(legacy);
             RunCoroutine(base.GameController.DrawCard(legacy.HeroTurnTaker, cardSource: legacy.CharacterCardController.GetCardSource()));
+            
             QuickHandCheck(0);
 
             PlayCard(bolsterAllies);
             QuickHandCheck(-1);
+
             GoToDrawCardPhase(legacy);
+
             AssertCannotPerformPhaseAction();
-            GoToPlayCardPhase(expatriette);
-            AssertCannotPerformPhaseAction();
+
+            GoToEndOfTurn(legacy);
+
+            GoToStartOfTurn(expatriette);
+
+            AssertCannotPlayCards(expatriette);
+
             GoToUsePowerPhase(expatriette);
             DecisionSelectCard = jacket;
             UsePower(expatriette.CharacterCard);
             AssertInHand(jacket);
-            
+
+            GoToDrawCardPhase(expatriette);
+            RunActiveTurnPhase();
+            GoToEndOfTurn(expatriette);
+
+            //Expiration
+            AssertNextMessageContains("Expatriette cannot play cards.");
+            GoToStartOfTurn(haka);
+            AssertNumberOfStatusEffectsInPlay(0);
         }
 
 
@@ -389,6 +411,7 @@ namespace CauldronTests
         [Test]
         public void TestInkScar()
         {
+            //bad seed: -734203179
             // Arrange
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
 

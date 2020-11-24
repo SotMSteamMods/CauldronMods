@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Dendron
 {
-    public class DendronCharacterCardController : VillainCharacterCardController
+    public class DendronCharacterCardController : DendronBaseCharacterCardController
     {
         /*
          *
@@ -191,11 +191,6 @@ namespace Cauldron.Dendron
             {
                 base.GameController.ExhaustCoroutine(gainHpRoutine);
             }
-        }
-
-        private bool IsTattoo(Card card)
-        {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "tattoo");
         }
     }
 }

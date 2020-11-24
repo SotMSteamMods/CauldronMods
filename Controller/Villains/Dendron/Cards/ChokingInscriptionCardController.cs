@@ -17,6 +17,7 @@ namespace Cauldron.Dendron
         //==============================================================
 
         public static readonly string Identifier = "ChokingInscription";
+        public static readonly string PreventDrawPropertyKey = Identifier + "TurnTakerCannotDraw";
 
         public ChokingInscriptionCardController(Card card, TurnTakerController turnTakerController) : base(card,
             turnTakerController)
@@ -26,9 +27,9 @@ namespace Cauldron.Dendron
         public override IEnumerator Play()
         {
             // Find hero with the most cards in hand
+            List<TurnTaker> excludedTurnTakers = new List<TurnTaker>();
             List<TurnTaker> mostCardsInHandResults = new List<TurnTaker>();
             IEnumerator heroWithMostCardsInHandRoutine = base.FindHeroWithMostCardsInHand(mostCardsInHandResults);
-
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(heroWithMostCardsInHandRoutine);
@@ -40,26 +41,15 @@ namespace Cauldron.Dendron
 
             if (mostCardsInHandResults.Any())
             {
-                // This hero may not draw cards during their next turn.
-                //PreventPhaseActionStatusEffect preventPhaseActionStatusEffect = new PreventPhaseActionStatusEffect();
-                //preventPhaseActionStatusEffect.ToTurnPhaseCriteria.Phase = Phase.DrawCard;
-                //preventPhaseActionStatusEffect.ToTurnPhaseCriteria.TurnTaker = mostCardsInHandResults.First();
-                //preventPhaseActionStatusEffect.UntilEndOfNextTurn(mostCardsInHandResults.First());
-                //IEnumerator preventDrawPhaseRoutine = base.AddStatusEffect(preventPhaseActionStatusEffect);
-                //if (base.UseUnityCoroutines)
-                //{
-                //    yield return base.GameController.StartCoroutine(preventDrawPhaseRoutine);
-                //}
-                //else
-                //{
-                //    base.GameController.ExhaustCoroutine(preventDrawPhaseRoutine);
-                //}
+                var biggestHandTurnTaker = mostCardsInHandResults.First();
+                excludedTurnTakers.Add(biggestHandTurnTaker);
 
-                OnPhaseChangeStatusEffect onPhaseChangeStatusEffect = new OnPhaseChangeStatusEffect(base.CardWithoutReplacements, "PreventDrawsThisTurnEffect", mostCardsInHandResults.First().CharacterCard.Title + " cannot draw cards on their turn.", new TriggerType[] { TriggerType.CreateStatusEffect }, base.Card);
-                onPhaseChangeStatusEffect.TurnTakerCriteria.IsSpecificTurnTaker = mostCardsInHandResults.First();
-                onPhaseChangeStatusEffect.TurnPhaseCriteria.Phase = Phase.Start;
-                onPhaseChangeStatusEffect.UntilEndOfNextTurn(mostCardsInHandResults.First());
-                IEnumerator onPhaseChangeRoutine = base.AddStatusEffect(onPhaseChangeStatusEffect);
+                //The status effect must last slightly longer than the triggering phase action, or the effect will not fire.
+                OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(base.CardWithoutReplacements, "PreventDrawsThisTurnEffect", $"{biggestHandTurnTaker.Name} cannot draw cards on their turn.", new TriggerType[] { TriggerType.CreateStatusEffect }, base.Card);
+                effect.TurnTakerCriteria.IsSpecificTurnTaker = biggestHandTurnTaker;
+                effect.TurnPhaseCriteria.Phase = Phase.Start;
+                effect.UntilEndOfNextTurn(biggestHandTurnTaker);
+                IEnumerator onPhaseChangeRoutine = base.AddStatusEffect(effect);
 
                 if (base.UseUnityCoroutines)
                 {
@@ -85,12 +75,16 @@ namespace Cauldron.Dendron
 
             if (mostCardsInPlayResults.Any())
             {
+                var mostCardsTurnTaker = mostCardsInPlayResults.First();
+                excludedTurnTakers.Add(mostCardsTurnTaker);
+
+                //The status effect must last slightly longer than the triggering phase action, or the effect will not fire.
                 // This hero may not play cards during their next turn.
-                OnPhaseChangeStatusEffect onPhaseChangeStatusEffect = new OnPhaseChangeStatusEffect(base.CardWithoutReplacements, "PreventPlaysThisTurnEffect", mostCardsInPlayResults.First().CharacterCard.Title + " cannot play cards on their turn.", new TriggerType[] { TriggerType.CreateStatusEffect }, base.Card);
-                onPhaseChangeStatusEffect.TurnTakerCriteria.IsSpecificTurnTaker = mostCardsInPlayResults.First();
-                onPhaseChangeStatusEffect.TurnPhaseCriteria.Phase = Phase.Start;
-                onPhaseChangeStatusEffect.UntilEndOfNextTurn(mostCardsInPlayResults.First());
-                IEnumerator onPhaseChangeRoutine = base.AddStatusEffect(onPhaseChangeStatusEffect);
+                OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(base.CardWithoutReplacements, "PreventPlaysThisTurnEffect", $"{mostCardsTurnTaker.Name} cannot play cards on their turn.", new TriggerType[] { TriggerType.CreateStatusEffect }, base.Card);
+                effect.TurnTakerCriteria.IsSpecificTurnTaker = mostCardsTurnTaker;
+                effect.TurnPhaseCriteria.Phase = Phase.Start;
+                effect.UntilEndOfNextTurn(mostCardsTurnTaker);
+                IEnumerator onPhaseChangeRoutine = base.AddStatusEffect(effect);
 
                 if (base.UseUnityCoroutines)
                 {
@@ -103,13 +97,7 @@ namespace Cauldron.Dendron
             }
 
             // All other heroes shuffle their trash into their decks
-            IEnumerator shuffleRoutine
-                    = base.DoActionToEachTurnTakerInTurnOrder(
-                        ttc => ttc.IsHero
-                                   && !mostCardsInHandResults.Any(tt => tt.Equals(ttc.TurnTaker))
-                                   && !mostCardsInPlayResults.Any(tt => tt.Equals(ttc.TurnTaker)),
-                        ShuffleTrashResponse);
-
+            IEnumerator shuffleRoutine = base.DoActionToEachTurnTakerInTurnOrder(ttc => ttc.IsHero && !ttc.IsIncapacitatedOrOutOfGame && !excludedTurnTakers.Contains(ttc.TurnTaker), ShuffleTrashResponse);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(shuffleRoutine);
@@ -120,33 +108,15 @@ namespace Cauldron.Dendron
             }
         }
 
-        public IEnumerator PreventPlaysThisTurnEffect(PhaseChangeAction p, OnPhaseChangeStatusEffect effect)
+        public IEnumerator PreventPlaysThisTurnEffect(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
         {
-            CannotPlayCardsStatusEffect cannotPlayCardsStatusEffect = new CannotPlayCardsStatusEffect();
-            cannotPlayCardsStatusEffect.TurnTakerCriteria.IsSpecificTurnTaker = base.Game.ActiveTurnTaker;
-            cannotPlayCardsStatusEffect.UntilThisTurnIsOver(base.Game);
-            IEnumerator cannotPlayCardsRoutine = base.AddStatusEffect(cannotPlayCardsStatusEffect);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(cannotPlayCardsRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(cannotPlayCardsRoutine);
-            }
-            yield break;
-        }
+            System.Console.WriteLine("### DEBUG ### - ChokingInspiration.PreventPlaysThisTurnEffect triggered");
 
-        public IEnumerator PreventDrawsThisTurnEffect(PhaseChangeAction p, OnPhaseChangeStatusEffect effect)
-        {
-            //prevent drawing cards in some way
-
-            HeroTurnTaker htt = base.Game.ActiveTurnTaker.ToHero();
-
-            OnDrawCardStatusEffect onDrawCardStatusEffect = new OnDrawCardStatusEffect(base.CardWithoutReplacements, "CancelDraws", "", new TriggerType[] { TriggerType.CancelAction }, htt, false, base.Card);
-            onDrawCardStatusEffect.UntilThisTurnIsOver(base.Game);
-            onDrawCardStatusEffect.BeforeOrAfter = BeforeOrAfter.Before;
-            IEnumerator coroutine = base.AddStatusEffect(onDrawCardStatusEffect);
+            CannotPlayCardsStatusEffect effect = new CannotPlayCardsStatusEffect();
+            effect.CardSource = sourceEffect.CardSource;
+            effect.TurnTakerCriteria.IsSpecificTurnTaker = base.Game.ActiveTurnTaker;
+            effect.UntilThisTurnIsOver(base.Game);
+            IEnumerator coroutine = base.AddStatusEffect(effect);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -158,14 +128,22 @@ namespace Cauldron.Dendron
             yield break;
         }
 
-        public IEnumerator CancelDraws(DrawCardAction dc, HeroTurnTaker htt, OnDrawCardStatusEffect effect)
+        public IEnumerator PreventDrawsThisTurnEffect(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
         {
-            if (dc.HeroTurnTaker != htt)
-            {
-                yield break;
-            }
+            System.Console.WriteLine("### DEBUG ### - ChokingInspiration.PreventDrawsThisTurnEffect triggered");
 
-            IEnumerator coroutine = base.CancelAction(dc, isPreventEffect: true);
+            //The status effect must last slightly longer than the triggering phase action, or the effect will not fire.
+            HeroTurnTaker htt = sourceEffect.TurnTakerCriteria.IsSpecificTurnTaker.ToHero();
+            OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(base.CardWithoutReplacements, "ResumeDrawEffect", $"{htt.Name} cannot draw cards.", new TriggerType[] { TriggerType.Hidden }, base.Card);
+            effect.TurnTakerCriteria.IsSpecificTurnTaker = htt;
+            effect.TurnPhaseCriteria.Phase = Phase.End;
+            effect.UntilThisTurnIsOver(Game);
+
+            //We secretly set a property on the victim's character card to indicate that they can't draw cards.
+            //A CannotDrawCards query on DendronCharacterCardController actually makes this happen
+            GameController.AddCardPropertyJournalEntry(htt.CharacterCards.First(), PreventDrawPropertyKey, true);
+
+            IEnumerator coroutine = base.AddStatusEffect(effect);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -175,19 +153,34 @@ namespace Cauldron.Dendron
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
+        }
+
+        public IEnumerator ResumeDrawEffect(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
+        {
+            System.Console.WriteLine("### DEBUG ### - ChokingInspiration.ResumeDrawEffect triggered");
+
+            HeroTurnTaker htt = sourceEffect.TurnTakerCriteria.IsSpecificTurnTaker.ToHero();
+
+            //Clear the secret property from all Character Cards of the victim, just to be sure
+            foreach (var ch in htt.CharacterCards)
+            {
+                GameController.AddCardPropertyJournalEntry(ch, PreventDrawPropertyKey, (bool?)null);
+            }
+
+            return DoNothing();
         }
 
         private IEnumerator ShuffleTrashResponse(TurnTakerController turnTakerController)
         {
             // Shuffle trash to deck
-            IEnumerator shuffleTrashIntoDeckRoutine = base.GameController.ShuffleTrashIntoDeck(turnTakerController);
+            IEnumerator coroutine = base.GameController.ShuffleTrashIntoDeck(turnTakerController);
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(shuffleTrashIntoDeckRoutine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(shuffleTrashIntoDeckRoutine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
         }
     }
