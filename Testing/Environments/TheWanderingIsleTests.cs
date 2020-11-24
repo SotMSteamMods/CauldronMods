@@ -654,6 +654,42 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestIslandquakeStartOfTurnRedirectForMultipleHits()
+        {
+            SetupGameController("BaronBlade", "Ra", "Tachyon", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //destroy mdp so baron blade is not immune to damage
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"));
+
+            Card teryx = PutIntoPlay("Teryx");
+
+            //set hitpoints so there is room to gain
+            SetHitPoints(teryx, 30);
+
+            GoToPlayCardPhase(ra);
+            //ra deals damage to teryx to cause hp gain and to be immune to islandquake damage
+            DealDamage(ra.CharacterCard, teryx, 5, DamageType.Fire);
+
+            //tachyon has synaptic interruption in play
+            PutIntoPlay("SynapticInterruption");
+
+            var card = PutIntoPlay("Islandquake");
+            AssertInPlayArea(isle, card);
+
+            //tachyon uses synaptic interruption to redirect damage to ra, who is immune to islandquake damage
+            DecisionRedirectTarget = ra.CharacterCard;
+
+            //At the start of the environment turn, this card deals each target other than Teryx 4 sonic damage. Hero targets which caused Teryx to regain HP since the end of the last environment turn are immune to this damage.
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, tachyon.CharacterCard, haka.CharacterCard, teryx);
+            GoToStartOfTurn(isle);
+
+            //ra was immune to damage and tachyon redirected damage to ra
+            //blade and haka were hit
+            QuickHPCheck(-4, 0, 0, -4, 0);
+        }
+
+        [Test()]
         public void TestSongOfTheDeepPlay()
         {
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");

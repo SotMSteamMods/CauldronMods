@@ -26,9 +26,9 @@ namespace Cauldron.TheWanderingIsle
             foreach (Card c in this.GetHeroesWhoCausedTeryxToGainHpLastRound())
             {
                 CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new CannotDealDamageStatusEffect();
+                cannotDealDamageStatusEffect.SourceCriteria.IsSpecificCard = base.Card;
                 cannotDealDamageStatusEffect.TargetCriteria.IsSpecificCard = c;
-                cannotDealDamageStatusEffect.NumberOfUses = 1;
-                cannotDealDamageStatusEffect.UntilTargetLeavesPlay(c);
+                cannotDealDamageStatusEffect.UntilEndOfPhase(base.TurnTaker, Phase.Start);
                 cannotDealDamageStatusEffect.IsPreventEffect = true;
                 coroutine = base.AddStatusEffect(cannotDealDamageStatusEffect);
                 if (base.UseUnityCoroutines)
