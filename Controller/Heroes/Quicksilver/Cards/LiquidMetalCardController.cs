@@ -8,7 +8,7 @@ using Handelabra;
 
 namespace Cauldron.Quicksilver
 {
-    public class LiquidMetalCardController : ComboCardController
+    public class LiquidMetalCardController : CardController
     {
         public LiquidMetalCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -45,18 +45,30 @@ namespace Cauldron.Quicksilver
             }
 
             //...and [the kind you didn't find first] and put them into your hand. Shuffle the other revealed cards back into your deck.
-            IEnumerator coroutine2 = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, true, new LinqCardCriteria((Card c) => c.DoKeywordsContain(missingKeywords)), 1);
+            coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, true, new LinqCardCriteria((Card c) => c.DoKeywordsContain(missingKeywords)), 1);
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(coroutine2);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine2);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            //{Quicksilver} may deal herself 2 melee damage and play a Combo now.
-            coroutine = this.ComboResponse();
+            base.CharacterCardController.SetCardPropertyToTrueIfRealAction("ComboSelfDamage");
+            //...{Quicksilver} may deal herself 2 melee damage...
+            coroutine = base.DealDamage(base.CharacterCard, base.CharacterCard, 2, DamageType.Melee, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            base.CharacterCardController.SetCardProperty("ComboSelfDamage", false);
+            //...play a Combo.
+            coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("combo")), cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
