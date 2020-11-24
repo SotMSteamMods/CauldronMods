@@ -17,7 +17,7 @@ namespace Cauldron.BlackwoodForest
         // At the end of the environment turn, destroy this card.
         //==============================================================
 
-        public static string Identifier = "Desolation";
+        public static readonly string Identifier = "Desolation";
 
         public DesolationCardController(Card card, TurnTakerController turnTakerController) : base(card,
             turnTakerController)
@@ -28,7 +28,7 @@ namespace Cauldron.BlackwoodForest
         public override void AddTriggers()
         {
             // Destroy self at end of env. turn
-            base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker,
+            base.AddEndOfTurnTrigger(tt => tt == base.TurnTaker,
                 base.DestroyThisCardResponse,
                 TriggerType.DestroySelf);
 

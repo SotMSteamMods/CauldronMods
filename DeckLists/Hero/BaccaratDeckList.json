@@ -44,7 +44,7 @@
                 "MistressOfFateCharacter": "Mistress of Fate placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "AbyssalSolitaire",
@@ -358,7 +358,7 @@
                 "MistressOfFateCharacter": "Mistress of Fate placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "BaccaratCharacter",
@@ -400,7 +400,7 @@
                 "MistressOfFateCharacter": "Mistress of Fate placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "BaccaratCharacter",
@@ -441,7 +441,7 @@
                 "MistressOfFateCharacter": "Mistress of Fate placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         }
     ]
 }

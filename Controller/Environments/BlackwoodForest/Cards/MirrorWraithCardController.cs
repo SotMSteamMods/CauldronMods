@@ -39,7 +39,7 @@ namespace Cauldron.BlackwoodForest
         //==============================================================
 
 
-        public static string Identifier = "MirrorWraith";
+        public static readonly string Identifier = "MirrorWraith";
 
         private const int DamageToDeal = 2;
 
@@ -53,7 +53,7 @@ namespace Cauldron.BlackwoodForest
             _copiedTriggers = new List<ITrigger>();
 
             base.SpecialStringMaker.ShowSpecialString(() =>
-                _copiedCard == null ? "Not copying a card" : "Copying card: TODO");
+                _copiedCard == null ? "Not copying a card" : $"Copying card: {_copiedCard.Title}");
         }
 
         public override IEnumerator Play()
@@ -95,6 +95,7 @@ namespace Cauldron.BlackwoodForest
             }
             else
             {
+
                 // Gains the text, keywords, and max HP of found target
 
                 // Identify this card controller as one who can modify keyword query answers
@@ -113,7 +114,17 @@ namespace Cauldron.BlackwoodForest
                 _copiedCard = storedResults.First();
 
                 // Set HP
-                IEnumerator setHpRoutine = base.GameController.SetHP(this.Card, _copiedCard.MaximumHitPoints.Value, this.GetCardSource());
+                IEnumerator makeTargetRoutine = this.GameController.MakeTargettable(this.Card, _copiedCard.MaximumHitPoints.Value, _copiedCard.MaximumHitPoints.Value,
+                    this.GetCardSource());
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(makeTargetRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(makeTargetRoutine);
+                }
 
                 // Set card text
                 CopyGameText(_copiedCard);
@@ -122,15 +133,6 @@ namespace Cauldron.BlackwoodForest
 
                 // Add the target's keywords to our copied list which will be returned on keyword queries
                 _copiedKeywords = _copiedCard.Definition.Keywords;
-
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(setHpRoutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(setHpRoutine);
-                }
             }
         }
 

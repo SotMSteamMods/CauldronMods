@@ -11,19 +11,15 @@ namespace Cauldron.TangoOne
         // Damage dealt by {TangoOne} Is irreducible.
         //==============================================================
 
-        public static string Identifier = "Farsight";
+        public static readonly string Identifier = "Farsight";
 
         public FarsightCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddTriggers()
         {
-
-            base.AddMakeDamageIrreducibleTrigger(dd => dd.DamageSource.IsSameCard(this.Card.Owner.CharacterCard));
-
-            base.AddTriggers();
+            base.AddMakeDamageIrreducibleTrigger(dd => dd.DamageSource.IsSameCard(CharacterCard));
         }
     }
 }

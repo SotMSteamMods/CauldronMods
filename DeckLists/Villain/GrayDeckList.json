@@ -53,7 +53,7 @@
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
             ],
-            "difficulty": 1,
+            "difficulty": 4,
             "openingLines": {
                 "default": "Out of my way.",
                 "VanishCharacter": "Vanish placeholder",

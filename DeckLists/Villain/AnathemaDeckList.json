@@ -56,7 +56,7 @@
                 "StartOfTurnAction",
                 "Discard"
             ],
-            "difficulty": 1,
+            "difficulty": 2,
             "openingLines": {
                 "default": "Give it up, heroes - what chance do you have against the pinnacle of evolution?",
                 "TangoOneCharacter": "Tango One placeholder",
@@ -476,7 +476,7 @@
             "flippedAdvancedIcons": [
                 "GainHP"
             ],
-            "difficulty": 1,
+            "difficulty": 3,
             "challengeTitle": "",
             "challengeText": [],
             "challengeIcons": [],

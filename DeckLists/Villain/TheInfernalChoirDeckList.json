@@ -60,7 +60,7 @@
             "flippedAdvancedIcons": [
                 "RemoveFromGame"
             ],
-            "difficulty": 1,
+            "difficulty": 4,
             "openingLines": {
                 "default": "default placeholder",
                 "TerminusCharacter": "Terminus placeholder",

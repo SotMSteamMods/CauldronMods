@@ -53,7 +53,7 @@
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
             ],
-            "difficulty": 1,
+            "difficulty": 3,
             "openingLines": {
                 "default": "Screeee! Raoooargh! Khhhaaazzt!",
                 "TheKnightCharacter": "The Knight placeholder",
@@ -474,7 +474,7 @@
             ],
             "flippedShowHitpoints": false,
             "flippedBody": "Winter, Decapitated",
-            "difficulty": 1,
+            "difficulty": 4,
             "openingLines": {
                 "default": "DrooooooHhhhhreaaaAAAAGHH!",
                 "NecroCharacter": "Necro placeholder",

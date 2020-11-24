@@ -3,7 +3,7 @@
   "kind": "Environment",
   "expansionIdentifier": "Cauldron",
   "backgroundColor": "FB5455",
-  "difficulty": 1,
+  "difficulty": 2,
   "cards": [
     {
       "identifier": "DenseBrambles",
@@ -67,8 +67,7 @@
         "When this card enters play, it gains the text, keywords, and max HP of the non-character target with the lowest HP in play.",
         "If there are no other non-character targets in play when this card enters play, this card deals each target 2 sonic damage and is destroyed."
        ],
-      "flavorText": "Those that get lost in the woods{BR}sometimes return three days later and{BR}considerably hungrier.",
-      "hitpoints": -99
+      "flavorText": "Those that get lost in the woods{BR}sometimes return three days later and{BR}considerably hungrier."
     },
     {
       "identifier": "OldBones",
