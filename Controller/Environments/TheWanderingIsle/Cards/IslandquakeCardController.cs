@@ -11,6 +11,7 @@ namespace Cauldron.TheWanderingIsle
     {
         public IslandquakeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.IsInPlay && this.IsHeroTargetWhoCausedTeryxToGainHpLastRound(c), "hero targets that have caused Teryx to regain HP", useCardsSuffix: false, useCardsPrefix: false, "hero target that has caused Teryx to regain HP", "hero targets that have caused Teryx to regain HP"));
         }
 
         public override void AddTriggers()
