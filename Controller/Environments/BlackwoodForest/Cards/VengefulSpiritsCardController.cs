@@ -18,7 +18,7 @@ namespace Cauldron.BlackwoodForest
         // discard 2 cards to destroy this card.
         //==============================================================
 
-        public static string Identifier = "VengefulSpirits";
+        public static readonly string Identifier = "VengefulSpirits";
 
         private const int DamageToDeal = 2;
         private const int NumberOfCardMatches = 1;

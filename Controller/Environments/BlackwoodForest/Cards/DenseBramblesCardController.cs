@@ -14,8 +14,7 @@ namespace Cauldron.BlackwoodForest
         // At the start of the environment turn destroy this card.
         //==============================================================
 
-
-        public static string Identifier = "DenseBrambles";
+        public static readonly string Identifier = "DenseBrambles";
 
         public DenseBramblesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -27,11 +26,9 @@ namespace Cauldron.BlackwoodForest
         public override void AddTriggers()
         {
             // Destroy self at start of next env. turn
-            base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker,
-                new Func<PhaseChangeAction, IEnumerator>(base.DestroyThisCardResponse),
-                TriggerType.DestroySelf);
+            base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker, base.DestroyThisCardResponse, TriggerType.DestroySelf);
             // (H - 1) targets with the lowest HP are immune to damage
-            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => true, new Func<DealDamageAction, IEnumerator>(this.MaybeImmuneToDamageResponse), TriggerType.ImmuneToDamage, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>(dd => true, this.MaybeImmuneToDamageResponse, TriggerType.ImmuneToDamage, TriggerTiming.Before);
         }
 
         private IEnumerator MaybeImmuneToDamageResponse(DealDamageAction action)
@@ -53,6 +50,7 @@ namespace Cauldron.BlackwoodForest
                 this.PerformImmune = new bool?(storedResults.Contains(action.Target));
                 storedResults = null;
             }
+            
             if (this.PerformImmune != null && this.PerformImmune.Value)
             {
                 IEnumerator coroutine2 = base.GameController.ImmuneToDamage(action, base.GetCardSource(null));
@@ -65,6 +63,7 @@ namespace Cauldron.BlackwoodForest
                     base.GameController.ExhaustCoroutine(coroutine2);
                 }
             }
+
             if (!base.GameController.PretendMode)
             {
                 this.PerformImmune = null;

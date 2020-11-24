@@ -16,7 +16,7 @@ namespace Cauldron.BlackwoodForest
         // At the start of the environment turn, you may destroy this card.
         //==============================================================
 
-        public static string Identifier = "OvergrownCathedral";
+        public static readonly string Identifier = "OvergrownCathedral";
 
         private const string FirstTimeDamageDealtPropName = "FirstTimeDamageDealt";
         private const int DamageToDeal = 1;

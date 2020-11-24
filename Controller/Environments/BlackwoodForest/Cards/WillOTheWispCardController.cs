@@ -13,7 +13,7 @@ namespace Cauldron.BlackwoodForest
         // At the end of the villain turn play the top 2 cards of the environment deck.
         //==============================================================
 
-        public static string Identifier = "WillOTheWisp";
+        public static readonly string Identifier = "WillOTheWisp";
 
         private const int EnvironmentCardsToDraw = 2;
 

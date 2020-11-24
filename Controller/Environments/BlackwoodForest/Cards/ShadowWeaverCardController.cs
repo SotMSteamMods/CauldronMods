@@ -17,13 +17,13 @@ namespace Cauldron.BlackwoodForest
         // When this card is destroyed, it deals each target 1 psychic damage.
         //==============================================================
 
-        public static string Identifier = "ShadowWeaver";
+        public static readonly string Identifier = "ShadowWeaver";
 
         private const int PsychicDamageToDeal = 1;
 
         public ShadowWeaverCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowHeroTargetWithLowestHP();
         }
 
         public override void AddTriggers()

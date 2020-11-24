@@ -17,10 +17,9 @@ namespace Cauldron.BlackwoodForest
         // and shuffle this card back into the environment deck.
         //==============================================================
 
-        public static string Identifier = "TheHound";
+        public static readonly string Identifier = "TheHound";
 
         private const int TargetsToHit = 1;
-        private const int OngoingOrEquipmentToDestroy = 1;
 
         public TheHoundCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

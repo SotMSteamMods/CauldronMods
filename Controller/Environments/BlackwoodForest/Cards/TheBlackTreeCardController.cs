@@ -18,7 +18,7 @@ namespace Cauldron.BlackwoodForest
         // When this card is destroyed, discard any remaining cards beneath it.
         //==============================================================
 
-        public static string Identifier = "TheBlackTree";
+        public static readonly string Identifier = "TheBlackTree";
 
         private const int CardsToDrawFromEachDeck = 1;
 

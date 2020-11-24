@@ -17,7 +17,7 @@ namespace Cauldron.BlackwoodForest
         // If the Hound is revealed, put it into play, otherwise discard that card.
         //==============================================================
 
-        public static string Identifier = "DontStrayFromThePath";
+        public static readonly string Identifier = "DontStrayFromThePath";
 
         private const int CardsToReveal = 1;
 
