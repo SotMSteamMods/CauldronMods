@@ -93,6 +93,78 @@ namespace CauldronTests
             Assert.IsTrue(steel.DoKeywordsContain("one-shot"));
             Assert.IsTrue(steel.DoKeywordsContain("combo"));
         }
+        [Test]
+        public void TestQuicksilverPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            QuickHandStorage(quicksilver);
+            UsePower(quicksilver);
+            //-1 for discard, +2 for draw
+            QuickHandCheck(1);
+            AssertNumberOfCardsInTrash(quicksilver, 1);
+
+            DiscardAllCards(quicksilver);
+            QuickHandStorage(quicksilver);
+            UsePower(quicksilver);
+            //with nothing to discard, shouldn't draw
+            QuickHandCheck(0);
+        }
+        [Test]
+        public void TestQuicksilverIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron, quicksilver.CharacterCard);
+            PutInHand("TheStaffOfRa");
+
+            //"One player may play a card now.",
+            AssertIncapLetsHeroPlayCard(quicksilver, 0, ra, "TheStaffOfRa");
+        }
+        [Test]
+        public void TestQuicksilverIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron, quicksilver.CharacterCard);
+            Card living = PlayCard("LivingForceField");
+
+            //"Destroy 1 ongoing card.",
+            UseIncapacitatedAbility(quicksilver, 1);
+            AssertInTrash(living);
+        }
+        [Test]
+        public void TestQuicksilverIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron, quicksilver.CharacterCard);
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card traffic = PlayCard("TrafficPileup");
+
+            QuickHPStorage(ra.CharacterCard, mdp, traffic);
+
+            //"Until the start of your next turn increase melee damage dealt by hero targets by 1."
+            UseIncapacitatedAbility(quicksilver, 2);
+            DealDamage(ra, mdp, 1, DamageType.Melee);
+            DealDamage(ra, traffic, 1, DamageType.Melee);
+            DealDamage(mdp, ra, 1, DamageType.Melee);
+            DealDamage(traffic, ra, 1, DamageType.Melee);
+            QuickHPCheck(-2, -2, -2);
+
+            DealDamage(ra, mdp, 1, DamageType.Fire);
+            DealDamage(ra, traffic, 1, DamageType.Fire);
+            QuickHPCheck(0, -1, -1);
+
+            GoToStartOfTurn(quicksilver);
+            DealDamage(ra, mdp, 1, DamageType.Melee);
+            DealDamage(ra, traffic, 1, DamageType.Melee);
+            QuickHPCheck(0, -1, -1);
+        }
 
         [Test()]
         public void TestComboCombo()
