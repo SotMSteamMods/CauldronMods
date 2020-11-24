@@ -540,7 +540,7 @@ namespace CauldronTests
 
             //Increase damage dealt by environment cards by 1.
             //If there are fewer than 2 environment targets in play, increase damage dealt by hero targets by 1."
-            //there is only 1 environment target, so no increase to heroes
+            //there is only 1 environment target, so increase to heroes
 
             PrintSeparator("check damage dealt by environments is increased by 1");
             Card[] targets = new Card[] { baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, envTarget };
@@ -550,7 +550,7 @@ namespace CauldronTests
             {
                 QuickHPStorage(ra);
 
-                if (source.IsEnvironmentTarget)
+                if (source.IsEnvironmentTarget || (source.IsHero && source.IsTarget))
                 {
                     expectedDamage = -3;
                 }
@@ -593,7 +593,7 @@ namespace CauldronTests
 
             //Increase damage dealt by environment cards by 1.
             //If there are fewer than 2 environment targets in play, increase damage dealt by hero targets by 1."
-            //there are 2 environment targets, so hero damage increased
+            //there are 2 environment targets, so hero damage is not increased
 
             PrintSeparator("check damage dealt by environments is increased by 1");
             Card[] targets = new Card[] { baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, envTarget1, envTarget2 };
@@ -603,7 +603,7 @@ namespace CauldronTests
             {
                 QuickHPStorage(ra);
 
-                if (source.IsEnvironmentTarget || (source.IsHero && source.IsTarget))
+                if (source.IsEnvironmentTarget)
                 {
                     expectedDamage = -3;
                 }
@@ -800,12 +800,14 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestCoalKid_TwistingPassagesInPlay_Affected()
+        public void TestCoalKid_TwistingPassagesInPlay_NotAffected()
         {
 
             SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
             StartGame();
-
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
             Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
             Card playedRoom;
@@ -824,20 +826,27 @@ namespace CauldronTests
             //don't mess with the room in play
             DecisionDoNotSelectCard = SelectionType.DestroyCard;
 
-            
             Card kid = PlayCard("CoalKid");
 
-            PrintSeparator("Check if coal kid can be dealt damage from hero card");
+            PrintSeparator("Check if coals kid can be dealt damage from hero card");
             //This card may not be affected by hero cards unless twisting passages is in play.
             QuickHPStorage(kid);
             DealDamage(ra.CharacterCard, kid, 1, DamageType.Fire);
-            QuickHPCheck(-1);
+            QuickHPCheckZero();
+
+            Card[] targets = new Card[] { baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, kid };
+
+            //all damage is increased by twisting passages
+            QuickHPStorage(targets);
+            DealDamage(ra.CharacterCard, (Card c) => c.IsTarget, 3, DamageType.Fire);
+            QuickHPCheck(-4, -4, -4, -4, 0);
+           
 
 
         }
 
         [Test()]
-        public void TestCoalKid_TwistingPassagesNotInPlay_NotAffected()
+        public void TestCoalKid_TwistingPassagesNotInPlay_Affected()
         {
 
             SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
@@ -865,20 +874,14 @@ namespace CauldronTests
             GoToPlayCardPhase(catacombs);
             //don't mess with the room in play
             DecisionDoNotSelectCard = SelectionType.DestroyCard;
-
             Card kid = PlayCard("CoalKid");
 
-            PrintSeparator("Check if coals kid can be dealt damage from hero card");
-            //This card may not be affected by hero cards unless twisting passages is in play.
+            PrintSeparator("Check if coal kid can be dealt damage from hero card");
+            //This card may not be affected by hero cards if twisting passages is in play.
             QuickHPStorage(kid);
             DealDamage(ra.CharacterCard, kid, 1, DamageType.Fire);
-            QuickHPCheckZero();
+            QuickHPCheck(-1);
 
-            Card[] targets = new Card[] { baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, kid };
-
-            QuickHPStorage(targets);
-            DealDamage(ra.CharacterCard, (Card c) => c.IsTarget, 3, DamageType.Fire);
-            QuickHPCheck(-3, -3, -3, -3, 0);
 
         }
 
@@ -1399,9 +1402,18 @@ namespace CauldronTests
             QuickHandCheck(1);
 
             QuickHPStorage(ra);
+            Card currentRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
             DealDamage(haka, ra, 2, DamageType.Melee);
             //galvanize should have been used twice
-            QuickHPCheck(-4);
+            if(currentRoom.Identifier == "TwistingPassages")
+            {
+                QuickHPCheck(-5);
+            } else
+            {
+                QuickHPCheck(-4);
+
+            }
 
         }
 
@@ -1910,8 +1922,16 @@ namespace CauldronTests
             //Whenever this card is dealt damage, it becomes immune to damage until a different Room card enters play.
             QuickHPStorage(scurrying);
             DealDamage(ra.CharacterCard, scurrying, 1, DamageType.Fire);
-            QuickHPCheck(-1);
-            
+            if (playedRoom.Identifier == "TwistingPassages")
+            {
+                QuickHPCheck(-2);
+            }
+            else
+            {
+                QuickHPCheck(-1);
+
+            }
+
             //scurrying evil should now be immune
             QuickHPStorage(scurrying);
             DealDamage(haka.CharacterCard, scurrying, 1, DamageType.Melee);
@@ -1920,8 +1940,17 @@ namespace CauldronTests
             //force a room change
             DestroyCard(playedRoom, ra.CharacterCard);
             QuickHPStorage(scurrying);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
             DealDamage(haka.CharacterCard, scurrying, 1, DamageType.Melee);
-            QuickHPCheck(-1);
+            if (playedRoom.Identifier == "TwistingPassages")
+            {
+                QuickHPCheck(-2);
+            }
+            else
+            {
+                QuickHPCheck(-1);
+
+            }
 
             //stack deck to prevent living geometry from destroying more rooms
             Card guide = PutOnDeck("LabyrinthGuide");
@@ -1957,21 +1986,36 @@ namespace CauldronTests
             //Whenever this card is dealt damage, it becomes immune to damage until a different Room card enters play.
             QuickHPStorage(scurrying);
             DealDamage(ra.CharacterCard, scurrying, 1, DamageType.Fire);
-            QuickHPCheck(-1);
+            if (playedRoom.Identifier == "TwistingPassages")
+            {
+                QuickHPCheck(-2);
+            }
+            else
+            {
+                QuickHPCheck(-1);
+            }
 
             //scurrying evil should now be immune
-            QuickHPStorage(scurrying);
+            QuickHPUpdate();
             DealDamage(haka.CharacterCard, scurrying, 1, DamageType.Melee);
             QuickHPCheck(0);
 
             //force a room change
             DestroyCard(playedRoom, ra.CharacterCard);
+            Card oldRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+            SetAllTargetsToMaxHP();
             QuickHPStorage(scurrying);
             DealDamage(haka.CharacterCard, scurrying, 1, DamageType.Melee);
-            QuickHPCheck(-1);
+            if(oldRoom.Identifier == "TwistingPassages")
+            {
+                QuickHPCheck(-2);
+            }
+            else
+            {
+                QuickHPCheck(-1);
+            }
 
             Card guide = PutOnDeck("LivingGeometry");
-            Card oldRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
             GoToNextTurn();
             Card currentRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
 

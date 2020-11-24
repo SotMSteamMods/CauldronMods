@@ -10,9 +10,10 @@ namespace Cauldron
     {
         #region Constructors
 
-        public GhostCardController(Card card, TurnTakerController turnTakerController, string[] affectedIdentifiers) : base(card, turnTakerController)
+        public GhostCardController(Card card, TurnTakerController turnTakerController, string[] affectedIdentifiers, bool reversed) : base(card, turnTakerController)
         {
             this.AffectedIdentifiers = affectedIdentifiers;
+            this.Reversed = reversed;
             //TODO: Add a conditional special string that says something like "AffectedCard is in play so it is affected by Hero cards" and the reverse
             base.AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
         }
@@ -35,10 +36,20 @@ namespace Cauldron
             yield break;
         }
 
+        private bool FlipIfReversed(bool value)
+        {
+            if(Reversed)
+            {
+                return !value;
+            }
+
+            return value;
+        }
+
         public override bool? AskIfCardIsVisibleToCardSource(Card card, CardSource cardSource)
         {
             //check if card is from a hero and if AffectedCard is in play
-            if (!this.IsAffectedCardInPlay() && card == base.Card)
+            if (!this.IsAffectedCardInPlay() && card == base.Card && cardSource.Card.IsHero)
             {
                 return new bool?(false);
             }
@@ -62,10 +73,11 @@ namespace Cauldron
         }
         private bool IsAffectedCardInPlay()
         {
-            return base.FindCardsWhere(c => c.IsInPlayAndHasGameText && AffectedIdentifiers.Contains(c.Identifier)).Count() > 0;
+            return FlipIfReversed(base.FindCardsWhere(c => c.IsInPlayAndHasGameText && AffectedIdentifiers.Contains(c.Identifier)).Count() > 0);
         }
 
         public string[] AffectedIdentifiers { get; private set; }
+        public bool Reversed { get; private set; }
         #endregion Methods
     }
 }

@@ -9,7 +9,7 @@ namespace Cauldron.StSimeonsCatacombs
     {
         #region Constructors
 
-        public TerriblePresenceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { "TortureChamber", "Aqueducts"})
+        public TerriblePresenceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { "TortureChamber", "Aqueducts"}, false)
         {
 
         }

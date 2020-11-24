@@ -9,7 +9,7 @@ namespace Cauldron.StSimeonsCatacombs
     {
         #region Constructors
 
-        public CoalKidCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { "TwistingPassages" })
+        public CoalKidCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { "TwistingPassages" }, true)
         {
 
         }

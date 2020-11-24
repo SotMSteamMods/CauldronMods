@@ -11,7 +11,7 @@ namespace Cauldron.StSimeonsCatacombs
     {
         #region Constructors
 
-        public BreathStealerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { "Aqueducts" })
+        public BreathStealerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { "Aqueducts" }, false)
         {
         }
 
