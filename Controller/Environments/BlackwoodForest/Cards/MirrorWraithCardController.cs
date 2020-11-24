@@ -45,7 +45,7 @@ namespace Cauldron.BlackwoodForest
 
         private IEnumerable<string> _copiedKeywords;
         private Card _copiedCard;
-        private List<ITrigger> _copiedTriggers;
+        private readonly List<ITrigger> _copiedTriggers;
 
         public MirrorWraithCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -192,13 +192,12 @@ namespace Cauldron.BlackwoodForest
         {
 
             // TODO: Don't think this override is necessary.  More testing needed
-            int i = 0;
-
-            if (cardSource != null && cardSource.AllowReplacements && this._copiedCard != null &&
-                cardSource.CardController == this)
-            {
-
-            }
+            
+            //if (cardSource != null && cardSource.AllowReplacements && this._copiedCard != null &&
+            //    cardSource.CardController == this)
+            //{
+            //
+            //}
 
             /*
             if (cardSource != null && cardSource.AllowReplacements && this._ongoings != null && cardSource.CardController == this)
@@ -326,12 +325,12 @@ namespace Cauldron.BlackwoodForest
 
         private void CopyWhenDestroyedTriggers(CardController cc)
         {
-            foreach (ITrigger trigger in cc.GetWhenDestroyedTriggers())
-            {
-                //SelfDestructTrigger destroyTrigger = trigger as SelfDestructTrigger;
-                //base.AddWhenDestroyedTrigger(dc => this.SetCardSourceLimitationsWhenDestroy(dc, destroyTrigger), 
-                    //destroyTrigger.Types.ToArray(), null, null).CardSource.AddAssociatedCardSource(cc.GetCardSource());
-            }
+            //foreach (ITrigger trigger in cc.GetWhenDestroyedTriggers())
+            //{
+            //    //SelfDestructTrigger destroyTrigger = trigger as SelfDestructTrigger;
+            //    //base.AddWhenDestroyedTrigger(dc => this.SetCardSourceLimitationsWhenDestroy(dc, destroyTrigger), 
+            //        //destroyTrigger.Types.ToArray(), null, null).CardSource.AddAssociatedCardSource(cc.GetCardSource());
+            //}
         }
     }
 }
