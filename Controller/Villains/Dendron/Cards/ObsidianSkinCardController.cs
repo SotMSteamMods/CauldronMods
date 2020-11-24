@@ -13,7 +13,7 @@ namespace Cauldron.Dendron
         // Reduce damage dealt to {Dendron} by 1.
         //==============================================================
 
-        public static string Identifier = "ObsidianSkin";
+        public static readonly string Identifier = "ObsidianSkin";
 
         private const int DamageAmountToReduce = 1;
 

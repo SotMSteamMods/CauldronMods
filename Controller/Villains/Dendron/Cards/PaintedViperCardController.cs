@@ -16,7 +16,7 @@ namespace Cauldron.Dendron
         // the hero target with the lowest HP {H - 2} toxic damage.
         //==============================================================
 
-        public static string Identifier = "PaintedViper";
+        public static readonly string Identifier = "PaintedViper";
 
         public PaintedViperCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

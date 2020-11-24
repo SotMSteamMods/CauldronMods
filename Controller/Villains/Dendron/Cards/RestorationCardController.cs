@@ -11,7 +11,7 @@ namespace Cauldron.Dendron
         // {Dendron} regains 10 HP. Restore all Tattoos to their max HP.
         //==============================================================
 
-        public static string Identifier = "Restoration";
+        public static readonly string Identifier = "Restoration";
 
         private const int HpToGain = 10;
 

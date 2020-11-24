@@ -13,7 +13,7 @@ namespace Cauldron.Dendron
         // Play the top 2 cards of the villain deck.
         //==============================================================
 
-        public static string Identifier = "InkScar";
+        public static readonly string Identifier = "InkScar";
 
         private const int CardsToPlay = 2;
 

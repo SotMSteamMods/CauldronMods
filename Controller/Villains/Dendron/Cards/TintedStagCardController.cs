@@ -16,7 +16,7 @@ namespace Cauldron.Dendron
         // Put the rest of the cards back into the villain trash.
         //==============================================================
 
-        public static string Identifier = "TintedStag";
+        public static readonly string Identifier = "TintedStag";
 
         public TintedStagCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

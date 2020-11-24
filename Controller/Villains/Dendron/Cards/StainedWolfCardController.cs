@@ -14,7 +14,7 @@ namespace Cauldron.Dendron
         // the hero target with the highest HP {H - 1} melee damage.
         //==============================================================
 
-        public static string Identifier = "StainedWolf";
+        public static readonly string Identifier = "StainedWolf";
 
         public StainedWolfCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

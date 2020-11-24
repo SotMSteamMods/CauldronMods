@@ -13,7 +13,7 @@ namespace Cauldron.Dendron
         // At the end of the villain turn, each villain target regains 3 HP.
         //==============================================================
 
-        public static string Identifier = "LivingInk";
+        public static readonly string Identifier = "LivingInk";
 
         private const int HpToGain = 3;
 

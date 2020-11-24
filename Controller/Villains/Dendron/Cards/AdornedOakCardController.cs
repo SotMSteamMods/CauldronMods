@@ -11,7 +11,7 @@ namespace Cauldron.Dendron
         // Reduce damage dealt to Tattoos by 1.
         //==============================================================
 
-        public static string Identifier = "AdornedOak";
+        public static readonly string Identifier = "AdornedOak";
 
         private const int DamageAmountToReduce = 1;
 

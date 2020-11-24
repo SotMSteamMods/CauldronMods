@@ -13,7 +13,7 @@ namespace Cauldron.Dendron
         // must discard {H} cards from their hand.
         //==============================================================
 
-        public static string Identifier = "DarkDesign";
+        public static readonly string Identifier = "DarkDesign";
 
         public DarkDesignCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

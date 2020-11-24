@@ -13,7 +13,7 @@ namespace Cauldron.Dendron
         // it first deals that target {H  - 2} radiant damage.
         //==============================================================
 
-        public static string Identifier = "BloodThornAura";
+        public static readonly string Identifier = "BloodThornAura";
 
         public BloodThornAuraCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

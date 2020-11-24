@@ -19,7 +19,7 @@ namespace Cauldron.Dendron
         // hero with the most cards in play.
         //==============================================================
 
-        public static string Identifier = "MarkOfTheWrithingNight";
+        public static readonly string Identifier = "MarkOfTheWrithingNight";
 
         private const int DamageToDealHighestHp = 5;
         private const int DamageToDealLowestHp = 2;

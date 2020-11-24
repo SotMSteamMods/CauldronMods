@@ -16,7 +16,7 @@ namespace Cauldron.Dendron
         // All other heroes shuffle their trash into their decks.
         //==============================================================
 
-        public static string Identifier = "ChokingInscription";
+        public static readonly string Identifier = "ChokingInscription";
 
         public ChokingInscriptionCardController(Card card, TurnTakerController turnTakerController) : base(card,
             turnTakerController)

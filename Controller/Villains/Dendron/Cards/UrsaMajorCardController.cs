@@ -15,7 +15,7 @@ namespace Cauldron.Dendron
         // target with the highest HP 2 melee damage.
         //==============================================================
 
-        public static string Identifier = "UrsaMajor";
+        public static readonly string Identifier = "UrsaMajor";
 
         private const int DamageAmountToReduce = 1;
         private const int DamageToDeal = 2;

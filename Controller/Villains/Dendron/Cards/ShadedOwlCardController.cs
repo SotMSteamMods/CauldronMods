@@ -14,7 +14,7 @@ namespace Cauldron.Dendron
         // hero target 1 sonic damage.
         //==============================================================
 
-        public static string Identifier = "ShadedOwl";
+        public static readonly string Identifier = "ShadedOwl";
 
         private const int DamageAmountToIncrease = 1;
         private const int DamageToDeal = 1;
