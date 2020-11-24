@@ -575,6 +575,20 @@ namespace CauldronTests
             DealDamage(apostate, quicksilver, 3, DamageType.Melee);
             AssertIncapacitated(quicksilver);
         }
+
+        [Test()]
+        public void TestMalleableArmorFromMaxHP()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            //If {Quicksilver} would be reduced from greater than 1 HP to 0 or fewer HP, restore her to 1HP.
+            PlayCard("MalleableArmor");
+
+            DealDamage(apostate, quicksilver, 30, DamageType.Infernal);
+            AssertHitPoints(quicksilver.CharacterCard, 1);
+        }
+
         [Test]
         public void TestMalleableArmorDoesNotModifyDamageAmount()
         {
@@ -652,10 +666,13 @@ namespace CauldronTests
             SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
             StartGame();
 
+            Card shard = PutInHand("MirrorShard");
+
             //"When [Mirror Shard] enters play, draw a card."
             QuickHandStorage(quicksilver);
-            PlayCard("MirrorShard");
-            QuickHandCheck(1);
+            PlayCard(shard);
+            //net 0, play + draw
+            QuickHandCheck(0);
 
             DecisionYesNo = true;
             DecisionSelectTarget = apostate.CharacterCard;
@@ -663,7 +680,7 @@ namespace CauldronTests
             QuickHPStorage(quicksilver, apostate);
             DealDamage(ra, apostate, 2, DamageType.Melee);
 
-            //should be ridirected to Quicksilver, who then punches Apostate for 3
+            //should be redirected to Quicksilver, who then punches Apostate for 3
             QuickHPCheck(-2, -3);
         }
         [Test]
