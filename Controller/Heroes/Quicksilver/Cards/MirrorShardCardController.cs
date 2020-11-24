@@ -14,7 +14,7 @@ namespace Cauldron.Quicksilver
         {
         }
 
-        private bool redirectPrimed = false;
+        private bool _redirectPrimed = false;
 
         public override IEnumerator Play()
         {
@@ -36,7 +36,7 @@ namespace Cauldron.Quicksilver
             //You may redirect any damage dealt by other hero targets to {Quicksilver}.
             base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.IsHero && action.DamageSource.Card != base.CharacterCard && action.IsRedirectable, this.MaybeRedirectResponse, TriggerType.RedirectDamage, TriggerTiming.Before, isActionOptional: true);
             //Whenever {Quicksilver} takes damage this way, she deals 1 non-hero target X damage of the same type, where X is the damage that was dealt to {Quicksilver} plus 1.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => redirectPrimed, (DealDamageAction action) => this.DealDamageResponse(action), TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => _redirectPrimed, (DealDamageAction action) => this.DealDamageResponse(action), TriggerType.DealDamage, TriggerTiming.After);
         }
 
         private IEnumerator MaybeRedirectResponse(DealDamageAction action)
@@ -68,7 +68,7 @@ namespace Cauldron.Quicksilver
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-                redirectPrimed = true;
+                _redirectPrimed = true;
                 yield return null;
             }
             yield break;
@@ -79,7 +79,7 @@ namespace Cauldron.Quicksilver
             //there is possibly a chance of false positive here, but it's what I can do for now            
             if (action.NumberOfTimesRedirected > 0 && action.AllTargets.Contains(this.CharacterCard))
             {
-                redirectPrimed = false;
+                _redirectPrimed = false;
                 if (action.Target == base.CharacterCard && action.DidDealDamage)
                 {
                     IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), action.Amount + 1, action.DamageType, 1, false, 1, cardSource: base.GetCardSource());

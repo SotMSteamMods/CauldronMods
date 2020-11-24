@@ -10,7 +10,6 @@ namespace Cauldron.Quicksilver
         public ViciousMemoriesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.GameController.AddCardControllerToList(CardControllerListType.IncreasePhaseActionCount, this);
-
         }
 
         public override void AddTriggers()

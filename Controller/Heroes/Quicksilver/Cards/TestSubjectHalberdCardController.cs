@@ -9,7 +9,6 @@ namespace Cauldron.Quicksilver
     {
         public TestSubjectHalberdCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override IEnumerator Play()

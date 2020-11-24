@@ -9,7 +9,6 @@ namespace Cauldron.Quicksilver
     {
         public MercuryStrikeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override IEnumerator Play()

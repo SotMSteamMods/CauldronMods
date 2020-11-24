@@ -10,7 +10,6 @@ namespace Cauldron.Quicksilver
     {
         public ComboCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public bool ContinueComboDamage;

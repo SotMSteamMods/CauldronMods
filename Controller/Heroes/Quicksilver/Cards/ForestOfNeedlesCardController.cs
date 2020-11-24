@@ -9,11 +9,10 @@ namespace Cauldron.Quicksilver
     {
         public ForestOfNeedlesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
-        //{Quicksilver} may deal 6 melee damage to a target with more than 8HP, or 3 melee damage to a target with 8 or fewer HP.
         public override IEnumerator Play()
         {
+            //{Quicksilver} may deal 6 melee damage to a target with more than 8HP, or 3 melee damage to a target with 8 or fewer HP.
             IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), (Card c) => this.DynamicDamage(c), DamageType.Melee, () => 1, false, 1, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {

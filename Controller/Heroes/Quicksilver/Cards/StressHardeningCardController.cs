@@ -8,7 +8,6 @@ namespace Cauldron.Quicksilver
     {
         public StressHardeningCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddTriggers()

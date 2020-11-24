@@ -10,7 +10,6 @@ namespace Cauldron.Quicksilver
     {
         public AlloyStormCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override IEnumerator Play()

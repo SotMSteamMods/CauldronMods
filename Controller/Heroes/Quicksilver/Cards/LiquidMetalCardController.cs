@@ -12,7 +12,6 @@ namespace Cauldron.Quicksilver
     {
         public LiquidMetalCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override IEnumerator Play()

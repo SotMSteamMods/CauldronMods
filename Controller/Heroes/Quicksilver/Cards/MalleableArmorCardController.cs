@@ -10,7 +10,6 @@ namespace Cauldron.Quicksilver
     {
         public MalleableArmorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override IEnumerator UsePower(int index = 0)
@@ -58,18 +57,10 @@ namespace Cauldron.Quicksilver
 
         private IEnumerator DealDamageResponse(DealDamageAction action)
         {
+            //I think this has the possibility to interact incorrectly with some esoteric effects.
+            //Not sure of a better way to do it, though.
             //...restore her to 1HP.
-            IEnumerator coroutine = base.CancelAction(action);
             base.CharacterCard.SetHitPoints(action.Amount + 1);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            //base.CharacterCard.SetHitPoints(action.Amount + 1);
             yield break;
         }
     }

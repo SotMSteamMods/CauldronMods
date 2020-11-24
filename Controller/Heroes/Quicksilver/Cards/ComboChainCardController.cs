@@ -9,7 +9,6 @@ namespace Cauldron.Quicksilver
     {
         public ComboChainCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         private const string FirstTimeDamageDealt = "FirstTimeDamageDealt";

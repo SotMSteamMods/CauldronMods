@@ -8,11 +8,9 @@ namespace Cauldron.Quicksilver
     {
         public FrenziedMeleeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         private const string FirstTimeDamageDealt = "FirstTimeDamageDealt";
-
         public override void AddTriggers()
         {
             //Increase all damage dealt by 1.
