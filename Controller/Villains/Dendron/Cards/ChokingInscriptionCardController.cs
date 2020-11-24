@@ -21,7 +21,6 @@ namespace Cauldron.Dendron
         public ChokingInscriptionCardController(Card card, TurnTakerController turnTakerController) : base(card,
             turnTakerController)
         {
-
         }
 
         public override IEnumerator Play()
@@ -70,14 +69,11 @@ namespace Cauldron.Dendron
                 {
                     base.GameController.ExhaustCoroutine(onPhaseChangeRoutine);
                 }
-
-
             }
 
             // Find hero with most cards in play
             List<TurnTaker> mostCardsInPlayResults = new List<TurnTaker>();
             IEnumerator heroWithMostCardsInPlayRoutine = base.FindHeroWithMostCardsInPlay(mostCardsInPlayResults);
-
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(heroWithMostCardsInPlayRoutine);
@@ -90,8 +86,6 @@ namespace Cauldron.Dendron
             if (mostCardsInPlayResults.Any())
             {
                 // This hero may not play cards during their next turn.
-
-
                 OnPhaseChangeStatusEffect onPhaseChangeStatusEffect = new OnPhaseChangeStatusEffect(base.CardWithoutReplacements, "PreventPlaysThisTurnEffect", mostCardsInPlayResults.First().CharacterCard.Title + " cannot play cards on their turn.", new TriggerType[] { TriggerType.CreateStatusEffect }, base.Card);
                 onPhaseChangeStatusEffect.TurnTakerCriteria.IsSpecificTurnTaker = mostCardsInPlayResults.First();
                 onPhaseChangeStatusEffect.TurnPhaseCriteria.Phase = Phase.Start;
@@ -106,7 +100,6 @@ namespace Cauldron.Dendron
                 {
                     base.GameController.ExhaustCoroutine(onPhaseChangeRoutine);
                 }
-
             }
 
             // All other heroes shuffle their trash into their decks
@@ -141,7 +134,6 @@ namespace Cauldron.Dendron
             {
                 base.GameController.ExhaustCoroutine(cannotPlayCardsRoutine);
             }
-
             yield break;
         }
 
@@ -163,9 +155,7 @@ namespace Cauldron.Dendron
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
             yield break;
-
         }
 
         public IEnumerator CancelDraws(DrawCardAction dc, HeroTurnTaker htt, OnDrawCardStatusEffect effect)

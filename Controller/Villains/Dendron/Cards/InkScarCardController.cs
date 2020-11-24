@@ -19,46 +19,51 @@ namespace Cauldron.Dendron
 
         public InkScarCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(IsTattoo, "tattoo"));
         }
 
         public override IEnumerator Play()
         {
             // Shuffle all Tattoos from the villain trash into the villain deck.
 
-
             // Move found Tattoo cards from villain trash to villain deck
-            List<MoveCardDestination> moveCardDestination = new List<MoveCardDestination>();
-            moveCardDestination.Add(new MoveCardDestination(base.TurnTaker.Deck));
+            List<MoveCardDestination> moveCardDestination = new List<MoveCardDestination>()
+            {
+                new MoveCardDestination(base.TurnTaker.Deck)
+            };
 
-            this.RevealCards_MoveMatching_ReturnNonMatchingCards(this.TurnTakerController, this.TurnTaker.Trash, false,
-                false, false, new LinqCardCriteria(IsTattoo), TattooCardsInDeck, TattooCardsInDeck);
-
-
-
-            IEnumerator moveCardsRoutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.DecisionMaker, this.TurnTaker.Trash, 0, TattooCardsInDeck,
-                new LinqCardCriteria(IsTattoo), moveCardDestination, autoDecideCard: true);
-
-            // Shuffle the villain deck
-            IEnumerator shuffleDeckRoutine = base.GameController.ShuffleLocation(this.TurnTaker.Deck, cardSource: this.GetCardSource());
-
-            // Play the top 2 cards of the villain deck.
-            IEnumerator playCardsRoutine
-                = this.GameController.PlayTopCardOfLocation(this.TurnTakerController, this.Card.Owner.Deck, false, CardsToPlay, CardsToPlay,
-                    true);
-
+            IEnumerator coroutine = GameController.SelectCardsFromLocationAndMoveThem(DecisionMaker, TurnTaker.Trash, 0, TurnTaker.Trash.NumberOfCards, new LinqCardCriteria(IsTattoo, "tattoo"), moveCardDestination, autoDecideCard: true);
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(moveCardsRoutine);
-                yield return base.GameController.StartCoroutine(shuffleDeckRoutine);
-                yield return base.GameController.StartCoroutine(playCardsRoutine);
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+
+            // Shuffle the villain deck
+            coroutine = GameController.ShuffleLocation(TurnTaker.Deck, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
 
             }
             else
             {
-                base.GameController.ExhaustCoroutine(moveCardsRoutine);
-                base.GameController.ExhaustCoroutine(shuffleDeckRoutine);
-                base.GameController.ExhaustCoroutine(playCardsRoutine);
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            // Play the top 2 cards of the villain deck.
+            coroutine = GameController.PlayTopCardOfLocation(TurnTakerController, Card.Owner.Deck, false, CardsToPlay, CardsToPlay, true, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
         }
     }

@@ -17,20 +17,16 @@ namespace Cauldron.Dendron
 
         public BloodThornAuraCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddTriggers()
         {
-            base.AddTrigger<DealDamageAction>(dda => IsTattoo(dda.Target) && !dda.DamageSource.IsVillainTarget,
+            base.AddTrigger<DealDamageAction>(dda => IsTattoo(dda.Target) && !dda.DamageSource.IsVillainTarget && dda.Amount > 0,
                 this.DealDamageResponse,
                 new[]
                 {
-                    TriggerType.CancelAction,
                     TriggerType.DealDamage
                 }, TriggerTiming.Before);
-
-            base.AddTriggers();
         }
 
         private IEnumerator DealDamageResponse(DealDamageAction dda)
@@ -52,8 +48,7 @@ namespace Cauldron.Dendron
             {
                 int damageToDeal = this.Game.H - 2;
 
-                IEnumerator dealDamageRoutine = this.DealDamage(dda.Target, dda.DamageSource.Card, damageToDeal, DamageType.Radiant);
-
+                IEnumerator dealDamageRoutine = this.DealDamage(dda.Target, dda.DamageSource.Card, damageToDeal, DamageType.Radiant, isCounterDamage: true, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(dealDamageRoutine);

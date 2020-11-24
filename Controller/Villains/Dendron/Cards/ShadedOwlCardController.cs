@@ -21,26 +21,21 @@ namespace Cauldron.Dendron
 
         public ShadedOwlCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddTriggers()
         {
             // Increase damage dealt by villain targets by 1.
-            base.AddIncreaseDamageTrigger(action => action.DamageSource != null && action.DamageSource.IsVillainTarget,
-                DamageAmountToIncrease);
+            base.AddIncreaseDamageTrigger(action => action.DamageSource != null && action.DamageSource.IsVillainTarget, DamageAmountToIncrease);
 
             // At the end of the villain turn, this card deals each hero target 1 sonic damage.
             base.AddEndOfTurnTrigger(tt => tt == base.TurnTaker, EndOfTurnDealDamageResponse, TriggerType.DealDamage);
-
-            base.AddTriggers();
         }
 
         private IEnumerator EndOfTurnDealDamageResponse(PhaseChangeAction pca)
         {
             // At the end of the villain turn, this card deals each hero target 1 sonic damage.
             IEnumerator dealDamageRoutine = this.DealDamage(this.Card, card => card.IsHero && card.IsInPlay, DamageToDeal, DamageType.Sonic);
-
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(dealDamageRoutine);

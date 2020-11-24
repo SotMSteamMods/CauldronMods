@@ -19,15 +19,11 @@ namespace Cauldron.Dendron
 
         public ObsidianSkinCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddTriggers()
         {
-            base.AddReduceDamageTrigger(c => c == this.Card.Owner.CharacterCard, DamageAmountToReduce);
-
-            base.AddTriggers();
+            base.AddReduceDamageTrigger(c => c == CharacterCard, DamageAmountToReduce);
         }
-
     }
 }

@@ -17,14 +17,11 @@ namespace Cauldron.Dendron
 
         public AdornedOakCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddTriggers()
         {
             base.AddReduceDamageTrigger(IsTattoo, DamageAmountToReduce);
-
-            base.AddTriggers();
         }
     }
 }

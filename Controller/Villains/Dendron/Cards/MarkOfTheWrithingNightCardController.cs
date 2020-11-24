@@ -28,16 +28,13 @@ namespace Cauldron.Dendron
 
         public MarkOfTheWrithingNightCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override IEnumerator Play()
         {
             // Find hero with the highest HP
             List<Card> storedHighestHp = new List<Card>();
-            IEnumerator getHighestHpRoutine = this.GameController.FindTargetWithHighestHitPoints(1,
-                card => card.IsHero && !card.IsIncapacitatedOrOutOfGame, storedHighestHp);
-
+            IEnumerator getHighestHpRoutine = this.GameController.FindTargetWithHighestHitPoints(1, card => card.IsHero && !card.IsIncapacitatedOrOutOfGame, storedHighestHp);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(getHighestHpRoutine);
@@ -50,9 +47,7 @@ namespace Cauldron.Dendron
             if (storedHighestHp.Any())
             {
                 // Deal the hero with the highest HP 5 projectile damage
-                IEnumerator dealDamageToHighestHpRoutine
-                    = this.DealDamage(this.TurnTaker.CharacterCard, storedHighestHp.First(), DamageToDealHighestHp, DamageType.Projectile);
-
+                IEnumerator dealDamageToHighestHpRoutine = this.DealDamage(this.TurnTaker.CharacterCard, storedHighestHp.First(), DamageToDealHighestHp, DamageType.Projectile);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(dealDamageToHighestHpRoutine);
@@ -63,12 +58,9 @@ namespace Cauldron.Dendron
                 }
             }
 
-
             // Find hero with the lowest HP
             List<Card> storedLowestHp = new List<Card>();
-            IEnumerator getLowestHpRoutine = this.GameController.FindTargetWithLowestHitPoints(1,
-                card => card.IsHero && !card.IsIncapacitatedOrOutOfGame, storedLowestHp);
-
+            IEnumerator getLowestHpRoutine = this.GameController.FindTargetWithLowestHitPoints(1, card => card.IsHero && !card.IsIncapacitatedOrOutOfGame, storedLowestHp);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(getLowestHpRoutine);
@@ -81,9 +73,7 @@ namespace Cauldron.Dendron
             if (storedLowestHp.Any())
             {
                 // Deal the hero with the lowest HP 2 irreducible infernal damage
-                IEnumerator dealDamageToLowestHpRoutine
-                    = this.DealDamage(this.TurnTaker.CharacterCard, storedLowestHp.First(), DamageToDealLowestHp, DamageType.Infernal, true);
-
+                IEnumerator dealDamageToLowestHpRoutine = this.DealDamage(this.TurnTaker.CharacterCard, storedLowestHp.First(), DamageToDealLowestHp, DamageType.Infernal, true);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(dealDamageToLowestHpRoutine);
@@ -97,7 +87,6 @@ namespace Cauldron.Dendron
             // Find hero with fewest cards in play
             List<TurnTaker> fewestCardsInPlayResults = new List<TurnTaker>();
             IEnumerator heroWithLeastCardsInPlayRoutine = base.FindHeroWithFewestCardsInPlay(fewestCardsInPlayResults);
-
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(heroWithLeastCardsInPlayRoutine);
@@ -166,9 +155,7 @@ namespace Cauldron.Dendron
                     base.GameController.ExhaustCoroutine(destroyTwoOngoingRoutine);
                     base.GameController.ExhaustCoroutine(destroyTwoEquipmentRoutine);
                 }
-
             }
-
         }
     }
 }

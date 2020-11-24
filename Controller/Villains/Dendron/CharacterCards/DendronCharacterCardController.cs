@@ -41,11 +41,10 @@ namespace Cauldron.Dendron
         private const int AdvancedTattooDamageIncrease = 1;
         private const int AdvancedHpGain = 5;
 
-
         public DendronCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             // Show the number of tattoos in play
-            base.SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(IsTattoo, "tattoo")).Condition = (() => true);
+            base.SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(IsTattoo, "tattoo"));
         }
 
         public override void AddSideTriggers()
@@ -56,17 +55,14 @@ namespace Cauldron.Dendron
                 // At the start and end of the villain turn, if there are fewer than {H - 2} tattoos in play,
                 // play the top card of the villain deck
 
-                base.SideTriggers.Add(base.AddStartOfTurnTrigger(taker => taker == base.TurnTaker,
-                    CheckTattooCountResponse, TriggerType.PlayCard));
+                base.SideTriggers.Add(base.AddStartOfTurnTrigger(taker => taker == base.TurnTaker, CheckTattooCountResponse, TriggerType.PlayCard));
 
-                base.SideTriggers.Add(base.AddEndOfTurnTrigger(taker => taker == base.TurnTaker,
-                    CheckTattooCountResponse, TriggerType.PlayCard));
+                base.SideTriggers.Add(base.AddEndOfTurnTrigger(taker => taker == base.TurnTaker, CheckTattooCountResponse, TriggerType.PlayCard));
 
                 if (this.IsGameAdvanced)
                 {
                     // Increase damage dealt by tattoos by 1.
-                    base.AddIncreaseDamageTrigger(dda => dda.DamageSource != null && IsTattoo(dda.DamageSource.Card),
-                        AdvancedTattooDamageIncrease);
+                    base.AddIncreaseDamageTrigger(dda => dda.DamageSource != null && IsTattoo(dda.DamageSource.Card), AdvancedTattooDamageIncrease);
                 }
 
                 base.AddDefeatedIfMovedOutOfGameTriggers();
@@ -75,11 +71,9 @@ namespace Cauldron.Dendron
             else
             {
                 // At the start and end of the villain turn, play the top card of the villain deck.
-                base.SideTriggers.Add(base.AddStartOfTurnTrigger(taker => taker == base.TurnTaker,
-                    PlayCardResponse, TriggerType.PlayCard));
+                base.SideTriggers.Add(base.AddStartOfTurnTrigger(taker => taker == base.TurnTaker, PlayCardResponse, TriggerType.PlayCard));
 
-                base.SideTriggers.Add(base.AddEndOfTurnTrigger(taker => taker == base.TurnTaker,
-                    PlayCardResponse, TriggerType.PlayCard));
+                base.SideTriggers.Add(base.AddEndOfTurnTrigger(taker => taker == base.TurnTaker, PlayCardResponse, TriggerType.PlayCard));
 
                 if (this.IsGameAdvanced)
                 {
@@ -101,9 +95,7 @@ namespace Cauldron.Dendron
             }
 
             // Flip Dendron
-            IEnumerator flipRoutine = base.GameController.FlipCard(this, treatAsPlayed: false, treatAsPutIntoPlay:
-                false, destroyCard.ActionSource, null, GetCardSource());
-
+            IEnumerator flipRoutine = base.GameController.FlipCard(this, treatAsPlayed: false, treatAsPutIntoPlay: false, destroyCard.ActionSource, null, GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(flipRoutine);
@@ -117,7 +109,6 @@ namespace Cauldron.Dendron
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
             IEnumerator afterFlipRoutine = base.AfterFlipCardImmediateResponse();
-
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(afterFlipRoutine);
@@ -128,9 +119,7 @@ namespace Cauldron.Dendron
             }
 
             // Restore Dendron back to 50 HP
-            IEnumerator restoreHpRoutine =
-                base.GameController.SetHP(this.Card, this.CharacterCard.MaximumHitPoints.Value, this.GetCardSource());
-
+            IEnumerator restoreHpRoutine = base.GameController.SetHP(this.Card, this.CharacterCard.MaximumHitPoints.Value, this.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(restoreHpRoutine);

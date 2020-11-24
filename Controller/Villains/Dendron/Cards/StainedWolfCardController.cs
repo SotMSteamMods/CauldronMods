@@ -18,22 +18,17 @@ namespace Cauldron.Dendron
 
         public StainedWolfCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddTriggers()
         {
             base.AddEndOfTurnTrigger(tt => tt == base.TurnTaker, EndOfTurnDealDamageResponse, TriggerType.DealDamage);
-
-            base.AddTriggers();
         }
 
         private IEnumerator EndOfTurnDealDamageResponse(PhaseChangeAction pca)
         {
             List<Card> storedResults = new List<Card>();
-            IEnumerator findTargetWithLowestHpRoutine = base.GameController.FindTargetWithHighestHitPoints(1,
-                c => c.IsHero && !c.IsIncapacitatedOrOutOfGame, storedResults);
-
+            IEnumerator findTargetWithLowestHpRoutine = base.GameController.FindTargetWithHighestHitPoints(1, c => c.IsHero && !c.IsIncapacitatedOrOutOfGame, storedResults);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(findTargetWithLowestHpRoutine);
@@ -51,9 +46,7 @@ namespace Cauldron.Dendron
             //  At the end of the villain turn, this card deals the hero target with the lowest HP {H - 2} toxic damage.
             int damageToDeal = Game.H - 1;
 
-            IEnumerator dealDamageRoutine = this.DealDamage(this.Card, storedResults.First(),
-                damageToDeal, DamageType.Melee);
-
+            IEnumerator dealDamageRoutine = this.DealDamage(this.Card, storedResults.First(), damageToDeal, DamageType.Melee);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(dealDamageRoutine);

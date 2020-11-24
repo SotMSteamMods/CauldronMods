@@ -19,21 +19,17 @@ namespace Cauldron.Dendron
 
         public LivingInkCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddTriggers()
         {
             this.AddEndOfTurnTrigger(tt => tt == base.TurnTaker, this.GainHpResponse, TriggerType.GainHP);
-
-            base.AddTriggers();
         }
 
         private IEnumerator GainHpResponse(PhaseChangeAction pca)
         {
             // Villain targets regain 3 HP
-            IEnumerator gainHpRoutine =
-                base.GameController.GainHP(DecisionMaker, card => card.IsVillainTarget && card.IsInPlay, HpToGain, cardSource: GetCardSource());
+            IEnumerator gainHpRoutine = base.GameController.GainHP(DecisionMaker, card => card.IsVillainTarget && card.IsInPlay, HpToGain, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(gainHpRoutine);

@@ -20,7 +20,6 @@ namespace Cauldron.Dendron
 
         public TintedStagCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddTriggers()
@@ -31,8 +30,6 @@ namespace Cauldron.Dendron
                 TriggerType.RevealCard,
                 TriggerType.MoveCard
             });
-
-            base.AddTriggers();
         }
 
         private IEnumerator RevealTattooResponse(PhaseChangeAction pca)
@@ -51,9 +48,7 @@ namespace Cauldron.Dendron
 
             // Reveal cards from trash until tattoo is revealed
             List<RevealCardsAction> revealedCardList = new List<RevealCardsAction>();
-            IEnumerator revealCardRoutine = base.GameController.RevealCards(this.TurnTakerController, this.Card.Owner.Trash, IsTattoo, 1,
-                revealedCardList);
-
+            IEnumerator revealCardRoutine = base.GameController.RevealCards(this.TurnTakerController, this.Card.Owner.Trash, IsTattoo, 1, revealedCardList);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(revealCardRoutine);
@@ -69,9 +64,7 @@ namespace Cauldron.Dendron
             if (tattooCards.Any())
             {
                 // Put tattoo into play
-                IEnumerator playCardRoutine = base.GameController.PlayCards(this.DecisionMaker,
-                    c => tattooCards.Contains(c), false, true, 1, cardSource: base.GetCardSource());
-
+                IEnumerator playCardRoutine = base.GameController.PlayCards(this.DecisionMaker, c => tattooCards.Contains(c), false, true, 1, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(playCardRoutine);
@@ -89,7 +82,6 @@ namespace Cauldron.Dendron
 
             // Put remaining revealed cards back into the villain trash
             IEnumerator returnCardsToTrashRoutine = base.GameController.MoveCards(this.DecisionMaker, otherCards, this.TurnTaker.Trash, cardSource: base.GetCardSource());
-
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(returnCardsToTrashRoutine);
