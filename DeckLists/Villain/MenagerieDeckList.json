@@ -58,7 +58,7 @@
             "flippedAdvancedIcons": [
                 "Manipulate"
             ],
-            "difficulty": 1,
+            "difficulty": 2,
             "openingLines": {
                 "default": "Oh, hello, heroes! Care to see my latest catch?",
                 "StarlightCharacter": "Starlight placeholder",

@@ -50,7 +50,7 @@
                 "DestroyOngoing",
                 "DestroyEquipment"
             ],
-            "difficulty": 1,
+            "difficulty": 3,
             "openingLines": {
                 "default": "default placeholder",
                 "GyrosaurCharacter": "Gyrosaur placeholder",

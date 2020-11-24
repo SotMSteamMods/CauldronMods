@@ -41,7 +41,7 @@
                 "default": "default placeholder",
                 "MenagerieCharacter": "Menagerie placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "AncientConstellationA",
@@ -485,7 +485,7 @@
                 "default": "default placeholder",
                 "MenagerieCharacter": "Menagerie placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "StarlightCharacter",
@@ -531,7 +531,7 @@
                 "TiamatCharacter": "Tiamat placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "StarlightCharacter",
@@ -565,7 +565,7 @@
                 "1929RamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "StarlightCharacter",
@@ -596,7 +596,7 @@
                 "default": "default placeholder",
                 "MenagerieCharacter": "Menagerie placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "StarlightCharacter",
@@ -627,7 +627,7 @@
                 "default": "default placeholder",
                 "MenagerieCharacter": "Menagerie placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         }
     ]
 }

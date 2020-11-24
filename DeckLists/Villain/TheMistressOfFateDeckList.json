@@ -61,7 +61,7 @@
             "flippedAdvancedIcons": [
                 "GainHP"
             ],
-            "difficulty": 1,
+            "difficulty": 2,
             "openingLines": {
                 "default": "default placeholder",
                 "BaccaratCharacter": "Baccarat placeholder",

@@ -41,7 +41,7 @@
                 "GrayCharacter": "Gray placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "AbductAndAbandon",
@@ -366,7 +366,7 @@
                 "GrayCharacter": "Gray placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "VanishCharacter",
@@ -407,7 +407,7 @@
                 "GrayCharacter": "Gray placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

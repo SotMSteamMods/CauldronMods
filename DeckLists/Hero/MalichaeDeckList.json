@@ -41,7 +41,7 @@
 				"OriphelCharacter": "Oriphel placeholder",
 				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
 			},
-			"complexity": 1
+			"complexity": 3
 		},
 		{
 			"identifier": "BaitAndSwitch",
@@ -544,7 +544,7 @@
 				"OriphelCharacter": "Oriphel placeholder",
 				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
 			},
-			"complexity": 1
+			"complexity": 3
 		},
 		{
 			"identifier": "MalichaeCharacter",
@@ -586,7 +586,7 @@
 				"OriphelCharacter": "Oriphel placeholder",
 				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
 			},
-			"complexity": 1
+			"complexity": 3
 		}
 	]
 }

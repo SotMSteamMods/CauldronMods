@@ -41,7 +41,7 @@
                 "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "ChameleonArmor",
@@ -411,7 +411,7 @@
                 "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "TangoOneCharacter",
@@ -453,7 +453,7 @@
                 "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }
