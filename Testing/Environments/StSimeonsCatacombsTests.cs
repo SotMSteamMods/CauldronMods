@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using Cauldron.StSimeonsCatacombs;
+using System;
 
 namespace CauldronTests
 {
@@ -2018,7 +2019,8 @@ namespace CauldronTests
             Card guide = PutOnDeck("LivingGeometry");
             GoToNextTurn();
             Card currentRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
-
+            //destroy all environment targets to ensure if twisting passages is in play the buff is there
+            DestroyCards((Card c) => c.IsEnvironmentTarget);
             if(oldRoom != currentRoom)
             {
                 //living geometry destroyed a room at the end of the turn so should be non-immune
@@ -2214,6 +2216,41 @@ namespace CauldronTests
             QuickHPCheck(0, -2, 0, 0, -2, 0);
             
            
+
+        }
+
+
+        [Test()]
+        public void TestRoomsNotVisible()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Tachyon", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is torture chamber in play
+            if (playedRoom.Identifier != "TortureChamber")
+            {
+                DecisionSelectCard = GetCard("TortureChamber");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            Card twisting = GetCard("TwistingPassages");
+
+
+            DecisionSelectCard = twisting;
+            AssertionException e = new AssertionException("dummy message");
+            Assert.Throws(e.GetType(), () => PlayCard("BlindingSpeed"), "Was able to target a room under Catacombs", null) ;
+            
+           
+
 
         }
     }

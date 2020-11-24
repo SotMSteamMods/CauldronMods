@@ -5,7 +5,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class TwistingPassagesCardController : CardController
+    public class TwistingPassagesCardController : RoomCardController
     {
         #region Constructors
 
@@ -27,6 +27,8 @@ namespace Cauldron.StSimeonsCatacombs
             //If there are fewer than 2 environment targets in play, increase damage dealt by hero targets by 1.
             Func<DealDamageAction, bool> heroCriteria = (DealDamageAction dd) => this.GetNumberOfEnvironmentTargetsInPlay() < 2 && dd.DamageSource != null && dd.DamageSource.Card.IsHero && dd.DamageSource.Card.IsTarget;
             base.AddIncreaseDamageTrigger(heroCriteria, (DealDamageAction dd) => 1);
+
+            base.AddTriggers();
         }
 
         protected int GetNumberOfEnvironmentTargetsInPlay()

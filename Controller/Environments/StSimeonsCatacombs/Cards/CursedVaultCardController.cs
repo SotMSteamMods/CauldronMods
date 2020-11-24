@@ -4,7 +4,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class CursedVaultCardController : CardController
+    public class CursedVaultCardController : RoomCardController
     {
         #region Constructors
 
@@ -21,6 +21,8 @@ namespace Cauldron.StSimeonsCatacombs
         {
             //Reduce damage dealt to villain targets by 1.
             AddReduceDamageTrigger((Card c) => c.IsVillainTarget, 1);
+
+            base.AddTriggers();
         }
 
         #endregion Methods

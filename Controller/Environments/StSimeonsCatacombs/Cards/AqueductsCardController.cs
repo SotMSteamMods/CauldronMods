@@ -5,7 +5,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class AqueductsCardController : CardController
+    public class AqueductsCardController : RoomCardController
     {
         #region Constructors
 
@@ -22,6 +22,8 @@ namespace Cauldron.StSimeonsCatacombs
         {
             //At the end of the environment turn, each target regains 1 HP
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, (PhaseChangeAction pca) => this.AllTargetsGainHP(), TriggerType.GainHP);
+
+            base.AddTriggers();
         }
 
         private IEnumerator AllTargetsGainHP()
