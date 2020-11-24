@@ -5,18 +5,14 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class AqueductsCardController : RoomCardController
+    public class AqueductsCardController : StSimeonsRoomCardController
     {
-        #region Constructors
+        public static readonly string Identifier = "Aqueducts";
 
         public AqueductsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public override void AddTriggers()
         {
@@ -39,9 +35,6 @@ namespace Cauldron.StSimeonsCatacombs
             }
 
             yield break;
-
         }
-
-        #endregion Methods
     }
 }

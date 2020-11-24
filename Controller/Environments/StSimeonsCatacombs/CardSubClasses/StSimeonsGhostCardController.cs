@@ -4,46 +4,29 @@ using System;
 using System.Collections;
 using System.Linq;
 
-namespace Cauldron
+namespace Cauldron.StSimeonsCatacombs
 {
-    public class GhostCardController : CardController
+    public abstract class StSimeonsGhostCardController : StSimeonsBaseCardController
     {
-        #region Constructors
-
-        public GhostCardController(Card card, TurnTakerController turnTakerController, string[] affectedIdentifiers, bool reversed) : base(card, turnTakerController)
+        protected StSimeonsGhostCardController(Card card, TurnTakerController turnTakerController, string[] affectedIdentifiers, bool flipIdentiferInPlayCondition = false) : base(card, turnTakerController)
         {
             this.AffectedIdentifiers = affectedIdentifiers;
-            this.Reversed = reversed;
+            this.FlipIdentiferInPlayCondition = flipIdentiferInPlayCondition;
             //TODO: Add a conditional special string that says something like "AffectedCard is in play so it is affected by Hero cards" and the reverse
             base.AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
         }
 
-        #endregion Constructors
-
-        #region Methods
-
         public override void AddTriggers()
         {
             //This card may not be affected by hero cards unless AffectedCard is in play.
-            base.AddTrigger<MakeDecisionsAction>((MakeDecisionsAction md) => !this.IsAffectedCardInPlay() && md.CardSource != null && md.CardSource.Card.Owner.IsHero, new Func<MakeDecisionsAction, IEnumerator>(this.RemoveDecisionsFromMakeDecisionsResponse), TriggerType.RemoveDecision, TriggerTiming.Before);
+            base.AddTrigger<MakeDecisionsAction>((MakeDecisionsAction md) => !this.IsAffectedCardInPlay() && md.CardSource != null && md.CardSource.Card.Owner.IsHero, this.RemoveDecisionsFromMakeDecisionsResponse, TriggerType.RemoveDecision, TriggerTiming.Before);
         }
 
         private IEnumerator RemoveDecisionsFromMakeDecisionsResponse(MakeDecisionsAction md)
         {
             //remove this card as an option to make decisions
             md.RemoveDecisions((IDecision d) => d.SelectedCard == base.Card);
-            yield return base.DoNothing();
-            yield break;
-        }
-
-        private bool FlipIfReversed(bool value)
-        {
-            if(Reversed)
-            {
-                return !value;
-            }
-
-            return value;
+            return base.DoNothing();
         }
 
         public override bool? AskIfCardIsVisibleToCardSource(Card card, CardSource cardSource)
@@ -51,11 +34,10 @@ namespace Cauldron
             //check if card is from a hero and if AffectedCard is in play
             if (!this.IsAffectedCardInPlay() && card == base.Card && cardSource.Card.IsHero)
             {
-                return new bool?(false);
+                return false;
             }
-            return new bool?(true);
+            return true;
         }
-
 
         public override bool AskIfActionCanBePerformed(GameAction g)
         {
@@ -73,11 +55,11 @@ namespace Cauldron
         }
         private bool IsAffectedCardInPlay()
         {
-            return FlipIfReversed(base.FindCardsWhere(c => c.IsInPlayAndHasGameText && AffectedIdentifiers.Contains(c.Identifier)).Count() > 0);
+            bool identiferInPlay = base.FindCardsWhere(c => c.IsInPlayAndHasGameText && AffectedIdentifiers.Contains(c.Identifier)).Any();
+            return FlipIdentiferInPlayCondition ? !identiferInPlay : identiferInPlay;
         }
 
-        public string[] AffectedIdentifiers { get; private set; }
-        public bool Reversed { get; private set; }
-        #endregion Methods
+        protected string[] AffectedIdentifiers { get; }
+        protected bool FlipIdentiferInPlayCondition { get; }
     }
 }

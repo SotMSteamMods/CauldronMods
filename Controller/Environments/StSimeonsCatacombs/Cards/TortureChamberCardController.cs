@@ -4,18 +4,14 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class TortureChamberCardController : RoomCardController
+    public class TortureChamberCardController : StSimeonsRoomCardController
     {
-        #region Constructors
+        public static readonly string Identifier = "TortureChamber";
 
         public TortureChamberCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public override void AddTriggers()
         {
@@ -25,7 +21,5 @@ namespace Cauldron.StSimeonsCatacombs
 
             base.AddTriggers();
         }
-
-        #endregion Methods
     }
 }

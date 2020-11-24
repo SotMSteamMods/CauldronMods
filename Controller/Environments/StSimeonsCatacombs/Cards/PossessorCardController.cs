@@ -6,20 +6,14 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class PossessorCardController : GhostCardController
+    public class PossessorCardController : StSimeonsGhostCardController
     {
-        #region Constructors
+        public static readonly string Identifier = "Possessor";
 
-        public PossessorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { "TortureChamber" }, false)
+        public PossessorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { TortureChamberCardController.Identifier }, false)
         {
 
         }
-
-
-
-        #endregion Constructors
-
-        #region Methods
 
         public override void AddTriggers()
         {
@@ -28,13 +22,13 @@ namespace Cauldron.StSimeonsCatacombs
             base.CannotUsePowers((TurnTakerController ttc) => ttc != null && ttc.TurnTaker == base.GetCardThisCardIsNextTo().Owner);
 
             //At the start of that hero's turn, put 2 cards from their hand into play at random.
-            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.GetCardThisCardIsNextTo().Owner, new Func<PhaseChangeAction, IEnumerator>(this.StartOfHeroTurnResponse), TriggerType.PutIntoPlay);
+            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.GetCardThisCardIsNextTo().Owner, this.StartOfHeroTurnResponse, TriggerType.PutIntoPlay);
         }
 
         private IEnumerator StartOfHeroTurnResponse(PhaseChangeAction pca)
         {
             //put 2 cards from the hero this card is next to's hand into play at random.
-            IEnumerator coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController,base.GetCardThisCardIsNextTo().Owner.ToHero().Hand, false, true, false, new LinqCardCriteria((Card c) => true), new int?(2), shuffleBeforehand: true);
+            IEnumerator coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController,base.GetCardThisCardIsNextTo().Owner.ToHero().Hand, false, true, false, new LinqCardCriteria((Card c) => true), 2, shuffleBeforehand: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -43,8 +37,6 @@ namespace Cauldron.StSimeonsCatacombs
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
-
             yield break;
         }
 
@@ -77,7 +69,5 @@ namespace Cauldron.StSimeonsCatacombs
 
             yield break;
         }
-
-        #endregion Methods
     }
 }

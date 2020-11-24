@@ -5,18 +5,14 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class TwistingPassagesCardController : RoomCardController
+    public class TwistingPassagesCardController : StSimeonsRoomCardController
     {
-        #region Constructors
+        public static readonly string Identifier = "TwistingPassages";
 
         public TwistingPassagesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public override void AddTriggers()
         {
@@ -35,7 +31,5 @@ namespace Cauldron.StSimeonsCatacombs
         {
             return base.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.IsEnvironmentTarget).Count();
         }
-
-        #endregion Methods
     }
 }

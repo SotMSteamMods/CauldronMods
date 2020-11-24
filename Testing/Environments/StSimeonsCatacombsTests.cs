@@ -2246,12 +2246,8 @@ namespace CauldronTests
 
 
             DecisionSelectCard = twisting;
-            AssertionException e = new AssertionException("dummy message");
-            Assert.Throws(e.GetType(), () => PlayCard("BlindingSpeed"), "Was able to target a room under Catacombs", null) ;
-            
-           
 
-
+            Assert.Throws(typeof(AssertionException), () => PlayCard("BlindingSpeed"), "Was able to target a room under Catacombs", null) ;
         }
 
         [Test()]
@@ -2268,13 +2264,10 @@ namespace CauldronTests
 
 
             DecisionSelectCard = twisting;
-
-            AssertionException e = new AssertionException("dummy message");
-            Assert.Throws(e.GetType(), () => UsePower(legacy, 0), "Was able to target a room under Catacombs", null);
-
-
-
-
+            UsePower(legacy, 0);
+            AssertNotInTrash(twisting);
+            //we would like these to not be targetable, but indestructible will have to do
+            //Assert.Throws(typeof(AssertionException), () => UsePower(legacy, 0), "Was able to target a room under Catacombs", null);
         }
 
         [Test()]

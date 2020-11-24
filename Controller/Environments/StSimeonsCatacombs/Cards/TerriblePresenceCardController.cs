@@ -5,18 +5,14 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class TerriblePresenceCardController : GhostCardController
+    public class TerriblePresenceCardController : StSimeonsGhostCardController
     {
-        #region Constructors
+        public static readonly string Identifier = "TerriblePresence";
 
-        public TerriblePresenceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { "TortureChamber", "Aqueducts"}, false)
+        public TerriblePresenceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { TortureChamberCardController.Identifier, AqueductsCardController.Identifier }, false)
         {
 
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public override void AddTriggers()
         {
@@ -27,7 +23,7 @@ namespace Cauldron.StSimeonsCatacombs
         private IEnumerator AddEndOfTurnResponse(PhaseChangeAction pca)
         {
             //this card deals the 2 non-ghost targets with the lowest HP 2 cold damage each
-            IEnumerator coroutine =  base.DealDamageToLowestHP(base.Card, 1, (Card c) => !this.IsGhost(c), (Card c) => new int?(2), DamageType.Cold, numberOfTargets: 2);
+            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, (Card c) => !this.IsGhost(c), (Card c) => 2, DamageType.Cold, numberOfTargets: 2);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -39,11 +35,5 @@ namespace Cauldron.StSimeonsCatacombs
 
             yield break;
         }
-
-        private bool IsGhost(Card card)
-        {
-            return card.DoKeywordsContain("ghost");
-        }
-        #endregion Methods
     }
 }
