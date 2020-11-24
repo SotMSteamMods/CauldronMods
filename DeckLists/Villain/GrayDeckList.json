@@ -45,8 +45,7 @@
             "flippedAdvanced": "Reduce damage dealt to villain targets by 1.",
             "flippedIcons": [
                 "StartOfTurnAction",
-                "DestroyOngoing",
-                "DestroyEquipment",
+                "Destroy",
                 "DealDamageEnergy",
                 "PlayCardNow"
             ],
