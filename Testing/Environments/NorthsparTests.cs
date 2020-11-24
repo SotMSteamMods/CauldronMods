@@ -858,6 +858,122 @@ namespace CauldronTests
             QuickHPCheck(0, 0, -1, 0);
         }
 
+        [Test()]
+        public void TestEerieStillness_ImmuneToCold()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            Card eerie = PlayCard("EerieStillness");
+            Card takAhab = PlayCard("TakAhab");
+            //All targets are immune to cold damage.
+
+            //check villain targets
+
+            //for cold
+            QuickHPStorage(baron);
+            DealDamage(ra, baron, 5, DamageType.Cold);
+            QuickHPCheckZero();
+            //for other
+            QuickHPUpdate();
+            DealDamage(ra, baron, 5, DamageType.Fire);
+            QuickHPCheck(-5);
+
+            //for hero
+
+            //for cold
+            QuickHPStorage(haka);
+            DealDamage(ra, haka, 5, DamageType.Cold);
+            QuickHPCheckZero();
+            //for other
+            QuickHPUpdate();
+            DealDamage(ra, haka, 5, DamageType.Fire);
+            QuickHPCheck(-5);
+
+            //for env target
+
+            //for cold
+            QuickHPStorage(takAhab);
+            DealDamage(ra.CharacterCard, takAhab, 5, DamageType.Cold);
+            QuickHPCheckZero();
+            //for other
+            QuickHPUpdate();
+            DealDamage(ra.CharacterCard, takAhab, 5, DamageType.Fire);
+            QuickHPCheck(-5);
+        }
+
+        [Test()]
+        public void TestEerieStillness_StartOfTurnFromTrash()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            Card eerie = PlayCard("EerieStillness");
+            Card makeshift = PutInTrash("MakeshiftShelter");
+            //At the start of the environment turn, search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play, then shuffle the deck and destroy this card.
+            DecisionSelectCard = makeshift;
+            DecisionSelectLocation = new LocationChoice(northspar.TurnTaker.Trash);
+            QuickShuffleStorage(northspar);
+            GoToStartOfTurn(northspar);
+            AssertIsInPlay(makeshift);
+            QuickShuffleCheck(1);
+            AssertInTrash(eerie);
+
+        }
+
+        [Test()]
+        public void TestEerieStillness_StartOfTurnFromDeck()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            Card eerie = PlayCard("EerieStillness");
+            PlayCard("MakeshiftShelter");
+
+            Card depot = PutOnDeck("SupplyDepot");
+            //At the start of the environment turn, search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play, then shuffle the deck and destroy this card.
+            DecisionSelectCards = new Card[] { depot, haka.CharacterCard };
+            DecisionSelectLocation = new LocationChoice(northspar.TurnTaker.Deck);
+
+            QuickShuffleStorage(northspar);
+            GoToStartOfTurn(northspar);
+            AssertIsInPlay(depot);
+            QuickShuffleCheck(1);
+            AssertInTrash(eerie);
+
+        }
+
+        [Test()]
+        public void TestEerieStillness_StartOfTurnFromDeck_ThirdWaypoint()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            Card eerie = PlayCard("EerieStillness");
+            PlayCard("MakeshiftShelter");
+            PlayCard("SupplyDepot");
+
+            Card landing = PutOnDeck("LandingSite");
+            //At the start of the environment turn, search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play, then shuffle the deck and destroy this card.
+            DecisionSelectCard = landing;
+            DecisionSelectLocation = new LocationChoice(northspar.TurnTaker.Deck);
+
+            QuickShuffleStorage(northspar);
+            GoToStartOfTurn(northspar);
+            AssertIsInPlay(landing);
+            QuickShuffleCheck(1);
+            AssertInTrash(eerie);
+
+        }
+
 
     }
 }
