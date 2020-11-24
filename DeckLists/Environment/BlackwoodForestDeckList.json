@@ -3,7 +3,7 @@
   "kind": "Environment",
   "expansionIdentifier": "Cauldron",
   "backgroundColor": "FB5455",
-  "difficulty": 1,
+  "difficulty": 2,
   "cards": [
     {
       "identifier": "DenseBrambles",
