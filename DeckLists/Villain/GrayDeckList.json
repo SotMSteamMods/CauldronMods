@@ -13,10 +13,6 @@
             "keywords": [
                 "villain"
             ],
-            "icons": [
-                "StartOfTurnAction"
-            ],
-            "advancedIcons": [],
             "body": "Walking Nuclear Reactor",
             "backgroundColor": "D99FC5",
             "foilBackgroundColor": "CD96C0",
@@ -35,10 +31,15 @@
                 "Whenever a radiation card is destroyed, destroy 1 hero ongoing or equipment card and {Gray} deals each non-villain target {H - 1} energy damage."
             ],
             "advanced": "Whenever a radiation card is destroyed, destroy a second hero ongoing or equipment card.",
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageEnergy",
+                "Destroy"
+            ],
             "flippedBody": "Catastrophic Meltdown",
             "flippedGameplay": [
                 "At the start of the villain turn, if there are 1 or 0 radiation cards in play, flip {Gray}'s character cards.",
-                "At the start of the villain turn, destroy all but 2 hero ongoing or equipment cards. {Gray} deals each hero target {H x 2} energy damage. Play the top card of the villain deck.",
+                "At the start of the villain turn, destroy all but 2 hero ongoing or equipment cards. {Gray} deals each hero target {H * 2} energy damage. Play the top card of the villain deck.",
                 "Whenever a radiation card is destroyed by a hero card, {Gray} deals that hero {H - 1} energy damage.",
                 "Whenever a copy of Radioactive Cascade is destroyed, {Gray} deals the hero with the highest HP {H - 1} energy damage."
             ],
