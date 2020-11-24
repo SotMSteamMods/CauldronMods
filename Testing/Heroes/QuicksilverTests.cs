@@ -516,12 +516,43 @@ namespace CauldronTests
             PlayCard("MirrorShard");
 
             DecisionYesNo = true;
-            SetHitPoints(quicksilver, 3);
+            SetHitPoints(quicksilver, 2);
             QuickHPStorage(apostate);
             DealDamage(ra, apostate, 4, DamageType.Melee);
+            //Quicksilver takes 4 and responds by punching for 5
             QuickHPCheck(-5);
         }
+        [Test]
+        public void TestMalleableArmorPower()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
 
+            PlayCard("MalleableArmor");
+
+            SetHitPoints(quicksilver, 10);
+            QuickHPStorage(quicksilver);
+
+            //Power: "If {Quicksilver} has not dealt damage this turn, she regains 3HP."
+            UsePower("MalleableArmor");
+            QuickHPCheck(3);
+        }
+        [Test]
+        public void TestMalleableArmorPowerHealOnlyIfNoDamage()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            PlayCard("MalleableArmor");
+
+            SetHitPoints(quicksilver, 10);
+            QuickHPStorage(quicksilver);
+
+            DealDamage(quicksilver, apostate, 2, DamageType.Melee);
+            //Power: "If {Quicksilver} has not dealt damage this turn, she regains 3HP."
+            UsePower("MalleableArmor");
+            QuickHPCheck(0);
+        }
         [Test()]
         public void TestMercuryStrikeSkipCombo()
         {
@@ -608,21 +639,24 @@ namespace CauldronTests
             StartGame();
             PlayCard("StressHardening");
             //No damage no increase
-            QuickHPStorage(apostate);
+            QuickHPStorage(apostate, ra);
             DealDamage(quicksilver, apostate, 2, DamageType.Melee);
-            QuickHPCheck(-2);
+            DealDamage(quicksilver, ra, 2, DamageType.Melee);
+            QuickHPCheck(-2, -2);
 
             //If {Quicksilver} currently has less than her max HP, increase damage she deals to non-hero targets by 1.
             DealDamage(apostate, quicksilver, 3, DamageType.Melee);
-            QuickHPStorage(apostate);
+            QuickHPStorage(apostate, ra);
             DealDamage(quicksilver, apostate, 2, DamageType.Melee);
-            QuickHPCheck(-3);
+            DealDamage(quicksilver, ra, 2, DamageType.Melee);
+            QuickHPCheck(-3, -2);
 
             //If {Quicksilver} has 10 or fewer HP, increase damage she deals to non-hero targets by an additional 1.
             SetHitPoints(quicksilver, 10);
-            QuickHPStorage(apostate);
+            QuickHPStorage(apostate, ra);
             DealDamage(quicksilver, apostate, 2, DamageType.Melee);
-            QuickHPCheck(-4);
+            DealDamage(quicksilver, ra, 2, DamageType.Melee);
+            QuickHPCheck(-4, -2);
         }
 
         [Test()]

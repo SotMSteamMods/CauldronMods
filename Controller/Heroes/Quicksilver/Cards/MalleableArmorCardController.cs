@@ -2,6 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Linq;
 
 namespace Cauldron.Quicksilver
 {
@@ -10,6 +11,31 @@ namespace Cauldron.Quicksilver
         public MalleableArmorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
+        }
+
+        public override IEnumerator UsePower(int index = 0)
+        {
+            //"If {Quicksilver} has not dealt damage this turn, she regains 3HP."
+            bool hasDealtDamage = Journal.DealDamageEntriesThisTurn().Where((DealDamageJournalEntry ddje) => ddje.SourceCard == this.CharacterCard && ddje.Amount > 0).Any();
+            IEnumerator coroutine;
+            if(hasDealtDamage)
+            {
+                coroutine = GameController.SendMessageAction($"{this.CharacterCard.Title} has dealt damage this turn, and does not regain HP.", Priority.High, GetCardSource());
+            }
+            else
+            {
+                coroutine = GameController.GainHP(this.CharacterCard, 3, cardSource: GetCardSource());
+            }
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
         public override void AddTriggers()
         {
