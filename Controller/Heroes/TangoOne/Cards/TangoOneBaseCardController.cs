@@ -12,7 +12,6 @@ namespace Cauldron.TangoOne
 
         protected TangoOneBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         protected bool IsCritical(Card card)
@@ -53,6 +52,5 @@ namespace Cauldron.TangoOne
 
             yield break;
         }
-
     }
 }
