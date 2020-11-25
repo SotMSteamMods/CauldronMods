@@ -581,6 +581,8 @@ namespace CauldronTests
             Game game = new Game(new string[] { "LaCapitan", "CaptainCosmic", "Parse", "Haka", "Cauldron.FSCContinuanceWanderer" });
             SetupGameController(game);
             StartGame();
+            DestroyNonCharacterVillainCards();
+
             Card slip = GetCard("TimeFreeze");
             Card crest = GetCard("CosmicCrest");
             PlayCard(crest);
@@ -607,6 +609,8 @@ namespace CauldronTests
             Game game = new Game(new string[] { "LaCapitan", "CaptainCosmic", "Parse", "Haka", "Cauldron.FSCContinuanceWanderer" });
             SetupGameController(game);
             StartGame();
+            DestroyNonCharacterVillainCards();
+
             Card slip = GetCard("TimeFreeze");
             Card crest = GetCard("CosmicCrest");
             PlayCard(crest);
@@ -631,10 +635,13 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            DestroyNonCharacterVillainCards();
+
             Card freeze = GetCard("TimeFreeze");
             GoToStartOfTurn(haka);
                       //stack spites deck to not get lab raid
             PutOnDeck("GoodSamaritan");
+            DecisionSelectCard = legacy.CharacterCard;
             PlayCard(freeze);
             //At the start of the environment turn, destroy this card.
             GoToStartOfTurn(env);

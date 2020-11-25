@@ -50,17 +50,19 @@ namespace Cauldron.FSCContinuanceWanderer
             //The phase where the Skip is applied
             triggerPhase = GameController.FindLastTurnPhase(prevTurnTaker);
 
-            Console.WriteLine($"## trigger = {triggerPhase}");
+            Log.Debug($"## TimeFreeze.Play: triggerPhase = {triggerPhase.TurnTaker.Name}-{triggerPhase.FriendlyPhaseName}");
 
             //The phase we will skip to
             skipToTurnPhase = base.Game.FindTurnPhases((TurnPhase turnPhase) => turnPhase.Phase == startPhase && turnPhase.TurnTaker == nextTurnTaker).FirstOrDefault();
 
             //Console.WriteLine($"## alt trigger = {frozenLast}");
-            Console.WriteLine($"## skip = {skipToTurnPhase}");
+            Log.Debug($"## TimeFreeze.Play: skipToTurnPhase = {skipToTurnPhase.TurnTaker.Name}-{skipToTurnPhase.FriendlyPhaseName}");
 
             //If we are already in the phase that would cause the trigger to fire then manually fire the override
             if (Game.ActiveTurnPhase == triggerPhase)
             {
+                Log.Debug($"## TimeFreeze.Play: ActiveGamePhase is trigger phase, skipping to skipTo phase.");
+
                 base.GameController.Game.OverrideNextTurnPhase = skipToTurnPhase;
             }
             yield break;
@@ -78,6 +80,8 @@ namespace Cauldron.FSCContinuanceWanderer
 
         private IEnumerator SkipTurnResponse(PhaseChangeAction action)
         {
+            Log.Debug($"## TimeFreeze.SkipTurnResponse triggered");
+
             base.GameController.Game.OverrideNextTurnPhase = skipToTurnPhase;
             yield break;
         }
