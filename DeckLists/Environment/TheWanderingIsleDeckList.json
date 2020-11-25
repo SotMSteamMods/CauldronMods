@@ -1,9 +1,10 @@
 {
     "name": "The Wandering Isle",
+    "sortName":"Wandering Isle",
     "kind": "Environment",
     "expansionIdentifier": "Cauldron",
     "backgroundColor": "FB5455",
-    "difficulty": 1,
+    "difficulty": 3,
     "cards": [
         {
             "identifier": "AmphibiousAssault",

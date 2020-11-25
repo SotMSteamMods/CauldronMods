@@ -19,6 +19,21 @@ namespace Cauldron.Malichae
             _attachIdentifier = attachIdentifier;
         }
 
+        //This is here for possible Promo support.
+        public abstract Power GetGrantedPower(CardController cardController);
+
+        public override IEnumerable<Power> AskIfContributesPowersToCardController(CardController cardController)
+        {
+            if (cardController.Card == base.GetCardThisCardIsNextTo(true))
+            {
+                return new Power[]
+                {
+                    GetGrantedPower(cardController),
+                };
+            }
+            return null;
+        }
+
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             //Place this card next to a target
@@ -38,6 +53,7 @@ namespace Cauldron.Malichae
         {
             AddTrigger<MoveCardAction>(MoveCriteria, RequiredCardMissingDestroySelfResponse, TriggerType.DestroySelf, TriggerTiming.After);
             AddTrigger<DestroyCardAction>(DestroyCriteria, RequiredCardMissingDestroySelfResponse, TriggerType.DestroySelf, TriggerTiming.After);
+            base.AddAsPowerContributor();
         }
 
         protected void AddDestroyAtEndOfTurnTrigger()

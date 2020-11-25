@@ -1083,7 +1083,7 @@ namespace CauldronTests
             //When this card enters play, put up to 3 cards from your trash beneath it.
 
             DecisionSelectCards = new Card[] { spring, fall, summer };
-            Card rebirth = PlayCard("Rebirth");
+            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
 
             //check that there are 3 cards under and that they are the cards under are correct
             AssertNumberOfCardsUnderCard(rebirth, 3);
@@ -1107,7 +1107,7 @@ namespace CauldronTests
             //When this card enters play, put up to 3 cards from your trash beneath it.
 
             DecisionSelectCards = new Card[] { spring, fall, null };
-            Card rebirth = PlayCard("Rebirth");
+            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
 
             //check that there are 2 cards under and that they are the cards under are correct
             AssertNumberOfCardsUnderCard(rebirth, 2);
@@ -1131,7 +1131,7 @@ namespace CauldronTests
             //When this card enters play, put up to 3 cards from your trash beneath it.
 
             DecisionSelectCards = new Card[] { spring, null };
-            Card rebirth = PlayCard("Rebirth");
+            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
 
             //check that there is 1 card under and that it is correct
             AssertNumberOfCardsUnderCard(rebirth, 1);
@@ -1154,7 +1154,7 @@ namespace CauldronTests
             //When this card enters play, put up to 3 cards from your trash beneath it.
 
             DecisionDoNotSelectCard = SelectionType.MoveCard;
-            Card rebirth = PlayCard("Rebirth");
+            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
 
             //since there are 0 cards moved under this card, it should immediately destroy itself
             AssertInTrash(rebirth);
@@ -1167,7 +1167,7 @@ namespace CauldronTests
             StartGame();
 
             //When this card enters play, put up to 3 cards from your trash beneath it.
-            Card rebirth = PlayCard("Rebirth");
+            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
 
             //since there are no cards to be moved under this card, it should immediately destroy itself
             AssertInTrash(rebirth);
@@ -1189,7 +1189,7 @@ namespace CauldronTests
 
             //Whenever LadyOfTheWood destroys a target, put a card from beneath this one into your hand.
             DecisionSelectCards = new Card[] { spring, fall, summer, summer };
-            Card rebirth = PlayCard("Rebirth");
+            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
 
             QuickHandStorage(ladyOfTheWood);
             //have lady of the wood destroy mdp
@@ -1226,7 +1226,7 @@ namespace CauldronTests
 
             //When there are no cards beneath this one, destroy this card.
             DecisionSelectCards = new Card[] { spring, fall, summer };
-            Card rebirth = PlayCard("Rebirth");
+            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
             
             MoveCards(ladyOfTheWood, new Card[] { spring, fall, summer }, ladyOfTheWood.HeroTurnTaker.Hand);
             AssertNotInPlay(rebirth);
@@ -1360,6 +1360,34 @@ namespace CauldronTests
             //Use LotW power to trigger reaction
             UsePower(gown);
             QuickHPCheck(-1);
+        }
+
+        [Test()]
+        public void TestSnowshadeGownCantDealDamageIfNoHPGain()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+ 
+
+            //destroy mdp so baron is vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card gown = PlayCard("SnowshadeGown");
+
+            // Whenever LadyOfTheWood regains HP, you may select a target that hasn't been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
+
+            GoToUsePowerPhase(ladyOfTheWood);
+
+
+            //Have baron blade and LotW have been dealt damage they aren't available for the reaction
+            DecisionYesNo = true;
+            DecisionSelectTarget = ra.CharacterCard;
+            QuickHPStorage(ra);
+            //Use LotW power to trigger reaction
+            UsePower(gown);
+            QuickHPCheck(0);
         }
 
 
@@ -1746,7 +1774,7 @@ namespace CauldronTests
 
         [Test()]
         [Sequential]
-        public void DecklistTest_Ongoing_IsOngoing([Values("Spring", "Summer", "Fall", "Winter", "Rebirth", "EnchantedClearing", "SerenityOfDawn", "NobilityOfDusk")] string ongoing)
+        public void DecklistTest_Ongoing_IsOngoing([Values("Spring", "Summer", "Fall", "Winter", "LadyOfTheWoodsRebirth", "EnchantedClearing", "SerenityOfDawn", "NobilityOfDusk")] string ongoing)
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Megalopolis");
             StartGame();

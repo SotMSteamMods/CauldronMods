@@ -56,7 +56,10 @@
                 "PlayCardNow",
                 "DealDamageMelee"
             ],
-            "body": "{Quicksilver} deals each non-hero target 1 projectile damage. You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo.",
+            "body": [
+                "{Quicksilver} deals each non-hero target 1 projectile damage.",
+                "You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "DocHavoc",
@@ -78,7 +81,10 @@
                 "PlayCardNow",
                 "DealDamageMelee"
             ],
-            "body": "{Quicksilver} deals 1 target 3 projectile damage. You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo.",
+            "body": [
+                "{Quicksilver} deals 1 target 3 projectile damage.",
+                "You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "Quicksilver",
@@ -135,7 +141,10 @@
                 "HasPower",
                 "DestroySelf"
             ],
-            "body": "Increase all damage dealt by 1. The first time a hero target would be dealt damage by a non-hero target during the villain turn, you may redirect that damage to {Quicksilver}.",
+            "body": [
+                "Increase all damage dealt by 1.",
+                "The first time a hero target would be dealt damage by a non-hero target during the villain turn, you may redirect that damage to {Quicksilver}."
+            ],
             "powers": [
                 "Destroy this card."
             ],
@@ -157,6 +166,7 @@
             ],
             "icons": [
                 "DestroyTarget",
+                "MakeDamageIrreducible",
                 "DealDamageMelee"
             ],
             "body": "Destroy a target with 3 or fewer HP, or deal 1 target 3 irreducible melee damage.",
@@ -185,7 +195,10 @@
                 "DestroySelf",
                 "PlayCardNow"
             ],
-            "body": "When this card enters play, draw a card and {Quicksilver} regains 2HP. When {Quicksilver} is dealt damage, you may destroy this card. If you do, you may play a card.",
+            "body": [
+                "When this card enters play, draw a card and {Quicksilver} regains 2HP.",
+                "When {Quicksilver} is dealt damage, you may destroy this card. If you do, you may play a card."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "Quicksilver",
@@ -206,7 +219,10 @@
                 "DealDamageMelee",
                 "PlayCardNow"
             ],
-            "body": "Reveal cards from the top of your deck until you reveal a Combo and a Finisher and put them into your hand. Shuffle the other revealed cards back into your deck. {Quicksilver} may deal herself 2 melee damage and play a Combo now.",
+            "body": [
+                "Reveal cards from the top of your deck until you reveal a Combo and a Finisher and put them into your hand. Shuffle the other revealed cards back into your deck.",
+                "{Quicksilver} may deal herself 2 melee damage and play a Combo now."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "Quicksilver",
@@ -251,7 +267,10 @@
                 "DealDamageMelee",
                 "PlayCardNow"
             ],
-            "body": "{Quicksilver} deals 1 target 2 melee damage, then 1 target 1 melee damage. You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo.",
+            "body": [
+                "{Quicksilver} deals 1 target 2 melee damage, then 1 target 1 melee damage.",
+                "You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "Quicksilver",
@@ -272,7 +291,11 @@
                 "DrawCardNow",
                 "RedirectDamage"
             ],
-            "body": "When this card enters play, draw a card. You may redirect any damage dealt by other hero targets to {Quicksilver}. Whenever {Quicksilver} takes damage this way, she deals 1 non-hero target X damage of the same type, where X is the damage that was dealt to {Quicksilver} plus 1.",
+            "body": [
+                "When this card enters play, draw a card.",
+                "You may redirect any damage dealt by other hero targets to {Quicksilver}.",
+                "Whenever {Quicksilver} takes damage this way, she deals 1 non-hero target X damage of the same type, where X is the damage that was dealt to {Quicksilver} plus 1."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "HalcyonSoldier",
@@ -296,7 +319,10 @@
             "icons": [
                 "IncreaseDamageDealt"
             ],
-            "body": "If {Quicksilver} currently has less than her max HP, increase damage she deals to non-hero targets by 1. If {Quicksilver} has 10 or fewer HP, increase damage she deals to non-hero targets by an additional 1.",
+            "body": [
+                "If {Quicksilver} currently has less than her max HP, increase damage she deals to non-hero targets by 1.",
+                "If {Quicksilver} has 10 or fewer HP, increase damage she deals to non-hero targets by an additional 1."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "Quicksilver",
@@ -352,9 +378,13 @@
             ],
             "icons": [
                 "DealDamageMelee",
+                "MakeDamageIrreducible",
                 "PlayCardNow"
             ],
-            "body": "{Quicksilver} deals 1 target 2 irreducible melee damage. You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo.",
+            "body": [
+                "{Quicksilver} deals 1 target 2 irreducible melee damage.",
+                "You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "CptReager",

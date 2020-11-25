@@ -26,7 +26,7 @@ namespace Cauldron.Tiamat
 
             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
             LinqCardCriteria criteria = new LinqCardCriteria((Card c) => base.CanCardBeConsideredLowestHitPoints(c, (Card card) => card.DoKeywordsContain("head") && card.IsTarget));
-            coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.SelectTarget, criteria, storedResults, false, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.GainHP, criteria, storedResults, false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

@@ -45,7 +45,7 @@
                 "default": "default placeholder",
                 "OutlanderCharacter": "Outlander placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "ShiftTrack",
@@ -490,7 +490,7 @@
                 "default": "default placeholder",
                 "OutlanderCharacter": "Outlander placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "ShiftTrack",
@@ -551,7 +551,7 @@
                 "default": "default placeholder",
                 "OutlanderCharacter": "Outlander placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "DriftCharacter",
@@ -597,7 +597,7 @@
                 "default": "default placeholder",
                 "OutlanderCharacter": "Outlander placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "ShiftTrack",

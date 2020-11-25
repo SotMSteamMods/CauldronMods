@@ -1,5 +1,6 @@
 {
     "name": "The Infernal Choir",
+    "sortName":"Infernal Choir",
     "kind": "Villain",
     "expansionIdentifier": "CauldronAdrift",
     "initialCardIdentifiers": [
@@ -59,7 +60,7 @@
             "flippedAdvancedIcons": [
                 "RemoveFromGame"
             ],
-            "difficulty": 1,
+            "difficulty": 4,
             "openingLines": {
                 "default": "default placeholder",
                 "TerminusCharacter": "Terminus placeholder",

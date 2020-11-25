@@ -11,7 +11,7 @@ namespace Cauldron.TheStranger
     {
         #region Constructors
 
-        public MarkOfDestructionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new LinqCardCriteria((Card c) => !c.IsHeroCharacterCard && !c.IsVillainCharacterCard && c.IsInPlay, "non-Character card", false, false, null, null, false))
+        public MarkOfDestructionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new LinqCardCriteria((Card c) => !c.IsHeroCharacterCard && !c.IsVillainCharacterCard && c.IsInPlay && !c.IsOneShot, "non-Character card", false, false, null, null, false))
         {
         }
 

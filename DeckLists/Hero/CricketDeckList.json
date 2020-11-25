@@ -39,7 +39,7 @@
                 "default": "default placeholder",
                 "DynamoCharacter": "Dynamo placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "AcousticDistortion",
@@ -456,7 +456,7 @@
                 "default": "default placeholder",
                 "DynamoCharacter": "Dynamo placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "CricketCharacter",
@@ -497,7 +497,7 @@
                 "default": "default placeholder",
                 "DynamoCharacter": "Dynamo placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "CricketCharacter",
@@ -537,7 +537,7 @@
                 "default": "default placeholder",
                 "DynamoCharacter": "Dynamo placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

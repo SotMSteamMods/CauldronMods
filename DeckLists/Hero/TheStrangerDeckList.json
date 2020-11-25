@@ -1,5 +1,6 @@
 {
     "name": "The Stranger",
+    "sortName":"Stranger",
     "kind": "Hero",
     "expansionIdentifier": "Cauldron",
     "initialCardIdentifiers": [
@@ -43,7 +44,7 @@
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "Corruption",
@@ -489,7 +490,7 @@
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "TheStrangerCharacter",
@@ -531,7 +532,7 @@
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "TheStrangerCharacter",
@@ -575,7 +576,7 @@
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

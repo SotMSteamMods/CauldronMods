@@ -41,7 +41,7 @@
                 "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "ChameleonArmor",
@@ -55,7 +55,7 @@
                 "Discard",
                 "PreventDamage"
             ],
-            "body": "Whenever {TangoOne} would be dealt damage, you may discard the top card of your deck. If it is a Critical card, prevent that damage.",
+            "body": "Whenever {TangoOne} would be dealt damage, you may reveal and discard the top card of your deck. If it is a Critical card, prevent that damage.",
             "flavorQuotes": [
                 {
                     "identifier": "TangoOne",
@@ -80,7 +80,7 @@
                 "Discard",
                 "IncreaseDamageDealt"
             ],
-            "body": "Whenever {TangoOne} deals damage, you may discard the top card of your deck. If it is a Critical card, increase that damage by 3.",
+            "body": "Whenever {TangoOne} deals damage, you may reveal and discard the top card of your deck. If it is a Critical card, increase that damage by 3.",
             "flavorQuotes": [
                 {
                     "identifier": "ChronoRanger",
@@ -411,7 +411,7 @@
                 "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "TangoOneCharacter",
@@ -453,7 +453,7 @@
                 "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

@@ -14,7 +14,7 @@ namespace Cauldron.DocHavoc
         // damage this way may not regain HP until the start of your next turn.
         //==============================================================
 
-        public static string Identifier = "PhosphorBlast";
+        public static readonly string Identifier = "PhosphorBlast";
         private const int DamageAmount = 1;
 
         public PhosphorBlastCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
@@ -27,7 +27,7 @@ namespace Cauldron.DocHavoc
             //{DocHavoc} deals each target 1 radiant damage.
             List<DealDamageAction> storedDamageResults = new List<DealDamageAction>();
 
-            IEnumerator routine =  base.DealDamage(this.CharacterCard, c => c.IsTarget && c.IsInPlayAndHasGameText, 
+            IEnumerator routine = base.DealDamage(this.CharacterCard, c => c.IsTarget && c.IsInPlayAndHasGameText,
                 DamageAmount, DamageType.Radiant, storedResults: storedDamageResults);
 
             if (base.UseUnityCoroutines)
@@ -46,7 +46,7 @@ namespace Cauldron.DocHavoc
                 // Apply CannotGainHPStatusEffect until start of this hero's next turn
                 CannotGainHPStatusEffect cannotGainHpStatusEffect = new CannotGainHPStatusEffect
                 {
-                    TargetCriteria = {IsSpecificCard = dd.Target}
+                    TargetCriteria = { IsSpecificCard = dd.Target }
                 };
                 cannotGainHpStatusEffect.UntilStartOfNextTurn(this.TurnTaker);
 
@@ -60,7 +60,7 @@ namespace Cauldron.DocHavoc
                     base.GameController.ExhaustCoroutine(statusEffectRoutine);
                 }
             }
-            
+
         }
     }
 }

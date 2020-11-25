@@ -1,637 +1,592 @@
 {
-    "name": "Malichae",
-    "kind": "Hero",
-    "expansionIdentifier": "Cauldron",
-    "initialCardIdentifiers": [
-        "MalichaeCharacter"
-    ],
-    "cards": [
-        {
-            "identifier": "MalichaeCharacter",
-            "count": 1,
-            "title": "Malichae",
-            "body": "Traveller",
-            "backgroundColor": "FBF8F9",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
-            "character": true,
-            "powers": [
-                "Draw 2 cards. Discard a card."
-            ],
-            "icons": [
-                "HasPower",
-                "DrawCardNow",
-                "Discard"
-            ],
-            "hitpoints": 27,
-            "nemesisIdentifiers": [
-                "Malichae"
-            ],
-            "incapacitatedAbilities": [
-                "One player may discard a card to draw 3 cards now.",
-                "You may destroy 1 environment card.",
-                "Select a damage type. Until the start of your next turn, change all damage dealt by hero targets to that type."
-            ],
-            "flippedIcons": [
-                "Discard",
-                "DrawCardNow",
-                "DestroyEnvironment"
-            ],
-            "openingLines": {
-                "default": "default placeholder",
-                "OriphelCharacter": "Oriphel placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
-            },
-            "complexity": 1
-        },
-        {
-            "identifier": "BaitAndSwitch",
-            "count": 4,
-            "title": "Bait and Switch",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Discard",
-                "PlayCardNow",
-                "DrawCardNow",
-                "UsePowerNow"
-            ],
-            "body": [
-                "Discard a Djinn card. If you do, you may put a Djinn from your trash into play or draw 2 cards.",
-                "You may use a power now."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Malichae",
-                    "text": "Ezael, I need you now. Come forth on borrowed essence."
-                }
-            ],
-            "flavorReference": "Malichae, Shatterpoint #50"
-        },
-        {
-            "identifier": "Bathiel",
-            "count": 1,
-            "title": "Bathiel",
-            "keywords": [
-                "djinn"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "DealDamageEnergy",
-                "ImmuneToDamageEnergy",
-                "Destroy",
-                "GainHP",
-                "Manipulate"
-            ],
-            "body": [
-                "At the end of your turn, this card may deal 1 target 2 energy damage.",
-                "This card is immune to energy damage.",
-                "When this card would be destroyed, destroy a Djinn ongoing attached to it and restore it to 5HP, otherwise put it in your hand."
-            ],
-            "flavorText": "Bathiel, the Cursed Champion.",
-            "flavorReference": "Entry in the Scrolls of Zephaeren",
-            "hitpoints": 5
-        },
-        {
-            "identifier": "Ezael",
-            "count": 1,
-            "title": "Ezael",
-            "keywords": [
-                "djinn"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "GainHP",
-                "ImmuneToDamageRadiant",
-                "Destroy",
-                "Manipulate"
-            ],
-            "body": [
-                "At the end of your turn, 1 hero target regains 2HP.",
-                "This card is immune to radiant damage.",
-                "When this card would be destroyed, destroy a Djinn ongoing attached to it and restore it to 5HP, otherwise put it in your hand."
-            ],
-            "flavorText": "Ezael, the Heavenly Sentinel.",
-            "flavorReference": "Entry in the Scrolls of Zephaeren",
-            "hitpoints": 5
-        },
-        {
-            "identifier": "FriendlyAdvice",
-            "count": 2,
-            "title": "Friendly Advice",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "GainHP",
-                "DrawCardNow",
-                "Manipulate"
-            ],
-            "body": [
-                "One character regains 2HP.",
-                "One player may draw a card.",
-                "One player may put a card from their trash on top of their deck."
-            ],
-            "flavorText": "I travelled for years, looking for the Compass. I know a guy here we can talk to.",
-            "flavorReference": "Arabian Nightmares #1"
-        },
-        {
-            "identifier": "GrandBathiel",
-            "count": 1,
-            "title": "Grand Bathiel",
-            "keywords": [
-                "ongoing",
-                "djinn"
-            ],
-            "icons": [
-                "DestroySelf",
-                "HasPower",
-                "DealDamageEnergy",
-                "EndOfTurnAction"
-            ],
-            "body": [
-                "When this card enters play, attach it to Bathiel. If High Bathiel is ever not in play, destroy this card.",
-                "At the end of your turn, destroy this card."
-            ],
-            "powers": [
-                "Bathiel deals 1 target 6 energy damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Malichae",
-                    "text": "Alright, Bathiel, show 'em what they're made of."
-                }
-            ],
-            "flavorReference": "Malichae, Shardcatcher Malichae #254"
-        },
-        {
-            "identifier": "GrandEzael",
-            "count": 1,
-            "title": "Grand Ezael",
-            "keywords": [
-                "ongoing",
-                "djinn"
-            ],
-            "icons": [
-                "DestroySelf",
-                "HasPower",
-                "GainHP",
-                "EndOfTurnAction"
-            ],
-            "body": [
-                "When this card enters play, attach it to Ezael. If High Ezael is ever not in play, destroy this card.",
-                "At the end of your turn, destroy this card."
-            ],
-            "powers": [
-                "All hero targets regain 3HP."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Malichae",
-                    "text": "Look after them, Ezael. Bathiel and I are going to finish this."
-                }
-            ],
-            "flavorReference": "Malichae, Shardcatcher Malichae #378"
-        },
-        {
-            "identifier": "GrandReshiel",
-            "count": 1,
-            "title": "Grand Reshiel",
-            "keywords": [
-                "ongoing",
-                "djinn"
-            ],
-            "icons": [
-                "DestroySelf",
-                "HasPower",
-                "DealDamageSonic"
-            ],
-            "body": [
-                "When this card enters play, attach it to Reshiel. If High Reshiel is ever not in play, destroy this card.",
-                "At the end of your turn, destroy this card."
-            ],
-            "powers": [
-                "Reshiel deals each non-hero target 2 sonic damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TheStranger",
-                    "text": "He is channeling his own lifeforce into the Djinn so that it may sustain its true form on this side of the Veil."
-                }
-            ],
-            "flavorReference": "TheStranger, Djinn & Tonic One-shot"
-        },
-        {
-            "identifier": "GrandSomael",
-            "count": 1,
-            "title": "Grand Somael",
-            "keywords": [
-                "ongoing",
-                "djinn"
-            ],
-            "icons": [
-                "DestroySelf",
-                "HasPower",
-                "ReduceDamageTaken",
-                "EndOfTurnAction"
-            ],
-            "body": [
-                "When this card enters play, attach it to Somael. If High Somael is ever not in play, destroy this card.",
-                "At the end of your turn, destroy this card."
-            ],
-            "powers": [
-                "Reduce damage dealt to hero targets by 2 until the start of your next turn."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TheStranger",
-                    "text": "It appears we are now under his protection."
-                }
-            ],
-            "flavorReference": "The Stranger, Book of the Dead #1022"
-        },
-        {
-            "identifier": "HighBathiel",
-            "count": 2,
-            "title": "High Bathiel",
-            "keywords": [
-                "ongoing",
-                "limited",
-                "djinn"
-            ],
-            "icons": [
-                "DestroySelf",
-                "IncreaseDamageDealt",
-                "HasPower",
-                "DealDamageEnergy"
-            ],
-            "body": [
-                "When this card enters play, attach it to Bathiel. If Bathiel is ever not in play, destroy this card.",
-                "Increase damage dealt by Bathiel by 1."
-            ],
-            "powers": [
-                "Bathiel deals 1 target 4 energy damage. Destroy this card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Malichae",
-                    "text": "When I finally broke through the Veil, he was the first Djinn I encountered. A lot's happened since then."
-                }
-            ],
-            "flavorReference": "Malichae, Tome of the Bizarre #35"
-        },
-        {
-            "identifier": "HighEzael",
-            "count": 2,
-            "title": "High Ezael",
-            "keywords": [
-                "ongoing",
-                "limited",
-                "djinn"
-            ],
-            "icons": [
-                "DestroySelf",
-                "GainHP",
-                "HasPower"
-            ],
-            "body": [
-                "When this card enters play, attach it to Ezael. If Ezael is ever not in play, destroy this card.",
-                "At the end of your turn, each Djinn regains 1HP."
-            ],
-            "powers": [
-                "All Djinn regain 2HP. All other hero targets regain 1HP. Destroy this card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "DocHavoc",
-                    "text": "If their medic's that good, how bad are their wars?"
-                }
-            ],
-            "flavorReference": "Doc Havoc, War Journal #516"
-        },
-        {
-            "identifier": "HighReshiel",
-            "count": 2,
-            "title": "High Reshiel",
-            "keywords": [
-                "ongoing",
-                "limited",
-                "djinn"
-            ],
-            "icons": [
-                "DestroySelf",
-                "IncreaseDamageDealt",
-                "HasPower",
-                "DealDamageSonic"
-            ],
-            "body": [
-                "When this card enters play, attach it to Reshiel. If Reshiel is ever not in play, destroy this card.",
-                "Increase damage dealt by Reshiel by 1."
-            ],
-            "powers": [
-                "Reshiel deals up to 3 targets 2 sonic damage each. Destroy this card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Gloomweaver",
-                    "text": "It disgusts me, the affinity that these denizens of the Veil have for a mortal. What has he done to earn their bond?"
-                }
-            ],
-            "flavorReference": "Gloomweaver, Rook City #404"
-        },
-        {
-            "identifier": "HighSomael",
-            "count": 2,
-            "title": "High Somael",
-            "keywords": [
-                "ongoing",
-                "limited",
-                "djinn"
-            ],
-            "icons": [
-                "DestroySelf",
-                "ReduceDamageTaken",
-                "HasPower"
-            ],
-            "body": [
-                "When this card enters play, attach it to Somael. If Somael is ever not in play, destroy this card.",
-                "Reduce damage dealt to Djinn by 1."
-            ],
-            "powers": [
-                "Reduce damage dealt to hero targets by 1 until the start of your next turn. Destroy this card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Malichae",
-                    "text": "He's really very friendly."
-                },
-                {
-                    "identifier": "TangoOne",
-                    "text": "If you say so."
-                }
-            ],
-            "flavorReference": "Shatterpoint #78"
-        },
-        {
-            "identifier": "PrismaticVision",
-            "count": 4,
-            "title": "Prismatic Vision",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Manipulate",
-                "PlayCardNow"
-            ],
-            "body": [
-                "Reveal the top 3 cards of your deck. Put 2 into your hand and 1 into your trash.",
-                "You may play a Djinn now."
-            ],
-            "flavorText": "From the depths of the crystal, Bathiel's silent stare met Malichae's. He nodded once, slowly, and shattered it upon the ground.",
-            "flavorReference": "and shattered it upon the ground."
-        },
-        {
-            "identifier": "Reshiel",
-            "count": 1,
-            "title": "Reshiel",
-            "keywords": [
-                "djinn"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "DealDamageSonic",
-                "ImmuneToDamageSonic",
-                "Destroy",
-                "Manipulate"
-            ],
-            "body": [
-                "At the end of your turn this card deals up to 2 targets 1 sonic damage each.",
-                "This card is immune to sonic damage.",
-                "When this card would be destroyed, destroy a Djinn ongoing attached to it and restore it to 5HP, otherwise put it in your hand."
-            ],
-            "flavorText": "Reshiel, the Screaming Trickster.",
-            "flavorReference": "Entry in the Scrolls of Zephaeren",
-            "hitpoints": 5
-        },
-        {
-            "identifier": "ShadowCatch",
-            "count": 4,
-            "title": "Shadow Catch",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Search",
-                "DrawCardNow",
-                "PlayCardNow"
-            ],
-            "body": [
-                "Search your deck for a Djinn card and put it into your hand. Shuffle your deck.",
-                "You may draw a card.",
-                "You may play a card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Malichae",
-                    "text": "It's been a long time, old friend."
-                }
-            ],
-            "flavorReference": "Malichae, Shatterpoint #182"
-        },
-        {
-            "identifier": "SolomonsFire",
-            "count": 2,
-            "title": "Solomon's Fire",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "IncreaseDamageTaken",
-                "DestroySelf"
-            ],
-            "body": "Play this card next to a target. Increase damage dealt to that target by Djinn cards by 1. If that target leaves play, destroy this card.",
-            "flavorQuotes": [
-                {
-                    "identifier": "Malichae",
-                    "text": "It calls out to the Djinn in this foreign place. Like a taste of home, like blood in the water."
-                }
-            ],
-            "flavorReference": "Malichae, Shardcatcher Malichae #64"
-        },
-        {
-            "identifier": "Somael",
-            "count": 1,
-            "title": "Somael",
-            "keywords": [
-                "djinn"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "ReduceDamageTaken",
-                "ImmuneToDamageProjectile",
-                "Destroy",
-                "Manipulate"
-            ],
-            "body": [
-                "At the end of your turn select a hero target. Reduce damage dealt to that target by 1 until the start of your turn.",
-                "This card is immune to projectile damage.",
-                "When this card would be destroyed, destroy a Djinn ongoing attached to it and restore it to 5HP, otherwise put it in your hand."
-            ],
-            "flavorText": "Somael, the Plated Guardian.",
-            "flavorReference": "Entry in the Scrolls of Zephaeren",
-            "hitpoints": 5
-        },
-        {
-            "identifier": "SummoningCrystal",
-            "count": 3,
-            "title": "Summoning Crystal",
-            "keywords": [
-                "equipment"
-            ],
-            "icons": [
-                "HasPower",
-                "PlayCardNow"
-            ],
-            "powers": [
-                "Put a Djinn from your hand into play."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TheScholar",
-                    "text": "Think of it as a lock, guarding the Djinn's location in the other realm. Until you break it, and it becomes a door."
-                }
-            ],
-            "flavorReference": "The Scholar, Arabian Nightmares #3"
-        },
-        {
-            "identifier": "Unshackled",
-            "count": 3,
-            "title": "Unshackled",
-            "keywords": [
-                "ongoing",
-                "limited"
-            ],
-            "icons": [
-                "UseExtraPower"
-            ],
-            "body": "You may use an additional power during your power phase.",
-            "flavorQuotes": [
-                {
-                    "identifier": "Malichae",
-                    "text": "She's only got two volumes. Off isn't one of them!"
-                }
-            ],
-            "flavorReference": "Malichae, Reshiel One-Shot"
-        },
-        {
-            "identifier": "ZephaerensCompass",
-            "count": 2,
-            "title": "Zephaeren's Compass",
-            "keywords": [
-                "equipment",
-                "limited"
-            ],
-            "icons": [
-                "HasPower",
-                "Manipulate",
-                "DestroyOngoing",
-                "DestroyEnvironment"
-            ],
-            "powers": [
-                "Put a Djinn target in play back into your hand. If you do, destroy up to X ongoing or environment cards, where X is 1 plus the number of Djinn ongoings attached to that target."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Malichae",
-                    "text": "The compass shows the path back to their realm. And when that door opens, you're going along for the ride!"
-                }
-            ],
-            "flavorReference": "Malichae, Bathiel One-shot"
-        }
-    ],
-    "promoCards": [
-        {
-            "identifier": "MalichaeCharacter",
-            "promoIdentifier": "ShardmasterMalichaeCharacter",
-            "count": 1,
-            "title": "Malichae",
-            "promoTitle": "Shardmaster Malichae",
-            "shortPromoTitle": "Shardmaster Malichae",
-            "body": "Channel",
-            "backgroundColor": "FBF8F9",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
-            "character": true,
-            "powers": [
-                "Search your deck for a djinn and put it in your hand. Shuffle your deck."
-            ],
-            "icons": [
-                "HasPower",
-                "Search"
-            ],
-            "hitpoints": 26,
-            "nemesisIdentifiers": [
-                "Malichae"
-            ],
-            "incapacitatedAbilities": [
-                "One player may reveal the top 2 cards of their deck, discard 1 and replace the other.",
-                "You may destroy 1 ongoing card.",
-                "One player may draw a card now."
-            ],
-            "flippedIcons": [
-                "Manipulate",
-                "DestroyOngoing",
-                "DrawCardNow"
-            ],
-            "openingLines": {
-                "default": "default placeholder",
-                "OriphelCharacter": "Oriphel placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
-            },
-            "complexity": 1
-        },
-        {
-            "identifier": "MalichaeCharacter",
-            "promoIdentifier": "MinistryOfStrategicScienceMalichaeCharacter",
-            "count": 1,
-            "title": "Malichae",
-            "promoTitle": "Ministry Of Strategic Science Malichae",
-            "shortPromoTitle": "MOSS Malichae",
-            "body": "Borrowed Aspect",
-            "backgroundColor": "FBF8F9",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
-            "character": true,
-            "powers": [
-                "Discard a card. Use that card's power, replacing any djinn's name with {Malichae}. Draw a card."
-            ],
-            "icons": [
-                "HasPower",
-                "Discard",
-                "UsePowerNow",
-                "DrawCardNow"
-            ],
-            "hitpoints": 24,
-            "nemesisIdentifiers": [
-                "Malichae"
-            ],
-            "incapacitatedAbilities": [
-                "One may use a power now.",
-                "2 targets regain 1 HP each.",
-                "Until the start of your next turn, whenever a hero would be dealt exactly 1 damage, prevent that damage."
-            ],
-            "flippedIcons": [
-                "UsePowerNow",
-                "GainHP",
-                "PreventDamage"
-            ],
-            "openingLines": {
-                "default": "default placeholder",
-                "OriphelCharacter": "Oriphel placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
-            },
-            "complexity": 1
-        }
-    ]
+	"name": "Malichae",
+	"kind": "Hero",
+	"expansionIdentifier": "Cauldron",
+	"initialCardIdentifiers": [
+		"MalichaeCharacter"
+	],
+	"cards": [{
+			"identifier": "MalichaeCharacter",
+			"count": 1,
+			"title": "Malichae",
+			"body": "Traveller",
+			"backgroundColor": "FBF8F9",
+			"foilBackgroundColor": "FEFEFE",
+			"hitpointColor": "C94742",
+			"character": true,
+			"powers": [
+				"Draw 2 cards. Discard a card."
+			],
+			"icons": [
+				"HasPower",
+				"DrawCardNow",
+				"Discard"
+			],
+			"hitpoints": 27,
+			"nemesisIdentifiers": [
+				"Malichae"
+			],
+			"incapacitatedAbilities": [
+				"One player may discard a card to draw 3 cards now.",
+				"You may destroy 1 environment card.",
+				"Select a damage type. Until the start of your next turn, change all damage dealt by hero targets to that type."
+			],
+			"flippedIcons": [
+				"Discard",
+				"DrawCardNow",
+				"DestroyEnvironment"
+			],
+			"openingLines": {
+				"default": "default placeholder",
+				"OriphelCharacter": "Oriphel placeholder",
+				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+			},
+			"complexity": 3
+		},
+		{
+			"identifier": "BaitAndSwitch",
+			"count": 4,
+			"title": "Bait and Switch",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"Discard",
+				"PlayCardNow",
+				"DrawCardNow",
+				"UsePowerNow"
+			],
+			"body": [
+				"Discard a Djinn card. If you do, you may put a Djinn from your trash into play or draw 2 cards.",
+				"You may use a power now."
+			],
+			"flavorQuotes": [{
+				"identifier": "Malichae",
+				"text": "Ezael, I need you now. Come forth on borrowed essence."
+			}],
+			"flavorReference": "Malichae, Shatterpoint #50"
+		},
+		{
+			"identifier": "Bathiel",
+			"count": 1,
+			"title": "Bathiel",
+			"keywords": [
+				"djinn"
+			],
+			"icons": [
+				"EndOfTurnAction",
+				"DealDamageEnergy",
+				"ImmuneToDamageEnergy",
+				"Destroy",
+				"GainHP",
+				"Manipulate"
+			],
+			"body": [
+				"At the end of your turn, this card may deal 1 target 2 energy damage.",
+				"This card is immune to energy damage.",
+				"When this card would be destroyed, destroy a Djinn ongoing attached to it and restore it to 5HP, otherwise put it in your hand."
+			],
+			"flavorText": "Bathiel, the Cursed Champion.",
+			"flavorReference": "Entry in the Scrolls of Zephaeren",
+			"hitpoints": 5
+		},
+		{
+			"identifier": "Ezael",
+			"count": 1,
+			"title": "Ezael",
+			"keywords": [
+				"djinn"
+			],
+			"icons": [
+				"EndOfTurnAction",
+				"GainHP",
+				"ImmuneToDamageRadiant",
+				"Destroy",
+				"Manipulate"
+			],
+			"body": [
+				"At the end of your turn, 1 hero target regains 2HP.",
+				"This card is immune to radiant damage.",
+				"When this card would be destroyed, destroy a Djinn ongoing attached to it and restore it to 5HP, otherwise put it in your hand."
+			],
+			"flavorText": "Ezael, the Heavenly Sentinel.",
+			"flavorReference": "Entry in the Scrolls of Zephaeren",
+			"hitpoints": 5
+		},
+		{
+			"identifier": "FriendlyAdvice",
+			"count": 2,
+			"title": "Friendly Advice",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"GainHP",
+				"DrawCardNow",
+				"Manipulate"
+			],
+			"body": [
+				"One character regains 2HP.",
+				"One player may draw a card.",
+				"One player may put a card from their trash on top of their deck."
+			],
+			"flavorText": "I travelled for years, looking for the Compass. I know a guy here we can talk to.",
+			"flavorReference": "Arabian Nightmares #1"
+		},
+		{
+			"identifier": "GrandBathiel",
+			"count": 1,
+			"title": "Grand Bathiel",
+			"keywords": [
+				"ongoing",
+				"djinn"
+			],
+			"icons": [
+				"DestroySelf",
+				"HasPower",
+				"DealDamageEnergy",
+				"EndOfTurnAction"
+			],
+			"body": [
+				"When this card enters play, attach it to Bathiel. If High Bathiel is ever not in play, destroy this card.",
+				"[b]Power:[/b] Bathiel deals 1 target 6 energy damage.",
+				"At the end of your turn, destroy this card."
+			],
+			"flavorQuotes": [{
+				"identifier": "Malichae",
+				"text": "Alright, Bathiel, show 'em what they're made of."
+			}],
+			"flavorReference": "Malichae, Shardcatcher Malichae #254"
+		},
+		{
+			"identifier": "GrandEzael",
+			"count": 1,
+			"title": "Grand Ezael",
+			"keywords": [
+				"ongoing",
+				"djinn"
+			],
+			"icons": [
+				"DestroySelf",
+				"HasPower",
+				"GainHP",
+				"EndOfTurnAction"
+			],
+			"body": [
+				"When this card enters play, attach it to Ezael. If High Ezael is ever not in play, destroy this card.",
+				"[b]Power:[/b] All hero targets regain 3HP.",
+				"At the end of your turn, destroy this card."
+			],
+			"flavorQuotes": [{
+				"identifier": "Malichae",
+				"text": "Look after them, Ezael. Bathiel and I are going to finish this."
+			}],
+			"flavorReference": "Malichae, Shardcatcher Malichae #378"
+		},
+		{
+			"identifier": "GrandReshiel",
+			"count": 1,
+			"title": "Grand Reshiel",
+			"keywords": [
+				"ongoing",
+				"djinn"
+			],
+			"icons": [
+				"DestroySelf",
+				"HasPower",
+				"DealDamageSonic"
+			],
+			"body": [
+				"When this card enters play, attach it to Reshiel. If High Reshiel is ever not in play, destroy this card.",
+				"b]Power:[/b] Reshiel deals each non-hero target 2 sonic damage.",
+				"At the end of your turn, destroy this card."
+			],
+			"flavorQuotes": [{
+				"identifier": "TheStranger",
+				"text": "He is channeling his own lifeforce into the Djinn so that it may sustain its true form on this side of the Veil."
+			}],
+			"flavorReference": "TheStranger, Djinn & Tonic One-shot"
+		},
+		{
+			"identifier": "GrandSomael",
+			"count": 1,
+			"title": "Grand Somael",
+			"keywords": [
+				"ongoing",
+				"djinn"
+			],
+			"icons": [
+				"DestroySelf",
+				"HasPower",
+				"ReduceDamageTaken",
+				"EndOfTurnAction"
+			],
+			"body": [
+				"When this card enters play, attach it to Somael. If High Somael is ever not in play, destroy this card.",
+				"b]Power:[/b] Reduce damage dealt to hero targets by 2 until the start of your next turn.",
+				"At the end of your turn, destroy this card."
+			],
+			"flavorQuotes": [{
+				"identifier": "TheStranger",
+				"text": "It appears we are now under his protection."
+			}],
+			"flavorReference": "The Stranger, Book of the Dead #1022"
+		},
+		{
+			"identifier": "HighBathiel",
+			"count": 2,
+			"title": "High Bathiel",
+			"keywords": [
+				"ongoing",
+				"limited",
+				"djinn"
+			],
+			"icons": [
+				"DestroySelf",
+				"IncreaseDamageDealt",
+				"HasPower",
+				"DealDamageEnergy"
+			],
+			"body": [
+				"When this card enters play, attach it to Bathiel. If Bathiel is ever not in play, destroy this card.",
+				"Increase damage dealt by Bathiel by 1.",
+				"[b]Power:[/b] Bathiel deals 1 target 4 energy damage. Destroy this card."
+			],
+			"flavorQuotes": [{
+				"identifier": "Malichae",
+				"text": "When I finally broke through the Veil, he was the first Djinn I encountered. A lot's happened since then."
+			}],
+			"flavorReference": "Malichae, Tome of the Bizarre #35"
+		},
+		{
+			"identifier": "HighEzael",
+			"count": 2,
+			"title": "High Ezael",
+			"keywords": [
+				"ongoing",
+				"limited",
+				"djinn"
+			],
+			"icons": [
+				"DestroySelf",
+				"GainHP",
+				"HasPower"
+			],
+			"body": [
+				"When this card enters play, attach it to Ezael. If Ezael is ever not in play, destroy this card.",
+				"At the end of your turn, each Djinn regains 1HP.",
+				"[b]Power:[/b] All Djinn regain 2HP. All other hero targets regain 1HP. Destroy this card."
+			],
+			"flavorQuotes": [{
+				"identifier": "DocHavoc",
+				"text": "If their medic's that good, how bad are their wars?"
+			}],
+			"flavorReference": "Doc Havoc, War Journal #516"
+		},
+		{
+			"identifier": "HighReshiel",
+			"count": 2,
+			"title": "High Reshiel",
+			"keywords": [
+				"ongoing",
+				"limited",
+				"djinn"
+			],
+			"icons": [
+				"DestroySelf",
+				"IncreaseDamageDealt",
+				"HasPower",
+				"DealDamageSonic"
+			],
+			"body": [
+				"When this card enters play, attach it to Reshiel. If Reshiel is ever not in play, destroy this card.",
+				"Increase damage dealt by Reshiel by 1.",
+				"[b]Power:[/b] Reshiel deals up to 3 targets 2 sonic damage each. Destroy this card."
+			],
+			"flavorQuotes": [{
+				"identifier": "Gloomweaver",
+				"text": "It disgusts me, the affinity that these denizens of the Veil have for a mortal. What has he done to earn their bond?"
+			}],
+			"flavorReference": "Gloomweaver, Rook City #404"
+		},
+		{
+			"identifier": "HighSomael",
+			"count": 2,
+			"title": "High Somael",
+			"keywords": [
+				"ongoing",
+				"limited",
+				"djinn"
+			],
+			"icons": [
+				"DestroySelf",
+				"ReduceDamageTaken",
+				"HasPower"
+			],
+			"body": [
+				"When this card enters play, attach it to Somael. If Somael is ever not in play, destroy this card.",
+				"Reduce damage dealt to Djinn by 1.",
+				"[b]Power:[/b] Reduce damage dealt to hero targets by 1 until the start of your next turn. Destroy this card."
+			],
+			"flavorQuotes": [{
+					"identifier": "Malichae",
+					"text": "He's really very friendly."
+				},
+				{
+					"identifier": "TangoOne",
+					"text": "If you say so."
+				}
+			],
+			"flavorReference": "Shatterpoint #78"
+		},
+		{
+			"identifier": "PrismaticVision",
+			"count": 4,
+			"title": "Prismatic Vision",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"Manipulate",
+				"PlayCardNow"
+			],
+			"body": [
+				"Reveal the top 3 cards of your deck. Put 2 into your hand and 1 into your trash.",
+				"You may play a Djinn now."
+			],
+			"flavorText": "From the depths of the crystal, Bathiel's silent stare met Malichae's. He nodded once, slowly, and shattered it upon the ground.",
+			"flavorReference": "and shattered it upon the ground."
+		},
+		{
+			"identifier": "Reshiel",
+			"count": 1,
+			"title": "Reshiel",
+			"keywords": [
+				"djinn"
+			],
+			"icons": [
+				"EndOfTurnAction",
+				"DealDamageSonic",
+				"ImmuneToDamageSonic",
+				"Destroy",
+				"Manipulate"
+			],
+			"body": [
+				"At the end of your turn this card deals up to 2 targets 1 sonic damage each.",
+				"This card is immune to sonic damage.",
+				"When this card would be destroyed, destroy a Djinn ongoing attached to it and restore it to 5HP, otherwise put it in your hand."
+			],
+			"flavorText": "Reshiel, the Screaming Trickster.",
+			"flavorReference": "Entry in the Scrolls of Zephaeren",
+			"hitpoints": 5
+		},
+		{
+			"identifier": "ShadowCatch",
+			"count": 4,
+			"title": "Shadow Catch",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"Search",
+				"DrawCardNow",
+				"PlayCardNow"
+			],
+			"body": [
+				"Search your deck for a Djinn card and put it into your hand. Shuffle your deck.",
+				"You may draw a card.",
+				"You may play a card."
+			],
+			"flavorQuotes": [{
+				"identifier": "Malichae",
+				"text": "It's been a long time, old friend."
+			}],
+			"flavorReference": "Malichae, Shatterpoint #182"
+		},
+		{
+			"identifier": "SolomonsFire",
+			"count": 2,
+			"title": "Solomon's Fire",
+			"keywords": [
+				"ongoing"
+			],
+			"icons": [
+				"IncreaseDamageTaken",
+				"DestroySelf"
+			],
+			"body": "Play this card next to a target. Increase damage dealt to that target by Djinn cards by 1. If that target leaves play, destroy this card.",
+			"flavorQuotes": [{
+				"identifier": "Malichae",
+				"text": "It calls out to the Djinn in this foreign place. Like a taste of home, like blood in the water."
+			}],
+			"flavorReference": "Malichae, Shardcatcher Malichae #64"
+		},
+		{
+			"identifier": "Somael",
+			"count": 1,
+			"title": "Somael",
+			"keywords": [
+				"djinn"
+			],
+			"icons": [
+				"EndOfTurnAction",
+				"ReduceDamageTaken",
+				"ImmuneToDamageProjectile",
+				"Destroy",
+				"Manipulate"
+			],
+			"body": [
+				"At the end of your turn select a hero target. Reduce damage dealt to that target by 1 until the start of your turn.",
+				"This card is immune to projectile damage.",
+				"When this card would be destroyed, destroy a Djinn ongoing attached to it and restore it to 5HP, otherwise put it in your hand."
+			],
+			"flavorText": "Somael, the Plated Guardian.",
+			"flavorReference": "Entry in the Scrolls of Zephaeren",
+			"hitpoints": 5
+		},
+		{
+			"identifier": "SummoningCrystal",
+			"count": 3,
+			"title": "Summoning Crystal",
+			"keywords": [
+				"equipment"
+			],
+			"icons": [
+				"HasPower",
+				"PlayCardNow"
+			],
+			"powers": [
+				"Put a Djinn from your hand into play."
+			],
+			"flavorQuotes": [{
+				"identifier": "TheScholar",
+				"text": "Think of it as a lock, guarding the Djinn's location in the other realm. Until you break it, and it becomes a door."
+			}],
+			"flavorReference": "The Scholar, Arabian Nightmares #3"
+		},
+		{
+			"identifier": "Unshackled",
+			"count": 3,
+			"title": "Unshackled",
+			"keywords": [
+				"ongoing",
+				"limited"
+			],
+			"icons": [
+				"UseExtraPower"
+			],
+			"body": "You may use an additional power during your power phase.",
+			"flavorQuotes": [{
+				"identifier": "Malichae",
+				"text": "She's only got two volumes. Off isn't one of them!"
+			}],
+			"flavorReference": "Malichae, Reshiel One-Shot"
+		},
+		{
+			"identifier": "ZephaerensCompass",
+			"count": 2,
+			"title": "Zephaeren's Compass",
+			"keywords": [
+				"equipment",
+				"limited"
+			],
+			"icons": [
+				"HasPower",
+				"Manipulate",
+				"DestroyOngoing",
+				"DestroyEnvironment"
+			],
+			"powers": [
+				"Put a Djinn target in play back into your hand. If you do, destroy up to X ongoing or environment cards, where X is 1 plus the number of Djinn ongoings attached to that target."
+			],
+			"flavorQuotes": [{
+				"identifier": "Malichae",
+				"text": "The compass shows the path back to their realm. And when that door opens, you're going along for the ride!"
+			}],
+			"flavorReference": "Malichae, Bathiel One-shot"
+		}
+	],
+	"promoCards": [{
+			"identifier": "MalichaeCharacter",
+			"promoIdentifier": "ShardmasterMalichaeCharacter",
+			"count": 1,
+			"title": "Malichae",
+			"promoTitle": "Shardmaster Malichae",
+			"shortPromoTitle": "Shardmaster Malichae",
+			"body": "Channel",
+			"backgroundColor": "FBF8F9",
+			"foilBackgroundColor": "FEFEFE",
+			"hitpointColor": "C94742",
+			"character": true,
+			"powers": [
+				"Search your deck for a djinn and put it in your hand. Shuffle your deck."
+			],
+			"icons": [
+				"HasPower",
+				"Search"
+			],
+			"hitpoints": 26,
+			"nemesisIdentifiers": [
+				"Malichae"
+			],
+			"incapacitatedAbilities": [
+				"One player may reveal the top 2 cards of their deck, discard 1 and replace the other.",
+				"You may destroy 1 ongoing card.",
+				"One player may draw a card now."
+			],
+			"flippedIcons": [
+				"Manipulate",
+				"DestroyOngoing",
+				"DrawCardNow"
+			],
+			"openingLines": {
+				"default": "default placeholder",
+				"OriphelCharacter": "Oriphel placeholder",
+				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+			},
+			"complexity": 3
+		},
+		{
+			"identifier": "MalichaeCharacter",
+			"promoIdentifier": "MinistryOfStrategicScienceMalichaeCharacter",
+			"count": 1,
+			"title": "Malichae",
+			"promoTitle": "Ministry Of Strategic Science Malichae",
+			"shortPromoTitle": "MOSS Malichae",
+			"body": "Borrowed Aspect",
+			"backgroundColor": "FBF8F9",
+			"foilBackgroundColor": "FEFEFE",
+			"hitpointColor": "C94742",
+			"character": true,
+			"powers": [
+				"Discard a card. Use that card's power, replacing any djinn's name with {Malichae}. Draw a card."
+			],
+			"icons": [
+				"HasPower",
+				"Discard",
+				"UsePowerNow",
+				"DrawCardNow"
+			],
+			"hitpoints": 24,
+			"nemesisIdentifiers": [
+				"Malichae"
+			],
+			"incapacitatedAbilities": [
+				"One may use a power now.",
+				"2 targets regain 1 HP each.",
+				"Until the start of your next turn, whenever a hero would be dealt exactly 1 damage, prevent that damage."
+			],
+			"flippedIcons": [
+				"UsePowerNow",
+				"GainHP",
+				"PreventDamage"
+			],
+			"openingLines": {
+				"default": "default placeholder",
+				"OriphelCharacter": "Oriphel placeholder",
+				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+			},
+			"complexity": 3
+		}
+	]
 }
