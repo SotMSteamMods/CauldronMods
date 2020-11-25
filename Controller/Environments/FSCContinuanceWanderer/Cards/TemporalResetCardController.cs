@@ -8,18 +8,14 @@ namespace Cauldron.FSCContinuanceWanderer
 {
     public class TemporalResetCardController : CardController
     {
-
         public TemporalResetCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
-
-
 
         public override IEnumerator Play()
         {
             //When this card enters play, destroy all other environment cards. 
-            IEnumerator coroutine = base.GameController.DestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsEnvironment && c != base.Card), autoDecide: true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = GameController.DestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => c.IsEnvironment && c != base.Card && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "environment"), autoDecide: true, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -29,7 +25,7 @@ namespace Cauldron.FSCContinuanceWanderer
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             //Then shuffle 2 cards from each trash pile back into their deck...
-            coroutine = base.DoActionToEachTurnTakerInTurnOrder((TurnTakerController turnTakerController) => true, MoveCardToDeckResponse);
+            coroutine = base.DoActionToEachTurnTakerInTurnOrder((TurnTakerController ttc) => GameController.IsTurnTakerVisibleToCardSource(ttc.TurnTaker, GetCardSource()), MoveCardToDeckResponse);
             //...and each non-character target regains {H} HP.
             IEnumerator coroutine2 = base.GameController.GainHP(this.DecisionMaker, (Card c) => !c.IsCharacter && c.IsTarget && c.IsInPlayAndHasGameText, base.Game.H, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
@@ -61,7 +57,7 @@ namespace Cauldron.FSCContinuanceWanderer
             {
                 decisionMaker = this.DecisionMaker;
             }
-            IEnumerator coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(decisionMaker, turnTaker.Trash, new int?(0), 2, new LinqCardCriteria((Card c) => c.Location == turnTaker.Trash, "trash"), list, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(decisionMaker, turnTaker.Trash, 0, 2, new LinqCardCriteria((Card c) => c.Location == turnTaker.Trash, "trash"), list, cardSource: base.GetCardSource());
             IEnumerator coroutine2 = base.ShuffleDeck(this.DecisionMaker, turnTaker.Deck);
             if (base.UseUnityCoroutines)
             {
