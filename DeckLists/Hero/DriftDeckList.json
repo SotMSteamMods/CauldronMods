@@ -49,6 +49,7 @@
         },
         {
             "identifier": "ShiftTrack",
+            "backgroundColor": "fbf767"
             "count": 1,
             "title": "Shift Track",
             "setup": [
@@ -495,6 +496,7 @@
         {
             "identifier": "ShiftTrack",
             "promoIdentifier": "ThroughTheBreachDriftCharacter",
+            "backgroundColor": "FCB040",
             "count": 1,
             "title": "Shift Track",
             "setup": [
@@ -602,6 +604,7 @@
         {
             "identifier": "ShiftTrack",
             "promoIdentifier": "SplitDriftCharacter",
+            "backgroundColor": "D1D2D4",
             "count": 1,
             "title": "Shift Track",
             "setup": [

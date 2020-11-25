@@ -674,7 +674,7 @@
             "title": "Tiamat",
             "promoTitle": "Tiamat: Elemental Hydra",
             "body": "The Eye of the Storm",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "FFFFFF",
             "foilBackgroundColor": "CD96C0",
             "setup": [
                 "At the start of the game, put {Tiamat}'s villain character cards into play, “The Eye of the Storm” side up (after putting all other villain character cards into play). Put “{Tiamat}, The Voice of the Wind”, face down beneath this card."
@@ -716,7 +716,7 @@
             "title": "Tiamat",
             "promoTitle": "Tiamat: Elemental Hydra",
             "body": "The Mouth of the Inferno",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "FFFFFF",
             "foilBackgroundColor": "CD96C0",
             "setup": [
                 "At the start of the game, put {Tiamat}'s villain character cards into play, “Mouth of the Inferno” side up (after putting all other villain character cards into play). Put “{Tiamat}, The Breath of Decay”, face down beneath this card."
@@ -761,7 +761,7 @@
             "title": "Tiamat",
             "promoTitle": "Tiamat: Elemental Hydra",
             "body": "The Jaws of Winter",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "FFFFFF",
             "foilBackgroundColor": "CD96C0",
             "setup": [
                 "At the start of the game, put {Tiamat}'s villain character cards into play, “Mouth of the Inferno” side up (after putting all other villain character cards into play). Put “{Tiamat}, The Maw of the Earth”, face down beneath this card."

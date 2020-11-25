@@ -3,11 +3,12 @@
     "sortName":"Chasm of a Thousand Nights",
     "kind": "Environment",
     "expansionIdentifier": "CauldronAdrift",
-    "backgroundColor": "FB5455",
+    "backgroundColor": "E59B34",
     "difficulty": 2,
     "cards": [
         {
             "identifier": "TheChasmOfAThousandNights",
+            "backgroundColor": "E2D6C1",
             "count": 1,
             "title": "The Chasm Of A Thousand Nights",
             "setup": "At the start of the game search the environment deck for all nature cards and put them face up beneath this card. Shuffle the environment deck and flip this card.",
