@@ -32,18 +32,26 @@
             ],
             "advanced": "Increase damage dealt by {SwarmEater} to environment targets by 1.",
             "icons": [
-                "StartOfTurnAction"
+                "StartOfTurnAction".
+                "DealDamagePsychic",
+                "Manipulate"
             ],
-            "advancedIcons": [],
+            "advancedIcons": [
+                "IncreaseDamageDealt"
+            ],
             "flippedBody": "Assimiliating Nanoswarm",
             "flippedGameplay": [
                 "At the start of the villain turn, {SwarmEater} deals the target other than itself with the lowest HP 2 melee damage.",
                 "Whenever Single-Minded Pursuit enters play, flip {SwarmEater}'s villain character cards.",
-                "Whenever a villain card is play {SwarmEater} deals the non-hero target other than itself with the lowest HP 3 melee damage."
+                "Whenever a villain card is played {SwarmEater} deals the non-hero target other than itself with the lowest HP 3 melee damage."
             ],
             "flippedAdvanced": "Whenever {SwarmEater} destroys a villain target, play the top card of the villain deck.",
-            "flippedIcons": [],
-            "flippedAdvancedIcons": [],
+            "flippedIcons": [
+                "DealDamageMelee",
+            ],
+            "flippedAdvancedIcons": [
+                "PlayCardNow"
+            ],
             "difficulty": 1,
             "openingLines": {
                 "default": "default placeholder",
