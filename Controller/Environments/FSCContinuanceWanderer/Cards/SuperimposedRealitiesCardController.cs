@@ -12,18 +12,23 @@ namespace Cauldron.FSCContinuanceWanderer
 
         public SuperimposedRealitiesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
-        private Card cardThisIsNextTo;
-        private HeroTurnTaker superimposedTurnTaker;
-        private HeroTurnTakerController superimposedTurnTakerController;
+        private Card cardThisIsNextTo => GetCardThisCardIsNextTo();
+        private HeroTurnTaker superimposedTurnTaker => cardThisIsNextTo.Owner.ToHero();
 
-        public override IEnumerator Play()
+        public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
-            cardThisIsNextTo = base.GetCardThisCardIsNextTo();
-            superimposedTurnTaker = cardThisIsNextTo.Owner.ToHero();
-            superimposedTurnTakerController = base.FindHeroTurnTakerController(superimposedTurnTaker);
+            //Play this card next to a hero.
+            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource())), storedResults, true, decisionSources);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
 
@@ -33,16 +38,17 @@ namespace Cauldron.FSCContinuanceWanderer
             //When a Play Card/Use Power/Draw Card phase is entered then give the Superimposed target those actions instead
             //base.AddPhaseChangeTrigger((TurnTaker turnTaker) => turnTaker.IsHero && turnTaker != cardThisIsNextTo.NativeDeck.OwnerTurnTaker, (Phase phase) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(phase), (PhaseChangeAction action) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(action.ToPhase.Phase), this.SuperimposedPhaseResponse, new TriggerType[] { TriggerType.SetPhaseActionCount, TriggerType.PreventPhaseAction }, TriggerTiming.After);
             //If a hero were to hero play. Instead the Superimposed plays.
-            base.AddTrigger<PlayCardAction>((PlayCardAction action) => action.TurnTakerController != superimposedTurnTakerController && action.TurnTakerController.IsHero, SuperimposePlayResponse, TriggerType.PlayCard, TriggerTiming.Before);
+            base.AddTrigger<PlayCardAction>((PlayCardAction action) => action.TurnTakerController.TurnTaker != superimposedTurnTaker && action.TurnTakerController.IsHero && GameController.IsTurnTakerVisibleToCardSource(action.TurnTakerController.TurnTaker, GetCardSource()), SuperimposePlayResponse, TriggerType.PlayCard, TriggerTiming.Before);
             //If a hero were to use a power. Instead the Superimposed plays.
-            base.AddTrigger<UsePowerAction>((UsePowerAction action) => action.HeroUsingPower.TurnTaker != superimposedTurnTaker, SuperimposePowerResponse, TriggerType.UsePower, TriggerTiming.Before);
+            base.AddTrigger<UsePowerAction>((UsePowerAction action) => action.HeroUsingPower.TurnTaker != superimposedTurnTaker && GameController.IsTurnTakerVisibleToCardSource(action.HeroUsingPower.TurnTaker, GetCardSource()), SuperimposePowerResponse, TriggerType.UsePower, TriggerTiming.Before);
             //If a hero were todraw a card. Instead the Superimposed does.
-            base.AddTrigger<DrawCardAction>((DrawCardAction action) => action.HeroTurnTaker != superimposedTurnTaker, SuperimposeDrawResponse, TriggerType.DrawCard, TriggerTiming.Before);
+            base.AddTrigger<DrawCardAction>((DrawCardAction action) => action.HeroTurnTaker != superimposedTurnTaker && GameController.IsTurnTakerVisibleToCardSource(action.HeroTurnTaker, GetCardSource()), SuperimposeDrawResponse, TriggerType.DrawCard, TriggerTiming.Before);
 
             //At the start of the environment turn, destroy this card.
             base.AddStartOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, base.DestroyThisCardResponse, TriggerType.DestroySelf);
         }
 
+        /*
         private IEnumerator SuperimposedPhaseResponse(PhaseChangeAction action)
         {
             TurnPhase turnPhase = base.Game.ActiveTurnPhase;
@@ -89,20 +95,30 @@ namespace Cauldron.FSCContinuanceWanderer
             }
             yield break;
         }
+        */
 
         private IEnumerator SuperimposePlayResponse(PlayCardAction action)
         {
+            var superImposed = FindHeroTurnTakerController(superimposedTurnTaker);
             IEnumerator coroutine = CancelAction(action);
-            IEnumerator coroutine2 = base.SelectAndPlayCardFromHand(superimposedTurnTakerController, false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
-                yield return base.GameController.StartCoroutine(coroutine2);
             }
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
-                base.GameController.ExhaustCoroutine(coroutine2);
+            }
+            System.Console.WriteLine($"### Canceled - {action.CardToPlay}");
+            
+            coroutine = base.SelectAndPlayCardFromHand(superImposed, false);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
         }
@@ -110,41 +126,44 @@ namespace Cauldron.FSCContinuanceWanderer
         private IEnumerator SuperimposePowerResponse(UsePowerAction action)
         {
             IEnumerator coroutine = CancelAction(action);
-            IEnumerator coroutine2 = base.SelectAndUsePower(base.FindCardController(cardThisIsNextTo), false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
-                yield return base.GameController.StartCoroutine(coroutine2);
             }
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
-                base.GameController.ExhaustCoroutine(coroutine2);
+            }
+            System.Console.WriteLine($"### Canceled - {action.Power}");
+
+            coroutine = base.SelectAndUsePower(base.FindCardController(cardThisIsNextTo), false);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
         }
 
         private IEnumerator SuperimposeDrawResponse(DrawCardAction action)
         {
+            var superImposed = FindHeroTurnTakerController(superimposedTurnTaker);
             IEnumerator coroutine = CancelAction(action);
-            IEnumerator coroutine2 = base.DrawCards(superimposedTurnTakerController, 1, false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
-                yield return base.GameController.StartCoroutine(coroutine2);
             }
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
-                base.GameController.ExhaustCoroutine(coroutine2);
             }
-            yield break;
-        }
 
-        public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
-        {
-            //Play this card next to a hero.
-            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame), storedResults, true, decisionSources);
+            System.Console.WriteLine($"### Canceled - {action.CardToDraw}");
+
+            coroutine = base.DrawCards(superImposed, 1, false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -155,6 +174,5 @@ namespace Cauldron.FSCContinuanceWanderer
             }
             yield break;
         }
-
     }
 }

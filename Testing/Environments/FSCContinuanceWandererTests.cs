@@ -318,6 +318,7 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            DecisionSelectCard = legacy.CharacterCard;
             PlayCard("SuperimposedRealities");
             //The target should have no change to its actions
             PlayCard("Thokk");
@@ -341,14 +342,16 @@ namespace CauldronTests
             Card thokk = GetCard("Thokk");
             Card blast = GetCard("FireBlast");
             PutInHand(thokk);
+            PutInHand(blast);
             //Going to Legacy to prevent suprise Select Card Decisions from villain
             GoToEndOfTurn(legacy);
+            DecisionSelectCard = legacy.CharacterCard;
             PlayCard("SuperimposedRealities");
 
             DecisionSelectCard = thokk;
             PlayCard(blast);
             AssertInTrash(thokk);
-            AssertNotInTrash(blast);
+            AssertInHand(blast);
         }
 
         [Test()]
@@ -360,6 +363,7 @@ namespace CauldronTests
             PutInHand(thokk);
             //Going to Legacy to prevent suprise Decisions from villain
             GoToEndOfTurn(legacy);
+            DecisionSelectCard = legacy.CharacterCard;
             PlayCard("SuperimposedRealities");
             DecisionSelectTarget = spite.CharacterCard;
             UsePower(ra);
@@ -375,13 +379,27 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             PutOnDeck("MobileDefensePlatform");
             StartGame();
+            DecisionSelectCard = legacy.CharacterCard;
             PlayCard("SuperimposedRealities");
             Card bolster = GetCard("BolsterAllies");
             PutInHand(bolster);
-            QuickHandStorage(legacy);
+
+            var t1 = GetTopCardOfDeck(ra);
+            var t2 = GetTopCardOfDeck(haka);
+
+            var d1 = GetTopCardOfDeck(legacy, 0);
+            var d2 = GetTopCardOfDeck(legacy, 1);
+            var d3 = GetTopCardOfDeck(legacy, 2);
+            
+            QuickHandStorage(legacy, ra, haka);
             PlayCard(bolster);
             //Draw one per hero, but played Bolster Allies
-            QuickHandCheck(2);
+            QuickHandCheck(2, 0, 0);
+            AssertOnTopOfDeck(ra, t1);
+            AssertOnTopOfDeck(haka, t2);
+            AssertInHand(legacy, d1);
+            AssertInHand(legacy, d2);
+            AssertInHand(legacy, d3);
         }
 
         [Test()]
@@ -392,6 +410,7 @@ namespace CauldronTests
             GoToStartOfTurn(haka);
             //stack spites deck to not get lab raid
             PutOnDeck("GoodSamaritan");
+            DecisionSelectCard = legacy.CharacterCard;
             Card reality = PlayCard("SuperimposedRealities");
             //At the start of the environment turn, destroy this card.
             GoToEndOfTurn(haka);
