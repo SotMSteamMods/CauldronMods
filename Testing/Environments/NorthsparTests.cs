@@ -997,6 +997,159 @@ namespace CauldronTests
             AssertInTrash(frostbite);
         }
 
+        [Test()]
+        public void TestFrozenSolid_PlayNext()
+        {
+            SetupGameController("BaronBlade", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            StartGame();
+            SetHitPoints(az, 10);
+            SetHitPoints(legacy, 10);
+
+            DecisionSelectCard = az.CharacterCard;
+            Card frozenSolid = PlayCard("FrozenSolid");
+            //When this card enters play, place it next to the hero with the lowest HP. 
+            AssertNextToCard(frozenSolid, az.CharacterCard);
+        }
+
+        [Test()]
+        public void TestFrozenSolid_NoPlayCanPower()
+        {
+            SetupGameController("BaronBlade", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            StartGame();
+            SetHitPoints(az, 10);
+            SetHitPoints(legacy, 10);
+
+            DecisionSelectCard = az.CharacterCard;
+            Card frozenSolid = PlayCard("FrozenSolid");
+            //When this card enters play, place it next to the hero with the lowest HP. 
+            AssertNextToCard(frozenSolid, az.CharacterCard);
+
+            GoToPlayCardPhase(az);
+            GoToUsePowerPhase(az);
+            AssertPhaseActionCount(new int?(1));
+
+        }
+
+        [Test()]
+        public void TestFrozenSolid_SkipPower()
+        {
+            SetupGameController("BaronBlade", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            StartGame();
+            SetHitPoints(az, 10);
+            SetHitPoints(legacy, 10);
+
+            DecisionSelectCard = az.CharacterCard;
+            Card frozenSolid = PlayCard("FrozenSolid");
+            //When this card enters play, place it next to the hero with the lowest HP. 
+            AssertNextToCard(frozenSolid, az.CharacterCard);
+
+            GoToPlayCardPhase(az);
+            PlayCard("CoolantBlast");
+            GoToUsePowerPhase(az);
+            AssertCannotPerformPhaseAction();
+
+
+        }
+
+        [Test()]
+        public void TestFrozenSolid_SkipPlay()
+        {
+            SetupGameController("WagerMaster", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            StartGame();
+            SetHitPoints(az, 10);
+            SetHitPoints(legacy, 10);
+
+            PlayCard("BreakingTheRules");
+
+            DecisionSelectCard = az.CharacterCard;
+            Card frozenSolid = PlayCard("FrozenSolid");
+            //When this card enters play, place it next to the hero with the lowest HP. 
+            AssertNextToCard(frozenSolid, az.CharacterCard);
+            GoToUsePowerPhase(az);
+            DecisionSelectDamageType = DamageType.Cold;
+            UsePower(az);
+            GoToPlayCardPhase(az);
+            AssertCannotPerformPhaseAction();
+
+
+        }
+
+        [Test()]
+        public void TestFrozenSolid_NoPowerCanPlay()
+        {
+            SetupGameController("WagerMaster", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            StartGame();
+            SetHitPoints(az, 10);
+            SetHitPoints(legacy, 10);
+
+            PlayCard("BreakingTheRules");
+
+            DecisionSelectCard = az.CharacterCard;
+            Card frozenSolid = PlayCard("FrozenSolid");
+            //When this card enters play, place it next to the hero with the lowest HP. 
+            AssertNextToCard(frozenSolid, az.CharacterCard);
+            GoToUsePowerPhase(az);
+
+            GoToPlayCardPhase(az);
+            AssertPhaseActionCount(new int?(1));
+
+
+        }
+
+        [Test()]
+        public void TestFrozenSolid_IncreaseDamageDealtTo()
+        {
+            SetupGameController("BaronBlade", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            StartGame();
+            SetHitPoints(az, 10);
+            SetHitPoints(legacy, 10);
+
+            DecisionSelectCard = az.CharacterCard;
+            Card frozenSolid = PlayCard("FrozenSolid");
+            AssertNextToCard(frozenSolid, az.CharacterCard);
+
+            // Increase cold damage dealt to that hero by 1
+            QuickHPStorage(az);
+            DealDamage(baron, az, 3, DamageType.Cold);
+            QuickHPCheck(-4);
+
+            //check only cold
+            QuickHPStorage(az);
+            DealDamage(baron, az, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            //check only damage dealt to az
+            QuickHPStorage(ra);
+            DealDamage(az, ra, 3, DamageType.Cold);
+            QuickHPCheck(-3);
+
+
+        }
+
+
+        [Test()]
+        public void TestFrozenSolid_DestroyOnFire()
+        {
+            SetupGameController("BaronBlade", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            StartGame();
+            SetHitPoints(az, 10);
+            SetHitPoints(legacy, 10);
+
+            DecisionSelectCard = az.CharacterCard;
+            Card frozenSolid = PlayCard("FrozenSolid");
+            AssertNextToCard(frozenSolid, az.CharacterCard);
+
+            //first check doesnt destroy on other fire damage
+            DealDamage(az, ra, 3, DamageType.Fire);
+            AssertNextToCard(frozenSolid, az.CharacterCard);
+
+            //If that hero is dealt fire damage, destroy this card
+            DealDamage(baron, az, 3, DamageType.Fire);
+            AssertInTrash(frozenSolid);
+
+
+        }
+
 
     }
 }
