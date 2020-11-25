@@ -683,7 +683,7 @@ namespace CauldronTests
             GoToEndOfTurn(env);
             AssertInPlayArea(env, glitch);
             //When another environment card enters play, destroy this card.
-            PlayCard("TimeFreeze");
+            PlayCard("PrehistoricBehemoth");
             AssertInTrash(env, glitch);
         }
 
@@ -737,7 +737,7 @@ namespace CauldronTests
             GoToEndOfTurn(env);
             AssertInPlayArea(env, interference);
             //When another environment card enters play, destroy this card.
-            PlayCard("TimeFreeze");
+            PlayCard("PrehistoricBehemoth");
             AssertInTrash(env, interference);
         }
 
@@ -771,7 +771,7 @@ namespace CauldronTests
             GoToEndOfTurn(env);
             AssertInPlayArea(env, surge);
             //When another environment card enters play, destroy this card.
-            PlayCard("TimeFreeze");
+            PlayCard("PrehistoricBehemoth");
             AssertInTrash(env, surge);
         }
     }
