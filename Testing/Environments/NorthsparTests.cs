@@ -1080,7 +1080,7 @@ namespace CauldronTests
             SetupGameController("WagerMaster", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
             StartGame();
             SetHitPoints(az, 10);
-            SetHitPoints(legacy, 10);
+            SetHitPoints(legacy, 11);
 
             PlayCard("BreakingTheRules");
 
@@ -1147,6 +1147,47 @@ namespace CauldronTests
             DealDamage(baron, az, 3, DamageType.Fire);
             AssertInTrash(frozenSolid);
 
+
+        }
+
+        [Test()]
+        public void TestLostInTheSnow_EndOfTurn()
+        {
+            SetupGameController("BaronBlade", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            StartGame();
+
+            GoToPlayCardPhase(northspar);
+            //put out null point to check for cold
+            SetHitPoints(az, 10);
+            PlayCard("NullPointCalibrationUnit");
+
+            Card lostInTheSnow = PlayCard("LostInTheSnow");
+
+            // At the end of the environment turn, this card deals each hero target 1 cold damage
+            QuickHPStorage(baron, az, legacy, ra);
+            GoToEndOfTurn(northspar);
+            QuickHPCheck(0, 1, -1, -1);
+
+
+        }
+
+        [Test()]
+        public void TestLostInTheSnow_StartOfTurn()
+        {
+            SetupGameController("BaronBlade", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            StartGame();
+
+            Card lostInTheSnow = PlayCard("LostInTheSnow");
+            Card azEquip = PlayCard("FocusedApertures");
+            Card azEquip2 = PlayCard("NullPointCalibrationUnit");
+            Card legacyOngoing = PlayCard("NextEvolution");
+            Card legacyEquipment = PlayCard("TheLegacyRing");
+
+            // At the start of the environment turn, each hero must destroy 1 ongoing and 1 equipment card
+            DecisionSelectCards = new Card[] { azEquip, legacyOngoing };
+            GoToStartOfTurn(northspar);
+            AssertInTrash(azEquip, legacyOngoing, legacyEquipment);
+            AssertInPlayArea(az, azEquip2);
 
         }
 
