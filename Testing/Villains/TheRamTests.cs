@@ -114,7 +114,7 @@ namespace CauldronTests
             Card close3 = GetCard("UpClose");
             play = (GetCardController(close3) as UpCloseCardController).PlayBySpecifiedHero(decoy, true, null);
             GameController.ExhaustCoroutine(play);
-            AssertNextToCard(close3, ra.CharacterCard);  
+            AssertNextToCard(close3, ra.CharacterCard);
         }
         [Test]
         public void TestUpCloseDestroysSelfWhenNoValidHero()
@@ -140,7 +140,7 @@ namespace CauldronTests
         }
         [Test]
         public void TestUpCloseGrantsPowerThatDestroysIt()
-        {    
+        {
             SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "CaptainCosmic", "Megalopolis");
 
             StartGame();
@@ -153,7 +153,7 @@ namespace CauldronTests
             DecisionSelectCard = haka.CharacterCard;
             Card deadClose = PlayCard("UpClose");
             PlayCard("UpClose");
-            
+
             AssertIsInPlay(deadClose);
 
             AssertNumberOfUsablePowers(haka, 1);
@@ -178,6 +178,142 @@ namespace CauldronTests
             Assert.True(IsUpClose(decoy));
         }
         [Test]
+        public void TestRamEndOfTurnDamage()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+
+            QuickHPStorage(legacy, haka, wraith, unity);
+
+            GoToEndOfTurn(ram);
+            QuickHPCheck(0, -3, 0, 0);
+
+            //should be the same on both sides
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            DestroyCard("GrapplingClaw");
+
+            GoToEndOfTurn(ram);
+            QuickHPCheck(-3, 0, 0, 0);
+        }
+        [Test]
+        public void TestRamDamageModifiers()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+
+
+            PlayCard("UpClose");
+
+            QuickHPStorage(ram);
+
+            DealDamage(legacy, ram, 2, DTM);
+            QuickHPCheck(-2);
+            DealDamage(haka, ram, 2, DTM);
+            QuickHPCheck(-1);
+
+            FlipCard(ram);
+
+            DealDamage(legacy, ram, 2, DTM);
+            QuickHPCheck(-3);
+            DealDamage(haka, ram, 2, DTM);
+            QuickHPCheck(-3);
+        }
+        [Test]
+        public void TestRamFlipTriggers()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis");
+
+            StartGame();
+            Card claw = GetCardInPlay("GrapplingClaw");
+            DestroyCard(claw);
+
+            Card fallback = PlayCard("FallBack");
+
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+
+            AssertNotFlipped(ram);
+            PlayCard("UpClose");
+
+            AssertFlipped(ram);
+            AssertNotInPlay(fallback);
+            AssertIsInPlay(claw);
+
+            DestroyCard("UpClose");
+            AssertNotFlipped(ram);
+        }
+        [Test]
+        public void TestRamGetUpCloseTrigger()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis");
+
+            StartGame();
+            Card claw = GetCardInPlay("GrapplingClaw");
+            DestroyCard(claw);
+
+            DecisionYesNo = true;
+
+            GoToStartOfTurn(legacy);
+            AssertIsInPlay("UpClose");
+            Assert.True(IsUpClose(legacy), "Legacy was not Up Close, though he should have been.");
+        }
+        [Test]
+        public void TestRamGetUpCloseTriggerOptional()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis");
+
+            StartGame();
+            Card claw = GetCardInPlay("GrapplingClaw");
+            DestroyCard(claw);
+
+            DecisionYesNo = false;
+
+            GoToStartOfTurn(legacy);
+            AssertNotInPlay("UpClose");
+            Assert.False(IsUpClose(legacy), "Legacy was Up Close, though he should not have been.");
+
+            DecisionYesNo = true;
+            GoToStartOfTurn(haka);
+            AssertIsInPlay("UpClose");
+            Assert.True(IsUpClose(haka), "Haka was not Up Close, though he should have been.");
+        }
+        [Test]
+        public void TestRamGetUpCloseTriggerOnlyIfNotUpClose()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis");
+
+            StartGame();
+            Card claw = GetCardInPlay("GrapplingClaw");
+            DestroyCard(claw);
+
+            PlayCard("UpClose");
+            AssertNoDecision();
+            GoToEndOfTurn(legacy);
+        }
+        [Test]
+        public void TestRamGetUpCloseTriggerOnlyIfUpCloseInTrash()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheScholar", "Unity", "Megalopolis");
+
+            StartGame();
+            PutOnDeck(ram, ram.TurnTaker.Trash.Cards);
+            PutInTrash("UpClose");
+
+            AssertNoDecision();
+
+            //Grappling Claw will automatically hook someone else, and Legacy will not get the chance to move up close.
+            GoToEndOfTurn(legacy);
+            AssertNumberOfCardsInTrash(ram, 0);
+        }
+        [Test]
         public void TestGrapplingClawSimple()
         {
             SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "CaptainCosmic", "Megalopolis");
@@ -189,11 +325,11 @@ namespace CauldronTests
             Assert.AreEqual(8, GetCard("GrapplingClaw").MaximumHitPoints);
             AssertMaxNumberOfDecisions(0);
 
-            GoToStartOfTurn(legacy);
+            GoToEndOfTurn(ram);
 
             AssertNumberOfCardsInPlay(ram, 3);
             Assert.True(IsUpClose(cosmic));
-            QuickHPCheck(0, 0, -2);
+            QuickHPCheck(0, -3, -2);
         }
         [Test]
         public void TestGrapplingClawIgnoresUpCloseAndNonCharacter()
@@ -247,19 +383,19 @@ namespace CauldronTests
         [Test]
         public void TestGrapplingClawIncapsSubCharacterOfMultiHero()
         {
-           SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheSentinels", "Megalopolis");
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheSentinels", "Megalopolis");
 
-           StartGame();
+            StartGame();
 
-           SetHitPoints(mainstay, 1);
-           AssertNextMessages("The Sentinels was pulled Up Close!", MessageTerminator);
+            SetHitPoints(mainstay, 1);
+            AssertNextMessages("The Sentinels was pulled Up Close!", MessageTerminator);
 
-           GoToStartOfTurn(legacy);
+            GoToStartOfTurn(legacy);
 
-           AssertNumberOfCardsInPlay(ram, 3);
-           Assert.IsTrue(IsUpClose(sentinels));
-           AssertUsablePower(sentinels, mainstay);
-           CheckFinalMessage();
+            AssertNumberOfCardsInPlay(ram, 3);
+            Assert.IsTrue(IsUpClose(sentinels));
+            AssertUsablePower(sentinels, mainstay);
+            CheckFinalMessage();
         }
         [Test]
         public void TestGrapplingClawNoUpCloseInTrash()
@@ -272,7 +408,7 @@ namespace CauldronTests
             QuickHPStorage(haka);
             AssertNextMessages("There were no copies of Up Close in the villain trash.", MessageTerminator);
 
-            GoToStartOfTurn(legacy);
+            GoToEndOfTurn(ram);
 
             QuickHPCheck(-2);
             AssertNumberOfCardsInPlay(ram, 2);
@@ -288,7 +424,7 @@ namespace CauldronTests
 
             //should hit non-character targets
             Card crest = PlayCard("CosmicCrest");
-            
+
             QuickHPStorage(legacy.CharacterCard, haka.CharacterCard, cosmic.CharacterCard, crest);
             PlayCard("BarrierBuster");
             QuickHPCheck(-3, -3, -3, -3);
@@ -347,7 +483,7 @@ namespace CauldronTests
         [Test]
         public void TestFallBackDamageImmunity()
         {
-            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "Unity", "Megalopolis");
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "Unity", "Ra", "Megalopolis");
 
             StartGame();
             DestroyCard("GrapplingClaw");
@@ -357,7 +493,7 @@ namespace CauldronTests
             Card bot = PlayCard("PlatformBot");
 
             int expectedDamage = 0;
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 DealDamage(legacy, ram, 1, DamageType.Melee);
                 DealDamage(haka, ram, 2, DamageType.Melee);
@@ -470,12 +606,11 @@ namespace CauldronTests
             QuickHPStorage(ram.CharacterCard, node);
 
             DealDamage(legacy, node, 1, DTM);
-            DealDamage(legacy, ram, 3, DTM);
+            DealDamage(legacy, ram, 4, DTM);
             DealDamage(ra, node, 1, DTM);
-            DealDamage(ra, ram, 3, DTM);
+            DealDamage(ra, ram, 4, DTM);
 
-            //TODO: reconfigure once Ram has its inbuilt DR
-            QuickHPCheck(-2, -1);
+            QuickHPCheck(-3, -1);
         }
         [Test]
         public void TestForcefieldNodeDamage()
@@ -676,85 +811,12 @@ namespace CauldronTests
 
             QuickHPStorage(legacy.CharacterCard, haka.CharacterCard, wraith.CharacterCard, unity.CharacterCard, bot);
             PlayCard("ThroatJab"); //let's not have the Ram mess up our damage
-            
+
             PlayCard("RocketPod");
 
             GoToEndOfTurn(ram);
 
             QuickHPCheck(0, 0, -2, -2, -2);
-        }
-        [Test]
-        public void TestRamEndOfTurnDamage()
-        {
-            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis");
-
-            StartGame();
-            DestroyCard("GrapplingClaw");
-
-            QuickHPStorage(legacy, haka, wraith, unity);
-
-            GoToEndOfTurn(ram);
-            QuickHPCheck(0, -3, 0, 0);
-
-            //should be the same on both sides
-            PlayCard("UpClose");
-            PlayCard("UpClose");
-            PlayCard("UpClose");
-            PlayCard("UpClose");
-            DestroyCard("GrapplingClaw");
-
-            GoToEndOfTurn(ram);
-            QuickHPCheck(-3, 0, 0, 0);
-        }
-        [Test]
-        public void TestRamDamageModifiers()
-        {
-            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis");
-
-            StartGame();
-            DestroyCard("GrapplingClaw");
-            
-            
-            PlayCard("UpClose");
-
-            QuickHPStorage(ram);
-
-            DealDamage(legacy, ram, 2, DTM);
-            QuickHPCheck(-2);
-            DealDamage(haka, ram, 2, DTM);
-            QuickHPCheck(-1);
-
-            FlipCard(ram);
-
-            DealDamage(legacy, ram, 2, DTM);
-            QuickHPCheck(-3);
-            DealDamage(haka, ram, 2, DTM);
-            QuickHPCheck(-3);
-        }
-        [Test]
-        public void TestRamFlipTriggers()
-        {
-            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis");
-
-            StartGame();
-            Card claw = GetCardInPlay("GrapplingClaw");
-            DestroyCard(claw);
-
-            Card fallback = PlayCard("FallBack");
-
-            PlayCard("UpClose");
-            PlayCard("UpClose");
-            PlayCard("UpClose");
-
-            AssertNotFlipped(ram);
-            PlayCard("UpClose");
-
-            AssertFlipped(ram);
-            AssertNotInPlay(fallback);
-            AssertIsInPlay(claw);
-
-            DestroyCard("UpClose");
-            AssertNotFlipped(ram);
         }
     }
 }

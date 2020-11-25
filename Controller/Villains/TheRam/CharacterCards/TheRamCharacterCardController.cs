@@ -24,6 +24,9 @@ namespace Cauldron.TheRam
                 //the second criterion: "we cannot find any heroes that are not up close"
                 AddSideTrigger(AddTrigger(potentialFlipTriggers, FlipToBack, TriggerType.FlipCard, TriggerTiming.After));
 
+                //"At the start of a hero's turn, if that hero is not Up Close, you may take a copy of Up close from the villain trash and play it next to that hero.",
+                AddSideTrigger(AddStartOfTurnTrigger((TurnTaker tt) => tt.IsHero && !IsUpClose(tt), AskIfMoveUpCloseResponse, TriggerType.PutIntoPlay));
+
                 //"Reduce damage dealt to {TheRam} by 1. Increase damage dealt to {TheRam} by Up Close targets by 1.",
                 AddSideTrigger(AddReduceDamageTrigger((Card c) => c == this.Card, 1));
                 AddSideTrigger(AddIncreaseDamageTrigger((DealDamageAction dd) => dd.Target == this.Card && dd.DamageSource.IsCard && IsUpClose(dd.DamageSource.Card), 1));
@@ -65,6 +68,71 @@ namespace Cauldron.TheRam
             }
 
             AddDefeatedIfDestroyedTriggers();
+        }
+
+        private IEnumerator AskIfMoveUpCloseResponse(PhaseChangeAction pc)
+        {
+            Card upClose = FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInTrash && c.Identifier == "UpClose")).FirstOrDefault();
+            if (upClose == null)
+            {
+                IEnumerator message = GameController.SendMessageAction("There were no copies of Up Close in the trash to take.", Priority.High, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(message);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(message);
+                }
+                yield break;
+            }
+
+            TurnTaker activeHero = pc.ToPhase.TurnTaker;
+            HeroTurnTakerController player = FindHeroTurnTakerController(activeHero.ToHero());
+
+            List<YesNoCardDecision> storedResult = new List<YesNoCardDecision> { };
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(player, SelectionType.PutIntoPlay, upClose, pc, storedResult, new Card[] { this.Card }, GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if(!DidPlayerAnswerYes(storedResult))
+            {
+                yield break;
+            }
+            
+            List<Card> heroResult = new List<Card> { };
+            coroutine = GameController.FindCharacterCard(player, activeHero, SelectionType.HeroCharacterCard, heroResult, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            Card hero = heroResult.FirstOrDefault();
+
+            if (hero != null)
+            {
+                coroutine = (FindCardController(upClose) as UpCloseCardController).PlayBySpecifiedHero(hero, true, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            
+            yield break;
         }
 
         private IEnumerator FlipToBack(GameAction ga)
