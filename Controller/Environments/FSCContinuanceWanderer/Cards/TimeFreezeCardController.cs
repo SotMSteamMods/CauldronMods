@@ -13,21 +13,15 @@ namespace Cauldron.FSCContinuanceWanderer
 
         public TimeFreezeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
-        private Card cardThisIsNextTo;
-        private HeroTurnTaker frozenTurnTaker;
         private TurnPhase triggerPhase;
         private TurnPhase skipToTurnPhase;
 
-
         public override IEnumerator Play()
         {
-            //The card this is next to
-            cardThisIsNextTo = base.GetCardThisCardIsNextTo();
             //The turn taker of the card this is next to
-            frozenTurnTaker = cardThisIsNextTo.Owner.ToHero();
+            var frozenTurnTaker = base.GetCardThisCardIsNextTo().Owner;
             //The index of the turn taker this card is next to
             int indexFrozenTurnTaker = Game.TurnTakers.IndexOf(frozenTurnTaker) ?? default;
             //The index of the turn taker after the frozen turn taker
@@ -44,23 +38,26 @@ namespace Cauldron.FSCContinuanceWanderer
                 //If the new index is outside of the list then take the last one
                 indexNextTurnTaker += Game.TurnTakers.Count() + 1;
             }
-            Phase startPhase = Phase.Start;
-            Phase endPhase = Phase.End;
-            if (Game.IsOblivAeonMode)
-            {
-                //If we're playing OblivAeon then we need to grab the actual first and last phases of the game
-                startPhase = Phase.BeforeStart;
-                endPhase = Phase.AfterEnd;
-            }
+            //If we're playing OblivAeon then we need to grab the actual first phasess of the game
+            Phase startPhase = Game.IsOblivAeonMode ? Phase.BeforeStart : Phase.Start;
+
             //Turn taker after the frozen turn taker
-            TurnTaker nextTurnTaker = Game.TurnTakers.ToList()[indexNextTurnTaker];
+            TurnTaker nextTurnTaker = Game.TurnTakers.ElementAt(indexNextTurnTaker);
 
             //Turn taker before the frozen turn taker
-            TurnTaker prevTurnTaker = Game.TurnTakers.ToList()[indexPrevTurnTaker];
+            TurnTaker prevTurnTaker = Game.TurnTakers.ElementAt(indexPrevTurnTaker);
+
             //The phase where the Skip is applied
-            triggerPhase = base.Game.FindTurnPhases((TurnPhase turnPhase) => turnPhase.Phase == endPhase && turnPhase.TurnTaker == prevTurnTaker).FirstOrDefault();
+            triggerPhase = GameController.FindLastTurnPhase(prevTurnTaker);
+
+            Console.WriteLine($"## trigger = {triggerPhase}");
+
             //The phase we will skip to
             skipToTurnPhase = base.Game.FindTurnPhases((TurnPhase turnPhase) => turnPhase.Phase == startPhase && turnPhase.TurnTaker == nextTurnTaker).FirstOrDefault();
+
+            //Console.WriteLine($"## alt trigger = {frozenLast}");
+            Console.WriteLine($"## skip = {skipToTurnPhase}");
+
             //If we are already in the phase that would cause the trigger to fire then manually fire the override
             if (Game.ActiveTurnPhase == triggerPhase)
             {
@@ -74,7 +71,7 @@ namespace Cauldron.FSCContinuanceWanderer
             //That hero skips their turns...
             base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == triggerPhase.TurnTaker, this.SkipTurnResponse, new TriggerType[] { TriggerType.SkipTurn });
             //...and targets in their play are are immune to damage.
-            base.AddImmuneToDamageTrigger((DealDamageAction action) => action.Target.Location == cardThisIsNextTo.Location);
+            base.AddImmuneToDamageTrigger((DealDamageAction action) => action.Target.Location == GetCardThisCardIsNextTo().Location);
             //At the start of the environment turn, destroy this card.
             base.AddStartOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, base.DestroyThisCardResponse, TriggerType.DestroySelf);
         }
@@ -99,6 +96,5 @@ namespace Cauldron.FSCContinuanceWanderer
             }
             yield break;
         }
-
     }
 }
