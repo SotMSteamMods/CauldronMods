@@ -539,7 +539,6 @@ namespace CauldronTests
             DealDamage(legacy, node, 1, DTM);
             DealDamage(ra, node, 2, DTM);
 
-            //TODO: reconfigure amounts one Ram has its inbuilt dr
             QuickHPCheck(-1);
         }
         [Test]
@@ -597,6 +596,50 @@ namespace CauldronTests
 
             GoToStartOfTurn(legacy);
             QuickHPCheck(0, 0, 0);
+        }
+        [Test]
+        public void TestRemoteMortarImmunity()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "Ra", "TheVisionary", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            PlayCard("DecoyProjection");
+
+            //legacy and haka should be up close, ra and visionary not
+            Card mortar = PlayCard("RemoteMortar");
+            QuickHPStorage(mortar);
+
+            DealDamage(legacy, mortar, 1, DTM);
+            DealDamage(ra, mortar, 2, DTM);
+
+            QuickHPCheck(-2);
+        }
+        [Test]
+        public void TestRemoteMortarDamageAndDiscard()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            Card bot = PlayCard("SwiftBot");
+
+            //legacy and haka should be up close, wraith and unity not
+
+            QuickHPStorage(legacy.CharacterCard, haka.CharacterCard, wraith.CharacterCard, unity.CharacterCard, bot);
+            PlayCard("ThroatJab"); //let's not have the Ram mess up our damage
+
+            Card mortar = PlayCard("RemoteMortar");
+            QuickHandStorage(legacy, haka, wraith, unity);
+
+            GoToEndOfTurn(ram);
+
+            QuickHPCheck(-3, -3, 0, 0, 0);
+            QuickHandCheck(-1, -1, 0, 0);
         }
     }
 }
