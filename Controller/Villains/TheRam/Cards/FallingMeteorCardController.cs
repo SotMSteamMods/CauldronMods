@@ -18,25 +18,60 @@ namespace Cauldron.TheRam
 
         public override IEnumerator Play()
         {
-            //"Search the villain deck and trash for {H - 2} copies of Up Close and play them next to the {H - 2} heroes with the highest HP that are not up close. If you searched the deck, shuffle it. 
-            List<bool> searchDeckFirst = new List<bool> { };
-            List<Card> foundCards = new List<Card> { };
-            IEnumerator playUpClose;
-            for(int i = 0; i < H-2; i++)
+
+            List<Card> storedUpClose = new List<Card> { };
+            List<bool> wasInDeck = new List<bool> { };
+
+            //"Search the villain deck and trash for {H - 2} copies of Up Close..."
+            IEnumerator coroutine = FindUpClose(storedUpClose, wasInDeck);
+            if (base.UseUnityCoroutines)
             {
-                playUpClose = PlayUpCloseFromDeckOrTrash(searchDeckFirst, (H-2) - i, foundCards);
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            bool needToShuffle = wasInDeck.Any();
+            int upCloseToPlay = storedUpClose.Count();
+
+            if (upCloseToPlay < H - 2)
+            {
+                string copyPlural = upCloseToPlay == 1 ? "copy" : "copies";
+                coroutine = GameController.SendMessageAction($"There were {upCloseToPlay} {copyPlural} of Up Close left to find.", Priority.High, GetCardSource(), storedUpClose);
                 if (base.UseUnityCoroutines)
                 {
-                    yield return base.GameController.StartCoroutine(playUpClose);
+                    yield return base.GameController.StartCoroutine(coroutine);
                 }
                 else
                 {
-                    base.GameController.ExhaustCoroutine(playUpClose);
+                    base.GameController.ExhaustCoroutine(coroutine);
                 }
-                if (foundCards.Count() != i + 1)
+            }
+
+            //"...and play them next to the {H - 2} heroes with the highest HP that are not up close."
+            coroutine = SelectTargetsAndPlayUpClose(storedUpClose);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //"If you searched the deck, shuffle it."
+            if (needToShuffle)
+            {
+                coroutine = ShuffleDeck(DecisionMaker, TurnTaker.Deck);
+                if (base.UseUnityCoroutines)
                 {
-                    //no more cards to find, stop looking
-                    i += H;
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
 
@@ -53,133 +88,141 @@ namespace Cauldron.TheRam
             yield break;
         }
 
-        private IEnumerator PlayUpCloseFromDeckOrTrash(List<bool> searchDeckFirst, int targetsLeft, List<Card> foundCards)
+        private IEnumerator FindUpClose(List<Card> storedUpClose, List<bool> didSearchDeck)
         {
-            bool knowDeckOrTrash = searchDeckFirst.Count() > 0;
-            //if we have already decided whether to search the trash or the deck, don't search the other if possible
-            bool willAvoidSearchingTrash = TurnTaker.GetCardsWhere((Card c) => c.IsInDeck && c.Identifier == "UpClose").Any() && knowDeckOrTrash && searchDeckFirst.FirstOrDefault() == false;
-            bool willAvoidSearchingDeck = TurnTaker.GetCardsWhere((Card c) => c.IsInTrash && c.Identifier == "UpClose").Any() && knowDeckOrTrash && searchDeckFirst.FirstOrDefault() == true;
+            List<Card> upCloseInDeck = TurnTaker.GetCardsWhere((Card c) => c.IsInDeck && c.Identifier == "UpClose").ToList();
+            List<Card> upCloseInTrash = TurnTaker.GetCardsWhere((Card c) => c.IsInTrash && c.Identifier == "UpClose").ToList();
+            int numberToGet = H - 2;
 
-            //TODO - this bit above is not working! figure out what mistake i made.
-            //it will probably be very simple and embarassing in retrospect
-
-            List<Function> actions = new List<Function> { };
-            actions.Add(new Function(DecisionMaker,
-                               "Search trash first.",
-                               SelectionType.SearchTrash,
-                               () => SearchSelectHeroAndPlayUpClose(false, targetsLeft, foundCards),
-                               !willAvoidSearchingTrash));
-            actions.Add(new Function(DecisionMaker,
-                                "Search deck first.",
-                                SelectionType.SearchDeck,
-                                () => SearchSelectHeroAndPlayUpClose(true, targetsLeft, foundCards),
-                                !willAvoidSearchingDeck));
-
-            Log.Debug($"willAvoidSearchingTrash is {willAvoidSearchingTrash}, willAvoidSearchingDeck is {willAvoidSearchingDeck}");
-
-            List<SelectFunctionDecision> deckOrTrashFirst = new List<SelectFunctionDecision> { };
-            SelectFunctionDecision selectFunction = new SelectFunctionDecision(GameController, DecisionMaker, actions, false, null, "There were no more copies of Up Close to find.", null, GetCardSource());
-            IEnumerator decision = GameController.SelectAndPerformFunction(selectFunction, deckOrTrashFirst);
-            if (base.UseUnityCoroutines)
+            if(upCloseInTrash.Count() < numberToGet && upCloseInDeck.Count() > 0)
             {
-                yield return base.GameController.StartCoroutine(decision);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(decision);
+                //they must get at least one from the deck
+                didSearchDeck.Add(true);
             }
 
-            if(deckOrTrashFirst.FirstOrDefault().Index == 1)
+            bool isDeckFirst = false;
+            if (upCloseInTrash.Count() > 0 && upCloseInDeck.Count() > 0 && upCloseInDeck.Count() + upCloseInTrash.Count() > numberToGet)
             {
-                var shuffleAction = new ShuffleCardsAction(new CardSource(CharacterCardController), this.TurnTaker.Deck);
-                IEnumerator shuffle = GameController.DoAction(shuffleAction);
+                //there are enough Up Closes left that they could decide whether to leave the rest in the deck or the trash
+                //so we give them a choice of where to look first
+
+                var storedChoice = new List<SelectLocationDecision> { };
+                IEnumerator pickLocation = GameController.SelectLocation(DecisionMaker, new List<LocationChoice> { new LocationChoice(TurnTaker.Deck), new LocationChoice(TurnTaker.Trash) }, SelectionType.SearchLocation, storedChoice, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
-                    yield return GameController.StartCoroutine(shuffle);
+                    yield return base.GameController.StartCoroutine(pickLocation);
                 }
                 else
                 {
-                    GameController.ExhaustCoroutine(shuffle);
+                    base.GameController.ExhaustCoroutine(pickLocation);
+                }
+                if (DidSelectLocation(storedChoice))
+                {
+                    if (storedChoice.FirstOrDefault().SelectedLocation.Location == TurnTaker.Deck)
+                    {
+                        //they are choosing to get one from the deck first
+                        isDeckFirst = true;
+                        didSearchDeck.Add(true);
+                    }  
                 }
             }
 
-            if(!knowDeckOrTrash)
+            List<Card> ordered = new List<Card> { };
+            if (isDeckFirst)
             {
-                searchDeckFirst.Add(deckOrTrashFirst.FirstOrDefault().Index == 1);
-            }
-            yield break;
-        }
-
-        private IEnumerator SearchSelectHeroAndPlayUpClose(bool trySearchDeck, int targetsLeft, List<Card> foundCard)
-        {
-            Location searchLoc; 
-            if (trySearchDeck && TurnTaker.GetCardsWhere((Card c) => c.IsInDeck && c.Identifier == "UpClose").Any())
-            {
-                searchLoc = TurnTaker.Deck;
+                ordered = upCloseInDeck;
+                ordered.AddRange(upCloseInTrash);
             }
             else
             {
-                searchLoc = TurnTaker.Trash;
+                ordered = upCloseInTrash;
+                ordered.AddRange(upCloseInDeck);
             }
 
-            Card close = GameController.FindCardsWhere((Card c) => searchLoc.Cards.Contains(c) && c.Identifier == "UpClose").FirstOrDefault();
-
-            if (close == null)
+            if (ordered.Count() <= numberToGet)
             {
-                IEnumerator message = GameController.SendMessageAction("There were no more copies of Up Close to find. (sub-option)", Priority.High, GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(message);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(message);
-                }
+                storedUpClose.AddRange(ordered);
                 yield break;
             }
 
-            foundCard.Add(close);
-
-            List<SelectCardDecision> selectedHero = new List<SelectCardDecision> { };
-
-            //select, from the non-Up Close heroes, one target that could be among the highest targetsLeft
-            List<Card> highestOptions = GameController.FindAllTargetsWithHighestHitPoints(1, (Card c) => c.IsInPlayAndHasGameText && c.IsHeroCharacterCard && !IsUpClose(c), GetCardSource(), targetsLeft).ToList();
-            Log.Debug($"Found {highestOptions.Count()} choices: ");
-            foreach (Card c in highestOptions)
+            for(int i = 0; i < H - 2; i++)
             {
-                Log.Debug(c.Title);
-            }
-            IEnumerator selectHero = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.HeroCharacterCard, highestOptions, selectedHero, false, cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(selectHero);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(selectHero);
-            }
-            IEnumerator playCard;
-
-            if (DidSelectCard(selectedHero))
-            {
-                Log.Debug("Automatically playing");
-                playCard = PlayGivenUpCloseByGivenCard(close, selectedHero.FirstOrDefault().SelectedCard, isPutIntoPlay: false);
-            }
-            else
-            {
-                Log.Debug("Could not autoplay.");
-                playCard = GameController.PlayCard(DecisionMaker, close, cardSource: GetCardSource());
+                storedUpClose.Add(ordered[i]);
             }
 
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(playCard);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(playCard);
-            }
+            yield break;
+        }
 
+        private IEnumerator SelectTargetsAndPlayUpClose(List<Card> upCloseList)
+        {
+            //as we will be playing out the up closes one-at-a-time, we don't want to keep 
+            //extending the threshold lower and lower - otherwise the player would be able to pick,
+            //if playing two copies, the second-highest and then the new second-highest that used to
+            //be third highest. 
+            int highestRemainingTargets = H - 2;
+            for(int i = 0; i < upCloseList.Count(); i++)
+            {
+                //this has to be dynamic because once we pick one of a multi-character team the rest are no longer valid
+                List<Card> currentHighestOptions = GameController.FindAllTargetsWithHighestHitPoints(1, (Card c) => c.IsHeroCharacterCard && !IsUpClose(c), GetCardSource(), highestRemainingTargets).ToList();
+                //Log.Debug($"Found {currentHighestOptions.Count()} viable targets");
+                if (currentHighestOptions.Any())
+                {
+                    var storedChoice = new List<SelectTargetDecision> { };
+                    IEnumerator makeDecision = GameController.SelectTargetAndStoreResults(DecisionMaker, currentHighestOptions, storedChoice, selectionType: SelectionType.HeroCharacterCard, cardSource: GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(makeDecision);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(makeDecision);
+                    }
+
+                    var actualChoice = storedChoice.FirstOrDefault();
+
+                    if (actualChoice == null || actualChoice.SelectedCard == null)
+                    {
+                        IEnumerator message = GameController.SendMessageAction("Error, no target was selected.", Priority.High, GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(message);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(message);
+                        }
+                    }
+                    else
+                    {
+                        IEnumerator play = PlayGivenUpCloseByGivenCard(upCloseList[i], actualChoice.SelectedCard);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(play);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(play);
+                        }
+                    }
+
+                }
+                else
+                {
+                    IEnumerator play = GameController.PlayCard(DecisionMaker, upCloseList[i]);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(play);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(play);
+                    }
+                }
+
+                //keep track of how many targets to put on our next list of options
+                highestRemainingTargets--;
+                
+            }
             yield break;
         }
     }
