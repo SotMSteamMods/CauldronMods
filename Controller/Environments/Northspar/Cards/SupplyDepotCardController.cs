@@ -23,7 +23,7 @@ namespace Cauldron.Northspar
         {
             //When this card enters play, destroy it and play the top card of the environment deck if Makeshift Shelter is not in play.Otherwise place it next to a hero.They gain:",
             //    "Power: this hero deals 1 target 1 fire damage."
-            if(!this.IsMakeshiftShelterInPlay())
+            if (!this.IsMakeshiftShelterInPlay())
             {
                 // When this card enters play, play the top card of the environment deck...
                 IEnumerator coroutine = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, cardSource: base.GetCardSource());
@@ -47,7 +47,7 @@ namespace Cauldron.Northspar
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            
+
         }
 
         public override IEnumerable<Power> AskIfContributesPowersToCardController(CardController cardController)
@@ -84,11 +84,12 @@ namespace Cauldron.Northspar
             IEnumerator coroutine;
             if (this.IsMakeshiftShelterInPlay())
             {
-                coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), "active hero"), storedResults, isPutIntoPlay, decisionSources);
-                
-            } else
+                coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()) && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), "active hero"), storedResults, isPutIntoPlay, decisionSources);
+
+            }
+            else
             {
-                coroutine = base.GameController.SelectMoveCardDestination(base.DecisionMaker, base.Card, new MoveCardDestination[] { new MoveCardDestination(base.TurnTaker.PlayArea)}, storedResults, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectMoveCardDestination(base.DecisionMaker, base.Card, new[] { new MoveCardDestination(base.TurnTaker.PlayArea) }, storedResults, cardSource: base.GetCardSource());
             }
 
             if (base.UseUnityCoroutines)
