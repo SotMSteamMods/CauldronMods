@@ -28,13 +28,18 @@ namespace Cauldron.Northspar
             base.AddTriggers();
         }
 
+        private bool HeroEquipmentOrOngoingQuery(Card c)
+        {
+            return c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c)) && GameController.IsCardVisibleToCardSource(c, GetCardSource());
+        }
+
         private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
         {
-            if (FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c))).Count() > 0)
+            if (FindCardsWhere(HeroEquipmentOrOngoingQuery).Any())
             {
                 /// ...you may destroy 1 hero ongoing or equipment card...
                 List<DestroyCardAction> storedResults = new List<DestroyCardAction>();
-                LinqCardCriteria criteria = new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c)), "hero ongoing or equipment");
+                LinqCardCriteria criteria = new LinqCardCriteria(HeroEquipmentOrOngoingQuery, "hero ongoing or equipment");
                 IEnumerator coroutine = base.GameController.SelectAndDestroyCard(base.DecisionMaker, criteria, true, storedResultsAction: storedResults, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
@@ -72,7 +77,8 @@ namespace Cauldron.Northspar
                         }
                     }
                 }
-            } else
+            }
+            else
             {
                 IEnumerator coroutine2 = base.GameController.SendMessageAction(base.Card.Title + " has no hero ongoing or equipment to destroy.", Priority.Medium, GetCardSource(), null, showCardSource: true);
                 if (base.UseUnityCoroutines)
@@ -84,7 +90,7 @@ namespace Cauldron.Northspar
                     base.GameController.ExhaustCoroutine(coroutine2);
                 }
             }
-           
+
             yield break;
         }
     }
