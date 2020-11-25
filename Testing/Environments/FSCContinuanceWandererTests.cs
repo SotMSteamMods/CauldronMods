@@ -402,14 +402,11 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
-            Card field = GetCard("BacklashField");
-            PutOnDeck(baron, field);
-            Card ring = GetCard("TheLegacyRing");
-            PutOnDeck(legacy, ring);
-            Card staff = GetCard("TheStaffOfRa");
-            PutOnDeck(ra, staff);
-            Card mere = GetCard("Mere");
-            PutOnDeck(haka, mere);
+            Card field = PutOnDeck("BacklashField");
+            Card ring = PutOnDeck("TheLegacyRing");
+            Card staff = PutOnDeck("TheStaffOfRa");
+            Card mere = PutOnDeck("Mere");
+
             //When this card enters play, play the top card of the villain deck. Then, play the top card of each hero deck in turn order.
             PlayCard(GetCard("TemporalAcceleration"));
             AssertInPlayArea(baron, field);
