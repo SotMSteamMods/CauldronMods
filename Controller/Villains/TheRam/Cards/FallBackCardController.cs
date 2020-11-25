@@ -44,7 +44,7 @@ namespace Cauldron.TheRam
         public override void AddTriggers()
         {
             //"{TheRam} is immune to damage from heroes that are not Up Close."
-            AddImmuneToDamageTrigger((DealDamageAction dda) => dda.DamageSource.IsHero && dda.DamageSource.IsTarget && !IsUpClose(dda.DamageSource.Card));
+            AddImmuneToDamageTrigger((DealDamageAction dda) => dda.Target == GetRam && dda.DamageSource.IsHero && dda.DamageSource.IsTarget && !IsUpClose(dda.DamageSource.Card));
         }
     }
 }

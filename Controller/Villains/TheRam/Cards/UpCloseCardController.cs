@@ -12,6 +12,7 @@ namespace Cauldron.TheRam
 {
     public class UpCloseCardController : TheRamUtilityCardController
     {
+        private Location NextToHeroToGoTo = null;
         public UpCloseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
@@ -38,11 +39,21 @@ namespace Cauldron.TheRam
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
+            //if we're given a hero to go to, go there - if we can
+            if (NextToHeroToGoTo != null)
+            {
+                if (NextToHeroToGoTo.IsNextToCard && NextToHeroToGoTo.OwnerCard.IsHeroCharacterCard && !IsUpClose(NextToHeroToGoTo.OwnerCard))
+                {
+                    storedResults.Add(new MoveCardDestination(NextToHeroToGoTo));
+                    NextToHeroToGoTo = null;
+                    yield break;
+                }
+                NextToHeroToGoTo = null;
+            }
+
             //"Play this card next to a hero who is not Up Close."
-            Location targetLocation = overridePlayArea;
-            bool entersPlayNextToHero = targetLocation != null && targetLocation.IsNextToCard && targetLocation.OwnerCard.IsHeroCharacterCard && !IsUpClose(targetLocation.OwnerCard);
             IEnumerator coroutine;
-            if (entersPlayNextToHero || AllHeroesAreUpClose)
+            if (AllHeroesAreUpClose)
             {
                 coroutine = base.DeterminePlayLocation(storedResults, isPutIntoPlay, decisionSources, overridePlayArea, additionalTurnTakerCriteria);
             }
@@ -83,13 +94,12 @@ namespace Cauldron.TheRam
 
         public IEnumerator PlayBySpecifiedHero(Card hero, bool isPutIntoPlay, CardSource cardSource)
         {
-            Location targetLocation = null;
             if (hero != null && hero.Owner.IsHero && hero.IsHeroCharacterCard && !hero.Owner.IsIncapacitatedOrOutOfGame && !IsUpClose(hero))
             {
-                targetLocation = hero.NextToLocation;
+                NextToHeroToGoTo = hero.NextToLocation;
             }
 
-            IEnumerator play = GameController.PlayCard(TurnTakerController, this.Card, wasCardPlayed: new List<bool> { !isPutIntoPlay }, isPutIntoPlay: isPutIntoPlay, overridePlayLocation: targetLocation, cardSource: cardSource);
+            IEnumerator play = GameController.PlayCard(TurnTakerController, this.Card, wasCardPlayed: new List<bool> { !isPutIntoPlay }, isPutIntoPlay: isPutIntoPlay, cardSource: cardSource);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(play);
