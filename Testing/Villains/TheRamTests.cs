@@ -633,13 +633,55 @@ namespace CauldronTests
             QuickHPStorage(legacy.CharacterCard, haka.CharacterCard, wraith.CharacterCard, unity.CharacterCard, bot);
             PlayCard("ThroatJab"); //let's not have the Ram mess up our damage
 
-            Card mortar = PlayCard("RemoteMortar");
+            PlayCard("RemoteMortar");
             QuickHandStorage(legacy, haka, wraith, unity);
 
             GoToEndOfTurn(ram);
 
             QuickHPCheck(-3, -3, 0, 0, 0);
             QuickHandCheck(-1, -1, 0, 0);
+        }
+        [Test]
+        public void TestRocketPodImmunity()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "TheVisionary", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            PlayCard("DecoyProjection");
+
+            //legacy and haka should be up close, ra and visionary not
+            Card rocket = PlayCard("RocketPod");
+            QuickHPStorage(rocket);
+
+            DealDamage(legacy, rocket, 1, DTM);
+            DealDamage(wraith, rocket, 2, DTM);
+
+            QuickHPCheck(-1);
+        }
+        [Test]
+        public void TestRocketPodDamage()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            Card bot = PlayCard("SwiftBot");
+
+            //legacy and haka should be up close, wraith and unity not
+
+            QuickHPStorage(legacy.CharacterCard, haka.CharacterCard, wraith.CharacterCard, unity.CharacterCard, bot);
+            PlayCard("ThroatJab"); //let's not have the Ram mess up our damage
+            
+            PlayCard("RocketPod");
+
+            GoToEndOfTurn(ram);
+
+            QuickHPCheck(0, 0, -2, -2, -2);
         }
     }
 }
