@@ -10,25 +10,17 @@ namespace Cauldron.FSCContinuanceWanderer
 {
     public class TimeFreezeCardController : CardController
     {
-        #region Constructors
 
         public TimeFreezeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
 
-        #endregion Constructors
-
-        #region Properties
-
         private Card cardThisIsNextTo;
         private HeroTurnTaker frozenTurnTaker;
         private TurnPhase triggerPhase;
         private TurnPhase skipToTurnPhase;
 
-        #endregion Properties
-
-        #region Methods
 
         public override IEnumerator Play()
         {
@@ -62,8 +54,11 @@ namespace Cauldron.FSCContinuanceWanderer
             }
             //Turn taker after the frozen turn taker
             TurnTaker nextTurnTaker = Game.TurnTakers.ToList()[indexNextTurnTaker];
+
+            //Turn taker before the frozen turn taker
+            TurnTaker prevTurnTaker = Game.TurnTakers.ToList()[indexPrevTurnTaker];
             //The phase where the Skip is applied
-            triggerPhase = base.Game.FindTurnPhases((TurnPhase turnPhase) => turnPhase.Phase == endPhase && turnPhase.TurnTaker == Game.TurnTakers.ToList()[indexPrevTurnTaker]).FirstOrDefault();
+            triggerPhase = base.Game.FindTurnPhases((TurnPhase turnPhase) => turnPhase.Phase == endPhase && turnPhase.TurnTaker == prevTurnTaker).FirstOrDefault();
             //The phase we will skip to
             skipToTurnPhase = base.Game.FindTurnPhases((TurnPhase turnPhase) => turnPhase.Phase == startPhase && turnPhase.TurnTaker == nextTurnTaker).FirstOrDefault();
             //If we are already in the phase that would cause the trigger to fire then manually fire the override
@@ -77,11 +72,11 @@ namespace Cauldron.FSCContinuanceWanderer
         public override void AddTriggers()
         {//base.GameController.Game.OverrideNextTurnPhase = lastTurnPhase;
             //That hero skips their turns...
-            base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == triggerPhase.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.SkipTurnResponse), new TriggerType[] { TriggerType.SkipTurn });
+            base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == triggerPhase.TurnTaker, this.SkipTurnResponse, new TriggerType[] { TriggerType.SkipTurn });
             //...and targets in their play are are immune to damage.
             base.AddImmuneToDamageTrigger((DealDamageAction action) => action.Target.Location == cardThisIsNextTo.Location);
             //At the start of the environment turn, destroy this card.
-            base.AddStartOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(base.DestroyThisCardResponse), TriggerType.DestroySelf);
+            base.AddStartOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, base.DestroyThisCardResponse, TriggerType.DestroySelf);
         }
 
         private IEnumerator SkipTurnResponse(PhaseChangeAction action)
@@ -105,6 +100,5 @@ namespace Cauldron.FSCContinuanceWanderer
             yield break;
         }
 
-        #endregion Methods
     }
 }

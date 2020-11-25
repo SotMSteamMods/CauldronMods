@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections;
+using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -6,25 +8,43 @@ namespace Cauldron.FSCContinuanceWanderer
 {
     public class ParadoxIntrusionCardController : CardController
     {
-        #region Constructors
 
         public ParadoxIntrusionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
 
-        #endregion Constructors
-
-        #region Methods
-
         public override void AddTriggers()
         {
             //At the end of the environment turn, this card deals the hero target with the highest HP {H} energy damage.
-            base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsHero, TargetType.HighestHP, base.Game.H, DamageType.Energy);
             //Then, this card deals X villain targets 2 energy damage each, where x is the number of time vortex cards in the environment trash.
-            base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsVillain, TargetType.SelectTarget, 2, DamageType.Energy, numberOfTargets: base.FindCardsWhere((Card c) => c.DoKeywordsContain("time vortex") && c.IsInTrash && c.IsEnvironment).Count<Card>());
+            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
         }
 
-        #endregion Methods
+        private IEnumerator DealDamageResponse(PhaseChangeAction pca)
+        {
+            //At the end of the environment turn, this card deals the hero target with the highest HP {H} energy damage.
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => new int?(base.H), DamageType.Energy);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            //Then, this card deals X villain targets 2 energy damage each, where x is the number of time vortex cards in the environment trash.
+            Func<int> X = () => base.FindCardsWhere((Card c) => c.DoKeywordsContain("time vortex") && c.IsInTrash && c.IsEnvironment).Count();
+            coroutine = base.DealDamage(base.Card, (Card c) => c.IsVillainTarget, (Card c) => new int?(2), DamageType.Energy, dynamicNumberOfTargets: X);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
     }
 }

@@ -5,16 +5,11 @@ namespace Cauldron.FSCContinuanceWanderer
 {
     public class CombatCyborgCardController : CardController
     {
-        #region Constructors
 
         public CombatCyborgCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public override void AddTriggers()
         {
@@ -24,6 +19,5 @@ namespace Cauldron.FSCContinuanceWanderer
             base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsNonEnvironmentTarget, TargetType.LowestHP, base.H - 2, DamageType.Projectile);
         }
 
-        #endregion Methods
     }
 }

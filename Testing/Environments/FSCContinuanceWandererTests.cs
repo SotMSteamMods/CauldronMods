@@ -5,6 +5,8 @@ using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+using System.Collections;
 
 namespace CauldronTests
 {
@@ -12,6 +14,13 @@ namespace CauldronTests
     class FSCContinuanceWandererTests : BaseTest
     {
         protected TurnTakerController fsc { get { return FindEnvironment(); } }
+
+        private void AddShuffleTrashCounterAttackTrigger(TurnTakerController ttc, TurnTaker turnTakerToReshuffleTrash, Card cardSource)
+        {
+            Func<DealDamageAction, bool> criteria = (DealDamageAction dd) => dd.Target == ttc.CharacterCard;
+            Func<DealDamageAction, IEnumerator> response = (DealDamageAction dd) => this.GameController.ShuffleTrashIntoDeck(this.GameController.FindTurnTakerController(turnTakerToReshuffleTrash));
+            this.GameController.AddTrigger<DealDamageAction>(new Trigger<DealDamageAction>(this.GameController, criteria, response, new TriggerType[] { TriggerType.ShuffleTrashIntoDeck }, TriggerTiming.After, this.GameController.FindCardController(cardSource).GetCardSource()));
+        }
 
         [Test()]
         public void TestLoadFSC()
@@ -106,14 +115,19 @@ namespace CauldronTests
             QuickHPStorage(borg);
             DealDamage(ra, borg, 3, DamageType.Fire);
             QuickHPCheck(-1);
+            //check only environment targets
+            QuickHPStorage(haka);
+            DealDamage(ra, haka, 3, DamageType.Fire);
+            QuickHPCheck(-3);
         }
         [Test()]
         public void TestHeartOfTheWandererDestroySelf()
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
-            Card heart = GetCard("HeartOfTheWanderer");
-            PlayCard(heart);
+            Card heart = PlayCard("HeartOfTheWanderer");
+            //stack spite's deck to not play lab raid
+            PutOnDeck("GoodSamaritan");
             //At the end of the environment turn, destroy this card.
             GoToStartOfTurn(env);
             AssertInPlayArea(env, heart);
@@ -143,6 +157,12 @@ namespace CauldronTests
             AssertNumberOfCardsInTrash(ra, 1);
             AssertNumberOfCardsInTrash(haka, 1);
             AssertNumberOfCardsInTrash(fsc, 1);
+
+            AssertNumberOfCardsInRevealed(spite, 0);
+            AssertNumberOfCardsInRevealed(legacy, 0);
+            AssertNumberOfCardsInRevealed(ra, 0);
+            AssertNumberOfCardsInRevealed(haka, 0);
+            AssertNumberOfCardsInRevealed(fsc, 0);
         }
 
         [Test()]
@@ -165,6 +185,12 @@ namespace CauldronTests
             AssertNumberOfCardsInTrash(ra, 0);
             AssertNumberOfCardsInTrash(haka, 0);
             AssertNumberOfCardsInTrash(fsc, 0);
+
+            AssertNumberOfCardsInRevealed(spite, 0);
+            AssertNumberOfCardsInRevealed(legacy, 0);
+            AssertNumberOfCardsInRevealed(ra, 0);
+            AssertNumberOfCardsInRevealed(haka, 0);
+            AssertNumberOfCardsInRevealed(fsc, 0);
         }
 
         [Test()]
@@ -191,6 +217,19 @@ namespace CauldronTests
             AssertNumberOfCardsInTrash(frictionTeam, 1);
             AssertNumberOfCardsInTrash(haka, 1);
             AssertNumberOfCardsInTrash(fsc, 1);
+
+            AssertNumberOfCardsInRevealed(ermineTeam, 0);
+            AssertNumberOfCardsInRevealed(legacy, 0);
+            AssertNumberOfCardsInRevealed(biomancerTeam, 0);
+            AssertNumberOfCardsInRevealed(ra, 0);
+            AssertNumberOfCardsInRevealed(frictionTeam, 0);
+            AssertNumberOfCardsInRevealed(haka, 0);
+            AssertNumberOfCardsInRevealed(fsc, 0);
+
+
+
+
+
         }
 
         [Test()]
@@ -221,6 +260,24 @@ namespace CauldronTests
             QuickHPStorage(haka.CharacterCard, capitan.CharacterCard, boat);
             GoToEndOfTurn(env);
             QuickHPCheck(-3, -2, -2);
+        }
+
+        [Test()]
+        public void TestParadoxIntrusionEndTurnDamage_Dynamic()
+        {
+            SetupGameController("Cauldron.FSCContinuanceWanderer", "LaCapitan", "Guise", "Parse", "Haka");
+            StartGame();
+            Card boat = GetCardInPlay("LaParadojaMagnifica");
+            PutInTrash("VortexSurge", "VortexGlitch");
+            GoToPlayCardPhase(env);
+            PlayCard("ParadoxIntrusion");
+            //At the end of the environment turn, this card deals the hero target with the highest HP {H} energy damage.
+            //Then, this card deals X villain targets 2 energy damage each, where x is the number of time vortex cards in the environment trash.
+            QuickHPStorage(haka.CharacterCard, capitan.CharacterCard, boat);
+            AddShuffleTrashCounterAttackTrigger(capitan, fsc.TurnTaker, capitan.CharacterCard);
+            GoToEndOfTurn(env);
+            //trash should be reshuffled so should no longer have enough targets to also damage boat
+            QuickHPCheck(-3, -2, 0);
         }
 
         [Test()]
@@ -304,7 +361,7 @@ namespace CauldronTests
             //Going to Legacy to prevent suprise Decisions from villain
             GoToEndOfTurn(legacy);
             PlayCard("SuperimposedRealities");
-
+            DecisionSelectTarget = spite.CharacterCard;
             UsePower(ra);
             //checking Spite because Ra's power should fail and deal no damage
             QuickHPStorage(haka, spite);
@@ -328,13 +385,30 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestSuperimposedRealitiesDestroySelf()
+        {
+            SetupGameController(new string[] { "Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer" });
+            StartGame();
+            GoToStartOfTurn(haka);
+            //stack spites deck to not get lab raid
+            PutOnDeck("GoodSamaritan");
+            Card reality = PlayCard("SuperimposedRealities");
+            //At the start of the environment turn, destroy this card.
+            GoToEndOfTurn(haka);
+            AssertNextToCard(reality, legacy.CharacterCard);
+            GoToStartOfTurn(env);
+            AssertInTrash(env, reality);
+        }
+
+        [Test()]
         public void TestTemporalAccelerationDestroySelf()
         {
-            SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+            SetupGameController(new string[] { "Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer" });
             StartGame();
-            Card accel = GetCard("TemporalAcceleration");
             GoToStartOfTurn(haka);
-            PlayCard(accel);
+            //stack spites deck to not get lab raid
+            PutOnDeck("GoodSamaritan");
+            Card accel = PlayCard("TemporalAcceleration");
             //At the end of the environment turn, destroy this card.
             GoToStartOfTurn(env);
             AssertInPlayArea(env, accel);
@@ -347,14 +421,11 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
-            Card field = GetCard("BacklashField");
-            PutOnDeck(baron, field);
-            Card ring = GetCard("TheLegacyRing");
-            PutOnDeck(legacy, ring);
-            Card staff = GetCard("TheStaffOfRa");
-            PutOnDeck(ra, staff);
-            Card mere = GetCard("Mere");
-            PutOnDeck(haka, mere);
+            Card field = PutOnDeck("BacklashField");
+            Card ring = PutOnDeck("TheLegacyRing");
+            Card staff = PutOnDeck("TheStaffOfRa");
+            Card mere = PutOnDeck("Mere");
+
             //When this card enters play, play the top card of the villain deck. Then, play the top card of each hero deck in turn order.
             PlayCard(GetCard("TemporalAcceleration"));
             AssertInPlayArea(baron, field);
@@ -368,9 +439,10 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
-            Card reset = GetCard("TemporalReset");
+            //stack spites deck to not get lab raid
+            PutOnDeck("GoodSamaritan");
             GoToStartOfTurn(haka);
-            PlayCard(reset);
+            Card reset = PlayCard("TemporalReset");
             //At the end of the environment turn, destroy this card.
             GoToStartOfTurn(env);
             AssertInPlayArea(env, reset);
@@ -383,16 +455,32 @@ namespace CauldronTests
         {
             SetupGameController("LaCapitan", "Ra", "Parse", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
-            Card pi0 = GetCard("ParadoxIntrusion", 0);
-            Card pi1 = GetCard("ParadoxIntrusion", 1);
-            PlayCards(pi0, pi1);
+            foreach(TurnTakerController ttc in base.GameController.TurnTakerControllers)
+            {
+                if(ttc != fsc)
+                {
+                    IEnumerable<Card> toTrash = FindCardsWhere((Card c) => ttc.TurnTaker.Deck.Cards.Contains(c)).Take(2);
+                    PutInTrash(toTrash);
+                }      
+            }
+
+            Card pi0 = PlayCard("ParadoxIntrusion", 0);
+            Card pi1 = PlayCard("ParadoxIntrusion", 1);
+            Card boat = GetCardInPlay("LaParadojaMagnifica");
+            SetHitPoints(boat, 2);
             //When this card enters play, destroy all other environment cards. Then shuffle 2 cards from each trash pile back into their deck, and each non-character target regains {H} HP.
-            Card reset = GetCard("TemporalReset");
-            QuickShuffleStorage(env);
-            PlayCard(reset);
-            QuickShuffleCheck(1);
+            QuickShuffleStorage(capitan, ra, parse, haka, env);
+            QuickHPStorage(boat);
+            Card reset = PlayCard("TemporalReset");
+            QuickShuffleCheck(1,1,1,1,1);
             AssertInDeck(env, pi0);
             AssertInDeck(env, pi1);
+            AssertNumberOfCardsInTrash(capitan, 0);
+            AssertNumberOfCardsInTrash(ra, 0);
+            AssertNumberOfCardsInTrash(parse, 0);
+            AssertNumberOfCardsInTrash(haka, 0);
+
+            QuickHPCheck(3);
         }
 
         [Test()]
@@ -417,9 +505,10 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
-            Card rev = GetCard("TemporalReversal");
+            //stack spites deck to not get lab raid
+            PutOnDeck("GoodSamaritan");
             GoToStartOfTurn(haka);
-            PlayCard(rev);
+            Card rev = PlayCard("TemporalReversal");
             //At the end of the environment turn, destroy this card.
             GoToStartOfTurn(env);
             AssertInPlayArea(env, rev);
@@ -433,6 +522,8 @@ namespace CauldronTests
             SetupGameController("LaCapitan", "Guise", "Parse", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             Card slip = GetCard("TemporalSlipstream");
+            //give haka more cards in hand
+            DrawCard(haka, 4);
             int guiseTrash = guise.TurnTaker.Trash.NumberOfCards;
             int parseTrash = parse.TurnTaker.Trash.NumberOfCards;
             int hakaTrash = haka.TurnTaker.Trash.NumberOfCards;
@@ -443,8 +534,8 @@ namespace CauldronTests
             //When this card enters play, each player discards their hand and draws that many cards.
             PlayCard(slip);
             AssertNumberOfCardsInTrash(guise, guiseHand + guiseTrash);
-            AssertNumberOfCardsInTrash(guise, parseHand + parseTrash);
-            AssertNumberOfCardsInTrash(guise, hakaHand + hakaTrash);
+            AssertNumberOfCardsInTrash(parse, parseHand + parseTrash);
+            AssertNumberOfCardsInTrash(haka, hakaHand + hakaTrash);
             QuickHandCheck(0, 0, 0);
         }
 
@@ -455,6 +546,8 @@ namespace CauldronTests
             StartGame();
             Card slip = GetCard("TemporalSlipstream");
             GoToStartOfTurn(haka);
+            //stack spites deck to not get lab raid
+            PutOnDeck("GoodSamaritan");
             PlayCard(slip);
             //At the end of the environment turn, destroy this card.
             GoToStartOfTurn(env);
@@ -521,6 +614,8 @@ namespace CauldronTests
             StartGame();
             Card freeze = GetCard("TimeFreeze");
             GoToStartOfTurn(haka);
+                      //stack spites deck to not get lab raid
+            PutOnDeck("GoodSamaritan");
             PlayCard(freeze);
             //At the start of the environment turn, destroy this card.
             GoToStartOfTurn(env);
@@ -532,6 +627,8 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            //stack deck to not have lab raid
+            PutOnDeck("GoodSamaritan");
             Card glitch = GetCard("VortexGlitch");
             //Players may not play one-shots.
             PlayCard(glitch);
@@ -549,8 +646,11 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            //stack deck to not have lab raid
+            PutOnDeck("GoodSamaritan");
             Card glitch = GetCard("VortexGlitch");
             GoToStartOfTurn(haka);
+
             PlayCard(glitch);
             GoToStartOfTurn(env);
             AssertInPlayArea(env, glitch);
@@ -566,14 +666,17 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            //stack deck to not have lab raid
+            PutOnDeck("GoodSamaritan");
             PlayCard("VortexInterference");
             Card staff = GetCard("TheStaffOfRa");
             Card ring = GetCard("TheLegacyRing");
             PlayCards(staff, ring);
             //Whenever a hero uses a power, destroy 1 hero ongoing or equipment card.
+            DecisionSelectCard = staff;
             UsePower(legacy);
-            AssertInPlayArea(ra, staff);
-            AssertInTrash(ring);
+            AssertInPlayArea(legacy, ring);
+            AssertInTrash(staff);
         }
 
         [Test()]
@@ -581,6 +684,8 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            //stack deck to not have lab raid
+            PutOnDeck("GoodSamaritan");
             PlayCard("VortexInterference");
             Card fort = GetCard("Fortitude");
             Card moko = GetCard("TaMoko");
@@ -596,6 +701,8 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            //stack deck to not have lab raid
+            PutOnDeck("GoodSamaritan");
             Card interference = GetCard("VortexInterference");
             GoToStartOfTurn(haka);
             PlayCard(interference);
@@ -613,9 +720,12 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            //stack deck to not have lab raid
+            PutOnDeck("GoodSamaritan");
             PlayCard("VortexSurge");
             //Whenever a hero card is drawn, 1 player must discard a card.
             QuickHandStorage(ra, legacy);
+            DecisionSelectCard = legacy.HeroTurnTaker.Hand.Cards.First();
             DrawCard(ra);
             QuickHandCheck(1, -1);
         }
@@ -625,6 +735,8 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            //stack deck to not have lab raid
+            PutOnDeck("GoodSamaritan");
             Card surge = GetCard("VortexSurge");
             GoToStartOfTurn(haka);
             PlayCard(surge);
