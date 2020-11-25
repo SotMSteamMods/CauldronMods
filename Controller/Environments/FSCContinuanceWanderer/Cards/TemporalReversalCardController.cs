@@ -9,22 +9,14 @@ namespace Cauldron.FSCContinuanceWanderer
 {
     public class TemporalReversalCardController : CardController
     {
-       
-
         public TemporalReversalCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
-
-
-
-        private List<Card> actedHeroes;
-
 
         public override IEnumerator Play()
         {
-            this.actedHeroes = new List<Card>();
             //When this card enters play, place 1 card in play from each other deck back on top of that deck.
+            //SelectTurnTakersAndDoAction filters on BattleZone, no need to check for visibility here
             IEnumerator coroutine = base.GameController.SelectTurnTakersAndDoAction(base.DecisionMaker, new LinqTurnTakerCriteria((TurnTaker turnTaker) => !turnTaker.IsEnvironment && !turnTaker.IsIncapacitatedOrOutOfGame), SelectionType.ReturnToDeck, (TurnTaker turnTaker) => this.MoveCardToDeckResponse(turnTaker), cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
@@ -39,9 +31,9 @@ namespace Cauldron.FSCContinuanceWanderer
 
         private IEnumerator MoveCardToDeckResponse(TurnTaker turnTaker)
         {
-            if (turnTaker.IsHero)
+            if (turnTaker is HeroTurnTaker htt)
             {
-                IEnumerator coroutine = base.GameController.SelectAndReturnCards(base.FindHeroTurnTakerController(turnTaker.ToHero()), new int?(1), new LinqCardCriteria((Card c) => !c.IsCharacter && c.IsInPlay && c.Owner == turnTaker, "card in play"), false, true, false, new int?(1), cardSource: base.GetCardSource());
+                IEnumerator coroutine = GameController.SelectAndReturnCards(FindHeroTurnTakerController(htt), 1, new LinqCardCriteria((Card c) => c.Owner == turnTaker && c.IsInPlay && !c.IsCharacter && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "card in play"), false, true, false, 1, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -53,28 +45,17 @@ namespace Cauldron.FSCContinuanceWanderer
             }
             else
             {
-                IEnumerator coroutine = base.GameController.SelectAndMoveCard(this.DecisionMaker, (Card c) => c.Owner == turnTaker && c.IsInPlay && !c.IsCharacter, turnTaker.Deck, cardSource: base.GetCardSource());
-                IEnumerator coroutine2 = base.GameController.ShuffleLocation(turnTaker.Deck);
+                IEnumerator coroutine = base.GameController.SelectAndMoveCard(DecisionMaker, (Card c) => c.Owner == turnTaker && c.IsInPlay && !c.IsCharacter && GameController.IsCardVisibleToCardSource(c, GetCardSource()), turnTaker.Deck, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
-                    yield return base.GameController.StartCoroutine(coroutine2);
                 }
                 else
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
-                    base.GameController.ExhaustCoroutine(coroutine2);
                 }
             }
             yield break;
-        }
-        private void LogActedCard(Card card)
-        {
-            if (card.SharedIdentifier != null)
-            {
-                IEnumerable<Card> collection = base.FindCardsWhere((Card c) => c.SharedIdentifier != null && c.SharedIdentifier == card.SharedIdentifier && c != card, false, null, false);
-                this.actedHeroes.AddRange(collection);
-            }
         }
 
         public override void AddTriggers()
