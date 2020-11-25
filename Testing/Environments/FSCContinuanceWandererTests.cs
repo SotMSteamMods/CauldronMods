@@ -650,14 +650,17 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            //stack deck to not have lab raid
+            PutOnDeck("GoodSamaritan");
             PlayCard("VortexInterference");
             Card staff = GetCard("TheStaffOfRa");
             Card ring = GetCard("TheLegacyRing");
             PlayCards(staff, ring);
             //Whenever a hero uses a power, destroy 1 hero ongoing or equipment card.
+            DecisionSelectCard = staff;
             UsePower(legacy);
-            AssertInPlayArea(ra, staff);
-            AssertInTrash(ring);
+            AssertInPlayArea(legacy, ring);
+            AssertInTrash(staff);
         }
 
         [Test()]
@@ -665,6 +668,8 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            //stack deck to not have lab raid
+            PutOnDeck("GoodSamaritan");
             PlayCard("VortexInterference");
             Card fort = GetCard("Fortitude");
             Card moko = GetCard("TaMoko");
@@ -680,6 +685,8 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            //stack deck to not have lab raid
+            PutOnDeck("GoodSamaritan");
             Card interference = GetCard("VortexInterference");
             GoToStartOfTurn(haka);
             PlayCard(interference);

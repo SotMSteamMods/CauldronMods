@@ -6,28 +6,24 @@ namespace Cauldron.FSCContinuanceWanderer
 {
     public class VortexInterferenceCardController : CardController
     {
-        #region Constructors
 
         public VortexInterferenceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
 
-        #endregion Constructors
-
-        #region Methods
 
         public override void AddTriggers()
         {
             //Whenever a hero uses a power, destroy 1 hero ongoing or equipment card.
             base.AddTrigger<UsePowerAction>((UsePowerAction p) => true, this.DestroyHeroOngoingOrEquipmentResponse, new TriggerType[] { TriggerType.DestroyCard }, TriggerTiming.After);
             //When another environment card enters play, destroy this card.
-            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction p) => p.CardEnteringPlay.IsEnvironment && p.CardEnteringPlay.Identifier != base.Card.Identifier, (base.DestroyThisCardResponse), TriggerType.DestroySelf, TriggerTiming.After);
+            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction p) => p.CardEnteringPlay.IsEnvironment && p.CardEnteringPlay.Identifier != base.Card.Identifier, base.DestroyThisCardResponse, TriggerType.DestroySelf, TriggerTiming.After);
         }
 
         private IEnumerator DestroyHeroOngoingOrEquipmentResponse(UsePowerAction action)
         {
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), false, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c)), "hero ongoing or equipment"), false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -38,6 +34,5 @@ namespace Cauldron.FSCContinuanceWanderer
             }
             yield break;
         }
-        #endregion Methods
     }
 }
