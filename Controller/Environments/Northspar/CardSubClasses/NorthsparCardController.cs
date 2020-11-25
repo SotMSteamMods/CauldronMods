@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.Northspar
 {
-    public class NorthsparCardController : CardController
+    public abstract class NorthsparCardController : CardController
     {
         public static readonly string FrozenKeyword = "frozen";
         public static readonly string FirstWaypointKeyword = "first waypoint";
@@ -14,7 +14,7 @@ namespace Cauldron.Northspar
         public static readonly string ThirdWaypointKeyword = "third waypoint";
         public static readonly string TakAhabIdentifier = "TakAhab";
 
-        public NorthsparCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected NorthsparCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
@@ -24,9 +24,14 @@ namespace Cauldron.Northspar
             return card.DoKeywordsContain(FrozenKeyword);
         }
 
+        private IEnumerable<Card> FindTakAhab()
+        {
+            return base.FindCardsWhere(c => c.Identifier == TakAhabIdentifier);
+        }
+
         protected bool IsTakAhabInPlay()
         {
-            return base.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.Identifier == TakAhabIdentifier).Count() > 0;
+            return FindTakAhab().Where(c => c.IsInPlayAndHasGameText).Any();
         }
 
         protected bool IsThirdWaypoint(Card card)
@@ -36,16 +41,12 @@ namespace Cauldron.Northspar
 
         protected Card FindTakAhabInPlay()
         {
-            if(!IsTakAhabInPlay())
-            {
-                return null;
-            }
-            return base.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.Identifier == "TakAhab").First();
+            return FindTakAhab().Where(c => c.IsInPlayAndHasGameText).FirstOrDefault();
         }
 
         protected Card FindTakAhabAnywhere()
         {
-            return base.FindCardsWhere(c => c.Identifier == "TakAhab").First();
+            return FindTakAhab().First();
         }
 
         protected int GetNumberOfWaypointsInPlay()
