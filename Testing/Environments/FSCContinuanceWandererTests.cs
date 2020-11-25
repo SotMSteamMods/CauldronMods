@@ -504,6 +504,8 @@ namespace CauldronTests
             SetupGameController("LaCapitan", "Guise", "Parse", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             Card slip = GetCard("TemporalSlipstream");
+            //give haka more cards in hand
+            DrawCard(haka, 4);
             int guiseTrash = guise.TurnTaker.Trash.NumberOfCards;
             int parseTrash = parse.TurnTaker.Trash.NumberOfCards;
             int hakaTrash = haka.TurnTaker.Trash.NumberOfCards;
@@ -514,8 +516,8 @@ namespace CauldronTests
             //When this card enters play, each player discards their hand and draws that many cards.
             PlayCard(slip);
             AssertNumberOfCardsInTrash(guise, guiseHand + guiseTrash);
-            AssertNumberOfCardsInTrash(guise, parseHand + parseTrash);
-            AssertNumberOfCardsInTrash(guise, hakaHand + hakaTrash);
+            AssertNumberOfCardsInTrash(parse, parseHand + parseTrash);
+            AssertNumberOfCardsInTrash(haka, hakaHand + hakaTrash);
             QuickHandCheck(0, 0, 0);
         }
 
@@ -526,6 +528,8 @@ namespace CauldronTests
             StartGame();
             Card slip = GetCard("TemporalSlipstream");
             GoToStartOfTurn(haka);
+            //stack spites deck to not get lab raid
+            PutOnDeck("GoodSamaritan");
             PlayCard(slip);
             //At the end of the environment turn, destroy this card.
             GoToStartOfTurn(env);
