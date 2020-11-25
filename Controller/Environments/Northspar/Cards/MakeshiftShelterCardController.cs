@@ -23,7 +23,7 @@ namespace Cauldron.Northspar
         private IEnumerator ShuffleCardsResponse(PhaseChangeAction pca)
         {
             //you may shuffle a card from the environment trash into the deck.
-            LinqCardCriteria cardCriteria = new LinqCardCriteria((Card c) => c.Location == base.TurnTaker.Trash);
+            LinqCardCriteria cardCriteria = new LinqCardCriteria((Card c) => c.Location == base.TurnTaker.Trash && GameController.IsLocationVisibleToSource(base.TurnTaker.Trash, GetCardSource()));
             Func<Card, IEnumerator> actionWithCard = (Card c) => base.GameController.ShuffleCardIntoLocation(base.DecisionMaker, c, base.TurnTaker.Deck, false, cardSource: base.GetCardSource());
             IEnumerator coroutine = base.GameController.SelectCardsAndDoAction(base.DecisionMaker, cardCriteria, SelectionType.ShuffleCardFromTrashIntoDeck, actionWithCard, new int?(1), true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
@@ -49,12 +49,10 @@ namespace Cauldron.Northspar
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-
             }
-           
         }
 
-public override bool AskIfCardIsIndestructible(Card card)
+        public override bool AskIfCardIsIndestructible(Card card)
         {
             //This card and Supply Depot are indestructible.
             return card == base.Card || card.Identifier == "SupplyDepot";
