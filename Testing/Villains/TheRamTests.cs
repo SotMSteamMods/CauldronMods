@@ -683,5 +683,78 @@ namespace CauldronTests
 
             QuickHPCheck(0, 0, -2, -2, -2);
         }
+        [Test]
+        public void TestRamEndOfTurnDamage()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+
+            QuickHPStorage(legacy, haka, wraith, unity);
+
+            GoToEndOfTurn(ram);
+            QuickHPCheck(0, -3, 0, 0);
+
+            //should be the same on both sides
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            DestroyCard("GrapplingClaw");
+
+            GoToEndOfTurn(ram);
+            QuickHPCheck(-3, 0, 0, 0);
+        }
+        [Test]
+        public void TestRamDamageModifiers()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+            
+            
+            PlayCard("UpClose");
+
+            QuickHPStorage(ram);
+
+            DealDamage(legacy, ram, 2, DTM);
+            QuickHPCheck(-2);
+            DealDamage(haka, ram, 2, DTM);
+            QuickHPCheck(-1);
+
+            FlipCard(ram);
+
+            DealDamage(legacy, ram, 2, DTM);
+            QuickHPCheck(-3);
+            DealDamage(haka, ram, 2, DTM);
+            QuickHPCheck(-3);
+        }
+        [Test]
+        public void TestRamFlipTriggers()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis");
+
+            StartGame();
+            Card claw = GetCardInPlay("GrapplingClaw");
+            DestroyCard(claw);
+
+            Card fallback = PlayCard("FallBack");
+
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+
+            AssertNotFlipped(ram);
+            PlayCard("UpClose");
+
+            AssertFlipped(ram);
+            AssertNotInPlay(fallback);
+            AssertIsInPlay(claw);
+
+            DestroyCard("UpClose");
+            AssertNotFlipped(ram);
+        }
     }
 }
