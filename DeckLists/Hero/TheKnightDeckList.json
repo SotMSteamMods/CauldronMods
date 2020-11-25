@@ -11,9 +11,9 @@
 			"count": 1,
 			"title": "The Knight",
 			"body": "Swing",
-			"backgroundColor": "FBF8F9",
+			"backgroundColor": "81a3a1",
 			"foilBackgroundColor": "FEFEFE",
-			"hitpointColor": "C94742",
+			"hitpointColor": "81a3a1",
 			"character": true,
 			"powers": [
 				"{TheKnight} deals 1 target 1 melee damage."
@@ -362,9 +362,9 @@
 			"promoTitle": "The Fair Knight",
 			"shortPromoTitle": "Fair Knight",
 			"body": "Resourceful",
-			"backgroundColor": "FBF8F9",
+			"backgroundColor": "96A3AB",
 			"foilBackgroundColor": "FEFEFE",
-			"hitpointColor": "C94742",
+			"hitpointColor": "96A3AB",
 			"character": true,
 			"powers": [
 				"{TheKnight} and all her targets regain 2 HP."
@@ -404,9 +404,9 @@
 			"promoTitle": "The Berzerker Knight",
 			"shortPromoTitle": "Berzerk Knight",
 			"body": "Rage",
-			"backgroundColor": "FBF8F9",
+			"backgroundColor": "CF5240",
 			"foilBackgroundColor": "FEFEFE",
-			"hitpointColor": "C94742",
+			"hitpointColor": "CF5240",
 			"character": true,
 			"powers": [
 				"Destroy an equipment target. {TheKnight} deals 1 target X psychic damage, where X is the HP of the equipment before it was destroyed by 1."
@@ -447,9 +447,9 @@
 			"promoTitle": "The Knight 1929",
 			"shortPromoTitle": "1929 Knight",
 			"body": "Vigilar",
-			"backgroundColor": "FBF8F9",
+			"backgroundColor": "97856C",
 			"foilBackgroundColor": "FEFEFE",
-			"hitpointColor": "C94742",
+			"hitpointColor": "97856C",
 			"character": true,
 			"powers": [
 				"Play an equipment target next to a hero. Treat {TheKnight}'s name on that equipment as the name of the hero it is next to."
@@ -536,9 +536,9 @@
 			"promoTitle": "The Old Knight: Wasteland Ronin",
 			"shortPromoTitle": "The Old Knight",
 			"body": "Destroyer",
-			"backgroundColor": "FBF8F9",
+			"backgroundColor": "D4E6B5",
 			"foilBackgroundColor": "FEFEFE",
-			"hitpointColor": "C94742",
+			"hitpointColor": "D4E6B5",
 			"character": true,
 			"powers": [
 				"{TheKnight} deals 1 target 2 irreducible lightning damage. Return 1 of your equipment cards in play to your hand."
@@ -574,9 +574,9 @@
 			"promoTitle": "The Young Knight: Wasteland Ronin",
 			"shortPromoTitle": "The Young Knight",
 			"body": "Dragon's Dance",
-			"backgroundColor": "FBF8F9",
+			"backgroundColor": "D4E6B5",
 			"foilBackgroundColor": "FEFEFE",
-			"hitpointColor": "C94742",
+			"hitpointColor": "D4E6B5",
 			"character": true,
 			"powers": [
 				"{TheKnight} deals herself and 2 other targets 2 toxic damage each"

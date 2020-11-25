@@ -19,7 +19,7 @@
             ],
             "advancedIcons": [],
             "body": "Mechanical Juggernaut",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "c7c0ad",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 80,
@@ -339,7 +339,7 @@
                 "villain"
             ],
             "body": "Amphibious Dreadnought",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "c1b49b",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 75,
@@ -401,7 +401,18 @@
                 "BaccaratCharacter": "Baccarat placeholder",
                 "AceOfSorrowsBaccaratCharacter": "Ace Of Sorrows Baccarat placeholder",
                 "AceOfSwordsBaccaratCharacter": "Ace Of Swords Baccarat placeholder",
-                "1929BaccaratCharacter": "Baccarat 1929 placeholder"
+                "1929BaccaratCharacter": "Baccarat 1929 placeholder",
+                "TheKnightCharacter": "The Knight placeholder",
+                "BerzerkerTheKnightCharacter": "The Berzerker Knight placeholder",
+                "FairTheKnightCharacter": "The Fair Knight placeholder",
+                "PastTheKnightCharacter": "The Knight 1929 placeholder",
+                "WastelandRoninTheKnightCharacter": "The Wasteland Ronin Knights placeholder",
+                "MagnificentMaraCharacter": "Magnificent Mara placeholder",
+                "MinistryOfStrategicScienceMagnificentMaraCharacter": "Ministry Of Strategic Science Magnificent Mara placeholder",
+                "1929MagnificentMaraCharacter": "1929 Magnificent Mara placeholder",
+                "VanishCharacter": "Vanish placeholder",
+                "FirstResponseVanishCharacter": "First Response Vanish  placeholder",
+                "1929VanishCharacter": "Vanish 1929 placeholder"
             }
         },
         {
@@ -414,7 +425,7 @@
                 "villain"
             ],
             "body": "Dreadnought Pilot",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "c1b49b",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 20,
@@ -455,21 +466,7 @@
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
             ],
-            "difficulty": 3,
-            "openingLines": {
-                "default": "default placeholder",
-                "TheKnightCharacter": "The Knight placeholder",
-                "BerzerkerTheKnightCharacter": "The Berzerker Knight placeholder",
-                "FairTheKnightCharacter": "The Fair Knight placeholder",
-                "PastTheKnightCharacter": "The Knight 1929 placeholder",
-                "WastelandRoninTheKnightCharacter": "The Wasteland Ronin Knights placeholder",
-                "MagnificentMaraCharacter": "Magnificent Mara placeholder",
-                "MinistryOfStrategicScienceMagnificentMaraCharacter": "Ministry Of Strategic Science Magnificent Mara placeholder",
-                "1929MagnificentMaraCharacter": "1929 Magnificent Mara placeholder",
-                "VanishCharacter": "Vanish placeholder",
-                "FirstResponseVanishCharacter": "First Response Vanish  placeholder",
-                "1929VanishCharacter": "Vanish 1929 placeholder"
-            }
+            "difficulty": 3
         }
     ]
 }
