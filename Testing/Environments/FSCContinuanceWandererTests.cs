@@ -421,9 +421,10 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
-            Card reset = GetCard("TemporalReset");
+            //stack spites deck to not get lab raid
+            PutOnDeck("GoodSamaritan");
             GoToStartOfTurn(haka);
-            PlayCard(reset);
+            Card reset = PlayCard("TemporalReset");
             //At the end of the environment turn, destroy this card.
             GoToStartOfTurn(env);
             AssertInPlayArea(env, reset);
@@ -486,9 +487,10 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
-            Card rev = GetCard("TemporalReversal");
+            //stack spites deck to not get lab raid
+            PutOnDeck("GoodSamaritan");
             GoToStartOfTurn(haka);
-            PlayCard(rev);
+            Card rev = PlayCard("TemporalReversal");
             //At the end of the environment turn, destroy this card.
             GoToStartOfTurn(env);
             AssertInPlayArea(env, rev);

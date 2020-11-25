@@ -9,28 +9,23 @@ namespace Cauldron.FSCContinuanceWanderer
 {
     public class TemporalReversalCardController : CardController
     {
-        #region Constructors
+       
 
         public TemporalReversalCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
 
-        #endregion Constructors
 
-        #region Properties
 
         private List<Card> actedHeroes;
 
-        #endregion Properties
-
-        #region Methods
 
         public override IEnumerator Play()
         {
             this.actedHeroes = new List<Card>();
             //When this card enters play, place 1 card in play from each other deck back on top of that deck.
-            IEnumerator coroutine = base.GameController.SelectTurnTakersAndDoAction(null, new LinqTurnTakerCriteria((TurnTaker turnTaker) => !turnTaker.IsEnvironment && !turnTaker.IsIncapacitatedOrOutOfGame), SelectionType.ReturnToDeck, (TurnTaker turnTaker) => this.MoveCardToDeckResponse(turnTaker), cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTurnTakersAndDoAction(base.DecisionMaker, new LinqTurnTakerCriteria((TurnTaker turnTaker) => !turnTaker.IsEnvironment && !turnTaker.IsIncapacitatedOrOutOfGame), SelectionType.ReturnToDeck, (TurnTaker turnTaker) => this.MoveCardToDeckResponse(turnTaker), cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -85,9 +80,8 @@ namespace Cauldron.FSCContinuanceWanderer
         public override void AddTriggers()
         {
             //At the end of the environment turn, destroy this card.
-            base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(base.DestroyThisCardResponse), TriggerType.DestroySelf);
+            base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, base.DestroyThisCardResponse, TriggerType.DestroySelf);
         }
 
-        #endregion Methods
     }
 }
