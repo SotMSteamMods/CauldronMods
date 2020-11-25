@@ -704,9 +704,12 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            //stack deck to not have lab raid
+            PutOnDeck("GoodSamaritan");
             PlayCard("VortexSurge");
             //Whenever a hero card is drawn, 1 player must discard a card.
             QuickHandStorage(ra, legacy);
+            DecisionSelectCard = legacy.HeroTurnTaker.Hand.Cards.First();
             DrawCard(ra);
             QuickHandCheck(1, -1);
         }
@@ -716,6 +719,8 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            //stack deck to not have lab raid
+            PutOnDeck("GoodSamaritan");
             Card surge = GetCard("VortexSurge");
             GoToStartOfTurn(haka);
             PlayCard(surge);
