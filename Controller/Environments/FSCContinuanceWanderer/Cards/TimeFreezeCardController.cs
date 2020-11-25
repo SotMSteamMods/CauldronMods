@@ -10,11 +10,13 @@ namespace Cauldron.FSCContinuanceWanderer
 {
     public class TimeFreezeCardController : CardController
     {
-
+        //This card is very fragile, test changes carefully.
         public TimeFreezeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
 
+
+        //TODO - These variables need to be removed and logic in Play needs to be moved to callbacks.
         private TurnPhase triggerPhase;
         private TurnPhase skipToTurnPhase;
 
