@@ -38,7 +38,9 @@ namespace Cauldron.FSCContinuanceWanderer
             //When a Play Card/Use Power/Draw Card phase is entered then give the Superimposed target those actions instead
             //base.AddPhaseChangeTrigger((TurnTaker turnTaker) => turnTaker.IsHero && turnTaker != cardThisIsNextTo.NativeDeck.OwnerTurnTaker, (Phase phase) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(phase), (PhaseChangeAction action) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(action.ToPhase.Phase), this.SuperimposedPhaseResponse, new TriggerType[] { TriggerType.SetPhaseActionCount, TriggerType.PreventPhaseAction }, TriggerTiming.After);
             //If a hero were to hero play. Instead the Superimposed plays.
+
             base.AddTrigger<PlayCardAction>((PlayCardAction action) => action.TurnTakerController.TurnTaker != superimposedTurnTaker && action.TurnTakerController.IsHero && GameController.IsTurnTakerVisibleToCardSource(action.TurnTakerController.TurnTaker, GetCardSource()), SuperimposePlayResponse, TriggerType.PlayCard, TriggerTiming.Before);
+
             //If a hero were to use a power. Instead the Superimposed plays.
             base.AddTrigger<UsePowerAction>((UsePowerAction action) => action.HeroUsingPower.TurnTaker != superimposedTurnTaker && GameController.IsTurnTakerVisibleToCardSource(action.HeroUsingPower.TurnTaker, GetCardSource()), SuperimposePowerResponse, TriggerType.UsePower, TriggerTiming.Before);
             //If a hero were todraw a card. Instead the Superimposed does.
@@ -97,10 +99,11 @@ namespace Cauldron.FSCContinuanceWanderer
         }
         */
 
+
+        //TODO - issue triggers from prevented card still exist for unknown reasons.
         private IEnumerator SuperimposePlayResponse(PlayCardAction action)
         {
-            var superImposed = FindHeroTurnTakerController(superimposedTurnTaker);
-            IEnumerator coroutine = CancelAction(action);
+            var coroutine = CancelAction(action, isPreventEffect: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -109,9 +112,24 @@ namespace Cauldron.FSCContinuanceWanderer
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+
             System.Console.WriteLine($"### Canceled - {action.CardToPlay}");
-            
-            coroutine = base.SelectAndPlayCardFromHand(superImposed, false);
+                        
+            var superImposed = FindHeroTurnTakerController(superimposedTurnTaker);
+
+            //Test Behaves differently, Game doesn't return card to players hand.
+            coroutine = GameController.MoveCard(null, action.CardToPlay, action.Origin, action.FromBottom, false, evenIfIndestructible: true, doesNotEnterPlay: true, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+
+            coroutine = base.SelectAndPlayCardFromHand(superImposed, true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -136,7 +154,7 @@ namespace Cauldron.FSCContinuanceWanderer
             }
             System.Console.WriteLine($"### Canceled - {action.Power}");
 
-            coroutine = base.SelectAndUsePower(base.FindCardController(cardThisIsNextTo), false);
+            coroutine = base.SelectAndUsePower(base.FindCardController(cardThisIsNextTo), true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
