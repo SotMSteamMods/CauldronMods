@@ -27,7 +27,7 @@ namespace Cauldron.Northspar
         private IEnumerator DealDamageResponse(PhaseChangeAction pca)
         {
             // this card deals the {H + 1} non-environment targets with the lowest HP 4 cold damage each...
-            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, (Card c) => c.IsNonEnvironmentTarget,(Card c) => new int?(4), DamageType.Cold, numberOfTargets: 4);
+            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, (Card c) => c.IsNonEnvironmentTarget, (Card c) => 4, DamageType.Cold, numberOfTargets: Game.H + 1);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
