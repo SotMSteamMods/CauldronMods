@@ -14,6 +14,10 @@ namespace CauldronTests
         #region NorthsparHelperFunctions
 
         protected TurnTakerController northspar { get { return FindEnvironment(); } }
+        protected bool IsFrozen(Card card)
+        {
+            return card.DoKeywordsContain("frozen");
+        }
 
         #endregion
 
@@ -1242,7 +1246,7 @@ namespace CauldronTests
         [Test()]
         public void TestRagingBlizzard_LessThan4CardsInDeck()
         {
-            SetupGameController("BaronBlade", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            SetupGameController(new string[] { "BaronBlade", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar" });
             StartGame();
 
             DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
@@ -1258,12 +1262,156 @@ namespace CauldronTests
             //there are 4 frozen cards
             QuickShuffleStorage(northspar);
             GoToEndOfTurn(northspar);
-            AssertNumberOfCardsInTrash(northspar, 2);
+            if(FindCardsWhere((Card c) => IsFrozen(c) && northspar.TurnTaker.Trash.Cards.Contains(c) && c != ragingBlizzard).Count() == 2)
+            {
+                AssertNumberOfCardsInTrash(northspar, 3);
+
+            }
+            else
+            {
+                AssertNumberOfCardsInTrash(northspar, 2);
+            }
             QuickShuffleCheck(1);
 
         }
 
+        [Test()]
+        public void TestSnowShrieker_IncreaseDamage()
+        {
+            SetupGameController("BaronBlade", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            StartGame();
 
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            Card snowShrieker = PlayCard("SnowShrieker");
+
+            //Increase fire damage dealt to this card by 2.
+            QuickHPStorage(snowShrieker);
+            DealDamage(ra, snowShrieker, 2, DamageType.Fire);
+            QuickHPCheck(-4);
+
+            //check only fire
+            QuickHPUpdate();
+            DealDamage(ra, snowShrieker, 2, DamageType.Projectile);
+            QuickHPCheck(-2);
+
+            //check only shrieker
+            QuickHPStorage(legacy);
+            DealDamage(ra, legacy, 2, DamageType.Fire);
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestSnowShrieker_EndOfTurn()
+        {
+            SetupGameController("BaronBlade", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            StartGame();
+
+            SetHitPoints(baron, 5);
+            SetHitPoints(az, 15);
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            Card snowShrieker = PlayCard("SnowShrieker");
+            //put 3 frozens in the trash
+            IEnumerable<Card> toTrash = FindCardsWhere((Card c) => IsFrozen(c) && northspar.TurnTaker.Deck.Cards.Contains(c)).Take(3);
+            PutInTrash(toTrash);
+
+            //At the end of the environment turn, this card deals the non-environment target with the second lowest HP X cold damage, where X = 1 plus the number of Frozen cards in the environment trash.
+            //az is the second lowest
+            QuickHPStorage(baron, az, legacy, ra);
+            GoToEndOfTurn(northspar);
+            QuickHPCheck(0, -4, 0, 0);
+
+        }
+
+        [Test()]
+        public void TestWhatsLeftOfThem_Play_SearchFromTrash()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            Card makeshift = PutInTrash("MakeshiftShelter");
+            ////When this card enters play search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play, then shuffle the deck and destroy this card.
+            DecisionSelectCard = makeshift;
+            DecisionSelectLocation = new LocationChoice(northspar.TurnTaker.Trash);
+            QuickShuffleStorage(northspar);
+            Card whatsLeft = PlayCard("WhatsLeftOfThem");
+            AssertIsInPlay(makeshift);
+            QuickShuffleCheck(1);
+
+        }
+
+        [Test()]
+        public void TestWhatsLeftOfThem_Play_SearchFromDeck()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            PlayCard("MakeshiftShelter");
+
+            Card depot = PutOnDeck("SupplyDepot");
+            //When this card enters play, search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play, then shuffle the deck and destroy this card.
+            DecisionSelectCards = new Card[] { depot, haka.CharacterCard };
+            DecisionSelectLocation = new LocationChoice(northspar.TurnTaker.Deck);
+
+            QuickShuffleStorage(northspar);
+            Card whatsLeft = PlayCard("WhatsLeftOfThem");
+            AssertIsInPlay(depot);
+            QuickShuffleCheck(1);
+
+        }
+
+        [Test()]
+        public void TestWhatsLeftOfThem_Play_SearchFromDeck_ThirdWaypoint()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            PlayCard("MakeshiftShelter");
+            PlayCard("SupplyDepot");
+
+            Card landing = PutOnDeck("LandingSite");
+            ////When this card enters play search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play, then shuffle the deck and destroy this card.
+            DecisionSelectCard = landing;
+            DecisionSelectLocation = new LocationChoice(northspar.TurnTaker.Deck);
+
+            QuickShuffleStorage(northspar);
+
+            Card whatsLeft = PlayCard("WhatsLeftOfThem");
+
+            AssertIsInPlay(landing);
+            QuickShuffleCheck(1);
+
+        }
+
+        [Test()]
+        public void TestWhatsLeftOfThem_EndOfTurn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            Card makeshift = PutInTrash("MakeshiftShelter");
+            DecisionSelectCard = makeshift;
+            DecisionSelectLocation = new LocationChoice(northspar.TurnTaker.Trash);
+            GoToPlayCardPhase(northspar);
+            Card whatsLeft = PlayCard("WhatsLeftOfThem");
+
+            //At the end of the environment turn, this card deals each hero target 1 psychic damage and is destroyed.
+            QuickHPStorage(baron, ra, legacy, haka);
+            AssertInPlayArea(northspar, whatsLeft);
+            GoToEndOfTurn(northspar);
+            QuickHPCheck(0, -1, -1, -1);
+            AssertInTrash(whatsLeft);
+
+        }
 
 
     }
