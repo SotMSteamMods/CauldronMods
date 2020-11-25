@@ -11,6 +11,9 @@ namespace Cauldron.TangoOne
 {
     public class PastTangoOneCharacterCardController : HeroCharacterCardController
     {
+        private const int PowerDamageToDeal = 3;
+        private const int Incapacitate1CardsToDraw = 2;
+        private const int Incapacitate2CardsToPlay = 2;
         private const int Incapacitate3CardsToDestroy = 1;
 
         public PastTangoOneCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
