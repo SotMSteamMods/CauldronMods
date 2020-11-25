@@ -41,7 +41,7 @@ namespace Cauldron.FSCContinuanceWanderer
             //...reveal the top card of each deck in turn order and either discard it or replace it.
             List<Card> revealedCards = new List<Card>();
             TurnTaker turnTaker = turnTakerController.TurnTaker;
-            IEnumerator coroutine = base.GameController.RevealCards(turnTakerController, turnTaker.Deck, 1, revealedCards);
+            IEnumerator coroutine = base.GameController.RevealCards(turnTakerController, turnTaker.Deck, 1, revealedCards, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
