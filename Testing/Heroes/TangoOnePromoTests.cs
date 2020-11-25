@@ -177,6 +177,19 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace1929, "Ra", "Legacy", "Megalopolis");
 
+            GoToStartOfTurn(TangoOne);
+            
+            GoToUsePowerPhase(TangoOne);
+            UsePower(TangoOne);
+
+            GoToDrawCardPhase(TangoOne);
+            
+
+            GoToEndOfTurn(TangoOne);
+            GoToStartOfTurn(TangoOne);
+
+
+
             Assert.True(false, "TODO");
         }
 
