@@ -630,8 +630,11 @@ namespace CauldronTests
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            //stack deck to not have lab raid
+            PutOnDeck("GoodSamaritan");
             Card glitch = GetCard("VortexGlitch");
             GoToStartOfTurn(haka);
+
             PlayCard(glitch);
             GoToStartOfTurn(env);
             AssertInPlayArea(env, glitch);
