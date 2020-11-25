@@ -5,6 +5,8 @@ using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+using System.Collections;
 
 namespace CauldronTests
 {
@@ -12,6 +14,13 @@ namespace CauldronTests
     class FSCContinuanceWandererTests : BaseTest
     {
         protected TurnTakerController fsc { get { return FindEnvironment(); } }
+
+        private void AddShuffleTrashCounterAttackTrigger(TurnTakerController ttc, TurnTaker turnTakerToReshuffleTrash, Card cardSource)
+        {
+            Func<DealDamageAction, bool> criteria = (DealDamageAction dd) => dd.Target == ttc.CharacterCard;
+            Func<DealDamageAction, IEnumerator> response = (DealDamageAction dd) => this.GameController.ShuffleTrashIntoDeck(this.GameController.FindTurnTakerController(turnTakerToReshuffleTrash));
+            this.GameController.AddTrigger<DealDamageAction>(new Trigger<DealDamageAction>(this.GameController, criteria, response, new TriggerType[] { TriggerType.ShuffleTrashIntoDeck }, TriggerTiming.After, this.GameController.FindCardController(cardSource).GetCardSource()));
+        }
 
         [Test()]
         public void TestLoadFSC()
@@ -249,6 +258,24 @@ namespace CauldronTests
             QuickHPStorage(haka.CharacterCard, capitan.CharacterCard, boat);
             GoToEndOfTurn(env);
             QuickHPCheck(-3, -2, -2);
+        }
+
+        [Test()]
+        public void TestParadoxIntrusionEndTurnDamage_Dynamic()
+        {
+            SetupGameController("Cauldron.FSCContinuanceWanderer", "LaCapitan", "Guise", "Parse", "Haka");
+            StartGame();
+            Card boat = GetCardInPlay("LaParadojaMagnifica");
+            PutInTrash("VortexSurge", "VortexGlitch");
+            GoToPlayCardPhase(env);
+            PlayCard("ParadoxIntrusion");
+            //At the end of the environment turn, this card deals the hero target with the highest HP {H} energy damage.
+            //Then, this card deals X villain targets 2 energy damage each, where x is the number of time vortex cards in the environment trash.
+            QuickHPStorage(haka.CharacterCard, capitan.CharacterCard, boat);
+            AddShuffleTrashCounterAttackTrigger(capitan, fsc.TurnTaker, capitan.CharacterCard);
+            GoToEndOfTurn(env);
+            //trash should be reshuffled so should no longer have enough targets to also damage boat
+            QuickHPCheck(-3, -2, 0);
         }
 
         [Test()]
