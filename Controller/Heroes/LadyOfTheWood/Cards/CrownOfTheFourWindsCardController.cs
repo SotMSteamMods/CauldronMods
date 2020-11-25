@@ -14,25 +14,30 @@ namespace Cauldron.LadyOfTheWood
 
 		public override IEnumerator UsePower(int index = 0)
 		{
-			//LadyOfTheWood deals 1 target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage.
+
+			int damage1 = GetPowerNumeral(0, 1);
+			int damage2 = GetPowerNumeral(1, 1);
+			int damage3 = GetPowerNumeral(2, 1);
+			int damage4 = GetPowerNumeral(3, 1);
+			//LadyOfTheWood deals one target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage.
 			List<DealDamageAction> targets = new List<DealDamageAction>();
-			IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Toxic, new int?(1), false, new int?(1), false, false, false, null, null, targets, null, null, false, null, null, false, null, base.GetCardSource(null));
-			IEnumerator secondDamage = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Fire, new int?(1), false, new int?(1), false, false, false, (Card c) => !(from d in targets
-																																																															 select d.Target).Contains(c), null, targets, null, null, false, null, null, false, null, base.GetCardSource(null));
-			IEnumerator thirdDamage = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Lightning, new int?(1), false, new int?(1), false, false, false, (Card c) => !(from d in targets
-																																																																 select d.Target).Contains(c), null, targets, null, null, false, null, null, false, null, base.GetCardSource(null));
-			IEnumerator fourthDamage = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Cold, new int?(1), false, new int?(1), false, false, false, (Card c) => !(from d in targets
-																																																															 select d.Target).Contains(c), null, targets, null, null, false, null, null, false, null, base.GetCardSource(null));
+			IEnumerator firstDamage = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), damage1, DamageType.Toxic, new int?(1), false, new int?(1), storedResultsDamage: targets, cardSource: base.GetCardSource());
+			IEnumerator secondDamage = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), damage2, DamageType.Fire, new int?(1), false, new int?(1), additionalCriteria: (Card c) => !(from d in targets
+																																																															 select d.Target).Contains(c), storedResultsDamage: targets, cardSource: base.GetCardSource());
+			IEnumerator thirdDamage = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), damage3, DamageType.Lightning, new int?(1), false, new int?(1), additionalCriteria: (Card c) => !(from d in targets
+																																																																select d.Target).Contains(c), storedResultsDamage: targets, cardSource: base.GetCardSource());
+			IEnumerator fourthDamage = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), damage4, DamageType.Cold, new int?(1), false, new int?(1), additionalCriteria: (Card c) => !(from d in targets
+																																																															select d.Target).Contains(c), storedResultsDamage: targets, cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
-				yield return base.GameController.StartCoroutine(coroutine);
+				yield return base.GameController.StartCoroutine(firstDamage);
 				yield return base.GameController.StartCoroutine(secondDamage);
 				yield return base.GameController.StartCoroutine(thirdDamage);
 				yield return base.GameController.StartCoroutine(fourthDamage);
 			}
 			else
 			{
-				base.GameController.ExhaustCoroutine(coroutine);
+				base.GameController.ExhaustCoroutine(firstDamage);
 				base.GameController.ExhaustCoroutine(secondDamage);
 				base.GameController.ExhaustCoroutine(thirdDamage);
 				base.GameController.ExhaustCoroutine(fourthDamage);

@@ -42,9 +42,9 @@
             "openingLines": {
                 "default": "default placeholder",
                 "MistressOfFateCharacter": "Mistress of Fate placeholder",
-                "1929RamCharacter": "1929 Ram placeholder"
+                "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "AbyssalSolitaire",
@@ -131,7 +131,7 @@
                 "Increase damage dealt by hero targets by 1.",
                 "At the start of your turn, shuffle 2 cards with the same name from your trash into your deck or this card is destroyed."
             ],
-            "flavorText": "Havoc Handed the card back.{BR}“It's a pretty small weapon.”{BR}“'Tis not a weapon.'Tis a coupon{BR}for victory.”"
+            "flavorText": "Havoc Handed the card back.{BR}“It's a pretty small weapon.”{BR}“'Tis not a weapon. 'Tis a coupon{BR}for victory.”"
         },
         {
             "identifier": "AfterlifeEuchre",
@@ -197,7 +197,7 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "TheKnight",
+                    "identifier": "The Knight",
                     "text": "This place{BR}has seen better days."
                 },
                 {
@@ -274,7 +274,7 @@
                 "You may shuffle a card from your trash into your deck. If you do, put a card with the same name from your trash into play.",
                 "Shuffle all copies of that card from your trash into your deck."
             ],
-            "flavorText": "Baccarat grinned through what remained of his lips. “Shall we play again?”"
+            "flavorText": "Baccarat grinned through what{BR}remained of his lips. “Shall we play{BR}again?”"
         },
         {
             "identifier": "IFold",
@@ -291,7 +291,7 @@
             "flavorQuotes": [
                 {
                     "identifier": "Tachyon",
-                    "text": "Don't worry. His luck improves the second time around."
+                    "text": "Don't worry. His luck{BR}improves the second time around."
                 }
             ],
             "flavorReference": "Tachyon, Freedom Five #735"
@@ -356,9 +356,9 @@
             "openingLines": {
                 "default": "default placeholder",
                 "MistressOfFateCharacter": "Mistress of Fate placeholder",
-                "1929RamCharacter": "1929 Ram placeholder"
+                "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "BaccaratCharacter",
@@ -398,13 +398,13 @@
             "openingLines": {
                 "default": "default placeholder",
                 "MistressOfFateCharacter": "Mistress of Fate placeholder",
-                "1929RamCharacter": "1929 Ram placeholder"
+                "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "BaccaratCharacter",
-            "promoIdentifier": "1929BaccaratCharacter",
+            "promoIdentifier": "PastBaccaratCharacter",
             "count": 1,
             "title": "Baccarat",
             "promoTitle": "Baccarat 1929",
@@ -439,9 +439,9 @@
             "openingLines": {
                 "default": "default placeholder",
                 "MistressOfFateCharacter": "Mistress of Fate placeholder",
-                "1929RamCharacter": "1929 Ram placeholder"
+                "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         }
     ]
 }

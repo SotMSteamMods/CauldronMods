@@ -654,6 +654,7 @@ namespace CauldronTests
             //get GrandSummon from hand for consistent behavior
             PutInHand("GrandSummon");
             Card grand = GetCardFromHand("GrandSummon");
+            StackDeck("BloodRite"); //stack the deck so that there's always a card to shuffle.
 
             GoToPlayCardPhase(necro);
 
@@ -663,6 +664,7 @@ namespace CauldronTests
             int numCardsInTrashBefore = GetNumberOfCardsInTrash(necro);
             //Reveal cards from the top of your deck until you reveal 2 Undead cards. Put 1 into play and 1 into the trash.
             PlayCard(grand);
+            
             AssertInTrash(necro, grand);
             QuickShuffleCheck(0, 1, 0, 0);
 
@@ -1030,11 +1032,31 @@ namespace CauldronTests
         [Test()]
         public void TestTalismanBehaviorAfterNextIsDestroyed()
         {
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(necro);
+            Card decoy = PlayCard("DecoyProjection");
+            //put the talisman in play on decoy
+            DecisionSelectCard = decoy;
+            var card = PutIntoPlay("Talisman");
+            AssertNextToCard(card, decoy);
+
+            //obliterate fanatic
+            //DealDamage(baron, fanatic, 99, DamageType.Psychic, true);
+
+            DestroyCard(decoy, baron.CharacterCard);
+
+            AssertInPlayArea(visionary, card);
+        }
+
+        [Test()]
+        public void TestTalismanBehaviorAfterNextIsDestroyed_Character()
+        {
             SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
             GoToPlayCardPhase(necro);
-
             //put the talisman in play on fanatic
             DecisionSelectCard = fanatic.CharacterCard;
             var card = PutIntoPlay("Talisman");
@@ -1043,7 +1065,7 @@ namespace CauldronTests
             //obliterate fanatic
             DealDamage(baron, fanatic, 99, DamageType.Psychic, true);
 
-            AssertInPlayArea(necro, card);
+            AssertNextToCard(card, fanatic.CharacterCard);
         }
 
         [Test()]

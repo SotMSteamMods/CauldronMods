@@ -26,7 +26,7 @@ namespace Cauldron.TheStranger
             List<MoveCardDestination> deck = new List<MoveCardDestination>();
             deck.Add(new MoveCardDestination(base.HeroTurnTaker.Deck, false, false, false));
             List<MoveCardAction> storedShuffle = new List<MoveCardAction>();
-            Func<IEnumerator> shuffleFunc = new Func<IEnumerator>( () => base.GameController.SelectCardsFromLocationAndMoveThem(this.DecisionMaker, base.TurnTaker.Trash, new int?(0), 4, new LinqCardCriteria((Card c) => this.IsRune(c), "rune", true, false, null, null, false), deck, false, true, true, false, null, storedShuffle, false, false, false, null, false, true, null, null, base.GetCardSource(null)));
+            Func<IEnumerator> shuffleFunc = new Func<IEnumerator>( () => base.GameController.SelectCardsFromLocationAndMoveThem(this.DecisionMaker, base.TurnTaker.Trash, new int?(0), 4, new LinqCardCriteria((Card c) => this.IsRune(c), "rune", true, false, null, null, false), deck,storedResultsMove: storedShuffle,cardSource: base.GetCardSource()));
             string shuffleCardsMessage = "You may shuffle up to 4 Runes from your trash into your deck";
             Function shuffle = new Function(this.DecisionMaker, shuffleCardsMessage, SelectionType.ShuffleCardFromTrashIntoDeck, shuffleFunc, null, null, shuffleCardsMessage);
             //discard card function details
@@ -49,6 +49,28 @@ namespace Cauldron.TheStranger
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if(selectFunction.Index == 0)
+            {
+                coroutine = base.GameController.SendMessageAction(base.Card.Title + " shuffles " + base.CharacterCard.Title + "'s deck!", Priority.Medium, base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                coroutine = base.ShuffleDeck(base.HeroTurnTakerController, base.TurnTaker.Deck);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
 
             //For each card shuffled or discarded this way, {TheStranger} may draw a card or regain 1HP.

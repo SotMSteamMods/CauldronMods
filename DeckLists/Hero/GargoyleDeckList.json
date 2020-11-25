@@ -40,7 +40,7 @@
                 "default": "default placeholder",
                 "VectorCharacter": "Vector placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "AbsorbAndUnleash",
@@ -446,11 +446,11 @@
                 "default": "default placeholder",
                 "VectorCharacter": "Vector placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "GargoyleCharacter",
-            "promoIdentifier": "2199Gargoyle",
+            "promoIdentifier": "FutureGargoyle",
             "count": 1,
             "title": "Gargoyle",
             "promoTitle": "2199 Gargoyle",
@@ -488,7 +488,7 @@
                 "default": "default placeholder",
                 "VectorCharacter": "Vector placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

@@ -14,6 +14,7 @@ namespace CauldronTests
         #region TheWanderingIsleHelperFunctions
 
         protected TurnTakerController isle { get { return FindEnvironment(); } }
+        protected HeroTurnTakerController stranger { get { return FindHero("TheStranger"); } }
 
         private bool IsTeryxInPlay(TurnTakerController ttc)
         {
@@ -35,7 +36,32 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheWanderingIsle");
 
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
-            
+
+        }
+
+
+        [Test()]
+        public void TestDecklist()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            Card card = GetCard("Teryx");
+            AssertIsTarget(card, 50);
+            AssertCardHasKeyword(card, "living island", false);
+
+            card = GetCard("AncientParasite");
+            AssertIsTarget(card, 20);
+            AssertCardHasKeyword(card, "creature", false);
+
+            card = GetCard("BarnacleHydra");
+            AssertIsTarget(card, 6);
+            AssertCardHasKeyword(card, "creature", false);
+
+            card = GetCard("TimedDetonator");
+            AssertIsTarget(card, 8);
+            AssertCardHasKeyword(card, "device", false);
+
         }
 
         [Test()]
@@ -43,15 +69,17 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            Card teryx = PutIntoPlay("Teryx");
+            AssertInPlayArea(env, teryx);
 
             //teryx is indestructible, so shouldn't be destroyed
-            int numCardsInPlayBefore = GetNumberOfCardsInPlay(isle);
             DestroyCard(teryx, baron.CharacterCard);
-            int numCardsInPlayAfter = GetNumberOfCardsInPlay(isle);
-            Assert.AreEqual(numCardsInPlayBefore, numCardsInPlayAfter, $"Teryx was destroyed when they shouldn't have. Expected {numCardsInPlayBefore}, actual {numCardsInPlayAfter}");
+            AssertInPlayArea(env, teryx);
 
+            //but not immune to damage
+            QuickHPStorage(teryx);
+            DealDamage(baron.CharacterCard, teryx, 3, DamageType.Cold);
+            QuickHPCheck(-3);
         }
 
         [Test()]
@@ -59,14 +87,12 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            Card teryx = PutIntoPlay("Teryx");
 
             //If this card reaches 0HP, the heroes lose.
             DealDamage(baron.CharacterCard, teryx, 50, DamageType.Melee, true);
-            
-            AssertGameOver(EndingResult.EnvironmentDefeat);
 
+            AssertGameOver(EndingResult.EnvironmentDefeat);
         }
 
         [Test()]
@@ -74,15 +100,14 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            Card teryx = PutIntoPlay("Teryx");
 
             //At the end of the environment turn, the villain target with the highest HP deals Teryx {H + 2} energy damage.
             //H = 3, should be dealt 5 damage
-            QuickHPStorage(teryx);
+            GoToStartOfTurn(isle);
+            QuickHPStorage(teryx, baron.CharacterCard, ra.CharacterCard);
             GoToEndOfTurn(isle);
-            QuickHPCheck(-5);
-
+            QuickHPCheck(-5, 0, 0);
         }
 
         [Test()]
@@ -90,17 +115,15 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            Card teryx = PutIntoPlay("Teryx");
 
             //set hp lower so something to gain
             SetHitPoints(teryx, 30);
 
             //Whenever a hero target would deal damage to Teryx, Teryx Instead regains that much HP.
-            QuickHPStorage(teryx);
+            QuickHPStorage(teryx, baron.CharacterCard, ra.CharacterCard);
             DealDamage(ra, teryx, 5, DamageType.Fire);
-            QuickHPCheck(5);
-
+            QuickHPCheck(5, 0, 0);
         }
 
         [Test()]
@@ -108,20 +131,19 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
-            List<int?> hpBefore = new List<int?>() { ra.CharacterCard.HitPoints, fanatic.CharacterCard.HitPoints, haka.CharacterCard.HitPoints };
+
+            QuickHPStorage(baron, ra, fanatic, haka);
+
             //When this card enters play, the {H - 1} villain targets with the lowest HP each deal 3 lightning damage to a different hero target.
-            //H = 3, so 2 villain targets hould deal damage
+            //H = 3, so 2 villain targets should deal damage
             //since we aren't selecting targets, it should default to ra, then fanatic being dealt damage
-            PutIntoPlay("AmphibiousAssault");
-            List<int?> hpAfter = new List<int?>() { ra.CharacterCard.HitPoints, fanatic.CharacterCard.HitPoints, haka.CharacterCard.HitPoints };
+            var card = PutIntoPlay("AmphibiousAssault");
+            AssertInPlayArea(isle, card);
 
-            Assert.AreEqual(hpBefore[0] - 3, hpAfter[0], "Ra's hitpoints doin't match.");
-            Assert.AreEqual(hpBefore[1] - 3, hpAfter[1], "Fanatic's hitpoints doin't match.");
-            Assert.AreEqual(hpBefore[2], hpAfter[2], "Haka's hitpoints doin't match.");
-
+            QuickHPCheck(0, -3, -3, 0);
         }
 
-        [Test()]
+        [Test]
         public void TestAmphibiousAssaultPlayWith1Villains()
         {
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
@@ -129,18 +151,60 @@ namespace CauldronTests
             //destroy mdp so there is only baron blade in play
             DestroyCard(GetCardInPlay("MobileDefensePlatform"));
 
-            List<int?> hpBefore = new List<int?>() { ra.CharacterCard.HitPoints, fanatic.CharacterCard.HitPoints, haka.CharacterCard.HitPoints };
-            //When this card enters play, the {H - 1} villain targets with the lowest HP each deal 3 lightning damage to a different hero target.
-            //H = 3, so 2 villain targets should deal damage
+            QuickHPStorage(baron, ra, fanatic, haka);
+
             //however, there is only 1 villain target in play, so only 1 instance of damage
             //since we aren't selecting targets, it should default to ra
-            PutIntoPlay("AmphibiousAssault");
-            List<int?> hpAfter = new List<int?>() { ra.CharacterCard.HitPoints, fanatic.CharacterCard.HitPoints, haka.CharacterCard.HitPoints };
+            var card = PutIntoPlay("AmphibiousAssault");
+            AssertInPlayArea(isle, card);
 
-            Assert.AreEqual(hpBefore[0] - 3, hpAfter[0], "Ra's hitpoints doin't match.");
-            Assert.AreEqual(hpBefore[1], hpAfter[1], "Fanatic's hitpoints doin't match.");
-            Assert.AreEqual(hpBefore[2], hpAfter[2], "Haka's hitpoints doin't match.");
+            QuickHPCheck(0, -3, 0, 0);
+        }
 
+        [Test()]
+        public void TestAmphibiousAssaultPlayWithNotEnoughHeros()
+        {
+            SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //incap fanatic and haka so there's not enough hero targets
+            DealDamage(baron.CharacterCard, fanatic.CharacterCard, 99, DamageType.Cold, true);
+            DealDamage(baron.CharacterCard, haka.CharacterCard, 99, DamageType.Cold, true);
+
+            QuickHPStorage(baron, ra);
+
+            //When this card enters play, the {H - 1} villain targets with the lowest HP each deal 3 lightning damage to a different hero target.
+            //H = 3, so 2 villain targets should deal damage
+            //since we aren't selecting targets, it should default to ra (only one available)
+            var card = PutIntoPlay("AmphibiousAssault");
+            AssertInPlayArea(isle, card);
+
+            QuickHPCheck(0, -3);
+        }
+
+        [Test()]
+        public void TestAmphibiousAssaultStartOfTurnNoHeroCardsPlayed()
+        {
+            SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //stack villain deck to not play hasten doom
+            var topCard = PutOnDeck("MobileDefensePlatform");
+
+            //don't play a hero card
+            GoToPlayCardPhase(ra);
+
+            GoToPlayCardPhase(haka);
+
+            var card = PutIntoPlay("AmphibiousAssault");
+            AssertInPlayArea(isle, card);
+            AssertNotInPlay(topCard);
+
+            //At the start of the environment turn, if any hero cards were played this round, play the top card of the villain deck. Then, destroy this card.
+            GoToStartOfTurn(isle);
+
+            AssertNotInPlay(topCard);
+            AssertInTrash(card);
         }
 
         [Test()]
@@ -150,47 +214,49 @@ namespace CauldronTests
             StartGame();
 
             //stack villain deck to not play hasten doom
-            PutOnDeck("MobileDefensePlatform");
+            var topCard = PutOnDeck("MobileDefensePlatform");
 
             //play a hero card
             GoToPlayCardPhase(ra);
-            PlayCard(GetCardFromHand(ra, 0));
+            var random = GetCardFromHand(ra);
+            PlayCard(random);
             GoToPlayCardPhase(haka);
 
-            PutIntoPlay("AmphibiousAssault");
-            int numCardsInVillainDeckBefore = GetNumberOfCardsInDeck(baron);
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+            var card = PutIntoPlay("AmphibiousAssault");
+            AssertInPlayArea(isle, card);
+            AssertNotInPlay(topCard);
+
             //At the start of the environment turn, if any hero cards were played this round, play the top card of the villain deck. Then, destroy this card.
             GoToStartOfTurn(isle);
 
-            int numCardsInVillainDeckAfter = GetNumberOfCardsInDeck(baron);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
-
-            //should be 1 fewer card in villain deck, and amphibious assult should have been destroyed
-            Assert.AreEqual(numCardsInVillainDeckBefore - 1, numCardsInVillainDeckAfter, "Number of cards in Baron Blade's deck don't match.");
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore - 1, numCardsInEnvironmentPlayAfter, "Number of environment cards in play don't match.");
+            AssertInPlayArea(baron, topCard);
+            AssertInTrash(card);
         }
 
         [Test()]
-        public void TestAmphibiousAssaultStartOfTurnNoHeroCardsPlayed()
+        public void TestAmphibiousAssaultNotInPlay()
         {
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("AmphibiousAssault");
-            int numCardsInVillainDeckBefore = GetNumberOfCardsInDeck(baron);
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
-            //At the start of the environment turn, if any hero cards were played this round, play the top card of the villain deck. Then, destroy this card.
-            //no hero cards were played, so no villain cards played and this card not discarded
+            //stack villain deck to not play hasten doom
+            var topCard = PutOnDeck("MobileDefensePlatform");
+
+            //don't play a hero card
+            GoToPlayCardPhase(ra);
+
+            GoToPlayCardPhase(haka);
+                        
+            //Issue #109 - villain deck is playing a card at the beginning of the turn
+            AssertNotInPlay(topCard);
+            //AmphibiousAssult isn't in play, so the top card of the villain shouldn't be played
+            
             GoToStartOfTurn(isle);
 
-            int numCardsInVillainDeckAfter = GetNumberOfCardsInDeck(baron);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
-
-            //should be the same for both
-            Assert.AreEqual(numCardsInVillainDeckBefore, numCardsInVillainDeckAfter, "Number of cards in Baron Blade's deck don't match.");
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore, numCardsInEnvironmentPlayAfter, "Number of environment cards in play don't match.");
+            //and still no
+            AssertNotInPlay(topCard);
         }
+
 
         [Test()]
         public void TestAncientParasiteHeroDamageMoveCard()
@@ -198,15 +264,26 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("AncientParasite");
-            Card parasite = GetCardInPlay("AncientParasite");
-            //Whenever this card is dealt damage by a hero target, move it next to that target.
-            int numCardsNextToRaBefore = GetNumberOfCardsNextToCard(ra.CharacterCard);
-            DealDamage(ra, GetCardInPlay("AncientParasite"), 5, DamageType.Fire);
-            int numCardsNextToRaAfter = GetNumberOfCardsNextToCard(ra.CharacterCard);
+            var mdp = GetCardInPlay("MobileDefensePlatform");
 
-            Assert.AreEqual(numCardsNextToRaBefore + 1, numCardsNextToRaAfter, "Number of cards next to Ra don't match");
+            Card parasite = PutIntoPlay("AncientParasite");
+            AssertInPlayArea(isle, parasite);
+
+            //Whenever this card is dealt damage by a hero target, move it next to that target.
+            DealDamage(ra, parasite, 5, DamageType.Fire);
             AssertNextToCard(parasite, ra.CharacterCard);
+
+            //still next too
+            DealDamage(ra, parasite, 1, DamageType.Fire);
+            AssertNextToCard(parasite, ra.CharacterCard);
+
+            //different hero
+            DealDamage(fanatic, parasite, 1, DamageType.Fire);
+            AssertNextToCard(parasite, fanatic.CharacterCard);
+
+            //doesn't move next to haka, still next to fanatic
+            DealDamage(haka, mdp, 1, DamageType.Melee);
+            AssertNextToCard(parasite, fanatic.CharacterCard);
         }
 
         [Test()]
@@ -215,15 +292,13 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("AncientParasite");
+            Card parasite = PutIntoPlay("AncientParasite");
+            AssertInPlayArea(isle, parasite);
 
             //Whenever this card is dealt damage by a hero target, move it next to that target.
-            int numCardsNextToBaronBladeBefore = GetNumberOfCardsNextToCard(baron.CharacterCard);
-            DealDamage(baron, GetCardInPlay("AncientParasite"), 5, DamageType.Fire);
-            int numCardsNextToBaronBladeAfter = GetNumberOfCardsNextToCard(baron.CharacterCard);
-
-            Assert.AreEqual(numCardsNextToBaronBladeBefore, numCardsNextToBaronBladeAfter, "Number of cards next to Baron Blade don't match");
-
+            DealDamage(baron, parasite, 5, DamageType.Fire);
+            //didn't move
+            AssertInPlayArea(isle, parasite);
         }
 
         [Test()]
@@ -232,21 +307,22 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("AncientParasite");
-            Card parasite = GetCardInPlay("AncientParasite");
+            Card teryx = PutIntoPlay("Teryx");
+            Card parasite = PutIntoPlay("AncientParasite");
+
             //move next to ra
-            DealDamage(ra, GetCardInPlay("AncientParasite"), 5, DamageType.Fire);
+            DealDamage(ra, parasite, 5, DamageType.Fire);
+            AssertNextToCard(parasite, ra.CharacterCard);
 
             //At the start of the environment turn, if this card is next to a target, it deals that target {H} toxic damage and moves back to the environment play area. 
             //H is 3, so 3 damage should be dealt
-            QuickHPStorage(ra);
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, haka.CharacterCard, parasite, teryx);
 
             GoToStartOfTurn(isle);
-            int numCardsInIslePlayAfter = GetNumberOfCardsInPlay(isle);
-            QuickHPCheck(-3);
-            AssertNotNextToCard(parasite, ra.CharacterCard);
 
-           
+            QuickHPCheck(0, -3, 0, 0, 0, 0);
+            AssertNotNextToCard(parasite, ra.CharacterCard);
+            AssertInPlayArea(isle, parasite);
         }
 
         [Test()]
@@ -255,19 +331,20 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("AncientParasite");
-            PutIntoPlay("Teryx");
-
-            Card teryx = GetCardInPlay("Teryx");
-
+            Card teryx = PutIntoPlay("Teryx");
+            Card parasite = PutIntoPlay("AncientParasite");
+            AssertInPlayArea(isle, teryx);
+            AssertInPlayArea(isle, parasite);
 
             //Otherwise it deals Teryx {H + 2} toxic damage.
             //H is 3, so 5 damage should be dealt
-            QuickHPStorage(teryx);
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, haka.CharacterCard, parasite, teryx);
 
             GoToStartOfTurn(isle);
-            QuickHPCheck(-5);
+            QuickHPCheck(0, 0, 0, 0, 0, -5);
 
+            AssertInPlayArea(isle, teryx);
+            AssertInPlayArea(isle, parasite);
         }
 
         [Test()]
@@ -276,34 +353,51 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("DecoyProjection");
-            Card decoy = GetCardInPlay("DecoyProjection");
+            Card decoy = PutIntoPlay("DecoyProjection");
+            Card parasite = PutIntoPlay("AncientParasite");
 
-            PutIntoPlay("AncientParasite");
-            DealDamage(decoy, GetCardInPlay("AncientParasite"), 5, DamageType.Fire);
+            DealDamage(decoy, parasite, 5, DamageType.Fire);
+            AssertNextToCard(parasite, decoy);
 
-            int numCardsInVisionaryPlayBefore = GetNumberOfCardsInPlay(visionary);
             DestroyCard(decoy);
-            int numCardsInVisionaryPlayAfter = GetNumberOfCardsInPlay(visionary);
 
-            //visionary should have 1 less card in play, not two
-            Assert.AreEqual(numCardsInVisionaryPlayBefore - 1, numCardsInVisionaryPlayAfter, "Visionary cards in play don't match");
-
-
+            AssertInPlayArea(visionary, parasite);
         }
 
         [Test()]
-        public void TestExposedLifeforcePlay()
+        public void TestExposedLifeforcePlay_SearchFromDeck()
         {
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
+            QuickShuffleStorage(isle);
+            //start with teryx in the deck
+            Card teryx = PutOnDeck("Teryx");
             // When this card enters play, search the environment deck and trash for Teryx and put it into play, then shuffle the deck.
             PutIntoPlay("ExposedLifeforce");
 
             //teryx should now be in play
-            Assert.IsTrue(this.IsTeryxInPlay(isle), "Teryx is not in play");
+            AssertIsInPlay(teryx);
 
+            QuickShuffleCheck(1);
+        }
+
+        [Test()]
+        public void TestExposedLifeforcePlay_SearchFromTrash()
+        {
+            SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            QuickShuffleStorage(isle);
+            //start with teryx in trash
+            Card teryx = PutInTrash("Teryx");
+            // When this card enters play, search the environment deck and trash for Teryx and put it into play, then shuffle the deck.
+            PutIntoPlay("ExposedLifeforce");
+
+            //teryx should now be in play
+            AssertIsInPlay(teryx);
+
+            QuickShuffleCheck(1);
         }
 
         [Test()]
@@ -320,8 +414,6 @@ namespace CauldronTests
 
             //damge should be increase, so will be 5
             QuickHPCheck(-5);
-
-
         }
 
         [Test()]
@@ -348,25 +440,68 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            Card teryx = PutIntoPlay("Teryx");
 
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
 
-            PutIntoPlay("ExposedLifeforce");
-
-
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+            Card card = PutIntoPlay("ExposedLifeforce");
+            AssertInPlayArea(isle, card);
 
             //Destroy this card if Teryx regains 10HP in a single round.
             GainHP(teryx, 10);
 
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
+            AssertInTrash(card);
+        }
 
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore - 1, numCardsInEnvironmentPlayAfter, "Number of environment cards in play don't match");
+        [Test()]
+        public void TestExposedLifeforceDestroyWhen10_OverRound()
+        {
+            SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
 
+            Card teryx = PutIntoPlay("Teryx");
 
+            //set hitpoints so there is room to gain
+            SetHitPoints(teryx, 30);
+
+            Card card = PutIntoPlay("ExposedLifeforce");
+            AssertInPlayArea(isle, card);
+
+            //Destroy this card if Teryx regains 10HP in a single round.
+            GoToStartOfTurn(ra);
+            //5 now
+            GainHP(teryx, 5);
+            GoToNextTurn();
+            //5 later
+            GainHP(teryx, 5);
+
+            AssertInTrash(card);
+        }
+
+        [Test()]
+        public void TestExposedLifeforceDestroyWhen10_ResetsOverRoundBreak()
+        {
+            SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            Card teryx = PutIntoPlay("Teryx");
+
+            //set hitpoints so there is room to gain
+            SetHitPoints(teryx, 30);
+
+            Card card = PutIntoPlay("ExposedLifeforce");
+            AssertInPlayArea(isle, card);
+
+            //Destroy this card if Teryx regains 10HP in a single round.
+            GoToStartOfTurn(ra);
+            //5 now
+            GainHP(teryx, 5);
+            GoToStartOfTurn(baron);
+            //5 later
+            GainHP(teryx, 5);
+            //because split over a round break, should not be destroyed
+            AssertInPlayArea(isle, card);
         }
 
         [Test()]
@@ -375,26 +510,18 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            Card teryx = PutIntoPlay("Teryx");
 
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
 
-            PutIntoPlay("ExposedLifeforce");
-
-
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+            Card card = PutIntoPlay("ExposedLifeforce");
+            AssertInPlayArea(isle, card);
 
             //Destroy this card if Teryx regains 10HP in a single round.
             GainHP(teryx, 9);
 
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
-
-            //Since teryx only gained 9 hp should not destroy
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore, numCardsInEnvironmentPlayAfter, "Number of environment cards in play don't match");
-
-
+            AssertInPlayArea(isle, card);
         }
 
         [Test()]
@@ -404,18 +531,17 @@ namespace CauldronTests
             StartGame();
 
             //put teryx into play
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            Card teryx = PutIntoPlay("Teryx");
+            AssertInPlayArea(isle, teryx);
 
-            PutIntoPlay("BarnacleHydra");
-            Card hydra = GetCardInPlay("BarnacleHydra");
+            Card hydra = PutIntoPlay("BarnacleHydra");
+            AssertInPlayArea(isle, hydra);
+
             //When this card is destroyed, it deals Teryx {H} toxic damage.
             //H=3, so 3 damage should be dealt
-            QuickHPStorage(teryx);
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard, teryx);
             DestroyCard(hydra, baron.CharacterCard);
-            QuickHPCheck(-3);
-
-
+            QuickHPCheck(0, 0, 0, 0, -3);
         }
 
         [Test()]
@@ -424,17 +550,16 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
+            Card hydra = PutIntoPlay("BarnacleHydra");
+            AssertInPlayArea(isle, hydra);
 
-            PutIntoPlay("BarnacleHydra");
-            Card hydra = GetCardInPlay("BarnacleHydra");
             //When this card is destroyed, it deals Teryx {H} toxic damage.
-            //teryx is not in play so damage should be dealt, essentially checking for no crash
-
+            //teryx is not in play so no damage should be dealt, essentially checking for no crash
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard);
             DestroyCard(hydra, baron.CharacterCard);
+            QuickHPCheck(0, 0, 0, 0);
 
             AssertNotGameOver();
-
-
         }
 
         [Test()]
@@ -443,26 +568,18 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            SetHitPoints(ra.CharacterCard, 5);
-            SetHitPoints(visionary.CharacterCard, 7);
-            SetHitPoints(haka.CharacterCard, 9);
-
-
-            PutIntoPlay("BarnacleHydra");
-            Card hydra = GetCardInPlay("BarnacleHydra");
+            Card hydra = PutIntoPlay("BarnacleHydra");
 
             //set hitpoints so have room to gain things
             //this also checks to make sure that damage being dealt ignores hydra
             SetHitPoints(hydra, 1);
+            SetHitPoints(haka, 5); //ensure haka is the lowest target
 
             //At the end of the environment turn, this card deals the non-environment target with the lowest HP 2 projectile damage. Then, if Submerge is in play, this card regains 6HP
-            //lowest HP is ra
             //Submerge is not in play
-            QuickHPStorage(ra.CharacterCard, hydra);
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard, hydra);
             GoToEndOfTurn(isle);
-            QuickHPCheck(-2, 0);
-
-
+            QuickHPCheck(0, 0, 0, -2, 0);
         }
 
         [Test()]
@@ -471,35 +588,24 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-       
+            GoToStartOfTurn(isle);
 
-            SetHitPoints(ra.CharacterCard, 5);
-            SetHitPoints(visionary.CharacterCard, 7);
-            SetHitPoints(haka.CharacterCard, 9);
-
-
-            PutIntoPlay("BarnacleHydra");
-            Card hydra = GetCardInPlay("BarnacleHydra");
+            Card hydra = PutIntoPlay("BarnacleHydra");
+            //submerge reduces all damage by 2
+            PutIntoPlay("Submerge");
 
             //set hitpoints so have room to gain things
             //this also checks to make sure that damage being dealt ignores hydra
             SetHitPoints(hydra, 1);
-
-            GoToPlayCardPhase(isle);
-            //put submerge into play
-            PutIntoPlay("Submerge");
+            SetHitPoints(haka, 5); //ensure haka is the lowest target
 
             //At the end of the environment turn, this card deals the non-environment target with the lowest HP 2 projectile damage. Then, if Submerge is in play, this card regains 6HP
-            //lowest HP is ra
             //Submerge is in play
-            //submerge reduces damage by 2 so 0 damage should be dealt
-            QuickHPStorage(ra);
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard, hydra);
             GoToEndOfTurn(isle);
-            QuickHPCheck(0);
-
-            //hydra max Hp is 6, so should be at max Hp now
+            //haka should not be dealt any damage because of submerge reduction
+            QuickHPCheck(0, 0, 0, 0, 5);
             AssertIsAtMaxHP(hydra);
-
         }
 
         [Test()]
@@ -508,23 +614,17 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            Card teryx = PutIntoPlay("Teryx");
 
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
 
-            PutIntoPlay("Islandquake");
-
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+            var card = PutIntoPlay("Islandquake");
+            AssertInPlayArea(isle, card);
 
             //Then, this card is destroyed.
             GoToStartOfTurn(isle);
-
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
-
-            //this card should have destroyed itself
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore - 1, numCardsInEnvironmentPlayAfter, "Number of environment cards in play don't match");
+            AssertInTrash(card);
         }
 
         [Test()]
@@ -536,8 +636,7 @@ namespace CauldronTests
             //destroy mdp so baron blade is not immune to damage
             DestroyCard(GetCardInPlay("MobileDefensePlatform"));
 
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            Card teryx = PutIntoPlay("Teryx");
 
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
@@ -546,13 +645,146 @@ namespace CauldronTests
             //ra deals damage to teryx to cause hp gain and to be immune to islandquake damage
             DealDamage(ra.CharacterCard, teryx, 5, DamageType.Fire);
 
-            PutIntoPlay("Islandquake");
-
+            var card = PutIntoPlay("Islandquake");
+            AssertInPlayArea(isle, card);
 
             //At the start of the environment turn, this card deals each target other than Teryx 4 sonic damage. Hero targets which caused Teryx to regain HP since the end of the last environment turn are immune to this damage.
             QuickHPStorage(baron.CharacterCard, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard, teryx);
             GoToStartOfTurn(isle);
             QuickHPCheck(-4, 0, -4, -4, 0);
+        }
+
+        [Test()]
+        public void TestIslandquakeStartOfTurnRedirectForMultipleHits()
+        {
+            SetupGameController("BaronBlade", "Ra", "Tachyon", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //destroy mdp so baron blade is not immune to damage
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"));
+
+            Card teryx = PutIntoPlay("Teryx");
+
+            //set hitpoints so there is room to gain
+            SetHitPoints(teryx, 30);
+
+            GoToPlayCardPhase(ra);
+            //ra deals damage to teryx to cause hp gain and to be immune to islandquake damage
+            DealDamage(ra.CharacterCard, teryx, 5, DamageType.Fire);
+
+            //tachyon has synaptic interruption in play
+            PutIntoPlay("SynapticInterruption");
+
+            var card = PutIntoPlay("Islandquake");
+            AssertInPlayArea(isle, card);
+
+            //tachyon uses synaptic interruption to redirect damage to ra, who is immune to islandquake damage
+            DecisionRedirectTarget = ra.CharacterCard;
+
+            //At the start of the environment turn, this card deals each target other than Teryx 4 sonic damage. Hero targets which caused Teryx to regain HP since the end of the last environment turn are immune to this damage.
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, tachyon.CharacterCard, haka.CharacterCard, teryx);
+            GoToStartOfTurn(isle);
+
+            //ra was immune to damage and tachyon redirected damage to ra
+            //blade and haka were hit
+            QuickHPCheck(-4, 0, 0, -4, 0);
+        }
+
+        [Test()]
+        public void TestIslandquakeStartOfTurnHealTeryxDuringStartOfTurnTrigger()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Ra", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //destroy mdp so baron blade is not immune to damage
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"));
+
+            Card teryx = PutIntoPlay("Teryx");
+
+            //set hitpoints so there is room to gain
+            SetHitPoints(teryx, 30);
+
+            var card = PutIntoPlay("Islandquake");
+            AssertInPlayArea(isle, card);
+
+            //both the stranger and ra have a mark of the blood thorn attached
+            GoToPlayCardPhase(stranger);
+            DecisionSelectCard = ra.CharacterCard;
+            Card rune1 = PutIntoPlay("MarkOfTheBloodThorn");
+            AssertNextToCard(rune1, ra.CharacterCard);
+            DecisionSelectCard = stranger.CharacterCard;
+            Card rune2 = PutIntoPlay("MarkOfTheBloodThorn");
+            AssertNextToCard(rune2, stranger.CharacterCard);
+
+            //the stranger uses 2x mark of the blood thorn to heal teryx when ra is damaged
+            base.ResetDecisions();
+            DecisionSelectTargets = new[] {
+                //islandquake targets ra
+                ra.CharacterCard,
+                //ra targets the stranger, via blood thorn
+                stranger.CharacterCard,
+                //the stranger targets teryx, via blood thorn
+                teryx,
+                //islandquake targets the stranger
+                stranger.CharacterCard,
+                //islandquake targets the remaining targets
+                baron.CharacterCard,
+                haka.CharacterCard
+            };
+
+            //At the start of the environment turn, this card deals each target other than Teryx 4 sonic damage. Hero targets which caused Teryx to regain HP since the end of the last environment turn are immune to this damage.
+            QuickHPStorage(baron.CharacterCard, stranger.CharacterCard, ra.CharacterCard, haka.CharacterCard, teryx);
+            GoToStartOfTurn(isle);
+
+            //stranger was immune, but took 1 damage from blood thorn
+            //blade ra, and haka were hit
+            //teryx healed from mainstay
+            QuickHPCheck(-4, -1, -4, -4, 1);
+        }
+
+        [Test()]
+        [Ignore("TODO:issues#199")]
+        public void TestIslandquakeStartOfTurnHealTeryxDuringDamage()
+        {
+            SetupGameController("BaronBlade", "VoidGuardMainstay", "Ra", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //destroy mdp so baron blade is not immune to damage
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"));
+
+            Card teryx = PutIntoPlay("Teryx");
+
+            //set hitpoints so there is room to gain
+            SetHitPoints(teryx, 30);
+
+            //mainstay has preemptive payback in play
+            PutIntoPlay("PreemptivePayback");
+
+            var card = PutIntoPlay("Islandquake");
+            AssertInPlayArea(isle, card);
+
+            //mainstay uses preemptive payback to heal teryx before being hit
+            //yes, destroy preemptive payback
+            DecisionYesNo = true;
+            DecisionSelectTargets = new[] {
+                //islandquake targets mainstay
+                voidMainstay.CharacterCard,
+                //mainstay preemptively targets teryx, via preemptive payback
+                teryx,
+                //islandquake targets the remaining targets
+                baron.CharacterCard,
+                ra.CharacterCard,
+                haka.CharacterCard
+            };
+
+            //At the start of the environment turn, this card deals each target other than Teryx 4 sonic damage. Hero targets which caused Teryx to regain HP since the end of the last environment turn are immune to this damage.
+            QuickHPStorage(baron.CharacterCard, voidMainstay.CharacterCard, ra.CharacterCard, haka.CharacterCard, teryx);
+            GoToStartOfTurn(isle);
+
+            //mainstay was immune
+            //blade ra, and haka were hit
+            //teryx healed from mainstay
+            QuickHPCheck(-4, 0, -4, -4, 3);
         }
 
         [Test()]
@@ -562,24 +794,14 @@ namespace CauldronTests
             StartGame();
 
             //stack deck to reduce variance
-            PutOnDeck("Teryx");
+            var teryx = PutOnDeck("Teryx");
 
             //When this card enters play, play the top card of the environment deck.
 
-            int numCardsInEnvironmentDeckBefore = GetNumberOfCardsInDeck(isle);
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
             //Play song of the deep
-            PutIntoPlay("SongOfTheDeep");
-
-            int numCardsInEnvironmentDeckAfter = GetNumberOfCardsInDeck(isle);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
-
-
-            //should be 2 fewer cards in the deck, one for song of the deep, 1 for top card of the deck
-            Assert.AreEqual(numCardsInEnvironmentDeckBefore - 2, numCardsInEnvironmentDeckAfter, "The number of cards in the environment deck don't match.");
-            //should be 2 more cards in play, one for song of the deep, 1 for top card of deck
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore + 2, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play area don't match.");
-
+            var card = PutIntoPlay("SongOfTheDeep");
+            AssertInPlayArea(isle, card);
+            AssertInPlayArea(isle, teryx);
         }
 
         [Test()]
@@ -591,21 +813,21 @@ namespace CauldronTests
             PutOnDeck("AncientParasite");
             PutIntoPlay("Teryx");
             //Play song of the deep
-            PutIntoPlay("SongOfTheDeep");
+            var card = PutIntoPlay("SongOfTheDeep");
+            AssertInPlayArea(isle, card);
 
             //collect the appropriate values for all hands
             GoToEndOfTurn(haka);
             //At the start of the environment turn, if Teryx is in play, each player may draw a card. Then, if there are at least 2 creatures in play, destroy this card.
             QuickHandStorage(ra, visionary, haka);
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+
             //setting all players to draw a card
             DecisionYesNo = true;
             GoToStartOfTurn(isle);
             QuickHandCheck(1, 1, 1);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
 
-            //since no creatures in play, should not be destroyed
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play area don't match.");
+            //since only 1 creature in play, should not be destroyed
+            AssertInPlayArea(isle, card);
         }
 
         [Test()]
@@ -618,23 +840,24 @@ namespace CauldronTests
             PutOnDeck("BarnacleHydra");
 
             //Play song of the deep
-            PutIntoPlay("SongOfTheDeep");
+            var card = PutIntoPlay("SongOfTheDeep");
             PutIntoPlay("BarnacleHydra");
             PutIntoPlay("AncientParasite");
             PutIntoPlay("Teryx");
+            AssertInPlayArea(isle, card);
 
             //collect the appropriate values for all hands
-            GoToEndOfTurn(haka);            //At the start of the environment turn, if Teryx is in play, each player may draw a card. Then, if there are at least 2 creatures in play, destroy this card.
+            GoToEndOfTurn(haka);            
+            //At the start of the environment turn, if Teryx is in play, each player may draw a card. Then, if there are at least 2 creatures in play, destroy this card.
             QuickHandStorage(ra, visionary, haka);
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+
             //setting all players to draw a card
             DecisionYesNo = true;
             GoToStartOfTurn(isle);
+            //since 2 creatures in play, song of the deep destroyed
             QuickHandCheck(1, 1, 1);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
-
-            //since 2 creatures in play, 1 destroyed
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore - 1, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play area don't match.");
+            AssertNotInPlay(card);
+            AssertInTrash(card);
         }
 
         [Test()]
@@ -645,38 +868,60 @@ namespace CauldronTests
 
             PutOnDeck("AncientParasite");
             //Play song of the deep
-            PutIntoPlay("SongOfTheDeep");
+            var card = PutIntoPlay("SongOfTheDeep");
             PutIntoPlay("BarnacleHydra");
             PutIntoPlay("AncientParasite");
+            AssertInPlayArea(isle, card);
 
             //collect the appropriate values for all hands
             GoToEndOfTurn(haka);
             //At the start of the environment turn, if Teryx is in play, each player may draw a card. Then, if there are at least 2 creatures in play, destroy this card.
             QuickHandStorage(ra, visionary, haka);
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+
             //setting all players to draw a card
             DecisionYesNo = true;
             GoToStartOfTurn(isle);
             //since teryx is not in play, nothing will be drawn
             QuickHandCheck(0, 0, 0);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
 
             //since no creatures in play, should not be destroyed
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play area don't match.");
+            AssertInPlayArea(isle, card);
         }
 
         [Test()]
-        public void TestSubmergePlay()
+        public void TestSubmergePlay_SearchFromDeck()
         {
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
+
+            QuickShuffleStorage(isle);
+            Card teryx = PutOnDeck("Teryx");
 
             // When this card enters play, search the environment deck and trash for Teryx and put it into play, then shuffle the deck.
             PutIntoPlay("Submerge");
 
             //teryx should now be in play
-            Assert.IsTrue(this.IsTeryxInPlay(isle), "Teryx is not in play");
+            AssertIsInPlay(teryx);
 
+            QuickShuffleCheck(1);
+        }
+
+        [Test()]
+        public void TestSubmergePlay_SearchFromTrash()
+        {
+            SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            QuickShuffleStorage(isle);
+            Card teryx = PutInTrash("Teryx");
+
+            // When this card enters play, search the environment deck and trash for Teryx and put it into play, then shuffle the deck.
+            PutIntoPlay("Submerge");
+
+            //teryx should now be in play
+            AssertIsInPlay(teryx);
+
+            QuickShuffleCheck(1);
         }
 
         [Test()]
@@ -685,13 +930,22 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("Submerge");
+            var card = PutIntoPlay("Submerge");
+            AssertInPlayArea(isle, card);
             //Reduce all damage dealt by 2
 
+            //check villain damage
             QuickHPStorage(ra);
             DealDamage(baron, ra, 5, DamageType.Lightning);
             //since 5 damage dealt - 2 = should be 3 less now
             QuickHPCheck(-3);
+
+            //check hero damage
+            QuickHPStorage(ra);
+            DealDamage(haka, ra, 5, DamageType.Melee);
+            //since 5 damage dealt - 2 = should be 3 less now
+            QuickHPCheck(-3);
+
 
         }
 
@@ -701,16 +955,17 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
-            PutIntoPlay("Submerge");
+            var card = PutIntoPlay("Submerge");
+            AssertInPlayArea(isle, card);
+
             //At the start of the environment turn, this card is destroyed.
 
-            int numCardsInPlayBefore = GetNumberOfCardsInPlay(isle);
             GoToStartOfTurn(isle);
-            int numCardsInPlayAfter = GetNumberOfCardsInPlay(isle);
 
             //Submerge should have destroyed itself so 1 fewer env cards in play
-            Assert.AreEqual(numCardsInPlayBefore - 1, numCardsInPlayAfter, "The number of environment cards in play don't match");
+            AssertInTrash(card);
         }
+
         [Test()]
         public void TestThroughTheHurricaneTargetIsPlayed()
         {
@@ -721,58 +976,66 @@ namespace CauldronTests
             SetHitPoints(visionary.CharacterCard, 18);
             SetHitPoints(haka.CharacterCard, 28);
 
-           // Whenever a target enters play, this card deals { H - 1}lightning damage to the target with the third highest HP.
-           // 3rd highest hp is ra
-           //H =3, 3-1 = 2
-            PutIntoPlay("ThroughTheHurricane");
+            // Whenever a target enters play, this card deals { H - 1}lightning damage to the target with the third highest HP.
+            // 3rd highest hp is ra
+            //H =3, 3-1 = 2
+            var card = PutIntoPlay("ThroughTheHurricane");
+            AssertInPlayArea(isle, card);
 
-            QuickHPStorage(ra);
+            QuickHPStorage(baron, ra, visionary, haka);
             PlayCard("DecoyProjection");
-            QuickHPCheck(-2);
+            QuickHPCheck(0, -2, 0, 0);
         }
 
         [Test()]
-        public void TestThroughTheHurricaneStartOfTurnPlay()
+        public void TestThroughTheHurricaneStartOfTurnPlayCards()
         {
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
             //stack deck for less variance
-            PutOnDeck("Teryx");
-            PutOnDeck("AncientParasite");
-            
-            PutIntoPlay("ThroughTheHurricane");
+            var c1 = PutOnDeck("Teryx");
+            var c2 = PutOnDeck("AncientParasite");
+
+            var card = PutIntoPlay("ThroughTheHurricane");
+            AssertInPlayArea(isle, card);
 
             //At the start of the environment turn, you may play the top 2 cards of the environment deck. If you do, this card is destroyed.
             DecisionYesNo = true;
-            int numCardsInEnvironmentDeckBefore = GetNumberOfCardsInDeck(isle);
-            GoToStartOfTurn(isle);
-            int numCardsInEnvironmentDeckAfter = GetNumberOfCardsInDeck(isle);
 
-            //should be 2 cards played, so 2 fewer cards in deck
-            Assert.AreEqual(numCardsInEnvironmentDeckBefore - 2, numCardsInEnvironmentDeckAfter, "The number of cards in the environment deck do not match.");
+            GoToStartOfTurn(isle);
+            //assert stacked cards got played
+            AssertInPlayArea(isle, c1);
+            AssertInPlayArea(isle, c2);
+
+            //and then this card was destroyed
+            AssertInTrash(card);
         }
 
         [Test()]
-        public void TestThroughTheHurricaneStartOfTurnDestroy()
+        public void TestThroughTheHurricaneStartOfTurnNoPlayCard()
         {
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
 
             //stack deck for less variance
-            PutOnDeck("Teryx");
-            PutOnDeck("AncientParasite");
+            var c1 = PutOnDeck("Teryx");
+            var c2 = PutOnDeck("AncientParasite");
 
-            PutIntoPlay("ThroughTheHurricane");
+            var card = PutIntoPlay("ThroughTheHurricane");
+            AssertInPlayArea(isle, card);
 
             //At the start of the environment turn, you may play the top 2 cards of the environment deck. If you do, this card is destroyed.
-            DecisionYesNo = true;
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
-            GoToStartOfTurn(isle);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
+            DecisionYesNo = false;
 
-            //should be 2 cards played, but this card destroyed, so 1 more
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore + 1, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play do not match.");
+            GoToStartOfTurn(isle);
+
+            //stacked cards are not played
+            AssertInDeck(c1);
+            AssertInDeck(c2);
+
+            //card not destroyed
+            AssertInPlayArea(isle, card);
         }
 
         [Test()]
@@ -782,25 +1045,16 @@ namespace CauldronTests
             StartGame();
 
             //stack deck to reduce variance
-            PutOnDeck("Teryx");
+            var c1 = PutOnDeck("Teryx");
+
+            //Play timed detonator
+            var card = PutIntoPlay("TimedDetonator");
+            AssertInPlayArea(isle, card);
 
             //When this card enters play, play the top card of the environment deck.
-
-            int numCardsInEnvironmentDeckBefore = GetNumberOfCardsInDeck(isle);
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
-            //Play timed detonator
-            PutIntoPlay("TimedDetonator");
-
-            int numCardsInEnvironmentDeckAfter = GetNumberOfCardsInDeck(isle);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
-
-
-            //should be 2 fewer cards in the deck, one for timed detonator, 1 for top card of the deck
-            Assert.AreEqual(numCardsInEnvironmentDeckBefore - 2, numCardsInEnvironmentDeckAfter, "The number of cards in the environment deck don't match.");
-            //should be 2 more cards in play, one for 1 for timed detonator, 1 for top card of deck
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore + 2, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play area don't match.");
-
+            AssertInPlayArea(isle, c1);
         }
+
         [Test()]
         public void TestTimedDetonatorStartofTurnDamage()
         {
@@ -808,23 +1062,24 @@ namespace CauldronTests
             StartGame();
 
             //stack deck for less variance
-            PutOnDeck("BarnacleHydra");
+            var c1 = PutOnDeck("BarnacleHydra");
 
             //play teryx
-            PutIntoPlay("Teryx");
-            Card teryx = GetCardInPlay("Teryx");
+            var teryx = PutIntoPlay("Teryx");
 
             //Play timed detonator
-            PutIntoPlay("TimedDetonator");
+            var card = PutIntoPlay("TimedDetonator");
+            AssertInPlayArea(isle, card);
+            AssertInPlayArea(isle, c1);
 
             //pause before environment to collect effects
             GoToEndOfTurn(haka);
 
             //At the start of the environment turn, this card deals Teryx 10 fire damage and each hero target {H - 2} fire damage. Then, this card is destroyed.
             //H = 3, so H-2 = 1
-            QuickHPStorage(teryx, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard);
+            QuickHPStorage(teryx, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard, c1);
             GoToStartOfTurn(isle);
-            QuickHPCheck(-10, -1, -1, -1);
+            QuickHPCheck(-10, -1, -1, -1, 0);
         }
 
         [Test()]
@@ -833,20 +1088,16 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "TheVisionary", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
             //stack deck for less variance
-            PutOnDeck("BarnacleHydra");
+            var c1 = PutOnDeck("BarnacleHydra");
 
             //play timed detonator
-            PutIntoPlay("TimedDetonator");
+            var card = PutIntoPlay("TimedDetonator");
 
             //At the start of the environment turn, this card deals Teryx 10 fire damage and each hero target {H - 2} fire damage. Then, this card is destroyed.
-           
-            int numCardsInEnvironmentPlayBefore = GetNumberOfCardsInPlay(isle);
+
             GoToStartOfTurn(isle);
-            int numCardsInEnvironmentPlayAfter = GetNumberOfCardsInPlay(isle);
 
-            //this card should be destroyed, so 1 less
-            Assert.AreEqual(numCardsInEnvironmentPlayBefore - 1, numCardsInEnvironmentPlayAfter, "The number of cards in the environment play do not match.");
+            AssertInTrash(card);
         }
-
     }
 }

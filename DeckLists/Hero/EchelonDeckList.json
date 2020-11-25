@@ -42,7 +42,7 @@
                 "TiamatCharacter": "Tiamat placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "AdvanceAndRegroup",
@@ -521,11 +521,11 @@
                 "TiamatCharacter": "Tiamat placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "EchelonCharacter",
-            "promoIdentifier": "2199EchelonCharacter",
+            "promoIdentifier": "FutureEchelonCharacter",
             "count": 1,
             "title": "Echelon",
             "promoTitle": "2199 Echelon",
@@ -559,7 +559,7 @@
                 "TiamatCharacter": "Tiamat placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         }
     ]
 }

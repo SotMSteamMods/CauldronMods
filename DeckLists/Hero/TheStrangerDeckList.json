@@ -1,5 +1,6 @@
 {
     "name": "The Stranger",
+    "sortName":"Stranger",
     "kind": "Hero",
     "expansionIdentifier": "Cauldron",
     "initialCardIdentifiers": [
@@ -40,10 +41,10 @@
                 "default": "default placeholder",
                 "DendronCharacter": "Dendron placeholder",
                 "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
+                "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "Corruption",
@@ -486,14 +487,14 @@
                 "default": "default placeholder",
                 "DendronCharacter": "Dendron placeholder",
                 "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
+                "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "TheStrangerCharacter",
-            "promoIdentifier": "1929TheStrangerCharacter",
+            "promoIdentifier": "PastTheStrangerCharacter",
             "count": 1,
             "title": "The Stranger",
             "promoTitle": "The Stranger 1929",
@@ -528,10 +529,10 @@
                 "default": "default placeholder",
                 "DendronCharacter": "Dendron placeholder",
                 "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
+                "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "TheStrangerCharacter",
@@ -572,10 +573,10 @@
                 "default": "default placeholder",
                 "DendronCharacter": "Dendron placeholder",
                 "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
+                "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

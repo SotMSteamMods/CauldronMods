@@ -58,9 +58,9 @@
             "flippedAdvancedIcons": [
                 "DestroyOngoing"
             ],
-            "difficulty": 1,
+            "difficulty": 3,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Ha! Smell ya later, losers! This girl is outta here!",
                 "ImpactCharacter": "Impact placeholder",
                 "RenegadeImpactCharacter": "Renegade Impact placeholder",
                 "WastelandRoninImpactCharacter": "Wasteland Ronin Impact placeholder"

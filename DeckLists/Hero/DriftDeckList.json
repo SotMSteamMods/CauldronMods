@@ -45,7 +45,7 @@
                 "default": "default placeholder",
                 "OutlanderCharacter": "Outlander placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "ShiftTrack",
@@ -490,7 +490,7 @@
                 "default": "default placeholder",
                 "OutlanderCharacter": "Outlander placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "ShiftTrack",
@@ -510,7 +510,7 @@
         },
         {
             "identifier": "DriftCharacter",
-            "promoIdentifier": "19292199DriftCharacter",
+            "promoIdentifier": "SplitDriftCharacter",
             "count": 1,
             "title": "Drift",
             "keywords": [
@@ -551,11 +551,11 @@
                 "default": "default placeholder",
                 "OutlanderCharacter": "Outlander placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "DriftCharacter",
-            "promoIdentifier": "19292199DriftCharacter",
+            "promoIdentifier": "SplitDriftCharacter",
             "count": 1,
             "title": "Drift",
             "keywords": [
@@ -597,11 +597,11 @@
                 "default": "default placeholder",
                 "OutlanderCharacter": "Outlander placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "ShiftTrack",
-            "promoIdentifier": "19292199DriftCharacter",
+            "promoIdentifier": "SplitDriftCharacter",
             "count": 1,
             "title": "Shift Track",
             "setup": [

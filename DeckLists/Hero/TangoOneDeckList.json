@@ -39,9 +39,9 @@
                 "default": "default placeholder",
                 "AnathemaCharacter": "Anathema placeholder",
                 "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
-                "1929RamCharacter": "1929 Ram placeholder"
+                "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "ChameleonArmor",
@@ -55,7 +55,7 @@
                 "Discard",
                 "PreventDamage"
             ],
-            "body": "Whenever {TangoOne} would be dealt damage, you may discard the top card of your deck. If it is a Critical card, prevent that damage.",
+            "body": "Whenever {TangoOne} would be dealt damage, you may reveal and discard the top card of your deck. If it is a Critical card, prevent that damage.",
             "flavorQuotes": [
                 {
                     "identifier": "TangoOne",
@@ -80,7 +80,7 @@
                 "Discard",
                 "IncreaseDamageDealt"
             ],
-            "body": "Whenever {TangoOne} deals damage, you may discard the top card of your deck. If it is a Critical card, increase that damage by 3.",
+            "body": "Whenever {TangoOne} deals damage, you may reveal and discard the top card of your deck. If it is a Critical card, increase that damage by 3.",
             "flavorQuotes": [
                 {
                     "identifier": "ChronoRanger",
@@ -122,7 +122,10 @@
                 "DestroyOngoing",
                 "DealDamageProjectile"
             ],
-            "body": "You may destroy 1 ongoing card. {TangoOne} may deal 1 target 2 projectile damage.",
+            "body": [
+                "You may destroy 1 ongoing card.",
+                "{TangoOne} may deal 1 target 2 projectile damage."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "HalcyonR43SystemLog",
@@ -140,7 +143,7 @@
                 "limited"
             ],
             "icons": [
-                "IrreducibleDamage"
+                "MakeDamageIrreducible"
             ],
             "body": "Damage dealt by {TangoOne} Is irreducible.",
             "flavorQuotes": [
@@ -168,7 +171,7 @@
             ],
             "body": "{TangoOne} is immune to psychic damage.",
             "powers": [
-                "Draw a card. Increase the next damage dealt by {TangoOne} by 2."
+                "Draw a card.{BR}Increase the next damage dealt by {TangoOne} by 2."
             ],
             "flavorText": "There's enough in this world that you{BR}don't understand without getting into the{BR}details of psionic augmentation equipment.",
             "flavorReference": "Tango One And Bunker, Neon Jungle #19"
@@ -186,7 +189,11 @@
                 "DrawCardNow",
                 "PlayCardNow"
             ],
-            "body": "Reveal the top 2 cards of any deck, then replace them in any order. You may draw a card. You may play a card.",
+            "body": [
+                "Reveal the top 2 cards of any deck, then replace them in any order.",
+                "You may draw a card.",
+                "You may play a card."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "TangoOne",
@@ -228,7 +235,11 @@
                 "DestroyTarget",
                 "DrawCardNow"
             ],
-            "body": "Discard any number of cards. Destroy a target with X or fewer HP, where X is 2 times the number of cards discarded this way. If you destroyed a target this way, draw a card.",
+            "body": [
+                "Discard any number of cards.",
+                "Destroy a target with X or fewer HP, where X is 2 times the number of cards discarded this way.",
+                "If you destroyed a target this way, draw a card."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "CptReager",
@@ -253,7 +264,11 @@
                 "Manipulate",
                 "DrawCardNow"
             ],
-            "body": "Increase the next damage dealt by {TangoOne} by 3. You may shuffle your trash into your deck. Draw 2 cards.",
+            "body": [
+                "Increase the next damage dealt by {TangoOne} by 3.",
+                "You may shuffle your trash into your deck.",
+                "Draw 2 cards."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "TangoOne",
@@ -271,9 +286,12 @@
             ],
             "icons": [
                 "IncreaseDamageDealt",
-                "DealDamageProjectile"
+                "PlayCardNow"
             ],
-            "body": "Increase the next damage dealt by {TangoOne} by 3. You may play a card.",
+            "body": [
+                "Increase the next damage dealt by {TangoOne} by 3.",
+                "You may play a card."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "TangoOne",
@@ -339,7 +357,10 @@
                 "Manipulate",
                 "DealDamageMelee"
             ],
-            "body": "Shuffle 2 cards from each trash back into their decks. {TangoOne} may deal 1 target 2 melee damage.",
+            "body": [
+                "Shuffle 2 cards from each trash back into their decks.",
+                "{TangoOne} may deal 1 target 2 melee damage."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "TheChairman",
@@ -381,20 +402,20 @@
             ],
             "flippedIcons": [
                 "PlayCardNow",
-                "IrreducibleDamage",
+                "MakeDamageIrreducible",
                 "IncreaseDamageDealt"
             ],
             "openingLines": {
                 "default": "default placeholder",
                 "AnathemaCharacter": "Anathema placeholder",
                 "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
-                "1929RamCharacter": "1929 Ram placeholder"
+                "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "TangoOneCharacter",
-            "promoIdentifier": "1929TangoOneCharacter",
+            "promoIdentifier": "PastTangoOneCharacter",
             "count": 1,
             "title": "Tango One",
             "promoTitle": "Tango One 1929",
@@ -409,6 +430,7 @@
             ],
             "icons": [
                 "HasPower",
+                "StartOfTurnAction",
                 "DealDamageProjectile"
             ],
             "hitpoints": 24,
@@ -429,9 +451,9 @@
                 "default": "default placeholder",
                 "AnathemaCharacter": "Anathema placeholder",
                 "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
-                "1929RamCharacter": "1929 Ram placeholder"
+                "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

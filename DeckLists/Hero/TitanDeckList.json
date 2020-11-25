@@ -40,7 +40,7 @@
                 "default": "default placeholder",
                 "MythosCharacter": "Mythos placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "CombatPragmatism",
@@ -405,11 +405,11 @@
                 "default": "default placeholder",
                 "MythosCharacter": "Mythos placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "TitanCharacter",
-            "promoIdentifier": "2199TitanCharacter",
+            "promoIdentifier": "FutureTitanCharacter",
             "count": 1,
             "title": "Titan",
             "promoTitle": "Titan 2199",
@@ -445,7 +445,7 @@
                 "default": "default placeholder",
                 "MythosCharacter": "Mythos placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

@@ -15,7 +15,7 @@ namespace Cauldron.LadyOfTheWood
 		{
 			//Select a damage type.
 			List<SelectDamageTypeDecision> storedResults = new List<SelectDamageTypeDecision>();
-			IEnumerator coroutine = base.GameController.SelectDamageType(base.HeroTurnTakerController, storedResults, null, null, SelectionType.DamageType, base.GetCardSource(null));
+			IEnumerator coroutine = base.GameController.SelectDamageType(base.HeroTurnTakerController, storedResults,cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -24,11 +24,12 @@ namespace Cauldron.LadyOfTheWood
 			{
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
-			DamageType damageType = storedResults.First((SelectDamageTypeDecision d) => d.Completed).SelectedDamageType.Value;
+			DamageType damageType = GetSelectedDamageType(storedResults).Value;
 
 			//LadyOfTheWood deals 1 target 1 damage of the chosen type.
-			int powerNumeral = base.GetPowerNumeral(0, 1);
-			IEnumerator coroutine2 = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), powerNumeral, damageType, new int?(powerNumeral), false, new int?(powerNumeral), false, false, false, null, null, null, null, null, false, null, null, false, null, base.GetCardSource(null));
+			int target = base.GetPowerNumeral(0, 1);
+			int damage = base.GetPowerNumeral(1, 1); 
+			IEnumerator coroutine2 = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard),damage, damageType, new int?(target), false, new int?(target), cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine2);
@@ -47,7 +48,7 @@ namespace Cauldron.LadyOfTheWood
 					{
 						//Select a damage type.
 						List<SelectDamageTypeDecision> storedResults = new List<SelectDamageTypeDecision>();
-						IEnumerator coroutine = base.GameController.SelectDamageType(base.HeroTurnTakerController, storedResults, null, null, SelectionType.DamageType, base.GetCardSource(null));
+						IEnumerator coroutine = base.GameController.SelectDamageType(base.HeroTurnTakerController, storedResults, cardSource: base.GetCardSource());
 						if (base.UseUnityCoroutines)
 						{
 							yield return base.GameController.StartCoroutine(coroutine);
@@ -56,12 +57,14 @@ namespace Cauldron.LadyOfTheWood
 						{
 							base.GameController.ExhaustCoroutine(coroutine);
 						}
-						DamageType damageType = storedResults.First((SelectDamageTypeDecision d) => d.Completed).SelectedDamageType.Value;
+
+						DamageType damageType = GetSelectedDamageType(storedResults).Value;
+
 						//Until the start of your next turn, increase damage of the chosen type by 1.
 						IncreaseDamageStatusEffect increaseDamageStatusEffect = new IncreaseDamageStatusEffect(1);
 						increaseDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
 						increaseDamageStatusEffect.DamageTypeCriteria.AddType(damageType);
-						IEnumerator coroutine2 = base.AddStatusEffect(increaseDamageStatusEffect, true);
+						IEnumerator coroutine2 = base.AddStatusEffect(increaseDamageStatusEffect);
 						if (base.UseUnityCoroutines)
 						{
 							yield return base.GameController.StartCoroutine(coroutine2);
@@ -70,13 +73,13 @@ namespace Cauldron.LadyOfTheWood
 						{
 							base.GameController.ExhaustCoroutine(coroutine2);
 						}
-						break;
+						yield break;
 					}
 				case 1:
 					{
 						//1 Hero may discard a card
 						List<DiscardCardAction> storedResults2 = new List<DiscardCardAction>();
-						IEnumerator coroutine3 = base.GameController.SelectHeroToDiscardCard(this.DecisionMaker, true, false, false, null, null, null, storedResults2, null, SelectionType.DiscardCard, base.GetCardSource(null));
+						IEnumerator coroutine3 = base.GameController.SelectHeroToDiscardCard(this.DecisionMaker, storedResultsDiscard: storedResults2, cardSource: base.GetCardSource());
 						if (base.UseUnityCoroutines)
 						{
 							yield return base.GameController.StartCoroutine(coroutine3);
@@ -87,9 +90,10 @@ namespace Cauldron.LadyOfTheWood
 						}
 
 						// If a card was discard, they regain 3 HP
-						if (base.DidDiscardCards(storedResults2, new int?(1), false))
+						if (base.DidDiscardCards(storedResults2, new int?(1)))
 						{
-							coroutine3 = base.GameController.GainHP(storedResults2[0].HeroTurnTakerController.CharacterCard, new int?(3), null, null, null);
+							Card hero = storedResults2[0].HeroTurnTakerController.CharacterCard;
+							coroutine3 = base.GameController.GainHP(hero, new int?(3));
 							if (base.UseUnityCoroutines)
 							{
 								yield return base.GameController.StartCoroutine(coroutine3);
@@ -104,7 +108,8 @@ namespace Cauldron.LadyOfTheWood
 				case 2:
 					{
 						//Destroy an environment card.
-						IEnumerator coroutine4 = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsEnvironment, "environment", true, false, null, null, false), false, null, null, base.GetCardSource(null));
+						LinqCardCriteria criteria = new LinqCardCriteria((Card c) => c.IsEnvironment && c.IsInPlay, "environment");
+						IEnumerator coroutine4 = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, criteria, false, cardSource: base.GetCardSource());
 						if (base.UseUnityCoroutines)
 						{
 							yield return base.GameController.StartCoroutine(coroutine4);
@@ -113,7 +118,7 @@ namespace Cauldron.LadyOfTheWood
 						{
 							base.GameController.ExhaustCoroutine(coroutine4);
 						}
-						break;
+						yield break;
 					}
 			}
 			yield break;

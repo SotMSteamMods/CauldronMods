@@ -56,7 +56,7 @@
             "flippedAdvancedIcons": [
                 "IncreaseDamageDealt"
             ],
-            "difficulty": 1,
+            "difficulty": 2,
             "openingLines": {
                 "default": "default placeholder",
                 "DocHavocCharacter": "Doc Havoc placeholder"

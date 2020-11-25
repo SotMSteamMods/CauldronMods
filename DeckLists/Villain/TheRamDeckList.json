@@ -1,5 +1,6 @@
 {
     "name": "The Ram",
+    "sortName":"Ram",
     "kind": "Villain",
     "expansionIdentifier": "Cauldron",
     "initialCardIdentifiers": [
@@ -52,9 +53,9 @@
             "flippedAdvancedIcons": [
                 "PlayCardNow"
             ],
-            "difficulty": 1,
+            "difficulty": 2,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Target Aquired//Status//Hostile//Initiate Neutralization Protocol",
                 "QuicksilverCharacter": "Quicksilver placeholder",
                 "UncannyQuicksilverCharacter": "Uncanny Quicksilver placeholder",
                 "RenegadeQuicksilverCharacter": "Renegade Quicksilver placeholder"
@@ -330,7 +331,7 @@
     "promoCards": [
         {
             "identifier": "TheRamCharacter",
-            "promoIdentifier": "1929TheRamCharacter",
+            "promoIdentifier": "PastTheRamCharacter",
             "count": 1,
             "title": "The Ram",
             "promoTitle": "The Ram 1929",
@@ -389,14 +390,14 @@
                 "RenegadeQuicksilverCharacter": "Renegade Quicksilver placeholder",
                 "TheStrangerCharacter": "The Stranger placeholder",
                 "RitualCarvedTheStrangerCharacter": "The Stranger: Ritual Carved placeholder",
-                "1929TheStrangerCharacter": "The Stranger 1929 placeholder",
+                "PastTheStrangerCharacter": "The Stranger 1929 placeholder",
                 "WastelandRoninTheStrangerCharacter": "Wasteland Ronin: The Stranger placeholder",
                 "NecroCharacter": "Necro placeholder",
                 "WardenOfChaosNecroCharacter": "Warden of Chaos Necro placeholder",
                 "1929NecroCharacter": "Necro 1929 placeholder",
                 "TangoOneCharacter": "Tango One placeholder",
                 "GhostOpsTangoOneCharacter": "Ghost Ops Tango One placeholder",
-                "1929TangoOneCharacter": "1929 Tango One placeholder",
+                "PastTangoOneCharacter": "1929 Tango One placeholder",
                 "BaccaratCharacter": "Baccarat placeholder",
                 "AceOfSorrowsBaccaratCharacter": "Ace Of Sorrows Baccarat placeholder",
                 "AceOfSwordsBaccaratCharacter": "Ace Of Swords Baccarat placeholder",
@@ -405,7 +406,7 @@
         },
         {
             "identifier": "TheRamCharacter",
-            "promoIdentifier": "1929TheRamCharacter",
+            "promoIdentifier": "PastTheRamCharacter",
             "count": 1,
             "title": "The Ram",
             "promoTitle": "The Ram 1929",
@@ -454,13 +455,13 @@
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
             ],
-            "difficulty": 1,
+            "difficulty": 3,
             "openingLines": {
                 "default": "default placeholder",
                 "TheKnightCharacter": "The Knight placeholder",
                 "BerzerkerTheKnightCharacter": "The Berzerker Knight placeholder",
                 "FairTheKnightCharacter": "The Fair Knight placeholder",
-                "1929TheKnightCharacter": "The Knight 1929 placeholder",
+                "PastTheKnightCharacter": "The Knight 1929 placeholder",
                 "WastelandRoninTheKnightCharacter": "The Wasteland Ronin Knights placeholder",
                 "MagnificentMaraCharacter": "Magnificent Mara placeholder",
                 "MinistryOfStrategicScienceMagnificentMaraCharacter": "Ministry Of Strategic Science Magnificent Mara placeholder",

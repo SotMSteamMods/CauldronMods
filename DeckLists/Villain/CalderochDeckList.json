@@ -58,14 +58,7 @@
             "flippedAdvancedIcons": [
                 "AddToken"
             ],
-            "difficulty": 1,
-            "openingLines": {
-                "default": "default placeholder",
-                "LadyOfTheWoodCharacter": "Lady Of The Wood placeholder",
-                "SeasonsOfChangeLadyOfTheWoodCharacter": "Lady Of The Wood: Seasons of Change placeholder",
-                "MinistryOfStrategicSciencesLadyOfTheWoodCharacter": "Ministry Of Strategic Sciences: Lady Of The Wood placeholder",
-                "2199LadyOfTheWoodCharacter": "Lady Of The Wood 2199 placeholder"
-            }
+            "difficulty": 4
         },
         {
             "identifier": "AutumnsTorment",

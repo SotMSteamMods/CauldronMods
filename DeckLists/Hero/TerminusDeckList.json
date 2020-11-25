@@ -36,7 +36,7 @@
                 "default": "default placeholder",
                 "InfernalChoirCharacter": "Infernal Choir placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "BoneChillingTouch",
@@ -566,11 +566,11 @@
                 "default": "default placeholder",
                 "InfernalChoirCharacter": "Infernal Choir placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "TerminusCharacter",
-            "promoIdentifier": "2199TerminusCharacter",
+            "promoIdentifier": "FutureTerminusCharacter",
             "count": 1,
             "title": "Terminus",
             "promoTitle": "2199 Terminus",
@@ -606,7 +606,7 @@
                 "default": "default placeholder",
                 "InfernalChoirCharacter": "Infernal Choir placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }
