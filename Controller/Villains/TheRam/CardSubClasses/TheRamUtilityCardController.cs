@@ -65,5 +65,10 @@ namespace Cauldron.TheRam
             }
             yield break;
         }
+
+        protected bool IsDeviceOrNode(Card c)
+        {
+            return GameController.DoesCardContainKeyword(c, "device") || GameController.DoesCardContainKeyword(c, "node");
+        }
     }
 }

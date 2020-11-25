@@ -571,5 +571,32 @@ namespace CauldronTests
             AssertIsInPlay(rocket);
             QuickHPCheck(0, 1, 1, 1, 1, 0, 0);
         }
+        [Test]
+        public void TestRechargeCircuits()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "Ra", "TheVisionary", "WagnerMarsBase");
+
+            StartGame();
+            Card mortar = PlayCard("RemoteMortar");
+            DestroyCard("GrapplingClaw");
+            Card node = PlayCard("ForcefieldNode");
+
+            PlayCard("MeteorStorm");
+            PlayCard("RechargeCircuits");
+
+            SetHitPoints(new Card[] { ram.CharacterCard, mortar, node }, 1);
+
+            QuickHPStorage(ram.CharacterCard, node, mortar);
+
+            GoToStartOfTurn(legacy);
+
+            QuickHPCheck(10, 2, 2);
+            GoToStartOfTurn(ram);
+            PlayCard("MeteorStorm");
+            PlayCard("UpClose");
+
+            GoToStartOfTurn(legacy);
+            QuickHPCheck(0, 0, 0);
+        }
     }
 }

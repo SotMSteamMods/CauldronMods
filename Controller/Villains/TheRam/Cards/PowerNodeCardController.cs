@@ -36,7 +36,7 @@ namespace Cauldron.TheRam
             }
 
             coroutine = GameController.GainHP(DecisionMaker,
-                                            (Card c) => c.IsInPlayAndHasGameText && c.IsTarget && (GameController.DoesCardContainKeyword(c, "device") || GameController.DoesCardContainKeyword(c, "node")),
+                                            (Card c) => c.IsInPlayAndHasGameText && c.IsTarget && IsDeviceOrNode(c),
                                             1,
                                             cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
