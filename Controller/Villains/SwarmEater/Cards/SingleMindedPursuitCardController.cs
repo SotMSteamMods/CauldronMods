@@ -17,6 +17,24 @@ namespace Cauldron.SwarmEater
             }).Condition = (() => base.Card.Location.IsNextToCard);
         }
 
+        public override IEnumerator Play()
+        {
+            if (base.CharacterCardController is SwarmEaterCharacterCardController && base.CharacterCard.IsFlipped)
+            {
+                //Whenever Single-Minded Pursuit enters play, flip {SwarmEater}'s villain character cards.
+                IEnumerator coroutine = base.GameController.FlipCard(base.CharacterCardController, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
+        }
+
         public override void AddTriggers()
         {
             //Increase damage dealt by {SwarmEater} by 2.
