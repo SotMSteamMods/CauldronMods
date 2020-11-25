@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Markup;
 
 namespace Cauldron.TheKnight
 {
@@ -27,7 +26,7 @@ namespace Cauldron.TheKnight
         {
             //"Play this card next to a target.",
             //"Whenever that target would take damage, redirect that damage to {TheKnight}. Damage redirected this way is irreducible."
-            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsTarget, "targets"), storedResults, isPutIntoPlay, decisionSources);
+            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlayAndHasGameText, "targets"), storedResults, isPutIntoPlay, decisionSources);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

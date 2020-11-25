@@ -14,6 +14,7 @@ namespace CauldronTests
         #region TheWanderingIsleHelperFunctions
 
         protected TurnTakerController isle { get { return FindEnvironment(); } }
+        protected HeroTurnTakerController stranger { get { return FindHero("TheStranger"); } }
 
         private bool IsTeryxInPlay(TurnTakerController ttc)
         {
@@ -233,10 +234,37 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestAmphibiousAssaultNotInPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //stack villain deck to not play hasten doom
+            var topCard = PutOnDeck("MobileDefensePlatform");
+
+            //don't play a hero card
+            GoToPlayCardPhase(ra);
+
+            GoToPlayCardPhase(haka);
+                        
+            //Issue #109 - villain deck is playing a card at the beginning of the turn
+            AssertNotInPlay(topCard);
+            //AmphibiousAssult isn't in play, so the top card of the villain shouldn't be played
+            
+            GoToStartOfTurn(isle);
+
+            //and still no
+            AssertNotInPlay(topCard);
+        }
+
+
+        [Test()]
         public void TestAncientParasiteHeroDamageMoveCard()
         {
             SetupGameController("BaronBlade", "Ra", "Fanatic", "Haka", "Cauldron.TheWanderingIsle");
             StartGame();
+
+            var mdp = GetCardInPlay("MobileDefensePlatform");
 
             Card parasite = PutIntoPlay("AncientParasite");
             AssertInPlayArea(isle, parasite);
@@ -251,6 +279,10 @@ namespace CauldronTests
 
             //different hero
             DealDamage(fanatic, parasite, 1, DamageType.Fire);
+            AssertNextToCard(parasite, fanatic.CharacterCard);
+
+            //doesn't move next to haka, still next to fanatic
+            DealDamage(haka, mdp, 1, DamageType.Melee);
             AssertNextToCard(parasite, fanatic.CharacterCard);
         }
 
@@ -620,6 +652,139 @@ namespace CauldronTests
             QuickHPStorage(baron.CharacterCard, ra.CharacterCard, visionary.CharacterCard, haka.CharacterCard, teryx);
             GoToStartOfTurn(isle);
             QuickHPCheck(-4, 0, -4, -4, 0);
+        }
+
+        [Test()]
+        public void TestIslandquakeStartOfTurnRedirectForMultipleHits()
+        {
+            SetupGameController("BaronBlade", "Ra", "Tachyon", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //destroy mdp so baron blade is not immune to damage
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"));
+
+            Card teryx = PutIntoPlay("Teryx");
+
+            //set hitpoints so there is room to gain
+            SetHitPoints(teryx, 30);
+
+            GoToPlayCardPhase(ra);
+            //ra deals damage to teryx to cause hp gain and to be immune to islandquake damage
+            DealDamage(ra.CharacterCard, teryx, 5, DamageType.Fire);
+
+            //tachyon has synaptic interruption in play
+            PutIntoPlay("SynapticInterruption");
+
+            var card = PutIntoPlay("Islandquake");
+            AssertInPlayArea(isle, card);
+
+            //tachyon uses synaptic interruption to redirect damage to ra, who is immune to islandquake damage
+            DecisionRedirectTarget = ra.CharacterCard;
+
+            //At the start of the environment turn, this card deals each target other than Teryx 4 sonic damage. Hero targets which caused Teryx to regain HP since the end of the last environment turn are immune to this damage.
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, tachyon.CharacterCard, haka.CharacterCard, teryx);
+            GoToStartOfTurn(isle);
+
+            //ra was immune to damage and tachyon redirected damage to ra
+            //blade and haka were hit
+            QuickHPCheck(-4, 0, 0, -4, 0);
+        }
+
+        [Test()]
+        public void TestIslandquakeStartOfTurnHealTeryxDuringStartOfTurnTrigger()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Ra", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //destroy mdp so baron blade is not immune to damage
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"));
+
+            Card teryx = PutIntoPlay("Teryx");
+
+            //set hitpoints so there is room to gain
+            SetHitPoints(teryx, 30);
+
+            var card = PutIntoPlay("Islandquake");
+            AssertInPlayArea(isle, card);
+
+            //both the stranger and ra have a mark of the blood thorn attached
+            GoToPlayCardPhase(stranger);
+            DecisionSelectCard = ra.CharacterCard;
+            Card rune1 = PutIntoPlay("MarkOfTheBloodThorn");
+            AssertNextToCard(rune1, ra.CharacterCard);
+            DecisionSelectCard = stranger.CharacterCard;
+            Card rune2 = PutIntoPlay("MarkOfTheBloodThorn");
+            AssertNextToCard(rune2, stranger.CharacterCard);
+
+            //the stranger uses 2x mark of the blood thorn to heal teryx when ra is damaged
+            base.ResetDecisions();
+            DecisionSelectTargets = new[] {
+                //islandquake targets ra
+                ra.CharacterCard,
+                //ra targets the stranger, via blood thorn
+                stranger.CharacterCard,
+                //the stranger targets teryx, via blood thorn
+                teryx,
+                //islandquake targets the stranger
+                stranger.CharacterCard,
+                //islandquake targets the remaining targets
+                baron.CharacterCard,
+                haka.CharacterCard
+            };
+
+            //At the start of the environment turn, this card deals each target other than Teryx 4 sonic damage. Hero targets which caused Teryx to regain HP since the end of the last environment turn are immune to this damage.
+            QuickHPStorage(baron.CharacterCard, stranger.CharacterCard, ra.CharacterCard, haka.CharacterCard, teryx);
+            GoToStartOfTurn(isle);
+
+            //stranger was immune, but took 1 damage from blood thorn
+            //blade ra, and haka were hit
+            //teryx healed from mainstay
+            QuickHPCheck(-4, -1, -4, -4, 1);
+        }
+
+        [Test()]
+        [Ignore("TODO:issues#199")]
+        public void TestIslandquakeStartOfTurnHealTeryxDuringDamage()
+        {
+            SetupGameController("BaronBlade", "VoidGuardMainstay", "Ra", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //destroy mdp so baron blade is not immune to damage
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"));
+
+            Card teryx = PutIntoPlay("Teryx");
+
+            //set hitpoints so there is room to gain
+            SetHitPoints(teryx, 30);
+
+            //mainstay has preemptive payback in play
+            PutIntoPlay("PreemptivePayback");
+
+            var card = PutIntoPlay("Islandquake");
+            AssertInPlayArea(isle, card);
+
+            //mainstay uses preemptive payback to heal teryx before being hit
+            //yes, destroy preemptive payback
+            DecisionYesNo = true;
+            DecisionSelectTargets = new[] {
+                //islandquake targets mainstay
+                voidMainstay.CharacterCard,
+                //mainstay preemptively targets teryx, via preemptive payback
+                teryx,
+                //islandquake targets the remaining targets
+                baron.CharacterCard,
+                ra.CharacterCard,
+                haka.CharacterCard
+            };
+
+            //At the start of the environment turn, this card deals each target other than Teryx 4 sonic damage. Hero targets which caused Teryx to regain HP since the end of the last environment turn are immune to this damage.
+            QuickHPStorage(baron.CharacterCard, voidMainstay.CharacterCard, ra.CharacterCard, haka.CharacterCard, teryx);
+            GoToStartOfTurn(isle);
+
+            //mainstay was immune
+            //blade ra, and haka were hit
+            //teryx healed from mainstay
+            QuickHPCheck(-4, 0, -4, -4, 3);
         }
 
         [Test()]

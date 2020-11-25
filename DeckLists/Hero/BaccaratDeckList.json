@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Baccarat",
             "body": "Dead Man's Hand",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "917193",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "917193",
             "character": true,
             "powers": [
                 "Discard the top card of your deck or put up to 2 trick cards with the same name from your trash into play."
@@ -44,7 +44,7 @@
                 "MistressOfFateCharacter": "Mistress of Fate placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "AbyssalSolitaire",
@@ -131,7 +131,7 @@
                 "Increase damage dealt by hero targets by 1.",
                 "At the start of your turn, shuffle 2 cards with the same name from your trash into your deck or this card is destroyed."
             ],
-            "flavorText": "Havoc Handed the card back.{BR}“It's a pretty small weapon.”{BR}“'Tis not a weapon.'Tis a coupon{BR}for victory.”"
+            "flavorText": "Havoc Handed the card back.{BR}“It's a pretty small weapon.”{BR}“'Tis not a weapon. 'Tis a coupon{BR}for victory.”"
         },
         {
             "identifier": "AfterlifeEuchre",
@@ -197,7 +197,7 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "TheKnight",
+                    "identifier": "The Knight",
                     "text": "This place{BR}has seen better days."
                 },
                 {
@@ -274,7 +274,7 @@
                 "You may shuffle a card from your trash into your deck. If you do, put a card with the same name from your trash into play.",
                 "Shuffle all copies of that card from your trash into your deck."
             ],
-            "flavorText": "Baccarat grinned through what remained of his lips. “Shall we play again?”"
+            "flavorText": "Baccarat grinned through what{BR}remained of his lips. “Shall we play{BR}again?”"
         },
         {
             "identifier": "IFold",
@@ -291,7 +291,7 @@
             "flavorQuotes": [
                 {
                     "identifier": "Tachyon",
-                    "text": "Don't worry. His luck improves the second time around."
+                    "text": "Don't worry. His luck{BR}improves the second time around."
                 }
             ],
             "flavorReference": "Tachyon, Freedom Five #735"
@@ -326,9 +326,9 @@
             "promoTitle": "Baccarat: Ace Of Swords",
             "shortPromoTitle": "Swords Baccarat",
             "body": "Ace Of Swords",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "EBC898",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "EBC898",
             "character": true,
             "powers": [
                 "Play X copies of Afterlife Euchre from your trash (up to 3). Discard the top 3-X cards of your deck."
@@ -358,7 +358,7 @@
                 "MistressOfFateCharacter": "Mistress of Fate placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "BaccaratCharacter",
@@ -368,9 +368,9 @@
             "promoTitle": "Baccarat: Ace Of Sorrows ",
             "shortPromoTitle": "Sorrows Baccarat",
             "body": "Ace Of Sorrows",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "EBC898",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "EBC898",
             "character": true,
             "powers": [
                 "Play any number of tricks from your hand, or put 2 tricks from your trash into your hand."
@@ -400,7 +400,7 @@
                 "MistressOfFateCharacter": "Mistress of Fate placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "BaccaratCharacter",
@@ -410,9 +410,9 @@
             "promoTitle": "Baccarat 1929",
             "shortPromoTitle": "Baccarat 1929",
             "body": "Card Sharp",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "C0BFBF",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "C0BFBF",
             "character": true,
             "powers": [
                 "Play or draw a card. If you played a trick this way, draw a card."
@@ -441,7 +441,7 @@
                 "MistressOfFateCharacter": "Mistress of Fate placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         }
     ]
 }

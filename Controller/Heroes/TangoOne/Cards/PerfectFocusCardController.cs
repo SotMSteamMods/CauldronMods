@@ -13,32 +13,25 @@ namespace Cauldron.TangoOne
         // You may play a card.
         //==============================================================
 
-        public static string Identifier = "PerfectFocus";
+        public static readonly string Identifier = "PerfectFocus";
 
         private const int DamageIncrease = 3;
 
         public PerfectFocusCardController(Card card, TurnTakerController turnTakerController) : base(card,
             turnTakerController)
         {
-
         }
 
         public override IEnumerator Play()
         {
             // Increase the next damage dealt by {TangoOne} by 3
-            IEnumerator increaseDamageRoutine = base.AddStatusEffect(new IncreaseDamageStatusEffect(DamageIncrease)
-            {
-                SourceCriteria =
-                {
-                    IsSpecificCard = base.Card.Owner.CharacterCard
-                },
-                NumberOfUses = 1,
-                CardDestroyedExpiryCriteria =
-                {
-                    Card = base.Card
-                }
-            });
+            var effect = new IncreaseDamageStatusEffect(DamageIncrease);
+            effect.SourceCriteria.IsSpecificCard = base.CharacterCard;
+            effect.CardSource = Card;
+            effect.Identifier = IncreaseDamageIdentifier;
+            effect.NumberOfUses = 1;
 
+            IEnumerator increaseDamageRoutine = base.AddStatusEffect(effect, true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(increaseDamageRoutine);
@@ -48,46 +41,8 @@ namespace Cauldron.TangoOne
                 base.GameController.ExhaustCoroutine(increaseDamageRoutine);
             }
 
-
-            if (!base.HeroTurnTakerController.HasCardsInHand)
-            {
-                IEnumerator sendMessage = base.GameController.SendMessageAction("No cards in hand to play, skipping", 
-                    Priority.High, base.GetCardSource(), null, true);
-
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(sendMessage);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(sendMessage);
-                }
-
-                yield break;
-            }
-
-            // Ask if player wants to play a card
-            List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
-            IEnumerator decidePlayCard = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.PlayCard, this.Card, null, storedYesNoResults, null, GetCardSource());
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(decidePlayCard);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(decidePlayCard);
-            }
-
-            if (!base.DidPlayerAnswerYes(storedYesNoResults))
-            {
-                yield break;
-            }
-
             // Play a card
-            IEnumerator playCardRoutine = base.SelectAndPlayCardFromHand(this.HeroTurnTakerController);
-
+            IEnumerator playCardRoutine = base.SelectAndPlayCardFromHand(DecisionMaker, true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(playCardRoutine);

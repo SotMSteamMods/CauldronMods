@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Doc Havoc",
             "body": "Adrenaline",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "559b53",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "559b53",
             "character": true,
             "powers": [
                 "{DocHavoc} deals 1 hero 3 toxic damage. If that hero took damage this way, they may play a card now."
@@ -41,7 +41,7 @@
                 "default": "default placeholder",
                 "VectorCharacter": "Vector placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "Brawler",
@@ -108,7 +108,7 @@
             ],
             "flavorReference": "War Journal #355",
             "powers": [
-                "Each 1 hero target regains 1HP."
+                "Each hero target regains 1HP."
             ]
         },
         {
@@ -122,7 +122,10 @@
                 "GainHP",
                 "PlayCardNow"
             ],
-            "body": "Each hero target regains 1HP. You may play a card now.",
+            "body": [
+                "Each hero target regains 1HP.",
+                "You may play a card now."
+                ],
             "flavorText": "His flask was a gift, cast from the{BR}molten remains of a holy sword. Other{BR}supplies were more rudimentary."
         },
         {
@@ -159,7 +162,10 @@
                 "DrawCardNow",
                 "GainHP"
             ],
-            "body": "Each player may take a card from their trash and place it in their hand, or discard a card and draw 2 cards. Each villain target regains 2HP.",
+            "body": [
+                "Each player may take a card from their trash and place it in their hand, or discard a card and draw 2 cards.",
+                "Each villain target regains 2HP."
+                ],
             "flavorQuotes": [
                 {
                     "identifier": "Quicksilver",
@@ -236,7 +242,10 @@
                 "DealDamageRadiant",
                 "CannotGainHP"
             ],
-            "body": "{DocHavoc} deals each target 1 radiant damage. Non-hero targets dealt damage this way may not regain HP until the start of your next turn.",
+            "body": [
+                "{DocHavoc} deals each target 1 radiant damage.",
+                "Non-hero targets dealt damage this way may not regain HP until the start of your next turn."
+                ],
             "flavorQuotes": [
                 {
                     "identifier": "DocHavoc",
@@ -259,7 +268,10 @@
                 "HasPower",
                 "DestroySelf"
             ],
-            "body": "Increase damage dealt to {DocHavoc} by 1. You may draw an extra card during your draw phase.",
+            "body": [
+                "Increase damage dealt to {DocHavoc} by 1.",
+                "You may draw an extra card during your draw phase."
+                ],
             "flavorQuotes": [
                 {
                     "identifier": "DocHavoc",
@@ -379,7 +391,10 @@
                 "DestroyEnvironment",
                 "DestroySelf"
             ],
-            "body": "When this card enters play, 1 target regains 2HP. At the end of your turn, you may destroy 1 ongoing or environment card. If you do, destroy this card.",
+            "body": [
+                "When this card enters play, 1 target regains 2HP.",
+                "At the end of your turn, you may destroy 1 ongoing or environment card. If you do, destroy this card."
+                ],
             "flavorQuotes": [
                 {
                     "identifier": "DocHavoc",
@@ -398,9 +413,9 @@
             "promoTitle": "First Response Doc Havoc",
             "shortPromoTitle": "Responder Doc Havoc",
             "body": "Breach",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "EAA078",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "EAA078",
             "character": true,
             "powers": [
                 "Draw a card. {DocHavoc} may deal 1 target 1 melee damage."
@@ -428,7 +443,7 @@
                 "default": "default placeholder",
                 "VectorCharacter": "Vector placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "DocHavocCharacter",
@@ -438,9 +453,9 @@
             "promoTitle": "2199 Doc Havoc",
             "shortPromoTitle": "2199 Doc Havoc",
             "body": "Motivate",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "A7B8C1",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "A7B8C1",
             "character": true,
             "powers": [
                 "{DocHavoc} deals 1 target 2 melee damage, or 1 hero that regained HP this turn uses a power."
@@ -468,7 +483,7 @@
                 "default": "default placeholder",
                 "VectorCharacter": "Vector placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

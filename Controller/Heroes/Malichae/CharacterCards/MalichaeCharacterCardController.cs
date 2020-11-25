@@ -73,7 +73,7 @@ namespace Cauldron.Malichae
                     }
                 case 1:
                     {
-                        var coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria(c => c.IsEnvironment, "enviroment"), false, cardSource: GetCardSource());
+                        var coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria(c => c.IsEnvironment && c.IsInPlay, "enviroment"), false, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

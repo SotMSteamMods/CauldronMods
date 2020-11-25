@@ -23,7 +23,7 @@ namespace Cauldron.TheWanderingIsle
         private IEnumerator DealDamageReponse(PhaseChangeAction pca)
         {
             //this card deals the non-environment target with the lowest HP 2 projectile damage. 
-            IEnumerator dealDamage = base.DealDamageToLowestHP(base.Card, 1, (Card c) => c.IsTarget && !c.IsEnvironment, (Card c) => 2, DamageType.Projectile);
+            IEnumerator dealDamage = base.DealDamageToLowestHP(base.Card, 1, (Card c) => c.IsTarget && c.IsInPlayAndHasGameText && !c.IsEnvironment, (Card c) => 2, DamageType.Projectile);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(dealDamage);

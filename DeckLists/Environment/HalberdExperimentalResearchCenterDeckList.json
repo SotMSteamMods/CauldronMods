@@ -2,8 +2,8 @@
     "name": "Halberd Experimental Research Center",
     "kind": "Environment",
     "expansionIdentifier": "Cauldron",
-    "backgroundColor": "FB5455",
-    "difficulty": 1,
+    "backgroundColor": "F58F22",
+    "difficulty": 2,
     "cards": [
         {
             "identifier": "HalberdProphet",

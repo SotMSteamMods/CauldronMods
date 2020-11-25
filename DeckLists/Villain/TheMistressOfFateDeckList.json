@@ -1,5 +1,6 @@
 {
     "name": "The Mistress Of Fate",
+    "sortName":"Mistress Of Fate",
     "kind": "Villain",
     "expansionIdentifier": "CauldronAdrift",
     "initialCardIdentifiers": [
@@ -15,7 +16,7 @@
                 "villain"
             ],
             "body": "Endless Cycle",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "eed4e6",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 88,
@@ -60,7 +61,7 @@
             "flippedAdvancedIcons": [
                 "GainHP"
             ],
-            "difficulty": 1,
+            "difficulty": 2,
             "openingLines": {
                 "default": "default placeholder",
                 "BaccaratCharacter": "Baccarat placeholder",

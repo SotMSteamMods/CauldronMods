@@ -1320,6 +1320,83 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Arm_IsArm([Values("BoneCleaver", "WhipTendril", "KnuckleDragger", "ThresherClaw")] string arm)
+        {
+            SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis");
+
+            StartGame();
+
+            GoToPlayCardPhase(anathema);
+
+            Card card = PlayCard(arm);
+            AssertIsInPlay(card);
+            AssertCardHasKeyword(card, "arm", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Body_IsBody([Values("RazorScales", "MetabolicArmor", "HeavyCarapace")] string body)
+        {
+            SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis");
+
+            StartGame();
+
+            GoToPlayCardPhase(anathema);
+
+            Card card = PlayCard(body);
+            AssertIsInPlay(card);
+            AssertCardHasKeyword(card, "body", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Head_IsHead([Values("ReflexBooster", "CarapaceHelmet", "EnhancedSenses")] string head)
+        {
+            SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis");
+
+            StartGame();
+
+            GoToPlayCardPhase(anathema);
+
+            Card card = PlayCard(head);
+            AssertIsInPlay(card);
+            AssertCardHasKeyword(card, "head", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Ongoing_IsOngoing([Values("TheStuffOfNightmares", "Biofeedback")] string ongoing)
+        {
+            SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis");
+
+            StartGame();
+
+            GoToPlayCardPhase(anathema);
+
+            Card card = PlayCard(ongoing);
+            AssertIsInPlay(card);
+            AssertCardHasKeyword(card, "ongoing", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Oneshot_IsOneshot([Values("ExplosiveTransformation", "AnathemaRampage", "DoppelgangerStrike")] string oneshot)
+        {
+            SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis");
+
+            StartGame();
+
+            GoToPlayCardPhase(anathema);
+
+            Card card = PlayCard(oneshot);
+            AssertInTrash(card);
+            AssertCardHasKeyword(card, "one-shot", false);
+        }
+
+
+
 
     }
 }

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -16,16 +15,17 @@ namespace Cauldron.DocHavoc
         // that target may instead regain that much HP.
         //==============================================================
 
-        public static string Identifier = "Cauterize";
+        public static readonly string Identifier = "Cauterize";
 
         public CauterizeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            this.AllowFastCoroutinesDuringPretend = false;
         }
 
         public override void AddTriggers()
         {
 
-            base.AddTrigger<DealDamageAction>(dealDamageAction => dealDamageAction.DamageSource != null 
+            base.AddTrigger<DealDamageAction>(dealDamageAction => dealDamageAction.DamageSource != null
                     && dealDamageAction.DamageSource.IsSameCard(base.CharacterCard),
                 ChooseDamageOrHealResponse, TriggerType.DealDamage, TriggerTiming.Before);
 
@@ -45,7 +45,7 @@ namespace Cauldron.DocHavoc
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
 
             IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(this.DecisionMaker,
-                SelectionType.GainHP, card, storedResults: storedResults,cardSource: base.GetCardSource());
+                SelectionType.GainHP, card, storedResults: storedResults, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -76,7 +76,7 @@ namespace Cauldron.DocHavoc
             }
 
             // Gain HP instead of dealing damage
-            coroutine = this.GameController.GainHP(card, dd.Amount);
+            coroutine = this.GameController.GainHP(card, dd.Amount, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -86,6 +86,7 @@ namespace Cauldron.DocHavoc
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+        
 
             yield break;
         }

@@ -14,7 +14,7 @@
                 "villain"
             ],
             "body": "Shardwalker",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "f2b67c",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 80,
@@ -52,9 +52,9 @@
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
             ],
-            "difficulty": 1,
+            "difficulty": 2,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "You're too late, heroes! Soon I will break the veil between our worlds, and rule over both!",
                 "MailchaeCharacter": "Mailchae placeholder",
                 "ShardmasterMailchaeCharacter": "Shardmaster Mailchae placeholder",
                 "MinistryOfStrategicScienceMailchaeCharacter": "Ministry Of Strategic Science Mailchae placeholder"

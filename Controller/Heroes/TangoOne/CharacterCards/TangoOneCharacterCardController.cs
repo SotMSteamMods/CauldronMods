@@ -198,7 +198,7 @@ namespace Cauldron.TangoOne
 
             MoveCardDestination[] possibleDestinations = {
                 new MoveCardDestination(card.Owner.Deck),
-                new MoveCardDestination(cardController.GetTrashDestination())
+                new MoveCardDestination(cardController.GetTrashDestination().Location)
             };
 
             IEnumerator setLocationAndMoveRoutine = this.GameController.SelectLocationAndMoveCard(this.HeroTurnTakerController, card,

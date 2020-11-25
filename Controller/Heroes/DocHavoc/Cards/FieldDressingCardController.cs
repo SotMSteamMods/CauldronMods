@@ -12,7 +12,7 @@ namespace Cauldron.DocHavoc
 
     public class FieldDressingCardController : CardController
     {
-        public static string Identifier = "FieldDressing";
+        public static readonly string Identifier = "FieldDressing";
         private const int HpGain = 1;
 
         public FieldDressingCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
@@ -26,7 +26,7 @@ namespace Cauldron.DocHavoc
             // Each hero target regains 1 HP.
             //==============================================================
 
-            IEnumerator gainHpRoutine = this.GameController.GainHP(this.HeroTurnTakerController, (Func<Card, bool>) (c => c.IsHero && c.IsTarget), HpGain,
+            IEnumerator gainHpRoutine = this.GameController.GainHP(this.HeroTurnTakerController, (Func<Card, bool>)(c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText), HpGain,
                 cardSource: this.GetCardSource());
 
             if (UseUnityCoroutines)

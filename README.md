@@ -22,8 +22,11 @@ To get started helping out take a look at:
 
 **How to I play this mod?**
 
-You can't.
-Handelabra is implementing Mod support now.
+You can!
+The 3.1.3 version of Sentinels released Nov. 19th supports ad-hoc loading of mods for alpha test.
+Join the Discord above for instructions and downloads.
+
+Handelabra is implementing Mod support now so Workshop integration, art and many more features are still to come.
 You can follow the development on [Handelabra's Discord](https://discordapp.com/invite/handelabra)
 channel with [Weekly Dev. Streams](https://www.youtube.com/playlist?list=PLGPBmjNUB43ick6QwxGIOMFFN5yKuTvQU).
 
@@ -41,17 +44,19 @@ when mods are available.
   - The Stranger
   - Malichae
   - Tango One
-  - Starlight - In Progress
+  - Starlight
+  - Quicksilver - In Progress
+  - Vanish - In Progress
 
 - VILLAINS:
   - Anathema
   - Tiamat
   - Gray - In Progress
+  - Dendron - In Progress
 
 - ENVIRONMENTS:
   - The Wandering Isle
   - Halberd Experimental Research Center
-  - FSC Continuance Wanderer
+  - FSC Continuance Wanderer - In Progress
   - Blackwood Forest - In Progress
-  - St Simeon's Catacombs
-  - Northspar - In Progress
+  - St Simeon's Catacombs - In Progress

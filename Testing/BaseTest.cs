@@ -1027,7 +1027,8 @@ namespace Handelabra.Sentinels.UnitTest
                     {
                         damage.SelectedDamageType = this.DecisionSelectDamageType;
                         Console.WriteLine("Selected: " + damage.SelectedDamageType);
-                    } else if (this.DecisionSelectDamageTypes != null)
+                    }
+                    else if (this.DecisionSelectDamageTypes != null)
                     {
                         // Select each of the given targets in order
                         damage.SelectedDamageType = this.DecisionSelectDamageTypes.ElementAt(this.DecisionSelectDamageTypesIndex);
@@ -3173,6 +3174,11 @@ namespace Handelabra.Sentinels.UnitTest
             Assert.IsTrue(card.HasGameText, card.Title + " should have game text.");
         }
 
+        protected void AssertDoesNotHaveGameText(Card card)
+        {
+            Assert.IsTrue(!card.HasGameText, card.Title + " should not have game text.");
+        }
+
         protected void AssertCardHasKeyword(Card card, string keyword, bool isAdditional)
         {
             Assert.IsTrue(this.GameController.DoesCardContainKeyword(card, keyword), "{0} should have keyword: {1}", card.Identifier, keyword);
@@ -4209,10 +4215,18 @@ namespace Handelabra.Sentinels.UnitTest
         protected void AssertCannotPlayCards(TurnTakerController ttc)
         {
             Assert.IsFalse(this.GameController.CanPerformAction<PlayCardAction>(ttc, null), ttc.Name + " should not be able to play cards.");
-            var keeper = ttc.TurnTaker.GetAllCards().Where(c => !c.IsCharacter && c.IsKeeper).FirstOrDefault();
+            var keeper = ttc.TurnTaker.GetAllCards().Where(c => !c.IsInPlay && !c.IsCharacter && c.IsKeeper).FirstOrDefault();
             Console.WriteLine("Checking to make sure {0} cannot play cards by playing {1} from {2}", ttc.Name, keeper.Identifier, keeper.Location.GetFriendlyName());
             PlayCard(keeper);
             AssertNotInPlay(keeper);
+        }
+
+        protected void AssertCannotPlayCards(TurnTakerController ttc, Card testCard)
+        {
+            Assert.IsFalse(this.GameController.CanPerformAction<PlayCardAction>(ttc, null), ttc.Name + " should not be able to play cards.");
+            Console.WriteLine("Checking to make sure {0} cannot play cards by playing {1} from {2}", ttc.Name, testCard.Identifier, testCard.Location.GetFriendlyName());
+            PlayCard(testCard);
+            AssertNotInPlay(testCard);
         }
 
         protected void AssertDamagePreviewResults(IEnumerable<DamagePreviewResult> results, int index, Card target, int amount, DamageType? damageType)
@@ -4928,7 +4942,7 @@ namespace Handelabra.Sentinels.UnitTest
                 {
                     var dllpath = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
                     path = Path.GetDirectoryName(dllpath.Replace("file://", "")).Replace("\\D:", "D:").Replace("\\C:", "C:");
-                    path = Path.Combine(path, "..", "..", "DataFiles", name);
+                    //path = Path.Combine(path, "..", "..", "DataFiles", name);
                 }
                 else if (addTempPath)
                 {
@@ -4965,7 +4979,7 @@ namespace Handelabra.Sentinels.UnitTest
 
                 var dllpath = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
                 var path = Path.GetDirectoryName(dllpath.Replace("file://", "")).Replace("\\D:", "D:").Replace("\\C:", "C:");
-                path = Path.Combine(path, "..", "..", "DataFiles", name);
+                //path = Path.Combine(path, "..", "..", "DataFiles", name);
                 var savedGame = LoadGamePath(path);
 
                 if (savedGame != null)

@@ -14,7 +14,7 @@
                 "villain"
             ],
             "body": "Insubstantial Rumor",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "a3cda5",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 48,
@@ -58,7 +58,7 @@
                 "DealDamageInfernal"
             ],
             "flippedAdvancedIcons": [],
-            "difficulty": 1,
+            "difficulty": 3,
             "openingLines": {
                 "default": "default placeholder",
                 "TitanCharacter": "Titan placeholder",

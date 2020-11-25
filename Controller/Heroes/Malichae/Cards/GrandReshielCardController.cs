@@ -20,12 +20,18 @@ namespace Cauldron.Malichae
             AddDestroyAtEndOfTurnTrigger();
         }
 
-        public override IEnumerator UsePower(int index = 0)
+        public override Power GetGrantedPower(CardController cardController)
+        {
+            return new Power(cardController.HeroTurnTakerController, cardController, $"{cardController.Card.Title}  deals each non-hero target 2 sonic damage.", UseGrantedPower(), 0, null, GetCardSource());
+        }
+
+        private IEnumerator UseGrantedPower()
         {
             int damages = GetPowerNumeral(0, 2);
 
             var card = GetCardThisCardIsNextTo(); //TODO - PROMO - DamageSource can be Malichae
             var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, card), damages, DamageType.Sonic, null, false, null,
+                allowAutoDecide: true,
                 additionalCriteria: c => c.IsInPlay && !c.IsHero,
                 cardSource: GetCardSource());
             if (base.UseUnityCoroutines)

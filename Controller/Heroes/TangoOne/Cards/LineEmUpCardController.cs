@@ -14,7 +14,7 @@ namespace Cauldron.TangoOne
         // she may deal 1 target 1 projectile damage.
         //==============================================================
 
-        public static string Identifier = "LineEmUp";
+        public static readonly string Identifier = "LineEmUp";
 
         private const int DamageAmount = 1;
 
@@ -22,16 +22,19 @@ namespace Cauldron.TangoOne
         {
         }
 
+        private bool LineEmUpTriggerCondition(DestroyCardAction destroyCard)
+        {
+            return destroyCard.WasCardDestroyed &&
+                    base.GameController.IsCardVisibleToCardSource(destroyCard.CardToDestroy.Card, base.GetCardSource()) &&
+                    (
+                        (destroyCard.ResponsibleCard != null && destroyCard.ResponsibleCard.Owner == this.TurnTaker) ||
+                        (destroyCard.CardSource != null && destroyCard.CardSource.Card != null && destroyCard.CardSource.Card.Owner == this.TurnTaker)
+                    );
+        }
+
         public override void AddTriggers()
         {
-            base.AddTrigger<DestroyCardAction>(destroyCard => destroyCard.WasCardDestroyed
-                && destroyCard.ResponsibleCard.Equals(this.Card.Owner.CharacterCard)
-                && base.GameController.IsCardVisibleToCardSource(destroyCard.CardToDestroy.Card,
-                    base.GetCardSource()),
-                this.DealDamageResponse,
-                TriggerType.DealDamage, TriggerTiming.After);
-
-            base.AddTriggers();
+            base.AddTrigger<DestroyCardAction>(LineEmUpTriggerCondition, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
         }
 
         private IEnumerator DealDamageResponse(DestroyCardAction destroyCard)
@@ -52,7 +55,7 @@ namespace Cauldron.TangoOne
             IEnumerator dealDamageRoutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
                 new DamageSource(base.GameController, characterCard), DamageAmount,
                 DamageType.Projectile, 1, false, 0,
-                additionalCriteria: c => c.IsTarget && c.IsInPlay,
+                additionalCriteria: c => c.IsTarget && c.IsInPlayAndHasGameText && !c.IsBeingDestroyed,
                 cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)

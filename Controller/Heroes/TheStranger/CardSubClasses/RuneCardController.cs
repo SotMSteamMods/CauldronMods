@@ -8,11 +8,11 @@ using NUnit.Framework;
 
 namespace Cauldron
 {
-    public class RuneCardController : CardController
+    public abstract class RuneCardController : CardController
     {
         #region Constructors
 
-        public RuneCardController(Card card, TurnTakerController turnTakerController, LinqCardCriteria nextToCardCriteria) : base(card, turnTakerController)
+        protected RuneCardController(Card card, TurnTakerController turnTakerController, LinqCardCriteria nextToCardCriteria) : base(card, turnTakerController)
         {
             this.NextToCardCriteria = nextToCardCriteria;
         }
@@ -28,7 +28,7 @@ namespace Cauldron
            
             //if the card this is next to leaves, have this card fall off
             Card cardThisCardIsNextTo = base.GetCardThisCardIsNextTo(true);
-            base.AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(true, cardThisCardIsNextTo != null && !cardThisCardIsNextTo.IsHeroCharacterCard);
+            base.AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(false, cardThisCardIsNextTo != null && !cardThisCardIsNextTo.IsHeroCharacterCard);
         }
 
         private IEnumerator DestroyCardResponse(PhaseChangeAction action)
