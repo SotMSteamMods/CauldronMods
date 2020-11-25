@@ -38,8 +38,9 @@ namespace Cauldron.FSCContinuanceWanderer
                 //If the new index is outside of the list then take the last one
                 indexNextTurnTaker += Game.TurnTakers.Count() + 1;
             }
-            //If we're playing OblivAeon then we need to grab the actual first phasess of the game
+            //If we're playing OblivAeon then we need to grab the actual phasess of the game
             Phase startPhase = Game.IsOblivAeonMode ? Phase.BeforeStart : Phase.Start;
+            Phase endPhase = Game.IsOblivAeonMode ? Phase.AfterEnd : Phase.End;
 
             //Turn taker after the frozen turn taker
             TurnTaker nextTurnTaker = Game.TurnTakers.ElementAt(indexNextTurnTaker);
@@ -48,7 +49,7 @@ namespace Cauldron.FSCContinuanceWanderer
             TurnTaker prevTurnTaker = Game.TurnTakers.ElementAt(indexPrevTurnTaker);
 
             //The phase where the Skip is applied
-            triggerPhase = GameController.FindLastTurnPhase(prevTurnTaker);
+            triggerPhase = base.Game.FindTurnPhases((TurnPhase turnPhase) => turnPhase.Phase == endPhase && turnPhase.TurnTaker == prevTurnTaker).FirstOrDefault();
 
             Log.Debug($"## TimeFreeze.Play: triggerPhase = {triggerPhase.TurnTaker.Name}-{triggerPhase.FriendlyPhaseName}");
 
