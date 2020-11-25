@@ -36,6 +36,11 @@ namespace CauldronTests
         {
             GameController.ExhaustCoroutine(GameController.SendMessageAction(MessageTerminator, Priority.High, null));
         }
+
+        protected DamageType DTM
+        {
+            get { return DamageType.Melee; }
+        }
         #endregion
 
         [Test]
@@ -380,6 +385,140 @@ namespace CauldronTests
             PlayCard("FallingMeteor");
             Assert.IsTrue(IsUpClose(unity));
             QuickHPCheck(-4, -4, -4, -4);
+        }
+        [Test]
+        public void TestFallingMeteorMayChooseDeckOrTrashFirst()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "Ra", "Unity", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+
+            PlayCard("UpClose", 0);
+            PutOnDeck(ram, GetCard("UpClose", 1));
+
+            SetHitPoints(haka, 20);
+
+            QuickHPStorage(legacy, haka, unity, ra);
+            AssertNextDecisionSelectionType(SelectionType.SearchLocation);
+            PlayCard("FallingMeteor");
+
+            Assert.IsTrue(IsUpClose(unity));
+            QuickHPCheck(-4, -4, -4, -4);
+        }
+        [Test]
+        public void TestFallingMeteorCannotPutMultiplesOnSentinels()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "Ra", "TheSentinels", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+
+            SetHitPoints(new TurnTakerController[] { legacy, haka, ra }, 10);
+
+            //should be forced to pick one of the Sentinels first, then default to Legacy afterwards
+            PlayCard("FallingMeteor");
+            Assert.IsTrue((IsUpClose(sentinels)), "The Sentinels were not up close.");
+            Assert.IsTrue((IsUpClose(legacy)), "Legacy was not up close.");
+        }
+        [Test]
+        public void TestFallingMeteorEveryoneAlreadyUpClose()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "Ra", "TheSentinels", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+            PutOnDeck(ram, ram.TurnTaker.Trash.Cards);
+
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+
+            PlayCard("FallingMeteor");
+
+            AssertInTrash("UpClose");
+            //Falling Meteor and one Up Close
+            AssertNumberOfCardsInTrash(ram, 2);
+        }
+        [Test]
+        public void TestFallingMeteorDecrementsAllowedTargets()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "Ra", "TheVisionary", "VoidGuardWrithe", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+
+            DecisionAutoDecideIfAble = true;
+            //First to pull up close, second to pull up close, third is automatic so the next choice hits auto. 
+            AssertMaxNumberOfDecisions(3);
+
+            PlayCard("FallingMeteor");
+        }
+        [Test]
+        public void TestForcefieldNodeImmunityAndDR()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "Ra", "TheVisionary", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            PlayCard("DecoyProjection");
+
+            //legacy and haka should be up close, ra and visionary not
+            Card node = PlayCard("ForcefieldNode");
+            QuickHPStorage(ram.CharacterCard, node);
+
+            DealDamage(legacy, node, 1, DTM);
+            DealDamage(legacy, ram, 3, DTM);
+            DealDamage(ra, node, 1, DTM);
+            DealDamage(ra, ram, 3, DTM);
+
+            QuickHPCheck(-2, -1);
+        }
+        [Test]
+        public void TestForcefieldNodeDamage()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "Ra", "TheVisionary", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+            PlayCard("UpClose");
+
+            QuickHPStorage(legacy, haka, ra);
+
+            PlayCard("ForcefieldNode");
+
+            PlayCard("UpClose");
+            //legacy was already up close, ra stayed away the whole time, haka went through
+            QuickHPCheck(0, -2, 0);
+
+            DestroyCard("UpClose");
+            QuickHPCheck(0, 0, 0);
+        }
+        [Test]
+        public void TestPersonalDefenseSpines()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "Ra", "Unity", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+            PlayCard("UpClose");
+
+            Card swift = PlayCard("SwiftBot");
+            Card crate = PlayCard("SupplyCrate");
+            Card charge = PlayCard("MotivationalCharge");
+            Card mana = PlayCard("SavageMana");
+            Card staff = PlayCard("TheStaffOfRa");
+
+            QuickHPStorage(legacy.CharacterCard, haka.CharacterCard, ra.CharacterCard, unity.CharacterCard, swift);
+
+            //Legacy is up close, others are not
+            PlayCard("PersonalDefenseSpines");
+
+            QuickHPCheck(-6, -2, -2, -2, -2);
+            AssertInTrash(charge);
+            AssertIsInPlay(new Card[] { crate, mana, staff });
         }
     }
 }
