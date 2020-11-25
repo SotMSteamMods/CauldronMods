@@ -6,10 +6,10 @@ using System.Collections.Generic;
 
 namespace Cauldron.Northspar
 {
-    public class ThirdWaypointCardController : NorthsparCardController
+    public abstract class ThirdWaypointCardController : NorthsparCardController
     {
 
-        public ThirdWaypointCardController(Card card, TurnTakerController turnTakerController, string cardToRemoveIdentifier) : base(card, turnTakerController)
+        protected ThirdWaypointCardController(Card card, TurnTakerController turnTakerController, string cardToRemoveIdentifier) : base(card, turnTakerController)
         {
             this.CardToRemoveIdentifier = cardToRemoveIdentifier;
         }
@@ -27,8 +27,8 @@ namespace Cauldron.Northspar
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-           // ...and destroy this card
-           coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card, cardSource: base.GetCardSource());
+            // ...and destroy this card
+            coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -45,7 +45,7 @@ namespace Cauldron.Northspar
         {
             //If the other Third Waypoint would enter play, instead remove it from the game.
             Func<CardEntersPlayAction, bool> criteria = (CardEntersPlayAction cp) => cp.CardEnteringPlay != null && cp.CardEnteringPlay.Identifier == CardToRemoveIdentifier;
-            base.AddTrigger<CardEntersPlayAction>(criteria , this.RemoveOtherThirdWaypointResponse, TriggerType.RemoveFromGame, TriggerTiming.Before);
+            base.AddTrigger<CardEntersPlayAction>(criteria, this.RemoveOtherThirdWaypointResponse, TriggerType.RemoveFromGame, TriggerTiming.Before);
         }
 
         private IEnumerator RemoveOtherThirdWaypointResponse(CardEntersPlayAction cp)
@@ -78,7 +78,7 @@ namespace Cauldron.Northspar
             }
 
             //do the move
-            coroutine = base.GameController.MoveCard(base.TurnTakerController, otherThirdWaypoint, base.TurnTaker.OutOfGame,evenIfIndestructible: true, cardSource: base.GetCardSource());
+            coroutine = base.GameController.MoveCard(base.TurnTakerController, otherThirdWaypoint, base.TurnTaker.OutOfGame, evenIfIndestructible: true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -90,6 +90,6 @@ namespace Cauldron.Northspar
             yield break;
         }
 
-        protected string CardToRemoveIdentifier { get; private set; }
+        protected string CardToRemoveIdentifier { get; }
     }
 }
