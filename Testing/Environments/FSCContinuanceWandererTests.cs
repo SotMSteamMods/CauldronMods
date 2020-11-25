@@ -106,14 +106,17 @@ namespace CauldronTests
             QuickHPStorage(borg);
             DealDamage(ra, borg, 3, DamageType.Fire);
             QuickHPCheck(-1);
+            //check only environment targets
+            QuickHPStorage(haka);
+            DealDamage(ra, haka, 3, DamageType.Fire);
+            QuickHPCheck(-3);
         }
         [Test()]
         public void TestHeartOfTheWandererDestroySelf()
         {
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
-            Card heart = GetCard("HeartOfTheWanderer");
-            PlayCard(heart);
+            Card heart = PlayCard("HeartOfTheWanderer");
             //At the end of the environment turn, destroy this card.
             GoToStartOfTurn(env);
             AssertInPlayArea(env, heart);
@@ -143,6 +146,12 @@ namespace CauldronTests
             AssertNumberOfCardsInTrash(ra, 1);
             AssertNumberOfCardsInTrash(haka, 1);
             AssertNumberOfCardsInTrash(fsc, 1);
+
+            AssertNumberOfCardsInRevealed(spite, 0);
+            AssertNumberOfCardsInRevealed(legacy, 0);
+            AssertNumberOfCardsInRevealed(ra, 0);
+            AssertNumberOfCardsInRevealed(haka, 0);
+            AssertNumberOfCardsInRevealed(fsc, 0);
         }
 
         [Test()]
@@ -165,6 +174,12 @@ namespace CauldronTests
             AssertNumberOfCardsInTrash(ra, 0);
             AssertNumberOfCardsInTrash(haka, 0);
             AssertNumberOfCardsInTrash(fsc, 0);
+
+            AssertNumberOfCardsInRevealed(spite, 0);
+            AssertNumberOfCardsInRevealed(legacy, 0);
+            AssertNumberOfCardsInRevealed(ra, 0);
+            AssertNumberOfCardsInRevealed(haka, 0);
+            AssertNumberOfCardsInRevealed(fsc, 0);
         }
 
         [Test()]
@@ -191,6 +206,19 @@ namespace CauldronTests
             AssertNumberOfCardsInTrash(frictionTeam, 1);
             AssertNumberOfCardsInTrash(haka, 1);
             AssertNumberOfCardsInTrash(fsc, 1);
+
+            AssertNumberOfCardsInRevealed(ermineTeam, 0);
+            AssertNumberOfCardsInRevealed(legacy, 0);
+            AssertNumberOfCardsInRevealed(biomancerTeam, 0);
+            AssertNumberOfCardsInRevealed(ra, 0);
+            AssertNumberOfCardsInRevealed(frictionTeam, 0);
+            AssertNumberOfCardsInRevealed(haka, 0);
+            AssertNumberOfCardsInRevealed(fsc, 0);
+
+
+
+
+
         }
 
         [Test()]
