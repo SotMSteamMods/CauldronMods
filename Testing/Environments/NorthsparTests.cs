@@ -973,6 +973,29 @@ namespace CauldronTests
             AssertInTrash(eerie);
 
         }
+        
+         [Test()]
+        public void TestFrostbite_EndOfTurn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "AbsoluteZero", "Cauldron.Northspar");
+            StartGame();
+            SetHitPoints(az, 10);
+            //swap villain targets
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            Card battalion = PlayCard("BladeBattalion");
+
+            Card frostbite = PlayCard("Frostbite");
+            //play out az null point calibration to make sure it is cold damage
+            PlayCard("NullPointCalibrationUnit");
+            //At the end of the environment turn, this card deals the {H + 1} non-environment targets with the lowest HP 4 cold damage each and is destroyed.
+            //H+1 = 4
+            GoToPlayCardPhase(northspar);
+            AssertInPlayArea(northspar, frostbite);
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, az.CharacterCard);
+            GoToEndOfTurn(northspar);
+            QuickHPCheck(0, -4, -4, -4, 4);
+            AssertInTrash(frostbite);
+        }
 
 
     }
