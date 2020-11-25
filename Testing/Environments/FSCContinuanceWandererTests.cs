@@ -126,6 +126,8 @@ namespace CauldronTests
             SetupGameController("Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             Card heart = PlayCard("HeartOfTheWanderer");
+            //stack spite's deck to not play lab raid
+            PutOnDeck("GoodSamaritan");
             //At the end of the environment turn, destroy this card.
             GoToStartOfTurn(env);
             AssertInPlayArea(env, heart);
@@ -596,6 +598,8 @@ namespace CauldronTests
             StartGame();
             Card freeze = GetCard("TimeFreeze");
             GoToStartOfTurn(haka);
+                      //stack spites deck to not get lab raid
+            PutOnDeck("GoodSamaritan");
             PlayCard(freeze);
             //At the start of the environment turn, destroy this card.
             GoToStartOfTurn(env);
