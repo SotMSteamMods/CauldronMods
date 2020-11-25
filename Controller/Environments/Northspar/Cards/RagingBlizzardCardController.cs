@@ -43,7 +43,7 @@ namespace Cauldron.Northspar
             if (DidMoveCard(storedResults))
             {
                 int X = storedResults.Count((MoveCardAction mc) => IsFrozen(mc.CardToMove));
-                if(X == 0)
+                if (X == 0)
                 {
                     coroutine = base.GameController.SendMessageAction(base.Card.Title + " did not discard any Frozen cards, so no damage is dealt", Priority.Medium, GetCardSource());
                     if (base.UseUnityCoroutines)
@@ -54,7 +54,8 @@ namespace Cauldron.Northspar
                     {
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
-                } else
+                }
+                else
                 {
                     //This card deals each non-environment target X cold damage, where X = the number of Frozen cards discarded this way
                     coroutine = base.DealDamage(base.Card, (Card c) => c.IsNonEnvironmentTarget, X, DamageType.Cold);
@@ -70,7 +71,6 @@ namespace Cauldron.Northspar
                     //If 4 Frozen cards were discarded this way, destroy this card.
                     if (X == 4)
                     {
-
                         coroutine = base.DestroyThisCardResponse(pca);
                         if (UseUnityCoroutines)
                         {
@@ -82,8 +82,6 @@ namespace Cauldron.Northspar
                         }
                     }
                 }
-
-               
             }
 
             yield break;
