@@ -9,24 +9,15 @@ namespace Cauldron.FSCContinuanceWanderer
 {
     public class SuperimposedRealitiesCardController : CardController
     {
-        #region Constructors
 
         public SuperimposedRealitiesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
 
-        #endregion Constructors
-
-        #region Properties
-
         private Card cardThisIsNextTo;
         private HeroTurnTaker superimposedTurnTaker;
         private HeroTurnTakerController superimposedTurnTakerController;
-
-        #endregion Properties
-
-        #region Methods
 
         public override IEnumerator Play()
         {
@@ -49,7 +40,7 @@ namespace Cauldron.FSCContinuanceWanderer
             base.AddTrigger<DrawCardAction>((DrawCardAction action) => action.HeroTurnTaker != superimposedTurnTaker, SuperimposeDrawResponse, TriggerType.DrawCard, TriggerTiming.Before);
 
             //At the start of the environment turn, destroy this card.
-            base.AddStartOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(base.DestroyThisCardResponse), TriggerType.DestroySelf);
+            base.AddStartOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, base.DestroyThisCardResponse, TriggerType.DestroySelf);
         }
 
         private IEnumerator SuperimposedPhaseResponse(PhaseChangeAction action)
@@ -153,7 +144,7 @@ namespace Cauldron.FSCContinuanceWanderer
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             //Play this card next to a hero.
-            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard), storedResults, true, decisionSources);
+            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame), storedResults, true, decisionSources);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -165,6 +156,5 @@ namespace Cauldron.FSCContinuanceWanderer
             yield break;
         }
 
-        #endregion Methods
     }
 }

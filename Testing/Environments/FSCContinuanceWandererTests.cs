@@ -361,7 +361,7 @@ namespace CauldronTests
             //Going to Legacy to prevent suprise Decisions from villain
             GoToEndOfTurn(legacy);
             PlayCard("SuperimposedRealities");
-
+            DecisionSelectTarget = spite.CharacterCard;
             UsePower(ra);
             //checking Spite because Ra's power should fail and deal no damage
             QuickHPStorage(haka, spite);
@@ -382,6 +382,22 @@ namespace CauldronTests
             PlayCard(bolster);
             //Draw one per hero, but played Bolster Allies
             QuickHandCheck(2);
+        }
+
+        [Test()]
+        public void TestSuperimposedRealitiesDestroySelf()
+        {
+            SetupGameController(new string[] { "Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer" });
+            StartGame();
+            GoToStartOfTurn(haka);
+            //stack spites deck to not get lab raid
+            PutOnDeck("GoodSamaritan");
+            Card reality = PlayCard("SuperimposedRealities");
+            //At the start of the environment turn, destroy this card.
+            GoToEndOfTurn(haka);
+            AssertNextToCard(reality, legacy.CharacterCard);
+            GoToStartOfTurn(env);
+            AssertInTrash(env, reality);
         }
 
         [Test()]
