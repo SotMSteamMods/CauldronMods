@@ -1191,6 +1191,80 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestRagingBlizzard_MoreThan4CardsInDeck_2Frozens()
+        {
+            SetupGameController("BaronBlade", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            Card env1 = PutOnDeck("LandingSite");
+            Card env2 = PutOnDeck("FrozenSolid");
+            Card env3 = PutOnDeck("BitterCold");
+            Card env4 = PutOnDeck("SupplyDepot");
+            Card ragingBlizzard = PlayCard("RagingBlizzard");
+            // At the end of the environment turn, discard the top 4 cards of the environment deck.
+            //This card deals each non - environment target X cold damage, where X = the number of Frozen cards discarded this way.
+            //there are 2 frozen cards
+            QuickHPStorage(baron, az, legacy, ra);
+            GoToEndOfTurn(northspar);
+            AssertInTrash(env1, env2, env3, env4);
+            QuickHPCheck(-2, -2, -2, -2);
+            AssertInPlayArea(northspar, ragingBlizzard);
+
+        }
+
+        [Test()]
+        public void TestRagingBlizzard_MoreThan4CardsInDeck_4Frozens()
+        {
+            SetupGameController("BaronBlade", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            Card env1 = PutOnDeck("LostInTheSnow");
+            Card env2 = PutOnDeck("FrozenSolid");
+            Card env3 = PutOnDeck("BitterCold");
+            Card env4 = PutOnDeck("SnowShrieker");
+            Card ragingBlizzard = PlayCard("RagingBlizzard");
+            // At the end of the environment turn, discard the top 4 cards of the environment deck.
+            //This card deals each non - environment target X cold damage, where X = the number of Frozen cards discarded this way.
+            //there are 4 frozen cards
+            QuickHPStorage(baron, az, legacy, ra);
+            GoToEndOfTurn(northspar);
+            AssertInTrash(env1, env2, env3, env4);
+            QuickHPCheck(-4, -4, -4, -4);
+            AssertInTrash(ragingBlizzard);
+
+        }
+
+        [Test()]
+        public void TestRagingBlizzard_LessThan4CardsInDeck()
+        {
+            SetupGameController("BaronBlade", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            //discard all cards from deck
+            DiscardTopCards(northspar, 15);
+            Card env1 = PutOnDeck("LostInTheSnow");
+            Card env2 = PutOnDeck("FrozenSolid");
+
+            Card ragingBlizzard = PlayCard("RagingBlizzard");
+            // At the end of the environment turn, discard the top 4 cards of the environment deck.
+            //This card deals each non - environment target X cold damage, where X = the number of Frozen cards discarded this way.
+            //there are 4 frozen cards
+            QuickShuffleStorage(northspar);
+            GoToEndOfTurn(northspar);
+            AssertNumberOfCardsInTrash(northspar, 2);
+            QuickShuffleCheck(1);
+
+        }
+
+
+
 
     }
 }
