@@ -27,8 +27,7 @@ namespace Cauldron.Northspar
         private IEnumerator DealDamageResponse(PhaseChangeAction pca)
         {
             //this card deals the non-environment target with the second lowest HP X cold damage, where X = 1 plus the number of Frozen cards in the environment trash
-            int? X = new int?(GetNumberOfFrozensInTrash + 1);
-            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 2, (Card c) => c.IsNonEnvironmentTarget, (Card c) => X, DamageType.Cold);
+            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 2, (Card c) => c.IsNonEnvironmentTarget, (Card c) => GetNumberOfFrozensInTrash + 1, DamageType.Cold);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -39,7 +38,7 @@ namespace Cauldron.Northspar
             }
         }
 
-        public int GetNumberOfFrozensInTrash
+        private int GetNumberOfFrozensInTrash
         {
             get
             {
