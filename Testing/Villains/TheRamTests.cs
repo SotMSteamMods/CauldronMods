@@ -474,6 +474,7 @@ namespace CauldronTests
             DealDamage(ra, node, 1, DTM);
             DealDamage(ra, ram, 3, DTM);
 
+            //TODO: reconfigure once Ram has its inbuilt DR
             QuickHPCheck(-2, -1);
         }
         [Test]
@@ -519,6 +520,56 @@ namespace CauldronTests
             QuickHPCheck(-6, -2, -2, -2, -2);
             AssertInTrash(charge);
             AssertIsInPlay(new Card[] { crate, mana, staff });
+        }
+        [Test]
+        public void TestPowerNodeImmunity()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "Ra", "TheVisionary", "Megalopolis");
+
+            StartGame();
+            DestroyCard("GrapplingClaw");
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            PlayCard("DecoyProjection");
+
+            //legacy and haka should be up close, ra and visionary not
+            Card node = PlayCard("PowerNode");
+            QuickHPStorage(node);
+
+            DealDamage(legacy, node, 1, DTM);
+            DealDamage(ra, node, 2, DTM);
+
+            //TODO: reconfigure amounts one Ram has its inbuilt dr
+            QuickHPCheck(-1);
+        }
+        [Test]
+        public void TestPowerNodeEndOfTurnResponse()
+        {
+            SetupGameController("Cauldron.TheRam", "Legacy", "Haka", "Ra", "TheVisionary", "WagnerMarsBase");
+
+            StartGame();
+
+
+            Card ff = PlayCard("ForcefieldNode");
+            Card claw = GetCardInPlay("GrapplingClaw");
+            Card mortar = PlayCard("RemoteMortar");
+            Card power = PlayCard("PowerNode");
+
+            PutOnDeck(ram, ram.TurnTaker.Trash.Cards);
+
+            //stack play
+            //go-to skips normal play, so we only need the one
+            Card rocket = PutOnDeck("RocketPod");
+
+            SetHitPoints(new Card[] { legacy.CharacterCard, haka.CharacterCard, ram.CharacterCard, ff, claw, mortar, power }, 5);
+
+            //keep damage from messing things up
+            PlayCard("MeteorStorm");
+            QuickHPStorage(ram.CharacterCard, ff, claw, mortar, power, legacy.CharacterCard, haka.CharacterCard);
+
+            GoToStartOfTurn(legacy);
+            AssertIsInPlay(rocket);
+            QuickHPCheck(0, 1, 1, 1, 1, 0, 0);
         }
     }
 }

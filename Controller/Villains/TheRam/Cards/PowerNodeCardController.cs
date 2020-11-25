@@ -18,8 +18,36 @@ namespace Cauldron.TheRam
         public override void AddTriggers()
         {
             //"This card is immune to damage from heroes that are not Up Close.",
+            AddImmuneToDamageTrigger((DealDamageAction dd) => dd.Target == this.Card && dd.DamageSource.IsHero && dd.DamageSource.IsCard && !IsUpClose(dd.DamageSource.Card));
             //"At the end of the villain turn, play the top card of the villain deck, and all Devices and Nodes regain 1HP."
+            AddEndOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker, PlayCardAndHealResponse, new TriggerType[] { TriggerType.PlayCard, TriggerType.GainHP });
         }
 
+        private IEnumerator PlayCardAndHealResponse(PhaseChangeAction pc)
+        {
+            IEnumerator coroutine = PlayTheTopCardOfTheVillainDeckResponse(pc);
+            if (base.UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = GameController.GainHP(DecisionMaker,
+                                            (Card c) => c.IsInPlayAndHasGameText && c.IsTarget && (GameController.DoesCardContainKeyword(c, "device") || GameController.DoesCardContainKeyword(c, "node")),
+                                            1,
+                                            cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
     }
 }
