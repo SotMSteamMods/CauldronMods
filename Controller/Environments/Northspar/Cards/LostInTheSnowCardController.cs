@@ -23,11 +23,16 @@ namespace Cauldron.Northspar
             AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, DestroyOngoingOrEquipmentResponse, TriggerType.DestroyCard);
         }
 
+        private bool VisibleHeroTurntakersQuery(TurnTaker tt)
+        {
+            return tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource());
+        }
+
         private IEnumerator DestroyOngoingOrEquipmentResponse(PhaseChangeAction pca)
         {
             //each hero must destroy 1 ongoing and 1 equipment card.
-            IEnumerator ongoing = EachPlayerDestroysTheirCards(new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame, "heroes with ongoing or equipment cards in play"), new LinqCardCriteria((Card c) => c.IsOngoing, "ongoing"));
-            IEnumerator equipment = EachPlayerDestroysTheirCards(new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame, "heroes with ongoing or equipment cards in play"), new LinqCardCriteria((Card c) => IsEquipment(c), "equipment"));
+            IEnumerator ongoing = EachPlayerDestroysTheirCards(new LinqTurnTakerCriteria(VisibleHeroTurntakersQuery, "heroes with ongoing or equipment cards in play"), new LinqCardCriteria((Card c) => c.IsOngoing, "ongoing"));
+            IEnumerator equipment = EachPlayerDestroysTheirCards(new LinqTurnTakerCriteria(VisibleHeroTurntakersQuery, "heroes with ongoing or equipment cards in play"), new LinqCardCriteria((Card c) => IsEquipment(c), "equipment"));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(ongoing);
@@ -38,7 +43,6 @@ namespace Cauldron.Northspar
             {
                 base.GameController.ExhaustCoroutine(ongoing);
                 base.GameController.ExhaustCoroutine(equipment);
-
             }
         }
     }
