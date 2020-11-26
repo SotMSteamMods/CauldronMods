@@ -11,6 +11,7 @@ namespace Cauldron.TheKnight
     {
         public DefenderOfTheRealmCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria(c => c.Identifier == "PlateHelm" || c.Identifier == "PlateMail", "armor"));
         }
 
         public override IEnumerator Play()
