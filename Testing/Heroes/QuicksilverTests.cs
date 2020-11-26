@@ -533,7 +533,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestLiquidMetalSkipCombo1Combo()
+        public void TestLiquidMetalAddCardsToHand()
         {
             SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
             StartGame();
@@ -543,11 +543,30 @@ namespace CauldronTests
             Card retort = PutOnDeck("IronRetort");
             Card storm = PutOnDeck("AlloyStorm");
             Card spear = PutOnDeck("CoalescingSpear");
-            DecisionDoNotSelectFunction = true;
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
 
             PlayCard("LiquidMetal");
             AssertInHand(forest, spear);
             AssertInDeck(quicksilver, new Card[] { retort, storm });
+        }
+
+        [Test()]
+        public void TestLiquidMetalPlayCard()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+            //Reveal cards from the top of your deck until you reveal a Combo and a Finisher and put them into your hand. Shuffle the other revealed cards back into your deck.
+
+            Card forest = PutOnDeck("ForestOfNeedles");
+            Card retort = PutOnDeck("IronRetort");
+            Card storm = PutOnDeck("AlloyStorm");
+            Card spear = PutOnDeck("CoalescingSpear");
+            DecisionSelectCard = spear;
+            DecisionDoNotSelectFunction = true;
+
+            QuickHPStorage(apostate, quicksilver);
+            PlayCard("LiquidMetal");
+            QuickHPCheck(-3, -2);
         }
 
         [Test()]
