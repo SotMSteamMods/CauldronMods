@@ -10,20 +10,24 @@ namespace Cauldron.Quicksilver
     {
         public MalleableArmorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            base.SpecialStringMaker.ShowSpecialString(() => Journal.DealDamageEntriesThisTurn().Where((DealDamageJournalEntry ddje) => ddje.SourceCard == this.CharacterCard && ddje.Amount > 0).Any() ? "Quicksilver has dealt damage this turn." : "Quicksilver has not dealt damage this turn.");
         }
 
         public override IEnumerator UsePower(int index = 0)
         {
             //"If {Quicksilver} has not dealt damage this turn, she regains 3HP."
+
+            int regains = GetPowerNumeral(0, 3);
+
             bool hasDealtDamage = Journal.DealDamageEntriesThisTurn().Where((DealDamageJournalEntry ddje) => ddje.SourceCard == this.CharacterCard && ddje.Amount > 0).Any();
             IEnumerator coroutine;
-            if(hasDealtDamage)
+            if (hasDealtDamage)
             {
                 coroutine = GameController.SendMessageAction($"{this.CharacterCard.Title} has dealt damage this turn, and does not regain HP.", Priority.High, GetCardSource());
             }
             else
             {
-                coroutine = GameController.GainHP(this.CharacterCard, 3, cardSource: GetCardSource());
+                coroutine = GameController.GainHP(this.CharacterCard, regains, cardSource: GetCardSource());
             }
 
             if (base.UseUnityCoroutines)
