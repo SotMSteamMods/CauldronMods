@@ -24,8 +24,11 @@ namespace Cauldron.TangoOne
             // Draw 2 cards. Then put 2 cards from your hand on top of your deck.
             //==============================================================
 
+            int cardDraws = GetPowerNumeral(0, CardsToDraw);
+            int topDecks = GetPowerNumeral(1, CardsToTopDeck);
+
             // Draw 2 cards
-            IEnumerator drawCardsRoutine = base.DrawCards(this.HeroTurnTakerController, CardsToDraw);
+            IEnumerator drawCardsRoutine = base.DrawCards(this.HeroTurnTakerController, cardDraws);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(drawCardsRoutine);
@@ -43,7 +46,7 @@ namespace Cauldron.TangoOne
 
             IEnumerator selectCardsFromLocationRoutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.HeroTurnTakerController, 
                 this.HeroTurnTaker.Hand,
-                CardsToTopDeck, CardsToTopDeck,
+                topDecks, topDecks,
                 new LinqCardCriteria(c => c.Location == this.HeroTurnTaker.Hand, "hand"),
                 list, shuffleAfterwards: false, cardSource: base.GetCardSource());
 
