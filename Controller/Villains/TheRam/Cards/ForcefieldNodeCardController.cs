@@ -14,7 +14,7 @@ namespace Cauldron.TheRam
     {
         public ForcefieldNodeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            AddUpCloaseTrackers();
+            AddUpCloseTrackers();
         }
 
         public override void AddTriggers()
