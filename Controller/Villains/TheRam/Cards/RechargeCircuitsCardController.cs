@@ -13,6 +13,7 @@ namespace Cauldron.TheRam
     {
         public RechargeCircuitsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowIfElseSpecialString(() => FindTurnTakersWhere((TurnTaker tt) => tt.IsHero && IsUpClose(tt)).Any(), () => "There is a hero Up Close", () => "There are no heroes Up Close.");
         }
 
         public override void AddTriggers()

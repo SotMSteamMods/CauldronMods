@@ -13,6 +13,7 @@ namespace Cauldron.TheRam
     {
         public RocketPodCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            AddUpCloseTrackers();
         }
 
         public override void AddTriggers()

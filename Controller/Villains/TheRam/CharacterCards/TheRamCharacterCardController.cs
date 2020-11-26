@@ -11,6 +11,7 @@ namespace Cauldron.TheRam
     {
         public TheRamCharacterCardController(Card card, TurnTakerController ttc) : base(card, ttc)
         {
+            AddUpCloseTrackers();
         }
 
         public override void AddSideTriggers()

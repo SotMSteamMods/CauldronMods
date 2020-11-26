@@ -13,6 +13,7 @@ namespace Cauldron.TheRam
     {
         public PowerNodeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            AddUpCloseTrackers;
         }
 
         public override void AddTriggers()

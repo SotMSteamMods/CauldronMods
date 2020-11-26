@@ -13,6 +13,7 @@ namespace Cauldron.TheRam
     {
         public BarrierBusterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCards(new LinqCardCriteria((Card c) => c.IsInPlay && c.IsEnvironment, "environment"));
         }
 
         public override IEnumerator Play()
