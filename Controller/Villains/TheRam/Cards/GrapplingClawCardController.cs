@@ -20,17 +20,17 @@ namespace Cauldron.TheRam
         public override void AddTriggers()
         {
             //"Increase damage dealt by {TheRam} by 1.",
-            //"At the end of the villain turn, {TheRam} deals {H - 2} projectile damage to the hero with the lowest HP that is not Up Close. Put a copy of Up Close from the villain trash into play next to that hero."
             AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(GetRam), 1);
+            //"At the end of the villain turn, {TheRam} deals {H - 2} projectile damage to the hero with the lowest HP that is not Up Close. Put a copy of Up Close from the villain trash into play next to that hero."
             AddEndOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker, EndOfTurnGrappleResponse, TriggerType.DealDamage);
         }
 
         private bool LogCardChecks(Card c)
         {
-            if(c.IsHeroCharacterCard && c.IsInPlayAndHasGameText)
+            if (c.IsHeroCharacterCard && c.IsInPlayAndHasGameText)
             {
                 Log.Debug($"{c.Title} is in play and has game text. Is it up close? {IsUpClose(c)}. Is it visible? {AskIfCardIsVisibleToCardSource(c, GetCardSource())}");
-                return c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !IsUpClose(c) && AskIfCardIsVisibleToCardSource(c, GetCardSource()) != false; 
+                return c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !IsUpClose(c) && AskIfCardIsVisibleToCardSource(c, GetCardSource()) != false;
 
             }
             return false;
@@ -42,8 +42,8 @@ namespace Cauldron.TheRam
 
             List<Card> results = new List<Card> { };
             DealDamageAction damagePreview = new DealDamageAction(GetCardSource(), new DamageSource(GameController, GetRam), null, H - 2, DamageType.Projectile);
-            IEnumerator chooseTarget = GameController.FindTargetWithLowestHitPoints(1, 
-                                                                      (Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !IsUpClose(c) && AskIfCardIsVisibleToCardSource(c, GetCardSource()) != false, 
+            IEnumerator chooseTarget = GameController.FindTargetWithLowestHitPoints(1,
+                                                                      (Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !IsUpClose(c) && AskIfCardIsVisibleToCardSource(c, GetCardSource()) != false,
                                                                       results, evenIfCannotDealDamage: true, dealDamageInfo: new List<DealDamageAction> { damagePreview }, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
@@ -80,8 +80,8 @@ namespace Cauldron.TheRam
             {
                 GameController.ExhaustCoroutine(damage);
             }
-            
-            if(target.Owner.IsIncapacitatedOrOutOfGame)
+
+            if (target.Owner.IsIncapacitatedOrOutOfGame)
             {
                 IEnumerator message = GameController.SendMessageAction($"{target.Owner.Name} was incapacitated before they could be pulled Up Close.", Priority.High, GetCardSource());
                 if (UseUnityCoroutines)
