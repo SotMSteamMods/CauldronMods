@@ -19,21 +19,16 @@ namespace Cauldron.SwarmEater
             }
         }
 
-        public override void AddTriggers()
+        public override ITrigger[] AddRegularTriggers()
         {
             //At the end of the villain turn, this card deals the hero target with the highest HP 2 lightning damage.
-            base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsHero, TargetType.HighestHP, 2, DamageType.Lightning);
+            return new ITrigger[] { base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsHero, TargetType.HighestHP, 2, DamageType.Lightning) };
         }
 
-        public override IEnumerator AddAbsorbTriggers(Card cardThisIsUnder)
+        public override ITrigger[] AddAbsorbTriggers(Card cardThisIsUnder)
         {
-            if (cardThisIsUnder.Identifier == "AbsorbedNanites")
-            {
-                cardThisIsUnder = base.CharacterCard;
-            }
             //Absorb: at the end of the villain turn, {SwarmEater} deals the target other than itself with the highest HP 2 lightning damage.
-            base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c != cardThisIsUnder, TargetType.HighestHP, 2, DamageType.Lightning);
-            yield break;
+            return new ITrigger[] { base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c != cardThisIsUnder, TargetType.HighestHP, 2, DamageType.Lightning) };
         }
     }
 }

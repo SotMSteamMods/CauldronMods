@@ -12,11 +12,17 @@ namespace Cauldron.SwarmEater
 
         }
 
-        public abstract void AddAbsorbTriggers(Card cardThisIsUnder);
+        public abstract ITrigger[] AddRegularTriggers();
+
+        public abstract ITrigger[] AddAbsorbTriggers(Card cardThisIsUnder);
 
         public override void AddTriggers()
         {
-            if (base.GetCardThisCardIsBelow() != null)
+            if (base.GetCardThisCardIsBelow() == null)
+            {
+                this.AddRegularTriggers();
+            }
+            else
             {
                 Card nextTo = base.GetCardThisCardIsBelow();
                 if (nextTo.Identifier == "AbsorbedNanites")
@@ -28,3 +34,4 @@ namespace Cauldron.SwarmEater
             }
         }
     }
+}

@@ -15,12 +15,14 @@ namespace Cauldron.SwarmEater
             }
         }
 
-        public override void AddTriggers()
+        public override ITrigger[] AddRegularTriggers()
         {
-            //At the end of the villain turn this card deals the hero target with the highest HP {H} projectile damage...
-            base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsHero, TargetType.HighestHP, Game.H, DamageType.Projectile);
-            //...and destroys {H - 2} hero ongoing and/or equipment cards.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DestroyTwoHeroOngoingOrEquipmentCardsResponse, TriggerType.DestroyCard);
+            return new ITrigger[] {
+                //At the end of the villain turn this card deals the hero target with the highest HP {H} projectile damage...
+                base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsHero, TargetType.HighestHP, Game.H, DamageType.Projectile),
+                //...and destroys {H - 2} hero ongoing and/or equipment cards.
+                base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DestroyTwoHeroOngoingOrEquipmentCardsResponse, TriggerType.DestroyCard)
+            };
         }
 
         private IEnumerator DestroyTwoHeroOngoingOrEquipmentCardsResponse(PhaseChangeAction action)
@@ -37,14 +39,10 @@ namespace Cauldron.SwarmEater
             yield break;
         }
 
-        public override void AddAbsorbTriggers(Card cardThisIsUnder)
+        public override ITrigger[] AddAbsorbTriggers(Card cardThisIsUnder)
         {
-            if (cardThisIsUnder.Identifier == "AbsorbedNanites")
-            {
-                cardThisIsUnder = base.CharacterCard;
-            }
             //Absorb: at the start of the villain turn, destroy 1 hero ongoing or equipment card.
-            base.AddReduceDamageTrigger((Card c) => c == cardThisIsUnder, 1);
+            return new ITrigger[] { base.AddReduceDamageTrigger((Card c) => c == cardThisIsUnder, 1) };
         }
     }
 }
