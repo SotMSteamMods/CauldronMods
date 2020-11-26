@@ -18,7 +18,7 @@ namespace Cauldron.BlackwoodForest
 
         public DenseBramblesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            this.SpecialStringMaker.ShowSpecialString(() => "Dense Brambles is currently making " + this.GetCurrentImmuneTargets() + " immune to damage");
+            this.SpecialStringMaker.ShowSpecialString(() => $"Dense Brambles is currently making {this.GetCurrentImmuneTargets()} immune to damage");
         }
 
         public bool? PerformImmune;
