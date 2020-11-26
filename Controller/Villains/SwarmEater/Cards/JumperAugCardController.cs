@@ -23,7 +23,7 @@ namespace Cauldron.SwarmEater
             base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsHero, TargetType.LowestHP, Game.H - 2, DamageType.Melee, numberOfTargets: 2);
         }
 
-        public override IEnumerator ActivateAbsorb(Card cardThisIsUnder)
+        public override IEnumerator AddAbsorbTriggers(Card cardThisIsUnder)
         {
             if (cardThisIsUnder.Identifier == "AbsorbedNanites")
             {

@@ -25,7 +25,7 @@ namespace Cauldron.SwarmEater
             base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsHero, TargetType.HighestHP, 2, DamageType.Lightning);
         }
 
-        public override IEnumerator ActivateAbsorb(Card cardThisIsUnder)
+        public override IEnumerator AddAbsorbTriggers(Card cardThisIsUnder)
         {
             if (cardThisIsUnder.Identifier == "AbsorbedNanites")
             {

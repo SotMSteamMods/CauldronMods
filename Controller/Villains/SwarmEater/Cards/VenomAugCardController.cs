@@ -55,7 +55,7 @@ namespace Cauldron.SwarmEater
             yield break;
         }
 
-        public override IEnumerator ActivateAbsorb(Card cardThisIsUnder)
+        public override IEnumerator AddAbsorbTriggers(Card cardThisIsUnder)
         {
             //Absorb: whenever {SwarmEater} deals damage to another target, that target deals itself 1 toxic damage.
             base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.Card == cardThisIsUnder && action.DidDealDamage, this.AbsorbDealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);

@@ -22,7 +22,7 @@ namespace Cauldron.SwarmEater
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageExceptLowestResponse, TriggerType.DealDamage);
         }
 
-        public override IEnumerator ActivateAbsorb(Card cardThisIsUnder)
+        public override IEnumerator AddAbsorbTriggers(Card cardThisIsUnder)
         {
             //At the end of the villain turn, {SwarmEater} deals each other target 1 irreducible energy damage.
             base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, cardThisIsUnder, (Card c) => c != cardThisIsUnder, TargetType.All, 1, DamageType.Energy, true);

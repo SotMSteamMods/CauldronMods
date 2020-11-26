@@ -5,31 +5,26 @@ using System.Collections;
 
 namespace Cauldron.SwarmEater
 {
-    public class AugCardController : CardController
+    public abstract class AugCardController : CardController
     {
         public AugCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
 
-        public override IEnumerator ActivateAbility(string abilityKey = "absorb")
-        {
-            IEnumerator coroutine = this.ActivateAbsorb();
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
-        }
+        public abstract void AddAbsorbTriggers(Card cardThisIsUnder);
 
-        public virtual IEnumerator ActivateAbsorb(Card cardThisIsUnder)
+        public override void AddTriggers()
         {
-            yield return null;
-            yield break;
+            if (base.GetCardThisCardIsBelow() != null)
+            {
+                Card nextTo = base.GetCardThisCardIsBelow();
+                if (nextTo.Identifier == "AbsorbedNanites")
+                {
+                    nextTo = base.CharacterCard;
+                }
+                this.AddAbsorbTriggers(nextTo);
+                return;
+            }
         }
     }
-}

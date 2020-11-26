@@ -77,7 +77,7 @@ namespace Cauldron.SwarmEater
             yield break;
         }
 
-        public override IEnumerator ActivateAbsorb(Card cardThisIsUnder)
+        public override IEnumerator AddAbsorbTriggers(Card cardThisIsUnder)
         {
             //Absorb: The first time {SwarmEater} would be dealt damage each turn, reduce that damage by 1.
             this._reduceDamage = base.AddReduceDamageTrigger((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn("FirstTimeDamageDealt"), new Func<DealDamageAction, IEnumerator>(this.ReduceDamageResponse), (Card c) => c == cardThisIsUnder, true);

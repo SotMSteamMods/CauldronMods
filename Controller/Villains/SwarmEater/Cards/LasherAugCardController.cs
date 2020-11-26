@@ -37,7 +37,7 @@ namespace Cauldron.SwarmEater
             yield break;
         }
 
-        public override IEnumerator ActivateAbsorb(Card cardThisIsUnder)
+        public override void AddAbsorbTriggers(Card cardThisIsUnder)
         {
             if (cardThisIsUnder.Identifier == "AbsorbedNanites")
             {
@@ -45,7 +45,6 @@ namespace Cauldron.SwarmEater
             }
             //Absorb: at the start of the villain turn, destroy 1 hero ongoing or equipment card.
             base.AddReduceDamageTrigger((Card c) => c == cardThisIsUnder, 1);
-            yield break;
         }
     }
 }

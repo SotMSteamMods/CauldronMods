@@ -18,7 +18,7 @@ namespace Cauldron.SwarmEater
             base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.IsVillainTarget, 1);
         }
 
-        public override IEnumerator ActivateAbsorb(Card cardThisIsUnder)
+        public override IEnumerator AddAbsorbTriggers(Card cardThisIsUnder)
         {
             //Absorb: increase damage dealt by {SwarmEater} by 1.
             base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.Card == cardThisIsUnder, 1);

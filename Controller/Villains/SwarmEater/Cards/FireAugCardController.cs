@@ -37,7 +37,7 @@ namespace Cauldron.SwarmEater
             yield break;
         }
 
-        public override IEnumerator ActivateAbsorb(Card cardThisIsUnder)
+        public override IEnumerator AddAbsorbTriggers(Card cardThisIsUnder)
         {
             //Absorb: at the start of the villain turn, {H - 2} players must discard a card.
             IEnumerator coroutine = base.GameController.EachPlayerDiscardsCards(1, 1, requiredNumberOfHeroes: Game.H - 2, cardSource: base.GetCardSource());
