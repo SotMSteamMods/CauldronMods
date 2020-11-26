@@ -16,6 +16,9 @@ namespace Cauldron.Quicksilver
         public override IEnumerator UsePower(int index = 0)
         {
             //"If {Quicksilver} has not dealt damage this turn, she regains 3HP."
+
+            int regains = GetPowerNumeral(0, 3);
+
             bool hasDealtDamage = Journal.DealDamageEntriesThisTurn().Where((DealDamageJournalEntry ddje) => ddje.SourceCard == this.CharacterCard && ddje.Amount > 0).Any();
             IEnumerator coroutine;
             if (hasDealtDamage)
@@ -24,7 +27,7 @@ namespace Cauldron.Quicksilver
             }
             else
             {
-                coroutine = GameController.GainHP(this.CharacterCard, 3, cardSource: GetCardSource());
+                coroutine = GameController.GainHP(this.CharacterCard, regains, cardSource: GetCardSource());
             }
 
             if (base.UseUnityCoroutines)
