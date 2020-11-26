@@ -15,7 +15,6 @@ namespace Cauldron.TangoOne
 
         public GhostOpsTangoOneCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override IEnumerator UsePower(int index = 0)
@@ -28,7 +27,7 @@ namespace Cauldron.TangoOne
             int topDecks = GetPowerNumeral(1, CardsToTopDeck);
 
             // Draw 2 cards
-            IEnumerator drawCardsRoutine = base.DrawCards(this.HeroTurnTakerController, cardDraws);
+            IEnumerator drawCardsRoutine = base.DrawCards(DecisionMaker, cardDraws);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(drawCardsRoutine);
@@ -44,7 +43,7 @@ namespace Cauldron.TangoOne
                 new MoveCardDestination(this.TurnTaker.Deck)
             };
 
-            IEnumerator selectCardsFromLocationRoutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.HeroTurnTakerController, 
+            IEnumerator selectCardsFromLocationRoutine = base.GameController.SelectCardsFromLocationAndMoveThem(DecisionMaker,
                 this.HeroTurnTaker.Hand,
                 topDecks, topDecks,
                 new LinqCardCriteria(c => c.Location == this.HeroTurnTaker.Hand, "hand"),
@@ -65,72 +64,67 @@ namespace Cauldron.TangoOne
             switch (index)
             {
                 case 0:
-
-                    //==============================================================
-                    // One player may play a card now.
-                    //==============================================================
-
-                    IEnumerator drawCardRoutine = this.GameController.SelectHeroToDrawCard(this.HeroTurnTakerController,
-                        cardSource: base.GetCardSource());
-
-                    if (this.UseUnityCoroutines)
                     {
-                        yield return this.GameController.StartCoroutine(drawCardRoutine);
-                    }
-                    else
-                    {
-                        this.GameController.ExhaustCoroutine(drawCardRoutine);
-                    }
+                        //==============================================================
+                        // One player may play a card now.
+                        //==============================================================
 
+                        IEnumerator drawCardRoutine = this.GameController.SelectHeroToDrawCard(DecisionMaker,
+                            cardSource: base.GetCardSource());
+
+                        if (this.UseUnityCoroutines)
+                        {
+                            yield return this.GameController.StartCoroutine(drawCardRoutine);
+                        }
+                        else
+                        {
+                            this.GameController.ExhaustCoroutine(drawCardRoutine);
+                        }
+                    }
                     break;
 
                 case 1:
-
-                    //==============================================================
-                    // All damage is irreducible until the start of your next turn.
-                    //==============================================================
-
-                    MakeDamageIrreducibleStatusEffect mdise = new MakeDamageIrreducibleStatusEffect();
-                    //mdise.NumberOfUses = 1;
-                    mdise.UntilStartOfNextTurn(this.TurnTaker);
-
-                    IEnumerator damageIrreducibleRoutine = AddStatusEffect(mdise);
-                    if (base.UseUnityCoroutines)
                     {
-                        yield return base.GameController.StartCoroutine(damageIrreducibleRoutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(damageIrreducibleRoutine);
-                    }
+                        //==============================================================
+                        // All damage is irreducible until the start of your next turn.
+                        //==============================================================
 
+                        MakeDamageIrreducibleStatusEffect mdise = new MakeDamageIrreducibleStatusEffect();
+                        mdise.CardSource = Card;
+                        mdise.UntilStartOfNextTurn(this.TurnTaker);
+
+                        IEnumerator damageIrreducibleRoutine = AddStatusEffect(mdise);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(damageIrreducibleRoutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(damageIrreducibleRoutine);
+                        }
+                    }
                     break;
 
                 case 2:
-
-                    //==============================================================
-                    // The next time a hero uses a power which deals damage, increase that damage by 2.
-                    //==============================================================
-
-                    IEnumerator increaseDamageRoutine 
-                        = base.AddStatusEffect(new IncreaseDamageStatusEffect(Incapacitate3DamageIncrease)
                     {
-                        SourceCriteria =
+                        //==============================================================
+                        // The next time a hero uses a power which deals damage, increase that damage by 2.
+                        //==============================================================
+                        IncreaseDamageStatusEffect effect = new IncreaseDamageStatusEffect(Incapacitate3DamageIncrease);
+                        effect.SourceCriteria.IsHero = true;
+                        effect.NumberOfUses = 1;
+                        effect.CardSource = Card;
+
+                        IEnumerator increaseDamageRoutine = base.AddStatusEffect(effect);
+                        if (base.UseUnityCoroutines)
                         {
-                            IsHero = true
-                        },
-                        NumberOfUses = 1
-                    });
-
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(increaseDamageRoutine);
+                            yield return base.GameController.StartCoroutine(increaseDamageRoutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(increaseDamageRoutine);
+                        }
                     }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(increaseDamageRoutine);
-                    }
-
                     break;
             }
         }
