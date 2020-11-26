@@ -14,10 +14,6 @@ namespace Cauldron.TangoOne
         private const int Incapacitate2CardsToPlay = 2;
         private const int Incapacitate3CardsToDestroy = 1;
 
-        private Card _innatePowerSelectedTarget = null;
-        private Card _incapSelectedHero = null;
-
-
         public PastTangoOneCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
@@ -29,64 +25,86 @@ namespace Cauldron.TangoOne
             // {TangoOne} deals that target 3 projectile damage.
             //==============================================================
 
-            IEnumerable<Card> targets = FindCardsWhere(card => card.IsTarget && card.IsInPlay);
-
+            IEnumerable<Card> targets = GameController.FindTargetsInPlay();
             List<SelectTargetDecision> storedResults = new List<SelectTargetDecision>();
-            IEnumerator selectTargetRoutine
-                = base.GameController.SelectTargetAndStoreResults(this.HeroTurnTakerController, targets, storedResults, false,
-                    false, null, this.Card, card => 3, DamageType.Projectile, false, 
-                    null, null, null, null, null,
-                    SelectionType.SelectTargetNoDamage, this.GetCardSource());
-
+            IEnumerator coroutine = GameController.SelectTargetAndStoreResults(DecisionMaker, targets, storedResults,
+                    damageSource: CharacterCard, damageAmount: card => 3, damageType: DamageType.Projectile,
+                    selectionType: SelectionType.SelectTargetNoDamage, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(selectTargetRoutine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(selectTargetRoutine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            _innatePowerSelectedTarget = storedResults.FirstOrDefault()?.SelectedCard;
-
-            IEnumerator addStatusEffectRoutine = base.GameController.AddStatusEffect(
-                MakeOnPhaseChangeStatusEffect(nameof(StartOfTurnDealDamageResponse), 
-                    $"{base.Card.Title} will deal {PowerDamageToDeal} projectile damage to {_innatePowerSelectedTarget?.Title} at the start of her next turn"), 
-                true, this.GetCardSource());
-
-            if (base.UseUnityCoroutines)
+            Card target = storedResults.FirstOrDefault()?.SelectedCard;
+            if (target != null)
             {
-                yield return base.GameController.StartCoroutine(addStatusEffectRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(addStatusEffectRoutine);
+                OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(this.CardWithoutReplacements,
+                    nameof(StartOfTurnDealDamageResponse),
+                    $"{base.Card.Title} will deal {PowerDamageToDeal} projectile damage to {target.Title} at the start of her next turn",
+                    new[] { TriggerType.DealDamage }, this.Card);
+                effect.UntilEndOfNextTurn(base.HeroTurnTaker);
+                effect.TurnTakerCriteria.IsSpecificTurnTaker = base.HeroTurnTaker;
+                effect.UntilTargetLeavesPlay(target);
+                effect.TurnPhaseCriteria.Phase = Phase.Start;
+                effect.BeforeOrAfter = BeforeOrAfter.After;
+                effect.CardSource = this.Card;
+
+                IEnumerator addStatusEffectRoutine = base.GameController.AddStatusEffect(effect, true, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(addStatusEffectRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(addStatusEffectRoutine);
+                }
             }
         }
 
-        public IEnumerator StartOfTurnDealDamageResponse(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
+        public IEnumerator StartOfTurnDealDamageResponse(PhaseChangeAction _, OnPhaseChangeStatusEffect sourceEffect)
         {
-            if (_innatePowerSelectedTarget == null)
-            {
-                yield break;
-            }
+            var target = sourceEffect.TargetLeavesPlayExpiryCriteria.IsOneOfTheseCards.FirstOrDefault();
 
             int powerNumeral = GetPowerNumeral(0, PowerDamageToDeal);
-            IEnumerator dealDamageRoutine = this.DealDamage(this.Card, _innatePowerSelectedTarget, powerNumeral, DamageType.Projectile);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(dealDamageRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(dealDamageRoutine);
-            }
 
-            _innatePowerSelectedTarget = null;
+            if (!CharacterCard.IsIncapacitatedOrOutOfGame && target.IsTarget && target.IsInPlayAndNotUnderCard)
+            {
+                if (GameController.IsCardVisibleToCardSource(target, GetCardSource()) != true)
+                {
+                    var coroutine = GameController.SendMessageAction($"{CharacterCard.Title} misses! {target.Title} is no longer visible!", Priority.Medium, GetCardSource(), new[] { target });
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+                else
+                {
+                    IEnumerator dealDamageRoutine = this.DealDamage(CharacterCard, target, powerNumeral, DamageType.Projectile);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(dealDamageRoutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(dealDamageRoutine);
+                    }
+                }
+            }
+            GameController.StatusEffectManager.RemoveStatusEffect(sourceEffect);
         }
 
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
+            IEnumerator coroutine;
+            List<SelectTurnTakerDecision> result;
             switch (index)
             {
                 case 0:
@@ -95,34 +113,33 @@ namespace Cauldron.TangoOne
                     // Select a player, at the start of your next turn, they may draw 2 cards.
                     //==============================================================
 
-                    List<SelectCardDecision> heroToDrawStoredResults = new List<SelectCardDecision>();
-                    IEnumerator selectDrawHeroRoutine = base.GameController.SelectHeroCharacterCard(this.HeroTurnTakerController, SelectionType.CharacterCard,
-                        heroToDrawStoredResults, false, false, base.GetCardSource());
+                    result = new List<SelectTurnTakerDecision>();
+                    coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.DrawCard, false, true, result, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
-                        yield return base.GameController.StartCoroutine(selectDrawHeroRoutine);
+                        yield return base.GameController.StartCoroutine(coroutine);
                     }
                     else
                     {
-                        base.GameController.ExhaustCoroutine(selectDrawHeroRoutine);
+                        base.GameController.ExhaustCoroutine(coroutine);
                     }
 
-                    _incapSelectedHero = heroToDrawStoredResults.FirstOrDefault()?.SelectedCard;
-
-                    IEnumerator addStatusEffectRoutine = base.GameController.AddStatusEffect(
-                        MakeOnPhaseChangeStatusEffect(nameof(StartOfTurnDrawCardsResponse),
-                        $"{_incapSelectedHero?.Title} may draw {Incapacitate1CardsToDraw} cards at the start of {this.Card.Title}'s next turn"), 
-                        true, this.GetCardSource());
-
-                    if (base.UseUnityCoroutines)
+                    if (DidSelectTurnTaker(result))
                     {
-                        yield return base.GameController.StartCoroutine(addStatusEffectRoutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(addStatusEffectRoutine);
-                    }
+                        var tt = GetSelectedTurnTaker(result);
+                        var effect = MakeTurntakerStartPhaseEffect(nameof(StartOfTurnDrawCardsResponse), tt, TriggerType.DrawCard,
+                            $"{tt.NameRespectingVariant} may draw {Incapacitate1CardsToDraw} cards at the start of {this.Card.Title}'s next turn");
 
+                        coroutine = AddStatusEffect(effect);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                    }
                     break;
 
                 case 1:
@@ -131,34 +148,33 @@ namespace Cauldron.TangoOne
                     // Select a player, at the start of your next turn, they may play 2 cards.
                     //==============================================================
 
-                    List<SelectCardDecision> heroToPlayStoredResults = new List<SelectCardDecision>();
-                    IEnumerator selectPlayHeroRoutine = base.GameController.SelectHeroCharacterCard(this.HeroTurnTakerController, SelectionType.CharacterCard,
-                        heroToPlayStoredResults, false, false, base.GetCardSource());
+                    result = new List<SelectTurnTakerDecision>();
+                    coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.DrawCard, false, true, result, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
-                        yield return base.GameController.StartCoroutine(selectPlayHeroRoutine);
+                        yield return base.GameController.StartCoroutine(coroutine);
                     }
                     else
                     {
-                        base.GameController.ExhaustCoroutine(selectPlayHeroRoutine);
+                        base.GameController.ExhaustCoroutine(coroutine);
                     }
 
-                    _incapSelectedHero = heroToPlayStoredResults.FirstOrDefault()?.SelectedCard;
-
-                    addStatusEffectRoutine = base.GameController.AddStatusEffect(
-                        MakeOnPhaseChangeStatusEffect(nameof(StartOfTurnPlayCardsResponse),
-                            $"{_incapSelectedHero?.Title} may play {Incapacitate2CardsToPlay} cards at the start of {this.Card.Title}'s next turn"),
-                        true, this.GetCardSource());
-
-                    if (base.UseUnityCoroutines)
+                    if (DidSelectTurnTaker(result))
                     {
-                        yield return base.GameController.StartCoroutine(addStatusEffectRoutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(addStatusEffectRoutine);
-                    }
+                        var tt = GetSelectedTurnTaker(result);
+                        var effect = MakeTurntakerStartPhaseEffect(nameof(StartOfTurnPlayCardsResponse), tt, TriggerType.PlayCard,
+                            $"{tt.NameRespectingVariant} may play {Incapacitate2CardsToPlay} cards at the start of {this.Card.Title}'s next turn");
 
+                        coroutine = AddStatusEffect(effect);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                    }
                     break;
 
                 case 2:
@@ -167,87 +183,83 @@ namespace Cauldron.TangoOne
                     // Destroy an environment card.
                     //==============================================================
 
-                    IEnumerator destroyRoutine 
-                        = base.GameController.SelectAndDestroyCards(base.HeroTurnTakerController, 
-                            new LinqCardCriteria(c => c.IsEnvironment, "environment"), Incapacitate3CardsToDestroy, optional: false, 0, null, null, null, ignoreBattleZone: false, null, null, null, GetCardSource());
-                    
+                    coroutine = base.GameController.SelectAndDestroyCards(base.HeroTurnTakerController, new LinqCardCriteria(c => c.IsEnvironment, "environment"), Incapacitate3CardsToDestroy,
+                        requiredDecisions: 0, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
-                        yield return base.GameController.StartCoroutine(destroyRoutine);
+                        yield return base.GameController.StartCoroutine(coroutine);
                     }
                     else
                     {
-                        base.GameController.ExhaustCoroutine(destroyRoutine);
+                        base.GameController.ExhaustCoroutine(coroutine);
                     }
 
                     break;
             }
         }
 
-        public IEnumerator StartOfTurnDrawCardsResponse(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
+        public IEnumerator StartOfTurnDrawCardsResponse(PhaseChangeAction _, OnPhaseChangeStatusEffect sourceEffect)
         {
-            if (_incapSelectedHero == null)
+            var tt = GetCardPropertyJournalEntryTurnTaker(IncapTurnTakerKey);
+            if (tt != null && !tt.IsIncapacitatedOrOutOfGame)
             {
-                yield break;
-            }
-            
-            IEnumerator drawCardRoutine = base.DrawCards(FindHeroTurnTakerController(_incapSelectedHero.Owner.ToHero()), 
-                Incapacitate1CardsToDraw, true, allowAutoDraw: false);
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(drawCardRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(drawCardRoutine);
-            }
-
-            _incapSelectedHero = null;
-        }
-
-        public IEnumerator StartOfTurnPlayCardsResponse(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
-        {
-            if (_incapSelectedHero == null)
-            {
-                yield break;
-            }
-
-            HeroTurnTakerController httc = FindHeroTurnTakerController(_incapSelectedHero.Owner.ToHero());
-
-            IEnumerator playCardsRoutine = base.GameController.PlayCards(httc,
-                card => card.Owner == _incapSelectedHero.Owner && card.IsInHand, true, true, 
-                Incapacitate2CardsToPlay, cardSource: httc.CharacterCardController.GetCardSource());
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(playCardsRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(playCardsRoutine);
-            }
-
-            _incapSelectedHero = null;
-        }
-
-        private OnPhaseChangeStatusEffect MakeOnPhaseChangeStatusEffect(string methodToCall, string description)
-        {
-            OnPhaseChangeStatusEffect onPhaseChangeStatusEffect = new OnPhaseChangeStatusEffect(this.CardWithoutReplacements,
-                methodToCall,
-                description, new[]
+                IEnumerator drawCardRoutine = base.DrawCards(FindHeroTurnTakerController(tt.ToHero()), Incapacitate1CardsToDraw, true, allowAutoDraw: false);
+                if (base.UseUnityCoroutines)
                 {
-                    TriggerType.PhaseChange
-                }, this.Card);
+                    yield return base.GameController.StartCoroutine(drawCardRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(drawCardRoutine);
+                }
+                //clear the last card prop
+                GameController.AddCardPropertyJournalEntry(Card, IncapTurnTakerKey, (TurnTaker)null);
+            }
 
-            onPhaseChangeStatusEffect.UntilEndOfNextTurn(base.HeroTurnTaker);
-            onPhaseChangeStatusEffect.TurnTakerCriteria.IsSpecificTurnTaker = base.HeroTurnTaker;
-            onPhaseChangeStatusEffect.UntilCardLeavesPlay(base.Card);
-            onPhaseChangeStatusEffect.DoesDealDamage = false;
-            onPhaseChangeStatusEffect.TurnPhaseCriteria.Phase = Phase.Start;
-            onPhaseChangeStatusEffect.BeforeOrAfter = BeforeOrAfter.After;
+            GameController.StatusEffectManager.RemoveStatusEffect(sourceEffect);
+        }
 
-            return onPhaseChangeStatusEffect;
+        private static readonly string IncapTurnTakerKey = "PastTangoIncapTurnTaker";
+
+        public IEnumerator StartOfTurnPlayCardsResponse(PhaseChangeAction _, OnPhaseChangeStatusEffect sourceEffect)
+        {
+            var tt = GetCardPropertyJournalEntryTurnTaker(IncapTurnTakerKey);
+            if (tt != null && !tt.IsIncapacitatedOrOutOfGame)
+            {
+                var httc = FindHeroTurnTakerController(tt.ToHero());
+
+                IEnumerator playCardsRoutine = base.GameController.SelectAndPlayCardsFromHand(httc, 2, true, requiredCards: 0, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(playCardsRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(playCardsRoutine);
+                }
+
+
+                //clear the last card prop
+                GameController.AddCardPropertyJournalEntry(Card, IncapTurnTakerKey, (TurnTaker)null);
+            }
+            GameController.StatusEffectManager.RemoveStatusEffect(sourceEffect);
+        }
+
+        private OnPhaseChangeStatusEffect MakeTurntakerStartPhaseEffect(string methodToCall, TurnTaker target, TriggerType triggerType, string description)
+        {
+            OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(this.CardWithoutReplacements,
+                methodToCall,
+                description, new[] { triggerType }, this.Card);
+
+            GameController.AddCardPropertyJournalEntry(Card, IncapTurnTakerKey, target);
+
+            effect.UntilEndOfNextTurn(base.HeroTurnTaker);
+            effect.TurnTakerCriteria.IsSpecificTurnTaker = base.HeroTurnTaker;
+            effect.TurnPhaseCriteria.Phase = Phase.Start;
+            effect.BeforeOrAfter = BeforeOrAfter.After;
+            effect.UntilCardLeavesPlay(base.Card);
+
+            return effect;
         }
     }
 }

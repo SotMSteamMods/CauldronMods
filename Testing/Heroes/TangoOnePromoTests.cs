@@ -180,12 +180,12 @@ namespace CauldronTests
             DecisionSelectTarget = legacy.CharacterCard;
 
             GoToStartOfTurn(TangoOne);
-            
+
             GoToUsePowerPhase(TangoOne);
             UsePower(TangoOne);
 
             GoToDrawCardPhase(TangoOne);
-            
+
             GoToEndOfTurn(TangoOne);
             QuickHPCheck(0); // Damage won't trigger until start of Tango's next turn
 
@@ -194,13 +194,75 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestInnatePower1929_TargetDies()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace1929, "Ra", "Legacy", "Megalopolis");
+            StartGame();
+
+            var mdp = GetMobileDefensePlatform().Card;
+
+            QuickHPStorage(mdp);
+
+            DecisionSelectTarget = mdp;
+
+            GoToStartOfTurn(TangoOne);
+
+            GoToUsePowerPhase(TangoOne);
+            UsePower(TangoOne);
+
+            GoToDrawCardPhase(TangoOne);
+
+            GoToEndOfTurn(TangoOne);
+            QuickHPCheck(0); // Damage won't trigger until start of Tango's next turn
+
+            DestroyCard(mdp);
+
+            AssertNumberOfStatusEffectsInPlay(0); //status effect should have expired.
+            GoToEndOfTurn(TangoOne);  // Go back around to Tango's turn
+            QuickHPCheck(0); // Damage should not have been attempted
+        }
+
+        [Test]
+        public void TestInnatePower1929_TangoOneDies()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace1929, "Ra", "Legacy", "Megalopolis");
+            StartGame();
+
+            var mdp = GetMobileDefensePlatform().Card;
+
+            QuickHPStorage(mdp);
+
+            DecisionSelectTarget = mdp;
+
+            GoToStartOfTurn(TangoOne);
+
+            GoToUsePowerPhase(TangoOne);
+            UsePower(TangoOne);
+
+            GoToDrawCardPhase(TangoOne);
+
+            GoToEndOfTurn(TangoOne);
+            QuickHPCheck(0); // Damage won't trigger until start of Tango's next turn
+
+            DealDamage(baron, TangoOne, 99, DamageType.Cold); //incap tango one
+
+            //status effect doesn't expire till after start of turn
+            GoToEndOfTurn(TangoOne);  // Go back around to Tango's turn
+            AssertNumberOfStatusEffectsInPlay(0); //status effect should have expired.
+            QuickHPCheck(0); // Damage should not have been attempted
+        }
+
+
+        [Test]
         public void Test1929IncapacitateOption1()
         {
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace1929, "Ra", "Legacy", "Megalopolis");
             StartGame();
 
-            DecisionSelectCard = legacy.CharacterCard;
+            DecisionSelectTurnTaker = legacy.TurnTaker;
             DecisionYesNo = true;
             QuickHandStorage(legacy);
 
@@ -264,7 +326,8 @@ namespace CauldronTests
             QuickHandStorage(legacy);
 
             //DecisionSelectCard = legacy.CharacterCard;
-            DecisionSelectCards = new[] {legacy.CharacterCard, GetCardFromHand(legacy, 0), GetCardFromHand(legacy, 1)};
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            DecisionSelectCards = new[] { GetCardFromHand(legacy, 0), GetCardFromHand(legacy, 1) };
             DecisionYesNo = true;
 
             SetHitPoints(TangoOne.CharacterCard, 1);
@@ -325,7 +388,7 @@ namespace CauldronTests
 
             QuickHandStorage(legacy);
 
-            DecisionSelectCard = legacy.CharacterCard;
+            DecisionSelectTurnTaker = legacy.TurnTaker;
             //DecisionSelectCards = new[] { legacy.CharacterCard, GetCardFromHand(legacy, 0), GetCardFromHand(legacy, 1) };
             DecisionYesNo = true;
 
