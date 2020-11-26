@@ -14,7 +14,7 @@ namespace Cauldron.Vanish
 
         public override IEnumerator Play()
         {
-            var coroutine = base.DrawCard();
+            var coroutine = base.DrawCard(optional: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

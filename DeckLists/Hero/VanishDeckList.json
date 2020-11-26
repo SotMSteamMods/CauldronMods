@@ -164,7 +164,7 @@
             "body": [
                 "Reveal the top card of each deck, then replace it.",
                 "Select a deck and put its top card into play."
-                ],
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "ChronoRanger",
