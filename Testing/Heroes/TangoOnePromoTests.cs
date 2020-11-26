@@ -177,6 +177,10 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace1929, "Ra", "Legacy", "Megalopolis");
 
+            StartGame();
+
+            DecisionSelectTarget = legacy.CharacterCard;
+
             GoToStartOfTurn(TangoOne);
             
             GoToUsePowerPhase(TangoOne);
@@ -186,7 +190,7 @@ namespace CauldronTests
             
 
             GoToEndOfTurn(TangoOne);
-            GoToStartOfTurn(TangoOne);
+            GoToEndOfTurn(TangoOne);
 
 
 
@@ -198,9 +202,19 @@ namespace CauldronTests
         {
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace1929, "Ra", "Legacy", "Megalopolis");
+            StartGame();
+
+            DecisionSelectCard = legacy.CharacterCard;
+            DecisionYesNo = true;
 
             SetHitPoints(TangoOne.CharacterCard, 1);
             DealDamage(baron, TangoOne, 2, DamageType.Melee);
+
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            UseIncapacitatedAbility(TangoOne, 0);
+
+            GoToEndOfTurn(TangoOne);
+            GoToEndOfTurn(TangoOne);
 
 
             // Assert
@@ -214,8 +228,20 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace1929, "Ra", "Legacy", "Megalopolis");
 
+            StartGame();
+
+            //DecisionSelectCard = legacy.CharacterCard;
+            DecisionSelectCards = new[] {legacy.CharacterCard, GetCardFromHand(legacy, 0), GetCardFromHand(legacy, 1)};
+            DecisionYesNo = true;
+
             SetHitPoints(TangoOne.CharacterCard, 1);
             DealDamage(baron, TangoOne, 2, DamageType.Melee);
+
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            UseIncapacitatedAbility(TangoOne, 1);
+
+            GoToEndOfTurn(TangoOne);
+            GoToEndOfTurn(TangoOne);
 
 
             // Assert
