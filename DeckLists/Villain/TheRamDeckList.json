@@ -14,10 +14,6 @@
             "keywords": [
                 "villain"
             ],
-            "icons": [
-                "StartOfTurnAction"
-            ],
-            "advancedIcons": [],
             "body": "Mechanical Juggernaut",
             "backgroundColor": "D99FC5",
             "foilBackgroundColor": "CD96C0",
@@ -37,6 +33,12 @@
                 "At the end of the villain turn, {TheRam} deals the hero target with the highest HP {H - 1} melee damage."
             ],
             "advanced": "Increase damage dealt to Up Close heroes by 1.",
+            "icons": [
+                "StartAndEndOfTurnAction",
+                "ReduceDamageTaken",
+                "IncreaseDamageDealt",
+                "DealDamageMelee"
+            ],
             "flippedBody": "Flanked Juggernaut",
             "flippedGameplay": [
                 "When {TheRam}'s character cards are flipped to this side, search the villain trash for Grappling claw and put it into play.",
@@ -46,8 +48,7 @@
             ],
             "flippedAdvanced": "Whenever a villain target is destroyed, play the top card of the villain deck.",
             "flippedIcons": [
-                "Search",
-                "IncreaseDamageDealt",
+                "IncreaseDamageTaken",
                 "EndOfTurnAction",
                 "DealDamageMelee"
             ],
@@ -409,7 +410,18 @@
                 "BaccaratCharacter": "Baccarat placeholder",
                 "AceOfSorrowsBaccaratCharacter": "Ace Of Sorrows Baccarat placeholder",
                 "AceOfSwordsBaccaratCharacter": "Ace Of Swords Baccarat placeholder",
-                "1929BaccaratCharacter": "Baccarat 1929 placeholder"
+                "1929BaccaratCharacter": "Baccarat 1929 placeholder",
+                "TheKnightCharacter": "The Knight placeholder",
+                "BerzerkerTheKnightCharacter": "The Berzerker Knight placeholder",
+                "FairTheKnightCharacter": "The Fair Knight placeholder",
+                "PastTheKnightCharacter": "The Knight 1929 placeholder",
+                "WastelandRoninTheKnightCharacter": "The Wasteland Ronin Knights placeholder",
+                "MagnificentMaraCharacter": "Magnificent Mara placeholder",
+                "MinistryOfStrategicScienceMagnificentMaraCharacter": "Ministry Of Strategic Science Magnificent Mara placeholder",
+                "1929MagnificentMaraCharacter": "1929 Magnificent Mara placeholder",
+                "VanishCharacter": "Vanish placeholder",
+                "FirstResponseVanishCharacter": "First Response Vanish  placeholder",
+                "1929VanishCharacter": "Vanish 1929 placeholder"
             }
         },
         {
@@ -463,21 +475,7 @@
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
             ],
-            "difficulty": 3,
-            "openingLines": {
-                "default": "default placeholder",
-                "TheKnightCharacter": "The Knight placeholder",
-                "BerzerkerTheKnightCharacter": "The Berzerker Knight placeholder",
-                "FairTheKnightCharacter": "The Fair Knight placeholder",
-                "PastTheKnightCharacter": "The Knight 1929 placeholder",
-                "WastelandRoninTheKnightCharacter": "The Wasteland Ronin Knights placeholder",
-                "MagnificentMaraCharacter": "Magnificent Mara placeholder",
-                "MinistryOfStrategicScienceMagnificentMaraCharacter": "Ministry Of Strategic Science Magnificent Mara placeholder",
-                "1929MagnificentMaraCharacter": "1929 Magnificent Mara placeholder",
-                "VanishCharacter": "Vanish placeholder",
-                "FirstResponseVanishCharacter": "First Response Vanish  placeholder",
-                "1929VanishCharacter": "Vanish 1929 placeholder"
-            }
+            "difficulty": 3
         }
     ]
 }
