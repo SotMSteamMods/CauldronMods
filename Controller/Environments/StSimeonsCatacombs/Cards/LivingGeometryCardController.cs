@@ -6,23 +6,19 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class LivingGeometryCardController : CardController
+    public class LivingGeometryCardController : StSimeonsBaseCardController
     {
-        #region Constructors
+        public static readonly string Identifier = "LivingGeometry";
 
         public LivingGeometryCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
 
-        #endregion Constructors
-
-        #region Methods
-
         public override void AddTriggers()
         {
             //At the end of the environment turn, play the top card of the environment deck and destroy this card.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator> (this.EndOfTurnResponse), new TriggerType[]
+            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.EndOfTurnResponse), new TriggerType[]
             {
                 TriggerType.PlayCard,
                 TriggerType.DestroySelf
@@ -50,7 +46,6 @@ namespace Cauldron.StSimeonsCatacombs
         public override IEnumerator Play()
         {
             //When this card enters play, destroy a room card. 
-
             IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsRoom, "room"), false, responsibleCard: base.Card, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
@@ -62,9 +57,7 @@ namespace Cauldron.StSimeonsCatacombs
             }
 
             //Its replacement is selected randomly from the 5 room cards, not chosen by the players.
-
-
-            IEnumerator coroutine2 = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.FindCard("StSimeonsCatacombs").UnderLocation, false, true, false, new LinqCardCriteria((Card c) => this.IsDefinitionRoom(c), "room"), new int?(1), shuffleBeforehand: true);
+            IEnumerator coroutine2 = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.FindCard(StSimeonsCatacombsCardController.Identifier).UnderLocation, false, true, false, new LinqCardCriteria((Card c) => this.IsDefinitionRoom(c), "room"), 1, shuffleBeforehand: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine2);
@@ -73,16 +66,7 @@ namespace Cauldron.StSimeonsCatacombs
             {
                 base.GameController.ExhaustCoroutine(coroutine2);
             }
-
-
             yield break;
         }
-
-        private bool IsDefinitionRoom(Card card)
-        {
-            return card != null && card.Definition.Keywords.Contains("room");
-        }
-
-        #endregion Methods
     }
 }

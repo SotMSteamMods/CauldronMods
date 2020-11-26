@@ -39,13 +39,13 @@ namespace Cauldron.BlackwoodForest
         //==============================================================
 
 
-        public static string Identifier = "MirrorWraith";
+        public static readonly string Identifier = "MirrorWraith";
 
         private const int DamageToDeal = 2;
 
         private IEnumerable<string> _copiedKeywords;
         private Card _copiedCard;
-        private List<ITrigger> _copiedTriggers;
+        private readonly List<ITrigger> _copiedTriggers;
 
         public MirrorWraithCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -53,7 +53,7 @@ namespace Cauldron.BlackwoodForest
             _copiedTriggers = new List<ITrigger>();
 
             base.SpecialStringMaker.ShowSpecialString(() =>
-                _copiedCard == null ? "Not copying a card" : "Copying card: TODO");
+                _copiedCard == null ? "Not copying a card" : $"Copying card: {_copiedCard.Title}");
         }
 
         public override IEnumerator Play()
@@ -95,6 +95,7 @@ namespace Cauldron.BlackwoodForest
             }
             else
             {
+
                 // Gains the text, keywords, and max HP of found target
 
                 // Identify this card controller as one who can modify keyword query answers
@@ -113,7 +114,17 @@ namespace Cauldron.BlackwoodForest
                 _copiedCard = storedResults.First();
 
                 // Set HP
-                IEnumerator setHpRoutine = base.GameController.SetHP(this.Card, _copiedCard.MaximumHitPoints.Value, this.GetCardSource());
+                IEnumerator makeTargetRoutine = this.GameController.MakeTargettable(this.Card, _copiedCard.MaximumHitPoints.Value, _copiedCard.MaximumHitPoints.Value,
+                    this.GetCardSource());
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(makeTargetRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(makeTargetRoutine);
+                }
 
                 // Set card text
                 CopyGameText(_copiedCard);
@@ -122,15 +133,6 @@ namespace Cauldron.BlackwoodForest
 
                 // Add the target's keywords to our copied list which will be returned on keyword queries
                 _copiedKeywords = _copiedCard.Definition.Keywords;
-
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(setHpRoutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(setHpRoutine);
-                }
             }
         }
 
@@ -190,13 +192,12 @@ namespace Cauldron.BlackwoodForest
         {
 
             // TODO: Don't think this override is necessary.  More testing needed
-            int i = 0;
-
-            if (cardSource != null && cardSource.AllowReplacements && this._copiedCard != null &&
-                cardSource.CardController == this)
-            {
-
-            }
+            
+            //if (cardSource != null && cardSource.AllowReplacements && this._copiedCard != null &&
+            //    cardSource.CardController == this)
+            //{
+            //
+            //}
 
             /*
             if (cardSource != null && cardSource.AllowReplacements && this._ongoings != null && cardSource.CardController == this)
@@ -324,12 +325,12 @@ namespace Cauldron.BlackwoodForest
 
         private void CopyWhenDestroyedTriggers(CardController cc)
         {
-            foreach (ITrigger trigger in cc.GetWhenDestroyedTriggers())
-            {
-                //SelfDestructTrigger destroyTrigger = trigger as SelfDestructTrigger;
-                //base.AddWhenDestroyedTrigger(dc => this.SetCardSourceLimitationsWhenDestroy(dc, destroyTrigger), 
-                    //destroyTrigger.Types.ToArray(), null, null).CardSource.AddAssociatedCardSource(cc.GetCardSource());
-            }
+            //foreach (ITrigger trigger in cc.GetWhenDestroyedTriggers())
+            //{
+            //    //SelfDestructTrigger destroyTrigger = trigger as SelfDestructTrigger;
+            //    //base.AddWhenDestroyedTrigger(dc => this.SetCardSourceLimitationsWhenDestroy(dc, destroyTrigger), 
+            //        //destroyTrigger.Types.ToArray(), null, null).CardSource.AddAssociatedCardSource(cc.GetCardSource());
+            //}
         }
     }
 }

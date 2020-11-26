@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Impact",
             "body": "Force Blast",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "dfb653",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "dfb653",
             "character": true,
             "powers": [
                 "{Impact} deals 1 target 1 infernal damage. You may destroy 1 hero ongoing card to increase this damage by 2."
@@ -401,9 +401,9 @@
             "promoTitle": "Renegade Impact",
             "shortPromoTitle": "Renegade Impact",
             "body": "Balance",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "5F9FD6",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "5F9FD6",
             "character": true,
             "powers": [
                 "Destroy 1 of your ongoing cards. If you do, play a card and draw a card."
@@ -442,9 +442,9 @@
             "promoTitle": "Wasteland Ronin Impact",
             "shortPromoTitle": "Wasteland Impact",
             "body": "Force Blast",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "D4E6B5",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "D4E6B5",
             "character": true,
             "powers": [
                 "{Impact} regains 1 HP, or the next time one of your ongoing cards is destroyed, play it."

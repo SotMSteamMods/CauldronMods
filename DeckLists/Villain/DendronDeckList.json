@@ -14,7 +14,7 @@
                 "villain"
             ],
             "body": "Mural of the Forest",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "8fbda0",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 50,
@@ -52,7 +52,7 @@
             "flippedAdvancedIcons": [
                 "GainHP"
             ],
-            "difficulty": 1,
+            "difficulty": 2,
             "openingLines": {
                 "default": "The world will know the mark of Dendron.",
                 "TheStrangerCharacter": "The Stranger placeholder",
@@ -410,7 +410,7 @@
             "flippedAdvancedIcons": [
                 "IncreaseDamageDealt"
             ],
-            "difficulty": 1,
+            "difficulty": 3,
             "challengeTitle": "",
             "challengeText": [],
             "challengeIcons": [],

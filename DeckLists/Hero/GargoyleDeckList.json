@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Gargoyle",
             "body": "Drain",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "bdd98f",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "bdd98f",
             "character": true,
             "powers": [
                 "Select a target. Reduce the next damage it deals by 1. Increase the next damage Gargoyle deals by 1."
@@ -40,7 +40,7 @@
                 "default": "default placeholder",
                 "VectorCharacter": "Vector placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "AbsorbAndUnleash",
@@ -416,9 +416,9 @@
             "promoTitle": "Wateland Ronin Gargoyle",
             "shortPromoTitle": "Wasteland Gargoyle",
             "body": "Rusted Claw",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "A7B8C1",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "A7B8C1",
             "character": true,
             "powers": [
                 "{Gargoyle} deals 1 target 2 toxic damage."
@@ -446,7 +446,7 @@
                 "default": "default placeholder",
                 "VectorCharacter": "Vector placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "GargoyleCharacter",
@@ -456,9 +456,9 @@
             "promoTitle": "2199 Gargoyle",
             "shortPromoTitle": "2199 Gargoyle",
             "body": "Sustain",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "D4E6B5",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "D4E6B5",
             "character": true,
             "powers": [
                 "You may destroy 1 hero ongoing or equipment card. If you do, 1 player plays a card. Draw a card."
@@ -488,7 +488,7 @@
                 "default": "default placeholder",
                 "VectorCharacter": "Vector placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

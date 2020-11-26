@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Vanish",
             "body": "Feint",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "8D96C9",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "8D96C9",
             "character": true,
             "powers": [
                 "Select a target. That target deals 1 other target 1 projectile damage."
@@ -41,7 +41,7 @@
                 "GrayCharacter": "Gray placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "AbductAndAbandon",
@@ -336,9 +336,9 @@
             "promoTitle": "First Response Vanish",
             "shortPromoTitle": "Responder Vanish",
             "body": "Intercept",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "999999",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "999999",
             "character": true,
             "powers": [
                 "Reduce the next damage that would be dealt to a hero target by 2."
@@ -366,7 +366,7 @@
                 "GrayCharacter": "Gray placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "VanishCharacter",
@@ -376,9 +376,9 @@
             "promoTitle": "Vanish 1929",
             "shortPromoTitle": "Vanish 1929",
             "body": "Scout",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "E6C8DA",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "E6C8DA",
             "character": true,
             "powers": [
                 "Draw a card. Increase damage delat by hero targets until the end of the round."
@@ -407,7 +407,7 @@
                 "GrayCharacter": "Gray placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

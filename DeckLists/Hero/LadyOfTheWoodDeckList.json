@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Lady Of The Wood",
             "body": "Season's Edge",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "b0da8c",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "b0da8c",
             "character": true,
             "powers": [
                 "Select a damage type. {LadyOfTheWood} deals 1 target 1 damage of the chosen type."
@@ -37,7 +37,7 @@
                 "CalderochCharacter": "Calderoch placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "CalmBeforeTheStorm",
@@ -448,9 +448,9 @@
             "promoTitle": "Lady of the Wood: Season of Change",
             "shortPromoTitle": "Seasons Lady of the Wood",
             "body": "Equinox",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "F4A77C",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "653590",
             "character": true,
             "powers": [
                 "Discard a card. You may play a card."
@@ -480,7 +480,7 @@
                 "CalderochCharacter": "Calderoch placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "LadyOfTheWoodCharacter",
@@ -490,9 +490,9 @@
             "promoTitle": "Ministry Of Strategic Science Lady of the Wood",
             "shortPromoTitle": "MOSS Lady of the Wood",
             "body": "Solstice",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "C1BCDD",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "C1BCDD",
             "character": true,
             "powers": [
                 "Add 2 tokens to your element pool. When {LadyOfTheWood} would deal damage, you may change its type by spending a token."
@@ -522,7 +522,7 @@
                 "CalderochCharacter": "Calderoch placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "LadyOfTheWoodCharacter",
@@ -532,9 +532,9 @@
             "promoTitle": "Lady of the Wood 2199",
             "shortPromoTitle": "Lady of the Wood 2199",
             "body": "Turn, Turn",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "A7B8C1",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "A7B8C1",
             "character": true,
             "powers": [
                 "Destroy a season. Play a season and change the next damage dealt by {LadyOfTheWood} to a type listed on it. You may use a power."
@@ -563,7 +563,7 @@
                 "CalderochCharacter": "Calderoch placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         }
     ]
 }

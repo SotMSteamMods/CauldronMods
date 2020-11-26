@@ -2,8 +2,8 @@
     "name": "Catchwater Harbor 1929",
     "kind": "Environment",
     "expansionIdentifier": "CauldronAdrift",
-    "backgroundColor": "FB5455",
-    "difficulty": 1,
+    "backgroundColor": "E2BA6E",
+    "difficulty": 2,
     "cards": [
         {
             "identifier": "AbandonedFactory",

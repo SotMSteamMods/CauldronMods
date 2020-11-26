@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Gyrosaur",
             "body": "Roll Out",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "feef00",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "feef00",
             "character": true,
             "powers": [
                 "If you have at least 2 crash cards in your had, {Gyrosaur} deals up to 3 targets 1 melee damage each. If not, draw a card."
@@ -445,9 +445,9 @@
             "promoTitle": "Gyrosaur: Speed Demon",
             "shortPromoTitle": "Speedy Gyrosaur",
             "body": "Object in Motion",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "AD97AD",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "AD97AD",
             "character": true,
             "powers": [
                 "If at least half of the cards in your hand are carsh cards. Draw a card. If not, play a card."
@@ -485,9 +485,9 @@
             "promoTitle": "Renegade Gyrosaur",
             "shortPromoTitle": "Renegade Gyrosaur",
             "body": "Being Sneaky",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "EC99C1",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "EC99C1",
             "character": true,
             "powers": [
                 "Discard a card, if it was a crash card, {Gyrosaur} regains 2 HP. Otherwise, she deals 1 target 2 melee damage. Draw a card."

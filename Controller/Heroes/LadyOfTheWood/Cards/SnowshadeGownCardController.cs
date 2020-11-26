@@ -13,7 +13,7 @@ namespace Cauldron.LadyOfTheWood
 		public override void AddTriggers()
 		{
 			//Whenever LadyOfTheWood regains HP, you may select a target that has not been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
-			base.AddTrigger<GainHPAction>((GainHPAction hp) => hp.HpGainer == base.CharacterCard, new Func<GainHPAction, IEnumerator>(this.DealDamageResponse), TriggerType.WouldGainHP, TriggerTiming.After);
+			base.AddTrigger<GainHPAction>((GainHPAction hp) => hp.HpGainer == base.CharacterCard && hp.GetAmountToActuallyGain() > 0, new Func<GainHPAction, IEnumerator>(this.DealDamageResponse), TriggerType.WouldGainHP, TriggerTiming.After);
 		}
 
 		public override IEnumerator UsePower(int index = 0)

@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Echelon",
             "body": "Seen It All",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "f27366",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "f27366",
             "character": true,
             "powers": [
                 "{Echelon} deals 1 target 1 irreducible melee damage."
@@ -42,7 +42,7 @@
                 "TiamatCharacter": "Tiamat placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "AdvanceAndRegroup",
@@ -490,9 +490,9 @@
             "promoTitle": "First Response Echelon",
             "shortPromoTitle": "Responder Echelon",
             "body": "Aerial Scan",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "83CFC7",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "83CFC7",
             "character": true,
             "powers": [
                 "Draw a card. You may play The Kestrel Mark II from your hand."
@@ -521,7 +521,7 @@
                 "TiamatCharacter": "Tiamat placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "EchelonCharacter",
@@ -531,9 +531,9 @@
             "promoTitle": "2199 Echelon",
             "shortPromoTitle": "2199 Echelon",
             "body": "Red Alert",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "A7B8C1",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "A7B8C1",
             "character": true,
             "powers": [
                 "1 other play draws X+1 cards where X is the number of tactic cards destroyed this turn."
@@ -559,7 +559,7 @@
                 "TiamatCharacter": "Tiamat placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         }
     ]
 }

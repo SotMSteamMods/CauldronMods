@@ -7,26 +7,19 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class ScurryingEvilCardController : CardController
+    public class ScurryingEvilCardController : StSimeonsBaseCardController
     {
-        #region Constructors
+        public static readonly string Identifier = "ScurryingEvil";
 
         public ScurryingEvilCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
-            base.SpecialStringMaker.ShowSpecialString(() => "Scurrying Evil has not been dealt damage since it has entered play.", new Func<bool>(base.IsFirstOrOnlyCopyOfThisCardInPlay), null).Condition = (() => !this.HasBeenDealtDamageSinceEnteringPlay());
-            base.SpecialStringMaker.ShowSpecialString(() => "Scurrying Evil is immune to damage as long as " + this.FindCorrelatedRoom().ToString() + " is in play.", new Func<bool>(base.IsFirstOrOnlyCopyOfThisCardInPlay), () => new Card[]
+            base.SpecialStringMaker.ShowSpecialString(() => $"{Card.Title} has not been dealt damage since it has entered play.", base.IsFirstOrOnlyCopyOfThisCardInPlay, null).Condition = (() => !this.HasBeenDealtDamageSinceEnteringPlay());
+            base.SpecialStringMaker.ShowSpecialString(() => $"{Card.Title} is immune to damage as long as {this.FindCorrelatedRoom().Title} is in play.", base.IsFirstOrOnlyCopyOfThisCardInPlay, () => new Card[]
             {
                 base.Card
             }).Condition = (() => this.IsImmuneToDamage());
         }
-
-        
-
-
-        #endregion Constructors
-
-        #region Methods
 
         public override void AddTriggers()
         {
@@ -45,7 +38,7 @@ namespace Cauldron.StSimeonsCatacombs
 
         private IEnumerator RoomChangeResponse(PlayCardAction pca)
         {
-            IEnumerator coroutine = base.GameController.SendMessageAction("Scurrying Evil is no longer immune to damage", Priority.High, base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SendMessageAction($"{Card.Title} is no longer immune to damage", Priority.High, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -63,13 +56,6 @@ namespace Cauldron.StSimeonsCatacombs
             return card == base.Card && base.Card.HitPoints > 0;
         }
 
-
-        private bool IsDefinitionRoom(Card card)
-        {
-            return card != null && card.Definition.Keywords.Contains("room");
-        }
-
-
         private bool IsImmuneToDamage()
         {
             //checks the journal for the last time Scurrying Evil was dealt damage
@@ -78,11 +64,12 @@ namespace Cauldron.StSimeonsCatacombs
             if (dealDamageJournalEntry != null)
             {
                 damageEntryIndex = base.GameController.Game.Journal.GetEntryIndex(dealDamageJournalEntry);
-            } else
+            }
+            else
             {
                 return false;
             }
-            
+
             //check the journal for the last room that was played before that damage
             IEnumerable<CardEntersPlayJournalEntry> roomEntries = from e in base.GameController.Game.Journal.CardEntersPlayEntries()
                                                                   where this.IsDefinitionRoom(e.Card) && base.GameController.Game.Journal.GetEntryIndex(e) < damageEntryIndex
@@ -90,10 +77,10 @@ namespace Cauldron.StSimeonsCatacombs
             int? latestCardEntersPlayIndex = new int?(0);
             int? roomEntryIndex;
             Dictionary<int?, CardEntersPlayJournalEntry> cardEntryDict = new Dictionary<int?, CardEntersPlayJournalEntry>();
-            foreach(CardEntersPlayJournalEntry roomEntry in roomEntries)
+            foreach (CardEntersPlayJournalEntry roomEntry in roomEntries)
             {
                 roomEntryIndex = base.GameController.Game.Journal.GetEntryIndex(roomEntry);
-                if(roomEntryIndex > latestCardEntersPlayIndex)
+                if (roomEntryIndex > latestCardEntersPlayIndex)
                 {
                     latestCardEntersPlayIndex = roomEntryIndex;
                     cardEntryDict.Add(roomEntryIndex, roomEntry);
@@ -105,8 +92,8 @@ namespace Cauldron.StSimeonsCatacombs
             //check the journal for if there has been a room played since that point
 
             IEnumerable<CardEntersPlayJournalEntry> newRoomEntries = from e in base.GameController.Game.Journal.CardEntersPlayEntries()
-                                                                  where this.IsDefinitionRoom(e.Card) && base.GameController.Game.Journal.GetEntryIndex(e) > damageEntryIndex
-                                                                  select e;
+                                                                     where this.IsDefinitionRoom(e.Card) && base.GameController.Game.Journal.GetEntryIndex(e) > damageEntryIndex
+                                                                     select e;
             foreach (CardEntersPlayJournalEntry roomEntry in newRoomEntries)
             {
                 //if there has been a room since then, check if its the same room as before
@@ -121,16 +108,16 @@ namespace Cauldron.StSimeonsCatacombs
 
         private bool IsNewRoom(Card newRoom)
         {
-            
+
             //check the journal for the last room that was played before this one
             IEnumerable<CardEntersPlayJournalEntry> roomEntries = from e in base.GameController.Game.Journal.CardEntersPlayEntries()
                                                                   where this.IsDefinitionRoom(e.Card)
                                                                   select e;
             int numEntries = roomEntries.Count();
-            if(numEntries > 0 )
-            { 
+            if (numEntries > 0)
+            {
                 Card previousRoom = roomEntries.ElementAt(numEntries - 1).Card;
-                if(previousRoom != newRoom)
+                if (previousRoom != newRoom)
                 {
                     return true;
                 }
@@ -144,9 +131,9 @@ namespace Cauldron.StSimeonsCatacombs
             PlayCardJournalEntry playCardJournalEntry = base.GameController.Game.Journal.QueryJournalEntries<PlayCardJournalEntry>((PlayCardJournalEntry e) => e.CardPlayed == base.Card).LastOrDefault<PlayCardJournalEntry>();
             int? playCardIndex = base.GameController.Game.Journal.GetEntryIndex(playCardJournalEntry);
             IEnumerable<DealDamageJournalEntry> damageEntries = from e in base.GameController.Game.Journal.DealDamageEntries()
-                                                                  where e.TargetCard == base.Card && base.GameController.Game.Journal.GetEntryIndex(e) > playCardIndex
-                                                                  select e;
-            if(damageEntries.Count() > 0)
+                                                                where e.TargetCard == base.Card && base.GameController.Game.Journal.GetEntryIndex(e) > playCardIndex
+                                                                select e;
+            if (damageEntries.Count() > 0)
             {
                 return true;
             }
@@ -168,8 +155,5 @@ namespace Cauldron.StSimeonsCatacombs
 
             return null;
         }
-
-
-        #endregion Methods
     }
 }

@@ -10,7 +10,7 @@ namespace Cauldron.TangoOne
         // {TangoOne} regains 2HP and may deal up to 3 targets 1 projectile damage each.
         //==============================================================
 
-        public static string Identifier = "DamnGoodGround";
+        public static readonly string Identifier = "DamnGoodGround";
 
         private const int DamageAmount = 1;
         private const int HpGain = 2;

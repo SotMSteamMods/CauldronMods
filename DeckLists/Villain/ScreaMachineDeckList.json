@@ -15,7 +15,7 @@
             "count": 1,
             "title": "The Set List",
             "body": "Warming Up",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "e4d8c2",
             "foilBackgroundColor": "CD96C0",
             "setup": [
                 "At the start of the game, put this card, {Slice}, {Valentine}, {Bloodlace}, and {RickyG}'s villain character cards into play, “Warming Up” side up.",
@@ -50,7 +50,7 @@
                 "DestroyOngoing",
                 "DestroyEquipment"
             ],
-            "difficulty": 1,
+            "difficulty": 3,
             "openingLines": {
                 "default": "default placeholder",
                 "GyrosaurCharacter": "Gyrosaur placeholder",
