@@ -13,6 +13,7 @@ namespace Cauldron.TheRam
     {
         public RemoteMortarCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            AddUpCloseTrackers();
         }
 
         public override void AddTriggers()

@@ -13,6 +13,7 @@ namespace Cauldron.TheRam
     {
         public PersonalDefenseSpinesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            AddUpCloseTrackers();
         }
 
         public override IEnumerator Play()
