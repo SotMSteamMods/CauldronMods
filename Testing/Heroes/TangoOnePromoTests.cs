@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Cauldron.TangoOne;
 
@@ -121,7 +119,6 @@ namespace CauldronTests
                                      && s.StatusEffect.CardSource.Equals(TangoOne.CharacterCard)));
 
             AssertIncapacitated(TangoOne);
-
         }
 
         [Test]
@@ -154,7 +151,6 @@ namespace CauldronTests
             UsePower(ra);
             QuickHPCheck(-2); // Ra's Pyre 2 dmg, Incap expired
             AssertIncapacitated(TangoOne);
-
         }
 
         [Test]
@@ -179,6 +175,8 @@ namespace CauldronTests
 
             StartGame();
 
+            QuickHPStorage(legacy);
+
             DecisionSelectTarget = legacy.CharacterCard;
 
             GoToStartOfTurn(TangoOne);
@@ -188,13 +186,11 @@ namespace CauldronTests
 
             GoToDrawCardPhase(TangoOne);
             
-
             GoToEndOfTurn(TangoOne);
-            GoToEndOfTurn(TangoOne);
+            QuickHPCheck(0); // Damage won't trigger until start of Tango's next turn
 
-
-
-            Assert.True(false, "TODO");
+            GoToEndOfTurn(TangoOne);  // Go back around to Tango's turn
+            QuickHPCheck(-3); // Damage should now have been attempted
         }
 
         [Test]
@@ -206,6 +202,7 @@ namespace CauldronTests
 
             DecisionSelectCard = legacy.CharacterCard;
             DecisionYesNo = true;
+            QuickHandStorage(legacy);
 
             SetHitPoints(TangoOne.CharacterCard, 1);
             DealDamage(baron, TangoOne, 2, DamageType.Melee);
@@ -214,12 +211,40 @@ namespace CauldronTests
             UseIncapacitatedAbility(TangoOne, 0);
 
             GoToEndOfTurn(TangoOne);
-            GoToEndOfTurn(TangoOne);
+            QuickHandCheck(0); // Card draw option won't trigger until start of Tango's next turn
 
+            GoToEndOfTurn(TangoOne); // Go back around to Tango's turn
+            QuickHandCheck(2);
 
             // Assert
             AssertIncapacitated(TangoOne);
-            Assert.True(false, "TODO");
+        }
+
+        [Test]
+        public void Test1929IncapacitateOption1DeclineDraw()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace1929, "Ra", "Legacy", "Megalopolis");
+            StartGame();
+
+            DecisionSelectCard = legacy.CharacterCard;
+            DecisionYesNo = false;
+            QuickHandStorage(legacy);
+
+            SetHitPoints(TangoOne.CharacterCard, 1);
+            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            UseIncapacitatedAbility(TangoOne, 0);
+
+            GoToEndOfTurn(TangoOne);
+            QuickHandCheck(0); // Card draw option won't trigger until start of Tango's next turn
+
+            GoToEndOfTurn(TangoOne); // Go back around to Tango's turn
+            QuickHandCheck(0);
+
+            // Assert
+            AssertIncapacitated(TangoOne);
         }
 
         [Test]
@@ -228,7 +253,15 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace1929, "Ra", "Legacy", "Megalopolis");
 
+            MakeCustomHeroHand(legacy, new List<string>()
+            {
+                "Fortitude", "DangerSense", "NextEvolution", "SurgeOfStrength"
+            });
+
+
             StartGame();
+
+            QuickHandStorage(legacy);
 
             //DecisionSelectCard = legacy.CharacterCard;
             DecisionSelectCards = new[] {legacy.CharacterCard, GetCardFromHand(legacy, 0), GetCardFromHand(legacy, 1)};
@@ -241,27 +274,100 @@ namespace CauldronTests
             UseIncapacitatedAbility(TangoOne, 1);
 
             GoToEndOfTurn(TangoOne);
-            GoToEndOfTurn(TangoOne);
+            QuickHandCheck(0);
 
+            GoToEndOfTurn(TangoOne); // Go back around to Tango's turn
+            QuickHandCheck(-2);
+            AssertNumberOfCardsInPlay(legacy, 3); // Character card + 2 randomly played cards
 
             // Assert
             AssertIncapacitated(TangoOne);
-            Assert.True(false, "TODO");
+        }
+
+        [Test]
+        public void Test1929IncapacitateOption2DeclinePlay()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace1929, "Ra", "Legacy", "Megalopolis");
+
+            StartGame();
+
+            QuickHandStorage(legacy);
+
+            DecisionSelectCard = legacy.CharacterCard;
+            DecisionYesNo = false;
+
+            SetHitPoints(TangoOne.CharacterCard, 1);
+            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            UseIncapacitatedAbility(TangoOne, 1);
+
+            GoToEndOfTurn(TangoOne);
+            QuickHandCheck(0);
+
+            GoToEndOfTurn(TangoOne); // Go back around to Tango's turn
+            QuickHandCheck(0);
+            AssertNumberOfCardsInPlay(legacy, 1); // Character card
+
+            // Assert
+            AssertIncapacitated(TangoOne);
+        }
+
+        [Test]
+        public void Test1929IncapacitateOption2NoCardsToPlay()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace1929, "Ra", "Legacy", "Megalopolis");
+
+            StartGame();
+            DiscardAllCards(legacy);
+
+            QuickHandStorage(legacy);
+
+            DecisionSelectCard = legacy.CharacterCard;
+            //DecisionSelectCards = new[] { legacy.CharacterCard, GetCardFromHand(legacy, 0), GetCardFromHand(legacy, 1) };
+            DecisionYesNo = true;
+
+            SetHitPoints(TangoOne.CharacterCard, 1);
+            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            UseIncapacitatedAbility(TangoOne, 1);
+
+            GoToEndOfTurn(TangoOne);
+            QuickHandCheck(0);
+
+            GoToEndOfTurn(TangoOne); // Go back around to Tango's turn
+            QuickHandCheck(0);
+            AssertNumberOfCardsInPlay(legacy, 1); // Character card
+
+            // Assert
+            AssertIncapacitated(TangoOne);
         }
 
         [Test]
         public void Test1929IncapacitateOption3()
         {
             // Arrange
-            SetupGameController("BaronBlade", DeckNamespace1929, "Ra", "Legacy", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace1929, "Ra", "Legacy", "InsulaPrimalis");
+
+            StartGame();
+
+            PutIntoPlay("EnragedTRex");
+            Card enragedTRex = GetCardInPlay("EnragedTRex");
+            DecisionSelectCard = enragedTRex;
 
             SetHitPoints(TangoOne.CharacterCard, 1);
             DealDamage(baron, TangoOne, 2, DamageType.Melee);
 
+            // Act
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            UseIncapacitatedAbility(TangoOne, 2);
 
             // Assert
             AssertIncapacitated(TangoOne);
-            Assert.True(false, "TODO");
+            AssertInTrash(enragedTRex);
         }
     }
 }
