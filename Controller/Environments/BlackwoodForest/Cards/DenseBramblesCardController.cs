@@ -18,7 +18,7 @@ namespace Cauldron.BlackwoodForest
 
         public DenseBramblesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            this.SpecialStringMaker.ShowSpecialString(() => "Dense Brambles is currently making " + this.GetCurrentImmuneTargets() + " immune to damage");
         }
 
         public bool? PerformImmune;
@@ -69,6 +69,21 @@ namespace Cauldron.BlackwoodForest
                 this.PerformImmune = null;
             }
             yield break;
+        }
+
+        private string GetCurrentImmuneTargets()
+        {
+            // Get all immune to damage effects from this card source
+            List<ImmuneToDamageJournalEntry> immuneToDamageStatusEffects 
+                = base.GameController.Game.Journal.ImmuneToDamageEntries(entry => entry.CardSource.Equals(this.Card)).ToList();
+
+            // Take last H - 1 entries
+            IEnumerable<ImmuneToDamageJournalEntry> mostRecent = immuneToDamageStatusEffects.Skip(Math.Max(0, immuneToDamageStatusEffects.Count() - (this.Game.H - 1)));
+
+            // Build string of card titles
+            string targets = mostRecent.Select(entry => entry.Target.Title).Aggregate((a, b) => a + ", " + b);
+
+            return targets;
         }
     }
 }
