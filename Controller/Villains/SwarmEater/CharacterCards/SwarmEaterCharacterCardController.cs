@@ -12,7 +12,8 @@ namespace Cauldron.SwarmEater
     {
         public SwarmEaterCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => !base.Card.IsFlipped, () => this.PursuedCard().ToString() + " is the pursued target.", () => "No one is being pursued");
+            base.SpecialStringMaker.ShowLowestHP(cardCriteria: new LinqCardCriteria((Card c) => c != base.Card));
         }
 
         public override void AddSideTriggers()
@@ -53,6 +54,11 @@ namespace Cauldron.SwarmEater
         private bool IsPursued(Card card)
         {
             return card.NextToLocation.Cards.Any((Card c) => c.Identifier == "SingleMindedPursuit");
+        }
+
+        private Card PursuedCard()
+        {
+            return base.FindCardsWhere(new LinqCardCriteria((Card c) => this.IsPursued(c))).FirstOrDefault();
         }
 
         private IEnumerator ChangePursuedResponse(DealDamageAction action)

@@ -9,7 +9,10 @@ namespace Cauldron.SwarmEater
     {
         public JumperAugCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            if (base.Card.IsInPlayAndNotUnderCard)
+            {
+                base.SpecialStringMaker.ShowHeroTargetWithLowestHP(numberOfTargets: 2);
+            }
         }
 
         public override void AddTriggers()

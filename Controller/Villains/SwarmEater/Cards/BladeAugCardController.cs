@@ -9,7 +9,14 @@ namespace Cauldron.SwarmEater
     {
         public BladeAugCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            if (base.Card.IsInPlayAndNotUnderCard)
+            {
+                base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
+            }
+            else
+            {
+                base.SpecialStringMaker.ShowHighestHP(cardCriteria: new LinqCardCriteria((Card c) => c != base.CharacterCard));
+            }
         }
 
         public override void AddTriggers()

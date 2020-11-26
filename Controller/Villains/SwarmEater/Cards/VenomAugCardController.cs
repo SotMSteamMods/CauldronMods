@@ -11,7 +11,10 @@ namespace Cauldron.SwarmEater
     {
         public VenomAugCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            if (base.Card.IsInPlayAndNotUnderCard)
+            {
+                base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
+            }
         }
 
         public override void AddTriggers()
@@ -55,7 +58,7 @@ namespace Cauldron.SwarmEater
         public override IEnumerator ActivateAbsorb(Card cardThisIsUnder)
         {
             //Absorb: whenever {SwarmEater} deals damage to another target, that target deals itself 1 toxic damage.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.Card == cardThisIsUnder, this.AbsorbDealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.Card == cardThisIsUnder && action.DidDealDamage, this.AbsorbDealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
             yield break;
         }
 
