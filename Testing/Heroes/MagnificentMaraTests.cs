@@ -77,6 +77,79 @@ namespace CauldronTests
             QuickHPCheck(0);
         }
         [Test]
+        public void TestAbracadabraBasic()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card abra = PlayCard("Abracadabra");
+            Card surge = PlayCard("SurgeOfStrength");
+            Card plating = PutInHand("HeavyPlating");
+
+            DecisionYesNo = true;
+            DecisionSelectTurnTaker = bunker.TurnTaker;
+            DecisionSelectCard = plating;
+
+            DestroyCard(surge);
+
+            AssertInHand(surge);
+            AssertIsInPlay(plating);
+        }
+        [Test]
+        public void TestAbracadabraCanReplaySameCard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card abra = PlayCard("Abracadabra");
+            Card surge = PlayCard("SurgeOfStrength");
+            Card plating = PlayCard("HeavyPlating");
+
+            DecisionYesNo = true;
+            DecisionSelectTurnTaker = bunker.TurnTaker;
+            DecisionSelectCard = plating;
+
+            DestroyCard(plating);
+
+            AssertIsInPlay(plating);
+        }
+        [Test]
+        public void TestAbracadabraOptional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card abra = PlayCard("Abracadabra");
+            Card surge = PlayCard("SurgeOfStrength");
+            Card plating = PlayCard("HeavyPlating");
+
+            DecisionYesNo = false;
+            DecisionSelectTurnTaker = bunker.TurnTaker;
+            DecisionSelectCard = plating;
+
+            DestroyCard(plating);
+
+            AssertInTrash(plating);
+            AssertIsInPlay(abra);
+        }
+        [Test]
+        public void TestAbracadabraNoTriggerOnSelf()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card abra = PlayCard("Abracadabra");
+            Card kalpak = PlayCard("KalpakOfMysteries");
+
+            AssertNoDecision();
+            DestroyCard(kalpak);
+            AssertIsInPlay(abra);
+        }
+        [Test]
         public void TestConvincingDoubleBasic()
         {
             //There are a million things that could go wrong with Convincing Double. 
