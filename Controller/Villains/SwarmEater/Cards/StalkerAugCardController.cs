@@ -16,17 +16,16 @@ namespace Cauldron.SwarmEater
             }
         }
 
-        public override void AddTriggers()
+        public override ITrigger[] AddRegularTriggers()
         {
             //At the end of the villain turn this card deals each hero target except the hero with the lowest HP {H - 2} irreducible energy damage.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageExceptLowestResponse, TriggerType.DealDamage);
+            return new ITrigger[] { base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageExceptLowestResponse, TriggerType.DealDamage) };
         }
 
-        public override IEnumerator AddAbsorbTriggers(Card cardThisIsUnder)
+        public override ITrigger[] AddAbsorbTriggers(Card cardThisIsUnder)
         {
             //At the end of the villain turn, {SwarmEater} deals each other target 1 irreducible energy damage.
-            base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, cardThisIsUnder, (Card c) => c != cardThisIsUnder, TargetType.All, 1, DamageType.Energy, true);
-            yield break;
+            return new ITrigger[] { base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, cardThisIsUnder, (Card c) => c != cardThisIsUnder, TargetType.All, 1, DamageType.Energy, true) };
         }
 
         private IEnumerator DealDamageExceptLowestResponse(PhaseChangeAction action)
