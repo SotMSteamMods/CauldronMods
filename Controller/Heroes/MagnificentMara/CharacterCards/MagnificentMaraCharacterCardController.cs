@@ -14,7 +14,41 @@ namespace Cauldron.MagnificentMara
 
         public override IEnumerator UsePower(int index = 0)
         {
+            int targetAmount = GetPowerNumeral(0, 1);
+            int firstTargetDamage = GetPowerNumeral(1, 1);
+            int secondTargetDamage = GetPowerNumeral(2, 1);
             //"{MagnificentMara} deals 1 target 1 psychic damage. That target deals another target 1 melee damage."
+            List<SelectCardDecision> firstTargetDecision = new List<SelectCardDecision> { };
+            var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, this.Card), firstTargetDamage, DamageType.Psychic, targetAmount, false, targetAmount, selectTargetsEvenIfCannotDealDamage: true, storedResultsDecisions: firstTargetDecision, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if(!DidSelectCard(firstTargetDecision))
+            {
+                yield break;
+            }
+
+            Card firstTarget = firstTargetDecision.FirstOrDefault().SelectedCard; 
+
+            if (firstTarget != null && firstTarget.IsInPlayAndHasGameText && firstTarget.IsTarget)
+            {
+                coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, firstTarget), secondTargetDamage, DamageType.Psychic, 1, false, 1, additionalCriteria: (Card c) => c != firstTarget, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
             yield break;
         }
 

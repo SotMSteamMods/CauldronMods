@@ -21,6 +21,9 @@ namespace CauldronTests
             DealDamage(villain, mara, 2, DamageType.Melee);
         }
 
+        protected DamageType DTM => DamageType.Melee;
+
+        protected Card MDP  { get { return FindCardInPlay("MobileDefensePlatform"); } }
         #endregion maraHelperFunctions
 
         [Test]
@@ -34,6 +37,44 @@ namespace CauldronTests
             Assert.IsInstanceOf(typeof(MagnificentMaraCharacterCardController), mara.CharacterCardController);
 
             Assert.AreEqual(27, mara.CharacterCard.HitPoints);
+        }
+        [Test]
+        public void TestMaraPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            PlayCard("SurgeOfStrength"); //for distinguishing damage source
+            PlayCard("HeavyPlating"); //for testing it doesn't need to do the first damage
+
+            Card mdp = MDP;
+
+            DecisionSelectCards = new Card[] { legacy.CharacterCard, mdp, bunker.CharacterCard, mdp };
+            QuickHPStorage(legacy.CharacterCard, mdp, bunker.CharacterCard);
+
+            UsePower(mara);
+            QuickHPCheck(-1, -2, 0);
+
+            UsePower(mara);
+            QuickHPCheck(0, -1, 0);
+        }
+        [Test]
+        public void TestMaraPowerFirstDamageKills()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            SetHitPoints(legacy, 1);
+
+            QuickHPStorage(MDP);
+            DecisionSelectCards = new Card[] { legacy.CharacterCard, MDP };
+
+            UsePower(mara);
+
+            AssertIncapacitated(legacy);
+            QuickHPCheck(0);
         }
         [Test]
         public void TestConvincingDoubleBasic()
