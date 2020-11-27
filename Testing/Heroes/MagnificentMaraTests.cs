@@ -318,5 +318,53 @@ namespace CauldronTests
             AssertIsInPlay(crystal);
             QuickHandCheck(-1);
         }
+        [Test]
+        public void TestHandIsFasterThanTheEye()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card battalion = PlayCard("BladeBattalion");
+            Card hand = PlayCard("HandIsFasterThanTheEye");
+
+            GoToStartOfTurn(mara);
+
+            AssertInTrash(battalion);
+            AssertInTrash(hand);
+        }
+        [Test]
+        public void TestHandIsFasterThanTheEyeDestroysOnlyOne()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card hand = PlayCard("HandIsFasterThanTheEye");
+            Card battalion1 = PlayCard("BladeBattalion");
+            Card battalion2 = PlayCard("BladeBattalion");
+
+            GoToStartOfTurn(mara);
+
+            AssertInTrash(battalion1);
+            AssertInTrash(hand);
+            AssertIsInPlay(battalion2);
+        }
+        [Test]
+        public void TestHandIsFasterThanTheEyeIgnoresCharacterAndRelic()
+        {
+            SetupGameController("Apostate", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+
+            StartGame();
+            Card fiend = PlayCard("FiendishPugilist");
+            Card sword = GetCardInPlay("Condemnation");
+            PlayCard("HandIsFasterThanTheEye");
+
+            GoToEndOfTurn(apostate);
+
+            AssertIsInPlay(sword);
+            AssertInTrash(fiend);
+
+        }
     }
 }
