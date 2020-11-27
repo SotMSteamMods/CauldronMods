@@ -79,7 +79,43 @@ namespace CauldronTests
         [Test]
         public void TestFirstResponseIncapacitateOption1()
         {
-            Assert.True(false, "TODO");
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespaceFirstResponse, "Legacy", "Ra", "InsulaPrimalis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            SetHitPoints(mdp, 5);
+
+            SetHitPoints(ra.CharacterCard, 5);
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, mdp);
+
+            SetHitPoints(DocHavoc.CharacterCard, 1);
+            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+
+            // Act
+            GoToUseIncapacitatedAbilityPhase(DocHavoc);
+            UseIncapacitatedAbility(DocHavoc, 0);
+
+            GoToStartOfTurn(legacy);
+            DecisionSelectTarget = mdp;
+            PlayCard(GetCard("Thokk"));
+
+            DealDamage(baron, legacy, 2, DamageType.Cold);
+            DealDamage(baron, ra, 2, DamageType.Cold);
+
+            QuickHPCheck(-3, -1, -2); // No reduction applied to Legacy
+            QuickHPStorage(ra.CharacterCard, mdp);
+
+            // Loop back around to make sure the effect is gone
+            GoToUseIncapacitatedAbilityPhase(DocHavoc);
+
+            DealDamage(baron, mdp, 2, DamageType.Cold);
+            DealDamage(baron, ra, 2, DamageType.Cold);
+            QuickHPCheck(-2, -2); // Doc Havoc's incap expired, full damage done to Ra, MDP
+
+
+            // Assert
+            AssertIncapacitated(DocHavoc);
         }
 
         [Test]
@@ -90,13 +126,18 @@ namespace CauldronTests
 
             Card dangerSense = GetCard("DangerSense");
             Card thokk = GetCard("Thokk");
+            Card bolsterAllies = GetCard("BolsterAllies");
 
             PutInTrash(legacy, dangerSense);
             PutInTrash(legacy, thokk);
+            PutInTrash(legacy, bolsterAllies);
+
+            Card fireBlast = GetCard("FireBlast");
+            PutInTrash(ra, fireBlast);
 
             StartGame();
-
-            DecisionSelectCard = legacy.CharacterCard;
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            DecisionSelectCard = thokk;
 
             SetHitPoints(DocHavoc.CharacterCard, 1);
             DealDamage(baron, DocHavoc, 2, DamageType.Melee);
@@ -106,9 +147,67 @@ namespace CauldronTests
             UseIncapacitatedAbility(DocHavoc, 1);
 
             // Assert
-
-            Assert.True(false, "TODO");
+            AssertIncapacitated(DocHavoc);
+            AssertNotInTrash(legacy, thokk.Identifier);
+            AssertOnTopOfDeck(legacy, thokk);
+            AssertInTrash(fireBlast);
         }
+
+        [Test]
+        public void TestFirstResponseIncapacitateOption2_EmptyTrashes()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespaceFirstResponse, "Ra", "Legacy", "InsulaPrimalis");
+
+            StartGame();
+            QuickTopCardStorage(legacy, ra);
+
+            SetHitPoints(DocHavoc.CharacterCard, 1);
+            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+
+            // Act
+            GoToUseIncapacitatedAbilityPhase(DocHavoc);
+            UseIncapacitatedAbility(DocHavoc, 1);
+
+            // Assert
+            AssertIncapacitated(DocHavoc);
+            QuickTopCardCheck(ttc => ttc.CharacterCard.Owner.Deck);
+        }
+
+        [Test]
+        public void TestFirstResponseIncapacitateOption2_NoOneShots()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespaceFirstResponse, "Ra", "Legacy", "InsulaPrimalis");
+
+            Card dangerSense = GetCard("DangerSense");
+            Card fortitude = GetCard("Fortitude");
+
+            PutInTrash(legacy, dangerSense);
+            PutInTrash(legacy, fortitude);
+
+            Card solarFlare = GetCard("SolarFlare");
+            PutInTrash(ra, solarFlare);
+
+            StartGame();
+            QuickTopCardStorage(legacy, ra);
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+
+            SetHitPoints(DocHavoc.CharacterCard, 1);
+            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+
+            // Act
+            GoToUseIncapacitatedAbilityPhase(DocHavoc);
+            UseIncapacitatedAbility(DocHavoc, 1);
+
+            // Assert
+            AssertIncapacitated(DocHavoc);
+            AssertInTrash(dangerSense);
+            AssertInTrash(fortitude);
+            AssertInTrash(solarFlare);
+            QuickTopCardCheck(ttc => ttc.CharacterCard.Owner.Deck);
+        }
+
 
         [Test]
         public void TestFirstResponseIncapacitateOption3_Destroy2Cards()

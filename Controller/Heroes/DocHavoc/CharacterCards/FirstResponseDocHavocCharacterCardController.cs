@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -14,7 +10,7 @@ namespace Cauldron.DocHavoc
     {
         private const int PowerDamageToDeal = 1;
         private const int Incapacitate1HpThreshold = 6;
-        private const int Incapacitate2CardsToDraw = 1;
+        private const int Incapacitate1DamageReduction = 1;
         private const int Incapacitate3CardsToDestroy = 2;
 
         public FirstResponseDocHavocCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
@@ -59,22 +55,20 @@ namespace Cauldron.DocHavoc
                 case 0:
 
                     //==============================================================
-                    // Until the start of your next turn, reduce damage dealt to targets with fewer than 6 HP by
+                    // Until the start of your next turn, reduce damage
+                    // dealt to targets with fewer than 6 HP by 1
                     //==============================================================
 
-                    break;
+                    List<Card> targets 
+                        = FindCardsWhere(card => card.IsTarget && card.IsInPlay 
+                            && card.HitPoints < Incapacitate1HpThreshold).ToList();
+                    
+                    ReduceDamageStatusEffect rdse = new ReduceDamageStatusEffect(Incapacitate1DamageReduction);
+                    rdse.TargetCriteria.IsOneOfTheseCards = targets;
+                    rdse.UntilTargetLeavesPlay(base.CharacterCard);
+                    rdse.UntilStartOfNextTurn(base.TurnTaker);
 
-                case 1:
-
-                    //==============================================================
-                    // One player may take a one-shot from their trash and put it on top of their deck.
-                    //==============================================================
-
-                    List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                    IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.MoveCardOnDeck, 
-                        new LinqCardCriteria(c => c.IsInTrash && c.Location.IsHero && c.IsOneShot, "in any hero's trash", useCardsSuffix: false, useCardsPrefix: true), 
-                        storedResults, optional: false,  cardSource: GetCardSource());
-
+                    coroutine = base.AddStatusEffect(rdse, true);
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -84,28 +78,18 @@ namespace Cauldron.DocHavoc
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
 
-                    if (storedResults.Any((SelectCardDecision d) => d.Completed && d.SelectedCard != null))
-                    {
-                        Card selectedCard = storedResults.FirstOrDefault().SelectedCard;
-                        Location hand = selectedCard.Location.OwnerTurnTaker.ToHero().Hand;
-                        coroutine = base.GameController.MoveCard(base.TurnTakerController, selectedCard, hand, toBottom: false, isPutIntoPlay: false, playCardIfMovingToPlayArea: true, null, showMessage: false, storedResults.Cast<IDecision>(), null, null, evenIfIndestructible: false, flipFaceDown: false, null, isDiscard: false, evenIfPretendGameOver: false, shuffledTrashIntoDeck: false, doesNotEnterPlay: false, GetCardSource());
-                        if (base.UseUnityCoroutines)
-                        {
-                            yield return base.GameController.StartCoroutine(coroutine);
-                        }
-                        else
-                        {
-                            base.GameController.ExhaustCoroutine(coroutine);
-                        }
-                    }
+                    break;
 
+                case 1:
 
+                    //==============================================================
+                    // One player may take a one-shot from their trash and
+                    // put it on top of their deck.
+                    //==============================================================
 
-                    /*
-                    coroutine = GameController.SelectHeroToMoveCardFromTrash(base.HeroTurnTakerController,
+                    coroutine = base.GameController.SelectHeroToMoveCardFromTrash(this.HeroTurnTakerController,
                         httc => httc.HeroTurnTaker.Deck,
-                        optionalMoveCard: false,
-                        cardCriteria: new LinqCardCriteria(card => card.IsOneShot, "one-shot"), 
+                        cardCriteria: new LinqCardCriteria(c => c.IsInTrash && c.Location.IsHero && c.IsOneShot),
                         cardSource: GetCardSource());
 
                     if (base.UseUnityCoroutines)
@@ -116,7 +100,6 @@ namespace Cauldron.DocHavoc
                     {
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
-                    */
 
                     break;
 
@@ -127,8 +110,10 @@ namespace Cauldron.DocHavoc
                     //==============================================================
 
                     coroutine = base.GameController.SelectAndDestroyCards(base.HeroTurnTakerController, 
-                        new LinqCardCriteria(c => c.IsEnvironment, "environment"), Incapacitate3CardsToDestroy,
+                        new LinqCardCriteria(c => c.IsEnvironment, "environment"), 
+                        Incapacitate3CardsToDestroy,
                         requiredDecisions: 0, cardSource: GetCardSource());
+
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -139,8 +124,6 @@ namespace Cauldron.DocHavoc
                     }
 
                     break;
-
-
             }
         }
     }
