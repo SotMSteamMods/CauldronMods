@@ -252,5 +252,52 @@ namespace CauldronTests
 
             //Assert.Ignore("Pass-to-Sentinels doesn't work, not sure it's fixable. Pass-from-sentinels doesn't, and I'm not sure why.");
         }
+        [Test]
+        public void TestDowsingCrystalSimple()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            PlayCard("DowsingCrystal");
+            UsePower("DowsingCrystal");
+
+            AssertNumberOfStatusEffectsInPlay(1);
+            UsePower("DowsingCrystal");
+
+            AssertNumberOfStatusEffectsInPlay(2);
+            DecisionYesNo = true;
+
+            QuickHPStorage(baron);
+            PlayCard("BladeBattalion");
+
+            AssertNumberOfStatusEffectsInPlay(0);
+            QuickHPCheck(-4);
+        }
+        [Test]
+        public void TestDowsingCrystalOptional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            PlayCard("DowsingCrystal");
+            UsePower("DowsingCrystal");
+
+            AssertNumberOfStatusEffectsInPlay(1);
+            UsePower("DowsingCrystal");
+
+            AssertNumberOfStatusEffectsInPlay(2);
+            DecisionYesNo = false;
+
+            QuickHPStorage(baron);
+
+            PlayCard("BladeBattalion");
+
+            AssertNumberOfStatusEffectsInPlay(2);
+            QuickHPCheck(0);
+        }
     }
 }
