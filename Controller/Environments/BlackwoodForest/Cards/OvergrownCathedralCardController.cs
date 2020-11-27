@@ -47,7 +47,7 @@ namespace Cauldron.BlackwoodForest
 
             // Ask if player wants to destroy this card
             IEnumerator routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.DiscardFromDeck, this.Card, null, storedYesNoResults, null, GetCardSource());
+                SelectionType.DestroyCard, this.Card, null, storedYesNoResults, null, GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
