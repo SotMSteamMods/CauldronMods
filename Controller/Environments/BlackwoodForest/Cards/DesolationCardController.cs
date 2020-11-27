@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 using Handelabra.Sentinels.Engine.Controller;
@@ -21,7 +20,6 @@ namespace Cauldron.BlackwoodForest
         public DesolationCardController(Card card, TurnTakerController turnTakerController) : base(card,
             turnTakerController)
         {
-
         }
 
         public override void AddTriggers()
@@ -36,60 +34,31 @@ namespace Cauldron.BlackwoodForest
 
         public override IEnumerator Play()
         {
-            IEnumerator choiceRoutine = base.DoActionToEachTurnTakerInTurnOrder(
-                ttc => ttc.IsHero && !ttc.IsIncapacitatedOrOutOfGame,
-                ChoiceResponse);
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(choiceRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(choiceRoutine);
-            }
-        }
-
-        private IEnumerator ChoiceResponse(TurnTakerController ttc)
-        {
-            int cardsToDiscard = ttc.ToHero().NumberOfCardsInHand - 1;
-
-            SelectCardsDecision selectCardsDecision = new SelectCardsDecision(base.GameController, ttc.ToHero(), 
-                c => c.Location == ttc.ToHero().HeroTurnTaker.Hand, 
-                SelectionType.DiscardCard, cardsToDiscard, true,
-                cardsToDiscard, true, cardSource: base.GetCardSource());
-
-            IEnumerator scada = base.GameController.SelectCardsAndDoAction(selectCardsDecision, 
-                d => base.GameController.MoveCard(ttc, d.SelectedCard, ttc.ToHero().HeroTurnTaker.Trash, false, false, 
-                    true, null, true, new List<IDecision> { d }, isDiscard: true, cardSource: base.GetCardSource()),
-                cardSource: base.GetCardSource());
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(scada);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(scada);
-            }
-
-            if (selectCardsDecision.Completed)
-            {
-                yield break;
-            }
-
-            // Opted not to discard, deal damage to hero
             int damageToDeal = Game.H + 1;
-            IEnumerator dealDamageRoutine
-                = this.DealDamage(this.Card, ttc.CharacterCard, damageToDeal, DamageType.Psychic);
+
+            IEnumerable<Function> Functions(HeroTurnTakerController httc) => new Function[2]
+            {
+                new Function(httc, "Discard all but 1 card", SelectionType.DiscardCard,
+                    () => base.GameController.SelectCardsFromLocationAndMoveThem(httc, httc.HeroTurnTaker.Hand,
+                        httc.NumberOfCardsInHand - 1, httc.NumberOfCardsInHand - 1, 
+                        new LinqCardCriteria(card => card.Location == httc.HeroTurnTaker.Hand, "hand"),
+                        new[] { new MoveCardDestination(httc.TurnTaker.Trash) }, cardSource: base.GetCardSource())),
+
+                new Function(httc, $"Take {damageToDeal} psychic damage", SelectionType.DealDamage,
+                    () => this.DealDamage(this.Card, httc.CharacterCard, damageToDeal, DamageType.Psychic, cardSource: base.GetCardSource()))
+            };
+
+            IEnumerator coroutine = EachPlayerSelectsFunction(h =>
+                    !h.IsIncapacitatedOrOutOfGame, Functions, Game.H, null,
+                h => h.Name + " has no cards in their hand.");
 
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(dealDamageRoutine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(dealDamageRoutine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
         }
     }
