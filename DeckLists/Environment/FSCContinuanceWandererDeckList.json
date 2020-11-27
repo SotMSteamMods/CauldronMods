@@ -19,7 +19,7 @@
             ],
             "body": [
                 "Reduce damage dealt to environment targets by 2.",
-                "At the end of the environment turn, this card deals non-environment the target with the lowest HP (H)-2 projectile damage."
+                "At the end of the environment turn, this card deals non-environment the target with the lowest HP {H-2} projectile damage."
             ],
             "flavorText": "“Now that's my kind of possible future!” said Unity.{BR}Omnitron-X grabbed her wrist and{BR}began retreating. “Please Accompany me if you wish to survive.”",
             "hitpoints": 4
