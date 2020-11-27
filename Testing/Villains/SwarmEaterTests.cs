@@ -133,6 +133,44 @@ namespace CauldronTests
         public void TestMoveSingleMindedPursuit()
         {
             SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            AddCannotDealNextDamageTrigger(swarm, swarm.CharacterCard);
+            StartGame();
+
+            //Whenever a pursued hero deals damage to a target other than {SwarmEater}, you may move Single-Minded Pursuit next to that target.
+            DecisionYesNo = true;
+            AssertNextToCard(pursuit, unity.CharacterCard);
+            DealDamage(unity, stalker, 2, DamageType.Melee);
+            AssertNextToCard(pursuit, stalker);
+        }
+
+        [Test()]
+        public void TestVillainCantMoveSingleMindedPursuit()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire });
+            AddCannotDealNextDamageTrigger(swarm, swarm.CharacterCard);
+            StartGame();
+
+            //Whenever a pursued hero deals damage to a target other than {SwarmEater}, you may move Single-Minded Pursuit next to that target.
+            //Only Hero Character Cards can move it
+            DecisionYesNo = true;
+            AssertNextToCard(pursuit, fire);
+            DealDamage(fire, stalker, 2, DamageType.Melee);
+            AssertNextToCard(pursuit, fire);
+        }
+
+        [Test()]
+        public void TestNonCharacterCardHeroCantMoveSingleMindedPursuit()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
             Card stalker = GetCard("StalkerAug");
             Card fire = GetCard("FireAug");
             PutOnDeck(swarm, new Card[] { stalker, fire });
@@ -140,7 +178,67 @@ namespace CauldronTests
             Card swift = PlayCard("SwiftBot");
             StartGame();
 
-            AssertNextToCard(GetCard("SingleMindedPursuit"), swift);
+            //Whenever a pursued hero deals damage to a target other than {SwarmEater}, you may move Single-Minded Pursuit next to that target.
+            //Only Hero Character Cards can move it
+            DecisionYesNo = true;
+            AssertNextToCard(pursuit, swift);
+            DealDamage(swift, stalker, 2, DamageType.Melee);
+            AssertNextToCard(pursuit, swift);
+        }
+
+        [Test()]
+        public void TestEnvironmentCantMoveSingleMindedPursuit()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            AddCannotDealNextDamageTrigger(swarm, swarm.CharacterCard);
+            Card mono = PlayCard("PlummetingMonorail");
+            StartGame();
+
+            //Whenever a pursued hero deals damage to a target other than {SwarmEater}, you may move Single-Minded Pursuit next to that target.
+            //Only Hero Character Cards can move it
+            DecisionYesNo = true;
+            AssertNextToCard(pursuit, mono);
+            DealDamage(mono, stalker, 2, DamageType.Melee);
+            AssertNextToCard(pursuit, mono);
+        }
+
+        [Test()]
+        public void TestCantMoveToSwarmEaterSingleMindedPursuit()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            AddCannotDealNextDamageTrigger(swarm, swarm.CharacterCard);
+            StartGame();
+
+            //Whenever a pursued hero deals damage to a target other than {SwarmEater}, you may move Single-Minded Pursuit next to that target.
+            //Can't move next to Swarm Eater
+            DecisionYesNo = true;
+            AssertNextToCard(pursuit, unity.CharacterCard);
+            DealDamage(unity, swarm, 2, DamageType.Melee);
+            AssertNextToCard(pursuit, unity.CharacterCard);
+        }
+
+        [Test()]
+        public void TestAdvancedSwarmEaterFront()
+        {
+            SetupGameController(new string[] { "Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis" }, true);
+            StartGame();
+            Card mono = PlayCard("PlummetingMonorail");
+
+            QuickHPStorage(mono, legacy.CharacterCard, swarm.CharacterCard);
+            DealDamage(swarm, mono, 2, DamageType.Melee);
+            DealDamage(swarm, legacy, 2, DamageType.Melee);
+            DealDamage(swarm, swarm, 2, DamageType.Melee);
+            //Advanced: Increase damage dealt by {SwarmEater} to environment targets by 1.
+            //Single-Minded Pursuit +2 damage dealt by Swarm Eater
+            QuickHPCheck(-5, -4, -4);
         }
     }
 }
