@@ -39,7 +39,7 @@ namespace Cauldron.SwarmEater
         private IEnumerator GainHPResponse(PhaseChangeAction action)
         {
             //...{SwarmEater} regains X times 2 HP, where X is the number of cards beneath this one.
-            IEnumerator coroutine = base.GameController.GainHP(base.CharacterCard, NumberOfCardsBeneathThis(), () => NumberOfCardsBeneathThis(), cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.GainHP(base.CharacterCard, NumberOfCardsBeneathThis() * 2, () => NumberOfCardsBeneathThis() * 2, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

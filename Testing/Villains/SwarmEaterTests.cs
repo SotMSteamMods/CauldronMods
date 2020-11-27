@@ -229,6 +229,9 @@ namespace CauldronTests
         public void TestAdvancedSwarmEaterFront()
         {
             SetupGameController(new string[] { "Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis" }, true);
+            Card fire = GetCard("FireAug");
+            Card stalker = GetCard("StalkerAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire });
             StartGame();
             Card mono = PlayCard("PlummetingMonorail");
 
@@ -239,6 +242,184 @@ namespace CauldronTests
             //Advanced: Increase damage dealt by {SwarmEater} to environment targets by 1.
             //Single-Minded Pursuit +2 damage dealt by Swarm Eater
             QuickHPCheck(-5, -4, -4);
+        }
+
+        [Test()]
+        public void TestSwarmEaterBackStartOfTurn()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Ra", "Megalopolis");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire });
+            StartGame();
+
+            //If Single-Minded Pursuit leaves play, flip {SwarmEater}'s villain character cards.
+            DestroyCard("SingleMindedPursuit");
+
+            //At the start of the villain turn, {SwarmEater} deals the target other than itself with the lowest HP 2 melee damage.
+            QuickHPStorage(fire);
+            GoToStartOfTurn(swarm);
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestSwarmEaterBackFlip()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Ra", "Megalopolis");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire });
+            StartGame();
+
+            //If Single-Minded Pursuit leaves play, flip {SwarmEater}'s villain character cards.
+            DestroyCard("SingleMindedPursuit");
+            Assert.IsTrue(swarm.CharacterCard.IsFlipped);
+
+            //Whenever Single-Minded Pursuit enters play, flip {SwarmEater}'s villain character cards.
+            PlayCard("SingleMindedPursuit");
+            Assert.IsTrue(!swarm.CharacterCard.IsFlipped);
+        }
+
+        [Test()]
+        public void TestSwarmEaterBackVillainCardResponse()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Ra", "Megalopolis");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire });
+            StartGame();
+
+            //If Single-Minded Pursuit leaves play, flip {SwarmEater}'s villain character cards.
+            DestroyCard("SingleMindedPursuit");
+            Assert.IsTrue(swarm.CharacterCard.IsFlipped);
+
+            //Whenever a villain card is played {SwarmEater} deals the non-hero target other than itself with the lowest HP 3 melee damage.
+            QuickHPStorage(fire);
+            PlayCard("BehindYou");
+            QuickHPCheck(-3);
+        }
+
+        [Test()]
+        public void TestSwarmEaterBackAdvancedResponse()
+        {
+            SetupGameController(new string[] { "Cauldron.SwarmEater", "Legacy", "Haka", "Ra", "Megalopolis" }, true);
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire });
+            StartGame();
+
+            //If Single-Minded Pursuit leaves play, flip {SwarmEater}'s villain character cards.
+            DestroyCard("SingleMindedPursuit");
+            Assert.IsTrue(swarm.CharacterCard.IsFlipped);
+
+            Card speed = GetCard("SpeedAug");
+            PutOnDeck(swarm, speed);
+            //Advanced: Whenever {SwarmEater} destroys a villain target, play the top card of the villain deck.
+            DealDamage(swarm, fire, 75, DamageType.Melee);
+            AssertIsInPlay(speed);
+        }
+
+        [Test()]
+        public void TestSwarmEaterBackAdvancedOnlyRespondOnVillainTarget()
+        {
+            SetupGameController(new string[] { "Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis" }, true);
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire });
+            StartGame();
+
+            //If Single-Minded Pursuit leaves play, flip {SwarmEater}'s villain character cards.
+            DestroyCard("SingleMindedPursuit");
+            Assert.IsTrue(swarm.CharacterCard.IsFlipped);
+
+            Card speed = GetCard("SpeedAug");
+            PutOnDeck(swarm, speed);
+
+            Card swift = PlayCard("SwiftBot");
+            Card mono = PlayCard("PlummetingMonorail");
+            //Advanced: Whenever {SwarmEater} destroys a villain target, play the top card of the villain deck.
+            DealDamage(swarm, swift, 75, DamageType.Melee);
+            DealDamage(swarm, mono, 75, DamageType.Melee);
+            AssertInDeck(speed);
+        }
+
+        [Test()]
+        public void TestBehindYou()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire });
+            StartGame();
+
+            Card behind = PlayCard("BehindYou");
+            Card swift = GetCard("SwiftBot");
+            //Whenever a target enters play, {SwarmEater} deals that target 1 melee damage.
+            QuickHPStorage(swift);
+            PlayCard(swift);
+            //Single-Minded Pursuit +2 damage dealt by Swarm Eater
+            QuickHPCheck(-3);
+
+            Card speed = GetCard("SpeedAug");
+            PutOnDeck(swarm, speed);
+            //When this card is destroyed, play the top card of the villain deck.
+            DestroyCard(behind);
+            AssertIsInPlay(speed);
+        }
+
+        [Test()]
+        public void TestBladeAug()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+            DestroyCards(new Card[] { stalker, fire });
+            PlayCard("BladeAug");
+
+            //At the end of the villain turn, this card deals the hero target with the highest HP 2 lightning damage.
+            QuickHPStorage(haka);
+            GoToEndOfTurn(swarm);
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestConvertedBiomass()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+
+            SetHitPoints(swarm, 20);
+            //At the end of the villain turn, {SwarmEater} regains X times 2 HP, where X is the number of cards beneath this one.
+            QuickHPStorage(swarm);
+            GoToEndOfTurn(swarm);
+            QuickHPCheck(0);
+
+            Card bio = GetCard("ConvertedBiomass");
+            //This card and cards beneath it are indestructible.
+            DestroyCard(bio);
+            AssertIsInPlay(bio);
+
+            Card mono = PlayCard("PlummetingMonorail");
+            //Whenever {SwarmEater} destroys an environment target, put it beneath this card. Cards beneath this one have no game text.
+            DealDamage(swarm, mono, 75, DamageType.Melee);
+            AssertUnderCard(bio, mono);
+            AssertNoGameText(mono);
+
+            //This card and cards beneath it are indestructible.
+            DestroyCard(mono);
+            AssertUnderCard(bio, mono);
+
+            //At the end of the villain turn, {SwarmEater} regains X times 2 HP, where X is the number of cards beneath this one.
+            QuickHPStorage(swarm);
+            GoToEndOfTurn(swarm);
+            QuickHPCheck(2);
         }
     }
 }
