@@ -365,7 +365,7 @@
             "flavorReference": "The Archive #1"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "TitanCharacter",
             "promoIdentifier": "MinistryOfStrategicScienceTitanCharacter",

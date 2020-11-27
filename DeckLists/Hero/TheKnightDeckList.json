@@ -354,7 +354,7 @@
 			"flavorReference": "The Knight, The Wanderer's Ballad #3"
 		}
 	],
-	"promoCards": [{
+	"notPromoCards": [{
 			"identifier": "TheKnightCharacter",
 			"promoIdentifier": "FairTheKnightCharacter",
 			"count": 1,

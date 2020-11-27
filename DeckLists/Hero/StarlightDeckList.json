@@ -447,7 +447,7 @@
             "flavorReference": "Chrono-Ranger, The Dark Millenia #11"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "StarlightCharacter",
             "promoIdentifier": "GenesisStarlightCharacter",

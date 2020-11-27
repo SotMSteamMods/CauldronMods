@@ -394,7 +394,7 @@
             "flavorReference": "Cpt. Reager, Quicksilver #1"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "QuicksilverCharacter",
             "promoIdentifier": "UncannyQuicksilverCharacter",

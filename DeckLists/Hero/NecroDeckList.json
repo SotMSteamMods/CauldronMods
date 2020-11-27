@@ -383,7 +383,7 @@
             "hitpointText": "#"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "NecroCharacter",
             "promoIdentifier": "WardenOfChaosNecroCharacter",

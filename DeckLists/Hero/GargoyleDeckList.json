@@ -407,7 +407,7 @@
             "flavorReference": "Gargoyle, Windmill City #86"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "GargoyleCharacter",
             "promoIdentifier": "WastelandRoninGargoyle",
