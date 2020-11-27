@@ -6,16 +6,17 @@ using System.Linq;
 
 namespace Cauldron.MagnificentMara
 {
-    public class AbracadabraCardController : CardController
+    public class MisdirectionCardController : CardController
     {
-        public AbracadabraCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public MisdirectionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
 
-        public override void AddTriggers()
+        public override IEnumerator Play()
         {
-            //"When a non-character card belonging to another hero is destroyed, you may return it to that player's hand. If you do, destroy this card.",
-            //"When this card is destroyed, one player may play a card."
+            //"{MagnificentMara} deals 1 target 1 sonic damage.",
+            //"One other hero target deals that same target 2 damage of a type of their choosing."
+            yield break;
         }
     }
 }
