@@ -32,7 +32,7 @@
             ],
             "advanced": "Increase damage dealt by {SwarmEater} to environment targets by 1.",
             "icons": [
-                "StartOfTurnAction".
+                "StartOfTurnAction",
                 "DealDamagePsychic",
                 "Manipulate"
             ],

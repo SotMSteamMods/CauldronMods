@@ -23,36 +23,25 @@ namespace Cauldron.SwarmEater
             int pursuitCount = 1;
             while (targetCount + traitCount + pursuitCount != 0)
             {
-                Func<Card, bool> revealCriteria = null;
                 //{H - 1} targets,
+                Func<Card, bool> targetCriteria = (Card c) => false;
                 if (targetCount != 0)
                 {
-                    revealCriteria = (Card c) => c.IsTarget;
+                    targetCriteria = (Card c) => c.IsTarget;
                 }
                 //2 traits, 
+                Func<Card, bool> traitCriteria = (Card c) => false;
                 if (traitCount != 0)
                 {
-                    if (revealCriteria == null)
-                    {
-                        revealCriteria = (Card c) => c.DoKeywordsContain("trait");
-                    }
-                    else
-                    {
-                        revealCriteria = (Card c) => c.DoKeywordsContain("trait") || revealCriteria(c);
-                    }
+                    traitCriteria = (Card c) => c.DoKeywordsContain("trait");
                 }
                 //and Single-Minded Pursuit are revealed. 
+                Func<Card, bool> pursuitCriteria = (Card c) => false;
                 if (pursuitCount != 0)
                 {
-                    if (revealCriteria == null)
-                    {
-                        revealCriteria = (Card c) => c.Identifier == "SingleMindedPursuit";
-                    }
-                    else
-                    {
-                        revealCriteria = (Card c) => c.Identifier == "SingleMindedPursuit" || revealCriteria(c);
-                    }
+                    pursuitCriteria = (Card c) => c.Identifier == "SingleMindedPursuit";
                 }
+                Func<Card, bool> revealCriteria = (Card c) => c != null && (targetCriteria(c) || traitCriteria(c) || pursuitCriteria(c));
                 List<Card> playedCard = new List<Card>();
                 //Put them into play, and shuffle the rest of the revealed cards back into the villain deck.
                 IEnumerator coroutine = base.CharacterCardController.RevealCards_MoveMatching_ReturnNonMatchingCards(this, base.TurnTaker.Deck, false, true, false, new LinqCardCriteria(revealCriteria), 1, storedPlayResults: playedCard, shuffleSourceAfterwards: false);
