@@ -45,7 +45,7 @@ namespace Cauldron.BlackwoodForest
                         new[] { new MoveCardDestination(httc.TurnTaker.Trash) }, cardSource: base.GetCardSource())),
 
                 new Function(httc, $"Take {damageToDeal} psychic damage", SelectionType.DealDamage,
-                    () => this.DealDamage(this.Card, httc.CharacterCard, damageToDeal, DamageType.Psychic, cardSource: base.GetCardSource()))
+                    () => this.DealDamage(this.Card, (Card c) => httc.CharacterCards.Contains(c) && c.IsTarget, damageToDeal, DamageType.Psychic, cardSource: base.GetCardSource()))
             };
 
             IEnumerator coroutine = EachPlayerSelectsFunction(h =>
