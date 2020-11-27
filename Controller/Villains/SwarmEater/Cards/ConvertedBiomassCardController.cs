@@ -24,7 +24,7 @@ namespace Cauldron.SwarmEater
         public override void AddTriggers()
         {
             //Whenever {SwarmEater} destroys an environment target, put it beneath this card. Cards beneath this one have no game text.
-            base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => action.CardToDestroy.Card.IsVillain && action.ResponsibleCard == base.CharacterCard, this.DestroyEnvironmentResponse, TriggerType.MoveCard, TriggerTiming.After);
+            base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => action.CardToDestroy.Card.IsEnvironmentTarget && action.ResponsibleCard == base.CharacterCard, this.DestroyEnvironmentResponse, TriggerType.MoveCard, TriggerTiming.After);
             //At the end of the villain turn, {SwarmEater} regains X times 2 HP, where X is the number of cards beneath this one.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.GainHPResponse, new TriggerType[] { TriggerType.GainHP });
         }
