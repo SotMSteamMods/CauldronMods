@@ -7,7 +7,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class StSimeonsCatacombsInstructionsCardController : CharacterCardController
+    public class StSimeonsCatacombsInstructionsCardController : VillainCharacterCardController
     {
         public static readonly string Identifier = "StSimeonsCatacombsInstructions";
 

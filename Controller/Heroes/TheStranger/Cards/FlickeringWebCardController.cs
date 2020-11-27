@@ -11,7 +11,7 @@ namespace Cauldron.TheStranger
 
         public FlickeringWebCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(HeroTurnTaker.Hand, new LinqCardCriteria(c => IsRune(c), "rune", false, false, null, "runes"));
         }
 
         #endregion Constructors

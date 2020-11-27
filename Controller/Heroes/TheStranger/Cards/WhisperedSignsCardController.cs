@@ -12,7 +12,7 @@ namespace Cauldron.TheStranger
 
         public WhisperedSignsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(c => IsRune(c), "rune", false, false, null, "runes"));
         }
 
         #endregion Constructors

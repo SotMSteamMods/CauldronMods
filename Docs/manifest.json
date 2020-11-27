@@ -15,17 +15,21 @@
 			"Starlight",
 			"TangoOne",
 			"TheKnight",
-			"TheStranger"
+			"TheStranger",
+			"Vanish"
 		],
 		"villains": [
 			"Anathema",
 			"Dendron",
 			"Gray",
+			"TheRam",
 			"Tiamat"
 		],
 		"environments": [
 			"BlackwoodForest",
+			"FSCContinuanceWanderer",
 			"HalberdExperimentalResearchCenter",
+			"Northspar",
 			"StSimeonsCatacombs",
 			"TheWanderingIsle"
 		]

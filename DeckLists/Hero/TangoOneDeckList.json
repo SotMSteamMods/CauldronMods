@@ -10,9 +10,9 @@
             "count": 1,
             "title": "Tango One",
             "body": "Snipe",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "656f7b",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "656f7b",
             "character": true,
             "powers": [
                 "{TangoOne} deals 1 target 1 projectile damage."
@@ -379,9 +379,9 @@
             "promoTitle": "Ghost Ops Tango One",
             "shortPromoTitle": "Ghost Tango One",
             "body": "Ghost Ops",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "409FD7",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "409FD7",
             "character": true,
             "powers": [
                 "Draw 2 cards. Then put 2 cards from your hand on top of your deck."
@@ -421,9 +421,9 @@
             "promoTitle": "Tango One 1929",
             "shortPromoTitle": "Tango One 1929",
             "body": "Lead the Target",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "C2B59B",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "C2B59B",
             "character": true,
             "powers": [
                 "Select a target, at the start of your next turn, {TangoOne} deals that target 3 projectile damage."

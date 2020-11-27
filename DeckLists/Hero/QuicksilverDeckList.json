@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Quicksilver",
             "body": "Reshape",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "915e5b",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "915e5b",
             "character": true,
             "powers": [
                 "Discard a card. If you do, draw 2 cards."
@@ -403,9 +403,9 @@
             "promoTitle": "Uncanny Quicksilver",
             "shortPromoTitle": "Uncanny Quicksilver",
             "body": "Razor's Edge",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "DD7D67",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "DD7D67",
             "character": true,
             "powers": [
                 "{Quicksilver} deals 1 target 2 melee damage."
@@ -443,9 +443,9 @@
             "promoTitle": "Renegade Quicksilver",
             "shortPromoTitle": "Renegade Quicksilver",
             "body": "Revenge",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "8FCADB",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "8FCADB",
             "character": true,
             "powers": [
                 "Discard a card. Search your deck for Iron Retort and put it into your hand. Shuffle your deck."

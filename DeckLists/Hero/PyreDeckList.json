@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Pyre",
             "body": "Exponential Decay",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "bdbebf",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "bdbebf",
             "character": true,
             "powers": [
                 "1 player draws a card. {PyreIrradiate} that card until it leaves their hand. Shuffle a cascade card from your trash into your deck."
@@ -387,9 +387,9 @@
             "promoTitle": "Unstable Pyre",
             "shortPromoTitle": "Unstable Pyre",
             "body": "Impermenant Solution",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "CDDFB4",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "CDDFB4",
             "character": true,
             "powers": [
                 "{PyreIrradiate} 1 non-{PyreIrradiate} card in a player's hand until it leaves their hand. Play an equipment card. Shuffle a cascade card from your trash into your deck."
@@ -429,9 +429,9 @@
             "promoTitle": "Wasteland Ronin Pyre",
             "shortPromoTitle": "Wasteland Pyre",
             "body": "Stabilized Reaction",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "D4E6B5",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "D4E6B5",
             "character": true,
             "powers": [
                 "The next time {Pyre} would deal damage to a hero target, you may redirect it to another target. Draw 2 cards. Discard a card."

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -18,7 +17,8 @@ namespace Cauldron.BlackwoodForest
 
         public DenseBramblesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            this.SpecialStringMaker.ShowLowestHP(1, () => Game.H - 1,
+                new LinqCardCriteria(c => c.IsTarget && c.IsInPlay));
         }
 
         public bool? PerformImmune;

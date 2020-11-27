@@ -257,6 +257,32 @@ namespace CauldronTests
             AssertNotInPlay(topCard);
         }
 
+        [Test()]
+        public void TestAmphibiousAssault_SelectedSourceDestroyed()
+        {
+            //Issue #198 - villain source removed mid execution
+            SetupGameController("Ambuscade", "Stuntman", "Cauldron.TheStranger", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //return all devices in play back into the deck
+            MoveCards(ambuscade, (Card c) => !c.IsCharacter && c.IsInPlayAndHasGameText, ambuscade.TurnTaker.Deck);
+
+            //Prep heroes
+            Card mine = PlayCard("SonicMine");
+            Card hand = PlayCard("CustomHandCannon");
+            SetHitPoints(hand, 2);
+            PlayCard("MovingTarget");
+            DecisionSelectCards = new Card[] { stunt.CharacterCard, mine, stunt.CharacterCard, haka.CharacterCard,hand, haka.CharacterCard };
+            PlayCard("MarkOfTheFaded");
+
+            PlayCard("AmphibiousAssault");
+            Assert.IsTrue(this.GameController.Game.Journal.GetLastEventInJournal().CardSource == null, hand.Title + " tried to initiate damage even though its out of play");
+
+
+
+           
+        }
+
 
         [Test()]
         public void TestAncientParasiteHeroDamageMoveCard()

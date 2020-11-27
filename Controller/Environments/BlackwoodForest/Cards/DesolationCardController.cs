@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-
+using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -10,7 +9,6 @@ namespace Cauldron.BlackwoodForest
 {
     public class DesolationCardController : CardController
     {
-
         //==============================================================
         // When this card enters play, each hero must discard all but 1 card,
         // or this card deals that hero {H + 1} psychic damage.
@@ -22,7 +20,6 @@ namespace Cauldron.BlackwoodForest
         public DesolationCardController(Card card, TurnTakerController turnTakerController) : base(card,
             turnTakerController)
         {
-
         }
 
         public override void AddTriggers()
@@ -37,70 +34,31 @@ namespace Cauldron.BlackwoodForest
 
         public override IEnumerator Play()
         {
-            IEnumerator choiceRoutine = base.DoActionToEachTurnTakerInTurnOrder(
-                ttc => ttc.IsHero && !ttc.IsIncapacitatedOrOutOfGame,
-                ChoiceResponse);
+            int damageToDeal = Game.H + 1;
+
+            IEnumerable<Function> Functions(HeroTurnTakerController httc) => new Function[2]
+            {
+                new Function(httc, "Discard all but 1 card", SelectionType.DiscardCard,
+                    () => base.GameController.SelectCardsFromLocationAndMoveThem(httc, httc.HeroTurnTaker.Hand,
+                        httc.NumberOfCardsInHand - 1, httc.NumberOfCardsInHand - 1, 
+                        new LinqCardCriteria(card => card.Location == httc.HeroTurnTaker.Hand, "hand"),
+                        new[] { new MoveCardDestination(httc.TurnTaker.Trash) }, cardSource: base.GetCardSource())),
+
+                new Function(httc, $"Take {damageToDeal} psychic damage", SelectionType.DealDamage,
+                    () => this.DealDamage(this.Card, (Card c) => httc.CharacterCards.Contains(c) && c.IsTarget, damageToDeal, DamageType.Psychic))
+            };
+
+            IEnumerator coroutine = EachPlayerSelectsFunction(h =>
+                    !h.IsIncapacitatedOrOutOfGame, Functions, Game.H, null,
+                h => h.Name + " has no cards in their hand.");
 
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(choiceRoutine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(choiceRoutine);
-            }
-        }
-
-        private IEnumerator ChoiceResponse(TurnTakerController ttc)
-        {
-            List<YesNoCardDecision> yesNoResults = new List<YesNoCardDecision>();
-            IEnumerator yesNoRoutine = base.GameController.MakeYesNoCardDecision(ttc.ToHero(),
-                SelectionType.DiscardCard, base.Card, storedResults: yesNoResults, cardSource: base.GetCardSource());
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(yesNoRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(yesNoRoutine);
-            }
-
-            if (DidPlayerAnswerYes(yesNoResults))
-            {
-                // Discard all cards in hand except 1
-                while (ttc.ToHero().NumberOfCardsInHand > 1)
-                {
-                    IEnumerator discardCard 
-                        = this.GameController.SelectAndDiscardCard(ttc.ToHero(), responsibleTurnTaker: ttc.TurnTaker);
-
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(discardCard);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(discardCard);
-                    }
-                }
-            }
-            else
-            {
-                // Opted not to discard, deal damage to hero
-
-                int damageToDeal = Game.H + 1;
-
-                IEnumerator dealDamageRoutine 
-                    = this.DealDamage(this.Card, ttc.CharacterCard, damageToDeal, DamageType.Psychic);
-
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(dealDamageRoutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(dealDamageRoutine);
-                }
+                base.GameController.ExhaustCoroutine(coroutine);
             }
         }
     }
