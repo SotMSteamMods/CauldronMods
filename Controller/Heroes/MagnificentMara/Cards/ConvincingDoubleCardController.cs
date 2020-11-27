@@ -119,6 +119,9 @@ namespace Cauldron.MagnificentMara
             AddThisCardControllerToList(CardControllerListType.ReplacesTurnTakerController);
             ITrigger associatedCardSourceTrigger = AddTrigger((GameAction ga) => ga.CardSource != null && ga.CardSource.Card == _passedCard, AddThisAsAssociatedCardSource, TriggerType.Hidden, TriggerTiming.Before);
 
+            CardController passedController = FindCardController(_passedCard);
+            passedController.AddAssociatedCardSource(GetCardSource());
+
             //"who then puts that card into play as if it were their card, treating any hero name on the card as the name of their hero instead."
             IEnumerator swappedPlay = GameController.PlayCard(_receiverController, passedCard, true, cardSource: GetCardSource());
 
@@ -134,6 +137,7 @@ namespace Cauldron.MagnificentMara
             RemoveThisCardControllerFromList(CardControllerListType.ReplacesCards);
             RemoveThisCardControllerFromList(CardControllerListType.ReplacesTurnTakerController);
             RemoveTrigger(associatedCardSourceTrigger);
+            passedController.RemoveAssociatedCardSource(GetCardSource());
 
             _passedCard = null;
             _giverController = null;
@@ -156,7 +160,7 @@ namespace Cauldron.MagnificentMara
                         Card cardWithoutReplacements = cardSource.CardController.CardWithoutReplacements;
                         IEnumerable<CardController> sources = cardSource.CardSourceChain.Select((CardSource cs) => cs.CardController);
 
-                        if (sources.Contains(FindCardController(_passedCard)) && _passedCard == cardSource.Card && _giverController.CharacterCards.Contains(card)) // && sources.Contains(this)
+                        if (sources.Contains(FindCardController(_passedCard)) && sources.Contains(this) && _passedCard == cardSource.Card && _giverController.CharacterCards.Contains(card)) // && sources.Contains(this)
                         {
                             return _receiverCharacterCard;
                         }
@@ -184,7 +188,7 @@ namespace Cauldron.MagnificentMara
                             //Log.Debug($"sources contains passed card: {sources.Contains(FindCardController(_passedCard))}");
                             //Log.Debug($"sources contains Convincing Double: {sources.Contains(this)}");
                             //Log.Debug($"CardSource card is passed card: {_passedCard == cardSource.Card}");
-                            if (sources.Contains(FindCardController(_passedCard)) && _passedCard == cardSource.Card) //&& sources.Contains(this) && _giverController.CharacterCards.Contains(card))
+                            if (sources.Contains(FindCardController(_passedCard)) && sources.Contains(this) && _passedCard == cardSource.Card) //&& sources.Contains(this) && _giverController.CharacterCards.Contains(card))
                             {
                                 //Log.Debug($"Returning {_receiverCharacterCard.Title}");
                                 return _receiverCharacterCard;
