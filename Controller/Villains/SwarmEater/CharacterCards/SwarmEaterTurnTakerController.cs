@@ -21,6 +21,7 @@ namespace Cauldron.SwarmEater
             int traitCount = 2;
             //and Single-Minded Pursuit are revealed. 
             int pursuitCount = 1;
+            IEnumerator coroutine = null;
             while (targetCount + traitCount + pursuitCount != 0)
             {
                 //{H - 1} targets,
@@ -44,7 +45,7 @@ namespace Cauldron.SwarmEater
                 Func<Card, bool> revealCriteria = (Card c) => c != null && (targetCriteria(c) || traitCriteria(c) || pursuitCriteria(c));
                 List<Card> playedCard = new List<Card>();
                 //Put them into play, and shuffle the rest of the revealed cards back into the villain deck.
-                IEnumerator coroutine = base.CharacterCardController.RevealCards_MoveMatching_ReturnNonMatchingCards(this, base.TurnTaker.Deck, false, true, false, new LinqCardCriteria(revealCriteria), 1, storedPlayResults: playedCard, shuffleSourceAfterwards: false);
+                coroutine = base.CharacterCardController.RevealCards_MoveMatching_ReturnNonMatchingCards(this, base.TurnTaker.Deck, false, true, false, new LinqCardCriteria(revealCriteria), 1, storedPlayResults: playedCard, shuffleSourceAfterwards: false);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -69,6 +70,15 @@ namespace Cauldron.SwarmEater
                         pursuitCount--;
                     }
                 }
+            }
+            coroutine = base.GameController.ShuffleLocation(base.TurnTaker.Deck);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
         }
