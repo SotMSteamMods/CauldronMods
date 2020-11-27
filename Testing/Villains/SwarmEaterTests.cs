@@ -395,19 +395,20 @@ namespace CauldronTests
             PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
             StartGame();
 
+            Card bio = GetCard("ConvertedBiomass");
             SetHitPoints(swarm, 20);
+
             //At the end of the villain turn, {SwarmEater} regains X times 2 HP, where X is the number of cards beneath this one.
             QuickHPStorage(swarm);
             GoToEndOfTurn(swarm);
             QuickHPCheck(0);
 
-            Card bio = GetCard("ConvertedBiomass");
             //This card and cards beneath it are indestructible.
             DestroyCard(bio);
             AssertIsInPlay(bio);
 
-            Card mono = PlayCard("PlummetingMonorail");
             //Whenever {SwarmEater} destroys an environment target, put it beneath this card. Cards beneath this one have no game text.
+            Card mono = PlayCard("PlummetingMonorail");
             DealDamage(swarm, mono, 75, DamageType.Melee);
             AssertUnderCard(bio, mono);
             AssertNoGameText(mono);
@@ -420,6 +421,64 @@ namespace CauldronTests
             QuickHPStorage(swarm);
             GoToEndOfTurn(swarm);
             QuickHPCheck(2);
+        }
+
+        [Test()]
+        public void TestFireAug()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+            DestroyCards(new Card[] { stalker });
+
+            //At the end of the villain turn this card deals the hero target with the second highest HP {H - 1} fire damage and each player must discard a card.
+            QuickHPStorage(legacy);
+            QuickHandStorage(legacy, haka, unity);
+            GoToEndOfTurn(swarm);
+            QuickHPCheck(-2);
+            QuickHandCheck(-1, -1, -1);
+        }
+
+        [Test()]
+        public void TestFollowTheScreams()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+
+            Card adj = PlayCard("CelestialAdjudicator");
+            Card turret = PlayCard("TurretBot");
+
+            //{SwarmEater} deals the {H} non-character targets with the lowest HP 4 irreducible projectile damage each.
+            //{SwarmEater} deals the hero target with the highest HP {H} melee damage.
+            QuickHPStorage(stalker, fire, adj, turret, haka.CharacterCard);
+            PlayCard("FollowTheScreams");
+            //Single-Minded Pursuit +2 damage dealt by Swarm Eater
+            QuickHPCheck(0, -6, -6, -6, -5);
+        }
+
+        [Test()]
+        public void TestFollowTheScreamsFirstDamageNotCharacterCards()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+
+            //{SwarmEater} deals the {H} non-character targets with the lowest HP 4 irreducible projectile damage each.
+            //{SwarmEater} deals the hero target with the highest HP {H} melee damage.
+            QuickHPStorage(stalker, fire, unity.CharacterCard, haka.CharacterCard);
+            PlayCard("FollowTheScreams");
+            //Single-Minded Pursuit +2 damage dealt by Swarm Eater
+            QuickHPCheck(-6, -6, 0, -5);
         }
     }
 }
