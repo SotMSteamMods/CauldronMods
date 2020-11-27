@@ -667,6 +667,9 @@ namespace CauldronTests
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
 
+            //end of the last environment turn
+            GoToEndOfTurn(env);
+
             GoToPlayCardPhase(ra);
             //ra deals damage to teryx to cause hp gain and to be immune to islandquake damage
             DealDamage(ra.CharacterCard, teryx, 5, DamageType.Fire);
@@ -693,6 +696,9 @@ namespace CauldronTests
 
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
+
+            //end of the last environment turn
+            GoToEndOfTurn(env);
 
             GoToPlayCardPhase(ra);
             //ra deals damage to teryx to cause hp gain and to be immune to islandquake damage
@@ -729,6 +735,9 @@ namespace CauldronTests
 
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
+
+            //end of the last environment turn
+            GoToEndOfTurn(env);
 
             var card = PutIntoPlay("Islandquake");
             AssertInPlayArea(isle, card);
@@ -783,6 +792,9 @@ namespace CauldronTests
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
 
+            //end of the last environment turn
+            GoToEndOfTurn(env);
+
             //mainstay has preemptive payback in play
             PutIntoPlay("PreemptivePayback");
 
@@ -827,6 +839,9 @@ namespace CauldronTests
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
 
+            //end of the last environment turn
+            GoToEndOfTurn(env);
+
             GoToPlayCardPhase(voidMedico);
             Card donor = PutIntoPlay("UniversalDonor");
             GoToUsePowerPhase(voidMedico);
@@ -860,6 +875,9 @@ namespace CauldronTests
 
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
+
+            //end of the last environment turn
+            GoToEndOfTurn(env);
 
             GoToPlayCardPhase(sentinels);
             Card oath = PutIntoPlay("HippocraticOath");

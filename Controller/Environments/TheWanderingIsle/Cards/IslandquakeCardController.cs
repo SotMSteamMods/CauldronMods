@@ -56,6 +56,7 @@ namespace Cauldron.TheWanderingIsle
         {
             return card.IsHero && card.IsTarget &&
                 base.GameController.Game.Journal.GainHPEntries()
+                .Where(Journal.SinceLastTurn<GainHPJournalEntry>(base.TurnTaker))
                         .Any(e => e.Round == this.Game.Round && e.TargetCard.Identifier == TeryxIdentifier && IsGainHPCausedByHeroTarget(e, card));
         }
 
