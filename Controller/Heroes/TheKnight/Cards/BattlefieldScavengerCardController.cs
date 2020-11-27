@@ -11,6 +11,13 @@ namespace Cauldron.TheKnight
     {
         public BattlefieldScavengerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            var query = GameController.HeroTurnTakerControllers.Where(httc => httc.TurnTaker.Trash.Cards.Any(c => IsEquipment(c) || c.IsOngoing))
+                                                               .Select(httc => httc.TurnTaker.Trash);
+            var ss = SpecialStringMaker.ShowNumberOfCardsAtLocations(() => query, new LinqCardCriteria(c => IsEquipment(c) || c.IsOngoing, "equipment or ongoing"));
+            ss.Condition = () => GameController.HeroTurnTakerControllers.Any(httc => httc.TurnTaker.Trash.Cards.Any(c => IsEquipment(c) || c.IsOngoing));
+
+            ss = SpecialStringMaker.ShowSpecialString(() => "No hero has has any equipment or ongoing cards in their trash.");
+            ss.Condition = () => GameController.HeroTurnTakerControllers.All(httc => !httc.TurnTaker.Trash.Cards.Any(c => IsEquipment(c) || c.IsOngoing));
         }
 
         public override IEnumerator Play()
@@ -34,7 +41,7 @@ namespace Cauldron.TheKnight
             var drawACard = new Function(httc, "Draw a card", SelectionType.DrawCard, () => this.DrawCard(httc.HeroTurnTaker), CanDrawCards(httc));
 
             var criteria = new LinqCardCriteria(c => IsEquipment(c) || c.IsOngoing, "equipment or ongoing");
-            var coroutine = this.GameController.SelectCardFromLocationAndMoveIt(httc, httc.HeroTurnTaker.Trash, criteria, new[] { new MoveCardDestination(httc.HeroTurnTaker.Deck) }, cardSource: this.GetCardSource());
+            var coroutine = this.GameController.SelectCardFromLocationAndMoveIt(httc, httc.HeroTurnTaker.Trash, criteria, new[] { new MoveCardDestination(httc.HeroTurnTaker.Deck) }, showOutput: true, cardSource: this.GetCardSource());
             var pullFromTrash = new Function(httc, "Select an Equipment or Ongoing from the trash to put on top of your deck", SelectionType.MoveCardOnDeck, () => coroutine, httc.HeroTurnTaker.Trash.HasCards);
 
             return new Function[]

@@ -12,7 +12,8 @@ namespace Cauldron.TheStranger
 
         public TheOldRoadsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(c => IsGlyph(c), "glyph"));
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria(c => IsGlyph(c), "glyph"));
         }
 
         #endregion Constructors

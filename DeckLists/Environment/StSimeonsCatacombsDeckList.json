@@ -2,7 +2,7 @@
     "name": "St. Simeon's Catacombs",
     "kind": "Environment",
     "expansionIdentifier": "Cauldron",
-    "backgroundColor": "FB5455",
+    "backgroundColor": "8C7E6E",
     "difficulty": 3,
     "initialCardIdentifiers":[
       "StSimeonsCatacombsInstructions"
@@ -13,7 +13,7 @@
             "count": 1,
             "title": "St. Simeon's Catacombs Instructions",
             "body":"The Catacombs",
-            "backgroundColor":"58bdec",
+            "backgroundColor":"B6DB9F",
             "foilBackgroundColor":"DAA465",
             "character": true,
             "setup": "At the start of the game search the environment deck for all room cards and put them face up beneath this card. Shuffle the environment deck.",
