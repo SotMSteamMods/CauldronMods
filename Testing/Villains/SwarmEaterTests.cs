@@ -480,5 +480,154 @@ namespace CauldronTests
             //Single-Minded Pursuit +2 damage dealt by Swarm Eater
             QuickHPCheck(-6, -6, 0, -5);
         }
+
+        [Test()]
+        public void TestHuntingGrounds()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+            Card ex0 = GetCard("CelestialExecutioner", 0);
+            Card ex1 = GetCard("CelestialExecutioner", 1);
+            PutOnDeck(env, new Card[] { ex0, ex1 });
+            Card adj = PlayCard("CelestialAdjudicator");
+
+            PlayCard("HuntingGrounds");
+            //Reduce damage dealt to {SwarmEater} by environment targets by 1.
+            QuickHPStorage(swarm);
+            DealDamage(adj, swarm, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            //Increase damage dealt by {SwarmEater} to environment targets by 1.
+            QuickHPStorage(adj);
+            DealDamage(swarm, adj, 2, DamageType.Melee);
+            //Single-Minded Pursuit +2 damage dealt by Swarm Eater
+            //Celestial Adjudicator reduces damage dealt to environment targets by 1
+            QuickHPCheck(-4);
+
+            //Whenever {SwarmEater} destroys a target, play the top card of the environment deck.
+            DealDamage(swarm, fire, 75, DamageType.Melee);
+            AssertIsInPlay(ex1);
+            DealDamage(swarm, ex1, 75, DamageType.Melee);
+            AssertIsInPlay(ex0);
+        }
+
+        [Test()]
+        public void TestInsatiableCharge0Destroy()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Ra", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+            Card staff = PlayCard("TheStaffOfRa");
+            Card flesh = PlayCard("FleshOfTheSunGod");
+            Card adj = PlayCard("CelestialAdjudicator");
+
+            //{SwarmEater} deals each other target 2 melee damage. For each target destroyed by {SwarmEater} this way, destroy 1 hero ongoing or equipment card.
+            QuickHPStorage(swarm.CharacterCard, legacy.CharacterCard, haka.CharacterCard, ra.CharacterCard, adj, stalker, fire);
+            PlayCard("InsatiableCharge");
+            //Single-Minded Pursuit +2 damage dealt by Swarm Eater
+            //Celestial Adjudicator reduces damage dealt to environment targets by 1
+            QuickHPCheck(0, -4, -4, -4, -3, -4, -4);
+            AssertIsInPlay(new Card[] { staff, flesh });
+        }
+
+        [Test()]
+        public void TestInsatiableCharge1Destroy()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Ra", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+
+            Card staff = PlayCard("TheStaffOfRa");
+            Card flesh = PlayCard("FleshOfTheSunGod");
+            SetHitPoints(stalker, 1);
+
+            //{SwarmEater} deals each other target 2 melee damage. For each target destroyed by {SwarmEater} this way, destroy 1 hero ongoing or equipment card.
+            PlayCard("InsatiableCharge");
+            AssertIsInPlay(new Card[] { staff });
+            AssertInTrash(ra, flesh);
+        }
+
+        [Test()]
+        public void TestInsatiableCharge2Destroy()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Ra", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+
+            Card staff = PlayCard("TheStaffOfRa");
+            Card flesh = PlayCard("FleshOfTheSunGod");
+            Card adj = PlayCard("CelestialAdjudicator");
+            SetHitPoints(stalker, 1);
+            SetHitPoints(adj, 1);
+
+            //{SwarmEater} deals each other target 2 melee damage. For each target destroyed by {SwarmEater} this way, destroy 1 hero ongoing or equipment card.
+            PlayCard("InsatiableCharge");
+            AssertInTrash(ra, new Card[] { staff, flesh });
+        }
+
+        [Test()]
+        public void TestJumperAug()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Ra", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+
+            DestroyCards(new Card[] { stalker, fire });
+
+            Card jumper = PlayCard("JumperAug");
+            Card adj = PlayCard("CelestialAdjudicator");
+            //Reduce damage dealt to this card by non-villain cards by 1.
+            QuickHPStorage(jumper);
+            DealDamage(ra, jumper, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            QuickHPStorage(jumper);
+            DealDamage(adj, jumper, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            //At the end of the villain turn this card deals the 2 hero targets with the lowest HP {H - 2} melee damage each.
+            QuickHPStorage(legacy, haka, ra);
+            GoToEndOfTurn(swarm);
+            QuickHPCheck(-1, 0, -1);
+        }
+
+        [Test()]
+        public void TestLasherAug()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Ra", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+
+            DestroyCards(new Card[] { stalker, fire });
+            Card staff = PlayCard("TheStaffOfRa");
+            Card flesh = PlayCard("FleshOfTheSunGod");
+
+            Card jumper = PlayCard("LasherAug");
+            //At the end of the villain turn this card deals the hero target with the highest HP {H} projectile damage and destroys {H - 2} hero ongoing and/or equipment cards.
+            QuickHPStorage(haka);
+            GoToEndOfTurn(swarm);
+            QuickHPCheck(-3);
+            AssertInTrash(ra, flesh);
+            AssertIsInPlay(staff);
+        }
     }
 }

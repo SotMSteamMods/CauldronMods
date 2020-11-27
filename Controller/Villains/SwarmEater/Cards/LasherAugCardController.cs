@@ -21,13 +21,13 @@ namespace Cauldron.SwarmEater
                 //At the end of the villain turn this card deals the hero target with the highest HP {H} projectile damage...
                 base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsHero, TargetType.HighestHP, Game.H, DamageType.Projectile),
                 //...and destroys {H - 2} hero ongoing and/or equipment cards.
-                base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DestroyTwoHeroOngoingOrEquipmentCardsResponse, TriggerType.DestroyCard)
+                base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DestroyHeroOngoingOrEquipmentCardsResponse, TriggerType.DestroyCard)
             };
         }
 
-        private IEnumerator DestroyTwoHeroOngoingOrEquipmentCardsResponse(PhaseChangeAction action)
+        private IEnumerator DestroyHeroOngoingOrEquipmentCardsResponse(PhaseChangeAction action)
         {
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || c.DoKeywordsContain("equipment"))), 2, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || c.DoKeywordsContain("equipment"))), Game.H - 2, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
