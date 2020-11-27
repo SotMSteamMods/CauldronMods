@@ -26,7 +26,7 @@
             ],
             "gameplay": [
                 "Whenever {Vector} is dealt damage, play the top card of the villain deck.",
-                "If {Vector} regains all his HP, he escapes. Gane over.",
+                "If {Vector} regains all his HP, he escapes. Game over.",
                 "Supervirus is indestructible. Cards beneath it are indestructible and have no game text. Whenever Supervirus is in play and there are {H + 2} or more cards beneath it, flip {Vector}'s villain character cards.",
                 "If {Vector} is dealt damage by an environment card, he becomes immune to damage dealt by environment cards until the end of the turn."
             ],
