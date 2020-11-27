@@ -97,6 +97,9 @@ namespace CauldronTests
             PutInHand("KnowWhenToTurnLoose");
             PutInHand("SecondChance");
 
+            //make sure we can distinguish who's playing what
+            PlayCard("SurgeOfStrength");
+
             SetHitPoints(new Card[] { mainstay, writhe, medico, idealist, legacy.CharacterCard, scholar.CharacterCard }, 8);
 
             DecisionSelectCards = new Card[] { thokk, idealist, mdp };
@@ -119,10 +122,10 @@ namespace CauldronTests
 
             //Scholar hands Sentinels Transmutive Recovery, they pick Writhe to take it
             QuickHandCheck(0, 2, -1);
-            //QuickHPCheck(2, 0, 0); 
-            //this does not work, cannot pick specific character for Sentinels
+            QuickHPCheck(2, 0, 0); 
+            //this ABSOLUTELY DOES WORK GOT DANG
 
-            DecisionSelectCards = new Card[] { dichotomy, mdp, mdp };
+            DecisionSelectCards = new Card[] { dichotomy, writhe, mdp };
             DecisionSelectCardsIndex = 0;
             AssertNotDamageSource(writhe);
             AssertNotDamageSource(medico);
@@ -131,9 +134,9 @@ namespace CauldronTests
 
             //Sentinels hand Legacy Horrifying Dichotomy, who ought to do both of the damages.
             QuickHandCheck(0, -1, 0);
-            QuickHPCheck(0, -6, 0);
+            QuickHPCheck(-4, -4, 0);
 
-            Assert.Ignore("Pass-to-Sentinels doesn't work, not sure it's fixable. Pass-from-sentinels doesn't, and I'm not sure why.");
+            //Assert.Ignore("Pass-to-Sentinels doesn't work, not sure it's fixable. Pass-from-sentinels doesn't, and I'm not sure why.");
         }
     }
 }

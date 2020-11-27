@@ -146,32 +146,66 @@ namespace Cauldron.MagnificentMara
         public override Card AskIfCardIsReplaced(Card card, CardSource cardSource)
         {
             //this is what handles the "treating any hero name on that card as the name of their hero instead" part
-
-            if (card != null && _receiverCharacterCard != null && cardSource != null && card.IsHeroCharacterCard && cardSource.AllowReplacements)
+            if (cardSource != null && _passedCard != null && cardSource.Card == _passedCard)
             {
-                //Log.Debug($"Card-to-possibly-replace is {card.Title}");
-                if (_passedCard != null && _giverController != null)
+                if (card != null && _receiverCharacterCard != null && cardSource != null && card.IsHeroCharacterCard && cardSource.AllowReplacements)
                 {
-                    Card cardWithoutReplacements = cardSource.CardController.CardWithoutReplacements;
-                    IEnumerable<CardController> sources = cardSource.CardSourceChain.Select((CardSource cs) => cs.CardController);
-
-                    if (sources.Contains(FindCardController(_passedCard)) && sources.Contains(this) && _passedCard == cardSource.Card && _giverController.CharacterCards.Contains(card))
+                    //Log.Debug($"Card-to-possibly-replace is {card.Title}");
+                    if (_passedCard != null && _giverController != null)
                     {
-                        return _receiverCharacterCard;
+                        Card cardWithoutReplacements = cardSource.CardController.CardWithoutReplacements;
+                        IEnumerable<CardController> sources = cardSource.CardSourceChain.Select((CardSource cs) => cs.CardController);
+
+                        if (sources.Contains(FindCardController(_passedCard)) && _passedCard == cardSource.Card && _giverController.CharacterCards.Contains(card)) // && sources.Contains(this)
+                        {
+                            return _receiverCharacterCard;
+                        }
                     }
                 }
-            }
-            if (card == null && _receiverController != null && _receiverController.CharacterCard == null)
-            {
-                Log.Debug("might try to replace a null character card, if we're lucky");
-                if (_passedCard != null)
+                if (card == null || !card.IsRealCard)
                 {
-                    Card cardWithoutReplacements = cardSource.CardController.CardWithoutReplacements;
-                    IEnumerable<CardController> sources = cardSource.CardSourceChain.Select((CardSource cs) => cs.CardController);
-
-                    if (sources.Contains(FindCardController(_passedCard)) && sources.Contains(this) && _passedCard == cardSource.Card && _giverController.CharacterCards.Contains(card))
+                    //Log.Debug("might try to replace a null character card, if we're lucky");
+                    if (card != null && cardSource.AllowReplacements && cardSource.Card == _passedCard)
                     {
-                        return _receiverCharacterCard;
+                        //Log.Debug("Fake card detected");
+                        if (_receiverController != null && _receiverController.HasMultipleCharacterCards && _passedCard != null)
+                        {
+                            //Log.Debug("And it should!");
+                            Card cardWithoutReplacements = cardSource.CardController.CardWithoutReplacements;
+                            IEnumerable<CardController> sources = cardSource.CardSourceChain.Select((CardSource cs) => cs.CardController);
+
+                            /*
+                            foreach (CardSource chainSource  in cardSource.CardSourceChain)
+                            {
+                                Log.Debug($"Tracing card source chain: {chainSource.Card.Title}");
+                            }
+                            */
+
+                            //Log.Debug($"sources contains passed card: {sources.Contains(FindCardController(_passedCard))}");
+                            //Log.Debug($"sources contains Convincing Double: {sources.Contains(this)}");
+                            //Log.Debug($"CardSource card is passed card: {_passedCard == cardSource.Card}");
+                            if (sources.Contains(FindCardController(_passedCard)) && _passedCard == cardSource.Card) //&& sources.Contains(this) && _giverController.CharacterCards.Contains(card))
+                            {
+                                //Log.Debug($"Returning {_receiverCharacterCard.Title}");
+                                return _receiverCharacterCard;
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        Log.Debug("Null card detected");
+                        if (_receiverController != null && _receiverController.HasMultipleCharacterCards && _passedCard != null)
+                        {
+                            //Log.Debug("And it did!");
+                            Card cardWithoutReplacements = cardSource.CardController.CardWithoutReplacements;
+                            IEnumerable<CardController> sources = cardSource.CardSourceChain.Select((CardSource cs) => cs.CardController);
+
+                            if (sources.Contains(FindCardController(_passedCard)) && sources.Contains(this) && _passedCard == cardSource.Card && _giverController.CharacterCards.Contains(card))
+                            {
+                                return _receiverCharacterCard;
+                            }
+                        }
                     }
                 }
             }
