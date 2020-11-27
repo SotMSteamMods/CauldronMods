@@ -246,11 +246,11 @@ namespace CauldronTests
             GoToPlayCardPhase(ra);
 
             GoToPlayCardPhase(haka);
-                        
+
             //Issue #109 - villain deck is playing a card at the beginning of the turn
             AssertNotInPlay(topCard);
             //AmphibiousAssult isn't in play, so the top card of the villain shouldn't be played
-            
+
             GoToStartOfTurn(isle);
 
             //and still no
@@ -280,7 +280,7 @@ namespace CauldronTests
 
 
 
-           
+
         }
 
 
@@ -340,7 +340,7 @@ namespace CauldronTests
             DealDamage(ra, parasite, 5, DamageType.Fire);
             AssertNextToCard(parasite, ra.CharacterCard);
 
-            //At the start of the environment turn, if this card is next to a target, it deals that target {H} toxic damage and moves back to the environment play area. 
+            //At the start of the environment turn, if this card is next to a target, it deals that target {H} toxic damage and moves back to the environment play area.
             //H is 3, so 3 damage should be dealt
             QuickHPStorage(baron.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, haka.CharacterCard, parasite, teryx);
 
@@ -873,7 +873,7 @@ namespace CauldronTests
             AssertInPlayArea(isle, card);
 
             //collect the appropriate values for all hands
-            GoToEndOfTurn(haka);            
+            GoToEndOfTurn(haka);
             //At the start of the environment turn, if Teryx is in play, each player may draw a card. Then, if there are at least 2 creatures in play, destroy this card.
             QuickHandStorage(ra, visionary, haka);
 
