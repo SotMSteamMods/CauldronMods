@@ -60,3 +60,4 @@ when mods are available.
   - FSC Continuance Wanderer - In Progress
   - Blackwood Forest - In Progress
   - St Simeon's Catacombs - In Progress
+  - Cybersphere - In Progress
