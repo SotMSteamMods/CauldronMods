@@ -14,7 +14,7 @@ namespace Cauldron.TheRam
     {
         public GrapplingClawCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowLowestHP(1, null, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !IsUpClose(c), "", false, singular: "hero with the lowest HP that is not Up Close", plural: "heroes with the lowest HP that are not Up Close"));
+            SpecialStringMaker.ShowLowestHP(1, null, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !IsUpClose(c), "", false, singular: "hero that is not Up Close", plural: "heroes that are not Up Close"));
         }
 
         public override void AddTriggers()
