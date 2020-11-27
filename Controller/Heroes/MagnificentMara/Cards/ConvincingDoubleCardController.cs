@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Handelabra;
 
 namespace Cauldron.MagnificentMara
 {
@@ -10,6 +11,7 @@ namespace Cauldron.MagnificentMara
     {
         public ConvincingDoubleCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => "Passing to or from multiple-character heroes is likely to be buggy. Don't say we didn't warn you.");
         }
 
         public override bool AllowFastCoroutinesDuringPretend => false;
@@ -105,11 +107,11 @@ namespace Cauldron.MagnificentMara
             var selectReceiverCharacterCard = FindCharacterCard(receiver, SelectionType.CharacterCard, storedResults);
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(chooseReceivingPlayer);
+                yield return base.GameController.StartCoroutine(selectReceiverCharacterCard);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(chooseReceivingPlayer);
+                base.GameController.ExhaustCoroutine(selectReceiverCharacterCard);
             }
             _receiverCharacterCard = storedResults.FirstOrDefault();
 
@@ -147,8 +149,22 @@ namespace Cauldron.MagnificentMara
 
             if (card != null && _receiverCharacterCard != null && cardSource != null && card.IsHeroCharacterCard && cardSource.AllowReplacements)
             {
-
+                //Log.Debug($"Card-to-possibly-replace is {card.Title}");
                 if (_passedCard != null && _giverController != null)
+                {
+                    Card cardWithoutReplacements = cardSource.CardController.CardWithoutReplacements;
+                    IEnumerable<CardController> sources = cardSource.CardSourceChain.Select((CardSource cs) => cs.CardController);
+
+                    if (sources.Contains(FindCardController(_passedCard)) && sources.Contains(this) && _passedCard == cardSource.Card && _giverController.CharacterCards.Contains(card))
+                    {
+                        return _receiverCharacterCard;
+                    }
+                }
+            }
+            if (card == null && _receiverController != null && _receiverController.CharacterCard == null)
+            {
+                Log.Debug("might try to replace a null character card, if we're lucky");
+                if (_passedCard != null)
                 {
                     Card cardWithoutReplacements = cardSource.CardController.CardWithoutReplacements;
                     IEnumerable<CardController> sources = cardSource.CardSourceChain.Select((CardSource cs) => cs.CardController);
