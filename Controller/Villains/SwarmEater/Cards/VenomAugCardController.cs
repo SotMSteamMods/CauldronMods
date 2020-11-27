@@ -17,10 +17,10 @@ namespace Cauldron.SwarmEater
             }
         }
 
-        public override void AddTriggers()
+        public override ITrigger[] AddRegularTriggers()
         {
             //At the end of the villain turn this card deals the hero target with the highest HP {H} projectile damage. Any target dealt damage this way deals itself 1 toxic damage.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage);
+            return new ITrigger[] { base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage) };
         }
         private IEnumerator DealDamageResponse(PhaseChangeAction phaseChange)
         {
@@ -55,11 +55,10 @@ namespace Cauldron.SwarmEater
             yield break;
         }
 
-        public override IEnumerator AddAbsorbTriggers(Card cardThisIsUnder)
+        public override ITrigger[] AddAbsorbTriggers(Card cardThisIsUnder)
         {
             //Absorb: whenever {SwarmEater} deals damage to another target, that target deals itself 1 toxic damage.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.Card == cardThisIsUnder && action.DidDealDamage, this.AbsorbDealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
-            yield break;
+            return new ITrigger[] { base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.Card == cardThisIsUnder && action.DidDealDamage, this.AbsorbDealDamageResponse, TriggerType.DealDamage, TriggerTiming.After) };
         }
 
         public IEnumerator AbsorbDealDamageResponse(DealDamageAction action)

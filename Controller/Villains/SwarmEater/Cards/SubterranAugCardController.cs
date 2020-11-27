@@ -17,10 +17,10 @@ namespace Cauldron.SwarmEater
         private ITrigger _reduceDamage;
         private const string FirstTimeDamageDealt = "FirstTimeDamageDealt";
 
-        public override void AddTriggers()
+        public override ITrigger[] AddRegularTriggers()
         {
             //At the start of the villain turn, put a random target from the villain trash into play.
-            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.PlayVillainTargetResponse), TriggerType.PlayCard);
+            return new ITrigger[] { base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.PlayVillainTargetResponse), TriggerType.PlayCard) };
         }
 
         private IEnumerator PlayVillainTargetResponse(PhaseChangeAction p)
@@ -77,11 +77,11 @@ namespace Cauldron.SwarmEater
             yield break;
         }
 
-        public override IEnumerator AddAbsorbTriggers(Card cardThisIsUnder)
+        public override ITrigger[] AddAbsorbTriggers(Card cardThisIsUnder)
         {
             //Absorb: The first time {SwarmEater} would be dealt damage each turn, reduce that damage by 1.
             this._reduceDamage = base.AddReduceDamageTrigger((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn("FirstTimeDamageDealt"), new Func<DealDamageAction, IEnumerator>(this.ReduceDamageResponse), (Card c) => c == cardThisIsUnder, true);
-            yield break;
+            return null;
         }
 
         private IEnumerator ReduceDamageResponse(DealDamageAction action)
