@@ -299,5 +299,24 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(2);
             QuickHPCheck(0);
         }
+        [Test]
+        public void TestGlimpse()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card glimpse = PutInHand("GlimpseOfThingsToCome");
+            Card crystal = PutInHand("DowsingCrystal");
+
+            DecisionSelectCard = crystal;
+
+            QuickHandStorage(mara);
+
+            PlayCard(glimpse);
+            AssertInTrash(glimpse);
+            AssertIsInPlay(crystal);
+            QuickHandCheck(-1);
+        }
     }
 }
