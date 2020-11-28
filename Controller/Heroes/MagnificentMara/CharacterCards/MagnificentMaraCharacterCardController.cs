@@ -38,7 +38,7 @@ namespace Cauldron.MagnificentMara
 
             if (firstTarget != null && firstTarget.IsInPlayAndHasGameText && firstTarget.IsTarget)
             {
-                coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, firstTarget), secondTargetDamage, DamageType.Psychic, 1, false, 1, additionalCriteria: (Card c) => c != firstTarget, cardSource: GetCardSource());
+                coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, firstTarget), secondTargetDamage, DamageType.Melee, 1, false, 1, additionalCriteria: (Card c) => c != firstTarget, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

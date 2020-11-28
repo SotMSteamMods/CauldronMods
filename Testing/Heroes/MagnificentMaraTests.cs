@@ -465,6 +465,38 @@ namespace CauldronTests
             AssertInTrash(kalpak);
         }
         [Test]
+        public void TestPostHypnoticCuePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card cue = PlayCard("PostHypnoticCue");
+
+            AssertNumberOfUsablePowers(mara, 1);
+            DestroyCard(cue);
+            AssertNumberOfUsablePowers(mara, 0);
+        }
+        [Test]
+        public void TestPostHypnoticCueStartOfTurnTrigger()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card cue = PlayCard("PostHypnoticCue");
+            DecisionYesNo = true;
+
+            GoToPlayCardPhase(mara);
+
+            AssertInTrash(cue);
+            AssertNumberOfUsablePowers(mara, 0);
+
+            PlayCard(cue);
+            AssertNoDecision();
+            GoToPlayCardPhase(legacy);
+        }
+        [Test]
         public void TestSmokeAndMirrorsPrevention()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
