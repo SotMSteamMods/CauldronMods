@@ -168,5 +168,72 @@ namespace CauldronTests
             QuickHPCheck(-1, -3);
             AssertNotInTrash(delayedSymptoms);
         }
+
+        [Test]
+        public void TestBloodSample()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card bloodSample = GetCard(BloodSampleCardController.Identifier);
+            Card superVirus = GetCard(SupervirusCardController.Identifier);
+
+            StartGame();
+            QuickHPStorage(legacy, ra, haka);
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(bloodSample);
+            PlayCard(superVirus);
+
+            DealDamage(legacy, Vector, 5, DamageType.Melee);
+
+            GoToStartOfTurn(Vector);
+
+            // Assert
+            QuickHPCheck(-1, -1, -1);
+            Assert.True(false, "TODO");
+        }
+
+        [Test]
+        public void TestDelayedSymptoms()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card delayedSymptoms = GetCard(DelayedSymptomsCardController.Identifier);
+
+            PutIntoPlay("DangerSense");
+            PutIntoPlay("Dominion");
+            PutIntoPlay("SavageMana");
+
+            StartGame();
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(delayedSymptoms);
+
+            // Assert
+            Assert.True(false, "TODO");
+        }
+
+        [Test]
+        public void TestEliteTraining()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card eliteTraining = GetCard(EliteTrainingCardController.Identifier);
+
+            StartGame();
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(eliteTraining);
+
+            // Assert
+            Assert.True(false, "TODO");
+
+        }
     }
 }

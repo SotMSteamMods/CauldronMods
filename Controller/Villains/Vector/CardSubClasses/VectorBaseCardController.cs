@@ -1,4 +1,5 @@
-﻿using Handelabra.Sentinels.Engine.Controller;
+﻿using System.Linq;
+using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Vector
@@ -24,5 +25,17 @@ namespace Cauldron.Vector
         {
             return card != null && base.GameController.DoesCardContainKeyword(card, "pawn");
         }
+
+        protected bool IsSuperVirusInPlay()
+        {
+            return base.GameController.IsCardInPlayAndNotUnderCard(SupervirusCardController.Identifier);
+        }
+
+        protected Card GetSuperVirusCard()
+        {
+            return FindCardsWhere(card => card.Identifier == SupervirusCardController.Identifier 
+                                && card.IsInPlayAndHasGameText).FirstOrDefault();
+        }
+
     }
 }
