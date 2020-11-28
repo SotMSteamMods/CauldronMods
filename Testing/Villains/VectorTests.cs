@@ -322,5 +322,25 @@ namespace CauldronTests
             // Assert
             Assert.True(false, "TODO");
         }
+
+        [Test]
+        public void TestQuarrantineProtocol()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            StartGame();
+
+            Card quarantine = GetCard(QuarantineProtocolsCardController.Identifier);
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(quarantine);
+
+            GoToEndOfTurn(Vector);
+
+            // Assert
+            Assert.True(false, "TODO");
+        }
     }
 }
