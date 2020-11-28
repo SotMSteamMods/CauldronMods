@@ -304,5 +304,23 @@ namespace CauldronTests
             // Assert
             Assert.True(false, "TODO");
         }
+
+        [Test]
+        public void TestLethalForce()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            StartGame();
+
+            Card lethalForce = GetCard(LethalForceCardController.Identifier);
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(lethalForce);
+            
+            // Assert
+            Assert.True(false, "TODO");
+        }
     }
 }
