@@ -514,6 +514,23 @@ namespace CauldronTests
             AssertIsInPlay(ring);
         }
         [Test]
+        public void TestMysticalEnhancementDamageBoost()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            DecisionSelectCards = new Card[] { mara.CharacterCard, legacy.CharacterCard, MDP };
+
+            PlayCard("MysticalEnhancement");
+            QuickHPStorage(mara.CharacterCard, legacy.CharacterCard, MDP);
+
+            UsePower(mara);
+
+            QuickHPCheck(0, -2, -2);
+
+        }
+        [Test]
         public void TestPostHypnoticCuePower()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
