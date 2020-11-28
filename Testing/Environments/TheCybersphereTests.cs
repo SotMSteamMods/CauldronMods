@@ -54,7 +54,24 @@ namespace CauldronTests
             AssertCardHasKeyword(card, "grid program", false);
         }
 
+        [Test()]
+        public void TestB3h3mth()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheCybersphere");
+            StartGame();
 
+            SetHitPoints(haka, 15);
+
+            Card b3h3mth = PlayCard("B3h3mth");
+
+            //At the end of the environment turn, this card deals the non-environment target with the second lowest HP 4 fire damage.
+            //2nd lowest is Haka
+
+            QuickHPStorage(baron, ra, legacy, haka);
+            GoToEndOfTurn(cybersphere);
+            QuickHPCheck(0, 0, 0, -4);
+
+        }
 
     }
 }
