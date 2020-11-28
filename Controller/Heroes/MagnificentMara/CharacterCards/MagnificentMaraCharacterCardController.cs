@@ -54,24 +54,67 @@ namespace Cauldron.MagnificentMara
 
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
+            IEnumerator coroutine;
             switch(index)
             {
                 case (0):
                     {
                         //"One hero may put a card from their trash on top of their deck.",
-
+                        var turnTakerDecision = new SelectTurnTakerDecision(GameController, DecisionMaker, GameController.FindTurnTakersWhere((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame), SelectionType.MoveCardOnDeck, true, cardSource: GetCardSource());
+                        coroutine = GameController.SelectTurnTakerAndDoAction(turnTakerDecision, (TurnTaker tt) => GameController.SelectAndMoveCard(FindHeroTurnTakerController(tt.ToHero()), (Card c) => c.Location == tt.Trash, tt.Deck, cardSource: GetCardSource()));
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case (1):
                     {
                         //"Destroy 1 ongoing card.",
-
+                        coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing), false, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case (2):
                     {
                         //"Select a target. Until the start of your next turn that target is immune to damage from environment cards."
-
+                        var storedTarget = new List<SelectCardDecision> { };
+                        coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.PreventDamage, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && (bool)AskIfCardIsVisibleToCardSource(c, GetCardSource()) && c.IsTarget), storedTarget, false, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                        if (DidSelectCard(storedTarget))
+                        {
+                            var preventDamage = new ImmuneToDamageStatusEffect();
+                            preventDamage.TargetCriteria.IsSpecificCard = storedTarget.FirstOrDefault().SelectedCard;
+                            preventDamage.SourceCriteria.IsEnvironment = true;
+                            preventDamage.UntilStartOfNextTurn(TurnTaker);
+                            coroutine = AddStatusEffect(preventDamage);
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine);
+                            }
+                        }
                         break;
                     }
             }
