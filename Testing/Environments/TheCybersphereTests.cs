@@ -170,5 +170,29 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestGlitch_Destroyed()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheCybersphere");
+            StartGame();
+
+            SetHitPoints(ra, 20);
+            SetHitPoints(haka, 15);
+
+            //destroy mdp to make him vulnerable
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            GoToPlayCardPhase(cybersphere);
+            Card glitch = PlayCard("Glitch");
+
+            //When this card is destroyed, it deals the non-environment target with the second highest HP 5 lightning damage.
+            //legacy is second highest
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            DestroyCard(glitch, baron.CharacterCard);
+            QuickHPCheck(0, 0, -5, 0);
+
+
+        }
+
     }
 }

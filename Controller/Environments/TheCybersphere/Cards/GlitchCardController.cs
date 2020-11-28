@@ -15,5 +15,27 @@ namespace Cauldron.TheCybersphere
         }
 
 
+        public override void AddTriggers()
+        {
+            //When this card is destroyed, it deals the non-environment target with the second highest HP 5 lightning damage.
+            AddWhenDestroyedTrigger(DealDamageResponse, TriggerType.DealDamage);
+        }
+
+        private IEnumerator DealDamageResponse(DestroyCardAction dca)
+        {
+            //it deals the non-environment target with the second highest HP 5 lightning damage.
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 2, (Card c) => c.IsNonEnvironmentTarget, (Card c) => new int?(5), DamageType.Lightning);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+
     }
 }
