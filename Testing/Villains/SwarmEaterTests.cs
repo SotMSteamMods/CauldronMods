@@ -376,10 +376,31 @@ namespace CauldronTests
             Card fire = GetCard("FireAug");
             PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
             StartGame();
+
             DestroyCards(new Card[] { stalker, fire });
             PlayCard("BladeAug");
 
             //At the end of the villain turn, this card deals the hero target with the highest HP 2 lightning damage.
+            QuickHPStorage(haka);
+            GoToEndOfTurn(swarm);
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestBladeAugAbsorb()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+            DestroyCards(new Card[] { stalker, fire });
+            Card blade = PlayCard("BladeAug");
+
+            DealDamage(swarm, blade, 75, DamageType.Melee);
+            AssertUnderCard(GetCard("AbsorbedNanites"), blade);
+            //Absorb: at the end of the villain turn, {SwarmEater} deals the target other than itself with the highest HP 2 lightning damage.
             QuickHPStorage(haka);
             GoToEndOfTurn(swarm);
             QuickHPCheck(-2);
@@ -432,6 +453,7 @@ namespace CauldronTests
             Card fire = GetCard("FireAug");
             PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
             StartGame();
+
             DestroyCards(new Card[] { stalker });
 
             //At the end of the villain turn this card deals the hero target with the second highest HP {H - 1} fire damage and each player must discard a card.
@@ -440,6 +462,25 @@ namespace CauldronTests
             GoToEndOfTurn(swarm);
             QuickHPCheck(-2);
             QuickHandCheck(-1, -1, -1);
+        }
+
+        [Test()]
+        public void TestFireAugAbsorb()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+            DestroyCards(new Card[] { stalker });
+
+            DealDamage(swarm, fire, 75, DamageType.Melee);
+            AssertUnderCard(GetCard("AbsorbedNanites"), fire);
+            //Absorb: at the start of the villain turn, {H - 2} players must discard a card.
+            QuickHandStorage(legacy);
+            GoToEndOfTurn(swarm);
+            QuickHandCheck(-1);
         }
 
         [Test()]
@@ -524,6 +565,7 @@ namespace CauldronTests
             Card fire = GetCard("FireAug");
             PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
             StartGame();
+
             Card staff = PlayCard("TheStaffOfRa");
             Card flesh = PlayCard("FleshOfTheSunGod");
             Card adj = PlayCard("CelestialAdjudicator");
@@ -608,6 +650,27 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestJumperAugAbsorb()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+
+            DestroyCards(new Card[] { fire, stalker });
+            Card jumper = PlayCard("JumperAug");
+
+            DealDamage(swarm, jumper, 75, DamageType.Melee);
+            AssertUnderCard(GetCard("AbsorbedNanites"), jumper);
+            //Absorb: reduce damage dealt to {SwarmEater} by 1.
+            QuickHPStorage(swarm);
+            DealDamage(haka, swarm, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+        }
+
+        [Test()]
         public void TestLasherAug()
         {
             SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Ra", "TheCelestialTribunal");
@@ -628,6 +691,29 @@ namespace CauldronTests
             QuickHPCheck(-3);
             AssertInTrash(ra, flesh);
             AssertIsInPlay(staff);
+        }
+
+        [Test()]
+        public void TestLasherAugAbsorb()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+
+            DestroyCards(new Card[] { fire, stalker });
+            Card lasher = PlayCard("LasherAug");
+            Card moko = PlayCard("TaMoko");
+            Card ring = PlayCard("TheLegacyRing");
+
+            DealDamage(swarm, lasher, 75, DamageType.Melee);
+            AssertUnderCard(GetCard("AbsorbedNanites"), lasher);
+            //Absorb: at the start of the villain turn, destroy 1 hero ongoing or equipment card.
+            GoToStartOfTurn(swarm);
+            AssertInTrash(moko);
+            AssertIsInPlay(ring);
         }
 
         [Test()]
@@ -705,6 +791,32 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestSpeedAugAbsorb()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+
+            DestroyCards(new Card[] { fire, stalker });
+            Card speed = PlayCard("SpeedAug");
+
+            DealDamage(swarm, speed, 75, DamageType.Melee);
+            AssertUnderCard(GetCard("AbsorbedNanites"), speed);
+            //Absorb: increase damage dealt by {SwarmEater} by 1.
+            QuickHPStorage(haka);
+            DealDamage(swarm, haka, 2, DamageType.Melee);
+            //Single-Minded Pursuit +2 damage dealt by Swarm Eater
+            QuickHPCheck(-3);
+
+            QuickHPStorage(haka);
+            DealDamage(legacy, haka, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
         public void TestStalkerAug()
         {
             SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "TheCelestialTribunal");
@@ -721,6 +833,139 @@ namespace CauldronTests
             QuickHPStorage(haka, legacy, unity);
             GoToEndOfTurn(swarm);
             QuickHPCheck(-1, -1, 0);
+        }
+
+        [Test()]
+        public void TestStalkerAugAbsorb()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+
+            DestroyCards(new Card[] { fire });
+            Card terran = PlayCard("SubterranAug");
+            Card mono = PlayCard("PlummetingMonorail");
+            PlayCard("TaMoko");
+
+            DealDamage(swarm, stalker, 75, DamageType.Melee);
+            AssertUnderCard(GetCard("AbsorbedNanites"), stalker);
+            //Absorb: At the end of the villain turn, {SwarmEater} deals each other target 1 irreducible energy damage.
+            QuickHPStorage(haka.CharacterCard, legacy.CharacterCard, unity.CharacterCard, terran, mono);
+            GoToEndOfTurn(swarm);
+            //Single-Minded Pursuit +2 damage dealt by Swarm Eater
+            QuickHPCheck(-3, -3, -3, -3, -3);
+        }
+
+        [Test()]
+        public void TestSubterranAug()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { pursuit, stalker, fire });
+            StartGame();
+
+            DestroyCards(new Card[] { stalker, fire });
+            Card sub = PlayCard("SubterranAug");
+            GoToEndOfTurn(env);
+            //To make sure Subterran isn't destroyed
+            SetHitPoints(sub, 6);
+
+            //At the start of the villain turn, put a random target from the villain trash into play.
+            GoToStartOfTurn(swarm);
+            //Swarm Eater, Converted Biomass, Absorbed Nanites, Subterran Aug, 1 random
+            AssertNumberOfCardsAtLocation(swarm.TurnTaker.PlayArea, 5);
+        }
+
+        [Test()]
+        public void TestSubterranAugAbsorb()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+
+            DestroyCards(new Card[] { stalker, fire });
+            Card terran = PlayCard("SubterranAug");
+
+            DealDamage(swarm, terran, 75, DamageType.Melee);
+            AssertUnderCard(GetCard("AbsorbedNanites"), terran);
+            //Absorb: The first time {SwarmEater} would be dealt damage each turn, reduce that damage by 1
+            QuickHPStorage(swarm);
+            DealDamage(haka, swarm, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            QuickHPStorage(swarm);
+            DealDamage(haka, swarm, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestUpdatedPriorities()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { pursuit, stalker, fire });
+            StartGame();
+
+            Card speed = PutOnDeck("SpeedAug");
+
+            DestroyCard(pursuit);
+
+            //Search the villain deck and trash for Single-Minded Pursuit and put it into play. If you searched the deck, shuffle it.
+            //Play the top card of the villain deck.
+            PlayCard("UpdatedPriorities");
+            AssertNextToCard(pursuit, fire);
+            AssertIsInPlay(speed);
+        }
+
+        [Test()]
+        public void TestVenomAug()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { pursuit, stalker, fire });
+            StartGame();
+
+            DestroyCards(new Card[] { stalker, fire });
+
+            PlayCard("VenomAug");
+            //At the end of the villain turn this card deals the hero target with the highest HP {H} projectile damage. Any target dealt damage this way deals itself 1 toxic damage.
+            QuickHPStorage(haka);
+            GoToEndOfTurn(swarm);
+            QuickHPCheck(-4);
+        }
+
+        [Test()]
+        public void TestVenomAugSecondaryDamageSource()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { pursuit, stalker, fire });
+            StartGame();
+
+            DestroyCards(new Card[] { stalker, fire });
+
+            PlayCard("PunishTheWeak");
+
+            PlayCard("VenomAug");
+            //At the end of the villain turn this card deals the hero target with the highest HP {H} projectile damage. Any target dealt damage this way deals itself 1 toxic damage.
+            QuickHPStorage(haka);
+            GoToEndOfTurn(swarm);
+            //Punish The Weak will reduce the damage Haka deals to himself
+            QuickHPCheck(-3);
         }
     }
 }
