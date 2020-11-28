@@ -119,6 +119,30 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestFirstResponseIncapacitateOption1DynamicHPCheck()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespaceFirstResponse, "Legacy", "Ra", "InsulaPrimalis");
+            StartGame();
+
+            SetHitPoints(ra, 7);
+
+            SetHitPoints(DocHavoc.CharacterCard, 1);
+            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+
+            // Act
+            GoToUseIncapacitatedAbilityPhase(DocHavoc);
+            UseIncapacitatedAbility(DocHavoc, 0);
+
+            QuickHPStorage(ra);
+            DealDamage(baron, ra, 2, DamageType.Cold);
+            QuickHPCheck(-2);
+            QuickHPStorage(ra);
+            DealDamage(baron, ra, 2, DamageType.Cold);
+            QuickHPCheck(-1);
+        }
+
+        [Test]
         public void TestFirstResponseIncapacitateOption2()
         {
             // Arrange
@@ -223,7 +247,7 @@ namespace CauldronTests
             PutIntoPlay("ObsidianField");
             Card obsidianField = GetCardInPlay("ObsidianField");
 
-            DecisionSelectCards = new[] {enragedTRex, obsidianField};
+            DecisionSelectCards = new[] { enragedTRex, obsidianField };
 
             SetHitPoints(DocHavoc.CharacterCard, 1);
             DealDamage(baron, DocHavoc, 2, DamageType.Melee);

@@ -64,7 +64,7 @@ namespace Cauldron.DocHavoc
                     List<Card> targets
                         = FindCardsWhere(card => card.IsTarget && card.IsInPlay
                             && card.HitPoints < Incapacitate1HpThreshold).ToList();
-
+                    //This is not dynamic. It only affects those below 6 at time of execution
                     ReduceDamageStatusEffect rdse = new ReduceDamageStatusEffect(Incapacitate1DamageReduction);
                     rdse.TargetCriteria.IsOneOfTheseCards = targets;
                     rdse.UntilStartOfNextTurn(base.TurnTaker);
