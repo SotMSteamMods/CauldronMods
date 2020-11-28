@@ -8,6 +8,7 @@ namespace Cauldron.DocHavoc
 {
     public class FirstResponseDocHavocCharacterCardController : HeroCharacterCardController
     {
+        private const int PowerNumberOfTargets = 1;
         private const int PowerDamageToDeal = 1;
         private const int Incapacitate1HpThreshold = 6;
         private const int Incapacitate1DamageReduction = 1;
@@ -33,10 +34,11 @@ namespace Cauldron.DocHavoc
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            int powerNumeral = GetPowerNumeral(0, PowerDamageToDeal);
+            int targetsNumeral = GetPowerNumeral(0, PowerNumberOfTargets);
+            int damageNumeral = GetPowerNumeral(1, PowerDamageToDeal);
             DamageSource ds = new DamageSource(this.GameController, this.TurnTaker);
-            IEnumerator routine2 = base.GameController.SelectTargetsAndDealDamage(this.HeroTurnTakerController, ds, powerNumeral,
-                DamageType.Melee, 1, true, 0, cardSource: base.GetCardSource());
+            IEnumerator routine2 = base.GameController.SelectTargetsAndDealDamage(this.HeroTurnTakerController, ds, damageNumeral,
+                DamageType.Melee, targetsNumeral, true, 0, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine2);
@@ -59,10 +61,10 @@ namespace Cauldron.DocHavoc
                     // dealt to targets with fewer than 6 HP by 1
                     //==============================================================
 
-                    List<Card> targets 
-                        = FindCardsWhere(card => card.IsTarget && card.IsInPlay 
+                    List<Card> targets
+                        = FindCardsWhere(card => card.IsTarget && card.IsInPlay
                             && card.HitPoints < Incapacitate1HpThreshold).ToList();
-                    
+
                     ReduceDamageStatusEffect rdse = new ReduceDamageStatusEffect(Incapacitate1DamageReduction);
                     rdse.TargetCriteria.IsOneOfTheseCards = targets;
                     rdse.UntilTargetLeavesPlay(base.CharacterCard);
@@ -109,8 +111,8 @@ namespace Cauldron.DocHavoc
                     // Destroy 2 environment targets.
                     //==============================================================
 
-                    coroutine = base.GameController.SelectAndDestroyCards(base.HeroTurnTakerController, 
-                        new LinqCardCriteria(c => c.IsEnvironment, "environment"), 
+                    coroutine = base.GameController.SelectAndDestroyCards(base.HeroTurnTakerController,
+                        new LinqCardCriteria(c => c.IsEnvironment, "environment"),
                         Incapacitate3CardsToDestroy,
                         requiredDecisions: 0, cardSource: GetCardSource());
 
