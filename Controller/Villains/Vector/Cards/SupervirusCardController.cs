@@ -11,7 +11,7 @@ namespace Cauldron.Vector
         //
         //==============================================================
 
-        public static string Identifier = "Supervirus";
+        public static readonly string Identifier = "Supervirus";
 
         public SupervirusCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

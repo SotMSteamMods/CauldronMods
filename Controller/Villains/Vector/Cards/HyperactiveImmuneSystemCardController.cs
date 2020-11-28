@@ -11,7 +11,7 @@ namespace Cauldron.Vector
         //
         //==============================================================
 
-        public static string Identifier = "HyperactiveImmuneSystem";
+        public static readonly string Identifier = "HyperactiveImmuneSystem";
 
         public HyperactiveImmuneSystemCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

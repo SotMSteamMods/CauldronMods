@@ -11,7 +11,7 @@ namespace Cauldron.Vector
         //
         //==============================================================
 
-        public static string Identifier = "QuarantineProtocols";
+        public static readonly string Identifier = "QuarantineProtocols";
 
         public QuarantineProtocolsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

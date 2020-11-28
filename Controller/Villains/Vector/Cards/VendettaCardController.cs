@@ -11,7 +11,7 @@ namespace Cauldron.Vector
         //
         //==============================================================
 
-        public static string Identifier = "Vendetta";
+        public static readonly string Identifier = "Vendetta";
 
         public VendettaCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

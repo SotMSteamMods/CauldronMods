@@ -11,7 +11,7 @@ namespace Cauldron.Vector
         //
         //==============================================================
 
-        public static string Identifier = "HostageShield";
+        public static readonly string Identifier = "HostageShield";
 
         public HostageShieldCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

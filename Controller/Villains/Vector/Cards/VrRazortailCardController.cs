@@ -11,7 +11,7 @@ namespace Cauldron.Vector
         //
         //==============================================================
 
-        public static string Identifier = "VrRazortail";
+        public static readonly string Identifier = "VrRazortail";
 
         public VrRazortailCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

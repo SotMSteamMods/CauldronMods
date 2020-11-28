@@ -11,7 +11,7 @@ namespace Cauldron.Vector
         //
         //==============================================================
 
-        public static string Identifier = "UndiagnosedSubject";
+        public static readonly string Identifier = "UndiagnosedSubject";
 
         public UndiagnosedSubjectCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

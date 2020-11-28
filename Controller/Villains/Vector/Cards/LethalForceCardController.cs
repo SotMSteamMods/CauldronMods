@@ -11,7 +11,7 @@ namespace Cauldron.Vector
         //
         //==============================================================
 
-        public static string Identifier = "LethalForce";
+        public static readonly string Identifier = "LethalForce";
 
         public LethalForceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
