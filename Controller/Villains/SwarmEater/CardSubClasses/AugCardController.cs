@@ -18,19 +18,19 @@ namespace Cauldron.SwarmEater
 
         public override void AddTriggers()
         {
-            if (base.GetCardThisCardIsBelow() == null)
+            Card below = base.GetCardThisCardIsBelow();
+            Card nextTo = base.GetCardThisCardIsNextTo();
+            if (nextTo == null)
             {
                 this.AddRegularTriggers();
             }
             else
             {
-                Card nextTo = base.GetCardThisCardIsBelow();
                 if (nextTo.Identifier == "AbsorbedNanites")
                 {
                     nextTo = base.CharacterCard;
                 }
                 this.AddAbsorbTriggers(nextTo);
-                return;
             }
         }
     }
