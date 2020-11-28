@@ -119,6 +119,7 @@ namespace CauldronTests
         }
 
         [Test]
+        [Ignore("This does not check a dynamic HP amount, just those 6 or below at time of execution")]
         public void TestFirstResponseIncapacitateOption1DynamicHPCheck()
         {
             // Arrange
