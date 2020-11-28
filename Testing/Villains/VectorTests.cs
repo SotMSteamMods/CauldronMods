@@ -72,5 +72,101 @@ namespace CauldronTests
             Card vrRazortail = GetCard(VrRazortailCardController.Identifier);
             Assert.IsTrue(vrRazortail.DoKeywordsContain("vehicle"));
         }
+
+        [Test]
+        public void TestVectorLoads()
+        {
+            SetupGameController(DeckNamespace, "Legacy", "Megalopolis");
+
+            Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(Vector);
+            Assert.IsInstanceOf(typeof(VectorCharacterCardController), Vector.CharacterCardController);
+
+            Assert.AreEqual(55, Vector.CharacterCard.HitPoints);
+        }
+
+        [Test]
+        public void TestAnticoagulant()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card antiC = GetCard(AnticoagulantCardController.Identifier);
+
+            PlayCard(antiC);
+
+            // Act
+            GoToPlayCardPhase(legacy);
+            DealDamage(legacy, Vector, 5, DamageType.Melee);
+
+
+            // Assert
+            Assert.True(false, "TODO");
+        }
+
+        [Test]
+        public void TestAssassinsSignature()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card mere = GetCard("Mere");
+            Card dominion = GetCard("Dominion");
+            Card savageMana = GetCard("SavageMana");
+
+            PutIntoPlay(mere.Identifier);
+            PutIntoPlay(dominion.Identifier);
+            PutIntoPlay(savageMana.Identifier);
+
+            DecisionSelectCard = dominion;
+            QuickHPStorage(haka);
+
+            // Act
+            Card aSig = GetCard(AssassinsSignatureCardController.Identifier);
+            PlayCard(aSig);
+
+
+            // Assert
+            QuickHPCheck(-3);
+            AssertInPlayArea(haka, new []{ mere, savageMana});
+            AssertInTrash(haka, dominion);
+        }
+
+        [Test]
+        public void TestBioTerrorSquad()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            
+            Card bloodSample = GetCard(BloodSampleCardController.Identifier); // Virus
+            Card delayedSymptoms = GetCard(DelayedSymptomsCardController.Identifier); // Virus
+            Card eliteTraining = GetCard(EliteTrainingCardController.Identifier);
+
+            Card bioTerror = GetCard(BioterrorSquadCardController.Identifier);
+
+            PutInTrash(bloodSample);
+            PutInTrash(delayedSymptoms);
+            PutInTrash(eliteTraining);
+
+            StartGame();
+            DecisionSelectCard = GetCard(DelayedSymptomsCardController.Identifier);
+
+            GoToPlayCardPhase(Vector);
+            QuickHPStorage(bioTerror, haka.CharacterCard);
+            PlayCard(bioTerror);
+
+            QuickShuffleStorage(Vector);
+
+            // Act
+            GoToStartOfTurn(Vector);
+
+            // Assert
+            QuickShuffleCheck(1);
+            QuickHPCheck(-1, -3);
+            AssertNotInTrash(delayedSymptoms);
+        }
     }
 }

@@ -3,9 +3,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Vector
 {
-    public class VectorBaseCardController : CardController
+    public class VectorBaseCharacterCardController : VillainCharacterCardController
     {
-        protected VectorBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected VectorBaseCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
