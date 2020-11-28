@@ -450,5 +450,49 @@ namespace CauldronTests
 
             PrintJournal();
         }
+        [Test]
+        public void TestKalpakDestroysSelf()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            DecisionSelectFunction = 1;
+
+            Card kalpak = PlayCard("KalpakOfMysteries");
+            UsePower(kalpak);
+
+            AssertInTrash(kalpak);
+        }
+        [Test]
+        public void TestSmokeAndMirrorsPrevention()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card smoke = PlayCard("SmokeAndMirrors");
+            DecisionYesNo = true;
+            QuickHPStorage(mara);
+
+            DealDamage(baron, mara, 2, DTM);
+            QuickHPCheck(0);
+            AssertInTrash(smoke);
+        }
+        [Test]
+        public void TestSmokeAndMirrorsOptional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card smoke = PlayCard("SmokeAndMirrors");
+            DecisionYesNo = false;
+            QuickHPStorage(mara);
+
+            DealDamage(baron, mara, 2, DTM);
+            QuickHPCheck(-2);
+            AssertIsInPlay(smoke);
+        }
     }
 }
