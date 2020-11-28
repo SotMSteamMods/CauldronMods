@@ -33,7 +33,7 @@
                 "DealDamageProjectile"
             ],
             "body": "At the end of the environment turn, this card deals each other target 2 projectile damage.",
-            "flavorText": "The stranger opened his eyes within the{BR}artificial world. The first thing he saw{BR}was a ship, floating above the glowing{BR}buildings and aiming its cannons at him.",
+            "flavorText": "The Stranger opened his eyes within the{BR}artificial world. The first thing he saw{BR}was a ship, floating above the glowing{BR}buildings and aiming its cannons at him.",
             "hitpoints": 10
         },
         {
