@@ -124,5 +124,51 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestGho5t_EndOfTurn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheCybersphere");
+            StartGame();
+
+            string[] inPlay = new string[] { "TheStaffOfRa", "Dominion" };
+            IEnumerable<Card> inPlayCards = PlayCards(inPlay);
+
+            string[] inTrash = new string[] { "FlameBarrier", "Mere" };
+            IEnumerable<Card> inTrashCards = PlayCards(inTrash);
+
+            //destroy mdp to make him vulnerable
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            GoToPlayCardPhase(cybersphere);
+            Card gho5t = PlayCard("Gho5t");
+
+            //At the end of the environment turn, each hero must destroy 1 of their ongoing or equipment cards.
+            DecisionSelectCards = inTrashCards;
+            GoToEndOfTurn(cybersphere);
+            AssertInTrash(inTrashCards);
+            AssertIsInPlay(inPlayCards);
+
+        }
+
+        [Test()]
+        public void TestGho5t_Destroyed()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheCybersphere");
+            StartGame();
+
+            //destroy mdp to make him vulnerable
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            GoToPlayCardPhase(cybersphere);
+            Card gho5t = PlayCard("Gho5t");
+
+            //When this card is destroyed, each player may draw a card.
+            QuickHandStorage(ra, legacy, haka);
+            DestroyCard(gho5t, baron.CharacterCard);
+            QuickHandCheck(1, 1, 1);
+
+
+        }
+
     }
 }
