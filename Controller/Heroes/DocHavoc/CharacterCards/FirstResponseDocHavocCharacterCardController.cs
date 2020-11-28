@@ -67,7 +67,6 @@ namespace Cauldron.DocHavoc
 
                     ReduceDamageStatusEffect rdse = new ReduceDamageStatusEffect(Incapacitate1DamageReduction);
                     rdse.TargetCriteria.IsOneOfTheseCards = targets;
-                    rdse.UntilTargetLeavesPlay(base.CharacterCard);
                     rdse.UntilStartOfNextTurn(base.TurnTaker);
 
                     coroutine = base.AddStatusEffect(rdse, true);
