@@ -465,6 +465,23 @@ namespace CauldronTests
             AssertInTrash(kalpak);
         }
         [Test]
+        public void TestLookingForThis()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card surge = PutInTrash("SurgeOfStrength");
+            Card lead = PutInTrash("NextEvolution");
+            Card ring = PlayCard("TheLegacyRing");
+
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+
+            PlayCard("LookingForThis");
+            AssertInHand(ring);
+            AssertIsInPlay(surge); //both limited!
+        }
+        [Test]
         public void TestPostHypnoticCuePower()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
