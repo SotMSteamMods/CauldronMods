@@ -629,5 +629,30 @@ namespace CauldronTests
             AssertInTrash(ra, flesh);
             AssertIsInPlay(staff);
         }
+
+        [Test()]
+        public void TestNaniteCorruption()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Ra", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+
+            Card lasher = GetCard("LasherAug");
+            Card venom = GetCard("VenomAug");
+            Card grounds = GetCard("HuntingGrounds");
+            Card updated = GetCard("UpdatedPriorities");
+            PutOnDeck(swarm, new Card[] { lasher, venom, grounds, updated });
+
+            //Reveal cards from the top of the villain deck until {H - 1} targets are revealed. Put those cards into play and discard the rest.
+            //{SwarmEater} deals the {H} targets other than itself with the lowest HP 2 projectile damage each.
+            QuickHPStorage(ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, lasher, fire, stalker, venom);
+            PlayCard("NaniteCorruption");
+            //Single-Minded Pursuit +2 damage dealt by Swarm Eater
+            QuickHPCheck(0, 0, 0, -4, -4, 0, -4);
+            AssertInTrash(new Card[] { grounds, updated });
+        }
     }
 }

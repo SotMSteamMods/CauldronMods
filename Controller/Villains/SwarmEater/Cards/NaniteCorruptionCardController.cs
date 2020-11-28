@@ -15,7 +15,7 @@ namespace Cauldron.SwarmEater
         public override IEnumerator Play()
         {
             //Reveal cards from the top of the villain deck until {H - 1} targets are revealed. Put those cards into play and discard the rest.
-            IEnumerator coroutine = base.RevealCards_PutSomeIntoPlay_DiscardRemaining(base.TurnTakerController, base.TurnTaker.Deck, Game.H - 1, new LinqCardCriteria((Card c) => c.IsTarget), revealUntilNumberOfMatchingCards: Game.H - 1);
+            IEnumerator coroutine = base.RevealCards_PutSomeIntoPlay_DiscardRemaining(base.TurnTakerController, base.TurnTaker.Deck, null, new LinqCardCriteria((Card c) => c.IsTarget, "targets"), revealUntilNumberOfMatchingCards: new int?(Game.H - 1));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
