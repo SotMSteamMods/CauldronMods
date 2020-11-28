@@ -395,7 +395,7 @@
     "promoCards": [
         {
             "identifier": "MagnificentMaraCharacter",
-            "promoIdentifiers": "MinistryOfStrategicScienceMagnificentMaraCharacter",
+            "promoIdentifier": "MinistryOfStrategicScienceMagnificentMaraCharacter",
             "count": 1,
             "title": "Magnificent Mara",
             "promoTitle": "Ministry Of Strategic Science Magnificent Mara",
@@ -435,7 +435,7 @@
         },
         {
             "identifier": "MagnificentMaraCharacter",
-            "promoIdentifiers": "PastMagnificentMaraCharacter",
+            "promoIdentifier": "PastMagnificentMaraCharacter",
             "count": 1,
             "title": "Magnificent Mara",
             "promoTitle": "Magnificent Mara 1929",
