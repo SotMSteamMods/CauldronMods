@@ -654,5 +654,73 @@ namespace CauldronTests
             QuickHPCheck(0, 0, 0, -4, -4, 0, -4);
             AssertInTrash(new Card[] { grounds, updated });
         }
+
+        [Test()]
+        public void TestSingleMindedPursuit()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Ra", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { pursuit, stalker, fire });
+            StartGame();
+
+            //Play this card next to the target with the lowest HP, other than {SwarmEater}. The target next to this card is Pursued.
+            AssertNextToCard(pursuit, fire);
+
+            //Increase damage dealt by {SwarmEater} by 2.
+            QuickHPStorage(haka);
+            DealDamage(swarm, haka, 2, DamageType.Melee);
+            QuickHPCheck(-4);
+
+            //If the Pursued target leaves play, destroy this card.
+            DestroyCard(fire);
+            AssertInTrash(pursuit);
+        }
+
+        [Test()]
+        public void TestSpeedAug()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Ra", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { pursuit, stalker, fire });
+            StartGame();
+
+            Card speed = PlayCard("SpeedAug");
+            //Increase damage dealt by villain targets by 1.
+            QuickHPStorage(haka);
+            DealDamage(swarm, haka, 2, DamageType.Melee);
+            //Single-Minded Pursuit +2 damage dealt by Swarm Eater
+            QuickHPCheck(-5);
+
+            QuickHPStorage(haka);
+            DealDamage(fire, haka, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            QuickHPStorage(haka);
+            DealDamage(stalker, haka, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+        }
+
+        [Test()]
+        public void TestStalkerAug()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { pursuit, stalker, fire });
+            StartGame();
+
+            PlayCard("TaMoko");
+            DestroyCard(fire);
+
+            //At the end of the villain turn this card deals each hero target except the hero with the lowest HP {H - 2} irreducible energy damage.
+            QuickHPStorage(haka, legacy, unity);
+            GoToEndOfTurn(swarm);
+            QuickHPCheck(-1, -1, 0);
+        }
     }
 }
