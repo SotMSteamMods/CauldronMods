@@ -494,5 +494,77 @@ namespace CauldronTests
             QuickHPCheck(-2);
             AssertIsInPlay(smoke);
         }
+        [Test]
+        public void TestWandOfBanishmentTop()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "VoidGuardMainstay", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card wand = PlayCard("WandOfBanishment");
+            Card bike = PlayCard("SweetRhonda");
+            DecisionSelectFunction = 1;
+            QuickHandStorage(voidMainstay);
+
+            DestroyCard(bike);
+
+            QuickHandCheck(0);
+            AssertOnTopOfDeck(bike);
+            AssertInTrash(wand);
+        }
+        [Test]
+        public void TestWandOfBanishmentBottom()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "VoidGuardMainstay", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card wand = PlayCard("WandOfBanishment");
+            Card bike = PlayCard("SweetRhonda");
+            DecisionSelectFunction = 2;
+            QuickHandStorage(voidMainstay);
+
+            DestroyCard(bike);
+
+            QuickHandCheck(0);
+            AssertOnBottomOfDeck(bike);
+            AssertInTrash(wand);
+        }
+        [Test]
+        public void TestWandOfBanishmentSkip()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "VoidGuardMainstay", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card wand = PlayCard("WandOfBanishment");
+            Card bike = PlayCard("SweetRhonda");
+            DecisionSelectFunction = 0;
+            QuickHandStorage(voidMainstay);
+
+            DestroyCard(bike);
+
+            QuickHandCheck(3);
+            AssertIsInPlay(wand);
+            AssertInTrash(bike);
+        }
+        [Test]
+        public void TestWandOfBanishmentNotOnMaraCard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "VoidGuardMainstay", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card wand = PlayCard("WandOfBanishment");
+            Card crystal = PlayCard("DowsingCrystal");
+            DecisionSelectFunction = 2;
+
+            AssertNoDecision();
+
+            DestroyCard(crystal);
+
+            AssertIsInPlay(wand);
+            AssertInTrash(crystal);
+        }
     }
 }
