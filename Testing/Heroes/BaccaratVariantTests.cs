@@ -567,5 +567,114 @@ namespace CauldronTests
             AssertInHand(new Card[] { hold1, euchre });
             AssertInTrash(new Card[] { solitare, hold0 });
         }
+
+        [Test()]
+        public void TestLoadBaccarat1929()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/PastBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            Assert.AreEqual(6, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(baccarat);
+            Assert.IsInstanceOf(typeof(PastBaccaratCharacterCardController), baccarat.CharacterCardController);
+
+            Assert.AreEqual(24, baccarat.CharacterCard.HitPoints);
+        }
+
+        [Test()]
+        public void TestBaccaratInnatePowerPlayTrick()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/PastBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card abyssal = PutInHand("AbyssalSolitaire");
+
+            //Play or draw a card. If you played a trick this way, draw a card.
+            DecisionSelectCardToPlay = abyssal;
+            GoToUsePowerPhase(baccarat);
+            QuickHandStorage(baccarat);
+            UsePower(baccarat);
+            //Played Abyssal Solitare then drew a card
+            QuickHandCheck(0);
+        }
+
+        [Test()]
+        public void TestBaccaratInnatePowerPlayNotTrick()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/PastBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card saint = PutInHand("AceOfSaints");
+
+            //Play or draw a card. If you played a trick this way, draw a card.
+            DecisionSelectCardToPlay = saint;
+            GoToUsePowerPhase(baccarat);
+            QuickHandStorage(baccarat);
+            UsePower(baccarat);
+            //Played Ace of Saints
+            QuickHandCheck(0);
+        }
+
+        [Test()]
+        public void TestBaccaratInnatePowerDraw()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/PastBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //Play or draw a card. If you played a trick this way, draw a card.
+            DecisionSelectFunction = 1;
+            GoToUsePowerPhase(baccarat);
+            QuickHandStorage(baccarat);
+            UsePower(baccarat);
+            QuickHandCheck(1);
+        }
+
+        [Test()]
+        public void TestBaccaratIncapOption1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/PastBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baccarat);
+            Card fort = PutInHand("Fortitude");
+            DecisionSelectCardToPlay = fort;
+
+            //One player may play a card now.
+            GoToUseIncapacitatedAbilityPhase(baccarat);
+            UseIncapacitatedAbility(baccarat, 0);
+            AssertIsInPlay(fort);
+        }
+
+        [Test()]
+        public void TestBaccaratIncapOption2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/PastBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baccarat);
+            DecisionSelectTurnTaker = bunker.TurnTaker;
+
+            //One player may use a power now.
+            GoToUseIncapacitatedAbilityPhase(baccarat);
+            QuickHandStorage(bunker);
+            UseIncapacitatedAbility(baccarat, 1);
+            QuickHandCheck(1);
+        }
+
+        [Test()]
+        public void TestBaccaratIncapOption3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/PastBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baccarat);
+            DecisionSelectTurnTaker = bunker.TurnTaker;
+
+            //One player may use a power now.
+            GoToUseIncapacitatedAbilityPhase(baccarat);
+            QuickHandStorage(bunker);
+            UseIncapacitatedAbility(baccarat, 2);
+            QuickHandCheck(1);
+        }
     }
 }
