@@ -366,5 +366,37 @@ namespace CauldronTests
             AssertInTrash(fiend);
 
         }
+        [Test]
+        public void TestImprobableEscapeCardDraw()
+        {
+            SetupGameController("Apostate", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card escape = PlayCard("ImprobableEscape");
+            Card enhancement = PlayCard("MysticalEnhancement");
+
+            QuickHandStorage(mara);
+
+            DestroyCard(enhancement);
+            QuickHandCheck(1);
+            DestroyCard(escape);
+            QuickHandCheck(1);
+        }
+        [Test]
+        public void TestImprobableEscapeSurvival()
+        {
+            SetupGameController("Apostate", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card escape = PlayCard("ImprobableEscape");
+
+            DealDamage(apostate, legacy, 50, DamageType.Melee);
+
+            AssertNotIncapacitatedOrOutOfGame(legacy);
+            AssertInTrash(escape);
+            Assert.AreEqual(legacy.CharacterCard.HitPoints, 2);
+        }
     }
 }
