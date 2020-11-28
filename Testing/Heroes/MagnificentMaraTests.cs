@@ -529,6 +529,30 @@ namespace CauldronTests
 
             QuickHPCheck(0, -2, -2);
 
+            DecisionSelectCardsIndex = 1;
+
+            DestroyCard("MysticalEnhancement");
+
+            UsePower(mara);
+
+            QuickHPCheck(0, -1, -1);
+        }
+        [Test]
+        public void TestMysticalEnhancementDestroyInsteadResponse()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card charge = PlayCard("MotivationalCharge");
+            PlayCard("SurgeOfStrength");
+            DecisionSelectCard = charge;
+
+            Card enhance = PlayCard("MysticalEnhancement");
+
+            DestroyCard(charge);
+            AssertIsInPlay(charge);
+            AssertInTrash(enhance);
         }
         [Test]
         public void TestPostHypnoticCuePower()
