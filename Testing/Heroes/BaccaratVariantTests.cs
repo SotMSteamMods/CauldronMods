@@ -612,7 +612,7 @@ namespace CauldronTests
             QuickHandStorage(baccarat);
             UsePower(baccarat);
             //Played Ace of Saints
-            QuickHandCheck(0);
+            QuickHandCheck(-1);
         }
 
         [Test()]
