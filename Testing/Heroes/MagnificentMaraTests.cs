@@ -367,6 +367,46 @@ namespace CauldronTests
 
         }
         [Test]
+        public void TestHandIsFasterThanTheEyeGoesInPlayOrder()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card faster = PlayCard("HandIsFasterThanTheEye");
+            Card battalion = PlayCard("BladeBattalion");
+            Card turret = PlayCard("PoweredRemoteTurret");
+
+            GoToStartOfTurn(mara);
+
+            AssertInTrash(battalion);
+            AssertInTrash(faster);
+            AssertIsInPlay(turret);
+
+            PlayCard(faster);
+            PlayCard(battalion);
+            GoToStartOfTurn(mara);
+
+            AssertInTrash(turret);
+            AssertIsInPlay(battalion);
+        }
+        [Test]
+        public void TestHandIsFasterThanTheEyeGetsStartOfTurnTrigger()
+        {
+            SetupGameController("CitizenDawn", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            GoToEndOfTurn(scholar);
+
+            Card eclipse = PlayCard("ChannelTheEclipse");
+            Card faster = PlayCard("HandIsFasterThanTheEye");
+
+            GoToStartOfTurn(dawn);
+
+            AssertInTrash(eclipse);
+        }
+        [Test]
         public void TestImprobableEscapeCardDraw()
         {
             SetupGameController("Apostate", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
@@ -397,6 +437,18 @@ namespace CauldronTests
             AssertNotIncapacitatedOrOutOfGame(legacy);
             AssertInTrash(escape);
             Assert.AreEqual(legacy.CharacterCard.HitPoints, 2);
+        }
+        [Test]
+        public void TestKalpakMakeJournal()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card kalpak = PlayCard("KalpakOfMysteries");
+            UsePower(kalpak);
+
+            PrintJournal();
         }
     }
 }
