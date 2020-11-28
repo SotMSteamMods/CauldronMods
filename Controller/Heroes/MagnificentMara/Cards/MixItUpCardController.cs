@@ -16,7 +16,34 @@ namespace Cauldron.MagnificentMara
         {
             //"Destroy 1 hero ongoing card, equipment card, or environment card.",
             //"If you do, reveal the top 2 cards of the associated deck, put one into play and discard the other."
+            var storedDestroy = new List<DestroyCardAction> { };
+            IEnumerator coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => (c.IsOngoing && c.IsHero) || IsEquipment(c) || c.IsEnvironment), false, storedDestroy, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
 
+            if(DidDestroyCard(storedDestroy))
+            {
+                var associatedDeck = storedDestroy.FirstOrDefault().CardToDestroy.Card.NativeDeck;
+                var destinations = new List<MoveCardDestination> {
+                        new MoveCardDestination(associatedDeck.OwnerTurnTaker.PlayArea),
+                        new MoveCardDestination(associatedDeck.OwnerTurnTaker.Trash)
+                    };
+                coroutine = RevealCardsFromDeckToMoveToOrderedDestinations(DecisionMaker, associatedDeck, destinations, numberOfCardsToReveal: 2, isPutIntoPlay: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
             yield break;
         }
     }

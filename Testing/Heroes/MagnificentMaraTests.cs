@@ -496,6 +496,24 @@ namespace CauldronTests
             QuickHPCheck(-5); //1 from mara, 2, from followup +1 for Surge +1 for Nemesis
         }
         [Test]
+        public void TestMixItUp()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card surge = PlayCard("SurgeOfStrength");
+            PlayCard("FleshToIron"); //need to make a decision
+            Card lead = PutOnDeck("LeadFromTheFront");
+            Card ring = PutOnDeck("TheLegacyRing");
+
+            DecisionSelectCards = new Card[] { surge, ring };
+
+            PlayCard("MixItUp");
+            AssertInTrash(surge, lead);
+            AssertIsInPlay(ring);
+        }
+        [Test]
         public void TestPostHypnoticCuePower()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
