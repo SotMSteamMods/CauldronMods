@@ -93,5 +93,36 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestF0551l()
+        {
+            SetupGameController("BaronBlade", "Ra", "Stuntman", "Haka", "Cauldron.TheCybersphere");
+            StartGame();
+
+            //this will result in stuntman being the second highest
+            SetHitPoints(ra, 20);
+            SetHitPoints(haka, 15);
+            SetHitPoints(stunt, 25);
+            SetHitPoints(baron, 25);
+
+            //destroy mdp to make him vulnerable
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            //Play out CouteQueCoute to verify there were two instances of damage
+            PlayCard("CouteQueCoute");
+
+            GoToPlayCardPhase(cybersphere);
+            Card f0551l = PlayCard("Fo551l");
+
+            //At the end of the environment turn, this card deals the non-environment target with the second highest HP 3 melee damage and 1 lightning damage.
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, stunt.CharacterCard, haka.CharacterCard, f0551l);
+            //should allow you to select if there is a tie
+            DecisionSelectTarget = stunt.CharacterCard;
+            GoToEndOfTurn(cybersphere);
+            //3 +1, 1+1 -> 6 damage total
+            QuickHPCheck(0, 0, -6, 0, 0);
+
+        }
+
     }
 }
