@@ -233,7 +233,76 @@ namespace CauldronTests
 
             // Assert
             Assert.True(false, "TODO");
+        }
 
+        [Test]
+        public void TestHostageShield()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card hostageShield = GetCard(HostageShieldCardController.Identifier);
+
+            StartGame();
+
+            DecisionYesNo = true;
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(hostageShield);
+
+            GoToStartOfTurn(ra);
+
+            // Assert
+            Assert.True(false, "TODO");
+
+        }
+
+        [Test]
+        public void TestHotZone()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            
+            StartGame();
+
+            Card hotZone = GetCard(HotZoneCardController.Identifier);
+            QuickHPStorage(legacy, ra, haka);
+
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(hotZone);
+
+            // Assert
+            QuickHPCheck(-2, -2, -2);
+            Assert.True(false, "TODO");
+        }
+
+        [Test]
+        public void TestHyperactiveImmuneSystem()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            StartGame();
+
+            SetHitPoints(Vector, 10);
+
+            Card hyperactive = GetCard(HyperactiveImmuneSystemCardController.Identifier);
+
+
+            PlayCard(legacy, "DangerSense");
+            PlayCard(legacy, "TheLegacyRing");
+            PlayCard(legacy, "Mere");
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(hyperactive);
+            GoToEndOfTurn(Vector);
+
+            // Assert
+            Assert.True(false, "TODO");
         }
     }
 }
