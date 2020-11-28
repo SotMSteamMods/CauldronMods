@@ -482,6 +482,20 @@ namespace CauldronTests
             AssertIsInPlay(surge); //both limited!
         }
         [Test]
+        public void TestMisdirection()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            DestroyCard(MDP);
+
+            QuickHPStorage(baron);
+            PlayCard("SurgeOfStrength");
+            PlayCard("Misdirection");
+            QuickHPCheck(-5); //1 from mara, 2, from followup +1 for Surge +1 for Nemesis
+        }
+        [Test]
         public void TestPostHypnoticCuePower()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
