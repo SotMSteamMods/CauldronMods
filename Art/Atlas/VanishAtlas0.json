@@ -1,0 +1,172 @@
+{"frames": {
+
+"AbductAndAbandon.jpg":
+{
+	"frame": {"x":0,"y":0,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"BlindsideJump.jpg":
+{
+	"frame": {"x":692,"y":0,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"Blink.jpg":
+{
+	"frame": {"x":1384,"y":0,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"ConcussiveBurst.jpg":
+{
+	"frame": {"x":2076,"y":0,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"Elusive.jpg":
+{
+	"frame": {"x":2768,"y":0,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"FirstResponseVanishCharacter.jpg":
+{
+	"frame": {"x":2076,"y":1020,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"FirstResponseVanishCharacterBack.jpg":
+{
+	"frame": {"x":2759,"y":1020,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"FlashRecon.jpg":
+{
+	"frame": {"x":0,"y":510,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"FlickeringStrike.jpg":
+{
+	"frame": {"x":692,"y":510,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"FocusingGauntlet.png":
+{
+	"frame": {"x":1384,"y":510,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"Forewarned.jpg":
+{
+	"frame": {"x":2076,"y":510,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"JauntingReflex.jpg":
+{
+	"frame": {"x":2768,"y":510,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"PastVanishCharacter.png":
+{
+	"frame": {"x":0,"y":2011,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"PastVanishCharacterBack.png":
+{
+	"frame": {"x":683,"y":2011,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"TacticalRelocation.jpg":
+{
+	"frame": {"x":0,"y":1020,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"TeleportBarrage.jpg":
+{
+	"frame": {"x":692,"y":1020,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"TranslocationAccelerator.png":
+{
+	"frame": {"x":1384,"y":1020,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"VanishCharacter.png":
+{
+	"frame": {"x":1366,"y":2011,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"VanishCharacterBack.png":
+{
+	"frame": {"x":2049,"y":2011,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"VanishDeckBack.jpg":
+{
+	"frame": {"x":2732,"y":2011,"w":825,"h":1154},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":825,"h":1154},
+	"sourceSize": {"w":825,"h":1154}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "VanishAtlas0.png",
+	"format": "RGBA8888",
+	"size": {"w":4096,"h":4096},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:6ae6f9f1268d9d54425b8266194de34f:2e77ba043af4d3d1b10f3e1abf195e0f:0cbeba678157540646b387a2c7dacc6d$"
+}
+}
