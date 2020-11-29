@@ -15,8 +15,9 @@ namespace Cauldron.MagnificentMara
         public override IEnumerator Play()
         {
             var storedResults = new List<SelectLocationDecision> { };
+
             //"Reveal the top card of the Villain deck, then replace it.",
-            IEnumerator coroutine = GameController.SelectADeck(DecisionMaker, SelectionType.RevealTopCardOfDeck, (Location deck) => deck.IsVillain, storedResults, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectADeck(DecisionMaker, SelectionType.RevealTopCardOfDeck, (Location deck) => IsVillain(deck.OwnerTurnTaker), storedResults, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
