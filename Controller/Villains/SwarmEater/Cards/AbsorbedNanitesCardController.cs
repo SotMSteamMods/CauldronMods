@@ -2,6 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Linq;
 
 namespace Cauldron.SwarmEater
 {
@@ -11,6 +12,7 @@ namespace Cauldron.SwarmEater
         {
             //This card and cards beneath it are indestructible
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
+            base.AddThisCardControllerToList(CardControllerListType.ReplacesCardSource);
             base.SpecialStringMaker.ShowNumberOfCardsUnderCard(base.Card);
         }
 
@@ -32,7 +34,6 @@ namespace Cauldron.SwarmEater
         {
             //...put it beneath this card.
             action.SetPostDestroyDestination(base.Card.UnderLocation, cardSource: base.GetCardSource());
-            action.PreventRemoveTriggers = true;
             yield break;
         }
 
@@ -40,6 +41,7 @@ namespace Cauldron.SwarmEater
         {
             CardController absorbed = base.FindCardController(action.CardToMove);
             absorbed.RemoveAllTriggers();
+            base.GameController.RemoveInhibitor(absorbed);
             absorbed.AddAllTriggers();
             yield break;
         }

@@ -399,12 +399,12 @@ namespace CauldronTests
             Card blade = PlayCard("BladeAug");
 
             DealDamage(swarm, blade, 75, DamageType.Melee);
-            //AssertNextToCard(blade, GetCard("AbsorbedNanites"));
-            //AssertUnderCard(GetCard("AbsorbedNanites"), blade);
+            AssertUnderCard(GetCard("AbsorbedNanites"), blade);
             //Absorb: at the end of the villain turn, {SwarmEater} deals the target other than itself with the highest HP 2 lightning damage.
             QuickHPStorage(haka);
             GoToEndOfTurn(swarm);
-            QuickHPCheck(-2);
+            //Single-Minded Pursuit +2 damage dealt by Swarm Eater
+            QuickHPCheck(-4);
         }
 
         [Test()]

@@ -12,26 +12,14 @@ namespace Cauldron.SwarmEater
 
         }
 
-        public abstract ITrigger[] AddRegularTriggers();
-
-        public abstract ITrigger[] AddAbsorbTriggers(Card cardThisIsUnder);
-
-        public override void AddTriggers()
+        public Card CardThatAbsorbedThis()
         {
-            Card below = base.GetCardThisCardIsBelow();
-            Card nextTo = base.GetCardThisCardIsNextTo();
-            if (nextTo == null)
+            Card nextTo = this.Card.Location.OwnerCard;
+            if (nextTo != null && nextTo.Identifier == "AbsorbedNanites")
             {
-                this.AddRegularTriggers();
+                nextTo = base.CharacterCard;
             }
-            else
-            {
-                if (nextTo.Identifier == "AbsorbedNanites")
-                {
-                    nextTo = base.CharacterCard;
-                }
-                this.AddAbsorbTriggers(nextTo);
-            }
+            return nextTo;
         }
     }
 }
