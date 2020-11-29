@@ -10,8 +10,11 @@ namespace Cauldron
     {
         public RenegadeQuicksilverCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SetCardProperty(base.GeneratePerTargetKey("Incap2NextTimeHeroIsDealtDamage", base.CharacterCard), false);
         }
+
+        private const string Incap2NextTimeHeroIsDealtDamage = "Incap2NextTimeHeroIsDealtDamage";
+        private int Incap2Count = 0;
 
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
@@ -34,15 +37,7 @@ namespace Cauldron
                 case 1:
                     {
                         //The next time a hero is dealt damage, they may play a card.
-                        IEnumerator coroutine2 = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsOngoing, "ongoing", true, false, null, null, false), false, null, null, base.GetCardSource(null));
-                        if (base.UseUnityCoroutines)
-                        {
-                            yield return base.GameController.StartCoroutine(coroutine2);
-                        }
-                        else
-                        {
-                            base.GameController.ExhaustCoroutine(coroutine2);
-                        }
+                        this.Incap2Count++;
                         break;
                     }
                 case 2:
@@ -89,6 +84,27 @@ namespace Cauldron
             }
             //Shuffle your deck.
             coroutine = base.ShuffleDeck(base.HeroTurnTakerController, base.TurnTaker.Deck);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        public override void AddTriggers()
+        {
+            //The next time a hero is dealt damage, they may play a card.
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => base.CharacterCard.IsIncapacitated && this.Incap2Count > 0 && action.Target.IsHero, this.PlayCardResponse, TriggerType.PlayCard, TriggerTiming.After);
+        }
+
+        private IEnumerator PlayCardResponse(DealDamageAction action)
+        {
+            //...they may play a card
+            IEnumerator coroutine = base.GameController.SelectAndPlayCardsFromHand(base.GameController.FindHeroTurnTakerController(action.Target.Owner.ToHero()), this.Incap2Count, true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
