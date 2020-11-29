@@ -357,10 +357,12 @@ namespace CauldronTests
             Card crystal = PutInHand("DowsingCrystal");
 
             DecisionSelectCard = crystal;
-
+            Card topOfDeck = GetTopCardOfDeck(baron);
             QuickHandStorage(mara);
 
             PlayCard(glimpse);
+
+            AssertOnTopOfDeck(topOfDeck);
             AssertInTrash(glimpse);
             AssertIsInPlay(crystal);
             QuickHandCheck(-1);

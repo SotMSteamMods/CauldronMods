@@ -29,7 +29,8 @@ namespace Cauldron.MagnificentMara
             if (DidSelectLocation(storedResults))
             {
                 Location villainDeck = storedResults.FirstOrDefault().SelectedLocation.Location;
-                coroutine = GameController.RevealCards(DecisionMaker, villainDeck, (Card c) => true, 1, null, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, GetCardSource());
+                var revealStorage = new List<RevealCardsAction> { };
+                coroutine = GameController.RevealCards(DecisionMaker, villainDeck, (Card c) => true, 1, revealStorage, revealedCardDisplay: RevealedCardDisplay.None, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -37,6 +38,41 @@ namespace Cauldron.MagnificentMara
                 else
                 {
                     GameController.ExhaustCoroutine(coroutine);
+                }
+                if (revealStorage.Any() && revealStorage.FirstOrDefault().RevealedCards.Any())
+                {
+                    Card c = revealStorage.FirstOrDefault().RevealedCards.First();
+                    coroutine = GameController.SendMessageAction($"{this.Card.Title} reveals {c.Title}", Priority.Medium, GetCardSource(), new Card[] { c });
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                        else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                    coroutine = GameController.MoveCard(DecisionMaker, c, villainDeck, cardSource: GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+                else
+                {
+                    coroutine = GameController.SendMessageAction($"There were no cards to reveal!", Priority.Medium, GetCardSource());
+
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
             //"You may draw a card.",
