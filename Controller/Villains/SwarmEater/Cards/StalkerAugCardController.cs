@@ -54,7 +54,7 @@ namespace Cauldron.SwarmEater
         private IEnumerator AbsorbDealDamageResponse(PhaseChangeAction action)
         {
             //...{SwarmEater} deals each other target 1 irreducible energy damage.
-            IEnumerator coroutine = base.DealDamage(this.CardThatAbsorbedThis(), (Card c) => c != this.CardThatAbsorbedThis(), 1, DamageType.Energy, true);
+            IEnumerator coroutine = base.DealDamage(this.CardThatAbsorbedThis(), (Card c) => c != this.CardThatAbsorbedThis(), (Card c) => 1, DamageType.Energy, true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
