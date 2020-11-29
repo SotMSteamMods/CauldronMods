@@ -307,7 +307,7 @@ namespace CauldronTests
             StartGame();
 
             DestroyCard("MobileDefensePlatform");
-            PlayCard("DowsingCrystal");
+            Card crystal = PlayCard("DowsingCrystal");
             UsePower("DowsingCrystal");
 
             AssertNumberOfStatusEffectsInPlay(1);
@@ -320,7 +320,8 @@ namespace CauldronTests
             PlayCard("BladeBattalion");
 
             AssertNumberOfStatusEffectsInPlay(0);
-            QuickHPCheck(-4);
+            QuickHPCheck(-6);
+            AssertInTrash(crystal);
         }
         [Test]
         public void TestDowsingCrystalOptional()

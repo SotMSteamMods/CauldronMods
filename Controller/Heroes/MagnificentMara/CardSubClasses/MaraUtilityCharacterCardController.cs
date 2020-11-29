@@ -15,6 +15,9 @@ namespace Cauldron.MagnificentMara
 
         public override void AddTriggers()
         {
+            //for Dowsing Crystal's power
+
+            //"(Once before your next turn,) when a non-hero card enters play..."
             AddTrigger((CardEntersPlayAction cep) => CanActivateEffect(this.Card, "Dowsing Crystal trigger") && cep.CardEnteringPlay != null && !cep.CardEnteringPlay.IsHero,
                             DowsingCrystalDamage,
                             TriggerType.DealDamage,
@@ -23,19 +26,25 @@ namespace Cauldron.MagnificentMara
 
         public IEnumerator DowsingCrystalDamage(CardEntersPlayAction cep)
         {
-            Log.Debug("DowsingCrystalDamage triggers");
+            //Log.Debug("DowsingCrystalDamage triggers");
             var dcTriggers = GameController.StatusEffectManager
                                             .GetStatusEffectControllersInList(CardControllerListType.ActivatesEffects)
                                             .Where((StatusEffectController sec) => (sec.StatusEffect as ActivateEffectStatusEffect).EffectName == "Dowsing Crystal trigger")
                                             .ToList();
             
+            //for each of the various Dowsing Crystal uses that have happened...
             foreach(StatusEffectController seController in dcTriggers)
             {
                 var currentTriggerEffect = seController.StatusEffect as ActivateEffectStatusEffect;
                 Card triggeringCrystal = currentTriggerEffect.CardSource;
                 CardSource crystalSource = new CardSource(FindCardController(triggeringCrystal));
 
+                if(!crystalSource.Card.IsInPlay)
+                {
+                    GameController.RemoveInhibitor(crystalSource.CardController);
+                }
 
+                //"(one hero target) may..."
                 var storedYesNo = new List<YesNoCardDecision> { };
                 IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.DealDamage, triggeringCrystal, storedResults: storedYesNo,  cardSource: crystalSource);
                 if (base.UseUnityCoroutines)
@@ -49,6 +58,7 @@ namespace Cauldron.MagnificentMara
 
                 if (DidPlayerAnswerYes(storedYesNo))
                 {
+                    //"one hero target (may deal damage...)"
                     var storedDamageSource = new List<SelectTargetDecision> { };
                     var heroTargets = GameController.FindCardsWhere(new LinqCardCriteria((Card c) => c != null && c.IsTarget && c.IsHero), visibleToCard: crystalSource);
                     coroutine = GameController.SelectTargetAndStoreResults(DecisionMaker, heroTargets, storedDamageSource, damageAmount: (Card c) => 2, selectionType: SelectionType.SelectTargetFriendly, cardSource: crystalSource);
@@ -66,6 +76,7 @@ namespace Cauldron.MagnificentMara
                     {
                         var damageSource = selectedDecision.SelectedCard;
 
+                        //"...of a type of their choosing."
                         var damageTypeDecision = new List<SelectDamageTypeDecision> { };
                         coroutine = GameController.SelectDamageType(FindHeroTurnTakerController(damageSource.Owner.ToHero()), damageTypeDecision, cardSource: crystalSource);
                         if (base.UseUnityCoroutines)
@@ -86,16 +97,18 @@ namespace Cauldron.MagnificentMara
 
                         //Log.Debug("Dowsing Crystal's trigger-on-Mara approach works so far.");
 
+                        //attempts to give the damage a destroy-dowsing-crystal-for-boost effect
                         AllowFastCoroutinesDuringPretend = false;
 
                         var damageSourceTempVar = (Card)AddTemporaryVariable("DowsingCrystalDamageSource", damageSource);
 
                         var boostDamageTrigger = new IncreaseDamageTrigger(GameController, (DealDamageAction dd) => LogAndReturnTrue(dd) && dd.DamageSource.Card == damageSourceTempVar && dd.CardSource == crystalSource && triggeringCrystal.IsInPlay, DestroyCrystalToBoostDamageResponse, null, TriggerPriority.Low, false, crystalSource);
-                        //boostDamageTrigger.
 
-                        AddToTemporaryTriggerList(boostDamageTrigger);
-                        
-                        coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, damageSourceTempVar), 2, selectedDamage, 1, false, 1, cardSource: crystalSource);
+                        AddTrigger(boostDamageTrigger);
+
+                        //"deal a non-hero target 2 damage"
+
+                        coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, damageSourceTempVar), 2, selectedDamage, 1, false, 1, additionalCriteria:((Card c) => !c.IsHero), cardSource: crystalSource);
                         if (UseUnityCoroutines)
                         {
                             yield return GameController.StartCoroutine(coroutine);
@@ -104,11 +117,13 @@ namespace Cauldron.MagnificentMara
                         {
                             GameController.ExhaustCoroutine(coroutine);
                         }
-                        RemoveTemporaryTriggers();
+
+                        RemoveTrigger(boostDamageTrigger);
                         RemoveTemporaryVariables();
                         AllowFastCoroutinesDuringPretend = true;
                     }
 
+                    //"Once before your next turn..."
                     coroutine = GameController.ExpireStatusEffect(currentTriggerEffect, crystalSource);
                     if (UseUnityCoroutines)
                     {
@@ -126,7 +141,7 @@ namespace Cauldron.MagnificentMara
 
         private bool LogAndReturnTrue(DealDamageAction dd)
         {
-            Log.Debug("LogAndDebug happens");
+            //Log.Debug("LogAndDebug happens");
             return true;
         }
 
@@ -158,6 +173,8 @@ namespace Cauldron.MagnificentMara
                         GameController.ExhaustCoroutine(coroutine);
                     }
 
+                    GameController.RemoveInhibitor(FindCardController(sourceCrystal));
+
                     coroutine = GameController.IncreaseDamage(dd, 2, false, dd.CardSource);
                     if (UseUnityCoroutines)
                     {
@@ -169,6 +186,12 @@ namespace Cauldron.MagnificentMara
                     }
                 }
             }
+            else if (!sourceCrystal.IsInPlay)
+            {
+                GameController.RemoveInhibitor(FindCardController(sourceCrystal));
+            }
+
+
             yield break;
         }
     }
