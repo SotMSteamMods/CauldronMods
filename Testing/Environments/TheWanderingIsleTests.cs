@@ -246,11 +246,11 @@ namespace CauldronTests
             GoToPlayCardPhase(ra);
 
             GoToPlayCardPhase(haka);
-                        
+
             //Issue #109 - villain deck is playing a card at the beginning of the turn
             AssertNotInPlay(topCard);
             //AmphibiousAssult isn't in play, so the top card of the villain shouldn't be played
-            
+
             GoToStartOfTurn(isle);
 
             //and still no
@@ -280,7 +280,7 @@ namespace CauldronTests
 
 
 
-           
+
         }
 
 
@@ -340,7 +340,7 @@ namespace CauldronTests
             DealDamage(ra, parasite, 5, DamageType.Fire);
             AssertNextToCard(parasite, ra.CharacterCard);
 
-            //At the start of the environment turn, if this card is next to a target, it deals that target {H} toxic damage and moves back to the environment play area. 
+            //At the start of the environment turn, if this card is next to a target, it deals that target {H} toxic damage and moves back to the environment play area.
             //H is 3, so 3 damage should be dealt
             QuickHPStorage(baron.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, haka.CharacterCard, parasite, teryx);
 
@@ -667,6 +667,9 @@ namespace CauldronTests
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
 
+            //end of the last environment turn
+            GoToEndOfTurn(env);
+
             GoToPlayCardPhase(ra);
             //ra deals damage to teryx to cause hp gain and to be immune to islandquake damage
             DealDamage(ra.CharacterCard, teryx, 5, DamageType.Fire);
@@ -693,6 +696,9 @@ namespace CauldronTests
 
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
+
+            //end of the last environment turn
+            GoToEndOfTurn(env);
 
             GoToPlayCardPhase(ra);
             //ra deals damage to teryx to cause hp gain and to be immune to islandquake damage
@@ -730,6 +736,9 @@ namespace CauldronTests
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
 
+            //end of the last environment turn
+            GoToEndOfTurn(env);
+
             var card = PutIntoPlay("Islandquake");
             AssertInPlayArea(isle, card);
 
@@ -764,7 +773,7 @@ namespace CauldronTests
 
             //stranger was immune, but took 1 damage from blood thorn
             //blade ra, and haka were hit
-            //teryx healed from mainstay
+            //teryx healed from blood thorn
             QuickHPCheck(-4, -1, -4, -4, 1);
         }
 
@@ -782,6 +791,9 @@ namespace CauldronTests
 
             //set hitpoints so there is room to gain
             SetHitPoints(teryx, 30);
+
+            //end of the last environment turn
+            GoToEndOfTurn(env);
 
             //mainstay has preemptive payback in play
             PutIntoPlay("PreemptivePayback");
@@ -811,6 +823,80 @@ namespace CauldronTests
             //blade ra, and haka were hit
             //teryx healed from mainstay
             QuickHPCheck(-4, 0, -4, -4, 3);
+        }
+
+        [Test()]
+        public void TestIslandquakeStartOfTurnHealWithPower()
+        {
+            SetupGameController("BaronBlade", "VoidGuardDrMedico", "Ra", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //destroy mdp so baron blade is not immune to damage
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"));
+
+            Card teryx = PutIntoPlay("Teryx");
+
+            //set hitpoints so there is room to gain
+            SetHitPoints(teryx, 30);
+
+            //end of the last environment turn
+            GoToEndOfTurn(env);
+
+            GoToPlayCardPhase(voidMedico);
+            Card donor = PutIntoPlay("UniversalDonor");
+            GoToUsePowerPhase(voidMedico);
+            //medico heals teryx with a power not on his character card
+            DecisionSelectCard = teryx;
+            UsePower(donor);
+            base.ResetDecisions();
+
+            var card = PutIntoPlay("Islandquake");
+            AssertInPlayArea(isle, card);
+
+            //At the start of the environment turn, this card deals each target other than Teryx 4 sonic damage. Hero targets which caused Teryx to regain HP since the end of the last environment turn are immune to this damage.
+            QuickHPStorage(baron.CharacterCard, voidMedico.CharacterCard, ra.CharacterCard, haka.CharacterCard, teryx);
+            GoToStartOfTurn(isle);
+
+            //medico was immune to damage
+            //blade, ra, and haka were hit
+            QuickHPCheck(-4, 0, -4, -4, 0);
+        }
+
+        [Test()]
+        public void TestIslandquakeStartOfTurnHealBySentinels()
+        {
+            SetupGameController("BaronBlade", "TheSentinels", "Ra", "Haka", "Cauldron.TheWanderingIsle");
+            StartGame();
+
+            //destroy mdp so baron blade is not immune to damage
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"));
+
+            Card teryx = PutIntoPlay("Teryx");
+
+            //set hitpoints so there is room to gain
+            SetHitPoints(teryx, 30);
+
+            //end of the last environment turn
+            GoToEndOfTurn(env);
+
+            GoToPlayCardPhase(sentinels);
+            Card oath = PutIntoPlay("HippocraticOath");
+            //hippocratic oath heals teryx
+            DecisionSelectCards = new Card[] { teryx, idealist, writhe };
+            GoToEndOfTurn(sentinels);
+            base.ResetDecisions();
+
+            var card = PutIntoPlay("Islandquake");
+            AssertInPlayArea(isle, card);
+
+            //At the start of the environment turn, this card deals each target other than Teryx 4 sonic damage. Hero targets which caused Teryx to regain HP since the end of the last environment turn are immune to this damage.
+            QuickHPStorage(baron.CharacterCard, medico, mainstay, idealist, writhe, ra.CharacterCard, haka.CharacterCard, teryx);
+            GoToStartOfTurn(isle);
+
+            //the sentinels were immune to damage
+            //TODO:issues#199 not clear that all 4 sentinels should be credited for hippocratic oath
+            //blade, ra, and haka were hit
+            QuickHPCheck(-4, 0, 0, 0, 0, -4, -4, 0);
         }
 
         [Test()]
@@ -873,7 +959,7 @@ namespace CauldronTests
             AssertInPlayArea(isle, card);
 
             //collect the appropriate values for all hands
-            GoToEndOfTurn(haka);            
+            GoToEndOfTurn(haka);
             //At the start of the environment turn, if Teryx is in play, each player may draw a card. Then, if there are at least 2 creatures in play, destroy this card.
             QuickHandStorage(ra, visionary, haka);
 

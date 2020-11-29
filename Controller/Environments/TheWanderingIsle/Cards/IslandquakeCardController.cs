@@ -56,7 +56,15 @@ namespace Cauldron.TheWanderingIsle
         {
             return card.IsHero && card.IsTarget &&
                 base.GameController.Game.Journal.GainHPEntries()
-                        .Any(e => e.Round == this.Game.Round && e.TargetCard.Identifier == TeryxIdentifier && e.SourceCard == card);
+                .Where(Journal.SinceLastTurn<GainHPJournalEntry>(base.TurnTaker))
+                        .Any(e => e.Round == this.Game.Round && e.TargetCard.Identifier == TeryxIdentifier && IsGainHPCausedByHeroTarget(e, card));
+        }
+
+        private bool IsGainHPCausedByHeroTarget(GainHPJournalEntry gainHPEntry, Card card)
+        {
+            //when teryx converts hero damage into healing, SourceCard is the damage source
+            //TODO:issues#199 attempting to attribute direct healing from non-target cards to their hero, but this behaves weirdly for multi-character hero decks or if a normally non-target card becomes a target.
+            return gainHPEntry.SourceCard == card || (!gainHPEntry.SourceCard.IsTarget && gainHPEntry.SourceCard.Owner.CharacterCards.Contains(card));
         }
 
     }
