@@ -16,16 +16,13 @@ namespace Cauldron.SwarmEater
             }
         }
 
-        public override ITrigger[] AddRegularTriggers()
+        public override void AddTriggers()
         {
             //At the end of the villain turn this card deals each hero target except the hero with the lowest HP {H - 2} irreducible energy damage.
-            return new ITrigger[] { base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageExceptLowestResponse, TriggerType.DealDamage) };
-        }
+            base.AddEndOfTurnTrigger((TurnTaker tt) => base.Card.IsInPlayAndNotUnderCard && tt == base.TurnTaker, this.DealDamageExceptLowestResponse, TriggerType.DealDamage);
 
-        public override ITrigger[] AddAbsorbTriggers(Card cardThisIsUnder)
-        {
             //At the end of the villain turn, {SwarmEater} deals each other target 1 irreducible energy damage.
-            return new ITrigger[] { base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, cardThisIsUnder, (Card c) => c != cardThisIsUnder, TargetType.All, 1, DamageType.Energy, true) };
+            base.AddEndOfTurnTrigger((TurnTaker tt) => base.Card.Location.IsUnderCard && tt == base.TurnTaker, this.AbsorbDealDamageResponse, TriggerType.DealDamage);
         }
 
         private IEnumerator DealDamageExceptLowestResponse(PhaseChangeAction action)
@@ -50,6 +47,21 @@ namespace Cauldron.SwarmEater
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
+            }
+            yield break;
+        }
+
+        private IEnumerator AbsorbDealDamageResponse(PhaseChangeAction action)
+        {
+            //...{SwarmEater} deals each other target 1 irreducible energy damage.
+            IEnumerator coroutine = base.DealDamage(this.CardThatAbsorbedThis(), (Card c) => c != this.CardThatAbsorbedThis(), 1, DamageType.Energy, true);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
         }
