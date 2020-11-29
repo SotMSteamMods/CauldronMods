@@ -1,13 +1,14 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Cauldron.Quicksilver
+namespace Cauldron
 {
-    public class QuicksilverCharacterCardController : HeroCharacterCardController
+    public class RenegadeQuicksilverCharacterCardController : QuicksilverSubCharacterCardController
     {
-        public QuicksilverCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public RenegadeQuicksilverCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
@@ -18,8 +19,8 @@ namespace Cauldron.Quicksilver
             {
                 case 0:
                     {
-                        //One player may play a card now.
-                        IEnumerator coroutine = base.SelectHeroToPlayCard(base.HeroTurnTakerController, false, true, false, null, null, null, false, true);
+                        //One player may draw a card now.
+                        IEnumerator coroutine = base.GameController.SelectHeroToDrawCard(base.HeroTurnTakerController, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -32,7 +33,7 @@ namespace Cauldron.Quicksilver
                     }
                 case 1:
                     {
-                        //Destroy 1 ongoing card.
+                        //The next time a hero is dealt damage, they may play a card.
                         IEnumerator coroutine2 = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsOngoing, "ongoing", true, false, null, null, false), false, null, null, base.GetCardSource(null));
                         if (base.UseUnityCoroutines)
                         {
@@ -46,11 +47,8 @@ namespace Cauldron.Quicksilver
                     }
                 case 2:
                     {
-                        //Until the start of your next turn increase melee damage dealt by hero targets by 1.
+                        //Increase all damage dealt by 1 until the start of your next turn.
                         IncreaseDamageStatusEffect increaseDamageStatusEffect = new IncreaseDamageStatusEffect(1);
-                        increaseDamageStatusEffect.SourceCriteria.IsHero = new bool?(true);
-                        //increaseDamageStatusEffect.DamageTypeCriteria.invertTypes = true;
-                        increaseDamageStatusEffect.DamageTypeCriteria.AddType(DamageType.Melee);
                         increaseDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
                         IEnumerator coroutine3 = base.AddStatusEffect(increaseDamageStatusEffect, true);
                         if (base.UseUnityCoroutines)
@@ -69,9 +67,8 @@ namespace Cauldron.Quicksilver
 
         public override IEnumerator UsePower(int index = 0)
         {
-            //Discard a card.
-            List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
-            IEnumerator coroutine = base.SelectAndDiscardCards(base.HeroTurnTakerController, 1, storedResults: storedResults);
+            //Discard a card. 
+            IEnumerator coroutine = base.SelectAndDiscardCards(base.HeroTurnTakerController, 1);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -80,20 +77,25 @@ namespace Cauldron.Quicksilver
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
-            //If you do, draw 2 cards
-            int drawNumeral = GetPowerNumeral(0, 2);
-            if (storedResults.Count == 1)
+            //Search your deck for Iron Retort and put it into your hand. 
+            coroutine = base.SearchForCards(base.HeroTurnTakerController, true, false, 1, 1, new LinqCardCriteria((Card c) => c.Identifier == "IronRetort"), false, true, false);
+            if (base.UseUnityCoroutines)
             {
-                coroutine = base.DrawCards(base.HeroTurnTakerController, drawNumeral);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            //Shuffle your deck.
+            coroutine = base.ShuffleDeck(base.HeroTurnTakerController, base.TurnTaker.Deck);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
         }
