@@ -1,5 +1,4 @@
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
@@ -7,17 +6,25 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Starlight
 {
-    public class StarlightCardController : CardController
+    public class StarlightSubCharacterCardController : HeroCharacterCardController
     {
-        public StarlightCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected bool IsCoreCharacterCard = true;
+        public StarlightSubCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
 
-        protected bool IsConstellation(Card card)
+        public override void AddStartOfGameTriggers()
         {
-            return (card != null) && GameController.DoesCardContainKeyword(card, "constellation");
+            if(IsCoreCharacterCard)
+            {
+                (TurnTakerController as StarlightTurnTakerController).ManageCharactersOffToTheSide(true);
+            }
         }
 
+        protected bool IsConstellation(Card c)
+        {
+            return GameController.DoesCardContainKeyword(c, "constellation");
+        }
         protected bool IsNextToConstellation(Card card)
         {
             if (card != null && card.NextToLocation != null && card.NextToLocation.Cards != null)
@@ -27,7 +34,6 @@ namespace Cauldron.Starlight
             }
             return false;
         }
-
         protected IEnumerator SelectActiveCharacterCardToDealDamage(List<Card> storedResults, int? damageAmount = null, DamageType? damageType = null)
         {
             //future-proofing for Nightlore Council
@@ -42,7 +48,7 @@ namespace Cauldron.Starlight
                 }
                 else
                 {
-                    
+
                     DealDamageAction previewDamage = new DealDamageAction(GetCardSource(), null, null, (int)damageAmount, (DamageType)damageType);
                     coroutine = base.GameController.SelectCardAndStoreResults(this.HeroTurnTakerController, SelectionType.HeroToDealDamage, new LinqCardCriteria((Card c) => c.Owner == base.TurnTaker && c.IsCharacter && !c.IsIncapacitatedOrOutOfGame, "active Starlight"), storedDecision, optional: false, allowAutoDecide: false, previewDamage, includeRealCardsOnly: true, GetCardSource());
                 }
@@ -70,19 +76,7 @@ namespace Cauldron.Starlight
 
         protected bool IsMultiCharPromo(bool allowReplacements = true)
         {
-            if (!allowReplacements)
-            {
-                return HeroTurnTakerControllerWithoutReplacements.HasMultipleCharacterCards;
-            }
-            return HeroTurnTakerController.HasMultipleCharacterCards;
-        }
-        protected List<Card> ListStarlights(bool allowReplacements = true)
-        {
-            if (!allowReplacements)
-            {
-                return HeroTurnTakerControllerWithoutReplacements.CharacterCards.ToList();
-            }
-            return this.CharacterCards.ToList();
+            return this.CharacterCards.Count() > 1;
         }
     }
 }
