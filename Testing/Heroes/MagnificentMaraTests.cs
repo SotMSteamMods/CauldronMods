@@ -482,6 +482,48 @@ namespace CauldronTests
             AssertIsInPlay(surge); //both limited!
         }
         [Test]
+        public void TestMesmerPendant()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            DestroyCard(MDP);
+            PlayCard("BladeBattalion");
+            PlayCard("MesmerPendant");
+
+            GoToStartOfTurn(mara);
+        }
+        [Test]
+        public void TestMesmerPendantNonVillain()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            PlayCard("LivingRockslide");
+            PlayCard("MesmerPendant");
+
+            GoToStartOfTurn(mara);
+        }
+        [Test]
+        public void TestMesmerPendantCryoBot()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.MagnificentMara", "Legacy", "Unity", "RealmOfDiscord");
+
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            GoToStartOfTurn(legacy);
+
+            Card bot = PlayCard("CryoBot");
+            PlayCard("MesmerPendant");
+
+
+            DestroyCard("MesmerPendant");
+        }
+        [Test]
         public void TestMisdirection()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
