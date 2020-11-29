@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cauldron
+namespace Cauldron.Quicksilver
 {
     public class UncannyQuicksilverCharacterCardController : HeroCharacterCardController
     {
@@ -80,7 +80,7 @@ namespace Cauldron
                         {
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
-                        coroutine = base.GameController.GainHP(selectedHero.CharacterCard, base.GetNumberOfCardsDiscarded(storedResults) * 2, cardSource: base.GetCardSource());
+                        coroutine = base.GameController.GainHP(selectedHero.CharacterCard, base.GetNumberOfCardsDiscarded(storedResults), cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
