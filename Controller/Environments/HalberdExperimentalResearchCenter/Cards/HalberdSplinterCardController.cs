@@ -36,7 +36,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             else
             {
                 //find all villain targets
-                targets = (Card c) => c.IsVillainTarget && c.IsInPlayAndHasGameText;
+                targets = (Card c) => IsVillainTarget(c) && c.IsInPlayAndHasGameText;
             }
 
             //deal the 3 hero/villain targets with the lowest HP 1 projectile damage each
