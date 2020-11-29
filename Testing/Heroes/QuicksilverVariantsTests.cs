@@ -44,7 +44,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestQuicksilverIncap1()
+        public void TestUncannyQuicksilverIncap1()
         {
             SetupGameController("BaronBlade", "Cauldron.Quicksilver/UncannyQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
             StartGame();
@@ -59,7 +59,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestQuicksilverIncap2()
+        public void TestUncannyQuicksilverIncap2()
         {
             SetupGameController("Apostate", "Cauldron.Quicksilver/UncannyQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
             StartGame();
@@ -71,7 +71,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestQuicksilverIncap3()
+        public void TestUncannyQuicksilverIncap3()
         {
             SetupGameController("BaronBlade", "Cauldron.Quicksilver/UncannyQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
             StartGame();
@@ -98,6 +98,122 @@ namespace CauldronTests
             QuickHPStorage(wraith);
             UseIncapacitatedAbility(quicksilver, 2);
             QuickHPCheck(2);
+        }
+
+        [Test()]
+        public void TestRenegadeQuicksilverLoad()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver/RenegadeQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
+
+            Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(quicksilver);
+            Assert.IsInstanceOf(typeof(RenegadeQuicksilverCharacterCardController), quicksilver.CharacterCardController);
+
+            Assert.AreEqual(27, quicksilver.CharacterCard.HitPoints);
+        }
+
+        [Test]
+        public void TestRenegadeQuicksilverPower()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver/RenegadeQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            Card retort = PutOnDeck("IronRetort");
+            Card needle = PutInHand("ForestOfNeedles");
+
+            DecisionSelectCard = retort;
+            DecisionDiscardCard = needle;
+
+            QuickHandStorage(quicksilver);
+            UsePower(quicksilver);
+            //Discard a card. Search your deck for Iron Retort and put it into your hand. Shuffle your deck.
+            QuickHandCheckZero();
+            AssertInHand(retort);
+            AssertInTrash(needle);
+        }
+
+        [Test]
+        public void TestRenegadeQuicksilverIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver/RenegadeQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron, quicksilver.CharacterCard);
+
+            //One player may draw a card now.
+            AssertIncapLetsHeroDrawCard(quicksilver, 0, ra, 1);
+        }
+
+        [Test]
+        public void TestRenegadeQuicksilverIncap2()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver/RenegadeQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            SetupIncap(apostate, quicksilver.CharacterCard);
+            Card staff = PutInHand("TheStaffOfRa");
+            Card blaze = PutInHand("BlazingTornado");
+            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { staff, blaze };
+
+            //The next time a hero is dealt damage, they may play a card.
+            UseIncapacitatedAbility(quicksilver, 1);
+            AssertInHand(new Card[] { staff, blaze });
+            DealDamage(apostate, ra, 2, DamageType.Melee);
+            DealDamage(apostate, ra, 2, DamageType.Melee);
+            AssertIsInPlay(staff);
+            AssertInHand(blaze);
+        }
+
+        [Test]
+        public void TestRenegadeQuicksilverIncap2UsedTwice()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver/RenegadeQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            SetupIncap(apostate, quicksilver.CharacterCard);
+            Card staff = PutInHand("TheStaffOfRa");
+            Card blaze = PutInHand("BlazingTornado");
+            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { staff, blaze };
+
+            //The next time a hero is dealt damage, they may play a card.
+            UseIncapacitatedAbility(quicksilver, 1);
+            UseIncapacitatedAbility(quicksilver, 1);
+            AssertInHand(new Card[] { staff, blaze });
+            DealDamage(apostate, ra, 2, DamageType.Melee);
+            AssertIsInPlay(new Card[] { staff, blaze });
+        }
+
+        [Test]
+        public void TestRenegadeQuicksilverIncap3()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver/RenegadeQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            SetupIncap(apostate, quicksilver.CharacterCard);
+
+            //Increase all damage dealt by 1 until the start of your next turn.
+            UseIncapacitatedAbility(quicksilver, 2);
+
+            QuickHPStorage(ra);
+            DealDamage(apostate, ra, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            QuickHPStorage(apostate);
+            DealDamage(wraith, apostate, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            GoToStartOfTurn(quicksilver);
+
+            QuickHPStorage(ra);
+            DealDamage(apostate, ra, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            QuickHPStorage(apostate);
+            DealDamage(wraith, apostate, 2, DamageType.Melee);
+            QuickHPCheck(-2);
         }
     }
 }
