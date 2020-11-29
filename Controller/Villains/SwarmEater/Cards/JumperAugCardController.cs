@@ -15,20 +15,30 @@ namespace Cauldron.SwarmEater
             }
         }
 
-        public override ITrigger[] AddRegularTriggers()
+        public override void AddTriggers()
         {
-            return new ITrigger[] {
-                //Reduce damage dealt to this card by non-villain cards by 1.
-                base.AddReduceDamageTrigger((DealDamageAction action) => action.Target == base.Card && !action.DamageSource.IsVillain, (DealDamageAction action) => 1),
-                //At the end of the villain turn this card deals the 2 hero targets with the lowest HP {H - 2} melee damage each.
-                base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsHero, TargetType.LowestHP, Game.H - 2, DamageType.Melee, numberOfTargets: 2)
-            };
+            //Reduce damage dealt to this card by non-villain cards by 1.
+            base.AddReduceDamageTrigger((DealDamageAction action) => base.Card.IsInPlayAndNotUnderCard && action.Target == base.Card && !action.DamageSource.IsVillain, (DealDamageAction action) => 1);
+            //At the end of the villain turn this card deals the 2 hero targets with the lowest HP {H - 2} melee damage each.
+            base.AddEndOfTurnTrigger((TurnTaker tt) => base.Card.IsInPlayAndNotUnderCard && tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
+
+            //Absorb: reduce damage dealt to {SwarmEater} by 1.
+            base.AddReduceDamageTrigger((Card c) => base.Card.Location.IsUnderCard && c == this.CardThatAbsorbedThis(), 1);
         }
 
-        public override ITrigger[] AddAbsorbTriggers(Card cardThisIsUnder)
+        private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
-            //Absorb: reduce damage dealt to {SwarmEater} by 1.
-            return new ITrigger[] { base.AddReduceDamageTrigger((Card c) => c == cardThisIsUnder, 1) };
+            //...this card deals the 2 hero targets with the lowest HP {H - 2} melee damage each.
+            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => Game.H - 2, DamageType.Melee, numberOfTargets: 2);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
     }
 }

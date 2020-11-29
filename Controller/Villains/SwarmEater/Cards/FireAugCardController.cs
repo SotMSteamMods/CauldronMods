@@ -18,10 +18,10 @@ namespace Cauldron.SwarmEater
         public override void AddTriggers()
         {
             //At the end of the villain turn this card deals the hero target with the second highest HP {H - 1} fire damage and each player must discard a card.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageAndDiscardCardResponse, TriggerType.DealDamage, (PhaseChangeAction action) => base.Card.IsInPlayAndNotUnderCard);
+            base.AddEndOfTurnTrigger((TurnTaker tt) => base.Card.IsInPlayAndNotUnderCard && tt == base.TurnTaker, this.DealDamageAndDiscardCardResponse, new TriggerType[] { TriggerType.DealDamage, TriggerType.DiscardCard });
 
             //Absorb: at the start of the villain turn, {H - 2} players must discard a card.
-            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.AbsorbDiscardResponse, TriggerType.DiscardCard, (PhaseChangeAction action) => base.Card.Location.IsUnderCard);
+            base.AddStartOfTurnTrigger((TurnTaker tt) => base.Card.Location.IsUnderCard && tt == base.TurnTaker, this.AbsorbDiscardResponse, TriggerType.DiscardCard);
         }
 
         private IEnumerator DealDamageAndDiscardCardResponse(PhaseChangeAction action)

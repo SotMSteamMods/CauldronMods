@@ -22,10 +22,10 @@ namespace Cauldron.SwarmEater
         public override void AddTriggers()
         {
             //At the end of the villain turn, this card deals the hero target with the highest HP 2 lightning damage.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, new TriggerType[] { TriggerType.DealDamage }, (PhaseChangeAction action) => base.Card.IsInPlayAndNotUnderCard);
+            base.AddEndOfTurnTrigger((TurnTaker tt) => base.Card.IsInPlayAndNotUnderCard && tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
 
             //Absorb: at the end of the villain turn, {SwarmEater} deals the target other than itself with the highest HP 2 lightning damage.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.AbsorbDealDamageResponse, new TriggerType[] { TriggerType.DealDamage }, (PhaseChangeAction action) => base.Card.Location.IsUnderCard);
+            base.AddEndOfTurnTrigger((TurnTaker tt) => base.Card.Location.IsUnderCard && tt == base.TurnTaker, this.AbsorbDealDamageResponse, TriggerType.DealDamage);
         }
 
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
