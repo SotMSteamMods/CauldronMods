@@ -14,7 +14,7 @@
                 "villain"
             ],
             "body": "Asymptomatic Carrier",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "fbae41",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 55,
@@ -56,7 +56,7 @@
             "flippedAdvancedIcons": [
                 "IncreaseDamageDealt"
             ],
-            "difficulty": 1,
+            "difficulty": 2,
             "openingLines": {
                 "default": "default placeholder",
                 "DocHavocCharacter": "Doc Havoc placeholder"

@@ -2,8 +2,8 @@
     "name": "F.S.C. Continuance Wanderer",
     "kind": "Environment",
     "expansionIdentifier": "Cauldron",
-    "backgroundColor": "FB5455",
-    "difficulty": 1,
+    "backgroundColor": "D88BB8",
+    "difficulty": 3,
     "cards": [
         {
             "identifier": "CombatCyborg",
@@ -19,9 +19,9 @@
             ],
             "body": [
                 "Reduce damage dealt to environment targets by 2.",
-                "At the end of the environment turn, this card deals non-environment the target with the lowest HP (H)-2 projectile damage."
+                "At the end of the environment turn, this card deals non-environment the target with the lowest HP {H-2} projectile damage."
             ],
-            "flavorText": "“Now that's my kind of possible future!” said Unity. Omnitron-X grabbed her wrist and began retreating. “Please Accompany me if you wish to survive.”",
+            "flavorText": "“Now that's my kind of possible future!” said Unity.{BR}Omnitron-X grabbed her wrist and{BR}began retreating. “Please Accompany me if you wish to survive.”",
             "hitpoints": 4
         },
         {
@@ -50,9 +50,12 @@
                 "EndOfTurnAction",
                 "DealDamageEnergy"
             ],
-            "body": "At the end of the environment turn, this card deals the hero target with the highest HP {H} energy damage.",
+            "body": [
+                "At the end of the environment turn, this card deals the hero target with the highest HP {H} energy damage.",
+                "Then, this card deals X villain targets 2 energy damage each, where x is the number of time vortex cards in the environment trash."
+            ],
             "flavorText": "“The way I hear it, some things ain't{BR}supposed to exist,” said Chrono-Ranger.{BR}“Problem is, when they intersect this{BR}crystal thing, they [b]DO[/b].”",
-            "hitpoints": 8
+            "hitpoints": 4
         },
         {
             "identifier": "PrehistoricBehemoth",
@@ -68,7 +71,7 @@
             ],
             "body": [
                 "This card is immune to damage dealt by targets with less than 10HP.",
-                "At the end of the environment turn, this card deals the {H - 2} hero target 2 melee damage each."
+                "At the end of the environment turn, this card deals the {H - 2} hero target with the highest HP 2 melee damage each."
             ],
             "flavorText": "The timeship attracts everything that{BR}might have been, including denizens{BR}of a potential world whose ice{BR}age never ended.",
             "hitpoints": 8

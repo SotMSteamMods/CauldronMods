@@ -13,6 +13,7 @@ namespace Cauldron.TheStranger
 
         public MarkOfDestructionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new LinqCardCriteria((Card c) => !c.IsHeroCharacterCard && !c.IsVillainCharacterCard && c.IsInPlay && !c.IsOneShot, "non-Character card", false, false, null, null, false))
         {
+			SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
         #endregion Constructors

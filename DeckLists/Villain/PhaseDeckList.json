@@ -15,7 +15,7 @@
                 "villain"
             ],
             "body": "Intagible Saboteur",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "c175b2",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 30,
@@ -58,7 +58,7 @@
             "flippedAdvancedIcons": [
                 "DestroyOngoing"
             ],
-            "difficulty": 1,
+            "difficulty": 3,
             "openingLines": {
                 "default": "Ha! Smell ya later, losers! This girl is outta here!",
                 "ImpactCharacter": "Impact placeholder",

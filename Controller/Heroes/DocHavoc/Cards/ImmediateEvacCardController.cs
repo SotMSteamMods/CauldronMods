@@ -85,7 +85,7 @@ namespace Cauldron.DocHavoc
 
             List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
 
-            IEnumerator discardCardRoutine = this.GameController.SelectAndDiscardCard(cc.HeroTurnTakerController, storedResults: storedResults);
+            IEnumerator discardCardRoutine = this.GameController.SelectAndDiscardCard(cc.HeroTurnTakerController, storedResults: storedResults, cardSource: GetCardSource());
 
 
             if (this.UseUnityCoroutines)

@@ -51,7 +51,7 @@ namespace Cauldron.DocHavoc
             int damage = this.GetPowerNumeral(0, DamageAmountToNonHeroTarget);
 
             IEnumerator dealDamageRoutine = base.GameController.DealDamageToTarget(new DamageSource(this.GameController, selectedCard), base.CharacterCard,
-                damage, DamageType.Melee);
+                damage, DamageType.Melee, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -69,8 +69,8 @@ namespace Cauldron.DocHavoc
             Console.WriteLine($"Damage dealt to Doc Havoc this turn by {selectedCard.Identifier}: {damageDealtToDocHavocByTargetThisTurn}");
 
             IEnumerator dealDamageRoutine2 = base.GameController.DealDamageToTarget(
-                new DamageSource(this.GameController, this.Card.Owner.CharacterCard), selectedCard,
-                damageDealtToDocHavocByTargetThisTurn, DamageType.Melee);
+                new DamageSource(this.GameController, this.CharacterCard), selectedCard,
+                damageDealtToDocHavocByTargetThisTurn, DamageType.Melee, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {

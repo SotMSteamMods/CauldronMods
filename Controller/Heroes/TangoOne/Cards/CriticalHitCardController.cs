@@ -14,92 +14,81 @@ namespace Cauldron.TangoOne
         // If it is a Critical card, increase that damage by 3.
         //==============================================================
 
-        public static string Identifier = "CriticalHit";
+        public static readonly string Identifier = "CriticalHit";
 
         private const int DamageIncrease = 3;
 
         public CriticalHitCardController(Card card, TurnTakerController turnTakerController) : base(card,
             turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(this.HeroTurnTaker.Deck, new LinqCardCriteria(c => IsCritical(c), "critical"));
+
             this.AllowFastCoroutinesDuringPretend = false;
+            this.RunModifyDamageAmountSimulationForThisCard = true;
         }
 
         public override void AddTriggers()
         {
-            DamageSource heroDamageSource = new DamageSource(this.GameController, this.Card.Owner.CharacterCard);
-
-            base.AddTrigger<DealDamageAction>(dda => dda.DamageSource != null && dda.DamageSource.IsSameCard(base.CharacterCard),
+            base.AddTrigger<DealDamageAction>(dda => dda.DamageSource != null && dda.DamageSource.IsSameCard(base.CharacterCard) && dda.Amount > 0,
                 this.RevealTopCardFromDeckResponse,
-                new TriggerType[]
-                {
-                    TriggerType.DealDamage
-
-                }, TriggerTiming.Before, null, false, true, true);
-
-            base.AddTriggers();
+                new TriggerType[] { TriggerType.IncreaseDamage },
+                TriggerTiming.Before, null, isConditional: false, requireActionSuccess: true, isActionOptional: true);
         }
 
         private IEnumerator RevealTopCardFromDeckResponse(DealDamageAction dda)
         {
+            List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
 
             // Ask if player wants to discard off the top of their deck
-
-            YesNoDecision yesNo = new YesNoDecision(base.GameController, base.HeroTurnTakerController,
-            SelectionType.DiscardFromDeck, false, cardSource: GetCardSource());
-
-            IEnumerator routine = base.GameController.MakeDecisionAction(yesNo, true);
+            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.RevealTopCardOfDeck, this.Card, dda, storedYesNoResults, null, GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(routine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(routine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
 
             // Return if they chose not to discard from their deck
-            if (yesNo.Answer == null || !yesNo.Answer.Value)
+            if (!base.DidPlayerAnswerYes(storedYesNoResults))
             {
                 yield break;
             }
 
             // Move card from top of their deck to the trash
             List<MoveCardAction> moveCardActions = new List<MoveCardAction>();
-            IEnumerator discardCardRoutine = base.GameController.DiscardTopCard(this.TurnTaker.Deck, moveCardActions,
-                card => true, this.TurnTaker, base.GetCardSource());
+            coroutine = base.GameController.DiscardTopCard(this.TurnTaker.Deck, moveCardActions, card => true, this.TurnTaker, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(discardCardRoutine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(discardCardRoutine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            // Check to see if the card was moved and contains the keyword "critical", if it didn't, break and damage proceeds normally
-            if (moveCardActions.Count <= 0 || !moveCardActions.First().WasCardMoved ||
-                !IsCritical(moveCardActions.First().CardToMove))
+            if (DidMoveCard(moveCardActions))
             {
-                yield break;
+                Card discardedCard = moveCardActions.First().CardToMove;
+                if (IsCritical(discardedCard))
+                {
+                    // Card had the "critical" keyword, increase the damage
+                    ModifyDealDamageAction mdda = new IncreaseDamageAction(this.GameController, dda, DamageIncrease, false);
+                    dda.AddDamageModifier(mdda);
+
+                    coroutine = base.GameController.SendMessageAction(discardedCard.Title + " is a critical card, so damage is increased by 3!", Priority.Medium, base.GetCardSource(), associatedCards: new Card[] { discardedCard });
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
             }
-
-            // Card had the "critical" keyword, increase the damage
-            ModifyDealDamageAction mdda = new IncreaseDamageAction(this.GameController, dda, DamageIncrease, false);
-            dda.AddDamageModifier(mdda);
-
-            Card discardedCard = moveCardActions.First().CardToMove;
-            IEnumerator sendMessage = base.GameController.SendMessageAction(discardedCard.Title + " is a critical card, so damage is increased by 3!", Priority.Medium, base.GetCardSource(), associatedCards: new Card[] { discardedCard });
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(sendMessage);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(sendMessage);
-            }
-
-
             yield break;
         }
     }

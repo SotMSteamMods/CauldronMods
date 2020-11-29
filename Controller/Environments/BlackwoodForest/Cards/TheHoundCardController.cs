@@ -17,10 +17,9 @@ namespace Cauldron.BlackwoodForest
         // and shuffle this card back into the environment deck.
         //==============================================================
 
-        public static string Identifier = "TheHound";
+        public static readonly string Identifier = "TheHound";
 
         private const int TargetsToHit = 1;
-        private const int OngoingOrEquipmentToDestroy = 1;
 
         public TheHoundCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -31,7 +30,7 @@ namespace Cauldron.BlackwoodForest
         {
             List<Card> storedResults = new List<Card>();
             IEnumerator findTargetWithLowestHpRoutine = base.GameController.FindTargetsWithLowestHitPoints(1, TargetsToHit,
-                c => c.IsTarget && !c.Owner.IsEnvironment, storedResults);
+                c => c.IsTarget && !c.IsEnvironment, storedResults);
 
             if (base.UseUnityCoroutines)
             {
@@ -60,7 +59,7 @@ namespace Cauldron.BlackwoodForest
 
             // Destroy 1 hero ongoing or equipment card
             IEnumerator destroyCardRoutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker,
-                new LinqCardCriteria(card => card.Owner.IsHero && (IsEquipment(card) || card.IsOngoing)), false, cardSource: this.GetCardSource());
+                new LinqCardCriteria(card => card.IsHero && (IsEquipment(card) || card.IsOngoing)), false, cardSource: this.GetCardSource());
 
             // Play the top card of the environment deck
             IEnumerator playCardRoutine = this.GameController.PlayTopCard(this.DecisionMaker, this.TurnTakerController);

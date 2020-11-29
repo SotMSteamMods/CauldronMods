@@ -16,9 +16,9 @@
             "count": 1,
             "title": "Starlight",
             "body": "Stargaze",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "eed974",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "eed974",
             "character": true,
             "powers": [
                 "Draw a card, or put a constellation card from your trash into play."
@@ -46,7 +46,7 @@
                 "default": "default placeholder",
                 "MenagerieCharacter": "Menagerie placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "AncientConstellationA",
@@ -542,9 +542,9 @@
             "promoTitle": "Starlight: Genesis",
             "shortPromoTitle": "Genesis Starlight",
             "body": "Radiance",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "C7E7E0",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "C7E7E0",
             "character": true,
             "powers": [
                 "{Starlight} deals each hero target 1 energy damage. Search your deck for up to 2 constellation cards and play them. Shuffle your deck."
@@ -571,7 +571,7 @@
                 "default": "default placeholder",
                 "MenagerieCharacter": "Menagerie placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "StarlightCharacter",
@@ -580,7 +580,7 @@
             "title": "Starlight",
             "promoTitle": "Nightlore Council Instructions",
             "shortPromoTitle": "Nightlore Council",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "FCF58A",
             "foilBackgroundColor": "FEFEFE",
             "hitpointColor": "C94742",
             "character": true,
@@ -619,7 +619,7 @@
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "isReal": false,
-            "complexity": 1
+            "complexity": 3
         }
     ]
 }

@@ -16,7 +16,7 @@ namespace Cauldron.BlackwoodForest
         // At the start of the environment turn, you may destroy this card.
         //==============================================================
 
-        public static string Identifier = "OvergrownCathedral";
+        public static readonly string Identifier = "OvergrownCathedral";
 
         private const string FirstTimeDamageDealtPropName = "FirstTimeDamageDealt";
         private const int DamageToDeal = 1;
@@ -47,7 +47,7 @@ namespace Cauldron.BlackwoodForest
 
             // Ask if player wants to destroy this card
             IEnumerator routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.DiscardFromDeck, this.Card, null, storedYesNoResults, null, GetCardSource());
+                SelectionType.DestroyCard, this.Card, null, storedYesNoResults, null, GetCardSource());
 
             if (base.UseUnityCoroutines)
             {

@@ -1362,6 +1362,34 @@ namespace CauldronTests
             QuickHPCheck(-1);
         }
 
+        [Test()]
+        public void TestSnowshadeGownCantDealDamageIfNoHPGain()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+ 
+
+            //destroy mdp so baron is vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card gown = PlayCard("SnowshadeGown");
+
+            // Whenever LadyOfTheWood regains HP, you may select a target that hasn't been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
+
+            GoToUsePowerPhase(ladyOfTheWood);
+
+
+            //Have baron blade and LotW have been dealt damage they aren't available for the reaction
+            DecisionYesNo = true;
+            DecisionSelectTarget = ra.CharacterCard;
+            QuickHPStorage(ra);
+            //Use LotW power to trigger reaction
+            UsePower(gown);
+            QuickHPCheck(0);
+        }
+
 
         [Test()]
         public void TestSnowshadeGownDealDamage_NoTargets()

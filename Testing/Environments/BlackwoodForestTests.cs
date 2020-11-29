@@ -48,6 +48,7 @@ namespace CauldronTests
             Assert.AreEqual(0, legacy.TurnTaker.Trash.Cards.Count());
             Assert.AreEqual(0, haka.TurnTaker.Trash.Cards.Count());
             Assert.AreEqual(0, baron.TurnTaker.Trash.Cards.Count());
+            AssertNumberOfCardsInRevealed(BlackwoodForest, 0);
         }
 
         [Test]
@@ -82,6 +83,7 @@ namespace CauldronTests
             Assert.AreEqual(2, legacy.TurnTaker.Trash.Cards.Count());
             Assert.AreEqual(0, haka.TurnTaker.Trash.Cards.Count());
             Assert.AreEqual(3, baron.TurnTaker.Trash.Cards.Count());
+            AssertNumberOfCardsInRevealed(BlackwoodForest, 0);
         }
 
         [Test]
@@ -229,7 +231,9 @@ namespace CauldronTests
 
             // 2 lowest HP characters are Ra and MDP
             DealDamage(baron, ra, 3, DamageType.Toxic); // Ra is immune
+            DealDamage(baron, mdp, 3, DamageType.Toxic); // MDP is immune
 
+            AssertCardSpecialString(denseBrambles, 0, $"{denseBrambles.Title} is currently making Ra, Mobile Defense Platform immune to damage");
 
             GoToStartOfTurn(BlackwoodForest); // Dense Brambles is destroyed
 
@@ -264,7 +268,9 @@ namespace CauldronTests
             // 2 lowest HP characters are Ra and MDP
             DealDamage(baron, ra, 3, DamageType.Toxic); // Ra is immune
 
-
+            // Will only show Ra as immune as MDP hasn't been dealt damage yet to trigger the immunity
+            AssertCardSpecialString(denseBrambles, 0, $"{denseBrambles.Title} is currently making Ra immune to damage");
+            
             GoToStartOfTurn(BlackwoodForest); // Dense Brambles is destroyed
 
             DealDamage(ra, mdp, 2, DamageType.Fire);

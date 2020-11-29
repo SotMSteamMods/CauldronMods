@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Magnificent Mara",
             "body": "Pull the String",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "f3f3f3",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "f3f3f3",
             "character": true,
             "powers": [
                 "{MagnificentMara} deals 1 target 1 psychic damage, that target deals another target 1 melee damage."
@@ -41,7 +41,7 @@
                 "default": "default placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "Abracadabra",
@@ -401,9 +401,9 @@
             "promoTitle": "Ministry Of Strategic Science Magnificent Mara",
             "shortPromoTitle": "MOSS Magnificent Mara",
             "body": "Illusory Veil",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "A6A2CD",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "A6A2CD",
             "character": true,
             "powers": [
                 "{MagnificentMara} deals 1 target 2 radiant damage. Increase damage dealt by that target by 1 until the start of your next turn."
@@ -431,7 +431,7 @@
                 "default": "default placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "MagnificentMaraCharacter",
@@ -441,9 +441,9 @@
             "promoTitle": "Magnificent Mara 1929",
             "shortPromoTitle": "Magnificent Mara 1929",
             "body": "Illusory Veil",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "ED9B74",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "ED9B74",
             "character": true,
             "powers": [
                 "One player may play a relic card. Another may move a relic from their trash to the top of their deck. If neither happens, draw a card."
@@ -471,7 +471,7 @@
                 "default": "default placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         }
     ]
 }

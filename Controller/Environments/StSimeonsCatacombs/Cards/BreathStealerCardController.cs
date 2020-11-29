@@ -7,17 +7,14 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class BreathStealerCardController : GhostCardController
+    public class BreathStealerCardController : StSimeonsGhostCardController
     {
-        #region Constructors
+        public static readonly string Identifier = "BreathStealer";
 
-        public BreathStealerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { "Aqueducts" })
+        public BreathStealerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { AqueductsCardController.Identifier }, false)
         {
         }
 
-        #endregion Constructors
-
-        #region Methods
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             //Play this card next to the hero with the lowest HP
@@ -31,7 +28,7 @@ namespace Cauldron.StSimeonsCatacombs
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            Card lowestHero = foundTarget.FirstOrDefault<Card>();
+            Card lowestHero = foundTarget.FirstOrDefault();
             if (lowestHero != null && storedResults != null)
             {
                 //Play this card next to the hero with the lowest HP
@@ -70,7 +67,5 @@ namespace Cauldron.StSimeonsCatacombs
             //add unaffected triggers from GhostCardControllers
             base.AddTriggers();
         }
-
-        #endregion Methods
     }
 }

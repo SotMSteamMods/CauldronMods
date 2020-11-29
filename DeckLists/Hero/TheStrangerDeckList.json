@@ -12,9 +12,9 @@
             "count": 1,
             "title": "The Stranger",
             "body": "Inscribe",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "5a4f91",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "5a4f91",
             "character": true,
             "powers": [
                 "Play a rune."
@@ -44,7 +44,7 @@
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "Corruption",
@@ -457,9 +457,9 @@
             "promoTitle": "The Runecarved Stranger",
             "shortPromoTitle": "Runecarved Stranger",
             "body": "Purify",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "708B8A",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "708B8A",
             "character": true,
             "powers": [
                 "1 hero target regains 2 HP."
@@ -490,7 +490,7 @@
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "TheStrangerCharacter",
@@ -500,9 +500,9 @@
             "promoTitle": "The Stranger 1929",
             "shortPromoTitle": "Stranger 1929",
             "body": "Soul Tap",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "CBD5AF",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "CBD5AF",
             "character": true,
             "powers": [
                 "The next time {TheStranger} would deal himself damage, redirect it to another target."
@@ -532,7 +532,7 @@
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "TheStrangerCharacter",
@@ -542,9 +542,9 @@
             "promoTitle": "Wasteland Ronin The Stranger",
             "shortPromoTitle": "Wasteland Stranger",
             "body": "Mark of the Wasteland",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "D4E6B5",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "D4E6B5",
             "character": true,
             "powers": [
                 "Discard a rune. If you do, {TheStranger} deals 1 target 4 infernal damage."
@@ -576,7 +576,7 @@
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

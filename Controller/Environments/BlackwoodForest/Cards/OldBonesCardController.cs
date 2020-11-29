@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
-
+using System.Collections.Generic;
+using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -15,7 +16,7 @@ namespace Cauldron.BlackwoodForest
         // At the start of the environment turn destroy this card.
         //==============================================================
 
-        public static string Identifier = "OldBones";
+        public static readonly string Identifier = "OldBones";
 
         private const int CardsToMove = 1;
 
@@ -37,28 +38,25 @@ namespace Cauldron.BlackwoodForest
         public override IEnumerator Play()
         {
             // Shuffle each trash pile other than environment
-            IEnumerator shuffleRoutine
-                = base.DoActionToEachTurnTakerInTurnOrder(
-                    turnTakerController => !turnTakerController.TurnTaker.IsEnvironment,
-                    ShuffleTrashResponse);
-
-            if (base.UseUnityCoroutines)
+            var query = GameController.FindLocationsWhere(loc => !loc.IsEnvironment && loc.IsTrash && GameController.IsLocationVisibleToSource(loc, GetCardSource()));
+            foreach (var loc in query)
             {
-                yield return base.GameController.StartCoroutine(shuffleRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(shuffleRoutine);
+                IEnumerator shuffleRoutine = ShuffleTrashResponse(loc);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(shuffleRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(shuffleRoutine);
+                }
             }
         }
 
-        private IEnumerator ShuffleTrashResponse(TurnTakerController turnTakerController)
+        private IEnumerator ShuffleTrashResponse(Location trash)
         {
-            TurnTaker turnTaker = turnTakerController.TurnTaker;
-            //HeroTurnTakerController decisionMaker = turnTaker.IsHero ? turnTakerController.ToHero() : this.DecisionMaker;
-
             // Shuffle trash pile
-            IEnumerator shuffleTrashRoutine = base.GameController.ShuffleLocation(turnTaker.Trash);
+            IEnumerator shuffleTrashRoutine = base.GameController.ShuffleLocation(trash);
 
             if (base.UseUnityCoroutines)
             {
@@ -69,8 +67,9 @@ namespace Cauldron.BlackwoodForest
                 base.GameController.ExhaustCoroutine(shuffleTrashRoutine);
             }
 
-            IEnumerator revealCardsRoutine = base.GameController.MoveCards(this.TurnTakerController, 
-                turnTaker.Trash, turnTaker.Deck, CardsToMove);
+            List<Card> revealedCards = new List<Card>();
+            IEnumerator revealCardsRoutine = base.GameController.RevealCards(this.TurnTakerController, trash, CardsToMove, revealedCards,
+                revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: this.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -79,6 +78,26 @@ namespace Cauldron.BlackwoodForest
             else
             {
                 base.GameController.ExhaustCoroutine(revealCardsRoutine);
+            }
+
+            if (!revealedCards.Any())
+            {
+                yield break;
+            }
+
+            Card revealedCard = revealedCards.First();
+
+            // Top deck the card 
+            IEnumerator moveCardsRoutine = base.GameController.MoveCard(this.TurnTakerController, revealedCard, revealedCard.NativeDeck,
+                cardSource: base.GetCardSource());
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(moveCardsRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(moveCardsRoutine);
             }
         }
     }

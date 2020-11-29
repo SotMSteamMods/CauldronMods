@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Necro",
             "body": "Blight",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "916894",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "916894",
             "character": true,
             "powers": [
                 "{Necro} deals 1 target 1 toxic damage or 1 undead target 2 toxic damage."
@@ -45,7 +45,7 @@
                 "TiamatCharacter": "Tiamat placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "Abomination",
@@ -392,9 +392,9 @@
             "promoTitle": "Necro: Warden of Chaos",
             "shortPromoTitle": "Chaos Necro",
             "body": "Reckless Summon",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "8F859A",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "8F859A",
             "character": true,
             "powers": [
                 "Put the top 2 cards of your deck into play."
@@ -423,7 +423,7 @@
                 "TiamatCharacter": "Tiamat placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "NecroCharacter",
@@ -433,9 +433,9 @@
             "promoTitle": "Necro 1929",
             "shortPromoTitle": "Necro 1929",
             "body": "Turn Undead",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "ACDDD5",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "ACDDD5",
             "character": true,
             "powers": [
                 "Until the start of your next turn, replace the word “hero” on your cards with “villain”, and vice versa."
@@ -464,7 +464,7 @@
                 "TiamatCharacter": "Tiamat placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

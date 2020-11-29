@@ -1,6 +1,7 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Cauldron.Gray
@@ -42,6 +43,7 @@ namespace Cauldron.Gray
                     base.AddSideTrigger(base.AddReduceDamageTrigger((Card c) => c.IsVillain, 1));
                 }
             }
+            AddDefeatedIfDestroyedTriggers();
         }
 
         private int? FindNumberOfRadiationCardsInPlay()
@@ -83,7 +85,7 @@ namespace Cauldron.Gray
             if (FindNumberOfHeroOngoingAndEquipmentInPlay() > 0)
             {
                 int? numberOfCards = new int?(1);
-                if(Game.IsAdvanced)
+                if (Game.IsAdvanced)
                 {
                     //Advanced - Whenever a radiation card is destroyed, destroy a second hero ongoing or equipment card.
                     numberOfCards = new int?(2);
@@ -168,19 +170,27 @@ namespace Cauldron.Gray
             //Whenever a radiation card is destroyed by a hero card, {Gray} deals that hero {H - 1} energy damage.
             IEnumerator coroutine;
             //if its not a hero destroying it do no damage
-            if (responsibleTurnTaker != null && responsibleTurnTaker.IsHero)
+            if (responsibleTurnTaker != null && responsibleTurnTaker.IsHero && !responsibleTurnTaker.IsIncapacitatedOrOutOfGame)
             {
-                if (responsibleTurnTaker.CharacterCard.IsInPlayAndHasGameText && !responsibleTurnTaker.CharacterCard.IsIncapacitatedOrOutOfGame)
+                List<Card> results = new List<Card>();
+                coroutine = base.FindCharacterCardToTakeDamage(responsibleTurnTaker, results, Card, Game.H - 1, DamageType.Energy);
+                if (base.UseUnityCoroutines)
                 {
-                    coroutine = base.DealDamage(base.Card, action.ResponsibleCard.Owner.CharacterCard, Game.H - 1, DamageType.Energy);
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
-                    }
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                coroutine = base.DealDamage(base.Card, results.First(), Game.H - 1, DamageType.Energy);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
             //Whenever a copy of Radioactive Cascade is destroyed, {Gray} deals the hero with the highest HP {H - 1} energy damage.

@@ -7,23 +7,14 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.StSimeonsCatacombs
 {
-    public class StSimeonsCatacombsInstructionsCardController : CharacterCardController
+    public class StSimeonsCatacombsInstructionsCardController : VillainCharacterCardController
     {
-        #region Constructors
+        public static readonly string Identifier = "StSimeonsCatacombsInstructions";
 
         public StSimeonsCatacombsInstructionsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SetCardProperty("Indestructible", false);
         }
-
-        #endregion Constructors
-
-        #region Methods
-        public override void AddTriggers()
-        {
-            this.AddSideTriggers();
-        }
-
 
         public override void AddSideTriggers()
         {
@@ -104,7 +95,7 @@ namespace Cauldron.StSimeonsCatacombs
             }
 
             //only do immediate play action if its not living geometry, which will take care of room response
-            if (mc.ActionSource == null || mc.ActionSource.CardSource == null || mc.ActionSource.CardSource.Card.Identifier != "LivingGeometry")
+            if (mc.ActionSource == null || mc.ActionSource.CardSource == null || mc.ActionSource.CardSource.Card.Identifier != LivingGeometryCardController.Identifier)
             {
                 //Then choose a different room beneath this card and put it into play.
                 IEnumerator play = base.GameController.SelectAndPlayCard(this.DecisionMaker, Catacombs.UnderLocation.Cards.Where(c => c != mc.CardToMove), isPutIntoPlay: true);
@@ -180,7 +171,7 @@ namespace Cauldron.StSimeonsCatacombs
             CannotPlayCardsStatusEffect cannotPlayCardsStatusEffect = new CannotPlayCardsStatusEffect();
             cannotPlayCardsStatusEffect.TurnTakerCriteria.IsEnvironment = true;
             IEnumerator coroutine3 = base.GameController.AddStatusEffect(cannotPlayCardsStatusEffect, true, cardController.GetCardSource());
-            this.SideStatusEffects.Add(cannotPlayCardsStatusEffect);
+            this._sideStatusEffects.Add(cannotPlayCardsStatusEffect);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine3);
@@ -217,11 +208,11 @@ namespace Cauldron.StSimeonsCatacombs
         private void RemoveSideEffects()
         {
             //remove all status effects in the SideStatusEffectList
-            foreach (StatusEffect effect in this.SideStatusEffects)
+            foreach (StatusEffect effect in this._sideStatusEffects)
             {
                 base.GameController.StatusEffectManager.RemoveStatusEffect(effect);
             }
-            this.SideStatusEffects.Clear();
+            this._sideStatusEffects.Clear();
         }
 
         public override IEnumerator AfterFlipCardImmediateResponse()
@@ -231,16 +222,6 @@ namespace Cauldron.StSimeonsCatacombs
             this.AddSideTriggers();
             //remove all old side status effects, get new status effects
             this.RemoveSideEffects();
-            IEnumerator addStatusEffects = this.AddSideStatusEffect();
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(addStatusEffects);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(addStatusEffects);
-
-            }
             yield break;
         }
 
@@ -257,12 +238,14 @@ namespace Cauldron.StSimeonsCatacombs
         {
             return card != null && card.Definition.Keywords.Contains("room");
         }
-        private List<StatusEffect> SideStatusEffects = new List<StatusEffect>();
+
+        private readonly List<StatusEffect> _sideStatusEffects = new List<StatusEffect>();
+
         private Card Catacombs
         {
             get
             {
-                return base.FindCard("StSimeonsCatacombs");
+                return base.FindCard(StSimeonsCatacombsCardController.Identifier);
             }
         }
 
@@ -270,6 +253,5 @@ namespace Cauldron.StSimeonsCatacombs
         {
             return card == base.Card;
         }
-        #endregion Methods
     }
 }

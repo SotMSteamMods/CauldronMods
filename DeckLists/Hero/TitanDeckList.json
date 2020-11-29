@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Titan",
             "body": "Dormant Fury",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "fcd070",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "fcd070",
             "character": true,
             "powers": [
                 "{Titan} deals 1 target 2 infernal damage."
@@ -40,7 +40,7 @@
                 "default": "default placeholder",
                 "MythosCharacter": "Mythos placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "CombatPragmatism",
@@ -374,9 +374,9 @@
             "promoTitle": "Ministry Of Strategic Science Titan",
             "shortPromoTitle": "MOSS Titan",
             "body": "Pyroclast",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "ABC187",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "ABC187",
             "character": true,
             "powers": [
                 "You may play an ongoing card. Draw a card."
@@ -405,7 +405,7 @@
                 "default": "default placeholder",
                 "MythosCharacter": "Mythos placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "TitanCharacter",
@@ -415,9 +415,9 @@
             "promoTitle": "Titan 2199",
             "shortPromoTitle": "Titan 2199",
             "body": "Rumble",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "A7B8C1",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "A7B8C1",
             "character": true,
             "powers": [
                 "If Titanform is in play, 1 target deals {Titan} 1 melee damage. Otherwise, play the top card of your deck."
@@ -445,7 +445,7 @@
                 "default": "default placeholder",
                 "MythosCharacter": "Mythos placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

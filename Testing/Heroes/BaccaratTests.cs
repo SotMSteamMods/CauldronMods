@@ -529,6 +529,11 @@ namespace CauldronTests
             DecisionSelectFunction = 0;
             //Increase the next damage dealt by {Baccarat} by 1,
             PlayCard(euchre);
+            //Damage is only increased for Baccarat
+            QuickHPStorage(baccarat);
+            DealDamage(mdp, baccarat, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+            //+1 damage
             QuickHPStorage(mdp);
             DealDamage(baccarat, mdp, 2, DamageType.Melee);
             QuickHPCheck(-3);

@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Vanish",
             "body": "Feint",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "8D96C9",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "8D96C9",
             "character": true,
             "powers": [
                 "Select a target. That target deals 1 other target 1 projectile damage."
@@ -41,7 +41,7 @@
                 "GrayCharacter": "Gray placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "AbductAndAbandon",
@@ -77,7 +77,7 @@
                 "IncreaseDamageTaken"
             ],
             "powers": [
-                "{Vanish} deals 1 target 1 energy damage. Until the start of your next turn, increase damage taken by that target by 1."
+                "{Vanish} deals 1 target 1 energy damage.{BR}Until the start of your next turn, increase damage taken by that target by 1."
             ],
             "flavorText": "Always one step behind you."
         },
@@ -93,7 +93,11 @@
                 "PlayCardNow",
                 "UsePowerNow"
             ],
-            "body": "You may draw a card. You may play a card. You may use a power now.",
+            "body": [
+                "You may draw a card.",
+                "You may play a card.",
+                "You may use a power now."
+                ],
             "flavorQuotes": [
                 {
                     "identifier": "OmnitronX",
@@ -136,7 +140,7 @@
                 "PlayCardNow"
             ],
             "powers": [
-                "Reduce the next damage dealt to {Vanish} by 1. You may draw a card or play a card now."
+                "Reduce the next damage dealt to {Vanish} by 1.{BR}You may draw a card or play a card now."
             ],
             "flavorQuotes": [
                 {
@@ -157,7 +161,10 @@
                 "Manipulate",
                 "PlayCardNow"
             ],
-            "body": "Reveal the top card of each deck, then replace it. Select a deck and put its top card into play.",
+            "body": [
+                "Reveal the top card of each deck, then replace it.",
+                "Select a deck and put its top card into play."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "ChronoRanger",
@@ -178,7 +185,10 @@
                 "Discard",
                 "DealDamageEnergy"
             ],
-            "body": "Draw 2 cards. Discard any number of cards. For each card discarded this way, {Vanish} deals 1 target 1 energy damage.",
+            "body": [
+                "Draw 2 cards.",
+                "Discard any number of cards. For each card discarded this way, {Vanish} deals 1 target 1 energy damage."
+                ],
             "flavorQuotes": [
                 {
                     "identifier": "Vanish",
@@ -269,7 +279,8 @@
                 "Discard"
             ],
             "body": [
-                "{Vanish} may deal any number of heroes 3 energy damage each. Heroes that take damage this way may put an ongoing or equipment card from their trash into play.",
+                "{Vanish} may deal any number of heroes 3 energy damage each.",
+                "Heroes that take damage this way may put an ongoing or equipment card from their trash into play.",
                 "Heroes that took no damage this way may draw a card, then discard a card."
             ],
             "flavorQuotes": [
@@ -290,7 +301,7 @@
             ],
             "icons": ["HasPower","DealDamageEnergy","Discard"],
             "powers": [
-                "{Vanish} deals 1 target 2 energy damage. Discard up to 3 cards. For each card discarded this way, {Vanish} deals 1 target 1 energy damage."
+                "{Vanish} deals 1 target 2 energy damage. Discard up to 3 cards.{BR}For each card discarded this way, {Vanish} deals 1 target 1 energy damage."
             ],
             "flavorQuotes": [
                 {
@@ -336,9 +347,9 @@
             "promoTitle": "First Response Vanish",
             "shortPromoTitle": "Responder Vanish",
             "body": "Intercept",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "999999",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "999999",
             "character": true,
             "powers": [
                 "Reduce the next damage that would be dealt to a hero target by 2."
@@ -366,7 +377,7 @@
                 "GrayCharacter": "Gray placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "VanishCharacter",
@@ -376,9 +387,9 @@
             "promoTitle": "Vanish 1929",
             "shortPromoTitle": "Vanish 1929",
             "body": "Scout",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "E6C8DA",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "E6C8DA",
             "character": true,
             "powers": [
                 "Draw a card. Increase damage delat by hero targets until the end of the round."
@@ -407,7 +418,7 @@
                 "GrayCharacter": "Gray placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

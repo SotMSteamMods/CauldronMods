@@ -12,11 +12,24 @@ namespace Cauldron.LadyOfTheWood
 		public LadyOfTheWoodsRebirthCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
 			base.SpecialStringMaker.ShowNumberOfCardsUnderCard(base.Card);
-			this._primed = false;
+			this._primed = true;
 		}
-		public override IEnumerator Play()
+
+        public override void AddStartOfGameTriggers()
+        {
+			this._primed = true;
+			base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction cpa) => cpa.CardEnteringPlay == base.Card, this.MarkNotPrimed, TriggerType.Hidden, TriggerTiming.Before);
+        }
+
+        private IEnumerator MarkNotPrimed(CardEntersPlayAction cpa)
+        {
+			this._primed = false;
+			yield return null;
+			yield break;
+        }
+
+        public override IEnumerator Play()
 		{
-			
 			//When this card enters play, put up to 3 cards from your trash beneath it.
 			List<MoveCardDestination> list = new List<MoveCardDestination>();
 			list.Add(new MoveCardDestination(base.Card.UnderLocation));
@@ -31,6 +44,7 @@ namespace Cauldron.LadyOfTheWood
 			}
 			//this card has cards under it, so mark as primed so that if any future actions result in 0 cards under this one, it is destroyed
 			this._primed = true;
+			yield return null;
 			yield break;
 		}
 		public override void AddTriggers()
