@@ -25,7 +25,7 @@ namespace Cauldron.TheStranger
             string option2 = "Put a Rune from your trash into your hand";
             List<Function> list = new List<Function>();
             list.Add(new Function(this.DecisionMaker, option1, SelectionType.DrawCard, () => base.DrawCards(this.DecisionMaker,2), new bool?(true), null, option1));
-            list.Add(new Function(this.DecisionMaker, option2, SelectionType.MoveCardToHandFromTrash, () => base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => this.IsRune(c), "rune"), new MoveCardDestination[] { new MoveCardDestination(base.Card.Owner.ToHero().Hand, false, false, false) }),null, null, option2));
+            list.Add(new Function(this.DecisionMaker, option2, SelectionType.MoveCardToHandFromTrash, () => base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => this.IsRune(c), "rune"), new MoveCardDestination[] { new MoveCardDestination(HeroTurnTaker.Hand, false, false, false) }),null, null, option2));
             SelectFunctionDecision selectFunction = new SelectFunctionDecision(base.GameController, this.DecisionMaker, list, false, null, null, null, base.GetCardSource(null));
             IEnumerator coroutine = base.GameController.SelectAndPerformFunction(selectFunction, null, null);
             if (base.UseUnityCoroutines)

@@ -53,7 +53,7 @@ namespace Cauldron.DocHavoc
             {
                 Card targetHero = dd.Target;
                 HeroTurnTakerController heroController = null;
-                if (targetHero.Owner.IsHero)
+                if (targetHero.IsHero)
                 {
                     heroController = base.FindHeroTurnTakerController(targetHero.Owner.ToHero());
                 }
