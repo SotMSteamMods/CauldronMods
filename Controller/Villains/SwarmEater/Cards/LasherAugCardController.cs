@@ -27,7 +27,7 @@ namespace Cauldron.SwarmEater
         private IEnumerator DealDamageAndDestroyResponse(PhaseChangeAction action)
         {
             //this card deals the hero target with the highest HP {H} projectile damage...
-            IEnumerator coroutine = base.DealDamageToHighestHP(this.CardThatAbsorbedThis(), 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => Game.H, DamageType.Projectile);
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => Game.H, DamageType.Projectile);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

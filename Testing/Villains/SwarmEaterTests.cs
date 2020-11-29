@@ -480,7 +480,7 @@ namespace CauldronTests
             AssertUnderCard(GetCard("AbsorbedNanites"), fire);
             //Absorb: at the start of the villain turn, {H - 2} players must discard a card.
             QuickHandStorage(legacy);
-            GoToEndOfTurn(swarm);
+            GoToStartOfTurn(swarm);
             QuickHandCheck(-1);
         }
 
@@ -713,8 +713,8 @@ namespace CauldronTests
             AssertUnderCard(GetCard("AbsorbedNanites"), lasher);
             //Absorb: at the start of the villain turn, destroy 1 hero ongoing or equipment card.
             GoToStartOfTurn(swarm);
-            AssertInTrash(moko);
-            AssertIsInPlay(ring);
+            AssertInTrash(ring);
+            AssertIsInPlay(moko);
         }
 
         [Test()]
@@ -810,7 +810,7 @@ namespace CauldronTests
             QuickHPStorage(haka);
             DealDamage(swarm, haka, 2, DamageType.Melee);
             //Single-Minded Pursuit +2 damage dealt by Swarm Eater
-            QuickHPCheck(-3);
+            QuickHPCheck(-5);
 
             QuickHPStorage(haka);
             DealDamage(legacy, haka, 2, DamageType.Melee);
