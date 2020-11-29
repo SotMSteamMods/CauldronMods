@@ -38,27 +38,25 @@ namespace Cauldron.BlackwoodForest
         public override IEnumerator Play()
         {
             // Shuffle each trash pile other than environment
-            IEnumerator shuffleRoutine
-                = base.DoActionToEachTurnTakerInTurnOrder(
-                    turnTakerController => !turnTakerController.TurnTaker.IsEnvironment,
-                    ShuffleTrashResponse);
-
-            if (base.UseUnityCoroutines)
+            var query = GameController.FindLocationsWhere(loc => !loc.IsEnvironment && loc.IsTrash && GameController.IsLocationVisibleToSource(loc, GetCardSource()));
+            foreach (var loc in query)
             {
-                yield return base.GameController.StartCoroutine(shuffleRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(shuffleRoutine);
+                IEnumerator shuffleRoutine = ShuffleTrashResponse(loc);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(shuffleRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(shuffleRoutine);
+                }
             }
         }
 
-        private IEnumerator ShuffleTrashResponse(TurnTakerController turnTakerController)
+        private IEnumerator ShuffleTrashResponse(Location trash)
         {
-            TurnTaker turnTaker = turnTakerController.TurnTaker;
-
             // Shuffle trash pile
-            IEnumerator shuffleTrashRoutine = base.GameController.ShuffleLocation(turnTaker.Trash);
+            IEnumerator shuffleTrashRoutine = base.GameController.ShuffleLocation(trash);
 
             if (base.UseUnityCoroutines)
             {
@@ -70,7 +68,7 @@ namespace Cauldron.BlackwoodForest
             }
 
             List<Card> revealedCards = new List<Card>();
-            IEnumerator revealCardsRoutine = base.GameController.RevealCards(this.TurnTakerController, turnTaker.Trash, CardsToMove, revealedCards,
+            IEnumerator revealCardsRoutine = base.GameController.RevealCards(this.TurnTakerController, trash, CardsToMove, revealedCards,
                 revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: this.GetCardSource());
 
             if (base.UseUnityCoroutines)
@@ -87,8 +85,10 @@ namespace Cauldron.BlackwoodForest
                 yield break;
             }
 
+            Card revealedCard = revealedCards.First();
+
             // Top deck the card 
-            IEnumerator moveCardsRoutine = base.GameController.MoveCard(this.TurnTakerController, revealedCards.First(), turnTaker.Deck,
+            IEnumerator moveCardsRoutine = base.GameController.MoveCard(this.TurnTakerController, revealedCard, revealedCard.NativeDeck,
                 cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)

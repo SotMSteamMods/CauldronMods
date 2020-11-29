@@ -56,7 +56,7 @@ namespace Cauldron.Dendron
             }
 
             // Play the top 2 cards of the villain deck.
-            coroutine = GameController.PlayTopCardOfLocation(TurnTakerController, Card.Owner.Deck, false, CardsToPlay, CardsToPlay, true, cardSource: GetCardSource());
+            coroutine = GameController.PlayTopCardOfLocation(TurnTakerController, TurnTaker.Deck, false, CardsToPlay, CardsToPlay, true, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

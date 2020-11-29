@@ -28,7 +28,7 @@ namespace Cauldron.Anathema
 
 			//Reveal the top {H} cards of the Villain Deck. 
 			List<Card> revealedCards = new List<Card>();
-			coroutine = base.GameController.RevealCards(base.TurnTakerController, base.Card.Owner.Deck, base.H, revealedCards,revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: base.GetCardSource());
+			coroutine = base.GameController.RevealCards(base.TurnTakerController, TurnTaker.Deck, base.H, revealedCards, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
