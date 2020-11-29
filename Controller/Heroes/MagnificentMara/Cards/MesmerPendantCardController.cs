@@ -38,13 +38,14 @@ namespace Cauldron.MagnificentMara
         }
         private IEnumerator LogAction(GameAction ga)
         {
-            Log.Debug($"GameAction detected from {ga.CardSource.Card.Title}");
+            //Log.Debug($"GameAction detected from {ga.CardSource.Card.Title}");
             yield break;
         }
 
         //i think the best we can do is turn "non-villain" into "non-hero"
         public override bool? AskIfIsVillain(Card card, CardSource cardSource)
         {
+            Log.Debug("Mesmer pendant's ask-if-is-villain fires");
             if (cardSource != null && cardSource.Card == GetCardThisCardIsNextTo())
             {
                 if(card.IsTarget || card.IsOngoing)
@@ -65,6 +66,7 @@ namespace Cauldron.MagnificentMara
         public override bool? AskIfIsVillainTarget(Card card, CardSource cardSource)
         {
             Log.Debug("Mesmer Pendant's ask-if-is-villain-target fires");
+            //it doesn't seem to
             if (cardSource != null && cardSource.Card == GetCardThisCardIsNextTo())
             {
                 if(card.IsTarget && card.IsHero)

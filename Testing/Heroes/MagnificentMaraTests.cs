@@ -77,6 +77,53 @@ namespace CauldronTests
             QuickHPCheck(0);
         }
         [Test]
+        public void TestMaraIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            StartGame();
+            SetupIncap(baron);
+
+            Card surge = PutInTrash("SurgeOfStrength");
+            UseIncapacitatedAbility(mara, 0);
+            AssertOnTopOfDeck(surge);
+        }
+        [Test]
+        public void TestMaraIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            StartGame();
+            SetupIncap(baron);
+
+            Card lff = PlayCard("LivingForceField");
+            UseIncapacitatedAbility(mara, 1);
+            AssertInTrash(lff);
+        }
+        [Test]
+        public void TestMaraIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "Bunker", "TheScholar", "DokThorathCapital");
+
+            StartGame();
+            SetupIncap(baron);
+
+            QuickHPStorage(legacy, bunker, scholar);
+            Card fighter = PlayCard("FreedomFighters");
+            DecisionSelectCard = legacy.CharacterCard;
+            UseIncapacitatedAbility(mara, 2);
+            DealDamage(fighter, legacy, 2, DTM);
+            DealDamage(fighter, bunker, 2, DTM);
+            DealDamage(bunker, legacy, 2, DTM);
+            QuickHPCheck(-2, -2, 0);
+
+            GoToStartOfTurn(mara);
+
+            DealDamage(fighter, legacy, 2, DTM);
+            QuickHPCheck(-2, 0, 0);
+            
+        }
+        [Test]
         public void TestAbracadabraBasic()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "Bunker", "TheScholar", "Megalopolis");
@@ -493,6 +540,8 @@ namespace CauldronTests
             PlayCard("MesmerPendant");
 
             GoToStartOfTurn(mara);
+
+            Assert.Ignore("Mesmer Pendant is non-functional");
         }
         [Test]
         public void TestMesmerPendantNonVillain()
@@ -506,6 +555,8 @@ namespace CauldronTests
             PlayCard("MesmerPendant");
 
             GoToStartOfTurn(mara);
+
+            Assert.Ignore("Mesmer Pendant is non-functional");
         }
         [Test]
         public void TestMesmerPendantCryoBot()
@@ -520,8 +571,7 @@ namespace CauldronTests
             Card bot = PlayCard("CryoBot");
             PlayCard("MesmerPendant");
 
-
-            DestroyCard("MesmerPendant");
+            Assert.Ignore("MesmerPendant is non-functional");
         }
         [Test]
         public void TestMisdirection()

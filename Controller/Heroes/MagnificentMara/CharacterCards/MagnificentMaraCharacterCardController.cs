@@ -90,7 +90,7 @@ namespace Cauldron.MagnificentMara
                     {
                         //"Select a target. Until the start of your next turn that target is immune to damage from environment cards."
                         var storedTarget = new List<SelectCardDecision> { };
-                        coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.PreventDamage, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && (bool)AskIfCardIsVisibleToCardSource(c, GetCardSource()) && c.IsTarget), storedTarget, false, cardSource: GetCardSource());
+                        coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.PreventDamage, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && (AskIfCardIsVisibleToCardSource(c, GetCardSource()) == null || (bool)AskIfCardIsVisibleToCardSource(c, GetCardSource())) && c.IsTarget), storedTarget, false, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
