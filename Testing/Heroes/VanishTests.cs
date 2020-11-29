@@ -729,6 +729,27 @@ namespace CauldronTests
         }
 
         [Test]
+        public void AbductAndAbandon_TestTitleReturn()
+        {
+            SetupGameController("KaargraWarfang", "Cauldron.Vanish", "Ra", "TheWraith", "TimeCataclysm");
+            StartGame();
+
+            var title = FindCard(c => c.IsTitle && c.IsInPlay);
+
+
+            DecisionSelectCard = title;
+
+            var card = PlayCard("AbductAndAbandon");
+
+            //AssertOnTopOfDeck(title);
+            AssertAtLocation(title, title.NativeDeck);
+
+            //AssertInTrash(vanish, card);
+            //AssertInPlayArea(baron, target);
+        }
+
+
+        [Test]
         public void TranslocationAccelerator()
         {
             SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "TimeCataclysm");
