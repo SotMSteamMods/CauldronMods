@@ -88,7 +88,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":672,"h":976},
 	"sourceSize": {"w":672,"h":976}
 },
-"LadyOfTheWoodsRebirthCardController.jpg":
+"LadyOfTheWoodsRebirth.jpg":
 {
 	"frame": {"x":2768,"y":1982,"w":689,"h":507},
 	"rotated": false,
@@ -152,7 +152,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
 	"sourceSize": {"w":680,"h":988}
 },
-"SerentiyOfDawn.jpg":
+"SerenityOfDawn.jpg":
 {
 	"frame": {"x":2076,"y":2492,"w":689,"h":507},
 	"rotated": false,

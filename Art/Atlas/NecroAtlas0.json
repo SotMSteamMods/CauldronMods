@@ -176,7 +176,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
 	"sourceSize": {"w":680,"h":988}
 },
-"Zombie.jpg":
+"NecroZombie.jpg":
 {
 	"frame": {"x":0,"y":1530,"w":689,"h":507},
 	"rotated": false,
