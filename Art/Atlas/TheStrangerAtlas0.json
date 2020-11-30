@@ -2,7 +2,7 @@
 
 "CornTheStrangerCharacter.png":
 {
-	"frame": {"x":1384,"y":1530,"w":680,"h":988},
+	"frame": {"x":676,"y":0,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -10,7 +10,7 @@
 },
 "CornTheStrangerCharacterBack.png":
 {
-	"frame": {"x":2067,"y":1530,"w":680,"h":988},
+	"frame": {"x":1359,"y":0,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -18,7 +18,7 @@
 },
 "Corruption.jpg":
 {
-	"frame": {"x":0,"y":0,"w":689,"h":507},
+	"frame": {"x":2049,"y":991,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -26,7 +26,7 @@
 },
 "FlickeringWeb.jpg":
 {
-	"frame": {"x":692,"y":0,"w":689,"h":507},
+	"frame": {"x":2741,"y":991,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -34,7 +34,7 @@
 },
 "GlyphOfCombustion.jpg":
 {
-	"frame": {"x":1384,"y":0,"w":689,"h":507},
+	"frame": {"x":0,"y":1982,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -42,7 +42,7 @@
 },
 "GlyphOfDecay.jpg":
 {
-	"frame": {"x":2076,"y":0,"w":689,"h":507},
+	"frame": {"x":692,"y":1982,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -50,7 +50,7 @@
 },
 "GlyphOfInnervation.jpg":
 {
-	"frame": {"x":2768,"y":0,"w":689,"h":507},
+	"frame": {"x":1384,"y":1982,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -58,7 +58,7 @@
 },
 "GlyphOfPerception.jpg":
 {
-	"frame": {"x":0,"y":510,"w":689,"h":507},
+	"frame": {"x":2076,"y":1982,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -66,7 +66,7 @@
 },
 "MarkOfBinding.jpg":
 {
-	"frame": {"x":692,"y":510,"w":689,"h":507},
+	"frame": {"x":2768,"y":1982,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -74,7 +74,7 @@
 },
 "MarkOfBreaking.jpg":
 {
-	"frame": {"x":1384,"y":510,"w":689,"h":507},
+	"frame": {"x":0,"y":2492,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -82,7 +82,7 @@
 },
 "MarkOfDestruction.jpg":
 {
-	"frame": {"x":2076,"y":510,"w":689,"h":507},
+	"frame": {"x":692,"y":2492,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -90,7 +90,7 @@
 },
 "MarkOfQuickening.jpg":
 {
-	"frame": {"x":2768,"y":510,"w":689,"h":507},
+	"frame": {"x":1384,"y":2492,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -98,7 +98,7 @@
 },
 "MarkOfTheBloodThorn.jpg":
 {
-	"frame": {"x":0,"y":1020,"w":689,"h":507},
+	"frame": {"x":2076,"y":2492,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -106,7 +106,7 @@
 },
 "MarkOfTheBoneLeech.jpg":
 {
-	"frame": {"x":692,"y":1020,"w":689,"h":507},
+	"frame": {"x":2768,"y":2492,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -114,7 +114,7 @@
 },
 "MarkOfTheFaded.jpg":
 {
-	"frame": {"x":1384,"y":1020,"w":689,"h":507},
+	"frame": {"x":0,"y":3002,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -122,7 +122,7 @@
 },
 "MarkOfTheTwistedShadow.jpg":
 {
-	"frame": {"x":2076,"y":1020,"w":689,"h":507},
+	"frame": {"x":692,"y":3002,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -130,7 +130,7 @@
 },
 "PastTheStrangerCharacter.png":
 {
-	"frame": {"x":2750,"y":1530,"w":680,"h":988},
+	"frame": {"x":2042,"y":0,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -138,7 +138,7 @@
 },
 "PastTheStrangerCharacterBack.png":
 {
-	"frame": {"x":0,"y":2521,"w":680,"h":988},
+	"frame": {"x":2725,"y":0,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -146,7 +146,7 @@
 },
 "RunecarvedTheStrangerCharacter.jpg":
 {
-	"frame": {"x":683,"y":2521,"w":680,"h":988},
+	"frame": {"x":3408,"y":0,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -154,7 +154,7 @@
 },
 "RunecarvedTheStrangerCharacterBack.jpg":
 {
-	"frame": {"x":1366,"y":2521,"w":680,"h":988},
+	"frame": {"x":0,"y":991,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -162,7 +162,7 @@
 },
 "TheOldRoads.jpg":
 {
-	"frame": {"x":2768,"y":1020,"w":689,"h":507},
+	"frame": {"x":1384,"y":3002,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -170,7 +170,7 @@
 },
 "TheStrangerCharacter.jpg":
 {
-	"frame": {"x":2049,"y":2521,"w":680,"h":988},
+	"frame": {"x":683,"y":991,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -178,15 +178,23 @@
 },
 "TheStrangerCharacterBack.jpg":
 {
-	"frame": {"x":2732,"y":2521,"w":680,"h":988},
+	"frame": {"x":1366,"y":991,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
 	"sourceSize": {"w":680,"h":988}
 },
+"TheStrangerDeckBack.jpg":
+{
+	"frame": {"x":0,"y":0,"w":673,"h":978},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":673,"h":978},
+	"sourceSize": {"w":673,"h":978}
+},
 "Unweave.jpg":
 {
-	"frame": {"x":0,"y":1530,"w":689,"h":507},
+	"frame": {"x":2076,"y":3002,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -194,7 +202,7 @@
 },
 "WhisperedSigns.jpg":
 {
-	"frame": {"x":692,"y":1530,"w":689,"h":507},
+	"frame": {"x":2768,"y":3002,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -207,6 +215,6 @@
 	"format": "RGBA8888",
 	"size": {"w":4096,"h":4096},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:220e1ac107ba4a002c9da0340ecf3f3a:4a4192f58f4068ec5659a2fb001368cf:410fc25ce867aae57553bd27f0dbc44f$"
+	"smartupdate": "$TexturePacker:SmartUpdate:591c42cfaf8d991095eeb937a8567aaf:979144665ca18c03c7276cbf0b77933d:410fc25ce867aae57553bd27f0dbc44f$"
 }
 }

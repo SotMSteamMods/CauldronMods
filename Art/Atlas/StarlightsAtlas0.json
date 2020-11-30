@@ -120,14 +120,6 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
 	"sourceSize": {"w":680,"h":988}
 },
-"NightloreCouncilStarlightCharacterBack.png":
-{
-	"frame": {"x":2049,"y":0,"w":680,"h":988},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
-	"sourceSize": {"w":680,"h":988}
-},
 "NovaShield.jpg":
 {
 	"frame": {"x":1384,"y":3002,"w":689,"h":507},
@@ -162,7 +154,7 @@
 },
 "StarlightCharacter.jpg":
 {
-	"frame": {"x":2732,"y":0,"w":680,"h":988},
+	"frame": {"x":2049,"y":0,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -170,11 +162,19 @@
 },
 "StarlightCharacterBack.jpg":
 {
-	"frame": {"x":3415,"y":0,"w":680,"h":988},
+	"frame": {"x":2732,"y":0,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
 	"sourceSize": {"w":680,"h":988}
+},
+"StarlightDeckBack.jpg":
+{
+	"frame": {"x":3415,"y":0,"w":680,"h":977},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":977},
+	"sourceSize": {"w":680,"h":977}
 },
 "StarlightOfAsheronCharacter.jpg":
 {
@@ -247,6 +247,6 @@
 	"format": "RGBA8888",
 	"size": {"w":4096,"h":4096},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:5682a226f8f4e09c288c99aabbe11c3b:bfd567d22b7ed0befceede71afa65dd2:f53913924507c0271019bc2bc324015a$"
+	"smartupdate": "$TexturePacker:SmartUpdate:0a207b97c27fd5a9571f95b7965b240a:78b16dc20712fd2e28ef541a10e809a6:f53913924507c0271019bc2bc324015a$"
 }
 }

@@ -106,15 +106,15 @@
 },
 "QuicksilverDeckBack.jpg":
 {
-	"frame": {"x":2058,"y":1020,"w":825,"h":1154},
+	"frame": {"x":2058,"y":1020,"w":675,"h":978},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":825,"h":1154},
-	"sourceSize": {"w":825,"h":1154}
+	"spriteSourceSize": {"x":0,"y":0,"w":675,"h":978},
+	"sourceSize": {"w":675,"h":978}
 },
 "RenegadeQuicksilverCharacter.png":
 {
-	"frame": {"x":2886,"y":1020,"w":680,"h":988},
+	"frame": {"x":2736,"y":1020,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -122,7 +122,7 @@
 },
 "RenegadeQuicksilverCharacterBack.png":
 {
-	"frame": {"x":0,"y":2177,"w":680,"h":988},
+	"frame": {"x":0,"y":2011,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -130,7 +130,7 @@
 },
 "StressHardening.jpg":
 {
-	"frame": {"x":683,"y":2177,"w":689,"h":507},
+	"frame": {"x":683,"y":2011,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -138,7 +138,7 @@
 },
 "TestSubjectHalberd.jpg":
 {
-	"frame": {"x":1375,"y":2177,"w":689,"h":507},
+	"frame": {"x":1375,"y":2011,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -146,7 +146,7 @@
 },
 "UncannyQuicksilverCharacter.jpg":
 {
-	"frame": {"x":2067,"y":2177,"w":680,"h":988},
+	"frame": {"x":2067,"y":2011,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -154,7 +154,7 @@
 },
 "UncannyQuicksilverCharacterBack.jpg":
 {
-	"frame": {"x":2750,"y":2177,"w":680,"h":988},
+	"frame": {"x":2750,"y":2011,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -162,7 +162,7 @@
 },
 "ViciousMemories.jpg":
 {
-	"frame": {"x":0,"y":3168,"w":689,"h":507},
+	"frame": {"x":0,"y":3002,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -170,7 +170,7 @@
 },
 "WhisperingSteel.jpg":
 {
-	"frame": {"x":692,"y":3168,"w":689,"h":507},
+	"frame": {"x":692,"y":3002,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -183,6 +183,6 @@
 	"format": "RGBA8888",
 	"size": {"w":4096,"h":4096},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:4d9dd20e909861b70ab11df6c71217ee:a3485cafa832c601c336448262238649:e58e29fc6f1736d3d737c56139788f5e$"
+	"smartupdate": "$TexturePacker:SmartUpdate:506d8f9acadf40474d7c442de8c3459c:414d7ae91ee51c39f3cd1f9856991f61:e58e29fc6f1736d3d737c56139788f5e$"
 }
 }
