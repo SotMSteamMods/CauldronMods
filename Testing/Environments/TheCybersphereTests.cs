@@ -194,5 +194,26 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestH3l1x()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+            SetHitPoints(ra, 10);
+            SetHitPoints(legacy, 15);
+            SetHitPoints(haka, 20);
+            SetHitPoints(tachyon, 11);
+            GoToEndOfTurn(haka);
+            Card h3l1x = PlayCard("H3l1x");
+
+            //At the start of the environment turn, this card deals the hero target with the lowest HP 1 melee damage, the hero target with the second highest HP 3 melee damage, and the hero target with the highest HP 5 melee damage.
+            //lowest hp ra, second highest is legacy, highest is haka
+            QuickHPStorage(baron, ra, legacy, haka, tachyon);
+            GoToStartOfTurn(cybersphere);
+            QuickHPCheck(0, -1, -3, -5, 0);
+
+        }
+
     }
 }
