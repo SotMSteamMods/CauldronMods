@@ -65,9 +65,9 @@
             }
         },
         {
-            "identifier": "AlistarWinters",
+            "identifier": "AlistairWinters",
             "count": 1,
-            "title": "Alistar Winters",
+            "title": "Alistair Winters",
             "keywords": [
                 "minion"
             ],
@@ -81,11 +81,11 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "AlistarWinters",
+                    "identifier": "AlistairWinters",
                     "text": "You're pretty strong, for some clown who thinks she's The Wraith!"
                 }
             ],
-            "flavorReference": "Alistar Winters, Wraith: Beyond #2",
+            "flavorReference": "Alistair Winters, Wraith: Beyond #2",
             "hitpoints": 5
         },
         {

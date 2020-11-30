@@ -4,9 +4,9 @@ using System;
 
 namespace Cauldron.Gray
 {
-    public class AlistarWintersCardController : CardController
+    public class AlistairWintersCardController : CardController
     {
-        public AlistarWintersCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public AlistairWintersCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }

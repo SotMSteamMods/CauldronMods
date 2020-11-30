@@ -59,7 +59,7 @@ namespace CauldronTests
 
             AssertCardHasKeyword(gray.CharacterCard, "villain", false);
 
-            AssertCard("AlistarWinters", new string[] { "minion" }, 5);
+            AssertCard("AlistairWinters", new string[] { "minion" }, 5);
             AssertCard("BlightTheLand", new string[] { "radiation" }, 8);
             AssertCard("ChainReaction", new string[] { "radiation" }, 3);
             AssertCard("Contamination", new string[] { "ongoing" });
@@ -226,7 +226,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Gray", "Legacy", "Haka", "Ra", "Megalopolis");
             StartGame();
-            Card ali = GetCard("AlistarWinters");
+            Card ali = GetCard("AlistairWinters");
             PutOnDeck(gray, ali);
             PlayCards(GetCard("BlightTheLand", 0), GetCard("BlightTheLand", 1));
             GoToEndOfTurn(env);
@@ -313,7 +313,7 @@ namespace CauldronTests
             SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "Megalopolis" }, true);
             StartGame();
             FlipCard(gray);
-            Card ali = GetCard("AlistarWinters");
+            Card ali = GetCard("AlistairWinters");
             PlayCard(ali);
             //Advanced - Reduce damage dealt to villain targets by 1.
             QuickHPStorage(gray.CharacterCard, ali, haka.CharacterCard);
@@ -325,12 +325,12 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestAlistarWintersHeroTargetEffects()
+        public void TestAlistairWintersHeroTargetEffects()
         {
             SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
             StartGame();
             Card roach = GetCard("GiantMutatedSpecimen");
-            Card ali = GetCard("AlistarWinters");
+            Card ali = GetCard("AlistairWinters");
             PlayCards(ali, roach);
             QuickHPStorage(legacy, haka, ra);
             //Increase damage dealt to hero targets by 1.
@@ -343,12 +343,12 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestAlistarWintersNonHeroTargetEffects()
+        public void TestAlistairWintersNonHeroTargetEffects()
         {
             SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
             StartGame();
             Card roach = GetCard("GiantMutatedSpecimen");
-            Card ali = GetCard("AlistarWinters");
+            Card ali = GetCard("AlistairWinters");
             Card chain = GetCardInPlay("ChainReaction");
             PlayCards(ali, roach);
             QuickHPStorage(gray.CharacterCard, chain, roach);
