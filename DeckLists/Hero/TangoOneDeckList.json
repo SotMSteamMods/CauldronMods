@@ -36,7 +36,7 @@
                 "PlayCardNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "You can't hide from my sniper rifle.",
                 "AnathemaCharacter": "You are a monster, and that place was run by monsters. I'm doing what I should have in the first place.",
                 "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
@@ -406,7 +406,7 @@
                 "IncreaseDamageDealt"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Going dark. Let's do this.",
                 "AnathemaCharacter": "Anathema placeholder",
                 "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
@@ -448,7 +448,49 @@
                 "DestroyEnvironment"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "I've got a bullet with your name on it. And backups, just in case.",
+                "AnathemaCharacter": "Anathema placeholder",
+                "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
+                "PastTheRamCharacter": "1929 Ram placeholder"
+            },
+            "complexity": 2
+        },
+        {
+            "identifier": "TangoOneCharacter",
+            "promoIdentifier": "CreedTangoOneCharacter",
+            "count": 1,
+            "title": "Tango One",
+            "promoTitle": "Tango One: Creed of the Sniper",
+            "shortPromoTitle": "Creed Tango One",
+            "body": "",
+            "backgroundColor": "",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "",
+            "character": true,
+            "powers": [
+                ""
+            ],
+            "icons": [
+                "HasPower",
+                "StartOfTurnAction",
+                "DealDamageProjectile"
+            ],
+            "hitpoints": 1,
+            "nemesisIdentifiers": [
+                "TangoOne"
+            ],
+            "incapacitatedAbilities": [
+                "",
+                "",
+                ""
+            ],
+            "flippedIcons": [
+                "PlayCardNow",
+                "DrawCardNow",
+                "DestroyEnvironment"
+            ],
+            "openingLines": {
+                "default": "IThis reality is just an elaborate simulation, that ends with your defeat.",
                 "AnathemaCharacter": "Anathema placeholder",
                 "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"

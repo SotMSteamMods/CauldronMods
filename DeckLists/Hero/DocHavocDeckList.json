@@ -480,7 +480,7 @@
                 "GainExtraHP"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Haven't seen your like before; let's see how you respond to punching.",
                 "VectorCharacter": "Vector placeholder"
             },
             "complexity": 2

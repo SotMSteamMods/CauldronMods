@@ -40,7 +40,7 @@
                 "IncreaseDamageTaken"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "What comes next may be unpleasant.",
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatCharacter": "Tiamat placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder",
@@ -419,7 +419,7 @@
                 "DrawCardNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "There is no defense against the horrors I shall unleash.",
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatCharacter": "Tiamat placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder",
@@ -461,11 +461,53 @@
                 "Discard"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "I will bring my most powerful rituals to bear against this foe.",
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatCharacter": "Tiamat placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder",
                 "MythosCharacter": "Those papers you hold... But how did [i]you[/i] obtain the missing pages of my tome?"
+            },
+            "complexity": 2
+        },
+        {
+            "identifier": "NecroCharacter",
+            "promoIdentifier": "LastOfTheForgottenOrderNecroCharacter",
+            "count": 1,
+            "title": "Necro",
+            "promoTitle": "Last of The Forgotten Order Necro",
+            "shortPromoTitle": "Mythos - Necro",
+            "body": "Turn Undead",
+            "backgroundColor": "",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "",
+            "character": true,
+            "powers": [
+                ""
+            ],
+            "icons": [
+                "HasPower"
+            ],
+            "hitpoints": 1,
+            "nemesisIdentifiers": [
+                "Necro"
+            ],
+            "incapacitatedAbilities": [
+                "",
+                "",
+                ""
+            ],
+            "flippedIcons": [
+                "DealDamageToxic",
+                "UsePowerNow",
+                "DrawCardNow",
+                "Discard"
+            ],
+            "openingLines": {
+                "default": "We must all... repent... before it is... too late.",
+                "PastTheRamCharacter": "1929 Ram placeholder",
+                "TiamatCharacter": "Tiamat placeholder",
+                "TiamatElementalCharacter": "Tiamat Elemental placeholder",
+                "MythosCharacter": "Is this to be my atonement? Thwarting the designs I spent so long advancing? Very well."
             },
             "complexity": 2
         }
