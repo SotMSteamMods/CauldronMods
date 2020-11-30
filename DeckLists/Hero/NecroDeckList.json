@@ -43,7 +43,8 @@
                 "default": "default placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "TiamatElementalCharacter": "Tiamat Elemental placeholder",
+                "MythosCharacter": "You seem happy to make it one for others. I will not allow it!"
             },
             "complexity": 2
         },
@@ -421,7 +422,8 @@
                 "default": "default placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "TiamatElementalCharacter": "Tiamat Elemental placeholder",
+                "MythosCharacter": "It is exactly because I have seen greater fears that death holds no terror for me."
             },
             "complexity": 2
         },
@@ -462,7 +464,8 @@
                 "default": "default placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "TiamatElementalCharacter": "Tiamat Elemental placeholder",
+                "MythosCharacter": "Those papers you hold... But how did [i]you[/i] obtain the missing pages of my tome?"
             },
             "complexity": 2
         }
