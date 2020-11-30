@@ -8,7 +8,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
 	"sourceSize": {"w":689,"h":507}
 },
-"BattlefieldScavanger.jpg":
+"BattlefieldScavenger.jpg":
 {
 	"frame": {"x":2058,"y":991,"w":689,"h":507},
 	"rotated": false,
@@ -152,7 +152,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
 	"sourceSize": {"w":689,"h":507}
 },
-"TheKnightCharacterCard.jpg":
+"TheKnightCharacter.jpg":
 {
 	"frame": {"x":0,"y":991,"w":680,"h":988},
 	"rotated": false,
@@ -160,7 +160,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
 	"sourceSize": {"w":680,"h":988}
 },
-"TheKnightCharacterCardBack.jpg":
+"TheKnightCharacterBack.jpg":
 {
 	"frame": {"x":683,"y":991,"w":680,"h":988},
 	"rotated": false,
@@ -191,6 +191,6 @@
 	"format": "RGBA8888",
 	"size": {"w":4096,"h":4096},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:d1b1492c5d75927e4347fa47787d120f:1b2ac0a38b03acb8d3c74be740d51657:462b0f338c72732491e78774ceba35d6$"
+	"smartupdate": "$TexturePacker:SmartUpdate:d45a81a3a0f4148bdece9ad4c6902c62:1b2ac0a38b03acb8d3c74be740d51657:462b0f338c72732491e78774ceba35d6$"
 }
 }
