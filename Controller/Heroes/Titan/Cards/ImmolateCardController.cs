@@ -14,9 +14,18 @@ namespace Cauldron.Titan
         }
 
         private const string FirstTimeDealingDamage = "FirstTimeDealingDamage";
+        private Location NextToHeroToGoTo = null;
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
+            //if we're given a hero to go to, go there
+            if (NextToHeroToGoTo != null)
+            {
+                storedResults.Add(new MoveCardDestination(NextToHeroToGoTo));
+                NextToHeroToGoTo = null;
+                yield break;
+            }
+
             //Play this card next to a target.
             IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsTarget, "targets"), storedResults, true, decisionSources);
             if (base.UseUnityCoroutines)
@@ -50,6 +59,25 @@ namespace Cauldron.Titan
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        public IEnumerator PlayBySpecifiedTarget(Card target, bool isPutIntoPlay, CardSource cardSource)
+        {
+            if (target != null && !target.IsIncapacitatedOrOutOfGame)
+            {
+                NextToHeroToGoTo = target.NextToLocation;
+            }
+
+            IEnumerator play = GameController.PlayCard(TurnTakerController, this.Card, wasCardPlayed: new List<bool> { !isPutIntoPlay }, isPutIntoPlay: isPutIntoPlay, cardSource: cardSource);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(play);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(play);
             }
             yield break;
         }

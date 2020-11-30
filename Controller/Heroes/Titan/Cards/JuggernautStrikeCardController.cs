@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Cauldron.Titan
 {
-    public class JuggernautStrikeCardController : CardController
+    public class JuggernautStrikeCardController : TitanCardController
     {
         public JuggernautStrikeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -16,7 +16,7 @@ namespace Cauldron.Titan
 
         public override IEnumerator Play()
         {
-            Card titanform = FindCard("Titanform");
+            Card titanform = base.GetTitanform();
             IEnumerator coroutine = null;
             //If Titanform is in your hand you may play it now.
             if (titanform.Location.IsHand && titanform.Location.OwnerTurnTaker == base.TurnTaker)
