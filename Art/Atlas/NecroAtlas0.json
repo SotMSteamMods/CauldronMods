@@ -98,7 +98,7 @@
 },
 "NecroCharacter.jpg":
 {
-	"frame": {"x":692,"y":1530,"w":680,"h":988},
+	"frame": {"x":1370,"y":1530,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -106,7 +106,7 @@
 },
 "NecroCharacterBack.jpg":
 {
-	"frame": {"x":1375,"y":1530,"w":680,"h":988},
+	"frame": {"x":2053,"y":1530,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -114,15 +114,15 @@
 },
 "NecroDeckBack.jpg":
 {
-	"frame": {"x":1366,"y":2521,"w":825,"h":1154},
+	"frame": {"x":692,"y":1530,"w":675,"h":978},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":825,"h":1154},
-	"sourceSize": {"w":825,"h":1154}
+	"spriteSourceSize": {"x":0,"y":0,"w":675,"h":978},
+	"sourceSize": {"w":675,"h":978}
 },
 "PastNecroCharacter.png":
 {
-	"frame": {"x":2058,"y":1530,"w":680,"h":988},
+	"frame": {"x":2736,"y":1530,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -130,7 +130,7 @@
 },
 "PastNecroCharacterBack.png":
 {
-	"frame": {"x":2741,"y":1530,"w":680,"h":988},
+	"frame": {"x":0,"y":2521,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -162,7 +162,7 @@
 },
 "WardenOfChaosNecroCharacter.jpg":
 {
-	"frame": {"x":0,"y":2521,"w":680,"h":988},
+	"frame": {"x":683,"y":2521,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -170,7 +170,7 @@
 },
 "WardenOfChaosNecroCharacterBack.jpg":
 {
-	"frame": {"x":683,"y":2521,"w":680,"h":988},
+	"frame": {"x":1366,"y":2521,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -191,6 +191,6 @@
 	"format": "RGBA8888",
 	"size": {"w":4096,"h":4096},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:ed233144307f2998d6fe2792df1c211b:e92207eef8b68063cd6a72cc28e60cd4:b1910fc34599234b106445a14740ff1e$"
+	"smartupdate": "$TexturePacker:SmartUpdate:9437571f7052e367f7aafdb5f5329290:31be813119ee21dc16cb5a3b6f7f767a:b1910fc34599234b106445a14740ff1e$"
 }
 }

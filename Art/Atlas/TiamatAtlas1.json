@@ -1,0 +1,156 @@
+{"frames": {
+
+"HydraDecayTiamatCharacter.jpg":
+{
+	"frame": {"x":0,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"HydraDecayTiamatCharacterBack.jpg":
+{
+	"frame": {"x":683,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"HydraEarthTiamatCharacter.jpg":
+{
+	"frame": {"x":1366,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"HydraEarthTiamatCharacterBack.jpg":
+{
+	"frame": {"x":2049,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"HydraFrigidEarthTiamatInstructions.jpg":
+{
+	"frame": {"x":2732,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"HydraFrigidEarthTiamatInstructionsBack.jpg":
+{
+	"frame": {"x":3415,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"HydraInfernoTiamatBack.jpg":
+{
+	"frame": {"x":0,"y":991,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"HydraInfernoTiamatCharacter.jpg":
+{
+	"frame": {"x":683,"y":991,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"HydraNoxiousFireTiamatInstructions.jpg":
+{
+	"frame": {"x":1366,"y":991,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"HydraNoxiousFireTiamatInstructionsBack.jpg":
+{
+	"frame": {"x":2049,"y":991,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"HydraStormTiamatCharacter.jpg":
+{
+	"frame": {"x":2732,"y":991,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"HydraStormTiamatCharacterBack.jpg":
+{
+	"frame": {"x":3415,"y":991,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"HydraThunderousGaleTiamatInstructions.jpg":
+{
+	"frame": {"x":0,"y":1982,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"HydraThunderousGaleTiamatInstructionsBack.jpg":
+{
+	"frame": {"x":683,"y":1982,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"HydraWindTiamatCharacter.jpg":
+{
+	"frame": {"x":1366,"y":1982,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"HydraWindTiamatCharacterBack.jpg":
+{
+	"frame": {"x":2049,"y":1982,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"HydraWinterTiamatCharacter.jpg":
+{
+	"frame": {"x":2732,"y":1982,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"HydraWinterTiamatCharacterBack.jpg":
+{
+	"frame": {"x":3415,"y":1982,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "TiamatAtlas1.png",
+	"format": "RGBA8888",
+	"size": {"w":4096,"h":4096},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:cb06ba04589519458e811540e01eb65d:8cf95ed97732b2251e544299697ff297:c152e0fac587a26d7ecf3e4725469a57$"
+}
+}

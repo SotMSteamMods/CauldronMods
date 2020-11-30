@@ -2,7 +2,7 @@
 
 "CalmBeforeTheStorm.jpg":
 {
-	"frame": {"x":0,"y":0,"w":689,"h":507},
+	"frame": {"x":2049,"y":991,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -10,7 +10,7 @@
 },
 "CrownOfTheFourWinds.jpg":
 {
-	"frame": {"x":692,"y":0,"w":689,"h":507},
+	"frame": {"x":2741,"y":991,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -18,7 +18,7 @@
 },
 "EnchantedClearing.jpg":
 {
-	"frame": {"x":1384,"y":0,"w":689,"h":507},
+	"frame": {"x":0,"y":1982,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -26,7 +26,7 @@
 },
 "Fall.jpg":
 {
-	"frame": {"x":2076,"y":0,"w":689,"h":507},
+	"frame": {"x":692,"y":1982,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -34,7 +34,7 @@
 },
 "FireInTheClouds.jpg":
 {
-	"frame": {"x":2768,"y":0,"w":689,"h":507},
+	"frame": {"x":1384,"y":1982,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -42,7 +42,7 @@
 },
 "FrostOnThePetals.jpg":
 {
-	"frame": {"x":0,"y":510,"w":689,"h":507},
+	"frame": {"x":2076,"y":1982,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -50,7 +50,7 @@
 },
 "FutureLadyOfTheWoodCharacter.png":
 {
-	"frame": {"x":1384,"y":1530,"w":680,"h":988},
+	"frame": {"x":675,"y":0,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -58,7 +58,7 @@
 },
 "FutureLadyOfTheWoodCharacterBack.png":
 {
-	"frame": {"x":2067,"y":1530,"w":680,"h":988},
+	"frame": {"x":1358,"y":0,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -66,7 +66,7 @@
 },
 "LadyOfTheWoodCharacter.jpg":
 {
-	"frame": {"x":2750,"y":1530,"w":680,"h":988},
+	"frame": {"x":2041,"y":0,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -74,15 +74,31 @@
 },
 "LadyOfTheWoodCharacterBack.jpg":
 {
-	"frame": {"x":0,"y":2521,"w":680,"h":988},
+	"frame": {"x":2724,"y":0,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
 	"sourceSize": {"w":680,"h":988}
 },
+"LadyOfTheWoodDeckBack.jpg":
+{
+	"frame": {"x":0,"y":0,"w":672,"h":976},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":672,"h":976},
+	"sourceSize": {"w":672,"h":976}
+},
+"LadyOfTheWoodsRebirthCardController.jpg":
+{
+	"frame": {"x":2768,"y":1982,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
 "MeadowRush.jpg":
 {
-	"frame": {"x":692,"y":510,"w":689,"h":507},
+	"frame": {"x":0,"y":2492,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -90,7 +106,7 @@
 },
 "MinistryOfStrategicScienceLadyOfTheWoodCharacter.png":
 {
-	"frame": {"x":683,"y":2521,"w":680,"h":988},
+	"frame": {"x":3407,"y":0,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -98,7 +114,7 @@
 },
 "MinistryOfStrategicScienceLadyOfTheWoodCharacterBack.png":
 {
-	"frame": {"x":1366,"y":2521,"w":680,"h":988},
+	"frame": {"x":0,"y":991,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -106,7 +122,7 @@
 },
 "NobilityOfDusk.jpg":
 {
-	"frame": {"x":1384,"y":510,"w":689,"h":507},
+	"frame": {"x":692,"y":2492,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -114,15 +130,7 @@
 },
 "RainpetalCloak.jpg":
 {
-	"frame": {"x":2076,"y":510,"w":689,"h":507},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
-},
-"Rebirth.jpg":
-{
-	"frame": {"x":2768,"y":510,"w":689,"h":507},
+	"frame": {"x":1384,"y":2492,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -130,7 +138,7 @@
 },
 "SeasonsOfChangeLadyOfTheWoodCharacter.jpg":
 {
-	"frame": {"x":2049,"y":2521,"w":680,"h":988},
+	"frame": {"x":683,"y":991,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -138,7 +146,7 @@
 },
 "SeasonsOfChangeLadyOfTheWoodCharacterBack.jpg":
 {
-	"frame": {"x":2732,"y":2521,"w":680,"h":988},
+	"frame": {"x":1366,"y":991,"w":680,"h":988},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
@@ -146,7 +154,7 @@
 },
 "SerentiyOfDawn.jpg":
 {
-	"frame": {"x":0,"y":1020,"w":689,"h":507},
+	"frame": {"x":2076,"y":2492,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -154,7 +162,7 @@
 },
 "SnowshadeGown.jpg":
 {
-	"frame": {"x":692,"y":1020,"w":689,"h":507},
+	"frame": {"x":2768,"y":2492,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -162,7 +170,7 @@
 },
 "Spring.jpg":
 {
-	"frame": {"x":1384,"y":1020,"w":689,"h":507},
+	"frame": {"x":0,"y":3002,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -170,7 +178,7 @@
 },
 "Summer.jpg":
 {
-	"frame": {"x":2076,"y":1020,"w":689,"h":507},
+	"frame": {"x":692,"y":3002,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -178,7 +186,7 @@
 },
 "SuncastMantle.jpg":
 {
-	"frame": {"x":2768,"y":1020,"w":689,"h":507},
+	"frame": {"x":1384,"y":3002,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -186,7 +194,7 @@
 },
 "ThundergreyShawl.jpg":
 {
-	"frame": {"x":0,"y":1530,"w":689,"h":507},
+	"frame": {"x":2076,"y":3002,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -194,7 +202,7 @@
 },
 "Winter.jpg":
 {
-	"frame": {"x":692,"y":1530,"w":689,"h":507},
+	"frame": {"x":2768,"y":3002,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -207,6 +215,6 @@
 	"format": "RGBA8888",
 	"size": {"w":4096,"h":4096},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:943fe1b63b2823f401492f1dae16858b:ed4c1a4871e020c856912439b5d1e98a:aebb254d77629167f632846d82801790$"
+	"smartupdate": "$TexturePacker:SmartUpdate:3294077e4909bc78f2bc90ddf32c5d87:c0317727ae1f26dec2ace949d5026764:aebb254d77629167f632846d82801790$"
 }
 }
