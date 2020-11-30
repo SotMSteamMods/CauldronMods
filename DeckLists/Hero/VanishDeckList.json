@@ -37,7 +37,7 @@
                 "ReduceDamageTaken"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Okay team, don't blink or you might miss me.",
                 "GrayCharacter": "The only thing I did was get people out of a mess [b]you[/b] made!",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
@@ -373,7 +373,7 @@
                 "RedirectDamage"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "I'll get everyone into position. Who's ready to jump?",
                 "GrayCharacter": "In and out, just like we practiced. This'll be a [b]good[/b] takedown.",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
@@ -414,7 +414,7 @@
                 "Manipulate"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "I'll scout ahead. There must be some advantage we can exploit.",
                 "GrayCharacter": "Gray placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },

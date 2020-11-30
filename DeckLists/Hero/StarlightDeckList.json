@@ -48,7 +48,7 @@
             },
             "complexity": 3,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Your defeat is written in the stars!",
                 "MenagerieCharacter":"Menagerie placeholder"
             }
         },
@@ -572,7 +572,7 @@
                 "UsePowerNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "This sector is under Nightlore protection.",
                 "MenagerieCharacter": "Menagerie placeholder"
             },
             "complexity": 3
@@ -624,8 +624,47 @@
             },
             "isReal": false,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "To survey the darkness and guard the light; this we pledge!",
                 "MenagerieCharacter": "By the order of the Nightlore Council, you are under arrest! ...Was that right?"
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "StarlightCharacter",
+            "promoIdentifier": "Area51StarlightCharacter",
+            "count": 1,
+            "title": "Starlight",
+            "promoTitle": "Starlight: Area 51",
+            "shortPromoTitle": "Area 51 Starlight",
+            "body": "",
+            "backgroundColor": "",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "",
+            "character": true,
+            "powers": [
+                ""
+            ],
+            "icons": [
+                "HasPower",
+                "DealDamageEnergy",
+                "Search"
+            ],
+            "hitpoints": 1,
+            "nemesisIdentifiers": [
+                "Starlight"
+            ],
+            "incapacitatedAbilities": [
+                "",
+                "",
+                ""
+            ],
+            "flippedIcons": [
+                "Manipulate",
+                "UsePowerNow"
+            ],
+            "openingLines": {
+                "default": "Just look right here, if you please.",
+                "MenagerieCharacter": "Menagerie placeholder"
             },
             "complexity": 3
         }
