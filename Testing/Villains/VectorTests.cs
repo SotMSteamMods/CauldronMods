@@ -371,5 +371,43 @@ namespace CauldronTests
             // Assert
             Assert.True(false, "TODO");
         }
+
+        [Test]
+        public void TestUndiagnosedSubject()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+
+            StartGame();
+            Card undiagnosed = GetCard(UndiagnosedSubjectCardController.Identifier);
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(undiagnosed);
+            GoToStartOfTurn(legacy);
+
+            // Assert
+            Assert.True(false, "TODO");
+
+        }
+
+        [Test]
+        public void TestVendetta()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+
+            StartGame();
+            Card vendetta = GetCard(VendettaCardController.Identifier);
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(vendetta);
+
+            // Assert
+            Assert.True(false, "TODO");
+        }
     }
 }

@@ -1,11 +1,9 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-
-
 
 namespace Cauldron.Vector
 {
@@ -33,7 +31,7 @@ namespace Cauldron.Vector
 
             AddWhenDestroyedTrigger(DestroyedResponse, new[]
             {
-                TriggerType.RevealCard
+                TriggerType.RevealCard, TriggerType.MoveCard
             });
 
             base.AddTriggers();
@@ -51,8 +49,6 @@ namespace Cauldron.Vector
             {
                 base.GameController.ExhaustCoroutine(routine);
             }
-
-            yield break;
         }
 
         private IEnumerator DestroyedResponse(DestroyCardAction destroy)
@@ -94,8 +90,18 @@ namespace Cauldron.Vector
                 });
             }
 
-            base.GameController.SelectAndPerformFunction()
+            SelectFunctionDecision selectFunctionDecision 
+                = new SelectFunctionDecision(base.GameController, this.DecisionMaker, choices, false, cardSource: base.GetCardSource());
 
+            IEnumerator routine = base.GameController.SelectAndPerformFunction(selectFunctionDecision);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
         }
     }
 }
