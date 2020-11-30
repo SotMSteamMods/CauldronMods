@@ -495,7 +495,7 @@ namespace CauldronTests
             QuickHPUpdate();
             DestroyCard("IrradiatedTouch");
             //Gray deals everyone 2 energy damage when a radiation card is destroyed
-            QuickHPCheck(-2,0,-4,-2);
+            QuickHPCheck(-2, 0, -4, -2);
         }
 
         [Test()]
@@ -543,6 +543,24 @@ namespace CauldronTests
             DealDamage(gray, ra, 2, DamageType.Melee);
             PrintJournal();
             QuickHPCheck(-3);
+            QuickHandCheck(0);
+        }
+
+        [Test()]
+        public void TestLivingReactorImmuneToDamage()
+        {
+            //Whenever {Gray} deals damage to a hero target, either increase that damage by 1 or that player must discard a card.
+            SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
+            StartGame();
+            PlayCard("LivingReactor");
+            Card evo = PlayCard("NextEvolution");
+            UsePower(evo);
+
+            //Since Legacy is immune to the damage he should not have to discard a card or increase the damage
+            QuickHandStorage(legacy);
+            QuickHPStorage(legacy);
+            DealDamage(gray, legacy, 2, DamageType.Cold);
+            QuickHPCheck(0);
             QuickHandCheck(0);
         }
 
