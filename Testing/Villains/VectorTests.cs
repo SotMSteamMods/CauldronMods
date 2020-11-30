@@ -342,5 +342,34 @@ namespace CauldronTests
             // Assert
             Assert.True(false, "TODO");
         }
+
+        [Test]
+        public void TestSupervirus()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card bloodSample = GetCard(BloodSampleCardController.Identifier); // Virus
+            Card delayedSymptoms = GetCard(DelayedSymptomsCardController.Identifier); // Virus
+            Card eliteTraining = GetCard(EliteTrainingCardController.Identifier);
+
+            PutInTrash(bloodSample);
+            PutInTrash(delayedSymptoms);
+            PutInTrash(eliteTraining);
+
+            Card superVirus = GetCard(SupervirusCardController.Identifier);
+            PlayCard(superVirus);
+
+            StartGame();
+
+            // Act
+
+            GoToStartOfTurn(haka);
+
+            DealDamage(haka, Vector, 100, DamageType.Melee);
+
+            // Assert
+            Assert.True(false, "TODO");
+        }
     }
 }
