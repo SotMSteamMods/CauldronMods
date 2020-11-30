@@ -64,7 +64,7 @@ namespace Cauldron.TheRam
                 if (IsGameAdvanced)
                 {
                     //"flippedAdvanced": "Whenever a villain target is destroyed, play the top card of the villain deck.",
-                    AddSideTrigger(AddTrigger((DestroyCardAction dc) => dc.CardToDestroy != null && dc.CardToDestroy.Card.IsVillainTarget, PlayTheTopCardOfTheVillainDeckResponse, TriggerType.PlayCard, TriggerTiming.After));
+                    AddSideTrigger(AddTrigger((DestroyCardAction dc) => dc.CardToDestroy != null && IsVillainTarget(dc.CardToDestroy.Card), PlayTheTopCardOfTheVillainDeckResponse, TriggerType.PlayCard, TriggerTiming.After));
                 }
             }
 
