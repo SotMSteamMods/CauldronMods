@@ -215,5 +215,109 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestHolocycleRace_Increase()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            Card h3l1x = PlayCard("H3l1x");
+
+
+            //Increase all damage dealt by 1.
+            Card holocycleRace = PlayCard("HolocycleRace");
+
+            //hero damage
+            QuickHPStorage(baron);
+            DealDamage(ra, baron, 2, DamageType.Fire);
+            QuickHPCheck(-3);
+
+            //villain damage
+            QuickHPStorage(ra);
+            DealDamage(baron, ra, 2, DamageType.Fire);
+            QuickHPCheck(-3);
+
+            //env damage
+            QuickHPStorage(baron);
+            DealDamage(h3l1x, baron, 2, DamageType.Fire);
+            QuickHPCheck(-3);
+
+        }
+
+        [Test()]
+        public void TestHolocycleRace_StartOfTurn_ThresholdMet()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            Card h3l1x = PlayCard("H3l1x");
+
+
+            GoToEndOfTurn(haka);
+            Card holocycleRace = PlayCard("HolocycleRace");
+
+            //At the start of the environment turn, each player may discard up to 2 cards. Then, unless {H} cards were discarded this way, destroy this card.
+            QuickHandStorage(ra, legacy, haka, tachyon);
+            DecisionSelectCards = new Card[] {ra.HeroTurnTaker.Hand.Cards.ElementAt(0), null,
+                                            legacy.HeroTurnTaker.Hand.Cards.ElementAt(0), legacy.HeroTurnTaker.Hand.Cards.ElementAt(1),
+                                            null,
+                                            tachyon.HeroTurnTaker.Hand.Cards.ElementAt(0), null};
+
+            GoToStartOfTurn(cybersphere);
+            QuickHandCheck(-1, -2, 0, -1);
+            AssertIsInPlay(holocycleRace);
+            
+        }
+
+        [Test()]
+        public void TestHolocycleRace_StartOfTurn_ThresholdExceeded()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            Card h3l1x = PlayCard("H3l1x");
+
+
+            GoToEndOfTurn(haka);
+            Card holocycleRace = PlayCard("HolocycleRace");
+
+            //At the start of the environment turn, each player may discard up to 2 cards. Then, unless {H} cards were discarded this way, destroy this card.
+            QuickHandStorage(ra, legacy, haka, tachyon);
+            DecisionSelectCards = new Card[] {ra.HeroTurnTaker.Hand.Cards.ElementAt(0), ra.HeroTurnTaker.Hand.Cards.ElementAt(1),
+                                            legacy.HeroTurnTaker.Hand.Cards.ElementAt(0), legacy.HeroTurnTaker.Hand.Cards.ElementAt(1),
+                                            haka.HeroTurnTaker.Hand.Cards.ElementAt(0), haka.HeroTurnTaker.Hand.Cards.ElementAt(1),
+                                            tachyon.HeroTurnTaker.Hand.Cards.ElementAt(0), null};
+
+            GoToStartOfTurn(cybersphere);
+            QuickHandCheck(-2, -2, -2, -1);
+            AssertInTrash(holocycleRace);
+
+        }
+
+        [Test()]
+        public void TestHolocycleRace_StartOfTurn_ThresholdNotMet()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            Card h3l1x = PlayCard("H3l1x");
+
+
+            GoToEndOfTurn(haka);
+            Card holocycleRace = PlayCard("HolocycleRace");
+
+            //At the start of the environment turn, each player may discard up to 2 cards. Then, unless {H} cards were discarded this way, destroy this card.
+            QuickHandStorage(ra, legacy, haka, tachyon);
+            DecisionDoNotSelectCard = SelectionType.DiscardCard;
+            GoToStartOfTurn(cybersphere);
+            QuickHandCheck(0, 0, 0, 0);
+            AssertInTrash(holocycleRace);
+
+        }
+
     }
 }
