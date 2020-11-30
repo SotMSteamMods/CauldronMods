@@ -88,9 +88,17 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":672,"h":976},
 	"sourceSize": {"w":672,"h":976}
 },
-"MeadowRush.jpg":
+"LadyOfTheWoodsRebirthCardController.jpg":
 {
 	"frame": {"x":2768,"y":1982,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"MeadowRush.jpg":
+{
+	"frame": {"x":0,"y":2492,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
@@ -114,21 +122,13 @@
 },
 "NobilityOfDusk.jpg":
 {
-	"frame": {"x":0,"y":2492,"w":689,"h":507},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
-},
-"RainpetalCloak.jpg":
-{
 	"frame": {"x":692,"y":2492,"w":689,"h":507},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
 	"sourceSize": {"w":689,"h":507}
 },
-"Rebirth.jpg":
+"RainpetalCloak.jpg":
 {
 	"frame": {"x":1384,"y":2492,"w":689,"h":507},
 	"rotated": false,
@@ -215,6 +215,6 @@
 	"format": "RGBA8888",
 	"size": {"w":4096,"h":4096},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:d35e100854b413e26a4169e39bd8f289:75fecf90b3d0093fd8dc026a9d9e473d:aebb254d77629167f632846d82801790$"
+	"smartupdate": "$TexturePacker:SmartUpdate:3294077e4909bc78f2bc90ddf32c5d87:c0317727ae1f26dec2ace949d5026764:aebb254d77629167f632846d82801790$"
 }
 }
