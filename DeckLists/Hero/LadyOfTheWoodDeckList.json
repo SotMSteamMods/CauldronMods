@@ -34,7 +34,7 @@
             "flippedIcons": [],
             "openingLines": {
                 "default": "default placeholder",
-                "CalderochCharacter": "Calderoch placeholder",
+                "CalderochCharacter": "I haven't felt this presence in many years. Beware, my friends. This wind carries the scent of death.",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
@@ -477,7 +477,7 @@
             ],
             "openingLines": {
                 "default": "default placeholder",
-                "CalderochCharacter": "Calderoch placeholder",
+                "CalderochCharacter": "Hurry, everyone! His bonds are weakening - but ours can strengthen!",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
@@ -519,7 +519,7 @@
             ],
             "openingLines": {
                 "default": "default placeholder",
-                "CalderochCharacter": "Calderoch placeholder",
+                "CalderochCharacter": "Adventure, discovery, life - all will exist after this. All but you, Celadroch.",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
@@ -560,7 +560,7 @@
             ],
             "openingLines": {
                 "default": "default placeholder",
-                "CalderochCharacter": "Calderoch placeholder",
+                "CalderochCharacter": "It seems like not all things have changed, after all - is your evil timeless, Celadroch, or were you waiting for me?",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3

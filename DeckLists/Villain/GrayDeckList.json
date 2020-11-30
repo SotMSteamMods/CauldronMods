@@ -55,9 +55,9 @@
             ],
             "difficulty": 4,
             "openingLines": {
-                "default": "Out of my way.",
-                "VanishCharacter": "Vanish placeholder",
-                "FirstResponseVanishCharacter": "First Response Vanish  placeholder",
+                "default": "I'm already fixing the problem. If you don't like what it takes, that just makes you another problem. ",
+                "VanishCharacter": "You! [b]You[/b] did this to me. Let's see how you like having [b]your[/b] life torn apart!",
+                "FirstResponseVanishCharacter": "Your company was just a warmup. Your new team is next. No matter how far you run, I'll rip down everything you build. ",
                 "1929VanishCharacter": "Vanish 1929 placeholder",
                 "PyreCharacter": "Pyre placeholder",
                 "UnstablePyreCharacter": "Unstable Pyre placeholder",

@@ -46,7 +46,7 @@
             "flippedAdvancedIcons": [],
             "difficulty": 4,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Obstruction analysis complete. Assigned secondary priority. Primary priority unchanged: incorporate targets, enhance self.",
                 "CypherCharacter": "Cypher placeholder",
                 "FirstResponseCypherCharacter": "First Response Cypher placeholder",
                 "SwarmingProtocolCypherCharacter": "Swarming Protocol Cypher placeholder"

@@ -43,10 +43,14 @@
                 "PlayCardNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Your defeat is written in the stars!",
                 "MenagerieCharacter": "Menagerie placeholder"
             },
-            "complexity": 3
+            "complexity": 3,
+            "openingLines": {
+                "default": "default placeholder",
+                "MenagerieCharacter":"Menagerie placeholder"
+            }
         },
         {
             "identifier": "AncientConstellationA",
@@ -619,6 +623,10 @@
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "isReal": false,
+            "openingLines": {
+                "default": "default placeholder",
+                "MenagerieCharacter": "By the order of the Nightlore Council, you are under arrest! ...Was that right?"
+            },
             "complexity": 3
         }
     ]
