@@ -82,8 +82,8 @@ namespace Cauldron.Quicksilver
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            //Search your deck for Iron Retort and put it into your hand. 
-            coroutine = base.SearchForCards(base.HeroTurnTakerController, true, false, 1, 1, new LinqCardCriteria((Card c) => c.Identifier == "IronRetort"), false, true, false);
+            //Search your deck or trash for Iron Retort and put it into your hand. 
+            coroutine = base.SearchForCards(base.HeroTurnTakerController, true, true, 1, 1, new LinqCardCriteria((Card c) => c.Identifier == "IronRetort"), false, true, false, autoDecideCard: true, shuffleAfterwards:false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
