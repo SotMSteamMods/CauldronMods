@@ -586,5 +586,27 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestSp4rk()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToEndOfTurn(haka);
+
+
+            //At the end of the environment turn, this card deals the non-environment target with the second highest HP 3 toxic damage.
+            //second highest is haka
+            Card sp4rk = PlayCard("Sp4rk");
+            QuickHPStorage(baron, ra, legacy, haka, tachyon);
+            GoToEndOfTurn(cybersphere);
+            QuickHPCheck(0, 0, 0, -3, 0);
+           
+
+
+
+        }
+
     }
 }
