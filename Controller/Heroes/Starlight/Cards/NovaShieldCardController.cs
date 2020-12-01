@@ -29,7 +29,9 @@ namespace Cauldron.Starlight
             {
                 var location = ce.CardEnteringPlay.Location;
                 if (location != null && location.IsNextToCard && location.OwnerCard != null)
+                {
                     return location.OwnerCard.IsTarget;
+                }
             }
             return false;
         }
@@ -59,7 +61,13 @@ namespace Cauldron.Starlight
                 yield break;
             }
 
-            var target = FindCardsWhere((Card c) => c.IsInPlay && c.IsTarget && c.GetAllNextToCards(false).Contains(constellation), visibleToCard: GetCardSource()).FirstOrDefault();
+
+            Card target = null;
+            if (constellation != null && constellation.Location != null)
+            {
+                target = constellation.Location.OwnerCard;
+            }
+
             if (target != null)
             {
                 //"...Starlight deals that target 1 energy damage..."

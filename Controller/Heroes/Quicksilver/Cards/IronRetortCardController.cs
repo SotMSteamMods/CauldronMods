@@ -37,7 +37,7 @@ namespace Cauldron.Quicksilver
              {
                 TriggerType.WouldBeDealtDamage,
                 TriggerType.DestroySelf
-             }, TriggerTiming.Before);
+             }, TriggerTiming.After);
         }
         private IEnumerator DestroySelfResponse(DealDamageAction action)
         {

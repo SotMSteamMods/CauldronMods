@@ -729,6 +729,27 @@ namespace CauldronTests
         }
 
         [Test]
+        public void AbductAndAbandon_TestTitleReturn()
+        {
+            SetupGameController("KaargraWarfang", "Cauldron.Vanish", "Ra", "TheWraith", "TimeCataclysm");
+            StartGame();
+
+            var title = FindCard(c => c.IsTitle && c.IsInPlay);
+
+
+            DecisionSelectCard = title;
+
+            var card = PlayCard("AbductAndAbandon");
+
+            //AssertOnTopOfDeck(title);
+            AssertAtLocation(title, title.NativeDeck);
+
+            //AssertInTrash(vanish, card);
+            //AssertInPlayArea(baron, target);
+        }
+
+
+        [Test]
         public void TranslocationAccelerator()
         {
             SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "TimeCataclysm");
@@ -999,6 +1020,30 @@ namespace CauldronTests
             DealDamage(wraith, ra, 1, DamageType.Melee);
             QuickHPCheck(0, 0, -1, 0);
 
+        }
+
+        [Test]
+        public void BlindsideJump_Redirection()
+        {
+            SetupGameController("KaargraWarfang", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            var target1 = PlayCard("IdesaTheAdroit");
+            var target2 = PlayCard("ProvocatorTarnis");
+            DestroyCards(FindCardsWhere(c => c.IsTitle && c.IsInPlay));
+
+            var card = PlayCard("BlindsideJump");
+            AssertInPlayArea(vanish, card);
+
+            QuickHPStorage(target1, target2);
+            AssertNumberOfStatusEffectsInPlay(0);
+            DecisionSelectCard = target1;
+            UsePower(card);
+            QuickHPCheck(0, -1);
+
+            AssertNumberOfStatusEffectsInPlay(1);
+            AssertStatusEffectsDoesNotContain(target1.Title);
+            AssertStatusEffectsContains(target2.Title);
         }
 
         [Test]

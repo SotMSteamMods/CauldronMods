@@ -35,7 +35,7 @@ namespace Cauldron.FSCContinuanceWanderer
             }
             //Then, this card deals X villain targets 2 energy damage each, where x is the number of time vortex cards in the environment trash.
             Func<int> X = () =>  base.FindCardsWhere((Card c) => c.Location == this.TurnTaker.Trash && c.IsEnvironment && c.IsInTrash && c.DoKeywordsContain("time vortex")).Count();
-            coroutine = base.DealDamage(base.Card, (Card c) => c.IsVillainTarget, (Card c) => 2, DamageType.Energy, dynamicNumberOfTargets: X);
+            coroutine = base.DealDamage(base.Card, (Card c) => IsVillainTarget(c), (Card c) => 2, DamageType.Energy, dynamicNumberOfTargets: X);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

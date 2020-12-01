@@ -37,7 +37,7 @@
 				"IncreaseDamageDealt"
 			],
 			"openingLines": {
-				"default": "default placeholder",
+				"default": "Halt, villain! Leave, or cross my steel!",
 				"OutlanderCharacter": "Outlander placeholder",
 				"PastTheRamCharacter": "1929 Ram placeholder",
 				"TiamatCharacter": "Tiamat placeholder",
@@ -388,7 +388,7 @@
 				"ReduceDamageTaken"
 			],
 			"openingLines": {
-				"default": "default placeholder",
+				"default": "Have at thee! I've always wanted to say that.",
 				"OutlanderCharacter": "Outlander placeholder",
 				"PastTheRamCharacter": "1929 Ram placeholder",
 				"TiamatCharacter": "Tiamat placeholder",
@@ -431,7 +431,7 @@
 				"DealDamagePsychic"
 			],
 			"openingLines": {
-				"default": "default placeholder",
+				"default": "Whether 'tis by my blood and bone alone, today shall be your undoing!",
 				"OutlanderCharacter": "Outlander placeholder",
 				"PastTheRamCharacter": "1929 Ram placeholder",
 				"TiamatCharacter": "Tiamat placeholder",
@@ -474,7 +474,7 @@
 				"IncreaseDamageDealt"
 			],
 			"openingLines": {
-				"default": "default placeholder",
+				"default": "You will not shed innocent blood while we stand.",
 				"OutlanderCharacter": "Outlander placeholder",
 				"PastTheRamCharacter": "1929 Ram placeholder",
 				"TiamatCharacter": "Tiamat placeholder",
@@ -520,7 +520,7 @@
 				"PlayCardNow"
 			],
 			"openingLines": {
-				"default": "default placeholder",
+				"default": "We survived the Wastelands; this should be easy!",
 				"OutlanderCharacter": "Outlander placeholder",
 				"PastTheRamCharacter": "1929 Ram placeholder",
 				"TiamatCharacter": "Tiamat placeholder",

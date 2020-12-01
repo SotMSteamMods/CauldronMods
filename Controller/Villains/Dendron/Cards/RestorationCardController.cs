@@ -22,7 +22,7 @@ namespace Cauldron.Dendron
         public override IEnumerator Play()
         {
             // Dendron regains 10 HP
-            IEnumerator gainHpRoutine = this.GameController.GainHP(this.HeroTurnTakerController, c => c == this.TurnTaker.CharacterCard, HpToGain, cardSource: this.GetCardSource());
+            IEnumerator gainHpRoutine = this.GameController.GainHP(this.HeroTurnTakerController, c => c == CharacterCard, HpToGain, cardSource: this.GetCardSource());
 
             // Restore all Tattoos to their max HP
             IEnumerator restoreTattooHpRoutine = this.GameController.SetHP(this.HeroTurnTakerController, IsTattoo, card => card.MaximumHitPoints.Value);

@@ -16,7 +16,7 @@ namespace Cauldron.StSimeonsCatacombs
         public override void AddTriggers()
         {
             //Increase damage dealt by villain targets by 1.
-            bool criteria(DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card.IsVillainTarget;
+            bool criteria(DealDamageAction dd) => dd.DamageSource != null && IsVillainTarget(dd.DamageSource.Card);
             base.AddIncreaseDamageTrigger(criteria, (DealDamageAction dd) => 1);
 
             base.AddTriggers();
