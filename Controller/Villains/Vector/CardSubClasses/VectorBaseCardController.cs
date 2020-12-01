@@ -37,5 +37,17 @@ namespace Cauldron.Vector
                                 && card.IsInPlayAndHasGameText).FirstOrDefault();
         }
 
+        protected bool ShouldVectorFlip()
+        {
+            if (!IsSuperVirusInPlay())
+            {
+                return false;
+            }
+
+            int cardFlipThreshold = base.Game.H + 2;
+
+            Card superVirus = GetSuperVirusCard();
+            return superVirus.UnderLocation.Cards.Count() >= cardFlipThreshold;
+        }
     }
 }

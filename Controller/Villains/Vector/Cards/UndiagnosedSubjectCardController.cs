@@ -80,13 +80,14 @@ namespace Cauldron.Vector
                     () => base.GameController.MoveCard(base.DecisionMaker, revealedCards.First(), base.TurnTaker.Deck, showMessage: true, cardSource: GetCardSource()))
             };
 
+            List<MoveCardAction> virusMoveAction = new List<MoveCardAction>();
             if (IsSuperVirusInPlay() && IsVirus(revealedCards.First()))
             {
                 choices = choices.Concat(new[]
                 {
                     new Function(base.DecisionMaker, "Put under Super Virus", SelectionType.MoveCardToUnderCard,
                         () => base.GameController.MoveCard(base.DecisionMaker, revealedCards.First(),
-                            GetSuperVirusCard().UnderLocation, showMessage: true, cardSource: GetCardSource())),
+                            GetSuperVirusCard().UnderLocation, storedResults: virusMoveAction, showMessage: true, cardSource: GetCardSource())),
                 });
             }
 
@@ -101,6 +102,17 @@ namespace Cauldron.Vector
             else
             {
                 base.GameController.ExhaustCoroutine(routine);
+            }
+
+            if (!virusMoveAction.Any())
+            {
+                yield break;
+            }
+
+            // If they chose to move the card under Super Virus, check for flip condition
+            if (virusMoveAction.First().WasCardMoved && ShouldVectorFlip())
+            {
+                // TODO: Flip Vector
             }
         }
     }

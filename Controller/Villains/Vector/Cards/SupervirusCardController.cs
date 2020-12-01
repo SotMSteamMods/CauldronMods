@@ -1,5 +1,7 @@
 ﻿
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
@@ -71,10 +73,11 @@ namespace Cauldron.Vector
         private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
         {
             // You may put 1 Virus card from the villain trash beneath this card
+            List<SelectCardDecision> cardsSelected = new List<SelectCardDecision>();
             MoveCardDestination underThisCard = new MoveCardDestination(base.Card.UnderLocation);
 
-            IEnumerator routine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.IsInTrash && IsVirus(c)),
-                underThisCard.ToEnumerable<MoveCardDestination>(), optional: true, showOutput: true, cardSource: base.GetCardSource());
+            IEnumerator routine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria(c => c.IsInTrash && IsVirus(c)),
+                underThisCard.ToEnumerable(), optional: true, storedResults: cardsSelected, showOutput: true, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -83,6 +86,15 @@ namespace Cauldron.Vector
             else
             {
                 base.GameController.ExhaustCoroutine(routine);
+            }
+
+            if (cardsSelected.Any())
+            {
+                // A virus card was moved under this card, check for flip condition
+                if (ShouldVectorFlip())
+                {
+                    // TODO: Flip Vector
+                }
             }
 
             // {Vector} deals each hero 1 toxic damage

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
@@ -53,17 +54,42 @@ namespace Cauldron.Vector
                 yield break;
             }
 
-            // Put this card underneath Super Virus
-            IEnumerator moveRoutine = this.GameController.MoveCard(this.DecisionMaker, this.Card, 
+            // Ask if players want to put this card underneath Super Virus
+            List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
+
+            IEnumerator routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
+                SelectionType.MoveCard, this.Card, null, storedYesNoResults, null, GetCardSource());
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
+
+            if (!base.DidPlayerAnswerYes(storedYesNoResults))
+            {
+                yield break;
+            }
+
+            routine = this.GameController.MoveCard(this.DecisionMaker, this.Card, 
                 GetSuperVirusCard().UnderLocation, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(moveRoutine);
+                yield return base.GameController.StartCoroutine(routine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(moveRoutine);
+                base.GameController.ExhaustCoroutine(routine);
+            }
+
+            // They chose to move the card under Super Virus, check for flip condition
+            if (ShouldVectorFlip())
+            {
+                // TODO: Flip Vector
             }
         }
 
