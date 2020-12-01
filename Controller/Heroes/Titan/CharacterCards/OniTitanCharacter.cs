@@ -84,8 +84,8 @@ namespace Cauldron.Titan
 
         public override IEnumerator UsePower(int index = 0)
         {
-            //You may play an ongoing card.
-            IEnumerator coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, cardCriteria: new LinqCardCriteria((Card c) => c.IsOngoing), cardSource: base.GetCardSource());
+            //Titan regains 1HP.
+            IEnumerator coroutine = base.GameController.GainHP(base.CharacterCard, 1, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -95,8 +95,19 @@ namespace Cauldron.Titan
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            //Draw a card.
-            coroutine = base.DrawCard();
+            //Search your deck, trash, and hand for Titanform and play it.
+            coroutine = base.GameController.PlayCard(base.TurnTakerController, FindCard("Titanform"), cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //Shuffle your deck.
+            coroutine = base.ShuffleDeck(base.HeroTurnTakerController, base.TurnTaker.Deck);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
