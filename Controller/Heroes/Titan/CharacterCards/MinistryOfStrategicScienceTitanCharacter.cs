@@ -12,6 +12,9 @@ namespace Cauldron.Titan
         {
 
         }
+
+        private List<Card> actedHeroes;
+
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
             IEnumerator coroutine;
@@ -19,8 +22,13 @@ namespace Cauldron.Titan
             {
                 case 0:
                     {
-                        //One player may draw a card now.
-                        coroutine = base.GameController.SelectHeroToDrawCard(base.HeroTurnTakerController, cardSource: base.GetCardSource());
+                        //Each hero may deal themselves 1 psychic damage to draw a card.
+                        this.actedHeroes = new List<Card>();
+                        IEnumerable<Function> functionsBasedOnCard(Card c) => new Function[]
+                        {
+                            new Function(base.FindCardController(c).DecisionMaker, "Deal self 1 psychic damage to draw a card now.", SelectionType.DrawCard, () => this.DealDamageAndDrawResponse(c))
+                        };
+                        coroutine = base.GameController.SelectCardsAndPerformFunction(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && !this.actedHeroes.Contains(c), "active hero character cards", false, false, null, null, false), functionsBasedOnCard, true, base.GetCardSource(null));
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -33,8 +41,8 @@ namespace Cauldron.Titan
                     }
                 case 1:
                     {
-                        //One player may use a power now.
-                        coroutine = base.GameController.SelectHeroToUsePower(base.HeroTurnTakerController, cardSource: base.GetCardSource());
+                        //Destroy an environment card.
+                        coroutine = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsEnvironment), false, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -48,9 +56,13 @@ namespace Cauldron.Titan
                     }
                 case 2:
                     {
-                        List<DiscardCardAction> list = new List<DiscardCardAction>();
-                        //One hero may discard a card to reduce damage dealt to them by 1 until the start of your turn.
-                        coroutine = base.GameController.SelectHeroToDiscardCard(base.HeroTurnTakerController, storedResultsDiscard: list, cardSource: base.GetCardSource());
+                        //Prevent the next damage that would be dealt to a hero target.
+                        CannotDealDamageStatusEffect statusEffect = new CannotDealDamageStatusEffect()
+                        {
+                            TargetCriteria = { IsHero = true },
+                            NumberOfUses = 1
+                        };
+                        coroutine = base.AddStatusEffect(statusEffect);
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -59,26 +71,40 @@ namespace Cauldron.Titan
                         {
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
-                        if (list.Any())
-                        {
-                            List<Card> cards = list.FirstOrDefault().HeroTurnTakerController.CharacterCards.ToList();
-                            ReduceDamageStatusEffect statusEffect = new ReduceDamageStatusEffect(1)
-                            {
-                                TargetCriteria = { IsOneOfTheseCards = cards }
-                            };
-                            statusEffect.UntilStartOfNextTurn(base.TurnTaker);
-                            coroutine = base.AddStatusEffect(statusEffect);
-                            if (base.UseUnityCoroutines)
-                            {
-                                yield return base.GameController.StartCoroutine(coroutine);
-                            }
-                            else
-                            {
-                                base.GameController.ExhaustCoroutine(coroutine);
-                            }
-                        }
                         break;
                     }
+            }
+        }
+
+        private IEnumerator DealDamageAndDrawResponse(Card card)
+        {
+            if (card != null)
+            {
+                IEnumerator coroutine = base.DealDamage(card, card, 1, DamageType.Psychic, cardSource: base.GetCardSource());
+                IEnumerator coroutine2 = base.DrawCard(card.Owner.ToHero());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                    yield return base.GameController.StartCoroutine(coroutine2);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                    base.GameController.ExhaustCoroutine(coroutine2);
+                }
+                this.LogActedCard(card);
+                coroutine2 = null;
+            }
+            yield break;
+        }
+
+        private void LogActedCard(Card card)
+        {
+            if (card.SharedIdentifier != null)
+            {
+                IEnumerable<Card> collection = base.FindCardsWhere((Card c) => c.SharedIdentifier != null && c.SharedIdentifier == card.SharedIdentifier && c != card, false, null, false);
+                this.actedHeroes.AddRange(collection);
+
             }
         }
 
