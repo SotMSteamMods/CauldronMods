@@ -506,8 +506,7 @@
 			"flavorReference": "Malichae, Bathiel One-shot"
 		}
 	],
-	"promoCards": [
-	{
+	"notPromoCards": [{
 			"identifier": "MalichaeCharacter",
 			"promoIdentifier": "ShardmasterMalichaeCharacter",
 			"count": 1,

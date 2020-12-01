@@ -448,7 +448,7 @@
             "flavorReference": "The Stranger, Strange Roads #187"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "TheStrangerCharacter",
             "promoIdentifier": "RunecarvedTheStrangerCharacter",

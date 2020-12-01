@@ -454,48 +454,6 @@
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 2
-        },
-        {
-            "identifier": "TangoOneCharacter",
-            "promoIdentifier": "CreedTangoOneCharacter",
-            "count": 1,
-            "title": "Tango One",
-            "promoTitle": "Tango One: Creed of the Sniper",
-            "shortPromoTitle": "Creed Tango One",
-            "body": "",
-            "backgroundColor": "",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "",
-            "character": true,
-            "powers": [
-                ""
-            ],
-            "icons": [
-                "HasPower",
-                "StartOfTurnAction",
-                "DealDamageProjectile"
-            ],
-            "hitpoints": 1,
-            "nemesisIdentifiers": [
-                "TangoOne"
-            ],
-            "incapacitatedAbilities": [
-                "",
-                "",
-                ""
-            ],
-            "flippedIcons": [
-                "PlayCardNow",
-                "DrawCardNow",
-                "DestroyEnvironment"
-            ],
-            "openingLines": {
-                "default": "IThis reality is just an elaborate simulation, that ends with your defeat.",
-                "AnathemaCharacter": "Anathema placeholder",
-                "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
-                "PastTheRamCharacter": "1929 Ram placeholder"
-            },
-            "complexity": 2
         }
     ]
 }

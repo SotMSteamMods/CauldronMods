@@ -439,7 +439,7 @@
             "flavorReference": "Starlight And Lady Of The Wood, Starcrossed #72"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "LadyOfTheWoodCharacter",
             "promoIdentifier": "SeasonsOfChangeLadyOfTheWoodCharacter",

@@ -489,7 +489,7 @@
             "flavorReference": "Necro, Experimental One-shot"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "CypherCharacter",
             "promoIdentifier": "FirstResponseCypherCharacter",

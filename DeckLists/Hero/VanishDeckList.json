@@ -338,7 +338,7 @@
             "flavorReference": "The Stranger #32"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "VanishCharacter",
             "promoIdentifier": "FirstResponseVanishCharacter",
