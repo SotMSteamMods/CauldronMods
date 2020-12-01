@@ -2,6 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Cauldron.Titan
 {
@@ -33,8 +34,9 @@ namespace Cauldron.Titan
 
         private IEnumerator DestroyThisCardToIncreaseDamageResponse(DealDamageAction action)
         {
+            List<DestroyCardAction> destroyList = new List<DestroyCardAction>();
             //...you may destroy this card...
-            IEnumerator coroutine = base.DestroyThisCardResponse(action);
+            IEnumerator coroutine = base.GameController.DestroyCard(base.HeroTurnTakerController, base.Card, storedResults: destroyList, cardSource: base.GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -43,16 +45,18 @@ namespace Cauldron.Titan
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
-
-            //...to increase that damage by 2.
-            coroutine = base.GameController.IncreaseDamage(action, 2, cardSource: base.GetCardSource());
-            if (UseUnityCoroutines)
+            if (base.DidDestroyCard(destroyList))
             {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
+                //...to increase that damage by 2.
+                coroutine = base.GameController.IncreaseDamage(action, 2, cardSource: base.GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }
