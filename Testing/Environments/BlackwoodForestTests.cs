@@ -829,7 +829,7 @@ namespace CauldronTests
             QuickHPStorage(ra, legacy);
             QuickHandStorage(ra, legacy);
 
-            DecisionsYesNo = new[] { false, true };
+            DecisionSelectFunctions = new int?[] { 1, 0 };
 
             // Act
             Card desolation = GetCard(DesolationCardController.Identifier);
