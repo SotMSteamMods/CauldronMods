@@ -16,9 +16,12 @@ namespace Cauldron.Titan
 
         public override IEnumerator UsePower(int index = 0)
         {
+            int targetNumeral = base.GetPowerNumeral(0, 2);
+            int damageNumeral = base.GetPowerNumeral(1, 2);
+
             List<SelectCardDecision> storedSelect = new List<SelectCardDecision>();
             //{Titan} deals up to 2 non-hero targets 2 infernal damage each.
-            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), 2, DamageType.Infernal, 2, false, 0, storedResultsDecisions: storedSelect, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), damageNumeral, DamageType.Infernal, targetNumeral, false, 0, storedResultsDecisions: storedSelect, cardSource: base.GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
