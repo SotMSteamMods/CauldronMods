@@ -49,6 +49,7 @@ namespace Cauldron.Dendron
                 effect.TurnTakerCriteria.IsSpecificTurnTaker = biggestHandTurnTaker;
                 effect.TurnPhaseCriteria.Phase = Phase.Start;
                 effect.UntilEndOfNextTurn(biggestHandTurnTaker);
+                effect.CanEffectStack = true;
                 IEnumerator onPhaseChangeRoutine = base.AddStatusEffect(effect);
 
                 if (base.UseUnityCoroutines)
@@ -84,6 +85,7 @@ namespace Cauldron.Dendron
                 effect.TurnTakerCriteria.IsSpecificTurnTaker = mostCardsTurnTaker;
                 effect.TurnPhaseCriteria.Phase = Phase.Start;
                 effect.UntilEndOfNextTurn(mostCardsTurnTaker);
+                effect.CanEffectStack = true;
                 IEnumerator onPhaseChangeRoutine = base.AddStatusEffect(effect);
 
                 if (base.UseUnityCoroutines)
