@@ -543,7 +543,7 @@ namespace CauldronTests
             Card retort = PutOnDeck("IronRetort");
             Card storm = PutOnDeck("AlloyStorm");
             Card spear = PutOnDeck("CoalescingSpear");
-            DecisionDoNotSelectCard = SelectionType.PlayCard;
+            DecisionYesNo = false;
 
             PlayCard("LiquidMetal");
             AssertInHand(forest, spear);
