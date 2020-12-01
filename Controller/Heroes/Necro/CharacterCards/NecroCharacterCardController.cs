@@ -151,9 +151,9 @@ namespace Cauldron.Necro
                     {
                         //Select a hero target. Increase damage dealt by that target by 3 and increase damage dealt to that target by 2 until the start of your next turn.
 
-                        //Select a hero
+                        //Select a hero target
                         List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                        IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.IncreaseDamage, new LinqCardCriteria((Card c) => !c.IsIncapacitatedOrOutOfGame && c.IsHeroCharacterCard && c.IsInPlayAndHasGameText, "hero character"), storedResults, false, cardSource: base.GetCardSource(null));
+                        IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.IncreaseDamage, new LinqCardCriteria((Card c) => !c.IsIncapacitatedOrOutOfGame && c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText, "hero target"), storedResults, false, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
