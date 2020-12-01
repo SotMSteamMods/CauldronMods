@@ -42,6 +42,7 @@ namespace Cauldron.Titan
                     GameController.ExhaustCoroutine(coroutine);
                 }
             }
+            yield break;
         }
     }
 }
