@@ -170,12 +170,14 @@ namespace Cauldron.Necro
                             IncreaseDamageStatusEffect increaseDamageDealtStatusEffect = new IncreaseDamageStatusEffect(3);
                             increaseDamageDealtStatusEffect.SourceCriteria.IsSpecificCard = selectedTarget;
                             increaseDamageDealtStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+                            increaseDamageDealtStatusEffect.UntilTargetLeavesPlay(selectedTarget);
                             IEnumerator coroutine2 = base.AddStatusEffect(increaseDamageDealtStatusEffect);
 
                             //Until start of turn, increase damage dealt to that selected card by 2
                             IncreaseDamageStatusEffect increaseDamageTakenStatusEffect = new IncreaseDamageStatusEffect(2);
                             increaseDamageTakenStatusEffect.TargetCriteria.IsSpecificCard = selectedTarget;
                             increaseDamageTakenStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+                            increaseDamageTakenStatusEffect.UntilTargetLeavesPlay(selectedTarget);
                             IEnumerator coroutine3 = base.AddStatusEffect(increaseDamageTakenStatusEffect);
 
                             if (base.UseUnityCoroutines)
