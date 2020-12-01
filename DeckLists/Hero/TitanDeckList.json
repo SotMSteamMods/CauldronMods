@@ -38,7 +38,7 @@
             ],
             "openingLines": {
                 "default": "default placeholder",
-                "MythosCharacter": "Mythos placeholder"
+                "MythosCharacter": "Send an invoice, I'm coming up on doubling the agency's old record for damages caused and you might push me over."
             },
             "complexity": 2
         },
@@ -177,7 +177,7 @@
             "flavorReference": "The Archive #1"
         },
         {
-            "identifier": "Ms.5DemolitionCharge",
+            "identifier": "Ms5DemolitionCharge",
             "count": 2,
             "title": "MS.5 Demolition Charge",
             "keywords": [
@@ -365,7 +365,7 @@
             "flavorReference": "The Archive #1"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "TitanCharacter",
             "promoIdentifier": "MinistryOfStrategicScienceTitanCharacter",

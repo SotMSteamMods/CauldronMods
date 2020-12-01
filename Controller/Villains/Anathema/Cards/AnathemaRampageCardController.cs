@@ -30,9 +30,19 @@ namespace Cauldron.Anathema
 			TurnTaker turnTaker = storedResults.FirstOrDefault();
 			if (turnTaker != null)
 			{
+				List<Card> results = new List<Card>();
+				coroutine = base.FindCharacterCardToTakeDamage(turnTaker, results, Card, base.H - 1, DamageType.Melee);
+				if (base.UseUnityCoroutines)
+				{
+					yield return base.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					base.GameController.ExhaustCoroutine(coroutine);
+				}
+
 				//Anathema deals the Hero target with the most cards in hand {H-1} melee damage.
-				HeroTurnTakerController hero = base.FindHeroTurnTakerController(turnTaker.ToHero());
-				IEnumerator coroutine2 = base.DealDamage(base.CharacterCard, hero.CharacterCard, base.H - 1, DamageType.Melee,cardSource: base.GetCardSource());
+				IEnumerator coroutine2 = base.DealDamage(base.CharacterCard, results.First(), base.H - 1, DamageType.Melee, cardSource: base.GetCardSource());
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine2);

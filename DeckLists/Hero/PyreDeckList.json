@@ -378,7 +378,7 @@
             "flavorReference": "The Atomic Pyre: Critical"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "PyreCharacter",
             "promoIdentifier": "UnstablePyreCharacter",

@@ -446,7 +446,7 @@
             "flavorText": "This world's end brought{BR}on by pieces of another."
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "WinterTiamatCharacter",
             "promoIdentifier": "ElementalHydraTiamatCharacter",

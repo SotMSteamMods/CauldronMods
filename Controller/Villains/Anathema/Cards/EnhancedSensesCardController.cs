@@ -2,6 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Cauldron.Anathema
@@ -25,7 +26,18 @@ namespace Cauldron.Anathema
         private IEnumerator DealDamageResponse(PlayCardAction pc)
         {
 			//this card deals that Hero Character 1 sonic damage.
-			IEnumerator coroutine = base.DealDamage(base.Card, pc.CardToPlay.Owner.CharacterCard, 1, DamageType.Sonic, cardSource: base.GetCardSource());
+			List<Card> results = new List<Card>();
+			IEnumerator coroutine = base.FindCharacterCardToTakeDamage(pc.TurnTakerController.TurnTaker, results, Card, 1, DamageType.Sonic);
+			if (base.UseUnityCoroutines)
+			{
+				yield return base.GameController.StartCoroutine(coroutine);
+			}
+			else
+			{
+				base.GameController.ExhaustCoroutine(coroutine);
+			}
+
+			coroutine = base.DealDamage(base.Card, results.First(), 1, DamageType.Sonic, cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);

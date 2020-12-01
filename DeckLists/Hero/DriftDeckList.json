@@ -450,7 +450,7 @@
             "flavorReference": "Drift, The Archive #29"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "DriftCharacter",
             "promoIdentifier": "ThroughTheBreachDriftCharacter",

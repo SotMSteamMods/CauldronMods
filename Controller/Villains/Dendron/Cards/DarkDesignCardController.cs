@@ -43,7 +43,7 @@ namespace Cauldron.Dendron
 
         private Card GetLastHeroToDamageVillainTarget()
         {
-            DealDamageJournalEntry journalEntry = base.GameController.Game.Journal.DealDamageEntries().LastOrDefault(j => j.TargetCard.IsVillainTarget && j.CardThatCausedDamageToOccur.IsHero);
+            DealDamageJournalEntry journalEntry = base.GameController.Game.Journal.DealDamageEntries().LastOrDefault(j => IsVillainTarget(j.TargetCard) && j.CardThatCausedDamageToOccur.IsHero);
 
             return journalEntry?.CardThatCausedDamageToOccur;
         }

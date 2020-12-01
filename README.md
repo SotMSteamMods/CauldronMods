@@ -38,26 +38,27 @@ when mods are available.
 - HEROES:
   - Baccarat
   - Doc Havoc
+  - The Knight
   - Lady of the Wood
   - Necro
-  - The Knight
-  - The Stranger
   - Malichae
-  - Tango One
+  - Quicksilver
   - Starlight
-  - Quicksilver - In Progress
-  - Vanish - In Progress
+  - The Stranger
+  - Tango One
+  - Vanish
 
 - VILLAINS:
   - Anathema
+  - Dendron
+  - Gray
+  - The Ram
   - Tiamat
-  - Gray - In Progress
-  - Dendron - In Progress
 
 - ENVIRONMENTS:
-  - The Wandering Isle
+  - Blackwood Forest
+  - FSC Continuance Wanderer
   - Halberd Experimental Research Center
-  - FSC Continuance Wanderer - In Progress
-  - Blackwood Forest - In Progress
-  - St Simeon's Catacombs - In Progress
-  - The Cybersphere - In Progress
+  - St Simeon's Catacombs
+  - The Cybersphere
+  - The Wandering Isle

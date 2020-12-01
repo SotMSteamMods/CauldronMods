@@ -58,7 +58,7 @@
             ],
             "difficulty": 2,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "You think you can stop me? You've already lost! Every drop of blood is a death sentence.",
                 "DocHavocCharacter": "Doc Havoc placeholder"
             }
         },

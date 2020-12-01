@@ -1390,6 +1390,33 @@ namespace CauldronTests
             QuickHPCheck(0);
         }
 
+        [Test()]
+        public void TestSnowshadeGownCantDealDamageIfPartialHPGain()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //give room to gain 2 HP, but not the full 3HP from the power.
+            SetHitPoints(ladyOfTheWood, 20);
+
+            //destroy mdp so baron is vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card gown = PlayCard("SnowshadeGown");
+
+            // Whenever LadyOfTheWood regains HP, you may select a target that hasn't been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
+            GoToUsePowerPhase(ladyOfTheWood);
+
+            //deal damage to ra with the trigger
+            DecisionYesNo = true;
+            DecisionSelectTarget = ra.CharacterCard;
+
+            QuickHPStorage(ladyOfTheWood, ra);
+            //try to gain 3HP and trigger the reaction
+            UsePower(gown);
+            QuickHPCheck(2, -1);
+        }
 
         [Test()]
         public void TestSnowshadeGownDealDamage_NoTargets()

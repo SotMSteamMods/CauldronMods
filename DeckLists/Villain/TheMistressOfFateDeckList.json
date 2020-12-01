@@ -63,11 +63,11 @@
             ],
             "difficulty": 2,
             "openingLines": {
-                "default": "default placeholder",
-                "BaccaratCharacter": "Baccarat placeholder",
+                "default": "Within this twisted time, my rulership is absolute. Struggle if you wish to. It won't matter.",
+                "BaccaratCharacter": "At long last, Mr. Deckard. You can't cheat your way out of fate itself.",
                 "AceOfSorrowsBaccaratCharacter": "Ace Of Sorrows Baccarat placeholder",
                 "AceOfSwordsBaccaratCharacter": "Ace Of Swords Baccarat placeholder",
-                "1929BaccaratCharacter": "Baccarat 1929 placeholder"
+                "PastBaccaratCharacter": "Stealing from me was the worst mistake you ever made or ever will make. Discover what it has taught me."
             }
         },
         {

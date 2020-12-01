@@ -43,7 +43,7 @@ namespace Cauldron.Malichae
 
             if (!cards.Any())
             {
-                string message = $"There are no {_djinnOngoingCriteria.Description()} in play for {Card.Title} to destroy. {Card.Title} will be returned to {Card.Owner.Name}'s hand.";
+                string message = $"There are no {_djinnOngoingCriteria.Description()} in play for {Card.Title} to destroy. {Card.Title} will be returned to {TurnTaker.Name}'s hand.";
                 coroutine = base.GameController.SendMessageAction(message, Priority.Medium, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
