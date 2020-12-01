@@ -1,6 +1,6 @@
 {"frames": {
 
-"AncientConstellationA.jpg":
+"AncientConstellationF.jpg":
 {
 	"frame": {"x":0,"y":1982,"w":689,"h":507},
 	"rotated": false,
@@ -8,7 +8,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
 	"sourceSize": {"w":689,"h":507}
 },
-"AncientConstellationB.jpg":
+"AncientConstellationE.jpg":
 {
 	"frame": {"x":692,"y":1982,"w":689,"h":507},
 	"rotated": false,
@@ -16,7 +16,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
 	"sourceSize": {"w":689,"h":507}
 },
-"AncientConstellationC.jpg":
+"AncientConstellationD.jpg":
 {
 	"frame": {"x":1384,"y":1982,"w":689,"h":507},
 	"rotated": false,
@@ -24,7 +24,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
 	"sourceSize": {"w":689,"h":507}
 },
-"AncientConstellationD.jpg":
+"AncientConstellationC.jpg":
 {
 	"frame": {"x":2076,"y":1982,"w":689,"h":507},
 	"rotated": false,
@@ -32,7 +32,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
 	"sourceSize": {"w":689,"h":507}
 },
-"AncientConstellationE.jpg":
+"AncientConstellationB.jpg":
 {
 	"frame": {"x":2768,"y":1982,"w":689,"h":507},
 	"rotated": false,
@@ -40,7 +40,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
 	"sourceSize": {"w":689,"h":507}
 },
-"AncientConstellationF.jpg":
+"AncientConstellationA.jpg":
 {
 	"frame": {"x":0,"y":2492,"w":689,"h":507},
 	"rotated": false,
