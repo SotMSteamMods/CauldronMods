@@ -569,12 +569,14 @@ namespace CauldronTests
         [Test()]
         public void TestReplication_Destroy()
         {
-            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere" });
             StartGame();
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             GoToEndOfTurn(haka);
 
+            IEnumerable<Card> nonVirusToPlay = FindCardsWhere((Card c) => !IsGridVirus(c) && c.Identifier != "SystemCrash" && cybersphere.TurnTaker.Deck.Cards.Contains(c)).Take(2);
+            PutOnDeck(cybersphere, nonVirusToPlay);
 
             //At the end of the environment turn, destroy this card.
             Card replication = PlayCard("Replication");
@@ -635,6 +637,32 @@ namespace CauldronTests
             //At the start of the environment turn, if there are at least 4 Grid Virus cards in play, everyone is deleted. [b] Game Over.[/ b]
             GoToStartOfTurn(cybersphere);
             AssertGameOver(EndingResult.EnvironmentDefeat);
+        }
+
+        [Test()]
+        public void TestYourMindMakesItReal_Play()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            GoToEndOfTurn(haka);
+            //When this card enters play, it deals each target 3 lightning damage.
+            QuickHPStorage(baron, ra, legacy, haka, tachyon);
+            Card yourMindMakesItReal = PlayCard("YourMindMakesItReal");
+            QuickHPCheck(-3, -3, -3, -3, -3);
+        }
+
+        [Test()]
+        public void TestYourMindMakesItReal_EndOFTurn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+            GoToEndOfTurn(haka);
+            //At the end of the environment turn, destroy this card.
+            Card yourMindMakesItReal = PlayCard("YourMindMakesItReal");
+            AssertInPlayArea(cybersphere, yourMindMakesItReal);
+            GoToEndOfTurn(cybersphere);
+            AssertInTrash(yourMindMakesItReal);
         }
 
     }
