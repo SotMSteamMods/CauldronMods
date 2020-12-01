@@ -35,6 +35,8 @@ namespace Cauldron.MagnificentMara
             AddTrigger((GameAction ga) => ga.CardSource != null && ga.CardSource.Card == GetCardThisCardIsNextTo(), LogAction, TriggerType.Hidden, TriggerTiming.Before);
             //"At the start of your turn destroy this card."
             AddStartOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker, DestroyThisCardResponse, TriggerType.DestroySelf);
+            AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(alsoRemoveTriggersFromThisCard: true);
+
         }
         private IEnumerator LogAction(GameAction ga)
         {
