@@ -14,7 +14,10 @@ namespace CauldronTests
         #region CybersphereHelperFunctions
 
         protected TurnTakerController cybersphere { get { return FindEnvironment(); } }
-
+        protected bool IsGridVirus(Card card)
+        {
+            return card.DoKeywordsContain("grid virus");
+        }
         #endregion
 
         [Test()]
@@ -531,6 +534,55 @@ namespace CauldronTests
             DealDamage(n1nj4, mdp, 10, DamageType.Melee);
             AssertInTrash(mdp);
             AssertInPlayArea(cybersphere, glitch);
+
+        }
+
+        [Test()]
+        public void TestReplication_Play()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToEndOfTurn(haka);
+
+            Card n1nj4 = PlayCard("N1nj4");
+
+            int numVirus = GameController.Game.RNG.Next(0, 5);
+
+            IEnumerable<Card> virusToPlay = FindCardsWhere((Card c) => IsGridVirus(c) && cybersphere.TurnTaker.Deck.Cards.Contains(c)).Take(numVirus);
+            IEnumerable<Card> nonVirusToPlay = FindCardsWhere((Card c) => !IsGridVirus(c) && cybersphere.TurnTaker.Deck.Cards.Contains(c)).Take(2);
+
+            PutOnDeck(cybersphere, nonVirusToPlay);
+            PutOnDeck(cybersphere, virusToPlay);
+
+            //When this card enters play, play the top X cards of the environment deck, where X is 1 plus the number of Grid Virus cards currently in play.
+            Card replication = PlayCard("Replication");
+            if (numVirus > 0)
+            {
+                AssertInPlayArea(cybersphere, virusToPlay);
+            }
+            AssertInPlayArea(cybersphere, nonVirusToPlay);
+
+        }
+
+        [Test()]
+        public void TestReplication_Destroy()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToEndOfTurn(haka);
+
+
+            //At the end of the environment turn, destroy this card.
+            Card replication = PlayCard("Replication");
+            AssertInPlayArea(cybersphere, replication);
+            GoToEndOfTurn(cybersphere);
+            AssertInTrash(replication);
+
+
 
         }
 
