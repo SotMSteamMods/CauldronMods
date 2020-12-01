@@ -46,7 +46,7 @@ namespace Cauldron.Titan
                     }
                 case 2:
                     {
-                        //Increase the next damage dealt by a hero target by 1."
+                        //Increase the next damage dealt by a hero target by 1.
                         IncreaseDamageStatusEffect statusEffect = new IncreaseDamageStatusEffect(1)
                         {
                             NumberOfUses = 1,

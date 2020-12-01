@@ -1,6 +1,8 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Cauldron.Titan
 {
@@ -17,8 +19,8 @@ namespace Cauldron.Titan
             {
                 case 0:
                     {
-                        //One player may use a power now.
-                        coroutine = base.GameController.SelectHeroToUsePower(base.HeroTurnTakerController, cardSource: base.GetCardSource());
+                        //One player may draw a card now.
+                        coroutine = base.GameController.SelectHeroToDrawCard(base.HeroTurnTakerController, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -31,8 +33,8 @@ namespace Cauldron.Titan
                     }
                 case 1:
                     {
-                        //One player may play a card now.
-                        coroutine = base.SelectHeroToPlayCard(this.HeroTurnTakerController);
+                        //One player may use a power now.
+                        coroutine = base.GameController.SelectHeroToUsePower(base.HeroTurnTakerController, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -46,13 +48,9 @@ namespace Cauldron.Titan
                     }
                 case 2:
                     {
-                        //Increase the next damage dealt by a hero target by 1."
-                        IncreaseDamageStatusEffect statusEffect = new IncreaseDamageStatusEffect(1)
-                        {
-                            NumberOfUses = 1,
-                            SourceCriteria = { IsHero = true }
-                        };
-                        coroutine = base.AddStatusEffect(statusEffect);
+                        List<DiscardCardAction> list = new List<DiscardCardAction>();
+                        //One hero may discard a card to reduce damage dealt to them by 1 until the start of your turn.
+                        coroutine = base.GameController.SelectHeroToDiscardCard(base.HeroTurnTakerController, storedResultsDiscard: list, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -60,6 +58,24 @@ namespace Cauldron.Titan
                         else
                         {
                             base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                        if (list.Any())
+                        {
+                            List<Card> cards = list.FirstOrDefault().HeroTurnTakerController.CharacterCards.ToList();
+                            ReduceDamageStatusEffect statusEffect = new ReduceDamageStatusEffect(1)
+                            {
+                                TargetCriteria = { IsOneOfTheseCards = cards }
+                            };
+                            statusEffect.UntilStartOfNextTurn(base.TurnTaker);
+                            coroutine = base.AddStatusEffect(statusEffect);
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine);
+                            }
                         }
                         break;
                     }
