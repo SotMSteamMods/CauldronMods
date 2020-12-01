@@ -568,7 +568,6 @@ namespace CauldronTests
             PlayCard("LiquidMetal");
             QuickHPCheck(-3, -2);
         }
-
         [Test()]
         public void TestMalleableArmor()
         {
@@ -738,6 +737,22 @@ namespace CauldronTests
             //should be redirected to Quicksilver, given +1 for 3 damage
             //the punch to Apostate should be 4 infernal increased to 5
             QuickHPCheck(-3, -5);
+        }
+        [Test]
+        public void TestMirrorShardOnlyRespondsIfFinalTarget()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "TheScholar", "TheCourtOfBlood");
+            StartGame();
+
+            PlayCard("MirrorShard");
+            PlayCard("AlchemicalRedirection");
+
+            DecisionYesNo = true;
+            DecisionSelectTarget = apostate.CharacterCard;
+
+            QuickHPStorage(apostate, scholar);
+            DealDamage(legacy, scholar, 2, DamageType.Melee);
+            QuickHPCheck(0, -2);
         }
 
         [Test()]
