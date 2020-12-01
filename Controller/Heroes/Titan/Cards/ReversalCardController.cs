@@ -37,6 +37,7 @@ namespace Cauldron.Titan
                     RedirectTarget = target.FirstOrDefault().SelectedCard,
                     SourceCriteria = { IsSpecificCard = target.FirstOrDefault().SelectedCard }
                 };
+                statusEffect.UntilCardLeavesPlay(target.FirstOrDefault().SelectedCard);
                 coroutine = base.AddStatusEffect(statusEffect);
                 if (UseUnityCoroutines)
                 {
