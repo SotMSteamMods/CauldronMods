@@ -498,5 +498,41 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestN1nj4_EndOfTurn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToEndOfTurn(haka);
+            Card n1nj4 = PlayCard("N1nj4");
+
+            //At the end of the environment turn, this card deals the target other than itself with the lowest HP 3 energy damage.
+            QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, tachyon.CharacterCard);
+            GoToEndOfTurn(cybersphere);
+            QuickHPCheck(0, -3, 0, 0, 0, 0);
+
+        }
+
+        [Test()]
+        public void TestN1nj4_DamageDestroysTarget()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToEndOfTurn(haka);
+            Card n1nj4 = PlayCard("N1nj4");
+            Card glitch = PutOnDeck("Glitch");
+            AssertInDeck(glitch);
+
+            //Whenever damage dealt by this card destroys a target, play the top card of the environment deck.
+            DealDamage(n1nj4, mdp, 10, DamageType.Melee);
+            AssertInTrash(mdp);
+            AssertInPlayArea(cybersphere, glitch);
+
+        }
+
     }
 }

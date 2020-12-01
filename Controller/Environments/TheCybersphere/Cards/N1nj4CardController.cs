@@ -14,6 +14,14 @@ namespace Cauldron.TheCybersphere
 
         }
 
+        public override void AddTriggers()
+        {
+            //At the end of the environment turn, this card deals the target other than itself with the lowest HP 3 energy damage.
+            AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c != base.Card, TargetType.LowestHP, 3, DamageType.Energy);
+
+            //Whenever damage dealt by this card destroys a target, play the top card of the environment deck.
+            AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card == base.Card && dd.DidDestroyTarget, PlayTheTopCardOfTheEnvironmentDeckWithMessageResponse, TriggerType.PlayCard, TriggerTiming.After);
+        }
 
     }
 }
