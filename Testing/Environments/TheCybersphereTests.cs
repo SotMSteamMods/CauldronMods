@@ -407,5 +407,51 @@ namespace CauldronTests
             AssertInPlayArea(cybersphere, glitch);
         }
 
+        [Test()]
+        public void TestInfectedFirewall_Reduce()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+
+            GoToEndOfTurn(haka);
+            Card firewall = PlayCard("InfectedFirewall");
+            Card dr3Dnt = PlayCard("Dr3Dnt");
+
+            //Reduce damage dealt to environment targets by 1.
+            QuickHPStorage(dr3Dnt);
+            DealDamage(baron.CharacterCard, dr3Dnt, 2, DamageType.Fire);
+            QuickHPCheck(-1);
+
+            //only environment
+            QuickHPStorage(ra, baron);
+            DealDamage(baron, ra, 2, DamageType.Fire);
+            DealDamage(ra, baron, 2, DamageType.Fire);
+            QuickHPCheck(-2, -2);
+            
+
+        }
+
+        [Test()]
+        public void TestInfectedFirewall_EndOfTurn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+
+            GoToEndOfTurn(haka);
+            Card firewall = PlayCard("InfectedFirewall");
+            Card dr3Dnt = PutOnDeck("Dr3Dnt");
+
+            //At the end of the environment turn, play the top card of the environment deck.
+            GoToEndOfTurn(cybersphere);
+            AssertInPlayArea(cybersphere, dr3Dnt);
+
+        }
+
     }
 }
