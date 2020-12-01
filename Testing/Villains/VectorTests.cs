@@ -87,6 +87,20 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestVectorSetsUp()
+        {
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(Vector);
+            Assert.IsInstanceOf(typeof(VectorCharacterCardController), Vector.CharacterCardController);
+
+            Assert.AreEqual(40, Vector.CharacterCard.HitPoints);
+        }
+
+        [Test]
         public void TestAnticoagulant()
         {
             // Arrange

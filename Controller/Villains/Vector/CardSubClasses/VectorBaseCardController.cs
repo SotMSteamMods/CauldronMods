@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -44,10 +45,16 @@ namespace Cauldron.Vector
                 return false;
             }
 
-            int cardFlipThreshold = base.Game.H + 2;
-
             Card superVirus = GetSuperVirusCard();
+
+            int cardFlipThreshold = base.Game.H + 2;
             return superVirus.UnderLocation.Cards.Count() >= cardFlipThreshold;
+        }
+
+        protected IEnumerator FlipVector()
+        {
+            Card superVirus = GetSuperVirusCard();
+            return base.GameController.FlipCard(base.CharacterCardController, cardSource: base.FindCardController(superVirus).GetCardSource());
         }
     }
 }

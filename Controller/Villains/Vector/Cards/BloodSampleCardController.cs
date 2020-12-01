@@ -34,7 +34,7 @@ namespace Cauldron.Vector
 
         public override IEnumerator Play()
         {
-            IEnumerator damageRoutine = this.DealDamage(this.CharacterCard, c => c.IsHero && c.IsInPlay, 
+            IEnumerator damageRoutine = this.DealDamage(base.CharacterCard, c => c.IsHero && c.IsInPlay, 
                 DamageToDeal, DamageType.Toxic);
             
             if (base.UseUnityCoroutines)
@@ -89,7 +89,14 @@ namespace Cauldron.Vector
             // They chose to move the card under Super Virus, check for flip condition
             if (ShouldVectorFlip())
             {
-                // TODO: Flip Vector
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(FlipVector());
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(FlipVector());
+                }
             }
         }
 

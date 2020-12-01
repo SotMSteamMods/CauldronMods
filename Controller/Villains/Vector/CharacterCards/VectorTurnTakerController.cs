@@ -10,9 +10,10 @@ namespace Cauldron.Vector
 {
     public class VectorTurnTakerController : TurnTakerController
     {
+        private const int StartingHp = 40;
+
         public VectorTurnTakerController(TurnTaker turnTaker, GameController gameController) : base(turnTaker, gameController)
         {
-
         }
 
         public override IEnumerator StartGame()
@@ -23,8 +24,15 @@ namespace Cauldron.Vector
             }
 
             // At the start of the game, put {Vector}'s villain character cards into play, "Asymptomatic Carrier" side up, with 40 HP.
-            // TODO
-
+            IEnumerator routine = base.GameController.SetHP(this.CharacterCard, StartingHp);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
         }
     }
 }

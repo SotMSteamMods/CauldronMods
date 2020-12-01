@@ -1,8 +1,7 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
+
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-
 
 namespace Cauldron.Vector
 {
@@ -50,7 +49,15 @@ namespace Cauldron.Vector
 
         private IEnumerator DestroyCardResponse(DestroyCardAction dca)
         {
-            yield break;
+            IEnumerator routine = base.GameController.EachPlayerDiscardsCards(CardsToDiscard, CardsToDiscard, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
         }
     }
 }

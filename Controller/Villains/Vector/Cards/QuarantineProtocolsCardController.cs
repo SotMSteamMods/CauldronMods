@@ -37,6 +37,7 @@ namespace Cauldron.Vector
         {
             // Environment targets are immune to damage.
             ImmuneToDamageStatusEffect itdse = new ImmuneToDamageStatusEffect { TargetCriteria = {IsEnvironment = true} };
+            itdse.UntilCardLeavesPlay(this.Card);
 
             IEnumerator routine = base.GameController.AddStatusEffect(itdse, true, GetCardSource());
             if (base.UseUnityCoroutines)

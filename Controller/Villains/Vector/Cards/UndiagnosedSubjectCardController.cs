@@ -55,7 +55,7 @@ namespace Cauldron.Vector
         {
             List<Card> revealedCards = new List<Card>();
             IEnumerator revealCardsRoutine = base.GameController.RevealCards(this.TurnTakerController, base.TurnTaker.Deck,
-                CardsToReveal, revealedCards, cardSource: base.GetCardSource());
+                CardsToReveal, revealedCards, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -110,9 +110,19 @@ namespace Cauldron.Vector
             }
 
             // If they chose to move the card under Super Virus, check for flip condition
-            if (virusMoveAction.First().WasCardMoved && ShouldVectorFlip())
+            if (!virusMoveAction.First().WasCardMoved || !ShouldVectorFlip())
             {
-                // TODO: Flip Vector
+                yield break;
+            }
+
+            // Flip Vector
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(FlipVector());
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(FlipVector());
             }
         }
     }

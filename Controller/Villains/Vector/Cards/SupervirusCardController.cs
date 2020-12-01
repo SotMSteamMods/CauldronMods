@@ -33,6 +33,14 @@ namespace Cauldron.Vector
         {
             //AddTrigger((GameAction t) => (t is DestroyCardAction && (t as DestroyCardAction).CardToDestroy.Card == this.CharacterCard, (GameAction t) => GameOverResponse(didHeroesWin: true), TriggerType.GameOver, TriggerTiming.After);
 
+            base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker, StartOfTurnResponse,
+                new[]
+                {
+                    TriggerType.MoveCard,
+                    TriggerType.DealDamage
+                });
+
+
             AddTrigger(ga => (ga is DestroyCardAction dca) && dca.WasCardDestroyed && dca.CardToDestroy.Card == this.CharacterCard, 
                 (GameAction t) => GameOverResponse(), TriggerType.GameOver, TriggerTiming.After);
 
@@ -42,13 +50,6 @@ namespace Cauldron.Vector
                 //TriggerType.AddTokensToPool, TriggerTiming.After);
 
             //base.AddWhenDestroyedTrigger(WhenDestroyedResponse, TriggerType.GameOver);
-
-            base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker, StartOfTurnResponse, 
-                new[]
-                {
-                    TriggerType.MoveCard, 
-                    TriggerType.DealDamage
-                });
 
             base.AddTriggers();
         }
@@ -88,15 +89,6 @@ namespace Cauldron.Vector
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            if (cardsSelected.Any())
-            {
-                // A virus card was moved under this card, check for flip condition
-                if (ShouldVectorFlip())
-                {
-                    // TODO: Flip Vector
-                }
-            }
-
             // {Vector} deals each hero 1 toxic damage
             routine = base.DealDamage(this.CharacterCard, c => c.IsHero && c.IsTarget && c.IsInPlay, 
                 DamageToDeal, DamageType.Toxic);
@@ -120,6 +112,27 @@ namespace Cauldron.Vector
             else
             {
                 base.GameController.ExhaustCoroutine(routine);
+            }
+
+            if (!cardsSelected.Any())
+            {
+                yield break;
+            }
+
+            // A virus card was moved under this card, check for flip condition
+            if (!ShouldVectorFlip())
+            {
+                yield break;
+            }
+
+            // Flip Vector
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(FlipVector());
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(FlipVector());
             }
         }
 

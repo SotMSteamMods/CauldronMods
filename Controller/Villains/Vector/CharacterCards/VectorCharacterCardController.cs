@@ -15,31 +15,32 @@ namespace Cauldron.Vector
          *
          * Gameplay:
          *
-         * Whenever {Vector} is dealt damage, play the top card of the villain deck.
-         * If {Vector} regains all his HP, he escapes. Game over.
-         * Supervirus is indestructible. Cards beneath it are indestructible and have no game text.
-         * Whenever Supervirus is in play and there are {H + 2} or more cards beneath it, flip {Vector}'s villain character cards.
-         * If {Vector} is dealt damage by an environment card, he becomes immune to damage dealt by environment cards until the end of the turn.
+         * - Whenever {Vector} is dealt damage, play the top card of the villain deck.
+         * - If {Vector} regains all his HP, he escapes. Game over.
+         * - Supervirus is indestructible. Cards beneath it are indestructible and have no game text.
+         * - Whenever Supervirus is in play and there are {H + 2} or more cards beneath it, flip {Vector}'s villain character cards.
+         * - If {Vector} is dealt damage by an environment card, he becomes immune to damage dealt by environment cards until the end of the turn.
+         *
          *
          * Advanced:
          *
-         * At the end of the villain turn, {Vector} regains 2 HP.
+         * - At the end of the villain turn, {Vector} regains 2 HP.
          *
          * Flipped Gameplay:
          *
-         * Whenever {Vector} flips to this side, remove Supervirus from the game. Put all virus cards that were beneath it into the villain trash.
-         * Reduce damage dealt to {Vector} by 1 for each villain target in play.
-         * At the end of the villain turn, play the top card of the villain deck.
+         * - Whenever {Vector} flips to this side, remove Supervirus from the game. Put all virus cards that were beneath it into the villain trash.
+         * - Reduce damage dealt to {Vector} by 1 for each villain target in play.
+         * - At the end of the villain turn, play the top card of the villain deck.
          *
          * Flipped Advanced:
          *
-         * Increase damage dealt by {Vector} by 2.
-         *
+         * - Increase damage dealt by {Vector} by 2.
          *
          */
 
         private const int AdvancedHpGain = 2;
         private const int AdvancedDamageIncrease = 2;
+        private const string EndingMessage = "Vector regained all of his health!  The Heroes lose!";
 
         public VectorCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -65,7 +66,7 @@ namespace Cauldron.Vector
                 base.SideTriggers.Add(base.AddTrigger<DealDamageAction>(dda => dda.Target.Equals(this.Card)
                     && dda.DamageSource != null && dda.DamageSource.IsEnvironmentCard,
                 DealtDamageByEnvResponse, new[] {TriggerType.ImmuneToDamage}, TriggerTiming.After));
-
+                
                 if (this.IsGameAdvanced)
                 {
 
@@ -90,7 +91,6 @@ namespace Cauldron.Vector
 
         private IEnumerator DealtDamageResponse(DealDamageAction dda)
         {
-
             IEnumerator routine = this.GameController.PlayTopCard(this.DecisionMaker, this.TurnTakerController,
                 false, 1);
 
@@ -132,9 +132,7 @@ namespace Cauldron.Vector
             }
 
             // Reached maximum HP, game over
-            string ending = "Vector regained all of his health!  The Heroes lose!";
-
-            IEnumerator routine = base.GameController.GameOver(EndingResult.AlternateDefeat, ending, cardSource: GetCardSource());
+            IEnumerator routine = base.GameController.GameOver(EndingResult.AlternateDefeat, EndingMessage, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
