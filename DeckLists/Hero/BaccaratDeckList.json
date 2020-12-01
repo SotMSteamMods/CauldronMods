@@ -317,7 +317,7 @@
             "flavorReference": "Haka, The Book of the Dead #721"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "BaccaratCharacter",
             "promoIdentifier": "AceOfSwordsBaccaratCharacter",
