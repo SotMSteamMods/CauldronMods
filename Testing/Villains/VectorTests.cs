@@ -409,5 +409,50 @@ namespace CauldronTests
             // Assert
             Assert.True(false, "TODO");
         }
+
+        [Test]
+        public void TestVirulentBlade()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+
+            StartGame();
+            Card virulentBlade = GetCard(VirulentBladeCardController.Identifier);
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(virulentBlade);
+            GoToStartOfTurn(legacy);
+
+            // Assert
+            Assert.True(false, "TODO");
+        }
+
+        [Test]
+        public void TestVrRazortail()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card policeBackup = GetCard("PoliceBackup");
+
+            StartGame();
+            Card razortail = GetCard(VrRazortailCardController.Identifier);
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(razortail);
+            GoToEndOfTurn(haka);
+
+            GoToStartOfTurn(env);
+            PlayCard(policeBackup);
+
+            GoToStartOfTurn(Vector);
+
+
+            // Assert
+            Assert.True(false, "TODO");
+        }
     }
 }
