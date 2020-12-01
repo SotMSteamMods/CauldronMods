@@ -404,7 +404,7 @@
             "flavorReference": "War Journal #80"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "DocHavocCharacter",
             "promoIdentifier": "FirstResponseDocHavocCharacter",
@@ -444,7 +444,8 @@
                 "VectorCharacter": "Vector placeholder"
             },
             "complexity": 2
-        },
+        }],
+        "notPromoCards": [
         {
             "identifier": "DocHavocCharacter",
             "promoIdentifier": "FutureDocHavocCharacter",
