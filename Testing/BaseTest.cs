@@ -5110,7 +5110,7 @@ namespace Handelabra.Sentinels.UnitTest
             Assert.IsTrue(card.IsTarget, card.Title + " should be a target.");
             if (maxHitPoints.HasValue)
             {
-                Assert.AreEqual(maxHitPoints.Value, card.HitPoints.Value);
+                Assert.AreEqual(maxHitPoints.Value, card.MaximumHitPoints.Value);
             }
         }
 
