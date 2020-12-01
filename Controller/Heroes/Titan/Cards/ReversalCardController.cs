@@ -28,23 +28,25 @@ namespace Cauldron.Titan
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            //Redirect the next damage dealt by that target back to itself.
-            RedirectDamageStatusEffect statusEffect = new RedirectDamageStatusEffect()
+            if (target.FirstOrDefault() != null && target.FirstOrDefault().SelectedCard != null)
             {
-                NumberOfUses = 1,
-                RedirectTarget = target.FirstOrDefault().SelectedCard,
-                SourceCriteria = { IsSpecificCard = target.FirstOrDefault().SelectedCard }
-            };
-            coroutine = base.AddStatusEffect(statusEffect);
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
+                //Redirect the next damage dealt by that target back to itself.
+                RedirectDamageStatusEffect statusEffect = new RedirectDamageStatusEffect()
+                {
+                    NumberOfUses = 1,
+                    RedirectTarget = target.FirstOrDefault().SelectedCard,
+                    SourceCriteria = { IsSpecificCard = target.FirstOrDefault().SelectedCard }
+                };
+                coroutine = base.AddStatusEffect(statusEffect);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
             }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-
             //If Titanform is in your trash, you may put it into play or into your hand.
             if (base.GetTitanform().Location.IsTrash)
             {
