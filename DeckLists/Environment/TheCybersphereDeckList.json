@@ -134,8 +134,9 @@
                 "PlayCardNow"
             ],
             "body": [
+                "At the start of the Environment turn, you may destroy this card.",
                 "Whenever a hero card destroys an environment target, that hero draws a card.",
-                "At the end of the Environment turn, either destroy this card or play the top card of the Environment deck."
+                "At the end of the Environment turn, play the top card of the Environment deck."
             ],
             "flavorText": "“Well,” said the Stranger, “I believe a{BR}little invisibility will even the playing{BR}field. Good hunting.” Next to him, Tango{BR}loaded her rifle and faded from sight."
         },

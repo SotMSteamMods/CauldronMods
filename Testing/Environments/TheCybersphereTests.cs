@@ -252,8 +252,6 @@ namespace CauldronTests
             StartGame();
 
             DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
-            Card h3l1x = PlayCard("H3l1x");
-
 
             GoToEndOfTurn(haka);
             Card holocycleRace = PlayCard("HolocycleRace");
@@ -278,7 +276,6 @@ namespace CauldronTests
             StartGame();
 
             DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
-            Card h3l1x = PlayCard("H3l1x");
 
 
             GoToEndOfTurn(haka);
@@ -304,7 +301,6 @@ namespace CauldronTests
             StartGame();
 
             DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
-            Card h3l1x = PlayCard("H3l1x");
 
 
             GoToEndOfTurn(haka);
@@ -317,6 +313,98 @@ namespace CauldronTests
             QuickHandCheck(0, 0, 0, 0);
             AssertInTrash(holocycleRace);
 
+        }
+
+        [Test()]
+        public void TestHologameArena_DestroyCardDrawCard()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+
+            GoToEndOfTurn(haka);
+            Card hologameArena = PlayCard("HologameArena");
+
+            //Whenever a hero card destroys an environment target, that hero draws a card.
+            QuickHandStorage(ra, legacy, haka, tachyon);
+            Card dr3Dnt = PlayCard("Dr3Dnt");
+            DestroyCard(dr3Dnt, ra.CharacterCard);
+            QuickHandCheck(1, 0, 0, 0);
+
+            Card blinding = PutInTrash("BlindingSpeed");
+            QuickHandUpdate();
+            dr3Dnt = PlayCard("Dr3Dnt");
+            DecisionSelectCard = dr3Dnt;
+            PlayCard(blinding);
+            QuickHandCheck(0, 0, 0, 1);
+
+            QuickHandUpdate();
+            dr3Dnt = PlayCard("Dr3Dnt");
+            DestroyCard(dr3Dnt, baron.CharacterCard);
+            QuickHandCheck(0, 0, 0, 0);
+
+
+        }
+
+        [Test()]
+        public void TestHologameArena_StartOfTurn_Destroy()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+
+            GoToEndOfTurn(haka);
+            Card hologameArena = PlayCard("HologameArena");
+            Card glitch = PutOnDeck("Glitch");
+
+            //At the end of the Environment turn, either destroy this card or play the top card of the Environment deck.
+            DecisionYesNo = true;
+            GoToStartOfTurn(cybersphere);
+            AssertInTrash(cybersphere, hologameArena);
+
+        }
+
+        [Test()]
+        public void TestHologameArena_StartOfTurn_DestroyOptional()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+
+            GoToEndOfTurn(haka);
+            Card hologameArena = PlayCard("HologameArena");
+            Card glitch = PutOnDeck("Glitch");
+
+            //At the end of the Environment turn, either destroy this card or play the top card of the Environment deck.
+            DecisionYesNo = false;
+            GoToStartOfTurn(cybersphere);
+            AssertInPlayArea(cybersphere, hologameArena);
+
+        }
+
+        [Test()]
+        public void TestHologameArena_EndOfTurn_Play()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+
+            GoToEndOfTurn(haka);
+            Card hologameArena = PlayCard("HologameArena");
+
+            Card glitch = PutOnDeck("Glitch");
+
+            //At the end of the Environment turn, either destroy this card or play the top card of the Environment deck.
+            GoToEndOfTurn(cybersphere);
+            AssertInPlayArea(cybersphere, glitch);
         }
 
     }
