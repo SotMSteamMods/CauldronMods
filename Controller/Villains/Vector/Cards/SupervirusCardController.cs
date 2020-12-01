@@ -51,6 +51,23 @@ namespace Cauldron.Vector
             base.AddTriggers();
         }
 
+        public override IEnumerator Play()
+        {
+            // Make this card indestructible
+            MakeIndestructibleStatusEffect ise = new MakeIndestructibleStatusEffect();
+            ise.CardsToMakeIndestructible.IsSpecificCard = this.Card;
+            IEnumerator routine = base.AddStatusEffect(ise, true);
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
+        }
+
         private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
         {
             // You may put 1 Virus card from the villain trash beneath this card
