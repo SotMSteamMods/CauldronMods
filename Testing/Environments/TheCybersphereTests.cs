@@ -602,10 +602,39 @@ namespace CauldronTests
             QuickHPStorage(baron, ra, legacy, haka, tachyon);
             GoToEndOfTurn(cybersphere);
             QuickHPCheck(0, 0, 0, -3, 0);
-           
+   
+        }
 
+        [Test()]
+        public void TestSystemCrash_LessThan4()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
 
+            GoToEndOfTurn(haka);
 
+            IEnumerable<Card> virusToPlay = FindCardsWhere((Card c) => IsGridVirus(c) && cybersphere.TurnTaker.Deck.Cards.Contains(c)).Take(3);
+            PlayCards(virusToPlay);
+            PlayCard("SystemCrash");
+            //At the start of the environment turn, if there are at least 4 Grid Virus cards in play, everyone is deleted. [b] Game Over.[/ b]
+            GoToStartOfTurn(cybersphere);
+            AssertNotGameOver();
+        }
+
+        [Test()]
+        public void TestSystemCrash_MoreThan4()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+            GoToEndOfTurn(haka);
+
+            IEnumerable<Card> virusToPlay = FindCardsWhere((Card c) => IsGridVirus(c) && cybersphere.TurnTaker.Deck.Cards.Contains(c)).Take(4);
+            PlayCards(virusToPlay);
+            PlayCard("SystemCrash");
+            //At the start of the environment turn, if there are at least 4 Grid Virus cards in play, everyone is deleted. [b] Game Over.[/ b]
+            GoToStartOfTurn(cybersphere);
+            AssertGameOver(EndingResult.EnvironmentDefeat);
         }
 
     }
