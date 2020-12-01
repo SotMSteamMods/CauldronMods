@@ -453,5 +453,50 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestInfectedHoloWeapon()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheCybersphere");
+            StartGame();
+
+
+            GoToEndOfTurn(haka);
+            Card holoweapon = PlayCard("InfectedHoloweapon");
+
+            //At the end of the environment turn, this card deals the 2 non-environment targets with the highest HP 2 irreducible energy damage each.
+            //Damage dealt by those targets is irreducible until the start of the environment turn.
+            //mdp makes baron immune to the damage, but should still get the irreducible buff
+
+            //baron and haka are the highest HP
+            QuickHPStorage(baron, ra, legacy, haka, tachyon);
+            GoToEndOfTurn(cybersphere);
+            QuickHPCheck(0, 0, 0, -2, 0);
+
+            //damage dealt by each of them is irreducible
+            PlayCard("TaMoko");
+            QuickHPStorage(haka);
+            DealDamage(baron, haka, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            QuickHPUpdate();
+            DealDamage(haka, haka, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            //only those targets
+            QuickHPUpdate();
+            DealDamage(ra, haka, 3, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //Resets at start of the env turn
+            GoToStartOfTurn(cybersphere);
+            QuickHPUpdate();
+            DealDamage(baron, haka, 3, DamageType.Melee);
+            QuickHPCheck(-2);
+            QuickHPUpdate();
+            DealDamage(haka, haka, 3, DamageType.Melee);
+            QuickHPCheck(-2);
+
+        }
+
     }
 }
