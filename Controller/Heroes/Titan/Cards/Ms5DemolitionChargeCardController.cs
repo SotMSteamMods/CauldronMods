@@ -9,7 +9,7 @@ namespace Cauldron.Titan
     {
         public Ms5DemolitionChargeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => c.IsEnvironment, "environment"));
         }
 
         public override IEnumerator Play()

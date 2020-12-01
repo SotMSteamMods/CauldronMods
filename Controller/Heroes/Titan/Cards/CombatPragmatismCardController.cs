@@ -12,7 +12,6 @@ namespace Cauldron.Titan
 
         }
 
-
         public override void AddTriggers()
         {
             //When a non-hero card enters play, you may destroy this card...

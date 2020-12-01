@@ -14,7 +14,6 @@ namespace Cauldron.Titan
 
         }
 
-
         public override IEnumerator Play()
         {
             //{Titan} deals 1 target 3 melee damage.

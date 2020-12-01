@@ -10,7 +10,7 @@ namespace Cauldron.Titan
     {
         public ImmolateCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowCardThisCardIsNextTo(base.GetCardThisCardIsNextTo());
         }
 
         private const string FirstTimeDealingDamage = "FirstTimeDealingDamage";

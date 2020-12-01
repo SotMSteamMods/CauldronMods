@@ -8,7 +8,7 @@ namespace Cauldron.Titan
     {
         public TitanCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowLocationOfCards(new LinqCardCriteria((Card c) => c == this.GetTitanform()));
         }
 
         public Card GetTitanform()

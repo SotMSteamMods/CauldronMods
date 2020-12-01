@@ -11,6 +11,7 @@ namespace Cauldron.Titan
         public TitanformCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SetCardProperty("FirstTimeDamageDealt", false);
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.IsPropertyTrue("FirstTimeDamageDealt"), () => "Titan has been dealt damage since the his last turn", () => "Titan has not been dealt damage since the his last turn");
         }
 
         private const string FirstTimeDamageDealt = "FirstTimeDamageDealt";
