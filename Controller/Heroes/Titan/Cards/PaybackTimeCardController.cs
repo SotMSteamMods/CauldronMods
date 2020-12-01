@@ -2,6 +2,8 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Cauldron.Titan
 {
@@ -15,7 +17,7 @@ namespace Cauldron.Titan
         public override void AddTriggers()
         {
             //Increase damage dealt by {Titan} by 1 to non-hero targets that have dealt him damage since the end of his last turn.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Target == base.CharacterCard, this.IncreaseDamageStatusEffectResponse, TriggerType.IncreaseDamage, TriggerTiming.After);
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard && this.HasTargetDealtDamageToTitanSinceHisLastTurn(action.Target), 1);
             //At the end of your turn {Titan} regains 1HP.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.GainHPResponse, TriggerType.GainHP);
         }
@@ -34,24 +36,29 @@ namespace Cauldron.Titan
             yield break;
         }
 
-        private IEnumerator IncreaseDamageStatusEffectResponse(DealDamageAction action)
+        private bool HasTargetDealtDamageToTitanSinceHisLastTurn(Card target)
         {
-            IncreaseDamageStatusEffect statusEffect = new IncreaseDamageStatusEffect(1)
+            if (target.IsTarget)
             {
-                SourceCriteria = { IsSpecificCard = base.CharacterCard },
-                TargetCriteria = { IsSpecificCard = action.DamageSource.Card }
-            };
-            statusEffect.UntilEndOfNextTurn(base.TurnTaker);
-            IEnumerator coroutine = base.AddStatusEffect(statusEffect);
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
+                DealDamageJournalEntry dealDamageJournalEntry = (from d in base.GameController.Game.Journal.DealDamageEntriesFromTargetToTargetSinceLastTurn(target, base.CharacterCard, base.TurnTaker) where d.Amount > 0 select d).LastOrDefault<DealDamageJournalEntry>();
+                if (dealDamageJournalEntry != null && target.IsInPlayAndHasGameText)
+                {
+                    int? entryIndex = base.GameController.Game.Journal.GetEntryIndex(dealDamageJournalEntry);
+                    PlayCardJournalEntry playCardJournalEntry = (from c in base.GameController.Game.Journal.PlayCardEntries() where c.CardPlayed == target select c).LastOrDefault<PlayCardJournalEntry>();
+                    if (playCardJournalEntry == null)
+                    {
+                        return true;
+                    }
+                    int? entryIndex2 = base.GameController.Game.Journal.GetEntryIndex(playCardJournalEntry);
+                    int? num = entryIndex;
+                    int? num2 = entryIndex2;
+                    if (num.GetValueOrDefault() > num2.GetValueOrDefault() & (num != null & num2 != null))
+                    {
+                        return true;
+                    }
+                }
             }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
+            return false;
         }
     }
 }
