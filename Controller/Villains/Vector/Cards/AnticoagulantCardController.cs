@@ -9,6 +9,7 @@ namespace Cauldron.Vector
     {
         //==============================================================
         // Increase damage dealt to {Vector} by 1.
+        //
         // When {Vector} is dealt damage, destroy this card and {Vector}
         // deals each hero target X toxic damage, where X is the amount
         // of damage that was dealt to {Vector}.
@@ -26,7 +27,7 @@ namespace Cauldron.Vector
         {
 
             AddTrigger((DealDamageAction dda) => dda.Target == base.CharacterCard, DealDamageResponse,
-                TriggerType.DealDamage, timing: TriggerTiming.After);
+                new []{TriggerType.DealDamage, TriggerType.DestroySelf}, timing: TriggerTiming.After);
 
             base.AddTriggers();
         }

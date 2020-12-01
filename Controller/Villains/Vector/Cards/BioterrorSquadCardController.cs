@@ -11,6 +11,7 @@ namespace Cauldron.Vector
         //==============================================================
         // At the start of the villain turn, shuffle a Virus card
         // from the villain trash into the villain deck.
+        //
         // At the end of the villain turn, this card deals the hero target
         // with the highest HP {H} projectile damage, then {Vector}
         // deals this card 1 toxic damage.
