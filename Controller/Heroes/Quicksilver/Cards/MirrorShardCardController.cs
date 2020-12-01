@@ -14,8 +14,6 @@ namespace Cauldron.Quicksilver
         {
         }
 
-        private bool _redirectPrimed = false;
-
         public override IEnumerator Play()
         {
             //When this card enters play, draw a card.
