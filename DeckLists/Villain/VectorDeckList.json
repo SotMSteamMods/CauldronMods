@@ -14,7 +14,7 @@
                 "villain"
             ],
             "body": "Asymptomatic Carrier",
-            "backgroundColor": "fbae41",
+            "backgroundColor": "FBAE41",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 55,
@@ -151,7 +151,7 @@
             ],
             "body": [
                 "When this card enters play, {Vector} deals each hero target 1 toxic damage.",
-                "At the start of the villain turn, if Supervirus is in play and {Vector} was dealt {H x 2} or more damage last round, you may put this card beneath Supervirus."
+                "At the start of the villain turn, if Supervirus is in play and {Vector} was dealt {H * 2} or more damage last round, you may put this card beneath Supervirus."
             ],
             "flavorQuotes": [
                 {
@@ -336,7 +336,7 @@
                 "LoseTheGame"
             ],
             "body": [
-                "At the start of the villain turn you may put 1 Virus card from the villain trash beneath this card. Then, {Vector} deals each hero 1 toxic damage and regains {H x 2} HP.",
+                "At the start of the villain turn you may put 1 Virus card from the villain trash beneath this card. Then, {Vector} deals each hero 1 toxic damage and regains {H * 2} HP.",
                 "If {Vector} is destroyed, the heroes lose."
             ],
             "flavorQuotes": [
@@ -437,8 +437,7 @@
             ],
             "body": [
                 "Reduce damage dealt to this card by 1.",
-                "At the start of the villain turn, {Vector} regains {H} HP.",
-                "If {Vector} is dealt damage by an environment card, he becomes immune to damage dealt by environment cards until the end of the turn."
+                "At the start of the villain turn, {Vector} regains {H} HP."
             ],
             "flavorQuotes": [
                 {
