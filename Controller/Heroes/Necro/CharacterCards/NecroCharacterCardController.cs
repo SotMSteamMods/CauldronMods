@@ -151,9 +151,9 @@ namespace Cauldron.Necro
                     {
                         //Select a hero target. Increase damage dealt by that target by 3 and increase damage dealt to that target by 2 until the start of your next turn.
 
-                        //Select a hero
+                        //Select a hero target
                         List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                        IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.IncreaseDamage, new LinqCardCriteria((Card c) => !c.IsIncapacitatedOrOutOfGame && c.IsHeroCharacterCard && c.IsInPlayAndHasGameText, "hero character"), storedResults, false, cardSource: base.GetCardSource(null));
+                        IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.IncreaseDamage, new LinqCardCriteria((Card c) => !c.IsIncapacitatedOrOutOfGame && c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText, "hero target"), storedResults, false, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -170,12 +170,14 @@ namespace Cauldron.Necro
                             IncreaseDamageStatusEffect increaseDamageDealtStatusEffect = new IncreaseDamageStatusEffect(3);
                             increaseDamageDealtStatusEffect.SourceCriteria.IsSpecificCard = selectedTarget;
                             increaseDamageDealtStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+                            increaseDamageDealtStatusEffect.UntilTargetLeavesPlay(selectedTarget);
                             IEnumerator coroutine2 = base.AddStatusEffect(increaseDamageDealtStatusEffect);
 
                             //Until start of turn, increase damage dealt to that selected card by 2
                             IncreaseDamageStatusEffect increaseDamageTakenStatusEffect = new IncreaseDamageStatusEffect(2);
                             increaseDamageTakenStatusEffect.TargetCriteria.IsSpecificCard = selectedTarget;
                             increaseDamageTakenStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+                            increaseDamageTakenStatusEffect.UntilTargetLeavesPlay(selectedTarget);
                             IEnumerator coroutine3 = base.AddStatusEffect(increaseDamageTakenStatusEffect);
 
                             if (base.UseUnityCoroutines)

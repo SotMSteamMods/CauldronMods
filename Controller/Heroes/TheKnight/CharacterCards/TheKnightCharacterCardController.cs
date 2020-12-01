@@ -67,6 +67,8 @@ namespace Cauldron.TheKnight
                             ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(1);
                             reduceDamageStatusEffect.TargetCriteria.IsSpecificCard = selectedCard;
                             reduceDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+                            reduceDamageStatusEffect.UntilTargetLeavesPlay(selectedCard);
+
                             coroutine = base.AddStatusEffect(reduceDamageStatusEffect, true);
                             if (base.UseUnityCoroutines)
                             {
@@ -99,6 +101,8 @@ namespace Cauldron.TheKnight
                             IncreaseDamageStatusEffect increaseDamageStatusEffect = new IncreaseDamageStatusEffect(1);
                             increaseDamageStatusEffect.SourceCriteria.IsSpecificCard = selectedCard;
                             increaseDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+                            increaseDamageStatusEffect.UntilTargetLeavesPlay(selectedCard);
+
                             coroutine = base.AddStatusEffect(increaseDamageStatusEffect, true);
                             if (base.UseUnityCoroutines)
                             {

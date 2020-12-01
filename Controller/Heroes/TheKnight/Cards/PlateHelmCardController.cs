@@ -16,6 +16,8 @@ namespace Cauldron.TheKnight
         public override void AddTriggers()
         {
             base.AddRedirectDamageTrigger(dd => IsEquipmentEffectingCard(dd.Target), c => base.Card, true);
+
+            base.AddMaintainTargetTriggers((Card c) => c.Owner == base.Card.Owner && c.Identifier == Card.Identifier, 3, new List<string> { "equipment" });
         }
 
         public override IEnumerator Play()

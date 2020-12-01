@@ -384,6 +384,61 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(0);
         }
 
+        [Test]
+        public void TestChokingInscription_BothEffectsOnSameHero()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Expatriette", "Haka", "Megalopolis");
+
+            StartGame();
+            QuickShuffleStorage(legacy, expatriette, haka);
+
+            Card chokingInscription = GetCard(ChokingInscriptionCardController.Identifier);
+            Card assaultRifle = GetCard("AssaultRifle");
+            Card jacket = PutInHand("FlakJacket");
+            PutInHand("Unload"); //so Expariatte has cards in hand that she shouldn't be able to play
+
+            // Act
+            PlayCard(assaultRifle); // Put Assault Rifle into play so expatriette will incur the most cards in play penalty
+            //have expat draw cards to ensure they have the most cards in hand
+            DrawCard(expatriette, 2);
+
+            GoToPlayCardPhase(Dendron);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            //Chocking Inscription applies a series of status effects to targets.
+            PlayCard(chokingInscription);
+
+            AssertNumberOfStatusEffectsInPlay(2);
+
+            // Expatriette affected with phase penalties.  Legacy and Haka shuffles his trash into his deck
+            QuickShuffleCheck(1, 0, 1);
+
+            GoToStartOfTurn(expatriette);
+
+            AssertCannotPlayCards(expatriette);
+
+            QuickHandStorage(expatriette);
+            RunCoroutine(base.GameController.DrawCard(expatriette.HeroTurnTaker, cardSource: expatriette.CharacterCardController.GetCardSource()));
+            QuickHandCheck(0);
+
+
+            GoToUsePowerPhase(expatriette);
+            DecisionSelectCard = jacket;
+            UsePower(expatriette.CharacterCard);
+            AssertInHand(jacket);
+
+            GoToDrawCardPhase(expatriette);
+            AssertCannotPerformPhaseAction();
+
+            GoToEndOfTurn(expatriette);
+
+            //Expiration
+            GoToStartOfTurn(haka);
+            AssertNumberOfStatusEffectsInPlay(0);
+        }
+
 
         [Test]
         public void TestDarkDesign()

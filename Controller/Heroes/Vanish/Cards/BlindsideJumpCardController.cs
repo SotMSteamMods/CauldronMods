@@ -38,6 +38,7 @@ namespace Cauldron.Vanish
             var effect = new IncreaseDamageStatusEffect(increases);
             effect.TargetCriteria.IsSpecificCard = action.Target;
             effect.UntilStartOfNextTurn(TurnTaker);
+            effect.UntilCardLeavesPlay(action.Target);
             effect.CardSource = Card;
             effect.Identifier = Card.Title;
 
