@@ -796,7 +796,7 @@ namespace CauldronTests
 
 
         [Test]
-        public void Armor_ImbuedVitality([Values("PlateHelm", "PlateMail"] string armor)
+        public void Armor_ImbuedVitality([Values("PlateHelm", "PlateMail")] string armor)
         {
             SetupGameController("GrandWarlordVoss", HeroNamespace, "RealmOfDiscord");
             StartGame();
@@ -806,13 +806,14 @@ namespace CauldronTests
             DiscardAllCards(HeroController);
 
             var target = PutInHand(HeroController, armor);
+            int targetHP = armor == "PlateHelm" ? 3 : 5;
             var equip = PutInHand("Whetstone");
             GoToPlayCardPhase(HeroController);
 
             PrintSeparator("Test");
 
             PlayCard(target);
-            AssertIsTarget(target, 3);
+            AssertIsTarget(target, targetHP);
             AssertInPlayArea(HeroController, target);
             PlayCard(equip);
             AssertInPlayArea(HeroController, equip);
@@ -822,7 +823,7 @@ namespace CauldronTests
             AssertIsTarget(equip, 6);
 
             DestroyCard(imbue);
-            AssertIsTarget(target, 3);
+            AssertIsTarget(target, targetHP);
             AssertNotTarget(equip);
         }
 
