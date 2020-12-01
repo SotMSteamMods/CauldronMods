@@ -13,7 +13,8 @@ namespace Cauldron
 
         protected GlyphCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowIfElseSpecialString(IsPreventionAvailable, () => $"{Card.Title} can prevent damage this turn.", () => "");
+            var ss = SpecialStringMaker.ShowSpecialString(() => $"{Card.Title} can prevent damage this turn.");
+            ss.Condition = IsPreventionAvailable;
         }
 
         #endregion Constructors
