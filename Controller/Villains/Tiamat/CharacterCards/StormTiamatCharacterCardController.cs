@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
@@ -23,7 +24,8 @@ namespace Cauldron.Tiamat
 				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Lightning, false),
 				//At the end of the villain turn, if {Tiamat}, The Mouth of the Storm dealt no damage this turn, she deals the hero target with the highest HP {H - 2} Lightning damage.
 				base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, (PhaseChangeAction p) => this.DidDealDamageThisTurn())
-            };
+                //ElementOfLightning: The hero with the most cards in hand may not draw cards until the start of the next villain turn.
+        };
         }
 
         protected override ITrigger[] AddFrontAdvancedTriggers()
@@ -41,6 +43,7 @@ namespace Cauldron.Tiamat
             {
 				//When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Lightning“ card in the villain trash.
 				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.CardSource != null && dealDamage.DamageSource != null &&  IsSpell(dealDamage.CardSource.Card) && IsHead(dealDamage.DamageSource.Card), GetNumberOfElementOfLightningInTrash())
+                //ElementOfLightning: The hero with the most cards in hand may not draw cards until the start of the next villain turn.
             };
         }
 

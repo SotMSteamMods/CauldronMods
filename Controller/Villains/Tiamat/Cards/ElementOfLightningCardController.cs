@@ -15,6 +15,8 @@ namespace Cauldron.Tiamat
             base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "ElementOfLightning"));
         }
 
+        public static readonly string PreventDrawPropertyKey = "ElementOfLightningCannotDraw";
+
         public override IEnumerator Play()
         {
             IEnumerator coroutine;
@@ -55,15 +57,20 @@ namespace Cauldron.Tiamat
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (storedResults.Count<TurnTaker>() > 0)
+            if (storedResults.Any())
             {
+                TurnTaker biggestHandTurnTaker = storedResults.First();
                 //...may not draw cards until the start of the next villain turn.
-                TurnTaker isSpecificTurnTaker = storedResults.First<TurnTaker>();
-                PreventPhaseActionStatusEffect preventPhaseActionStatusEffect = new PreventPhaseActionStatusEffect();
-                preventPhaseActionStatusEffect.ToTurnPhaseCriteria.Phase = new Phase?(Phase.DrawCard);
-                preventPhaseActionStatusEffect.ToTurnPhaseCriteria.TurnTaker = isSpecificTurnTaker;
-                preventPhaseActionStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-                coroutine = base.AddStatusEffect(preventPhaseActionStatusEffect);
+                //We secretly set a property on the victim's character card to indicate that they can't draw cards.
+                //A CannotDrawCards query on TiamatCharacterCardController actually makes this happen
+                GameController.AddCardPropertyJournalEntry(biggestHandTurnTaker.CharacterCard, PreventDrawPropertyKey, true);
+
+                //This status effect makes them able to draw again at start of next villain
+                OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(base.CardWithoutReplacements, "", $"{biggestHandTurnTaker.Name} cannot draw cards.", new TriggerType[] { TriggerType.CreateStatusEffect }, base.Card);
+                effect.UntilStartOfNextTurn(base.TurnTaker);
+                effect.TurnTakerCriteria.IsSpecificTurnTaker = base.TurnTaker;
+                effect.TurnPhaseCriteria.Phase = Phase.Start;
+                coroutine = base.AddStatusEffect(effect);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -73,6 +80,19 @@ namespace Cauldron.Tiamat
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
+            yield break;
+        }
+
+        public IEnumerator ResumeDrawEffect(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
+        {
+            System.Console.WriteLine("### DEBUG ### - ElementOfLightning.ResumeDrawEffect triggered");
+
+            //Clear the secret property from all Character Cards 
+            foreach (HeroTurnTaker hero in Game.HeroTurnTakers)
+            {
+                GameController.AddCardPropertyJournalEntry(hero.CharacterCard, PreventDrawPropertyKey, (bool?)null);
+            }
+
             yield break;
         }
     }

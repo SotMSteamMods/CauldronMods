@@ -36,6 +36,8 @@ namespace Cauldron.Tiamat
 
         public override void AddSideTriggers()
         {
+            //Element of Lightning Cancel Draws
+            base.CannotDrawCards(ElementOfLightningCriteria);
             //Win Condition
             base.AddSideTrigger(base.AddTrigger<GameAction>(delegate (GameAction g)
             {
@@ -102,6 +104,15 @@ namespace Cauldron.Tiamat
                 }
             }
             yield break;
+        }
+
+        private bool ElementOfLightningCriteria(TurnTakerController ttc)
+        {
+            if (ttc is HeroTurnTakerController httc)
+            {
+                return httc.CharacterCardControllers.Any(chc => chc.GetCardPropertyJournalEntryBoolean(ElementOfLightningCardController.PreventDrawPropertyKey) == true);
+            }
+            return false;
         }
     }
 }

@@ -925,12 +925,13 @@ namespace CauldronTests
             DrawCard(bunker);
             //The hero with most cards in hand cannot draw cards until start of next villain turn
             PlayCard(tiamat, GetCard("ElementOfLightning"));
-            GoToDrawCardPhase(legacy);
-            AssertCanPerformPhaseAction();
-            GoToDrawCardPhase(bunker);
-            AssertCannotPerformPhaseAction();
-            GoToDrawCardPhase(haka);
-            AssertCanPerformPhaseAction();
+            GoToStartOfTurn(legacy);
+            QuickHandStorage(legacy, bunker, haka);
+            DrawCard(legacy);
+            DrawCard(bunker);
+            DrawCard(haka);
+            PrintJournal();
+            QuickHandCheck(1, 0, 1);
         }
 
         [Test()]

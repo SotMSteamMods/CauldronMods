@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Tiamat
 {
-    public abstract class TiamatCharacterCardController : VillainCharacterCardController
+    public abstract class TiamatCharacterCardController : TiamatSubCharacterCardController
     {
         public TiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
