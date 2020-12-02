@@ -21,7 +21,7 @@
                 "ReduceDamageTaken"
             ],
             "body": "Black Wind Rising",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "92b6ac",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "nemesisIdentifiers": [
@@ -58,7 +58,13 @@
             "flippedAdvancedIcons": [
                 "AddToken"
             ],
-            "difficulty": 1
+            "difficulty": 4,
+            "openingLines": {
+                "LadyOfTheWoodCharacter": "--You.",
+                "SeasonsOfChangeLadyOfTheWoodCharacter": "--You.",
+                "MinistryOfStrategicScienceLadyOfTheWoodCharacter": "--You.",
+                "FutureLadyOfTheWoodCharacter": "--You."
+            }
         },
         {
             "identifier": "AutumnsTorment",

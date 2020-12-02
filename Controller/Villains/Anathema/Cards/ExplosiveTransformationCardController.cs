@@ -16,7 +16,7 @@ namespace Cauldron.Anathema
 		public override IEnumerator Play()
 		{
 			//Anathema deals each Hero target 1 projectile damage.
-			IEnumerator coroutine = base.DealDamage(base.Card, (Card card) => card.IsHero && card.IsTarget, 1, DamageType.Projectile);
+			IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card card) => card.IsHero && card.IsTarget, 1, DamageType.Projectile);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -28,7 +28,7 @@ namespace Cauldron.Anathema
 
 			//Reveal the top {H} cards of the Villain Deck. 
 			List<Card> revealedCards = new List<Card>();
-			coroutine = base.GameController.RevealCards(base.TurnTakerController, base.Card.Owner.Deck, base.H, revealedCards,revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: base.GetCardSource());
+			coroutine = base.GameController.RevealCards(base.TurnTakerController, TurnTaker.Deck, base.H, revealedCards, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);

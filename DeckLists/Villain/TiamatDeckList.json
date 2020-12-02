@@ -15,7 +15,7 @@
                 "head"
             ],
             "body": "The Mouth of the Inferno",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "d89e60",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 40,
@@ -50,7 +50,16 @@
             ],
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
-            ]
+            ],
+            "difficulty": 3,
+            "openingLines": {
+                "default": "Screeee! Raoooargh! Khhhaaazzt!",
+                "TheKnightCharacter": "The Knight placeholder",
+                "BerzerkerTheKnightCharacter": "The Berzerker Knight placeholder",
+                "FairTheKnightCharacter": "The Fair Knight placeholder",
+                "WastelandRoninTheKnightCharacter": "Wasteland Ronin The Knight placeholder",
+                "1929TheKnightCharacter": "The Knight 1929 placeholder"
+            }
         },
         {
             "identifier": "StormTiamatCharacter",
@@ -61,7 +70,7 @@
                 "head"
             ],
             "body": "The Eye of the Storm",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "e1dfa7",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 40,
@@ -107,7 +116,7 @@
                 "head"
             ],
             "body": "The Jaws of Winter",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "82b2e0",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 40,
@@ -446,7 +455,7 @@
                 "ImmuneToDamageFire"
             ],
             "body": "The Mouth of the Inferno",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "d89e60",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 15,
@@ -476,7 +485,7 @@
             ],
             "advancedIcons": [],
             "body": "The Eye of the Storm",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "e1dfa7",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 15,
@@ -506,7 +515,7 @@
                 "ReduceDamageTaken"
             ],
             "body": "The Maw of the Earth",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "90877e",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 15,
@@ -537,7 +546,7 @@
                 "IncreaseDamageDealt"
             ],
             "body": "The Breath of Decay",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "b1c779",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 15,
@@ -569,7 +578,7 @@
                 "GainHP"
             ],
             "body": "The Voice of the Wind",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "d6cde5",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 15,
@@ -592,7 +601,7 @@
             "count": 1,
             "title": "Tiamat: Thunderous Gale Instructions",
             "body": "The Eye of the Storm",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "FFFFFF",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "setup": [
@@ -631,7 +640,7 @@
             "count": 1,
             "title": "Tiamat: Noxious Fire Instructions",
             "body": "The Mouth of the Inferno",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "FFFFFF",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "setup": [
@@ -671,7 +680,7 @@
             "count": 1,
             "title": "Tiamat: Frigid Earth Instructions",
             "body": "The Jaws of Winter",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "FFFFFF",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "setup": [

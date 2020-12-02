@@ -11,6 +11,7 @@ namespace Cauldron.TheKnight
     {
         public DefenderOfTheRealmCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria(c => c.Identifier == "PlateHelm" || c.Identifier == "PlateMail", "armor"));
         }
 
         public override IEnumerator Play()
@@ -45,6 +46,7 @@ namespace Cauldron.TheKnight
                 ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(1);
                 reduceDamageStatusEffect.TargetCriteria.IsSpecificCard = card;
                 reduceDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+                reduceDamageStatusEffect.UntilTargetLeavesPlay(card);
 
                 coroutine = base.AddStatusEffect(reduceDamageStatusEffect, true);
                 if (base.UseUnityCoroutines)

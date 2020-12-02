@@ -15,13 +15,13 @@ namespace Cauldron.TangoOne
         // If you destroyed a target this way, draw a card.
         //==============================================================
 
-        public static string Identifier = "OneShotOneKill";
+        public static readonly string Identifier = "OneShotOneKill";
 
         private const int HpMultiplier = 2;
 
         public OneShotOneKillCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            this.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.HeroTurnTaker.Hand);
         }
 
         public override IEnumerator Play()

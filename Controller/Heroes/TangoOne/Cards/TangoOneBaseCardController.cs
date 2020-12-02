@@ -6,11 +6,12 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TangoOne
 {
-    public class TangoOneBaseCardController : CardController
+    public abstract class TangoOneBaseCardController : CardController
     {
-        public TangoOneBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
-        {
+        protected static readonly string IncreaseDamageIdentifier = "TangoOneIncreaseDamageId";
 
+        protected TangoOneBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        {
         }
 
         protected bool IsCritical(Card card)
@@ -28,7 +29,7 @@ namespace Cauldron.TangoOne
             if (base.HeroTurnTakerController.HasMultipleCharacterCards)
             {
                 LinqCardCriteria criteria = new LinqCardCriteria(IsOwnCharacterCard, "hero character cards");
-                var routine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, selectionType, 
+                var routine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, selectionType,
                     criteria, results, false, cardSource: base.GetCardSource());
 
                 if (base.UseUnityCoroutines)
@@ -42,7 +43,7 @@ namespace Cauldron.TangoOne
             }
             else
             {
-                var result = new SelectCardDecision(this.GameController, this.DecisionMaker, selectionType, 
+                var result = new SelectCardDecision(this.GameController, this.DecisionMaker, selectionType,
                     new[] { base.CharacterCard }, false, true, cardSource: base.GetCardSource());
                 result.ChooseIndex(0);
                 result.AutoDecide();
@@ -51,6 +52,5 @@ namespace Cauldron.TangoOne
 
             yield break;
         }
-
     }
 }

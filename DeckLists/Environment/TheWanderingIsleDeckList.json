@@ -1,10 +1,11 @@
 {
     "name": "The Wandering Isle",
-    "sortName": "Wandering Isle",
+    "sortName":"Wandering Isle",
+
     "kind": "Environment",
     "expansionIdentifier": "Cauldron",
-    "backgroundColor": "FB5455",
-    "difficulty": 1,
+    "backgroundColor": "7AC05D",
+    "difficulty": 3,
     "cards": [
         {
             "identifier": "AmphibiousAssault",
@@ -144,7 +145,7 @@
                 "At the end of the environment turn, the villain target with the highest HP deals Teryx {H + 2} energy damage.",
                 "Whenever a hero target would deal damage to Teryx, Teryx Instead regains that much HP."
             ],
-            "flavorText": "“Say hello to my little friend,” Baccarat chuckled. The mountains themselves trembled and began to rise slowly out of the waves far below.",
+            "flavorText": "“Say hello to my little friend,” Baccarat{BR}chuckled. The mountains themselves{BR}trembled and began to rise slowly out{BR} of the waves far below.",
             "hitpoints": 50
         },
         {

@@ -11,6 +11,7 @@ namespace Cauldron.TheKnight
     {
         public ArmYourselfCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(c => IsEquipment(c), "equipment"));
         }
 
         public override IEnumerator Play()
@@ -38,7 +39,7 @@ namespace Cauldron.TheKnight
                 };
 
                 List<MoveCardAction> moveResult = new List<MoveCardAction>();
-                coroutine = base.GameController.SelectLocationAndMoveCard(this.DecisionMaker, card, destinations, storedResults: moveResult, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectLocationAndMoveCard(this.DecisionMaker, card, destinations, storedResults: moveResult, isPutIntoPlay: true, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

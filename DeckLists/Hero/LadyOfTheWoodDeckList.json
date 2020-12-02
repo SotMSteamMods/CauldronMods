@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Lady Of The Wood",
             "body": "Season's Edge",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "b0da8c",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "b0da8c",
             "character": true,
             "powers": [
                 "Select a damage type. {LadyOfTheWood} deals 1 target 1 damage of the chosen type."
@@ -33,11 +33,11 @@
             ],
             "flippedIcons": [],
             "openingLines": {
-                "default": "default placeholder",
-                "CalderochCharacter": "Calderoch placeholder",
+                "default": "Will you frolic with us?",
+                "CalderochCharacter": "I haven't felt this presence in many years. Beware, my friends. This wind carries the scent of death.",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "CalmBeforeTheStorm",
@@ -152,7 +152,7 @@
             "flavorReference": "Roots of the Underworld #27"
         },
         {
-            "identifier": "Rebirth",
+            "identifier": "LadyOfTheWoodsRebirth",
             "count": 2,
             "title": "Rebirth",
             "keywords": [
@@ -439,7 +439,7 @@
             "flavorReference": "Starlight And Lady Of The Wood, Starcrossed #72"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "LadyOfTheWoodCharacter",
             "promoIdentifier": "SeasonsOfChangeLadyOfTheWoodCharacter",
@@ -448,9 +448,9 @@
             "promoTitle": "Lady of the Wood: Season of Change",
             "shortPromoTitle": "Seasons Lady of the Wood",
             "body": "Equinox",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "F4A77C",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "653590",
             "character": true,
             "powers": [
                 "Discard a card. You may play a card."
@@ -476,11 +476,11 @@
                 "IrreducibleDamage"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "CalderochCharacter": "Calderoch placeholder",
+                "default": "The turn of the seasons will wipe this land clean of evil.",
+                "CalderochCharacter": "Hurry, everyone! His bonds are weakening - but ours can strengthen!",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "LadyOfTheWoodCharacter",
@@ -490,9 +490,9 @@
             "promoTitle": "Ministry Of Strategic Science Lady of the Wood",
             "shortPromoTitle": "MOSS Lady of the Wood",
             "body": "Solstice",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "C1BCDD",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "C1BCDD",
             "character": true,
             "powers": [
                 "Add 2 tokens to your element pool. When {LadyOfTheWood} would deal damage, you may change its type by spending a token."
@@ -518,11 +518,11 @@
                 "DealDamage"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "CalderochCharacter": "Calderoch placeholder",
+                "default": "We have formed a most excellent team to deal with your misdeeds.",
+                "CalderochCharacter": "Adventure, discovery, life - all will exist after this. All but you, Celadroch.",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "LadyOfTheWoodCharacter",
@@ -532,9 +532,9 @@
             "promoTitle": "Lady of the Wood 2199",
             "shortPromoTitle": "Lady of the Wood 2199",
             "body": "Turn, Turn",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "A7B8C1",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "A7B8C1",
             "character": true,
             "powers": [
                 "Destroy a season. Play a season and change the next damage dealt by {LadyOfTheWood} to a type listed on it. You may use a power."
@@ -559,11 +559,11 @@
                 "DealDamageCold"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "CalderochCharacter": "Calderoch placeholder",
+                "default": "I have seen millenia slip away; as will your chance at victory.",
+                "CalderochCharacter": "It seems like not all things have changed, after all - is your evil timeless, Celadroch, or were you waiting for me?",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         }
     ]
 }

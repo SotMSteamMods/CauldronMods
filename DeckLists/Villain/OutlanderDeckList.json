@@ -14,7 +14,7 @@
                 "villain"
             ],
             "body": "Fragemented Riftwarrior",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "e4bc94",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 20,
@@ -52,9 +52,9 @@
                 "DestroyOngoing",
                 "DestroyEquipment"
             ],
-            "difficulty": 1,
+            "difficulty": 3,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "The blight of your “powers“ will be wiped clean from this earth - and every other.",
                 "TheKnightCharacter": "The Knight placeholder",
                 "BerzerkerTheKnightCharacter": "The Berzerker Knight placeholder",
                 "FairTheKnightCharacter": "The Fair Knight placeholder",

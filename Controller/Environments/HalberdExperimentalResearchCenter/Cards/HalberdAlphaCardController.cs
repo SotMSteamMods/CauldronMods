@@ -39,7 +39,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             else
             {
                 //find all villain targets
-                targets = (Card c) => c.IsVillainTarget && c.IsInPlayAndHasGameText;
+                targets = (Card c) => IsVillainTarget(c) && c.IsInPlayAndHasGameText;
             }
 
             IEnumerable<Card> testSubjectsInPlay = FindAllTestSubjectsInPlay();

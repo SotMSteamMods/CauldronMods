@@ -30,7 +30,7 @@ namespace Cauldron.DocHavoc
                 damageSource,
                 amount,
                 DamageType.Toxic,
-                new int?(numTargets), 
+                new int?(numTargets),
                 false,
                 new int?(numTargets),
                 additionalCriteria: ((Func<Card, bool>)(c => c.IsHeroCharacterCard)),
@@ -53,11 +53,11 @@ namespace Cauldron.DocHavoc
             {
                 Card targetHero = dd.Target;
                 HeroTurnTakerController heroController = null;
-                if (targetHero.Owner.IsHero)
+                if (targetHero.IsHero)
                 {
                     heroController = base.FindHeroTurnTakerController(targetHero.Owner.ToHero());
                 }
-                IEnumerator coroutine = base.SelectAndPlayCardFromHand(heroController,overrideName: targetHero.Title);
+                IEnumerator coroutine = base.SelectAndPlayCardFromHand(heroController, overrideName: targetHero.Title);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -72,7 +72,7 @@ namespace Cauldron.DocHavoc
 
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
-            IEnumerator coroutine = null;
+            IEnumerator coroutine;
             switch (index)
             {
                 case 0:
@@ -137,7 +137,7 @@ namespace Cauldron.DocHavoc
             // One player may draw a card now.
             //==============================================================
 
-            return this.GameController.SelectHeroToDrawCard(this.DecisionMaker);
+            return this.GameController.SelectHeroToDrawCard(this.DecisionMaker, cardSource: GetCardSource());
         }
 
         private IEnumerator DoIncapacitateOption3()

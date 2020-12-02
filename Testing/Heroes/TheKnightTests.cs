@@ -794,6 +794,40 @@ namespace CauldronTests
             AssertNumberOfCardsInPlay(HeroController, 3);
         }
 
+
+        [Test]
+        public void Armor_ImbuedVitality([Values("PlateHelm", "PlateMail")] string armor)
+        {
+            SetupGameController("GrandWarlordVoss", HeroNamespace, "RealmOfDiscord");
+            StartGame();
+                        
+            //nuke all baron blades cards so his ongoings don't break tests
+            DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
+            DiscardAllCards(HeroController);
+
+            var target = PutInHand(HeroController, armor);
+            int targetHP = armor == "PlateHelm" ? 3 : 5;
+            var equip = PutInHand("Whetstone");
+            GoToPlayCardPhase(HeroController);
+
+            PrintSeparator("Test");
+
+            PlayCard(target);
+            AssertIsTarget(target, targetHP);
+            AssertInPlayArea(HeroController, target);
+            PlayCard(equip);
+            AssertInPlayArea(HeroController, equip);
+
+            var imbue = PlayCard("ImbuedVitality");
+            AssertIsTarget(target, 6);
+            AssertIsTarget(equip, 6);
+
+            DestroyCard(imbue);
+            AssertIsTarget(target, targetHP);
+            AssertNotTarget(equip);
+        }
+
+
         [Test]
         [Description("TheKnight - PlateHelm")]
         public void PlateHelm()

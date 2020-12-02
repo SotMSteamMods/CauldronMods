@@ -13,12 +13,8 @@
             "keywords": [
                 "villain"
             ],
-            "icons": [
-                "StartOfTurnAction"
-            ],
-            "advancedIcons": [],
             "body": "Walking Nuclear Reactor",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "a8a9ac",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 75,
@@ -31,33 +27,37 @@
             ],
             "gameplay": [
                 "At the end of the villain turn, if there are 3 or more radiation cards in play, flip {Gray}'s villain character cards and destroy 1 environment card.",
-                "At the end of the villain turn, {Gray} deals the hero target with the highest HP {H -1} energy damage.",
-                "Whenever a radiation card is destroyed, destroy 1 hero ongoing or equipment card and gray deals each non-villain target {H - 1} energy damage."
+                "At the end of the villain turn, {Gray} deals the hero target with the highest HP {H - 1} energy damage.",
+                "Whenever a radiation card is destroyed, destroy 1 hero ongoing or equipment card and {Gray} deals each non-villain target {H - 1} energy damage."
             ],
             "advanced": "Whenever a radiation card is destroyed, destroy a second hero ongoing or equipment card.",
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageEnergy",
+                "Destroy"
+            ],
             "flippedBody": "Catastrophic Meltdown",
             "flippedGameplay": [
                 "At the start of the villain turn, if there are 1 or 0 radiation cards in play, flip {Gray}'s character cards.",
-                "At the start of the villain turn, destroy all but 2 hero ongoing or equipment cards. {Gray} deals each hero target {H x 2} energy damage. Play the top card of the villain deck.",
+                "At the start of the villain turn, destroy all but 2 hero ongoing or equipment cards. {Gray} deals each hero target {H * 2} energy damage. Play the top card of the villain deck.",
                 "Whenever a radiation card is destroyed by a hero card, {Gray} deals that hero {H - 1} energy damage.",
                 "Whenever a copy of Radioactive Cascade is destroyed, {Gray} deals the hero with the highest HP {H - 1} energy damage."
             ],
             "flippedAdvanced": "Reduce damage dealt to villain targets by 1.",
             "flippedIcons": [
                 "StartOfTurnAction",
-                "DestroyOngoing",
-                "DestroyEquipment",
+                "Destroy",
                 "DealDamageEnergy",
                 "PlayCardNow"
             ],
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
             ],
-            "difficulty": 1,
+            "difficulty": 4,
             "openingLines": {
-                "default": "Out of my way.",
-                "VanishCharacter": "Vanish placeholder",
-                "FirstResponseVanishCharacter": "First Response Vanish  placeholder",
+                "default": "I'm already fixing the problem. If you don't like what it takes, that just makes you another problem. ",
+                "VanishCharacter": "You! [b]You[/b] did this to me. Let's see how you like having [b]your[/b] life torn apart!",
+                "FirstResponseVanishCharacter": "Your company was just a warmup. Your new team is next. No matter how far you run, I'll rip down everything you build. ",
                 "1929VanishCharacter": "Vanish 1929 placeholder",
                 "PyreCharacter": "Pyre placeholder",
                 "UnstablePyreCharacter": "Unstable Pyre placeholder",
@@ -65,9 +65,9 @@
             }
         },
         {
-            "identifier": "AlistarWinters",
+            "identifier": "AlistairWinters",
             "count": 1,
-            "title": "Alistar Winters",
+            "title": "Alistair Winters",
             "keywords": [
                 "minion"
             ],
@@ -81,11 +81,11 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "AlistarWinters",
+                    "identifier": "AlistairWinters",
                     "text": "You're pretty strong, for some clown who thinks she's The Wraith!"
                 }
             ],
-            "flavorReference": "Alistar Winters, Wraith: Beyond #2",
+            "flavorReference": "Alistair Winters, Wraith: Beyond #2",
             "hitpoints": 5
         },
         {
@@ -100,7 +100,7 @@
                 "DealDamageToxic",
                 "GainHP"
             ],
-            "body": "At the end of the villain turn, this card deals each  non-villain target 2 toxic damage and each Radiation card regains 2HP.",
+            "body": "At the end of the villain turn, this card deals each non-villain target 2 toxic damage and each Radiation card regains 2HP.",
             "flavorQuotes": [
                 {
                     "identifier": "Gray",
@@ -118,9 +118,8 @@
                 "radiation"
             ],
             "icons": [
-                "StartOfTurnAction",
+                "StartAndEndOfTurnAction",
                 "DealDamageEnergy",
-                "EndOfTurnAction",
                 "PlayCardNow"
             ],
             "body": [
