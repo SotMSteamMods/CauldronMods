@@ -17,7 +17,7 @@ namespace Cauldron.LadyOfTheWood
 			ITrigger lateIrreducibleTrigger = new Trigger<DealDamageAction>(GameController,
 																(DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.Amount <= 2,
 																RetroactiveIrreducibilityResponse,
-																new TriggerType[] { TriggerType.WouldBeDealtDamage },
+																new TriggerType[] { TriggerType.WouldBeDealtDamage, TriggerType.MakeDamageIrreducible },
 																TriggerTiming.Before,
 																GetCardSource(),
 																orderMatters: true);
