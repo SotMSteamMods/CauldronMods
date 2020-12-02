@@ -621,8 +621,10 @@ namespace CauldronTests
             Card modularWorkbench = GetCard("ModularWorkbench");
 
             // Act
-            GoToPlayCardPhase(unity);
+            //Can't play Swift Bot during Unity's play phase, if it happens to end up in hand.
             PlayCard(swiftBot);
+
+            GoToPlayCardPhaseAndPlayCard(unity, "ConstructionPylon");
             GoToDrawCardPhase(unity);
 
             AssertPhaseActionCount(2); // Normal draw + 1 from swiftbot
