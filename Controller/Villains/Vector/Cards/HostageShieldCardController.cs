@@ -46,7 +46,7 @@ namespace Cauldron.Vector
             }
 
             routine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria(c => c == storedHeroes.First()), 
-                storedResults, true, decisionSources); 
+                storedResults, isPutIntoPlay, decisionSources); 
             
             if (base.UseUnityCoroutines)
             {
@@ -56,15 +56,23 @@ namespace Cauldron.Vector
             {
                 base.GameController.ExhaustCoroutine(routine);
             }
+        }
+
+        public override IEnumerator Play()
+        {
+            if (!base.Card.Location.IsNextToCard)
+            {
+                yield break;
+            }
 
             CannotDealDamageStatusEffect cddse = new CannotDealDamageStatusEffect
             {
-                IsPreventEffect = true, 
-                SourceCriteria = { IsSpecificCard = storedHeroes.First() }
+                IsPreventEffect = true,
+                SourceCriteria = { IsSpecificCard = base.GetCardThisCardIsNextTo() }
             };
-            cddse.UntilCardLeavesPlay(this.Card);
+            cddse.UntilCardLeavesPlay(base.Card);
 
-            routine = base.GameController.AddStatusEffect(cddse, true, GetCardSource());
+            IEnumerator routine = base.GameController.AddStatusEffect(cddse, true, GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
@@ -77,7 +85,6 @@ namespace Cauldron.Vector
 
         public override void AddTriggers()
         {
-
             base.AddStartOfTurnTrigger(tt => tt == base.GetCardThisCardIsNextTo().Owner, base.SkipTheirTurnToDestroyThisCardResponse, new[]
             {
                 TriggerType.SkipTurn,
