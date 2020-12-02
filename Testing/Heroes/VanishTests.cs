@@ -1063,10 +1063,11 @@ namespace CauldronTests
             //vanish takes no damage, so draws and discards, set those up
             var t2 = GetCardFromHand(vanish);
             var card = PutInHand("TacticalRelocation");
-            var t3 = GetTopCardOfDeck(vanish);
 
             var f1 = GetCard("FocusingGauntlet");
             PutInTrash(vanish, f1); //should not be played
+
+            var t3 = GetTopCardOfDeck(vanish);
 
             //ra takes damage, but has no valid cards, nothing should happen
             var hand2 = ra.HeroTurnTaker.Hand.Cards.ToList();
