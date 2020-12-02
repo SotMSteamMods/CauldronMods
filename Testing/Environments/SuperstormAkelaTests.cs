@@ -2,6 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,7 +15,19 @@ namespace CauldronTests
         #region SuperstormAkelaHelperFunctions
 
         protected TurnTakerController superstorm { get { return FindEnvironment(); } }
-      
+        
+        private void PrintPlayAreaPositions()
+        {
+            foreach (var card in GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea))
+            {
+                Console.WriteLine(card.Title + " is in Position " + GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ToList().IndexOf(card));
+            }
+        }
+
+        private IEnumerable<Card> GetOrderedCardsInLocation(Location location)
+        {
+            return location.Cards.OrderBy((Card c) => c.PlayIndex);
+        }
         #endregion
 
         [Test()]
@@ -136,6 +149,43 @@ namespace CauldronTests
             Card card = PlayCard(storm);
             AssertIsInPlay(card);
             AssertCardHasKeyword(card, "storm", false);
+        }
+
+        [Test()]
+        public void TestRideTheCurrents_MoveCardsAround()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela");
+            StartGame();
+            GoToPlayCardPhase(superstorm);
+            Card currents = PlayCard("RideTheCurrents");
+            IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c)).Take(4);
+            PlayCards(cardsToPlay);
+            DecisionSelectFunction = 1;
+            //selecting the first card played and moving it to the last position
+            DecisionSelectCards = new Card[] {currents, cardsToPlay.ElementAt(3) };
+            PrintPlayAreaPositions();
+            GoToStartOfTurn(baron);
+
+            PrintPlayAreaPositions();
+
+            Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(4) == currents, currents.Title + " is not in the correct position.");
+
+        }
+
+        [Test()]
+        public void TestRideTheCurrents_Play()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela");
+            StartGame();
+            GoToPlayCardPhase(superstorm);
+
+            //When this card enters play, select the deck with the least number of non-character cards in play. Put the top card of that deck into play.
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            Card topCard = legacy.TurnTaker.Deck.TopCard;
+            Card currents = PlayCard("RideTheCurrents");
+            AssertNotInDeck(topCard);
+           
+
         }
 
 

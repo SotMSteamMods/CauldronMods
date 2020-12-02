@@ -3307,6 +3307,11 @@ namespace Handelabra.Sentinels.UnitTest
             Assert.IsTrue(FindCardsWhere(card => card.Location.IsDeck && card.Identifier == identifier).Count() == 0, "There are cards with identifier " + identifier + " that are in a deck.");
         }
 
+        protected void AssertNotInDeck(Card card)
+        {
+            Assert.IsTrue(FindCardsWhere(c => c.Location.IsDeck && c == card).Count() == 0, "The card " + card.Title + " is still in a deck.");
+        }
+
         protected void AssertOffToTheSide(Card card)
         {
             Assert.IsTrue(card.Location.IsOffToTheSide, card.Title + " is not off to the side.");
