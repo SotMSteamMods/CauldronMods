@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cauldron.Dendron;
+
 using Cauldron.Vector;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
@@ -101,11 +101,29 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestVectorPlaysCardWhenHit()
+        {
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            int vectorCardsInPlay = GetNumberOfCardsInPlay(Vector);
+
+            // Act
+            GoToPlayCardPhase(legacy);
+            DealDamage(legacy, Vector, 2, DamageType.Melee);
+
+            // Assert
+            Assert.AreEqual(vectorCardsInPlay + 1, GetNumberOfCardsInPlay(Vector));
+        }
+
+        [Test]
         public void TestAnticoagulant()
         {
             // Arrange
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
+
+            QuickHPStorage(Vector, legacy, ra, haka);
 
             Card antiC = GetCard(AnticoagulantCardController.Identifier);
 
@@ -115,9 +133,8 @@ namespace CauldronTests
             GoToPlayCardPhase(legacy);
             DealDamage(legacy, Vector, 5, DamageType.Melee);
 
-
             // Assert
-            Assert.True(false, "TODO");
+            QuickHPCheck(-6, -6, -6, -6); // Anti Coag increases damage to Vector by 1
         }
 
         [Test]
@@ -184,7 +201,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestBloodSample()
+        public void TestBloodSampleMoveUnderSuperVirus()
         {
             // Arrange
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
@@ -194,20 +211,55 @@ namespace CauldronTests
 
             StartGame();
             QuickHPStorage(legacy, ra, haka);
+            DecisionYesNo = true;
 
             // Act
             GoToPlayCardPhase(Vector);
             PlayCard(bloodSample);
+            QuickHPCheck(-1, -1, -1);
+
             PlayCard(superVirus);
 
-            DealDamage(legacy, Vector, 5, DamageType.Melee);
+            DealDamage(legacy, Vector, 6, DamageType.Melee);
 
             GoToStartOfTurn(Vector);
 
             // Assert
-            QuickHPCheck(-1, -1, -1);
-            Assert.True(false, "TODO");
+
+            // Enough damage was done to offer to move Blood Sample under Super Virus
+            AssertUnderCard(superVirus, bloodSample);
         }
+
+        [Test]
+        public void TestBloodSampleNotEnoughMoveDamage()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card bloodSample = GetCard(BloodSampleCardController.Identifier);
+            Card superVirus = GetCard(SupervirusCardController.Identifier);
+
+            StartGame();
+            QuickHPStorage(legacy, ra, haka);
+            DecisionYesNo = true;
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(bloodSample);
+            QuickHPCheck(-1, -1, -1);
+
+            PlayCard(superVirus);
+
+            DealDamage(legacy, Vector, 2, DamageType.Melee);
+
+            GoToStartOfTurn(Vector);
+
+            // Assert
+
+            // Not enough damage was done to offer to move Blood Sample under Super Virus
+            AssertIsInPlayAndNotUnderCard(bloodSample);
+        }
+
 
         [Test]
         public void TestDelayedSymptoms()
@@ -217,9 +269,14 @@ namespace CauldronTests
 
             Card delayedSymptoms = GetCard(DelayedSymptomsCardController.Identifier);
 
+            Card dangerSense = GetCard("DangerSense");
+            Card dominion = GetCard("Dominion");
+
             PutIntoPlay("DangerSense");
             PutIntoPlay("Dominion");
             PutIntoPlay("SavageMana");
+
+            DecisionSelectCards = new[] {dangerSense, dominion};
 
             StartGame();
 
@@ -228,11 +285,15 @@ namespace CauldronTests
             PlayCard(delayedSymptoms);
 
             // Assert
-            Assert.True(false, "TODO");
+            AssertInTrash(legacy, dangerSense);
+            AssertInTrash(haka, dominion);
+            Assert.AreEqual(2, GetNumberOfCardsInTrash(legacy));
+            Assert.AreEqual(1, GetNumberOfCardsInTrash(ra));
+            Assert.AreEqual(2, GetNumberOfCardsInTrash(haka));
         }
 
         [Test]
-        public void TestEliteTraining()
+        public void TestEliteTrainingIncreasesVillainDamage()
         {
             // Arrange
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
@@ -245,12 +306,39 @@ namespace CauldronTests
             GoToPlayCardPhase(Vector);
             PlayCard(eliteTraining);
 
+            QuickHPStorage(legacy);
+
+            DealDamage(Vector, legacy, 3, DamageType.Toxic);
+
             // Assert
-            Assert.True(false, "TODO");
+            QuickHPCheck(-4);
         }
 
         [Test]
-        public void TestHostageShield()
+        public void TestEliteTrainingCausesPlayerDiscard()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card eliteTraining = GetCard(EliteTrainingCardController.Identifier);
+
+            StartGame();
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(eliteTraining);
+
+            QuickHandStorage(new []{legacy, ra, haka});
+
+            DestroyCard(eliteTraining);
+
+            // Assert
+            QuickHandCheck(new []{-2, -2, -2});
+        }
+
+
+        [Test]
+        public void TestHostageShieldAppliesNoDamageDealingEffect()
         {
             // Arrange
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
@@ -265,12 +353,37 @@ namespace CauldronTests
             GoToPlayCardPhase(Vector);
             PlayCard(hostageShield);
 
-            GoToStartOfTurn(ra);
-
-            // Assert
-            Assert.True(false, "TODO");
-
+            string messageText = $"Prevent damage from Ra.";
+            AssertStatusEffectsContains(messageText);
+            AssertNextToCard(hostageShield, ra.CharacterCard);
         }
+
+        [Test]
+        public void TestHostageShieldIsRemovedIfTurnIsSkipped()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card hostageShield = GetCard(HostageShieldCardController.Identifier);
+
+            StartGame();
+
+            DecisionYesNo = true;
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(hostageShield);
+
+            string messageText = $"Prevent damage from Ra.";
+            AssertStatusEffectsContains(messageText);
+            AssertNextToCard(hostageShield, ra.CharacterCard);
+
+            GoToStartOfTurn(ra);
+            AssertNotNextToCard(hostageShield, ra.CharacterCard);
+            AssertStatusEffectsDoesNotContain(messageText);
+        }
+
+
 
         [Test]
         public void TestHotZone()

@@ -62,6 +62,7 @@ namespace Cauldron.Vector
                 IsPreventEffect = true, 
                 SourceCriteria = { IsSpecificCard = storedHeroes.First() }
             };
+            cddse.UntilCardLeavesPlay(this.Card);
 
             routine = base.GameController.AddStatusEffect(cddse, true, GetCardSource());
             if (base.UseUnityCoroutines)
@@ -72,51 +73,18 @@ namespace Cauldron.Vector
             {
                 base.GameController.ExhaustCoroutine(routine);
             }
+        }
 
-            base.AddStartOfTurnTrigger(tt => tt == storedHeroes.First().Owner, base.SkipTheirTurnToDestroyThisCardResponse, new[]
+        public override void AddTriggers()
+        {
+
+            base.AddStartOfTurnTrigger(tt => tt == base.GetCardThisCardIsNextTo().Owner, base.SkipTheirTurnToDestroyThisCardResponse, new[]
             {
                 TriggerType.SkipTurn,
                 TriggerType.DestroySelf
             });
 
-            //base.AddStartOfTurnTrigger(tt => tt == storedHeroes.First().Owner, SkipTurnResponse, TriggerType.SkipTurn);
-        }
-
-        private IEnumerator SkipTurnResponse(PhaseChangeAction pca)
-        {
-            List<YesNoCardDecision> storedDecisions = new List<YesNoCardDecision>();
-            IEnumerator routine = base.GameController.MakeYesNoCardDecision(base.DecisionMaker, SelectionType.SkipTurn, this.Card,
-                storedResults: storedDecisions, cardSource: GetCardSource());
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-
-            if (!base.DidPlayerAnswerYes(storedDecisions))
-            {
-                yield break;
-            }
-
-
-            routine = base.SkipTheirTurnToDestroyThisCardResponse(pca);
-
-            //IEnumerator routine2 = base.GameController.DestroyCard(pca.DecisionMaker, this.Card, cardSource: GetCardSource());
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-                //yield return base.GameController.StartCoroutine(routine2);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-                //base.GameController.ExhaustCoroutine(routine2);
-            }
+            base.AddTriggers();
         }
     }
 }
