@@ -383,27 +383,55 @@ namespace CauldronTests
             AssertStatusEffectsDoesNotContain(messageText);
         }
 
+        [Test]
+        public void TestHostageShieldIsNotRemovedIfTurnIsNotSkipped()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card hostageShield = GetCard(HostageShieldCardController.Identifier);
+
+            StartGame();
+
+            DecisionYesNo = false;
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(hostageShield);
+
+            string messageText = $"Prevent damage from Ra.";
+            AssertStatusEffectsContains(messageText);
+            AssertNextToCard(hostageShield, ra.CharacterCard);
+
+            GoToStartOfTurn(ra);
+            GoToPlayCardPhase(ra);
+            PlayCard(ra, GetCardFromHand(ra, 0));
+            AssertNextToCard(hostageShield, ra.CharacterCard);
+            AssertStatusEffectsContains(messageText);
+        }
+
 
 
         [Test]
         public void TestHotZone()
         {
             // Arrange
-            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "InsulaPrimalis");
             
             StartGame();
 
-            Card hotZone = GetCard(HotZoneCardController.Identifier);
-            QuickHPStorage(legacy, ra, haka);
+            PutIntoPlay("EnragedTRex");
+            Card enragedTRex = GetCardInPlay("EnragedTRex");
 
+            Card hotZone = GetCard(HotZoneCardController.Identifier);
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, enragedTRex);
 
             // Act
             GoToPlayCardPhase(Vector);
             PlayCard(hotZone);
 
             // Assert
-            QuickHPCheck(-2, -2, -2);
-            Assert.True(false, "TODO");
+            QuickHPCheck(-2, -2, -2, -2);
         }
 
         [Test]
@@ -415,6 +443,7 @@ namespace CauldronTests
             StartGame();
 
             SetHitPoints(Vector, 10);
+            QuickHPStorage(Vector);
 
             Card hyperactive = GetCard(HyperactiveImmuneSystemCardController.Identifier);
 
@@ -429,7 +458,7 @@ namespace CauldronTests
             GoToEndOfTurn(Vector);
 
             // Assert
-            Assert.True(false, "TODO");
+            QuickHPCheck(3);
         }
 
         [Test]
@@ -440,6 +469,11 @@ namespace CauldronTests
 
             StartGame();
 
+
+            DecisionLowestHP = ra.CharacterCard;
+
+            QuickHPStorage(legacy, ra);
+
             Card lethalForce = GetCard(LethalForceCardController.Identifier);
 
             // Act
@@ -447,18 +481,45 @@ namespace CauldronTests
             PlayCard(lethalForce);
             
             // Assert
-            Assert.True(false, "TODO");
+            QuickHPCheck(-2, -1);
         }
 
         [Test]
-        public void TestQuarrantineProtocol()
+        public void TestQuarantineProtocolMakesEnvironmentImmuneToDamage()
         {
             // Arrange
-            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "InsulaPrimalis");
+
+            StartGame();
+
+            PutIntoPlay("EnragedTRex");
+            Card enragedTRex = GetCardInPlay("EnragedTRex");
+            Card quarantine = GetCard(QuarantineProtocolsCardController.Identifier);
+
+            QuickHPStorage(enragedTRex);
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(quarantine);
+
+            GoToStartOfTurn(legacy);
+            DealDamage(legacy, enragedTRex, 4, DamageType.Melee);
+
+            // Assert
+            QuickHPCheck(0);
+        }
+
+        [Test]
+        public void TestQuarantineProtocolCausesHeroDiscard()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "InsulaPrimalis");
 
             StartGame();
 
             Card quarantine = GetCard(QuarantineProtocolsCardController.Identifier);
+
+            QuickHandStorage(legacy, ra, haka);
 
             // Act
             GoToPlayCardPhase(Vector);
@@ -467,8 +528,32 @@ namespace CauldronTests
             GoToEndOfTurn(Vector);
 
             // Assert
-            Assert.True(false, "TODO");
+            QuickHandCheck(-1, -1, -1);
         }
+
+        [Test]
+        public void TestQuarantineProtocolDealsHeroesDamageWhenDestroyed()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "InsulaPrimalis");
+
+            StartGame();
+
+            QuickHPStorage(legacy, ra, haka);
+
+            Card quarantine = GetCard(QuarantineProtocolsCardController.Identifier);
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(quarantine);
+
+            DestroyCard(quarantine);
+
+            // Assert
+            QuickHPCheck(-3, -3, -3);
+        }
+
+
 
         [Test]
         public void TestSupervirus()
@@ -500,7 +585,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestUndiagnosedSubject()
+        public void TestUndiagnosedSubjectPlaysVillainCardAtEndOfVillainTurn()
         {
             // Arrange
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
@@ -509,13 +594,16 @@ namespace CauldronTests
             StartGame();
             Card undiagnosed = GetCard(UndiagnosedSubjectCardController.Identifier);
 
+
             // Act
             GoToPlayCardPhase(Vector);
             PlayCard(undiagnosed);
+            int cardsInPlay = GetNumberOfCardsInPlay(Vector);
+            GoToEndOfTurn(Vector);
             GoToStartOfTurn(legacy);
 
             // Assert
-            Assert.True(false, "TODO");
+            Assert.AreEqual(cardsInPlay + 1, GetNumberOfCardsInPlay(Vector));
 
         }
 
