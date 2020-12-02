@@ -824,7 +824,7 @@ namespace CauldronTests
         [Test()]
         public void TestBringDownTheHouseDestroy3Cards()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController(new string[] { "BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis" });//, randomSeed: 142903984
             StartGame();
             //Setup Trash
             Card trick1 = GetCard("CheapTrick", 1);
