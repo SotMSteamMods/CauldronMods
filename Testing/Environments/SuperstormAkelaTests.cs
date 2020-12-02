@@ -156,12 +156,16 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela");
             StartGame();
+            //stack deck to reduce variability
+            PutOnDeck("TheStaffOfRa");
+
             GoToPlayCardPhase(superstorm);
             Card currents = PlayCard("RideTheCurrents");
             IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c)).Take(4);
             PlayCards(cardsToPlay);
             DecisionSelectFunction = 1;
             //selecting the first card played and moving it to the last position
+            DecisionAutoDecideIfAble = true;
             DecisionSelectCards = new Card[] {currents, cardsToPlay.ElementAt(3) };
             PrintPlayAreaPositions();
             GoToStartOfTurn(baron);
@@ -185,6 +189,38 @@ namespace CauldronTests
             Card currents = PlayCard("RideTheCurrents");
             AssertNotInDeck(topCard);
            
+
+        }
+
+        [Test()]
+        public void TestFlailingWires_EndOfTurn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela");
+            StartGame();
+            GoToPlayCardPhase(superstorm);
+            Card wires = GetCard("FlailingWires");
+            IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c) && c != wires).Take(1);
+            PlayCards(cardsToPlay);
+            PlayCard(wires);
+            QuickHPStorage(ra, legacy, haka);
+            //At the end of the environment turn, this card deals the X+1 hero targets with the highest HP 1 lightning damage each, where X is the number of environment cards to the left of this one.
+
+            GoToEndOfTurn(superstorm);
+            QuickHPCheck(0, -1, -1);
+
+        }
+
+        [Test()]
+        public void TestFlailingWires_Play()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela");
+            StartGame();
+            GoToPlayCardPhase(superstorm);
+            Card wires = GetCard("FlailingWires");
+            Card currents = PutOnDeck("RideTheCurrents");
+            //"When this card enters play, play the top card of the environment deck.",
+            PlayCard(wires);
+            AssertInPlayArea(superstorm, currents);
 
         }
 
