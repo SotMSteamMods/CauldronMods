@@ -51,7 +51,9 @@
             ],
             "icons": [
                 "DestroySelf",
-                "UsePowerNow"
+                "UsePowerNow",
+                "HasPower",
+                "GainHP"
             ],
             "body": "When a non-hero card enters play, you may destroy this card. If you do, you may use a power now.",
             "powers": [
@@ -406,7 +408,9 @@
             ],
             "icons": [
                 "DealDamageInfernal",
-                "DealDamageFire"
+                "DealDamageFire",
+                "HasPower",
+                "DestroySelf"
             ],
             "body": "When this card is destroyed, {Titan} deals 1 villain target 5 infernal damage. If Titanform is in play, {Titan} also deals that target 2 fire damage.",
             "powers": [
