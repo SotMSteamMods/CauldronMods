@@ -1105,6 +1105,31 @@ namespace CauldronTests
             AssertInHand(hand1);
             AssertInHand(hand2);
         }
+        [Test]
+        public void TacticalRelocation_RecoveryRequiresDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "TheScholar", "TheWraith", "Megalopolis");
+            StartGame();
+
+            RemoveMobileDefensePlatform();
+
+            PutOnDeck(scholar, scholar.HeroTurnTaker.Hand.Cards);
+
+            Card liveIron = PlayCard("FleshToIron");
+            Card deadIron = PutInTrash("FleshToIron");
+            Card liquid = PutInTrash("SolidToLiquid");
+
+            AssertIsInPlay(liveIron);
+            AssertInTrash(deadIron);
+
+            DecisionYesNo = true;
+
+            PlayCard("TacticalRelocation");
+            AssertIsInPlay(deadIron);
+
+            PlayCard("TacticalRelocation");
+            AssertNotInPlay(liquid);
+        }
 
     }
 }
