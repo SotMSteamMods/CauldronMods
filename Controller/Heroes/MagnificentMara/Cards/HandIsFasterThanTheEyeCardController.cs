@@ -10,8 +10,32 @@ namespace Cauldron.MagnificentMara
 {
     public class HandIsFasterThanTheEyeCardController : CardController
     {
+        private int _lastTriggerIndex = -1;
+        private int? _turnEntered = null;
+        private string _entryPhase = "";
+
         private List<ITrigger> _triggersSuppressed;
         private Dictionary<ITrigger, Func<PhaseChangeAction, bool>> _suppressors;
+
+        private int lastTriggerIndex {
+            get
+            {
+                if (_turnEntered != null)
+                {
+                    if(_turnEntered == Game.TurnIndex && _entryPhase == Game.ActiveTurnPhase.FriendlyPhaseName)
+                    {
+                        return _lastTriggerIndex;
+                    }
+                    else
+                    {
+                        _turnEntered = null;
+                        _lastTriggerIndex = -1;
+                    }
+                }
+                return _lastTriggerIndex;
+            }
+        }
+        
         public HandIsFasterThanTheEyeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             _suppressors = new Dictionary<ITrigger, Func<PhaseChangeAction, bool>>();
@@ -20,6 +44,13 @@ namespace Cauldron.MagnificentMara
 
         public override IEnumerator Play()
         {
+            if(Game.ActiveTurnPhase.IsStart || Game.ActiveTurnPhase.IsEnd)
+            {
+                _turnEntered = Game.TurnIndex;
+                _lastTriggerIndex = GameController.GetMostRecentTriggerIndex();
+                _entryPhase = Game.ActiveTurnPhase.FriendlyPhaseName;
+                Log.Debug($"Entering play, most recent trigger is {_lastTriggerIndex}");
+            }
             AddLastTriggers();
             IEnumerator coroutine = ApplyChangesResponse(null);
             if (base.UseUnityCoroutines)
@@ -103,6 +134,7 @@ namespace Cauldron.MagnificentMara
             var unsuppressorAction = new PhaseChangeAction(GetCardSource(), pc.FromPhase, pc.ToPhase, pc.IsEphemeral, pc.ForceIncrementTurnIndex);
 
             Func<ITrigger, bool> logFunc = (ITrigger trigger) => LogAndReturnTrue(trigger) && trigger.DoesMatchTypeAndCriteria(unsuppressorAction);
+            // && trigger.Index > lastTriggerIndex
 
             //not quite correct - it will get the first card that would act in a phase, 
             //not the first one that WOULD act after Hand is Faster than the Eye enters play
@@ -147,7 +179,7 @@ namespace Cauldron.MagnificentMara
 
         private bool LogAndReturnTrue(ITrigger trigger)
         {
-            //Log.Debug("Trigger info: " + trigger.ToString());
+            Log.Debug("Trigger info: " + trigger.ToString() + " index " + trigger.Index.ToString());
             //Log.Debug("Suppressor record: " + _suppressors[trigger].ToString());
             return true;
         }

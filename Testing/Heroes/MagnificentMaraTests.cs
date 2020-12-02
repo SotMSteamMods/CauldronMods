@@ -423,15 +423,17 @@ namespace CauldronTests
 
             StartGame();
 
-            Card faster = PlayCard("HandIsFasterThanTheEye");
             Card battalion = PlayCard("BladeBattalion");
             Card turret = PlayCard("PoweredRemoteTurret");
+            Card faster = PlayCard("HandIsFasterThanTheEye");
 
             GoToStartOfTurn(mara);
 
+            QuickHPStorage(mara, legacy, scholar);
             AssertInTrash(battalion);
             AssertInTrash(faster);
             AssertIsInPlay(turret);
+            QuickHPCheck(-3, -3, -3);
 
             PlayCard(faster);
             PlayCard(battalion);
@@ -455,6 +457,34 @@ namespace CauldronTests
             GoToStartOfTurn(dawn);
 
             AssertInTrash(eclipse);
+        }
+        [Test]
+        public void TestHandIsFasterThanTheEyeWhenPlayedMidEndPhase()
+        {
+            SetupGameController("Apostate", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+
+            StartGame();
+            Card imp = PlayCard("ImpPilferer");
+            Card fiend = PlayCard("FiendishPugilist");
+            Card spirit = PlayCard("RelicSpirit");
+            Card sword = GetCardInPlay("Condemnation");
+            
+            SetHitPoints(sword, 5);
+            QuickHPStorage(sword);
+            PlayCard("Abracadabra");
+            Card iron = PlayCard("FleshToIron");
+
+            Card faster = PutInHand("HandIsFasterThanTheEye");
+
+            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { iron, faster };
+            DecisionSelectTurnTaker = mara.TurnTaker;
+
+            GoToEndOfTurn(apostate);
+
+            QuickHPCheck(1);
+            AssertIsInPlay(imp);
+            AssertInTrash(fiend);
         }
         [Test]
         public void TestImprobableEscapeCardDraw()
