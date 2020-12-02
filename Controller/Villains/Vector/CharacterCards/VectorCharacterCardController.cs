@@ -47,7 +47,6 @@ namespace Cauldron.Vector
 
         public VectorCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddSideTriggers()
@@ -72,7 +71,9 @@ namespace Cauldron.Vector
                 
                 if (this.IsGameAdvanced)
                 {
-                    // TODO:
+                    // At the end of the villain turn, {Vector} regains 2 HP.
+                    base.SideTriggers.Add(base.AddEndOfTurnTrigger(tt => tt == this.TurnTaker,
+                        AdvancedEndOfTurnResponse, TriggerType.GainHP));
                 }
             }
             // Flipped side (Desperate Assassin)
@@ -87,13 +88,11 @@ namespace Cauldron.Vector
 
                 base.SideTriggers.Add(base.AddReduceDamageTrigger(dda => dda.DamageSource != null && dda.CardSource != null 
                                                                                                   && dda.Target == base.CharacterCard, AmountToReduce));
-
-                if (this.IsGameAdvanced)
-                {
-                    // TODO:
-                }
             }
+
+            AddDefeatedIfDestroyedTriggers();
         }
+
 
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
@@ -118,6 +117,26 @@ namespace Cauldron.Vector
                 {
                     base.GameController.ExhaustCoroutine(r1);
                     base.GameController.ExhaustCoroutine(r2);
+                }
+            }
+
+            if (this.IsGameAdvanced)
+            {
+                // Increase damage dealt by {Vector} by 2.
+                IncreaseDamageStatusEffect idse = new IncreaseDamageStatusEffect(AdvancedDamageIncrease)
+                {
+                    TargetCriteria = {IsSpecificCard = this.Card}
+                };
+                idse.UntilCardLeavesPlay(this.Card);
+
+                IEnumerator routine = base.GameController.AddStatusEffect(idse, true, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
                 }
             }
         }
@@ -181,6 +200,19 @@ namespace Cauldron.Vector
             IEnumerator routine = this.GameController.PlayTopCard(this.DecisionMaker, this.TurnTakerController,
                 false, 1);
 
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
+        }
+
+        private IEnumerator AdvancedEndOfTurnResponse(PhaseChangeAction pca)
+        {
+            IEnumerator routine = this.GameController.GainHP(this.CharacterCard, AdvancedHpGain);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
