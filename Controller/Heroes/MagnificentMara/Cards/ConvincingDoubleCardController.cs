@@ -11,7 +11,7 @@ namespace Cauldron.MagnificentMara
     {
         public ConvincingDoubleCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowSpecialString(() => "Passing to or from multiple-character heroes is likely to be buggy. Don't say we didn't warn you.");
+            //SpecialStringMaker.ShowSpecialString(() => "Passing to or from multiple-character heroes is likely to be buggy. Don't say we didn't warn you.");
         }
 
         public override bool AllowFastCoroutinesDuringPretend => false;
@@ -152,6 +152,9 @@ namespace Cauldron.MagnificentMara
             //this is what handles the "treating any hero name on that card as the name of their hero instead" part
             if (cardSource != null && _passedCard != null && cardSource.Card == _passedCard)
             {
+                //Most cards, code-wise, refer to their hero with simply "this.CharacterCard" which is automatically
+                //swapped out when the TurnTakerController is. For those few that call out a specific hero some other 
+                //way, this swaps it for the receiver's character.
                 if (card != null && _receiverCharacterCard != null && cardSource != null && card.IsHeroCharacterCard && cardSource.AllowReplacements)
                 {
                     //Log.Debug($"Card-to-possibly-replace is {card.Title}");
@@ -166,6 +169,10 @@ namespace Cauldron.MagnificentMara
                         }
                     }
                 }
+
+                //Alternatively, if we pass *to* a multi-character hero all of those "this.CharacterCard" references
+                //will be to their instruction card, which is not supposed to act. Here's where we swap it for the one 
+                //they picked.
                 if (card == null || !card.IsRealCard)
                 {
                     //Log.Debug("might try to replace a null character card, if we're lucky");
@@ -178,16 +185,6 @@ namespace Cauldron.MagnificentMara
                             Card cardWithoutReplacements = cardSource.CardController.CardWithoutReplacements;
                             IEnumerable<CardController> sources = cardSource.CardSourceChain.Select((CardSource cs) => cs.CardController);
 
-                            /*
-                            foreach (CardSource chainSource  in cardSource.CardSourceChain)
-                            {
-                                Log.Debug($"Tracing card source chain: {chainSource.Card.Title}");
-                            }
-                            */
-
-                            //Log.Debug($"sources contains passed card: {sources.Contains(FindCardController(_passedCard))}");
-                            //Log.Debug($"sources contains Convincing Double: {sources.Contains(this)}");
-                            //Log.Debug($"CardSource card is passed card: {_passedCard == cardSource.Card}");
                             if (sources.Contains(FindCardController(_passedCard)) && sources.Contains(this) && _passedCard == cardSource.Card) //&& sources.Contains(this) && _giverController.CharacterCards.Contains(card))
                             {
                                 //Log.Debug($"Returning {_receiverCharacterCard.Title}");
@@ -198,7 +195,7 @@ namespace Cauldron.MagnificentMara
                     }
                     else
                     {
-                        Log.Debug("Null card detected");
+                        //Log.Debug("Null card detected");
                         if (_receiverController != null && _receiverController.HasMultipleCharacterCards && _passedCard != null)
                         {
                             //Log.Debug("And it did!");
@@ -218,7 +215,9 @@ namespace Cauldron.MagnificentMara
 
         public override TurnTakerController AskIfTurnTakerControllerIsReplaced(TurnTakerController ttc, CardSource cardSource)
         {
-            //this is what handles the "as if it were their card" part of the instructions
+            //This is what handles the "as if it were their card" part of the instructions
+            //Since CardController.CharacterCard ultimately goes through TurnTakerController.CharacterCard,
+            //this usually handles swapping out hero names too.
 
             HeroTurnTakerController receiverTTC = _receiverController;
             HeroTurnTaker receiver = receiverTTC.HeroTurnTaker;
