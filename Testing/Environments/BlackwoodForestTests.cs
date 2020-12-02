@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Collections.Generic;
 
 using Cauldron.BlackwoodForest;
 using Handelabra.Sentinels.Engine.Controller;
@@ -356,6 +357,9 @@ namespace CauldronTests
             PutIntoPlay(dangerSense.Identifier);
 
             DecisionSelectCard = legacyRing;
+
+            //pick a card that definitely won't give the players another SelectCardDecision
+            PutOnDeck("DenseBrambles");
 
             // Act
             PutIntoPlay(TheHoundCardController.Identifier);
