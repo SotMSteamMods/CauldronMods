@@ -1755,6 +1755,34 @@ namespace CauldronTests
             //it is still irreducible, so -5
             QuickHPCheck(-5);
         }
+        [Test()]
+        public void TestThundergreyShawlIrreducibleOrdering()
+        {
+            //TGS should trigger if the damage totals to 2 or less, with boosts and reductions included
+            SetupGameController("Apostate", "Cauldron.LadyOfTheWood", "Legacy", "Haka", "Megalopolis");
+            StartGame();
+
+            Card sword = GetCardInPlay("Condemnation");
+            Card periapt = PlayCard("PeriaptOfWoe");
+
+            PlayCard("ThundergreyShawl");
+            PlayCard("Summer");
+            UsePower(legacy);
+
+            //total of +3 to fire damage
+
+            QuickHPStorage(sword);
+
+            DealDamage(ladyOfTheWood, sword, 1, DamageType.Fire);
+            DealDamage(ladyOfTheWood, periapt, 1, DamageType.Fire);
+
+            //1 damage +3 boost -2 DR = 2, so Shawl applies and Periapt takes the full 4
+            AssertInTrash(periapt);
+
+            //1 damage +3 boost -1 DR = 1, Shawl does not trigger and Condemnation takes 3
+            QuickHPCheck(-3);
+
+        }
 
         [Test()]
         public void TestWinter()
