@@ -1028,6 +1028,9 @@ namespace CauldronTests
             SetupGameController("KaargraWarfang", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
+            //Playing Tarnis when he's already in play messes up his redirection, so let's avoid that
+            PutOnDeck("ProvocatorTarnis");
+
             var target1 = PlayCard("IdesaTheAdroit");
             var target2 = PlayCard("ProvocatorTarnis");
             DestroyCards(FindCardsWhere(c => c.IsTitle && c.IsInPlay));
@@ -1050,6 +1053,7 @@ namespace CauldronTests
         public void TacticalRelocation()
         {
             SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis" }, randomSeed: -1689251121);
             StartGame();
 
             RemoveMobileDefensePlatform();
