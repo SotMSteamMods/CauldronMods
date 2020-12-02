@@ -618,6 +618,32 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestFinalRitualSingleCard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+            Card final = GetCard("FinalRitual");
+
+            //put in play a ritual to boost HP of undead by 1
+            PutIntoPlay("DarkPact");
+
+            //set up game for effect testing
+            var card1 = PutInTrash("Ghoul");
+
+            GoToPlayCardPhase(necro);
+
+            DecisionSelectCards = new[] { card1 };
+            DecisionSelectTargets = new[] { card1 };
+
+            //Search your trash for up to 2 Undead and put them into play. {Necro} deals each of those cards 2 toxic damage.
+            PlayCard(final);
+            AssertInTrash(final);
+            AssertInPlayArea(necro, card1);
+            AssertHitPoints(card1, card1.MaximumHitPoints.Value - 2);
+            AssertHitPoints(necro.CharacterCard, necro.CharacterCard.MaximumHitPoints.Value - 2);
+        }
+
+        [Test()]
         public void TestFinalRitualPutInPlay()
         {
             SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Fanatic", "Megalopolis");
