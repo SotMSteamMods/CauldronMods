@@ -1752,7 +1752,7 @@ namespace CauldronTests
             QuickHPStorage(baron);
             DealDamage(ladyOfTheWood, baron, 2, DamageType.Lightning);
             //because of suncast mantle, +3 damage, now 5
-            //it is not irreducible, so -5
+            //it is not irreducible, so -4 total
             QuickHPCheck(-4);
         }
         [Test()]
@@ -1783,7 +1783,34 @@ namespace CauldronTests
             QuickHPCheck(-3);
 
         }
+        [Test()]
+        public void TestThundergreyShawlWithUnincreasableDamage()
+        {
+            SetupGameController("BaronBladeTeam", "MissInformationTeam", "BugbearTeam", "Cauldron.LadyOfTheWood", "TheWraith", "TheSentinels", "Megalopolis");
 
+            StartGame();
+
+            //avoid having any of the starting card shenanigans mess things up
+            var villains = new List<TurnTakerController> { baronTeam, missinfoTeam, bugbearTeam };
+            foreach(TurnTakerController villain in villains)
+            {
+                PutOnDeck(villain, villain.TurnTaker.GetPlayAreaCards().Where((Card c) => !c.IsCharacter));
+            }
+
+            PlayCard("ThundergreyShawl");
+            PlayCard("StunBolt"); 
+            PlayCard("JudgeMental");
+
+            DecisionSelectTarget = ladyOfTheWood.CharacterCard;
+
+            //to give LOTW a putative "damage increase" from a hero card
+            UsePower("StunBolt");
+
+            QuickHPStorage(baronTeam);
+            DealDamage(ladyOfTheWood, baronTeam, 3, DamageType.Melee);
+
+            QuickHPCheck(-3);
+        }
         [Test()]
         public void TestWinter()
         {

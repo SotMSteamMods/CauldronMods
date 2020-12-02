@@ -58,7 +58,17 @@ namespace Cauldron.LadyOfTheWood
 
 			foreach(ReduceDamageAction mod in reduceActions)
             {
-				coroutine = GameController.IncreaseDamage(dd, mod.AmountToReduce, cardSource: mod.CardSource);
+				IncreaseDamageAction restoreDamage = new IncreaseDamageAction(mod.CardSource, dd, mod.AmountToReduce, false);
+
+				//we do our best to make it have as little interaction as possible with things that respond to increasing damage
+				//since it's supposed to be retroactive undoing of damage decreases
+				restoreDamage.AllowTriggersToRespond = false;
+				restoreDamage.CanBeCancelled = false;
+
+				var wasUnincreasable = dd.IsUnincreasable;
+				dd.IsUnincreasable = false;
+
+				coroutine = GameController.DoAction(restoreDamage);
 				if (base.UseUnityCoroutines)
 				{
 					yield return GameController.StartCoroutine(coroutine);
@@ -67,6 +77,8 @@ namespace Cauldron.LadyOfTheWood
 				{
 					GameController.ExhaustCoroutine(coroutine);
 				}
+
+				dd.IsUnincreasable = wasUnincreasable;
             }
 			yield break;
         }
