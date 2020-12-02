@@ -561,6 +561,7 @@ namespace CauldronTests
             Card retort = PutOnDeck("IronRetort");
             Card storm = PutOnDeck("AlloyStorm");
             Card spear = PutOnDeck("CoalescingSpear");
+            DecisionYesNo = true;
             DecisionSelectCard = spear;
             DecisionDoNotSelectFunction = true;
 
