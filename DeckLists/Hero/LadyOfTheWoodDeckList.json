@@ -33,8 +33,8 @@
             ],
             "flippedIcons": [],
             "openingLines": {
-                "default": "default placeholder",
-                "CalderochCharacter": "Calderoch placeholder",
+                "default": "Will you frolic with us?",
+                "CalderochCharacter": "I haven't felt this presence in many years. Beware, my friends. This wind carries the scent of death.",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
@@ -439,7 +439,7 @@
             "flavorReference": "Starlight And Lady Of The Wood, Starcrossed #72"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "LadyOfTheWoodCharacter",
             "promoIdentifier": "SeasonsOfChangeLadyOfTheWoodCharacter",
@@ -476,8 +476,8 @@
                 "IrreducibleDamage"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "CalderochCharacter": "Calderoch placeholder",
+                "default": "The turn of the seasons will wipe this land clean of evil.",
+                "CalderochCharacter": "Hurry, everyone! His bonds are weakening - but ours can strengthen!",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
@@ -518,8 +518,8 @@
                 "DealDamage"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "CalderochCharacter": "Calderoch placeholder",
+                "default": "We have formed a most excellent team to deal with your misdeeds.",
+                "CalderochCharacter": "Adventure, discovery, life - all will exist after this. All but you, Celadroch.",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
@@ -559,8 +559,8 @@
                 "DealDamageCold"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "CalderochCharacter": "Calderoch placeholder",
+                "default": "I have seen millenia slip away; as will your chance at victory.",
+                "CalderochCharacter": "It seems like not all things have changed, after all - is your evil timeless, Celadroch, or were you waiting for me?",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3

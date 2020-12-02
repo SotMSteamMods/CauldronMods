@@ -38,7 +38,7 @@
                 "PlayCardNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Rain and shadow will unmake you.",
                 "DendronCharacter": "Dendron placeholder",
                 "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
@@ -448,7 +448,7 @@
             "flavorReference": "The Stranger, Strange Roads #187"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "TheStrangerCharacter",
             "promoIdentifier": "RunecarvedTheStrangerCharacter",
@@ -484,7 +484,7 @@
                 "CannotGainHP"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "I have come a long way, to witness your defeat.",
                 "DendronCharacter": "Dendron placeholder",
                 "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
@@ -526,7 +526,7 @@
                 "DealDamageToxic"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Your essence will only fuel my runes!",
                 "DendronCharacter": "Dendron placeholder",
                 "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
@@ -570,7 +570,51 @@
                 "PlayCardNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Your nightmare is just beginning.",
+                "DendronCharacter": "Dendron placeholder",
+                "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
+                "PastTheRamCharacter": "1929 Ram placeholder",
+                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+            },
+            "complexity": 2
+        },
+        {
+            "identifier": "TheStrangerCharacter",
+            "promoIdentifier": "CornTheStrangerCharacter",
+            "count": 1,
+            "title": "The Stranger",
+            "promoTitle": "Stranger in the Corn",
+            "shortPromoTitle": "Corn Stranger",
+            "body": "",
+            "backgroundColor": "",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "",
+            "character": true,
+            "powers": [
+                ""
+            ],
+            "icons": [
+                "HasPower",
+                "Discard",
+                "DealDamageInfernal"
+            ],
+            "hitpoints": 1,
+            "nemesisIdentifiers": [
+                "TheStranger"
+            ],
+            "incapacitatedAbilities": [
+                "",
+                "",
+                ""
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "DealDamageInfernal",
+                "DestroyEnvironment",
+                "PlayCardNow"
+            ],
+            "openingLines": {
+                "default": "Flee in terror at my visage!",
                 "DendronCharacter": "Dendron placeholder",
                 "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",

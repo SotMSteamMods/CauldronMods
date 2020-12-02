@@ -11,7 +11,9 @@ namespace Cauldron.LadyOfTheWood
     {
         public NobilityOfDuskCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowIfElseSpecialString(IsBuffAvailable, () => $"{Card.Title} can increase damage this turn.", () => "");
+            var ss = SpecialStringMaker.ShowSpecialString(() => $"{Card.Title} can increase damage this turn.");
+            ss.Condition = IsBuffAvailable;
+
             this.RunModifyDamageAmountSimulationForThisCard = false;
         }
 

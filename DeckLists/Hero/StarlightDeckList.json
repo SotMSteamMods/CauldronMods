@@ -43,10 +43,14 @@
                 "PlayCardNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Your defeat is written in the stars!",
                 "MenagerieCharacter": "Menagerie placeholder"
             },
-            "complexity": 3
+            "complexity": 3,
+            "openingLines": {
+                "default": "Your defeat is written in the stars!",
+                "MenagerieCharacter":"Menagerie placeholder"
+            }
         },
         {
             "identifier": "AncientConstellationA",
@@ -568,7 +572,7 @@
                 "UsePowerNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "This sector is under Nightlore protection.",
                 "MenagerieCharacter": "Menagerie placeholder"
             },
             "complexity": 3
@@ -619,6 +623,10 @@
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "isReal": false,
+            "openingLines": {
+                "default": "To survey the darkness and guard the light; this we pledge!",
+                "MenagerieCharacter": "By the order of the Nightlore Council, you are under arrest! ...Was that right?"
+            },
             "complexity": 3
         }
     ]

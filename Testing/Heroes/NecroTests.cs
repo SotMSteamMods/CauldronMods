@@ -182,7 +182,7 @@ namespace CauldronTests
         [Test()]
         public void TestNecroIncap3()
         {
-            SetupGameController("BaronBlade", "Cauldron.Necro", "Legacy", "Fanatic", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Legacy", "Fanatic", "Luminary", "Megalopolis");
             StartGame();
             SetHitPoints(legacy.CharacterCard, 20);
             SetupIncap(baron);
@@ -229,6 +229,62 @@ namespace CauldronTests
             QuickHPStorage(baron, legacy, fanatic);
             DealDamage(baron, fanatic, 2, DamageType.Projectile);
             QuickHPCheck(0, 0, -2);
+        }
+
+        [Test()]
+        public void TestNecroIncap3_NonCharacterTarget()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Legacy", "Fanatic", "Luminary", "Megalopolis");
+            StartGame();
+            SetHitPoints(legacy.CharacterCard, 20);
+            SetupIncap(baron);
+            AssertIncapacitated(necro);
+
+            //Destroy all non-character cards in play to reduce variance
+            GoToStartOfTurn(necro);
+            DestroyCards((Card c) => c.IsInPlayAndHasGameText && !c.IsCharacter);
+            Card turret = PlayCard("RegressionTurret");
+            GoToUseIncapacitatedAbilityPhase(necro);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            //Select a hero target. Increase damage dealt by that target by 3 and increase damage dealt to that target by 2 until the start of your next turn.
+            //using incap ability on regression turret
+            DecisionSelectCard = turret;
+            string dealtText = $"Increase damage dealt by {turret.Title} by 3.";
+            string takenText = $"Increase damage dealt to {turret.Title} by 2.";
+            AssertNextMessages(dealtText, takenText, dealtText, takenText);
+
+            UseIncapacitatedAbility(necro, 2);
+            AssertNumberOfStatusEffectsInPlay(2);
+
+            AssertStatusEffectAssociatedTurnTaker(0, luminary.TurnTaker);
+            AssertStatusEffectAssociatedTurnTaker(1, luminary.TurnTaker);
+
+            GoToPlayCardPhase(luminary);
+
+            //try turret dealing damage to baron, should be +3
+            QuickHPStorage(baron.CharacterCard, legacy.CharacterCard, fanatic.CharacterCard, turret);
+            DealDamage(turret, baron, 2, DamageType.Melee);
+            QuickHPCheck(-5, 0, 0, 0);
+
+            //try baron dealing damage to turret, should be +2
+            QuickHPUpdate();
+            DealDamage(baron, turret, 2, DamageType.Projectile);
+            QuickHPCheck(0, 0,  0, -4);
+
+            SetAllTargetsToMaxHP();
+
+            //go to necro's next turn, should be normal damage
+            GoToUseIncapacitatedAbilityPhase(necro);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+            QuickHPUpdate();
+            DealDamage(turret, baron, 2, DamageType.Melee);
+            QuickHPCheck(-2, 0, 0, 0);
+            QuickHPUpdate();
+            DealDamage(baron, turret, 2, DamageType.Projectile);
+            QuickHPCheck(0, 0, 0, -2);
         }
 
         [Test()]
@@ -559,6 +615,32 @@ namespace CauldronTests
             DestroyCard(ghoul, baron.CharacterCard);
 
             QuickHPCheck(0, 0, 0, 0, 0, -2, -2);
+        }
+
+        [Test()]
+        public void TestFinalRitualSingleCard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+            Card final = GetCard("FinalRitual");
+
+            //put in play a ritual to boost HP of undead by 1
+            PutIntoPlay("DarkPact");
+
+            //set up game for effect testing
+            var card1 = PutInTrash("Ghoul");
+
+            GoToPlayCardPhase(necro);
+
+            DecisionSelectCards = new[] { card1 };
+            DecisionSelectTargets = new[] { card1 };
+
+            //Search your trash for up to 2 Undead and put them into play. {Necro} deals each of those cards 2 toxic damage.
+            PlayCard(final);
+            AssertInTrash(final);
+            AssertInPlayArea(necro, card1);
+            AssertHitPoints(card1, card1.MaximumHitPoints.Value - 2);
+            AssertHitPoints(necro.CharacterCard, necro.CharacterCard.MaximumHitPoints.Value - 2);
         }
 
         [Test()]

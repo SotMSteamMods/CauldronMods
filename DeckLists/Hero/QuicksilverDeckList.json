@@ -38,7 +38,7 @@
                 "IncreaseDamageDealtMelee"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Let's dance!",
                 "TheRamCharacter": "Ram placeholder"
             },
             "complexity": 1
@@ -430,7 +430,7 @@
                 "GainHP"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "We'll see how much you yap after I turn you into a pincushion.",
                 "TheRamCharacter": "Ram placeholder"
             },
             "complexity": 1
@@ -448,7 +448,7 @@
             "hitpointColor": "8FCADB",
             "character": true,
             "powers": [
-                "Discard a card. Search your deck for Iron Retort and put it into your hand. Shuffle your deck."
+                "Discard a card. Search your deck or trash for Iron Retort and put it into your hand. Shuffle your deck."
             ],
             "icons": [
                 "HasPower",
@@ -470,7 +470,7 @@
                 "IncreaseDamageDealt"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Seems like the whole world wants a piece of me today.",
                 "TheRamCharacter": "Ram placeholder"
             },
             "complexity": 1
