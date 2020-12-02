@@ -50,5 +50,19 @@ namespace Cauldron.Titan
             }
             yield break;
         }
+
+        public override IEnumerator UsePower(int index = 0)
+        {
+            //Destroy this card.
+            IEnumerator coroutine = base.GameController.DestroyCard(base.HeroTurnTakerController, base.Card, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
     }
 }

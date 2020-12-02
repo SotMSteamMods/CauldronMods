@@ -42,7 +42,7 @@ namespace CauldronTests
             Assert.AreEqual(6, this.GameController.TurnTakerControllers.Count());
 
             Assert.IsNotNull(vanish);
-            Assert.IsInstanceOf(typeof(VanishCharacterCardController), vanish.CharacterCardController);
+            Assert.IsInstanceOf(typeof(TitanCharacterCardController), vanish.CharacterCardController);
 
             foreach (var card in vanish.HeroTurnTaker.GetAllCards())
             {
