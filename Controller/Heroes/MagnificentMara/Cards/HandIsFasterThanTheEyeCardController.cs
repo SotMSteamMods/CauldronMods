@@ -35,8 +35,8 @@ namespace Cauldron.MagnificentMara
         public override void AddTriggers()
         {
             //"When a non-relic, non-character villain card would activate start of turn or end of turn text, destroy it instead. Then, destroy this card.",
-            AddStartOfTurnTrigger((TurnTaker tt) => true, CheckForSuppressedTriggerResponse, new TriggerType[] { TriggerType.DestroyCard, TriggerType.CancelAction });
-            AddEndOfTurnTrigger((TurnTaker tt) => true, CheckForSuppressedTriggerResponse, new TriggerType[] { TriggerType.DestroyCard, TriggerType.CancelAction });
+            AddStartOfTurnTrigger((TurnTaker tt) => true, CheckForSuppressedTriggerResponse, new TriggerType[] { TriggerType.DestroyCard });
+            AddEndOfTurnTrigger((TurnTaker tt) => true, CheckForSuppressedTriggerResponse, new TriggerType[] { TriggerType.DestroyCard });
         }
 
         public override void AddLastTriggers()
@@ -81,13 +81,14 @@ namespace Cauldron.MagnificentMara
             {
                 //Log.Debug($"Suppressing trigger on {trigger.CardSource.Card.Title}");
                 Func<PhaseChangeAction, bool> stop = (PhaseChangeAction pca) => pca.CardSource != null && pca.CardSource.Card == this.Card;
-                trigger.AddAdditionalCriteria(stop);
-                _triggersSuppressed.Add(trigger);
+
                 if (_suppressors.ContainsKey(trigger))
                 {
                     trigger.RemoveAdditionalCriteria(_suppressors[trigger]);
                     _suppressors.Remove(trigger);
                 }
+                trigger.AddAdditionalCriteria(stop);
+                _triggersSuppressed.Add(trigger);
                 _suppressors.Add(trigger, stop);
             }
         }
