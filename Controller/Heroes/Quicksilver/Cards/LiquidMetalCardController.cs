@@ -54,10 +54,8 @@ namespace Cauldron.Quicksilver
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
-            base.CharacterCardController.SetCardPropertyToTrueIfRealAction("ComboSelfDamage");
-            //...{Quicksilver} may deal herself 2 melee damage...
-            coroutine = base.DealDamage(base.CharacterCard, base.CharacterCard, 2, DamageType.Melee, cardSource: base.GetCardSource());
+            List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
+            coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.PlayCard, base.Card, storedResults: storedResults);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -66,16 +64,30 @@ namespace Cauldron.Quicksilver
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            base.CharacterCardController.SetCardProperty("ComboSelfDamage", false);
-            //...play a Combo.
-            coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("combo")), cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
+            if (base.DidPlayerAnswerYes(storedResults))
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                base.CharacterCardController.SetCardPropertyToTrueIfRealAction("ComboSelfDamage");
+                //...{Quicksilver} may deal herself 2 melee damage...
+                coroutine = base.DealDamage(base.CharacterCard, base.CharacterCard, 2, DamageType.Melee, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                base.CharacterCardController.SetCardProperty("ComboSelfDamage", false);
+                //...play a Combo.
+                coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("combo")), cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }

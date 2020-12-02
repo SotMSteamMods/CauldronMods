@@ -46,6 +46,7 @@ namespace Cauldron.TangoOne
                 effect.CardSource = Card;
                 effect.SourceCriteria.IsSpecificCard = selectedCard;
                 effect.UntilStartOfNextTurn(base.TurnTaker);
+                effect.UntilTargetLeavesPlay(selectedCard);
 
                 IEnumerator cannotDealDamageRoutine = base.AddStatusEffect(effect);
                 if (base.UseUnityCoroutines)

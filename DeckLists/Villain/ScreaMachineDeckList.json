@@ -52,7 +52,7 @@
             ],
             "difficulty": 3,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "We are Screamachine! And you lot are out of your league!",
                 "GyrosaurCharacter": "Gyrosaur placeholder",
                 "RenegadeGyrosaurCharacter": "Renegade Gyrosaur placeholder",
                 "SpeedDemonGyrosaurCharacter": "Gyrosaur Speed Demon placeholder"
