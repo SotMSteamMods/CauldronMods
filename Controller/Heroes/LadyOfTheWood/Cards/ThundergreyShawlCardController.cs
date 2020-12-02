@@ -14,7 +14,15 @@ namespace Cauldron.LadyOfTheWood
 		public override void AddTriggers()
 		{
 			//Whenever LadyOfTheWood deals 2 or less damage to a target, that damage is irreducible.
-			base.AddMakeDamageIrreducibleTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.Amount <= 2);
+			ITrigger lateIrreducibleTrigger = new Trigger<DealDamageAction>(GameController,
+																(DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.Amount <= 2,
+																RetroactiveIrreducibilityResponse,
+																new TriggerType[] { TriggerType.WouldBeDealtDamage },
+																TriggerTiming.Before,
+																GetCardSource(),
+																orderMatters: true);
+			AddTrigger(lateIrreducibleTrigger);
+			//base.AddMakeDamageIrreducibleTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.Amount <= 2);
 		}
 
 		public override IEnumerator UsePower(int index = 0)
@@ -33,6 +41,35 @@ namespace Cauldron.LadyOfTheWood
 			}
 			yield break;
 		}
+
+		private IEnumerator RetroactiveIrreducibilityResponse(DealDamageAction dd)
+        {
+			IEnumerator coroutine = GameController.MakeDamageIrreducible(dd, GetCardSource());
+			if (base.UseUnityCoroutines)
+			{
+				yield return GameController.StartCoroutine(coroutine);
+			}
+			else
+			{
+				GameController.ExhaustCoroutine(coroutine);
+			}
+
+			var reduceActions = dd.DamageModifiers.Where((ModifyDealDamageAction mdd) => mdd is ReduceDamageAction).ToList();
+
+			foreach(ReduceDamageAction mod in reduceActions)
+            {
+				coroutine = GameController.IncreaseDamage(dd, mod.AmountToReduce, cardSource: mod.CardSource);
+				if (base.UseUnityCoroutines)
+				{
+					yield return GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					GameController.ExhaustCoroutine(coroutine);
+				}
+            }
+			yield break;
+        }
 
 		public override bool CanOrderAffectOutcome(GameAction action)
 		{

@@ -1752,8 +1752,8 @@ namespace CauldronTests
             QuickHPStorage(baron);
             DealDamage(ladyOfTheWood, baron, 2, DamageType.Lightning);
             //because of suncast mantle, +3 damage, now 5
-            //it is still irreducible, so -5
-            QuickHPCheck(-5);
+            //it is not irreducible, so -5
+            QuickHPCheck(-4);
         }
         [Test()]
         public void TestThundergreyShawlIrreducibleOrdering()
