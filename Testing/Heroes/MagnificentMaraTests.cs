@@ -423,13 +423,13 @@ namespace CauldronTests
 
             StartGame();
 
+            Card faster = PlayCard("HandIsFasterThanTheEye");
             Card battalion = PlayCard("BladeBattalion");
             Card turret = PlayCard("PoweredRemoteTurret");
-            Card faster = PlayCard("HandIsFasterThanTheEye");
-
-            GoToStartOfTurn(mara);
 
             QuickHPStorage(mara, legacy, scholar);
+
+            GoToStartOfTurn(mara);
             AssertInTrash(battalion);
             AssertInTrash(faster);
             AssertIsInPlay(turret);

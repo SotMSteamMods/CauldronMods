@@ -233,5 +233,69 @@ namespace Cauldron.MagnificentMara
             yield return null;
             yield break;
         }
+
+        private ITrigger WrapTrigger(Trigger<PhaseChangeAction> trigger)
+        {
+            ITrigger wrappedTrigger = new Trigger<PhaseChangeAction>(GameController,
+                                                        trigger.Criteria,
+                                                        (PhaseChangeAction pc) => InterruptOrAllowResponse(pc, trigger),
+                                                        trigger.Types,
+                                                        trigger.Timing,
+                                                        trigger.CardSource,
+                                                        trigger.ActionDescriptions,
+                                                        trigger.IsConditionalOnSimilar,
+                                                        trigger.RequireActionSuccess,
+                                                        trigger.IsActionOptional,
+                                                        trigger.IsOutOfPlayTrigger,
+                                                        trigger.OrderMatters,
+                                                        trigger.Priority,
+                                                        trigger.IgnoreBattleZone == true,
+                                                        trigger.RespondEvenIfPlayedAfterAction,
+                                                        trigger.CopyingCardController);
+            wrappedTrigger.AddAssociatedTrigger(trigger);
+            return wrappedTrigger;
+        }
+
+        private IEnumerator InterruptOrAllowResponse(PhaseChangeAction pc, Trigger<PhaseChangeAction> trigger)
+        {
+            if (false) // destruction criteria go here
+            {
+                Card cardToDestroy = trigger.CardSource.Card;
+                IEnumerator coroutine = GameController.SendMessageAction($"{this.Card.Title} interrupts the {pc.ToPhase.FriendlyPhaseName} trigger on {cardToDestroy.Title}!", Priority.High, GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+                coroutine = GameController.DestroyCard(DecisionMaker, cardToDestroy, cardSource: GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+                coroutine = DestroyThisCardResponse(pc);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            else
+            {
+                var unlockPCA = new PhaseChangeAction(GetCardSource(), pc.FromPhase, pc.ToPhase, pc.IsEphemeral, pc.ForceIncrementTurnIndex);
+
+                yield return trigger.Response(unlockPCA);
+            }
+            yield break;
+        }
     }
 }
