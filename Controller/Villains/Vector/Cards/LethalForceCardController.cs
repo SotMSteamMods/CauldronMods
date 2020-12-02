@@ -22,27 +22,22 @@ namespace Cauldron.Vector
 
         public override IEnumerator Play()
         {
-            List<Card> lowestHpTarget = new List<Card>();
-            IEnumerator routine = base.GameController.FindTargetWithLowestHitPoints(1, c => c.IsHero, lowestHpTarget, cardSource: base.GetCardSource());
-
             List<Card> highestHpTarget = new List<Card>();
-            IEnumerator routine2 = base.GameController.FindTargetWithHighestHitPoints(2, c => c.IsHero, highestHpTarget, cardSource: base.GetCardSource());
+            IEnumerator routine = base.GameController.FindTargetWithHighestHitPoints(2, c => c.IsHero, highestHpTarget, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
-                yield return base.GameController.StartCoroutine(routine2);
             }
             else
             {
                 base.GameController.ExhaustCoroutine(routine);
-                base.GameController.ExhaustCoroutine(routine2);
             }
 
             if (highestHpTarget.Any())
             {
                 int highestHpDamage = base.Game.H - 1;
-                routine = base.DealDamage(this.CharacterCard, c => c == lowestHpTarget.First(), highestHpDamage, DamageType.Melee);
+                routine = base.DealDamage(this.CharacterCard, c => c == highestHpTarget.First(), highestHpDamage, DamageType.Melee);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(routine);
@@ -51,6 +46,17 @@ namespace Cauldron.Vector
                 {
                     base.GameController.ExhaustCoroutine(routine);
                 }
+            }
+
+            List<Card> lowestHpTarget = new List<Card>();
+            routine = base.GameController.FindTargetWithLowestHitPoints(1, c => c.IsHero, lowestHpTarget, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
             }
 
             if (!lowestHpTarget.Any())
