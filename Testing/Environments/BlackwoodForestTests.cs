@@ -233,7 +233,7 @@ namespace CauldronTests
             DealDamage(baron, ra, 3, DamageType.Toxic); // Ra is immune
             DealDamage(baron, mdp, 3, DamageType.Toxic); // MDP is immune
 
-            AssertCardSpecialString(denseBrambles, 0, $"{denseBrambles.Title} is currently making Ra, Mobile Defense Platform immune to damage");
+            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra.");
 
             GoToStartOfTurn(BlackwoodForest); // Dense Brambles is destroyed
 
@@ -269,7 +269,7 @@ namespace CauldronTests
             DealDamage(baron, ra, 3, DamageType.Toxic); // Ra is immune
 
             // Will only show Ra as immune as MDP hasn't been dealt damage yet to trigger the immunity
-            AssertCardSpecialString(denseBrambles, 0, $"{denseBrambles.Title} is currently making Ra immune to damage");
+            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
             
             GoToStartOfTurn(BlackwoodForest); // Dense Brambles is destroyed
 
@@ -829,7 +829,7 @@ namespace CauldronTests
             QuickHPStorage(ra, legacy);
             QuickHandStorage(ra, legacy);
 
-            DecisionsYesNo = new[] { false, true };
+            DecisionSelectFunctions = new int?[] { 1, 0 };
 
             // Act
             Card desolation = GetCard(DesolationCardController.Identifier);
