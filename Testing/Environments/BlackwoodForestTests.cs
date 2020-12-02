@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Collections.Generic;
 
 using Cauldron.BlackwoodForest;
 using Handelabra.Sentinels.Engine.Controller;
@@ -357,6 +358,9 @@ namespace CauldronTests
 
             DecisionSelectCard = legacyRing;
 
+            //pick a card that definitely won't give the players another SelectCardDecision
+            PutOnDeck("DenseBrambles");
+
             // Act
             PutIntoPlay(TheHoundCardController.Identifier);
 
@@ -617,8 +621,10 @@ namespace CauldronTests
             Card modularWorkbench = GetCard("ModularWorkbench");
 
             // Act
-            GoToPlayCardPhase(unity);
+            //Can't play Swift Bot during Unity's play phase, if it happens to end up in hand.
             PlayCard(swiftBot);
+
+            GoToPlayCardPhaseAndPlayCard(unity, "ConstructionPylon");
             GoToDrawCardPhase(unity);
 
             AssertPhaseActionCount(2); // Normal draw + 1 from swiftbot
