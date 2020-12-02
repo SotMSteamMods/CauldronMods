@@ -1,11 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
 
 namespace Cauldron.Vector
 {
-    public class VectorCharacterCardController : VillainCharacterCardController
+    public class VectorCharacterCardController : VectorBaseCharacterCardController
     {
         /*
          *
@@ -69,24 +72,54 @@ namespace Cauldron.Vector
                 
                 if (this.IsGameAdvanced)
                 {
-
+                    // TODO:
                 }
             }
             // Flipped side (Desperate Assassin)
             else
             {
+                // At the end of the villain turn, play the top card of the villain deck.
+                base.SideTriggers.Add(base.AddEndOfTurnTrigger(tt => tt == this.TurnTaker, 
+                    FlippedEndOfTurnResponse, TriggerType.PlayCard));
 
+                // Reduce damage dealt to {Vector} by 1 for each villain target in play.
+                int AmountToReduce(DealDamageAction dmg) => base.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.IsVillainTarget).Count();
+
+                base.SideTriggers.Add(base.AddReduceDamageTrigger(dda => dda.DamageSource != null && dda.CardSource != null 
+                                                                                                  && dda.Target == base.CharacterCard, AmountToReduce));
 
                 if (this.IsGameAdvanced)
                 {
-
+                    // TODO:
                 }
             }
         }
 
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
-            yield break;
+            // Remove Super Virus card from the game
+            if (IsSuperVirusInPlay())
+            {
+                // Move any cards underneath Super Virus into villain trash
+                IEnumerable<Card> cardsUnder = FindCardsWhere(c => c.Location == GetSuperVirusCard().UnderLocation);
+                IEnumerator r1 = this.GameController.MoveCards(this.DecisionMaker, cardsUnder, this.TurnTaker.Trash,
+                    cardSource: GetCardSource());
+
+                // Remove Super Virus from game
+                IEnumerator r2 = this.GameController.MoveCard(this.TurnTakerController, GetSuperVirusCard(),
+                    new Location(this.Card, LocationName.OutOfGame));
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(r1);
+                    yield return base.GameController.StartCoroutine(r2);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(r1);
+                    base.GameController.ExhaustCoroutine(r2);
+                }
+            }
         }
 
         private IEnumerator DealtDamageResponse(DealDamageAction dda)
@@ -133,6 +166,21 @@ namespace Cauldron.Vector
 
             // Reached maximum HP, game over
             IEnumerator routine = base.GameController.GameOver(EndingResult.AlternateDefeat, EndingMessage, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
+        }
+
+        private IEnumerator FlippedEndOfTurnResponse(PhaseChangeAction pca)
+        {
+            IEnumerator routine = this.GameController.PlayTopCard(this.DecisionMaker, this.TurnTakerController,
+                false, 1);
+
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
