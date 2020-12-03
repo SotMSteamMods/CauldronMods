@@ -37,7 +37,7 @@ namespace Cauldron.Titan
         private IEnumerator OnDestroyResponse(DestroyCardAction action)
         {
             //you may use a power now.
-            IEnumerator coroutine = base.GameController.SelectAndUsePower(base.HeroTurnTakerController, allowAnyHeroPower: true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndUsePower(base.HeroTurnTakerController, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
