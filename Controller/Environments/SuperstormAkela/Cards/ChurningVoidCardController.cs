@@ -11,7 +11,55 @@ namespace Cauldron.SuperstormAkela
 
         public ChurningVoidCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
+        }
 
+        public override void AddTriggers()
+        {
+            //At the start of the environment turn, this card deals the { H} targets with the highest HP X projectile damage each, where X is the number of environment cards to the left of this one.
+            AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, DealDamageResponse, TriggerType.DealDamage);
+
+            //After all other start of turn effects have taken place, move this card 1 space to the right in the environment play area.
+            AddPhaseChangeTrigger(tt => tt == base.TurnTaker, p => p == Phase.PlayCard, _ => true, MoveCardResponse, new TriggerType[] { TriggerType.MoveCard }, TriggerTiming.Before);
+
+        }
+
+        private IEnumerator DealDamageResponse(PhaseChangeAction pca)
+        {
+            //this card deals the { H} targets with the highest HP X projectile damage each, where X is the number of environment cards to the left of this one.
+            Func<Card, int?> X = (Card c) => GetNumberOfCardsToTheLeftOfThisOne(base.Card);
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsTarget, X, DamageType.Projectile, numberOfTargets: () => Game.H);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+            throw new NotImplementedException();
+        }
+
+        private IEnumerator MoveCardResponse(PhaseChangeAction pca)
+        {
+            //move this card 1 space to the right in the environment play area.
+            IEnumerator coroutine = MoveCardOneToTheRight(base.Card);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        public override bool AskIfCardIsIndestructible(Card card)
+        {
+            //This card is indestructible
+            return card == base.Card;
         }
 
 

@@ -271,6 +271,112 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestChurningVoid_Indestructible()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.SuperstormAkela");
+            StartGame();
+            GoToPlayCardPhase(superstorm);
+            
+            Card churning = PlayCard("ChurningVoid");
+            DecisionSelectCard = churning;
+            //this card is indestructible
+            PlayCard("BlindingSpeed");
+            AssertInPlayArea(superstorm, churning);
+
+        }
+
+        [Test()]
+        public void TestChurningVoid_StartOfTurn_DealDamage_3CardsLeft()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.SuperstormAkela");
+            StartGame();
+            GoToEndOfTurn(haka);
+
+            //destroy mdp
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            PlayCard("GeminiIndra");
+            PlayCard("GeogravLocus");
+            PlayCard("ForgottenDjinn");
+            Card churning = PlayCard("ChurningVoid");
+            //At the start of the environment turn, this card deals the { H} targets with the highest HP X projectile damage each, where X is the number of environment cards to the left of this one.
+            //4 highest HP targets are baron, ra, legacy, and haka
+            //3 cards to the left of churning
+            QuickHPStorage(baron, ra, legacy, haka, tachyon);
+            GoToStartOfTurn(superstorm);
+            QuickHPCheck(-3, -3, -3, -3, 0);
+
+        }
+
+        [Test()]
+        public void TestChurningVoid_StartOfTurn_DealDamage_1CardsLeft()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.SuperstormAkela");
+            StartGame();
+            GoToEndOfTurn(haka);
+
+            //destroy mdp
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            PlayCard("GeminiIndra");
+            Card churning = PlayCard("ChurningVoid");
+            //At the start of the environment turn, this card deals the { H} targets with the highest HP X projectile damage each, where X is the number of environment cards to the left of this one.
+            //4 highest HP targets are baron, ra, legacy, and haka
+            //3 cards to the left of churning
+            QuickHPStorage(baron, ra, legacy, haka, tachyon);
+            GoToStartOfTurn(superstorm);
+            QuickHPCheck(-1, -1, -1, -1, 0);
+
+        }
+
+        [Test()]
+        public void TestChurningVoid_StartOfTurn_MoveCard_2CardsRight()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.SuperstormAkela");
+            StartGame();
+            GoToEndOfTurn(haka);
+
+            //destroy mdp
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            Card djinn = PlayCard("ForgottenDjinn");
+            Card churning = PlayCard("ChurningVoid");
+            Card indra = PlayCard("GeminiIndra");
+            Card locus = PlayCard("GeogravLocus");
+
+            //After all other start of turn effects have taken place, move this card 1 space to the right in the environment play area.
+            GoToStartOfTurn(superstorm);
+            PrintPlayAreaPositions();
+            Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(1) == churning, churning.Title + " is not in the correct position.");
+            GoToPlayCardPhase(superstorm);
+            PrintPlayAreaPositions();
+            Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(2) == churning, churning.Title + " is not in the correct position.");
+
+
+        }
+
+        [Test()]
+        public void TestChurningVoid_StartOfTurn_MoveCard_NoCardsRight()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.SuperstormAkela");
+            StartGame();
+            GoToEndOfTurn(haka);
+
+            //destroy mdp
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            Card djinn = PlayCard("ForgottenDjinn");
+            Card churning = PlayCard("ChurningVoid");
+
+
+            //After all other start of turn effects have taken place, move this card 1 space to the right in the environment play area.
+            GoToStartOfTurn(superstorm);
+            PrintPlayAreaPositions();
+            Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(1) == churning, churning.Title + " is not in the correct position.");
+            GoToPlayCardPhase(superstorm);
+            PrintPlayAreaPositions();
+            Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(1) == churning, churning.Title + " is not in the correct position.");
+
+
+        }
+
 
 
     }

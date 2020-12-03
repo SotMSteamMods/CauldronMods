@@ -104,6 +104,55 @@ namespace Cauldron.SuperstormAkela
             yield break;
         }
 
+        protected IEnumerator MoveCardOneToTheRight(Card card, bool noMessage = false)
+        {
+            List<Card> list = GetOrderedCardsInLocation(TurnTaker.PlayArea).ToList();
+
+            if(list.Last() == card)
+            {
+                IEnumerator coroutine = GameController.SendMessageAction("Can't move " + card.Title + " any farther right in the environment's play area.", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                Log.Debug(card.Title + " can't be move any farther right in the environment's play area.");
+
+                yield break;
+
+            }
+
+            int index = list.IndexOf(card);
+            list.Remove(card);
+            list.Insert(index + 1, card);
+            list.ForEach(delegate (Card c)
+            {
+                base.GameController.Game.AssignPlayCardIndex(c);
+            });
+
+            if (!noMessage)
+            {
+                IEnumerator coroutine = GameController.SendMessageAction("Moved " + card.Title + " one space to the right in the environment's play area.", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                Log.Debug(card.Title + " was moved one space to the right in the environment's play area.");
+            }
+
+
+            yield break;
+        }
+
         protected IEnumerator MoveToTheLeftOfCard(Card card, Card cardToMoveLeftOf)
         {
             List<Card> list = GetOrderedCardsInLocation(TurnTaker.PlayArea).ToList();
