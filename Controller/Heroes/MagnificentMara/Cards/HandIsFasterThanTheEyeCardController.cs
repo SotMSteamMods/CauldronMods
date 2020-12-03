@@ -16,6 +16,7 @@ namespace Cauldron.MagnificentMara
 
         private List<ITrigger> _triggersSuppressed;
         private Dictionary<ITrigger, Func<PhaseChangeAction, bool>> _suppressors;
+        private List<ITrigger> _wrappedTriggers;
 
         private int lastTriggerIndex {
             get
@@ -65,14 +66,17 @@ namespace Cauldron.MagnificentMara
 
         public override void AddTriggers()
         {
+            /*
             //"When a non-relic, non-character villain card would activate start of turn or end of turn text, destroy it instead. Then, destroy this card.",
             AddStartOfTurnTrigger((TurnTaker tt) => true, CheckForSuppressedTriggerResponse, new TriggerType[] { TriggerType.DestroyCard });
             AddEndOfTurnTrigger((TurnTaker tt) => true, CheckForSuppressedTriggerResponse, new TriggerType[] { TriggerType.DestroyCard });
+            */
         }
 
         public override void AddLastTriggers()
         {
             _triggersSuppressed = new List<ITrigger> { };
+            _wrappedTriggers = new List<ITrigger> { };
             AddTrigger((PhaseChangeAction p) => IsVillain(p.ToPhase.TurnTaker) && base.GameController.IsTurnTakerVisibleToCardSource(p.ToPhase.TurnTaker, GetCardSource()), ApplyChangesResponse, TriggerType.HiddenLast, TriggerTiming.Before);
             AddTrigger((FlipCardAction f) => IsVillain(f.CardToFlip.Card) && base.GameController.IsCardVisibleToCardSource(f.CardToFlip.Card, GetCardSource()), ApplyChangesResponse, TriggerType.HiddenLast, TriggerTiming.After);
             AddTrigger((PlayCardAction p) => IsVillain(p.CardToPlay) && base.GameController.IsCardVisibleToCardSource(p.CardToPlay, GetCardSource()), ApplyChangesResponse, TriggerType.HiddenLast, TriggerTiming.After);
@@ -91,7 +95,9 @@ namespace Cauldron.MagnificentMara
                 TurnPhase end = item.TurnTaker.TurnPhases.Where((TurnPhase phase) => phase.IsEnd).First();
                 PhaseChangeAction startOfTurn = new PhaseChangeAction(GetCardSource(), null, start, start.IsEphemeral);
                 PhaseChangeAction endOfTurn = new PhaseChangeAction(GetCardSource(), null, end, end.IsEphemeral);
-                IEnumerable<ITrigger> changeMe = FindTriggersWhere((ITrigger t) => t is PhaseChangeTrigger && IsVillain(t.CardSource.Card.Owner) && !t.CardSource.Card.IsCharacter && !t.CardSource.Card.IsRelic && !t.CardSource.Card.IsMissionCard && (t.DoesMatchTypeAndCriteria(endOfTurn) || t.DoesMatchTypeAndCriteria(startOfTurn)) && t.CardSource.BattleZone == base.BattleZone);
+
+                //IEnumerable<ITrigger> changeMe = FindTriggersWhere((ITrigger t) => t is PhaseChangeTrigger && IsVillain(t.CardSource.Card.Owner) && !t.CardSource.Card.IsCharacter && !t.CardSource.Card.IsRelic && !t.CardSource.Card.IsMissionCard && (t.DoesMatchTypeAndCriteria(endOfTurn) || t.DoesMatchTypeAndCriteria(startOfTurn)) && t.CardSource.BattleZone == base.BattleZone);
+                IEnumerable<ITrigger> changeMe = FindTriggersWhere((ITrigger t) => t is PhaseChangeTrigger && t.CardSource != null && (t.DoesMatchTypeAndCriteria(endOfTurn) || t.DoesMatchTypeAndCriteria(startOfTurn) && t.CardSource.BattleZone == this.BattleZone)).OrderBy((ITrigger t) => t.CardSource.Card.PlayIndex);
 
                 changeMe.ForEach(delegate (ITrigger t)
                 {
@@ -110,7 +116,7 @@ namespace Cauldron.MagnificentMara
         {
             if (!_triggersSuppressed.Contains(trigger))
             {
-                //Log.Debug($"Suppressing trigger on {trigger.CardSource.Card.Title}");
+                Log.Debug($"Suppressing trigger on {trigger.CardSource.Card.Title}: {trigger.ToString()}");
                 Func<PhaseChangeAction, bool> stop = (PhaseChangeAction pca) => pca.CardSource != null && pca.CardSource.Card == this.Card;
 
                 if (_suppressors.ContainsKey(trigger))
@@ -118,6 +124,10 @@ namespace Cauldron.MagnificentMara
                     trigger.RemoveAdditionalCriteria(_suppressors[trigger]);
                     _suppressors.Remove(trigger);
                 }
+                var wrappedTrigger = WrapTrigger(trigger);
+                AddTrigger(wrappedTrigger);
+                _wrappedTriggers.Add(wrappedTrigger);
+
                 trigger.AddAdditionalCriteria(stop);
                 _triggersSuppressed.Add(trigger);
                 _suppressors.Add(trigger, stop);
@@ -229,13 +239,38 @@ namespace Cauldron.MagnificentMara
                 }
                 */
             }
+            foreach (PhaseChangeTrigger wrapped in _wrappedTriggers)
+            {
+                if (!GameController.ActiveTurnPhase.IsStart && !GameController.ActiveTurnPhase.IsEnd || wrapped.CardSource == null)
+                {
+                    RemoveTrigger(wrapped);
+                }
+                else
+                {
+                    RemoveTrigger(wrapped);
+                    AddToTemporaryTriggerList(wrapped);
+                    
+                }
+            }
             _triggersSuppressed.Clear();
+            _wrappedTriggers.Clear();
             yield return null;
             yield break;
         }
 
         private ITrigger WrapTrigger(Trigger<PhaseChangeAction> trigger)
         {
+            var pc = trigger as PhaseChangeTrigger;
+            PhaseChangeTrigger wrappedTrigger = new PhaseChangeTrigger(GameController,
+                                                                    pc.TurnTakerCriteria,
+                                                                    pc.PhaseCriteria,
+                                                                    (PhaseChangeAction x) => true,
+                                                                    (PhaseChangeAction phase) => InterruptOrAllowResponse(phase, trigger),
+                                                                    pc.Types,
+                                                                    pc.Timing,
+                                                                    pc.IgnoreBattleZone == true,
+                                                                    pc.CardSource);
+            /*
             ITrigger wrappedTrigger = new Trigger<PhaseChangeAction>(GameController,
                                                         trigger.Criteria,
                                                         (PhaseChangeAction pc) => InterruptOrAllowResponse(pc, trigger),
@@ -252,13 +287,30 @@ namespace Cauldron.MagnificentMara
                                                         trigger.IgnoreBattleZone == true,
                                                         trigger.RespondEvenIfPlayedAfterAction,
                                                         trigger.CopyingCardController);
+            */
             wrappedTrigger.AddAssociatedTrigger(trigger);
             return wrappedTrigger;
         }
 
         private IEnumerator InterruptOrAllowResponse(PhaseChangeAction pc, Trigger<PhaseChangeAction> trigger)
         {
-            if (false) // destruction criteria go here
+            Log.Debug($"Calling wrapper function for {trigger.ToString()}");
+            Card triggering = null;
+            var unlockPCA = new PhaseChangeAction(GetCardSource(), pc.FromPhase, pc.ToPhase, pc.IsEphemeral, pc.ForceIncrementTurnIndex);
+
+            if (trigger.CardSource != null)
+            {
+                triggering = trigger.CardSource.Card;
+            }
+
+            Log.Debug($"Original Card Is : {triggering.ToString()}");
+            Log.Debug("Conditions:");
+            Log.Debug($"Not Character: {!triggering.IsCharacter}");
+            Log.Debug($"Is Villain: {IsVillain(triggering)}");
+            Log.Debug($"Is Not Relic: {!triggering.IsRelic}");
+            Log.Debug($"Would otherwise trigger: {trigger.DoesMatchTypeAndCriteria(unlockPCA)}"); // destruction criteria go here
+
+            if (triggering != null && IsVillain(triggering) && !triggering.IsCharacter && !triggering.IsRelic && !triggering.IsMissionCard && trigger.DoesMatchTypeAndCriteria(unlockPCA)) // destruction criteria go here
             {
                 Card cardToDestroy = trigger.CardSource.Card;
                 IEnumerator coroutine = GameController.SendMessageAction($"{this.Card.Title} interrupts the {pc.ToPhase.FriendlyPhaseName} trigger on {cardToDestroy.Title}!", Priority.High, GetCardSource());
@@ -291,9 +343,10 @@ namespace Cauldron.MagnificentMara
             }
             else
             {
-                var unlockPCA = new PhaseChangeAction(GetCardSource(), pc.FromPhase, pc.ToPhase, pc.IsEphemeral, pc.ForceIncrementTurnIndex);
-
-                yield return trigger.Response(unlockPCA);
+                if (trigger.DoesMatchTypeAndCriteria(unlockPCA))
+                {
+                    yield return trigger.Response(unlockPCA);
+                }
             }
             yield break;
         }
