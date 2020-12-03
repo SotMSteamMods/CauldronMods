@@ -1297,6 +1297,28 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestBiofeedbackNoGainHPOnNoDamage()
+        {
+            SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis");
+
+            StartGame();
+
+            PutIntoPlay("FleshOfTheSunGod");
+
+            ResetAnathemaDeck();
+            SetHitPoints(anathema.CharacterCard, 30);
+            GoToPlayCardPhase(anathema);
+
+            //put biofeedback in play
+            PutIntoPlay("Biofeedback");
+
+            //Whenever anathema deals damage to a Hero target, he regains 1 HP.
+            QuickHPStorage(anathema);
+            DealDamage(anathema, ra, 5, DamageType.Fire);
+            QuickHPCheck(0);
+        }
+
+        [Test()]
         public void TestBiofeedbackSelfDamage()
         {
             SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis");
