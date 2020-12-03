@@ -8,8 +8,6 @@ namespace Cauldron.Quicksilver
 {
     public class MalleableArmorCardController : CardController
     {
-        private bool _primedToSaveSelf = false;
-
         public MalleableArmorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowSpecialString(() => Journal.DealDamageEntriesThisTurn().Where((DealDamageJournalEntry ddje) => ddje.SourceCard == this.CharacterCard && ddje.Amount > 0).Any() ? "Quicksilver has dealt damage this turn." : "Quicksilver has not dealt damage this turn.");
