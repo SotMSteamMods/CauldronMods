@@ -483,7 +483,7 @@ namespace CauldronTests
             DecisionSelectTurnTaker = mara.TurnTaker;
 
             GoToEndOfTurn(apostate);
-            Assert.Ignore("There may be a way to manage this, but it's a difficult problem.");
+            //Assert.Ignore("There may be a way to manage this, but it's a difficult problem.");
 
             QuickHPCheck(1);
             AssertIsInPlay(imp);

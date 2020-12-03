@@ -87,8 +87,15 @@ namespace Cauldron.MagnificentMara
                             (GameAction ga) => InterruptAction(ga),
                             TriggerType.CancelAction,
                             TriggerTiming.Before);
+            AddPhaseChangeTrigger((TurnTaker tt) => true, (Phase p) => true, (PhaseChangeAction pc) => true, ClearJustActed, new TriggerType[] { TriggerType.HiddenLast }, TriggerTiming.Before);
         }
 
+        private IEnumerator ClearJustActed(PhaseChangeAction pca)
+        {
+            _justActivatedTrigger = null;
+            yield return null;
+            yield break;
+        }
         private IEnumerator InterruptAction(GameAction ga)
         {
             if(IsRealAction(ga) && !(ga is MessageAction))
@@ -180,7 +187,7 @@ namespace Cauldron.MagnificentMara
                 });
                 if (Game.ActiveTurnPhase != null && (Game.ActiveTurnPhase.IsEnd || Game.ActiveTurnPhase.IsStart))
                 {
-                    GameController.AddTemporaryTriggerInhibitor((ITrigger t) => changeMe.Contains(t), (GameAction ga) => (ga is PhaseChangeAction && ((ga as PhaseChangeAction).FromPhase.IsEnd || (ga as PhaseChangeAction).FromPhase.IsStart)) || !Card.IsInPlayAndHasGameText, GetCardSource());
+                    //GameController.AddTemporaryTriggerInhibitor((ITrigger t) => changeMe.Contains(t), (GameAction ga) => (ga is PhaseChangeAction && ((ga as PhaseChangeAction).FromPhase.IsEnd || (ga as PhaseChangeAction).FromPhase.IsStart)) || !Card.IsInPlayAndHasGameText, GetCardSource());
                 }
             }
             yield return null;
