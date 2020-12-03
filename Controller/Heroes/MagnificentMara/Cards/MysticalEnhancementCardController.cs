@@ -66,7 +66,6 @@ namespace Cauldron.MagnificentMara
             yield break;
         }
 
-        //WITNESS THE POWER OF COPY-PASTING PRIVATE FUNCTIONS!
         private IEnumerator ModifyDamageFromPowerResponse(UsePowerAction power, Func<Func<DealDamageAction, bool>, ITrigger> addDealDamageTrigger, int? increaseDamageAmount = null, bool makeDamageIrreducible = false)
         {
             RemoveTemporaryTriggers();

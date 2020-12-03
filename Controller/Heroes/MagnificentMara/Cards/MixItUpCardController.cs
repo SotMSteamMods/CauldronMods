@@ -15,7 +15,6 @@ namespace Cauldron.MagnificentMara
         public override IEnumerator Play()
         {
             //"Destroy 1 hero ongoing card, equipment card, or environment card.",
-            //"If you do, reveal the top 2 cards of the associated deck, put one into play and discard the other."
             var storedDestroy = new List<DestroyCardAction> { };
             IEnumerator coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => (c.IsOngoing && c.IsHero) || IsEquipment(c) || c.IsEnvironment), false, storedDestroy, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
@@ -27,6 +26,7 @@ namespace Cauldron.MagnificentMara
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
+            //"If you do, reveal the top 2 cards of the associated deck, put one into play and discard the other."
             if(DidDestroyCard(storedDestroy))
             {
                 var associatedDeck = storedDestroy.FirstOrDefault().CardToDestroy.Card.NativeDeck;
