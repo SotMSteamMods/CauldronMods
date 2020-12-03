@@ -394,7 +394,7 @@
             "flavorReference": "Absolute Zero,{BR}Carnival of Heroes #14"
         }
     ],
-    "uninplementableCards": [
+    "unimplementableCards": [
         {
             "identifier": "MesmerPendant",
             "count": 2,

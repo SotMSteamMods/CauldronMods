@@ -24,7 +24,7 @@ namespace Cauldron.TheWanderingIsle
             // When this card enters play, the { H - 1} villain targets with the lowest HP each deal 3 lightning damage to a different hero target.
             //Find the villain targets with the lowest HP
             List<Card> damageDealers = new List<Card>();
-            IEnumerator coroutine = base.GameController.FindTargetsWithLowestHitPoints(1, Game.H - 1, (Card c) => c.IsVillainTarget, damageDealers, cardSource: GetCardSource());
+            IEnumerator coroutine = base.GameController.FindTargetsWithLowestHitPoints(1, Game.H - 1, (Card c) => IsVillainTarget(c), damageDealers, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

@@ -57,7 +57,7 @@ namespace Cauldron.BlackwoodForest
         private IEnumerator DrawCardFromEachDeckResponse(TurnTakerController ttc)
         {
             List<Card> revealedCards = new List<Card>();
-            IEnumerator revealCardRoutine = this.GameController.RevealCards(ttc, ttc.CharacterCard.Owner.Deck, 
+            IEnumerator revealCardRoutine = this.GameController.RevealCards(ttc, ttc.TurnTaker.Deck, 
                 CardsToDrawFromEachDeck, revealedCards);
 
             if (base.UseUnityCoroutines)

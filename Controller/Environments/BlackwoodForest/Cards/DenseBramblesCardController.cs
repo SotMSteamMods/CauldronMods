@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-
+using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -19,6 +19,7 @@ namespace Cauldron.BlackwoodForest
         {
             this.SpecialStringMaker.ShowLowestHP(1, () => Game.H - 1,
                 new LinqCardCriteria(c => c.IsTarget && c.IsInPlay));
+            AllowFastCoroutinesDuringPretend = false;
         }
 
         public bool? PerformImmune;
@@ -28,13 +29,12 @@ namespace Cauldron.BlackwoodForest
             // Destroy self at start of next env. turn
             base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker, base.DestroyThisCardResponse, TriggerType.DestroySelf);
             // (H - 1) targets with the lowest HP are immune to damage
-            base.AddTrigger<DealDamageAction>(dd => true, this.MaybeImmuneToDamageResponse, TriggerType.ImmuneToDamage, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>(dd => GameController.FindAllTargetsWithLowestHitPoints(1, null, GetCardSource(), Game.H - 1).Any((Card c) => c == dd.Target), this.MaybeImmuneToDamageResponse, TriggerType.ImmuneToDamage, TriggerTiming.Before);
         }
 
         private IEnumerator MaybeImmuneToDamageResponse(DealDamageAction action)
         {
             int numberOfTargets = Game.H - 1;
-
             if (base.GameController.PretendMode)
             {
                 List<Card> storedResults = new List<Card>();
@@ -53,7 +53,7 @@ namespace Cauldron.BlackwoodForest
             
             if (this.PerformImmune != null && this.PerformImmune.Value)
             {
-                IEnumerator coroutine2 = base.GameController.ImmuneToDamage(action, base.GetCardSource(null));
+                IEnumerator coroutine2 = base.GameController.ImmuneToDamage(action, this.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine2);
@@ -63,7 +63,6 @@ namespace Cauldron.BlackwoodForest
                     base.GameController.ExhaustCoroutine(coroutine2);
                 }
             }
-
             if (!base.GameController.PretendMode)
             {
                 this.PerformImmune = null;

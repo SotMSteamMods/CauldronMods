@@ -57,7 +57,7 @@ namespace Cauldron.FSCContinuanceWanderer
             {
                 decisionMaker = this.DecisionMaker;
             }
-            IEnumerator coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(decisionMaker, turnTaker.Trash, 0, 2, new LinqCardCriteria((Card c) => c.Location == turnTaker.Trash, "trash"), list, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(decisionMaker, turnTaker.Trash, 2, 2, new LinqCardCriteria((Card c) => c.Location == turnTaker.Trash, "trash"), list, cardSource: base.GetCardSource());
             IEnumerator coroutine2 = base.ShuffleDeck(this.DecisionMaker, turnTaker.Deck);
             if (base.UseUnityCoroutines)
             {

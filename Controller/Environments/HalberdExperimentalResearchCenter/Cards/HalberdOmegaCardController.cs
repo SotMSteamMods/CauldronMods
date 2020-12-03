@@ -36,7 +36,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             else
             {
                 //find all villain targets
-                targets = (Card c) => c.IsVillainTarget && c.IsInPlayAndHasGameText;
+                targets = (Card c) => IsVillainTarget(c) && c.IsInPlayAndHasGameText;
             }
 
             //this cards deals each hero/villain target 2 infernal damage. 

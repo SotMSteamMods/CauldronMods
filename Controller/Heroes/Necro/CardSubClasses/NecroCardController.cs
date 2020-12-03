@@ -27,7 +27,7 @@ namespace Cauldron.Necro
 
         protected bool IsVillianConsidering1929(Card card)
         {
-            return card.IsVillain;
+            return base.IsVillain(card);
         }
 
         protected string HeroStringConsidering1929
