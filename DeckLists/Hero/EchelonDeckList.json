@@ -481,7 +481,7 @@
             "flavorReference": "Cypher: First Response #5"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "EchelonCharacter",
             "promoIdentifier": "FirstResponseEchelonCharacter",

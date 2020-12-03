@@ -222,16 +222,6 @@ namespace Cauldron.StSimeonsCatacombs
             this.AddSideTriggers();
             //remove all old side status effects, get new status effects
             this.RemoveSideEffects();
-            IEnumerator addStatusEffects = this.AddSideStatusEffect();
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(addStatusEffects);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(addStatusEffects);
-
-            }
             yield break;
         }
 

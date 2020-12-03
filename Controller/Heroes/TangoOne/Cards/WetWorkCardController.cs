@@ -40,7 +40,7 @@ namespace Cauldron.TangoOne
 
             // You may deal 1 target 2 melee damage
             IEnumerator dealDamageRoutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
-                new DamageSource(base.GameController, this.TurnTaker.CharacterCard), DamageAmount,
+                new DamageSource(base.GameController, CharacterCard), DamageAmount,
                 DamageType.Melee, 1, false, 0,
                 cardSource: base.GetCardSource());
 

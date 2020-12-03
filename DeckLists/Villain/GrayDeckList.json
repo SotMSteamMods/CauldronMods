@@ -55,9 +55,9 @@
             ],
             "difficulty": 4,
             "openingLines": {
-                "default": "Out of my way.",
-                "VanishCharacter": "Vanish placeholder",
-                "FirstResponseVanishCharacter": "First Response Vanish  placeholder",
+                "default": "I'm already fixing the problem. If you don't like what it takes, that just makes you another problem. ",
+                "VanishCharacter": "You! [b]You[/b] did this to me. Let's see how you like having [b]your[/b] life torn apart!",
+                "FirstResponseVanishCharacter": "Your company was just a warmup. Your new team is next. No matter how far you run, I'll rip down everything you build. ",
                 "1929VanishCharacter": "Vanish 1929 placeholder",
                 "PyreCharacter": "Pyre placeholder",
                 "UnstablePyreCharacter": "Unstable Pyre placeholder",
@@ -65,9 +65,9 @@
             }
         },
         {
-            "identifier": "AlistarWinters",
+            "identifier": "AlistairWinters",
             "count": 1,
-            "title": "Alistar Winters",
+            "title": "Alistair Winters",
             "keywords": [
                 "minion"
             ],
@@ -81,11 +81,11 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "AlistarWinters",
+                    "identifier": "AlistairWinters",
                     "text": "You're pretty strong, for some clown who thinks she's The Wraith!"
                 }
             ],
-            "flavorReference": "Alistar Winters, Wraith: Beyond #2",
+            "flavorReference": "Alistair Winters, Wraith: Beyond #2",
             "hitpoints": 5
         },
         {

@@ -93,8 +93,8 @@ namespace Cauldron.Vanish
                             var card = revealedCards.First();
                             var locations = new[]
                             {
-                                new MoveCardDestination(card.Owner.Deck, true, false),
-                                new MoveCardDestination(card.Owner.Deck, false, true)
+                                new MoveCardDestination(card.NativeDeck, true, false),
+                                new MoveCardDestination(card.NativeDeck, false, true)
                             };
 
                             coroutine = GameController.SelectLocationAndMoveCard(this.DecisionMaker, card, locations, cardSource: GetCardSource());
@@ -129,6 +129,8 @@ namespace Cauldron.Vanish
                             ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(1);
                             reduceDamageStatusEffect.TargetCriteria.IsSpecificCard = selectedCard;
                             reduceDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+                            reduceDamageStatusEffect.UntilTargetLeavesPlay(selectedCard);
+
                             coroutine = base.AddStatusEffect(reduceDamageStatusEffect, true);
                             if (base.UseUnityCoroutines)
                             {

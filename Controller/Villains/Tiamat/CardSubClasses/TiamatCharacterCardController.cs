@@ -54,7 +54,7 @@ namespace Cauldron.Tiamat
 			{
 				if (base.GameController.HasGameStarted && !(g is GameOverAction) && !(g is IncrementAchievementAction))
 				{
-					return base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsVillainTarget).Count<Card>() == 0;
+					return base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsVillainTarget(c)).Count() == 0;
 				}
 				return false;
 			}, (GameAction g) => base.DefeatedResponse(g), new TriggerType[]

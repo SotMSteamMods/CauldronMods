@@ -525,7 +525,7 @@
             "flavorReference": "Terminus, Guilty Metal #7"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "TerminusCharacter",
             "promoIdentifier": "MinistryOfStrategicScienceTerminusCharacter",

@@ -58,7 +58,13 @@
             "flippedAdvancedIcons": [
                 "AddToken"
             ],
-            "difficulty": 4
+            "difficulty": 4,
+            "openingLines": {
+                "LadyOfTheWoodCharacter": "--You.",
+                "SeasonsOfChangeLadyOfTheWoodCharacter": "--You.",
+                "MinistryOfStrategicScienceLadyOfTheWoodCharacter": "--You.",
+                "FutureLadyOfTheWoodCharacter": "--You."
+            }
         },
         {
             "identifier": "AutumnsTorment",

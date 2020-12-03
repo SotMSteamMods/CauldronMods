@@ -37,7 +37,7 @@
 				"DestroyEnvironment"
 			],
 			"openingLines": {
-				"default": "default placeholder",
+				"default": "I have some friends from beyond the Veil who'd like a word with you.",
 				"OriphelCharacter": "Oriphel placeholder",
 				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
 			},
@@ -506,7 +506,7 @@
 			"flavorReference": "Malichae, Bathiel One-shot"
 		}
 	],
-	"promoCards": [{
+	"notPromoCards": [{
 			"identifier": "MalichaeCharacter",
 			"promoIdentifier": "ShardmasterMalichaeCharacter",
 			"count": 1,
@@ -540,7 +540,7 @@
 				"DrawCardNow"
 			],
 			"openingLines": {
-				"default": "default placeholder",
+				"default": "The power of the Djinn will be your undoing.",
 				"OriphelCharacter": "Oriphel placeholder",
 				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
 			},
@@ -582,7 +582,7 @@
 				"PreventDamage"
 			],
 			"openingLines": {
-				"default": "default placeholder",
+				"default": "My friends taught me some new tricks to use on the likes of you.",
 				"OriphelCharacter": "Oriphel placeholder",
 				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
 			},

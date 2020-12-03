@@ -35,11 +35,11 @@ namespace Cauldron.Vanish
             var choices = GameController.GetAllCards().Where(c => c.IsHeroCharacterCard && c.IsInPlay && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()) &&!selected.Contains(c.Owner.ToHero())).ToArray();
             while (choices.Length > 0 && !done)
             {
-                var dda = new DealDamageAction(GameController, new DamageSource(GameController, CharacterCard), null, 3, DamageType.Energy);
+                var previewDDA = new DealDamageAction(GameController, new DamageSource(GameController, CharacterCard), null, 3, DamageType.Energy);
                 var scd = new SelectCardDecision(GameController, DecisionMaker, SelectionType.DealDamage, choices,
                     isOptional: true,
                     allowAutoDecide: true,
-                    dealDamageInfo: new[] { dda },
+                    dealDamageInfo: new[] { previewDDA },
                     cardSource: GetCardSource());
 
                 coroutine = GameController.MakeDecisionAction(scd);
@@ -62,9 +62,10 @@ namespace Cauldron.Vanish
                     //otherwise attempt to damage the selected card, recording the owner, then regenerate the list of choices ignoring those already picked.
                     var owner = scd.SelectedCard.Owner.ToHero();
                     selected.Add(owner);
-                    dda.Target = scd.SelectedCard;
 
-                    coroutine = GameController.DoAction(dda);
+                    var storedDamage = new List<DealDamageAction> { };
+
+                    coroutine = DealDamage(this.CharacterCard, scd.SelectedCard, 3, DamageType.Energy, storedResults: storedDamage, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -74,7 +75,7 @@ namespace Cauldron.Vanish
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
 
-                    if (dda.DidDealDamage)
+                    if (DidDealDamage(storedDamage, scd.SelectedCard))
                     {
                         damaged.Add(owner);
                     }

@@ -358,7 +358,7 @@
             "hitpoints": 6
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "DendronCharacter",
             "promoIdentifier": "OutsideTheLinesDendronCharacter",

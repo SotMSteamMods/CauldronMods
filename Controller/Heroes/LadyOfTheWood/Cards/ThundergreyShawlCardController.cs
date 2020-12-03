@@ -14,7 +14,15 @@ namespace Cauldron.LadyOfTheWood
 		public override void AddTriggers()
 		{
 			//Whenever LadyOfTheWood deals 2 or less damage to a target, that damage is irreducible.
-			base.AddMakeDamageIrreducibleTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.Amount <= 2);
+			ITrigger lateIrreducibleTrigger = new Trigger<DealDamageAction>(GameController,
+																(DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.Amount <= 2,
+																RetroactiveIrreducibilityResponse,
+																new TriggerType[] { TriggerType.WouldBeDealtDamage, TriggerType.MakeDamageIrreducible },
+																TriggerTiming.Before,
+																GetCardSource(),
+																orderMatters: true);
+			AddTrigger(lateIrreducibleTrigger);
+			//base.AddMakeDamageIrreducibleTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.Amount <= 2);
 		}
 
 		public override IEnumerator UsePower(int index = 0)
@@ -33,6 +41,47 @@ namespace Cauldron.LadyOfTheWood
 			}
 			yield break;
 		}
+
+		private IEnumerator RetroactiveIrreducibilityResponse(DealDamageAction dd)
+        {
+			IEnumerator coroutine = GameController.MakeDamageIrreducible(dd, GetCardSource());
+			if (base.UseUnityCoroutines)
+			{
+				yield return GameController.StartCoroutine(coroutine);
+			}
+			else
+			{
+				GameController.ExhaustCoroutine(coroutine);
+			}
+
+			var reduceActions = dd.DamageModifiers.Where((ModifyDealDamageAction mdd) => mdd is ReduceDamageAction).ToList();
+
+			foreach(ReduceDamageAction mod in reduceActions)
+            {
+				IncreaseDamageAction restoreDamage = new IncreaseDamageAction(mod.CardSource, dd, mod.AmountToReduce, false);
+
+				//we do our best to make it have as little interaction as possible with things that respond to increasing damage
+				//since it's supposed to be retroactive undoing of damage decreases
+				restoreDamage.AllowTriggersToRespond = false;
+				restoreDamage.CanBeCancelled = false;
+
+				var wasUnincreasable = dd.IsUnincreasable;
+				dd.IsUnincreasable = false;
+
+				coroutine = GameController.DoAction(restoreDamage);
+				if (base.UseUnityCoroutines)
+				{
+					yield return GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					GameController.ExhaustCoroutine(coroutine);
+				}
+
+				dd.IsUnincreasable = wasUnincreasable;
+            }
+			yield break;
+        }
 
 		public override bool CanOrderAffectOutcome(GameAction action)
 		{

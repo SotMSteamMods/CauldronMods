@@ -47,7 +47,7 @@ namespace Cauldron.Dendron
             if (storedHighestHp.Any())
             {
                 // Deal the hero with the highest HP 5 projectile damage
-                IEnumerator dealDamageToHighestHpRoutine = this.DealDamage(this.TurnTaker.CharacterCard, storedHighestHp.First(), DamageToDealHighestHp, DamageType.Projectile);
+                IEnumerator dealDamageToHighestHpRoutine = this.DealDamage(CharacterCard, storedHighestHp.First(), DamageToDealHighestHp, DamageType.Projectile);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(dealDamageToHighestHpRoutine);
@@ -73,7 +73,7 @@ namespace Cauldron.Dendron
             if (storedLowestHp.Any())
             {
                 // Deal the hero with the lowest HP 2 irreducible infernal damage
-                IEnumerator dealDamageToLowestHpRoutine = this.DealDamage(this.TurnTaker.CharacterCard, storedLowestHp.First(), DamageToDealLowestHp, DamageType.Infernal, true);
+                IEnumerator dealDamageToLowestHpRoutine = this.DealDamage(CharacterCard, storedLowestHp.First(), DamageToDealLowestHp, DamageType.Infernal, true);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(dealDamageToLowestHpRoutine);
