@@ -56,8 +56,8 @@ namespace Cauldron.Vector
             {
                 // Whenever {Vector} is dealt damage, play the top card of the villain deck.
                 base.SideTriggers.Add(
-                    base.AddTrigger<DealDamageAction>(dda => dda.Target.Equals(this.Card) && dda.DamageSource != null &&
-                    dda.Target.Equals(this.Card), DealtDamageResponse, new[] { TriggerType.PlayCard }, TriggerTiming.After));
+                    base.AddTrigger<DealDamageAction>(dda => dda.DamageSource != null 
+                    && dda.Target.Equals(this.Card), DealtDamageResponse, new[] { TriggerType.PlayCard }, TriggerTiming.After));
 
                 // If {Vector} regains all his HP, he escapes. Game over.
                 base.SideTriggers.Add(base.AddTrigger<GainHPAction>(gha => gha.IsSuccessful && gha.HpGainer.Equals(this.Card), 
@@ -65,8 +65,8 @@ namespace Cauldron.Vector
 
                 // If {Vector} is dealt damage by an environment card, he becomes
                 // immune to damage dealt by environment cards until the end of the turn.
-                base.SideTriggers.Add(base.AddTrigger<DealDamageAction>(dda => dda.Target.Equals(this.Card)
-                    && dda.DamageSource != null && dda.DamageSource.IsEnvironmentCard,
+                base.SideTriggers.Add(base.AddTrigger<DealDamageAction>(dda => dda.DamageSource != null && 
+                    dda.DamageSource.IsEnvironmentCard && dda.Target.Equals(this.Card),
                 DealtDamageByEnvResponse, new[] {TriggerType.ImmuneToDamage}, TriggerTiming.After));
                 
                 if (this.IsGameAdvanced)
@@ -79,15 +79,17 @@ namespace Cauldron.Vector
             // Flipped side (Desperate Assassin)
             else
             {
+                base.SideTriggers.Add(base.AddReduceDamageTrigger(c => c == base.CharacterCard, FindNumberOfVillainCardsInPlay() ?? default));
+
                 // At the end of the villain turn, play the top card of the villain deck.
-                base.SideTriggers.Add(base.AddEndOfTurnTrigger(tt => tt == this.TurnTaker, 
-                    FlippedEndOfTurnResponse, TriggerType.PlayCard));
+                //base.SideTriggers.Add(base.AddEndOfTurnTrigger(tt => tt == this.TurnTaker, 
+                //FlippedEndOfTurnResponse, new[] { TriggerType.PlayCard }));
 
                 // Reduce damage dealt to {Vector} by 1 for each villain target in play.
-                int AmountToReduce(DealDamageAction dmg) => base.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.IsVillainTarget).Count();
+                //int AmountToReduce(DealDamageAction dmg) => base.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.IsVillainTarget).Count();
 
-                base.SideTriggers.Add(base.AddReduceDamageTrigger(dda => dda.DamageSource != null && dda.CardSource != null 
-                                                                                                  && dda.Target == base.CharacterCard, AmountToReduce));
+                //base.SideTriggers.Add(base.AddReduceDamageTrigger(dda => dda.DamageSource != null && dda.CardSource != null 
+                // && dda.Target == base.CharacterCard, AmountToReduce));
             }
 
             AddDefeatedIfDestroyedTriggers();
@@ -120,12 +122,27 @@ namespace Cauldron.Vector
                 }
             }
 
+
+            // At the end of the villain turn, play the top card of the villain deck.
+            base.SideTriggers.Add(base.AddEndOfTurnTrigger(tt => tt == this.TurnTaker,
+                FlippedEndOfTurnResponse, new[] { TriggerType.PlayCard }));
+
+
+            // Reduce damage dealt to {Vector} by 1 for each villain target in play.
+            //int AmountToReduce(DealDamageAction dmg) => base.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.IsVillainTarget).Count();
+
+            //base.SideTriggers.Add(base.AddReduceDamageTrigger(dda => dda.DamageSource != null && dda.CardSource != null
+            //&& dda.Target == base.CharacterCard, AmountToReduce));
+
+            base.SideTriggers.Add(base.AddReduceDamageTrigger(c => c == base.CharacterCard, FindNumberOfVillainCardsInPlay() ?? default));
+
+
             if (this.IsGameAdvanced)
             {
                 // Increase damage dealt by {Vector} by 2.
                 IncreaseDamageStatusEffect idse = new IncreaseDamageStatusEffect(AdvancedDamageIncrease)
                 {
-                    TargetCriteria = {IsSpecificCard = this.Card}
+                    SourceCriteria = { IsSpecificCard = this.Card }
                 };
                 idse.UntilCardLeavesPlay(this.Card);
 
@@ -143,8 +160,7 @@ namespace Cauldron.Vector
 
         private IEnumerator DealtDamageResponse(DealDamageAction dda)
         {
-            IEnumerator routine = this.GameController.PlayTopCard(this.DecisionMaker, this.TurnTakerController,
-                false, 1);
+            IEnumerator routine = base.GameController.PlayTopCardOfLocation(this.TurnTakerController, this.TurnTaker.Deck);
 
             if (base.UseUnityCoroutines)
             {
@@ -197,8 +213,7 @@ namespace Cauldron.Vector
 
         private IEnumerator FlippedEndOfTurnResponse(PhaseChangeAction pca)
         {
-            IEnumerator routine = this.GameController.PlayTopCard(this.DecisionMaker, this.TurnTakerController,
-                false, 1);
+            IEnumerator routine = base.GameController.PlayTopCardOfLocation(this.TurnTakerController, this.TurnTaker.Deck);
 
             if (base.UseUnityCoroutines)
             {
@@ -221,6 +236,11 @@ namespace Cauldron.Vector
             {
                 base.GameController.ExhaustCoroutine(routine);
             }
+        }
+
+        public int? FindNumberOfVillainCardsInPlay()
+        {
+            return base.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.IsVillainTarget).Count();
         }
     }
 }

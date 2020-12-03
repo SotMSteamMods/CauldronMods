@@ -40,7 +40,9 @@ namespace Cauldron.Vector
         private IEnumerator EndOfTurnResponse(PhaseChangeAction pca)
         {
             // Play the top card of the villain deck
-            IEnumerator routine = base.PlayCardFromLocation(new Location(this.TurnTaker, LocationName.Deck), "Deck");
+            IEnumerator routine = this.GameController.PlayTopCard(this.DecisionMaker, this.TurnTakerController,
+                false, 1);
+
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
