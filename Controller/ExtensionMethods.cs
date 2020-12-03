@@ -1,0 +1,30 @@
+﻿using Handelabra.Sentinels.Engine.Controller;
+using Handelabra.Sentinels.Engine.Model;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+
+namespace Cauldron
+{
+    public static class ExtensionMethods
+    {
+        public static Card GetCardDestroyer(this DestroyCardAction action)
+        {
+            if (action.ResponsibleCard != null)
+                return action.ResponsibleCard;
+            if (action.CardSource != null)
+                return action.CardSource.Card;
+
+            return null;
+        }
+
+        public static bool WasDestroyedBy(this DestroyCardAction action, Func<Card, bool> criteria)
+        {
+            var card = GetCardDestroyer(action);
+            return criteria(card);
+        }
+
+    }
+}
