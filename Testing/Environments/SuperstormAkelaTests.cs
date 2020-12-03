@@ -16,11 +16,11 @@ namespace CauldronTests
 
         protected TurnTakerController superstorm { get { return FindEnvironment(); } }
         
-        private void PrintPlayAreaPositions()
+        private void PrintPlayAreaPositions(TurnTaker tt)
         {
-            foreach (var card in GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea))
+            foreach (var card in GetOrderedCardsInLocation(tt.PlayArea))
             {
-                Console.WriteLine(card.Title + " is in Position " + GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ToList().IndexOf(card));
+                Console.WriteLine(card.Title + " is in Position " + GetOrderedCardsInLocation(tt.PlayArea).ToList().IndexOf(card));
             }
         }
 
@@ -167,10 +167,10 @@ namespace CauldronTests
             //selecting the first card played and moving it to the last position
             DecisionAutoDecideIfAble = true;
             DecisionSelectCards = new Card[] {currents, cardsToPlay.ElementAt(3) };
-            PrintPlayAreaPositions();
+            PrintPlayAreaPositions(superstorm.TurnTaker);
             GoToStartOfTurn(baron);
 
-            PrintPlayAreaPositions();
+            PrintPlayAreaPositions(superstorm.TurnTaker);
 
             Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(4) == currents, currents.Title + " is not in the correct position.");
 
@@ -236,12 +236,15 @@ namespace CauldronTests
             Card sky = PutInTrash("FracturedSky");
             IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c) && c != sky).Take(3);
             PlayCards(cardsToPlay);
-            IEnumerable<Card> topCards = superstorm.TurnTaker.Deck.GetTopCards(2);
+            //stack deck to never play extra cards
+            Card card1 = PutOnDeck("GeminiIndra");
+            Card card2 = PutOnDeck("GeminiMaya");
+            IEnumerable<Card> topCards = new Card[] { card1, card2 };
             DecisionSelectCards = topCards;
 ;
             PlayCard(sky);
 
-            PrintPlayAreaPositions();
+            PrintPlayAreaPositions(superstorm.TurnTaker);
             Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(0) == topCards.ElementAt(0), topCards.ElementAt(0).Title + " is not in the correct position.");
             Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).Last() == topCards.ElementAt(1), topCards.ElementAt(1).Title + " is not in the correct position.");
 
@@ -344,10 +347,10 @@ namespace CauldronTests
 
             //After all other start of turn effects have taken place, move this card 1 space to the right in the environment play area.
             GoToStartOfTurn(superstorm);
-            PrintPlayAreaPositions();
+            PrintPlayAreaPositions(superstorm.TurnTaker);
             Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(1) == churning, churning.Title + " is not in the correct position.");
             GoToPlayCardPhase(superstorm);
-            PrintPlayAreaPositions();
+            PrintPlayAreaPositions(superstorm.TurnTaker);
             Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(2) == churning, churning.Title + " is not in the correct position.");
 
 
@@ -368,14 +371,39 @@ namespace CauldronTests
 
             //After all other start of turn effects have taken place, move this card 1 space to the right in the environment play area.
             GoToStartOfTurn(superstorm);
-            PrintPlayAreaPositions();
+            PrintPlayAreaPositions(superstorm.TurnTaker);
             Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(1) == churning, churning.Title + " is not in the correct position.");
             GoToPlayCardPhase(superstorm);
-            PrintPlayAreaPositions();
+            PrintPlayAreaPositions(superstorm.TurnTaker);
             Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(1) == churning, churning.Title + " is not in the correct position.");
 
 
         }
+
+        [Test()]
+        public void TestScatterburst()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.SuperstormAkela");
+            StartGame();
+            GoToPlayCardPhase(haka);
+            SetHitPoints(new TurnTakerController[] { baron, ra, legacy, haka, tachyon }, 10);
+            IEnumerable<Card> villainCardsToPlay = FindCardsWhere((Card c) => baron.TurnTaker.Deck.Cards.Contains(c) && !c.IsOneShot).Take(5);
+            PlayCards(villainCardsToPlay);
+
+            Card scatterburst = PlayCard("Scatterburst");
+            IEnumerable<Card> envCardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.Cards.Contains(c) && c != scatterburst).Take(5);
+            PlayCards(envCardsToPlay);
+
+            QuickShuffleStorage(baron.TurnTaker.PlayArea, superstorm.TurnTaker.PlayArea);
+            PrintPlayAreaPositions(baron.TurnTaker);
+            PrintPlayAreaPositions(superstorm.TurnTaker);
+            QuickHPStorage(baron, ra, legacy, haka, tachyon);
+            GoToNextTurn();
+            //QuickShuffleCheck(1, 1);
+            QuickHPCheck(0, 1, 1, 1, 1);
+            PrintPlayAreaPositions(baron.TurnTaker);
+            PrintPlayAreaPositions(superstorm.TurnTaker);
+       }
 
 
 

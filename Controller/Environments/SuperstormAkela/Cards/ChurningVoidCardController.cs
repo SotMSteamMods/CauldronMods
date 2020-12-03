@@ -38,7 +38,6 @@ namespace Cauldron.SuperstormAkela
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
-            throw new NotImplementedException();
         }
 
         private IEnumerator MoveCardResponse(PhaseChangeAction pca)
