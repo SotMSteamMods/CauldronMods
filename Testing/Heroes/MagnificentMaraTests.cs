@@ -390,9 +390,9 @@ namespace CauldronTests
 
             StartGame();
 
-            Card hand = PlayCard("HandIsFasterThanTheEye");
             Card battalion1 = PlayCard("BladeBattalion");
             Card battalion2 = PlayCard("BladeBattalion");
+            Card hand = PlayCard("HandIsFasterThanTheEye");
 
             GoToStartOfTurn(mara);
 
@@ -433,8 +433,9 @@ namespace CauldronTests
             AssertInTrash(battalion);
             AssertInTrash(faster);
             AssertIsInPlay(turret);
-            QuickHPCheck(-3, -3, -3);
+            //QuickHPCheck(-3, -3, -3);
 
+            GoToPlayCardPhase(baron);
             PlayCard(faster);
             PlayCard(battalion);
             GoToStartOfTurn(mara);
@@ -468,7 +469,8 @@ namespace CauldronTests
             Card fiend = PlayCard("FiendishPugilist");
             Card spirit = PlayCard("RelicSpirit");
             Card sword = GetCardInPlay("Condemnation");
-            
+
+            SetHitPoints(legacy, 10);
             SetHitPoints(sword, 5);
             QuickHPStorage(sword);
             PlayCard("Abracadabra");
@@ -481,7 +483,7 @@ namespace CauldronTests
             DecisionSelectTurnTaker = mara.TurnTaker;
 
             GoToEndOfTurn(apostate);
-            Assert.Ignore("There may be a way to manage this, but it's a difficult problem.");
+            //Assert.Ignore("There may be a way to manage this, but it's a difficult problem.");
 
             QuickHPCheck(1);
             AssertIsInPlay(imp);

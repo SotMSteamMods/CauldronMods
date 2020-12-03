@@ -18,6 +18,10 @@ namespace Cauldron.MagnificentMara
         private Dictionary<ITrigger, Func<PhaseChangeAction, bool>> _suppressors;
         private List<ITrigger> _wrappedTriggers;
 
+
+        private ITrigger _finalProcessedTrigger;
+        private List<ITrigger> _triggersToSave;
+
         private int lastTriggerIndex {
             get
             {
@@ -71,8 +75,21 @@ namespace Cauldron.MagnificentMara
             AddStartOfTurnTrigger((TurnTaker tt) => true, CheckForSuppressedTriggerResponse, new TriggerType[] { TriggerType.DestroyCard });
             AddEndOfTurnTrigger((TurnTaker tt) => true, CheckForSuppressedTriggerResponse, new TriggerType[] { TriggerType.DestroyCard });
             */
+            AddBeforeDestroyAction(PreventTriggerRemoval);
+            //AddBef(PreventTriggerRemoval, TriggerType.Hidden);
         }
 
+        private IEnumerator PreventTriggerRemoval(GameAction ga)
+        {
+            /*
+            if (ga is DestroyCardAction && ((DestroyCardAction)ga).CardToDestroy == this)
+            {
+                ((DestroyCardAction)ga).PreventRemoveTriggers = true;
+            }
+            */
+            yield return null;
+            yield break;
+        }
         public override void AddLastTriggers()
         {
             _triggersSuppressed = new List<ITrigger> { };
@@ -84,7 +101,8 @@ namespace Cauldron.MagnificentMara
             AddTrigger((CardEntersPlayAction p) => p.CardEnteringPlay != null && p.CardEnteringPlay.Identifier == "IsolatedHero" && IsVillain(base.Card), ReapplyAllTriggersResponse, TriggerType.HiddenLast, TriggerTiming.After);
             AddTrigger((SwitchBattleZoneAction sba) => sba.Origin != sba.Destination, ReapplyAllTriggersResponse, TriggerType.HiddenLast, TriggerTiming.After);
             AddTrigger((MoveCardAction mc) => mc.Origin.BattleZone != mc.Destination.BattleZone, ReapplyAllTriggersResponse, TriggerType.HiddenLast, TriggerTiming.After);
-            AddBeforeLeavesPlayActions(RestoreTriggersOnDestroy);
+            AddBeforeLeavesPlayActions((GameAction ga) => RestoreTriggersOnDestroy(ga, true));
+            AddAfterLeavesPlayAction(ReapplySavedTriggers);
         }
 
         private IEnumerator ApplyChangesResponse(GameAction action)
@@ -196,7 +214,7 @@ namespace Cauldron.MagnificentMara
 
         private IEnumerator ReapplyAllTriggersResponse(GameAction action)
         {
-            IEnumerator coroutine = RestoreTriggersOnDestroy(action);
+            IEnumerator coroutine = RestoreTriggersOnDestroy(action, false);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -216,7 +234,7 @@ namespace Cauldron.MagnificentMara
             }
         }
 
-        private IEnumerator RestoreTriggersOnDestroy(GameAction action)
+        private IEnumerator RestoreTriggersOnDestroy(GameAction action, bool isRealDestroy)
         {
             foreach (PhaseChangeTrigger trigger in _triggersSuppressed)
             {
@@ -239,6 +257,19 @@ namespace Cauldron.MagnificentMara
                 }
                 */
             }
+
+            if(isRealDestroy && GameController.RealMode)
+            {
+                if (_triggersToSave == null)
+                {
+                    _triggersToSave = new List<ITrigger> { };
+                }
+                Log.Debug("Actual destruction, looking for triggers to save.");
+                Log.Debug($"Last processed: {_finalProcessedTrigger}");
+                Log.Debug($"Wrapped triggers to process: {_wrappedTriggers.Count()}");
+            }
+
+            bool saveFollowingTriggers = false;
             foreach (PhaseChangeTrigger wrapped in _wrappedTriggers)
             {
                 if (!GameController.ActiveTurnPhase.IsStart && !GameController.ActiveTurnPhase.IsEnd || wrapped.CardSource == null)
@@ -247,17 +278,68 @@ namespace Cauldron.MagnificentMara
                 }
                 else
                 {
-                    RemoveTrigger(wrapped);
-                    AddToTemporaryTriggerList(wrapped);
-                    
+                     if(isRealDestroy && GameController.RealMode)
+                    {
+                        //Log.Debug("Actual destruction, looking for triggers to save:");
+                        if (saveFollowingTriggers)
+                        {
+                            Log.Debug($"Saving trigger: {wrapped.AssociatedTriggers.FirstOrDefault()}");
+                            _triggersToSave.Add(wrapped);
+                        }
+                        else
+                        {
+                            saveFollowingTriggers = wrapped.AssociatedTriggers.Any((ITrigger trigger) => _finalProcessedTrigger.CompareTo(trigger) == 0);
+                            if(saveFollowingTriggers)
+                            {
+                                Log.Debug($"Found destruction trigger: {wrapped.AssociatedTriggers.FirstOrDefault()}");
+                            }
+                        }
+                    }
                 }
+            }
+            if (isRealDestroy && GameController.RealMode)
+            {
+                Log.Debug($"Found {_triggersToSave.Count()} triggers to save");
+                int? currentTurnIndex = Game.TurnIndex;
+                int currentPhaseIndex = Game.TurnPhaseIndex;
+                AddInhibitorException((GameAction ga) => !(ga is DestroyCardAction) && Game.TurnIndex == currentTurnIndex && Game.TurnPhaseIndex == currentPhaseIndex);
             }
             _triggersSuppressed.Clear();
             _wrappedTriggers.Clear();
             yield return null;
             yield break;
         }
-
+        
+        private IEnumerator ReapplySavedTriggers()
+        {
+            RemoveInhibitor();
+            Log.Debug("Hopefully triggers continue...");
+            
+            foreach(Trigger<PhaseChangeAction> trigger in _triggersToSave)
+            {
+                ITrigger lateTrigger = new Trigger<PhaseChangeAction>(GameController,
+                                            trigger.Criteria,
+                                            trigger.Response,
+                                            trigger.Types,
+                                            trigger.Timing,
+                                            trigger.CardSource,
+                                            trigger.ActionDescriptions,
+                                            trigger.IsConditionalOnSimilar,
+                                            trigger.RequireActionSuccess,
+                                            trigger.IsActionOptional,
+                                            trigger.IsOutOfPlayTrigger,
+                                            trigger.OrderMatters,
+                                            trigger.Priority,
+                                            trigger.IgnoreBattleZone == true,
+                                            respondEvenIfPlayedAfterAction: true,
+                                            trigger.CopyingCardController);
+                Log.Debug($"Trigger being added: {lateTrigger}");
+                AddTrigger(lateTrigger);
+            }
+            
+            yield break;
+        }
+        
         private ITrigger WrapTrigger(Trigger<PhaseChangeAction> trigger)
         {
             var pc = trigger as PhaseChangeTrigger;
@@ -294,6 +376,10 @@ namespace Cauldron.MagnificentMara
 
         private IEnumerator InterruptOrAllowResponse(PhaseChangeAction pc, Trigger<PhaseChangeAction> trigger)
         {
+            if (this.Card.IsInPlay)
+            {
+                _finalProcessedTrigger = trigger;
+            }
             Log.Debug($"Calling wrapper function for {trigger.ToString()}");
             Card triggering = null;
             var unlockPCA = new PhaseChangeAction(GetCardSource(), pc.FromPhase, pc.ToPhase, pc.IsEphemeral, pc.ForceIncrementTurnIndex);
@@ -302,15 +388,15 @@ namespace Cauldron.MagnificentMara
             {
                 triggering = trigger.CardSource.Card;
             }
-
+            /*
             Log.Debug($"Original Card Is : {triggering.ToString()}");
             Log.Debug("Conditions:");
             Log.Debug($"Not Character: {!triggering.IsCharacter}");
             Log.Debug($"Is Villain: {IsVillain(triggering)}");
             Log.Debug($"Is Not Relic: {!triggering.IsRelic}");
             Log.Debug($"Would otherwise trigger: {trigger.DoesMatchTypeAndCriteria(unlockPCA)}"); // destruction criteria go here
-
-            if (triggering != null && IsVillain(triggering) && !triggering.IsCharacter && !triggering.IsRelic && !triggering.IsMissionCard && trigger.DoesMatchTypeAndCriteria(unlockPCA)) // destruction criteria go here
+            */
+            if (triggering != null && this.Card.IsInPlay && !this.Card.IsBeingDestroyed && GameController.RealMode && IsVillain(triggering) && !triggering.IsCharacter && !triggering.IsRelic && !triggering.IsMissionCard && trigger.DoesMatchTypeAndCriteria(unlockPCA)) // destruction criteria go here
             {
                 Card cardToDestroy = trigger.CardSource.Card;
                 IEnumerator coroutine = GameController.SendMessageAction($"{this.Card.Title} interrupts the {pc.ToPhase.FriendlyPhaseName} trigger on {cardToDestroy.Title}!", Priority.High, GetCardSource());
@@ -343,9 +429,22 @@ namespace Cauldron.MagnificentMara
             }
             else
             {
+                if (GameController.RealMode)
+                { 
+                    Log.Debug("Criteria do not match, so we should let it act."); 
+                }
                 if (trigger.DoesMatchTypeAndCriteria(unlockPCA))
                 {
-                    yield return trigger.Response(unlockPCA);
+                    //Log.Debug("And we should be.");
+                    IEnumerator coroutine = trigger.Response(unlockPCA);
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
             yield break;
