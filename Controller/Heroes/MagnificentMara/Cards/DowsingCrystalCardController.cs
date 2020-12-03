@@ -39,7 +39,7 @@ namespace Cauldron.MagnificentMara
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            Log.Debug($"Dowsing Crystal trigger effects allowed? {CanActivateEffect((TurnTaker.CharacterCard), "Dowsing Crystal trigger")}");
+            //Log.Debug($"Dowsing Crystal trigger effects allowed? {CanActivateEffect((TurnTaker.CharacterCard), "Dowsing Crystal trigger")}");
 
             yield break;
         }
