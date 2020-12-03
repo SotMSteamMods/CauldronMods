@@ -15,15 +15,29 @@ namespace Cauldron.Titan
         public override void AddTriggers()
         {
             //When a non-hero card enters play, you may destroy this card...
-            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => !action.CardEnteringPlay.IsHero, base.DestroyThisCardResponse, TriggerType.DestroySelf, TriggerTiming.After);
+            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => !action.CardEnteringPlay.IsHero, this.DestroySelfResponse, TriggerType.DestroySelf, TriggerTiming.After, isActionOptional: true);
             //...If you do, you may use a power now.
             base.AddWhenDestroyedTrigger(this.OnDestroyResponse, TriggerType.UsePower);
+        }
+
+        private IEnumerator DestroySelfResponse(CardEntersPlayAction action)
+        {
+            IEnumerator coroutine = base.GameController.DestroyCard(base.HeroTurnTakerController, base.Card, true, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
 
         private IEnumerator OnDestroyResponse(DestroyCardAction action)
         {
             //you may use a power now.
-            IEnumerator coroutine = base.GameController.SelectAndUsePower(base.HeroTurnTakerController, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndUsePower(base.HeroTurnTakerController, allowAnyHeroPower: true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
