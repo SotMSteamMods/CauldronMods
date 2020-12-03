@@ -224,6 +224,53 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestFracturedSky_Play()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela");
+            StartGame();
+
+            GoToPlayCardPhase(superstorm);
+
+            PutOnDeck("TheStaffOfRa");
+            Card sky = PutInTrash("FracturedSky");
+            IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c) && c != sky).Take(3);
+            PlayCards(cardsToPlay);
+            IEnumerable<Card> topCards = superstorm.TurnTaker.Deck.GetTopCards(2);
+            DecisionSelectCards = topCards;
+;
+            PlayCard(sky);
+
+            PrintPlayAreaPositions();
+            Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(0) == topCards.ElementAt(0), topCards.ElementAt(0).Title + " is not in the correct position.");
+            Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).Last() == topCards.ElementAt(1), topCards.ElementAt(1).Title + " is not in the correct position.");
+
+
+        }
+
+        [Test()]
+        public void TestFracturedSky_OnDestroy()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela");
+            StartGame();
+            GoToPlayCardPhase(superstorm);
+            Card pressure = PlayCard("PressureDrop");
+            Card maya = PlayCard("GeminiMaya");
+            Card sky = PlayCard("FracturedSky");
+
+            AssertInPlayArea(superstorm, sky);
+
+            //should only be destroyed on environment target destruction
+            DestroyCard(pressure, baron.CharacterCard);
+            AssertInPlayArea(superstorm, sky);
+
+            DestroyCard(maya, baron.CharacterCard);
+            //When an environment target is destroyed, destroy this card.
+            AssertInTrash(sky);
+
+
+        }
+
 
 
     }

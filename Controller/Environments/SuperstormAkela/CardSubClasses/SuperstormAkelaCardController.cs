@@ -16,9 +16,9 @@ namespace Cauldron.SuperstormAkela
 
         }
 
-        protected IEnumerator MoveCardToFarLeft(Card card)
+        protected IEnumerator MoveCardToFarLeft(Card card, bool noMessage = false)
         {
-            List<Card> list = TurnTaker.PlayArea.Cards.ToList();
+            List<Card> list = GetOrderedCardsInLocation(TurnTaker.PlayArea).ToList();
             list.Remove(card);
             list.Insert(0, card);
             list.ForEach(delegate (Card c)
@@ -26,25 +26,58 @@ namespace Cauldron.SuperstormAkela
                 base.GameController.Game.AssignPlayCardIndex(c);
             });
 
-            IEnumerator coroutine = GameController.SendMessageAction("Moved " + card.Title + " to the far left of the environment's play area.", Priority.Medium, GetCardSource());
-            if (base.UseUnityCoroutines)
+            if (!noMessage)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                IEnumerator coroutine = GameController.SendMessageAction("Moved " + card.Title + " to the far left of the environment's play area.", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                Log.Debug(card.Title + " was moved to the far left of the environment's play area.");
             }
 
-            Log.Debug(card.Title + " was moved to the far left of the environment's play area.");
+
+            yield break;
+        }
+
+        protected IEnumerator MoveCardIntoFarLeft(Card card, bool noMessage = false)
+        {
+            List<Card> list = GetOrderedCardsInLocation(TurnTaker.PlayArea).ToList();
+            list.Insert(0, card);
+            list.ForEach(delegate (Card c)
+            {
+                base.GameController.Game.AssignPlayCardIndex(c);
+            });
+
+            if (!noMessage)
+            {
+                IEnumerator coroutine = GameController.SendMessageAction("Played " + card.Title + " to the far left of the environment's play area.", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                Log.Debug(card.Title + " was played to the far left of the environment's play area.");
+            }
+
 
             yield break;
         }
 
 
-        protected IEnumerator MoveCardToFarRight(Card card)
+
+        protected IEnumerator MoveCardToFarRight(Card card, bool noMessage = false)
         {
-            List<Card> list = TurnTaker.PlayArea.Cards.ToList();
+            List<Card> list = GetOrderedCardsInLocation(TurnTaker.PlayArea).ToList();
             list.Remove(card);
             list.Add(card);
             list.ForEach(delegate (Card c)
@@ -52,23 +85,28 @@ namespace Cauldron.SuperstormAkela
                 base.GameController.Game.AssignPlayCardIndex(c);
             });
 
-            IEnumerator coroutine = GameController.SendMessageAction("Moved " + card.Title + " to the far right of the environment's play area.", Priority.Medium, GetCardSource());
-            if (base.UseUnityCoroutines)
+            if (!noMessage)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                IEnumerator coroutine = GameController.SendMessageAction("Moved " + card.Title + " to the far right of the environment's play area.", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                Log.Debug(card.Title + " was moved to the far right of the environment's play area.");
             }
 
-            Log.Debug(card.Title + " was moved to the far right of the environment's play area.");
+
             yield break;
         }
 
         protected IEnumerator MoveToTheLeftOfCard(Card card, Card cardToMoveLeftOf)
         {
-            List<Card> list = TurnTaker.PlayArea.Cards.ToList();
+            List<Card> list = GetOrderedCardsInLocation(TurnTaker.PlayArea).ToList();
             list.Remove(card);
             int index = list.IndexOf(cardToMoveLeftOf);
             list.Insert(index, card);
@@ -94,7 +132,7 @@ namespace Cauldron.SuperstormAkela
 
         protected IEnumerator MoveToTheRightOfCard(Card card, Card cardToMoveRightOf)
         {
-            List<Card> list = TurnTaker.PlayArea.Cards.ToList();
+            List<Card> list = GetOrderedCardsInLocation(TurnTaker.PlayArea).ToList();
             list.Remove(card);
             int index = list.IndexOf(cardToMoveRightOf);
             list.Insert(index + 1, card);
@@ -149,6 +187,35 @@ namespace Cauldron.SuperstormAkela
         private int FindCardPositionInLocation(Location location, Card c)
         {
             return GetOrderedCardsInLocation(location).ToList().IndexOf(c);
+        }
+
+
+        public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
+        {
+            if (playToTheLeft != null && playToTheLeft.Value)
+            {
+                IEnumerator coroutine = MoveCardIntoFarLeft(base.Card);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            storedResults.Add(new MoveCardDestination(TurnTaker.PlayArea));
+
+            yield return null;
+        }
+
+        private bool? playToTheLeft {
+            get
+            {
+                return Game.Journal.GetCardPropertiesBoolean(GameController.FindCard("FracturedSky"), "PlayToTheLeft");
+                
+            }
         }
 
 
