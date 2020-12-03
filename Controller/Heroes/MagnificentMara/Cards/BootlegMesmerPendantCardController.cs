@@ -44,7 +44,7 @@ namespace Cauldron.MagnificentMara
             //"At the start of your turn destroy this card."
             AddStartOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker, DestroyThisCardResponse, TriggerType.DestroySelf);
 
-            AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(alsoRemoveTriggersFromThisCard: true);
+            AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(alsoRemoveTriggersFromThisCard: false);
 
             AddAfterLeavesPlayAction((GameAction ga) => ResetFlagsAfterLeavesPlay(mesmerKey), TriggerType.Hidden);
         }
