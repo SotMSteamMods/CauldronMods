@@ -1125,6 +1125,36 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestHalcyonCleanersTestSubjectKilledByCleaner()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            GoToPlayCardPhase(halberd);
+
+            //we play out cleaner
+            Card cleaner = GetCard("HalcyonCleaners");
+            PlayCard(cleaner);
+            AssertIsInPlay(cleaner);
+
+            //play alpha to have a subject to destroy
+            Card alpha = GetCard("HalberdAlpha");
+            PlayCard(alpha);
+            AssertIsInPlay(alpha);
+
+            //stack deck with omega
+            Card omega = GetCard("HalberdOmega");
+            PutOnDeck(halberd, omega);
+            AssertInDeck(omega);
+
+            //Whenever this card destroys a Test Subject, play the top card of the environment deck.
+            DealDamage(cleaner, alpha, 99, DamageType.Cold);
+            //alpha should have been destroyed, causing omega to be played from the top of the environment deck
+            AssertInTrash(alpha);
+            AssertIsInPlay(omega);
+        }
+
+        [Test()]
         public void TestHalcyonCleanersTestSubjectDestroyedByNotCleaner()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.HalberdExperimentalResearchCenter");
@@ -1149,6 +1179,37 @@ namespace CauldronTests
 
             //Whenever this card destroys a Test Subject, play the top card of the environment deck.
             DestroyCard(alpha, baron.CharacterCard);
+            //alpha should have been destroyed, but since it was done by baron, no cards should be played
+            AssertInTrash(alpha);
+            AssertInDeck(omega);
+        }
+
+
+        [Test()]
+        public void TestHalcyonCleanersTestSubjectKilledByNotCleaner()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            GoToPlayCardPhase(halberd);
+
+            //we play out cleaner
+            Card cleaner = GetCard("HalcyonCleaners");
+            PlayCard(cleaner);
+            AssertIsInPlay(cleaner);
+
+            //play alpha to have a subject to destroy
+            Card alpha = GetCard("HalberdAlpha");
+            PlayCard(alpha);
+            AssertIsInPlay(alpha);
+
+            //stack deck with omega
+            Card omega = GetCard("HalberdOmega");
+            PutOnDeck(halberd, omega);
+            AssertInDeck(omega);
+
+            //Whenever this card destroys a Test Subject, play the top card of the environment deck.
+            DealDamage(baron.CharacterCard, alpha, 99, DamageType.Cold);
             //alpha should have been destroyed, but since it was done by baron, no cards should be played
             AssertInTrash(alpha);
             AssertInDeck(omega);

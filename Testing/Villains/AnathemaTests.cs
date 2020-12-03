@@ -1307,16 +1307,21 @@ namespace CauldronTests
             GoToPlayCardPhase(anathema);
 
             //put an arm in play to test effect
-            PlayCard("KnuckleDragger");
+            var knuckle = PlayCard("KnuckleDragger");
 
             //put biofeedback in play
             PutIntoPlay("Biofeedback");
 
             //Whenever an arm, body, or head is destroyed by a Hero target, Anathema deals himself 2 psychic damage.
             QuickHPStorage(anathema);
-            DestroyCard(GetListOfArmsInPlay(anathema)[0], ra.CharacterCard);
+            DestroyCard(knuckle, ra.CharacterCard);
             QuickHPCheck(-2);
 
+            //reset and test with damage.
+            PlayCard(knuckle);
+            QuickHPStorage(anathema);
+            DealDamage(ra.CharacterCard, knuckle, 99, DamageType.Fire, true);
+            QuickHPCheck(-2);
 
         }
 
