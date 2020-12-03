@@ -279,21 +279,13 @@ namespace CauldronTests
         {
             SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Unity", "Ra", "TimeCataclysm" });
             StartGame();
-            var reaction = GetCardInPlay("ChainReaction");
             FlipCard(gray);
             Card bot = GetCard("RaptorBot");
             PlayCard(bot);
             //Whenever a radiation card is destroyed by a hero card, {Gray} deals that hero {H - 1} energy damage.
             QuickHPStorage(legacy, ra, unity);
-            DealDamage(bot, reaction, 3, DamageType.Melee);
-            AssertInTrash(reaction);
-            QuickHPCheck(0, 0, -2);
-
-            //reset and test a destroy effect
-            PlayCard(reaction);
-            QuickHPStorage(legacy, ra, unity);
-            DestroyCard(reaction, bot);
-            AssertInTrash(reaction);
+            DealDamage(bot, GetCardInPlay("ChainReaction"), 3, DamageType.Melee);
+            AssertInTrash("ChainReaction");
             QuickHPCheck(0, 0, -2);
         }
 
