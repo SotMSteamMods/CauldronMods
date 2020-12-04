@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Cauldron.Celadroch
 {
-    public class LeeechingBreathCardController : CardController
+    public class HoursTilDawnCardController : CardController
     {
-        public LeeechingBreathCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public HoursTilDawnCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
