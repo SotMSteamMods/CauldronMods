@@ -1,8 +1,7 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-using System;
 using System.Collections;
-using System.Linq;
+
 
 namespace Cauldron.SwarmEater
 {
@@ -25,9 +24,10 @@ namespace Cauldron.SwarmEater
         public override void AddTriggers()
         {
             //Whenever {SwarmEater} destroys a villain target, put it beneath this card. 
-            base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => action.CardToDestroy.Card.IsVillain && action.ResponsibleCard == base.CharacterCard, this.DestroyVillainResponse, TriggerType.MoveCard, TriggerTiming.After);
+            base.AddTrigger((DestroyCardAction action) => action.WasCardDestroyed && action.CardToDestroy.Card.IsVillain && action.ResponsibleCard == base.CharacterCard, this.DestroyVillainResponse, TriggerType.MoveCard, TriggerTiming.After);
+            
             //Activate the Absorb text of all cards beneath this one. Ignore all other game text on those cards.
-            base.AddTrigger<MoveCardAction>((MoveCardAction action) => action.Destination == base.Card.UnderLocation, this.AbsorbResponse, TriggerType.AddTrigger, TriggerTiming.After);
+            base.AddTrigger((MoveCardAction action) => action.Destination == base.Card.UnderLocation, this.AbsorbResponse, TriggerType.AddTrigger, TriggerTiming.After);
         }
 
         private IEnumerator DestroyVillainResponse(DestroyCardAction action)
