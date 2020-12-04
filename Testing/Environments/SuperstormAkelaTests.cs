@@ -224,6 +224,8 @@ namespace CauldronTests
 
         }
 
+
+
         [Test()]
         public void TestFracturedSky_Play()
         {
@@ -242,6 +244,33 @@ namespace CauldronTests
             IEnumerable<Card> topCards = new Card[] { card1, card2 };
             DecisionSelectCards = topCards;
 ;
+            PlayCard(sky);
+
+            PrintPlayAreaPositions(superstorm.TurnTaker);
+            Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(0) == topCards.ElementAt(0), topCards.ElementAt(0).Title + " is not in the correct position.");
+            Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).Last() == topCards.ElementAt(1), topCards.ElementAt(1).Title + " is not in the correct position.");
+
+
+        }
+
+        [Test()]
+        public void TestFracturedSky_InterruptPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela");
+            StartGame();
+
+            GoToPlayCardPhase(superstorm);
+
+            PutOnDeck("TheStaffOfRa");
+            Card sky = PutInTrash("FracturedSky");
+            IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c) && c != sky).Take(3);
+            PlayCards(cardsToPlay);
+            Card extraCard = PutOnDeck("GeminiMaya");
+            Card card1 = PutOnDeck("GeminiIndra");
+            Card card2 = PutOnDeck("FlailingWires");
+            IEnumerable<Card> topCards = new Card[] { card2, card1 };
+            DecisionSelectCards = topCards;
+            
             PlayCard(sky);
 
             PrintPlayAreaPositions(superstorm.TurnTaker);

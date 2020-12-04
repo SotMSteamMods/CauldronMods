@@ -34,6 +34,8 @@ namespace Cauldron.SuperstormAkela
             {
                 yield break;
             }
+
+            //BUG: If the card that is played has an on play effect that plays another card, it will also be caught by this Play to the Left
             SetCardProperty("PlayToTheLeft", true);
             coroutine = base.GameController.SelectCardsAndDoAction(DecisionMaker, new LinqCardCriteria((Card c) => storedCards.Contains(c)), SelectionType.PutIntoPlay, (Card c) => GameController.PlayCard(TurnTakerController, c, isPutIntoPlay: true, cardSource: GetCardSource()), numberOfCards: new int?(1), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
@@ -100,6 +102,15 @@ namespace Cauldron.SuperstormAkela
         {
             //When an environment target is destroyed, destroy this card.
             AddTrigger<DestroyCardAction>((DestroyCardAction destroy) => destroy.CardToDestroy != null && destroy.CardToDestroy.Card.IsEnvironmentTarget && destroy.WasCardDestroyed, DestroyThisCardResponse, TriggerType.DestroySelf, TriggerTiming.After);
+
+            //Reset the PlayToTheLeft flag as soon as the first card enters play
+            AddTrigger<CardEntersPlayAction>((CardEntersPlayAction cpa) => IsPropertyTrue("PlayToTheLeft"), ResetPlayToTheLeftResponse, TriggerType.FirstTrigger, TriggerTiming.After);
+        }
+
+        private IEnumerator ResetPlayToTheLeftResponse(CardEntersPlayAction arg)
+        {
+            SetCardProperty("PlayToTheLeft", false);
+            yield return null;
         }
     }
 }
