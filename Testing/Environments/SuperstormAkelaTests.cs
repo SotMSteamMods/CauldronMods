@@ -203,9 +203,9 @@ namespace CauldronTests
             StartGame();
             GoToPlayCardPhase(superstorm);
             Card wires = GetCard("FlailingWires");
-            PlayCard("GeminiIndra");
+            PlayCard("PressureDrop");
             //stack deck to prevent extra damage
-            PutOnDeck("GeminiMaya");
+            PutOnDeck("ToppledSkyscraper");
             PlayCard(wires);
             QuickHPStorage(ra, legacy, haka);
             //At the end of the environment turn, this card deals the X+1 hero targets with the highest HP 1 lightning damage each, where X is the number of environment cards to the left of this one.
@@ -619,9 +619,9 @@ namespace CauldronTests
             StartGame();
             GoToPlayCardPhase(superstorm);
             Card bus = GetCard("FlyingBus");
-            PlayCard("GeminiIndra");
+            PlayCard("PressureDrop");
             //stack deck to prevent extra targets
-            PutOnDeck("GeminiMaya");
+            PutOnDeck("ToppledSkyscraper");
             PlayCard(bus);
             QuickHPStorage(ra, legacy, haka);
             //At the end of the environment turn, this card deals the X+1 hero targets with the highest HP {H} projectile damage each, where X is the number of environment cards to the left of this one
@@ -629,6 +629,145 @@ namespace CauldronTests
             PrintPlayAreaPositions(superstorm.TurnTaker);
             GoToEndOfTurn(superstorm);
             QuickHPCheck(0, -3, -3);
+
+        }
+
+        [Test()]
+        public void TestForgottenDjinn()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela" });
+            StartGame();
+            GoToPlayCardPhase(superstorm);
+            Card djinn = GetCard("ForgottenDjinn");
+            PlayCard("PressureDrop");
+            //stack deck to prevent extra targets
+            PutOnDeck("ToppledSkyscraper");
+            PlayCard(djinn);
+            QuickHPStorage(ra, legacy, haka);
+            //At the end of the environment turn, this card deals the non-environment target with the second highest HP X+2 melee damage, where X is the number of environment cards to the left of this one.
+            //2nd highest is haka
+            //X = 1
+            PrintPlayAreaPositions(superstorm.TurnTaker);
+            GoToEndOfTurn(superstorm);
+            QuickHPCheck(0, 0, -3);
+
+        }
+
+        [Test()]
+        public void TestGeminiIndra_IncreaseLightningDamage()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.SuperstormAkela");
+            StartGame();
+            //swap mdp for battalion
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            Card battalion = PlayCard("BladeBattalion");
+
+            GoToPlayCardPhase(superstorm);
+            Card indra = PlayCard("GeminiIndra");
+
+            //Increase all lightning damage dealt by 1.
+
+            //check villain
+            QuickHPStorage(haka);
+            DealDamage(baron, haka, 1, DamageType.Lightning);
+            QuickHPCheck(-2);
+
+            //check hero
+            QuickHPUpdate();
+            DealDamage(ra, haka, 1, DamageType.Lightning);
+            QuickHPCheck(-2);
+
+            //check environment
+            QuickHPUpdate();
+            DealDamage(indra, haka.CharacterCard, 1, DamageType.Lightning);
+            QuickHPCheck(-2);
+
+            //check only lightning
+            QuickHPUpdate();
+            DealDamage(ra, haka, 1, DamageType.Fire);
+            QuickHPCheck(-1);
+
+        }
+
+        [Test()]
+        public void TestGeminiMaya_IncreaseProjectileDamage()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.SuperstormAkela");
+            StartGame();
+            //swap mdp for battalion
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            Card battalion = PlayCard("BladeBattalion");
+
+            GoToPlayCardPhase(superstorm);
+            Card maya = PlayCard("GeminiMaya");
+
+            //Increase all projectile damage dealt by 1.
+
+            //check villain
+            QuickHPStorage(haka);
+            DealDamage(baron, haka, 1, DamageType.Projectile);
+            QuickHPCheck(-2);
+
+            //check hero
+            QuickHPUpdate();
+            DealDamage(ra, haka, 1, DamageType.Projectile);
+            QuickHPCheck(-2);
+
+            //check environment
+            QuickHPUpdate();
+            DealDamage(maya, haka.CharacterCard, 1, DamageType.Projectile);
+            QuickHPCheck(-2);
+
+            //check only projectile
+            QuickHPUpdate();
+            DealDamage(ra, haka, 1, DamageType.Fire);
+            QuickHPCheck(-1);
+
+        }
+
+        [Test()]
+        public void TestGeminiIndra_EndOfTurn()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela" });
+            StartGame();
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            GoToPlayCardPhase(superstorm);
+            Card indra = GetCard("GeminiIndra");
+            PlayCard("PressureDrop");
+            //stack deck to prevent extra targets
+            PutOnDeck("ToppledSkyscraper");
+            PlayCard(indra);
+            QuickHPStorage(baron, ra, legacy, haka);
+            //At the end of the environment turn, this card deals the 2 targets with the highest HP X+1 projectile damage each, where X is the number of environment cards to the left of this one.
+            //2 highest are baron and haka
+            //X = 1
+            PrintPlayAreaPositions(superstorm.TurnTaker);
+            GoToEndOfTurn(superstorm);
+            QuickHPCheck(-2, 0, 0, -2);
+
+        }
+
+        [Test()]
+        public void TestGeminiMaya_EndOfTurn()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela" });
+            StartGame();
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            GoToPlayCardPhase(superstorm);
+            Card maya = GetCard("GeminiMaya");
+            PlayCard("PressureDrop");
+            //stack deck to prevent extra targets
+            PutOnDeck("ToppledSkyscraper");
+            PlayCard(maya);
+            QuickHPStorage(baron, ra, legacy, haka);
+            //At the end of the environment turn, this card deals the 2 targets with the highest HP X+1 lightning damage each, where X is the number of environment cards to the left of this one.
+            //2 highest are baron and haka
+            //X = 1
+            PrintPlayAreaPositions(superstorm.TurnTaker);
+            GoToEndOfTurn(superstorm);
+            QuickHPCheck(-2, 0, 0, -2);
 
         }
 
