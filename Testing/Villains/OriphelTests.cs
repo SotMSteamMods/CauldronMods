@@ -30,6 +30,10 @@ namespace CauldronTests
                 AssertCardHasKeyword(card, keyword, false);
             }
         }
+        protected bool IsGuardian(Card c)
+        {
+            return GameController.DoesCardContainKeyword(c, "guardian");
+        }
 
         private void CleanupStartingCards()
         {
@@ -157,6 +161,19 @@ namespace CauldronTests
             DestroyCard(guardian);
             QuickShuffleCheck(1);
             AssertNumberOfCardsInPlay((Card c) => c.IsRelic && c.IsVillain, 0);
+        }
+        [Test]
+        public void TestOriphelSetup([Values(new string[] { }, new string[] { "Bunker" }, new string[] {"Bunker", "Fanatic"})] string[] extraHeroes)
+        {
+            var startStrings = new List<string> { "Cauldron.Oriphel", "Legacy", "Ra", "Tempest" };
+            startStrings.AddRange(extraHeroes);
+            startStrings.Add("Megalopolis");
+            int totalHeroes = 3 + extraHeroes.Count();
+
+            SetupGameController(startStrings);
+            StartGame();
+
+            AssertNumberOfCardsInPlay((Card c) => IsGuardian(c), totalHeroes - 2);
         }
     }
 }
