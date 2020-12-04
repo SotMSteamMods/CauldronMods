@@ -114,7 +114,7 @@ namespace CauldronTests
             DealDamage(legacy, Vector, 2, DamageType.Melee);
 
             // Assert
-            Assert.True(GetNumberOfCardsInPlay(Vector) == vectorCardsInPlay + 1 || GetNumberOfCardsInTrash(Vector) == vectorCardsInTrash + 1);
+            Assert.True(GetNumberOfCardsInPlay(Vector) > vectorCardsInPlay || GetNumberOfCardsInTrash(Vector) > vectorCardsInTrash);
         }
 
         [Test]
@@ -165,6 +165,47 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestWhenFlippedSuperVirusIsRemovedFromGame()
+        {
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card superVirus = GetCard(SupervirusCardController.Identifier);
+
+            StartGame();
+            PlayCard(superVirus);
+
+            FlipCard(Vector.CharacterCardController);
+
+            AssertFlipped(Vector);
+            AssertOutOfGame(superVirus);
+        }
+
+        [Test]
+        public void TestWhenFlipperCardsUnderSuperVirusAreReturnedToVillainTrash()
+        {
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card bloodSample = GetCard(BloodSampleCardController.Identifier); // Virus
+            Card delayedSymptoms = GetCard(DelayedSymptomsCardController.Identifier); // Virus
+
+            Card superVirus = GetCard(SupervirusCardController.Identifier);
+
+            MoveCard(Vector, bloodSample, superVirus.UnderLocation);
+            MoveCard(Vector, delayedSymptoms, superVirus.UnderLocation);
+
+            StartGame();
+            PlayCard(superVirus);
+
+            FlipCard(Vector.CharacterCardController);
+
+            AssertFlipped(Vector);
+            AssertOutOfGame(superVirus);
+            AssertInTrash(bloodSample);
+            AssertInTrash(delayedSymptoms);
+
+        }
+
+        [Test]
         public void TestFlippedVectorPlaysCardAtEndOfVillainTurn()
         {
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
@@ -189,12 +230,22 @@ namespace CauldronTests
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
 
+            PutOnDeck(Vector, GetCard(HotZoneCardController.Identifier));
+            PutOnDeck(Vector, GetCard(HyperactiveImmuneSystemCardController.Identifier));
+
             Card bioTerror = GetCard(BioterrorSquadCardController.Identifier);
             PlayCard(bioTerror);
 
             FlipCard(Vector.CharacterCardController);
+
+            QuickHPStorage(Vector);
+
+            GoToStartOfTurn(haka);
+            DealDamage(haka, Vector, 4, DamageType.Melee);
+
+
+            QuickHPCheck(-2); // Damage was reduced by 2 (2 villain targets: Vector, Bio Terror Squad)
             AssertFlipped(Vector);
-            Assert.True(false, "TODO");
         }
 
         [Test]
@@ -669,16 +720,12 @@ namespace CauldronTests
             Card superVirus = GetCard(SupervirusCardController.Identifier);
             PlayCard(superVirus);
 
+            DecisionSelectCard = bloodSample;
+
             StartGame();
 
-            // Act
-
-            GoToStartOfTurn(haka);
-
-            DealDamage(haka, Vector, 100, DamageType.Melee);
-
             // Assert
-            Assert.True(false, "TODO");
+            AssertUnderCard(superVirus, bloodSample);
         }
 
         [Test]
@@ -733,19 +780,16 @@ namespace CauldronTests
 
             StartGame();
             
+            GoToPlayCardPhase(Vector);
             PlayCard(superVirus);
 
             // Act
-
-            GoToStartOfTurn(haka);
-
-            DealDamage(haka, Vector, 100, DamageType.Melee);
-
+            GoToStartOfTurn(legacy);
+            DealDamage(legacy, Vector, 100, DamageType.Melee);
 
             // Assert
-            Assert.True(false, "TODO");
+            AssertGameOver(EndingResult.AlternateDefeat);
         }
-
 
         [Test]
         public void TestUndiagnosedSubjectPlaysVillainCardAtEndOfVillainTurn()

@@ -51,12 +51,16 @@ namespace Cauldron.Vector
                 }, TriggerTiming.After, null, false, true, true);
             */
 
-            base.AddTrigger<DealDamageAction>(dda => dda.Target == this.CharacterCard && this.CharacterCard.HitPoints <= 0, 
-                this.GameOverResponse, TriggerType.GameOver, TriggerTiming.After);
+            //base.AddTrigger<DealDamageAction>(dda => dda.Target == this.CharacterCard && this.CharacterCard.HitPoints <= 0, 
+                //this.GameOverResponse, TriggerType.GameOver, TriggerTiming.Before);
+
+            base.AddTrigger<DestroyCardAction>(dca => dca.CardToDestroy != null && dca.WasCardDestroyed 
+                    && dca.CardToDestroy.Card == this.CharacterCard, 
+                GameOverResponse, TriggerType.GameOver, TriggerTiming.After);
 
 
             //AddTrigger(ga => (ga is DestroyCardAction dca) && dca.CardToDestroy != null && dca.CardToDestroy.Card == this.CharacterCard, 
-            //(GameAction t) => GameOverResponse(), TriggerType.DestroyCard, TriggerTiming.After);
+            //(GameAction t) => GameOverResponse, TriggerType.DestroyCard, TriggerTiming.After);
 
 
             //AddTrigger(d => d.WasCardDestroyed && d.CardToDestroy.Card == this.CharacterCard && d.CardSource != null, 
@@ -150,11 +154,27 @@ namespace Cauldron.Vector
             }
         }
 
+        /*
         private IEnumerator GameOverResponse(DealDamageAction dda)
         {
             string ending = "Vector was destroyed while Super Virus was active!  The Heroes lose!";
             
             IEnumerator routine = base.GameController.GameOver(EndingResult.AlternateDefeat, ending, actionSource: dda, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
+        }
+        */
+        private IEnumerator GameOverResponse(DestroyCardAction dca)
+        {
+            string ending = "Vector was destroyed while Super Virus was active!  The Heroes lose!";
+
+            IEnumerator routine = base.GameController.GameOver(EndingResult.AlternateDefeat, ending, actionSource: dca, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
