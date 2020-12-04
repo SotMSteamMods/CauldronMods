@@ -515,5 +515,69 @@ namespace CauldronTests
             QuickHPCheck(2);
             QuickHandCheck(0);
         }
+
+        [Test()]
+        public void TestMs5DemolitionCharge0Environment()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            QuickHPStorage(titan);
+            PlayCard("Ms5DemolitionCharge");
+            //Destroy all environment cards.
+            //For each environment card destroyed this way, {Titan} deals himself 1 fire damage.
+            QuickHPCheckZero();
+        }
+
+        [Test()]
+        public void TestMs5DemolitionCharge1Environment()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card mono = PlayCard("PlummetingMonorail");
+
+            QuickHPStorage(titan);
+            PlayCard("Ms5DemolitionCharge");
+            //Destroy all environment cards.
+            AssertInTrash(new Card[] { mono });
+            //For each environment card destroyed this way, {Titan} deals himself 1 fire damage.
+            QuickHPCheck(-1);
+        }
+
+        [Test()]
+        public void TestMs5DemolitionCharge2Environment()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card mono0 = PlayCard("PlummetingMonorail", 0);
+            Card mono1 = PlayCard("PlummetingMonorail", 1);
+
+            QuickHPStorage(titan);
+            PlayCard("Ms5DemolitionCharge");
+            //Destroy all environment cards.
+            AssertInTrash(new Card[] { mono0, mono1 });
+            //For each environment card destroyed this way, {Titan} deals himself 1 fire damage.
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestMs5DemolitionCharge3Environment()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card mono0 = PlayCard("PlummetingMonorail", 0);
+            Card mono1 = PlayCard("PlummetingMonorail", 1);
+            Card popo = PlayCard("PoliceBackup");
+
+            QuickHPStorage(titan);
+            PlayCard("Ms5DemolitionCharge");
+            //Destroy all environment cards.
+            AssertInTrash(new Card[] { mono0, mono1, popo });
+            //For each environment card destroyed this way, {Titan} deals himself 1 fire damage.
+            QuickHPCheck(-3);
+        }
     }
 }

@@ -30,15 +30,18 @@ namespace Cauldron.Titan
 
         private IEnumerator DealDamageResponse(int count)
         {
-            //...{Titan} deals himself 1 fire damage.
-            IEnumerator coroutine = base.DealDamage(base.CharacterCard, base.CharacterCard, 1, DamageType.Fire, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
+            for (int i = 0; i < count; i++)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                //...{Titan} deals himself 1 fire damage.
+                IEnumerator coroutine = base.DealDamage(base.CharacterCard, base.CharacterCard, 1, DamageType.Fire, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }
