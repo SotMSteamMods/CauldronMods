@@ -76,21 +76,6 @@ namespace Cauldron.Vector
                         AdvancedEndOfTurnResponse, TriggerType.GainHP));
                 }
             }
-            // Flipped side (Desperate Assassin)
-            else
-            {
-                base.SideTriggers.Add(base.AddReduceDamageTrigger(c => c == base.CharacterCard, FindNumberOfVillainCardsInPlay() ?? default));
-
-                // At the end of the villain turn, play the top card of the villain deck.
-                //base.SideTriggers.Add(base.AddEndOfTurnTrigger(tt => tt == this.TurnTaker, 
-                //FlippedEndOfTurnResponse, new[] { TriggerType.PlayCard }));
-
-                // Reduce damage dealt to {Vector} by 1 for each villain target in play.
-                //int AmountToReduce(DealDamageAction dmg) => base.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.IsVillainTarget).Count();
-
-                //base.SideTriggers.Add(base.AddReduceDamageTrigger(dda => dda.DamageSource != null && dda.CardSource != null 
-                // && dda.Target == base.CharacterCard, AmountToReduce));
-            }
         }
 
         public override IEnumerator AfterFlipCardImmediateResponse()
@@ -126,11 +111,6 @@ namespace Cauldron.Vector
 
 
             // Reduce damage dealt to {Vector} by 1 for each villain target in play.
-            //int AmountToReduce(DealDamageAction dmg) => base.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.IsVillainTarget).Count();
-
-            //base.SideTriggers.Add(base.AddReduceDamageTrigger(dda => dda.DamageSource != null && dda.CardSource != null
-            //&& dda.Target == base.CharacterCard, AmountToReduce));
-
             base.SideTriggers.Add(base.AddReduceDamageTrigger(c => c == base.CharacterCard, FindNumberOfVillainCardsInPlay() ?? default));
 
 

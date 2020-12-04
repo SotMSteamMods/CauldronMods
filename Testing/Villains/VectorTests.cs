@@ -181,7 +181,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestWhenFlipperCardsUnderSuperVirusAreReturnedToVillainTrash()
+        public void TestWhenFlippedCardsUnderSuperVirusAreReturnedToVillainTrash()
         {
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
 

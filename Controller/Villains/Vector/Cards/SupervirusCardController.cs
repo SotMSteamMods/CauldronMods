@@ -1,11 +1,10 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-
 
 namespace Cauldron.Vector
 {
@@ -21,18 +20,15 @@ namespace Cauldron.Vector
 
         public static readonly string Identifier = "Supervirus";
 
-        private const int CardsToMove = 1;
         private const int DamageToDeal = 1;
+        private const string LoseMessage = "Vector was destroyed while Super Virus was active!  The Heroes lose!";
 
         public SupervirusCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddTriggers()
         {
-            //AddTrigger((GameAction t) => (t is DestroyCardAction && (t as DestroyCardAction).CardToDestroy.Card == this.CharacterCard, (GameAction t) => GameOverResponse(didHeroesWin: true), TriggerType.GameOver, TriggerTiming.After);
-
             base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker, StartOfTurnResponse,
                 new[]
                 {
@@ -40,34 +36,9 @@ namespace Cauldron.Vector
                     TriggerType.DealDamage
                 });
 
-
-
-            /*
-            base.AddTrigger<DestroyCardAction>(dca => dca.CardToDestroy != null ,
-                this.DestroyVectorResponse,
-                new[]
-                {
-                    TriggerType.DestroyCard
-                }, TriggerTiming.After, null, false, true, true);
-            */
-
-            //base.AddTrigger<DealDamageAction>(dda => dda.Target == this.CharacterCard && this.CharacterCard.HitPoints <= 0, 
-                //this.GameOverResponse, TriggerType.GameOver, TriggerTiming.Before);
-
             base.AddTrigger<DestroyCardAction>(dca => dca.CardToDestroy != null && dca.WasCardDestroyed 
                     && dca.CardToDestroy.Card == this.CharacterCard, 
                 GameOverResponse, TriggerType.GameOver, TriggerTiming.After);
-
-
-            //AddTrigger(ga => (ga is DestroyCardAction dca) && dca.CardToDestroy != null && dca.CardToDestroy.Card == this.CharacterCard, 
-            //(GameAction t) => GameOverResponse, TriggerType.DestroyCard, TriggerTiming.After);
-
-
-            //AddTrigger(d => d.WasCardDestroyed && d.CardToDestroy.Card == this.CharacterCard && d.CardSource != null, 
-            //(DestroyCardAction d) => GameOverResponse, 
-            //TriggerType.AddTokensToPool, TriggerTiming.After);
-
-            //base.AddWhenDestroyedTrigger(WhenDestroyedResponse, TriggerType.GameOver);
 
             base.AddTriggers();
         }
@@ -154,27 +125,9 @@ namespace Cauldron.Vector
             }
         }
 
-        /*
-        private IEnumerator GameOverResponse(DealDamageAction dda)
-        {
-            string ending = "Vector was destroyed while Super Virus was active!  The Heroes lose!";
-            
-            IEnumerator routine = base.GameController.GameOver(EndingResult.AlternateDefeat, ending, actionSource: dda, cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-        }
-        */
         private IEnumerator GameOverResponse(DestroyCardAction dca)
         {
-            string ending = "Vector was destroyed while Super Virus was active!  The Heroes lose!";
-
-            IEnumerator routine = base.GameController.GameOver(EndingResult.AlternateDefeat, ending, actionSource: dca, cardSource: GetCardSource());
+            IEnumerator routine = base.GameController.GameOver(EndingResult.AlternateDefeat, LoseMessage, actionSource: dca, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);

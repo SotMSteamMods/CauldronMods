@@ -1,8 +1,7 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
+
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-
 
 namespace Cauldron.Vector
 {

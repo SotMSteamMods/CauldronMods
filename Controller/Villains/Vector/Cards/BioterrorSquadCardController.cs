@@ -1,8 +1,8 @@
 ﻿using System.Collections;
+
 using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-
 
 namespace Cauldron.Vector
 {
@@ -78,7 +78,6 @@ namespace Cauldron.Vector
             {
                 base.GameController.ExhaustCoroutine(damageRoutine);
                 base.GameController.ExhaustCoroutine(damageRoutine2);
-
             }
         }
     }
