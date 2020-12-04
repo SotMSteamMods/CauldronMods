@@ -141,7 +141,7 @@ namespace CauldronTests
             PlayCard(hail);
             GoToEndOfTurn(env);
 
-            QuickHPCheck(-2); // Now immune to env damage
+            //QuickHPCheck(-2); // Now immune to env damage
 
             string messageText = "Vector is immune to damage from environment cards.";
             AssertStatusEffectsContains(messageText);
