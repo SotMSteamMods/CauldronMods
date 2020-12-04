@@ -12,7 +12,8 @@ namespace Cauldron.SuperstormAkela
 
         public PressureDropCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.PlayArea, new LinqCardCriteria((Card c) => IsLeftOfThisCard(c, base.Card), "card(s) left of this"));
+            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.PlayArea, new LinqCardCriteria((Card c) => IsRightOfThisCard(c, base.Card), "card(s) right of this"));
         }
 
         public override IEnumerator Play()

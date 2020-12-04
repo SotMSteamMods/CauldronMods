@@ -35,7 +35,6 @@ namespace Cauldron.SuperstormAkela
                 yield break;
             }
 
-            //BUG: If the card that is played has an on play effect that plays another card, it will also be caught by this Play to the Left
             SetCardProperty("PlayToTheLeft", true);
             coroutine = base.GameController.SelectCardsAndDoAction(DecisionMaker, new LinqCardCriteria((Card c) => storedCards.Contains(c)), SelectionType.PutIntoPlay, (Card c) => GameController.PlayCard(TurnTakerController, c, isPutIntoPlay: true, cardSource: GetCardSource()), numberOfCards: new int?(1), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)

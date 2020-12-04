@@ -215,6 +215,16 @@ namespace Cauldron.SuperstormAkela
             return new int?(numCardsToTheLeft);
         }
 
+        protected bool IsLeftOfThisCard(Card card, Card thisCard)
+        {
+            return FindCardPositionInLocation(TurnTaker.PlayArea, card) < FindCardPositionInLocation(TurnTaker.PlayArea, thisCard);
+        }
+
+        protected bool IsRightOfThisCard(Card card, Card thisCard)
+        {
+            return FindCardPositionInLocation(TurnTaker.PlayArea, card) > FindCardPositionInLocation(TurnTaker.PlayArea, thisCard);
+        }
+
         protected int? GetNumberOfCardsToTheRightOfThisOne(Card card)
         {
             if (!TurnTaker.PlayArea.HasCard(card))
