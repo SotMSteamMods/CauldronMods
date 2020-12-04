@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System.Collections;
 using System.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace Cauldron.Necro
 {
@@ -13,7 +14,7 @@ namespace Cauldron.Necro
             this.BaseHP = baseHP;
         }
 
-        public override IEnumerator Play()
+        public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             IEnumerator coroutine = base.GameController.ChangeMaximumHP(base.Card, BaseHP + GetNumberOfRitualsInPlay(), true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
@@ -24,9 +25,18 @@ namespace Cauldron.Necro
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
+            
+            coroutine = base.DeterminePlayLocation(storedResults, isPutIntoPlay, decisionSources, overridePlayArea, additionalTurnTakerCriteria);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
 
-        protected int BaseHP { get; private set; }
+        protected int BaseHP { get; }
     }
 }
