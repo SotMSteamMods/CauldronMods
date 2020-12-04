@@ -259,5 +259,19 @@ namespace CauldronTests
             //For each other player that draws cards this way, {Titan} deals himself 2 psychic damage.
             QuickHPCheckZero();
         }
+
+        [Test()]
+        public void TestHaplessShield()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard("PlummetingMonorail");
+            PlayCard("ElectroPulseExplosive");
+
+            QuickHPStorage(omnitron);
+            PlayCard("HaplessShield");
+            QuickHPCheck(-2);
+        }
     }
 }
