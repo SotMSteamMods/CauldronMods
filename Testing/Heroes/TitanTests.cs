@@ -190,5 +190,74 @@ namespace CauldronTests
             QuickHPCheck(0);
             AssertIsInPlay(prag);
         }
+
+        [Test()]
+        public void TestCombatPragmatismPower()
+        {
+            SetupGameController("Apostate", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(titan, 17);
+            Card prag = PlayCard("CombatPragmatism");
+
+            //{Titan} regains 3HP.
+            QuickHPStorage(titan);
+            UsePower(prag);
+            QuickHPCheck(3);
+        }
+
+        [Test()]
+        public void TestForbiddenArchivesAllDraw()
+        {
+            SetupGameController("Apostate", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card arch = PutInHand("ForbiddenArchives");
+            DecisionsYesNo = new Boolean[] { true, true, true, true };
+
+            //Each player may draw 2 cards now.
+            QuickHandStorage(titan, haka, bunker, scholar);
+            QuickHPStorage(titan);
+            PlayCard(arch);
+            QuickHandCheck(1, 2, 2, 2);
+            //For each other player that draws cards this way, {Titan} deals himself 2 psychic damage.
+            QuickHPCheck(-6);
+        }
+
+        [Test()]
+        public void TestForbiddenArchives2Draw()
+        {
+            SetupGameController("Omnitron", "Haka", "Bunker", "TheScholar", "Cauldron.Titan", "Megalopolis");
+            StartGame();
+
+            Card arch = PutInHand("ForbiddenArchives");
+            DecisionsYesNo = new Boolean[] { true, true, false, false };
+
+            //Each player may draw 2 cards now.
+            QuickHandStorage(titan, haka, bunker, scholar);
+            QuickHPStorage(titan);
+            PlayCard(arch);
+            QuickHandCheck(-1, 2, 2, 0);
+            //For each other player that draws cards this way, {Titan} deals himself 2 psychic damage.
+            QuickHPCheck(-4);
+        }
+
+        [Test()]
+        public void TestForbiddenArchives0Draw()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card arch = PutInHand("ForbiddenArchives");
+            DecisionYesNo = false;
+
+            //Each player may draw 2 cards now.
+            QuickHandStorage(titan, haka, bunker, scholar);
+            QuickHPStorage(titan);
+            PlayCard(arch);
+            QuickHandCheck(-1, 0, 0, 0);
+            //For each other player that draws cards this way, {Titan} deals himself 2 psychic damage.
+            QuickHPCheckZero();
+        }
     }
 }
