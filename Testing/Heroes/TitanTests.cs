@@ -360,5 +360,96 @@ namespace CauldronTests
             QuickHPCheck(-5);
             AssertInTrash(tform);
         }
+
+        [Test()]
+        public void TestMisbehaviorReveal0()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card tform = PutOnDeck("Titanform");
+            Card chap = PutOnDeck("TheChaplain");
+            Card prag = PutOnDeck("CombatPragmatism");
+            SetHitPoints(titan, 17);
+
+            QuickHPStorage(titan);
+            PlayCard("Misbehavior");
+            //Reveal up to 3 cards from the top of your deck. Put 1 of them into play or into your hand. Put the rest into your trash.
+            AssertInDeck(new Card[] { tform, chap, prag });
+            //{Titan} regains X HP, where X is 3 minus the number of cards revealed this way.
+            QuickHPCheck(3);
+        }
+
+        [Test()]
+        public void TestMisbehaviorReveal1ToHand()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card tform = PutOnDeck("Titanform");
+            Card chap = PutOnDeck("TheChaplain");
+            Card prag = PutOnDeck("CombatPragmatism");
+            SetHitPoints(titan, 17);
+
+            DecisionSelectNumber = 1;
+            DecisionMoveCardDestination = new MoveCardDestination(titan.HeroTurnTaker.Hand);
+
+            QuickHPStorage(titan);
+            PlayCard("Misbehavior");
+            //Reveal up to 3 cards from the top of your deck. Put 1 of them into play or into your hand. Put the rest into your trash.
+            AssertInDeck(new Card[] { tform, chap });
+            AssertInHand(prag);
+            //{Titan} regains X HP, where X is 3 minus the number of cards revealed this way.
+            QuickHPCheck(2);
+        }
+
+        [Test()]
+        public void TestMisbehaviorReveal2ToPlay()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card tform = PutOnDeck("Titanform");
+            Card chap = PutOnDeck("TheChaplain");
+            Card prag = PutOnDeck("CombatPragmatism");
+            SetHitPoints(titan, 17);
+
+            DecisionSelectNumber = 2;
+            DecisionMoveCardDestination = new MoveCardDestination(titan.HeroTurnTaker.PlayArea);
+            DecisionSelectCard = chap;
+
+            QuickHPStorage(titan);
+            PlayCard("Misbehavior");
+            //Reveal up to 3 cards from the top of your deck. Put 1 of them into play or into your hand. Put the rest into your trash.
+            AssertInDeck(tform);
+            AssertInTrash(prag);
+            AssertIsInPlay(chap);
+            //{Titan} regains X HP, where X is 3 minus the number of cards revealed this way.
+            QuickHPCheck(1);
+        }
+
+        [Test()]
+        public void TestMisbehaviorReveal3ToPlay()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card tform = PutOnDeck("Titanform");
+            Card chap = PutOnDeck("TheChaplain");
+            Card prag = PutOnDeck("CombatPragmatism");
+            SetHitPoints(titan, 17);
+
+            DecisionSelectNumber = 3;
+            DecisionMoveCardDestination = new MoveCardDestination(titan.HeroTurnTaker.PlayArea);
+            DecisionSelectCard = chap;
+
+            QuickHPStorage(titan);
+            PlayCard("Misbehavior");
+            //Reveal up to 3 cards from the top of your deck. Put 1 of them into play or into your hand. Put the rest into your trash.
+            AssertInTrash(new Card[] { prag, tform });
+            AssertIsInPlay(chap);
+            //{Titan} regains X HP, where X is 3 minus the number of cards revealed this way.
+            QuickHPCheck(0);
+        }
     }
 }

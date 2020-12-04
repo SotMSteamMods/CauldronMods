@@ -31,7 +31,7 @@ namespace Cauldron.Titan
 
             SelectNumberDecision selectNumberDecision = storedNumber.FirstOrDefault<SelectNumberDecision>();
             //...cards from the top of your deck. Put 1 of them into play or into your hand. Put the rest into your trash.
-            coroutine = base.RevealCards_SelectSome_MoveThem_DiscardTheRest(base.HeroTurnTakerController, base.TurnTakerController, base.TurnTaker.Deck, (Card c) => true, selectNumberDecision.SelectedNumber ?? 0, 1, false, false, true, "revealed card");
+            coroutine = base.RevealCards_SelectSome_MoveThem_DiscardTheRest(base.HeroTurnTakerController, base.TurnTakerController, base.TurnTaker.Deck, (Card c) => true, selectNumberDecision.SelectedNumber ?? 0, 1, true, true, true, "revealed card");
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
