@@ -57,6 +57,14 @@
 			"flippedAdvancedIcons": [
 				"AddToken"
 			],
+			"tokenPools":[              {  
+               "identifier":"StormPool",
+               "name":"Storm Pool",
+               "initialValue":0,
+               "minimumValue":0,
+               "color":"92b6ac"
+            }         ],
+
 			"difficulty": 4,
 			"openingLines": {
 				"LadyOfTheWoodCharacter": "--You.",

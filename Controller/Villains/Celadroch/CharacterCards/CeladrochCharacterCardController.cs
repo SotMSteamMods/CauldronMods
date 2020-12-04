@@ -23,12 +23,12 @@ namespace Cauldron.Celadroch
 
         public override void AddSideTriggers()
         {
-            // Front side (Mural of the Forest)
+            // Front side (Black Wind Rising)
             if (!base.Card.IsFlipped)
             {
 
             }
-            // Flipped side (Unmarked Dryad)
+            // Flipped side (The Dark Mountain)
             else
             {
 

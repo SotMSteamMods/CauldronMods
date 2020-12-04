@@ -48,8 +48,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controller\Villains\Celadroch\CardSubClasses\" />
-  </ItemGroup>
-
 </Project>
