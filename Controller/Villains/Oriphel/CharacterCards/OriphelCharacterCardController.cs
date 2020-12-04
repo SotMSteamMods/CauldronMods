@@ -17,8 +17,15 @@ namespace Cauldron.Oriphel
             if(!Card.IsFlipped)
             {
                 //"Whenever a villain relic enters play, play the top card of the villain deck.",
+                AddSideTrigger(AddTrigger((CardEntersPlayAction cep) => cep.CardEnteringPlay != null && cep.CardEnteringPlay.IsRelic && IsVillain(cep.CardEnteringPlay),
+                                                PlayTheTopCardOfTheVillainDeckResponse,
+                                                TriggerType.PlayCard,
+                                                TriggerTiming.After));
                 //"Whenever a villain ongoing card enters play, destroy it and play the top card of the villain deck."
-
+                AddSideTrigger(AddTrigger((CardEntersPlayAction cep) => cep.CardEnteringPlay != null && cep.CardEnteringPlay.IsOngoing && IsVillain(cep.CardEnteringPlay),
+                                DestroyOngoingAndPlayCardResponse,
+                                new TriggerType[] { TriggerType.PlayCard, TriggerType.DestroyCard },
+                                TriggerTiming.After));
             }
             else
             {
@@ -29,6 +36,29 @@ namespace Cauldron.Oriphel
 
             }
             AddDefeatedIfDestroyedTriggers();
+        }
+
+        private IEnumerator DestroyOngoingAndPlayCardResponse(CardEntersPlayAction cep)
+        {
+            IEnumerator coroutine = GameController.DestroyCard(DecisionMaker, cep.CardEnteringPlay, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            coroutine = PlayTheTopCardOfTheVillainDeckResponse(cep);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
     }
 }

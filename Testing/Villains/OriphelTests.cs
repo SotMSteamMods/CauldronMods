@@ -175,5 +175,30 @@ namespace CauldronTests
 
             AssertNumberOfCardsInPlay((Card c) => IsGuardian(c), totalHeroes - 2);
         }
+        [Test]
+        public void TestJadePlaysFromRelics()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            Card goon = PutOnDeck("MejiNomad");
+            PlayCard("MoonShardkey");
+
+            AssertIsInPlay(goon);
+        }
+        [Test]
+        public void TestJadeTriggerHandlesOngoing()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            Card goon = PutOnDeck("MejiNomad");
+            Card grand = PlayCard("GrandOriphel");
+
+            AssertIsInPlay(goon);
+            AssertInTrash(grand);
+        }
     }
 }
