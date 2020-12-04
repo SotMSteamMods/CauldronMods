@@ -91,10 +91,7 @@ namespace Cauldron.Vector
                 //base.SideTriggers.Add(base.AddReduceDamageTrigger(dda => dda.DamageSource != null && dda.CardSource != null 
                 // && dda.Target == base.CharacterCard, AmountToReduce));
             }
-
-            AddDefeatedIfDestroyedTriggers();
         }
-
 
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
