@@ -26,5 +26,20 @@ namespace Cauldron.Oriphel
         {
             return GameController.DoesCardContainKeyword(c, "transformation");
         }
+
+        protected Card oriphelIfInPlay
+        {
+            get
+            {
+                return CharacterCard.Title == "Oriphel" ? CharacterCard : null;
+            }
+        }
+        protected Card jadeIfInPlay
+        {
+            get
+            {
+                return CharacterCard.Title == "Jade" ? CharacterCard : null;
+            }
+        }
     }
 }

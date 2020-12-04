@@ -127,8 +127,9 @@ namespace CauldronTests
             StartGame();
             CleanupStartingCards();
 
-            Card key = PlayCard(element + "Shardkey");
             Card goon = PutOnDeck("MejiNomad");
+            Card key = PlayCard(element + "Shardkey");
+            PutOnDeck(oriphel, goon);
 
             GoToStartOfTurn(oriphel);
             AssertOnBottomOfDeck(goon);
@@ -288,6 +289,82 @@ namespace CauldronTests
 
             PlayCard("WreckingUppercut");
             AssertNotFlipped(oriphel);
+        }
+        [Test]
+        public void TestGrandOriphelDestroyCondition()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "Tempest", "Knyfe", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            GoToEndOfTurn(knyfe);
+            FlipCard(oriphel);
+
+            Card grand = PutOnDeck("GrandOriphel");
+            PlayCard("MoonShardkey");
+            GoToEndOfTurn(oriphel);
+            AssertIsInPlay(grand);
+
+            GoToStartOfTurn(oriphel);
+            AssertInTrash(grand);
+        }
+        [Test]
+        public void TestGrandOriphelDamageModifiers()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "Tempest", "Knyfe", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            FlipCard(oriphel);
+
+            PlayCard("GrandOriphel");
+
+            QuickHPStorage(oriphel, legacy);
+            DealDamage(legacy, oriphel, 3, DTM);
+            DealDamage(oriphel, legacy, 3, DTM);
+
+            //Oriphel gets -2 total, 1 from self and 1 extra from Grand
+            QuickHPCheck(-1, -4);
+        }
+        [Test]
+        public void TestGrandOriphelEndOfTurnDamage()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "Tempest", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            FlipCard(oriphel);
+
+            PlayCard("GrandOriphel");
+            PlayCard("TaMoko");
+
+            QuickHPStorage(legacy, ra, tempest, haka);
+            GoToEndOfTurn(oriphel);
+
+            //Everyone takes (1+1)x2, for a total of 4
+            //Legacy and Haka also take the standard EOT hits for 3+1 each, for a total of 8
+            //Haka reduces each hit by 1, for a result of 5
+            QuickHPCheck(-8, -4, -4, -5);
+        }
+        [Test]
+        public void TestGrandOriphelNotAppliedToJade()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "Tempest", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            FlipCard(oriphel);
+            PlayCard("GrandOriphel");
+            FlipCard(oriphel);
+
+            QuickHPStorage(oriphel, legacy);
+            DealDamage(legacy, oriphel, 2, DTM);
+            DealDamage(oriphel, legacy, 2, DTM);
+
+            QuickHPCheck(-2, -2);
+
+            GoToEndOfTurn(oriphel);
+            QuickHPCheck(0, 0);
         }
     }
 }
