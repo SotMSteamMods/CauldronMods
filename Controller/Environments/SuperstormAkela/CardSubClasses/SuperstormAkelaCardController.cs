@@ -211,7 +211,6 @@ namespace Cauldron.SuperstormAkela
                 return null;
             }
             int position = FindCardPositionInLocation(TurnTaker.PlayArea, card);
-            List<Card> orderedPlayArea = GetOrderedCardsInLocation(TurnTaker.PlayArea).ToList();
             int numCardsToTheLeft = position;
             return new int?(numCardsToTheLeft);
         }
@@ -224,7 +223,7 @@ namespace Cauldron.SuperstormAkela
             }
             int position = FindCardPositionInLocation(TurnTaker.PlayArea, card);
             List<Card> orderedPlayArea = GetOrderedCardsInLocation(TurnTaker.PlayArea).ToList();
-            int numCardsToTheRight = orderedPlayArea.Count() - position + 1;
+            int numCardsToTheRight = orderedPlayArea.Count() - position - 1;
             return new int?(numCardsToTheRight);
         }
 

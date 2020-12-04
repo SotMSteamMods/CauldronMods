@@ -161,6 +161,7 @@ namespace CauldronTests
 
             GoToPlayCardPhase(superstorm);
             PutInTrash("Scatterburst");
+            PutInTrash("GeogravLocus");
             Card currents = PlayCard("RideTheCurrents");
             IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c)).Take(4);
             PlayCards(cardsToPlay);
@@ -812,6 +813,51 @@ namespace CauldronTests
             DealDamage(ra, (Card c) => c.IsTarget, 4, DamageType.Fire);
             QuickHPCheck(-4, -4, -4, -4, -3);
 
+
+
+        }
+
+        [Test()]
+        public void TestPressureDrop_Discard()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela" });
+            StartGame();
+
+            SetHitPoints(new TurnTakerController[] { ra, legacy }, 10);
+            GoToPlayCardPhase(superstorm);
+            Card geograv = PlayCard("GeogravLocus");
+            Card indra = PlayCard("GeminiIndra");
+
+            QuickHandStorage(legacy);
+            SelectCardsForNextDecision( legacy.CharacterCard, legacy.HeroTurnTaker.Hand.Cards.ElementAt(0), legacy.HeroTurnTaker.Hand.Cards.ElementAt(1));
+            PrintPlayAreaPositions(superstorm.TurnTaker);
+            //When this card enters play, the hero with the lowest HP must discard X cards, where X is the number of environment cards to the left of this one.
+            Card pressure = PlayCard("PressureDrop");
+            QuickHandCheck(-2);
+            
+        }
+
+        [Test()]
+        public void TestPressureDrop_Destroy()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela" });
+            StartGame();
+
+            GoToPlayCardPhase(superstorm);
+            PutInTrash("Scatterburst");
+            PutOnDeck("TheStaffOfRa");
+            Card pressure = PlayCard("PressureDrop");
+            PlayCard("RideTheCurrents");
+            IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c)).Take(4);
+            PlayCards(cardsToPlay);
+            GoToEndOfTurn(superstorm);
+            Card cardToMoveNextTo = GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(GetNumberOfCardsInPlay(superstorm) - 3);
+            DecisionSelectCards = new Card[] { pressure, cardToMoveNextTo };
+            DecisionAutoDecideIfAble = true;
+            GoToStartOfTurn(baron);
+            PrintPlayAreaPositions(superstorm.TurnTaker);
+            GoToStartOfTurn(superstorm);
+            AssertInTrash(pressure);
 
 
         }
