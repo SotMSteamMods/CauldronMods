@@ -9,7 +9,7 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    class SwarmEaterTests : BaseTest
+    public class SwarmEaterTests : BaseTest
     {
         protected TurnTakerController swarm { get { return FindVillain("SwarmEater"); } }
 
@@ -20,12 +20,6 @@ namespace CauldronTests
                 var card = GetCard(id);
                 AssertCardHasKeyword(card, keyword, false);
             }
-        }
-
-        private void SetupIncap(TurnTakerController source, Card target)
-        {
-            SetHitPoints(target, 1);
-            DealDamage(source, target, 2, DamageType.Melee);
         }
 
         protected void AddCannotDealNextDamageTrigger(TurnTakerController ttc, Card card)
