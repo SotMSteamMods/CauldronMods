@@ -9,7 +9,7 @@
         {
             "identifier": "OriphelCharacter",
             "count": 1,
-            "title": "Oriphel",
+            "title": "Jade",
             "keywords": [
                 "villain"
             ],
@@ -19,11 +19,11 @@
             "character": true,
             "hitpoints": 80,
             "nemesisIdentifiers": [
-                "Mailchae"
+                "Malichae"
             ],
             "setup": [
                 "At the start of the game, put {Oriphel}'s villain character cards into play, 'Shardwalker' side up.",
-		"Reveal cards from the top of the villain deck until {H - 2} guardians are revealed and put them into play. Shuffle the villain deck."
+		        "Reveal cards from the top of the villain deck until {H - 2} guardians are revealed and put them into play. Shuffle the villain deck."
             ],
             "gameplay": [
                 "Whenever a villain relic enters play, play the top card of the villain deck.",
@@ -36,6 +36,7 @@
             "advancedIcons": [
                 "IncreaseDamageDealt"
             ],
+            "flippedTitle": "Oriphel",
             "flippedBody": "Summoned Marid",
             "flippedGameplay": [
                 "When {Oriphel} is flipped to this side, shuffle all relics in the villain trash into the villain deck.",
