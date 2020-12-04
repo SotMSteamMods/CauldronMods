@@ -942,6 +942,32 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestVenomAugAbsorb()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+
+            DestroyCards(new Card[] { stalker, fire });
+            Card venom = PlayCard("VenomAug");
+
+            DealDamage(swarm, venom, 75, DamageType.Melee);
+            AssertUnderCard(GetCard("AbsorbedNanites"), venom);
+
+            //Absorb: Whenever {SwarmEater} deals damage to another target, that target deals itself 1 toxic damage.
+            
+            QuickHPStorage(haka);
+            DealDamage(swarm, haka, 2, DamageType.Melee);
+
+            // 2 damage from Swarm, +2 from Pursuit, +1 Haka damaging self from Venom Aug
+            QuickHPCheck(-5);
+        }
+
+
+        [Test()]
         public void TestVenomAugSecondaryDamageSource()
         {
             SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "TheCelestialTribunal");
