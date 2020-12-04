@@ -423,16 +423,89 @@ namespace CauldronTests
             IEnumerable<Card> envCardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.Cards.Contains(c) && c != scatterburst).Take(5);
             PlayCards(envCardsToPlay);
 
-            QuickShuffleStorage(baron.TurnTaker.PlayArea, superstorm.TurnTaker.PlayArea);
+            //On the turn this card enters play, after all other end of turn effects have taken place, shuffle all non-character villain cards from the villain play area and replace them in a random order. 
+            //Do the same for environment cards in the environment play area.
+            //Then, each hero target regains 1HP and this card is destroyed.
             PrintPlayAreaPositions(baron.TurnTaker);
             PrintPlayAreaPositions(superstorm.TurnTaker);
             QuickHPStorage(baron, ra, legacy, haka, tachyon);
             GoToNextTurn();
-            //QuickShuffleCheck(1, 1);
             QuickHPCheck(0, 1, 1, 1, 1);
             PrintPlayAreaPositions(baron.TurnTaker);
             PrintPlayAreaPositions(superstorm.TurnTaker);
        }
+
+        [Test()]
+        public void TestToppledSkyscraperRedirect()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.SuperstormAkela");
+            StartGame();
+
+            //swap mdp for battalion
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            Card battalion = PlayCard("BladeBattalion");
+
+            //The first time a villain target would be dealt damage each turn, redirect it to this card.
+            Card toppled = PlayCard("ToppledSkyscraper");
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, tachyon.CharacterCard, toppled);
+            DealDamage(ra, (Card c) => c.IsTarget, 1, DamageType.Toxic);
+            QuickHPCheck(0, 0, -1, -1, -1, -1, -3);
+
+            //only first damage
+            QuickHPUpdate();
+            DealDamage(ra, (Card c) => c.IsTarget, 1, DamageType.Toxic);
+            QuickHPCheck(-1, -1, -1, -1, -1, -1, -1);
+
+            //resets on each turn
+            GoToNextTurn();
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, tachyon.CharacterCard, toppled);
+            DealDamage(ra, (Card c) => c.IsTarget, 1, DamageType.Toxic);
+            QuickHPCheck(0, 0, -1, -1, -1, -1, -3);
+
+        }
+
+        [Test()]
+        public void TestToppledSkyscraperChangeOrder()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.SuperstormAkela");
+            StartGame();
+
+
+
+            //At the start of each hero’s turn, they may choose what order to perform that turn's play, power, and draw phases in.
+            Card toppled = PlayCard("ToppledSkyscraper");
+            GoToStartOfTurn(ra);
+            DecisionSelectTurnPhases = new TurnPhase[] { ra.HeroTurnTaker.TurnPhases.ElementAt(3), ra.HeroTurnTaker.TurnPhases.ElementAt(1) };
+            EnterNextTurnPhase();
+            AssertCurrentTurnPhase(ra, Phase.DrawCard);
+            EnterNextTurnPhase();
+            AssertCurrentTurnPhase(ra, Phase.PlayCard);
+            EnterNextTurnPhase();
+            AssertCurrentTurnPhase(ra, Phase.UsePower);
+            EnterNextTurnPhase();
+            AssertCurrentTurnPhase(ra, Phase.End);
+
+        }
+
+        [Test()]
+        public void TestToppledSkyscraper_IncappedHero()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.SuperstormAkela");
+            StartGame();
+
+
+            DealDamage(baron, ra, 100, DamageType.Melee);
+            AssertIncapacitated(ra);
+
+            //At the start of each hero’s turn, they may choose what order to perform that turn's play, power, and draw phases in.
+            Card toppled = PlayCard("ToppledSkyscraper");
+            GoToStartOfTurn(ra);
+            EnterNextTurnPhase();
+            AssertCurrentTurnPhase(ra, Phase.UseIncapacitatedAbility);
+            EnterNextTurnPhase();
+            AssertCurrentTurnPhase(ra, Phase.End);
+
+        }
 
 
 

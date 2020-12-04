@@ -90,6 +90,8 @@ namespace Handelabra.Sentinels.UnitTest
         protected int DecisionSelectLocationsIndex { get; set; }
         protected bool DecisionAutoDecideIfAble { get; set; }
         protected TurnPhase DecisionSelectTurnPhase { get; set; }
+        protected TurnPhase[] DecisionSelectTurnPhases { get; set; }
+        protected int DecisionSelectTurnPhasesIndex { get; set; }
         protected string[] DecisionSelectFromBoxIdentifiers { get; set; }
         protected string DecisionSelectFromBoxTurnTakerIdentifier { get; set; }
         protected int DecisionSelectFromBoxIndex { get; set; }
@@ -379,6 +381,8 @@ namespace Handelabra.Sentinels.UnitTest
             DecisionAutoDecideIfAble = false;
             NumberOfDecisionsAnswered = 0;
             DecisionSelectTurnPhase = null;
+            DecisionSelectTurnPhases = null;
+            DecisionSelectTurnPhasesIndex = 0;
             DecisionSelectFromBoxIdentifiers = null;
             DecisionSelectFromBoxTurnTakerIdentifier = null;
             DecisionSelectFromBoxIndex = 0;
@@ -1553,6 +1557,16 @@ namespace Handelabra.Sentinels.UnitTest
                         }
 
                         selectPhase.SelectedPhase = this.DecisionSelectTurnPhase;
+                    }
+                    if (this.DecisionSelectTurnPhases != null)
+                    {
+                        var phase = this.DecisionSelectTurnPhases[this.DecisionSelectTurnPhasesIndex];
+                        if (!selectPhase.Choices.Contains(phase))
+                        {
+                            Assert.Fail("The SelectTurnPhaseDecision does not contain the phase: " + phase);
+                        }
+                        selectPhase.SelectedPhase = phase;
+                        this.DecisionSelectTurnPhasesIndex++;
                     }
                     else
                     {
