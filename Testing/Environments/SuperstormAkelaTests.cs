@@ -538,12 +538,76 @@ namespace CauldronTests
 
             GoToPlayCardPhase(superstorm);
             Card edifice = GetCard("AscendedEdifice");
+            Card indra = PutOnDeck("GeminiIndra");
 
             //Reduce damage dealt to villain cards by 1.
             PlayCard(edifice);
             QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, tachyon.CharacterCard, edifice);
-            DealDamage(ra, (Card c) => c.IsTarget, 2, DamageType.Toxic);
+            DealDamage(haka, (Card c) => c.IsTarget, 2, DamageType.Toxic);
             QuickHPCheck(-1, -1, -2, -2, -2, -2, -2);
+
+        }
+
+        [Test()]
+        public void TestCutLoose_IncreaseDamage()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.SuperstormAkela");
+            StartGame();
+            //swap mdp for battalion
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            Card battalion = PlayCard("BladeBattalion");
+
+            GoToPlayCardPhase(superstorm);
+            Card cutLoose = PlayCard("CutLoose");
+            Card indra = PlayCard("GeminiIndra");
+
+            //Increase all damage dealt by 1.
+
+            //check villain
+            QuickHPStorage(haka);
+            DealDamage(baron, haka, 1, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //check hero
+            QuickHPUpdate();
+            DealDamage(ra, haka, 1, DamageType.Fire);
+            QuickHPCheck(-2);
+
+            //check environment
+            QuickHPUpdate();
+            DealDamage(indra, haka.CharacterCard, 1, DamageType.Melee);
+            QuickHPCheck(-2);
+
+        }
+
+        [Test()]
+        public void TestCutLoose_TargetDestroyed()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.SuperstormAkela");
+            StartGame();
+            //swap mdp for battalion
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            Card battalion = PlayCard("BladeBattalion");
+
+            GoToPlayCardPhase(superstorm);
+            Card cutLoose = PlayCard("CutLoose");
+
+            //When a hero destroys a target, this card deals that hero {H} projectile damage and is destroyed
+            //H=4 +1 from cut loose buff
+
+            //don't trigger on villain destruction
+            Card indra = PlayCard("GeminiIndra");
+            QuickHPStorage(baron);
+            DestroyCard(indra, baron.CharacterCard);
+            QuickHPCheckZero();
+            AssertInPlayArea(superstorm, cutLoose);
+
+            //trigger on hero destruction
+            PlayCard(indra);
+            QuickHPStorage(haka);
+            DestroyCard(indra, haka.CharacterCard);
+            QuickHPCheck(-5);
+            AssertInTrash(superstorm, cutLoose);
 
         }
 
