@@ -451,5 +451,69 @@ namespace CauldronTests
             //{Titan} regains X HP, where X is 3 minus the number of cards revealed this way.
             QuickHPCheck(0);
         }
+
+        [Test()]
+        public void TestMoltenViensSearchDeck()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card tform = GetCard("Titanform");
+            Card chap = PutInHand("TheChaplain");
+            SetHitPoints(titan, 17);
+            DecisionYesNo = true;
+            DecisionSelectCard = chap;
+
+            QuickHPStorage(titan);
+            PlayCard("MoltenVeins");
+            //{Titan} regains 2HP.
+            QuickHPCheck(2);
+            //You may search your deck and trash for a copy of the card Titanform and put it into your hand. If you searched your deck, shuffle it.
+            AssertInHand(tform);
+            //You may play a card.
+            AssertIsInPlay(chap);
+        }
+
+        [Test()]
+        public void TestMoltenViensSearchTrash()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card tform = PutInTrash("Titanform");
+            Card chap = PutInHand("TheChaplain");
+            SetHitPoints(titan, 17);
+            DecisionYesNo = true;
+            DecisionSelectCard = chap;
+
+            QuickHPStorage(titan);
+            PlayCard("MoltenVeins");
+            //{Titan} regains 2HP.
+            QuickHPCheck(2);
+            //You may search your deck and trash for a copy of the card Titanform and put it into your hand. If you searched your deck, shuffle it.
+            AssertInHand(tform);
+            //You may play a card.
+            AssertIsInPlay(chap);
+        }
+
+        [Test()]
+        public void TestMoltenViensDontSearchOrPlay()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card tform = PutInTrash("Titanform");
+            Card veins = PutOnDeck("MoltenVeins");
+            SetHitPoints(titan, 17);
+            DecisionYesNo = false;
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+
+            QuickHPStorage(titan);
+            QuickHandStorage(titan);
+            PlayCard(veins);
+            //{Titan} regains 2HP.
+            QuickHPCheck(2);
+            QuickHandCheck(0);
+        }
     }
 }
