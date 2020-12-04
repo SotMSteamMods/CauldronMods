@@ -16,7 +16,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
 	"sourceSize": {"w":689,"h":507}
 },
-"CalderochCharacter.png":
+"CeladrochCharacter.png":
 {
 	"frame": {"x":1384,"y":0,"w":680,"h":988},
 	"rotated": false,
@@ -24,7 +24,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
 	"sourceSize": {"w":680,"h":988}
 },
-"CalderochCharacterBack.png":
+"CeladrochCharacterBack.png":
 {
 	"frame": {"x":2067,"y":0,"w":680,"h":988},
 	"rotated": false,
@@ -32,7 +32,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
 	"sourceSize": {"w":680,"h":988}
 },
-"CalderochDeckBack.png":
+"CeladrochDeckBack.png":
 {
 	"frame": {"x":2750,"y":0,"w":680,"h":988},
 	"rotated": false,
@@ -211,7 +211,7 @@
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "CalderochAtlas0.png",
+	"image": "CeladrochAtlas0.png",
 	"format": "RGBA8888",
 	"size": {"w":4096,"h":4096},
 	"scale": "1",
