@@ -673,6 +673,8 @@ namespace CauldronTests
             AssertIsInPlay(foamcore);
 
             //If there are no Chemical Triggers in play, reduce damage dealt to the hero target with the lowest HP by 1.
+            AssertCardSpecialString(foamcore, 0, "Hero target with the lowest HP: Haka.");
+
             //haka has the lowest hitpoints
             QuickHPStorage(haka.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard);
             DealDamage(baron, haka, 4, DamageType.Melee);
@@ -713,6 +715,7 @@ namespace CauldronTests
             AssertIsInPlay(foamcore);
 
             //If there are no Chemical Triggers in play, reduce damage dealt to the hero target with the lowest HP by 1.
+            AssertCardSpecialString(foamcore, 0, "Hero targets with the lowest HP: Legacy, Haka.");
 
             //choose haka as the lowest hitpoints when asked
             DecisionYesNo = true;
