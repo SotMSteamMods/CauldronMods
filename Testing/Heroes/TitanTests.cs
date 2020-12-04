@@ -310,7 +310,8 @@ namespace CauldronTests
             Card drone0 = PlayCard("S83AssaultDrone", 0);
             Card drone1 = PlayCard("S83AssaultDrone", 1);
             Card tform = PutInHand("Titanform");
-            DecisionYesNo = true;
+            DecisionsYesNo = new Boolean[] { true, false, false, false, };
+
 
             //If Titanform is in your hand you may play it now.
             //{Titan} deals 1 target 4 infernal damage and each other target from that deck 1 projectile damage.
