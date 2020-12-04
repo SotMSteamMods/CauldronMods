@@ -1,6 +1,5 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-using System;
 using System.Collections;
 
 namespace Cauldron.SwarmEater
@@ -9,7 +8,6 @@ namespace Cauldron.SwarmEater
     {
         public NaniteCorruptionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override IEnumerator Play()
@@ -25,7 +23,7 @@ namespace Cauldron.SwarmEater
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             //{SwarmEater} deals the {H} targets other than itself with the lowest HP 2 projectile damage each.
-            coroutine = base.DealDamageToLowestHP(base.CharacterCard, 1, (Card c) => c != base.CharacterCard, (Card c) => 2, DamageType.Melee, numberOfTargets: Game.H);
+            coroutine = base.DealDamageToLowestHP(base.CharacterCard, 1, (Card c) => c.IsTarget && c != base.CharacterCard, (Card c) => 2, DamageType.Melee, numberOfTargets: Game.H);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -34,7 +32,6 @@ namespace Cauldron.SwarmEater
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
         }
     }
 }
