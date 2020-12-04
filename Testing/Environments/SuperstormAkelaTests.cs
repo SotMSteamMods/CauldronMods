@@ -771,6 +771,50 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestGeogravLocus_EndOfTurn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela");
+            StartGame();
+            GoToPlayCardPhase(superstorm);
+            Card locus = GetCard("GeogravLocus");
+            Card pressure = PutOnDeck("PressureDrop");
+            PlayCard(locus);
+            //At the end of the environment turn, play the top card of the environment deck.
+            GoToEndOfTurn(superstorm);
+            AssertInPlayArea(superstorm, pressure);
+
+        }
+
+        [Test()]
+        public void TestGeogravLocus_ReduceDamage()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela" });
+            StartGame();
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            GoToPlayCardPhase(superstorm);
+            Card geograv = GetCard("GeogravLocus");
+            PlayCard("PressureDrop");
+            Card indra = PlayCard("GeminiIndra");
+            PlayCard(geograv);
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, geograv);
+           //Reduce damage dealt to this card by X, where X is the number of environment cards to the left of this one.
+           //X = 2
+            PrintPlayAreaPositions(superstorm.TurnTaker);
+            DealDamage(ra, (Card c) => c.IsTarget, 4, DamageType.Fire);
+            QuickHPCheck(-4, -4, -4, -4, -2);
+
+            //check dynamic
+            DestroyCard(indra, baron.CharacterCard);
+            QuickHPUpdate();
+            PrintPlayAreaPositions(superstorm.TurnTaker);
+            DealDamage(ra, (Card c) => c.IsTarget, 4, DamageType.Fire);
+            QuickHPCheck(-4, -4, -4, -4, -3);
+
+
+
+        }
 
 
 
