@@ -146,7 +146,11 @@ namespace CauldronTests
             "MoveCountdownTokenDown",
             "MoveCountdownTokenUp",
             "RemoveDevastation",
-            "AddDevastation"
+            "AddDevastation",
+
+            //not supoorted yet, but planned to be added
+            "ImmuneToDamageRadiant",
+            "DealDAmageRadiant",
         };
 
         #endregion Data
@@ -226,20 +230,34 @@ namespace CauldronTests
                 }
 
                 var name = jsonObject.GetString("name");
-                var array = jsonObject.GetArray("cards");
-                foreach (var jsonvalue in array)
+                List<JSONValue> cards = new List<JSONValue>();
+                cards.AddRange(jsonObject.GetArray("cards"));
+                cards.AddRange(jsonObject.GetArray("notPromoCards") ?? Enumerable.Empty<JSONValue>());
+                cards.AddRange(jsonObject.GetArray("promoCards") ?? Enumerable.Empty<JSONValue>());
+
+                List<string> errors = new List<string>();
+
+                foreach (var jsonvalue in cards)
                 {
                     var cardObject = jsonvalue.Obj;
-                    string id = cardObject.GetString("identifier");
+                    string id = cardObject.GetString("title") ?? cardObject.GetString("Title") ??
+                        cardObject.GetString("promoIdentifer") ?? cardObject.GetString("identifer");
                     List<string> icons = new List<string>();
                     icons.AddRange(ReadStrings(cardObject, "icons"));
                     icons.AddRange(ReadStrings(cardObject, "advancedIcons"));
                     icons.AddRange(ReadStrings(cardObject, "challengeIcons"));
 
-                    Assert.IsTrue(icons.Count <= 4, "{0}:{1} has more than 4 icons.  Only 4 icons will be displayed. icons: {2}", name, id, string.Join(",", icons.ToArray()));
+                    if (icons.Count > 4)
+                    {
+                        errors.Add(string.Format("Deck: \"{0}\", Card \"{1}\" has more than 4 icons.  Only 4 icons will be displayed. icons: {2}", name, id, string.Join(", ", icons.ToArray())));
+                    }
+
                     foreach (string icon in icons)
                     {
-                        Assert.IsTrue(smallIcons.Contains(icon), "{0}:{1} has icon '{2}' that is not in the master list.", name, id, icon);
+                        if(!smallIcons.Contains(icon))
+                        {
+                            errors.Add(string.Format("Deck: \"{0}\", Card \"{1}\" has icon '{2}' that is not in the master list.", name, id, icon));
+                        }
                     }
 
                     icons.Clear();
@@ -247,12 +265,22 @@ namespace CauldronTests
                     icons.AddRange(ReadStrings(cardObject, "flippedAdvancedIcons"));
                     icons.AddRange(ReadStrings(cardObject, "flippedChallengeIcons"));
 
-                    Assert.IsTrue(icons.Count <= 4, "{0}:{1} flipped side has more than 4 icons.  Only 4 icons will be displayed. icons: {2}", name, id, string.Join(",", icons.ToArray()));
+                    if (icons.Count > 4)
+                    {
+                        errors.Add(string.Format("Deck: \"{0}\", Card \"{1}\" has more than flipped 4 icons.  Only 4 icons will be displayed. icons: {2}", name, id, string.Join(", ", icons.ToArray())));
+                    }
+
+
                     foreach (string icon in icons)
                     {
-                        Assert.IsTrue(smallIcons.Contains(icon), "{0}:{1} has icon '{2}' that is not in the master list.", name, id, icon);
+                        if (!smallIcons.Contains(icon))
+                        {
+                            errors.Add(string.Format("Deck: \"{0}\", Card \"{1}\" has flipped icon '{2}' that is not in the master list.", name, id, icon));
+                        }
                     }
                 }
+
+                Assert.IsTrue(errors.Count == 0, string.Join(Environment.NewLine + "  ", errors.ToArray()));
             }
             Console.WriteLine("Done");
         }
