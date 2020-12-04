@@ -579,5 +579,61 @@ namespace CauldronTests
             //For each environment card destroyed this way, {Titan} deals himself 1 fire damage.
             QuickHPCheck(-3);
         }
+
+        [Test()]
+        public void TestObsidianGraspNotTitanform()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card imm = PutOnDeck("Immolate");
+
+            QuickHPStorage(omnitron);
+            PlayCard("ObsidianGrasp");
+            //{Titan} deals 1 target 3 melee damage.
+            QuickHPCheck(-3);
+            //If Titanform is in play, you may discard a card to search your deck and trash for a copy of the card Immolate and play it next to that target. If you searched your deck, shuffle it.
+            AssertInDeck(imm);
+        }
+
+        [Test()]
+        public void TestObsidianGraspYesTitanformSearchDeck()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard("Titanform");
+            Card imm = PutOnDeck("Immolate");
+            Card veins = PutInHand("MoltenVeins");
+            DecisionsYesNo = new bool[] { false, true };
+            DecisionSelectCards = new Card[] { omnitron.CharacterCard, veins, imm };
+
+            QuickHPStorage(omnitron);
+            PlayCard("ObsidianGrasp");
+            //{Titan} deals 1 target 3 melee damage.
+            QuickHPCheck(-3);
+            //If Titanform is in play, you may discard a card to search your deck and trash for a copy of the card Immolate and play it next to that target. If you searched your deck, shuffle it.
+            AssertNextToCard(imm, omnitron.CharacterCard);
+        }
+
+        [Test()]
+        public void TestObsidianGraspYesTitanformSearchTrash()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard("Titanform");
+            Card imm = PutInTrash("Immolate");
+            Card veins = PutInHand("MoltenVeins");
+            DecisionsYesNo = new bool[] { false, true };
+            DecisionSelectCards = new Card[] { omnitron.CharacterCard, veins, imm };
+
+            QuickHPStorage(omnitron);
+            PlayCard("ObsidianGrasp");
+            //{Titan} deals 1 target 3 melee damage.
+            QuickHPCheck(-3);
+            //If Titanform is in play, you may discard a card to search your deck and trash for a copy of the card Immolate and play it next to that target. If you searched your deck, shuffle it.
+            AssertNextToCard(imm, omnitron.CharacterCard);
+        }
     }
 }

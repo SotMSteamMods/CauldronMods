@@ -11,7 +11,8 @@ namespace Cauldron.Titan
     {
         public ObsidianGraspCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Deck, new LinqCardCriteria((Card c) => c.Identifier == "Immolate", "Immolate"));
+            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "Immolate", "Immolate"));
         }
 
         public override IEnumerator Play()
@@ -47,7 +48,8 @@ namespace Cauldron.Titan
                 if (base.DidDiscardCards(storedResult))
                 {
                     List<SelectCardDecision> selectedImmolate = new List<SelectCardDecision>();
-                    coroutine = base.SearchForCards(base.HeroTurnTakerController, true, false, 1, 1, new LinqCardCriteria((Card c) => c.Identifier == "Immolate"), true, false, false, storedResults: selectedImmolate, shuffleAfterwards: true);
+                    IEnumerable<Card> immolates = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Identifier == "Immolate" && (c.IsInTrash || c.IsInDeck)));
+                    coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.PlayCard, immolates, selectedImmolate, cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -59,14 +61,14 @@ namespace Cauldron.Titan
                     CardController immolateController = FindCardController(selectedImmolate.FirstOrDefault().SelectedCard);
                     if (immolateController is ImmolateCardController)
                     {
-                        IEnumerator play = (immolateController as ImmolateCardController).PlayBySpecifiedTarget(storedTarget.FirstOrDefault().SelectedCard, true, base.GetCardSource());
+                        coroutine = (immolateController as ImmolateCardController).PlayBySpecifiedTarget(storedTarget.FirstOrDefault().SelectedCard, true, base.GetCardSource());
                         if (UseUnityCoroutines)
                         {
-                            yield return GameController.StartCoroutine(play);
+                            yield return GameController.StartCoroutine(coroutine);
                         }
                         else
                         {
-                            GameController.ExhaustCoroutine(play);
+                            GameController.ExhaustCoroutine(coroutine);
                         }
                     }
                 }
