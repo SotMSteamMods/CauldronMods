@@ -693,6 +693,47 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestHalberdFoamcore_NoChemicalTriggers_TiedLowest()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //legacy and haka are tied for the lowest HP hero targets
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 10);
+            SetHitPoints(haka.CharacterCard, 10);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToPlayCardPhase(halberd);
+
+            //we play out foamcore
+            Card foamcore = GetCard("HalberdFoamcore");
+            PlayCard(foamcore);
+            AssertIsInPlay(foamcore);
+
+            //If there are no Chemical Triggers in play, reduce damage dealt to the hero target with the lowest HP by 1.
+
+            //choose haka as the lowest hitpoints when asked
+            DecisionYesNo = true;
+            QuickHPStorage(haka.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard);
+            DealDamage(baron, haka, 4, DamageType.Melee);
+            //damage should have been reduced by 1
+            QuickHPCheck(-3, 0, 0, 0);
+
+            //reset tied HP
+            SetHitPoints(legacy.CharacterCard, 10);
+            SetHitPoints(haka.CharacterCard, 10);
+
+            //deny haka as the lowest hitpoints when asked
+            DecisionYesNo = false;
+            QuickHPStorage(haka.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard);
+            DealDamage(baron, haka, 4, DamageType.Melee);
+            //damage was dealt in full
+            QuickHPCheck(-4, 0, 0, 0);
+        }
+
+        [Test()]
         public void TestHalberdFoamcore_WithChemicalTriggers()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
