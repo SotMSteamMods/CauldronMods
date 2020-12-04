@@ -273,5 +273,91 @@ namespace CauldronTests
             PlayCard("HaplessShield");
             QuickHPCheck(-2);
         }
+
+        [Test()]
+        public void TestImmolate()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard("S83AssaultDrone");
+            Card imm = PlayCard("Immolate");
+
+
+            //Play this card next to a target.
+            AssertNextToCard(imm, omnitron.CharacterCard);
+
+            //The first time that target deals damage each turn, it deals itself 1 fire damage.
+            QuickHPStorage(omnitron);
+            DealDamage(omnitron, haka, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+            //Only first time
+            QuickHPStorage(omnitron);
+            DealDamage(omnitron, haka, 2, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //If that target leaves play, destroy this card.
+            DestroyCard(omnitron.CharacterCard);
+            AssertInTrash(imm);
+        }
+
+        [Test()]
+        public void TestJuggernautStrike()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card drone0 = PlayCard("S83AssaultDrone", 0);
+            Card drone1 = PlayCard("S83AssaultDrone", 1);
+            Card tform = PutInHand("Titanform");
+            DecisionYesNo = true;
+
+            //If Titanform is in your hand you may play it now.
+            //{Titan} deals 1 target 4 infernal damage and each other target from that deck 1 projectile damage.
+            QuickHPStorage(omnitron.CharacterCard, drone0, drone1, haka.CharacterCard);
+            PlayCard("JuggernautStrike");
+            AssertIsInPlay(tform);
+            QuickHPCheck(-4, -1, -1, 0);
+        }
+
+        [Test()]
+        public void TestTitanform()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PutOnDeck("Terraforming");
+
+            Card tform = PlayCard("Titanform");
+
+            //Whenever {Titan} is dealt damage by another target, reduce damage dealt to {Titan} by 1 until the start of your next turn.
+            QuickHPStorage(titan);
+            DealDamage(omnitron, titan, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+            //Second time damage dealt to Titan
+            QuickHPStorage(titan);
+            DealDamage(omnitron, titan, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            //First time in a new turn
+            GoToStartOfTurn(titan);
+            QuickHPStorage(titan);
+            DealDamage(omnitron, titan, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //When {Titan} would deal damage, you may destroy this card to increase that damage by 2.
+            //saying no - not destroyed no increase
+            DecisionYesNo = false;
+            QuickHPStorage(omnitron);
+            DealDamage(titan, omnitron, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+            AssertIsInPlay(tform);
+            //selecting yes this time
+            DecisionYesNo = true;
+            QuickHPStorage(omnitron);
+            DealDamage(titan, omnitron, 3, DamageType.Melee);
+            QuickHPCheck(-5);
+            AssertInTrash(tform);
+        }
     }
 }

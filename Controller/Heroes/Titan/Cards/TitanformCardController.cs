@@ -37,7 +37,7 @@ namespace Cauldron.Titan
         {
             List<DestroyCardAction> destroyList = new List<DestroyCardAction>();
             //...you may destroy this card...
-            IEnumerator coroutine = base.GameController.DestroyCard(base.HeroTurnTakerController, base.Card, storedResults: destroyList, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.DestroyCard(base.HeroTurnTakerController, base.Card, true, storedResults: destroyList, cardSource: base.GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -48,16 +48,11 @@ namespace Cauldron.Titan
             }
             if (base.DidDestroyCard(destroyList))
             {
+                base.AllowFastCoroutinesDuringPretend = false;
                 //...to increase that damage by 2.
-                coroutine = base.GameController.IncreaseDamage(action, 2, cardSource: base.GetCardSource());
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
+                ModifyDealDamageAction modify = new IncreaseDamageAction(base.GetCardSource(), action, 2, false);
+                action.AddDamageModifier(modify);
+                base.AllowFastCoroutinesDuringPretend = true;
             }
             yield break;
         }
