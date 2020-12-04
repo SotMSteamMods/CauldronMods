@@ -23,7 +23,7 @@ namespace Cauldron.SwarmEater
             base.AddStartOfTurnTrigger((TurnTaker tt) => base.Card.IsInPlayAndNotUnderCard && tt == base.TurnTaker, this.PlayVillainTargetResponse, TriggerType.PlayCard);
 
             //Absorb: The first time {SwarmEater} would be dealt damage each turn, reduce that damage by 1.
-            this._reduceDamage = base.AddReduceDamageTrigger((DealDamageAction action) => base.Card.Location.IsUnderCard && !base.HasBeenSetToTrueThisTurn("FirstTimeDamageDealt"), this.ReduceDamageResponse, (Card c) => c == this.CardThatAbsorbedThis(), true);
+            this._reduceDamage = base.AddReduceDamageTrigger((DealDamageAction action) => base.Card.Location.IsUnderCard && !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt), this.ReduceDamageResponse, (Card c) => c == this.CardThatAbsorbedThis(), true);
         }
 
         private IEnumerator PlayVillainTargetResponse(PhaseChangeAction p)
@@ -31,7 +31,7 @@ namespace Cauldron.SwarmEater
             IEnumerable<Card> source = base.FindCardsWhere((Card c) => c.IsVillainTarget && c.Location.IsVillain && c.Location.IsTrash);
             if (source.Count<Card>() == 1)
             {
-                string message = string.Format("{0} moves {1} from the villain trash into play.", base.Card.Title, source.First<Card>().Title);
+                string message = $"{base.Card.Title} moves {source.First<Card>().Title} from the villain trash into play.";
                 IEnumerator coroutine = base.GameController.SendMessageAction(message, Priority.Low, base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
@@ -42,16 +42,12 @@ namespace Cauldron.SwarmEater
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            Location trash = base.TurnTaker.Trash;
+
             GameController gameController = base.GameController;
-            HeroTurnTakerController decisionMaker = this.DecisionMaker;
-            Func<Card, bool> criteria = (Card c) => c.IsVillainTarget && c.Location == trash;
             bool optional = false;
-            bool isPutIntoPlay = true;
-            string noValidCardsMessage = "There are no villain targets in " + trash.GetFriendlyName() + " to put into play.";
             IEnumerator coroutine2 = null;
             Random rng = Game.RNG;
-            IEnumerable<Card> trashTargets = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsVillainTarget && c.IsInTrash));
+            IEnumerable<Card> trashTargets = base.FindCardsWhere(new LinqCardCriteria(c => c.IsVillainTarget && c.IsInTrash));
             Card cardToPlay = trashTargets.ElementAt(rng.Next(0, trashTargets.Count()));
             if (cardToPlay != null)
             {
@@ -77,12 +73,11 @@ namespace Cauldron.SwarmEater
                     base.GameController.ExhaustCoroutine(coroutine2);
                 }
             }
-            yield break;
         }
 
         private IEnumerator ReduceDamageResponse(DealDamageAction action)
         {
-            base.SetCardPropertyToTrueIfRealAction("FirstTimeDamageDealt");
+            base.SetCardPropertyToTrueIfRealAction(FirstTimeDamageDealt);
             IEnumerator coroutine = base.GameController.ReduceDamage(action, 1, this._reduceDamage, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
@@ -92,7 +87,6 @@ namespace Cauldron.SwarmEater
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
         }
     }
 }
