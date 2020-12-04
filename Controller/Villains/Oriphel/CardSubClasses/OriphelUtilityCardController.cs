@@ -11,5 +11,20 @@ namespace Cauldron.Oriphel
         public OriphelUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        protected bool IsGuardian(Card c)
+        {
+            return GameController.DoesCardContainKeyword(c, "guardian");
+        }
+
+        protected bool IsGoon(Card c)
+        {
+            return GameController.DoesCardContainKeyword(c, "goon");
+        }
+
+        protected bool IsTransformation(Card c)
+        {
+            return GameController.DoesCardContainKeyword(c, "transformation");
+        }
     }
 }

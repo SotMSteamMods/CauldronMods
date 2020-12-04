@@ -30,6 +30,11 @@ namespace CauldronTests
                 AssertCardHasKeyword(card, keyword, false);
             }
         }
+
+        private void CleanupStartingCards()
+        {
+            MoveCards(oriphel, (Card c) => c.IsInPlay && !c.IsCharacter, oriphel.TurnTaker.Deck, true);
+        }
         #endregion
 
         [Test]
@@ -97,6 +102,32 @@ namespace CauldronTests
             });
 
             AssertNumberOfCardsInGame((Card c) => c.IsVillain && !c.IsCharacter, 25);
+        }
+        [Test]
+        public void TestShardkeyRevealTriggerPlaysTransformation([Values("Moon", "Sun", "Veil", "World")] string element)
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            Card key = PlayCard(element + "Shardkey");
+            Card wake = PutOnDeck("ShardwalkersAwakening");
+
+            GoToStartOfTurn(oriphel);
+            AssertInTrash(wake);
+        }
+        [Test]
+        public void TestShardkeyRevealTriggerBottomsNonTransformation([Values("Moon", "Sun", "Veil", "World")] string element)
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            Card key = PlayCard(element + "Shardkey");
+            Card goon = PutOnDeck("MejiNomad");
+
+            GoToStartOfTurn(oriphel);
+            AssertOnBottomOfDeck(goon);
         }
     }
 }
