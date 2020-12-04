@@ -154,25 +154,29 @@ namespace CauldronTests
         [Test()]
         public void TestRideTheCurrents_MoveCardsAround()
         {
-            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela");
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela" });
             StartGame();
             //stack deck to reduce variability
             PutOnDeck("TheStaffOfRa");
 
             GoToPlayCardPhase(superstorm);
+            PutInTrash("Scatterburst");
             Card currents = PlayCard("RideTheCurrents");
             IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c)).Take(4);
             PlayCards(cardsToPlay);
             DecisionSelectFunction = 1;
-            //selecting the first card played and moving it to the last position
+            //selecting currents and moving it to the right of the 4th card played
             DecisionAutoDecideIfAble = true;
             DecisionSelectCards = new Card[] {currents, cardsToPlay.ElementAt(3) };
             PrintPlayAreaPositions(superstorm.TurnTaker);
+            int nextToPosition = GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ToList().IndexOf(cardsToPlay.ElementAt(3));
             GoToStartOfTurn(baron);
 
             PrintPlayAreaPositions(superstorm.TurnTaker);
-
-            Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(4) == currents, currents.Title + " is not in the correct position.");
+            //all cards shift one over since we are removing the one at the far left
+            int expected = (nextToPosition - 1) + 1;
+            int actual = GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ToList().IndexOf(currents);
+            Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(expected) == currents, currents.Title + " is not in the correct position. Expected: " + expected + ", Actual: " + actual);
 
         }
 
@@ -195,16 +199,17 @@ namespace CauldronTests
         [Test()]
         public void TestFlailingWires_EndOfTurn()
         {
-            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela");
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela" });
             StartGame();
             GoToPlayCardPhase(superstorm);
             Card wires = GetCard("FlailingWires");
-            IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c) && c != wires).Take(1);
-            PlayCards(cardsToPlay);
+            PlayCard("GeminiIndra");
+            //stack deck to prevent extra damage
+            PutOnDeck("GeminiMaya");
             PlayCard(wires);
             QuickHPStorage(ra, legacy, haka);
             //At the end of the environment turn, this card deals the X+1 hero targets with the highest HP 1 lightning damage each, where X is the number of environment cards to the left of this one.
-
+            PrintPlayAreaPositions(superstorm.TurnTaker);
             GoToEndOfTurn(superstorm);
             QuickHPCheck(0, -1, -1);
 
@@ -504,6 +509,41 @@ namespace CauldronTests
             AssertCurrentTurnPhase(ra, Phase.UseIncapacitatedAbility);
             EnterNextTurnPhase();
             AssertCurrentTurnPhase(ra, Phase.End);
+
+        }
+
+        [Test()]
+        public void TestAscendedEdifice_PlayCard()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.SuperstormAkela");
+            StartGame();
+
+            GoToPlayCardPhase(superstorm);
+            Card edifice = GetCard("AscendedEdifice");
+            Card currents = PutOnDeck("RideTheCurrents");
+            //When this card enters play, play the top card of the environment deck.
+            PlayCard(edifice);
+            AssertInPlayArea(superstorm, currents);
+
+        }
+
+        [Test()]
+        public void TestAscendedEdifice_Reduce()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.SuperstormAkela");
+            StartGame();
+            //swap mdp for battalion
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            Card battalion = PlayCard("BladeBattalion");
+
+            GoToPlayCardPhase(superstorm);
+            Card edifice = GetCard("AscendedEdifice");
+
+            //Reduce damage dealt to villain cards by 1.
+            PlayCard(edifice);
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, tachyon.CharacterCard, edifice);
+            DealDamage(ra, (Card c) => c.IsTarget, 2, DamageType.Toxic);
+            QuickHPCheck(-1, -1, -2, -2, -2, -2, -2);
 
         }
 
