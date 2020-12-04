@@ -11,5 +11,14 @@ namespace Cauldron.Oriphel
         public HighAsrielCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override void AddTriggers()
+        {
+            //Guardian destroy tregger
+            base.AddTriggers();
+
+            //"When a hero card is played, this card deals the hero with the highest HP 2 psychic damage.",
+
+        }
     }
 }

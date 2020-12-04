@@ -11,5 +11,10 @@ namespace Cauldron.Oriphel
         public ShardbearerNathanielCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override void AddTriggers()
+        {
+            //"Increase damage dealt by Guardians and {Oriphel} by 1."
+        }
     }
 }

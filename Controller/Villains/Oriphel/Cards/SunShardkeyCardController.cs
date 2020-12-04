@@ -11,5 +11,13 @@ namespace Cauldron.Oriphel
         public SunShardkeyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override void AddTriggers()
+        {
+            //Shardkey transformation trigger
+            base.AddTriggers();
+
+            //"Whenever a hero uses a power, that hero deals themselves 2 psychic damage."
+        }
     }
 }

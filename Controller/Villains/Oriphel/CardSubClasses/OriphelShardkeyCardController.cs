@@ -11,5 +11,11 @@ namespace Cauldron.Oriphel
         public OriphelShardkeyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override void AddTriggers()
+        {
+            //"At the start of the villain turn, reveal the top card of the villain deck. If a Transformation card is revealed, play it, 
+            //otherwise put it on the bottom of the villain deck.",
+        }
     }
 }

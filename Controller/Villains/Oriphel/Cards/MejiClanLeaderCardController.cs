@@ -11,5 +11,11 @@ namespace Cauldron.Oriphel
         public MejiClanLeaderCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override void AddTriggers()
+        {
+            //"Reduce damage dealt to Goons by 1.",
+            //"At the end of the villain turn, this card deals each hero target 3 melee damage."
+        }
     }
 }

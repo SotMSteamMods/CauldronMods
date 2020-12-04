@@ -11,5 +11,14 @@ namespace Cauldron.Oriphel
         public VeilShardkeyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override void AddTriggers()
+        {
+            //Shardkey Transformation trigger
+            base.AddTriggers();
+
+            //"Whenever another villain target is destroyed, play the top card of the villain deck."
+
+        }
     }
 }

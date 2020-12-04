@@ -11,5 +11,12 @@ namespace Cauldron.Oriphel
         public ShardwalkersAwakeningCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override IEnumerator Play()
+        {
+            //"If {Oriphel} is in play, he deals each hero target 1 infernal and 1 projectile damage.",
+            //"If Jade is in play, flip her villain character cards."
+            yield break;
+        }
     }
 }

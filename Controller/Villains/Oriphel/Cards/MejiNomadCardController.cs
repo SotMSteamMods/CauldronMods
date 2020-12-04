@@ -11,5 +11,10 @@ namespace Cauldron.Oriphel
         public MejiNomadCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override void AddTriggers()
+        {
+            //"At the end of the villain turn, this card deals the hero target with the highest HP X projectile damage, where X is the number of Guardians in play plus 2.",
+        }
     }
 }

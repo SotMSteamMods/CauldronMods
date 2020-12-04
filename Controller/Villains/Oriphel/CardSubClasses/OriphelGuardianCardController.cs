@@ -11,5 +11,12 @@ namespace Cauldron.Oriphel
         public OriphelGuardianCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override void AddTriggers()
+        {
+            //"When this card is destroyed, reveal cards from the top of the villain deck until a Relic is revealed and play it. 
+            
+            //Shuffle the remaining cards into the villain deck."
+        }
     }
 }

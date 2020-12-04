@@ -11,5 +11,14 @@ namespace Cauldron.Oriphel
         public HighDjarilCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override void AddTriggers()
+        {
+            //Guardian destroy trigger
+            base.AddTriggers();
+
+            //"At the end of the villain turn, this card deals the hero target with the highest HP {H} lightning damage.",
+
+        }
     }
 }

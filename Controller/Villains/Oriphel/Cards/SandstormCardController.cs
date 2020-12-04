@@ -11,5 +11,12 @@ namespace Cauldron.Oriphel
         public SandstormCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override IEnumerator Play()
+        {
+            //"Shuffle the villain trash and reveal cards until X Goons are revealed, where X is 1 plus the number of environment cards in play.",
+            //"Put the revealed Goons into play and discard the other cards."
+            yield break;
+        }
     }
 }
