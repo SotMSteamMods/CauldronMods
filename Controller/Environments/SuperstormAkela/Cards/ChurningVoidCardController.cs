@@ -21,7 +21,7 @@ namespace Cauldron.SuperstormAkela
             AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, DealDamageResponse, TriggerType.DealDamage);
 
             //After all other start of turn effects have taken place, move this card 1 space to the right in the environment play area.
-            AddPhaseChangeTrigger(tt => tt == base.TurnTaker, p => p == Phase.PlayCard, _ => true, MoveCardResponse, new TriggerType[] { TriggerType.MoveCard }, TriggerTiming.Before);
+            base.AddTrigger<PhaseChangeAction>((PhaseChangeAction p) => p.FromPhase.TurnTaker == base.TurnTaker && p.FromPhase.IsStart, MoveCardResponse, TriggerType.MoveCard, TriggerTiming.Before);
 
         }
 

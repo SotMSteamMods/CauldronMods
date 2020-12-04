@@ -27,8 +27,9 @@ namespace Cauldron.SuperstormAkela
             //On the turn this card enters play, after all other end of turn effects have taken place, shuffle all non-character villain cards from the villain play area and replace them in a random order. Do the same for environment cards in the environment play area.
             //Then, each hero target regains 1HP and this card is destroyed.
 
-            //TODO: adjust for oblivaeon to proc before AfterEnd instead of Start
-            AddPhaseChangeTrigger(tt => DidEnterPlayLastTurn(), p => p == Phase.Start, _ => true, ShuffleResponse, new TriggerType[] { TriggerType.ShuffleCards, TriggerType.GainHP, TriggerType.DestroySelf }, TriggerTiming.Before);
+            //AddPhaseChangeTrigger(tt => DidEnterPlayLastTurn(), p => p == Phase.Start, _ => true, ShuffleResponse, new TriggerType[] { TriggerType.ShuffleCards, TriggerType.GainHP, TriggerType.DestroySelf }, TriggerTiming.Before);
+            base.AddTrigger<PhaseChangeAction>((PhaseChangeAction p) => DidEnterPlayLastTurn() && p.FromPhase.IsEnd, ShuffleResponse, new TriggerType[] { TriggerType.ShuffleCards, TriggerType.GainHP, TriggerType.DestroySelf }, TriggerTiming.Before);
+
         }
 
         private IEnumerator ShuffleResponse(PhaseChangeAction pca)
