@@ -71,15 +71,15 @@ namespace CauldronTests
             Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
 
             Assert.IsNotNull(celadroch);
-            //Assert.IsInstanceOf(typeof(CeladrochCharacterCardController), celadroch.CharacterCardController);
+            Assert.IsInstanceOf(typeof(CeladrochCharacterCardController), celadroch.CharacterCardController);
 
             
         }
 
         [Test()]
-        public void TestCeledrochStartGame()
+        public void TestCeladrochStartGame()
         {
-            SetupGameController("Cauldron.Celedroch", "Legacy", "Megalopolis");
+            SetupGameController("Cauldron.Celadroch", "Legacy", "Megalopolis");
 
             StartGame();
 
@@ -89,25 +89,25 @@ namespace CauldronTests
 
 
         [Test()]
-        public void TestGrayDeckList()
+        public void TestCeladrochDeckList()
         {
-            SetupGameController("Cauldron.Gray", "Legacy", "Haka", "Ra", "Megalopolis");
+            SetupGameController("Cauldron.Celadroch", "Legacy", "Haka", "Ra", "Megalopolis");
 
             AssertCardHasKeyword(celadroch.CharacterCard, "villain", false);
 
-            AssertCard("AlistairWinters", new string[] { "minion" }, 5);
-            AssertCard("BlightTheLand", new string[] { "radiation" }, 8);
-            AssertCard("ChainReaction", new string[] { "radiation" }, 3);
-            AssertCard("Contamination", new string[] { "ongoing" });
-            AssertCard("CriticalMass", new string[] { "one-shot" });
-            AssertCard("HeavyRadiation", new string[] { "ongoing" });
-            AssertCard("IrradiatedTouch", new string[] { "radiation" }, 6);
-            AssertCard("LivingReactor", new string[] { "ongoing" });
-            AssertCard("MutatedWildlife", new string[] { "radiation" }, 6);
-            AssertCard("NuclearFire", new string[] { "one-shot" });
-            AssertCard("RadioactiveCascade", new string[] { "radiation" });
-            AssertCard("UnstableIsotope", new string[] { "one-shot" });
-            AssertCard("UnwittingHenchmen", new string[] { "minion" }, 5);
+            //AssertCard("AlistairWinters", new string[] { "minion" }, 5);
+            //AssertCard("BlightTheLand", new string[] { "radiation" }, 8);
+            //AssertCard("ChainReaction", new string[] { "radiation" }, 3);
+            //AssertCard("Contamination", new string[] { "ongoing" });
+            //AssertCard("CriticalMass", new string[] { "one-shot" });
+            //AssertCard("HeavyRadiation", new string[] { "ongoing" });
+            //AssertCard("IrradiatedTouch", new string[] { "radiation" }, 6);
+            //AssertCard("LivingReactor", new string[] { "ongoing" });
+            //AssertCard("MutatedWildlife", new string[] { "radiation" }, 6);
+            //AssertCard("NuclearFire", new string[] { "one-shot" });
+            //AssertCard("RadioactiveCascade", new string[] { "radiation" });
+            //AssertCard("UnstableIsotope", new string[] { "one-shot" });
+            //AssertCard("UnwittingHenchmen", new string[] { "minion" }, 5);
         }
     }
 }

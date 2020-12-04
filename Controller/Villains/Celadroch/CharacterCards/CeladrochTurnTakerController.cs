@@ -34,6 +34,7 @@ namespace Cauldron.Celadroch
             //    base.GameController.ExhaustCoroutine(stainedWolfRoutine);
             //    base.GameController.ExhaustCoroutine(paintedViperRoutine);
             //}
+            yield break;
         }
     }
 }
