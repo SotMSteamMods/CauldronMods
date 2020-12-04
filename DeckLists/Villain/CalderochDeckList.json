@@ -15,7 +15,7 @@
             ],
             "icons": [
                 "StartOfTurnAction",
-                "AddToken"
+                "AddTokens"
             ],
             "advancedIcons": [
                 "ReduceDamageTaken"
@@ -46,17 +46,10 @@
             ],
             "flippedAdvanced": "When {Calderoch} flips to this side, add 2 tokens to the storm pool.",
             "flippedIcons": [
-                "StartOfTurnAction",
-                "AddToken",
+                "AddOrRemoveTokens",
                 "PlayCardNow",
-                "RemoveToken",
-                "EndOfTurnAction",
                 "DealDamageProjectile",
-                "DestroyOngoing",
-                "DestroyEquipment"
-            ],
-            "flippedAdvancedIcons": [
-                "AddToken"
+                "Destroy",
             ],
             "difficulty": 4,
             "openingLines": {
@@ -101,7 +94,6 @@
                 "StartOfTurnAction",
                 "DestroyOngoing",
                 "ReduceDamageTaken",
-                "EndOfTurnAction",
                 "DealDamageProjectile"
             ],
             "body": [
@@ -250,12 +242,8 @@
             ],
             "icons": [
                 "EndOfTurnAction",
-                "DestroyOngoing",
-                "DestroyEquipment",
-                "ImmuneToDamageFire",
-                "ImmuneToDamageLightning",
-                "ImmuneToDamageCold",
-                "ImmuneToDamageToxic",
+                "Destroy",
+                "ImmuneToDamage",
                 "IncreaseDamageDealt"
             ],
             "body": [

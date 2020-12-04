@@ -41,14 +41,11 @@
             "flippedAdvanced": "When a villain target flips, destroy 1 hero ongoing or equipment.",
             "flippedIcons": [
                 "Indestructible",
-                "StartOfTurnAction",
                 "PlayCardNow",
-                "EndOfTurnAction",
                 "DealDamageSonic"
             ],
             "flippedAdvancedIcons": [
-                "DestroyOngoing",
-                "DestroyEquipment"
+                "Destroy"
             ],
             "difficulty": 3,
             "openingLines": {
@@ -120,8 +117,7 @@
             "flippedIcons": [
                 "IncreaseDamageDealt",
                 "EndOfTurnAction",
-                "DealDamageSonic",
-                "DealDamagePsychic"
+                "DealDamageSonic"
             ]
         },
         {
@@ -239,9 +235,7 @@
             "icons": [
                 "DestroyOngoing",
                 "DestroyEquipment",
-                "DealDamagePsychic",
-                "{ScreaMachineVocal}",
-                "{ScreaMachineBass}"
+                "DealDamagePsychic"
             ],
             "body": [
                 "Each hero may destroy 1 of their ongoing or equipment cards.",
@@ -264,9 +258,7 @@
                 "one-shot"
             ],
             "icons": [
-                "IncreaseDamageDealt",
-                "{ScreaMachineGuitar}",
-                "{ScreaMachineVocal}"
+                "IncreaseDamageDealt"
             ],
             "body": [
                 "Increase the next damage dealt by a villain target by {H}.",
@@ -341,11 +333,7 @@
             ],
             "icons": [
                 "DealDamageMelee",
-                "Discard",
-                "{ScreaMachineGuitar}",
-                "{ScreaMachineVocal}",
-                "{ScreaMachineBass}",
-                "{ScreaMachineDrum}"
+                "Discard"
             ],
             "body": [
                 "The villain target with the highest HP deals the hero target with the highest HP {H} melee damage.",
@@ -390,9 +378,7 @@
                 "one-shot"
             ],
             "icons": [
-                "DealDamageProjectile",
-                "{ScreaMachineVocal}",
-                "{ScreaMachineDrum}"
+                "DealDamageProjectile"
             ],
             "body": [
                 "Each villain target deals the target with the highest HP 2 projectile damage.",
@@ -414,8 +400,6 @@
                 "ongoing"
             ],
             "icons": [
-                "{ScreaMachineDrum}",
-                "{ScreaMachineGuitar}",
                 "StartOfTurnAction",
                 "DestroySelf",
                 "ReduceDamageTaken"
@@ -464,9 +448,7 @@
                 "one-shot"
             ],
             "icons": [
-                "DealDamageSonic",
-                "{ScreaMachineGuitar}",
-                "{ScreaMachineVocal}"
+                "DealDamageSonic"
             ],
             "body": [
                 "Each villain target deals the target with the highest HP 2 sonic damage.",
@@ -559,8 +541,6 @@
             "icons": [
                 "GainHP",
                 "DealDamageSonic",
-                "{ScreaMachineBass}",
-                "{ScreaMachineDrum}",
                 "PlayCardNow"
             ],
             "body": [

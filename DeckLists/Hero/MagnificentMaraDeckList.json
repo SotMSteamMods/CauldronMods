@@ -357,7 +357,7 @@
                 "ongoing"
             ],
             "icons": [
-                "PreventDamage",
+                "CancelledDamageGreen",
                 "DestroySelf"
             ],
             "body": "When a hero target would be dealt damage, you may prevent that damage. If you do, destroy this card.",

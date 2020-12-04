@@ -77,8 +77,6 @@
 				"EndOfTurnAction",
 				"DealDamageEnergy",
 				"ImmuneToDamageEnergy",
-				"Destroy",
-				"GainHP",
 				"Manipulate"
 			],
 			"body": [
@@ -101,7 +99,6 @@
 				"EndOfTurnAction",
 				"GainHP",
 				"ImmuneToDamageRadiant",
-				"Destroy",
 				"Manipulate"
 			],
 			"body": [
@@ -368,7 +365,6 @@
 				"EndOfTurnAction",
 				"DealDamageSonic",
 				"ImmuneToDamageSonic",
-				"Destroy",
 				"Manipulate"
 			],
 			"body": [
@@ -432,7 +428,6 @@
 				"EndOfTurnAction",
 				"ReduceDamageTaken",
 				"ImmuneToDamageProjectile",
-				"Destroy",
 				"Manipulate"
 			],
 			"body": [
@@ -473,7 +468,7 @@
 				"limited"
 			],
 			"icons": [
-				"UseExtraPower"
+				"UsePowerExtra"
 			],
 			"body": "You may use an additional power during your power phase.",
 			"flavorQuotes": [{
@@ -579,7 +574,7 @@
 			"flippedIcons": [
 				"UsePowerNow",
 				"GainHP",
-				"PreventDamage"
+				"CancelledDamageGreen"
 			],
 			"openingLines": {
 				"default": "My friends taught me some new tricks to use on the likes of you.",

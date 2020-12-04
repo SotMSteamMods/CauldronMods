@@ -34,12 +34,9 @@
             ],
             "advanced": "Increase all damage dealt by 1.",
             "icons": [
-                "PreventDamage",
+                "Indestructible",
                 "Manipulate",
-                "LoseTheGame",
-                "EndOfTurnAction",
-                "PlayCardNow",
-                "DealDamageInfernal"
+                "LoseTheGame"
             ],
             "advancedIcons": [
                 "IncreaseDamageDealt"
@@ -52,12 +49,8 @@
             "flippedAdvanced": "At the start of each player's turn, remove the top card of their deck from the game.",
             "flippedIcons": [
                 "RedirectDamage",
-                "StartOfTurnAction",
                 "Destroy",
                 "PlayCardNow",
-                "RemoveFromGame"
-            ],
-            "flippedAdvancedIcons": [
                 "RemoveFromGame"
             ],
             "difficulty": 4,

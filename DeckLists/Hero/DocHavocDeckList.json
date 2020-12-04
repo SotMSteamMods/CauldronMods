@@ -35,7 +35,7 @@
             "flippedIcons": [
                 "GainHP",
                 "DrawCardNow",
-                "PreventDamage"
+                "CannotDealDamage"
             ],
             "openingLines": {
                 "default": "Alright, folks, let's keep a level head here. This may get rough.",
@@ -74,7 +74,7 @@
                 "limited"
             ],
             "icons": [
-                "PreventDamage",
+                "CancelledDamageGreen",
                 "GainHP"
             ],
             "body": "Whenever {DocHavoc} would deal damage to a target, that target may instead regain that much HP.",
@@ -211,7 +211,7 @@
                 "ongoing"
             ],
             "icons": [
-                "IrreducibleDamage",
+                "MakeDamageIrreducible",
                 "DealDamageToxic",
                 "DestroySelf"
             ],
@@ -264,7 +264,7 @@
             ],
             "icons": [
                 "IncreaseDamageTaken",
-                "DrawExtraCard",
+                "DrawCardExtra",
                 "HasPower",
                 "DestroySelf"
             ],
@@ -296,7 +296,7 @@
                 "limited"
             ],
             "icons": [
-                "GainExtraHP"
+                "IncreaseGainHP"
             ],
             "body": "Increase all HP recovery by 1.",
             "flavorQuotes": [
@@ -360,7 +360,7 @@
             ],
             "icons": [
                 "HasPower",
-                "dealDamageProjectile"
+                "DealDamageProjectile"
             ],
             "flavorQuotes": [
                 {
@@ -387,8 +387,7 @@
             "icons": [
                 "GainHP",
                 "EndOfTurnAction",
-                "DestroyOngoing",
-                "DestroyEnvironment",
+                "Destroy",
                 "DestroySelf"
             ],
             "body": [
@@ -478,7 +477,7 @@
             "flippedIcons": [
                 "DrawCardNow",
                 "DestroyOngoing",
-                "GainExtraHP"
+                "IncreaseGainHP"
             ],
             "openingLines": {
                 "default": "Haven't seen your like before; let's see how you respond to punching.",

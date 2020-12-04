@@ -399,7 +399,7 @@
                 "DealDamagePsychic",
                 "DrawCardNow",
                 "DestroyEnvironment",
-                "PreventDamage"
+                "CancelledDamageGreen"
             ],
             "openingLines": {
                 "default": "default placeholder",

@@ -81,7 +81,7 @@
                 "ancient automaton"
             ],
             "icons": [
-                "StartOfTurnACtion",
+                "StartOfTurnAction",
                 "DealDamageRadiant",
                 "Discard"
             ],
@@ -99,7 +99,7 @@
             "icons": [
                 "DealDamageMelee",
                 "ReduceDamageDealt",
-                "StartOfTurnACtion",
+                "StartOfTurnAction",
                 "DestroySelf"
             ],
             "body": [
@@ -115,7 +115,7 @@
             "title": "Lonely Calling",
             "icons": [
                 "CannotPlayCards",
-                "StartOfTurnACtion",
+                "StartOfTurnAction",
                 "DestroySelf"
             ],
             "body": [
@@ -222,8 +222,7 @@
             "icons": [
                 "CannotDealDamage",
                 "ImmuneToDamage",
-                "StartOfTurnACtion",
-                "DrawCardNow",
+                "StartOfTurnAction",
                 "DestroySelf"
             ],
             "body": [
