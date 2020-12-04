@@ -20,17 +20,17 @@ namespace Cauldron.SwarmEater
         public override void AddTriggers()
         {
             //At the end of the villain turn this card deals the hero target with the highest HP {H} projectile damage. Any target dealt damage this way deals itself 1 toxic damage.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => base.Card.IsInPlayAndNotUnderCard && tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
+            base.AddEndOfTurnTrigger(tt => base.Card.IsInPlayAndNotUnderCard && tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
 
             //Absorb: whenever {SwarmEater} deals damage to another target, that target deals itself 1 toxic damage.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => base.Card.Location.IsUnderCard && action.DamageSource.Card == this.CardThatAbsorbedThis() && action.DidDealDamage, this.AbsorbDealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTrigger((DealDamageAction action) => base.Card.Location.IsUnderCard && action.DamageSource.Card == this.CardThatAbsorbedThis() && action.DidDealDamage, this.AbsorbDealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
         }
 
         private IEnumerator DealDamageResponse(PhaseChangeAction phaseChange)
         {
             //...this card deals the hero target with the highest HP {H} projectile damage.
             List<DealDamageAction> storedResults = new List<DealDamageAction>();
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero, (Card c) => Game.H, DamageType.Projectile, storedResults: storedResults, numberOfTargets: () => 1);
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, c => c.IsHero, c => Game.H, DamageType.Projectile, storedResults: storedResults, numberOfTargets: () => 1);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -39,24 +39,23 @@ namespace Cauldron.SwarmEater
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            IEnumerable<Card> damagedTargets = (from d in storedResults
-                                                where d.DidDealDamage
-                                                select d.Target).Distinct<Card>();
-            if (storedResults != null)
+
+            if (!storedResults.Any())
             {
-                Card target = storedResults.FirstOrDefault().Target;
-                //...Any target dealt damage this way deals itself 1 toxic damage.
-                coroutine = base.DealDamage(target, target, 1, DamageType.Toxic, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+                yield break;
             }
-            yield break;
+
+            Card target = storedResults.FirstOrDefault()?.Target;
+            //...Any target dealt damage this way deals itself 1 toxic damage.
+            coroutine = base.DealDamage(target, target, 1, DamageType.Toxic, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
 
         public IEnumerator AbsorbDealDamageResponse(DealDamageAction action)
@@ -71,7 +70,6 @@ namespace Cauldron.SwarmEater
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
         }
     }
 }
