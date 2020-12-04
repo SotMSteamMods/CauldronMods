@@ -862,6 +862,51 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestSkulkingIntermediary_Immune()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela" });
+            StartGame();
+
+            GoToPlayCardPhase(superstorm);
+
+            Card skulking = PlayCard("SkulkingIntermediary");
+            //This card is immune to damage dealt by villain targets.
+            QuickHPStorage(skulking);
+            DealDamage(baron, skulking, 6, DamageType.Melee);
+            QuickHPCheckZero();
+
+            //check only for villain damage
+            QuickHPUpdate();
+            DealDamage(ra, skulking, 6, DamageType.Fire);
+            QuickHPCheck(-6);
+
+        }
+
+        [Test()]
+        public void TestSkulkingIntermediary_EndOfTurn()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela" });
+            StartGame();
+
+
+            GoToPlayCardPhase(superstorm);
+
+            Card geograv = PlayCard("PressureDrop");
+            Card indra = PlayCard("ToppledSkyscraper");
+            Card skulking = PlayCard("SkulkingIntermediary");
+            IEnumerable<Card> listOfTargets = FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsTarget);
+            IEnumerable<Card> listOfEnvTargets = listOfTargets.Where((Card c) => c.IsEnvironment || c.IsVillainTarget);
+            IEnumerable<Card> listOfHeroTargets = listOfTargets.Where((Card c) => c.IsHero && c.IsTarget);
+            SetHitPoints(listOfTargets, 3);
+            //At the end of the environment turn, each environment and villain target regains X+1 HP, where X is the number of environment cards to the left of this one.
+            GoToEndOfTurn(superstorm);
+            Assert.IsTrue(listOfEnvTargets.All((Card c) => c.HitPoints == 6), "Not all environment and villain targets gained HP");
+            Assert.IsTrue(listOfHeroTargets.All((Card c) => c.HitPoints == 3), "Some hero targets incorrectly gained HP");
+            
+
+        }
+
 
 
     }
