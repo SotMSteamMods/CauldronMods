@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cauldron.SwarmEater
 {
@@ -54,21 +55,24 @@ namespace Cauldron.SwarmEater
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-                if (playedCard != null)
+
+                if (!playedCard.Any())
                 {
-                    Card card = playedCard[0];
-                    if (card.IsTarget)
-                    {
-                        targetCount--;
-                    }
-                    else if (card.DoKeywordsContain("trait"))
-                    {
-                        traitCount--;
-                    }
-                    else if (card.Identifier == "SingleMindedPursuit")
-                    {
-                        pursuitCount--;
-                    }
+                    continue;
+                }
+
+                Card card = playedCard[0];
+                if (card.IsTarget)
+                {
+                    targetCount--;
+                }
+                else if (card.DoKeywordsContain("trait"))
+                {
+                    traitCount--;
+                }
+                else if (card.Identifier == "SingleMindedPursuit")
+                {
+                    pursuitCount--;
                 }
             }
             coroutine = base.GameController.ShuffleLocation(base.TurnTaker.Deck);
@@ -80,7 +84,6 @@ namespace Cauldron.SwarmEater
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
         }
     }
 }
