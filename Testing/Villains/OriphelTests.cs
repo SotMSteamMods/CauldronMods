@@ -129,5 +129,34 @@ namespace CauldronTests
             GoToStartOfTurn(oriphel);
             AssertOnBottomOfDeck(goon);
         }
+        [Test]
+        public void TestGuardianDestroyTrigger([Values("Asriel", "Djaril", "Phaol", "Tormul")] string name)
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            QuickShuffleStorage(oriphel);
+            Card guardian = PlayCard("High" + name);
+
+            DestroyCard(guardian);
+            QuickShuffleCheck(1);
+            AssertNumberOfCardsInPlay((Card c) => c.IsRelic && c.IsVillain, 1);
+        }
+        [Test]
+        public void TestGuardianDestroyTriggerNoRelicsLeft([Values("Asriel", "Djaril", "Phaol", "Tormul")] string name)
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            PutInTrash(new string[] { "MoonShardkey", "SunShardkey", "VeilShardkey", "WorldShardkey" });
+            QuickShuffleStorage(oriphel);
+            Card guardian = PlayCard("High" + name);
+
+            DestroyCard(guardian);
+            QuickShuffleCheck(1);
+            AssertNumberOfCardsInPlay((Card c) => c.IsRelic && c.IsVillain, 0);
+        }
     }
 }
