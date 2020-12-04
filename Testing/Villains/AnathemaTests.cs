@@ -686,6 +686,42 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestKnuckleDraggerEndOfTurn_CheckForOriginalTarget()
+        {
+            SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Luminary", "Megalopolis");
+
+            StartGame();
+            ResetAnathemaDeck();
+            GoToPlayCardPhase(anathema);
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(luminary.CharacterCard, 25);
+
+
+            //put an ongoing in play for haka to destroy
+            Card plan = PutIntoPlay("AllAccordingToPlan");
+            Card defender = PutIntoPlay("DisposableDefender");
+
+            //Put Knuckle Dragger in play. 
+            PutIntoPlay("KnuckleDragger");
+
+            int? numCardsInPlayBefore = GetNumberOfCardsInPlay(luminary);
+
+            QuickHPStorage(luminary);
+            //at the end of turn, anathema deals the Hero character with the highest HP {H+1} melee damage.
+            //since disposable defender is in, no damage should be dealt to original target
+            GoToEndOfTurn(anathema);
+            QuickHPCheck(0);
+
+            int? numCardsInPlayAfter = GetNumberOfCardsInPlay(luminary);
+
+            //no damage was dealt, so haka should not have destroyed any cards
+
+            Assert.AreEqual(numCardsInPlayBefore, numCardsInPlayAfter);
+            AssertInPlayArea(luminary, plan);
+        }
+
+        [Test()]
         public void TestThresherClawDestroyOtherArm()
         {
             SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Megalopolis");
