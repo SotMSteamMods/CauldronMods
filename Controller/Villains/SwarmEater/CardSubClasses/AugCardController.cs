@@ -1,13 +1,11 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-using System;
-using System.Collections;
 
 namespace Cauldron.SwarmEater
 {
     public abstract class AugCardController : CardController
     {
-        public AugCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected AugCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
