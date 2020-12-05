@@ -116,21 +116,22 @@ namespace Cauldron.Vector
             if (this.IsGameAdvanced)
             {
                 // Increase damage dealt by {Vector} by 2.
-                IncreaseDamageStatusEffect idse = new IncreaseDamageStatusEffect(AdvancedDamageIncrease)
-                {
-                    SourceCriteria = { IsSpecificCard = this.Card }
-                };
-                idse.UntilCardLeavesPlay(this.Card);
+                base.SideTriggers.Add(base.AddIncreaseDamageTrigger(dd => dd.DamageSource != null && dd.DamageSource.IsSameCard(base.CharacterCard), dd => 2));
+                //IncreaseDamageStatusEffect idse = new IncreaseDamageStatusEffect(AdvancedDamageIncrease)
+                //{
+                //    SourceCriteria = { IsSpecificCard = this.Card }
+                //};
+                //idse.UntilCardLeavesPlay(this.Card);
 
-                IEnumerator routine = base.GameController.AddStatusEffect(idse, true, GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(routine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(routine);
-                }
+                //IEnumerator routine = base.GameController.AddStatusEffect(idse, true, GetCardSource());
+                //if (base.UseUnityCoroutines)
+                //{
+                //    yield return base.GameController.StartCoroutine(routine);
+                //}
+                //else
+                //{
+                //    base.GameController.ExhaustCoroutine(routine);
+                //}
             }
         }
 
