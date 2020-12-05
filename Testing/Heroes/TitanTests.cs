@@ -811,5 +811,41 @@ namespace CauldronTests
             QuickHPCheck(-7);
             AssertInTrash(vulc);
         }
+
+        [Test()]
+        public void TestUnbreakable()
+        {
+            SetupGameController("Omnitron", "CaptainCosmic", "Cauldron.Titan", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card epe = PutOnDeck("ElectroPulseExplosive");
+            Card unb = PlayCard("Unbreakable");
+
+            //Skip any effects which would act at the end of the villain turn.
+            //Skip play top card of deck
+            GoToEndOfTurn(omnitron);
+            AssertInDeck(epe);
+
+            //Don't skip Hero End of Turn
+            GoToStartOfTurn(cosmic);
+            PlayCard("UnflaggingAnimation");
+            QuickHPStorage(cosmic);
+            GoToEndOfTurn(cosmic);
+            QuickHPCheck(-1);
+
+            //You may not use Powers.
+            QuickHPStorage(omnitron);
+            UsePower(titan);
+            QuickHPCheckZero();
+
+            //You may not draw cards.
+            QuickHandStorage(titan);
+            DrawCard(titan);
+            QuickHandCheckZero();
+
+            //At the start of your turn, destroy this card.
+            GoToStartOfTurn(titan);
+            AssertInTrash(unb);
+        }
     }
 }

@@ -12,10 +12,26 @@ namespace Cauldron.Titan
 
         }
 
-        public override void AddTriggers()
+        public override IEnumerator Play()
         {
             //Skip any effects which would act at the end of the villain turn.
-            base.AddTrigger<PhaseChangeAction>((PhaseChangeAction action) => action.ToPhase.IsEnd && action.ToPhase.IsVillain && base.GameController.IsTurnTakerVisibleToCardSource(action.ToPhase.TurnTaker, base.GetCardSource()), (PhaseChangeAction action) => base.CancelAction(action), TriggerType.CancelAction, TriggerTiming.Before);
+            PreventPhaseEffectStatusEffect preventPhaseEffectStatusEffect = new PreventPhaseEffectStatusEffect(Phase.End);
+            preventPhaseEffectStatusEffect.UntilCardLeavesPlay(this.Card);
+            preventPhaseEffectStatusEffect.CardCriteria.IsVillain = true;
+            IEnumerator coroutine = base.AddStatusEffect(preventPhaseEffectStatusEffect);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        public override void AddTriggers()
+        {
             //You may not use powers.
             base.CannotUsePowers((TurnTakerController ttc) => ttc == base.HeroTurnTakerController);
             //You may not draw cards.
