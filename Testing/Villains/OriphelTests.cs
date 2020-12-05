@@ -366,5 +366,33 @@ namespace CauldronTests
             GoToEndOfTurn(oriphel);
             QuickHPCheck(0, 0);
         }
+        [Test]
+        public void TestHighAsrielDamageTrigger()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "Tempest", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            //to make it obvious when and where damage should be going
+            SetHitPoints(tempest, 10);
+            SetHitPoints(ra, 10);
+            SetHitPoints(legacy, 31);
+            SetHitPoints(haka, 30);
+
+            PlayCard("HighAsriel");
+            QuickHPStorage(legacy, haka);
+
+            //damage to highest HP hero target
+            PlayCard("TheLegacyRing");
+            QuickHPCheck(-2, 0);
+
+            //even if they didn't play the card
+            PlayCard("BlazingTornado");
+            QuickHPCheck(0, -2);
+
+            //but not if it is "put into play"
+            PutIntoPlay("SurgeOfStrength");
+            QuickHPCheck(0, 0);
+        }
     }
 }
