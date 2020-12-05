@@ -352,18 +352,44 @@ namespace CauldronTests
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
 
+ 
+
+            Card antiC = GetCard(AnticoagulantCardController.Identifier);
+
+            PlayCard(antiC);
+
+            //change phase to help with consistency
+            GoToPlayCardPhase(legacy);
+
+            QuickHPStorage(Vector, legacy, ra, haka);
+            // Act
+            DealDamage(legacy, Vector, 5, DamageType.Melee);
+
+            // Assert
+            QuickHPCheck(-6, -6, -6, -6); // Anti Coag increases damage to Vector by 1, response to hit everyone
+            AssertInTrash(antiC);
+        }
+
+        [Test]
+        public void TestAnticoagulant_NoResponseOnZeroDamage()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
             QuickHPStorage(Vector);
 
             Card antiC = GetCard(AnticoagulantCardController.Identifier);
 
             PlayCard(antiC);
 
+            AddImmuneToDamageTrigger(Vector, false, true);
+
             // Act
             DealDamage(legacy, Vector, 5, DamageType.Melee);
 
             // Assert
-            QuickHPCheck(-6); // Anti Coag increases damage to Vector by 1
-            AssertInTrash(antiC);
+            AssertInPlayArea(Vector, antiC);
         }
 
         [Test]

@@ -26,29 +26,14 @@ namespace Cauldron.Vector
         public override void AddTriggers()
         {
 
-            AddTrigger((DealDamageAction dda) => dda.Target == base.CharacterCard, DealDamageResponse,
+            AddTrigger((DealDamageAction dda) => dda.Target == base.CharacterCard && dda.DidDealDamage, DealDamageResponse,
                 new []{TriggerType.DealDamage, TriggerType.DestroySelf}, timing: TriggerTiming.After);
+
+            AddIncreaseDamageTrigger((DealDamageAction dda) => dda.Target == base.CharacterCard, 1);
 
             base.AddTriggers();
         }
 
-        public override IEnumerator Play()
-        {
-            // Increase damage dealt to {Vector} by 1.
-            IncreaseDamageStatusEffect idse = new IncreaseDamageStatusEffect(IncreaseDamageAmount);
-            idse.TargetCriteria.IsSpecificCard = base.CharacterCard;
-            idse.UntilCardLeavesPlay(this.Card);
-
-            IEnumerator coroutine = base.AddStatusEffect(idse);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-        }
 
         private IEnumerator DealDamageResponse(DealDamageAction dda)
         {
