@@ -393,7 +393,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestAssassinsSignature()
+        public void TestAssassinsSignature_DestroyOngoing()
         {
             // Arrange
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
@@ -408,17 +408,74 @@ namespace CauldronTests
             PutIntoPlay(savageMana.Identifier);
 
             DecisionSelectCard = dominion;
-            QuickHPStorage(haka);
+            QuickHPStorage(Vector, legacy, ra, haka);
 
             // Act
-            Card aSig = GetCard(AssassinsSignatureCardController.Identifier);
-            PlayCard(aSig);
+            Card aSig = PlayCard(AssassinsSignatureCardController.Identifier);
 
 
             // Assert
-            QuickHPCheck(-3);
+            QuickHPCheck(0,0,0,-3);
             AssertInPlayArea(haka, new []{ mere, savageMana});
             AssertInTrash(haka, dominion);
+        }
+
+        [Test]
+        public void TestAssassinsSignature_DestructionEvenIfNoDamage()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card mere = GetCard("Mere");
+            Card dominion = GetCard("Dominion");
+            Card savageMana = GetCard("SavageMana");
+
+            PutIntoPlay(mere.Identifier);
+            PutIntoPlay(dominion.Identifier);
+            PutIntoPlay(savageMana.Identifier);
+
+            DecisionSelectCard = dominion;
+            QuickHPStorage(Vector, legacy, ra, haka);
+
+            AddImmuneToDamageTrigger(ra, true, false);
+
+            // Act
+            Card aSig = PlayCard(AssassinsSignatureCardController.Identifier);
+
+
+            // Assert
+            QuickHPCheck(0, 0, 0, 0);
+            AssertInPlayArea(haka, new[] { mere, savageMana });
+            AssertInTrash(haka, dominion);
+        }
+
+        [Test]
+        public void TestAssassinsSignature_DestroyEquipment()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card mere = GetCard("Mere");
+            Card dominion = GetCard("Dominion");
+            Card savageMana = GetCard("SavageMana");
+
+            PutIntoPlay(mere.Identifier);
+            PutIntoPlay(dominion.Identifier);
+            PutIntoPlay(savageMana.Identifier);
+
+            DecisionSelectCard = mere;
+            QuickHPStorage(Vector, legacy, ra, haka);
+
+            // Act
+            Card aSig = PlayCard(AssassinsSignatureCardController.Identifier);
+
+
+            // Assert
+            QuickHPCheck(0, 0, 0, -3);
+            AssertInPlayArea(haka, new[] { dominion, savageMana });
+            AssertInTrash(haka, mere);
         }
 
         [Test]
