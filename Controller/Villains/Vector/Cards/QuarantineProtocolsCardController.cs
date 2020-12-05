@@ -30,24 +30,10 @@ namespace Cauldron.Vector
             // When this card is destroyed, it deals each hero target {H} lightning damage.
             base.AddWhenDestroyedTrigger(DestroyCardResponse, TriggerType.DealDamage);
 
+            //Environment targets are immune to damage.
+            base.AddImmuneToDamageTrigger((DealDamageAction dda) => dda.Target != null && dda.Target.IsEnvironmentTarget);
+
             base.AddTriggers();
-        }
-
-        public override IEnumerator Play()
-        {
-            // Environment targets are immune to damage.
-            ImmuneToDamageStatusEffect itdse = new ImmuneToDamageStatusEffect { TargetCriteria = {IsEnvironment = true} };
-            itdse.UntilCardLeavesPlay(this.Card);
-
-            IEnumerator routine = base.GameController.AddStatusEffect(itdse, true, GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
         }
 
         private IEnumerator DiscardCardResponse(PhaseChangeAction pca)
@@ -67,7 +53,7 @@ namespace Cauldron.Vector
         {
             int damageToDeal = base.Game.H;
 
-            IEnumerator routine = this.DealDamage(this.Card, card => card.IsHero && card.IsTarget && card.IsInPlay, 
+            IEnumerator routine = this.DealDamage(this.Card, card => card.IsHero && card.IsTarget && card.IsInPlayAndNotUnderCard, 
                 damageToDeal, DamageType.Lightning);
 
             if (base.UseUnityCoroutines)
