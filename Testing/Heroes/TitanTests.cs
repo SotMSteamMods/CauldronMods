@@ -14,7 +14,6 @@ namespace CauldronTests
     [TestFixture()]
     public class TitanTests : BaseTest
     {
-
         protected HeroTurnTakerController titan { get { return FindHero("Titan"); } }
 
         private void SetupIncap(TurnTakerController villain)
@@ -634,6 +633,49 @@ namespace CauldronTests
             QuickHPCheck(-3);
             //If Titanform is in play, you may discard a card to search your deck and trash for a copy of the card Immolate and play it next to that target. If you searched your deck, shuffle it.
             AssertNextToCard(imm, omnitron.CharacterCard);
+        }
+
+        [Test()]
+        public void TestPaybackTime()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PutOnDeck(omnitron, GetCard("Terraforming", 0));
+            PutOnDeck(omnitron, GetCard("Terraforming", 1));
+            PlayCard("PaybackTime");
+            GoToStartOfTurn(omnitron);
+            //Increase damage dealt by {Titan} by 1 to non-hero targets that have dealt him damage since the end of his last turn.
+
+            //Hasn't been hit by Omnitron yet
+            QuickHPStorage(omnitron);
+            DealDamage(titan, omnitron, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //getting hit by Omnitron
+            DealDamage(omnitron, titan, 2, DamageType.Melee);
+
+            //+1 for having been hit
+            QuickHPStorage(omnitron);
+            DealDamage(titan, omnitron, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            //hasn't been hit by Haka yet
+            QuickHPStorage(haka);
+            DealDamage(titan, haka, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            GoToPlayCardPhase(titan);
+            //At the end of your turn {Titan} regains 1HP.
+            QuickHPStorage(titan);
+            GoToEndOfTurn(titan);
+            QuickHPCheck(1);
+
+            GoToStartOfTurn(haka);
+            //reset list of people who have hit Titan
+            QuickHPStorage(omnitron);
+            DealDamage(titan, omnitron, 2, DamageType.Melee);
+            QuickHPCheck(-2);
         }
     }
 }

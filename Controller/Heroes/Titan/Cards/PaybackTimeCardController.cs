@@ -40,7 +40,7 @@ namespace Cauldron.Titan
         {
             if (target.IsTarget)
             {
-                DealDamageJournalEntry dealDamageJournalEntry = (from d in base.GameController.Game.Journal.DealDamageEntriesFromTargetToTargetSinceLastTurn(target, base.CharacterCard, base.TurnTaker) where d.Amount > 0 select d).LastOrDefault<DealDamageJournalEntry>();
+                DealDamageJournalEntry dealDamageJournalEntry = (from d in base.Journal.DealDamageEntriesFromTargetToTargetSinceLastTurn(target, base.CharacterCard, base.TurnTaker) where d.Amount > 0 select d).LastOrDefault<DealDamageJournalEntry>();
                 if (dealDamageJournalEntry != null && target.IsInPlayAndHasGameText)
                 {
                     int? entryIndex = base.GameController.Game.Journal.GetEntryIndex(dealDamageJournalEntry);
