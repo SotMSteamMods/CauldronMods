@@ -2,139 +2,139 @@
 
 "BridgeDisaster.png":
 {
-	"frame": {"x":0,"y":0,"w":689,"h":507},
+	"frame": {"x":0,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "CitywideCarnage.png":
 {
-	"frame": {"x":692,"y":0,"w":689,"h":507},
+	"frame": {"x":259,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "CrackedWaterMain.png":
 {
-	"frame": {"x":1384,"y":0,"w":689,"h":507},
+	"frame": {"x":518,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "CrashedTanker.png":
 {
-	"frame": {"x":2076,"y":0,"w":689,"h":507},
+	"frame": {"x":0,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "DetectiveSedrick.png":
 {
-	"frame": {"x":2768,"y":0,"w":689,"h":507},
+	"frame": {"x":259,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "FrameJob.png":
 {
-	"frame": {"x":0,"y":510,"w":689,"h":507},
+	"frame": {"x":518,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "Gearlock.png":
 {
-	"frame": {"x":692,"y":510,"w":689,"h":507},
+	"frame": {"x":0,"y":382,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "GrayPharmaceuticalBuilding.png":
 {
-	"frame": {"x":1384,"y":510,"w":689,"h":507},
+	"frame": {"x":259,"y":382,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "InjuredWorker.png":
 {
-	"frame": {"x":2076,"y":510,"w":689,"h":507},
+	"frame": {"x":518,"y":382,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "IntrepidReporter.png":
 {
-	"frame": {"x":2768,"y":510,"w":689,"h":507},
+	"frame": {"x":0,"y":573,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "IronWasp.png":
 {
-	"frame": {"x":0,"y":1020,"w":689,"h":507},
+	"frame": {"x":259,"y":573,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "RainOfDebris.png":
 {
-	"frame": {"x":692,"y":1020,"w":689,"h":507},
+	"frame": {"x":518,"y":573,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "SaveTheDay.png":
 {
-	"frame": {"x":1384,"y":1020,"w":689,"h":507},
+	"frame": {"x":0,"y":764,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "WCPDChariot.png":
 {
-	"frame": {"x":2076,"y":1020,"w":689,"h":507},
+	"frame": {"x":259,"y":764,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "WCPDSquad.png":
 {
-	"frame": {"x":2768,"y":1020,"w":689,"h":507},
+	"frame": {"x":518,"y":764,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "WindmillCityDeckBack.png":
 {
-	"frame": {"x":0,"y":1530,"w":680,"h":988},
+	"frame": {"x":777,"y":764,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
-	"sourceSize": {"w":680,"h":988}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "WindmillCityAtlas0.png",
 	"format": "RGBA8888",
-	"size": {"w":4096,"h":4096},
+	"size": {"w":1024,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:bf5919f320261de333536fe446699c42:39d9309af5ac24b7a06ad21b40738238:fb490be2289f6e714843bbb27bcc3374$"
+	"smartupdate": "$TexturePacker:SmartUpdate:28dc28afdebdf11c5815f7b3768716f1:524d90b9ec6a3484ed3f022971fdd0b4:fb490be2289f6e714843bbb27bcc3374$"
 }
 }
