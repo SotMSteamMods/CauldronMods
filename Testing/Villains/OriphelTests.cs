@@ -753,5 +753,34 @@ namespace CauldronTests
             AssertInTrash(destroyed);
             AssertIsInPlay(goon, tamoko);
         }
+        [Test]
+        public void TestShardkeyMoonDamage()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            QuickHPStorage(haka);
+            PlayCard("MoonShardkey");
+            GoToEndOfTurn();
+            QuickHPCheck(-2);
+        }
+        [Test]
+        public void TestShardkeyMoonSourceIsHighest()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            DecisionSelectTarget = oriphel.CharacterCard;
+            PlayCard("ThroatJab");
+            SetHitPoints(oriphel, 10);
+
+            QuickHPStorage(haka);
+            PutOnDeck("HighAsriel");
+            PlayCard("MoonShardkey");
+            GoToEndOfTurn();
+            QuickHPCheck(-2);
+        }
     }
 }
