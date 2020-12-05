@@ -43,7 +43,7 @@ namespace Cauldron.Vector
 
         private const int AdvancedHpGain = 2;
         private const int AdvancedDamageIncrease = 2;
-        private const string EndingMessage = "Vector regained all of his health!  The Heroes lose!";
+        private const string EndingMessage = "Vector regained all of his health!  He escapes and the Heroes lose!";
 
         public VectorCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
