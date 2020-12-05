@@ -66,7 +66,7 @@ namespace Cauldron.Vector
                 // If {Vector} is dealt damage by an environment card, he becomes
                 // immune to damage dealt by environment cards until the end of the turn.
                 base.SideTriggers.Add(base.AddTrigger<DealDamageAction>(dda => dda.DamageSource != null && 
-                    dda.DamageSource.IsEnvironmentCard && dda.Target.Equals(this.Card),
+                    dda.DamageSource.IsEnvironmentCard && dda.Target.Equals(this.Card) && dda.DidDealDamage,
                 DealtDamageByEnvResponse, new[] {TriggerType.ImmuneToDamage}, TriggerTiming.After));
                 
                 if (this.IsGameAdvanced)
