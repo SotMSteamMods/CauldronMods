@@ -692,7 +692,7 @@ namespace CauldronTests
 
 
         [Test]
-        public void TestDelayedSymptoms()
+        public void TestDelayedSymptoms_DestroyOngoing()
         {
             // Arrange
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
@@ -720,6 +720,71 @@ namespace CauldronTests
             Assert.AreEqual(2, GetNumberOfCardsInTrash(legacy));
             Assert.AreEqual(1, GetNumberOfCardsInTrash(ra));
             Assert.AreEqual(2, GetNumberOfCardsInTrash(haka));
+        }
+
+        public void TestDelayedSymptoms_DestroyEquipment()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card delayedSymptoms = GetCard(DelayedSymptomsCardController.Identifier);
+
+            Card dangerSense = PlayCard("DangerSense");
+            Card mere = PlayCard("Mere");
+
+            
+            PutIntoPlay("SavageMana");
+
+            DecisionSelectCards = new[] { dangerSense, mere };
+
+            StartGame();
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(delayedSymptoms);
+
+            // Assert
+            AssertInTrash(legacy, dangerSense);
+            AssertInTrash(haka, mere);
+            Assert.AreEqual(2, GetNumberOfCardsInTrash(legacy));
+            Assert.AreEqual(1, GetNumberOfCardsInTrash(ra));
+            Assert.AreEqual(2, GetNumberOfCardsInTrash(haka));
+        }
+
+        [Test()]
+        public void TestDelayedSymptoms_NoCardsInDeckForcesReshuffle()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            //put all legacy cards in trash
+            DiscardTopCards(legacy, 36);
+            Card delayedSymptoms = GetCard(DelayedSymptomsCardController.Identifier);
+
+            Card dangerSense = PlayCard("DangerSense");
+            Card mere = PlayCard("Mere");
+
+
+            PutIntoPlay("SavageMana");
+
+            DecisionSelectCards = new[] { dangerSense, mere };
+
+            StartGame();
+
+            // Act
+            GoToPlayCardPhase(Vector);
+
+            QuickShuffleStorage(legacy);
+
+            PlayCard(delayedSymptoms);
+
+            // Assert
+            AssertNotInPlayArea(legacy, dangerSense);
+            AssertInTrash(haka, mere);
+            Assert.AreEqual(1, GetNumberOfCardsInTrash(legacy));
+            Assert.AreEqual(1, GetNumberOfCardsInTrash(ra));
+            Assert.AreEqual(2, GetNumberOfCardsInTrash(haka));
+            QuickShuffleCheck(1);
         }
 
         [Test]
