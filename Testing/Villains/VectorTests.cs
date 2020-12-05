@@ -801,12 +801,15 @@ namespace CauldronTests
             GoToPlayCardPhase(Vector);
             PlayCard(eliteTraining);
 
-            QuickHPStorage(legacy);
+            QuickHPStorage(legacy, ra);
 
             DealDamage(Vector, legacy, 3, DamageType.Toxic);
 
+            //doesn't increase hero damage
+            DealDamage(legacy, ra, 3, DamageType.Melee);
+
             // Assert
-            QuickHPCheck(-4);
+            QuickHPCheck(-4, -3);
         }
 
         [Test]
@@ -822,13 +825,13 @@ namespace CauldronTests
             // Act
             GoToPlayCardPhase(Vector);
             PlayCard(eliteTraining);
-
+            DiscardAllCards(ra);
             QuickHandStorage(new []{legacy, ra, haka});
 
             DestroyCard(eliteTraining);
 
             // Assert
-            QuickHandCheck(new []{-2, -2, -2});
+            QuickHandCheck(new []{-2, 0, -2});
         }
 
 

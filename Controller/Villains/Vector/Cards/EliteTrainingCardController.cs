@@ -24,28 +24,29 @@ namespace Cauldron.Vector
         public override void AddTriggers()
         {
             base.AddWhenDestroyedTrigger(DestroyCardResponse, TriggerType.DiscardCard);
+            base.AddIncreaseDamageTrigger((DealDamageAction dda) => dda.DamageSource != null && IsVillainTarget(dda.DamageSource.Card), 1);
 
             base.AddTriggers();
         }
 
-        public override IEnumerator Play()
-        {
-            IncreaseDamageStatusEffect idse = new IncreaseDamageStatusEffect(IncreaseDamageAmount);
-            idse.UntilCardLeavesPlay(this.Card);
-            idse.SourceCriteria.IsVillain = true;
-            idse.SourceCriteria.IsTarget = true;
+        //public override IEnumerator Play()
+        //{
+        //    IncreaseDamageStatusEffect idse = new IncreaseDamageStatusEffect(IncreaseDamageAmount);
+        //    idse.UntilCardLeavesPlay(this.Card);
+        //    idse.SourceCriteria.IsVillain = true;
+        //    idse.SourceCriteria.IsTarget = true;
 
-            IEnumerator routine = base.AddStatusEffect(idse);
+        //    IEnumerator routine = base.AddStatusEffect(idse);
 
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-        }
+        //    if (base.UseUnityCoroutines)
+        //    {
+        //        yield return base.GameController.StartCoroutine(routine);
+        //    }
+        //    else
+        //    {
+        //        base.GameController.ExhaustCoroutine(routine);
+        //    }
+        //}
 
         private IEnumerator DestroyCardResponse(DestroyCardAction dca)
         {
