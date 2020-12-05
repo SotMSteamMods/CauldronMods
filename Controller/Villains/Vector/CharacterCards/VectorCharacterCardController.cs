@@ -90,7 +90,7 @@ namespace Cauldron.Vector
 
                 // Remove Super Virus from game
                 IEnumerator r2 = this.GameController.MoveCard(this.TurnTakerController, GetSuperVirusCard(),
-                    new Location(this.Card, LocationName.OutOfGame));
+                    new Location(this.Card, LocationName.OutOfGame), evenIfIndestructible: true, cardSource: GetCardSource());
 
                 if (base.UseUnityCoroutines)
                 {

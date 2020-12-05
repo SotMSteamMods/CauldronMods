@@ -25,6 +25,7 @@ namespace Cauldron.Vector
 
         public SupervirusCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
         }
 
         public override void AddTriggers()
@@ -41,23 +42,6 @@ namespace Cauldron.Vector
                 GameOverResponse, TriggerType.GameOver, TriggerTiming.After);
 
             base.AddTriggers();
-        }
-
-        public override IEnumerator Play()
-        {
-            // Make this card indestructible
-            MakeIndestructibleStatusEffect ise = new MakeIndestructibleStatusEffect();
-            ise.CardsToMakeIndestructible.IsSpecificCard = this.Card;
-            IEnumerator routine = base.AddStatusEffect(ise, true);
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
         }
 
         private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
@@ -136,6 +120,11 @@ namespace Cauldron.Vector
             {
                 base.GameController.ExhaustCoroutine(routine);
             }
+        }
+
+        public override bool AskIfCardIsIndestructible(Card card)
+        {
+            return card == base.Card || card.Location == base.Card.UnderLocation;
         }
     }
 }

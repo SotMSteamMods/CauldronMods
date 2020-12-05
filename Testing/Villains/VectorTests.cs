@@ -233,6 +233,40 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestSuperVirusAndCardsUnderneathAreIndestructible()
+        {
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "TheArgentAdept", "Megalopolis");
+
+            Card bloodSample = GetCard(BloodSampleCardController.Identifier); // Virus
+            Card delayedSymptoms = GetCard(DelayedSymptomsCardController.Identifier); // Virus
+
+            Card superVirus = GetCard(SupervirusCardController.Identifier);
+
+            MoveCard(Vector, bloodSample, superVirus.UnderLocation);
+            MoveCard(Vector, delayedSymptoms, superVirus.UnderLocation);
+
+            StartGame();
+            PlayCard(superVirus);
+
+            Card cedistic = PlayCard("CedisticDissonant");
+            Card pipes = PlayCard("DrakesPipes");
+            DecisionSelectCard = superVirus;
+            UsePower(adept);
+            AssertInPlayArea(Vector, superVirus);
+
+            foreach (Card under in superVirus.UnderLocation.Cards)
+            {
+                PlayCard(pipes);
+                DecisionSelectCard = under;
+                UsePower(adept);
+                AssertUnderCard(superVirus, under);
+
+
+            }
+
+        }
+
+        [Test]
         public void TestFlippedVectorPlaysCardAtEndOfVillainTurn()
         {
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
