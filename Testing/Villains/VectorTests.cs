@@ -536,8 +536,6 @@ namespace CauldronTests
 
         }
 
-
-
         [Test]
         public void TestBloodSampleMoveUnderSuperVirus()
         {
@@ -563,10 +561,104 @@ namespace CauldronTests
             GoToStartOfTurn(Vector);
 
             // Assert
-
-            // Enough damage was done to offer to move Blood Sample under Super Virus
+             // Enough damage was done to offer to move Blood Sample under Super Virus
             AssertUnderCard(superVirus, bloodSample);
         }
+
+        [Test]
+        public void TestBloodSampleMoveUnderSuperVirus_FlipsVector()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card bloodSample = GetCard(BloodSampleCardController.Identifier);
+            Card superVirus = GetCard(SupervirusCardController.Identifier);
+
+            StartGame();
+            QuickHPStorage(legacy, ra, haka);
+            DecisionYesNo = true;
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(bloodSample);
+            QuickHPCheck(-1, -1, -1);
+
+            PlayCard(superVirus);
+
+            DealDamage(legacy, Vector, 6, DamageType.Melee);
+
+            //get H+1 (4) viruses to move on supervirus
+            IEnumerable<Card> virusToMove = FindCardsWhere((Card c) => IsVirus(c) && Vector.TurnTaker.Deck.HasCard(c)).Take(4);
+            MoveCards(Vector, virusToMove, superVirus.UnderLocation);
+
+            GoToStartOfTurn(Vector);
+
+            // Assert
+
+            AssertFlipped(Vector.CharacterCard);
+
+
+        }
+
+
+        [Test]
+        public void TestBloodSampleMoveUnderSuperVirus_Optional()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card bloodSample = GetCard(BloodSampleCardController.Identifier);
+            Card superVirus = GetCard(SupervirusCardController.Identifier);
+
+            StartGame();
+            QuickHPStorage(legacy, ra, haka);
+            DecisionYesNo = false;
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(bloodSample);
+            QuickHPCheck(-1, -1, -1);
+
+            PlayCard(superVirus);
+
+            DealDamage(legacy, Vector, 6, DamageType.Melee);
+
+            GoToStartOfTurn(Vector);
+
+            // Assert
+
+            // Enough damage was done to offer to move Blood Sample under Super Virus
+            AssertIsInPlayAndNotUnderCard(bloodSample);
+        }
+
+        [Test]
+        public void TestBloodSampleDontAttemptMoving_NoSupervirus()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card bloodSample = GetCard(BloodSampleCardController.Identifier);
+
+            StartGame();
+            QuickHPStorage(legacy, ra, haka);
+            DecisionYesNo = true;
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(bloodSample);
+            QuickHPCheck(-1, -1, -1);
+
+
+            DealDamage(legacy, Vector, 6, DamageType.Melee);
+
+            GoToStartOfTurn(Vector);
+
+            // Assert
+
+            // Enough damage was done to offer to move Blood Sample under Super Virus
+            AssertIsInPlayAndNotUnderCard(bloodSample);
+        }
+
 
         [Test]
         public void TestBloodSampleNotEnoughMoveDamage()

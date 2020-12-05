@@ -59,7 +59,7 @@ namespace Cauldron.Vector
             List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
 
             IEnumerator routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.MoveCard, this.Card, null, storedYesNoResults, null, GetCardSource());
+                SelectionType.MoveCard, this.Card, storedResults: storedYesNoResults, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -87,18 +87,6 @@ namespace Cauldron.Vector
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            // They chose to move the card under Super Virus, check for flip condition
-            if (ShouldVectorFlip())
-            {
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(FlipVector());
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(FlipVector());
-                }
-            }
         }
 
         private bool WasVectorDealtSufficientDamage()
