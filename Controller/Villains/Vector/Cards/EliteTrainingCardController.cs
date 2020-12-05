@@ -29,25 +29,6 @@ namespace Cauldron.Vector
             base.AddTriggers();
         }
 
-        //public override IEnumerator Play()
-        //{
-        //    IncreaseDamageStatusEffect idse = new IncreaseDamageStatusEffect(IncreaseDamageAmount);
-        //    idse.UntilCardLeavesPlay(this.Card);
-        //    idse.SourceCriteria.IsVillain = true;
-        //    idse.SourceCriteria.IsTarget = true;
-
-        //    IEnumerator routine = base.AddStatusEffect(idse);
-
-        //    if (base.UseUnityCoroutines)
-        //    {
-        //        yield return base.GameController.StartCoroutine(routine);
-        //    }
-        //    else
-        //    {
-        //        base.GameController.ExhaustCoroutine(routine);
-        //    }
-        //}
-
         private IEnumerator DestroyCardResponse(DestroyCardAction dca)
         {
             IEnumerator routine = base.GameController.EachPlayerDiscardsCards(CardsToDiscard, CardsToDiscard, cardSource: base.GetCardSource());
