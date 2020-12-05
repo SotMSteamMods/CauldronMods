@@ -394,5 +394,26 @@ namespace CauldronTests
             PutIntoPlay("SurgeOfStrength");
             QuickHPCheck(0, 0);
         }
+        [Test]
+        public void TestHighDjarilDamageTrigger()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "Tempest", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            PlayCard("HighDjaril");
+
+            //to make it obvious when and where damage should be going
+            SetHitPoints(tempest, 10);
+            SetHitPoints(ra, 10);
+            SetHitPoints(legacy, 31);
+            SetHitPoints(haka, 30);
+
+            QuickHPStorage(legacy, haka);
+            GoToEndOfTurn(oriphel);
+            QuickHPCheck(-4, 0);
+            GoToEndOfTurn(oriphel);
+            QuickHPCheck(0, -4);
+        }
     }
 }
