@@ -228,5 +228,79 @@ namespace CauldronTests
             QuickHPCheck(-1, -1, -1);
         }
 
+
+        [Test()]
+        public void TestCeladroch_PillarRewards_NumberOfTriggers([Values(3, 4, 5)] int H)
+        {
+            var math = new CeladrochPillarRewards(H);
+
+            int[] beforeHp = new int[] { 25, 22, 21, 21, 12, 7, 2, 25, 10, -4 };
+            int[] afterHp = new int[] { 22, 21, 21, 12, 7, 2, -20, -100, 20, -10 };
+
+            int[] answers3 = new int[] { 0, 1, 0, 2, 1, 1, 1, 6, 0, 0 };
+            int[] answers4 = new int[] { 0, 0, 0, 2, 1, 1, 1, 5, 0, 0 };
+            int[] answers5 = new int[] { 0, 0, 0, 2, 1, 0, 1, 4, 0, 0 };
+
+            var answers = H <= 3 ? answers3 : H == 4 ? answers4 : answers5;
+
+            for (int index = 0; index < beforeHp.Length; index++)
+            {
+                int before = beforeHp[index];
+                int after = afterHp[index];
+                int expected = answers[index];
+
+                int actual = math.NumberOfTriggers(before, after);
+
+                Assert.AreEqual(expected, actual, $"Test {index}: NumberOfTriggers ({H},{before},{after}) Expect={expected}, Result = {actual}");
+            }
+        }
+
+        [Test()]
+        public void TestCeladroch_PillarRewards_HpTilNextTrigger([Values(3, 4, 5)] int H)
+        {
+            var math = new CeladrochPillarRewards(H);
+
+            int[] currentHp = new int[] { 25, 22, 21, 21, 12, 7, 2, 25, 10, -4 };
+
+            int[] answers3 = new int[] { 4, 1, 4, 4, 3, 2, 1, 4, 1, 0 };
+            int[] answers4 = new int[] { 5, 2, 1, 1, 2, 2, 2, 5, 5, 0 };
+            int[] answers5 = new int[] { 6, 3, 2, 2, 5, 6, 1, 6, 3, 0 };
+
+            var answers = H <= 3 ? answers3 : H == 4 ? answers4 : answers5;
+
+            for (int index = 0; index < currentHp.Length; index++)
+            {
+                int hp = currentHp[index];
+                int expected = answers[index];
+
+                int actual = math.HpTillNextTrigger(hp);
+
+                Assert.AreEqual(expected, actual, $"Test {index}: HpTillNextTrigger ({H},{hp}) Expect={expected}, Result = {actual}");
+            }
+        }
+
+        [Test()]
+        public void TestCeladroch_PillarRewards_RemainingTriggers([Values(3, 4, 5)] int H)
+        {
+            var math = new CeladrochPillarRewards(H);
+
+            int[] currentHp = new int[] { 25, 22, 21, 21, 12, 7, 2, 25, 10, -4 };
+
+            int[] answers3 = new int[] { 6, 6, 5, 5, 3, 2, 1, 6, 3, 0 };
+            int[] answers4 = new int[] { 5, 5, 5, 5, 3, 2, 1, 5, 2, 0 };
+            int[] answers5 = new int[] { 4, 4, 4, 4, 2, 1, 1, 4, 2, 0 };
+
+            var answers = H <= 3 ? answers3 : H == 4 ? answers4 : answers5;
+
+            for (int index = 0; index < currentHp.Length; index++)
+            {
+                int hp = currentHp[index];
+                int expected = answers[index];
+
+                int actual = math.RemainingRewards(hp);
+
+                Assert.AreEqual(expected, actual, $"Test {index}: RemainingTriggers ({H},{hp}) Expect={expected}, Result = {actual}");
+            }
+        }
     }
 }

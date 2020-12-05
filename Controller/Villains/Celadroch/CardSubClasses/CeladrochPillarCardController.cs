@@ -4,20 +4,23 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cauldron
+namespace Cauldron.Celadroch
 {
     public abstract class CeladrochPillarCardController : CardController
     {
-        private readonly int[] _rewardThresholds;
+        private readonly CeladrochPillarRewards _rewards;
         private readonly TriggerType _rewardType;
+        private readonly string PendingTriggerKey = "PendingTriggerKey";
 
         protected CeladrochPillarCardController(Card card, TurnTakerController turnTakerController, TriggerType rewardType) : base(card, turnTakerController)
         {
-            _rewardThresholds = GetRewardThresholds();
+            _rewards = new CeladrochPillarRewards(H);
             _rewardType = rewardType;
 
             SpecialStringMaker.ShowSpecialString(RemainingRewardsSpecialString);
-            SpecialStringMaker.ShowSpecialString(HpTilNextRewardSpecialString).Condition = () => HpTilNextReward() > 0;
+            SpecialStringMaker.ShowSpecialString(HpTilNextRewardSpecialString).Condition = () => _rewards.HpTillNextTrigger(Card.HitPoints.Value) > 0;
+
+            SpecialStringMaker.ShowSpecialString(() => $"DEBUG - Pending Triggers {GetCardPropertyJournalEntryInteger(PendingTriggerKey) ?? 0}");
         }
 
         // This card may not regain HP.
@@ -40,12 +43,48 @@ namespace Cauldron
             AddTrigger<DealDamageAction>(dda => dda.Target == Card && dda.DidDealDamage, PillarCardRewardResponse, _rewardType, TriggerTiming.After);
 
             //when this card would leave play, remove it from the game.
-            AddTrigger<MoveCardAction>(mca => mca.CardToMove == Card && mca.Origin.IsPlayArea && !mca.Destination.HighestRecursiveLocation.IsInPlay, MoveOutOfPlayResponse, TriggerType.CancelAction, TriggerTiming.Before);
+            AddTrigger<MoveCardAction>(mca => mca.CardToMove == Card && mca.Origin.IsPlayArea && !mca.Destination.HighestRecursiveLocation.IsInPlay, MoveOutOfPlayResponse, TriggerType.RemoveFromGame, TriggerTiming.Before);
         }
 
         private IEnumerator PillarCardRewardResponse(DealDamageAction action)
         {
-            return null;
+            //plan:
+            // pull pending triggers
+            // push new trigger count
+            // do loop
+            // pull pending triggers
+            // if triggers, loop
+            // fire the trigger
+            // loop
+
+            int pendingTriggers = GetCardPropertyJournalEntryInteger(PendingTriggerKey) ?? 0;
+            int newTriggers = _rewards.NumberOfTriggers(action.TargetHitPointsAfterBeingDealtDamage.Value, action.TargetHitPointsBeforeBeingDealtDamage.Value);
+            pendingTriggers += newTriggers;
+
+            SetCardProperty(PendingTriggerKey, pendingTriggers);
+            while (pendingTriggers > 0)
+            {
+                List<SelectTurnTakerDecision> selected = new List<SelectTurnTakerDecision>();
+                var coroutine = SelectHeroAndGrantReward(selected);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                pendingTriggers = GetCardPropertyJournalEntryInteger(PendingTriggerKey) ?? 0;
+                if (pendingTriggers > 0)
+                    pendingTriggers--;
+                if (!DidSelectTurnTaker(selected))
+                {
+                    pendingTriggers = 0; // skip == done
+                }
+
+                SetCardProperty(PendingTriggerKey, pendingTriggers);
+            }
         }
 
         //When this card would leave play, remove it from the game
@@ -54,11 +93,11 @@ namespace Cauldron
             return new MoveCardDestination(TurnTaker.OutOfGame, false, true, true);
         }
 
-        protected abstract IEnumerator SelectHeroAndGrantReward();
+        protected abstract IEnumerator SelectHeroAndGrantReward(List<SelectTurnTakerDecision> selected);
 
         private string RemainingRewardsSpecialString()
         {
-            int num = NumberOfRemainingRewards();
+            int num = _rewards.RemainingRewards(Card.HitPoints.Value);
             switch (num)
             {
                 case 0: return $"{Card.Title} has used all it's rewards.";
@@ -70,7 +109,7 @@ namespace Cauldron
 
         private string HpTilNextRewardSpecialString()
         {
-            int num = HpTilNextReward();
+            int num = _rewards.HpTillNextTrigger(Card.HitPoints.Value);
             switch (num)
             {
                 case 0: return "";
@@ -80,37 +119,10 @@ namespace Cauldron
             }
         }
 
-
-        private int NumberOfRemainingRewards()
-        {
-            return 0;
-        }
-
-        private int HpTilNextReward()
-        {
-            return 0;
-        }
-
-        private int NumberOfRewardTriggers(int beforeHp, int afterHp)
-        {
-            return 0;
-        }
-
-        private int[] GetRewardThresholds()
-        {
-            return new int[0];
-        }
-
-
         private IEnumerator MoveOutOfPlayResponse(MoveCardAction action)
         {
-            return null;
+            action.SetDestination(TurnTaker.OutOfGame);
+            return DoNothing();
         }
-
-
-
-
-
-
     }
 }

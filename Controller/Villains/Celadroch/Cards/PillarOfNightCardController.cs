@@ -14,9 +14,9 @@ namespace Cauldron.Celadroch
 
         }
 
-        protected override IEnumerator SelectHeroAndGrantReward()
+        protected override IEnumerator SelectHeroAndGrantReward(List<SelectTurnTakerDecision> selected)
         {
-            return GameController.SelectHeroToDrawCard(DecisionMaker, optionalSelectHero: true, optionalDrawCard: false, cardSource: GetCardSource());
+            return GameController.SelectHeroToDrawCard(DecisionMaker, optionalSelectHero: true, optionalDrawCard: false, storedResults: selected, cardSource: GetCardSource());
         }
     }
 }
