@@ -32,7 +32,6 @@ namespace CauldronTests
         }
 
         [Test()]
-        [Order(0)]
         public void TestMOSSTitanLoad()
         {
             SetupGameController("BaronBlade", "Cauldron.Titan/MinistryOfStrategicScienceTitanCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
@@ -109,6 +108,203 @@ namespace CauldronTests
             QuickHPStorage(haka);
             DealDamage(apostate, haka, 2, DamageType.Melee);
             QuickHPCheck(0);
+            DealDamage(apostate, haka, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestFutureTitanLoad()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Titan/FutureTitanCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+
+            Assert.AreEqual(6, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(titan);
+            Assert.IsInstanceOf(typeof(FutureTitanCharacterCardController), titan.CharacterCardController);
+
+            foreach (var card in titan.HeroTurnTaker.GetAllCards())
+            {
+                var cc = GetCardController(card);
+                Assert.IsTrue(cc.GetType() != typeof(CardController), $"{card.Identifier} is does not have a CardController");
+            }
+
+            Assert.AreEqual(33, titan.CharacterCard.HitPoints);
+        }
+
+        [Test()]
+        public void TestFutureTitanInnatePower()
+        {
+            SetupGameController("Apostate", "Cauldron.Titan/FutureTitanCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            //If Titanform is in play, 1 target deals {Titan} 1 melee damage. Otherwise, play the top card of your deck.
+            Card tform = PutOnDeck("Titanform");
+            //Otherwise, play the top card of your deck.
+            QuickHPStorage(apostate);
+            UsePower(titan);
+            QuickHPCheck(0);
+            AssertIsInPlay(tform);
+            //If Titanform is in play, 1 target deals {Titan} 1 melee damage. 
+            QuickHPStorage(apostate);
+            UsePower(titan);
+            QuickHPCheck(-1);
+        }
+
+        [Test()]
+        public void TestFutureTitanIncap1()
+        {
+            SetupGameController("Apostate", "Cauldron.Titan/FutureTitanCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(apostate);
+
+            //One player may draw a card now,
+            QuickHandStorage(haka);
+            UseIncapacitatedAbility(titan, 0);
+            QuickHandCheck(1);
+        }
+
+        [Test()]
+        public void TestFutureTitanIncap2()
+        {
+            SetupGameController("Apostate", "Cauldron.Titan/FutureTitanCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(apostate);
+
+            SetHitPoints(apostate, 27);
+            Card sword = GetCardInPlay("Condemnation");
+            SetHitPoints(sword, 6);
+
+            //Two targets regain 1 HP each.
+            QuickHPStorage(apostate.CharacterCard, sword);
+            UseIncapacitatedAbility(titan, 1);
+            QuickHPCheck(1, 1);
+        }
+
+        [Test()]
+        public void TestFutureTitanIncap3()
+        {
+            SetupGameController("Apostate", "Cauldron.Titan/FutureTitanCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(apostate);
+
+            Card apoc = PlayCard("Apocalypse");
+
+            //Destroy an ongoing card.
+            UseIncapacitatedAbility(titan, 2);
+            AssertInTrash(apoc);
+        }
+
+        [Test()]
+        public void TestOniTitanLoad()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Titan/OniTitanCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+
+            Assert.AreEqual(6, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(titan);
+            Assert.IsInstanceOf(typeof(OniTitanCharacterCardController), titan.CharacterCardController);
+
+            foreach (var card in titan.HeroTurnTaker.GetAllCards())
+            {
+                var cc = GetCardController(card);
+                Assert.IsTrue(cc.GetType() != typeof(CardController), $"{card.Identifier} is does not have a CardController");
+            }
+
+            Assert.AreEqual(27, titan.CharacterCard.HitPoints);
+        }
+
+        [Test()]
+        public void TestOniTitanInnatePowerDeck()
+        {
+            SetupGameController("Apostate", "Cauldron.Titan/OniTitanCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(titan, 17);
+            Card tform = PutOnDeck("Titanform");
+
+            //Titan regains 1HP. Search your deck, trash, and hand for Titanform and play it. Shuffle your deck.
+            QuickHPStorage(titan);
+            UsePower(titan);
+            QuickHPCheck(1);
+            AssertIsInPlay(tform);
+        }
+
+        [Test()]
+        public void TestOniTitanInnatePowerTrash()
+        {
+            SetupGameController("Apostate", "Cauldron.Titan/OniTitanCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(titan, 17);
+            Card tform = PutInTrash("Titanform");
+
+            //Titan regains 1HP. Search your deck, trash, and hand for Titanform and play it. Shuffle your deck.
+            QuickHPStorage(titan);
+            UsePower(titan);
+            QuickHPCheck(1);
+            AssertIsInPlay(tform);
+        }
+
+        [Test()]
+        public void TestOniTitanInnatePowerHand()
+        {
+            SetupGameController("Apostate", "Cauldron.Titan/OniTitanCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(titan, 17);
+            Card tform = PutInHand("Titanform");
+
+            //Titan regains 1HP. Search your deck, trash, and hand for Titanform and play it. Shuffle your deck.
+            QuickHPStorage(titan);
+            UsePower(titan);
+            QuickHPCheck(1);
+            AssertIsInPlay(tform);
+        }
+
+        [Test()]
+        public void TestOniTitanIncap1()
+        {
+            SetupGameController("Apostate", "Cauldron.Titan/OniTitanCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(apostate);
+
+            //One player may draw a card now,
+            QuickHandStorage(haka);
+            UseIncapacitatedAbility(titan, 0);
+            QuickHandCheck(1);
+        }
+
+        [Test()]
+        public void TestOniTitanIncap2()
+        {
+            SetupGameController("Apostate", "Cauldron.Titan/OniTitanCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(apostate);
+
+            //One Hero may use a power now.
+            QuickHPStorage(apostate);
+            UseIncapacitatedAbility(titan, 1);
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestOniTitanIncap3()
+        {
+            SetupGameController("Apostate", "Cauldron.Titan/OniTitanCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(apostate);
+
+            //One hero may discard a card to reduce damage dealt to them by 1 until the start of your turn.
+            QuickHandStorage(haka);
+            UseIncapacitatedAbility(titan, 2);
+            QuickHandCheck(-1);
+
+            //reduce damge to target by 1
+            QuickHPStorage(haka);
+            DealDamage(apostate, haka, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+            //until start of your turn
+            GoToStartOfTurn(titan);
+            QuickHPStorage(haka);
             DealDamage(apostate, haka, 2, DamageType.Melee);
             QuickHPCheck(-2);
         }
