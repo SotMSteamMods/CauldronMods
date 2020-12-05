@@ -20,6 +20,15 @@ namespace CauldronTests
         protected TokenPool stormPool => celadroch.CharacterCard.FindTokenPool(CeladrochCharacterCardController.StormPoolIdentifier);
         protected TurnTakerController celadroch { get { return FindVillain("Celadroch"); } }
 
+        protected void SuppressPillarRewardTriggers(Card pillar)
+        {
+            var pcc = FindCardController(pillar);
+            Assert.IsInstanceOf(typeof(CeladrochPillarCardController), pcc);
+
+            GameController.AddTemporaryTriggerInhibitor<DealDamageAction>(t => t is Trigger<DealDamageAction> dt && dt.CardSource.Card == pillar, dda => false, pcc.GetCardSource());
+            GameController.AddTemporaryTriggerInhibitor<DestroyCardAction>(t => t is Trigger<DestroyCardAction> dt && dt.CardSource.Card == pillar, dda => false, pcc.GetCardSource());
+        }
+
         private void AssertCard(string identifier, string[] keywords = null, int hitpoints = 0)
         {
             Card card = GetCard(identifier);
@@ -301,6 +310,221 @@ namespace CauldronTests
 
                 Assert.AreEqual(expected, actual, $"Test {index}: RemainingTriggers ({H},{hp}) Expect={expected}, Result = {actual}");
             }
+        }
+
+
+        [Test()]
+        public void TestCeladroch_PillarCard_CannotGainHp([Values("PillarOfNight", "PillarOfSky", "PillarOfStorms")] string pillar)
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var p = GetCard(pillar);
+            SetHitPoints(p, 24);
+
+            QuickHPStorage(p);
+            GainHP(p, 1);
+            QuickHPCheck(0);
+
+            SetHitPoints(haka.CharacterCard, 20);
+            QuickHPStorage(haka);
+            GainHP(haka.CharacterCard, 3);
+            QuickHPCheck(3);
+        }
+
+        [Test()]
+        public void TestCeladroch_PillarCard_RemoveFromGameDamge([Values("PillarOfNight", "PillarOfSky", "PillarOfStorms")] string pillar)
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var p = GetCard(pillar);
+            SuppressPillarRewardTriggers(p);
+
+            DealDamage(ra, p, 30, DamageType.Fire);
+
+            AssertOutOfGame(p);
+        }
+
+        [Test()]
+        public void TestCeladroch_PillarCard_RemoveFromGameDestroy([Values("PillarOfNight", "PillarOfSky", "PillarOfStorms")] string pillar)
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var p = GetCard(pillar);
+            SuppressPillarRewardTriggers(p);
+            DestroyCard(p, ra.CharacterCard);
+
+            AssertOutOfGame(p);
+        }
+
+        [Test()]
+        public void TestCeladroch_PillarCard_RemoveFromGameMove()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var p1 = GetCard("PillarOfNight");
+            var p2 = GetCard("PillarOfSky");
+            var p3 = GetCard("PillarOfStorms");
+
+            SuppressPillarRewardTriggers(p1);
+            SuppressPillarRewardTriggers(p2);
+            SuppressPillarRewardTriggers(p3);
+
+            MoveCard(ra, p1, p1.NativeDeck);
+            AssertOutOfGame(p1);
+
+            MoveCard(ra, p2, celadroch.TurnTaker.Trash);
+            AssertOutOfGame(p2);
+
+            MoveCard(ra, p3, ra.TurnTaker.PlayArea);
+            AssertIsInPlay(p3);
+        }
+
+        [Test()]
+        public void TestCeladroch_PillarCard_RemoveFromGameWeirdStuff()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var p1 = GetCard("PillarOfNight");
+            var p2 = GetCard("PillarOfSky");
+            var p3 = GetCard("PillarOfStorms");
+
+            MoveCard(ra, p1, ra.CharacterCard.UnderLocation);
+            AssertIsInPlay(p1);
+
+            MoveCard(ra, p2, ra.CharacterCard.NextToLocation);
+            AssertOutOfGame(p2);
+
+            FlipCard(p3);
+            AssertOutOfGame(p3);
+        }
+
+        [Test()]
+        public void TestCeladroch_PillarOfNight_RewardTrigger()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var p1 = GetCard("PillarOfNight");
+            var p2 = GetCard("PillarOfSky");
+            var p3 = GetCard("PillarOfStorms");
+
+            //H = 3, 4 damage per trigger, 6 total triggers possible
+            DecisionSelectTurnTaker = ra.HeroTurnTaker;
+            QuickHandStorage(ra);
+            DealDamage(ra, p1, 4, DamageType.Cold);
+            QuickHandCheck(1);
+
+            DealDamage(ra, p1, 8, DamageType.Cold);
+            QuickHandCheck(2);
+
+            DealDamage(ra, p1, 8, DamageType.Cold);
+            QuickHandCheck(2);
+
+            //over kill ensure trigger fires on destruction
+            DealDamage(ra, p1, 20, DamageType.Cold);
+            QuickHandCheck(1);
+        }
+
+        [Test()]
+        public void TestCeladroch_PillarOfSky_RewardTrigger()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var p1 = GetCard("PillarOfNight");
+            var p2 = GetCard("PillarOfSky");
+            var p3 = GetCard("PillarOfStorms");
+
+            SuppressPillarRewardTriggers(p1);
+
+            //setup enough powers
+            DecisionSelectTarget = p1;
+            var h1 = PlayCard("MotivationalCharge");
+            var h2 = PlayCard("Mere");
+            var h3 = PlayCard("LivingConflagration");
+
+            //H = 3, 4 damage per trigger, 6 total triggers possible
+            //sequence turntakers and powers, damaging p1 as the target soak.
+            DecisionSelectTurnTakers = new[] { legacy.HeroTurnTaker, ra.HeroTurnTaker, haka.HeroTurnTaker, legacy.HeroTurnTaker, ra.HeroTurnTaker, haka.HeroTurnTaker };
+            DecisionSelectCards = new[]
+            {
+                legacy.CharacterCard,
+                ra.CharacterCard, p1,
+                haka.CharacterCard, p1,
+                h1, p1,
+                h2, p1,
+                h3, p1,
+            };
+
+            DealDamage(ra, p2, 4, DamageType.Cold);
+
+            AssertNotUsablePower(legacy, legacy.CharacterCard);
+
+            DealDamage(ra, p2, 8, DamageType.Cold);
+            AssertNotUsablePower(ra, ra.CharacterCard);
+            AssertNotUsablePower(haka, haka.CharacterCard);
+
+            DealDamage(ra, p2, 8, DamageType.Cold);
+            AssertNotUsablePower(legacy, h1);
+            AssertNotUsablePower(ra, h2);
+
+            //over kill ensure trigger fires on destruction
+            DealDamage(ra, p2, 20, DamageType.Cold);
+            AssertNotUsablePower(haka, h3);
+        }
+
+
+        [Test()]
+        public void TestCeladroch_PillarOfStorms_RewardTrigger()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false, randomSeed: -1239823770);
+            StartGame();
+
+            var p1 = GetCard("PillarOfNight");
+            var p2 = GetCard("PillarOfSky");
+            var p3 = GetCard("PillarOfStorms");
+
+            SuppressPillarRewardTriggers(p1);
+
+            //preload cards into hands
+            var h1 = MakeCustomHeroHand(legacy, new[] { "InspiringPresence", "BackFistStrike", "BackFistStrike" });
+
+            var h2 = MakeCustomHeroHand(haka, new[] { "Dominion", "ElbowSmash", "ElbowSmash" });
+
+            var h3 = MakeCustomHeroHand(ra, new[] { "ImbuedFire", "FireBlast", "FireBlast" });
+
+            //H = 3, 4 damage per trigger, 6 total triggers possible
+            //sequence turntakers and cards, damaging p1 as the target soak.
+            DecisionSelectTurnTakers = new[] { legacy.HeroTurnTaker, legacy.HeroTurnTaker, haka.HeroTurnTaker, haka.HeroTurnTaker, ra.HeroTurnTaker, ra.HeroTurnTaker };
+            DecisionSelectCards = new[]
+            {
+                h1[1], p1,
+                h1[2], p1,
+                h2[1], p1,
+                h2[2], p1,
+                h3[1], p1,
+                h3[2], p1,
+            };
+
+            DealDamage(ra, p3, 4, DamageType.Cold);
+            AssertInTrash(h1[1]);
+
+            DealDamage(ra, p3, 8, DamageType.Cold);
+            AssertInTrash(h1[2]);
+            AssertInTrash(h2[1]);
+
+            DealDamage(ra, p3, 8, DamageType.Cold);
+            AssertInTrash(h2[2]);
+            AssertInTrash(h3[1]);
+
+            //over kill ensure trigger fires on destruction
+            DealDamage(ra, p3, 20, DamageType.Cold);
+            AssertInTrash(h3[2]);
         }
     }
 }

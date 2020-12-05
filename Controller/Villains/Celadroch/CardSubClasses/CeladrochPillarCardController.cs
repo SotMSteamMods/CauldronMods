@@ -39,11 +39,20 @@ namespace Cauldron.Celadroch
             //Reduce damge dealt to Celadroch by 1.
             AddReduceDamageTrigger(c => c.IsTarget && c.Identifier == "Celadroch", 1);
 
-            //reward trigger
-            AddTrigger<DealDamageAction>(dda => dda.Target == Card && dda.DidDealDamage, PillarCardRewardResponse, _rewardType, TriggerTiming.After);
+            //reward triggers
+            //incremental damage trigger
+            AddTrigger<DealDamageAction>(PillarCardRewardTrigger, PillarCardRewardResponse, _rewardType, TriggerTiming.After);
+            //destroyed by HP damage final
+            AddTrigger<DestroyCardAction>(dca => dca.CardToDestroy.Card == Card && dca.DealDamageAction != null && dca.DealDamageAction.DidDealDamage, dca => PillarCardRewardResponse(dca.DealDamageAction), _rewardType, TriggerTiming.Before);
 
             //when this card would leave play, remove it from the game.
-            AddTrigger<MoveCardAction>(mca => mca.CardToMove == Card && mca.Origin.IsPlayArea && !mca.Destination.HighestRecursiveLocation.IsInPlay, MoveOutOfPlayResponse, TriggerType.RemoveFromGame, TriggerTiming.Before);
+            AddTrigger<MoveCardAction>(mca => mca.CardToMove == Card && mca.Origin.IsPlayArea && (!mca.Destination.HighestRecursiveLocation.IsInPlay || !mca.Destination.IsUnderCard), MoveOutOfPlayResponse, TriggerType.RemoveFromGame, TriggerTiming.Before);
+            AddTrigger<FlipCardAction>(fca => fca.CardToFlip.Card == Card, fca => GameController.MoveCard(TurnTakerController, Card, TurnTaker.OutOfGame, cardSource: GetCardSource()), TriggerType.RemoveFromGame, TriggerTiming.Before);
+        }
+
+        private bool PillarCardRewardTrigger(DealDamageAction action)
+        {
+            return action.Target == Card && action.DidDealDamage;
         }
 
         private IEnumerator PillarCardRewardResponse(DealDamageAction action)
@@ -58,12 +67,17 @@ namespace Cauldron.Celadroch
             // loop
 
             int pendingTriggers = GetCardPropertyJournalEntryInteger(PendingTriggerKey) ?? 0;
-            int newTriggers = _rewards.NumberOfTriggers(action.TargetHitPointsAfterBeingDealtDamage.Value, action.TargetHitPointsBeforeBeingDealtDamage.Value);
+            int beforeHp = action.TargetHitPointsBeforeBeingDealtDamage.Value;
+            int afterHp = action.TargetHitPointsAfterBeingDealtDamage.Value;
+            System.Console.WriteLine($"{Card.Title} - before = {beforeHp}, after = {afterHp}");
+            int newTriggers = _rewards.NumberOfTriggers(beforeHp, afterHp);
             pendingTriggers += newTriggers;
 
             SetCardProperty(PendingTriggerKey, pendingTriggers);
             while (pendingTriggers > 0)
             {
+                System.Console.WriteLine($"{Card.Title} - Reward Trigger");
+
                 List<SelectTurnTakerDecision> selected = new List<SelectTurnTakerDecision>();
                 var coroutine = SelectHeroAndGrantReward(selected);
                 if (base.UseUnityCoroutines)

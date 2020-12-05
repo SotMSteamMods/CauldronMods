@@ -141,6 +141,17 @@ namespace Cauldron.Celadroch
             //Undo Villain Cards cannot be played
             CannotPlayCards(null);
 
+
+            IEnumerator afterFlipRoutine = base.AfterFlipCardImmediateResponse();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(afterFlipRoutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(afterFlipRoutine);
+            }
+
             if (IsGameAdvanced)
             {
                 var coroutine = GameController.AddTokensToPool(StormPool, 2, GetCardSource());
