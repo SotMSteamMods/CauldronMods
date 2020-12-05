@@ -887,6 +887,22 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestUnbreakableDestroySelfAndRestoreEndOfTurnEffects()
+        {
+            SetupGameController("Omnitron", "Haka", "Cauldron.Titan", "TheScholar", "VoidGuardDrMedico", "Megalopolis");
+            StartGame();
+
+            Card drone = PutInTrash("S83AssaultDrone");
+            Card unb = PlayCard("Unbreakable");
+            //At the start of your turn, destroy this card.
+            GoToStartOfTurn(titan);
+            AssertInTrash(unb);
+
+            GoToEndOfTurn(omnitron);
+            AssertIsInPlay(drone);
+        }
+
+        [Test()]
         public void TestUnbreakableVillainTeamMode()
         {
             Game game = new Game(new string[] { "BugbearTeam", "Cauldron.Titan", "ErmineTeam", "Bunker", "FrictionTeam", "Lifeline", "GreazerTeam", "VoidGuardDrMedico", "Megalopolis" });
@@ -903,9 +919,7 @@ namespace CauldronTests
             PlayCard("Regeneration");
             SetHitPoints(voidMedico, 10);
             QuickHPStorage(voidMedico);
-            PlayCard("AlienArcana");
-            GoToEndOfTurn(lifeline);
-            GoToEndOfTurn(greazerTeam);
+            GoToStartOfTurn(voidMedico);
             //+2 each for Bunker and Scholar's turns
             QuickHPCheck(4);
         }
