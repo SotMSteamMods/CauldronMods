@@ -14,9 +14,42 @@ namespace Cauldron.Oriphel
 
         public override IEnumerator Play()
         {
-
+            IEnumerator coroutine;
             //"If Jade is in play, reveal the top {H} cards of the villain deck. Put any revealed Goons and Guardians into play and discard the rest.",
+            if(jadeIfInPlay != null)
+            {
+                coroutine = RevealCards_PutSomeIntoPlay_DiscardRemaining(TurnTakerController, TurnTaker.Deck, H, new LinqCardCriteria((Card c) => IsGoon(c) || IsGuardian(c)));
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
             //"If {Oriphel} is in play, destroy {H} hero ongoing and/or equipment cards. Play the top card of the villain deck."
+            if(oriphelIfInPlay != null)
+            {
+                coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => (c.IsHero && c.IsOngoing) || IsEquipment(c), "ongoing or equipment"), H, false, H, cardSource: GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+                coroutine = PlayTheTopCardOfTheVillainDeckResponse(FakeAction);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
 
             yield break;
         }

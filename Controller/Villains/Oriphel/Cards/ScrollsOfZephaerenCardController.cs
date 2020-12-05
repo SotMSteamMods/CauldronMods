@@ -37,7 +37,7 @@ namespace Cauldron.Oriphel
                 GameController.ExhaustCoroutine(coroutine);
             }
             //"Play the top card of the villain deck.",
-            coroutine = PlayTheTopCardOfTheVillainDeckResponse(FakeAction());
+            coroutine = PlayTheTopCardOfTheVillainDeckResponse(FakeAction);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -60,11 +60,6 @@ namespace Cauldron.Oriphel
                 }
             }
             yield break;
-        }
-
-        private GameAction FakeAction()
-        {
-            return new PhaseChangeAction(GetCardSource(), Game.ActiveTurnPhase, Game.ActiveTurnPhase, true);
         }
     }
 }

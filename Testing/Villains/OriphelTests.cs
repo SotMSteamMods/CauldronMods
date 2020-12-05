@@ -720,5 +720,38 @@ namespace CauldronTests
             AssertFlipped(oriphel);
             QuickHPCheck(-2, -2, -2, -2);
         }
+        [Test]
+        public void TestUmbralJavelinJade()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            Card goon = PutOnDeck("MejiGuard");
+            Card guardian = PutOnDeck("HighPhaol");
+            Card relic = PutOnDeck("MoonShardkey");
+            Card transformation = PutOnDeck("GrandOriphel");
+
+            PlayCard("UmbralJavelin");
+            AssertIsInPlay(goon, guardian);
+            AssertInTrash(relic, transformation);
+        }
+        [Test]
+        public void TestUmbralJavelinOriphel()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            FlipCard(oriphel);
+            Card goon = PutOnDeck("MejiGuard");
+
+            var destroyed = new Card[] { PlayCard("SurgeOfStrength"), PlayCard("TheLegacyRing"), PlayCard("TheStaffOfRa"), PlayCard("StunBolt") };
+            Card tamoko = PlayCard("TaMoko");
+
+            PlayCard("UmbralJavelin");
+            AssertInTrash(destroyed);
+            AssertIsInPlay(goon, tamoko);
+        }
     }
 }

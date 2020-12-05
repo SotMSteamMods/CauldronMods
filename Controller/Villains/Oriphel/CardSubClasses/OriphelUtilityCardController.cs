@@ -41,5 +41,13 @@ namespace Cauldron.Oriphel
                 return CharacterCard.Title == "Jade" ? CharacterCard : null;
             }
         }
+
+        protected GameAction FakeAction
+        {
+            get
+            {
+                return new PhaseChangeAction(GetCardSource(), Game.ActiveTurnPhase, Game.ActiveTurnPhase, true);
+            }
+        }
     }
 }
