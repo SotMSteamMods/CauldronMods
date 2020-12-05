@@ -85,7 +85,22 @@ namespace Cauldron.Vector
             {
                 // Move any cards underneath Super Virus into villain trash
                 IEnumerable<Card> cardsUnder = FindCardsWhere(c => c.Location == GetSuperVirusCard().UnderLocation);
-                IEnumerator r1 = this.GameController.MoveCards(DecisionMaker, cardsUnder, (Card c) => new MoveCardDestination(c.NativeTrash), cardSource: GetCardSource());
+                IEnumerator r1;
+
+                var copyCards = cardsUnder.ToArray();
+                for (int i = 0; i < copyCards.Count(); i++)
+                {
+                    var card = copyCards.ElementAt(i);
+                    r1 = GameController.MoveCard(DecisionMaker, card, card.NativeTrash,evenIfIndestructible: true, cardSource: GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(r1);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(r1);
+                    }
+                }
 
                 // Remove Super Virus from game
                 IEnumerator r2 = this.GameController.MoveCard(this.TurnTakerController, GetSuperVirusCard(),
@@ -93,12 +108,10 @@ namespace Cauldron.Vector
 
                 if (base.UseUnityCoroutines)
                 {
-                    yield return base.GameController.StartCoroutine(r1);
                     yield return base.GameController.StartCoroutine(r2);
                 }
                 else
                 {
-                    base.GameController.ExhaustCoroutine(r1);
                     base.GameController.ExhaustCoroutine(r2);
                 }
             }
@@ -117,21 +130,7 @@ namespace Cauldron.Vector
             {
                 // Increase damage dealt by {Vector} by 2.
                 base.SideTriggers.Add(base.AddIncreaseDamageTrigger(dd => dd.DamageSource != null && dd.DamageSource.IsSameCard(base.CharacterCard), dd => 2));
-                //IncreaseDamageStatusEffect idse = new IncreaseDamageStatusEffect(AdvancedDamageIncrease)
-                //{
-                //    SourceCriteria = { IsSpecificCard = this.Card }
-                //};
-                //idse.UntilCardLeavesPlay(this.Card);
-
-                //IEnumerator routine = base.GameController.AddStatusEffect(idse, true, GetCardSource());
-                //if (base.UseUnityCoroutines)
-                //{
-                //    yield return base.GameController.StartCoroutine(routine);
-                //}
-                //else
-                //{
-                //    base.GameController.ExhaustCoroutine(routine);
-                //}
+                
             }
         }
 
