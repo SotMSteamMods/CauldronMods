@@ -11,6 +11,7 @@ namespace Cauldron.Oriphel
     {
         public OriphelGuardianCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowListOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria((Card c) => c.IsRelic, "relic"));
         }
 
         public override void AddTriggers()

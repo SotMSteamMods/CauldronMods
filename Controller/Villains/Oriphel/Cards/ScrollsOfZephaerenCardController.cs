@@ -10,6 +10,7 @@ namespace Cauldron.Oriphel
     {
         public ScrollsOfZephaerenCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroTargetWithLowestHP(ranking: 2);
         }
 
         public override IEnumerator Play()

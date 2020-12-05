@@ -10,6 +10,8 @@ namespace Cauldron.Oriphel
     {
         public OriphelCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria((Card c) => c.IsRelic, "relic")).Condition = () => Card.Title == "Oriphel";
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: 2).Condition = () => Card.Title == "Oriphel";
         }
 
         public override void AddSideTriggers()

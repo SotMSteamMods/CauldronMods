@@ -31,6 +31,7 @@ namespace Cauldron.Oriphel
                                                     new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && IsGoon(c), "goon"),
                                                     SelectionType.CardToDealDamage,
                                                     HitHighestHP,
+                                                    allowAutoDecide: true,
                                                     cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {

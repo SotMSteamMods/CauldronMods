@@ -10,6 +10,8 @@ namespace Cauldron.Oriphel
     {
         public MoonShardkeyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
+            SpecialStringMaker.ShowVillainTargetWithHighestHP();
         }
 
         public override void AddTriggers()

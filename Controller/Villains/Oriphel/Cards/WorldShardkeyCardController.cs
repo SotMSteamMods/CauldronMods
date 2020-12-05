@@ -10,6 +10,8 @@ namespace Cauldron.Oriphel
     {
         public WorldShardkeyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroTargetWithLowestHP();
+            SpecialStringMaker.ShowVillainTargetWithHighestHP();
         }
 
         public override void AddTriggers()

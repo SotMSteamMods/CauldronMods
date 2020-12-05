@@ -10,6 +10,8 @@ namespace Cauldron.Oriphel
     {
         public MejiNomadCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => IsGuardian(c), "guardian"));
         }
 
         public override void AddTriggers()

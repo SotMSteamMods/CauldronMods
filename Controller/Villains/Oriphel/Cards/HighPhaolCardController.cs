@@ -12,6 +12,7 @@ namespace Cauldron.Oriphel
         private const string phaolKey = "PhaolRetaliationUsedThisTurn";
         public HighPhaolCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => $"{Card.Title} has used its retaliation damage this turn").Condition = () => !RetaliationAvailable();
         }
 
         public override void AddTriggers()

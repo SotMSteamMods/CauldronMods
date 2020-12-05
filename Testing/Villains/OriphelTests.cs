@@ -797,6 +797,7 @@ namespace CauldronTests
             CleanupStartingCards();
 
             QuickHPStorage(haka);
+            PutOnDeck("HighAsriel");
             PlayCard("MoonShardkey");
             GoToEndOfTurn();
             QuickHPCheck(-2);
@@ -860,6 +861,7 @@ namespace CauldronTests
             CleanupStartingCards();
 
             QuickHPStorage(wraith);
+            PutOnDeck("HighAsriel");
             PlayCard("WorldShardkey");
             GoToEndOfTurn();
             QuickHPCheck(-2);

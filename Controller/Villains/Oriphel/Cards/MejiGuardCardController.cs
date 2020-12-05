@@ -10,6 +10,7 @@ namespace Cauldron.Oriphel
     {
         public MejiGuardCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroWithMostCards(true);
         }
 
         public override void AddTriggers()

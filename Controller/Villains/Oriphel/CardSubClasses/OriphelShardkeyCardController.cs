@@ -52,6 +52,15 @@ namespace Cauldron.Oriphel
                 }
                 else
                 {
+                    coroutine = GameController.SendMessageAction($"{Card.Title} puts {revealedCard.Title} on the bottom of the villain deck.", Priority.Medium, GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
                     //otherwise put it on the bottom of the villain deck.",
                     coroutine = GameController.MoveCard(DecisionMaker, revealedCard, TurnTaker.Deck, toBottom: true, cardSource: GetCardSource());
                     if (UseUnityCoroutines)
