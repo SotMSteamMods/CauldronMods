@@ -772,10 +772,6 @@ namespace CauldronTests
             StartGame();
             CleanupStartingCards();
 
-            DecisionSelectTarget = oriphel.CharacterCard;
-            PlayCard("ThroatJab");
-            SetHitPoints(oriphel, 10);
-
             QuickHPStorage(haka);
             PutOnDeck("HighAsriel");
             PlayCard("MoonShardkey");
@@ -802,6 +798,23 @@ namespace CauldronTests
             QuickHPCheck(0, 0, 0, -2);
             UsePower(legacy);
             QuickHPCheck(-3, 0, 0, 0);
+        }
+        [Test]
+        public void TestShardkeyVeil()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            PutOnDeck("HighAsriel");
+            PutOnDeck("MejiNomad");
+            PutOnDeck("MejiGuard");
+            PlayCard("VeilShardkey");
+
+            DestroyCard("MejiGuard");
+            AssertIsInPlay("MejiNomad");
+            DestroyCard("VeilShardkey");
+            AssertNotInPlay("HighAsriel");
         }
     }
 }
