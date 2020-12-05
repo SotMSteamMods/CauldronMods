@@ -415,5 +415,39 @@ namespace CauldronTests
             GoToEndOfTurn(oriphel);
             QuickHPCheck(0, -4);
         }
+        [Test]
+        public void TestHighPhaolDamageTrigger()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            PlayCard("HighPhaol");
+
+            QuickHPStorage(legacy, ra, wraith, haka);
+
+            DealDamage(legacy, oriphel, 1, DTM);
+            QuickHPCheck(-3, 0, 0, 0);
+
+            //only once per turn
+            DealDamage(ra, oriphel, 1, DTM);
+            QuickHPCheckZero();
+
+            //restarts at start of turn
+            GoToStartOfTurn(legacy);
+            DealDamage(ra, oriphel, 1, DTM);
+            QuickHPCheck(0, -3, 0, 0);
+
+            //does not activate on hero-hero damage
+            GoToStartOfTurn(wraith);
+            DecisionSelectTarget = haka.CharacterCard;
+            PlayCard("StunBolt");
+            UsePower("StunBolt");
+            QuickHPCheck(0, 0, 0, -1);
+
+            //nor on failed damage
+            DealDamage(haka, oriphel, 1, DTM);
+            QuickHPCheckZero();
+        }
     }
 }
