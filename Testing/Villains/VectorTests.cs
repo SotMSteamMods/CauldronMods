@@ -849,8 +849,7 @@ namespace CauldronTests
 
             // Act
             GoToPlayCardPhase(Vector);
-            PlayCard(hostageShield);
-
+            Card shield = PlayCard(hostageShield);
             string messageText = $"Prevent damage from Ra.";
             AssertStatusEffectsContains(messageText);
             AssertNextToCard(hostageShield, ra.CharacterCard);
@@ -879,6 +878,33 @@ namespace CauldronTests
             GoToStartOfTurn(ra);
             AssertNotNextToCard(hostageShield, ra.CharacterCard);
             AssertStatusEffectsDoesNotContain(messageText);
+        }
+
+        [Test]
+        public void TestHostageShield_EffectIsRemovedIfDestroyed()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card hostageShield = GetCard(HostageShieldCardController.Identifier);
+
+            StartGame();
+
+            DecisionYesNo = true;
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(hostageShield);
+            QuickHPStorage(legacy);
+            DealDamage(ra, legacy, 3, DamageType.Fire);
+            QuickHPCheck(0);
+            string messageText = $"Prevent damage from Ra.";
+            DestroyCard(hostageShield, Vector.CharacterCard);
+            AssertStatusEffectsDoesNotContain(messageText);
+
+            QuickHPStorage(legacy);
+            DealDamage(ra, legacy, 3, DamageType.Fire);
+            QuickHPCheck(-3);
         }
 
         [Test]

@@ -27,7 +27,7 @@ namespace Cauldron.Vector
         {
             List<Card> storedHeroes = new List<Card>();
             IEnumerator routine = base.GameController.FindTargetWithLowestHitPoints(1,
-                c => c.IsHero && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 
+                c => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 
                 storedHeroes, cardSource: this.GetCardSource());
 
             if (base.UseUnityCoroutines)
