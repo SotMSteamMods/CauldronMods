@@ -582,5 +582,117 @@ namespace CauldronTests
             DealDamage(oriphel, legacy, 1, DTM);
             QuickHPCheck(-2);
         }
+        [Test]
+        public void TestMirageDiscards()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            Card javelin = PutOnDeck("UmbralJavelin");
+            Card storm = PutOnDeck("Sandstorm");
+
+            PlayCard("Mirage");
+            AssertInTrash(javelin, storm);
+        }
+        [Test]
+        public void TestMiragePlaysTargets()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            Card phaol = PutOnDeck("HighPhaol");
+            Card meji = PutOnDeck("MejiGuard");
+
+            PlayCard("Mirage");
+            AssertIsInPlay(phaol, meji);
+        }
+        [Test]
+        public void TestMirageDamage()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            PlayCard("MejiNomad");
+            PlayCard("ShardbearerNathaniel");
+            PutOnDeck("MejiGuard");
+            PutOnDeck("MejiClanLeader");
+
+            QuickHPStorage(legacy, ra, wraith, haka);
+            PlayCard("Mirage");
+
+            //First two hits must go to Haka, next one is a choice between Legacy and Haka, last goes to the other
+            QuickHPCheck(-1, 0, 0, -3);
+        }
+        [Test]
+        public void TestSandstorm([Values(0, 1, 2, 3)] int environCards)
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            var safeCards = new string[] { "PoliceBackup", "TrafficPileup", "ImpendingCasualty" };
+
+            for(int i = 0; i < environCards; i++)
+            {
+                PlayCard(safeCards[i]);
+            }
+
+            PutInTrash(oriphel, (Card c) => c.IsTarget && !c.IsCharacter);
+            QuickShuffleStorage(oriphel.TurnTaker.Trash);
+
+            PlayCard("Sandstorm");
+            AssertNumberOfCardsInPlay(oriphel, environCards + 2);
+            QuickShuffleCheck(1);
+        }
+        [Test]
+        public void TestSandstormNotEnoughGoons()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            PutInTrash("HighAsriel", "HighTormul", "MejiGuard");
+            PlayCard("PoliceBackup");
+
+            PlayCard("Sandstorm");
+            AssertNumberOfCardsInPlay(oriphel, 2);
+        }
+        [Test]
+        public void TestScrollsOfZephaerenShuffleAndNoJadeDamage()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            var guardians = new Card[] { PutInTrash("HighAsriel"), PutInTrash("HighPhaol"), PutInTrash("HighTormul"), PutInTrash("HighDjaril") };
+
+            QuickHPStorage(legacy, ra, wraith, haka);
+            QuickShuffleStorage(oriphel.TurnTaker.Deck);
+            PlayCard("TakeDown");
+            PutIntoPlay("ScrollsOfZephaeren");
+            AssertNotInTrash(guardians);
+            QuickShuffleCheck(1);
+            QuickHPCheck(0, 0, 0, 0);
+        }
+        [Test]
+        public void TestScrollsOfZephaerenDamage()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            FlipCard(oriphel);
+            var guardians = new Card[] { PutInTrash("HighAsriel"), PutInTrash("HighPhaol"), PutInTrash("HighTormul"), PutInTrash("HighDjaril") };
+
+            QuickHPStorage(ra);
+            QuickShuffleStorage(oriphel.TurnTaker.Deck);
+            PlayCard("TakeDown");
+            PutIntoPlay("ScrollsOfZephaeren");
+            QuickHPCheck(-3);
+
+        }
     }
 }
