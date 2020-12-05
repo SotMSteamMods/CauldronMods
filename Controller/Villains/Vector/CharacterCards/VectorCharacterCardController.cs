@@ -57,7 +57,7 @@ namespace Cauldron.Vector
                 // Whenever {Vector} is dealt damage, play the top card of the villain deck.
                 base.SideTriggers.Add(
                     base.AddTrigger<DealDamageAction>(dda => dda.DamageSource != null 
-                    && dda.Target.Equals(this.Card), DealtDamageResponse, new[] { TriggerType.PlayCard }, TriggerTiming.After));
+                    && dda.Target.Equals(this.Card) && dda.DidDealDamage, PlayTheTopCardOfTheVillainDeckWithMessageResponse, new[] { TriggerType.PlayCard }, TriggerTiming.After));
 
                 // If {Vector} regains all his HP, he escapes. Game over.
                 base.SideTriggers.Add(base.AddTrigger<GainHPAction>(gha => gha.IsSuccessful && gha.HpGainer.Equals(this.Card), 
@@ -132,20 +132,6 @@ namespace Cauldron.Vector
                 {
                     base.GameController.ExhaustCoroutine(routine);
                 }
-            }
-        }
-
-        private IEnumerator DealtDamageResponse(DealDamageAction dda)
-        {
-            IEnumerator routine = base.GameController.PlayTopCardOfLocation(this.TurnTakerController, this.TurnTaker.Deck);
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
             }
         }
 

@@ -19,6 +19,15 @@ namespace CauldronTests
 
         private const string DeckNamespace = "Cauldron.Vector";
 
+        protected void AddImmuneToDamageTrigger(TurnTakerController ttc, bool heroesImmune, bool villainsImmune)
+        {
+            ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect();
+            immuneToDamageStatusEffect.TargetCriteria.IsHero = new bool?(heroesImmune);
+            immuneToDamageStatusEffect.TargetCriteria.IsVillain = new bool?(villainsImmune);
+            immuneToDamageStatusEffect.UntilStartOfNextTurn(ttc.TurnTaker);
+            this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
+        }
+
         [Test]
         public void TestVectorDeckList()
         {
@@ -96,7 +105,6 @@ namespace CauldronTests
 
             Assert.IsNotNull(Vector);
             Assert.IsInstanceOf(typeof(VectorCharacterCardController), Vector.CharacterCardController);
-
             Assert.AreEqual(40, Vector.CharacterCard.HitPoints);
         }
 
@@ -114,7 +122,26 @@ namespace CauldronTests
             DealDamage(legacy, Vector, 2, DamageType.Melee);
 
             // Assert
-            Assert.True(GetNumberOfCardsInPlay(Vector) > vectorCardsInPlay || GetNumberOfCardsInTrash(Vector) > vectorCardsInTrash);
+            Assert.True(GetNumberOfCardsInPlay(Vector) > vectorCardsInPlay || GetNumberOfCardsInTrash(Vector) > vectorCardsInTrash, "A card was not played");
+        }
+
+        [Test]
+        public void TestVectorDoesNotPlaysCardWhenHitFor0()
+        {
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            int vectorCardsInPlay = GetNumberOfCardsInPlay(Vector);
+            int vectorCardsInTrash = GetNumberOfCardsInTrash(Vector);
+
+            AddImmuneToDamageTrigger(Vector, false, true);
+
+            // Act
+            GoToPlayCardPhase(legacy);
+            DealDamage(legacy, Vector, 2, DamageType.Melee);
+
+            // Assert
+            Assert.True(GetNumberOfCardsInPlay(Vector) == vectorCardsInPlay && GetNumberOfCardsInTrash(Vector) == vectorCardsInTrash, "A card was played when no damage was dealt");
         }
 
         [Test]
