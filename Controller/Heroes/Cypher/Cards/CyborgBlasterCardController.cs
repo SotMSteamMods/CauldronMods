@@ -61,7 +61,7 @@ namespace Cauldron.Cypher
 
             TurnTaker selectedTurnTaker = sttd.First().SelectedTurnTaker;
 
-            this.GameController.SelectHeroToSelectTargetAndDealDamage()
+            //this.GameController.SelectHeroToSelectTargetAndDealDamage()
             
 
         }
