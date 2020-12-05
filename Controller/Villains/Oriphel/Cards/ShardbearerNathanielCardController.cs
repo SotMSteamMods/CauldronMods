@@ -15,6 +15,7 @@ namespace Cauldron.Oriphel
         public override void AddTriggers()
         {
             //"Increase damage dealt by Guardians and {Oriphel} by 1."
+            AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsCard && (IsGuardian(dd.DamageSource.Card) || dd.DamageSource.Card == oriphelIfInPlay), 1);
         }
     }
 }
