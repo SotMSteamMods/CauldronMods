@@ -219,6 +219,7 @@ namespace CauldronTests
             PlayCard(impendingCasualty);
             DealDamage(impendingCasualty, mdp, 2, DamageType.Energy);
             QuickHPCheck(0);
+            DestroyCard(impendingCasualty);
 
             //But it should not be able to deal damage either.
             QuickHPStorage(haka);
@@ -242,6 +243,59 @@ namespace CauldronTests
             QuickHPStorage(battalion);
             DealDamage(haka, battalion, 2, DamageType.Melee);
             QuickHPCheck(-2);
+        }
+        [Test()]
+        public void TestStarlightIncap1_TiedLowest()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(starlight);
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToUseIncapacitatedAbilityPhase(starlight);
+            UseIncapacitatedAbility(starlight, 0);
+
+            //MDP and Ra are tied for lowest HP target
+            SetHitPoints(mdp, 10);
+            SetHitPoints(ra, 10);
+
+            //Choose MDP as lowest HP target, it should be immune to damage
+            DecisionsYesNo = new bool[] { true };
+            QuickHPStorage(mdp);
+            DealDamage(haka, mdp, 2, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //Choose MDP as lowest HP target, it should be unable to deal damage
+            base.ResetDecisions();
+            DecisionsYesNo = new bool[] { true };
+            QuickHPStorage(haka);
+            DealDamage(mdp, haka, 2, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //Deny MDP as lowest HP target, it should deal damage normally
+            base.ResetDecisions();
+            DecisionsYesNo = new bool[] { false };
+            QuickHPStorage(haka);
+            DealDamage(mdp, haka, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //Deny MDP as lowest HP target, it should take damage normally
+            base.ResetDecisions();
+            DecisionsYesNo = new bool[] { false };
+            QuickHPStorage(mdp);
+            DealDamage(haka, mdp, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //An unambiguously lowest HP target shouldn't get a choice
+            base.ResetDecisions();
+            DecisionsYesNo = new bool[] { };
+            PutIntoPlay("BladeBattalion");
+            Card battalion = GetCardInPlay("BladeBattalion");
+            QuickHPStorage(battalion);
+            DealDamage(haka, battalion, 2, DamageType.Melee);
+            QuickHPCheck(0);
         }
         [Test()]
         public void TestStarlightIncap2()
