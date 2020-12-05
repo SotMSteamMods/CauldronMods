@@ -360,6 +360,7 @@ namespace CauldronTests
 
             //change phase to help with consistency
             GoToPlayCardPhase(legacy);
+            PutOnDeck("BioterrorSquad");
 
             QuickHPStorage(Vector, legacy, ra, haka);
             // Act
@@ -511,6 +512,31 @@ namespace CauldronTests
             QuickHPCheck(-1, -3);
             AssertNotInTrash(delayedSymptoms);
         }
+
+        [Test]
+        public void TestBioTerrorSquad_NoVirusInTrash()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card bioTerror = GetCard(BioterrorSquadCardController.Identifier);
+
+            StartGame();
+
+            GoToPlayCardPhase(Vector);
+            PlayCard(bioTerror);
+
+            QuickShuffleStorage(Vector);
+
+            // Act
+            GoToStartOfTurn(Vector);
+
+            // Assert
+            QuickShuffleCheck(0);
+
+        }
+
+
 
         [Test]
         public void TestBloodSampleMoveUnderSuperVirus()

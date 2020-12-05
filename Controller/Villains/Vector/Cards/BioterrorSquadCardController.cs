@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-
+using System.Linq;
 using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
@@ -38,25 +38,42 @@ namespace Cauldron.Vector
 
         private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
         {
-            MoveCardDestination turnTakerDeck = new MoveCardDestination(base.TurnTaker.Deck);
-
-            IEnumerator routine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, 
-                base.TurnTaker.Trash, new LinqCardCriteria(c => c.IsInTrash && IsVirus(c)), 
-                turnTakerDeck.ToEnumerable(),
-                showOutput: true, cardSource: base.GetCardSource());
-
-            IEnumerator routine2 = base.ShuffleDeck(this.DecisionMaker, base.TurnTaker.Deck);
-
-            if (base.UseUnityCoroutines)
+            if (FindCardsWhere((Card c) => base.TurnTaker.Trash.HasCard(c) && IsVirus(c)).Any())
             {
-                yield return base.GameController.StartCoroutine(routine);
-                yield return base.GameController.StartCoroutine(routine2);
-            }
-            else
+
+                MoveCardDestination turnTakerDeck = new MoveCardDestination(base.TurnTaker.Deck);
+
+                IEnumerator routine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker,
+                    base.TurnTaker.Trash, new LinqCardCriteria(c => base.TurnTaker.Trash.HasCard(c) && IsVirus(c)),
+                    turnTakerDeck.ToEnumerable(),
+                    showOutput: true, cardSource: base.GetCardSource());
+
+                IEnumerator routine2 = base.ShuffleDeck(this.DecisionMaker, base.TurnTaker.Deck);
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                    yield return base.GameController.StartCoroutine(routine2);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                    base.GameController.ExhaustCoroutine(routine2);
+                }
+            } else
             {
-                base.GameController.ExhaustCoroutine(routine);
-                base.GameController.ExhaustCoroutine(routine2);
+                IEnumerator routine = base.GameController.SendMessageAction("There are no Virus cards in " + base.CharacterCard.Title + "'s Trash", Priority.Medium, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
             }
+
+            yield break;
         }
 
         private IEnumerator EndOfTurnResponse(PhaseChangeAction pca)
