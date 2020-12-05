@@ -772,6 +772,10 @@ namespace CauldronTests
             StartGame();
             CleanupStartingCards();
 
+            DecisionSelectTarget = oriphel.CharacterCard;
+            PlayCard("ThroatJab");
+            SetHitPoints(oriphel, 10);
+
             QuickHPStorage(haka);
             PutOnDeck("HighAsriel");
             PlayCard("MoonShardkey");
@@ -784,10 +788,6 @@ namespace CauldronTests
             SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
             StartGame();
             CleanupStartingCards();
-
-            DecisionSelectTarget = oriphel.CharacterCard;
-            PlayCard("ThroatJab");
-            SetHitPoints(oriphel, 10);
 
             QuickHPStorage(haka);
             PutOnDeck("HighAsriel");
@@ -815,6 +815,35 @@ namespace CauldronTests
             AssertIsInPlay("MejiNomad");
             DestroyCard("VeilShardkey");
             AssertNotInPlay("HighAsriel");
+        }
+        [Test]
+        public void TestShardkeyWorldDamage()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            QuickHPStorage(wraith);
+            PlayCard("WorldShardkey");
+            GoToEndOfTurn();
+            QuickHPCheck(-2);
+        }
+        [Test]
+        public void TestShardkeyWorldSourceIsLowest()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            DecisionSelectTarget = oriphel.CharacterCard;
+            PlayCard("ThroatJab");
+            SetHitPoints(oriphel, 10);
+
+            QuickHPStorage(wraith);
+            PutOnDeck("HighAsriel");
+            PlayCard("WorldShardkey");
+            GoToEndOfTurn();
+            QuickHPCheck(-2);
         }
     }
 }

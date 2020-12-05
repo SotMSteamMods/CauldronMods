@@ -18,7 +18,21 @@ namespace Cauldron.Oriphel
             base.AddTriggers();
 
             //"At the end of the villain turn, the villain target with the highest HP deals the hero target with the lowest HP 2 melee damage."
+            AddEndOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, HighestDamagesLowestResponse, TriggerType.DealDamage);
+        }
 
+        private IEnumerator HighestDamagesLowestResponse(PhaseChangeAction pca)
+        {
+            IEnumerator coroutine = DealDamageToLowestHP(null, 1, (Card c) => c.IsHero, (c) => 2, DamageType.Melee, damageSourceInfo: new TargetInfo(HighestLowestHP.HighestHP, 1, 1, new LinqCardCriteria((Card c) => c.IsVillainTarget, "The villain target with the highest HP")));
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
     }
 }
