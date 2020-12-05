@@ -28,6 +28,11 @@ namespace CauldronTests
             this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
         }
 
+        protected bool IsVirus(Card card)
+        {
+            return card != null && base.GameController.DoesCardContainKeyword(card, "virus");
+        }
+
         [Test]
         public void TestVectorDeckList()
         {
@@ -126,7 +131,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestVectorDoesNotPlaysCardWhenHitFor0()
+        public void TestVectorDoesNotPlaysCardWhenHitForZero()
         {
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
@@ -142,6 +147,22 @@ namespace CauldronTests
 
             // Assert
             Assert.True(GetNumberOfCardsInPlay(Vector) == vectorCardsInPlay && GetNumberOfCardsInTrash(Vector) == vectorCardsInTrash, "A card was played when no damage was dealt");
+        }
+
+        [Test]
+        public void TestVectorFlipCondition()
+        {
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card supervirus = PlayCard("Supervirus");
+
+            //get H+2 (5) viruses to move on supervirus
+            IEnumerable<Card> virusToMove = FindCardsWhere((Card c) => IsVirus(c) && Vector.TurnTaker.Deck.HasCard(c)).Take(5);
+
+            AssertNotFlipped(Vector.CharacterCard);
+            MoveCards(Vector, virusToMove, supervirus.UnderLocation);
+            AssertFlipped(Vector.CharacterCard);
         }
 
         [Test]
@@ -260,10 +281,7 @@ namespace CauldronTests
                 DecisionSelectCard = under;
                 UsePower(adept);
                 AssertUnderCard(superVirus, under);
-
-
             }
-
         }
 
         [Test]

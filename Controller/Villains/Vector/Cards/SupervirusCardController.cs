@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -41,7 +42,52 @@ namespace Cauldron.Vector
                     && dca.CardToDestroy.Card == this.CharacterCard, 
                 GameOverResponse, TriggerType.GameOver, TriggerTiming.After);
 
+            base.AddTrigger<MoveCardAction>((MoveCardAction mca) => mca.Destination == base.Card.UnderLocation, FlipVectorResponse, TriggerType.FlipCard, TriggerTiming.After);
+            base.AddTrigger<BulkMoveCardsAction>((BulkMoveCardsAction bmca) => bmca.Destination == base.Card.UnderLocation, FlipVectorResponse, TriggerType.FlipCard, TriggerTiming.After);
+
             base.AddTriggers();
+        }
+
+        private IEnumerator FlipVectorResponse(MoveCardAction mca)
+        {
+            // A virus card was moved under this card, check for flip condition
+            if (!ShouldVectorFlip())
+            {
+                yield break;
+            }
+
+            // Flip Vector
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(FlipVector());
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(FlipVector());
+            }
+
+            yield break;
+        }
+
+        private IEnumerator FlipVectorResponse(BulkMoveCardsAction bmca)
+        {
+            // A virus card was moved under this card, check for flip condition
+            if (!ShouldVectorFlip())
+            {
+                yield break;
+            }
+
+            // Flip Vector
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(FlipVector());
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(FlipVector());
+            }
+
+            yield break;
         }
 
         private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
@@ -87,26 +133,7 @@ namespace Cauldron.Vector
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            if (!cardsSelected.Any())
-            {
-                yield break;
-            }
-
-            // A virus card was moved under this card, check for flip condition
-            if (!ShouldVectorFlip())
-            {
-                yield break;
-            }
-
-            // Flip Vector
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(FlipVector());
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(FlipVector());
-            }
+            yield break;
         }
 
         private IEnumerator GameOverResponse(DestroyCardAction dca)
