@@ -28,7 +28,7 @@ namespace Cauldron.Vector
 
         private IEnumerator GainHpResponse(PhaseChangeAction pca)
         {
-            int eligibleCards = FindCardsWhere(c => c.Owner.IsHero && c.IsInPlay && (c.IsOngoing || IsEquipment(c))).ToList().Count();
+            int eligibleCards = FindCardsWhere(c => c.Owner.IsHero && c.IsInPlayAndNotUnderCard && (c.IsOngoing || IsEquipment(c))).Count();
 
             IEnumerator routine = this.GameController.GainHP(this.CharacterCard, eligibleCards);
             if (base.UseUnityCoroutines)
