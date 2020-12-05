@@ -21,7 +21,7 @@ namespace Cauldron.Vector
 
         public override IEnumerator Play()
         {
-            IEnumerator routine = base.DealDamage(this.CharacterCard, c => !c.IsVillain && c.IsTarget && c.IsInPlay, DamageToDeal, DamageType.Toxic);
+            IEnumerator routine = base.DealDamage(this.CharacterCard, c => c.IsNonVillainTarget && c.IsInPlayAndNotUnderCard, DamageToDeal, DamageType.Toxic);
 
             if (base.UseUnityCoroutines)
             {

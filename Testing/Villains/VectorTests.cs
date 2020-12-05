@@ -948,14 +948,14 @@ namespace CauldronTests
             Card enragedTRex = GetCardInPlay("EnragedTRex");
 
             Card hotZone = GetCard(HotZoneCardController.Identifier);
-            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, enragedTRex);
+            QuickHPStorage(Vector.CharacterCard, legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, enragedTRex);
 
             // Act
             GoToPlayCardPhase(Vector);
             PlayCard(hotZone);
 
             // Assert
-            QuickHPCheck(-2, -2, -2, -2);
+            QuickHPCheck(0, -2, -2, -2, -2);
         }
 
         [Test]
