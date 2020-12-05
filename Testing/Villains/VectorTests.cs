@@ -996,7 +996,7 @@ namespace CauldronTests
 
             DecisionLowestHP = ra.CharacterCard;
 
-            QuickHPStorage(legacy, ra);
+            QuickHPStorage(Vector, legacy, ra, haka);
 
             Card lethalForce = GetCard(LethalForceCardController.Identifier);
 
@@ -1005,7 +1005,7 @@ namespace CauldronTests
             PlayCard(lethalForce);
             
             // Assert
-            QuickHPCheck(-2, -1);
+            QuickHPCheck(0, -2, -1, 0);
         }
 
         [Test]
