@@ -205,6 +205,7 @@ namespace CauldronTests
             SetupIncap(baron);
             AssertIncapacitated(starlight);
             Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card impendingCasualty = GetCard("ImpendingCasualty");
 
             GoToUseIncapacitatedAbilityPhase(starlight);
             UseIncapacitatedAbility(starlight, 0);
@@ -212,6 +213,11 @@ namespace CauldronTests
             //as lowest HP target, Mobile Defense Platform should be immune to damage
             QuickHPStorage(mdp);
             DealDamage(haka, mdp, 2, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //Mobile Defense Platform is also immune to damage from non-target sources
+            PlayCard(impendingCasualty);
+            DealDamage(impendingCasualty, mdp, 2, DamageType.Energy);
             QuickHPCheck(0);
 
             //But it should not be able to deal damage either.

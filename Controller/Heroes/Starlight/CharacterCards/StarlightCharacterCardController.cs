@@ -39,7 +39,6 @@ namespace Cauldron.Starlight
                         OnDealDamageStatusEffect lowestTargetImmunity = new OnDealDamageStatusEffect(Card, "LowestTargetImmunity", "The target with the lowest HP is immune to damage and cannot deal damage.", new TriggerType[] { TriggerType.MakeImmuneToDamage }, TurnTaker, Card);
                         lowestTargetImmunity.UntilStartOfNextTurn(TurnTaker);
                         lowestTargetImmunity.CardSource = Card;
-                        lowestTargetImmunity.SourceCriteria.IsTarget = true;
                         lowestTargetImmunity.BeforeOrAfter = BeforeOrAfter.Before;
                         IEnumerator coroutine = AddStatusEffect(lowestTargetImmunity);
                         if (UseUnityCoroutines)
