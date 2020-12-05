@@ -14,7 +14,7 @@
                 "villain"
             ],
             "body": "Notorious Supercriminal",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "a3dff3",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 60,
@@ -44,10 +44,10 @@
             "difficulty": 1,
             "openingLines": {
                 "default": "default placeholder",
-                "CricketCharacter": "Cricket placeholder",
-                "RenegadeCricketCharacter": "Renegade Cricket placeholder",
-                "FirstResponseCricketCharacter": "First Response Cricket  placeholder",
-                "1929CricketCharacter": "Cricket 1929 placeholder"
+                "CricketCharacter": "Hey pipsqueak, aren't you a little young to be playing caped crusader?",
+                "RenegadeCricketCharacter": "Whoa, what is this? You fixing to join the gang? Or is this another one of your tricks?",
+                "FirstResponseCricketCharacter": "Nice digs, kid. But fancy gear ain't nothing without the brains behind it.",
+                "WastelandRoninCricketCharacter": "Looks like you got a new edge. Wonder how it'll look broken."
             }
         },
         {

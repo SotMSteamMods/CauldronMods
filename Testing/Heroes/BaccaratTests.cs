@@ -283,7 +283,6 @@ namespace CauldronTests
             GoToEndOfTurn(baccarat);
             DealDamage(baron, baccarat, 2, DamageType.Melee);
             QuickHPCheck(-1);
-            PrintJournal();
         }
 
         [Test()]
@@ -301,8 +300,6 @@ namespace CauldronTests
             DealDamage(baron, baccarat, 2, DamageType.Melee);
 
             QuickHPCheck(-2);
-
-            PrintJournal();
         }
 
         [Test()]
@@ -529,6 +526,11 @@ namespace CauldronTests
             DecisionSelectFunction = 0;
             //Increase the next damage dealt by {Baccarat} by 1,
             PlayCard(euchre);
+            //Damage is only increased for Baccarat
+            QuickHPStorage(baccarat);
+            DealDamage(mdp, baccarat, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+            //+1 damage
             QuickHPStorage(mdp);
             DealDamage(baccarat, mdp, 2, DamageType.Melee);
             QuickHPCheck(-3);
@@ -822,7 +824,7 @@ namespace CauldronTests
         [Test()]
         public void TestBringDownTheHouseDestroy3Cards()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController(new string[] { "BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis" });//, randomSeed: 142903984
             StartGame();
             //Setup Trash
             Card trick1 = GetCard("CheapTrick", 1);
@@ -1006,7 +1008,7 @@ namespace CauldronTests
             GoToPlayCardPhase(baccarat);
             QuickShuffleStorage(baccarat);
             PlayCard(bridge);
-            QuickShuffleCheck(1);
+            QuickShuffleCheck(2);
             AssertNumberOfCardsInTrash(baccarat, 37);
             //check that all 3 copies are in the deck
             AssertInDeck(GetCard("AbyssalSolitaire", 0));

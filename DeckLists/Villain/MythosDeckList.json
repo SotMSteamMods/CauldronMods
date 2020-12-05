@@ -14,7 +14,7 @@
                 "villain"
             ],
             "body": "Insubstantial Rumor",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "a3cda5",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 48,
@@ -58,12 +58,16 @@
                 "DealDamageInfernal"
             ],
             "flippedAdvancedIcons": [],
-            "difficulty": 1,
+            "difficulty": 3,
             "openingLines": {
-                "default": "default placeholder",
-                "TitanCharacter": "Titan placeholder",
+                "default": "You can't begin to understand the horrors that have been set in motion - or your part in them. ",
+                "TitanCharacter": "Do you have any idea what your foolhardiness has cost? Rituals are delicate things, you can't just pop down to the corner store for replacements.",
                 "MinistryofStrategicSciencesTitanCharacter": "Ministry of Strategic Sciences Titan  placeholder",
-                "2199TitanCharacter": "Titan 2199 placeholder"
+                "FutureTitanCharacter": "Titan 2199 placeholder",
+                "NecroCharacter": "Leave, Mr. Coil. This place is not to be your grave.",
+                "WardenOfChaosNecroCharacter": "No fear of death in you, eh? Believe me, you have no idea what fear looks like.",
+                "PastNecroCharacter": "Fascinating. Just...fascinating. What sort of shade are you, and what sort of portent am I, to have found ourselves face to face?",
+                "LastOfTheForgottenOrderNecro": "Plans within plans have been laid and buried...Are you my end? Or another beginning?"
             }
         },
         {

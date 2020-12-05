@@ -1362,6 +1362,61 @@ namespace CauldronTests
             QuickHPCheck(-1);
         }
 
+        [Test()]
+        public void TestSnowshadeGownCantDealDamageIfNoHPGain()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+ 
+
+            //destroy mdp so baron is vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card gown = PlayCard("SnowshadeGown");
+
+            // Whenever LadyOfTheWood regains HP, you may select a target that hasn't been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
+
+            GoToUsePowerPhase(ladyOfTheWood);
+
+
+            //Have baron blade and LotW have been dealt damage they aren't available for the reaction
+            DecisionYesNo = true;
+            DecisionSelectTarget = ra.CharacterCard;
+            QuickHPStorage(ra);
+            //Use LotW power to trigger reaction
+            UsePower(gown);
+            QuickHPCheck(0);
+        }
+
+        [Test()]
+        public void TestSnowshadeGownCantDealDamageIfPartialHPGain()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //give room to gain 2 HP, but not the full 3HP from the power.
+            SetHitPoints(ladyOfTheWood, 20);
+
+            //destroy mdp so baron is vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card gown = PlayCard("SnowshadeGown");
+
+            // Whenever LadyOfTheWood regains HP, you may select a target that hasn't been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
+            GoToUsePowerPhase(ladyOfTheWood);
+
+            //deal damage to ra with the trigger
+            DecisionYesNo = true;
+            DecisionSelectTarget = ra.CharacterCard;
+
+            QuickHPStorage(ladyOfTheWood, ra);
+            //try to gain 3HP and trigger the reaction
+            UsePower(gown);
+            QuickHPCheck(2, -1);
+        }
 
         [Test()]
         public void TestSnowshadeGownDealDamage_NoTargets()
@@ -1697,10 +1752,65 @@ namespace CauldronTests
             QuickHPStorage(baron);
             DealDamage(ladyOfTheWood, baron, 2, DamageType.Lightning);
             //because of suncast mantle, +3 damage, now 5
-            //it is still irreducible, so -5
-            QuickHPCheck(-5);
+            //it is not irreducible, so -4 total
+            QuickHPCheck(-4);
         }
+        [Test()]
+        public void TestThundergreyShawlIrreducibleOrdering()
+        {
+            //TGS should trigger if the damage totals to 2 or less, with boosts and reductions included
+            SetupGameController("Apostate", "Cauldron.LadyOfTheWood", "Legacy", "Haka", "Megalopolis");
+            StartGame();
 
+            Card sword = GetCardInPlay("Condemnation");
+            Card periapt = PlayCard("PeriaptOfWoe");
+
+            PlayCard("ThundergreyShawl");
+            PlayCard("Summer");
+            UsePower(legacy);
+
+            //total of +3 to fire damage
+
+            QuickHPStorage(sword);
+
+            DealDamage(ladyOfTheWood, sword, 1, DamageType.Fire);
+            DealDamage(ladyOfTheWood, periapt, 1, DamageType.Fire);
+
+            //1 damage +3 boost -2 DR = 2, so Shawl applies and Periapt takes the full 4
+            AssertInTrash(periapt);
+
+            //1 damage +3 boost -1 DR = 1, Shawl does not trigger and Condemnation takes 3
+            QuickHPCheck(-3);
+
+        }
+        [Test()]
+        public void TestThundergreyShawlWithUnincreasableDamage()
+        {
+            SetupGameController("BaronBladeTeam", "MissInformationTeam", "BugbearTeam", "Cauldron.LadyOfTheWood", "TheWraith", "TheSentinels", "Megalopolis");
+
+            StartGame();
+
+            //avoid having any of the starting card shenanigans mess things up
+            var villains = new List<TurnTakerController> { baronTeam, missinfoTeam, bugbearTeam };
+            foreach(TurnTakerController villain in villains)
+            {
+                PutOnDeck(villain, villain.TurnTaker.GetPlayAreaCards().Where((Card c) => !c.IsCharacter));
+            }
+
+            PlayCard("ThundergreyShawl");
+            PlayCard("StunBolt"); 
+            PlayCard("JudgeMental");
+
+            DecisionSelectTarget = ladyOfTheWood.CharacterCard;
+
+            //to give LOTW a putative "damage increase" from a hero card
+            UsePower("StunBolt");
+
+            QuickHPStorage(baronTeam);
+            DealDamage(ladyOfTheWood, baronTeam, 3, DamageType.Melee);
+
+            QuickHPCheck(-3);
+        }
         [Test()]
         public void TestWinter()
         {

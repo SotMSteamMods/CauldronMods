@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Necro",
             "body": "Blight",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "916894",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "916894",
             "character": true,
             "powers": [
                 "{Necro} deals 1 target 1 toxic damage or 1 undead target 2 toxic damage."
@@ -40,12 +40,13 @@
                 "IncreaseDamageTaken"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "What comes next may be unpleasant.",
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "TiamatElementalCharacter": "Tiamat Elemental placeholder",
+                "MythosCharacter": "You seem happy to make it one for others. I will not allow it!"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "Abomination",
@@ -383,7 +384,7 @@
             "hitpointText": "#"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "NecroCharacter",
             "promoIdentifier": "WardenOfChaosNecroCharacter",
@@ -392,9 +393,9 @@
             "promoTitle": "Necro: Warden of Chaos",
             "shortPromoTitle": "Chaos Necro",
             "body": "Reckless Summon",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "8F859A",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "8F859A",
             "character": true,
             "powers": [
                 "Put the top 2 cards of your deck into play."
@@ -418,12 +419,13 @@
                 "DrawCardNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "There is no defense against the horrors I shall unleash.",
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "TiamatElementalCharacter": "Tiamat Elemental placeholder",
+                "MythosCharacter": "It is exactly because I have seen greater fears that death holds no terror for me."
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "NecroCharacter",
@@ -433,9 +435,9 @@
             "promoTitle": "Necro 1929",
             "shortPromoTitle": "Necro 1929",
             "body": "Turn Undead",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "ACDDD5",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "ACDDD5",
             "character": true,
             "powers": [
                 "Until the start of your next turn, replace the word “hero” on your cards with “villain”, and vice versa."
@@ -459,12 +461,55 @@
                 "Discard"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "I will bring my most powerful rituals to bear against this foe.",
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "TiamatElementalCharacter": "Tiamat Elemental placeholder",
+                "MythosCharacter": "Those papers you hold... But how did [i]you[/i] obtain the missing pages of my tome?"
             },
-            "complexity": 1
+            "complexity": 2
+        },
+        {
+            "identifier": "NecroCharacter",
+            "promoIdentifier": "LastOfTheForgottenOrderNecroCharacter",
+            "count": 1,
+            "title": "Necro",
+            "promoTitle": "Last of The Forgotten Order Necro",
+            "shortPromoTitle": "Mythos - Necro",
+            "body": "Turn Undead",
+            "backgroundColor": "",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "",
+            "character": true,
+            "powers": [
+                ""
+            ],
+            "icons": [
+                "HasPower"
+            ],
+            "hitpoints": 1,
+            "nemesisIdentifiers": [
+                "Necro"
+            ],
+            "incapacitatedAbilities": [
+                "",
+                "",
+                ""
+            ],
+            "flippedIcons": [
+                "DealDamageToxic",
+                "UsePowerNow",
+                "DrawCardNow",
+                "Discard"
+            ],
+            "openingLines": {
+                "default": "We must all... repent... before it is... too late.",
+                "PastTheRamCharacter": "1929 Ram placeholder",
+                "TiamatCharacter": "Tiamat placeholder",
+                "TiamatElementalCharacter": "Tiamat Elemental placeholder",
+                "MythosCharacter": "Is this to be my atonement? Thwarting the designs I spent so long advancing? Very well."
+            },
+            "complexity": 2
         }
     ]
 }

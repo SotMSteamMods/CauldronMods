@@ -1,0 +1,132 @@
+{"frames": {
+
+"AnchoredFragment.png":
+{
+	"frame": {"x":2049,"y":0,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"Archangel.png":
+{
+	"frame": {"x":2741,"y":0,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"Crusader.png":
+{
+	"frame": {"x":0,"y":991,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"DimensionalInsinuation.png":
+{
+	"frame": {"x":692,"y":991,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"DisarmingBlow.png":
+{
+	"frame": {"x":1384,"y":991,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"Dragonborn.png":
+{
+	"frame": {"x":2076,"y":991,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"KnightsHatred.png":
+{
+	"frame": {"x":2768,"y":991,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"Magekiller.png":
+{
+	"frame": {"x":0,"y":1501,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"OutlanderCharacter.png":
+{
+	"frame": {"x":0,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"OutlanderCharacterBack.png":
+{
+	"frame": {"x":683,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"OutlanderDeckBack.png":
+{
+	"frame": {"x":1366,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"OutOfTouch.png":
+{
+	"frame": {"x":692,"y":1501,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"RiftBladeStrikes.png":
+{
+	"frame": {"x":1384,"y":1501,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"TransdimensionalOnslaught.png":
+{
+	"frame": {"x":2076,"y":1501,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"Warbrand.png":
+{
+	"frame": {"x":2768,"y":1501,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "OutlanderAtlas0.png",
+	"format": "RGBA8888",
+	"size": {"w":4096,"h":4096},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:1cf48692cda971b4459a0035967714a4:459d318a7ea1563e9373e5aa13911362:5af65710623bf10c178aa5d532b60563$"
+}
+}

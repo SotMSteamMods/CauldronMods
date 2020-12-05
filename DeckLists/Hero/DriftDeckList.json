@@ -12,9 +12,9 @@
             "count": 1,
             "title": "Drift",
             "body": "Chronoshift",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "fbf767",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "fbf767",
             "character": true,
             "powers": [
                 "Shift {DriftLL}, {DriftL}, {DriftR}, {DriftRR}. Drift regains 1 HP."
@@ -45,10 +45,11 @@
                 "default": "default placeholder",
                 "OutlanderCharacter": "Outlander placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "ShiftTrack",
+            "backgroundColor": "fbf767",
             "count": 1,
             "title": "Shift Track",
             "setup": [
@@ -449,7 +450,7 @@
             "flavorReference": "Drift, The Archive #29"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "DriftCharacter",
             "promoIdentifier": "ThroughTheBreachDriftCharacter",
@@ -458,9 +459,9 @@
             "promoTitle": "Drift: Through the Breach",
             "shortPromoTitle": "Breach Drift",
             "body": "Riftwalker",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "FCB040",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "FCB040",
             "character": true,
             "powers": [
                 "Add the top 2 cards of your deck to your shift track, or discard the card from your current shift track space."
@@ -490,11 +491,12 @@
                 "default": "default placeholder",
                 "OutlanderCharacter": "Outlander placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "ShiftTrack",
             "promoIdentifier": "ThroughTheBreachDriftCharacter",
+            "backgroundColor": "FCB040",
             "count": 1,
             "title": "Shift Track",
             "setup": [
@@ -519,9 +521,9 @@
             "promoTitle": "1929 Drift",
             "shortPromoTitle": "1929 Drift",
             "body": "Omen",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "ECCD96",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "ECCD96",
             "character": true,
             "powers": [
                 "Reveal the top 2 cards of 1 hero deck. Replace or discard each of them in any order. Shift {DriftLL}."
@@ -551,7 +553,7 @@
                 "default": "default placeholder",
                 "OutlanderCharacter": "Outlander placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "DriftCharacter",
@@ -564,9 +566,9 @@
             "promoTitle": "2199 Drift",
             "shortPromoTitle": "2199 Drift",
             "body": "Uncertain Future",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "A7B8C1",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "A7B8C1",
             "character": true,
             "powers": [
                 "Play an ongoing card. At the end of your next turn, return it from play to your hand. Shift {DriftRR}."
@@ -597,11 +599,12 @@
                 "default": "default placeholder",
                 "OutlanderCharacter": "Outlander placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "ShiftTrack",
             "promoIdentifier": "SplitDriftCharacter",
+            "backgroundColor": "D1D2D4",
             "count": 1,
             "title": "Shift Track",
             "setup": [

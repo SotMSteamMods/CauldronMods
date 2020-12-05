@@ -1,0 +1,140 @@
+{"frames": {
+
+"AethiumCannon.png":
+{
+	"frame": {"x":683,"y":0,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"AethiumRage.png":
+{
+	"frame": {"x":1375,"y":0,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"ArtemisVector.png":
+{
+	"frame": {"x":2067,"y":0,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"AssembleTheCouncil.png":
+{
+	"frame": {"x":0,"y":2011,"w":1920,"h":1413},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1920,"h":1413},
+	"sourceSize": {"w":1920,"h":1413}
+},
+"CitadelGarrison.png":
+{
+	"frame": {"x":2759,"y":0,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"GravityFluctuation.png":
+{
+	"frame": {"x":0,"y":991,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"LonelyCalling.png":
+{
+	"frame": {"x":692,"y":991,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"NightloreCouncilDeckBack.png":
+{
+	"frame": {"x":0,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"RogueConstellation.png":
+{
+	"frame": {"x":1384,"y":991,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"StarlightOfNoome.png":
+{
+	"frame": {"x":2076,"y":991,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"StarlightOfOros.png":
+{
+	"frame": {"x":2768,"y":991,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"StarlightOfZzeck.png":
+{
+	"frame": {"x":0,"y":1501,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"TalinBrosk.png":
+{
+	"frame": {"x":692,"y":1501,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"UrgentMission.png":
+{
+	"frame": {"x":1384,"y":1501,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"WarpBridge.png":
+{
+	"frame": {"x":2076,"y":1501,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"WatchedByTheStars.png":
+{
+	"frame": {"x":2768,"y":1501,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "NightloreCouncilAtlas0.png",
+	"format": "RGBA8888",
+	"size": {"w":4096,"h":4096},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:638adb9d8c40134917f41502e65ef6ac:9eb47a884e606722b5e2add8952cea55:7797de740645d556326cbee8dda9ec9f$"
+}
+}

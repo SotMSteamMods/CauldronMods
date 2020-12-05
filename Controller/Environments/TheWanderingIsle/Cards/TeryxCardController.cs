@@ -33,7 +33,7 @@ namespace Cauldron.TheWanderingIsle
         {
             //Find the villain target with the highest HP
             List<Card> storedResults = new List<Card>();
-            IEnumerator coroutine = base.GameController.FindTargetsWithHighestHitPoints(1, 1, (Card c) => c.IsVillainTarget, storedResults, cardSource: GetCardSource());
+            IEnumerator coroutine = base.GameController.FindTargetsWithHighestHitPoints(1, 1, (Card c) => IsVillainTarget(c), storedResults, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

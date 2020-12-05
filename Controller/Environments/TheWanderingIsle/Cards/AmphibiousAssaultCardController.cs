@@ -23,8 +23,8 @@ namespace Cauldron.TheWanderingIsle
         {
             // When this card enters play, the { H - 1} villain targets with the lowest HP each deal 3 lightning damage to a different hero target.
             //Find the villain targets with the lowest HP
-            List<Card> storedResults = new List<Card>();
-            IEnumerator coroutine = base.GameController.FindTargetsWithLowestHitPoints(1, Game.H - 1, (Card c) => c.IsVillainTarget, storedResults, cardSource: GetCardSource());
+            List<Card> damageDealers = new List<Card>();
+            IEnumerator coroutine = base.GameController.FindTargetsWithLowestHitPoints(1, Game.H - 1, (Card c) => IsVillainTarget(c), damageDealers, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -34,12 +34,50 @@ namespace Cauldron.TheWanderingIsle
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
+            //coroutine = MultipleDamageSourcesDealDamage(new LinqCardCriteria((Card c) => damageDealers.Contains(c), "H-1 villain targets with the lowest HP", useCardsSuffix: false), TargetType.SelectTarget, 1, new LinqCardCriteria((Card c) => c.IsHero && c.IsTarget, "hero target"), 3, DamageType.Lightning);
+            //if (base.UseUnityCoroutines)
+            //{
+            //	yield return base.GameController.StartCoroutine(coroutine);
+            //}
+            //else
+            //{
+            //	base.GameController.ExhaustCoroutine(coroutine);
+            //}
             //hero targets so we can exclude from the selection
             List<Card> heroTargets = new List<Card>();
+			List<Card> usedSources = new List<Card>();
             //while there are villian targets to deal damage, and hero targets to recieve damage
-            for (int index = 0; index < storedResults.Count; index++)
+            //for (int index = 0; index < damageDealers.Count; index++)
+            while (damageDealers.Count() > 0)
             {
-                Card villainSource = storedResults[index];
+				IEnumerable<Card> source = FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && damageDealers.Contains(c) && !usedSources.Contains(c));
+				if (source.Count() == 0)
+				{
+					break;
+				}
+				Card villainSource = damageDealers.First();
+				if (damageDealers.Count() > 1)
+				{					
+					List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
+					coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.CardToDealDamage, source, storedResults, optional: false, allowAutoDecide: true);
+					if (UseUnityCoroutines)
+					{
+						yield return GameController.StartCoroutine(coroutine);
+					}
+					else
+					{
+						GameController.ExhaustCoroutine(coroutine);
+					}
+					SelectCardDecision selectCardDecision = storedResults.FirstOrDefault();
+					if (selectCardDecision != null)
+					{ 
+						villainSource = GetSelectedCard(storedResults);
+					}
+				} 
+
+
+				usedSources.Add(villainSource);
+
                 List<SelectCardDecision> selectCards = new List<SelectCardDecision>();
 
                 coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(GameController, villainSource), 3, DamageType.Lightning, 1, false, 1,
@@ -56,7 +94,9 @@ namespace Cauldron.TheWanderingIsle
                 }
 
                 heroTargets.Add(GetSelectedCard(selectCards));
+               
             }
+
 
             yield break;
         }
@@ -100,5 +140,6 @@ namespace Cauldron.TheWanderingIsle
             return base.GameController.Game.Journal.PlayCardEntries()
                             .Any(e => e.Round == this.Game.Round && !e.IsPutIntoPlay && e.CardPlayed.IsHero);
         }
-    }
+
+	}
 }

@@ -59,7 +59,7 @@ namespace Cauldron.DocHavoc
 
             // Villain targets gain 2 HP
             IEnumerator gainHpRoutine = this.GameController.GainHP(this.HeroTurnTakerController,
-                (Func<Card, bool>)(c => c.IsVillainTarget), HpGain,
+                (Func<Card, bool>)(c => IsVillainTarget(c)), HpGain,
                 cardSource: this.GetCardSource());
 
             if (this.UseUnityCoroutines)
@@ -85,7 +85,7 @@ namespace Cauldron.DocHavoc
 
             List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
 
-            IEnumerator discardCardRoutine = this.GameController.SelectAndDiscardCard(cc.HeroTurnTakerController, storedResults: storedResults);
+            IEnumerator discardCardRoutine = this.GameController.SelectAndDiscardCard(cc.HeroTurnTakerController, storedResults: storedResults, cardSource: GetCardSource());
 
 
             if (this.UseUnityCoroutines)

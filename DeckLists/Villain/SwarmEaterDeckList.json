@@ -14,7 +14,7 @@
                 "villain"
             ],
             "body": "Power Hungry",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "cececa",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 80,
@@ -32,29 +32,21 @@
             ],
             "advanced": "Increase damage dealt by {SwarmEater} to environment targets by 1.",
             "icons": [
-                "StartOfTurnAction",
-                "DealDamagePsychic",
-                "Manipulate"
+                "StartOfTurnAction"
             ],
-            "advancedIcons": [
-                "IncreaseDamageDealt"
-            ],
+            "advancedIcons": [],
             "flippedBody": "Assimiliating Nanoswarm",
             "flippedGameplay": [
                 "At the start of the villain turn, {SwarmEater} deals the target other than itself with the lowest HP 2 melee damage.",
                 "Whenever Single-Minded Pursuit enters play, flip {SwarmEater}'s villain character cards.",
-                "Whenever a villain card is played {SwarmEater} deals the non-hero target other than itself with the lowest HP 3 melee damage."
+                "Whenever a villain card is play {SwarmEater} deals the non-hero target other than itself with the lowest HP 3 melee damage."
             ],
             "flippedAdvanced": "Whenever {SwarmEater} destroys a villain target, play the top card of the villain deck.",
-            "flippedIcons": [
-                "DealDamageMelee",
-            ],
-            "flippedAdvancedIcons": [
-                "PlayCardNow"
-            ],
-            "difficulty": 1,
+            "flippedIcons": [],
+            "flippedAdvancedIcons": [],
+            "difficulty": 4,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Obstruction analysis complete. Assigned secondary priority. Primary priority unchanged: incorporate targets, enhance self.",
                 "CypherCharacter": "Cypher placeholder",
                 "FirstResponseCypherCharacter": "First Response Cypher placeholder",
                 "SwarmingProtocolCypherCharacter": "Swarming Protocol Cypher placeholder"
@@ -120,12 +112,9 @@
                 "EndOfTurnAction",
                 "DealDamageLightning"
             ],
-            "body": "At the end of the villain turn, this card deals the hero target with the highest HP 2 lightning damage.",
-            "activatableAbilities":[
-                {
-                    "name":"absorb",
-                    "text":"at the end of the villain turn, {SwarmEater} deals the target other than itself with the highest HP 2 lightning damage."
-                }
+            "body": [
+                "At the end of the villain turn, this card deals the hero target with the highest HP 2 lightning damage.",
+                "Absorb: at the end of the villain turn, {SwarmEater} deals the target other than itself with the highest HP 2 lightning damage."
             ],
             "flavorQuotes": [
                 {
@@ -172,12 +161,9 @@
                 "DealDamageFire",
                 "Discard"
             ],
-            "body": "At the end of the villain turn this card deals the hero target with the second highest HP {H - 1} fire damage and each player must discard a card.",
-            "activatableAbilities":[
-                {
-                    "name":"absorb",
-                    "text":"at the start of the villain turn, {H - 2} players must discard a card."
-                }
+            "body": [
+                "At the end of the villain turn this card deals the hero target with the second highest HP {H - 1} fire damage and each player must discard a card.",
+                "Absorb: at the start of the villain turn, {H - 2} players must discard a card."
             ],
             "flavorQuotes": [
                 {
@@ -271,13 +257,8 @@
             ],
             "body": [
                 "Reduce damage dealt to this card by non-villain cards by 1.",
-                "At the end of the villain turn this card deals the 2 hero targets with the lowest HP {H - 2} melee damage each."
-            ],
-            "activatableAbilities":[
-                {
-                    "name":"absorb",
-                    "text":"reduce damage dealt to {SwarmEater} by 1."
-                }
+                "At the end of the villain turn this card deals the 2 hero targets with the lowest HP {H - 2} melee damage each.",
+                "Absorb: reduce damage dealt to {SwarmEater} by 1."
             ],
             "flavorQuotes": [
                 {
@@ -300,12 +281,9 @@
                 "DealDamageProjectile",
                 "DestroyOngoing"
             ],
-            "body": "At the end of the villain turn this card deals the hero target with the highest HP {H} projectile damage and destroys {H - 2} hero ongoing and/or equipment cards.",
-            "activatableAbilities":[
-                {
-                    "name":"absorb",
-                    "text":"at the start of the villain turn, destroy 1 hero ongoing or equipment card."
-                }
+            "body": [
+                "At the end of the villain turn this card deals the hero target with the highest HP {H} projectile damage and destroys {H - 2} hero ongoing and/or equipment cards.",
+                "Absorb: at the start of the villain turn, destroy 1 hero ongoing or equipment card."
             ],
             "flavorQuotes": [
                 {
@@ -367,12 +345,9 @@
             "icons": [
                 "IncreaseDamageDealt"
             ],
-            "body": "Increase damage dealt by villain targets by 1.",
-            "activatableAbilities":[
-                {
-                    "name":"absorb",
-                    "text":"increase damage dealt by {SwarmEater} by 1."
-                }
+            "body": [
+                "Increase damage dealt by villain targets by 1.",
+                "Absorb: increase damage dealt by {SwarmEater} by 1."
             ],
             "flavorQuotes": [
                 {
@@ -394,12 +369,9 @@
                 "EndOfTurnAction",
                 "DealDamageEnergy"
             ],
-            "body": "At the end of the villain turn this card deals each hero target except the hero with the lowest HP {H - 2} irreducible energy damage.",
-            "activatableAbilities":[
-                {
-                    "name":"absorb",
-                    "text":"At the end of the villain turn, {SwarmEater} deals each other target 1 irreducible energy damage."
-                }
+            "body": [
+                "At the end of the villain turn this card deals each hero target except the hero with the lowest HP {H - 2} irreducible energy damage.",
+                "Absorb: At the end of the villain turn, {SwarmEater} deals each other target 1 irreducible energy damage."
             ],
             "flavorQuotes": [
                 {
@@ -421,12 +393,9 @@
                 "StartOfTurnAction",
                 "ReduceDamageTaken"
             ],
-            "body": "At the start of the villain turn, put a random target from the villain trash into play.",
-            "activatableAbilities":[
-                {
-                    "name":"absorb",
-                    "text":"The first time {SwarmEater} would be dealt damage each turn, reduce that damage by 1."
-                }
+            "body": [
+                "At the start of the villain turn, put a random target from the villain trash into play.",
+                "Absorb: The first time {SwarmEater} would be dealt damage each turn, reduce that damage by 1."
             ],
             "flavorQuotes": [
                 {
@@ -466,12 +435,9 @@
                 "DealDamageProjectile",
                 "DealDamageToxic"
             ],
-            "body": "At the end of the villain turn this card deals the hero target with the highest HP {H} projectile damage. Any target dealt damage this way deals itself 1 toxic damage.",
-            "activatableAbilities":[
-                {
-                    "name":"absorb",
-                    "text":"whenever {SwarmEater} deals damage to another target, that target deals itself 1 toxic damage."
-                }
+            "body": [
+                "At the end of the villain turn this card deals the hero target with the highest HP {H} projectile damage. Any target dealt damage this way deals itself 1 toxic damage.",
+                "Absorb: whenever {SwarmEater} deals damage to another target, that target deals itself 1 toxic damage."
             ],
             "flavorQuotes": [
                 {
@@ -530,7 +496,7 @@
             "flippedAdvancedIcons": [
                 "GainHP"
             ],
-            "difficulty": 1,
+            "difficulty": 2,
             "openingLines": {
                 "default": "default placeholder",
                 "CypherCharacter": "Cypher placeholder",

@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Cricket",
             "body": "Damping",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "f1e391",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "f1e391",
             "character": true,
             "powers": [
                 "Select a target. Reduce damage dealt by that target by 1 until the start of your next turn."
@@ -39,7 +39,7 @@
                 "default": "default placeholder",
                 "DynamoCharacter": "Dynamo placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "AcousticDistortion",
@@ -417,7 +417,7 @@
             "flavorReference": "Adventurers #8"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "CricketCharacter",
             "promoIdentifier": "FirstResponseCricketCharacter",
@@ -426,9 +426,9 @@
             "promoTitle": "First Response Cricket",
             "shortPromoTitle": "Responder Cricket",
             "body": "Sonar Burst",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "B3D0D9",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "B3D0D9",
             "character": true,
             "powers": [
                 "{Cricket} deals 2 targets 1 sonic damage each. You may use a power now."
@@ -456,7 +456,7 @@
                 "default": "default placeholder",
                 "DynamoCharacter": "Dynamo placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "CricketCharacter",
@@ -466,9 +466,9 @@
             "promoTitle": "Renegade Cricket",
             "shortPromoTitle": "Renegade Cricket",
             "body": "Sonar Burst",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "EF4945",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "EF4945",
             "character": true,
             "powers": [
                 "Reveral the top card of a hero deck. You may discard a card to put into play, otherwise put it into that player's hand."
@@ -497,7 +497,7 @@
                 "default": "default placeholder",
                 "DynamoCharacter": "Dynamo placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "CricketCharacter",
@@ -507,9 +507,9 @@
             "promoTitle": "Wasteland Ronin Cricket",
             "shortPromoTitle": "Wasteland Cricket",
             "body": "Hide and Seek",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "D4E6B5",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "D4E6B5",
             "character": true,
             "powers": [
                 "Increase damage dealt by {Cricket} during your next turn by 1. {Cricket} may deal 1 target 1 sonic damage."
@@ -537,7 +537,7 @@
                 "default": "default placeholder",
                 "DynamoCharacter": "Dynamo placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

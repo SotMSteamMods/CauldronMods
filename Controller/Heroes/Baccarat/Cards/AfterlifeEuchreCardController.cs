@@ -20,13 +20,13 @@ namespace Cauldron.Baccarat
             IEnumerable<Function> functionChoices = new Function[]
             {
 				//Increase the next damage dealt by {Baccarat} by 1...
-				new Function(base.HeroTurnTakerController, "Increase the next damage dealt by Baccarat by 1", SelectionType.IncreaseNextDamage, () => base.AddStatusEffect(new IncreaseDamageStatusEffect(1){ NumberOfUses = new int?(1) })),
+				new Function(base.HeroTurnTakerController, "Increase the next damage dealt by Baccarat by 1", SelectionType.IncreaseNextDamage, () => base.AddStatusEffect(new IncreaseDamageStatusEffect(1){ SourceCriteria = { IsSpecificCard = base.CharacterCard }, NumberOfUses = new int?(1) })),
 
 				//...or {Baccarat} deals 1 target 2 toxic damage.
 				new Function(base.HeroTurnTakerController, "Baccarat deals 1 target 2 toxic damage", SelectionType.TurnTaker, () => base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 2, DamageType.Toxic, new int?(1), false, new int?(1),cardSource: base.GetCardSource()))
             };
             SelectFunctionDecision selectFunction = new SelectFunctionDecision(base.GameController, base.HeroTurnTakerController, functionChoices, false);
-            IEnumerator coroutine = base.GameController.SelectAndPerformFunction(selectFunction, null, null);
+            IEnumerator coroutine = base.GameController.SelectAndPerformFunction(selectFunction);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

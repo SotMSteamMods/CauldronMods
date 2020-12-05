@@ -1,0 +1,188 @@
+{"frames": {
+
+"Brawler.jpg":
+{
+	"frame": {"x":0,"y":0,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"Cauterize.jpg":
+{
+	"frame": {"x":692,"y":0,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"DocHavocCharacter.jpg":
+{
+	"frame": {"x":1384,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"DocHavocCharacterBack.jpg":
+{
+	"frame": {"x":2067,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"DocHavocDeckBack.jpg":
+{
+	"frame": {"x":2750,"y":0,"w":676,"h":978},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":676,"h":978},
+	"sourceSize": {"w":676,"h":978}
+},
+"DocsFlask.jpg":
+{
+	"frame": {"x":0,"y":991,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"FieldDressing.jpg":
+{
+	"frame": {"x":692,"y":991,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"FirstResponseDocHavocCharacter.png":
+{
+	"frame": {"x":1384,"y":991,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"FirstResponseDocHavocCharacterBack.png":
+{
+	"frame": {"x":2067,"y":991,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"FutureDocHavocCharacter.png":
+{
+	"frame": {"x":2750,"y":991,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"FutureDocHavocCharacterBack.png":
+{
+	"frame": {"x":0,"y":1982,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"GasMask.jpg":
+{
+	"frame": {"x":683,"y":1982,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"ImmediateEvac.jpg":
+{
+	"frame": {"x":1375,"y":1982,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"ImprovisedMine.jpg":
+{
+	"frame": {"x":2067,"y":1982,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"Painkillers.jpg":
+{
+	"frame": {"x":2759,"y":1982,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"PhosphorBlast.jpg":
+{
+	"frame": {"x":0,"y":2973,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"RapidRegen.jpg":
+{
+	"frame": {"x":692,"y":2973,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"RecklessCharge.jpg":
+{
+	"frame": {"x":1384,"y":2973,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"SearchAndRescue.jpg":
+{
+	"frame": {"x":2076,"y":2973,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"StimShot.jpg":
+{
+	"frame": {"x":2768,"y":2973,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"SyringeDarts.jpg":
+{
+	"frame": {"x":0,"y":3483,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"UnstableSerum.jpg":
+{
+	"frame": {"x":692,"y":3483,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "DocHavocAtlas0.png",
+	"format": "RGBA8888",
+	"size": {"w":4096,"h":4096},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:46cb5164b576008a7fefbe8327201950:636521f5e91f847ba736fa0a93d5e8b6:51f64e8f641b0af82ac005eb427c2079$"
+}
+}

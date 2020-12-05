@@ -2,8 +2,8 @@
     "name": "Windmill City",
     "kind": "Environment",
     "expansionIdentifier": "CauldronAdrift",
-    "backgroundColor": "FB5455",
-    "difficulty": 1,
+    "backgroundColor": "D9EAC1",
+    "difficulty": 2,
     "cards": [
         {
             "identifier": "BridgeDisaster",

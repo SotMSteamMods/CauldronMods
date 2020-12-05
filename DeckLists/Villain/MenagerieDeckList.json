@@ -14,7 +14,7 @@
                 "villain"
             ],
             "body": "Intergalactic Collector",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "faf6c6",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "nemesisIdentifiers": [
@@ -58,12 +58,13 @@
             "flippedAdvancedIcons": [
                 "Manipulate"
             ],
-            "difficulty": 1,
+            "difficulty": 2,
             "openingLines": {
                 "default": "Oh, hello, heroes! Care to see my latest catch?",
-                "StarlightCharacter": "Starlight placeholder",
-                "GenesisStarlightCharacter": "Starlight: Genesis placeholder",
-                "NightloreCouncilStarlightCharacter": "Nightlore Council Starlight placeholder"
+                "StarlightCharacter": "Why, you are simply exquisite, my dear. I'll have to make your accomodations especially fortified.",
+                "GenesisStarlightCharacter": "I've heard so much about you, darling - too much to simply ignore!",
+                "NightloreCouncilStarlightCharacter": "What is this, the B-team from Nightlore? How insulting. I deserve the best!",
+                "Area51StarlightCharacter": "A rarity among rarities, it seems."
             }
         },
         {

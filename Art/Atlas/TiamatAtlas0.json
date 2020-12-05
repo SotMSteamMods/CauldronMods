@@ -1,0 +1,164 @@
+{"frames": {
+
+"AcidBreath.jpg":
+{
+	"frame": {"x":0,"y":991,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"Alteration.jpg":
+{
+	"frame": {"x":692,"y":991,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"AncientWard.jpg":
+{
+	"frame": {"x":1384,"y":991,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"ElementalForm.jpg":
+{
+	"frame": {"x":692,"y":1501,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"ElementalFrenzy.jpg":
+{
+	"frame": {"x":1384,"y":1501,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"ElementalHydraTiamat.jpg":
+{
+	"frame": {"x":0,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"ElementalWrath.jpg":
+{
+	"frame": {"x":2076,"y":1501,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"ElementOfFire.jpg":
+{
+	"frame": {"x":2076,"y":991,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"ElementOfIce.jpg":
+{
+	"frame": {"x":2768,"y":991,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"ElementOfLightning.jpg":
+{
+	"frame": {"x":0,"y":1501,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"HealingMagic.jpg":
+{
+	"frame": {"x":2768,"y":1501,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"ManaCharge.jpg":
+{
+	"frame": {"x":0,"y":2011,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"ReptilianAspect.jpg":
+{
+	"frame": {"x":692,"y":2011,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"SkyBreaker.jpg":
+{
+	"frame": {"x":1384,"y":2011,"w":689,"h":507},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
+	"sourceSize": {"w":689,"h":507}
+},
+"StormTiamatCharacter.jpg":
+{
+	"frame": {"x":683,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"StormTiamatCharacterBack.jpg":
+{
+	"frame": {"x":1366,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"TiamatDeckBack.jpg":
+{
+	"frame": {"x":2049,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"WinterTiamatCharacter.jpg":
+{
+	"frame": {"x":2732,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+},
+"WinterTiamatCharacterBack.jpg":
+{
+	"frame": {"x":3415,"y":0,"w":680,"h":988},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
+	"sourceSize": {"w":680,"h":988}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "TiamatAtlas0.png",
+	"format": "RGBA8888",
+	"size": {"w":4096,"h":4096},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:aac07c887342f109d6c40d7bbf55fad1:1572d6522bb811c7bc050b81f2871d92:38df6e9218114b1ffa66a5ee8552bcf7$"
+}
+}

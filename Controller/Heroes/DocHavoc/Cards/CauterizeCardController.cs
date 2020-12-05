@@ -76,7 +76,7 @@ namespace Cauldron.DocHavoc
             }
 
             // Gain HP instead of dealing damage
-            coroutine = this.GameController.GainHP(card, dd.Amount);
+            coroutine = this.GameController.GainHP(card, dd.Amount, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
             {

@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Cypher",
             "body": "Encode",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "888888",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "888888",
             "character": true,
             "powers": [
                 "One augmented hero may draw a card now."
@@ -43,7 +43,7 @@
                 "SwarmEaterCharacter": "Swarm Eater placeholder",
                 "SwarmEaterDistributedHivemindCharacter": "Swarm Eater Distributed Hivemind placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "BackupPlan",
@@ -489,7 +489,7 @@
             "flavorReference": "Necro, Experimental One-shot"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "CypherCharacter",
             "promoIdentifier": "FirstResponseCypherCharacter",
@@ -498,9 +498,9 @@
             "promoTitle": "First Response Cypher",
             "shortPromoTitle": "Responder Cypher",
             "body": "Fusion Cannon",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "8FD7EF",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "8FD7EF",
             "character": true,
             "powers": [
                 "{Cypher} deals 1 target X energy damage, where X is the number of augments in play."
@@ -529,7 +529,7 @@
                 "SwarmEaterCharacter": "Swarm Eater placeholder",
                 "SwarmEaterDistributedHivemindCharacter": "Swarm Eater Distributed Hivemind placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         },
         {
             "identifier": "CypherCharacter",
@@ -539,9 +539,9 @@
             "promoTitle": "Cypher: Swarming Protocol",
             "shortPromoTitle": "Swarming Cypher",
             "body": "Nanocloud",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "F27991",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "F27991",
             "character": true,
             "powers": [
                 "Play a card face down next to a hero. Until leaving play it gains keyword \"Augment\" and text \"This hero is augmented\", draw a card."
@@ -569,7 +569,7 @@
                 "SwarmEaterCharacter": "Swarm Eater placeholder",
                 "SwarmEaterDistributedHivemindCharacter": "Swarm Eater Distributed Hivemind placeholder"
             },
-            "complexity": 1
+            "complexity": 3
         }
     ]
 }

@@ -53,7 +53,7 @@ namespace Cauldron.DocHavoc
             {
                 Card targetHero = dd.Target;
                 HeroTurnTakerController heroController = null;
-                if (targetHero.Owner.IsHero)
+                if (targetHero.IsHero)
                 {
                     heroController = base.FindHeroTurnTakerController(targetHero.Owner.ToHero());
                 }
@@ -72,7 +72,7 @@ namespace Cauldron.DocHavoc
 
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
-            IEnumerator coroutine = null;
+            IEnumerator coroutine;
             switch (index)
             {
                 case 0:
@@ -137,7 +137,7 @@ namespace Cauldron.DocHavoc
             // One player may draw a card now.
             //==============================================================
 
-            return this.GameController.SelectHeroToDrawCard(this.DecisionMaker);
+            return this.GameController.SelectHeroToDrawCard(this.DecisionMaker, cardSource: GetCardSource());
         }
 
         private IEnumerator DoIncapacitateOption3()

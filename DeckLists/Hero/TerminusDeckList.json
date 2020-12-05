@@ -11,9 +11,9 @@
             "count": 1,
             "title": "Terminus",
             "body": "Haunted Grasp",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "e58061",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "e58061",
             "character": true,
             "powers": [
                 "{Terminus} deals herself 2 cold damage and 1 target 3 cold damage."
@@ -36,7 +36,7 @@
                 "default": "default placeholder",
                 "InfernalChoirCharacter": "Infernal Choir placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "BoneChillingTouch",
@@ -525,7 +525,7 @@
             "flavorReference": "Terminus, Guilty Metal #7"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "TerminusCharacter",
             "promoIdentifier": "MinistryOfStrategicScienceTerminusCharacter",
@@ -534,9 +534,9 @@
             "promoTitle": "Ministry Of Strategic Science Terminus",
             "shortPromoTitle": "MOSS Terminus",
             "body": "Ether Link",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "A7B8C1",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "A7B8C1",
             "character": true,
             "powers": [
                 "Remove X tokens from your wrath pool (up to 2). {Terminus} deals 1 target X+1 cold damage and regains X+1 HP."
@@ -566,7 +566,7 @@
                 "default": "default placeholder",
                 "InfernalChoirCharacter": "Infernal Choir placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "TerminusCharacter",
@@ -576,9 +576,9 @@
             "promoTitle": "2199 Terminus",
             "shortPromoTitle": "2199 Terminus",
             "body": "Corporealize",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "F05354",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "F05354",
             "character": true,
             "powers": [
                 "Play a card. {Terminus} deals herself 2 cold damage."
@@ -606,7 +606,7 @@
                 "default": "default placeholder",
                 "InfernalChoirCharacter": "Infernal Choir placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         }
     ]
 }

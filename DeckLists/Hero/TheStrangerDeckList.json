@@ -1,5 +1,6 @@
 {
     "name": "The Stranger",
+    "sortName":"Stranger",
     "kind": "Hero",
     "expansionIdentifier": "Cauldron",
     "initialCardIdentifiers": [
@@ -11,9 +12,9 @@
             "count": 1,
             "title": "The Stranger",
             "body": "Inscribe",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "5a4f91",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "5a4f91",
             "character": true,
             "powers": [
                 "Play a rune."
@@ -37,13 +38,13 @@
                 "PlayCardNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Rain and shadow will unmake you.",
                 "DendronCharacter": "Dendron placeholder",
                 "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "Corruption",
@@ -447,7 +448,7 @@
             "flavorReference": "The Stranger, Strange Roads #187"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "TheStrangerCharacter",
             "promoIdentifier": "RunecarvedTheStrangerCharacter",
@@ -456,9 +457,9 @@
             "promoTitle": "The Runecarved Stranger",
             "shortPromoTitle": "Runecarved Stranger",
             "body": "Purify",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "708B8A",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "708B8A",
             "character": true,
             "powers": [
                 "1 hero target regains 2 HP."
@@ -483,13 +484,13 @@
                 "CannotGainHP"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "I have come a long way, to witness your defeat.",
                 "DendronCharacter": "Dendron placeholder",
                 "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "TheStrangerCharacter",
@@ -499,9 +500,9 @@
             "promoTitle": "The Stranger 1929",
             "shortPromoTitle": "Stranger 1929",
             "body": "Soul Tap",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "CBD5AF",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "CBD5AF",
             "character": true,
             "powers": [
                 "The next time {TheStranger} would deal himself damage, redirect it to another target."
@@ -525,13 +526,13 @@
                 "DealDamageToxic"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Your essence will only fuel my runes!",
                 "DendronCharacter": "Dendron placeholder",
                 "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
         },
         {
             "identifier": "TheStrangerCharacter",
@@ -541,9 +542,9 @@
             "promoTitle": "Wasteland Ronin The Stranger",
             "shortPromoTitle": "Wasteland Stranger",
             "body": "Mark of the Wasteland",
-            "backgroundColor": "FBF8F9",
+            "backgroundColor": "D4E6B5",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
+            "hitpointColor": "D4E6B5",
             "character": true,
             "powers": [
                 "Discard a rune. If you do, {TheStranger} deals 1 target 4 infernal damage."
@@ -569,13 +570,57 @@
                 "PlayCardNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Your nightmare is just beginning.",
                 "DendronCharacter": "Dendron placeholder",
                 "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 1
+            "complexity": 2
+        },
+        {
+            "identifier": "TheStrangerCharacter",
+            "promoIdentifier": "CornTheStrangerCharacter",
+            "count": 1,
+            "title": "The Stranger",
+            "promoTitle": "Stranger in the Corn",
+            "shortPromoTitle": "Corn Stranger",
+            "body": "",
+            "backgroundColor": "",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "",
+            "character": true,
+            "powers": [
+                ""
+            ],
+            "icons": [
+                "HasPower",
+                "Discard",
+                "DealDamageInfernal"
+            ],
+            "hitpoints": 1,
+            "nemesisIdentifiers": [
+                "TheStranger"
+            ],
+            "incapacitatedAbilities": [
+                "",
+                "",
+                ""
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "DealDamageInfernal",
+                "DestroyEnvironment",
+                "PlayCardNow"
+            ],
+            "openingLines": {
+                "default": "Flee in terror at my visage!",
+                "DendronCharacter": "Dendron placeholder",
+                "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
+                "PastTheRamCharacter": "1929 Ram placeholder",
+                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+            },
+            "complexity": 2
         }
     ]
 }

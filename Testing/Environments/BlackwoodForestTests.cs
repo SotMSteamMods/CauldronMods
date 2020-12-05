@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Collections.Generic;
 
 using Cauldron.BlackwoodForest;
 using Handelabra.Sentinels.Engine.Controller;
@@ -48,6 +49,7 @@ namespace CauldronTests
             Assert.AreEqual(0, legacy.TurnTaker.Trash.Cards.Count());
             Assert.AreEqual(0, haka.TurnTaker.Trash.Cards.Count());
             Assert.AreEqual(0, baron.TurnTaker.Trash.Cards.Count());
+            AssertNumberOfCardsInRevealed(BlackwoodForest, 0);
         }
 
         [Test]
@@ -82,6 +84,7 @@ namespace CauldronTests
             Assert.AreEqual(2, legacy.TurnTaker.Trash.Cards.Count());
             Assert.AreEqual(0, haka.TurnTaker.Trash.Cards.Count());
             Assert.AreEqual(3, baron.TurnTaker.Trash.Cards.Count());
+            AssertNumberOfCardsInRevealed(BlackwoodForest, 0);
         }
 
         [Test]
@@ -229,7 +232,9 @@ namespace CauldronTests
 
             // 2 lowest HP characters are Ra and MDP
             DealDamage(baron, ra, 3, DamageType.Toxic); // Ra is immune
+            DealDamage(baron, mdp, 3, DamageType.Toxic); // MDP is immune
 
+            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra.");
 
             GoToStartOfTurn(BlackwoodForest); // Dense Brambles is destroyed
 
@@ -264,7 +269,9 @@ namespace CauldronTests
             // 2 lowest HP characters are Ra and MDP
             DealDamage(baron, ra, 3, DamageType.Toxic); // Ra is immune
 
-
+            // Will only show Ra as immune as MDP hasn't been dealt damage yet to trigger the immunity
+            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
+            
             GoToStartOfTurn(BlackwoodForest); // Dense Brambles is destroyed
 
             DealDamage(ra, mdp, 2, DamageType.Fire);
@@ -350,6 +357,9 @@ namespace CauldronTests
             PutIntoPlay(dangerSense.Identifier);
 
             DecisionSelectCard = legacyRing;
+
+            //pick a card that definitely won't give the players another SelectCardDecision
+            PutOnDeck("DenseBrambles");
 
             // Act
             PutIntoPlay(TheHoundCardController.Identifier);
@@ -611,8 +621,10 @@ namespace CauldronTests
             Card modularWorkbench = GetCard("ModularWorkbench");
 
             // Act
-            GoToPlayCardPhase(unity);
+            //Can't play Swift Bot during Unity's play phase, if it happens to end up in hand.
             PlayCard(swiftBot);
+
+            GoToPlayCardPhaseAndPlayCard(unity, "ConstructionPylon");
             GoToDrawCardPhase(unity);
 
             AssertPhaseActionCount(2); // Normal draw + 1 from swiftbot
@@ -823,7 +835,7 @@ namespace CauldronTests
             QuickHPStorage(ra, legacy);
             QuickHandStorage(ra, legacy);
 
-            DecisionsYesNo = new[] { false, true };
+            DecisionSelectFunctions = new int?[] { 1, 0 };
 
             // Act
             Card desolation = GetCard(DesolationCardController.Identifier);

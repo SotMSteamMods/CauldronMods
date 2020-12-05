@@ -1,5 +1,6 @@
 {
     "name": "The Ram",
+    "sortName":"Ram",
     "kind": "Villain",
     "expansionIdentifier": "Cauldron",
     "initialCardIdentifiers": [
@@ -13,12 +14,8 @@
             "keywords": [
                 "villain"
             ],
-            "icons": [
-                "StartOfTurnAction"
-            ],
-            "advancedIcons": [],
             "body": "Mechanical Juggernaut",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "c7c0ad",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 80,
@@ -32,9 +29,16 @@
             "gameplay": [
                 "Whenever all active heroes are Up Close, flip {TheRam}'s character cards and destroy all copies of Fall Back,",
                 "At the start of a hero's turn, if that hero is not Up Close, you may take a copy of Up close from the villain trash and play it next to that hero.",
-                "Reduce damage dealt to {TheRam} by 1. Increase damage dealt to {TheRam} deals the hero target with the highest HP {H - 1} melee damage."
+                "Reduce damage dealt to {TheRam} by 1. Increase damage dealt to {TheRam} by Up Close targets by 1.",
+                "At the end of the villain turn, {TheRam} deals the hero target with the highest HP {H - 1} melee damage."
             ],
             "advanced": "Increase damage dealt to Up Close heroes by 1.",
+            "icons": [
+                "StartAndEndOfTurnAction",
+                "ReduceDamageTaken",
+                "IncreaseDamageDealt",
+                "DealDamageMelee"
+            ],
             "flippedBody": "Flanked Juggernaut",
             "flippedGameplay": [
                 "When {TheRam}'s character cards are flipped to this side, search the villain trash for Grappling claw and put it into play.",
@@ -44,15 +48,14 @@
             ],
             "flippedAdvanced": "Whenever a villain target is destroyed, play the top card of the villain deck.",
             "flippedIcons": [
-                "Search",
-                "IncreaseDamageDealt",
+                "IncreaseDamageTaken",
                 "EndOfTurnAction",
                 "DealDamageMelee"
             ],
             "flippedAdvancedIcons": [
                 "PlayCardNow"
             ],
-            "difficulty": 1,
+            "difficulty": 2,
             "openingLines": {
                 "default": "Target Aquired//Status//Hostile//Initiate Neutralization Protocol",
                 "QuicksilverCharacter": "Quicksilver placeholder",
@@ -71,7 +74,10 @@
                 "DestroyEnvironment",
                 "DealDamageMelee"
             ],
-            "body": "Destroy all environment cards. {TheRam} deals each non-villain target X melee damage, where X = 3 plus the number of cards destroyed this way.",
+            "body": [
+                "Destroy all environment cards.",
+                "{TheRam} deals each non-villain target X melee damage, where X = 3 plus the number of cards destroyed this way."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "HalcyonR43GlitchReport",
@@ -94,7 +100,7 @@
             ],
             "body": [
                 "When this card enters play, {TheRam} deals each Up Close hero target {H - 1} melee damage. Destroy all copies of Up Close in play.",
-                "{TheRam} is immune to damage from heroes that are not Up Close."
+                "{TheRam} is immune to damage from hero targets that are not Up Close."
             ],
             "flavorQuotes": [
                 {
@@ -115,7 +121,10 @@
                 "Search",
                 "DealDamageProjectile"
             ],
-            "body": "Search the villain deck and trash for {H - 2} copies of Up Close and play them next to the {H - 2} heroes with the highest HP that are not up close. If you searched the deck, shuffle it. {TheRam} deals each non-villain target {H} projectile damage.",
+            "body": [
+                "Search the villain deck and trash for {H - 2} copies of Up Close and play them next to the {H - 2} heroes with the highest HP that are not up close. If you searched the deck, shuffle it.",
+                "{TheRam} deals each non-villain target {H} projectile damage."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "HalcyonR43SystemLog",
@@ -137,7 +146,7 @@
                 "DealDamageEnergy"
             ],
             "body": [
-                "This card is immune to damage from heroes that are not Up Close.",
+                "This card is immune to damage from hero targets that are not Up Close.",
                 "Reduce damage dealt to {TheRam} by 2.",
                 "Whenever a copy of Up Close enters play next to a hero, this card deals that hero {H - 2} energy damage."
             ],
@@ -193,7 +202,10 @@
                 "DestroyEquipment",
                 "DealDamageProjectile"
             ],
-            "body": "{TheRam} deals each Up Close hero target {H + 2} melee damage. Destroy all ongoing and equipment cards belonging to those heroes. {TheRam} deals each other hero target 2 projectile damage.",
+            "body": [
+                "{TheRam} deals each Up Close hero target {H + 2} melee damage. Destroy all ongoing and equipment cards belonging to those heroes.",
+                "{TheRam} deals each other hero target 2 projectile damage."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "Expatriette",
@@ -216,8 +228,9 @@
                 "GainHP"
             ],
             "body": [
-                "This card is immune to damage from heroes that are not Up Close.",
-                "At the end of the villain turn, play the top card of the villain deck, and all Devices and Nodes regain 1HP."
+                "This card is immune to damage from hero targets that are not Up Close.",
+                "At the end of the villain turn, play the top card of the villain deck.",
+                "At the end of the villain turn, all Devices and Nodes regain 1HP."
             ],
             "flavorQuotes": [
                 {
@@ -262,7 +275,7 @@
                 "Discard"
             ],
             "body": [
-                "This card is immune to damage from heroes that are Up Close.",
+                "This card is immune to damage from hero targets that are Up Close.",
                 "At the end of the villain turn, this card deals each Up Close hero {H - 1} energy damage and those heroes must each discard a card."
             ],
             "flavorQuotes": [
@@ -287,7 +300,7 @@
                 "DealDamageCold"
             ],
             "body": [
-                "This card is immune to damage from heroes that are not Up Close.",
+                "This card is immune to damage from hero targets that are not Up Close.",
                 "At the end of the villain turn, this card deals each hero that is not Up Close {H - 2} cold damage."
             ],
             "flavorQuotes": [
@@ -313,10 +326,7 @@
             "body": [
                 "When this card enters play, if all active heroes are Up Close, this card is destroyed.",
                 "Play this card next to an active hero who is not Up Close. That hero and all their targets are Up Close. That hero gains:",
-                "Power: Destroy this card."
-            ],
-            "powers": [
-                "Destroy this card."
+                "[b]Power:[/b] Destroy this card."
             ],
             "flavorQuotes": [
                 {
@@ -327,7 +337,7 @@
             "flavorReference": "Quicksilver, Halcyon Black Limited Series #1"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "TheRamCharacter",
             "promoIdentifier": "PastTheRamCharacter",
@@ -338,7 +348,7 @@
                 "villain"
             ],
             "body": "Amphibious Dreadnought",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "c1b49b",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 75,
@@ -400,7 +410,18 @@
                 "BaccaratCharacter": "Baccarat placeholder",
                 "AceOfSorrowsBaccaratCharacter": "Ace Of Sorrows Baccarat placeholder",
                 "AceOfSwordsBaccaratCharacter": "Ace Of Swords Baccarat placeholder",
-                "1929BaccaratCharacter": "Baccarat 1929 placeholder"
+                "1929BaccaratCharacter": "Baccarat 1929 placeholder",
+                "TheKnightCharacter": "The Knight placeholder",
+                "BerzerkerTheKnightCharacter": "The Berzerker Knight placeholder",
+                "FairTheKnightCharacter": "The Fair Knight placeholder",
+                "PastTheKnightCharacter": "The Knight 1929 placeholder",
+                "WastelandRoninTheKnightCharacter": "The Wasteland Ronin Knights placeholder",
+                "MagnificentMaraCharacter": "Magnificent Mara placeholder",
+                "MinistryOfStrategicScienceMagnificentMaraCharacter": "Ministry Of Strategic Science Magnificent Mara placeholder",
+                "1929MagnificentMaraCharacter": "1929 Magnificent Mara placeholder",
+                "VanishCharacter": "Vanish placeholder",
+                "FirstResponseVanishCharacter": "First Response Vanish  placeholder",
+                "1929VanishCharacter": "Vanish 1929 placeholder"
             }
         },
         {
@@ -413,7 +434,7 @@
                 "villain"
             ],
             "body": "Dreadnought Pilot",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "c1b49b",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 20,
@@ -424,9 +445,9 @@
             ],
             "gameplay": [
                 "The heroes cannot win the game. If {AdmiralWinters} would be destroyed, flip his character cards instead.",
-                "At the start of a hero's turn, if that hero is not Up Close, you may take a copy of Up close from the villain trash and play it next to that hero.",
+                "At the start of a hero's turn, if that hero is not Up Close, you may take a copy of Up Close from the villain trash and play it next to that hero.",
                 "{AdmiralWinters} is immune to damage from targets that are not up close. The first time {AdmiralWinters} would be dealt damage each turn, redirect that damage to {TheRam}.",
-                "At the end of the villain turn, {AdmiralWinters} deals {H} projectile damage to each hero that is not up close. Then, play the top X cards of the villain deck, where X is the number of copies of Up Close in play minus 1."
+                "At the end of the villain turn, {AdmiralWinters} deals {H} projectile damage to each hero that is not Up Close. Then, play the top X cards of the villain deck, where X is the number of copies of Up Close in play minus 1."
             ],
             "advanced": "Reduce damage dealt to {AdmiralWinters} by 1.",
             "icons": [
@@ -454,21 +475,7 @@
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
             ],
-            "difficulty": 1,
-            "openingLines": {
-                "default": "default placeholder",
-                "TheKnightCharacter": "The Knight placeholder",
-                "BerzerkerTheKnightCharacter": "The Berzerker Knight placeholder",
-                "FairTheKnightCharacter": "The Fair Knight placeholder",
-                "PastTheKnightCharacter": "The Knight 1929 placeholder",
-                "WastelandRoninTheKnightCharacter": "The Wasteland Ronin Knights placeholder",
-                "MagnificentMaraCharacter": "Magnificent Mara placeholder",
-                "MinistryOfStrategicScienceMagnificentMaraCharacter": "Ministry Of Strategic Science Magnificent Mara placeholder",
-                "1929MagnificentMaraCharacter": "1929 Magnificent Mara placeholder",
-                "VanishCharacter": "Vanish placeholder",
-                "FirstResponseVanishCharacter": "First Response Vanish  placeholder",
-                "1929VanishCharacter": "Vanish 1929 placeholder"
-            }
+            "difficulty": 3
         }
     ]
 }

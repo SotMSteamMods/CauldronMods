@@ -48,7 +48,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             else
             {
                 //find villain target with the lowest hitpoints
-                targets = (Card c) => base.CanCardBeConsideredLowestHitPoints(c, (Card card) => card.IsVillainTarget);
+                targets = (Card c) => base.CanCardBeConsideredLowestHitPoints(c, (Card card) => IsVillainTarget(card));
             }
 
             //the hero/villain target with the lowest HP regains 3HP

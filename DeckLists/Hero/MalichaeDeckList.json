@@ -10,9 +10,9 @@
 			"count": 1,
 			"title": "Malichae",
 			"body": "Traveller",
-			"backgroundColor": "FBF8F9",
+			"backgroundColor": "f6931e",
 			"foilBackgroundColor": "FEFEFE",
-			"hitpointColor": "C94742",
+			"hitpointColor": "f6931e",
 			"character": true,
 			"powers": [
 				"Draw 2 cards. Discard a card."
@@ -37,11 +37,11 @@
 				"DestroyEnvironment"
 			],
 			"openingLines": {
-				"default": "default placeholder",
+				"default": "I have some friends from beyond the Veil who'd like a word with you.",
 				"OriphelCharacter": "Oriphel placeholder",
 				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
 			},
-			"complexity": 1
+			"complexity": 3
 		},
 		{
 			"identifier": "BaitAndSwitch",
@@ -198,7 +198,7 @@
 			],
 			"body": [
 				"When this card enters play, attach it to Reshiel. If High Reshiel is ever not in play, destroy this card.",
-				"b]Power:[/b] Reshiel deals each non-hero target 2 sonic damage.",
+				"[b]Power:[/b] Reshiel deals each non-hero target 2 sonic damage.",
 				"At the end of your turn, destroy this card."
 			],
 			"flavorQuotes": [{
@@ -506,7 +506,7 @@
 			"flavorReference": "Malichae, Bathiel One-shot"
 		}
 	],
-	"promoCards": [{
+	"notPromoCards": [{
 			"identifier": "MalichaeCharacter",
 			"promoIdentifier": "ShardmasterMalichaeCharacter",
 			"count": 1,
@@ -514,9 +514,9 @@
 			"promoTitle": "Shardmaster Malichae",
 			"shortPromoTitle": "Shardmaster Malichae",
 			"body": "Channel",
-			"backgroundColor": "FBF8F9",
+			"backgroundColor": "FCE4C3",
 			"foilBackgroundColor": "FEFEFE",
-			"hitpointColor": "C94742",
+			"hitpointColor": "FCE4C3",
 			"character": true,
 			"powers": [
 				"Search your deck for a djinn and put it in your hand. Shuffle your deck."
@@ -540,11 +540,11 @@
 				"DrawCardNow"
 			],
 			"openingLines": {
-				"default": "default placeholder",
+				"default": "The power of the Djinn will be your undoing.",
 				"OriphelCharacter": "Oriphel placeholder",
 				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
 			},
-			"complexity": 1
+			"complexity": 3
 		},
 		{
 			"identifier": "MalichaeCharacter",
@@ -554,9 +554,9 @@
 			"promoTitle": "Ministry Of Strategic Science Malichae",
 			"shortPromoTitle": "MOSS Malichae",
 			"body": "Borrowed Aspect",
-			"backgroundColor": "FBF8F9",
+			"backgroundColor": "819497",
 			"foilBackgroundColor": "FEFEFE",
-			"hitpointColor": "C94742",
+			"hitpointColor": "819497",
 			"character": true,
 			"powers": [
 				"Discard a card. Use that card's power, replacing any djinn's name with {Malichae}. Draw a card."
@@ -582,11 +582,11 @@
 				"PreventDamage"
 			],
 			"openingLines": {
-				"default": "default placeholder",
+				"default": "My friends taught me some new tricks to use on the likes of you.",
 				"OriphelCharacter": "Oriphel placeholder",
 				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
 			},
-			"complexity": 1
+			"complexity": 3
 		}
 	]
 }

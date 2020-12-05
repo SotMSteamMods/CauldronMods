@@ -1,5 +1,6 @@
 {
     "name": "The Infernal Choir",
+    "sortName":"Infernal Choir",
     "kind": "Villain",
     "expansionIdentifier": "CauldronAdrift",
     "initialCardIdentifiers": [
@@ -15,7 +16,7 @@
                 "villain"
             ],
             "body": "Unfinished Business",
-            "backgroundColor": "D99FC5",
+            "backgroundColor": "ea809e",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "hitpoints": 55,
@@ -59,9 +60,9 @@
             "flippedAdvancedIcons": [
                 "RemoveFromGame"
             ],
-            "difficulty": 1,
+            "difficulty": 4,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "You're surprised there are ghosts in organized crime? Let us show why it's called the “criminal underworld“...",
                 "TerminusCharacter": "Terminus placeholder",
                 "MinistryOfStrategicSciencesCharacter": "Ministry Of Strategic Sciences Terminus placeholder",
                 "2199TerminusCharacter": "Terminus 2199 placeholder"

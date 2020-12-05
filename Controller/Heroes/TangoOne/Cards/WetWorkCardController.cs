@@ -13,8 +13,8 @@ namespace Cauldron.TangoOne
         // Shuffle 2 cards from each trash back into their decks.
         // You may deal 1 target 2 melee damage.
         //==============================================================
-        
-        public static string Identifier = "WetWork";
+
+        public static readonly string Identifier = "WetWork";
 
         private const int CardsToMoveFromTrash = 2;
         private const int DamageAmount = 2;
@@ -27,26 +27,29 @@ namespace Cauldron.TangoOne
         public override IEnumerator Play()
         {
             // Shuffle 2 cards from each trash back into their decks
-            IEnumerator shuffleRoutine 
-                = base.DoActionToEachTurnTakerInTurnOrder(turnTakerController => true, MoveCardToDeckResponse);
-
-            // You may deal 1 target 2 melee damage
-            IEnumerator dealDamageRoutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
-                new DamageSource(base.GameController, this.TurnTaker.CharacterCard), DamageAmount,
-                DamageType.Melee, 1, false, 0,
-                additionalCriteria: c => c.IsTarget && c.IsInPlayAndHasGameText,
-                cardSource: base.GetCardSource());
+            IEnumerator shuffleRoutine = base.DoActionToEachTurnTakerInTurnOrder(ttc => !ttc.IsIncapacitatedOrOutOfGame && ttc.IsLocationVisible(ttc.TurnTaker.Trash, GetCardSource()), MoveCardToDeckResponse);
 
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(shuffleRoutine);
-                //yield return base.GameController.StartCoroutine(selectOwnCharacterRoutine);
-                yield return base.GameController.StartCoroutine(dealDamageRoutine);
             }
             else
             {
                 base.GameController.ExhaustCoroutine(shuffleRoutine);
-                //base.GameController.ExhaustCoroutine(selectOwnCharacterRoutine);
+            }
+
+            // You may deal 1 target 2 melee damage
+            IEnumerator dealDamageRoutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
+                new DamageSource(base.GameController, CharacterCard), DamageAmount,
+                DamageType.Melee, 1, false, 0,
+                cardSource: base.GetCardSource());
+
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(dealDamageRoutine);
+            }
+            else
+            {
                 base.GameController.ExhaustCoroutine(dealDamageRoutine);
             }
         }
@@ -54,29 +57,33 @@ namespace Cauldron.TangoOne
         private IEnumerator MoveCardToDeckResponse(TurnTakerController turnTakerController)
         {
             TurnTaker turnTaker = turnTakerController.TurnTaker;
-            List<MoveCardDestination> list = new List<MoveCardDestination>
-            {
-                new MoveCardDestination(turnTaker.Deck)
-            };
-
+            //allow each hero to choose for themselves, TangoOne decides for the villain and environment deck.
             HeroTurnTakerController decisionMaker = turnTaker.IsHero ? turnTakerController.ToHero() : this.DecisionMaker;
 
-            IEnumerator selectCardsFromLocationRoutine = base.GameController.SelectCardsFromLocationAndMoveThem(decisionMaker, turnTaker.Trash, 
-                    2, CardsToMoveFromTrash, 
-                    new LinqCardCriteria(c => c.Location == turnTaker.Trash, "trash"), 
-                    list, shuffleAfterwards: false, cardSource: base.GetCardSource());
-
-            IEnumerator shuffleDeckRoutine = base.GameController.ShuffleLocation(turnTaker.Deck);
-
+            var scsd = new SelectCardsDecision(GameController, decisionMaker, c => c.Location == turnTaker.Trash, SelectionType.ShuffleCardFromTrashIntoDeck,
+                numberOfCards: CardsToMoveFromTrash,
+                isOptional: false,
+                requiredDecisions: CardsToMoveFromTrash,
+                allowAutoDecide: true,
+                cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectCardsAndDoAction(scsd, scd => GameController.MoveCard(decisionMaker, scd.SelectedCard, turnTaker.Deck, cardSource: GetCardSource()), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(selectCardsFromLocationRoutine);
-                yield return base.GameController.StartCoroutine(shuffleDeckRoutine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(selectCardsFromLocationRoutine);
-                base.GameController.ExhaustCoroutine(shuffleDeckRoutine);
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = base.GameController.ShuffleLocation(turnTaker.Deck, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
         }
     }

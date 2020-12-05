@@ -10,7 +10,7 @@ namespace Cauldron.TheStranger
 
         public MarkOfQuickeningCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, "hero", true, false, null, null, false))
         {
-
+            base.AddThisCardControllerToList(CardControllerListType.IncreasePhaseActionCount);
         }
 
         #endregion Constructors
@@ -25,7 +25,7 @@ namespace Cauldron.TheStranger
 
         private bool ShouldIncreasePhaseActionCount(TurnTaker tt)
         {
-            return tt == base.GetCardThisCardIsNextTo(true).Owner.ToHero(); ;
+            return tt == base.GetCardThisCardIsNextTo(true).Owner;
         }
         #endregion Methods
     }

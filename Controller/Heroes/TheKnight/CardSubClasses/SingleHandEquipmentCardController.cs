@@ -11,6 +11,7 @@ namespace Cauldron.TheKnight
     {
         protected SingleHandEquipmentCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(HeroTurnTaker.PlayArea, new LinqCardCriteria(c => IsEquipment(c) && IsSingleHandCard(c), "single hand equipment"));
         }
 
         public override void AddTriggers()
