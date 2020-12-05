@@ -449,5 +449,23 @@ namespace CauldronTests
             DealDamage(haka, oriphel, 1, DTM);
             QuickHPCheckZero();
         }
+        [Test]
+        public void TestHighTormulDamageTrigger()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            PlayCard("HighTormul");
+
+            QuickHPStorage(legacy, ra, wraith, haka);
+
+            GoToStartOfTurn(legacy);
+            QuickHPCheck(-2, 0, 0, 0);
+            GoToStartOfTurn(ra);
+            QuickHPCheck(0, -2, 0, 0);
+            GoToStartOfTurn(wraith);
+            QuickHPCheck(0, 0, -2, 0);
+        }
     }
 }
