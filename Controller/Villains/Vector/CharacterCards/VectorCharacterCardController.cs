@@ -85,8 +85,7 @@ namespace Cauldron.Vector
             {
                 // Move any cards underneath Super Virus into villain trash
                 IEnumerable<Card> cardsUnder = FindCardsWhere(c => c.Location == GetSuperVirusCard().UnderLocation);
-                IEnumerator r1 = this.GameController.MoveCards(this.DecisionMaker, cardsUnder, this.TurnTaker.Trash,
-                    cardSource: GetCardSource());
+                IEnumerator r1 = this.GameController.MoveCards(DecisionMaker, cardsUnder, (Card c) => new MoveCardDestination(c.NativeTrash), cardSource: GetCardSource());
 
                 // Remove Super Virus from game
                 IEnumerator r2 = this.GameController.MoveCard(this.TurnTakerController, GetSuperVirusCard(),
@@ -190,7 +189,7 @@ namespace Cauldron.Vector
 
         private IEnumerator AdvancedEndOfTurnResponse(PhaseChangeAction pca)
         {
-            IEnumerator routine = this.GameController.GainHP(this.CharacterCard, AdvancedHpGain);
+            IEnumerator routine = this.GameController.GainHP(this.CharacterCard, AdvancedHpGain, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
