@@ -19,15 +19,29 @@ namespace Cauldron.Celadroch
          * Advanced:
          * Reduce Damage Dealt to Relics by 1.
          *
+         * The Dark Mountain
+         * Gameplay:
+         * At the start of the villain turn, add 1 token to the storm pool.
+         * You may play the top card of the villain deck to remove 2 cards from the storm pool.
+		 * Whenever an elemental, zombie, demon, or chosen is played from the top of the villain deck,
+		 *   search the villain deck and trash for all other cards with the same keyword and put them into play.
+		 *   Shuffle the villain deck.
+		 * At the end of the villain turn, {Celadroch} deals the {H - 1} hero targets with the highest HP X projectile damage each, where X is the number of tokens in the storm pool minus 2.
+		 * If Forsaken Crusader is in the villain trash, put it into play.
+		 * If a villain card was not played this turn, destroy {H} hero ongoing and/or equipment cards.
+         *
+         * Advanced:
+         * When {Celadroch} flips to this side, add 2 tokens to the storm pool.
          */
 
         public static readonly string StormPoolIdentifier = "StormPool";
+
 
         public TokenPool StormPool => CharacterCard.FindTokenPool(StormPoolIdentifier);
 
         public CeladrochCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowSpecialString(TopCardSpecialString, null, () => new[] { FindCeladrochsTopCard() }).Condition = () => !Card.IsFlipped;
+            SpecialStringMaker.ShowSpecialString(TopCardSpecialString, null, () => new[] { FindCeladrochsTopCard() }).Condition = () => Card.IsInPlay && !Card.IsFlipped;
         }
 
         private Card FindCeladrochsTopCard()
@@ -44,7 +58,7 @@ namespace Cauldron.Celadroch
                     return $"Celadroch's top card is {card.Title}";
                 return $"Celadroch's top card was {card.Title}";
             }
-            return "";
+            return null;
         }
 
         public override void AddSideTriggers()
@@ -66,11 +80,23 @@ namespace Cauldron.Celadroch
             // Flipped side (The Dark Mountain)
             else
             {
+                AddStartOfTurnTrigger(tt => tt == TurnTaker, pca => GameController.AddTokensToPool(StormPool, 1, GetCardSource()), TriggerType.AddTokensToPool);
 
-                if (this.IsGameAdvanced)
-                {
+                AddStartOfTurnTrigger(tt => tt == TurnTaker, pca => DoNothing(), new[] { TriggerType.ModifyTokens, TriggerType.PlayCard });
 
-                }
+                AddTrigger<PlayCardAction>(pca => pca.CardToPlay.Owner == TurnTaker && !pca.IsPutIntoPlay && pca.Origin == TurnTaker.Deck && !pca.FromBottom,
+                                            pca => DoNothing(), TriggerType.PutIntoPlay, TriggerTiming.After);
+
+                AddDealDamageAtEndOfTurnTrigger(TurnTaker, CharacterCard, c => c.IsHero && c.IsTarget,
+                    targetType: TargetType.HighestHP,
+                    amount: StormPool.CurrentValue >= 2 ? StormPool.CurrentValue - 2 : 0, //make sure we aren't dealing negative damage
+                    damageType: DamageType.Projectile,
+                    highestLowestRanking: 1,
+                    numberOfTargets: H - 1);
+
+                AddEndOfTurnTrigger(tt => tt == TurnTaker, pca => DoNothing(), TriggerType.PlayCard);
+
+                AddEndOfTurnTrigger(tt => tt == TurnTaker, pca => DoNothing(), TriggerType.DestroyCard);
 
                 base.AddDefeatedIfDestroyedTriggers();
             }
@@ -108,14 +134,25 @@ namespace Cauldron.Celadroch
             {
                 yield break;
             }
-
-
         }
 
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
+            //Undo Villain Cards cannot be played
+            CannotPlayCards(null);
 
-
+            if (IsGameAdvanced)
+            {
+                var coroutine = GameController.AddTokensToPool(StormPool, 2, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
             yield break;
         }
 

@@ -8,6 +8,9 @@ namespace Cauldron.Celadroch
 {
     public class ForsakenCrusaderCardController : CardController
     {
+        public static readonly string Identifier = "ForsakenCrusader";
+
+
         //IE - Mountain's Special Boy
         public ForsakenCrusaderCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

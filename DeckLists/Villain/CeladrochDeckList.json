@@ -40,7 +40,7 @@
 			"flippedBody": "The Dark Mountain",
 			"flippedGameplay": [
 				"At the start of the villain turn, add 1 token to the storm pool. You may play the top card of the villain deck to remove 2 cards from the storm pool.",
-				"Whenever an elemental, zombie, demon, or chosen is played from the top of the villai ndeck, search the villain deck and trash for all other cards with the same keyword and put them into play. Shuffle the villain deck.",
+				"Whenever an elemental, zombie, demon, or chosen is played from the top of the villain deck, search the villain deck and trash for all other cards with the same keyword and put them into play. Shuffle the villain deck.",
 				"At the end of the villain turn, {Celadroch} deals the {H - 1} hero targets with the highest HP X projectile damage each, where X is the number of tokens in the storm pool minus 2. Tf Forsaken Crusader is in the villain trash, put it into play. If a villain card was not played this turn, destroy {H} hero ongoing and/or equipment cards."
 			],
 			"flippedAdvanced": "When {Celadroch} flips to this side, add 2 tokens to the storm pool.",
