@@ -21,7 +21,7 @@ namespace Cauldron.Celadroch
          *
          */
 
-        private static readonly string StormPoolIdentifier = "StormPool";
+        public static readonly string StormPoolIdentifier = "StormPool";
 
         public TokenPool StormPool => CharacterCard.FindTokenPool(StormPoolIdentifier);
 
