@@ -7,11 +7,16 @@ using System.Linq;
 
 namespace Cauldron.Celadroch
 {
-    public class PillarOfNightCardController : CardController
+    public class PillarOfNightCardController : CeladrochPillarCardController
     {
-        public PillarOfNightCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public PillarOfNightCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, TriggerType.DrawCard)
         {
 
+        }
+
+        protected override IEnumerator SelectHeroAndGrantReward()
+        {
+            return GameController.SelectHeroToDrawCard(DecisionMaker, optionalSelectHero: true, optionalDrawCard: false, cardSource: GetCardSource());
         }
     }
 }

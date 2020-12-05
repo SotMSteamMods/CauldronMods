@@ -80,11 +80,28 @@ namespace CauldronTests
         public void TestCeladrochStartGame()
         {
             SetupGameController("Cauldron.Celadroch", "Legacy", "Megalopolis");
-
             StartGame();
 
+            AssertInPlayArea(celadroch, celadroch.CharacterCard);
+            AssertNotTarget(celadroch.CharacterCard);
+
+            var p1 = GetCard("PillarOfNight");
+            var p2 = GetCard("PillarOfSky");
+            var p3 = GetCard("PillarOfStorms");
+
+            AssertInPlayArea(celadroch, p1);
+            AssertInPlayArea(celadroch, p2);
+            AssertInPlayArea(celadroch, p3);
+
+            var topCard = celadroch.TurnTaker.Deck.TopCard;
+            AssertCardSpecialString(celadroch.CharacterCard, 0, $"Celadroch's top card is {topCard.Title}");
+            
 
             
+
+
+
+
         }
 
 

@@ -13,6 +13,12 @@ namespace Cauldron.Celadroch
         {
         }
 
+        /* Setup:
+         * At the start of the game, put {Celadroch}'s villain character cards into play, 'Black Wind Rising' side up.
+		 * Search the villain deck for 3 relic cards and put them into play. Shuffle the villain deck.
+		 * Flip the top card of the villain deck face up."
+         */
+
         public override IEnumerator StartGame()
         {
             if (!(base.CharacterCardController is CeladrochCharacterCardController))
@@ -20,21 +26,29 @@ namespace Cauldron.Celadroch
                 yield break;
             }
 
-            //// Search the deck for 1 copy of Stained Wolf and 1 copy of Painted Viper and put them into play.
-            //IEnumerator stainedWolfRoutine = this.PutCardIntoPlay(StainedWolfCardController.Identifier, shuffleDeckAfter: false);
-            //IEnumerator paintedViperRoutine = this.PutCardIntoPlay(PaintedViperCardController.Identifier);
+            IEnumerator coroutine = PutCardsIntoPlay(new LinqCardCriteria(c => c.Owner == TurnTaker && c.IsRelic, "relic"), 3);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
 
-            //if (base.UseUnityCoroutines)
-            //{
-            //    yield return base.GameController.StartCoroutine(stainedWolfRoutine);
-            //    yield return base.GameController.StartCoroutine(paintedViperRoutine);
-            //}
-            //else
-            //{
-            //    base.GameController.ExhaustCoroutine(stainedWolfRoutine);
-            //    base.GameController.ExhaustCoroutine(paintedViperRoutine);
-            //}
-            yield break;
+            var topCard = TurnTaker.Deck.TopCard;
+            var cc = FindCardController(topCard);
+            cc.SetCardProperty("CeladrochsTopCard", true);
+
+            coroutine = GameController.SendMessageAction($"Celadroch's top card is {topCard.Title}", Priority.High, CharacterCardController.GetCardSource(), new[] { topCard });
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
     }
 }
