@@ -207,6 +207,21 @@ namespace CauldronTests
             AssertInTrash(grand);
         }
         [Test]
+        public void TestJadeAdvanced()
+        {
+            SetupGameController(new string[] { "Cauldron.Oriphel", "Legacy", "Ra", "Tempest", "Megalopolis" }, advanced: true);
+            StartGame();
+            CleanupStartingCards();
+
+            Card guard = PlayCard("MejiGuard");
+
+            QuickHPStorage(legacy);
+            DealDamage(oriphel, legacy, 1, DTM);
+            QuickHPCheck(-2);
+            DealDamage(guard, legacy, 1, DTM);
+            QuickHPCheck(-2);
+        }
+        [Test]
         public void TestOriphelImmediateFlipResponse()
         {
             SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "Tempest", "Megalopolis");
@@ -236,6 +251,21 @@ namespace CauldronTests
             QuickHPCheck(-1, 0);
             DealDamage(oriphel, legacy, 2, DTM);
             QuickHPCheck(0, -2);
+        }
+        [Test]
+        public void TestOriphelAdvanced()
+        {
+            SetupGameController(new string[] { "Cauldron.Oriphel", "Legacy", "Ra", "Tempest", "Megalopolis" }, advanced: true);
+            StartGame();
+            CleanupStartingCards();
+
+            FlipCard(oriphel);
+            QuickHPStorage(oriphel, legacy);
+
+            DealDamage(legacy, oriphel, 3, DTM);
+            QuickHPCheck(-1, 0);
+            DealDamage(oriphel, legacy, 3, DTM);
+            QuickHPCheck(0, -3);
         }
         [Test]
         public void TestOriphelEndOfTurnDamageHIs3()

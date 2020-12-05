@@ -26,6 +26,11 @@ namespace Cauldron.Oriphel
                                 DestroyOngoingAndPlayCardResponse,
                                 new TriggerType[] { TriggerType.PlayCard, TriggerType.DestroyCard },
                                 TriggerTiming.After));
+                if (Game.IsAdvanced)
+                {
+                    //"Increase damage dealt by villain targets by 1.",
+                    AddSideTrigger(AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsVillainTarget, 1));
+                }
             }
             else
             {
@@ -37,6 +42,12 @@ namespace Cauldron.Oriphel
 
                 //"When there are 2 villain relics in the villain trash, flip {Oriphel}'s villain character cards."
                 AddSideTrigger(AddTrigger<GameAction>(CheckCardsInTrashCriteria, FlipThisCharacterCardResponse, TriggerType.FlipCard, TriggerTiming.After));
+
+                if(Game.IsAdvanced)
+                {
+                    //"Reduce damage dealt to {Oriphel} by 1.",
+                    AddSideTrigger(AddReduceDamageTrigger((Card c) => c == this.Card, 1));
+                }
             }
             AddDefeatedIfDestroyedTriggers();
         }
