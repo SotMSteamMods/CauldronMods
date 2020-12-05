@@ -452,7 +452,7 @@ namespace CauldronTests
             StartGame();
             CleanupStartingCards();
 
-            PlayCard("HighPhaol");
+            Card phaol = PlayCard("HighPhaol");
 
             QuickHPStorage(legacy, ra, wraith, haka);
 
@@ -471,13 +471,19 @@ namespace CauldronTests
             //does not activate on hero-hero damage
             GoToStartOfTurn(wraith);
             DecisionSelectTarget = haka.CharacterCard;
-            PlayCard("StunBolt");
-            UsePower("StunBolt");
+            Card bolt = PlayCard("StunBolt");
+            UsePower(bolt);
             QuickHPCheck(0, 0, 0, -1);
 
             //nor on failed damage
             DealDamage(haka, oriphel, 1, DTM);
             QuickHPCheckZero();
+
+            DecisionSelectTarget = phaol;
+            DestroyCard(bolt);
+            PlayCard(bolt);
+            UsePower(bolt);
+            QuickHPCheck(0, 0, -2, 0);
         }
         [Test]
         public void TestHighTormulDamageTrigger()
