@@ -847,5 +847,67 @@ namespace CauldronTests
             GoToStartOfTurn(titan);
             AssertInTrash(unb);
         }
+
+        [Test()]
+        public void TestUnbreakableVillainEndOfHeroTurnEffects()
+        {
+            SetupGameController("Chokepoint", "Haka", "Cauldron.Titan", "TheScholar", "VoidGuardDrMedico", "Megalopolis");
+            StartGame();
+
+            PlayCard("Unbreakable");
+
+            PlayCard("Mere");
+            PlayCard("ShockingAnimation");
+            //Skip any effects which would act at the end of the villain turn.
+
+            //Villain End of Turn effects trigger on other turns as appropriate
+            //Shocking Animation deals 2 to all hero targets
+            GoToStartOfTurn(haka);
+            QuickHPStorage(haka, scholar, voidMedico, titan);
+            GoToEndOfTurn(haka);
+            QuickHPCheck(-2, -2, -2, -2);
+        }
+
+        [Test()]
+        public void TestUnbreakableHeroEndOfVillainTurnEffects()
+        {
+            SetupGameController("Chokepoint", "Haka", "Cauldron.Titan", "TheScholar", "VoidGuardDrMedico", "Megalopolis");
+            StartGame();
+
+            PlayCard("Unbreakable");
+            //Skip any effects which would act at the end of the villain turn.
+
+            //Hero end of turn needs to be canceled
+            //Regeneration heals Medico 2
+            PlayCard("Regeneration");
+            SetHitPoints(voidMedico, 10);
+            QuickHPStorage(voidMedico);
+            GoToEndOfTurn(choke);
+            QuickHPCheck(0);
+        }
+
+        [Test()]
+        public void TestUnbreakableVillainTeamMode()
+        {
+            Game game = new Game(new string[] { "BugbearTeam", "Cauldron.Titan", "ErmineTeam", "Bunker", "FrictionTeam", "Lifeline", "GreazerTeam", "VoidGuardDrMedico", "Megalopolis" });
+            SetupGameController(game);
+            StartGame();
+
+            GoToStartOfTurn(ermineTeam);
+
+            PlayCard("Unbreakable");
+            //Skip any effects which would act at the end of the villain turn.
+
+            //Hero end of turn needs to be canceled
+            //Regeneration heals Medico 2
+            PlayCard("Regeneration");
+            SetHitPoints(voidMedico, 10);
+            QuickHPStorage(voidMedico);
+            PlayCard("AlienArcana");
+            GoToEndOfTurn(lifeline);
+            GoToEndOfTurn(greazerTeam);
+            //+2 each for Bunker and Scholar's turns
+            QuickHPCheck(4);
+        }
     }
 }
