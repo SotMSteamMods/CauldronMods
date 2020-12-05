@@ -467,5 +467,120 @@ namespace CauldronTests
             GoToStartOfTurn(wraith);
             QuickHPCheck(0, 0, -2, 0);
         }
+        [Test]
+        public void TestMejiClanLeaderDR()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            var goons = new List<Card> { PlayCard("MejiClanLeader"), PlayCard("MejiGuard"), PlayCard("MejiNomad"), PlayCard("ShardbearerNathaniel") };
+
+            foreach (Card goon in goons)
+            {
+                QuickHPStorage(goon);
+                DealDamage(legacy, goon, 2, DTM);
+                QuickHPCheck(-1);
+            }
+
+            //only goons
+            QuickHPStorage(oriphel, legacy);
+            DealDamage(oriphel, legacy, 2, DTM);
+            DealDamage(legacy, oriphel, 2, DTM);
+            QuickHPCheck(-2, -2);
+        }
+        [Test]
+        public void TestMejiClanLeaderDamage()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            PlayCard("MejiClanLeader");
+
+            QuickHPStorage(legacy, ra, wraith, haka);
+            GoToEndOfTurn();
+            QuickHPCheck(-3, -3, -3, -3);
+        }
+        [Test]
+        public void TestMejiGuardDamage()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            PlayCard("MejiGuard");
+            QuickHPStorage(legacy, ra, wraith, haka);
+            DrawCard(ra);
+            AssertNoDecision();
+            GoToEndOfTurn();
+            QuickHPCheck(0, -2, 0, 0);
+        }
+        [Test]
+        public void TestMejiGuardDR([Values("HighAsriel", "HighDjaril", "HighPhaol", "HighTormul")] string name)
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            PlayCard("MejiGuard");
+            Card djinn = PlayCard(name);
+
+            QuickHPStorage(djinn);
+            DealDamage(ra, djinn, 2, DTM);
+            QuickHPCheck(-1);
+        }
+        [Test]
+        public void TestMejiNomadDamage([Values(0, 1, 2, 3, 4)] int numGuardians)
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            //make sure the play-card effect of Asriel doesn't cause a tie
+            SetHitPoints(legacy, 20);
+
+            PlayCard("MejiNomad");
+            var guardians = FindCardsWhere((Card c) => IsGuardian(c)).ToList();
+            Card guardian;
+            for(int i = 0; i < numGuardians; i++)
+            {
+                guardian = guardians[i];
+                PlayCard(guardian);
+                DecisionSelectTarget = guardian;
+                PlayCard("ThroatJab");
+            }
+
+            int expectedDamage = numGuardians + 2;
+            QuickHPStorage(haka);
+            GoToEndOfTurn();
+            QuickHPCheck(-expectedDamage);
+        }
+        [Test]
+        public void TestShardbearerNathaniel()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            PlayCard("ShardbearerNathaniel");
+            var guardians = FindCardsWhere((Card c) => IsGuardian(c)).ToList();
+            QuickHPStorage(legacy);
+
+            foreach(Card guardian in guardians)
+            {
+                PlayCard(guardian);
+                DealDamage(guardian, legacy, 1, DTM);
+                QuickHPCheck(-2);
+            }
+
+            //should not work on Jade
+            DealDamage(oriphel, legacy, 1, DTM);
+            QuickHPCheck(-1);
+
+            FlipCard(oriphel);
+            DealDamage(oriphel, legacy, 1, DTM);
+            QuickHPCheck(-2);
+        }
     }
 }
