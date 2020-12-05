@@ -971,6 +971,8 @@ namespace CauldronTests
             AssertIsInPlay(ether);
 
             //If there are no Chemical Triggers in play, increase damage dealt by the hero target with the highest HP by 1.
+            AssertCardSpecialString(ether, 0, "Hero target with the highest HP: Ra.");
+
             //ra is the highest hp
             QuickHPStorage(mdp);
             DealDamage(ra.CharacterCard, mdp, 3, DamageType.Fire);
@@ -1011,6 +1013,7 @@ namespace CauldronTests
             AssertIsInPlay(ether);
 
             //If there are no Chemical Triggers in play, increase damage dealt by the hero target with the highest HP by 1.
+            AssertCardSpecialString(ether, 0, "Hero targets with the highest HP: Ra, Legacy.");
 
             //choose ra as the highest hitpoints when asked
             DecisionYesNo = true;
