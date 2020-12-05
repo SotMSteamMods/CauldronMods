@@ -106,7 +106,7 @@ namespace Cauldron.Vector
 
             // At the end of the villain turn, play the top card of the villain deck.
             base.SideTriggers.Add(base.AddEndOfTurnTrigger(tt => tt == this.TurnTaker,
-                FlippedEndOfTurnResponse, new[] { TriggerType.PlayCard }));
+                PlayTheTopCardOfTheVillainDeckWithMessageResponse, new[] { TriggerType.PlayCard }));
 
 
             // Reduce damage dealt to {Vector} by 1 for each villain target in play.
@@ -163,20 +163,6 @@ namespace Cauldron.Vector
 
             // Reached maximum HP, game over
             IEnumerator routine = base.GameController.GameOver(EndingResult.AlternateDefeat, EndingMessage, cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-        }
-
-        private IEnumerator FlippedEndOfTurnResponse(PhaseChangeAction pca)
-        {
-            IEnumerator routine = base.GameController.PlayTopCardOfLocation(this.TurnTakerController, this.TurnTaker.Deck);
-
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
