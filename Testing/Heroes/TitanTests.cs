@@ -677,5 +677,139 @@ namespace CauldronTests
             DealDamage(titan, omnitron, 2, DamageType.Melee);
             QuickHPCheck(-2);
         }
+
+        [Test()]
+        public void TestReversalToPlay()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card tform = PutInTrash("Titanform");
+
+            QuickHPStorage(omnitron);
+            PlayCard("Reversal");
+            //{Titan} deals 1 target 1 infernal damage.
+            QuickHPCheck(-1);
+            //Redirect the next damage dealt by that target back to itself.
+            QuickHPStorage(omnitron, titan);
+            DealDamage(omnitron, titan, 2, DamageType.Melee);
+            QuickHPCheck(-2, 0);
+            //If Titanform is in your trash, you may put it into play or into your hand.
+            AssertIsInPlay(tform);
+        }
+
+        [Test()]
+        public void TestReversalToHand()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card tform = PutInTrash("Titanform");
+            DecisionMoveCardDestination = new MoveCardDestination(titan.HeroTurnTaker.Hand);
+
+            QuickHPStorage(omnitron);
+            PlayCard("Reversal");
+            //{Titan} deals 1 target 1 infernal damage.
+            QuickHPCheck(-1);
+            //Redirect the next damage dealt by that target back to itself.
+            QuickHPStorage(omnitron, titan);
+            DealDamage(omnitron, titan, 2, DamageType.Melee);
+            QuickHPCheck(-2, 0);
+            //If Titanform is in your trash, you may put it into play or into your hand.
+            AssertInHand(tform);
+        }
+
+        [Test()]
+        public void TestStubbornGoliath()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PutOnDeck(omnitron, GetCard("Terraforming", 0));
+            Card epe = PlayCard("ElectroPulseExplosive");
+
+            Card gol = PlayCard("StubbornGoliath");
+            UsePower(gol);
+            //{Titan} deals up to 2 non-hero targets 2 infernal damage each.{BR}Until the start of your next turn, when those targets would deal damage, you may redirect that damage to {Titan}.
+            QuickHPStorage(titan, haka);
+            DealDamage(omnitron, haka, 2, DamageType.Melee);
+            DealDamage(epe, haka, 2, DamageType.Melee);
+            QuickHPCheck(-4, 0);
+
+            //no longer works at start of new turn
+            GoToStartOfTurn(titan);
+            QuickHPStorage(titan, haka);
+            DealDamage(omnitron, haka, 2, DamageType.Melee);
+            DealDamage(epe, haka, 2, DamageType.Melee);
+            QuickHPCheck(0, -4);
+        }
+
+        [Test()]
+        public void TestTheChaplianNoTitan()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card moko = PlayCard("TaMoko");
+
+            Card chap = PlayCard("TheChaplain");
+            //{Titan} deals 1 target 3 projectile damage.
+            QuickHPStorage(omnitron);
+            UsePower(chap);
+            QuickHPCheck(-3);
+            //If Titanform is in play, destroy 1 ongoing card.
+            AssertIsInPlay(moko);
+        }
+
+        [Test()]
+        public void TestTheChaplianYesTitan()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card moko = PlayCard("TaMoko");
+            PlayCard("Titanform");
+            DecisionYesNo = false;
+            DecisionSelectCard = moko;
+
+            Card chap = PlayCard("TheChaplain");
+            //{Titan} deals 1 target 3 projectile damage.
+            QuickHPStorage(omnitron);
+            UsePower(chap);
+            QuickHPCheck(-3);
+            //If Titanform is in play, destroy 1 ongoing card.
+            AssertInTrash(moko);
+        }
+
+        [Test()]
+        public void TestVulcansJudgmentNoTitan()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card vulc = PlayCard("VulcansJudgment");
+            //When this card is destroyed, {Titan} deals 1 villain target 5 infernal damage. If Titanform is in play, {Titan} also deals that target 2 fire damage.
+            QuickHPStorage(omnitron);
+            UsePower(vulc);
+            QuickHPCheck(-5);
+            AssertInTrash(vulc);
+        }
+
+        [Test()]
+        public void TestVulcansJudgmentYesTitan()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard("Titanform");
+            DecisionYesNo = false;
+
+            Card vulc = PlayCard("VulcansJudgment");
+            //When this card is destroyed, {Titan} deals 1 villain target 5 infernal damage. If Titanform is in play, {Titan} also deals that target 2 fire damage.
+            QuickHPStorage(omnitron);
+            UsePower(vulc);
+            QuickHPCheck(-7);
+            AssertInTrash(vulc);
+        }
     }
 }
