@@ -782,5 +782,26 @@ namespace CauldronTests
             GoToEndOfTurn();
             QuickHPCheck(-2);
         }
+        [Test]
+        public void TestShardkeySun()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            DecisionSelectTarget = oriphel.CharacterCard;
+            PlayCard("ThroatJab");
+            SetHitPoints(oriphel, 10);
+
+            QuickHPStorage(haka);
+            PutOnDeck("HighAsriel");
+            PlayCard("SunShardkey");
+
+            QuickHPStorage(legacy, ra, wraith, haka);
+            UsePower(haka);
+            QuickHPCheck(0, 0, 0, -2);
+            UsePower(legacy);
+            QuickHPCheck(-3, 0, 0, 0);
+        }
     }
 }
