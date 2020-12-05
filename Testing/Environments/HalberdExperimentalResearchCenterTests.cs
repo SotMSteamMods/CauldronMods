@@ -991,6 +991,43 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestHalberdEther_NoChemicalTriggers_TiedHighest()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //ra and legacy are tied fro the highest HP hero targets
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 20);
+            SetHitPoints(haka.CharacterCard, 10);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToPlayCardPhase(halberd);
+
+            //we play out ether
+            Card ether = GetCard("HalberdEther");
+            PlayCard(ether);
+            AssertIsInPlay(ether);
+
+            //If there are no Chemical Triggers in play, increase damage dealt by the hero target with the highest HP by 1.
+
+            //choose ra as the highest hitpoints when asked
+            DecisionYesNo = true;
+            QuickHPStorage(mdp);
+            DealDamage(ra.CharacterCard, mdp, 3, DamageType.Fire);
+            //hero w/ highest hp damage should be +1
+            QuickHPCheck(-4);
+
+            //deny ra as the highest hitpoints when asked
+            DecisionYesNo = false;
+            QuickHPStorage(mdp);
+            DealDamage(ra.CharacterCard, mdp, 3, DamageType.Fire);
+            //damage was not increased
+            QuickHPCheck(-3);
+        }
+
+        [Test()]
         public void TestHalberdEther_WithChemicalTriggers()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
