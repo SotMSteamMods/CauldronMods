@@ -694,5 +694,31 @@ namespace CauldronTests
             QuickHPCheck(-3);
 
         }
+        [Test]
+        public void TestShardwalkersAwakeningJade()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            QuickHPStorage(legacy, ra, wraith, haka);
+            AssertNotFlipped(oriphel);
+            PlayCard("ShardwalkersAwakening");
+            AssertFlipped(oriphel);
+            QuickHPCheck(0, 0, 0, 0);
+        }
+        [Test]
+        public void TestShardwalkersAwakeningOriphel()
+        {
+            SetupGameController("Cauldron.Oriphel", "Legacy", "Ra", "TheWraith", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            QuickHPStorage(legacy, ra, wraith, haka);
+            FlipCard(oriphel);
+            PlayCard("ShardwalkersAwakening");
+            AssertFlipped(oriphel);
+            QuickHPCheck(-2, -2, -2, -2);
+        }
     }
 }
