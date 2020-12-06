@@ -6,6 +6,9 @@
     "initialCardIdentifiers": [
         "TheRamCharacter"
     ],
+    "initialOffToTheSideCardIdentifiers": [
+        "AdmiralWintersCharacter"
+    ],
     "cards": [
         {
             "identifier": "TheRamCharacter",
@@ -335,9 +338,62 @@
                 }
             ],
             "flavorReference": "Quicksilver, Halcyon Black Limited Series #1"
+        },
+        {
+            "identifier": "AdmiralWintersCharacter",
+            "promoIdentifier": "AdmiralWintersCharacter",
+            "count": 1,
+            "title": "Admiral Winters",
+            "promoTitle": "Admiral Winters",
+            "keywords": [
+                "villain"
+            ],
+            "body": "Dreadnought Pilot",
+            "backgroundColor": "c1b49b",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 20,
+            "nemesisIdentifiers": [
+                "TheKnight",
+                "MagnificentMara",
+                "Vanish"
+            ],
+            "gameplay": [
+                "The heroes cannot win the game. If {AdmiralWinters} would be destroyed, flip his character cards instead.",
+                "At the start of a hero's turn, if that hero is not Up Close, you may take a copy of Up Close from the villain trash and play it next to that hero.",
+                "{AdmiralWinters} is immune to damage from targets that are not up close. The first time {AdmiralWinters} would be dealt damage each turn, redirect that damage to {TheRam}.",
+                "At the end of the villain turn, {AdmiralWinters} deals {H} projectile damage to each hero that is not Up Close. Then, play the top X cards of the villain deck, where X is the number of copies of Up Close in play minus 1."
+            ],
+            "advanced": "Reduce damage dealt to {AdmiralWinters} by 1.",
+            "icons": [
+                "CannotWin",
+                "StartOfTurnAction",
+                "ImmuneToDamage",
+                "RedirectDamage",
+                "DealDamageProjectile",
+                "PlayCardNow"
+            ],
+            "advancedIcons": [
+                "ReduceDamageTaken"
+            ],
+            "flippedBody": "Incapacitated",
+            "flippedGameplay": [
+                "At the start of a hero's turn, if that hero is not Up Close, you may take a copy of Up close from the villain trash and play it next to that hero.",
+                "Increase damage dealt to and by {TheRam} by 1.",
+                "Whenever a one-shot is placed under {TheRam}'s character cards, immediately flip {TheRam}'s character cards."
+            ],
+            "flippedAdvanced": "Reduce damage dealt to villain targets by 1.",
+            "flippedIcons": [
+                "IncreaseDamageDealt",
+                "IncreaseDamageTaken"
+            ],
+            "flippedAdvancedIcons": [
+                "ReduceDamageTaken"
+            ],
+            "difficulty": 3
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "TheRamCharacter",
             "promoIdentifier": "PastTheRamCharacter",
@@ -423,59 +479,6 @@
                 "FirstResponseVanishCharacter": "First Response Vanish  placeholder",
                 "1929VanishCharacter": "Vanish 1929 placeholder"
             }
-        },
-        {
-            "identifier": "TheRamCharacter",
-            "promoIdentifier": "PastTheRamCharacter",
-            "count": 1,
-            "title": "The Ram",
-            "promoTitle": "The Ram 1929",
-            "keywords": [
-                "villain"
-            ],
-            "body": "Dreadnought Pilot",
-            "backgroundColor": "c1b49b",
-            "foilBackgroundColor": "CD96C0",
-            "character": true,
-            "hitpoints": 20,
-            "nemesisIdentifiers": [
-                "TheKnight",
-                "MagnificentMara",
-                "Vanish"
-            ],
-            "gameplay": [
-                "The heroes cannot win the game. If {AdmiralWinters} would be destroyed, flip his character cards instead.",
-                "At the start of a hero's turn, if that hero is not Up Close, you may take a copy of Up Close from the villain trash and play it next to that hero.",
-                "{AdmiralWinters} is immune to damage from targets that are not up close. The first time {AdmiralWinters} would be dealt damage each turn, redirect that damage to {TheRam}.",
-                "At the end of the villain turn, {AdmiralWinters} deals {H} projectile damage to each hero that is not Up Close. Then, play the top X cards of the villain deck, where X is the number of copies of Up Close in play minus 1."
-            ],
-            "advanced": "Reduce damage dealt to {AdmiralWinters} by 1.",
-            "icons": [
-                "CannotWin",
-                "StartOfTurnAction",
-                "ImmuneToDamage",
-                "RedirectDamage",
-                "DealDamageProjectile",
-                "PlayCardNow"
-            ],
-            "advancedIcons": [
-                "ReduceDamageTaken"
-            ],
-            "flippedBody": "Incapacitated",
-            "flippedGameplay": [
-                "At the start of a hero's turn, if that hero is not Up Close, you may take a copy of Up close from the villain trash and play it next to that hero.",
-                "Increase damage dealt to and by {TheRam} by 1.",
-                "Whenever a one-shot is placed under {TheRam}'s character cards, immediately flip {TheRam}'s character cards."
-            ],
-            "flippedAdvanced": "Reduce damage dealt to villain targets by 1.",
-            "flippedIcons": [
-                "IncreaseDamageDealt",
-                "IncreaseDamageTaken"
-            ],
-            "flippedAdvancedIcons": [
-                "ReduceDamageTaken"
-            ],
-            "difficulty": 3
         }
     ]
 }
