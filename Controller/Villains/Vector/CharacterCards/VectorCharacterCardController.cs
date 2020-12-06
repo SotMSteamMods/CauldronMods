@@ -68,6 +68,7 @@ namespace Cauldron.Vector
                 base.SideTriggers.Add(base.AddTrigger<DealDamageAction>(dda => dda.DamageSource != null && 
                     dda.DamageSource.IsEnvironmentCard && dda.Target.Equals(this.Card) && dda.DidDealDamage,
                 DealtDamageByEnvResponse, new[] {TriggerType.ImmuneToDamage}, TriggerTiming.After));
+                AddVectorDefeatedIfDestroyedTriggers();
                 
                 if (this.IsGameAdvanced)
                 {
@@ -125,6 +126,7 @@ namespace Cauldron.Vector
             // Reduce damage dealt to {Vector} by 1 for each villain target in play.
             base.SideTriggers.Add(base.AddReduceDamageTrigger(c => c == base.CharacterCard, FindNumberOfVillainCardsInPlay() ?? default));
 
+            AddVectorDefeatedIfDestroyedTriggers();
 
             if (this.IsGameAdvanced)
             {
@@ -185,6 +187,30 @@ namespace Cauldron.Vector
                 base.GameController.ExhaustCoroutine(routine);
             }
         }
+
+        protected void AddVectorDefeatedIfDestroyedTriggers(bool canBeMoved = false)
+        {
+           
+            if (!canBeMoved)
+            {
+                SideTriggers.Add(AddTrigger((DestroyCardAction destroyCard) => destroyCard.CardToDestroy == this && !IsSuperVirusInPlay(), CannotBeMovedResponse, TriggerType.Hidden, TriggerTiming.Before));
+            }
+            AddVectorDefeatedIfMovedOutOfGameTriggers();
+            AddVectorTriggerGameOver();
+           
+        }
+
+        protected void AddVectorTriggerGameOver()
+        {
+            SideTriggers.Add(AddTrigger<DestroyCardAction>((DestroyCardAction destroyCard) => destroyCard.CardToDestroy == this && !IsSuperVirusInPlay(), DefeatedResponse, TriggerType.GameOver, TriggerTiming.Before));
+        }
+
+        protected void AddVectorDefeatedIfMovedOutOfGameTriggers()
+        {
+            SideTriggers.Add(AddTrigger((MoveCardAction moveCard) => !IsSuperVirusInPlay() && moveCard.CardToMove == base.Card && moveCard.Destination.Name == LocationName.OutOfGame, (MoveCardAction m) => DefeatedResponse(m), TriggerType.GameOver, TriggerTiming.Before));
+        }
+
+      
 
         public int? FindNumberOfVillainCardsInPlay()
         {
