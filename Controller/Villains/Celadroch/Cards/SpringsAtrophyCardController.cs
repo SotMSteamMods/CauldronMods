@@ -8,6 +8,10 @@ namespace Cauldron.Celadroch
 {
     public class SpringsAtrophyCardController : CardController
     {
+        /*
+         * "At the end of the villain turn, this card deals the hero target with the lowest HP {H - 1} toxic damage."
+         */
+
         public SpringsAtrophyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 

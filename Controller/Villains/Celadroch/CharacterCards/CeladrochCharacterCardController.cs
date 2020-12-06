@@ -62,54 +62,58 @@ namespace Cauldron.Celadroch
             return null;
         }
 
+        public override void AddTriggers()
+        {
+            //Villain Cards cannot be played
+            CannotPlayCards(ttc => ttc.IsVillain && !ttc.CharacterCard.IsFlipped);
+
+            base.AddTriggers();
+        }
+
         public override void AddSideTriggers()
         {
             // Front side (Black Wind Rising)
             if (!base.Card.IsFlipped)
             {
-                //Villain Cards cannot be played
-                CannotPlayCards(ttc => ttc.IsVillain && !ttc.CharacterCard.IsFlipped);
-
                 //At the start of the villain turn, if the storm pool has 3 or more tokens, flip {Celadroch}'s character card. Otherwise, add 1 token to the storm pool.
-                AddStartOfTurnTrigger(tt => tt == TurnTaker, FrontSideAddTokensOrFlip, new[] { TriggerType.AddTokensToPool, TriggerType.FlipCard });
+                AddSideTrigger(AddStartOfTurnTrigger(tt => tt == TurnTaker, FrontSideAddTokensOrFlip, new[] { TriggerType.AddTokensToPool, TriggerType.FlipCard }));
 
                 if (IsGameAdvanced)
                 {
-                    AddReduceDamageTrigger(c => c.IsTarget && c.IsRelic, 1);
+                    AddSideTrigger(AddReduceDamageTrigger(c => c.IsTarget && c.IsRelic, 1));
                 }
             }
             // Flipped side (The Dark Mountain)
             else
             {
                 //At the start of the villain turn, add 1 token to the storm pool.
-                AddStartOfTurnTrigger(tt => tt == TurnTaker, pca => GameController.AddTokensToPool(StormPool, 1, GetCardSource()), TriggerType.AddTokensToPool);
+                AddSideTrigger(AddStartOfTurnTrigger(tt => tt == TurnTaker, pca => GameController.AddTokensToPool(StormPool, 1, GetCardSource()), TriggerType.AddTokensToPool));
 
                 //You may play the top card of the villain deck to remove 2 cards from the storm pool.
-                AddStartOfTurnTrigger(tt => tt == TurnTaker, StartOfTurnOptionalCardPlayResponse, new[] { TriggerType.ModifyTokens, TriggerType.PlayCard });
+                AddSideTrigger(AddStartOfTurnTrigger(tt => tt == TurnTaker, StartOfTurnOptionalCardPlayResponse, new[] { TriggerType.ModifyTokens, TriggerType.PlayCard }));
 
                 // Whenever an elemental, zombie, demon, or chosen is played from the top of the villain deck...
                 Func<Card, bool> playCriteria = c => c.Owner == TurnTaker && c.GetKeywords().Intersect(MinionKeywords, StringComparer.Ordinal).Any();
-                AddTrigger<PlayCardAction>(pca => !pca.IsPutIntoPlay && pca.Origin == TurnTaker.Deck && !pca.FromBottom && playCriteria(pca.CardToPlay),
-                                            pca => SummonMinionsReponse(pca.CardToPlay), TriggerType.PutIntoPlay, TriggerTiming.After);
+                AddSideTrigger(AddTrigger<PlayCardAction>(pca => !pca.IsPutIntoPlay && pca.Origin == TurnTaker.Deck && !pca.FromBottom && playCriteria(pca.CardToPlay),
+                                            pca => SummonMinionsReponse(pca.CardToPlay), TriggerType.PutIntoPlay, TriggerTiming.After));
 
                 //At the end of the villain turn, {Celadroch} deals the {H - 1} hero targets with the highest HP X projectile damage each, where X is the number of tokens in the storm pool minus 2.
-                AddDealDamageAtEndOfTurnTrigger(TurnTaker, CharacterCard, c => c.IsHero && c.IsTarget,
+                AddSideTrigger(AddDealDamageAtEndOfTurnTrigger(TurnTaker, CharacterCard, c => c.IsHero && c.IsTarget,
                     targetType: TargetType.HighestHP,
                     amount: StormPool.CurrentValue >= 2 ? StormPool.CurrentValue - 2 : 0, //make sure we aren't dealing negative damage
                     damageType: DamageType.Projectile,
                     highestLowestRanking: 1,
-                    numberOfTargets: H - 1);
+                    numberOfTargets: H - 1));
 
                 //If Forsaken Crusader is in the villain trash, put it into play.
-                AddEndOfTurnTrigger(tt => tt == TurnTaker, pca => DoNothing(), TriggerType.PlayCard);
+                AddSideTrigger(AddEndOfTurnTrigger(tt => tt == TurnTaker, pca => PlayForsakenCrusaderFromTrash(), TriggerType.PutIntoPlay));
 
                 //If a villain card was not played this turn, destroy {H} hero ongoing and/or equipment cards.
-                AddEndOfTurnTrigger(tt => tt == TurnTaker, pca => DoNothing(), TriggerType.DestroyCard);
+                AddSideTrigger(AddEndOfTurnTrigger(tt => tt == TurnTaker, pca => NoCardsPlayedResponse(), TriggerType.DestroyCard));
 
                 base.AddDefeatedIfDestroyedTriggers();
             }
         }
-
 
         private IEnumerator FrontSideAddTokensOrFlip(PhaseChangeAction action)
         {
@@ -155,19 +159,10 @@ namespace Cauldron.Celadroch
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = GameController.MakeTargettable(Card, Card.Definition.FlippedHitPoints.Value, Card.Definition.FlippedHitPoints.Value, GetCardSource());
-            if (base.UseUnityCoroutines)
+            if (Card.IsFlipped)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            if (IsGameAdvanced)
-            {
-                coroutine = GameController.AddTokensToPool(StormPool, 2, GetCardSource());
+                //coroutine = GameController.ChangeMaximumHP(Card, Card.Definition.FlippedHitPoints.Value, true, GetCardSource());
+                coroutine = GameController.MakeTargettable(Card, Card.Definition.FlippedHitPoints.Value, Card.Definition.FlippedHitPoints.Value, GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -175,6 +170,19 @@ namespace Cauldron.Celadroch
                 else
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                if (IsGameAdvanced)
+                {
+                    coroutine = GameController.AddTokensToPool(StormPool, 2, GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
             yield break;
@@ -241,6 +249,75 @@ namespace Cauldron.Celadroch
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+
+        private IEnumerator PlayForsakenCrusaderFromTrash()
+        {
+            Card card = FindCard(ForsakenCrusaderCardController.Identifier);
+            if (card.IsInTrash)
+            {
+                var coroutine = ReviveForsakenCrusaderMessage(card);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                coroutine = GameController.PlayCard(TurnTakerController, card, isPutIntoPlay: true, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+        }
+
+        private IEnumerator ReviveForsakenCrusaderMessage(Card card)
+        {
+            int rng = Game.RNG.Next(1, 21);
+            string msg = $"Your service has not ended...";
+            bool showCardSource = true;
+            if (5 <= rng && rng < 10)
+            {
+                msg = $"Arise"; showCardSource = true;
+            }
+            if (rng < 15)
+            {
+                msg = $"\"When can I slumber...\""; showCardSource = false;
+            }
+            if (rng < 20)
+            {
+                msg = $"\"I Serve\""; showCardSource = false;
+            }
+            if (rng == 21)
+            {
+                msg = $"Whose the best strong boi, that's right, it's you."; showCardSource = true;
+            }
+
+            return GameController.SendMessageAction(msg, Priority.Medium, GetCardSource(), new[] { card }, showCardSource);
+        }
+
+        private IEnumerator NoCardsPlayedResponse()
+        {
+            bool villainCardPlayed = Game.Journal.CardEntersPlayEntriesThisTurn().Any(e => e.Card.IsVillain);
+            if (!villainCardPlayed)
+            {
+                var coroutine = GameController.DestroyCards(DecisionMaker, new LinqCardCriteria(c => (c.IsOngoing || IsEquipment(c)) && c.IsInPlayAndNotUnderCard, "equipment or ongoing"), cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
         }
     }

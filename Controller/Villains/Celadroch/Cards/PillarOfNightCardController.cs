@@ -9,6 +9,11 @@ namespace Cauldron.Celadroch
 {
     public class PillarOfNightCardController : CeladrochPillarCardController
     {
+        /*
+         * 	"This card may not regain HP. Reduce damage dealt to {Celadroch} by 1.",
+			"For every {H + 1} HP this card loses, including when it reaches 0HP, 1 player may immediately draw a card. When this card would leave play, remove it from the game."
+         */
+
         public PillarOfNightCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, TriggerType.DrawCard)
         {
 

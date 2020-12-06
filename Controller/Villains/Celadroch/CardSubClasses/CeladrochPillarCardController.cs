@@ -11,6 +11,7 @@ namespace Cauldron.Celadroch
         private readonly CeladrochPillarRewards _rewards;
         private readonly TriggerType _rewardType;
         private readonly string PendingTriggerKey = "PendingTriggerKey";
+        private readonly string DebugRewardCountKey = "RewardCountKey";
 
         protected CeladrochPillarCardController(Card card, TurnTakerController turnTakerController, TriggerType rewardType) : base(card, turnTakerController)
         {
@@ -21,6 +22,7 @@ namespace Cauldron.Celadroch
             SpecialStringMaker.ShowSpecialString(HpTilNextRewardSpecialString).Condition = () => _rewards.HpTillNextTrigger(Card.HitPoints.Value) > 0;
 
             SpecialStringMaker.ShowSpecialString(() => $"DEBUG - Pending Triggers {GetCardPropertyJournalEntryInteger(PendingTriggerKey) ?? 0}");
+            SpecialStringMaker.ShowSpecialString(() => $"DEBUG - Reward Triggers {GetCardPropertyJournalEntryInteger(DebugRewardCountKey) ?? 0}");
         }
 
         // This card may not regain HP.
@@ -77,6 +79,9 @@ namespace Cauldron.Celadroch
             while (pendingTriggers > 0)
             {
                 System.Console.WriteLine($"{Card.Title} - Reward Trigger");
+
+                int triggerCount = GetCardPropertyJournalEntryInteger(DebugRewardCountKey) ?? 0;
+                SetCardProperty(DebugRewardCountKey, triggerCount + 1);
 
                 List<SelectTurnTakerDecision> selected = new List<SelectTurnTakerDecision>();
                 var coroutine = SelectHeroAndGrantReward(selected);

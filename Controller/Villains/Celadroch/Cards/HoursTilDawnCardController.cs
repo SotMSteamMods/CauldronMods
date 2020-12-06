@@ -8,6 +8,12 @@ namespace Cauldron.Celadroch
 {
     public class HoursTilDawnCardController : CardController
     {
+        /*
+         *  "When this card enters play, play the top card of the villain deck.",
+			"At the end of the villain turn, each villain target regains 2HP.",
+			"When this card is destroyed, {Celadroch} regains 10HP."
+         */
+
         public HoursTilDawnCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 

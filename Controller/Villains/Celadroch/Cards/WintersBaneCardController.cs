@@ -8,6 +8,11 @@ namespace Cauldron.Celadroch
 {
     public class WintersBaneCardController : CardController
     {
+        /*
+         * 	"Reduce damage dealt to villain cards by 1.",
+			"At the end of the villain turn, this card deals the hero target with the highest HP {H} cold damage."
+         */
+
         public WintersBaneCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 

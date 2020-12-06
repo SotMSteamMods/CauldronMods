@@ -8,6 +8,11 @@ namespace Cauldron.Celadroch
 {
     public class ScreamingGaleCardController : CardController
     {
+        /*
+         * 	"When this card enters play, play the top card of the villain deck.",
+			"Increase damage dealt by villain targets by 1."
+         */
+
         public ScreamingGaleCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
