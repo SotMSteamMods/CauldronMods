@@ -28,6 +28,15 @@ namespace CauldronTests
             this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
         }
 
+        protected void AddCannotPlayTrigger(TurnTakerController ttc, bool heroesCannotPlay, bool villainsCannotPlay)
+        {
+            CannotPlayCardsStatusEffect effect = new CannotPlayCardsStatusEffect();
+            effect.CardCriteria.IsHero = new bool?(heroesCannotPlay);
+            effect.CardCriteria.IsVillain = new bool?(villainsCannotPlay);
+            effect.UntilStartOfNextTurn(ttc.TurnTaker);
+            this.RunCoroutine(this.GameController.AddStatusEffect(effect, true, new CardSource(ttc.CharacterCardController)));
+        }
+
         protected bool IsVirus(Card card)
         {
             return card != null && base.GameController.DoesCardContainKeyword(card, "virus");
@@ -648,7 +657,7 @@ namespace CauldronTests
             PlayCard(bloodSample);
             QuickHPCheck(-1, -1, -1);
 
-
+            PutOnDeck("BioterrorSquad");
             DealDamage(legacy, Vector, 6, DamageType.Melee);
 
             GoToStartOfTurn(Vector);
@@ -1338,7 +1347,6 @@ namespace CauldronTests
             PlayCard(superVirus);
             PlayCard(undiagnosed);
 
-
             DestroyCard(undiagnosed);
 
             // Assert
@@ -1351,7 +1359,7 @@ namespace CauldronTests
         public void TestUndiagnosedSubjectPlaysVillainCardWhenDestroyed_SuperVirusInPlay_TriggerFlip()
         {
             // Arrange
-            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            SetupGameController(new string[] {DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis"}, randomSeed: new int?(928483507));
 
             Card bioTerror = GetCard(BioterrorSquadCardController.Identifier);
             PutOnDeck(Vector, bioTerror);
@@ -1366,11 +1374,13 @@ namespace CauldronTests
 
             GoToPlayCardPhase(Vector);
             PlayCard(superVirus);
+            //get H+1 (4) viruses to move on supervirus
+            IEnumerable<Card> virusToMove = FindCardsWhere((Card c) => IsVirus(c) && Vector.TurnTaker.Deck.HasCard(c) && c != bioTerror).Take(4);
+            MoveCards(Vector, virusToMove, superVirus.UnderLocation);
+
             PlayCard(undiagnosed);
 
-            //get H+1 (4) viruses to move on supervirus
-            IEnumerable<Card> virusToMove = FindCardsWhere((Card c) => IsVirus(c) && Vector.TurnTaker.Deck.HasCard(c)).Take(4);
-            MoveCards(Vector, virusToMove, superVirus.UnderLocation);
+
             DestroyCard(undiagnosed);
 
             // Assert
@@ -1378,8 +1388,6 @@ namespace CauldronTests
             AssertFlipped(Vector.CharacterCard);
 
         }
-
-
 
         [Test]
         public void TestVendetta()
@@ -1399,6 +1407,79 @@ namespace CauldronTests
 
             // Assert
             QuickHPCheck(-2); 
+            QuickHandCheck(-1);
+        }
+        [Test]
+        public void TestVendetta_DiscardEvenIfNoDamageDealt()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+
+            StartGame();
+            Card vendetta = GetCard(VendettaCardController.Identifier);
+            QuickHPStorage(haka);
+            QuickHandStorage(haka);
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            AddImmuneToDamageTrigger(legacy, true, false);
+            PlayCard(vendetta);
+
+            // Assert
+            QuickHPCheck(0);
+            QuickHandCheck(-1);
+        }
+
+        [Test]
+        public void TestVendetta_DiscardEvenIfRedirectedToDifferentHero()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Tachyon", "Megalopolis");
+
+
+            StartGame();
+
+            SetHitPoints(new List<TurnTakerController>() { legacy, ra, haka }, 10);
+            Card vendetta = GetCard(VendettaCardController.Identifier);
+            QuickHPStorage(tachyon, ra);
+            QuickHandStorage(tachyon);
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard("SynapticInterruption");
+            DecisionSelectCards = new Card[] { ra.CharacterCard, tachyon.HeroTurnTaker.Hand.TopCard };
+            PlayCard(vendetta);
+
+            // Assert
+            QuickHPCheck(0, -3);
+            QuickHandCheck(-1);
+        }
+
+        [Test]
+        public void TestVendetta_DiscardEvenIfRedirectedToVillain()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Tachyon", "Megalopolis");
+
+
+            StartGame();
+
+            SetHitPoints(new List<TurnTakerController>() { legacy, ra, haka }, 10);
+            Card vendetta = GetCard(VendettaCardController.Identifier);
+            QuickHPStorage(tachyon, Vector);
+            QuickHandStorage(tachyon);
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard("SynapticInterruption");
+            DecisionSelectCards = new Card[] { Vector.CharacterCard, tachyon.HeroTurnTaker.Hand.TopCard };
+            AddCannotPlayTrigger(Vector, false, true);
+
+            PlayCard(vendetta, true);
+
+            // Assert
+            QuickHPCheck(0, -3);
             QuickHandCheck(-1);
         }
 

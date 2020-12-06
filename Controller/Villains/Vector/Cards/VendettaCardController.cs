@@ -24,26 +24,10 @@ namespace Cauldron.Vector
 
         public override IEnumerator Play()
         {
-            List<Card> storedResults = new List<Card>();
-            IEnumerator routine = base.GameController.FindTargetWithHighestHitPoints(1, c => c.IsHero 
-                && !c.IsIncapacitatedOrOutOfGame, storedResults);
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-
-            if (!storedResults.Any())
-            {
-                yield break;
-            }
-
             int damageToDeal = Game.H - 1;
-            routine = this.DealDamage(this.CharacterCard, storedResults.First(), damageToDeal, DamageType.Psychic);
+
+            List<DealDamageAction> storedResults = new List<DealDamageAction>();
+            IEnumerator routine = this.DealDamageToHighestHP(base.CharacterCard, 1, c => c.IsHero && c.IsTarget && !c.IsIncapacitatedOrOutOfGame, c => damageToDeal, DamageType.Psychic, storedResults: storedResults);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
@@ -53,18 +37,26 @@ namespace Cauldron.Vector
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            // Affected hero must discard a card
-            routine = base.GameController.SelectAndDiscardCards(base.FindHeroTurnTakerController(storedResults.First().Owner.ToHero()), 
-                CardsToDiscard, false, CardsToDiscard);
+            if(storedResults != null)
+            {
+                Card target = storedResults.First().OriginalTarget;
+                
+                // Affected hero must discard a card
+                routine = base.GameController.SelectAndDiscardCards(base.FindHeroTurnTakerController(target.Owner.ToHero()),
+                    CardsToDiscard, false, CardsToDiscard);
 
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
             }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
+
+            yield break;
         }
+           
     }
 }
