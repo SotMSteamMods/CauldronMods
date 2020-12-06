@@ -14,8 +14,10 @@ namespace Cauldron.Cricket
 
         public override IEnumerator UsePower(int index = 0)
         {
+            int targetNumeral = GetPowerNumeral(0, 1);
+            int damageNumeral = GetPowerNumeral(1, 2);
             //{Cricket} deals 1 target 2 melee damage. 
-            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), 2, DamageType.Melee, 1, false, 1, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), damageNumeral, DamageType.Melee, targetNumeral, false, targetNumeral, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
