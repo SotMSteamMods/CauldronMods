@@ -56,5 +56,10 @@ namespace Cauldron.Vector
             Card superVirus = GetSuperVirusCard();
             return base.GameController.FlipCard(base.CharacterCardController, cardSource: base.FindCardController(superVirus).GetCardSource());
         }
+
+        protected bool IsVectorFlipped()
+        {
+            return base.CharacterCard.IsFlipped;
+        }
     }
 }

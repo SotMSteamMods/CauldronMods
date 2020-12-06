@@ -1078,6 +1078,42 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestSupervirusAllowsPlacingVirusCardsUnderneath_FlipsCard()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card bloodSample = GetCard(BloodSampleCardController.Identifier); // Virus
+            Card delayedSymptoms = GetCard(DelayedSymptomsCardController.Identifier); // Virus
+            Card eliteTraining = GetCard(EliteTrainingCardController.Identifier);
+
+            PutInTrash(bloodSample);
+            PutInTrash(delayedSymptoms);
+            PutInTrash(eliteTraining);
+
+            Card superVirus = GetCard(SupervirusCardController.Identifier);
+           
+
+            DecisionSelectCard = bloodSample;
+            StartGame();
+            GoToEndOfTurn(env);
+            QuickHPStorage(Vector, legacy, ra, haka);
+            PlayCard(superVirus);
+
+            //get H+1 (4) viruses to move on supervirus
+            IEnumerable<Card> virusToMove = FindCardsWhere((Card c) => IsVirus(c) && Vector.TurnTaker.Deck.HasCard(c)).Take(4);
+            MoveCards(Vector, virusToMove, superVirus.UnderLocation);
+
+            GoToStartOfTurn(Vector);
+
+    
+
+
+            // Assert
+            QuickHPCheck(0, 0, 0, 0);
+        }
+
+        [Test]
         public void TestSupervirusAllowsPlacingVirusCardsUnderneath()
         {
             // Arrange
@@ -1163,6 +1199,45 @@ namespace CauldronTests
 
             // Assert
             AssertGameOver(EndingResult.AlternateDefeat);
+        }
+
+        [Test]
+        public void TestSuperVirusOnlyCausesGameLossIfVectorIsDestroyedWhileItsOut()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+
+            StartGame();
+
+            GoToPlayCardPhase(Vector);
+
+            // Act
+            GoToStartOfTurn(legacy);
+            DealDamage(legacy, Vector, 100, DamageType.Melee);
+
+            // Assert
+            AssertGameOver(EndingResult.VillainDestroyedVictory);
+        }
+
+        [Test]
+        public void TestSuperVirusOnlyCausesGameLossIfVectorIsDestroyedWhileItsOut_FixedPointTest()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "TimeCataclysm");
+
+
+            StartGame();
+
+            GoToPlayCardPhase(Vector);
+
+            // Act
+            GoToStartOfTurn(legacy);
+            PlayCard("FixedPoint");
+            DealDamage(legacy, Vector, 100, DamageType.Melee);
+
+            // Assert
+            AssertNotGameOver();
         }
 
         [Test]

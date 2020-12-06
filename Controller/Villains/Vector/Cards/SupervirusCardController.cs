@@ -108,30 +108,34 @@ namespace Cauldron.Vector
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            // {Vector} deals each hero 1 toxic damage
-            routine = base.DealDamage(this.CharacterCard, c => c.IsHero && c.IsTarget && c.IsInPlay, 
-                DamageToDeal, DamageType.Toxic);
+           if(!IsVectorFlipped())
+            {
+                // {Vector} deals each hero 1 toxic damage
+                routine = base.DealDamage(this.CharacterCard, c => c.IsHero && c.IsTarget && c.IsInPlay,
+                    DamageToDeal, DamageType.Toxic);
 
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
 
-            // Regain {H x 2} HP
-            int hpGain = base.Game.H * 2;
-            routine = this.GameController.GainHP(this.CharacterCard, hpGain);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
+                // Regain {H x 2} HP
+                int hpGain = base.Game.H * 2;
+                routine = this.GameController.GainHP(this.CharacterCard, hpGain);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
+           }
+           
 
             yield break;
         }
