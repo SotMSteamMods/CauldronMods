@@ -11,10 +11,13 @@ namespace Cauldron.TheCybersphere
 
         public SystemCrashCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+		}
+
+		public override void AddTriggers()
+        {
 			//At the start of the environment turn, if there are at least 4 Grid Virus cards in play, everyone is deleted. [b]Game Over.[/b]
 			AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, CheckIfGameOverResponse, TriggerType.GameOver);
 		}
-
 
 		private IEnumerator CheckIfGameOverResponse(PhaseChangeAction phaseChange)
 		{
