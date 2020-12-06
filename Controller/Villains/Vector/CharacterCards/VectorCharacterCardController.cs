@@ -84,7 +84,7 @@ namespace Cauldron.Vector
 
 
                 // Reduce damage dealt to {Vector} by 1 for each villain target in play.
-                base.SideTriggers.Add(base.AddReduceDamageTrigger(c => c == base.CharacterCard, FindNumberOfVillainCardsInPlay() ?? default));
+                base.SideTriggers.Add(base.AddReduceDamageTrigger(dda => dda.Target == base.CharacterCard, null, (dda) => FindNumberOfVillainCardsInPlay() ?? 0));
 
                 
 
@@ -101,6 +101,7 @@ namespace Cauldron.Vector
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
             RemoveSideTriggers();
+
             // Remove Super Virus card from the game
             if (IsSuperVirusInPlay())
             {
@@ -136,7 +137,10 @@ namespace Cauldron.Vector
                     base.GameController.ExhaustCoroutine(r2);
                 }
             }
+
             AddSideTriggers();
+            yield return null;
+            yield break;
         }
 
         private IEnumerator DealtDamageByEnvResponse(DealDamageAction dda)
