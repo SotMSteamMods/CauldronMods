@@ -25,33 +25,19 @@ namespace Cauldron.Vector
             // At the start of the villain turn, {Vector} regains {H} HP.
             base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker, StartOfTurnResponse, TriggerType.GainHP);
 
+            // Reduce damage dealt to this card by 1.
+            base.AddReduceDamageTrigger((Card c) => c == base.Card, 1);
+
             base.AddTriggers();
         }
 
-        public override IEnumerator Play()
-        {
-            // Reduce damage dealt to this card by 1.
-            ReduceDamageStatusEffect rdse = new ReduceDamageStatusEffect(ReduceDamageAmount)
-            {
-                TargetCriteria = {IsSpecificCard = this.Card}
-            };
-
-            IEnumerator routine = this.AddStatusEffect(rdse);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-        }
+       
 
         private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
         {
             int hpToGain = this.Game.H;
 
-            IEnumerator routine = this.GameController.GainHP(this.CharacterCard, hpToGain);
+            IEnumerator routine = this.GameController.GainHP(this.CharacterCard, hpToGain, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);

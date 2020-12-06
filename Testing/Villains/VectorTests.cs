@@ -28,6 +28,15 @@ namespace CauldronTests
             this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
         }
 
+        protected void AddReduceDamageTrigger(TurnTakerController ttc, bool heroesReduce, bool villainsReduce, int amount)
+        {
+            ReduceDamageStatusEffect effect = new ReduceDamageStatusEffect(amount);
+            effect.TargetCriteria.IsHero = new bool?(heroesReduce);
+            effect.TargetCriteria.IsVillain = new bool?(villainsReduce);
+            effect.UntilStartOfNextTurn(ttc.TurnTaker);
+            this.RunCoroutine(this.GameController.AddStatusEffect(effect, true, new CardSource(ttc.CharacterCardController)));
+        }
+
         protected void AddCannotPlayTrigger(TurnTakerController ttc, bool heroesCannotPlay, bool villainsCannotPlay)
         {
             CannotPlayCardsStatusEffect effect = new CannotPlayCardsStatusEffect();
@@ -1484,12 +1493,11 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestVirulentBlade()
+        public void TestVirulentBlade_SelfDamage()
         {
             // Arrange
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
 
-            PutOnDeck(Vector, GetCard(HotZoneCardController.Identifier));
 
 
             StartGame();
@@ -1498,16 +1506,41 @@ namespace CauldronTests
 
             // Act
             GoToPlayCardPhase(Vector);
-            PlayCard(virulentBlade);
-
-            GoToStartOfTurn(legacy);
+            AddCannotPlayTrigger(Vector, false, true);
+            AddReduceDamageTrigger(Vector, false, true, 2);
+            PlayCard(virulentBlade, true);
 
             // Assert
 
-            // Vector: -2 from Virulent Blade, Heroes: -4 (Hot zone -2, Virulent Blade -2)
-            QuickHPCheck(-2, -4, -4, -4);
+            // Vector: -2 from Virulent Blade
+            QuickHPCheck(-2, 0, 0, 0);
 
         }
+
+        [Test]
+        public void TestVirulentBlade_EndOfTurn()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+
+
+            StartGame();
+            Card virulentBlade = GetCard(VirulentBladeCardController.Identifier);
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            AddCannotPlayTrigger(Vector, false, true);
+            PlayCard(virulentBlade, true);
+            QuickHPStorage(Vector, legacy, ra, haka);
+            GoToEndOfTurn(Vector);
+            // Assert
+
+            // Heroes: -2 from Virulent Blade
+            QuickHPCheck(0, -2, -2, -2);
+
+        }
+
 
         [Test]
         public void TestVrRazortail()
@@ -1526,6 +1559,13 @@ namespace CauldronTests
             DealDamage(haka, razortail, 4, DamageType.Melee);
 
             QuickHPCheck(-3);
+
+            //check only reduces self
+
+            QuickHPStorage(Vector);
+            AddCannotPlayTrigger(Vector, false, true);
+            DealDamage(haka, Vector, 4, DamageType.Melee);
+            QuickHPCheck(-4);
 
 
             GoToEndOfTurn(haka);

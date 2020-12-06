@@ -24,7 +24,7 @@ namespace Cauldron.Vector
         public override void AddTriggers()
         {
             // At the end of the villain turn, {Vector} deals each hero target 2 toxic damage.
-            base.AddEndOfTurnTrigger(tt => tt == base.TurnTaker, EndOfTurnResponse, TriggerType.DealDamage);
+            base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.CharacterCard, c => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, TargetType.All, 2, DamageType.Toxic);
 
             base.AddTriggers();
         }
@@ -33,20 +33,6 @@ namespace Cauldron.Vector
         {
             IEnumerator routine = this.GameController.DealDamageToSelf(this.DecisionMaker, c => c == this.CharacterCard, DamageToDealSelf,
                 DamageType.Melee, true, cardSource: GetCardSource());
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-        }
-
-        private IEnumerator EndOfTurnResponse(PhaseChangeAction pca)
-        {
-            IEnumerator routine = base.DealDamage(this.CharacterCard, c => c.IsHero && c.IsTarget && c.IsInPlay, DamageToDeal, DamageType.Toxic);
 
             if (base.UseUnityCoroutines)
             {
