@@ -96,7 +96,7 @@ namespace Cauldron.StSimeonsCatacombs
 
             if(cc.Card.IsIncapacitatedOrOutOfGame)
             {
-                Log.Debug("Hero this card is next to is incapicated or out of the game!");
+                Log.Debug("Hero this card is next to is incapacitated or out of the game!");
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(endTurn);
@@ -138,7 +138,7 @@ namespace Cauldron.StSimeonsCatacombs
 
             if (cc.Card.IsIncapacitatedOrOutOfGame)
             {
-                Log.Debug("Hero this card is next to is incapicated or out of the game!");
+                Log.Debug("Hero this card is next to is incapacitated or out of the game!");
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(endTurn);
