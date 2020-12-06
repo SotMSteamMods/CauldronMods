@@ -13,5 +13,18 @@ namespace Cauldron.Celadroch
         {
 
         }
+
+        public override IEnumerator Play()
+        {
+            var coroutine = PlayTheTopCardOfTheVillainDeckResponse(null);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
     }
 }

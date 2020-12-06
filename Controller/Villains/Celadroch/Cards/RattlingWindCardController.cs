@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.Celadroch
 {
-    public class RattlingWindCardController : CardController
+    public class RattlingWindCardController : CeladrochOngoingCardController
     {
         /*
          * 	"When this card enters play, play the top card of the villain deck.",
