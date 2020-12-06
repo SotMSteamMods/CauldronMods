@@ -93,17 +93,17 @@ namespace Cauldron.Celadroch
                 AddSideTrigger(AddStartOfTurnTrigger(tt => tt == TurnTaker, StartOfTurnOptionalCardPlayResponse, new[] { TriggerType.ModifyTokens, TriggerType.PlayCard }));
 
                 // Whenever an elemental, zombie, demon, or chosen is played from the top of the villain deck...
-                Func<Card, bool> playCriteria = c => c.Owner == TurnTaker && c.GetKeywords().Intersect(MinionKeywords, StringComparer.Ordinal).Any();
-                AddSideTrigger(AddTrigger<PlayCardAction>(pca => !pca.IsPutIntoPlay && pca.Origin == TurnTaker.Deck && !pca.FromBottom && playCriteria(pca.CardToPlay),
+                AddSideTrigger(AddTrigger<PlayCardAction>(SummonMinionCriteria,
                                             pca => SummonMinionsReponse(pca.CardToPlay), TriggerType.PutIntoPlay, TriggerTiming.After));
 
                 //At the end of the villain turn, {Celadroch} deals the {H - 1} hero targets with the highest HP X projectile damage each, where X is the number of tokens in the storm pool minus 2.
                 AddSideTrigger(AddDealDamageAtEndOfTurnTrigger(TurnTaker, CharacterCard, c => c.IsHero && c.IsTarget,
                     targetType: TargetType.HighestHP,
-                    amount: StormPool.CurrentValue >= 2 ? StormPool.CurrentValue - 2 : 0, //make sure we aren't dealing negative damage
+                    amount: 0,
                     damageType: DamageType.Projectile,
                     highestLowestRanking: 1,
-                    numberOfTargets: H - 1));
+                    numberOfTargets: H - 1,
+                    dynamicAmount: c => StormPool.CurrentValue >= 2 ? StormPool.CurrentValue - 2 : 0)); //make sure we aren't dealing negative damage
 
                 //If Forsaken Crusader is in the villain trash, put it into play.
                 AddSideTrigger(AddEndOfTurnTrigger(tt => tt == TurnTaker, pca => PlayForsakenCrusaderFromTrash(), TriggerType.PutIntoPlay));
@@ -213,16 +213,32 @@ namespace Cauldron.Celadroch
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                coroutine = PlayTheTopCardOfTheVillainDeckWithMessageResponse(action);
+                var msg = GameController.SendMessageAction($"{Card.Title} remove 2 tokens from the Storm Pool and plays the top card of the villain deck...", Priority.High, GetCardSource());
+                coroutine = PlayTheTopCardOfTheVillainDeckResponse(action);
                 if (base.UseUnityCoroutines)
                 {
+                    yield return base.GameController.StartCoroutine(msg);
                     yield return base.GameController.StartCoroutine(coroutine);
                 }
                 else
                 {
+                    base.GameController.ExhaustCoroutine(msg);
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
+        }
+
+        private bool SummonMinionCriteria(PlayCardAction pca)
+        {
+            if (!pca.IsPutIntoPlay && pca.Origin == TurnTaker.Deck && !pca.FromBottom)
+            {
+                var c = pca.CardToPlay;
+                if (c.Owner == TurnTaker && c.GetKeywords().Intersect(MinionKeywords, StringComparer.Ordinal).Any())
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private IEnumerator SummonMinionsReponse(Card card)
@@ -294,7 +310,7 @@ namespace Cauldron.Celadroch
             }
             if (rng < 20)
             {
-                msg = $"\"I Serve\""; showCardSource = false;
+                msg = $"\"I serve.\""; showCardSource = false;
             }
             if (rng == 21)
             {
@@ -309,7 +325,7 @@ namespace Cauldron.Celadroch
             bool villainCardPlayed = Game.Journal.CardEntersPlayEntriesThisTurn().Any(e => e.Card.IsVillain);
             if (!villainCardPlayed)
             {
-                var coroutine = GameController.DestroyCards(DecisionMaker, new LinqCardCriteria(c => (c.IsOngoing || IsEquipment(c)) && c.IsInPlayAndNotUnderCard, "equipment or ongoing"), cardSource: GetCardSource());
+                var coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria(c => (c.IsOngoing || IsEquipment(c)) && c.IsInPlayAndNotUnderCard, "equipment or ongoing"), H, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

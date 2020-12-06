@@ -29,6 +29,18 @@ namespace CauldronTests
             GameController.AddTemporaryTriggerInhibitor<DestroyCardAction>(t => t is Trigger<DestroyCardAction> dt && dt.CardSource.Card == pillar && !dt.Types.Contains(TriggerType.ReduceDamage), dda => false, pcc.GetCardSource());
         }
 
+        protected void SafetyRemovePillars()
+        {
+            var p1 = GetCard("PillarOfNight");
+            var p2 = GetCard("PillarOfSky");
+            var p3 = GetCard("PillarOfStorms");
+
+            MoveCard(celadroch, p1, celadroch.TurnTaker.OutOfGame);
+            MoveCard(celadroch, p2, celadroch.TurnTaker.OutOfGame);
+            MoveCard(celadroch, p3, celadroch.TurnTaker.OutOfGame);
+        }
+
+
         private void AssertCard(string identifier, string[] keywords = null, int hitpoints = 0)
         {
             Card card = GetCard(identifier);
@@ -191,7 +203,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestCeladroch_NormalFrontNoRelicDr()
+        public void TestCeladroch_NormalFrontNoRelicDR()
         {
             SetupGameController(new[] { "Cauldron.Celadroch", "Legacy", "Megalopolis" }, advanced: false);
             StartGame();
@@ -404,7 +416,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestCeladroch_PillarOfNight_RewardTrigger()
+        public void TestPillarOfNight_RewardTrigger()
         {
             SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
             StartGame();
@@ -431,7 +443,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestCeladroch_PillarOfSky_RewardTrigger()
+        public void TestPillarOfSky_RewardTrigger()
         {
             SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
             StartGame();
@@ -480,7 +492,7 @@ namespace CauldronTests
 
 
         [Test()]
-        public void TestCeladroch_PillarOfStorms_RewardTrigger()
+        public void TestPillarOfStorms_RewardTrigger()
         {
             SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
             StartGame();
@@ -528,7 +540,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestCeladroch_Pillars_ProvideDr()
+        public void TestCeladroch_PillarCard_ProvideCeladrochDR()
         {
             SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
             AddTokensToPool(stormPool, 3);
@@ -566,5 +578,142 @@ namespace CauldronTests
             DealDamage(ra, celadroch.CharacterCard, 5, DamageType.Cold);
             QuickHPCheck(-5);
         }
+
+        [Test()]
+        public void TestCeladroch_EndOfTurnDamage([Values(1, 2, 4)] int tokensToTest)
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            StartGame(false);
+
+            RemoveTokensFromPool(stormPool, 4); //zero out pool
+            AssertTokenPoolCount(stormPool, 0);
+
+            AddTokensToPool(stormPool, tokensToTest);
+
+            QuickHPStorage(ra, haka, legacy);
+
+            GoToEndOfTurn(celadroch);
+            int expectedDamage = tokensToTest - 2;
+            if (expectedDamage < 0) expectedDamage = 0;
+
+            Console.WriteLine("DEBUG: Expected Damage = " + expectedDamage.ToString());
+
+            QuickHPCheck(0, -expectedDamage, -expectedDamage);
+        }
+
+        [Test()]
+        public void TestCeladroch_PlayCardToRemoveTokens()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            
+            StackAfterShuffle(celadroch.TurnTaker.Deck, new[] { "AvatarOfDeath" });
+
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = true;
+            StartGame(false);
+
+            var card = GetCard("AvatarOfDeath");
+            AssertInPlayArea(celadroch, card);
+            AssertTokenPoolCount(stormPool, 2);
+        }
+
+        [Test()]
+        public void TestCeladroch_NoCardsPlayedDestoryCards()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+
+            StackAfterShuffle(celadroch.TurnTaker.Deck, new[] { "AvatarOfDeath" });
+
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StartGame(false);
+
+            var o1 = PlayCard("Fortitude");
+            var o2 = PlayCard("TheLegacyRing");
+            var o3 = PlayCard("ImbuedFire");
+            var o4 = PlayCard("Dominion");
+
+            DecisionSelectCards = new[] { haka.CharacterCard, o1, o2, o3 };
+
+            GoToEndOfTurn(celadroch);
+
+            AssertInTrash(o1);
+            AssertInTrash(o2);
+            AssertInTrash(o3);
+            AssertIsInPlay(o4);
+        }
+
+        [Test()]
+        public void TestCeladroch_CardsPlayedNoDestoryCards()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+
+            StackAfterShuffle(celadroch.TurnTaker.Deck, new[] { "AvatarOfDeath" });
+
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StartGame(false);
+
+            var o1 = PlayCard("Fortitude");
+            var o2 = PlayCard("TheLegacyRing");
+            var o3 = PlayCard("ImbuedFire");
+            var o4 = PlayCard("Dominion");
+
+            GoToPlayCardPhase(celadroch);
+            PlayTopCard(celadroch);
+
+            DecisionSelectCards = new[] { haka.CharacterCard, o1, o2, o3 };
+
+            GoToEndOfTurn(celadroch);
+
+            AssertIsInPlay(o1);
+            AssertIsInPlay(o2);
+            AssertIsInPlay(o3);
+            AssertIsInPlay(o4);
+        }
+
+
+        [Test()]
+        public void TestCeladroch_PlayForsakenCrusader()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StartGame(false);
+
+            var card = PutInTrash("ForsakenCrusader");
+
+            GoToEndOfTurn(celadroch);
+            AssertInPlayArea(celadroch, card);
+
+        }
+
+        [Test()]
+        [Sequential]
+        public void TestCeladroch_BulkPlayMinions([Values("elemental", "zombie", "demon", "chosen")] string keyword, [Values(4, 3, 2, 3)] int expectedCards)
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+
+            var cards = FindCardsWhere(c => c.DoKeywordsContain(keyword)).ToList();
+            Assert.IsTrue(expectedCards == cards.Count, $"Test Setup Issue, should have {expectedCards} {keyword} cards.");
+
+            var topCard = cards[base.GameController.Game.RNG.Next(0, cards.Count - 1)];
+            StackAfterShuffle(celadroch.TurnTaker.Deck, new[] { topCard.Identifier });
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StartGame(false);
+
+            GoToPlayCardPhase(celadroch);
+            PlayTopCard(celadroch);
+
+            foreach(var c in cards)
+            {
+                AssertIsInPlay(c);
+            }
+        }
+
     }
 }
