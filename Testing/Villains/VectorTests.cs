@@ -1287,6 +1287,7 @@ namespace CauldronTests
 
             // Assert
             QuickTopCardCheck(ttc => ttc.TurnTaker.Trash);
+            AssertNumberOfCardsInRevealed(Vector, 0);
         }
 
         [Test]
@@ -1312,6 +1313,8 @@ namespace CauldronTests
 
             // Assert
             QuickTopCardCheck(ttc => ttc.TurnTaker.Deck);
+            AssertNumberOfCardsInRevealed(Vector, 0);
+
         }
 
         [Test]
@@ -1335,10 +1338,45 @@ namespace CauldronTests
             PlayCard(superVirus);
             PlayCard(undiagnosed);
 
+
             DestroyCard(undiagnosed);
 
             // Assert
             AssertUnderCard(superVirus, bioTerror);
+            AssertNumberOfCardsInRevealed(Vector, 0);
+
+        }
+
+        [Test]
+        public void TestUndiagnosedSubjectPlaysVillainCardWhenDestroyed_SuperVirusInPlay_TriggerFlip()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card bioTerror = GetCard(BioterrorSquadCardController.Identifier);
+            PutOnDeck(Vector, bioTerror);
+
+            StartGame();
+            Card undiagnosed = GetCard(UndiagnosedSubjectCardController.Identifier);
+            Card superVirus = GetCard(SupervirusCardController.Identifier);
+
+            DecisionSelectFunction = 2; // Put under Super Virus
+
+            // Act
+
+            GoToPlayCardPhase(Vector);
+            PlayCard(superVirus);
+            PlayCard(undiagnosed);
+
+            //get H+1 (4) viruses to move on supervirus
+            IEnumerable<Card> virusToMove = FindCardsWhere((Card c) => IsVirus(c) && Vector.TurnTaker.Deck.HasCard(c)).Take(4);
+            MoveCards(Vector, virusToMove, superVirus.UnderLocation);
+            DestroyCard(undiagnosed);
+
+            // Assert
+            AssertNumberOfCardsInRevealed(Vector, 0);
+            AssertFlipped(Vector.CharacterCard);
+
         }
 
 

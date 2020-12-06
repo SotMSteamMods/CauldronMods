@@ -27,7 +27,7 @@ namespace Cauldron.Vector
         public override void AddTriggers()
         {
             base.AddEndOfTurnTrigger(tt => tt == base.TurnTaker,
-                EndOfTurnResponse, TriggerType.PlayCard);
+                PlayTheTopCardOfTheVillainDeckWithMessageResponse, TriggerType.PlayCard);
 
             AddWhenDestroyedTrigger(DestroyedResponse, new[]
             {
@@ -35,22 +35,6 @@ namespace Cauldron.Vector
             });
 
             base.AddTriggers();
-        }
-
-        private IEnumerator EndOfTurnResponse(PhaseChangeAction pca)
-        {
-            // Play the top card of the villain deck
-            IEnumerator routine = this.GameController.PlayTopCard(this.DecisionMaker, this.TurnTakerController,
-                false, 1);
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
         }
 
         private IEnumerator DestroyedResponse(DestroyCardAction destroy)
@@ -106,26 +90,7 @@ namespace Cauldron.Vector
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            if (!virusMoveAction.Any())
-            {
-                yield break;
-            }
-
-            // If they chose to move the card under Super Virus, check for flip condition
-            if (!virusMoveAction.First().WasCardMoved || !ShouldVectorFlip())
-            {
-                yield break;
-            }
-
-            // Flip Vector
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(FlipVector());
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(FlipVector());
-            }
+            yield break;
         }
     }
 }
