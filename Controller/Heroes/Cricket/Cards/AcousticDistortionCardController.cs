@@ -27,7 +27,7 @@ namespace Cauldron.Cricket
         {
             //Once per turn when a hero target would be dealt damage, you may redirect that damage to another hero target.
             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-            IEnumerator coroutine = base.GameController.SelectTargetAndRedirectDamage(base.HeroTurnTakerController, (Card c) => c.IsHero && c != action.Target, action, true, storedResults, base.GetCardSource(null));
+            IEnumerator coroutine = base.GameController.SelectTargetAndRedirectDamage(base.HeroTurnTakerController, (Card c) => c.IsHero && c != action.Target, action, true, storedResults, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
