@@ -2,187 +2,187 @@
 
 "AlloyStorm.jpg":
 {
-	"frame": {"x":0,"y":0,"w":689,"h":507},
+	"frame": {"x":0,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "CoalescingSpear.jpg":
 {
-	"frame": {"x":692,"y":0,"w":689,"h":507},
+	"frame": {"x":259,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "ComboChain.jpg":
 {
-	"frame": {"x":1384,"y":0,"w":689,"h":507},
+	"frame": {"x":518,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "ForestOfNeedles.jpg":
 {
-	"frame": {"x":2076,"y":0,"w":689,"h":507},
+	"frame": {"x":777,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "FrenziedMelee.jpg":
 {
-	"frame": {"x":2768,"y":0,"w":689,"h":507},
+	"frame": {"x":1036,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "GuardBreaker.jpg":
 {
-	"frame": {"x":0,"y":510,"w":689,"h":507},
+	"frame": {"x":1295,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "IronRetort.jpg":
 {
-	"frame": {"x":692,"y":510,"w":689,"h":507},
+	"frame": {"x":1554,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "LiquidMetal.jpg":
 {
-	"frame": {"x":1384,"y":510,"w":689,"h":507},
+	"frame": {"x":0,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "MalleableArmor.jpg":
 {
-	"frame": {"x":2076,"y":510,"w":689,"h":507},
+	"frame": {"x":259,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "MercuryStrike.jpg":
 {
-	"frame": {"x":2768,"y":510,"w":689,"h":507},
+	"frame": {"x":518,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "MirrorShard.jpg":
 {
-	"frame": {"x":0,"y":1020,"w":689,"h":507},
+	"frame": {"x":777,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "QuicksilverCharacter.jpg":
 {
-	"frame": {"x":692,"y":1020,"w":680,"h":988},
+	"frame": {"x":259,"y":382,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
-	"sourceSize": {"w":680,"h":988}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "QuicksilverCharacterBack.jpg":
 {
-	"frame": {"x":1375,"y":1020,"w":680,"h":988},
+	"frame": {"x":438,"y":382,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
-	"sourceSize": {"w":680,"h":988}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "QuicksilverDeckBack.jpg":
 {
-	"frame": {"x":2058,"y":1020,"w":675,"h":978},
+	"frame": {"x":617,"y":382,"w":177,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":675,"h":978},
-	"sourceSize": {"w":675,"h":978}
+	"spriteSourceSize": {"x":0,"y":0,"w":177,"h":256},
+	"sourceSize": {"w":177,"h":256}
 },
 "RenegadeQuicksilverCharacter.png":
 {
-	"frame": {"x":2736,"y":1020,"w":680,"h":988},
+	"frame": {"x":797,"y":382,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
-	"sourceSize": {"w":680,"h":988}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "RenegadeQuicksilverCharacterBack.png":
 {
-	"frame": {"x":0,"y":2011,"w":680,"h":988},
+	"frame": {"x":976,"y":382,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
-	"sourceSize": {"w":680,"h":988}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "StressHardening.jpg":
 {
-	"frame": {"x":683,"y":2011,"w":689,"h":507},
+	"frame": {"x":1036,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "TestSubjectHalberd.jpg":
 {
-	"frame": {"x":1375,"y":2011,"w":689,"h":507},
+	"frame": {"x":1295,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "UncannyQuicksilverCharacter.jpg":
 {
-	"frame": {"x":2067,"y":2011,"w":680,"h":988},
+	"frame": {"x":1155,"y":382,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
-	"sourceSize": {"w":680,"h":988}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "UncannyQuicksilverCharacterBack.jpg":
 {
-	"frame": {"x":2750,"y":2011,"w":680,"h":988},
+	"frame": {"x":1334,"y":382,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
-	"sourceSize": {"w":680,"h":988}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "ViciousMemories.jpg":
 {
-	"frame": {"x":0,"y":3002,"w":689,"h":507},
+	"frame": {"x":1554,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "WhisperingSteel.jpg":
 {
-	"frame": {"x":692,"y":3002,"w":689,"h":507},
+	"frame": {"x":0,"y":382,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "QuicksilverAtlas0.png",
 	"format": "RGBA8888",
-	"size": {"w":4096,"h":4096},
+	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:506d8f9acadf40474d7c442de8c3459c:414d7ae91ee51c39f3cd1f9856991f61:e58e29fc6f1736d3d737c56139788f5e$"
+	"smartupdate": "$TexturePacker:SmartUpdate:38dbf3e4ed8e3224246e78c604d68ae1:a75da4a2371449bb7c37a196aac85ecc:e58e29fc6f1736d3d737c56139788f5e$"
 }
 }
