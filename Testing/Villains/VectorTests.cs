@@ -182,6 +182,22 @@ namespace CauldronTests
             MoveCards(Vector, virusToMove, supervirus.UnderLocation);
             AssertFlipped(Vector.CharacterCard);
         }
+        [Test]
+        public void TestVectorFlipRemovesTriggers()
+        {
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card sample1 = PutOnDeck("BloodSample");
+            DealDamage(legacy, Vector, 4, DamageType.Melee);
+            AssertIsInPlay(sample1);
+
+            FlipCard(Vector);
+
+            Card sample2 = PutOnDeck("BloodSample");
+            DealDamage(legacy, Vector, 4, DamageType.Melee);
+            AssertOnTopOfDeck(sample2);
+        }
 
         [Test]
         public void TestVectorWinsIfGainsFullHp()
@@ -343,6 +359,11 @@ namespace CauldronTests
 
             QuickHPCheck(-2); // Damage was reduced by 2 (2 villain targets: Vector, Bio Terror Squad)
             AssertFlipped(Vector);
+
+            //Check for dynamicism
+            PlayCard("QuarantineProtocols");
+            DealDamage(haka, Vector, 4, DamageType.Melee);
+            QuickHPCheck(-1); //3 targets: Vector, Squad, Protocols
         }
 
         [Test]
