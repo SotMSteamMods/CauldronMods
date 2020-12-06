@@ -14,6 +14,20 @@ namespace Cauldron.Cricket
 
         }
 
+        public override IEnumerator UsePower(int index = 0)
+        {
+            //Destroy this card.
+            IEnumerator coroutine = base.GameController.DestroyCard(base.HeroTurnTakerController, base.Card, cardSource: base.GetCardSource(null));
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+
         public override void AddTriggers()
         {
             //At the start of your turn, reveal the top card of 2 different decks, then replace them.
