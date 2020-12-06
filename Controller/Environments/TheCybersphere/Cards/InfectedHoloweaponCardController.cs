@@ -11,7 +11,7 @@ namespace Cauldron.TheCybersphere
 
         public InfectedHoloweaponCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNonEnvironmentTargetWithHighestHP(numberOfTargets: 2);
         }
 
         public override void AddTriggers()

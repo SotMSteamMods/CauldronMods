@@ -11,6 +11,8 @@ namespace Cauldron.TheCybersphere
 
         public SystemCrashCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+			SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => IsGridVirus(c)));
+			SpecialStringMaker.ShowSpecialString(() => "[b]You are in danger of being deleted![/b]").Condition = () => GetNumberOfGridVirusesInPlay() >= 4;
 		}
 
 		public override void AddTriggers()

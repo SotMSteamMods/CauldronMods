@@ -24,7 +24,7 @@ namespace Cauldron.TheCybersphere
         {
             //When this card enters play, play the top X cards of the environment deck, where X is 1 plus the number of Grid Virus cards currently in play.
 
-            int? X = new int?(GetNumberOfGridVirusesInPlay() + 1);
+            int X = GetNumberOfGridVirusesInPlay() + 1;
             IEnumerator coroutine;
             IEnumerator coroutine2;
             string cardPlural = X == 1 ? "card" : "cards";

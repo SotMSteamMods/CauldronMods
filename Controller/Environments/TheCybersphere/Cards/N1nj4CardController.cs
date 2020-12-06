@@ -11,7 +11,7 @@ namespace Cauldron.TheCybersphere
 
         public N1nj4CardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowLowestHP(cardCriteria: new LinqCardCriteria((Card c) => c != this.Card));
         }
 
         public override void AddTriggers()

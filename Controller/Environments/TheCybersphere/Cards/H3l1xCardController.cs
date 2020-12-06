@@ -11,7 +11,9 @@ namespace Cauldron.TheCybersphere
 
         public H3l1xCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHeroTargetWithLowestHP();
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(ranking: 2);
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
         public override void AddTriggers()

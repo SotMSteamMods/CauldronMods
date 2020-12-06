@@ -11,7 +11,7 @@ namespace Cauldron.TheCybersphere
 
         public Fo551lCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+			SpecialStringMaker.ShowNonEnvironmentTargetWithHighestHP(ranking: 2);
         }
 
 		public override void AddTriggers()

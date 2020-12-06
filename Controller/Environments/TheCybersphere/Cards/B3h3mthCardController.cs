@@ -11,7 +11,7 @@ namespace Cauldron.TheCybersphere
 
         public B3h3mthCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            
+            SpecialStringMaker.ShowNonEnvironmentTargetWithLowestHP(ranking: 2);
         }
 
         public override void AddTriggers()

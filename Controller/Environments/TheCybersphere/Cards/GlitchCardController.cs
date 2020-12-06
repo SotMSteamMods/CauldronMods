@@ -11,7 +11,7 @@ namespace Cauldron.TheCybersphere
 
         public GlitchCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNonEnvironmentTargetWithHighestHP(ranking: 2);
         }
 
 
