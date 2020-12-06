@@ -67,7 +67,7 @@ namespace Cauldron.Celadroch
             if (!base.Card.IsFlipped)
             {
                 //Villain Cards cannot be played
-                CannotPlayCards(ttc => ttc.IsVillain);
+                CannotPlayCards(ttc => ttc.IsVillain && !ttc.CharacterCard.IsFlipped);
 
                 //At the start of the villain turn, if the storm pool has 3 or more tokens, flip {Celadroch}'s character card. Otherwise, add 1 token to the storm pool.
                 AddStartOfTurnTrigger(tt => tt == TurnTaker, FrontSideAddTokensOrFlip, new[] { TriggerType.AddTokensToPool, TriggerType.FlipCard });
@@ -138,23 +138,29 @@ namespace Cauldron.Celadroch
 
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
-            //Undo Villain Cards cannot be played
-            CannotPlayCards(null);
-
-
-            IEnumerator afterFlipRoutine = base.AfterFlipCardImmediateResponse();
+            IEnumerator coroutine = base.AfterFlipCardImmediateResponse();
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(afterFlipRoutine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(afterFlipRoutine);
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = GameController.MakeTargettable(Card, Card.Definition.FlippedHitPoints.Value, Card.Definition.FlippedHitPoints.Value, GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
 
             if (IsGameAdvanced)
             {
-                var coroutine = GameController.AddTokensToPool(StormPool, 2, GetCardSource());
+                coroutine = GameController.AddTokensToPool(StormPool, 2, GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

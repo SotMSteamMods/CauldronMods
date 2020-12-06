@@ -37,7 +37,7 @@ namespace Cauldron.Celadroch
         public override void AddTriggers()
         {
             //Reduce damge dealt to Celadroch by 1.
-            AddReduceDamageTrigger(c => c.IsTarget && c.Identifier == "Celadroch", 1);
+            base.AddReduceDamageTrigger(c => c.IsTarget && c == FindCard("CeladrochCharacter"), 1);
 
             //reward triggers
             //incremental damage trigger

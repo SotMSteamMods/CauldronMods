@@ -25,8 +25,8 @@ namespace CauldronTests
             var pcc = FindCardController(pillar);
             Assert.IsInstanceOf(typeof(CeladrochPillarCardController), pcc);
 
-            GameController.AddTemporaryTriggerInhibitor<DealDamageAction>(t => t is Trigger<DealDamageAction> dt && dt.CardSource.Card == pillar, dda => false, pcc.GetCardSource());
-            GameController.AddTemporaryTriggerInhibitor<DestroyCardAction>(t => t is Trigger<DestroyCardAction> dt && dt.CardSource.Card == pillar, dda => false, pcc.GetCardSource());
+            GameController.AddTemporaryTriggerInhibitor<DealDamageAction>(t => t is Trigger<DealDamageAction> dt && dt.CardSource.Card == pillar && !dt.Types.Contains(TriggerType.ReduceDamage), dda => false, pcc.GetCardSource());
+            GameController.AddTemporaryTriggerInhibitor<DestroyCardAction>(t => t is Trigger<DestroyCardAction> dt && dt.CardSource.Card == pillar && !dt.Types.Contains(TriggerType.ReduceDamage), dda => false, pcc.GetCardSource());
         }
 
         private void AssertCard(string identifier, string[] keywords = null, int hitpoints = 0)
@@ -482,7 +482,7 @@ namespace CauldronTests
         [Test()]
         public void TestCeladroch_PillarOfStorms_RewardTrigger()
         {
-            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false, randomSeed: -1239823770);
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
             StartGame();
 
             var p1 = GetCard("PillarOfNight");
@@ -525,6 +525,46 @@ namespace CauldronTests
             //over kill ensure trigger fires on destruction
             DealDamage(ra, p3, 20, DamageType.Cold);
             AssertInTrash(h3[2]);
+        }
+
+        [Test()]
+        public void TestCeladroch_Pillars_ProvideDr()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            StartGame();
+
+            var p1 = GetCard("PillarOfNight");
+            var p2 = GetCard("PillarOfSky");
+            var p3 = GetCard("PillarOfStorms");
+
+            SuppressPillarRewardTriggers(p1);
+            SuppressPillarRewardTriggers(p2);
+            SuppressPillarRewardTriggers(p3);
+
+            AssertIsTarget(celadroch.CharacterCard, 100);
+
+            QuickHPStorage(celadroch.CharacterCard);
+            DealDamage(ra, celadroch.CharacterCard, 5, DamageType.Cold);
+            QuickHPCheck(-2);
+
+            DestroyCard(p1);
+
+            QuickHPStorage(celadroch.CharacterCard);
+            DealDamage(ra, celadroch.CharacterCard, 5, DamageType.Cold);
+            QuickHPCheck(-3);
+
+            DestroyCard(p2);
+
+            QuickHPStorage(celadroch.CharacterCard);
+            DealDamage(ra, celadroch.CharacterCard, 5, DamageType.Cold);
+            QuickHPCheck(-4);
+
+            DestroyCard(p3);
+
+            QuickHPStorage(celadroch.CharacterCard);
+            DealDamage(ra, celadroch.CharacterCard, 5, DamageType.Cold);
+            QuickHPCheck(-5);
         }
     }
 }
