@@ -2,7 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 
-namespace Cauldron
+namespace Cauldron.Cricket
 {
     public class CricketCharacterCardController : HeroCharacterCardController
     {
