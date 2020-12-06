@@ -546,15 +546,16 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             GoToEndOfTurn(haka);
 
-            Card n1nj4 = PlayCard("N1nj4");
+            //don't want this coming out and blowing up any viruses
+            PutInTrash("YourMindMakesItReal");
 
             int numVirus = GameController.Game.RNG.Next(0, 5);
-
             IEnumerable<Card> virusToPlay = FindCardsWhere((Card c) => IsGridVirus(c) && cybersphere.TurnTaker.Deck.Cards.Contains(c)).Take(numVirus);
-            IEnumerable<Card> nonVirusToPlay = FindCardsWhere((Card c) => !IsGridVirus(c) && cybersphere.TurnTaker.Deck.Cards.Contains(c)).Take(2);
 
-            PutOnDeck(cybersphere, nonVirusToPlay);
-            PutOnDeck(cybersphere, virusToPlay);
+            foreach(Card virus in virusToPlay)
+            {
+                PlayCard(virus);
+            }
 
             //When this card enters play, play the top X cards of the environment deck, where X is 1 plus the number of Grid Virus cards currently in play.
             Card replication = PlayCard("Replication");
@@ -562,7 +563,8 @@ namespace CauldronTests
             {
                 AssertInPlayArea(cybersphere, virusToPlay);
             }
-            AssertInPlayArea(cybersphere, nonVirusToPlay);
+            //X original viruses, 1 from Replication, X+1 plays, for a total of (X+1) * 2 cards
+            AssertNumberOfCardsInPlay(cybersphere, (numVirus + 1) * 2);
 
         }
 
