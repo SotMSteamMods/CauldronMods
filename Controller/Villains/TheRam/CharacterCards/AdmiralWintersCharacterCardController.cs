@@ -9,6 +9,8 @@ namespace Cauldron.TheRam
 {
     public class AdmiralWintersCharacterCardController : TheRamUtilityCharacterCardController
     {
+        private Card ram { get { return this.CharacterCard; } }
+        private const string redirectKey = "AdmiralWintersRedirectKey";
         public AdmiralWintersCharacterCardController(Card card, TurnTakerController ttc) : base(card, ttc)
         {
             AddUpCloseTrackers();
@@ -19,9 +21,22 @@ namespace Cauldron.TheRam
             if(!Card.IsFlipped)
             {
                 //"The heroes cannot win the game. If {AdmiralWinters} would be destroyed, flip his character cards instead.",
+                AddSideTrigger(AddTrigger((GameOverAction ga) => ga.ResultIsVictory && ga.EndingResult != EndingResult.PrematureVictory, CancelWithMessageResponse, TriggerType.CancelAction, TriggerTiming.Before));
+
                 //"At the start of a hero's turn, if that hero is not Up Close, you may take a copy of Up Close from the villain trash and play it next to that hero.",
-                //"{AdmiralWinters} is immune to damage from targets that are not up close. The first time {AdmiralWinters} would be dealt damage each turn, redirect that damage to {TheRam}.",
-                //"At the end of the villain turn, {AdmiralWinters} deals {H} projectile damage to each hero that is not Up Close. Then, play the top X cards of the villain deck, where X is the number of copies of Up Close in play minus 1."
+                AddSideTrigger(AddStartOfTurnTrigger((TurnTaker tt) => tt.IsHero && !IsUpClose(tt), AskIfMoveUpCloseResponse, TriggerType.PutIntoPlay));
+
+                //"{AdmiralWinters} is immune to damage from targets that are not up close. 
+                AddImmuneToDamageTrigger((DealDamageAction dd) => dd.Target == this.Card && dd.DamageSource.IsTarget && !IsUpClose(dd.DamageSource.Card));
+
+                //The first time {AdmiralWinters} would be dealt damage each turn, redirect that damage to {TheRam}.",
+                AddSideTriggers(AddFirstTimePerTurnRedirectTrigger((DealDamageAction dd) => dd.Target == this.Card, redirectKey, TargetType.HighestHP, (Card c) => c == ram));
+
+                //"At the end of the villain turn, {AdmiralWinters} deals {H} projectile damage to each hero that is not Up Close. 
+                AddSideTrigger(AddDealDamageAtEndOfTurnTrigger(TurnTaker, this.Card, (Card c) => c.IsHeroCharacterCard && !IsUpClose(c), TargetType.All, H, DamageType.Projectile));
+
+                //Then, play the top X cards of the villain deck, where X is the number of copies of Up Close in play minus 1."
+                AddSideTrigger(AddEndOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker, PlayCardsBasedOnUpClose, TriggerType.PlayCard));
 
                 if (IsGameAdvanced)
                 {
@@ -31,8 +46,15 @@ namespace Cauldron.TheRam
             else
             {
                 //"At the start of a hero's turn, if that hero is not Up Close, you may take a copy of Up close from the villain trash and play it next to that hero.",
+                AddSideTrigger(AddStartOfTurnTrigger((TurnTaker tt) => tt.IsHero && !IsUpClose(tt), AskIfMoveUpCloseResponse, TriggerType.PutIntoPlay));
+
                 //"Increase damage dealt to and by {TheRam} by 1.",
+                AddSideTrigger(AddIncreaseDamageTrigger((DealDamageAction dda) => dda.DamageSource.Card == ram, 1));
+                AddSideTrigger(AddIncreaseDamageTrigger((DealDamageAction dda) => dda.Target == ram, 1));
+
                 //"Whenever a one-shot is placed under {TheRam}'s character cards, immediately flip {TheRam}'s character cards."
+                AddSideTrigger(AddTrigger((MoveCardAction mc) => mc.Destination == ram.UnderLocation && mc.CardToMove.IsOneShot && mc.WasCardMoved, FlipRamResponse, TriggerType.FlipCard, TriggerTiming.After));
+                AddSideTrigger(AddTrigger((BulkMoveCardsAction bmc) => bmc.Destination == ram.UnderLocation && bmc.CardsToMove.Any((Card c) => c.IsOneShot) && bmc.CardsToMove.Any((Card c) => c.Location == ram.UnderLocation && c.IsOneShot), FlipRamResponse, TriggerType.FlipCard, TriggerTiming.After));
 
                 if (IsGameAdvanced)
                 {
@@ -41,6 +63,123 @@ namespace Cauldron.TheRam
             }
 
             //AddDefeatedIfDestroyedTriggers();
+        }
+
+        private IEnumerator PlayCardsBasedOnUpClose(GameAction ga)
+        {
+            //I think this wants to be dynamic in case Up Closes get played or destroyed in the middle of things
+            Func<int> numUpClose = () => FindCardsWhere(new LinqCardCriteria((Card c) => c.Identifier == "UpClose" && c.IsInPlayAndHasGameText)).Count();
+            IEnumerator coroutine;
+            for(int i = 1; i <= numUpClose() - 1; i++)
+            {
+                string ordinal = "";
+                switch (i)
+                { 
+                    case 2:
+                        {
+                            ordinal = "second ";
+                            break;
+                        }
+                    case 3:
+                        {
+                            ordinal = "third ";
+                            break;
+                        }
+                    case 4:
+                        {
+                            ordinal = "fourth ";
+                            break;
+                        }
+                    //not possible to get to 5
+                }
+                coroutine = GameController.SendMessageAction($"Admiral Winters plays a {ordinal}card...", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                coroutine = PlayTheTopCardOfTheVillainDeckResponse(ga);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+            }
+            yield break;
+        }
+
+        private IEnumerator CancelWithMessageResponse(GameOverAction go)
+        {
+            IEnumerator coroutine;
+            if (!HasBeenSetToTrueThisGame("HeroesCannotWinMessage"))
+            {
+                coroutine = base.GameController.SendMessageAction($"The heroes cannot win the game while {Card.Title} is active!", Priority.Critical, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                SetCardPropertyToTrueIfRealAction("HeroesCannotWinMessage");
+            }
+            coroutine = CancelAction(go);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+        private IEnumerator FlipRamResponse(GameAction ga)
+        {
+            IEnumerator coroutine = GameController.SendMessageAction("Admiral Winters immediately flips the Ram!", Priority.High, GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            coroutine = GameController.FlipCard(CharacterCardController, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        public override IEnumerator DestroyAttempted(DestroyCardAction destroyCard)
+        {
+            //If {AdmiralWinters} would be destroyed, flip his character cards instead.
+            if (!this.Card.IsFlipped)
+            {
+                IEnumerator coroutine = GameController.FlipCard(this, cardSource: GetCardSource(), allowBackToFront: false);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
         }
 
         private IEnumerator AskIfMoveUpCloseResponse(PhaseChangeAction pc)
@@ -105,44 +244,6 @@ namespace Cauldron.TheRam
                 }
             }
             
-            yield break;
-        }
-
-        private IEnumerator FlipToBack(GameAction ga)
-        {
-            //"Whenever all active heroes are Up Close, flip {TheRam}'s character cards..."
-
-            IEnumerator coroutine = GameController.FlipCard(this, cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-
-            //...and destroy all copies of Fall Back"
-            coroutine = GameController.DestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => c != null && c.IsInPlayAndHasGameText && c.Identifier == "FallBack"), autoDecide: true, cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-
-            //"When {TheRam}'s character cards are flipped to this side, search the villain trash for Grappling claw and put it into play.",
-            coroutine = GameController.SelectAndMoveCard(DecisionMaker, (Card c) => c != null && c.Location == TurnTaker.Trash && c.Identifier == "GrapplingClaw", TurnTaker.PlayArea, isPutIntoPlay: true, cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
             yield break;
         }
     }
