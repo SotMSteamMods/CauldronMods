@@ -39,14 +39,29 @@ namespace Cauldron.TheRam
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = GameController.GainHP(GetRam, 10, cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
+            if (RamIfInPlay != null)
             {
-                yield return GameController.StartCoroutine(coroutine);
+                coroutine = GameController.GainHP(GetRam, 10, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
             }
             else
             {
-                GameController.ExhaustCoroutine(coroutine);
+                IEnumerator message = MessageNoRamToAct(GetCardSource(), "regain HP");
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(message);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(message);
+                }
             }
 
             coroutine = GameController.GainHP(DecisionMaker, (Card c) => IsDeviceOrNode(c), 2, cardSource: GetCardSource());
