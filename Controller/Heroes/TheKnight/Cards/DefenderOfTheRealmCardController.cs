@@ -46,6 +46,7 @@ namespace Cauldron.TheKnight
                 ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(1);
                 reduceDamageStatusEffect.TargetCriteria.IsSpecificCard = card;
                 reduceDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+                reduceDamageStatusEffect.UntilTargetLeavesPlay(card);
 
                 coroutine = base.AddStatusEffect(reduceDamageStatusEffect, true);
                 if (base.UseUnityCoroutines)

@@ -69,7 +69,7 @@ namespace Cauldron.DocHavoc
             Console.WriteLine($"Damage dealt to Doc Havoc this turn by {selectedCard.Identifier}: {damageDealtToDocHavocByTargetThisTurn}");
 
             IEnumerator dealDamageRoutine2 = base.GameController.DealDamageToTarget(
-                new DamageSource(this.GameController, this.Card.Owner.CharacterCard), selectedCard,
+                new DamageSource(this.GameController, this.CharacterCard), selectedCard,
                 damageDealtToDocHavocByTargetThisTurn, DamageType.Melee, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)

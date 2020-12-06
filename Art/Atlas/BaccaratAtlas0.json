@@ -1,0 +1,201 @@
+{"frames": {
+
+"AbyssalSolitaire.jpg":
+{
+	"frame": {"x":1611,"y":0,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"AceInTheHole.jpg":
+{
+	"frame": {"x":0,"y":259,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"AceOfSaints.jpg":
+{
+	"frame": {"x":259,"y":259,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"AceOfSinners.jpg":
+{
+	"frame": {"x":518,"y":259,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"AceOfSorrowsBaccaratCharacter.jpg":
+{
+	"frame": {"x":0,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"AceOfSorrowsBaccaratCharacterBack.jpg":
+{
+	"frame": {"x":179,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"AceOfSwordsBaccaratCharacter.jpg":
+{
+	"frame": {"x":358,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"AceOfSwordsBaccaratCharacterBack.jpg":
+{
+	"frame": {"x":537,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"AfterlifeEuchre.jpg":
+{
+	"frame": {"x":777,"y":259,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"AllIn.jpg":
+{
+	"frame": {"x":1036,"y":259,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"BaccaratCharacter.jpg":
+{
+	"frame": {"x":716,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"BaccaratCharacterBack.jpg":
+{
+	"frame": {"x":895,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"BaccaratDeckBack.jpg":
+{
+	"frame": {"x":1074,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"BringDownTheHouse.jpg":
+{
+	"frame": {"x":1295,"y":259,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"CardToss.jpg":
+{
+	"frame": {"x":1554,"y":259,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"CheapTrick.jpg":
+{
+	"frame": {"x":0,"y":450,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"GraveyardBridge.jpg":
+{
+	"frame": {"x":259,"y":450,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"IFold.jpg":
+{
+	"frame": {"x":518,"y":450,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"PastBaccaratCharacter.png":
+{
+	"frame": {"x":1253,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"PastBaccaratCharacterBack.png":
+{
+	"frame": {"x":1432,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"UnderworldHoldEm.jpg":
+{
+	"frame": {"x":777,"y":450,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "BaccaratAtlas0.png",
+	"format": "RGBA8888",
+	"size": {"w":2048,"h":2048},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:b49e7d3b92541b8f4f80b16ffba3c48d:5892460aeb8a95d1fe17e25b81cfcad1:2a0fe26df5b6792e5db9b54f1d1423cb$"
+}
+}

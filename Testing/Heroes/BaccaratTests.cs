@@ -283,7 +283,6 @@ namespace CauldronTests
             GoToEndOfTurn(baccarat);
             DealDamage(baron, baccarat, 2, DamageType.Melee);
             QuickHPCheck(-1);
-            PrintJournal();
         }
 
         [Test()]
@@ -301,8 +300,6 @@ namespace CauldronTests
             DealDamage(baron, baccarat, 2, DamageType.Melee);
 
             QuickHPCheck(-2);
-
-            PrintJournal();
         }
 
         [Test()]
@@ -827,7 +824,7 @@ namespace CauldronTests
         [Test()]
         public void TestBringDownTheHouseDestroy3Cards()
         {
-            SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController(new string[] { "BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis" });//, randomSeed: 142903984
             StartGame();
             //Setup Trash
             Card trick1 = GetCard("CheapTrick", 1);

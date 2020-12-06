@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -6,11 +9,29 @@ namespace Cauldron.HalberdExperimentalResearchCenter
 {
     public class HalberdEtherCardController : TestSubjectCardController
     {
+        public override bool AllowFastCoroutinesDuringPretend
+        {
+            get
+            {
+                if (!base.GameController.PreviewMode)
+                {
+                    return IsHighestHitPointsUnique((Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText);
+                }
+                return true;
+            }
+        }
+
+        private bool? PerformIncrease
+        {
+            get;
+            set;
+        }
+
         #region Constructors
 
         public HalberdEtherCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
         #endregion Constructors
@@ -25,13 +46,47 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             Func<DealDamageAction, bool> heroCriteria = (DealDamageAction dd) => !base.IsChemicalTriggerInPlay() && dd.DamageSource != null && base.CanCardBeConsideredHighestHitPoints(dd.DamageSource.Card, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText);
 
             //criteria for finding all villain targets when chemical triggers are in play
-            Func<DealDamageAction, bool> villainCriteria = (DealDamageAction dd) => base.IsChemicalTriggerInPlay() && dd.DamageSource != null && dd.DamageSource.Card.IsVillainTarget;
+            Func<DealDamageAction, bool> villainCriteria = (DealDamageAction dd) => base.IsChemicalTriggerInPlay() && dd.DamageSource != null && IsVillainTarget(dd.DamageSource.Card);
 
             //increase damage dealt by villain targets by 1 if chemical trigger is in play
             base.AddIncreaseDamageTrigger(villainCriteria, 1);
 
             //increase damage dealt by hero targets by 1 if no chemical trigger is in play
-            base.AddIncreaseDamageTrigger(heroCriteria, 1);
+            base.AddTrigger<DealDamageAction>(heroCriteria, MaybeIncreaseDamageByHeroTargetResponse, TriggerType.IncreaseDamage, TriggerTiming.Before);
+        }
+
+        private IEnumerator MaybeIncreaseDamageByHeroTargetResponse(DealDamageAction dd)
+        {
+            if (base.GameController.PretendMode)
+            {
+                List<bool> storedResults = new List<bool>();
+                IEnumerator coroutine = base.DetermineIfGivenCardIsTargetWithLowestOrHighestHitPoints(dd.DamageSource.Card, highest: true, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText, dd, storedResults);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                PerformIncrease = storedResults.Count() > 0 && storedResults.First();
+            }
+            if (PerformIncrease.HasValue && PerformIncrease.Value)
+            {
+                IEnumerator coroutine2 = base.GameController.IncreaseDamage(dd, 1, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine2);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine2);
+                }
+            }
+            if (!base.GameController.PretendMode)
+            {
+                PerformIncrease = null;
+            }
         }
         #endregion Methods
     }

@@ -38,7 +38,7 @@
                 "PreventDamage"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Alright, folks, let's keep a level head here. This may get rough.",
                 "VectorCharacter": "Vector placeholder"
             },
             "complexity": 2
@@ -430,7 +430,7 @@
                 "DocHavoc"
             ],
             "incapacitatedAbilities": [
-                "Until the start of your next turn, reduce damage dealt to targets with ferwewr than 6 HP by 1.",
+                "Until the start of your next turn, reduce damage dealt to targets with fewer than 6 HP by 1.",
                 "One player may take a one-shot from their trash and put it on top of their deck.",
                 "Destroy 2 environment targets."
             ],
@@ -440,11 +440,12 @@
                 "DestroyEnvironment"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "First priority, people, evacuate the wounded - then we knock the kook out cold.",
                 "VectorCharacter": "Vector placeholder"
             },
             "complexity": 2
-        },
+        }],
+        "notPromoCards": [
         {
             "identifier": "DocHavocCharacter",
             "promoIdentifier": "FutureDocHavocCharacter",
@@ -480,7 +481,7 @@
                 "GainExtraHP"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Haven't seen your like before; let's see how you respond to punching.",
                 "VectorCharacter": "Vector placeholder"
             },
             "complexity": 2

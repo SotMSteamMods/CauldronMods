@@ -28,13 +28,38 @@ namespace Cauldron.Starlight
             return false;
         }
 
-        protected IEnumerator SelectActiveCharacterCardToDealDamage(List<Card> storedResults, int damageAmount, DamageType damageType)
+        protected IEnumerator SelectActiveCharacterCardToDealDamage(List<Card> storedResults, int? damageAmount = null, DamageType? damageType = null)
         {
             //future-proofing for Nightlore Council
             if (IsMultiCharPromo())
             {
-                throw new NotImplementedException();
-                //TODO - get this working, look at SentinelCardController
+                List<SelectCardDecision> storedDecision = new List<SelectCardDecision>();
+
+                IEnumerator coroutine;
+                if (damageAmount == null || damageType == null)
+                {
+                    coroutine = base.GameController.SelectCardAndStoreResults(this.HeroTurnTakerController, SelectionType.HeroCharacterCard, new LinqCardCriteria((Card c) => c.Owner == base.TurnTaker && c.IsCharacter && !c.IsIncapacitatedOrOutOfGame, "active Starlight"), storedDecision, optional: false, allowAutoDecide: false, includeRealCardsOnly: true, cardSource: GetCardSource());
+                }
+                else
+                {
+                    
+                    DealDamageAction previewDamage = new DealDamageAction(GetCardSource(), null, null, (int)damageAmount, (DamageType)damageType);
+                    coroutine = base.GameController.SelectCardAndStoreResults(this.HeroTurnTakerController, SelectionType.HeroToDealDamage, new LinqCardCriteria((Card c) => c.Owner == base.TurnTaker && c.IsCharacter && !c.IsIncapacitatedOrOutOfGame, "active Starlight"), storedDecision, optional: false, allowAutoDecide: false, previewDamage, includeRealCardsOnly: true, GetCardSource());
+                }
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                SelectCardDecision selectCardDecision = storedDecision.FirstOrDefault();
+                if (selectCardDecision != null)
+                {
+                    storedResults.Add(selectCardDecision.SelectedCard);
+                }
             }
             else
             {
@@ -43,24 +68,21 @@ namespace Cauldron.Starlight
             yield break;
         }
 
-        protected bool IsMultiCharPromo()
+        protected bool IsMultiCharPromo(bool allowReplacements = true)
         {
+            if (!allowReplacements)
+            {
+                return HeroTurnTakerControllerWithoutReplacements.HasMultipleCharacterCards;
+            }
             return HeroTurnTakerController.HasMultipleCharacterCards;
         }
-
-        protected List<Card> ListStarlights()
+        protected List<Card> ListStarlights(bool allowReplacements = true)
         {
-            List<Card> starlights = new List<Card> { };
-            if (IsMultiCharPromo())
+            if (!allowReplacements)
             {
-                throw new NotImplementedException();
-                //TODO - get list of all character cards belonging to HeroTurnTakerController
+                return HeroTurnTakerControllerWithoutReplacements.CharacterCards.ToList();
             }
-            else
-            {
-                starlights.Add(TurnTaker.CharacterCard);
-            }
-            return starlights;
+            return this.CharacterCards.ToList();
         }
     }
 }

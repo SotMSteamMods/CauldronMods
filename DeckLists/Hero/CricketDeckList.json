@@ -417,7 +417,7 @@
             "flavorReference": "Adventurers #8"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "CricketCharacter",
             "promoIdentifier": "FirstResponseCricketCharacter",

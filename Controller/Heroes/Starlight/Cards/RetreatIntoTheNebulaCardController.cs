@@ -24,53 +24,57 @@ namespace Cauldron.Starlight
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
-            IEnumerator coroutine;
+            IEnumerator moveToRightPlace;
             //do we need to pick one of our multi-character promo to protect?
-            if (IsMultiCharPromo())
+            if (IsMultiCharPromo(allowReplacements: false))
             {
-                //TODO - Retreat's find-character-to-play-next-to multichar logic
-                coroutine = GameController.SendMessageAction("Thinks we're in MultiCharPromo", Priority.Low, GetCardSource());
+
+                //The 'move-to-starlight' text is on the instruction card - 
+                //I expect it is very unlikely to need card/turntakercontroller replacements!
+                moveToRightPlace = SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsTarget && ListStarlights(allowReplacements: false).Contains(c), "Starlight"), storedResults, isPutIntoPlay, decisionSources);
+
             }
             else
             {
                 //let the default handle it if not
-                coroutine = base.DeterminePlayLocation(storedResults, isPutIntoPlay, decisionSources, overridePlayArea, additionalTurnTakerCriteria);
+                moveToRightPlace = base.DeterminePlayLocation(storedResults, isPutIntoPlay, decisionSources, overridePlayArea, additionalTurnTakerCriteria);
             }
 
             if (UseUnityCoroutines)
             {
-                yield return GameController.StartCoroutine(coroutine);
+                yield return GameController.StartCoroutine(moveToRightPlace);
             }
             else
             {
-                GameController.ExhaustCoroutine(coroutine);
+                GameController.ExhaustCoroutine(moveToRightPlace);
             }
 
             yield break;
         }
 
-        private bool IsProtectedCard(Card c)
+        private bool IsProtectedCard(Card target)
         {
-            bool shouldProtect = false;
+            bool shouldProtect = true;
 
-            if (IsMultiCharPromo())
+            if (IsMultiCharPromo(allowReplacements: false))
             {
-                //TODO - Retreat's multichar protection logic
-                return false;
+
                 //proper logic:
-                //if EITHER it is next to the character card being damaged
+                //if EITHER this is next to the character card being damaged
                 //      (because it was put there when we played it)
-                //OR it is not next to any of them - even incapacitated ones
-                //      (and therefore it is being borrowed by someone else)
+                bool isNextToTarget = target == GetCardThisCardIsNextTo();
+
+                //OR this is next to a character card, and that character is not owned by this card's (replacements-allowed) owner
+                //      (and therefore its effect is being borrowed by someone else in Guise-shenanigans-or-future-mod land)
+                Card nextTo = GetCardThisCardIsNextTo(false);
+                bool isBeingBorrowedByTarget = nextTo != null && this.TurnTaker != nextTo.Owner;
+
                 //THEN prevent the damage
-            }
-            else
-            {
-                Card ownCharCard = ListStarlights().FirstOrDefault();
-                shouldProtect = c == ownCharCard;
+                shouldProtect = isNextToTarget || isBeingBorrowedByTarget;
             }
 
-            return c.IsTarget && shouldProtect;
+            //even considering the multi-char check, still needs to be one of the 'starlights' or appropriate replacement
+            return shouldProtect && ListStarlights().Contains(target);
         }
 
         private IEnumerator DestroyThisOrConstellation(PhaseChangeAction pc)

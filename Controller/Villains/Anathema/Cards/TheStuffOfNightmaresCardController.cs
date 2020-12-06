@@ -18,7 +18,7 @@ namespace Cauldron.Anathema
 
             //Whenever a Villain target enters play, that target deals the hero target with the second lowest HP 2 psychic damage.
 
-            base.AddTargetEntersPlayTrigger((Card c) => c.IsVillainTarget, (Card c) => DealDamageResponse(c), TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTargetEntersPlayTrigger((Card c) => IsVillainTarget(c), (Card c) => DealDamageResponse(c), TriggerType.DealDamage, TriggerTiming.After);
         }
 
         private IEnumerator DealDamageResponse(Card c)

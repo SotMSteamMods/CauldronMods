@@ -22,16 +22,19 @@
 			"Anathema",
 			"Dendron",
 			"Gray",
+      "SwarmEater"
 			"TheRam",
 			"Tiamat",
 			"Vector"
 		],
 		"environments": [
 			"BlackwoodForest",
+			"TheCybersphere",
 			"FSCContinuanceWanderer",
 			"HalberdExperimentalResearchCenter",
 			"Northspar",
 			"StSimeonsCatacombs",
+			"SuperstormAkela",
 			"TheWanderingIsle"
 		]
 	}

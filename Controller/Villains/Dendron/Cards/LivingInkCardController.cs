@@ -29,7 +29,7 @@ namespace Cauldron.Dendron
         private IEnumerator GainHpResponse(PhaseChangeAction pca)
         {
             // Villain targets regain 3 HP
-            IEnumerator gainHpRoutine = base.GameController.GainHP(DecisionMaker, card => card.IsVillainTarget && card.IsInPlay, HpToGain, cardSource: GetCardSource());
+            IEnumerator gainHpRoutine = base.GameController.GainHP(DecisionMaker, card => IsVillainTarget(card) && card.IsInPlay, HpToGain, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(gainHpRoutine);

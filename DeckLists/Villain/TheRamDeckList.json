@@ -337,7 +337,7 @@
             "flavorReference": "Quicksilver, Halcyon Black Limited Series #1"
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "TheRamCharacter",
             "promoIdentifier": "PastTheRamCharacter",

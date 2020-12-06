@@ -167,18 +167,18 @@ namespace CauldronTests
 
         }
 
-        [Test()]
-        public void TestCatacombsCantPlayCardsOnFront_FlippedBack()
-        {
-            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
-            StartGame();
-            Card instructions = GetCard("StSimeonsCatacombsInstructions"); Card testCard = GetCard("CoalKid");
-            FlipCard(instructions);
-            FlipCard(instructions);
-            AssertNotFlipped(instructions);
-            AssertCannotPlayCards(catacombs, testCard);
+        //[Test()]
+        //public void TestCatacombsCantPlayCardsOnFront_FlippedBack()
+        //{
+        //    SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
+        //    StartGame();
+        //    Card instructions = GetCard("StSimeonsCatacombsInstructions"); Card testCard = GetCard("CoalKid");
+        //    FlipCard(instructions);
+        //    FlipCard(instructions);
+        //    AssertNotFlipped(instructions);
+        //    AssertCannotPlayCards(catacombs, testCard);
 
-        }
+        //}
 
         [Test()]
         public void TestCatacombsCanPlayCardsOnBack()

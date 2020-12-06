@@ -25,7 +25,7 @@ namespace Cauldron.TheRam
                 }
                 else
                 {
-                    return TurnTaker.CharacterCard;
+                    return CharacterCard;
                 }
             }
         }
