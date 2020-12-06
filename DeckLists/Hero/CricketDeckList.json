@@ -19,7 +19,8 @@
                 "Select a target. Reduce damage dealt by that target by 1 until the start of your next turn."
             ],
             "icons": [
-                "HasPower"
+                "HasPower",
+                "ReduceDamageDealt"
             ],
             "hitpoints": 27,
             "nemesisIdentifiers": [
@@ -141,7 +142,7 @@
             ],
             "icons": [
                 "Manipulate",
-                "IncreaseDamageTaken",
+                "IncreaseDamageTakenSonic",
                 "HasPower",
                 "DestroySelf"
             ],
@@ -290,6 +291,7 @@
             ],
             "icons": [
                 "ImmuneToDamage",
+                "StartOfTurnAction",
                 "DestroySelf"
             ],
             "body": [
@@ -332,6 +334,7 @@
             ],
             "icons": [
                 "RedirectDamage",
+                "StartOfTurnAction",
                 "DestroySelf"
             ],
             "body": [
@@ -471,7 +474,7 @@
             "hitpointColor": "EF4945",
             "character": true,
             "powers": [
-                "Reveral the top card of a hero deck. You may discard a card to put into play, otherwise put it into that player's hand."
+                "Reveral the top card of a hero deck. You may discard a card to put it into play, otherwise put it into that player's hand."
             ],
             "icons": [
                 "HasPower",
