@@ -60,4 +60,5 @@ when mods are available.
   - FSC Continuance Wanderer
   - Halberd Experimental Research Center
   - St Simeon's Catacombs
+  - Superstorm Akela
   - The Wandering Isle
