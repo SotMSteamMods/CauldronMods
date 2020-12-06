@@ -28,14 +28,14 @@ namespace Cauldron.Necro
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (DidSelectCards(storedResults))
+            var cards = storedResults.Where(d => d.Completed).Select(d => d.SelectedCard).ToArray();
+            if (cards.Any())
             {
                 int numUndeadPlayed = 0;
 
                 //Necro deals each of those cards 2 toxic damage.
-                foreach (var cardDecision in storedResults)
+                foreach (var undeadTarget in cards)
                 {
-                    Card undeadTarget = cardDecision.SelectedCard;
                     if (undeadTarget != null)
                     {
                         numUndeadPlayed++;

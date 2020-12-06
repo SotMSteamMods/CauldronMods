@@ -61,4 +61,5 @@ when mods are available.
   - Halberd Experimental Research Center
   - St Simeon's Catacombs
   - The Cybersphere
+  - Superstorm Akela
   - The Wandering Isle

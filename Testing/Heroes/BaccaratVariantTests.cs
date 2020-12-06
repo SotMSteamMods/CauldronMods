@@ -42,14 +42,14 @@ namespace CauldronTests
         [Test()]
         public void TestBaccaratAceOfSwordsInnatePower1EuchreInTrash()
         {
-            SetupGameController("Spite", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("Apostate", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             //Play X copies of Afterlife Euchre from your trash (up to 3). Discard the top 3 - X cards of your deck.
             GoToUsePowerPhase(baccarat);
             //Pick deal damage on Afterlife Euchre
             DecisionSelectFunction = 1;
             PutInTrash("AfterlifeEuchre", 0);
-            QuickHPStorage(spite);
+            QuickHPStorage(apostate);
             UsePower(baccarat.CharacterCard);
             QuickHPCheck(-2);
             AssertNumberOfCardsInTrash(baccarat, 3);
@@ -58,7 +58,7 @@ namespace CauldronTests
         [Test()]
         public void TestBaccaratAceOfSwordsInnatePower2EuchreInTrash()
         {
-            SetupGameController("Spite", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("Apostate", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             //Play X copies of Afterlife Euchre from your trash (up to 3). Discard the top 3 - X cards of your deck.
             GoToUsePowerPhase(baccarat);
@@ -66,7 +66,7 @@ namespace CauldronTests
             DecisionSelectFunction = 1;
             PutInTrash("AfterlifeEuchre", 0);
             PutInTrash("AfterlifeEuchre", 1);
-            QuickHPStorage(spite);
+            QuickHPStorage(apostate);
             UsePower(baccarat.CharacterCard);
             QuickHPCheck(-4);
             AssertNumberOfCardsInTrash(baccarat, 3);
@@ -75,7 +75,7 @@ namespace CauldronTests
         [Test()]
         public void TestBaccaratAceOfSwordsInnatePower3EuchreInTrash()
         {
-            SetupGameController("Spite", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController(new string[] { "Apostate", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis" });//, randomSeed: 1961543406
             StartGame();
             //Play X copies of Afterlife Euchre from your trash (up to 3). Discard the top 3 - X cards of your deck.
             GoToUsePowerPhase(baccarat);
@@ -84,7 +84,7 @@ namespace CauldronTests
             PutInTrash("AfterlifeEuchre", 0);
             PutInTrash("AfterlifeEuchre", 1);
             PutInTrash("AfterlifeEuchre", 2);
-            QuickHPStorage(spite);
+            QuickHPStorage(apostate);
             UsePower(baccarat.CharacterCard);
             QuickHPCheck(-6);
             AssertNumberOfCardsInTrash(baccarat, 3);
@@ -93,7 +93,7 @@ namespace CauldronTests
         [Test()]
         public void TestBaccaratAceOfSwordsInnatePower4EuchreInTrash()
         {
-            SetupGameController("Spite", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("Apostate", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             //Play X copies of Afterlife Euchre from your trash (up to 3). Discard the top 3 - X cards of your deck.
             GoToUsePowerPhase(baccarat);
@@ -103,7 +103,7 @@ namespace CauldronTests
             PutInTrash("AfterlifeEuchre", 1);
             PutInTrash("AfterlifeEuchre", 2);
             PutInTrash("AfterlifeEuchre", 3);
-            QuickHPStorage(spite);
+            QuickHPStorage(apostate);
             UsePower(baccarat.CharacterCard);
             QuickHPCheck(-6);
             AssertNumberOfCardsInTrash(baccarat, 4);
@@ -113,7 +113,7 @@ namespace CauldronTests
         [Ignore("SelectAndMoveACard's optional paramter does not work")]
         public void TestBaccaratAceOfSwordsInnatePowerSelect0Euchre()
         {
-            SetupGameController("Spite", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("Apostate", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             //Play X copies of Afterlife Euchre from your trash (up to 3). Discard the top 3 - X cards of your deck.
             GoToUsePowerPhase(baccarat);

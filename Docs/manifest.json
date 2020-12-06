@@ -23,7 +23,8 @@
 			"Dendron",
 			"Gray",
 			"TheRam",
-			"Tiamat"
+			"Tiamat",
+      "SwarmEater"
 		],
 		"environments": [
 			"BlackwoodForest",
@@ -32,6 +33,7 @@
 			"HalberdExperimentalResearchCenter",
 			"Northspar",
 			"StSimeonsCatacombs",
+			"SuperstormAkela",
 			"TheWanderingIsle"
 		]
 	}

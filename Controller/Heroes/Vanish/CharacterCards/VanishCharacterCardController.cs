@@ -129,6 +129,8 @@ namespace Cauldron.Vanish
                             ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(1);
                             reduceDamageStatusEffect.TargetCriteria.IsSpecificCard = selectedCard;
                             reduceDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+                            reduceDamageStatusEffect.UntilTargetLeavesPlay(selectedCard);
+
                             coroutine = base.AddStatusEffect(reduceDamageStatusEffect, true);
                             if (base.UseUnityCoroutines)
                             {

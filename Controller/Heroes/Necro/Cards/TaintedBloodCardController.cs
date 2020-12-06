@@ -15,7 +15,8 @@ namespace Cauldron.Necro
         public override void AddTriggers()
         {
             //At the end of your draw phase, Necro deals the undead target with the lowest HP 2 irreducible toxic damage.
-            base.AddPhaseChangeTrigger(tt => tt == base.HeroTurnTaker, p => p == Phase.End, _ => true, DealDamageResponse, new TriggerType[] { TriggerType.DealDamage }, TriggerTiming.Before);
+            //base.AddPhaseChangeTrigger(tt => tt == base.HeroTurnTaker, p => p == Phase.End, _ => true, DealDamageResponse, new TriggerType[] { TriggerType.DealDamage }, TriggerTiming.Before);
+            base.AddTrigger<PhaseChangeAction>((PhaseChangeAction p) => p.FromPhase.TurnTaker == base.TurnTaker && p.FromPhase.IsDrawCard, DealDamageResponse, TriggerType.DealDamage, TriggerTiming.Before);
         }
 
         private IEnumerator DealDamageResponse(PhaseChangeAction pca)
