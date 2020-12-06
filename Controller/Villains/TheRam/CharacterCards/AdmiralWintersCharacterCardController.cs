@@ -14,6 +14,7 @@ namespace Cauldron.TheRam
         public AdmiralWintersCharacterCardController(Card card, TurnTakerController ttc) : base(card, ttc)
         {
             AddUpCloseTrackers();
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => c.Identifier == "UpClose", "", false, false, "copy of Up Close", "copies of Up Close"));
         }
 
         public override void AddSideTriggers()
@@ -30,7 +31,7 @@ namespace Cauldron.TheRam
                 AddImmuneToDamageTrigger((DealDamageAction dd) => dd.Target == this.Card && dd.DamageSource.IsTarget && !IsUpClose(dd.DamageSource.Card));
 
                 //The first time {AdmiralWinters} would be dealt damage each turn, redirect that damage to {TheRam}.",
-                AddSideTriggers(AddFirstTimePerTurnRedirectTrigger((DealDamageAction dd) => dd.Target == this.Card, redirectKey, TargetType.HighestHP, (Card c) => c == ram));
+                AddSideTriggers(AddFirstTimePerTurnRedirectTrigger((DealDamageAction dd) => dd.Target == this.Card && ram.IsInPlayAndNotUnderCard, redirectKey, TargetType.HighestHP, (Card c) => c == ram));
 
                 //"At the end of the villain turn, {AdmiralWinters} deals {H} projectile damage to each hero that is not Up Close. 
                 AddSideTrigger(AddDealDamageAtEndOfTurnTrigger(TurnTaker, this.Card, (Card c) => c.IsHeroCharacterCard && !IsUpClose(c), TargetType.All, H, DamageType.Projectile));
