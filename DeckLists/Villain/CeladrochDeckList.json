@@ -14,7 +14,7 @@
 			],
 			"icons": [
 				"StartOfTurnAction",
-				"AddToken"
+				"AddTokens"
 			],
 			"advancedIcons": [
 				"ReduceDamageTaken"
@@ -45,25 +45,18 @@
 			],
 			"flippedAdvanced": "When {Celadroch} flips to this side, add 2 tokens to the storm pool.",
 			"flippedIcons": [
-				"StartOfTurnAction",
-				"AddToken",
+				"AddOrRemoveTokens",
 				"PlayCardNow",
-				"RemoveToken",
-				"EndOfTurnAction",
 				"DealDamageProjectile",
-				"DestroyOngoing",
-				"DestroyEquipment"
+				"Destroy"
 			],
-			"flippedAdvancedIcons": [
-				"AddToken"
-			],
-			"tokenPools":[              {  
-               "identifier":"StormPool",
-               "name":"Storm Pool",
-               "initialValue":0,
-               "minimumValue":0,
-               "color":"92b6ac"
-            }         ],
+			"tokenPools": [{
+				"identifier": "StormPool",
+				"name": "Storm Pool",
+				"initialValue": 0,
+				"minimumValue": 0,
+				"color": "92b6ac"
+			}],
 
 			"difficulty": 4,
 			"openingLines": {
@@ -106,7 +99,6 @@
 				"StartOfTurnAction",
 				"DestroyOngoing",
 				"ReduceDamageTaken",
-				"EndOfTurnAction",
 				"DealDamageProjectile"
 			],
 			"body": [
@@ -246,12 +238,8 @@
 			],
 			"icons": [
 				"EndOfTurnAction",
-				"DestroyOngoing",
-				"DestroyEquipment",
-				"ImmuneToDamageFire",
-				"ImmuneToDamageLightning",
-				"ImmuneToDamageCold",
-				"ImmuneToDamageToxic",
+				"Destroy",
+				"ImmuneToDamage",
 				"IncreaseDamageDealt"
 			],
 			"body": [
