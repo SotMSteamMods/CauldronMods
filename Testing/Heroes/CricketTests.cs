@@ -254,5 +254,35 @@ namespace CauldronTests
             UsePower(hear);
             AssertInTrash(hear);
         }
+
+        [Test()]
+        public void TestGrasshopperKick()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card kick = PlayCard("GrasshopperKick");
+            //{Cricket} deals 1 target 2 melee damage. {Cricket} is immune to damage dealt by environment targets until the start of your next turn.
+            QuickHPStorage(akash);
+            UsePower(kick);
+            QuickHPCheck(-2);
+
+            Card rail = PlayCard("PlummetingMonorail");
+            //{Cricket} is immune to damage dealt by environment targets until the start of your next turn.
+            QuickHPStorage(cricket);
+            DealDamage(rail, cricket, 2, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //Non targets deal damage
+            Card hostage = PlayCard("HostageSituation");
+            DealDamage(hostage, cricket, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            GoToStartOfTurn(cricket);
+            //Until Start of next turn
+            QuickHPStorage(cricket);
+            DealDamage(rail, cricket, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+        }
     }
 }

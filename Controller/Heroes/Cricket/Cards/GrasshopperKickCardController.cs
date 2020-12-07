@@ -32,6 +32,7 @@ namespace Cauldron.Cricket
             immuneToDamageStatusEffect.TargetCriteria.IsSpecificCard = base.CharacterCard;
             //...is immune to damage dealt by environment targets...
             immuneToDamageStatusEffect.SourceCriteria.IsEnvironment = true;
+            immuneToDamageStatusEffect.SourceCriteria.IsTarget = true;
             //...until the start of your next turn.
             immuneToDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
             immuneToDamageStatusEffect.CardDestroyedExpiryCriteria.Card = base.CharacterCard;
