@@ -405,5 +405,18 @@ namespace CauldronTests
             DestroyCard(ram.CharacterCard);
             AssertGameOver();
         }
+        [Test]
+        public void TestPastRamDoesNotDoDamageFromOutOfGame([Values("BarrierBuster", "FallingMeteor", "PersonalDefenseSpines", "FallBack")] string damageCard)
+        {
+            SetupGameController("Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Ra", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            PlayCard("UpClose");
+            DestroyCard(ram.CharacterCard);
+            QuickHPStorage(wraith, legacy, haka, ra);
+            PlayCard(damageCard);
+            QuickHPCheckZero();
+        }
     }
 }
