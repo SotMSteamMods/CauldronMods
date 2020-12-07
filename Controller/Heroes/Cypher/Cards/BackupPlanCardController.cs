@@ -1,12 +1,13 @@
-﻿using Handelabra.Sentinels.Engine.Controller;
+﻿using System;
+
+using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-using System;
+
 
 namespace Cauldron.Cypher
 {
     public class BackupPlanCardController : CardController
     {
-
         //==============================================================
         // When a non-hero card enters play, you may destroy this card.
         // If you do, select any number of Augments in play and move

@@ -31,6 +31,73 @@ namespace CauldronTests
             Assert.AreEqual(26, Cypher.CharacterCard.HitPoints);
         }
 
+        [Test]
+        public void TestCyborgBlaster()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card muscleAug = GetCard(MuscleAugCardController.Identifier);
+            Card cyborgBlaster = GetCard(CyborgBlasterCardController.Identifier);
+
+            DecisionSelectCards = new[] {ra.CharacterCard, muscleAug, tachyon.CharacterCard, mdp};
+            DecisionSelectTarget = mdp;
+
+
+            PlayCard(muscleAug);
+            PlayCard(cyborgBlaster);
+
+            Assert.True(false, "TODO");
+
+        }
+
+        [Test]
+        public void TestCyborgPunch()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card muscleAug = GetCard(MuscleAugCardController.Identifier);
+            Card cyborgPunch = GetCard(CyborgPunchCardController.Identifier);
+
+            DecisionSelectCards = new[] { ra.CharacterCard, muscleAug, tachyon.CharacterCard, mdp };
+            DecisionSelectTarget = mdp;
+
+
+            PlayCard(muscleAug);
+            PlayCard(cyborgPunch);
+
+            Assert.True(false, "TODO");
+
+        }
+
+        [Test]
+        public void TestElectroOpticalCloak()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card electroCloak = GetCard(ElectroOpticalCloakCardController.Identifier);
+            Card muscleAug = GetCard(MuscleAugCardController.Identifier);
+
+            DecisionSelectCard = tachyon.CharacterCard;
+
+            GoToPlayCardPhase(Cypher);
+            PlayCard(muscleAug);
+            PlayCard(electroCloak);
+
+            DealDamage(baron, tachyon.CharacterCard, 4, DamageType.Energy);
+
+            //GoToStartOfTurn(Cypher);
+            
+            Assert.True(false, "TODO");
+        }
+
 
         [Test]
         public void TestMuscleAug()

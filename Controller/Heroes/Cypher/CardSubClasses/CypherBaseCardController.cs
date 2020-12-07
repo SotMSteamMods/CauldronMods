@@ -69,7 +69,7 @@ namespace Cauldron.Cypher
                 yield break;
             }
 
-            List<MoveCardDestination> otherHeroLocations = FindCardsWhere(c => c != scd.SelectedCard && c.IsHero 
+            List<MoveCardDestination> otherHeroLocations = FindCardsWhere(c => c != scd.SelectedCard.Location.OwnerCard && c.IsHeroCharacterCard 
                                 && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame).ToList()
                 .Select(h => new MoveCardDestination(h.NextToLocation, showMessage: true)).ToList();
 

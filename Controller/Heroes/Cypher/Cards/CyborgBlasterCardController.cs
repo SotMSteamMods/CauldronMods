@@ -38,10 +38,10 @@ namespace Cauldron.Cypher
             {
                 base.GameController.ExhaustCoroutine(routine);
             }
-
+            
             // One augmented hero deals 1 target 2 lightning damage.
             List<SelectTurnTakerDecision> sttd = new List<SelectTurnTakerDecision>();
-            routine = this.GameController.SelectHeroTurnTaker(this.DecisionMaker, SelectionType.CharacterCard, false, false, sttd,
+            routine = this.GameController.SelectHeroTurnTaker(this.HeroTurnTakerController, SelectionType.CardToDealDamage, false, false, sttd,
                 new LinqTurnTakerCriteria(tt => GetAugmentedHeroTurnTakers().Contains(tt)), cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
@@ -58,10 +58,11 @@ namespace Cauldron.Cypher
                 yield break;
             }
 
-            HeroTurnTakerController httc = base.FindHeroTurnTakerController(GetSelectedTurnTaker(sttd).ToHero());
+            HeroTurnTakerController httc = base.FindHeroTurnTakerController(sttd.First().SelectedTurnTaker.ToHero());
 
-            routine = base.GameController.SelectHeroToSelectTargetAndDealDamage(httc, DamageToDeal, DamageType.Lightning,
-                cardSource: base.GetCardSource());
+            routine = base.GameController.SelectTargetsAndDealDamage(httc,
+                new DamageSource(base.GameController, httc.CharacterCard), DamageToDeal, DamageType.Lightning, 1, 
+                false, 1, cardSource: httc.CharacterCardController.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
