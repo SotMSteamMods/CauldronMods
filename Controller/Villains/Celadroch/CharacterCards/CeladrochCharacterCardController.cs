@@ -93,8 +93,8 @@ namespace Cauldron.Celadroch
                 AddSideTrigger(AddStartOfTurnTrigger(tt => tt == TurnTaker, StartOfTurnOptionalCardPlayResponse, new[] { TriggerType.ModifyTokens, TriggerType.PlayCard }));
 
                 // Whenever an elemental, zombie, demon, or chosen is played from the top of the villain deck...
-                AddSideTrigger(AddTrigger<PlayCardAction>(SummonMinionCriteria,
-                                            pca => SummonMinionsReponse(pca.CardToPlay), TriggerType.PutIntoPlay, TriggerTiming.After));
+                AddSideTrigger(AddTrigger<CompletedCardPlayAction>(SummonMinionCriteria,
+                                            SummonMinionsReponse, TriggerType.PutIntoPlay, TriggerTiming.After));
 
                 //At the end of the villain turn, {Celadroch} deals the {H - 1} hero targets with the highest HP X projectile damage each, where X is the number of tokens in the storm pool minus 2.
                 AddSideTrigger(AddDealDamageAtEndOfTurnTrigger(TurnTaker, CharacterCard, c => c.IsHero && c.IsTarget,
@@ -228,11 +228,11 @@ namespace Cauldron.Celadroch
             }
         }
 
-        private bool SummonMinionCriteria(PlayCardAction pca)
+        private bool SummonMinionCriteria(CompletedCardPlayAction pca)
         {
-            if (!pca.IsPutIntoPlay && pca.Origin == TurnTaker.Deck && !pca.FromBottom)
+            if (!pca.IsPutIntoPlay && pca.Origin == TurnTaker.Deck && !pca.PlayedFromBottom)
             {
-                var c = pca.CardToPlay;
+                var c = pca.CardPlayed;
                 if (c.Owner == TurnTaker && c.GetKeywords().Intersect(MinionKeywords, StringComparer.Ordinal).Any())
                 {
                     return true;
@@ -241,8 +241,12 @@ namespace Cauldron.Celadroch
             return false;
         }
 
-        private IEnumerator SummonMinionsReponse(Card card)
+        private IEnumerator SummonMinionsReponse(CompletedCardPlayAction pca)
         {
+            var card = pca.CardPlayed;
+
+            Console.WriteLine($"TRIGGER - {card.Title}, {card.Location.GetFriendlyName()}");
+
             var keyword = card.GetKeywords().Intersect(MinionKeywords, StringComparer.Ordinal).First();
             string msg = $"{TurnTaker.Name} summons forth his {keyword} minions.";
 
@@ -256,8 +260,9 @@ namespace Cauldron.Celadroch
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            var cards = FindCardsWhere(c => (c.Location == TurnTaker.Deck || c.Location == TurnTaker.Trash) && c != card && c.DoKeywordsContain(keyword));
-            coroutine = GameController.MoveCards(TurnTakerController, cards, TurnTaker.PlayArea, isPutIntoPlay: true, cardSource: GetCardSource());
+            coroutine = GameController.PlayCards(DecisionMaker,
+                c => (c.Location == TurnTaker.Deck || c.Location == TurnTaker.Trash) && c.DoKeywordsContain(keyword), false, true,
+                cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -266,6 +271,9 @@ namespace Cauldron.Celadroch
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+
+            //Note: using the GameAction shuffleLocation screws something with the card being played.  This doesn't.
+            TurnTaker.Deck.ShuffleCards();
         }
 
         private IEnumerator PlayForsakenCrusaderFromTrash()

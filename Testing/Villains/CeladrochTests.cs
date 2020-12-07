@@ -202,6 +202,24 @@ namespace CauldronTests
             AssertTokenPoolCount(stormPool, 4); //flipped side token gain
         }
 
+
+        [Test()]
+        public void TestCeladroch_AdvancedFlipExtraTokens()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Legacy", "Megalopolis" }, advanced: true);
+
+            stormPool.AddTokens(2);
+
+            StartGame();
+
+            AssertTokenPoolCount(stormPool, 3);
+            GoToEndOfTurn(celadroch);
+
+            GoToStartOfTurn(celadroch);
+            AssertFlipped(celadroch);
+            AssertTokenPoolCount(stormPool, 6); //flipped side token gain
+        }
+
         [Test()]
         public void TestCeladroch_NormalFrontNoRelicDR()
         {
@@ -705,15 +723,18 @@ namespace CauldronTests
             AddTokensToPool(stormPool, 3);
             DecisionYesNo = false;
             StartGame(false);
+            SafetyRemovePillars();
 
+            QuickShuffleStorage(celadroch.TurnTaker.Deck);
             GoToPlayCardPhase(celadroch);
             PlayTopCard(celadroch);
-
+            AssertIsInPlay(topCard);
+            
             foreach(var c in cards)
             {
                 AssertIsInPlay(c);
             }
+            QuickShuffleCheck(1);
         }
-
     }
 }
