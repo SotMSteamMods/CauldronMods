@@ -29,7 +29,7 @@ namespace Cauldron.Cricket
             }
 
             //{Cricket} deals up to 4 targets X sonic damage each, where X is 1 plus the number of cards discarded this way.
-            coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), list.Count() + 1, DamageType.Sonic, 4, true, 0, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), list.Count() + 1, DamageType.Sonic, 4, false, 0, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
