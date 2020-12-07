@@ -7,6 +7,7 @@
 	"decks": {
 		"heroes": [
 			"Baccarat",
+			"Cricket",
 			"DocHavoc",
 			"LadyOfTheWood",
 			"Malichae",
@@ -22,9 +23,9 @@
 			"Anathema",
 			"Dendron",
 			"Gray",
+			"SwarmEater",
 			"TheRam",
-			"Tiamat",
-      "SwarmEater"
+			"Tiamat"
 		],
 		"environments": [
 			"BlackwoodForest",
