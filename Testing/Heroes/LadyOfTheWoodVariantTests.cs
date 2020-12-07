@@ -453,6 +453,284 @@ namespace CauldronTests
         }
 
 
+        [Test()]
+        public void TestFutureLadyOfTheWoodLoads()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/FutureLadyOfTheWoodCharacter", "Megalopolis");
+
+            Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(ladyOfTheWood);
+            Assert.IsInstanceOf(typeof(FutureLadyOfTheWoodCharacterCardController), ladyOfTheWood.CharacterCardController);
+
+            Assert.AreEqual(20, ladyOfTheWood.CharacterCard.HitPoints);
+        }
+
+        [Test()]
+        public void TestFutureLadyOfTheWoodPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/FutureLadyOfTheWoodCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(ladyOfTheWood, 10);
+
+            //Destroy a season. Play a season and change the next damage dealt by {LadyOfTheWood} to a type listed on it. You may use a power.
+            GoToUsePowerPhase(ladyOfTheWood);
+            Card seasonToDestroy = PlayCard("Summer");
+            Card seasonToPlay = PutInHand("Spring");
+            Card cardWithPower = PlayCard("SnowshadeGown");
+            QuickHPStorage(ladyOfTheWood);
+            DecisionSelectCard = seasonToPlay;
+            UsePower(ladyOfTheWood.CharacterCard);
+
+            //check that a season has been destroyed
+            AssertInTrash(seasonToDestroy);
+
+            //check that a season has been played
+            AssertInPlayArea(ladyOfTheWood, seasonToPlay);
+
+            //check that a power has been used
+            QuickHPCheck(3);
+
+            //check that damage has been changed to toxic
+            AddIncreaseDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Toxic, 1);
+            QuickHPStorage(ra);
+            DealDamage(ladyOfTheWood, ra, 3, DamageType.Cold);
+            QuickHPCheck(-4);
+
+            //check only next damage
+            AddIncreaseDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Toxic, 1);
+            QuickHPStorage(ra);
+            DealDamage(ladyOfTheWood, ra, 3, DamageType.Cold);
+            QuickHPCheck(-3);
+
+        }
+
+        [Test()]
+        public void TestFutureLadyOfTheWoodPower_NoSeasonInPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/FutureLadyOfTheWoodCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(ladyOfTheWood, 10);
+
+            //Destroy a season. Play a season and change the next damage dealt by {LadyOfTheWood} to a type listed on it. You may use a power.
+            GoToUsePowerPhase(ladyOfTheWood);
+            Card seasonToPlay = PutInHand("Summer");
+            Card cardWithPower = PlayCard("SnowshadeGown");
+            QuickHPStorage(ladyOfTheWood);
+            DecisionSelectCard = seasonToPlay;
+            UsePower(ladyOfTheWood.CharacterCard);
+
+            //check that a season has been played
+            AssertInPlayArea(ladyOfTheWood, seasonToPlay);
+
+            //check that a power has been used
+            QuickHPCheck(3);
+
+            //check that damage has been changed to fire
+            AddIncreaseDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Fire, 1);
+            QuickHPStorage(ra);
+            DealDamage(ladyOfTheWood, ra, 3, DamageType.Cold);
+            QuickHPCheck(-6); //+1 from check, +2 from summer
+
+        }
+
+        [Test()]
+        public void TestFutureLadyOfTheWoodIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/FutureLadyOfTheWoodCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(ladyOfTheWood);
+
+            //One player may draw a card.
+            GoToUseIncapacitatedAbilityPhase(ladyOfTheWood);
+            QuickHandStorage(ra);
+            DecisionSelectTurnTaker = ra.TurnTaker;
+            UseIncapacitatedAbility(ladyOfTheWood, 0);
+            QuickHandCheck(1);
+        }
+
+        [Test()]
+        public void TestFutureLadyOfTheWoodIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/FutureLadyOfTheWoodCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(ladyOfTheWood);
+
+            //One target deals itself 1 cold damage.
+            GoToUseIncapacitatedAbilityPhase(ladyOfTheWood);
+            QuickHPStorage(ra);
+            DecisionSelectTarget = ra.CharacterCard;
+            AddIncreaseDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Cold, 1);
+            UseIncapacitatedAbility(ladyOfTheWood, 1);
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestFutureLadyOfTheWoodIncap3_Spring()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/FutureLadyOfTheWoodCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(ladyOfTheWood);
+            GoToUseIncapacitatedAbilityPhase(ladyOfTheWood);
+
+            //Select 1 of your season cards, its text affects all heroes until your next turn.
+            Card spring = FindCardsWhere((Card c) => ladyOfTheWood.CharacterCard.UnderLocation.HasCard(c) && c.Identifier == "Spring").First();
+            DecisionSelectCard = spring;
+            UseIncapacitatedAbility(ladyOfTheWood, 2);
+
+            GoToPlayCardPhase(haka);
+            //Whenever a hero deals toxic damage to a target, they regain that much HP.
+            SetHitPoints(haka, 20);
+            SetHitPoints(ra, 20);
+
+            //check gain hp on toxic
+            QuickHPStorage(haka, ra);
+            DealDamage(haka, ra, 3, DamageType.Toxic);
+            QuickHPCheck(3, -3);
+
+            //check only for toxic
+            QuickHPUpdate();
+            DealDamage(haka, ra, 3, DamageType.Fire);
+            QuickHPCheck(0, -3);
+
+            //check expires at start of next turn
+            GoToStartOfTurn(haka);
+            QuickHPUpdate();
+            DealDamage(haka, ra, 3, DamageType.Toxic);
+            QuickHPCheck(0, -3);
+
+        }
+
+        [Test()]
+        public void TestFutureLadyOfTheWoodIncap3_Summer()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/FutureLadyOfTheWoodCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(ladyOfTheWood);
+            GoToUseIncapacitatedAbilityPhase(ladyOfTheWood);
+
+            //Select 1 of your season cards, its text affects all heroes until your next turn.
+            Card summer = FindCardsWhere((Card c) => ladyOfTheWood.CharacterCard.UnderLocation.HasCard(c) && c.Identifier == "Summer").First();
+            DecisionSelectCard = summer;
+            UseIncapacitatedAbility(ladyOfTheWood, 2);
+
+            GoToPlayCardPhase(haka);
+            //Increase fire damage dealt by heroes by 2
+
+            //check gain hp on toxic
+            QuickHPStorage(ra);
+            DealDamage(haka, ra, 3, DamageType.Fire);
+            QuickHPCheck(-5);
+
+            //check only for toxic
+            QuickHPUpdate();
+            DealDamage(haka, ra, 3, DamageType.Toxic);
+            QuickHPCheck(-3);
+
+            //check expires at start of next turn
+            GoToStartOfTurn(ladyOfTheWood);
+            QuickHPUpdate();
+            DealDamage(haka, ra, 3, DamageType.Fire);
+            QuickHPCheck(-3);
+
+        }
+
+        [Test()]
+        public void TestFutureLadyOfTheWoodIncap3_Fall()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/FutureLadyOfTheWoodCharacter", "Ra", "Haka", "Tachyon", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(ladyOfTheWood);
+            GoToUseIncapacitatedAbilityPhase(ladyOfTheWood);
+
+            //Select 1 of your season cards, its text affects all heroes until your next turn.
+            Card fall = FindCardsWhere((Card c) => ladyOfTheWood.CharacterCard.UnderLocation.HasCard(c) && c.Identifier == "Fall").First();
+            DecisionSelectCard = fall;
+            UseIncapacitatedAbility(ladyOfTheWood, 2);
+
+            GoToPlayCardPhase(haka);
+            //Whenever a hero deals lightning damage to a target, reduce damage dealt by that target by 1 until the start of your next turn.
+
+            //check reduce effect applied on lightning
+            QuickHPStorage(ra);
+            DealDamage(haka, ra, 3, DamageType.Lightning);
+            QuickHPCheck(-3);
+            QuickHPStorage(haka);
+            DealDamage(ra, haka, 3, DamageType.Fire);
+            QuickHPCheck(-2);
+
+            //check only for lightning
+            QuickHPStorage(tachyon);
+            DealDamage(haka, tachyon, 3, DamageType.Fire);
+            QuickHPCheck(-3);
+            QuickHPStorage(haka);
+            DealDamage(tachyon, haka, 3, DamageType.Fire);
+            QuickHPCheck(-3);
+
+            //check expires at start of next turn
+            GoToStartOfTurn(haka);
+            QuickHPStorage(haka);
+            DealDamage(ra, haka, 3, DamageType.Fire);
+            QuickHPCheck(-3);
+
+        }
+
+
+        [Test()]
+        public void TestFutureLadyOfTheWoodIncap3_Winter()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/FutureLadyOfTheWoodCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(ladyOfTheWood);
+            GoToUseIncapacitatedAbilityPhase(ladyOfTheWood);
+
+            //Select 1 of your season cards, its text affects all heroes until your next turn.
+            Card winter = FindCardsWhere((Card c) => ladyOfTheWood.CharacterCard.UnderLocation.HasCard(c) && c.Identifier == "Winter").First();
+            DecisionSelectCard = winter;
+            UseIncapacitatedAbility(ladyOfTheWood, 2);
+
+            GoToPlayCardPhase(haka);
+            //Whenever a hero deals cold damage to a target, they draw a card.
+
+            //check for draw on cold
+            QuickHPStorage(ra);
+            QuickHandStorage(haka);
+            DealDamage(haka, ra, 3, DamageType.Cold);
+            QuickHPCheck(-3);
+            QuickHandCheck(1);
+
+            //check only for cold
+            QuickHPUpdate();
+            QuickHandUpdate();
+            DealDamage(haka, ra, 3, DamageType.Fire);
+            QuickHPCheck(-3);
+            QuickHandCheck(0);
+
+            //check expires at start of next turn
+            GoToStartOfTurn(ladyOfTheWood);
+            QuickHPUpdate();
+            QuickHandUpdate();
+            DealDamage(haka, ra, 3, DamageType.Cold);
+            QuickHPCheck(-3);
+            QuickHandCheck(0);
+
+
+        }
+
 
 
     }
