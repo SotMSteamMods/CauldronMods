@@ -86,6 +86,7 @@ namespace Cauldron.Cricket
             int damageNumeral = GetPowerNumeral(2, 1);
 
             //Increase damage dealt by {Cricket} during your next turn by 1.
+
             //OnPhaseChangeStatusEffect
 
             IncreaseDamageStatusEffect statusEffect = new IncreaseDamageStatusEffect(increaseNumeral);

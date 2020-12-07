@@ -35,9 +35,11 @@ namespace Cauldron.Cricket
                     }
                 case 1:
                     {
-                        List<SelectLocationDecision> storedLocation = new List<SelectLocationDecision>();
                         //Look at the top card of a deck and replace or discard it.
-                        coroutine = base.GameController.SelectADeck(base.HeroTurnTakerController, SelectionType.RevealTopCardOfDeck, null, storedLocation, cardSource: base.GetCardSource());
+                        List<SelectLocationDecision> storedLocation = new List<SelectLocationDecision>();
+                        IEnumerable<LocationChoice> possibleDestinations = from tt in base.FindTurnTakersWhere((TurnTaker tt) => !tt.IsIncapacitatedOrOutOfGame, false)
+                                                                           select new LocationChoice(tt.Deck, null, false);
+                        coroutine = base.GameController.SelectLocation(this.DecisionMaker, possibleDestinations, SelectionType.RevealTopCardOfDeck, storedLocation, false, base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -46,9 +48,10 @@ namespace Cauldron.Cricket
                         {
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
-                        if (DidSelectDeck(storedLocation))
+                        Location selectedLocation = base.GetSelectedLocation(storedLocation);
+                        if (selectedLocation != null)
                         {
-                            coroutine = base.RevealCard_DiscardItOrPutItOnDeck(base.HeroTurnTakerController, base.TurnTakerController, storedLocation.FirstOrDefault().SelectedLocation.Location, false);
+                            coroutine = base.RevealCard_DiscardItOrPutItOnDeck(base.HeroTurnTakerController, base.TurnTakerController, selectedLocation, false);
                             if (base.UseUnityCoroutines)
                             {
                                 yield return base.GameController.StartCoroutine(coroutine);
@@ -63,7 +66,7 @@ namespace Cauldron.Cricket
                 case 2:
                     {
                         //Each target deals themselves 1 sonic damage.
-                        coroutine = base.GameController.DealDamageToSelf(base.HeroTurnTakerController, null, 1, DamageType.Sonic, cardSource: base.GetCardSource());
+                        coroutine = base.GameController.DealDamageToSelf(base.HeroTurnTakerController, (Card c) => true, 1, DamageType.Sonic, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -82,9 +85,9 @@ namespace Cauldron.Cricket
         {
             //Select a target. Reduce damage dealt by that target by 1 until the start of your next turn.
             List<SelectTargetDecision> storedResults = new List<SelectTargetDecision>();
+            IEnumerable<Card> choices = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlayAndHasGameText));
             //Select a target. 
-            IEnumerator coroutine = base.GameController.SelectTargetAndStoreResults(base.HeroTurnTakerController, base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlayAndHasGameText)), storedResults, cardSource
-                : base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTargetAndStoreResults(base.HeroTurnTakerController, choices, storedResults, selectionType: SelectionType.None, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
