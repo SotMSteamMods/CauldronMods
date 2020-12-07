@@ -31,6 +31,22 @@ namespace CauldronTests
             this.RunCoroutine(this.GameController.AddStatusEffect(reduceDamageStatusEffect, true, new CardSource(httc.CharacterCardController)));
         }
 
+        private void AddIncreaseDamageOfDamageTypeTrigger(HeroTurnTakerController httc, DamageType damageType, int amount)
+        {
+            IncreaseDamageStatusEffect increaseDamageStatusEffect = new IncreaseDamageStatusEffect(amount);
+            increaseDamageStatusEffect.DamageTypeCriteria.AddType(damageType);
+            increaseDamageStatusEffect.NumberOfUses = 1;
+            this.RunCoroutine(this.GameController.AddStatusEffect(increaseDamageStatusEffect, true, new CardSource(httc.CharacterCardController)));
+        }
+
+        private TokenPool ElementTokenPool
+        {
+            get
+            {
+                return FindTokenPool(ladyOfTheWood.CharacterCard.Identifier, "LadyOfTheWoodElementPool");
+            }
+        }            
+
         #endregion
 
         [Test()]
@@ -231,6 +247,209 @@ namespace CauldronTests
             DealDamage(police, baron.CharacterCard, 5, DamageType.Projectile);
             QuickHPCheck(-4);
 
+        }
+
+        [Test()]
+        public void TestMinistryOfStrategicScienceLadyOfTheWoodLoads()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/MinistryOfStrategicScienceLadyOfTheWoodCharacter", "Megalopolis");
+
+            Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(ladyOfTheWood);
+            Assert.IsInstanceOf(typeof(MinistryOfStrategicScienceLadyOfTheWoodCharacterCardController), ladyOfTheWood.CharacterCardController);
+
+            Assert.AreEqual(19, ladyOfTheWood.CharacterCard.HitPoints);
+        }
+
+        [Test()]
+        public void TestMinistryOfStrategicScienceLadyOfTheWoodPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/MinistryOfStrategicScienceLadyOfTheWoodCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //Add 2 tokens to your element pool. When {LadyOfTheWood} would deal damage, you may change its type by spending a token.
+            GoToUsePowerPhase(ladyOfTheWood);
+            AssertTokenPoolCount(ElementTokenPool, 0);
+            UsePower(ladyOfTheWood.CharacterCard);
+            AssertTokenPoolCount(ElementTokenPool, 2);
+
+            //check optional damage type change when lady of the wood deals damage
+            GoToNextTurn();
+            DecisionSelectDamageType = DamageType.Infernal;
+            DecisionYesNo = true;
+            AddIncreaseDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Infernal, 1);
+            QuickHPStorage(ra);
+            AssertTokenPoolCount(ElementTokenPool, 2);
+            DealDamage(ladyOfTheWood, ra, 3, DamageType.Cold);
+            QuickHPCheck(-4);
+            AssertTokenPoolCount(ElementTokenPool, 1);
+
+            //check that it only applies to lady of the wood
+            DecisionSelectDamageType = DamageType.Infernal;
+            DecisionYesNo = true;
+            AddIncreaseDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Infernal, 1);
+            QuickHPStorage(ra);
+            AssertTokenPoolCount(ElementTokenPool, 1);
+            DealDamage(haka, ra, 3, DamageType.Cold);
+            QuickHPCheck(-3);
+            AssertTokenPoolCount(ElementTokenPool, 1);
+
+            //check that it never exprires
+            GoToStartOfTurn(ladyOfTheWood);
+            DecisionSelectDamageType = DamageType.Infernal;
+            DecisionYesNo = true;
+            AddIncreaseDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Infernal, 1);
+            QuickHPStorage(ra);
+            AssertTokenPoolCount(ElementTokenPool, 1);
+            DealDamage(ladyOfTheWood, ra, 3, DamageType.Cold);
+            QuickHPCheck(-5); //2 increases have been given up to here
+            AssertTokenPoolCount(ElementTokenPool, 0);
+
+        }
+
+        [Test()]
+        public void TestMinistryOfStrategicScienceLadyOfTheWoodPower_GuiseTests()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/MinistryOfStrategicScienceLadyOfTheWoodCharacter", "Ra", "Guise", "Megalopolis");
+            StartGame();
+
+            GoToStartOfTurn(guise);
+            PlayCard("ICanDoThatToo");
+
+            //check optional damage type change when guise deals damage
+            DecisionSelectDamageType = DamageType.Infernal;
+            DecisionYesNo = true;
+            AddIncreaseDamageOfDamageTypeTrigger(guise, DamageType.Infernal, 1);
+            QuickHPStorage(ra);
+            AssertTokenPoolCount(ElementTokenPool, 2);
+            DealDamage(guise, ra, 3, DamageType.Cold);
+            QuickHPCheck(-4);
+            AssertTokenPoolCount(ElementTokenPool, 1);
+
+            //check that it only applies to guise and lotw
+            DecisionSelectDamageType = DamageType.Infernal;
+            DecisionYesNo = true;
+            AddIncreaseDamageOfDamageTypeTrigger(guise, DamageType.Infernal, 1);
+            QuickHPStorage(ra);
+            AssertTokenPoolCount(ElementTokenPool, 1);
+            DealDamage(ra, ra, 3, DamageType.Cold);
+            QuickHPCheck(-3);
+            AssertTokenPoolCount(ElementTokenPool, 1);
+
+            //check that it never exprires
+            GoToStartOfTurn(guise);
+            DecisionSelectDamageType = DamageType.Infernal;
+            DecisionYesNo = true;
+            AddIncreaseDamageOfDamageTypeTrigger(guise, DamageType.Infernal, 1);
+            QuickHPStorage(ra);
+            AssertTokenPoolCount(ElementTokenPool, 1);
+            DealDamage(guise, ra, 3, DamageType.Cold);
+            QuickHPCheck(-5); //2 increases have been given up to here
+            AssertTokenPoolCount(ElementTokenPool, 0);
+
+        }
+
+        [Test()]
+        public void TestMinistryOfStrategicScienceLadyOfTheWoodIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/MinistryOfStrategicScienceLadyOfTheWoodCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(ladyOfTheWood);
+
+            //One player may play a card.
+            GoToUseIncapacitatedAbilityPhase(ladyOfTheWood);
+            Card mere = PutInHand("Mere");
+            DecisionSelectTurnTaker = haka.TurnTaker;
+            DecisionSelectCard = mere;
+            UseIncapacitatedAbility(ladyOfTheWood, 0);
+            AssertInPlayArea(haka, mere);
+        }
+
+        [Test()]
+        public void TestMinistryOfStrategicScienceLadyOfTheWoodIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/MinistryOfStrategicScienceLadyOfTheWoodCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(ladyOfTheWood);
+
+            //Add 1 token to your element pool.
+            GoToUseIncapacitatedAbilityPhase(ladyOfTheWood);
+            AssertTokenPoolCount(ElementTokenPool, 0);
+            UseIncapacitatedAbility(ladyOfTheWood, 1);
+            AssertTokenPoolCount(ElementTokenPool, 1);
+        }
+
+        [Test()]
+        public void TestMinistryOfStrategicScienceLadyOfTheWoodIncap2_StartWithTokensInPool()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/MinistryOfStrategicScienceLadyOfTheWoodCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            UsePower(ladyOfTheWood);
+            SetupIncap(baron);
+            AssertIncapacitated(ladyOfTheWood);
+
+            //Add 1 token to your element pool.
+            GoToUseIncapacitatedAbilityPhase(ladyOfTheWood);
+            AssertTokenPoolCount(ElementTokenPool, 2);
+            UseIncapacitatedAbility(ladyOfTheWood, 1);
+            AssertTokenPoolCount(ElementTokenPool, 3);
+        }
+
+        [Test()]
+        public void TestMinistryOfStrategicScienceLadyOfTheWoodIncap3_TokensInPool()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/MinistryOfStrategicScienceLadyOfTheWoodCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            UsePower(ladyOfTheWood);
+
+            SetupIncap(baron);
+            AssertIncapacitated(ladyOfTheWood);
+
+            //Spend 1 token from your element pool. If you do, 1 hero deals 1 target 3 damage of any type.
+            GoToUseIncapacitatedAbilityPhase(ladyOfTheWood);
+            DecisionSelectTurnTaker = haka.TurnTaker;
+            DecisionSelectDamageType = DamageType.Infernal;
+            DecisionSelectTarget = baron.CharacterCard;
+            QuickHPStorage(baron);
+            AddIncreaseDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Infernal, 1);
+            AssertTokenPoolCount(ElementTokenPool, 2);
+            UseIncapacitatedAbility(ladyOfTheWood, 2);
+            QuickHPCheck(-4);
+            AssertTokenPoolCount(ElementTokenPool, 1);
+        }
+
+        [Test()]
+        public void TestMinistryOfStrategicScienceLadyOfTheWoodIncap3_NoTokensInPool()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/MinistryOfStrategicScienceLadyOfTheWoodCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+
+            SetupIncap(baron);
+            AssertIncapacitated(ladyOfTheWood);
+
+            //Spend 1 token from your element pool. If you do, 1 hero deals 1 target 3 damage of any type.
+            GoToUseIncapacitatedAbilityPhase(ladyOfTheWood);
+            DecisionSelectTurnTaker = haka.TurnTaker;
+            DecisionSelectDamageType = DamageType.Infernal;
+            DecisionSelectTarget = baron.CharacterCard;
+            QuickHPStorage(baron);
+            AddIncreaseDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Infernal, 1);
+            AssertTokenPoolCount(ElementTokenPool, 0);
+            UseIncapacitatedAbility(ladyOfTheWood, 2);
+            QuickHPCheck(0);
+            AssertTokenPoolCount(ElementTokenPool, 0);
         }
 
 
