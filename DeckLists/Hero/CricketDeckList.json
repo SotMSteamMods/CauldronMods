@@ -420,7 +420,7 @@
             "flavorReference": "Adventurers #8"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "CricketCharacter",
             "promoIdentifier": "FirstResponseCricketCharacter",
@@ -528,7 +528,7 @@
             ],
             "incapacitatedAbilities": [
                 "One hero may use a power now.",
-                "Select a power on a card in play. The next time a hero uses it. They may immediately use it again..",
+                "Select a power on a card in play. The next time a hero uses it. They may immediately use it again.",
                 "Move the bottom card of a deck to the top."
             ],
             "flippedIcons": [

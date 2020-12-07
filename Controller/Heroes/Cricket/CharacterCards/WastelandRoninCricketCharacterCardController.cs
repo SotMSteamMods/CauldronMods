@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace Cauldron.Cricket
 {
-    public class CricketCharacterCardController : HeroCharacterCardController
+    public class WastelandRoninCricketCharacterCardController : HeroCharacterCardController
     {
-        public CricketCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public WastelandRoninCricketCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
@@ -21,8 +21,8 @@ namespace Cauldron.Cricket
             {
                 case 0:
                     {
-                        //One player may draw a card now.
-                        coroutine = base.GameController.SelectHeroToDrawCard(base.HeroTurnTakerController, cardSource: base.GetCardSource());
+                        //One hero may use a power now.
+                        coroutine = base.GameController.SelectHeroToUsePower(base.HeroTurnTakerController, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -80,11 +80,24 @@ namespace Cauldron.Cricket
 
         public override IEnumerator UsePower(int index = 0)
         {
-            //Select a target. Reduce damage dealt by that target by 1 until the start of your next turn.
-            List<SelectTargetDecision> storedResults = new List<SelectTargetDecision>();
-            //Select a target. 
-            IEnumerator coroutine = base.GameController.SelectTargetAndStoreResults(base.HeroTurnTakerController, base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlayAndHasGameText)), storedResults, cardSource
-                : base.GetCardSource());
+            //Increase damage dealt by {Cricket} during your next turn by 1. {Cricket} may deal 1 target 1 sonic damage.
+            int increaseNumeral = GetPowerNumeral(0, 1);
+            int targetNumeral = GetPowerNumeral(1, 1);
+            int damageNumeral = GetPowerNumeral(2, 1);
+
+            //Increase damage dealt by {Cricket} during your next turn by 1.
+            //OnPhaseChangeStatusEffect
+
+            IncreaseDamageStatusEffect statusEffect = new IncreaseDamageStatusEffect(increaseNumeral);
+            statusEffect.UntilEndOfNextTurn(base.TurnTaker);
+            statusEffect.UntilTargetLeavesPlay(base.CharacterCard);
+            //Only during next turn
+            IncreaseDamageStatusEffect reduceEffect = new IncreaseDamageStatusEffect(-1 * increaseNumeral);
+            reduceEffect.UntilStartOfNextTurn(base.TurnTaker);
+            reduceEffect.UntilTargetLeavesPlay(base.CharacterCard);
+
+            statusEffect.CombineWithStatusEffect(reduceEffect);
+            IEnumerator coroutine = base.AddStatusEffect(statusEffect);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -94,22 +107,15 @@ namespace Cauldron.Cricket
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (storedResults != null && storedResults.FirstOrDefault().SelectedCard != null)
+            //{Cricket} may deal 1 target 1 sonic damage.
+            coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), damageNumeral, DamageType.Sonic, targetNumeral, false, 0, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
             {
-                //Reduce damage dealt by that target by 1 until the start of your next turn.
-                ReduceDamageStatusEffect statusEffect = new ReduceDamageStatusEffect(1);
-                statusEffect.SourceCriteria.IsSpecificCard = storedResults.FirstOrDefault().SelectedCard;
-                statusEffect.UntilStartOfNextTurn(base.TurnTaker);
-                statusEffect.UntilTargetLeavesPlay(storedResults.FirstOrDefault().SelectedCard);
-                coroutine = base.AddStatusEffect(statusEffect);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
         }
