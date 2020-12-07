@@ -207,5 +207,52 @@ namespace CauldronTests
             //{Cricket} deals up to 4 targets X sonic damage each, where X is 1 plus the number of cards discarded this way.
             QuickHPCheck(-4, -4, -4, -4);
         }
+
+        [Test()]
+        public void TestEchonavigation()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DecisionMoveCardDestinations = new MoveCardDestination[] { new MoveCardDestination(akash.TurnTaker.Trash), new MoveCardDestination(cricket.TurnTaker.Trash), new MoveCardDestination(legacy.TurnTaker.Trash), new MoveCardDestination(bunker.TurnTaker.Deck), new MoveCardDestination(scholar.TurnTaker.Deck), new MoveCardDestination(env.TurnTaker.Deck) };
+
+            Card topAkash = akash.TurnTaker.Deck.TopCard;
+            Card topCricket = cricket.TurnTaker.Deck.TopCard;
+            Card topLegacy = legacy.TurnTaker.Deck.TopCard;
+            Card topBunker = bunker.TurnTaker.Deck.TopCard;
+            Card topScholar = scholar.TurnTaker.Deck.TopCard;
+            Card topEnv = env.TurnTaker.Deck.TopCard;
+
+            //One player may draw a card now.
+            QuickHandStorage(cricket);
+            PlayCard("Echonavigation");
+            QuickHandCheck(1);
+            //Reveal the top card of each deck. You may replace or discard each card.
+            AssertOnTopOfTrash(akash, topAkash);
+            //Echonavigation gets put on top
+            AssertInTrash(cricket, topCricket);
+            AssertOnTopOfTrash(legacy, topLegacy);
+            AssertOnTopOfDeck(topBunker);
+            AssertOnTopOfDeck(topScholar);
+            AssertOnTopOfDeck(topEnv);
+        }
+
+        [Test()]
+        public void TestEnhancedHearing()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card hear = PlayCard("EnhancedHearing");
+            //At the start of your turn, reveal the top card of 2 different decks, then replace them.
+            GoToStartOfTurn(cricket);
+            //Increase sonic damage dealt to {Cricket} by 1.
+            QuickHPStorage(cricket);
+            DealDamage(akash, cricket, 2, DamageType.Sonic);
+            QuickHPCheck(-3);
+            //Power: Destroy this card.
+            UsePower(hear);
+            AssertInTrash(hear);
+        }
     }
 }

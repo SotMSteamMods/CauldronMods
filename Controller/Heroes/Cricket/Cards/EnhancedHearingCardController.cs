@@ -41,7 +41,7 @@ namespace Cauldron.Cricket
             //...reveal the top card of 2 different decks, then replace them.
             List<SelectLocationDecision> storedResult = new List<SelectLocationDecision>();
             //Pick first deck
-            IEnumerator coroutine = base.GameController.SelectADeck(base.HeroTurnTakerController, SelectionType.RevealTopCardOfDeck, null, storedResult, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectADeck(base.HeroTurnTakerController, SelectionType.RevealTopCardOfDeck, (Location deck) => true, storedResult, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -54,7 +54,18 @@ namespace Cauldron.Cricket
             {
                 //Reveal top card and maybe discard
                 Location selectedDeck = storedResult.FirstOrDefault().SelectedLocation.Location;
-                coroutine = base.RevealCard_DiscardItOrPutItOnDeck(base.HeroTurnTakerController, base.FindTurnTakerController(selectedDeck.OwnerTurnTaker), selectedDeck, false);
+                List<Card> list = new List<Card>();
+                coroutine = base.GameController.RevealCards(base.TurnTakerController, selectedDeck, 1, list, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                coroutine = base.CleanupRevealedCards(selectedDeck.OwnerTurnTaker.Revealed, selectedDeck);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -78,7 +89,17 @@ namespace Cauldron.Cricket
                 {
                     //Reveal top card and maybe discard
                     selectedDeck = storedResult.LastOrDefault().SelectedLocation.Location;
-                    coroutine = base.RevealCard_DiscardItOrPutItOnDeck(base.HeroTurnTakerController, base.FindTurnTakerController(selectedDeck.OwnerTurnTaker), selectedDeck, false);
+                    coroutine = base.GameController.RevealCards(base.TurnTakerController, selectedDeck, 1, list, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: base.GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+
+                    coroutine = base.CleanupRevealedCards(selectedDeck.OwnerTurnTaker.Revealed, selectedDeck);
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);

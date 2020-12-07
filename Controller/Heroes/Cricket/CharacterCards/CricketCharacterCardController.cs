@@ -37,8 +37,7 @@ namespace Cauldron.Cricket
                     {
                         //Look at the top card of a deck and replace or discard it.
                         List<SelectLocationDecision> storedLocation = new List<SelectLocationDecision>();
-                        IEnumerable<LocationChoice> possibleDestinations = from tt in base.FindTurnTakersWhere((TurnTaker tt) => !tt.IsIncapacitatedOrOutOfGame, false)
-                                                                           select new LocationChoice(tt.Deck, null, false);
+                        IEnumerable<LocationChoice> possibleDestinations = from tt in base.FindTurnTakersWhere((TurnTaker tt) => !tt.IsIncapacitatedOrOutOfGame, false) select new LocationChoice(tt.Deck, null, false);
                         coroutine = base.GameController.SelectLocation(this.DecisionMaker, possibleDestinations, SelectionType.RevealTopCardOfDeck, storedLocation, false, base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
