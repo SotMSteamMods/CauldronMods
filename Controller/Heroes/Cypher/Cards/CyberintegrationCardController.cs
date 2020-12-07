@@ -45,10 +45,10 @@ namespace Cauldron.Cypher
             }
 
             // When an Augment is destroyed this way, the hero it was next to regains 3HP
-            List<Card> ownerCards =
-                storedResults.Select(dca => dca.CardToDestroy.Card.NextToLocation.OwnerCard).Distinct().ToList();
+            List<Card> ownerCards = storedResults.Select(dca => dca.CardToDestroy.Card.NextToLocation.OwnerCard).Distinct().ToList();
 
-            routine = this.GameController.GainHP(DecisionMaker, c => c.IsHero && c.IsInPlayAndHasGameText && ownerCards.Contains(c), HpGain, cardSource: GetCardSource());
+            routine = this.GameController.GainHP(DecisionMaker, c => c.IsHero && c.IsInPlayAndHasGameText 
+                                    && ownerCards.Contains(c), HpGain, cardSource: GetCardSource());
             
             if (base.UseUnityCoroutines)
             {

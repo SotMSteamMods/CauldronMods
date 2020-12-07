@@ -1,6 +1,7 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using System;
+using System.Collections;
 
 namespace Cauldron.Cypher
 {
@@ -15,8 +16,21 @@ namespace Cauldron.Cypher
 
         public RetinalAugCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
+        public override IEnumerator Play()
+        {
+            IEnumerator routine = base.IncreasePhaseActionCountIfInPhase(tt => tt == base.TurnTaker, 
+                Phase.PlayCard, 1);
+            
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
+        }
     }
 }

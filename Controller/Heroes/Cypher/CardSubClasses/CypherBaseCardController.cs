@@ -1,4 +1,5 @@
-﻿using Handelabra.Sentinels.Engine.Controller;
+﻿using System.Collections;
+using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,8 @@ namespace Cauldron.Cypher
 
         protected bool IsAugmented(Card hero)
         {
-            return hero.NextToLocation.HasCards && hero.GetAllNextToCards(false).Any(IsAugment);
+            return hero.IsHero && hero.IsInPlayAndHasGameText && !hero.IsIncapacitatedOrOutOfGame
+                && hero.NextToLocation.HasCards && hero.GetAllNextToCards(false).Any(IsAugment);
         }
 
         protected List<Card> GetAugmentsInPlay()
@@ -28,7 +30,8 @@ namespace Cauldron.Cypher
 
         protected List<Card> GetAugmentedHeroCards()
         {
-            return FindCardsWhere(c => c.IsHero && c.NextToLocation.HasCards && c.NextToLocation.Cards.Any(IsAugment)).ToList();
+            return FindCardsWhere(c => c.IsHero && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame
+                && c.NextToLocation.HasCards && c.NextToLocation.Cards.Any(IsAugment)).ToList();
         }
 
         protected List<TurnTaker> GetAugmentedHeroTurnTakers()
@@ -51,6 +54,36 @@ namespace Cauldron.Cypher
         protected List<TurnTaker> GetValidAugmentMoveHeroes(TurnTaker sourceHero)
         {
             return FindTurnTakersWhere(tt => tt != sourceHero && tt.IsHero).ToList();
+        }
+
+        protected LinqCardCriteria AugmentedHeroes()
+        {
+            return new LinqCardCriteria(IsAugmented);
+        }
+
+
+        protected IEnumerator MoveAugment(SelectCardDecision scd)
+        {
+            if (scd.SelectedCard == null)
+            {
+                yield break;
+            }
+
+            List<MoveCardDestination> otherHeroLocations = FindCardsWhere(c => c != scd.SelectedCard && c.IsHero 
+                                && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame).ToList()
+                .Select(h => new MoveCardDestination(h.NextToLocation, showMessage: true)).ToList();
+
+            IEnumerator routine = GameController.SelectLocationAndMoveCard(this.DecisionMaker, scd.SelectedCard,
+                otherHeroLocations, cardSource: GetCardSource());
+            
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
         }
     }
 }

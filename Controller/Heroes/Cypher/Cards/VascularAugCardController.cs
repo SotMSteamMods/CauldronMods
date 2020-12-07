@@ -1,7 +1,8 @@
-﻿using Handelabra.Sentinels.Engine.Controller;
-using Handelabra.Sentinels.Engine.Model;
-using System;
+﻿using System;
 using System.Collections;
+
+using Handelabra.Sentinels.Engine.Controller;
+using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Cypher
 {

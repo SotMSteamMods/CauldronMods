@@ -1,10 +1,9 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-
 
 namespace Cauldron.Cypher
 {
@@ -21,7 +20,7 @@ namespace Cauldron.Cypher
 
         public CyborgBlasterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowListOfCards(AugmentedHeroes());
         }
 
         public override IEnumerator Play()
@@ -59,23 +58,19 @@ namespace Cauldron.Cypher
                 yield break;
             }
 
-            TurnTaker selectedTurnTaker = sttd.First().SelectedTurnTaker;
+            HeroTurnTakerController httc = base.FindHeroTurnTakerController(GetSelectedTurnTaker(sttd).ToHero());
 
-            //this.GameController.SelectHeroToSelectTargetAndDealDamage()
-            
+            routine = base.GameController.SelectHeroToSelectTargetAndDealDamage(httc, DamageToDeal, DamageType.Lightning,
+                cardSource: base.GetCardSource());
 
-        }
-
-        private IEnumerator MoveAugment(SelectCardDecision scd)
-        {
-            if (scd.SelectedCard == null)
+            if (base.UseUnityCoroutines)
             {
-                yield break;
+                yield return base.GameController.StartCoroutine(routine);
             }
-
-
-
-            yield break;
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
         }
     }
 }

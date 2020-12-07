@@ -23,24 +23,10 @@ namespace Cauldron.Cypher
 
         }
 
-        public override IEnumerator Play()
+        public override void AddTriggers()
         {
-            IncreaseDamageStatusEffect idse = new IncreaseDamageStatusEffect(DamageIncrease)
-            {
-                SourceCriteria = {IsSpecificCard = base.GetCardThisCardIsNextTo()}, 
-                CardSource = this.Card
-            };
-            idse.UntilCardLeavesPlay(this.Card);
-
-            IEnumerator routine = base.AddStatusEffect(idse, true);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
+            base.AddIncreaseDamageTrigger(dd => dd.DamageSource.IsSameCard(base.GetCardThisCardIsNextTo()), 
+                DamageIncrease);
         }
     }
 }

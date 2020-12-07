@@ -21,22 +21,9 @@ namespace Cauldron.Cypher
         {
         }
 
-        public override IEnumerator Play()
+        public override void AddTriggers()
         {
-
-            ReduceDamageStatusEffect rdse = new ReduceDamageStatusEffect(DamageReduction);
-            rdse.TargetCriteria.IsSpecificCard = base.GetCardThisCardIsNextTo();
-            rdse.UntilCardLeavesPlay(this.Card);
-
-            IEnumerator routine = base.AddStatusEffect(rdse, true);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
+            base.AddReduceDamageTrigger(c => c == base.GetCardThisCardIsNextTo(), DamageReduction);
         }
     }
 }
