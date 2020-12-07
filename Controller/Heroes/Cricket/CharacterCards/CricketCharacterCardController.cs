@@ -46,7 +46,7 @@ namespace Cauldron.Cricket
                         {
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
-                        if (DidSelectLocation(storedLocation))
+                        if (DidSelectDeck(storedLocation))
                         {
                             coroutine = base.RevealCard_DiscardItOrPutItOnDeck(base.HeroTurnTakerController, base.TurnTakerController, storedLocation.FirstOrDefault().SelectedLocation.Location, false);
                             if (base.UseUnityCoroutines)
