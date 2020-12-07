@@ -65,11 +65,14 @@ namespace Cauldron.TheRam
 
                 AddSideTrigger(AddCannotDealDamageTrigger((Card c) => c == this.Card));
 
+                AddSideTrigger(AddTrigger((DestroyCardAction dc) => dc.CardToDestroy.Card == this.CharacterCardWithoutReplacements && !AskIfCardIsIndestructible(dc.CardToDestroy.Card), DefeatedResponse, TriggerType.GameOver, TriggerTiming.Before));
+
                 if (IsGameAdvanced)
                 {
                     //"Reduce damage dealt to villain targets by 1.",
                 }
             }
+            AddDefeatedIfMovedOutOfGameTriggers();
             //AddDefeatedIfDestroyedTriggers();
         }
 
@@ -209,7 +212,35 @@ namespace Cauldron.TheRam
                 {
                     GameController.ExhaustCoroutine(coroutine);
                 }
+
+                coroutine = CheckForVictory(destroyCard);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
             }
+            yield break;
+        }
+
+        private IEnumerator CheckForVictory(GameAction ga)
+        {
+            if (this.Card.IsFlipped && (!this.CharacterCardWithoutReplacements.IsInPlay || this.CharacterCardWithoutReplacements.IsBeingDestroyed))
+            {
+                IEnumerator coroutine = DefeatedResponse(ga);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
         }
 
         private IEnumerator AskIfMoveUpCloseResponse(PhaseChangeAction pc)

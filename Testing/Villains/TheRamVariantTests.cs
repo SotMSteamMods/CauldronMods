@@ -307,5 +307,29 @@ namespace CauldronTests
             AssertFlipped(winters);
             AssertNotTarget(winters);
         }
+        [Test]
+        public void TestPastRamWinnableRamFirst()
+        {
+            SetupGameController("Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Ra", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            DestroyCard(ram.CharacterCard);
+            AssertNotGameOver();
+            DestroyCard(winters);
+            AssertGameOver();
+        }
+        [Test]
+        public void TestPastRamWinnableWintersFirst()
+        {
+            SetupGameController("Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Ra", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            DestroyCard(winters);
+            AssertNotGameOver();
+            DestroyCard(ram.CharacterCard);
+            AssertGameOver();
+        }
     }
 }
