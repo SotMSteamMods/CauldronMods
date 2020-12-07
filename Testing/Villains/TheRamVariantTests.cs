@@ -296,6 +296,40 @@ namespace CauldronTests
             QuickHPCheck(-8);
         }
         [Test]
+        public void TestPastRamFlippedDamageBoost()
+        {
+            SetupGameController("Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Ra", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            FlipCard(ram);
+
+            QuickHPStorage(legacy, haka, ram);
+            DealDamage(ram, legacy, 1, DTM);
+            DealDamage(ram, ram, 1, DTM);
+            DealDamage(winters, haka, 1, DTM);
+            QuickHPCheck(-1, -1, -1);
+
+            DealDamage(ram, legacy, 1, DamageType.Projectile);
+            DealDamage(ram, ram, 1, DamageType.Projectile);
+            DealDamage(winters, haka, 1, DamageType.Projectile);
+            QuickHPCheck(-2, -2, -2);
+        }
+        [Test]
+        public void TestPastRamFlipToFrontCondition()
+        {
+            SetupGameController("Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Ra", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            PlayCard("TakeDown");
+            GoToStartOfTurn(haka);
+            FlipCard(ram);
+            AssertFlipped(ram);
+            GoToStartOfTurn(ram);
+            AssertNotFlipped(ram);
+        }
+        [Test]
         public void TestPastWintersFlipCondition()
         {
             SetupGameController("Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Ra", "Megalopolis");
