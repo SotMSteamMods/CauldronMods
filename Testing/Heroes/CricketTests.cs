@@ -284,5 +284,41 @@ namespace CauldronTests
             DealDamage(rail, cricket, 2, DamageType.Melee);
             QuickHPCheck(-2);
         }
+
+        [Test()]
+        public void TestInfrasonicCollapseDestroyOngoing()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card entomb = PlayCard("Entomb");
+
+            QuickHPStorage(akash);
+            PlayCard("InfrasonicCollapse");
+            //Destroy 1 ongoing or environment card.
+            AssertInTrash(entomb);
+            //If you destroyed an ongoing card this way, {Cricket} deals 1 target 2 sonic damage.
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestInfrasonicCollapseDestroyEnvironment()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card phlange = PlayCard("ArborealPhalanges");
+            Card bramb = PlayCard("EnsnaringBrambles");
+            Card rocks = PlayCard("LivingRockslide");
+            Card rail0 = PlayCard("PlummetingMonorail", 0);
+            Card rail1 = PlayCard("PlummetingMonorail", 1);
+
+            QuickHPStorage(akash.CharacterCard, phlange, bramb, rocks, rail1);
+            PlayCard("InfrasonicCollapse");
+            //Destroy 1 ongoing or environment card.
+            AssertInTrash(rail0);
+            //If you destroyed an environment card this way, {Cricket} deals each non-hero target 1 sonic damage.
+            QuickHPCheck(-1, -1, -1, -1, -1);
+        }
     }
 }
