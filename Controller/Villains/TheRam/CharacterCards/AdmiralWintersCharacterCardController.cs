@@ -19,11 +19,6 @@ namespace Cauldron.TheRam
             SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => c.Identifier == "UpClose", "", false, false, "copy of Up Close", "copies of Up Close"));
         }
 
-        public override void AddTriggers()
-        {
-            //AddTrigger((DestroyCardAction destroyCard) => destroyCard.CardToDestroy == this, CannotBeMovedResponse, TriggerType.Hidden, TriggerTiming.Before);
-        }
-
         public override void AddSideTriggers()
         {
             if(!Card.IsFlipped)
