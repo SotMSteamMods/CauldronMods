@@ -17,6 +17,13 @@ namespace Cauldron.Cypher
             return card != null && base.GameController.DoesCardContainKeyword(card, "augment");
         }
 
+        protected List<TurnTaker> GetAugmentedHeroTurnTakers()
+        {
+            return FindTurnTakersWhere(tt =>
+                tt.IsHero && tt.CharacterCard.NextToLocation.HasCards &&
+                tt.CharacterCard.NextToLocation.Cards.Any(IsAugment)).ToList();
+        }
+
         protected List<Card> GetAugmentedHeroes()
         {
             return FindCardsWhere(c => c.IsHero && c.NextToLocation.HasCards && c.NextToLocation.Cards.Any(IsAugment)).ToList();
