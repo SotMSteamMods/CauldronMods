@@ -49,6 +49,7 @@ namespace Cauldron.TheRam
                 if (IsGameAdvanced)
                 {
                     //"Reduce damage dealt to {AdmiralWinters} by 1.",
+                    AddSideTrigger(AddReduceDamageTrigger((Card c) => c == this.Card, 1));
                 }
             }
             else
@@ -71,10 +72,10 @@ namespace Cauldron.TheRam
                 if (IsGameAdvanced)
                 {
                     //"Reduce damage dealt to villain targets by 1.",
+                    AddSideTrigger(AddReduceDamageTrigger((Card c) => c.IsVillainTarget, 1));
                 }
             }
             AddDefeatedIfMovedOutOfGameTriggers();
-            //AddDefeatedIfDestroyedTriggers();
         }
 
         private bool ImmediateFlipRamCriteria(MoveCardAction mc)

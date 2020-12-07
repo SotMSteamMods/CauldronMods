@@ -32,6 +32,7 @@ namespace Cauldron.TheRam
                 if (IsGameAdvanced)
                 {
                     //"Reduce damage dealt to {TheRam} by 1",
+                    AddSideTrigger(AddReduceDamageTrigger((Card c) => c == this.Card, 1));
                 }
             }
             else
@@ -51,6 +52,7 @@ namespace Cauldron.TheRam
                 if (IsGameAdvanced)
                 {
                     //"At the end of the villain turn, play the top card of the villain deck.",
+                    AddSideTrigger(AddEndOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker, PlayTheTopCardOfTheVillainDeckWithMessageResponse, TriggerType.PlayCard));
                 }
             }
         }
