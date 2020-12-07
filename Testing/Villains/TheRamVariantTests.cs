@@ -252,5 +252,48 @@ namespace CauldronTests
             AssertNotInTrash(ram.CharacterCard);
             AssertOutOfGame(ram.CharacterCard);
         }
+        [Test]
+        public void TestPastRamHealOnFlipH3()
+        {
+            SetupGameController("Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            SetHitPoints(ram, 50);
+            QuickHPStorage(ram);
+            FlipCard(ram);
+            QuickHPCheck(5);
+        }
+        [Test]
+        public void TestPastRamHealOnFlipH4()
+        {
+            SetupGameController("Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Ra", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            SetHitPoints(ram, 50);
+            QuickHPStorage(ram);
+            FlipCard(ram);
+            QuickHPCheck(6);
+        }
+        [Test]
+        public void TestPastRamPlaysStoredCardsOnFlip()
+        {
+            SetupGameController("Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Ra", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            Card buster = PlayCard("BarrierBuster");
+            Card meteor = PlayCard("FallingMeteor");
+
+            QuickHPStorage(wraith);
+            AssertNotInTrash(buster, meteor);
+            AssertNextDecisionChoices(new Card[] { buster, meteor });
+            FlipCard(ram);
+            AssertInTrash(buster, meteor);
+
+            //Wraith took: 3 melee damage from Barrier Buster, H = 4 projectile from Falling Meteor
+            QuickHPCheck(-7);
+        }
     }
 }

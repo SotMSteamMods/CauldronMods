@@ -39,7 +39,11 @@ namespace Cauldron.TheRam
                 AddSideTrigger(AddWhenDestroyedTrigger(SetPostDestroyOutOfGame, TriggerType.ChangePostDestroyDestination));
 
                 //"When {TheRam} flips to this side, it regains {H + 2} HP. Then, put all cards beneath this one into play in any order.",
+                //see AfterFlipCardImmediateResponse
+
                 //"At the start of the villain turn, if {TheRam} did not flip this turn, flip {TheRam}'s villain character cards.",
+                AddSideTrigger(AddStartOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker, FlipIfWasNotFlippedThisTurn, TriggerType.FlipCard));
+
                 //"Increase projectile damage dealt by villain targets by 1."
 
                 if (IsGameAdvanced)
@@ -47,6 +51,51 @@ namespace Cauldron.TheRam
                     //"At the end of the villain turn, play the top card of the villain deck.",
                 }
             }
+        }
+
+        private IEnumerator FlipIfWasNotFlippedThisTurn(PhaseChangeAction pca)
+        {
+            yield break;
+        }
+
+        public override IEnumerator AfterFlipCardImmediateResponse()
+        {
+            IEnumerator coroutine = base.AfterFlipCardImmediateResponse();
+            if (base.UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if (base.Card.IsFlipped)
+            {
+                //"When {TheRam} flips to this side, it regains {H + 2} HP. 
+                coroutine = GameController.GainHP(this.Card, H + 2, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
+                //Then, put all cards beneath this one into play in any order.",
+                coroutine = GameController.PlayCards(DecisionMaker, (Card c) => c.Location == this.Card.UnderLocation, false, true, responsibleTurnTaker: this.TurnTaker, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            yield break;
         }
 
         private IEnumerator SetPostDestroyOutOfGame(DestroyCardAction dc)
