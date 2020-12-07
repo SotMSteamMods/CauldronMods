@@ -26,7 +26,7 @@ namespace Cauldron.TheRam
                 AddSideTrigger(AddTrigger(potentialFlipTriggers, FlipToBack, TriggerType.FlipCard, TriggerTiming.After));
 
                 //"At the start of a hero's turn, if that hero is not Up Close, you may take a copy of Up close from the villain trash and play it next to that hero.",
-                AddSideTrigger(AddStartOfTurnTrigger((TurnTaker tt) => tt.IsHero && !IsUpClose(tt), AskIfMoveUpCloseResponse, TriggerType.PutIntoPlay));
+                AddSideTrigger(AddStartOfTurnTrigger((TurnTaker tt) => tt.IsHero && !IsUpClose(tt) && !tt.IsIncapacitatedOrOutOfGame, AskIfMoveUpCloseResponse, TriggerType.PutIntoPlay));
 
                 //"Reduce damage dealt to {TheRam} by 1. Increase damage dealt to {TheRam} by Up Close targets by 1.",
                 AddSideTrigger(AddReduceDamageTrigger((Card c) => c == this.Card, 1));

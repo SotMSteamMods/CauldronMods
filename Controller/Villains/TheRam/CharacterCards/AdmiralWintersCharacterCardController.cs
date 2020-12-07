@@ -27,7 +27,7 @@ namespace Cauldron.TheRam
                 AddSideTrigger(AddTrigger((GameOverAction ga) => ga.ResultIsVictory && ga.EndingResult != EndingResult.PrematureVictory, CancelWithMessageResponse, TriggerType.CancelAction, TriggerTiming.Before));
 
                 //"At the start of a hero's turn, if that hero is not Up Close, you may take a copy of Up Close from the villain trash and play it next to that hero.",
-                AddSideTrigger(AddStartOfTurnTrigger((TurnTaker tt) => tt.IsHero && !IsUpClose(tt), AskIfMoveUpCloseResponse, TriggerType.PutIntoPlay));
+                AddSideTrigger(AddStartOfTurnTrigger((TurnTaker tt) => tt.IsHero && !IsUpClose(tt) && !tt.IsIncapacitatedOrOutOfGame, AskIfMoveUpCloseResponse, TriggerType.PutIntoPlay));
 
                 //"{AdmiralWinters} is immune to damage from targets that are not up close. 
                 AddImmuneToDamageTrigger((DealDamageAction dd) => dd.Target == this.Card && dd.DamageSource.IsTarget && !IsUpClose(dd.DamageSource.Card));
@@ -50,7 +50,7 @@ namespace Cauldron.TheRam
             else
             {
                 //"At the start of a hero's turn, if that hero is not Up Close, you may take a copy of Up close from the villain trash and play it next to that hero.",
-                AddSideTrigger(AddStartOfTurnTrigger((TurnTaker tt) => tt.IsHero && !IsUpClose(tt), AskIfMoveUpCloseResponse, TriggerType.PutIntoPlay));
+                AddSideTrigger(AddStartOfTurnTrigger((TurnTaker tt) => tt.IsHero && !IsUpClose(tt) && !tt.IsIncapacitatedOrOutOfGame, AskIfMoveUpCloseResponse, TriggerType.PutIntoPlay));
 
                 //"Increase damage dealt to and by {TheRam} by 1.",
                 AddSideTrigger(AddIncreaseDamageTrigger((DealDamageAction dda) => dda.DamageSource.Card == ram, 1));
