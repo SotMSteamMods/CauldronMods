@@ -117,5 +117,55 @@ namespace CauldronTests
             UseIncapacitatedAbility(cricket, 2);
             QuickHPCheck(-1, 0, -1, -1, -1);
         }
+
+        [Test()]
+        public void TestAcousticDistortion()
+        {
+            SetupGameController("Apostate", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard("AcousticDistortion");
+            //Once per turn when a hero target would be dealt damage, you may redirect that damage to another hero target.
+
+            //Optional Redirect
+            QuickHPStorage(cricket);
+            DealDamage(apostate, cricket, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //Choose to redirect
+            DecisionRedirectTarget = legacy.CharacterCard;
+            QuickHPStorage(legacy, cricket);
+            DealDamage(apostate, cricket, 2, DamageType.Melee);
+            QuickHPCheck(-2, 0);
+
+            //Once per turn
+            QuickHPStorage(legacy, cricket);
+            DealDamage(apostate, cricket, 2, DamageType.Melee);
+            QuickHPCheck(0, -2);
+
+            //Can do again next turn
+            GoToStartOfTurn(cricket);
+            QuickHPStorage(legacy, cricket);
+            DealDamage(apostate, cricket, 2, DamageType.Melee);
+            QuickHPCheck(-2, 0);
+        }
+
+        [Test()]
+        public void TestBeforeTheThunder()
+        {
+            SetupGameController("Apostate", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card revealed = apostate.TurnTaker.Deck.TopCard;
+
+            //Reveal the top card of 1 deck, then replace it.
+            AssertNextMessage("Revealed card: " + revealed.Title);
+            //Draw 3 cards
+            QuickHandStorage(cricket);
+            PlayCard("BeforeTheThunder");
+            QuickHandCheck(3);
+            //Make sure the revealed card was put back
+            AssertOnTopOfDeck(revealed);
+        }
     }
 }

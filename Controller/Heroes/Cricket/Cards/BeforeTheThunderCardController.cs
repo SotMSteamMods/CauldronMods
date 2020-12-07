@@ -29,7 +29,7 @@ namespace Cauldron.Cricket
 
             //Select a deck to reveal from
             List<SelectLocationDecision> storedResults = new List<SelectLocationDecision>();
-            coroutine = base.GameController.SelectADeck(base.HeroTurnTakerController, SelectionType.RevealTopCardOfDeck, null, storedResults, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectADeck(base.HeroTurnTakerController, SelectionType.RevealTopCardOfDeck, (Location deck) => true, storedResults, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -39,9 +39,20 @@ namespace Cauldron.Cricket
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
+            Location selectedLocation = storedResults.FirstOrDefault().SelectedLocation.Location;
             List<Card> list = new List<Card>();
             //Reveal the top card of 1 deck, then replace it.
-            coroutine = base.GameController.RevealCards(base.TurnTakerController, storedResults.FirstOrDefault().SelectedLocation.Location, 1, list, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: base.GetCardSource());
+            coroutine = base.GameController.RevealCards(base.TurnTakerController, selectedLocation, 1, list, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = base.CleanupRevealedCards(selectedLocation.OwnerTurnTaker.Revealed, selectedLocation);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
