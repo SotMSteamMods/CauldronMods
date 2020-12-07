@@ -25,7 +25,7 @@ namespace Cauldron.Dendron
             IEnumerator gainHpRoutine = this.GameController.GainHP(this.HeroTurnTakerController, c => c == CharacterCard, HpToGain, cardSource: this.GetCardSource());
 
             // Restore all Tattoos to their max HP
-            IEnumerator restoreTattooHpRoutine = this.GameController.SetHP(this.HeroTurnTakerController, IsTattoo, card => card.MaximumHitPoints.Value);
+            IEnumerator restoreTattooHpRoutine = this.GameController.SetHP(this.HeroTurnTakerController, IsTattoo, card => card.MaximumHitPoints.Value, cardSource: base.GetCardSource());
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(gainHpRoutine);

@@ -673,6 +673,8 @@ namespace CauldronTests
             AssertIsInPlay(foamcore);
 
             //If there are no Chemical Triggers in play, reduce damage dealt to the hero target with the lowest HP by 1.
+            AssertCardSpecialString(foamcore, 0, "Hero target with the lowest HP: Haka.");
+
             //haka has the lowest hitpoints
             QuickHPStorage(haka.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard);
             DealDamage(baron, haka, 4, DamageType.Melee);
@@ -690,6 +692,48 @@ namespace CauldronTests
             DealDamage(haka.CharacterCard, mdp, 4, DamageType.Melee);
             //damage should not have been reduced
             QuickHPCheck(0, -4, 0, 0);
+        }
+
+        [Test()]
+        public void TestHalberdFoamcore_NoChemicalTriggers_TiedLowest()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //legacy and haka are tied for the lowest HP hero targets
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 10);
+            SetHitPoints(haka.CharacterCard, 10);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToPlayCardPhase(halberd);
+
+            //we play out foamcore
+            Card foamcore = GetCard("HalberdFoamcore");
+            PlayCard(foamcore);
+            AssertIsInPlay(foamcore);
+
+            //If there are no Chemical Triggers in play, reduce damage dealt to the hero target with the lowest HP by 1.
+            AssertCardSpecialString(foamcore, 0, "Hero targets with the lowest HP: Legacy, Haka.");
+
+            //choose haka as the lowest hitpoints when asked
+            DecisionYesNo = true;
+            QuickHPStorage(haka.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard);
+            DealDamage(baron, haka, 4, DamageType.Melee);
+            //damage should have been reduced by 1
+            QuickHPCheck(-3, 0, 0, 0);
+
+            //reset tied HP
+            SetHitPoints(legacy.CharacterCard, 10);
+            SetHitPoints(haka.CharacterCard, 10);
+
+            //deny haka as the lowest hitpoints when asked
+            DecisionYesNo = false;
+            QuickHPStorage(haka.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard);
+            DealDamage(baron, haka, 4, DamageType.Melee);
+            //damage was dealt in full
+            QuickHPCheck(-4, 0, 0, 0);
         }
 
         [Test()]
@@ -927,6 +971,8 @@ namespace CauldronTests
             AssertIsInPlay(ether);
 
             //If there are no Chemical Triggers in play, increase damage dealt by the hero target with the highest HP by 1.
+            AssertCardSpecialString(ether, 0, "Hero target with the highest HP: Ra.");
+
             //ra is the highest hp
             QuickHPStorage(mdp);
             DealDamage(ra.CharacterCard, mdp, 3, DamageType.Fire);
@@ -943,6 +989,44 @@ namespace CauldronTests
             QuickHPStorage(ra);
             DealDamage(baron, ra, 3, DamageType.Melee);
             //damage should be normal
+            QuickHPCheck(-3);
+        }
+
+        [Test()]
+        public void TestHalberdEther_NoChemicalTriggers_TiedHighest()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.HalberdExperimentalResearchCenter");
+            StartGame();
+
+            //ra and legacy are tied fro the highest HP hero targets
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 20);
+            SetHitPoints(haka.CharacterCard, 10);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToPlayCardPhase(halberd);
+
+            //we play out ether
+            Card ether = GetCard("HalberdEther");
+            PlayCard(ether);
+            AssertIsInPlay(ether);
+
+            //If there are no Chemical Triggers in play, increase damage dealt by the hero target with the highest HP by 1.
+            AssertCardSpecialString(ether, 0, "Hero targets with the highest HP: Ra, Legacy.");
+
+            //choose ra as the highest hitpoints when asked
+            DecisionYesNo = true;
+            QuickHPStorage(mdp);
+            DealDamage(ra.CharacterCard, mdp, 3, DamageType.Fire);
+            //hero w/ highest hp damage should be +1
+            QuickHPCheck(-4);
+
+            //deny ra as the highest hitpoints when asked
+            DecisionYesNo = false;
+            QuickHPStorage(mdp);
+            DealDamage(ra.CharacterCard, mdp, 3, DamageType.Fire);
+            //damage was not increased
             QuickHPCheck(-3);
         }
 

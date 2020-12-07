@@ -49,7 +49,7 @@
         },
         {
             "identifier": "ShiftTrack",
-            "backgroundColor": "fbf767"
+            "backgroundColor": "fbf767",
             "count": 1,
             "title": "Shift Track",
             "setup": [

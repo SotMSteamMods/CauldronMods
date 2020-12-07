@@ -267,6 +267,9 @@ namespace CauldronTests
 
             QuickHPStorage(Dendron);
 
+            //Have to keep her *start*-of-turn card play from messing things up too, after the reshuffle
+            PutInTrash(Dendron, Dendron.TurnTaker.Deck.Cards.Where(c => c.Identifier == "Restoration"));
+
             GoToStartOfTurn(Dendron);
 
             // Assert

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Collections.Generic;
 
 using Cauldron.BlackwoodForest;
 using Handelabra.Sentinels.Engine.Controller;
@@ -244,7 +245,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestDenseBramblesThreeWayTieForLowest()
+        public void TestDenseBramblesThreeWayTieForLowestChooseYes()
         {
             // Arrange
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
@@ -253,30 +254,93 @@ namespace CauldronTests
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
 
+            // mdp, legacy, and ra are all tied for lowest
             SetHitPoints(legacy, 10);
             SetHitPoints(ra, 10);
-
-
-            DecisionSelectCards = new[] { mdp, ra.CharacterCard };
 
             // Act
             PutIntoPlay(DenseBramblesCardController.Identifier);
             Card denseBrambles = GetCardInPlay(DenseBramblesCardController.Identifier);
 
+            // All 3 targets are listed as the 2 lowest
+            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
+
             QuickHPStorage(ra.CharacterCard, mdp);
 
-            // 2 lowest HP characters are Ra and MDP
-            DealDamage(baron, ra, 3, DamageType.Toxic); // Ra is immune
-
-            // Will only show Ra as immune as MDP hasn't been dealt damage yet to trigger the immunity
-            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
-            
-            GoToStartOfTurn(BlackwoodForest); // Dense Brambles is destroyed
-
-            DealDamage(ra, mdp, 2, DamageType.Fire);
+            DecisionYesNo = true; //Choose Ra is one of the 2 lowest
+            DealDamage(baron, ra, 3, DamageType.Toxic);
 
             // Assert
-            QuickHPCheck(0, -2); // Ra took no damage from baron's attack due to Dense Brambles, MDP was damaged after Dense Brambles was destroyed
+            QuickHPCheck(0, 0); // Ra was immune
+        }
+
+        [Test]
+        public void TestDenseBramblesThreeWayTieForLowestChooseNo()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            // mdp, legacy, and ra are all tied for lowest
+            SetHitPoints(legacy, 10);
+            SetHitPoints(ra, 10);
+
+            // Act
+            PutIntoPlay(DenseBramblesCardController.Identifier);
+            Card denseBrambles = GetCardInPlay(DenseBramblesCardController.Identifier);
+
+            // All 3 targets are listed as the 2 lowest
+            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
+
+            QuickHPStorage(ra.CharacterCard, mdp);
+
+            DecisionYesNo = false; // Choose Ra is NOT one of the 2 lowest
+            DealDamage(baron, ra, 3, DamageType.Toxic);
+
+            // Assert
+            QuickHPCheck(-3, 0); // Ra took damage when chosen not to be among the 2 lowest
+        }
+
+        [Test]
+        public void TestDenseBramblesThreeWayTieForSecondLowest()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            // MDP is lowest
+            // Legacy and Ra are tied for 2nd
+            SetHitPoints(legacy, 15);
+            SetHitPoints(ra, 15);
+
+            // Act
+            PutIntoPlay(DenseBramblesCardController.Identifier);
+            Card denseBrambles = GetCardInPlay(DenseBramblesCardController.Identifier);
+
+            // All 3 targets are listed as the 2 lowest
+            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
+
+            QuickHPStorage(mdp, legacy.CharacterCard, ra.CharacterCard);
+
+            DecisionsYesNo = new bool[] { }; // MDP is within the lowest 2 without a choice
+            DealDamage(ra, mdp, 3, DamageType.Fire);
+
+            base.ResetDecisions();
+            DecisionsYesNo = new bool[] { true }; // Choose Legacy is one of the 2 lowest
+            DealDamage(baron, legacy, 3, DamageType.Toxic);
+
+            base.ResetDecisions();
+            DecisionsYesNo = new bool[] { false }; // Choose Ra is NOT one of the 2 lowest
+            DealDamage(baron, ra, 3, DamageType.Toxic);
+
+            // Assert
+            QuickHPCheck(0, 0, -3); // MDP and Legacy were immune, Ra took damage
         }
 
         [Test]
@@ -356,6 +420,9 @@ namespace CauldronTests
             PutIntoPlay(dangerSense.Identifier);
 
             DecisionSelectCard = legacyRing;
+
+            //pick a card that definitely won't give the players another SelectCardDecision
+            PutOnDeck("DenseBrambles");
 
             // Act
             PutIntoPlay(TheHoundCardController.Identifier);
@@ -617,8 +684,10 @@ namespace CauldronTests
             Card modularWorkbench = GetCard("ModularWorkbench");
 
             // Act
-            GoToPlayCardPhase(unity);
+            //Can't play Swift Bot during Unity's play phase, if it happens to end up in hand.
             PlayCard(swiftBot);
+
+            GoToPlayCardPhaseAndPlayCard(unity, "ConstructionPylon");
             GoToDrawCardPhase(unity);
 
             AssertPhaseActionCount(2); // Normal draw + 1 from swiftbot

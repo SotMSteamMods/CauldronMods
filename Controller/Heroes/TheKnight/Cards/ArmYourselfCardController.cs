@@ -28,9 +28,10 @@ namespace Cauldron.TheKnight
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            if (DidSelectCards(storedResults))
+
+            var cards = GetSelectedCards(storedResults).ToList();
+            if (cards.Any())
             {
-                var cards = GetSelectedCards(storedResults).ToList();
                 var card = cards[0];
 
                 var destinations = new[] {
