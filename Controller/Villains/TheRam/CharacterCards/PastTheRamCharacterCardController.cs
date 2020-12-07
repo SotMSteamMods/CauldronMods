@@ -18,9 +18,15 @@ namespace Cauldron.TheRam
         {
             if(!Card.IsFlipped)
             {
+                Card.UnderLocation.OverrideIsInPlay = false;
+
                 //"If {TheRam} is destroyed remove this card from the game.",
+                AddSideTrigger(AddWhenDestroyedTrigger(SetPostDestroyOutOfGame, TriggerType.ChangePostDestroyDestination));
                 //"Whenever a villain one-shot would enter play, put it beneath this card instard. Cards beneath this one are not considered in play.",
+                AddSideTrigger(AddTrigger((CardEntersPlayAction cep) => cep.CardEnteringPlay.IsVillain && cep.CardEnteringPlay.IsOneShot, MoveOneShotUnderResponse, TriggerType.CancelAction, TriggerTiming.Before));
+
                 //"At the start of the villain turn, if there are 3 or more cards beneath this one, flip {TheRam}'s character cards."
+                AddSideTrigger(AddStartOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker && this.Card.UnderLocation.NumberOfCards >= 3, FlipThisCharacterCardResponse, TriggerType.FlipCard));
 
                 if (IsGameAdvanced)
                 {
@@ -30,6 +36,8 @@ namespace Cauldron.TheRam
             else
             {
                 //"If {TheRam} is destroyed remove this card from the game.",
+                AddSideTrigger(AddWhenDestroyedTrigger(SetPostDestroyOutOfGame, TriggerType.ChangePostDestroyDestination));
+
                 //"When {TheRam} flips to this side, it regains {H + 2} HP. Then, put all cards beneath this one into play in any order.",
                 //"At the start of the villain turn, if {TheRam} did not flip this turn, flip {TheRam}'s villain character cards.",
                 //"Increase projectile damage dealt by villain targets by 1."
@@ -39,6 +47,54 @@ namespace Cauldron.TheRam
                     //"At the end of the villain turn, play the top card of the villain deck.",
                 }
             }
+        }
+
+        private IEnumerator SetPostDestroyOutOfGame(DestroyCardAction dc)
+        {
+            dc.SetPostDestroyDestination(TurnTaker.OutOfGame, showMessage: true, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SendMessageAction("The Ram 1929 is removed from the game!", Priority.High, GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            yield return null;
+            yield break;
+        }
+
+        private IEnumerator MoveOneShotUnderResponse(CardEntersPlayAction mc)
+        {
+            IEnumerator coroutine = GameController.CancelAction(mc);
+            if (base.UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            coroutine = GameController.SendMessageAction($"The Ram stored {mc.CardEnteringPlay.Title} under itself!", Priority.Medium, GetCardSource(), new Card[] { mc.CardEnteringPlay });
+            if (base.UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            coroutine = GameController.MoveCard(TurnTakerController, mc.CardEnteringPlay, this.Card.UnderLocation, showMessage: false, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
 
         private IEnumerator AskIfMoveUpCloseResponse(PhaseChangeAction pc)

@@ -73,27 +73,27 @@ namespace Cauldron.TheRam
             IEnumerator coroutine;
             for(int i = 1; i <= numUpClose() - 1; i++)
             {
-                string ordinal = "";
+                string ordinal = "a";
                 switch (i)
                 { 
                     case 2:
                         {
-                            ordinal = "second ";
+                            ordinal = "a second";
                             break;
                         }
                     case 3:
                         {
-                            ordinal = "third ";
+                            ordinal = "a third";
                             break;
                         }
                     case 4:
                         {
-                            ordinal = "fourth ";
+                            ordinal = "a fourth";
                             break;
                         }
                     //not possible to get to 5
                 }
-                coroutine = GameController.SendMessageAction($"Admiral Winters plays a {ordinal}card...", Priority.Medium, GetCardSource());
+                coroutine = GameController.SendMessageAction($"Admiral Winters plays {ordinal} card...", Priority.Medium, GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

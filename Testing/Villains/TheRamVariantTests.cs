@@ -193,5 +193,64 @@ namespace CauldronTests
             AssertIsInPlay(toBeInPlay);
             AssertNotInPlay(notInPlay);
         }
+        [Test]
+        public void TestPastRamStoresOneShots()
+        {
+            SetupGameController("Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Tempest", "TheVisionary", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            QuickHPStorage(wraith, legacy, haka, tempest, visionary);
+            Card buster = PlayCard("BarrierBuster");
+            AssertUnderCard(ram.CharacterCard, buster);
+            QuickHPCheckZero();
+
+            //winters and ram, shouldn't count Barrier Buster
+            AssertNumberOfCardsInPlay(ram, 2); 
+        }
+        [Test]
+        public void TestPastRamFrontFlipCondition()
+        {
+            SetupGameController("Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            PlayCard("TakeDown");
+
+            GoToStartOfTurn(haka);
+            Card buster = PlayCard("BarrierBuster");
+            Card meteor = PlayCard("FallingMeteor");
+            Card spines = PlayCard("PersonalDefenseSpines");
+            AssertNotFlipped(ram);
+            GoToStartOfTurn(ram);
+            AssertFlipped(ram);
+        }
+        [Test]
+        public void TestPastRamFrontFlipOnlyWithEnough()
+        {
+            SetupGameController("Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            PlayCard("TakeDown");
+
+            GoToStartOfTurn(haka);
+            Card buster = PlayCard("BarrierBuster");
+            Card meteor = PlayCard("FallingMeteor");
+            AssertNotFlipped(ram);
+            GoToStartOfTurn(ram);
+            AssertNotFlipped(ram);
+        }
+        [Test]
+        public void TestPastRamRFGWhenDestroyed()
+        {
+            SetupGameController("Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            DestroyCard(ram.CharacterCard);
+            AssertNotInTrash(ram.CharacterCard);
+            AssertOutOfGame(ram.CharacterCard);
+        }
     }
 }
