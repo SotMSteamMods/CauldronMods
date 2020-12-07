@@ -295,5 +295,17 @@ namespace CauldronTests
             //Wraith took: 3 melee damage from Barrier Buster, H = 4 + 1 projectile from Falling Meteor
             QuickHPCheck(-8);
         }
+        [Test]
+        public void TestPastWintersFlipCondition()
+        {
+            SetupGameController("Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Ra", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            DestroyCard(winters);
+            AssertIsInPlay(winters);
+            AssertFlipped(winters);
+            AssertNotTarget(winters);
+        }
     }
 }

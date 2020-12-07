@@ -11,10 +11,16 @@ namespace Cauldron.TheRam
     {
         private Card ram { get { return this.CharacterCard; } }
         private const string redirectKey = "AdmiralWintersRedirectKey";
+        public override bool CanBeDestroyed => false;
         public AdmiralWintersCharacterCardController(Card card, TurnTakerController ttc) : base(card, ttc)
         {
             AddUpCloseTrackers();
             SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => c.Identifier == "UpClose", "", false, false, "copy of Up Close", "copies of Up Close"));
+        }
+
+        public override void AddTriggers()
+        {
+            //AddTrigger((DestroyCardAction destroyCard) => destroyCard.CardToDestroy == this, CannotBeMovedResponse, TriggerType.Hidden, TriggerTiming.Before);
         }
 
         public override void AddSideTriggers()
@@ -57,13 +63,36 @@ namespace Cauldron.TheRam
                 AddSideTrigger(AddTrigger((MoveCardAction mc) => mc.Destination == ram.UnderLocation && mc.CardToMove.IsOneShot && mc.WasCardMoved, FlipRamResponse, TriggerType.FlipCard, TriggerTiming.After));
                 AddSideTrigger(AddTrigger((BulkMoveCardsAction bmc) => bmc.Destination == ram.UnderLocation && bmc.CardsToMove.Any((Card c) => c.IsOneShot) && bmc.CardsToMove.Any((Card c) => c.Location == ram.UnderLocation && c.IsOneShot), FlipRamResponse, TriggerType.FlipCard, TriggerTiming.After));
 
+                AddSideTrigger(AddCannotDealDamageTrigger((Card c) => c == this.Card));
+
                 if (IsGameAdvanced)
                 {
                     //"Reduce damage dealt to villain targets by 1.",
                 }
             }
-
             //AddDefeatedIfDestroyedTriggers();
+        }
+
+        public override IEnumerator BeforeFlipCardImmediateResponse(FlipCardAction flip)
+        {
+            CardSource cardSource = flip.CardSource;
+            if (cardSource == null && flip.ActionSource != null)
+            {
+                cardSource = flip.ActionSource.CardSource;
+            }
+            if (cardSource == null)
+            {
+                cardSource = GetCardSource();
+            }
+            IEnumerator coroutine = base.GameController.RemoveTarget(base.Card, leavesPlayIfInPlay: true, cardSource);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
 
         private IEnumerator PlayCardsBasedOnUpClose(GameAction ga)
