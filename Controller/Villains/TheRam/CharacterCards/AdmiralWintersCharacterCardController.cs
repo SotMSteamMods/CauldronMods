@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+using Handelabra;
 
 namespace Cauldron.TheRam
 {
@@ -60,8 +61,8 @@ namespace Cauldron.TheRam
                 AddSideTrigger(AddIncreaseDamageTrigger((DealDamageAction dda) => dda.Target == ram, 1));
 
                 //"Whenever a one-shot is placed under {TheRam}'s character cards, immediately flip {TheRam}'s character cards."
-                AddSideTrigger(AddTrigger((MoveCardAction mc) => mc.Destination == ram.UnderLocation && mc.CardToMove.IsOneShot && mc.WasCardMoved, FlipRamResponse, TriggerType.FlipCard, TriggerTiming.After));
-                AddSideTrigger(AddTrigger((BulkMoveCardsAction bmc) => bmc.Destination == ram.UnderLocation && bmc.CardsToMove.Any((Card c) => c.IsOneShot) && bmc.CardsToMove.Any((Card c) => c.Location == ram.UnderLocation && c.IsOneShot), FlipRamResponse, TriggerType.FlipCard, TriggerTiming.After));
+                AddSideTrigger(AddTrigger<MoveCardAction>(ImmediateFlipRamCriteria, FlipRamResponse, TriggerType.FlipCard, TriggerTiming.After));
+                AddSideTrigger(AddTrigger((BulkMoveCardsAction bmc) => bmc.Destination == ram.UnderLocation && bmc.CardsToMove.Any((Card c) => c.IsOneShot) && bmc.CardsToMove.Any((Card c) => c.Location == ram.UnderLocation && c.DoKeywordsContain("one-shot", true)), FlipRamResponse, TriggerType.FlipCard, TriggerTiming.After));
 
                 AddSideTrigger(AddCannotDealDamageTrigger((Card c) => c == this.Card));
 
@@ -74,6 +75,11 @@ namespace Cauldron.TheRam
             }
             AddDefeatedIfMovedOutOfGameTriggers();
             //AddDefeatedIfDestroyedTriggers();
+        }
+
+        private bool ImmediateFlipRamCriteria(MoveCardAction mc)
+        {
+            return mc.Destination == ram.UnderLocation && mc.CardToMove.DoKeywordsContain("one-shot", true) && mc.CardToMove.Location == ram.UnderLocation;
         }
 
         public override IEnumerator BeforeFlipCardImmediateResponse(FlipCardAction flip)

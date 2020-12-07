@@ -342,6 +342,46 @@ namespace CauldronTests
             AssertNotTarget(winters);
         }
         [Test]
+        public void TestPastWintersFlippedDamageBoost()
+        {
+            SetupGameController("Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Ra", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            FlipCard(winters);
+
+            QuickHPStorage(legacy, haka, ram);
+            DealDamage(ram, legacy, 1, DTM);
+            DealDamage(ram, ram, 1, DTM);
+            DealDamage(winters, haka, 1, DTM);
+            //ram double-dips when hitting itself, winters can't do damage
+            QuickHPCheck(-2, 0, -3);
+
+            DealDamage(ram, legacy, 1, DamageType.Projectile);
+            DealDamage(ram, ram, 1, DamageType.Projectile);
+            DealDamage(winters, haka, 1, DamageType.Projectile);
+            QuickHPCheck(-2, 0, -3);
+
+            DealDamage(legacy, ram, 3, DTM);
+            QuickHPCheck(0, 0, -4);
+        }
+        [Test]
+        public void TestPastWintersFlippedCausesRamInstaflip()
+        {
+            SetupGameController("Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Ra", "Megalopolis");
+            StartGame();
+            CleanupStartingCards();
+
+            FlipCard(winters);
+
+            QuickHPStorage(wraith, legacy, haka, ra);
+            AssertNotFlipped(ram);
+            Card buster = PlayCard("BarrierBuster");
+            AssertFlipped(ram);
+            AssertInTrash(buster);
+            QuickHPCheck(-4, -4, -4, -4);
+        }
+        [Test]
         public void TestPastRamWinnableRamFirst()
         {
             SetupGameController("Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Ra", "Megalopolis");
