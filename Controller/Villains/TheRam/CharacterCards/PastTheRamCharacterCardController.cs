@@ -11,7 +11,7 @@ namespace Cauldron.TheRam
     {
         public PastTheRamCharacterCardController(Card card, TurnTakerController ttc) : base(card, ttc)
         {
-            AddUpCloseTrackers();
+            SpecialStringMaker.ShowListOfCardsAtLocation(this.Card.UnderLocation, new LinqCardCriteria());
         }
 
         public override void AddSideTriggers()
