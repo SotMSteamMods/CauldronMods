@@ -45,6 +45,7 @@ namespace Cauldron.TheRam
                 AddSideTrigger(AddStartOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker, FlipIfWasNotFlippedThisTurn, TriggerType.FlipCard));
 
                 //"Increase projectile damage dealt by villain targets by 1."
+                AddSideTrigger(AddIncreaseDamageTrigger((DealDamageAction dda) => dda.DamageSource.IsVillainTarget && dda.DamageType == DamageType.Projectile, 1));
 
                 if (IsGameAdvanced)
                 {
@@ -55,6 +56,18 @@ namespace Cauldron.TheRam
 
         private IEnumerator FlipIfWasNotFlippedThisTurn(PhaseChangeAction pca)
         {
+            if (!Journal.WasCardFlippedThisTurn(this.Card))
+            {
+                IEnumerator coroutine = FlipThisCharacterCardResponse(pca);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
             yield break;
         }
 

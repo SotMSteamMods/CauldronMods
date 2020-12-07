@@ -292,8 +292,8 @@ namespace CauldronTests
             FlipCard(ram);
             AssertInTrash(buster, meteor);
 
-            //Wraith took: 3 melee damage from Barrier Buster, H = 4 projectile from Falling Meteor
-            QuickHPCheck(-7);
+            //Wraith took: 3 melee damage from Barrier Buster, H = 4 + 1 projectile from Falling Meteor
+            QuickHPCheck(-8);
         }
     }
 }
