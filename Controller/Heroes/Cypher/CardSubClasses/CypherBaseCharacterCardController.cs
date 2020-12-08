@@ -17,6 +17,11 @@ namespace Cauldron.Cypher
             return card != null && base.GameController.DoesCardContainKeyword(card, "augment");
         }
 
+        protected List<Card> GetAugmentsInPlay()
+        {
+            return FindCardsWhere(c => c.IsInPlay && IsAugment(c)).ToList();
+        }
+
         protected List<TurnTaker> GetAugmentedHeroTurnTakers()
         {
             return FindTurnTakersWhere(tt =>
@@ -26,7 +31,7 @@ namespace Cauldron.Cypher
 
         protected List<Card> GetAugmentedHeroes()
         {
-            return FindCardsWhere(c => c.IsHero && c.NextToLocation.HasCards && c.NextToLocation.Cards.Any(IsAugment)).ToList();
+            return FindCardsWhere(c => c.IsHeroCharacterCard && c.NextToLocation.HasCards && c.NextToLocation.Cards.Any(IsAugment)).ToList();
         }
     }
 }

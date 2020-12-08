@@ -3,12 +3,14 @@ using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cauldron.Cypher
 {
     public class CypherCharacterCardController : CypherBaseCharacterCardController
     {
 
+        private const int PowerCardsToDraw = 1;
         private const int Incapacitate1OngoingToDestroy = 1;
         private const int Incapacitate1CardsToDraw = 3;
         private const int Incapacitate2EquipmentToDestroy = 1;
@@ -23,9 +25,12 @@ namespace Cauldron.Cypher
         public override IEnumerator UsePower(int index = 0)
         {
             // One augmented hero may draw a card now.
+
+            int drawNumeral = base.GetPowerNumeral(0, PowerCardsToDraw);
+
             IEnumerator routine = base.GameController.SelectHeroToDrawCard(this.HeroTurnTakerController,
                 additionalCriteria: new LinqTurnTakerCriteria(ttc => GetAugmentedHeroTurnTakers().Contains(ttc)), 
-                numberOfCards: 1, cardSource: GetCardSource());
+                numberOfCards: drawNumeral, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -67,8 +72,9 @@ namespace Cauldron.Cypher
                         Card heroCard = GetSelectedCard(storedHero);
                         HeroTurnTakerController httc = base.FindHeroTurnTakerController(heroCard.Owner.ToHero());
 
+                        List<DestroyCardAction> dcas = new List<DestroyCardAction>();
                         routine = base.GameController.SelectAndDestroyCard(httc,
-                            new LinqCardCriteria(c => c.IsOngoing), false, cardSource: GetCardSource());
+                            new LinqCardCriteria(c => c.IsOngoing), false, dcas, cardSource: GetCardSource());
 
                         if (base.UseUnityCoroutines)
                         {
@@ -77,6 +83,19 @@ namespace Cauldron.Cypher
                         else
                         {
                             base.GameController.ExhaustCoroutine(routine);
+                        }
+
+                        if (dcas.Any() && dcas.First().WasCardDestroyed)
+                        {
+                            routine = base.GameController.DrawCards(httc, Incapacitate1CardsToDraw);
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(routine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(routine);
+                            }
                         }
                     }
 
@@ -104,8 +123,9 @@ namespace Cauldron.Cypher
                         Card heroCard = GetSelectedCard(storedHero);
                         HeroTurnTakerController httc = base.FindHeroTurnTakerController(heroCard.Owner.ToHero());
 
+                        List<DestroyCardAction> dcas = new List<DestroyCardAction>();
                         routine = base.GameController.SelectAndDestroyCard(httc,
-                            new LinqCardCriteria(c => IsEquipment(c)), false, cardSource: GetCardSource());
+                            new LinqCardCriteria(c => IsEquipment(c)), false, dcas, cardSource: GetCardSource());
 
                         if (base.UseUnityCoroutines)
                         {
@@ -114,6 +134,19 @@ namespace Cauldron.Cypher
                         else
                         {
                             base.GameController.ExhaustCoroutine(routine);
+                        }
+
+                        if (dcas.Any() && dcas.First().WasCardDestroyed)
+                        {
+                            routine = base.GameController.DrawCards(httc, Incapacitate2CardsToDraw);
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(routine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(routine);
+                            }
                         }
                     }
 

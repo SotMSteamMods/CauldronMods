@@ -19,7 +19,7 @@ namespace Cauldron.Cypher
 
         protected bool IsAugmented(Card hero)
         {
-            return hero.IsHero && hero.IsInPlayAndHasGameText && !hero.IsIncapacitatedOrOutOfGame
+            return hero.IsHeroCharacterCard && hero.IsInPlayAndHasGameText && !hero.IsIncapacitatedOrOutOfGame
                 && hero.NextToLocation.HasCards && hero.GetAllNextToCards(false).Any(IsAugment);
         }
 
@@ -30,7 +30,7 @@ namespace Cauldron.Cypher
 
         protected List<Card> GetAugmentedHeroCards()
         {
-            return FindCardsWhere(c => c.IsHero && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame
+            return FindCardsWhere(c => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame
                 && c.NextToLocation.HasCards && c.NextToLocation.Cards.Any(IsAugment)).ToList();
         }
 
@@ -48,7 +48,7 @@ namespace Cauldron.Cypher
 
         protected List<Card> GetValidAugmentMoveHeroes(Card sourceHero)
         {
-            return FindCardsWhere(c => c != sourceHero && c.IsHero).ToList();
+            return FindCardsWhere(c => c != sourceHero && c.IsHeroCharacterCard).ToList();
         }
 
         protected List<TurnTaker> GetValidAugmentMoveHeroes(TurnTaker sourceHero)
@@ -60,7 +60,6 @@ namespace Cauldron.Cypher
         {
             return new LinqCardCriteria(IsAugmented);
         }
-
 
         protected IEnumerator MoveAugment(SelectCardDecision scd)
         {

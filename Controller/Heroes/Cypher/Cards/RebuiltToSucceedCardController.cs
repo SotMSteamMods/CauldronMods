@@ -19,11 +19,11 @@ namespace Cauldron.Cypher
 
         public RebuiltToSucceedCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override IEnumerator Play()
         {
+            // Select two Augments in your trash. Put one into your hand and one into play.
             List<SelectCardsDecision> storedResults = new List<SelectCardsDecision>();
             IEnumerator routine = base.GameController.SelectCardsAndStoreResults(this.DecisionMaker, SelectionType.SearchTrash, 
                 c => c.Location.Name == LocationName.Trash && IsAugment(c), 
@@ -38,7 +38,7 @@ namespace Cauldron.Cypher
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            var cards = GetSelectedCards(storedResults).ToList();
+            List<Card> cards = GetSelectedCards(storedResults).ToList();
             if (!cards.Any())
             {
                 routine = base.GameController.SendMessageAction($"There were no augments {this.Card.Owner.CharacterCard.Title}'s trash to select", Priority.Medium, base.GetCardSource());
@@ -77,13 +77,20 @@ namespace Cauldron.Cypher
 
             if (cards.Count <= 1)
             {
-                if (moveResult.First().Destination.IsInPlay)
+                if (moveResult.First().Destination.IsInPlay && card.Location.IsNextToCard)
                 {
                     // The hero you augment this way may play a card now.
+                    HeroTurnTakerController httc = FindHeroTurnTakerController(card.Location.OwnerTurnTaker.ToHero());
 
-
-                    base.GameController.PlayCard()
-
+                    routine = base.SelectAndPlayCardFromHand(httc);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(routine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(routine);
+                    }
                 }
 
                 yield break;
@@ -103,62 +110,21 @@ namespace Cauldron.Cypher
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            if(moveResult.First().Destination.IsInPlay)
-
-
-            /*
-            var scsd = new SelectCardsDecision(GameController, this.HeroTurnTakerController, c => c.Location == TurnTaker.Trash, SelectionType.MoveCard,
-                numberOfCards: 2,
-                isOptional: false,
-                requiredDecisions: 0,
-                allowAutoDecide: true,
-                cardSource: GetCardSource());
-
-
-            IEnumerator coroutine = GameController.SelectCardsAndDoAction(scsd, scd => base.GameController.Moveca)
-            if (base.UseUnityCoroutines)
+            if (destination == base.TurnTaker.PlayArea)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                // The hero you augment this way may play a card now.
+                HeroTurnTakerController httc = FindHeroTurnTakerController(card.Location.OwnerTurnTaker.ToHero());
+
+                routine = base.SelectAndPlayCardFromHand(httc);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
             }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            */
-
-            /*
-            List<MoveCardDestination> list = new List<MoveCardDestination>();
-            list.Add(new MoveCardDestination(base.HeroTurnTaker.Hand, false, false, false));
-            list.Add(new MoveCardDestination(base.TurnTaker.PlayArea, false, false, false));
-
-            IEnumerator coroutine = base.RevealCardsFromDeckToMoveToOrderedDestinations(this.DecisionMaker, 
-                base.TurnTaker.Trash, list, false, true, null);
-
-
-            IEnumerable<MoveCardDestination> moveLocations = new[]
-            {
-                new MoveCardDestination(base.TurnTaker.PlayArea),
-                new MoveCardDestination(base.HeroTurnTaker.Hand)
-            };
-
-            base.GameController.SelectCardsFromLocationAndMoveThem()
-
-
-            IEnumerator routine = base.GameController.SelectCardsFromLocationAndMoveThem(this.HeroTurnTakerController,
-                this.HeroTurnTaker.Trash, 0, 2, new LinqCardCriteria(IsAugment), moveLocations,
-                cardSource: GetCardSource());
-
-
-            //IEnumerator routine = base.GameController.SelectLocationAndMoveCard(base.HeroTurnTakerController, base.GetTitanform(), locations, true, cardSource: base.GetCardSource());
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(routine);
-            }
-            */
         }
     }
 }

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-
 
 namespace Cauldron.Cypher
 {
@@ -56,7 +55,18 @@ namespace Cauldron.Cypher
             List<Card> augmentsInPlay = GetAugmentsInPlay();
             //base.GameController.SelectCardsAndPerformFunction(this.HeroTurnTakerController)
 
+            // Then, each augmented hero regains 2HP.
+            routine = this.GameController.GainHP(this.HeroTurnTakerController, IsAugmented, HpGain,
+                cardSource: GetCardSource());
 
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
         }
     }
 }
