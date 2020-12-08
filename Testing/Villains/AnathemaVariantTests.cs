@@ -181,7 +181,24 @@ namespace CauldronTests
             AssertInDeck(transformations);
             QuickShuffleCheck(1);
 
+        }
 
+        [Test()]
+        public void TestAcceleratedEvolutionAnathemaOnFlip_PlayAllUnderCards()
+        {
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Megalopolis");
+            StartGame();
+
+            IEnumerable<Card> cardsUnder = GetCards("Biofeedback", "TheStuffOfNightmares", "HeavyCarapace");
+            MoveCards(anathema, cardsUnder, anathema.CharacterCard.UnderLocation);
+            AssertNumberOfCardsUnderCard(anathema.CharacterCard, 3);
+            //When {Anathema} flips to this side, put all cards from underneath him into play. 
+            AssertNotFlipped(anathema);
+            FlipCard(anathema);
+            AssertFlipped(anathema);
+            AssertNumberOfCardsUnderCard(anathema.CharacterCard, 0);
+            AssertInPlayArea(anathema, cardsUnder);
+           
 
         }
 

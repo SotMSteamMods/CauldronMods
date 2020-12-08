@@ -88,6 +88,16 @@ namespace Cauldron.Anathema
 			}
 
 			//When {Anathema} flips to this side, put all cards from underneath him into play. 
+			IEnumerable<Card> cardsToMove = base.CharacterCard.UnderLocation.Cards;
+			coroutine = GameController.MoveCards(base.TurnTakerController, cardsToMove, (Card c) => new MoveCardDestination(c.Owner.PlayArea), isPutIntoPlay: true, cardSource: GetCardSource());
+			if (base.UseUnityCoroutines)
+			{
+				yield return base.GameController.StartCoroutine(coroutine);
+			}
+			else
+			{
+				base.GameController.ExhaustCoroutine(coroutine);
+			}
 
 			//Shuffle all copies of explosive transformation from the villain trash into the villain deck.
 			IEnumerable<Card> cardsToShuffle = FindCardsWhere((Card c) => c.Identifier == "ExplosiveTransformation" && base.TurnTaker.Trash.HasCard(c));
