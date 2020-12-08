@@ -119,8 +119,19 @@ namespace CauldronTests
             SetupGameController("Chokepoint", "Cauldron.Cricket/RenegadeCricketCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
+            Card staff = PutOnDeck("TelescopingStaff");
+            Card ring = PutOnDeck("TheLegacyRing");
             //Reveal the top card of a hero deck. You may discard a card to put it into play, otherwise put it into that player's hand.
+            QuickHandStorage(cricket);
             UsePower(cricket);
+            QuickHandCheck(-1);
+            AssertIsInPlay(staff);
+
+            DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
+            QuickHandStorage(cricket);
+            UsePower(cricket);
+            QuickHandCheck(-1);
+            AssertIsInPlay(ring);
         }
 
         [Test()]

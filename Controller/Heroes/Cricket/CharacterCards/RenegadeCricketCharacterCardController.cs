@@ -111,9 +111,19 @@ namespace Cauldron.Cricket
             if (DidSelectDeck(storedResults))
             {
                 Location selectedDeck = storedResults.FirstOrDefault().SelectedLocation.Location;
-                List<RevealCardsAction> revealedCards = new List<RevealCardsAction>();
+                List<Card> revealedCards = new List<Card>();
                 //Reveral the top card of a hero deck.
-                coroutine = base.GameController.RevealCards(base.TurnTakerController, selectedDeck, null, 1, revealedCards, RevealedCardDisplay.ShowRevealedCards, base.GetCardSource());
+                coroutine = base.GameController.RevealCards(base.TurnTakerController, selectedDeck, 1, revealedCards, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                coroutine = base.CleanupRevealedCards(selectedDeck.OwnerTurnTaker.Revealed, selectedDeck);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
