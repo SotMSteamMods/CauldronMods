@@ -894,9 +894,24 @@ namespace CauldronTests
             DealDamage(epe, haka, 2, DamageType.Melee);
             QuickHPCheck(-2, -2);
         }
-
         [Test()]
-        public void TestTheChaplianNoTitan()
+        public void TestTheChaplianPower1()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card moko = PlayCard("TaMoko");
+            PlayCard("Titanform");
+            Card chap = PlayCard("TheChaplain");
+            //{Titan} deals 1 target 3 projectile damage.
+            QuickHPStorage(omnitron);
+            UsePower(chap, 0);
+            QuickHPCheck(-3);
+            //first power does not destroy ongoings
+            AssertIsInPlay(moko);
+        }
+        [Test()]
+        public void TestTheChaplianPower2NoTitan()
         {
             SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -906,14 +921,15 @@ namespace CauldronTests
             Card chap = PlayCard("TheChaplain");
             //{Titan} deals 1 target 3 projectile damage.
             QuickHPStorage(omnitron);
-            UsePower(chap);
-            QuickHPCheck(-3);
+            UsePower(chap, 1);
             //If Titanform is in play, destroy 1 ongoing card.
             AssertIsInPlay(moko);
+            //this power does not deal damage
+            QuickHPCheck(0);
         }
 
         [Test()]
-        public void TestTheChaplianYesTitan()
+        public void TestTheChaplianPower2YesTitan()
         {
             SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -924,12 +940,12 @@ namespace CauldronTests
             DecisionSelectCard = moko;
 
             Card chap = PlayCard("TheChaplain");
-            //{Titan} deals 1 target 3 projectile damage.
             QuickHPStorage(omnitron);
-            UsePower(chap);
-            QuickHPCheck(-3);
+            UsePower(chap, 1);
             //If Titanform is in play, destroy 1 ongoing card.
             AssertInTrash(moko);
+            //this power does not deal damage
+            QuickHPCheck(0);
         }
 
         [Test()]
