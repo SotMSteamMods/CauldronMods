@@ -1070,6 +1070,28 @@ namespace CauldronTests
             AssertInPlayArea(necro, blood);
         }
 
+
+        [Test]
+
+        public void TestUndeadEnterDamage([Values("NecroZombie", "DemonicImp", "Ghoul", "PossessedCorpse")] string undeadIdentifier)
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Fanatic", "OmnitronIV");
+            StartGame();
+
+            //play 2 grid so 2 damage is inflicted on entry
+            PlayCard("InternalDefenseGrid");
+            PlayCard("InternalDefenseGrid");
+
+            //play two rituals so undead should have 4 hp
+            PlayCard("BloodRite");
+            PlayCard("DarkPact");
+
+            //put a undead in play
+            Card undead = PutIntoPlay(undeadIdentifier);
+            AssertInPlayArea(necro, undead);
+        }
+
+
         [Test()]
         public void TestTalismanImmuneToUndead()
         {
