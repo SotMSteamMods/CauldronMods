@@ -199,7 +199,7 @@ namespace CauldronTests
             Assert.IsNotNull(cricket);
             Assert.IsInstanceOf(typeof(WastelandRoninCricketCharacterCardController), cricket.CharacterCardController);
 
-            Assert.AreEqual(26, cricket.CharacterCard.HitPoints);
+            Assert.AreEqual(28, cricket.CharacterCard.HitPoints);
         }
 
         [Test()]
@@ -208,19 +208,19 @@ namespace CauldronTests
             SetupGameController("Chokepoint", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
-            Card staff = PutOnDeck("TelescopingStaff");
-            Card ring = PutOnDeck("TheLegacyRing");
-            //Reveal the top card of a hero deck. You may discard a card to put it into play, otherwise put it into that player's hand.
-            QuickHandStorage(cricket);
-            UsePower(cricket);
-            QuickHandCheck(-1);
-            AssertIsInPlay(staff);
+            //Increase damage dealt by {Cricket} during your next turn by 1. {Cricket} may deal 1 target 1 sonic damage.
 
-            DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
-            QuickHandStorage(cricket);
+            //{Cricket} may deal 1 target 1 sonic damage.
+            QuickHPStorage(choke);
             UsePower(cricket);
-            QuickHandCheck(-1);
-            AssertIsInPlay(ring);
+            QuickHPCheck(-1);
+
+            //{Cricket} may deal 1 target 1 sonic damage.
+            //Increase damage dealt by {Cricket} during your next turn by 1.
+            GoToStartOfTurn(cricket);
+            QuickHPStorage(choke);
+            UsePower(cricket);
+            QuickHPCheck(-2);
         }
 
         [Test()]

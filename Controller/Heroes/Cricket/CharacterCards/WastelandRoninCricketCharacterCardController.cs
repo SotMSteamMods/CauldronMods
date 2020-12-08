@@ -85,19 +85,22 @@ namespace Cauldron.Cricket
             int targetNumeral = GetPowerNumeral(1, 1);
             int damageNumeral = GetPowerNumeral(2, 1);
 
+            string increaseString = "One";
+            if (increaseNumeral == 2)
+            {
+                increaseString = "Two";
+            }
+            else if (increaseNumeral == 0)
+            {
+                increaseString = "Zero";
+            }
             //Increase damage dealt by {Cricket} during your next turn by 1.
-
-            //OnPhaseChangeStatusEffect
-
-            IncreaseDamageStatusEffect statusEffect = new IncreaseDamageStatusEffect(increaseNumeral);
+            OnPhaseChangeStatusEffect statusEffect = new OnPhaseChangeStatusEffect(base.Card, "IncreaseDamageResponse" + increaseNumeral, "Increase damage dealt by {Cricket} during your next turn by 1", new TriggerType[] { TriggerType.IncreaseDamage }, base.Card);
+            statusEffect.TurnTakerCriteria.IsSpecificTurnTaker = base.TurnTaker;
+            statusEffect.TurnPhaseCriteria.Phase = Phase.Start;
             statusEffect.UntilEndOfNextTurn(base.TurnTaker);
             statusEffect.UntilTargetLeavesPlay(base.CharacterCard);
-            //Only during next turn
-            IncreaseDamageStatusEffect reduceEffect = new IncreaseDamageStatusEffect(-1 * increaseNumeral);
-            reduceEffect.UntilStartOfNextTurn(base.TurnTaker);
-            reduceEffect.UntilTargetLeavesPlay(base.CharacterCard);
 
-            statusEffect.CombineWithStatusEffect(reduceEffect);
             IEnumerator coroutine = base.AddStatusEffect(statusEffect);
             if (base.UseUnityCoroutines)
             {
@@ -110,6 +113,51 @@ namespace Cauldron.Cricket
 
             //{Cricket} may deal 1 target 1 sonic damage.
             coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), damageNumeral, DamageType.Sonic, targetNumeral, false, 0, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        private IEnumerator IncreaseDamageResponse(int increaseNumeral)
+        {
+            IncreaseDamageStatusEffect statusEffect = new IncreaseDamageStatusEffect(increaseNumeral);
+            statusEffect.UntilEndOfPhase(base.TurnTaker, Phase.End);
+            statusEffect.UntilTargetLeavesPlay(base.CharacterCard);
+            IEnumerator coroutine = base.AddStatusEffect(statusEffect);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        public IEnumerator IncreaseDamageResponse1(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
+        {
+            IEnumerator coroutine = this.IncreaseDamageResponse(1);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        public IEnumerator IncreaseDamageResponse2(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
+        {
+            IEnumerator coroutine = this.IncreaseDamageResponse(2);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
