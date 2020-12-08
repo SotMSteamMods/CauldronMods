@@ -15,7 +15,16 @@ namespace Cauldron.Celadroch
 
         public ScreamingGaleCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
 
+        public override IEnumerator Play()
+        {
+            return base.Play();
+        }
+
+        public override void AddTriggers()
+        {
+            AddIncreaseDamageTrigger(dda => dda.DamageSource != null && IsVillainTarget(dda.DamageSource.Card), 1);
         }
     }
 }

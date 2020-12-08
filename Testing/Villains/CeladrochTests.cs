@@ -1015,5 +1015,28 @@ namespace CauldronTests
             DealDamage(haka, card, 2, DamageType.Projectile, true);
             QuickHPCheck(-2);
         }
+
+        [Test()]
+        public void TestScreamingGale()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            SuppressCeladrochMinionPlay();
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            StackDeckAfterShuffle(celadroch, new[] { "AvatarOfDeath", "TatteredDevil" });
+            StartGame(false);
+
+            var card = PlayCard("ScreamingGale");
+            AssertInPlayArea(celadroch, card);
+
+            var top = GetCard("AvatarOfDeath");
+            AssertInPlayArea(celadroch, top);
+
+            QuickHPStorage(ra, haka, legacy);
+            DealDamage(celadroch.CharacterCard, haka, 2, DamageType.Psychic);
+            DealDamage(top, ra, 2, DamageType.Radiant);
+            QuickHPCheck(-3, -3, 0);
+        }
     }
 }
