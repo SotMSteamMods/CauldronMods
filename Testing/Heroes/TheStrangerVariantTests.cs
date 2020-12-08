@@ -269,6 +269,130 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestWastelandRoninStrangerInnatePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger/WastelandRoninTheStrangerCharacter", "Haka", "Ra", "Megalopolis");
+            StartGame();
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            GoToUsePowerPhase(stranger);
+            Card rune = PutInHand("MarkOfBreaking");
+
+            //Discard a rune. If you do, {TheStranger} deals 1 target 4 infernal damage.
+            DecisionSelectCard = rune;
+            DecisionSelectTarget = baron.CharacterCard;
+            QuickHPStorage(baron, stranger, haka, ra);
+            QuickHandStorage(stranger);
+            UsePower(stranger.CharacterCard);
+            QuickHPCheck(-4, 0, 0, 0);
+            QuickHandCheck(-1);
+            AssertInTrash(rune);
+
+        }
+
+        [Test()]
+        public void TestWastelandRoninStrangerInnatePower_NoRuneNoDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger/WastelandRoninTheStrangerCharacter", "Haka", "Ra", "Megalopolis");
+            StartGame();
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            GoToUsePowerPhase(stranger);
+            DiscardAllCards(stranger);
+            PutInHand(stranger, new string[] { "GlyphOfDecay", "Corruption", "TheOldRoads" });
+
+            //Discard a rune. If you do, {TheStranger} deals 1 target 4 infernal damage.
+            DecisionSelectTarget = baron.CharacterCard;
+            QuickHPStorage(baron, stranger, haka, ra);
+            QuickHandStorage(stranger);
+            UsePower(stranger.CharacterCard);
+            QuickHPCheck(0, 0, 0, 0);
+            QuickHandCheckZero();
+
+        }
+
+        [Test()]
+        public void TestWastelandRoninStrangerIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger/WastelandRoninTheStrangerCharacter", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(stranger);
+
+            //One player may draw a card now.
+            GoToUseIncapacitatedAbilityPhase(stranger);
+            DecisionSelectTurnTaker = ra.TurnTaker;
+            QuickHandStorage(ra);
+            UseIncapacitatedAbility(stranger, 0);
+            QuickHandCheck(1);
+        }
+
+        [Test()]
+        public void TestWastelandRoninStrangerIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger/WastelandRoninTheStrangerCharacter", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(stranger);
+
+            //One hero target deals 1 target 1 infernal damage.
+            GoToUseIncapacitatedAbilityPhase(stranger);
+            DecisionSelectCard = haka.CharacterCard;
+            DecisionSelectTarget = ra.CharacterCard;
+            QuickHPStorage(haka, ra);
+            UseIncapacitatedAbility(stranger, 1);
+            QuickHPCheck(0, -1);
+
+        }
+
+        [Test()]
+        public void TestWastelandRoninStrangerIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger/WastelandRoninTheStrangerCharacter", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(stranger);
+
+            IEnumerable<Card> envToPlay = GetCards("CrampedQuartersCombat", "HostageSituation", "ImpendingCasualty");
+            PlayCards(envToPlay);
+            Card topDeck = PutOnDeck("PoliceBackup");
+
+            //Destroy all environment cards. Play the top card of the environment deck.
+            GoToUseIncapacitatedAbilityPhase(stranger);
+            AssertIsInPlay(envToPlay);
+            AssertInDeck(topDeck);
+            UseIncapacitatedAbility(stranger, 2);
+            AssertInTrash(envToPlay);
+            AssertIsInPlay(topDeck);
+
+        }
+
+        [Test()]
+        public void TestWastelandRoninStrangerIncap3_NoCardsInDeck()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger/WastelandRoninTheStrangerCharacter", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(stranger);
+
+            DiscardTopCards(FindEnvironment().TurnTaker.Deck, 15);
+
+            IEnumerable<Card> envToPlay = GetCards("CrampedQuartersCombat", "HostageSituation", "ImpendingCasualty");
+            PlayCards(envToPlay);
+
+            //Destroy all environment cards. Play the top card of the environment deck.
+            GoToUseIncapacitatedAbilityPhase(stranger);
+            AssertIsInPlay(envToPlay);
+            QuickShuffleStorage(FindEnvironment());
+            UseIncapacitatedAbility(stranger, 2);
+            QuickShuffleCheck(1);
+            AssertNumberOfCardsInDeck(FindEnvironment(), 14);
+
+        }
+
 
     }
 }

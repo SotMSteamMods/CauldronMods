@@ -560,7 +560,7 @@
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
-                "One hero target deals itself 1 infernal damage.",
+                "One hero target deals 1 target 1 infernal damage.",
                 "Destroy all environment cards. Play the top card of the environment deck."
             ],
             "flippedIcons": [
