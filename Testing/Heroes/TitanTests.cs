@@ -875,6 +875,25 @@ namespace CauldronTests
             DealDamage(epe, haka, 2, DamageType.Melee);
             QuickHPCheck(0, -4);
         }
+        [Test()]
+        public void TestStubbornGoliathNotFollowOutOfPlay()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PutOnDeck(omnitron, GetCard("Terraforming", 0));
+            Card epe = PlayCard("ElectroPulseExplosive");
+
+            Card gol = PlayCard("StubbornGoliath");
+            UsePower(gol);
+            //{Titan} deals up to 2 non-hero targets 2 infernal damage each.{BR}Until the start of your next turn, when those targets would deal damage, you may redirect that damage to {Titan}.
+            DestroyCard(epe);
+            PlayCard(epe);
+            QuickHPStorage(titan, haka);
+            DealDamage(omnitron, haka, 2, DamageType.Melee);
+            DealDamage(epe, haka, 2, DamageType.Melee);
+            QuickHPCheck(-2, -2);
+        }
 
         [Test()]
         public void TestTheChaplianNoTitan()
