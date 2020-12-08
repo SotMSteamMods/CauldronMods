@@ -29,6 +29,12 @@ namespace CauldronTests
             GameController.AddTemporaryTriggerInhibitor<DestroyCardAction>(t => t is Trigger<DestroyCardAction> dt && dt.CardSource.Card == pillar && !dt.Types.Contains(TriggerType.ReduceDamage), dda => false, pcc.GetCardSource());
         }
 
+        protected void SuppressCeladrochMinionPlay()
+        {
+            GameController.AddTemporaryTriggerInhibitor<CompletedCardPlayAction>(t => t is Trigger<CompletedCardPlayAction> pt && pt.CardSource.Card == celadroch.CharacterCard, pa => false, celadroch.CharacterCardController.GetCardSource());
+        }
+
+
         protected void SafetyRemovePillars()
         {
             var p1 = GetCard("PillarOfNight");
@@ -735,6 +741,214 @@ namespace CauldronTests
                 AssertIsInPlay(c);
             }
             QuickShuffleCheck(1);
+        }
+
+        [Test()]
+        public void TestZombies_MoveNextToAndDealDamage([Values("GraspingBreath","LeechingBreath","WhisperingBreath")] string zombie)
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StartGame(false);
+            SuppressCeladrochMinionPlay();
+
+            //setup haka to be the highest of all
+            PlayCard("Dominion");
+            DrawCard(haka);
+            SetHitPoints(legacy, 20);
+
+            GoToPlayCardPhase(celadroch);
+
+            var card = GetCard(zombie);
+            PlayCard(card);
+            AssertNextToCard(card, haka.CharacterCard);
+
+            DecisionAutoDecideIfAble = true;
+            QuickHPStorage(ra, haka, legacy);
+            GoToEndOfTurn(celadroch);
+
+            //celadroch's end of turn damage is included.
+            QuickHPCheck(-2, -5, 0);
+        }
+
+        [Test()]
+        public void TestZombies_IncapBehavior([Values("GraspingBreath", "LeechingBreath", "WhisperingBreath")] string zombie)
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StartGame(false);
+            SuppressCeladrochMinionPlay();
+
+            //setup haka to be the highest of all
+            PlayCard("Dominion");
+            DrawCard(haka);
+            SetHitPoints(legacy, 20);
+
+            GoToPlayCardPhase(celadroch);
+
+            var card = GetCard(zombie);
+            PlayCard(card);
+            AssertNextToCard(card, haka.CharacterCard);
+
+            DecisionAutoDecideIfAble = true;
+            GoToEndOfTurn(celadroch);
+
+            DealDamage(celadroch.CharacterCard, haka.CharacterCard, 99, DamageType.Cold);
+
+            AssertNextToCard(card, haka.CharacterCard);
+        }
+
+        [Test()]
+        public void TestGraspingBreath_PreventAction()
+        {
+            //[Values("GraspingBreath", "LeechingBreath", "WhisperingBreath")] string zombie
+
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StartGame(false);
+            SuppressCeladrochMinionPlay();
+
+            //setup haka to be the highest of all
+            PlayCard("Dominion");
+            DrawCard(haka);
+            SetHitPoints(legacy, 20);
+
+            GoToPlayCardPhase(celadroch);
+
+            var card = GetCard("GraspingBreath");
+            PlayCard(card);
+            AssertNextToCard(card, haka.CharacterCard);
+
+            QuickHandStorage(haka);
+            DrawCard(haka);
+            QuickHandCheck(0);
+        }
+
+        [Test()]
+        public void TestLeechingBreath_PreventAction()
+        {
+            //[Values("GraspingBreath", "LeechingBreath", "WhisperingBreath")] string zombie
+
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StartGame(false);
+            SuppressCeladrochMinionPlay();
+
+            //setup haka to be the highest of all
+            PlayCard("Dominion");
+            DrawCard(haka);
+            SetHitPoints(legacy, 20);
+
+            GoToPlayCardPhase(celadroch);
+
+            var card = GetCard("LeechingBreath");
+            PlayCard(card);
+            AssertNextToCard(card, haka.CharacterCard);
+
+            AssertNotUsablePower(haka, haka.CharacterCard);
+            UsePower(haka.CharacterCard);
+            AssertNotUsablePower(haka, haka.CharacterCard);
+        }
+
+        [Test()]
+        public void TestWhisperingBreath_PreventAction()
+        {
+            //[Values("GraspingBreath", "LeechingBreath", "WhisperingBreath")] string zombie
+
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StartGame(false);
+            SuppressCeladrochMinionPlay();
+
+            //setup haka to be the highest of all
+            PlayCard("Dominion");
+            DrawCard(haka);
+            SetHitPoints(legacy, 20);
+
+            GoToPlayCardPhase(celadroch);
+
+            var card = GetCard("WhisperingBreath");
+            PlayCard(card);
+            AssertNextToCard(card, haka.CharacterCard);
+
+            AssertCannotPlayCards(haka);
+        }
+
+
+        [Test()]
+        public void TestCelestials_EndOfTurnDamage([Values("HollowAngel", "TatteredDevil")] string celestials)
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StartGame(false);
+            SuppressCeladrochMinionPlay();
+
+            GoToPlayCardPhase(celadroch);
+
+            var card = GetCard(celestials);
+            PlayCard(card);
+
+            DecisionAutoDecideIfAble = true;
+            QuickHPStorage(ra, haka, legacy);
+            GoToEndOfTurn(celadroch);
+
+            //celadroch's end of turn damage is included.
+            QuickHPCheck(-2, -4, -4);
+        }
+
+        [Test()]
+        public void TestCelestials_SoloNotImmune([Values("HollowAngel", "TatteredDevil")] string celestials)
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StartGame(false);
+            SuppressCeladrochMinionPlay();
+
+            GoToPlayCardPhase(celadroch);
+
+            var card = GetCard(celestials);
+            PlayCard(card);
+
+            DecisionSelectTarget = card;
+            QuickHPStorage(card);
+            DealDamage(haka, card, 2, DamageType.Cold);
+            DealDamage(legacy, card, 2, DamageType.Cold);
+            QuickHPCheck(-4);
+        }
+
+        [Test()]
+        public void TestCelestials_TestImmunity()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StartGame(false);
+            SuppressCeladrochMinionPlay();
+
+            GoToPlayCardPhase(celadroch);
+
+            var c1 = GetCard("HollowAngel");
+            var c2 = GetCard("TatteredDevil");
+            PlayCard(c1);
+            PlayCard(c2);
+                        
+            QuickHPStorage(c1, c2);
+            DealDamage(haka, c1, 2, DamageType.Cold);
+            DealDamage(legacy, c1, 2, DamageType.Cold);
+            QuickHPCheck(-2, 0);
+
+            QuickHPStorage(c1, c2);
+            DealDamage(haka, c2, 2, DamageType.Cold);
+            DealDamage(legacy, c2, 2, DamageType.Cold);
+            QuickHPCheck(0, -2);
+
+
         }
     }
 }
