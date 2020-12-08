@@ -260,7 +260,7 @@
             ],
             "icons": [
                 "IncreaseDamageDealt",
-                "EndOfTurnTrigger",
+                "EndOfTurnAction",
                 "GainHP"
             ],
             "body": [
@@ -459,7 +459,7 @@
                 "DealDamagePsychic",
                 "DrawCardNow",
                 "DestroyEnvironment",
-                "ImmuneToDamage"
+                "CancelledDamageGreen"
             ],
             "openingLines": {
                 "default": "default placeholder",

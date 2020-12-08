@@ -172,7 +172,7 @@
 			],
 			"icons": [
 				"RedirectDamage",
-				"IrreducibleDamage",
+				"MakeDamageIrreducible",
 				"HasPower",
 				"DestroySelf"
 			],

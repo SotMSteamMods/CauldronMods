@@ -137,7 +137,6 @@
                 "Indestructible",
                 "LoseTheGame",
                 "DealDamageEnergy",
-                "PreventDamage",
                 "GainHP"
             ],
             "body": [

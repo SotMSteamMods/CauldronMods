@@ -199,11 +199,10 @@
                 "limited"
             ],
             "icons": [
-                "PreventDamage",
+                "CancelledDamageGreen",
                 "GainHP",
                 "HasPower",
-                "DealDamageRadiant",
-                "DrawCardNow"
+                "DealDamageRadiant"
             ],
             "body": "Whenever {Starlight} would deal damage to a hero target next to a constellation, instead that target regains that much HP.",
             "powers": [
@@ -292,7 +291,7 @@
             ],
             "icons": [
                 "Destroy",
-                "PreventDamage"
+                "CancelledDamageGreen"
             ],
             "body": "Whenever damage would be dealt to another hero target, you may destroy a constellation card in play to prevent that damage.",
             "flavorQuotes": [
