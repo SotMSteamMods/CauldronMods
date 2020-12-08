@@ -289,11 +289,18 @@ namespace CauldronTests
             StartGame();
 
             PlayCard("PlummetingMonorail");
-            PlayCard("ElectroPulseExplosive");
+            Card epe = PlayCard("ElectroPulseExplosive");
 
             QuickHPStorage(omnitron);
             PlayCard("HaplessShield");
             QuickHPCheck(-2);
+
+            //ensure it is the nonhero targets doing damage
+            DecisionSelectTarget = epe;
+            PlayCard("OffensiveTransmutation");
+            DecisionSelectTarget = null;
+            PlayCard("HaplessShield");
+            QuickHPCheck(-1);
         }
 
         [Test()]
@@ -318,6 +325,12 @@ namespace CauldronTests
             DealDamage(omnitron, haka, 2, DamageType.Melee);
             QuickHPCheck(0);
 
+            //test it resets each turn
+            PutOnDeck("S83AssaultDrone");
+            GoToStartOfTurn(titan);
+            DealDamage(omnitron, haka, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+            
             //If that target leaves play, destroy this card.
             DestroyCard(omnitron.CharacterCard);
             AssertInTrash(imm);
@@ -342,7 +355,62 @@ namespace CauldronTests
             AssertIsInPlay(tform);
             QuickHPCheck(-4, -1, -1, 0);
         }
+        [Test()]
+        public void TestJuggernautStrikePickAnyDeck()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "CaptainCosmic", "Megalopolis");
+            StartGame();
 
+            Card drone0 = PlayCard("S83AssaultDrone", 0);
+            Card drone1 = PlayCard("S83AssaultDrone", 1);
+
+            //{Titan} deals 1 target 4 infernal damage and each other target from that deck 1 projectile damage.
+            QuickHPStorage(omnitron.CharacterCard, drone0, drone1, haka.CharacterCard);
+            PlayCard("JuggernautStrike");
+            QuickHPCheck(-4, -1, -1, 0);
+
+            //check it can pick non-villain decks
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card targeting = PlayCard("TargetingInnocents");
+
+            QuickHPStorage(omnitron.CharacterCard, drone0, traffic, targeting, haka.CharacterCard);
+
+            DecisionSelectTarget = targeting;
+            PlayCard("JuggernautStrike");
+            QuickHPCheck(0, 0, -1, -4, 0);
+            DecisionSelectTarget = null;
+
+            Card weapon = PlayCard("CosmicWeapon");
+            Card crest = PlayCard("CosmicCrest");
+            DecisionSelectTargets = new Card[] { cosmic.CharacterCard, weapon };
+            QuickHPStorage(cosmic.CharacterCard, weapon, crest, traffic, drone0);
+            PlayCard("JuggernautStrike");
+            QuickHPCheck(-4, -1, -1, 0, 0);
+        }
+        public void TestTitanformDamage()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PutOnDeck("Terraforming");
+
+            Card tform = PlayCard("Titanform");
+
+            //When {Titan} would deal damage, you may destroy this card to increase that damage by 2.
+            //saying no - not destroyed no increase
+            DecisionYesNo = false;
+            QuickHPStorage(omnitron);
+            DealDamage(titan, omnitron, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+            AssertIsInPlay(tform);
+            //selecting yes this time
+            DecisionYesNo = true;
+            QuickHPStorage(omnitron);
+            DealDamage(titan, omnitron, 3, DamageType.Melee);
+            QuickHPCheck(-5);
+            AssertInTrash(tform);
+        }
         [Test()]
         public void TestTitanform()
         {
