@@ -673,6 +673,24 @@ namespace CauldronTests
             //For each environment card destroyed this way, {Titan} deals himself 1 fire damage.
             QuickHPCheck(-3);
         }
+        [Test()]
+        public void TestMs5DemolitionChargeIndividualHits()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "CaptainCosmic", "Megalopolis");
+            StartGame();
+
+            Card mono0 = PlayCard("PlummetingMonorail", 0);
+            Card mono1 = PlayCard("PlummetingMonorail", 1);
+            Card popo = PlayCard("PoliceBackup");
+
+            QuickHPStorage(titan);
+            PlayCard("EnergyBracer");
+            PlayCard("Ms5DemolitionCharge");
+            //Destroy all environment cards.
+            AssertInTrash(new Card[] { mono0, mono1, popo });
+            //For each environment card destroyed this way, {Titan} deals himself 1 fire damage.
+            QuickHPCheck(0);
+        }
 
         [Test()]
         public void TestObsidianGraspNotTitanform()
@@ -702,12 +720,16 @@ namespace CauldronTests
             DecisionsYesNo = new bool[] { false, true };
             DecisionSelectCards = new Card[] { omnitron.CharacterCard, veins, imm };
 
+            DecisionSelectFunction = 0;
+
+            QuickShuffleStorage(titan);
             QuickHPStorage(omnitron);
             PlayCard("ObsidianGrasp");
             //{Titan} deals 1 target 3 melee damage.
             QuickHPCheck(-3);
             //If Titanform is in play, you may discard a card to search your deck and trash for a copy of the card Immolate and play it next to that target. If you searched your deck, shuffle it.
             AssertNextToCard(imm, omnitron.CharacterCard);
+            QuickShuffleCheck(1);
         }
 
         [Test()]
@@ -722,12 +744,16 @@ namespace CauldronTests
             DecisionsYesNo = new bool[] { false, true };
             DecisionSelectCards = new Card[] { omnitron.CharacterCard, veins, imm };
 
+            DecisionSelectFunction = 1;
+
+            QuickShuffleStorage(titan);
             QuickHPStorage(omnitron);
             PlayCard("ObsidianGrasp");
             //{Titan} deals 1 target 3 melee damage.
             QuickHPCheck(-3);
             //If Titanform is in play, you may discard a card to search your deck and trash for a copy of the card Immolate and play it next to that target. If you searched your deck, shuffle it.
             AssertNextToCard(imm, omnitron.CharacterCard);
+            QuickShuffleCheck(0);
         }
 
         [Test()]
