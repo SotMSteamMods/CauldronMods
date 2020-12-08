@@ -137,7 +137,7 @@
             "title": "Radio Plaza",
             "icons": [
                 "Manipulate",
-                "IrreducibleDamage",
+                "MakeDamageIrreducible",
                 "StartOfTurnAction",
                 "DestroySelf"
             ],
@@ -155,7 +155,7 @@
                 "gangster"
             ],
             "icons": [
-                "ReduceDamgeTaken",
+                "ReduceDamageTaken",
                 "EndOfTurnAction",
                 "DealDamageProjectile"
             ],
@@ -176,7 +176,6 @@
             "icons": [
                 "Search",
                 "GainHP",
-                "Travel",
                 "DrawCardNow"
             ],
             "body": [
@@ -226,8 +225,7 @@
             ],
             "icons": [
                 "Search",
-                "PlayCardNow",
-                "Travel"
+                "PlayCardNow"
             ],
             "body": [
                 "When this card enters play, search the environment deck and trash for All Aboard and put it into play. Shuffle the environment deck and play its top card.",
@@ -245,7 +243,6 @@
             "icons": [
                 "Search",
                 "DealDamageProjectile",
-                "Travel",
                 "IncreaseDamageDealt"
             ],
             "body": [

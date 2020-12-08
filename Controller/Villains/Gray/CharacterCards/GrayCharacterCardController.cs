@@ -37,6 +37,7 @@ namespace Cauldron.Gray
                 //Whenever a radiation card is destroyed by a hero card, {Gray} deals that hero {H - 1} energy damage.
                 //Whenever a copy of Radioactive Cascade is destroyed, {Gray} deals the hero with the highest HP {H - 1} energy damage.
                 base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => action.WasCardDestroyed && action.CardToDestroy.Card.DoKeywordsContain("radiation"), this.DestroyRadiationBackResponse, TriggerType.DealDamage, TriggerTiming.After));
+                
                 //Advanced - Reduce damage dealt to villain targets by 1.
                 if (Game.IsAdvanced)
                 {
@@ -158,15 +159,9 @@ namespace Cauldron.Gray
 
         private IEnumerator DestroyRadiationBackResponse(DestroyCardAction action)
         {
-            TurnTaker responsibleTurnTaker;
-            if (action.ResponsibleCard != null)
-            {
-                responsibleTurnTaker = action.ResponsibleCard.Owner;
-            }
-            else
-            {
-                responsibleTurnTaker = base.TurnTaker;
-            }
+            Card source = action.GetCardDestroyer();
+            TurnTaker responsibleTurnTaker = source?.Owner;
+
             //Whenever a radiation card is destroyed by a hero card, {Gray} deals that hero {H - 1} energy damage.
             IEnumerator coroutine;
             //if its not a hero destroying it do no damage

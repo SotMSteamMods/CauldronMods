@@ -9,22 +9,17 @@ namespace Cauldron.Tiamat
 {
     public class AcidBreathCardController : CardController
     {
-        #region Constructors
 
         public AcidBreathCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowVillainTargetWithHighestHP();
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public override IEnumerator Play()
         {
             List<DestroyCardAction> storedResultsAction = new List<DestroyCardAction>();
             //Destroy 2 hero ongoing cards and 2 hero equipment cards.
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && c.IsHero), new int?(2), storedResultsAction: storedResultsAction,cardSource: this.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && c.IsHero), new int?(2), storedResultsAction: storedResultsAction, cardSource: this.GetCardSource());
             IEnumerator coroutine2 = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c) && c.IsHero), new int?(2), storedResultsAction: storedResultsAction, cardSource: this.GetCardSource());
             if (base.UseUnityCoroutines)
             {
@@ -39,7 +34,7 @@ namespace Cauldron.Tiamat
 
             //The Head with the highest HP deals {H} toxic damage to each hero who did not destroy a card this way.
             List<Card> characterCardsWithDestroyed = new List<Card>();
-            if(storedResultsAction.Count<DestroyCardAction>() > 0)
+            if (storedResultsAction.Count<DestroyCardAction>() > 0)
             {
                 using (List<DestroyCardAction>.Enumerator enumerator = storedResultsAction.GetEnumerator())
                 {
@@ -61,7 +56,5 @@ namespace Cauldron.Tiamat
             }
             yield break;
         }
-
-        #endregion Methods
     }
 }

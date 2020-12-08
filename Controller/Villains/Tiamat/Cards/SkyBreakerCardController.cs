@@ -9,16 +9,10 @@ namespace Cauldron.Tiamat
 {
     public class SkyBreakerCardController : CardController
     {
-        #region Constructors
-
         public SkyBreakerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowVillainTargetWithHighestHP();
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public override IEnumerator Play()
         {
@@ -35,7 +29,5 @@ namespace Cauldron.Tiamat
             }
             yield break;
         }
-
-		#endregion Methods
-	}
+    }
 }

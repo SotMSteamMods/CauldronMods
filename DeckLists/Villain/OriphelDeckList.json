@@ -69,11 +69,8 @@
                 "transformation"
             ],
             "icons": [
-                "StartOfTurnAction",
-                "DestroySelf",
                 "IncreaseDamageDealt",
                 "ReduceDamageTaken",
-                "EndOfTurnAction",
                 "DealDamageInfernal",
                 "DealDamageProjectile"
             ],

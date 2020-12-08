@@ -143,14 +143,17 @@ namespace Cauldron.Baccarat
                 }
             }
             //Discard the top 3 - X cards of your deck.
-            coroutine = base.DiscardCardsFromTopOfDeck(base.TurnTakerController, discardBase - X);
-            if (base.UseUnityCoroutines)
+            for (int i = 0; i < discardBase - X; i++)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                coroutine = base.GameController.DiscardTopCard(base.TurnTaker.Deck, null, (Card c) => true, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }
