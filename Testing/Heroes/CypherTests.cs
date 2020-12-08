@@ -158,5 +158,47 @@ namespace CauldronTests
             Assert.True(false, "TODO");
 
         }
+
+        [Test]
+        public void TestRebuiltToSucceedNoAugmentsInTrash()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+
+            StartGame();
+
+            Card rebuilt = GetCard(RebuiltToSucceedCardController.Identifier);
+
+            GoToPlayCardPhase(Cypher);
+            PlayCard(rebuilt);
+
+
+            Assert.True(false, "TODO");
+        }
+
+        [Test]
+        public void TestRebuiltToSucceedAugmentsInTrash()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+
+            Card dermal = GetCard(DermalAugCardController.Identifier);
+            Card muscle = GetCard(MuscleAugCardController.Identifier);
+            PutInTrash(Cypher, dermal);
+            PutInTrash(Cypher, muscle);
+
+            StartGame();
+
+            Card rebuilt = GetCard(RebuiltToSucceedCardController.Identifier);
+
+            DecisionSelectCards = new[] {dermal, muscle, ra.CharacterCard};
+            DecisionMoveCardDestination = new MoveCardDestination(Cypher.HeroTurnTaker.Hand);
+
+            GoToPlayCardPhase(Cypher);
+            PlayCard(rebuilt);
+
+
+            Assert.True(false, "TODO");
+        }
     }
 }
