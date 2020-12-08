@@ -786,6 +786,17 @@ namespace CauldronTests
             DealDamage(titan, haka, 2, DamageType.Melee);
             QuickHPCheck(-2);
 
+            //shouldn't trigger against heroes
+            DealDamage(haka, titan, 2, DamageType.Melee);
+            DealDamage(titan, haka, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //shouldn't trigger against things that haven't hit him
+            Card epe = PlayCard("ElectroPulseExplosive");
+            QuickHPStorage(epe);
+            DealDamage(titan, epe, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
             GoToPlayCardPhase(titan);
             //At the end of your turn {Titan} regains 1HP.
             QuickHPStorage(titan);
