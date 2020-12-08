@@ -9,6 +9,16 @@ namespace Cauldron.MagnificentMara
 {
     public class DowsingCrystalCardController : CardController
     {
+        public override bool AllowFastCoroutinesDuringPretend { 
+            get
+            {
+                if(this.Card.IsInPlay && Game.StatusEffects.Any((StatusEffect se) => se.CardSource == this.Card))
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
         public DowsingCrystalCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             AddThisCardControllerToList(CardControllerListType.CanCauseDamageOutOfPlay);
