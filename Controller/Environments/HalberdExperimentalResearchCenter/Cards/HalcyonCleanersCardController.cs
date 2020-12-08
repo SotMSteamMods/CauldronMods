@@ -31,7 +31,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
 
             //Whenever this card destroys a Test Subject, play the top card of the environment deck.
             //criteria for this card destroying a test subject
-            Func<DestroyCardAction, bool> destroyCriteria = (DestroyCardAction destroy) => destroy.CardToDestroy != null && base.IsTestSubject(destroy.CardToDestroy.Card) && destroy.CardSource != null && destroy.CardSource.Card == base.Card;
+            Func<DestroyCardAction, bool> destroyCriteria = (DestroyCardAction destroy) => destroy.CardToDestroy != null && base.IsTestSubject(destroy.CardToDestroy.Card) && destroy.GetCardDestroyer() == base.Card;
             //When a card is destroyed that matches the above criteria, play the top card of the environment deck
             base.AddTrigger<DestroyCardAction>(destroyCriteria, PlayTheTopCardOfTheEnvironmentDeckWithMessageResponse, TriggerType.PlayCard, TriggerTiming.After);
         }
