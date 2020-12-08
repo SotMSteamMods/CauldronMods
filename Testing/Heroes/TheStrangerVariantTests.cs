@@ -393,6 +393,101 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestCornStrangerInnatePower_StrangerSource()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger/CornTheStrangerCharacter", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToUsePowerPhase(stranger);
+
+            Card rune = PlayCard("MarkOfTheTwistedShadow");
+            AssertNextToCard(rune, haka.CharacterCard);
+
+            //{TheStranger} or a target next to a Rune deals 1 target 2 psychic damage.
+            DecisionSelectCard = stranger.CharacterCard;
+            DecisionSelectTarget = ra.CharacterCard;
+            QuickHPStorage(ra);
+            UsePower(stranger.CharacterCard);
+            QuickHPCheck(-2); //would have been +1 if haka had dealt it
+
+        }
+
+        [Test()]
+        public void TestCornStrangerInnatePower_NextToRuneSource()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger/CornTheStrangerCharacter", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToUsePowerPhase(stranger);
+
+            Card rune = PlayCard("MarkOfTheTwistedShadow");
+            AssertNextToCard(rune, haka.CharacterCard);
+
+            //{TheStranger} or a target next to a Rune deals 1 target 2 psychic damage.
+            DecisionSelectCard = haka.CharacterCard;
+            DecisionSelectTarget = ra.CharacterCard;
+            QuickHPStorage(ra);
+            UsePower(stranger.CharacterCard);
+            QuickHPCheck(-3); //is +1 because of twisted shadow
+
+        }
+
+        [Test()]
+        public void TestCornStrangerIncap1()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger/CornTheStrangerCharacter", "Ra", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(stranger);
+
+            //One player may draw a card now.
+            GoToUseIncapacitatedAbilityPhase(stranger);
+            DecisionSelectTurnTaker = ra.TurnTaker;
+            QuickHandStorage(ra);
+            UseIncapacitatedAbility(stranger, 0);
+            QuickHandCheck(1);
+        }
+
+        [Test()]
+        public void TestCornStrangerIncap2()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger/CornTheStrangerCharacter", "Ra", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(stranger);
+
+            //One player may use a power now.
+            GoToUseIncapacitatedAbilityPhase(stranger);
+            DecisionSelectTurnTaker = ra.TurnTaker;
+            DecisionSelectTarget = haka.CharacterCard;
+            QuickHPStorage(haka);
+            UseIncapacitatedAbility(stranger, 1);
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestCornStrangerIncap3()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger/CornTheStrangerCharacter", "Ra", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(stranger);
+
+            //play Ta Moko to check for irreducibility
+            PlayCard("TaMoko");
+
+            //One target deals itself 1 irreducible toxic damage.
+            GoToUseIncapacitatedAbilityPhase(stranger);
+            SelectCardsForNextDecision(haka.CharacterCard);
+            QuickHPStorage(haka);
+            UseIncapacitatedAbility(stranger, 2);
+            QuickHPCheck(-1);
+        }
+
 
     }
 }
