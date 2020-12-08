@@ -438,7 +438,7 @@
             "flavorReference": "Starlight And Lady Of The Wood, Starcrossed #72"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "LadyOfTheWoodCharacter",
             "promoIdentifier": "SeasonsOfChangeLadyOfTheWoodCharacter",
@@ -521,7 +521,15 @@
                 "CeladrochCharacter": "Adventure, discovery, life - all will exist after this. All but you, Celadroch.",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 3
+            "complexity": 3,
+             "tokenPools":[
+		 	{
+		 		"identifier":"LadyOfTheWoodElementPool",
+		 		"name":"Lady of the Wood's Element Pool",
+		 		"initialValue":0,
+		 		"minimumValue":0,
+		 		"color":"D1426D"
+		 	}]
         },
         {
             "identifier": "LadyOfTheWoodCharacter",
