@@ -260,7 +260,7 @@
             ],
             "icons": [
                 "IncreaseDamageDealt",
-                "EndOfTurnTrigger",
+                "EndOfTurnAction",
                 "GainHP"
             ],
             "body": [
