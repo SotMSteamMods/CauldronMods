@@ -32,7 +32,9 @@
             ],
             "advanced": "Increase damage dealt by {SwarmEater} to environment targets by 1.",
             "icons": [
-                "StartOfTurnAction"
+                "StartOfTurnAction",
+                "DealDamagePsychic",
+                "Manipulate"
             ],
             "advancedIcons": [],
             "flippedBody": "Assimiliating Nanoswarm",
@@ -42,7 +44,10 @@
                 "Whenever a villain card is played, {SwarmEater} deals the non-hero target other than itself with the lowest HP 3 melee damage."
             ],
             "flippedAdvanced": "Whenever {SwarmEater} destroys a villain target, play the top card of the villain deck.",
-            "flippedIcons": [],
+            "flippedIcons": [
+                "StartOfTurnAction",
+                "DealDamageMelee"
+            ],
             "flippedAdvancedIcons": [],
             "difficulty": 4,
             "openingLines": {
@@ -134,6 +139,7 @@
             ],
             "icons": [
                 "Indestructible",
+                "EndOfTurnAction",
                 "GainHP"
             ],
             "body": [
@@ -182,6 +188,7 @@
                 "one-shot"
             ],
             "icons": [
+                "MakeDamageIrreducible",
                 "DealDamageProjectile",
                 "DealDamageMelee"
             ],
@@ -478,6 +485,7 @@
             "advanced": "Single-Minded Pursuit is indestructible.",
             "icons": [
                 "RedirectDamage",
+                "EndOfTurnAction",
                 "PlayCardNow"
             ],
             "advancedIcons": [
