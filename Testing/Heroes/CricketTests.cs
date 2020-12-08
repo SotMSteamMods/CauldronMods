@@ -320,5 +320,44 @@ namespace CauldronTests
             //If you destroyed an environment card this way, {Cricket} deals each non-hero target 1 sonic damage.
             QuickHPCheck(-1, -1, -1, -1, -1);
         }
+
+        [Test()]
+        public void TestReturnPulse1Target()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            QuickHandStorage(cricket);
+            QuickHPStorage(akash.CharacterCard);
+            PlayCard("ReturnPulse");
+            //{Cricket} deals up to 3 non-hero targets 1 sonic damage each.
+            QuickHPCheck(-1);
+            //For each target dealt damage this way, draw a card.
+            QuickHandCheck(1);
+        }
+
+        [Test()]
+        public void TestReturnPulse3Target()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card rocks = PutOnDeck("LivingRockslide");
+            Card rail0 = PlayCard("PlummetingMonorail");
+
+            QuickHandStorage(cricket);
+            QuickHPStorage(akash.CharacterCard, rocks, rail0);
+            PlayCard("ReturnPulse");
+            //{Cricket} deals up to 3 non-hero targets 1 sonic damage each.
+            QuickHPCheck(-1, -1, -1);
+            //For each target dealt damage this way, draw a card.
+            QuickHandCheck(3);
+        }
+
+        [Test()]
+        public void Test()
+        {
+
+        }
     }
 }
