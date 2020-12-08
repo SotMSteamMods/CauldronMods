@@ -97,7 +97,7 @@
                 "glyph"
             ],
             "icons": [
-                "PreventDamage",
+                "CancelledDamageGreen",
                 "DealDamageFire"
             ],
             "body": [
@@ -121,7 +121,7 @@
                 "glyph"
             ],
             "icons": [
-                "PreventDamage",
+                "CancelledDamageGreen",
                 "HasPower",
                 "PlayCardNow",
                 "DealDamageToxic"
@@ -147,7 +147,7 @@
                 "glyph"
             ],
             "icons": [
-                "PreventDamage",
+                "CancelledDamageGreen",
                 "HasPower",
                 "DrawCardNow"
             ],
@@ -172,7 +172,7 @@
                 "glyph"
             ],
             "icons": [
-                "PreventDamage",
+                "CancelledDamageGreen",
                 "PlayCardNow"
             ],
             "body": [
@@ -267,7 +267,7 @@
                 "rune"
             ],
             "icons": [
-                "PlayExtraCard",
+                "PlayCardExtra",
                 "StartOfTurnAction",
                 "DealDamageToxic"
             ],

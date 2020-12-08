@@ -243,9 +243,7 @@
             "icons": [
                 "IncreaseDamageDealt",
                 "GainHP",
-                "HasPower",
-                "Discard",
-                "DrawCardNow"
+                "HasPower"
             ],
             "body": "When {Gargoyle} destroys a target by reducing its HP below 0, increase the next damage dealt by {Gargoyle} by X and he regains 1HP, where X is the amount of negative HP that target had.",
             "powers": [
@@ -343,7 +341,7 @@
                 "limited"
             ],
             "icons": [
-                "PreventDamage",
+                "CancelledDamageGreen",
                 "IncreaseDamageDealt"
             ],
             "body": [
@@ -438,7 +436,7 @@
             ],
             "flippedIcons": [
                 "PlayCardNow",
-                "PreventDamage",
+                "CancelledDamageGreen",
                 "DealDamageToxic",
                 "GainHP"
             ],
@@ -466,7 +464,6 @@
             "icons": [
                 "HasPower",
                 "DestroyOngoing",
-                "DestroyEnvironment",
                 "PlayCardNow",
                 "DrawCardNow"
             ],

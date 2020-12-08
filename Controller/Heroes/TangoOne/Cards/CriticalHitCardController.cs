@@ -75,10 +75,17 @@ namespace Cauldron.TangoOne
                 if (IsCritical(discardedCard))
                 {
                     // Card had the "critical" keyword, increase the damage
-                    ModifyDealDamageAction mdda = new IncreaseDamageAction(this.GameController, dda, DamageIncrease, false);
-                    dda.AddDamageModifier(mdda);
 
-                    coroutine = base.GameController.SendMessageAction(discardedCard.Title + " is a critical card, so damage is increased by 3!", Priority.Medium, base.GetCardSource(), associatedCards: new Card[] { discardedCard });
+                    coroutine = base.GameController.SendMessageAction(discardedCard.Title + " is a critical card!", Priority.Medium, base.GetCardSource(), associatedCards: new Card[] { discardedCard });
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                    coroutine = GameController.IncreaseDamage(dda, 3, false, GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);

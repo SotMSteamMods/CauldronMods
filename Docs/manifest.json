@@ -15,6 +15,7 @@
 			"Quicksilver",
 			"Starlight",
 			"TangoOne",
+			"Titan",
 			"TheKnight",
 			"TheStranger",
 			"Vanish"
@@ -25,10 +26,12 @@
 			"Gray",
 			"SwarmEater",
 			"TheRam",
-			"Tiamat"
+			"Tiamat",
+			"Vector"
 		],
 		"environments": [
 			"BlackwoodForest",
+			"TheCybersphere",
 			"FSCContinuanceWanderer",
 			"HalberdExperimentalResearchCenter",
 			"Northspar",

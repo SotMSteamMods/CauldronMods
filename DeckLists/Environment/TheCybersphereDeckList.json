@@ -33,7 +33,7 @@
                 "DealDamageProjectile"
             ],
             "body": "At the end of the environment turn, this card deals each other target 2 projectile damage.",
-            "flavorText": "The stranger opened his eyes within the{BR}artificial world. The first thing he saw{BR}was a ship, floating above the glowing{BR}buildings and aiming its cannons at him.",
+            "flavorText": "The Stranger opened his eyes within the{BR}artificial world. The first thing he saw{BR}was a ship, floating above the glowing{BR}buildings and aiming its cannons at him.",
             "hitpoints": 10
         },
         {
@@ -134,8 +134,9 @@
                 "PlayCardNow"
             ],
             "body": [
+                "At the start of the Environment turn, you may destroy this card.",
                 "Whenever a hero card destroys an environment target, that hero draws a card.",
-                "At the end of the Environment turn, either destroy this card or play the top card of the Environment deck."
+                "At the end of the Environment turn, play the top card of the Environment deck."
             ],
             "flavorText": "“Well,” said the Stranger, “I believe a{BR}little invisibility will even the playing{BR}field. Good hunting.” Next to him, Tango{BR}loaded her rifle and faded from sight."
         },
@@ -168,7 +169,7 @@
             "icons": [
                 "EndOfTurnAction",
                 "DealDamageEnergy",
-                "IrreducibleDamage"
+                "MakeDamageIrreducible"
             ],
             "body": [
                 "At the end of the environment turn, this card deals the 2 non-environment targets with the highest HP 2 irreducible energy damage each.",
