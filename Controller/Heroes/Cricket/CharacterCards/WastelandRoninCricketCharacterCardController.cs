@@ -106,7 +106,7 @@ namespace Cauldron.Cricket
                     {
                         List<SelectLocationDecision> storedLocation = new List<SelectLocationDecision>();
                         //Move the bottom card of a deck to the top.
-                        coroutine = base.GameController.SelectADeck(base.HeroTurnTakerController, SelectionType.RevealTopCardOfDeck, null, storedLocation, cardSource: base.GetCardSource());
+                        coroutine = base.GameController.SelectADeck(base.HeroTurnTakerController, SelectionType.RevealTopCardOfDeck, (Location deck) => true, storedLocation, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

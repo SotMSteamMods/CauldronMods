@@ -264,15 +264,19 @@ namespace CauldronTests
             StartGame();
             SetupIncap(akash);
 
-            Card phlange = PutInTrash("ArborealPhalanges");
-            Card ring = PutInTrash("TheLegacyRing");
-            Card defender = PutInTrash("SeismicDefender");
+            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(akash.TurnTaker.Deck), new LocationChoice(legacy.TurnTaker.Deck), new LocationChoice(env.TurnTaker.Deck) };
 
+            Card akashBottom = GetBottomCardOfDeck(akash);
+            Card legacyBottom = GetBottomCardOfDeck(legacy);
+            Card envBottom = GetBottomCardOfDeck(env);
+            //Move the bottom card of a deck to the top.
             UseIncapacitatedAbility(cricket, 2);
             UseIncapacitatedAbility(cricket, 2);
             UseIncapacitatedAbility(cricket, 2);
-            AssertInDeck(new Card[] { phlange, ring, defender });
-            AssertGameOver(EndingResult.AlternateVictory);
+
+            AssertOnTopOfDeck(akashBottom);
+            AssertOnTopOfDeck(legacyBottom);
+            AssertOnTopOfDeck(envBottom);
         }
     }
 }
