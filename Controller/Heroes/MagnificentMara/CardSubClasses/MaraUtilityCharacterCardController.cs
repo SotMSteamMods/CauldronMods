@@ -98,7 +98,6 @@ namespace Cauldron.MagnificentMara
                         //Log.Debug("Dowsing Crystal's trigger-on-Mara approach works so far.");
 
                         //attempts to give the damage a destroy-dowsing-crystal-for-boost effect
-                        AllowFastCoroutinesDuringPretend = false;
 
                         var damageSourceTempVar = (Card)AddTemporaryVariable("DowsingCrystalDamageSource", damageSource);
 
@@ -120,7 +119,6 @@ namespace Cauldron.MagnificentMara
 
                         RemoveTrigger(boostDamageTrigger);
                         RemoveTemporaryVariables();
-                        AllowFastCoroutinesDuringPretend = true;
                     }
 
                     //"Once before your next turn..."
