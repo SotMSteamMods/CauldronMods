@@ -425,7 +425,7 @@
             "hitpoints": 7
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "AnathemaCharacter",
             "promoIdentifier": "AcceleratedEvolutionAnathemaCharacter",
