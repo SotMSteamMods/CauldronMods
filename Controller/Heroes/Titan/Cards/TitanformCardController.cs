@@ -3,6 +3,8 @@ using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Handelabra;
 
 namespace Cauldron.Titan
 {
@@ -10,18 +12,13 @@ namespace Cauldron.Titan
     {
         public TitanformCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SetCardProperty("FirstTimeDamageDealt", false);
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.IsPropertyTrue("FirstTimeDamageDealt"), () => "Titan has been dealt damage since the his last turn", () => "Titan has not been dealt damage since the his last turn");
+            AllowFastCoroutinesDuringPretend = false;
         }
-
-        private const string FirstTimeDamageDealt = "FirstTimeDamageDealt";
 
         public override void AddTriggers()
         {
             //Whenever {Titan} is dealt damage by another target, reduce damage dealt to {Titan} by 1 until the start of your next turn.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.IsPropertyTrue("FirstTimeDamageDealt") && action.Target == base.CharacterCard, this.DealtDamageResponse, TriggerType.Hidden, TriggerTiming.After);
-            base.AddReduceDamageTrigger((Card c) => base.IsPropertyTrue("FirstTimeDamageDealt") && c == base.CharacterCard, 1);
-            base.AddAfterLeavesPlayAction((GameAction ga) => base.ResetFlagAfterLeavesPlay("FirstTimeDamageDealt"), TriggerType.Hidden);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Target == base.CharacterCard && !action.DamageSource.IsSameCard(this.CharacterCard) && action.DidDealDamage, this.DealtDamageResponse, TriggerType.CreateStatusEffect, TriggerTiming.After);
 
             //When {Titan} would deal damage, you may destroy this card to increase that damage by 2.
             base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard, this.DestroyThisCardToIncreaseDamageResponse, new TriggerType[] { TriggerType.DestroySelf, TriggerType.IncreaseDamage }, TriggerTiming.Before);
@@ -29,8 +26,38 @@ namespace Cauldron.Titan
 
         private IEnumerator DealtDamageResponse(DealDamageAction action)
         {
-            base.SetCardPropertyToTrueIfRealAction("FirstTimeDamageDealt");
+            var reduceDamageEffect = new ReduceDamageStatusEffect(1);
+            reduceDamageEffect.UntilStartOfNextTurn(this.TurnTaker);
+            reduceDamageEffect.TargetCriteria.IsSpecificCard = this.CharacterCard;
+            reduceDamageEffect.CardSource = this.Card;
+
+            IEnumerator coroutine;
+            var maybeExistingEffect = GetExistingEffect(reduceDamageEffect);
+            if(maybeExistingEffect != null)
+            {
+                maybeExistingEffect.CombineWithStatusEffect(reduceDamageEffect);
+                coroutine = GameController.SendMessageAction($"{this.CharacterCard.Title}'s damage resistance from {this.Card.Title} increases to {maybeExistingEffect.Amount}.", Priority.Medium, GetCardSource());
+            }
+            else
+            {
+                coroutine = AddStatusEffect(reduceDamageEffect);
+            }
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
+        }
+
+        private ReduceDamageStatusEffect GetExistingEffect(ReduceDamageStatusEffect newEffect)
+        {
+            var foundEffect = Game.StatusEffects.Where((StatusEffect se) => se is ReduceDamageStatusEffect && (se as ReduceDamageStatusEffect).IsSameAs(newEffect)).FirstOrDefault();
+            Log.Debug($"Found Status Effect: {foundEffect}");
+            return foundEffect != null ? foundEffect as ReduceDamageStatusEffect : null;
         }
 
         private IEnumerator DestroyThisCardToIncreaseDamageResponse(DealDamageAction action)

@@ -388,7 +388,8 @@ namespace CauldronTests
             PlayCard("JuggernautStrike");
             QuickHPCheck(-4, -1, -1, 0, 0);
         }
-        public void TestTitanformDamage()
+        [Test()]
+        public void TestTitanformDamageBoost()
         {
             SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -412,7 +413,7 @@ namespace CauldronTests
             AssertInTrash(tform);
         }
         [Test()]
-        public void TestTitanform()
+        public void TestTitanformDR()
         {
             SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -420,7 +421,8 @@ namespace CauldronTests
             PutOnDeck("Terraforming");
 
             Card tform = PlayCard("Titanform");
-
+            DecisionYesNo = false;
+            
             //Whenever {Titan} is dealt damage by another target, reduce damage dealt to {Titan} by 1 until the start of your next turn.
             QuickHPStorage(titan);
             DealDamage(omnitron, titan, 2, DamageType.Melee);
@@ -429,26 +431,28 @@ namespace CauldronTests
             QuickHPStorage(titan);
             DealDamage(omnitron, titan, 2, DamageType.Melee);
             QuickHPCheck(-1);
-
-            //First time in a new turn
+            //Third time - having been hit twice, he should have accumulated 2 DR
+            DealDamage(omnitron, titan, 2, DamageType.Melee);
+            QuickHPCheck(0);
+            
+            //Should wear off on his turn
             GoToStartOfTurn(titan);
-            QuickHPStorage(titan);
+            DealDamage(titan, titan, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+            //And not trigger on self-damage
+            DealDamage(titan, titan, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
             DealDamage(omnitron, titan, 2, DamageType.Melee);
             QuickHPCheck(-2);
 
-            //When {Titan} would deal damage, you may destroy this card to increase that damage by 2.
-            //saying no - not destroyed no increase
-            DecisionYesNo = false;
-            QuickHPStorage(omnitron);
-            DealDamage(titan, omnitron, 2, DamageType.Melee);
-            QuickHPCheck(-2);
-            AssertIsInPlay(tform);
-            //selecting yes this time
-            DecisionYesNo = true;
-            QuickHPStorage(omnitron);
-            DealDamage(titan, omnitron, 3, DamageType.Melee);
-            QuickHPCheck(-5);
-            AssertInTrash(tform);
+            DealDamage(titan, titan, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            //Should keep his DR until his turn starts
+            GoToStartOfTurn(haka);
+            DealDamage(titan, titan, 2, DamageType.Melee);
+            QuickHPCheck(-1);
         }
 
         [Test()]
