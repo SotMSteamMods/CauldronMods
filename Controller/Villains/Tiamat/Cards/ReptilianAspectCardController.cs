@@ -7,16 +7,10 @@ namespace Cauldron.Tiamat
 {
     public class ReptilianAspectCardController : CardController
     {
-        #region Constructors
-
         public ReptilianAspectCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public override void AddTriggers()
         {
@@ -36,7 +30,5 @@ namespace Cauldron.Tiamat
             }
             yield break;
         }
-
-        #endregion Methods
     }
 }

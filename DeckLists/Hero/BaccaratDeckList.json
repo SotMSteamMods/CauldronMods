@@ -21,7 +21,6 @@
             "icons": [
                 "HasPower",
                 "Discard",
-                "Manipulate",
                 "PlayCardNow"
             ],
             "hitpoints": 27,
@@ -243,8 +242,7 @@
             ],
             "icons": [
                 "Discard",
-                "Manipulate",
-                "PlayCardNow"
+                "Search"
             ],
             "body": [
                 "Discard the top card of your deck.",

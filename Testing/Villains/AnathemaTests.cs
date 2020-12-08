@@ -260,6 +260,62 @@ namespace CauldronTests
             QuickHPCheck(2);
         }
 
+
+        [Test()]
+        public void TestAnathemaGainsHPWhenVillainKillsArm()
+        {
+            SetupGameController("Cauldron.Anathema", "Ra", "Megalopolis");
+
+            StartGame();
+
+            //set anathema hp to 30 to give room to heal
+            SetHitPoints(anathema.CharacterCard, 30);
+            QuickHPStorage(anathema);
+
+            List<Card> arms = GetListOfArmsInPlay(anathema);
+            //have anathema destroy the arm to trigger healing
+            DealDamage(anathema.CharacterCard, arms[0], 99, DamageType.Psychic);
+
+            QuickHPCheck(2);
+        }
+
+        [Test()]
+        public void TestAnathemaGainsHPWhenVillainKillsBody()
+        {
+            SetupGameController("Cauldron.Anathema", "Ra", "Megalopolis");
+
+            StartGame();
+
+            //set anathema hp to 30 to give room to heal
+            SetHitPoints(anathema.CharacterCard, 30);
+            QuickHPStorage(anathema);
+
+            List<Card> body = GetListOfBodyInPlay(anathema);
+            //have anathema destroy the body to trigger healing
+            DealDamage(anathema.CharacterCard, body[0], 99, DamageType.Psychic);
+
+            QuickHPCheck(2);
+        }
+
+        [Test()]
+        public void TestAnathemaGainsHPWhenVillainKillsHead()
+        {
+            SetupGameController("Cauldron.Anathema", "Ra", "Megalopolis");
+
+            StartGame();
+
+            //set anathema hp to 30 to give room to heal
+            SetHitPoints(anathema.CharacterCard, 30);
+            QuickHPStorage(anathema);
+
+            List<Card> heads = GetListOfHeadsInPlay(anathema);
+            //have anathema destroy the head to trigger healing
+            DealDamage(anathema.CharacterCard, heads[0], 99, DamageType.Psychic);
+
+            QuickHPCheck(2);
+        }
+
+
         [Test()]
         public void TestAnathemaFlipsWhen0VillainTargets()
         {
@@ -1365,16 +1421,21 @@ namespace CauldronTests
             GoToPlayCardPhase(anathema);
 
             //put an arm in play to test effect
-            PlayCard("KnuckleDragger");
+            var knuckle = PlayCard("KnuckleDragger");
 
             //put biofeedback in play
             PutIntoPlay("Biofeedback");
 
             //Whenever an arm, body, or head is destroyed by a Hero target, Anathema deals himself 2 psychic damage.
             QuickHPStorage(anathema);
-            DestroyCard(GetListOfArmsInPlay(anathema)[0], ra.CharacterCard);
+            DestroyCard(knuckle, ra.CharacterCard);
             QuickHPCheck(-2);
 
+            //reset and test with damage.
+            PlayCard(knuckle);
+            QuickHPStorage(anathema);
+            DealDamage(ra.CharacterCard, knuckle, 99, DamageType.Fire, true);
+            QuickHPCheck(-2);
 
         }
 
