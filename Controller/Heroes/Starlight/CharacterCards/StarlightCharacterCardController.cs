@@ -108,23 +108,26 @@ namespace Cauldron.Starlight
             yield break;
         }
 
-        public override void AddTriggers()
+        public override void AddSideTriggers()
         {
-            base.AddTriggers();
+            base.AddSideTriggers();
 
-            //Triggers for the damage prevention incap ability.
-            //Uses Triggers, because StatusEffects have no parallel to AllowFastCoroutinesDuringPretend.
-            base.AddTrigger<DealDamageAction>(PreventDamageViaIncapCriteria, PreventDamageViaIncapResponse, TriggerType.CancelAction, TriggerTiming.Before, outOfPlayTrigger: true);
-            Func<ExpireStatusEffectAction, bool> clearIncapEffectCriteria = (ExpireStatusEffectAction action) =>
+            if (base.Card.IsFlipped)
             {
-                if (action.StatusEffect is OnPhaseChangeStatusEffect)
+                //Triggers for the damage prevention incap ability.
+                //Uses Triggers, because StatusEffects have no parallel to AllowFastCoroutinesDuringPretend.
+                base.AddSideTrigger(base.AddTrigger<DealDamageAction>(PreventDamageViaIncapCriteria, PreventDamageViaIncapResponse, TriggerType.CancelAction, TriggerTiming.Before));
+                Func<ExpireStatusEffectAction, bool> clearIncapEffectCriteria = (ExpireStatusEffectAction action) =>
                 {
-                    OnPhaseChangeStatusEffect effect = (OnPhaseChangeStatusEffect)action.StatusEffect;
-                    return effect.CardWithMethod == base.Card && effect.MethodToExecute == PreventDamageViaIncapEffectMarker;
-                }
-                return false;
-            };
-            base.AddTrigger<ExpireStatusEffectAction>(clearIncapEffectCriteria, ClearPreventDamageViaIncapResponse, TriggerType.Other, TriggerTiming.After, outOfPlayTrigger: true);
+                    if (action.StatusEffect is OnPhaseChangeStatusEffect)
+                    {
+                        OnPhaseChangeStatusEffect effect = (OnPhaseChangeStatusEffect)action.StatusEffect;
+                        return effect.CardWithMethod == base.Card && effect.MethodToExecute == PreventDamageViaIncapEffectMarker;
+                    }
+                    return false;
+                };
+                base.AddSideTrigger(base.AddTrigger<ExpireStatusEffectAction>(clearIncapEffectCriteria, ClearPreventDamageViaIncapResponse, TriggerType.Other, TriggerTiming.After));
+            }
         }
 
         private IEnumerator DrawACardOrPlayConstellationFromTrash()

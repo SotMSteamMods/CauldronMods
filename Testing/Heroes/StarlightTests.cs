@@ -21,6 +21,13 @@ namespace CauldronTests
             DealDamage(villain, starlight, 2, DamageType.Melee);
         }
 
+        private void ReviveFromIncap(int revivedHP, Card ritesOfRevival)
+        {
+            CardController revivalController = base.GameController.FindCardController(ritesOfRevival);
+            List<UnincapacitateHeroAction> storedResults = new List<UnincapacitateHeroAction>();
+            base.RunCoroutine(base.GameController.UnincapacitateHero(base.GameController.FindCardController(starlight.CharacterCard), revivedHP, 2, storedResults, revivalController.GetCardSource()));
+        }
+
         private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
         {
             foreach (var id in identifiers)
@@ -296,6 +303,45 @@ namespace CauldronTests
             QuickHPStorage(battalion);
             DealDamage(haka, battalion, 2, DamageType.Melee);
             QuickHPCheck(0);
+        }
+        [Test()]
+        public void TestStarlightIncap1_Revived()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheTempleOfZhuLong");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(starlight);
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToUseIncapacitatedAbilityPhase(starlight);
+            UseIncapacitatedAbility(starlight, 0);
+
+            //as lowest HP target, Mobile Defense Platform should be immune to damage
+            QuickHPStorage(mdp);
+            DealDamage(haka, mdp, 2, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //Revive Starlight
+            Card revival = GetCard("RitesOfRevival");
+            PlayCard(revival);
+            ReviveFromIncap(25, revival);
+            AssertHitPoints(starlight.CharacterCard, 25);
+
+            //Incap status effects are cleared when a hero is revived
+            //Mobile Defense Platform is no longer immune to damage
+            QuickHPStorage(mdp);
+            DealDamage(haka, mdp, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //Re-incap Starlight
+            SetupIncap(baron);
+            AssertIncapacitated(starlight);
+
+            //Mobile Defense Platform still takes damage normally
+            QuickHPStorage(mdp);
+            DealDamage(haka, mdp, 2, DamageType.Melee);
+            QuickHPCheck(-2);
         }
         [Test()]
         public void TestStarlightIncap2()
