@@ -137,16 +137,26 @@ namespace CauldronTests
         [Test()]
         public void TestRenegadeCricketIncap1()
         {
-            SetupGameController("Apostate", "Cauldron.Cricket/RenegadeCricketCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("AkashBhuta", "Cauldron.Cricket/RenegadeCricketCharacter", "Legacy", "Bunker", "TheScholar", "Magmaria");
             StartGame();
-            SetupIncap(apostate);
+            SetupIncap(akash);
 
-            Card ring = PutInHand("TheLegacyRing");
-            DecisionSelectCard = ring;
+            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(akash.TurnTaker.Deck), new LocationChoice(legacy.TurnTaker.Deck), new LocationChoice(env.TurnTaker.Deck) };
 
-            //One player may play a card now.
+            Card phlange = PutOnDeck("ArborealPhalanges");
+            //Select a deck and put its top card into play.
+            UseIncapacitatedAbility(cricket, 0);
+            AssertIsInPlay(phlange);
+
+            Card ring = PutOnDeck("TheLegacyRing");
+            //Select a deck and put its top card into play.
             UseIncapacitatedAbility(cricket, 0);
             AssertIsInPlay(ring);
+
+            Card defender = PutOnDeck("SeismicDefender");
+            //Select a deck and put its top card into play.
+            UseIncapacitatedAbility(cricket, 0);
+            AssertIsInPlay(defender);
         }
 
         [Test()]
@@ -156,29 +166,116 @@ namespace CauldronTests
             StartGame();
             SetupIncap(apostate);
 
-            PutInTrash("PlummetingMonorail");
-            PutInTrash("HostageSituation");
-            PutInTrash("RooftopCombat");
-
             //Shuffle the environment trash into the environment deck.
             UseIncapacitatedAbility(cricket, 1);
-            AssertNumberOfCardsInTrash(env, 0);
-            AssertNumberOfCardsInDeck(env, 15);
+            AssertNumberOfCardsInTrash(apostate, 2);
         }
 
         [Test()]
         public void TestRenegadeCricketIncap3()
         {
-            SetupGameController("Apostate", "Cauldron.Cricket/RenegadeCricketCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("AkashBhuta", "Cauldron.Cricket/RenegadeCricketCharacter", "Legacy", "Bunker", "TheScholar", "Magmaria");
+            StartGame();
+            SetupIncap(akash);
+
+            Card phlange = PutInTrash("ArborealPhalanges");
+            Card ring = PutInTrash("TheLegacyRing");
+            Card defender = PutInTrash("SeismicDefender");
+
+            //Shuffle 1 card from a trash back into its deck.
+            UseIncapacitatedAbility(cricket, 2);
+            UseIncapacitatedAbility(cricket, 2);
+            UseIncapacitatedAbility(cricket, 2);
+            AssertInDeck(new Card[] { phlange, ring, defender });
+        }
+
+        [Test()]
+        public void TestLoadWastelandRoninCricket()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            Assert.AreEqual(6, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(cricket);
+            Assert.IsInstanceOf(typeof(WastelandRoninCricketCharacterCardController), cricket.CharacterCardController);
+
+            Assert.AreEqual(26, cricket.CharacterCard.HitPoints);
+        }
+
+        [Test()]
+        public void TestWastelandRoninCricketInnatePower()
+        {
+            SetupGameController("Chokepoint", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card staff = PutOnDeck("TelescopingStaff");
+            Card ring = PutOnDeck("TheLegacyRing");
+            //Reveal the top card of a hero deck. You may discard a card to put it into play, otherwise put it into that player's hand.
+            QuickHandStorage(cricket);
+            UsePower(cricket);
+            QuickHandCheck(-1);
+            AssertIsInPlay(staff);
+
+            DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
+            QuickHandStorage(cricket);
+            UsePower(cricket);
+            QuickHandCheck(-1);
+            AssertIsInPlay(ring);
+        }
+
+        [Test()]
+        public void TestWastelandRoninCricketIncap1()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Bunker", "TheScholar", "Magmaria");
+            StartGame();
+            SetupIncap(akash);
+
+            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(akash.TurnTaker.Deck), new LocationChoice(legacy.TurnTaker.Deck), new LocationChoice(env.TurnTaker.Deck) };
+
+            Card phlange = PutOnDeck("ArborealPhalanges");
+            //Select a deck and put its top card into play.
+            UseIncapacitatedAbility(cricket, 0);
+            AssertIsInPlay(phlange);
+
+            Card ring = PutOnDeck("TheLegacyRing");
+            //Select a deck and put its top card into play.
+            UseIncapacitatedAbility(cricket, 0);
+            AssertIsInPlay(ring);
+
+            Card defender = PutOnDeck("SeismicDefender");
+            //Select a deck and put its top card into play.
+            UseIncapacitatedAbility(cricket, 0);
+            AssertIsInPlay(defender);
+        }
+
+        [Test()]
+        public void TestWastelandRoninCricketIncap2()
+        {
+            SetupGameController("Apostate", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             SetupIncap(apostate);
 
-            SetHitPoints(apostate, 17);
-            SetHitPoints(legacy, 17);
-            //1 hero target regains 2 HP.
-            QuickHPStorage(apostate, legacy);
+            //Shuffle the environment trash into the environment deck.
+            UseIncapacitatedAbility(cricket, 1);
+            AssertNumberOfCardsInTrash(apostate, 2);
+        }
+
+        [Test()]
+        public void TestWastelandRoninCricketIncap3()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Bunker", "TheScholar", "Magmaria");
+            StartGame();
+            SetupIncap(akash);
+
+            Card phlange = PutInTrash("ArborealPhalanges");
+            Card ring = PutInTrash("TheLegacyRing");
+            Card defender = PutInTrash("SeismicDefender");
+
+            //Shuffle 1 card from a trash back into its deck.
             UseIncapacitatedAbility(cricket, 2);
-            QuickHPCheck(0, 2);
+            UseIncapacitatedAbility(cricket, 2);
+            UseIncapacitatedAbility(cricket, 2);
+            AssertInDeck(new Card[] { phlange, ring, defender });
         }
     }
 }

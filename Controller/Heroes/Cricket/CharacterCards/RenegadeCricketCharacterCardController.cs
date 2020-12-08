@@ -24,7 +24,7 @@ namespace Cauldron.Cricket
                         //Select a deck and put its top card into play.
                         List<SelectLocationDecision> storedResults = new List<SelectLocationDecision>();
                         //Select a deck
-                        coroutine = base.GameController.SelectADeck(base.HeroTurnTakerController, SelectionType.RevealTopCardOfDeck, null, storedResults, cardSource: base.GetCardSource());
+                        coroutine = base.GameController.SelectADeck(base.HeroTurnTakerController, SelectionType.RevealTopCardOfDeck, (Location deck) => true, storedResults, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -54,7 +54,7 @@ namespace Cauldron.Cricket
                     {
                         //Discard the top 2 cards of the villain deck.
                         List<SelectLocationDecision> storedLocation = new List<SelectLocationDecision>();
-                        coroutine = base.FindVillainDeck(base.HeroTurnTakerController, SelectionType.DiscardCard, storedLocation, null);
+                        coroutine = base.FindVillainDeck(base.HeroTurnTakerController, SelectionType.DiscardCard, storedLocation, (Location deck) => true);
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
