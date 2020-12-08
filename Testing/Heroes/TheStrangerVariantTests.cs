@@ -176,6 +176,99 @@ namespace CauldronTests
             QuickHPCheck(10);
         }
 
+        [Test()]
+        public void TestPastStrangerInnatePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger/PastTheStrangerCharacter", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            GoToUsePowerPhase(stranger);
+            //The next time {TheStranger} would deal himself damage, redirect it to another target.
+            UsePower(stranger.CharacterCard);
+
+            //check redirected
+            SelectCardsForNextDecision(ra.CharacterCard);
+            QuickHPStorage(stranger, ra);
+            DealDamage(stranger, stranger, 1, DamageType.Toxic, isIrreducible: true);
+            QuickHPCheck(0, -1);
+
+            //only next damage
+            SelectCardsForNextDecision(ra.CharacterCard);
+            QuickHPStorage(stranger, ra);
+            DealDamage(stranger, stranger, 1, DamageType.Toxic, isIrreducible: true);
+            QuickHPCheck(-1, 0);
+
+            UsePower(stranger.CharacterCard);
+
+            //only self damage
+            SelectCardsForNextDecision(ra.CharacterCard);
+            QuickHPStorage(stranger, ra);
+            DealDamage(ra, stranger, 1, DamageType.Fire, isIrreducible: true);
+            QuickHPCheck(-1, 0);
+        }
+
+        [Test()]
+        public void TestPastStrangerIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger/PastTheStrangerCharacter", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(stranger);
+
+            //One player may use a power now.
+            GoToUseIncapacitatedAbilityPhase(stranger);
+            DecisionSelectTurnTaker = ra.TurnTaker;
+            DecisionSelectTarget = haka.CharacterCard;
+            QuickHPStorage(haka);
+            UseIncapacitatedAbility(stranger, 0);
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestPastStrangerIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger/PastTheStrangerCharacter", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            Card field = PlayCard("LivingForceField");
+            Card backlash = PlayCard("BacklashField");
+
+            SetupIncap(baron);
+            AssertIncapacitated(stranger);
+
+            //Destroy 1 ongoing card.
+            GoToUseIncapacitatedAbilityPhase(stranger);
+            DecisionSelectCard = backlash;
+            UseIncapacitatedAbility(stranger, 1);
+            AssertInPlayArea(baron, field);
+            AssertInTrash(backlash);
+        }
+
+        [Test()]
+        public void TestPastStrangerIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger/PastTheStrangerCharacter", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(ra, 7);
+            SetHitPoints(haka, 7);
+
+            PlayCard("TaMoko");
+
+            SetupIncap(baron);
+            AssertIncapacitated(stranger);
+
+            //The target with the lowest HP deals itself 1 irreducible toxic damage.
+            GoToUseIncapacitatedAbilityPhase(stranger);
+            SelectCardsForNextDecision(haka.CharacterCard);
+            QuickHPStorage(ra, haka);
+            UseIncapacitatedAbility(stranger, 2);
+            //is irreducible so should go through Ta Moko
+            QuickHPCheck(0, -1);
+
+        }
+
 
     }
 }
