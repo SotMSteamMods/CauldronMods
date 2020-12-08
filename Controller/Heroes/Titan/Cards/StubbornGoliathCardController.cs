@@ -32,41 +32,32 @@ namespace Cauldron.Titan
             }
 
             //Until the start of your next turn, when those targets would deal damage, you may redirect that damage to {Titan}.
-            if (storedSelect.FirstOrDefault() != null && storedSelect.FirstOrDefault().SelectedCard != null)
+            if (storedSelect.FirstOrDefault() != null)
             {
-                Card firstCard = storedSelect.FirstOrDefault().SelectedCard;
-                Card secondCard = storedSelect.LastOrDefault().SelectedCard;
                 List<StatusEffect> redirects = new List<StatusEffect> { };
 
-                if (firstCard.IsInPlay)
+                foreach (SelectCardDecision decision in storedSelect)
                 {
-                    RedirectDamageStatusEffect redirectDamageStatusEffect = new RedirectDamageStatusEffect();
-                    //Until the start of your next turn...
-                    redirectDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-                    //...when those targets would deal damage...
-                    redirectDamageStatusEffect.SourceCriteria.IsSpecificCard = firstCard;
-                    //...you may redirect...
-                    redirectDamageStatusEffect.IsOptional = true;
-                    //...that damage to {Titan}.
-                    redirectDamageStatusEffect.RedirectTarget = base.CharacterCard;
-                    redirectDamageStatusEffect.UntilTargetLeavesPlay(firstCard);
+                    if (decision.SelectedCard != null && decision.SelectedCard.IsInPlayAndHasGameText)
+                    {
+                        RedirectDamageStatusEffect redirectDamageStatusEffect = new RedirectDamageStatusEffect();
+                        //Until the start of your next turn...
+                        redirectDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+                        //...when those targets would deal damage...
+                        redirectDamageStatusEffect.SourceCriteria.IsSpecificCard = decision.SelectedCard;
+                        //...you may redirect...
+                        redirectDamageStatusEffect.IsOptional = true;
+                        //...that damage to {Titan}.
+                        redirectDamageStatusEffect.RedirectTarget = base.CharacterCard;
+                        redirectDamageStatusEffect.UntilTargetLeavesPlay(decision.SelectedCard);
 
-                    //prevent it from asking to redirect from Titan to Titan
-                    redirectDamageStatusEffect.TargetCriteria.IsNotSpecificCard = base.CharacterCard;
+                        //prevent it from asking to redirect from Titan to Titan
+                        redirectDamageStatusEffect.TargetCriteria.IsNotSpecificCard = base.CharacterCard;
 
-                    redirects.Add(redirectDamageStatusEffect);
+                        redirects.Add(redirectDamageStatusEffect);
+                    }
                 }
-                if (firstCard != secondCard && secondCard.IsInPlay)
-                {
-                    RedirectDamageStatusEffect redirectDamageStatusEffect = new RedirectDamageStatusEffect();
-                    redirectDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-                    redirectDamageStatusEffect.SourceCriteria.IsSpecificCard = secondCard;
-                    redirectDamageStatusEffect.IsOptional = true;
-                    redirectDamageStatusEffect.RedirectTarget = base.CharacterCard;
-                    redirectDamageStatusEffect.UntilTargetLeavesPlay(secondCard);
-                    redirectDamageStatusEffect.TargetCriteria.IsNotSpecificCard = base.CharacterCard;
-                    redirects.Add(redirectDamageStatusEffect);
-                }
+
                 foreach (StatusEffect effect in redirects)
                 {
                     coroutine = base.AddStatusEffect(effect);
