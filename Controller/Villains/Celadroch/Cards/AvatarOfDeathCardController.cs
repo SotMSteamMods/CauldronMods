@@ -15,7 +15,28 @@ namespace Cauldron.Celadroch
          */
         public AvatarOfDeathCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
 
+        public override void AddTriggers()
+        {
+            AddStartOfTurnTrigger(tt => tt == TurnTaker, pca => DestroyOngoingResponse(), TriggerType.DestroyCard);
+
+            AddReduceDamageTrigger(c => c == Card, 1);
+
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => c.IsHero && c.IsTarget, TargetType.All, H, DamageType.Projectile);
+        }
+
+        private IEnumerator DestroyOngoingResponse()
+        {
+            var coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria(c => c.IsHero && c.IsOngoing, "hero ongoing"), false, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
     }
 }

@@ -674,8 +674,8 @@ namespace CauldronTests
         public void TestCeladroch_CardsPlayedNoDestoryCards()
         {
             SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
-
-            StackAfterShuffle(celadroch.TurnTaker.Deck, new[] { "AvatarOfDeath" });
+            SuppressCeladrochMinionPlay();
+            StackAfterShuffle(celadroch.TurnTaker.Deck, new[] { "TatteredDevil" });
 
             AddTokensToPool(stormPool, 3);
             DecisionYesNo = false;
@@ -689,7 +689,8 @@ namespace CauldronTests
             GoToPlayCardPhase(celadroch);
             PlayTopCard(celadroch);
 
-            DecisionSelectCards = new[] { haka.CharacterCard, o1, o2, o3 };
+            DecisionAutoDecideIfAble = true;
+            DecisionSelectCards = new[] { o1, o2, o3 };
 
             GoToEndOfTurn(celadroch);
 
@@ -947,8 +948,72 @@ namespace CauldronTests
             DealDamage(haka, c2, 2, DamageType.Cold);
             DealDamage(legacy, c2, 2, DamageType.Cold);
             QuickHPCheck(0, -2);
+        }
+
+        [Test()]
+        public void TestAvatarOfDeath_StartOfTurn()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StartGame(false);
+            SuppressCeladrochMinionPlay();
+
+            GoToEndOfTurn(env);
+
+            var o1 = PlayCard(haka, "Dominion", 0, true);
+            AssertIsInPlay(o1);
+
+            var card = GetCard("AvatarOfDeath");
+            PlayCard(card);
+            AssertIsInPlay(card);
+
+            GoToStartOfTurn(celadroch);
+
+            AssertInTrash(o1);
+        }
+
+        [Test()]
+        public void TestAvatarOfDeath_EndOfTurn()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StartGame(false);
+            SuppressCeladrochMinionPlay();
+
+            var card = GetCard("AvatarOfDeath");
+            PlayCard(card);
+            AssertIsInPlay(card);
 
 
+            DecisionAutoDecideIfAble = true;
+            QuickHPStorage(ra, haka, legacy);
+            GoToEndOfTurn(celadroch);
+
+            //celadroch's end of turn damage is included.
+            QuickHPCheck(-3, -5, -5);
+        }
+
+        public void TestAvatarOfDeath_ReduceDamage()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StartGame(false);
+            SuppressCeladrochMinionPlay();
+
+            var card = GetCard("AvatarOfDeath");
+            PlayCard(card);
+            AssertIsInPlay(card);
+
+            QuickHPStorage(card);
+            DealDamage(haka, card, 2, DamageType.Projectile);
+            QuickHPCheck(-1);
+
+            QuickHPStorage(card);
+            DealDamage(haka, card, 2, DamageType.Projectile, true);
+            QuickHPCheck(-2);
         }
     }
 }
