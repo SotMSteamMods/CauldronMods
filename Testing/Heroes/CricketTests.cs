@@ -355,9 +355,85 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void Test()
+        public void TestSilentStalker()
         {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
 
+            DecisionSelectPowers = new Card[] { cricket.CharacterCard, null };
+
+            PlayCard("SilentStalker");
+            //At the end of your turn, if {Cricket} dealt no damage this turn, you may use a power.
+            GoToEndOfTurn(cricket);
+            //Use Cricket's base power
+            QuickHPStorage(legacy);
+            DealDamage(akash, legacy, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+        }
+
+        [Test()]
+        public void TestSonicAmplifier()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card amp = PlayCard("SonicAmplifier");
+            Card top = cricket.TurnTaker.Deck.TopCard;
+            //Whenever {Cricket} deals sonic damage to a target, you may put the top card of your deck beneath this one. Cards beneath this one are not considered to be in play.
+            DealDamage(cricket, akash, 2, DamageType.Sonic);
+            AssertUnderCard(amp, top);
+
+            //Power: Discard all cards beneath this one. {Cricket} deals 1 target X sonic damage, where X is the number of cards discarded this way.
+            QuickHPStorage(akash);
+            UsePower(amp);
+            QuickHPCheck(-1);
+
+            DealDamage(cricket, akash, 2, DamageType.Sonic);
+            DealDamage(cricket, akash, 2, DamageType.Sonic);
+            DealDamage(cricket, akash, 2, DamageType.Sonic);
+            //the power usage puts one under this
+            AssertNumberOfCardsUnderCard(amp, 4);
+
+            QuickHPStorage(akash);
+            UsePower(amp);
+            QuickHPCheck(-4);
+        }
+
+        [Test()]
+        public void TestSoundMasking()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card rail = PlayCard("PlummetingMonorail");
+            Card mask = PlayCard("SoundMasking");
+
+            //All targets are immune to damage.
+            QuickHPStorage(akash.CharacterCard, legacy.CharacterCard, bunker.CharacterCard, rail);
+            DealDamage(akash, legacy, 2, DamageType.Sonic);
+            DealDamage(cricket, akash, 2, DamageType.Sonic);
+            DealDamage(cricket, bunker, 2, DamageType.Sonic);
+            DealDamage(cricket, rail, 2, DamageType.Sonic);
+            QuickHPCheckZero();
+
+            //At the start of your turn, destroy this card.
+            GoToStartOfTurn(cricket);
+            AssertInTrash(mask);
+        }
+
+        [Test()]
+        public void TestSubharmonicReceiver()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card sub = PlayCard("SubharmonicReceiver");
+
+            //Each player may draw a card. When a player draws a card this way, 1 other player must discard a card.
+            QuickHandStorage(cricket, legacy, bunker, scholar);
+            UsePower(sub);
+            //All draw 1, Cricket -3 for other heroes, Legacy -1 for Cricket
+            QuickHandCheck(-2, 0, 1, 1);
         }
     }
 }

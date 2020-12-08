@@ -20,7 +20,7 @@ namespace Cauldron.Cricket
             int otherPlayers = GetPowerNumeral(0, 1);
             List<DrawCardAction> storedResults = new List<DrawCardAction>();
             //Each player may draw a card.
-            IEnumerator coroutine = base.EachPlayerDrawsACard((HeroTurnTaker htt) => htt != base.HeroTurnTaker, true, storedResults: storedResults);
+            IEnumerator coroutine = base.EachPlayerDrawsACard(optional: true, storedResults: storedResults);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -39,7 +39,8 @@ namespace Cauldron.Cricket
                     for (int i = 0; i < otherPlayers; i++)
                     {
                         //...1 other player must discard a card.
-                        SelectTurnTakerDecision decision = new SelectTurnTakerDecision(base.GameController, base.HeroTurnTakerController, base.Game.TurnTakers.Where((TurnTaker tt) => tt.IsHero && tt != storedResults.FirstOrDefault().HeroTurnTaker), SelectionType.DrawExtraCard, true, cardSource: base.GetCardSource());
+                        IEnumerable<TurnTaker> choices = base.Game.TurnTakers.Where((TurnTaker tt) => tt.IsHero && tt.ToHero() != action.HeroTurnTaker);
+                        SelectTurnTakerDecision decision = new SelectTurnTakerDecision(base.GameController, base.HeroTurnTakerController, choices, SelectionType.DiscardCard, true, cardSource: base.GetCardSource());
                         coroutine = base.GameController.SelectTurnTakerAndDoAction(decision, (TurnTaker tt) => base.GameController.SelectAndDiscardCard(base.FindHeroTurnTakerController(tt.ToHero())));
                         if (base.UseUnityCoroutines)
                         {
