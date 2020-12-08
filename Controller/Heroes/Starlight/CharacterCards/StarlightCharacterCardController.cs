@@ -1,5 +1,6 @@
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,28 @@ namespace Cauldron.Starlight
 {
     public class StarlightCharacterCardController : StarlightSubCharacterCardController
     {
+
+        private static readonly string PreventDamageViaIncapPropertyKey = "StarlightIncapPreventDamageToOrByLowest";
+        private static readonly string PreventDamageViaIncapEffectMarker = "NeverCalledStarlightIncapPreventDamageToOrByLowest";
+        private bool? PreventDamageViaIncap
+        {
+            get;
+            set;
+        }
+
+        public override bool AllowFastCoroutinesDuringPretend
+        {
+            get
+            {
+                bool? incapIsActive = base.GetCardPropertyJournalEntryBoolean(PreventDamageViaIncapPropertyKey);
+                return !incapIsActive.HasValue || !incapIsActive.Value;
+            }
+        }
+
         public StarlightCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria((Card c) => IsConstellation(c), "constellation"));
+            AllowFastCoroutinesDuringPretend = false;
         }
 
         public override IEnumerator UsePower(int index = 0)
@@ -36,19 +56,21 @@ namespace Cauldron.Starlight
                 case 0:
                     {
                         //"Until the start of your next turn, prevent all damage that would be dealt to or by the target with the lowest HP.",
-                        OnDealDamageStatusEffect lowestTargetImmunity = new OnDealDamageStatusEffect(Card, "LowestTargetImmunity", "The target with the lowest HP is immune to damage and cannot deal damage.", new TriggerType[] { TriggerType.MakeImmuneToDamage }, TurnTaker, Card);
-                        lowestTargetImmunity.UntilStartOfNextTurn(TurnTaker);
-                        lowestTargetImmunity.CardSource = Card;
-                        lowestTargetImmunity.SourceCriteria.IsTarget = true;
-                        lowestTargetImmunity.BeforeOrAfter = BeforeOrAfter.Before;
-                        IEnumerator coroutine = AddStatusEffect(lowestTargetImmunity);
-                        if (UseUnityCoroutines)
+                        //Secretly set a property on this card that is checked by triggers, in order to apply the effect.
+                        base.AddCardPropertyJournalEntry(PreventDamageViaIncapPropertyKey, true);
+                        //This status effect displays UI text but provides no behavior on its own.
+                        //The method name is fake. Another trigger clears the above property when this status effect is removed.
+                        OnPhaseChangeStatusEffect displayEffect = new OnPhaseChangeStatusEffect(Card, PreventDamageViaIncapEffectMarker, "The target with the lowest HP is immune to damage and cannot deal damage.", new TriggerType[] { }, base.Card);
+                        displayEffect.UntilStartOfNextTurn(base.TurnTaker);
+                        IEnumerator coroutine = base.AddStatusEffect(displayEffect);
+
+                        if (base.UseUnityCoroutines)
                         {
-                            yield return GameController.StartCoroutine(coroutine);
+                            yield return base.GameController.StartCoroutine(coroutine);
                         }
                         else
                         {
-                            GameController.ExhaustCoroutine(coroutine);
+                            base.GameController.ExhaustCoroutine(coroutine);
                         }
                         break;
                     }
@@ -84,6 +106,28 @@ namespace Cauldron.Starlight
 
 
             yield break;
+        }
+
+        public override void AddSideTriggers()
+        {
+            base.AddSideTriggers();
+
+            if (base.Card.IsFlipped)
+            {
+                //Triggers for the damage prevention incap ability.
+                //Uses Triggers, because StatusEffects have no parallel to AllowFastCoroutinesDuringPretend.
+                base.AddSideTrigger(base.AddTrigger<DealDamageAction>(PreventDamageViaIncapCriteria, PreventDamageViaIncapResponse, TriggerType.CancelAction, TriggerTiming.Before));
+                Func<ExpireStatusEffectAction, bool> clearIncapEffectCriteria = (ExpireStatusEffectAction action) =>
+                {
+                    if (action.StatusEffect is OnPhaseChangeStatusEffect)
+                    {
+                        OnPhaseChangeStatusEffect effect = (OnPhaseChangeStatusEffect)action.StatusEffect;
+                        return effect.CardWithMethod == base.Card && effect.MethodToExecute == PreventDamageViaIncapEffectMarker;
+                    }
+                    return false;
+                };
+                base.AddSideTrigger(base.AddTrigger<ExpireStatusEffectAction>(clearIncapEffectCriteria, ClearPreventDamageViaIncapResponse, TriggerType.Other, TriggerTiming.After));
+            }
         }
 
         private IEnumerator DrawACardOrPlayConstellationFromTrash()
@@ -129,39 +173,50 @@ namespace Cauldron.Starlight
             return HeroTurnTaker.Trash.Cards.Where((Card card) => IsConstellation(card) && GameController.CanPlayCard(FindCardController(card), false, null, false, true) == CanPlayCardResult.CanPlay);
         }
 
-        public IEnumerator LowestTargetImmunity(DealDamageAction dealDamage, HeroTurnTaker hero = null, StatusEffect effect = null, int[] powerNumerals = null)
+        private bool PreventDamageViaIncapCriteria(DealDamageAction dealDamage)
         {
-            List<bool> storedResults = new List<bool>();
+            bool? incapIsActive = base.GetCardPropertyJournalEntryBoolean(PreventDamageViaIncapPropertyKey);
+            return incapIsActive.HasValue && incapIsActive.Value;
+        }
 
-            //Is the target of the damage the lowest HP target?
-            IEnumerator coroutine = DetermineIfGivenCardIsTargetWithLowestOrHighestHitPoints(dealDamage.Target, highest: false, (Card card) => GameController.IsCardVisibleToCardSource(card, GetCardSource()), dealDamage, storedResults);
-            if (UseUnityCoroutines)
+        private IEnumerator PreventDamageViaIncapResponse(DealDamageAction dealDamage)
+        {
+            if (base.GameController.PretendMode)
             {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
+                List<bool> storedResults = new List<bool>();
 
-            //If not, is the source of the damage the lowest HP target?
-            if (!storedResults.First() && dealDamage.DamageSource.IsTarget)
-            {
-                IEnumerator coroutine2 = DetermineIfGivenCardIsTargetWithLowestOrHighestHitPoints(dealDamage.DamageSource.Card, highest: false, (Card card) => GameController.IsCardVisibleToCardSource(card, GetCardSource()), dealDamage, storedResults);
+                //Is the target of the damage the lowest HP target?
+                IEnumerator coroutine = DetermineIfGivenCardIsTargetWithLowestOrHighestHitPoints(dealDamage.Target, highest: false, (Card card) => GameController.IsCardVisibleToCardSource(card, GetCardSource()), dealDamage, storedResults);
                 if (UseUnityCoroutines)
                 {
-                    yield return GameController.StartCoroutine(coroutine2);
+                    yield return GameController.StartCoroutine(coroutine);
                 }
                 else
                 {
-                    GameController.ExhaustCoroutine(coroutine2);
+                    GameController.ExhaustCoroutine(coroutine);
                 }
+
+                //If not, is the source of the damage the lowest HP target?
+                if (!storedResults.First() && dealDamage.DamageSource.IsTarget)
+                {
+                    IEnumerator coroutine2 = DetermineIfGivenCardIsTargetWithLowestOrHighestHitPoints(dealDamage.DamageSource.Card, highest: false, (Card card) => GameController.IsCardVisibleToCardSource(card, GetCardSource()), dealDamage, storedResults);
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine2);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine2);
+                    }
+                }
+
+                //If we answered yes to either question, prevent the damage.
+                this.PreventDamageViaIncap = storedResults.Contains(true);
             }
 
-            //If we answered yes to either question, prevent the damage.
-            if (storedResults.Contains(true))
+            if (this.PreventDamageViaIncap != null && this.PreventDamageViaIncap.Value)
             {
-                IEnumerator coroutine3 = CancelAction(dealDamage, showOutput: true, cancelFutureRelatedDecisions: true, null, isPreventEffect: true);
+                IEnumerator coroutine3 = base.CancelAction(dealDamage, showOutput: true, cancelFutureRelatedDecisions: true, null, isPreventEffect: true);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine3);
@@ -172,6 +227,16 @@ namespace Cauldron.Starlight
                 }
             }
 
+            if (!base.GameController.PretendMode)
+            {
+                this.PreventDamageViaIncap = null;
+            }
+            yield break;
+        }
+
+        protected IEnumerator ClearPreventDamageViaIncapResponse(ExpireStatusEffectAction expireAction)
+        {
+            base.AddCardPropertyJournalEntry(PreventDamageViaIncapPropertyKey, (bool?)null);
             yield break;
         }
     }
