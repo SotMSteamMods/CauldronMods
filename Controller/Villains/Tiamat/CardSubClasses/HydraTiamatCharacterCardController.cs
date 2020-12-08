@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Handelabra;
+﻿using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+using System;
+using System.Collections;
+using System.Linq;
 
 namespace Cauldron.Tiamat
 {
-    public abstract class TiamatCharacterCardController : TiamatSubCharacterCardController
+    public abstract class HydraTiamatCharacterCardController : VillainCharacterCardController
     {
-        public TiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public HydraTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
 
+        //Face down heads are indestructible
         public override bool CanBeDestroyed
         {
             get
@@ -24,9 +24,6 @@ namespace Cauldron.Tiamat
         }
 
         protected abstract ITrigger[] AddFrontTriggers();
-        protected abstract ITrigger[] AddFrontAdvancedTriggers();
-        protected abstract ITrigger[] AddDecapitatedTriggers();
-        protected abstract ITrigger[] AddDecapitatedAdvancedTriggers();
 
         public bool IsSpell(Card card)
         {
@@ -37,15 +34,16 @@ namespace Cauldron.Tiamat
             return card != null && base.GameController.DoesCardContainKeyword(card, "head");
         }
 
-
         public override void AddSideTriggers()
         {
+            //Element of Lightning Cancel Draws
+            base.CannotDrawCards(ElementOfLightningCriteria);
             //Win Condition
             base.AddSideTrigger(base.AddTrigger<GameAction>(delegate (GameAction g)
             {
                 if (base.GameController.HasGameStarted && !(g is GameOverAction) && !(g is IncrementAchievementAction))
                 {
-					return base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsVillainTarget(c)).Count() == 0;
+                    return base.FindCardsWhere((Card c) => c.IsFlipped && c.IsVillain && c.DoKeywordsContain("head")).Count<Card>() == 6;
                 }
                 return false;
             }, (GameAction g) => base.DefeatedResponse(g), new TriggerType[]
@@ -57,39 +55,12 @@ namespace Cauldron.Tiamat
             if (!base.Card.IsFlipped)
             {
                 base.AddSideTriggers(this.AddFrontTriggers());
-                if (Game.IsAdvanced)
-                {
-                    base.AddSideTriggers(this.AddFrontAdvancedTriggers());
-                }
             }
-            //Back Triggers
             else
             {
-                base.AddSideTriggers(this.AddDecapitatedTriggers());
-                base.AddSideTrigger(base.AddCannotDealDamageTrigger((Card c) => c == base.Card));
-                if (Game.IsAdvanced)
-                {
-                    base.AddSideTriggers(this.AddDecapitatedAdvancedTriggers());
-                }
-            };
-        }
-
-        //Did Head Deal Damage This Turn
-        public bool DidDealDamageThisTurn()
-        {
-            int result = 0;
-            try
-            {
-                result = (from e in base.GameController.Game.Journal.DealDamageEntriesThisTurn()
-                          where e.SourceCard == base.Card
-                          select e.Amount).Sum();
+                //Decapitated heads cannot deal damage
+                base.AddSideTrigger(base.AddPreventDamageTrigger((DealDamageAction action) => action.DamageSource.Card == base.Card));
             }
-            catch (OverflowException ex)
-            {
-                Log.Warning("DamageDealtThisTurn overflowed: " + ex.Message);
-                result = int.MaxValue;
-            }
-            return result == 0;
         }
 
         //When a {Tiamat} head is destroyed, flip her.
@@ -117,18 +88,31 @@ namespace Cauldron.Tiamat
             }
             if (cardSource == null)
             {
-                cardSource = base.GetCardSource(null);
+                cardSource = base.GetCardSource();
             }
-            IEnumerator coroutine = base.GameController.RemoveTarget(base.Card, cardSource: cardSource);
-            if (base.UseUnityCoroutines)
+
+            if (!flip.CardToFlip.Card.IsFlipped)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                IEnumerator coroutine = base.GameController.RemoveTarget(base.Card, cardSource: cardSource);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
+        }
+
+        private bool ElementOfLightningCriteria(TurnTakerController ttc)
+        {
+            if (ttc is HeroTurnTakerController httc)
+            {
+                return httc.CharacterCardControllers.Any(chc => chc.GetCardPropertyJournalEntryBoolean(ElementOfLightningCardController.PreventDrawPropertyKey) == true);
+            }
+            return false;
         }
     }
 }

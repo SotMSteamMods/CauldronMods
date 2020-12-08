@@ -1,5 +1,6 @@
 {
     "name": "ScreaMachine",
+    "isPlural": true,
     "kind": "Villain",
     "expansionIdentifier": "CauldronAdrift",
     "initialCardIdentifiers": [
