@@ -919,7 +919,7 @@ namespace CauldronTests
 
             PutOnDeck(omnitron, GetCard("Terraforming", 0));
             Card epe = PlayCard("ElectroPulseExplosive");
-            DecisionYesNo = true;
+            DecisionYesNo = false;
             Card gol = PlayCard("StubbornGoliath");
             DecisionSelectTargets = new Card[] { epe, omnitron.CharacterCard };
             UsePower(gol);
