@@ -53,7 +53,15 @@ namespace Cauldron.Cypher
             // If you do, select any number of Augments in play and move
             // each one next to a new hero. Then, each augmented hero regains 2HP.
             List<Card> augmentsInPlay = GetAugmentsInPlay();
-            //base.GameController.SelectCardsAndPerformFunction(this.HeroTurnTakerController)
+
+            IEnumerable<Function> functionsBasedOnCard(Card c) => new Function[]
+            {
+                //new Function(base.FindCardController(c).DecisionMaker, "Deal self 3 toxic damage to play a card now.", SelectionType.PlayCard, () => this.DealDamageAndDrawResponse(c))
+                //new Function(this.HeroTurnTakerController, "Move augment", SelectionType.MoveCardNextToCard, )
+            };
+
+
+            //base.GameController.SelectCardsAndPerformFunction(this.HeroTurnTakerController, new LinqCardCriteria(c => GetAugmentsInPlay().Contains(c)), ), 
 
             // Then, each augmented hero regains 2HP.
             routine = this.GameController.GainHP(this.HeroTurnTakerController, IsAugmented, HpGain,
