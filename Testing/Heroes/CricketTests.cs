@@ -521,5 +521,29 @@ namespace CauldronTests
             AssertInHand(new Card[] { staff, ring, flak, loose });
             AssertInTrash(vant);
         }
+
+        [Test()]
+        public void TestVoiceMimicry()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Magmaria");
+            StartGame();
+
+            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(akash.TurnTaker.Deck), new LocationChoice(legacy.TurnTaker.Deck), new LocationChoice(env.TurnTaker.Deck) };
+
+            Card phlange = PutOnDeck("ArborealPhalanges");
+            //Play the top card of a deck.
+            PlayCard("VoiceMimicry");
+            AssertIsInPlay(phlange);
+
+            Card ring = PutOnDeck("TheLegacyRing");
+            //Play the top card of a deck.
+            PlayCard("VoiceMimicry");
+            AssertIsInPlay(ring);
+
+            Card defender = PutOnDeck("SeismicDefender");
+            //Play the top card of a deck.
+            PlayCard("VoiceMimicry");
+            AssertIsInPlay(defender);
+        }
     }
 }

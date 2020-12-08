@@ -18,7 +18,7 @@ namespace Cauldron.Cricket
         {
             List<SelectLocationDecision> storedResults = new List<SelectLocationDecision>();
             //Play the top card of a deck.
-            IEnumerator coroutine = base.GameController.SelectADeck(base.HeroTurnTakerController, SelectionType.PlayTopCard, null, storedResults, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectADeck(base.HeroTurnTakerController, SelectionType.PlayTopCard, (Location deck) => true, storedResults, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
