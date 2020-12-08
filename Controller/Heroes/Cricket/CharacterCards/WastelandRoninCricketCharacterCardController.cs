@@ -168,7 +168,7 @@ namespace Cauldron.Cricket
                     {
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
-                    if (true || base.DidPlayerAnswerYes(storedResults))
+                    if (base.DidPlayerAnswerYes(storedResults))
                     {
                         coroutine = UsePowerOnOtherCard(action.Power.CardSource.Card, action.Power.Index);
                         if (base.UseUnityCoroutines)
