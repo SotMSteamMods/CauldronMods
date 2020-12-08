@@ -50,7 +50,7 @@ namespace Cauldron.Titan
                     {
                         List<DiscardCardAction> list = new List<DiscardCardAction>();
                         //One hero may discard a card to reduce damage dealt to them by 1 until the start of your turn.
-                        coroutine = base.GameController.SelectHeroToDiscardCard(base.HeroTurnTakerController, storedResultsDiscard: list, cardSource: base.GetCardSource());
+                        coroutine = base.GameController.SelectHeroToDiscardCard(base.HeroTurnTakerController, optionalSelectHero: true, storedResultsDiscard: list, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

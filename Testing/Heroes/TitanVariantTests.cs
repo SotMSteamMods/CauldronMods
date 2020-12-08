@@ -222,10 +222,12 @@ namespace CauldronTests
             Card tform = PutOnDeck("Titanform");
 
             //Titan regains 1HP. Search your deck, trash, and hand for Titanform and play it. Shuffle your deck.
+            QuickShuffleStorage(titan);
             QuickHPStorage(titan);
             UsePower(titan);
             QuickHPCheck(1);
             AssertIsInPlay(tform);
+            QuickShuffleCheck(1);
         }
 
         [Test()]
@@ -238,10 +240,12 @@ namespace CauldronTests
             Card tform = PutInTrash("Titanform");
 
             //Titan regains 1HP. Search your deck, trash, and hand for Titanform and play it. Shuffle your deck.
+            QuickShuffleStorage(titan);
             QuickHPStorage(titan);
             UsePower(titan);
             QuickHPCheck(1);
             AssertIsInPlay(tform);
+            QuickShuffleCheck(1);
         }
 
         [Test()]
@@ -254,10 +258,12 @@ namespace CauldronTests
             Card tform = PutInHand("Titanform");
 
             //Titan regains 1HP. Search your deck, trash, and hand for Titanform and play it. Shuffle your deck.
+            QuickShuffleStorage(titan);
             QuickHPStorage(titan);
             UsePower(titan);
             QuickHPCheck(1);
             AssertIsInPlay(tform);
+            QuickShuffleCheck(1);
         }
 
         [Test()]
