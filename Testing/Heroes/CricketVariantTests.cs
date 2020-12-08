@@ -230,34 +230,31 @@ namespace CauldronTests
             StartGame();
             SetupIncap(akash);
 
-            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(akash.TurnTaker.Deck), new LocationChoice(legacy.TurnTaker.Deck), new LocationChoice(env.TurnTaker.Deck) };
+            DecisionSelectTurnTakers = new TurnTaker[] { bunker.TurnTaker, scholar.TurnTaker };
+            SetHitPoints(scholar, 17);
 
-            Card phlange = PutOnDeck("ArborealPhalanges");
-            //Select a deck and put its top card into play.
+            //One hero may use a power now.
+            QuickHandStorage(bunker);
+            QuickHPStorage(scholar);
             UseIncapacitatedAbility(cricket, 0);
-            AssertIsInPlay(phlange);
-
-            Card ring = PutOnDeck("TheLegacyRing");
-            //Select a deck and put its top card into play.
             UseIncapacitatedAbility(cricket, 0);
-            AssertIsInPlay(ring);
-
-            Card defender = PutOnDeck("SeismicDefender");
-            //Select a deck and put its top card into play.
-            UseIncapacitatedAbility(cricket, 0);
-            AssertIsInPlay(defender);
+            QuickHandCheck(2);
+            QuickHPCheck(2);
         }
 
         [Test()]
         public void TestWastelandRoninCricketIncap2()
         {
-            SetupGameController("Apostate", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("Apostate", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Bunker", "Legacy", "MrFixer", "Megalopolis");
             StartGame();
             SetupIncap(apostate);
 
-            //Shuffle the environment trash into the environment deck.
             UseIncapacitatedAbility(cricket, 1);
-            AssertNumberOfCardsInTrash(apostate, 2);
+
+            //Select a power on a card in play. The next time a hero uses it. They may immediately use it again.
+            QuickHandStorage(bunker);
+            UsePower(bunker);
+            QuickHandCheck(2);
         }
 
         [Test()]
@@ -271,11 +268,11 @@ namespace CauldronTests
             Card ring = PutInTrash("TheLegacyRing");
             Card defender = PutInTrash("SeismicDefender");
 
-            //Shuffle 1 card from a trash back into its deck.
             UseIncapacitatedAbility(cricket, 2);
             UseIncapacitatedAbility(cricket, 2);
             UseIncapacitatedAbility(cricket, 2);
             AssertInDeck(new Card[] { phlange, ring, defender });
+            AssertGameOver(EndingResult.AlternateVictory);
         }
     }
 }
