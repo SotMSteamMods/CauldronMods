@@ -16,9 +16,9 @@ namespace Cauldron.Tiamat
             return new ITrigger[]
             { 
 				//{Tiamat}, The Maw of the Earth is immune to Melee damage.
-				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Melee, false),
+				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Melee),
                 //Reduce damage dealt to other villain targets by 1.
-                base.AddReduceDamageTrigger((Card c) => c.IsVillain && c != this.Card, 1)
+                base.AddReduceDamageTrigger((Card c) => c.IsVillainTarget && c != this.Card, 1)
             };
         }
     }

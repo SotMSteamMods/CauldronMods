@@ -15,7 +15,7 @@ namespace Cauldron.Tiamat
             return new ITrigger[]
             { 
 				//{Tiamat}, The Mouth of the Inferno is immune to Fire damage.
-				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Fire, false)
+				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Fire)
             };
         }
     }

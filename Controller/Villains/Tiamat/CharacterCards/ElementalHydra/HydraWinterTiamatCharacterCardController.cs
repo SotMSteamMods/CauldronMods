@@ -15,7 +15,7 @@ namespace Cauldron.Tiamat
             return new ITrigger[]
             { 
 				//{Tiamat}, The Jaws of Winter is immune to Cold damage.
-				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Cold, false)
+				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Cold)
             };
         }
     }

@@ -235,6 +235,12 @@ namespace CauldronTests
             //Inferno Tiamat should be immune to fire damage
             DealDamage(legacy, inferno, 2, DamageType.Fire);
             QuickHPCheck(0);
+
+            //test only immune to fire
+            QuickHPUpdate();
+            DealDamage(legacy, inferno, 2, DamageType.Infernal);
+            QuickHPCheck(-2);
+
         }
 
         [Test()]
@@ -246,6 +252,11 @@ namespace CauldronTests
             //Storm Tiamat should be immune to lightning damage
             DealDamage(legacy, storm, 2, DamageType.Lightning);
             QuickHPCheck(0);
+
+            //test only immune to lightning
+            QuickHPUpdate();
+            DealDamage(legacy, storm, 2, DamageType.Infernal);
+            QuickHPCheck(-2);
         }
 
         [Test()]
@@ -257,6 +268,11 @@ namespace CauldronTests
             //Inferno Tiamat should be immune to cold damage
             DealDamage(legacy, winter, 2, DamageType.Cold);
             QuickHPCheck(0);
+
+            //test only immune to cold
+            QuickHPUpdate();
+            DealDamage(legacy, winter, 2, DamageType.Infernal);
+            QuickHPCheck(-2);
         }
 
         [Test()]
@@ -271,6 +287,11 @@ namespace CauldronTests
             //Inferno Tiamat should be immune to cold damage
             DealDamage(legacy, wind, 2, DamageType.Projectile);
             QuickHPCheck(0);
+
+            //test only immune to projectile
+            QuickHPUpdate();
+            DealDamage(legacy, wind, 2, DamageType.Infernal);
+            QuickHPCheck(-2);
         }
 
         [Test()]
@@ -282,9 +303,14 @@ namespace CauldronTests
             SetupHead(haka, earth);
 
             QuickHPStorage(earth);
-            //Inferno Tiamat should be immune to cold damage
+            //Inferno Tiamat should be immune to melee damage
             DealDamage(legacy, earth, 2, DamageType.Melee);
             QuickHPCheck(0);
+
+            //test only immune to melee
+            QuickHPUpdate();
+            DealDamage(legacy, earth, 2, DamageType.Infernal);
+            QuickHPCheck(-2);
         }
 
         [Test()]
@@ -296,9 +322,14 @@ namespace CauldronTests
             SetupHead(haka, decay);
 
             QuickHPStorage(decay);
-            //Inferno Tiamat should be immune to cold damage
+            //Inferno Tiamat should be immune to toxic damage
             DealDamage(legacy, decay, 2, DamageType.Toxic);
             QuickHPCheck(0);
+
+            //test only immune to toxic
+            QuickHPUpdate();
+            DealDamage(legacy, decay, 2, DamageType.Infernal);
+            QuickHPCheck(-2);
         }
 
         [Test()]
@@ -307,9 +338,13 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Haka", "Ra", "Parse", "Megalopolis");
             StartGame();
             QuickHPStorage(haka, ra, parse);
+            QuickHandStorage(ra);
             //End of turn damage checking happens per head
+            DecisionSelectTurnTaker = ra.TurnTaker;
             GoToEndOfTurn(tiamat);
             QuickHPCheck(-3, -1, -1);
+            QuickHandCheck(-1);
+            
         }
 
         [Test()]

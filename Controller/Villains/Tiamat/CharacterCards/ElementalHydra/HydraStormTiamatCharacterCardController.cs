@@ -16,7 +16,7 @@ namespace Cauldron.Tiamat
             return new ITrigger[]
             { 
 				//{Tiamat}, The Eye of the Storm is immune to Lightning damage.
-				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Lightning, false)
+				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Lightning)
             };
         }
     }

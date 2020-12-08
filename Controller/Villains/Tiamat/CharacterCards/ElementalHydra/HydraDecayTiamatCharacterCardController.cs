@@ -16,9 +16,9 @@ namespace Cauldron.Tiamat
             return new ITrigger[]
             { 
 				//{Tiamat}, The Breath of Decay is immune to Toxic damage.
-				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Toxic, false),
+				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Toxic),
                 //Increase damage dealt to hero targets by 1.
-                base.AddIncreaseDamageTrigger((DealDamageAction action) => action.Target.IsHero, 1)
+                base.AddIncreaseDamageTrigger((DealDamageAction action) => action.Target != null && action.Target.IsHero && action.Target.IsTarget, 1)
             };
         }
     }
