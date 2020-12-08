@@ -40,7 +40,7 @@ namespace Cauldron.Titan
             }
             else
             {
-                coroutine = AddStatusEffect(reduceDamageEffect);
+                coroutine = AddStatusEffect(reduceDamageEffect, true);
             }
             if (UseUnityCoroutines)
             {
@@ -75,11 +75,18 @@ namespace Cauldron.Titan
             }
             if (base.DidDestroyCard(destroyList))
             {
-                base.AllowFastCoroutinesDuringPretend = false;
+                this.AddInhibitorException((GameAction ga) => ga is IncreaseDamageAction);
                 //...to increase that damage by 2.
-                ModifyDealDamageAction modify = new IncreaseDamageAction(base.GetCardSource(), action, 2, false);
-                action.AddDamageModifier(modify);
-                base.AllowFastCoroutinesDuringPretend = true;
+                coroutine = GameController.IncreaseDamage(action, 2, false, GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+                RemoveInhibitorException();
             }
             yield break;
         }
