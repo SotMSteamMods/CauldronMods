@@ -34,7 +34,7 @@
             "flippedIcons": [],
             "openingLines": {
                 "default": "Will you frolic with us?",
-                "CalderochCharacter": "I haven't felt this presence in many years. Beware, my friends. This wind carries the scent of death.",
+                "CeladrochCharacter": "I haven't felt this presence in many years. Beware, my friends. This wind carries the scent of death.",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
@@ -476,7 +476,7 @@
             ],
             "openingLines": {
                 "default": "The turn of the seasons will wipe this land clean of evil.",
-                "CalderochCharacter": "Hurry, everyone! His bonds are weakening - but ours can strengthen!",
+                "CeladrochCharacter": "Hurry, everyone! His bonds are weakening - but ours can strengthen!",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
@@ -518,7 +518,7 @@
             ],
             "openingLines": {
                 "default": "We have formed a most excellent team to deal with your misdeeds.",
-                "CalderochCharacter": "Adventure, discovery, life - all will exist after this. All but you, Celadroch.",
+                "CeladrochCharacter": "Adventure, discovery, life - all will exist after this. All but you, Celadroch.",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
@@ -559,7 +559,7 @@
             ],
             "openingLines": {
                 "default": "I have seen millenia slip away; as will your chance at victory.",
-                "CalderochCharacter": "It seems like not all things have changed, after all - is your evil timeless, Celadroch, or were you waiting for me?",
+                "CeladrochCharacter": "It seems like not all things have changed, after all - is your evil timeless, Celadroch, or were you waiting for me?",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
