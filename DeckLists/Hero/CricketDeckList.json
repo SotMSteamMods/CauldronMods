@@ -474,7 +474,7 @@
             "hitpointColor": "EF4945",
             "character": true,
             "powers": [
-                "Reveral the top card of a hero deck. You may discard a card to put it into play, otherwise put it into that player's hand."
+                "Reveal the top card of a hero deck. You may discard a card to put it into play, otherwise put it into that player's hand."
             ],
             "icons": [
                 "HasPower",
