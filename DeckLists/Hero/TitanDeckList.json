@@ -49,7 +49,12 @@
             "keywords": [
                 "ongoing"
             ],
-            "icons": [],
+            "icons": [
+                "DestroySelf",
+                "UsePowerNow",
+                "HasPower",
+                "GainHP"
+            ],
             "body": "When a non-hero card enters play, you may destroy this card. If you do, you may use a power now.",
             "powers": [
                 "{Titan} regains 3HP."
@@ -69,7 +74,10 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": [],
+            "icons": [
+                "DrawCardNow",
+                "DealDamagePsychic"
+            ],
             "body": [
                 "Each player may draw 2 cards now.",
                 "For each other player that draws cards this way, {Titan} deals himself 2 psychic damage."
@@ -84,7 +92,9 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": [],
+            "icons": [
+                "DealDamageMelee"
+            ],
             "body": "Select a non-hero target. Each other non-hero target deals that target 1 melee damage.",
             "flavorQuotes": [
                 {
@@ -101,7 +111,10 @@
             "keywords": [
                 "ongoing"
             ],
-            "icons": [],
+            "icons": [
+                "DealDamageFire",
+                "DestroySelf"
+            ],
             "body": [
                 "Play this card next to a target.",
                 "The first time that target deals damage each turn, it deals itself 1 fire damage.",
@@ -122,7 +135,11 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": [],
+            "icons": [
+                "PlayCardNow",
+                "DealDamageInfernal",
+                "DealDamageProjectile"
+            ],
             "body": [
                 "If Titanform is in your hand you may play it now.",
                 "{Titan} deals 1 target 4 infernal damage and each other target from that deck 1 projectile damage."
@@ -142,7 +159,10 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": [],
+            "icons": [
+                "Manipulate",
+                "GainHP"
+            ],
             "body": [
                 "Reveal up to 3 cards from the top of your deck. Put 1 of them into play or into your hand. Put the rest into your trash.",
                 "{Titan} regains X HP, where X is 3 minus the number of cards revealed this way."
@@ -162,7 +182,11 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": [],
+            "icons": [
+                "GainHP",
+                "Search",
+                "PlayCardNow"
+            ],
             "body": [
                 "{Titan} regains 2HP.",
                 "You may search your deck and trash for a copy of the card Titanform and put it into your hand. If you searched your deck, shuffle it.",
@@ -183,7 +207,10 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": [],
+            "icons": [
+                "DestroyEnvironment",
+                "DealDamageFire"
+            ],
             "body": [
                 "Destroy all environment cards.",
                 "For each environment card destroyed this way, {Titan} deals himself 1 fire damage."
@@ -207,7 +234,10 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": [],
+            "icons": [
+                "DealDamageMelee",
+                "Search"
+            ],
             "body": [
                 "{Titan} deals 1 target 3 melee damage.",
                 "If Titanform is in play, you may discard a card to search your deck and trash for a copy of the card Immolate and play it next to that target. If you searched your deck, shuffle it."
@@ -228,7 +258,11 @@
                 "ongoing",
                 "limited"
             ],
-            "icons": [],
+            "icons": [
+                "IncreaseDamageDealt",
+                "EndOfTurnTrigger",
+                "GainHP"
+            ],
             "body": [
                 "Increase damage dealt by {Titan} by 1 to non-hero targets that have dealt him damage since the end of his last turn.",
                 "At the end of your turn {Titan} regains 1HP."
@@ -248,7 +282,11 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": [],
+            "icons": [
+                "DealDamageInfernal",
+                "RedirectDamage",
+                "Manipulate"
+            ],
             "body": [
                 "{Titan} deals 1 target 1 infernal damage.",
                 "Redirect the next damage dealt by that target back to itself.",
@@ -270,7 +308,11 @@
                 "ongoing",
                 "limited"
             ],
-            "icons": [],
+            "icons": [
+                "HasPower",
+                "DealDamageInfernal",
+                "RedirectDamage"
+            ],
             "powers": [
                 "{Titan} deals up to 2 non-hero targets 2 infernal damage each.{BR}Until the start of your next turn, when those targets would deal damage, you may redirect that damage to {Titan}."
             ],
@@ -290,7 +332,11 @@
                 "equipment",
                 "limited"
             ],
-            "icons": [],
+            "icons": [
+                "HasPower",
+                "DealDamageProjectile",
+                "DestroyOngoing"
+            ],
             "powers": [
                 "{Titan} deals 1 target 3 projectile damage.",
                 "If Titanform is in play, destroy 1 ongoing card."
@@ -310,7 +356,11 @@
             "keywords": [
                 "ongoing"
             ],
-            "icons": [],
+            "icons": [
+                "ReduceDamageTaken",
+                "DestroySelf",
+                "IncreaseDamageDealt"
+            ],
             "body": [
                 "Whenever {Titan} is dealt damage by another target, reduce damage dealt to {Titan} by 1 until the start of your next turn.",
                 "When {Titan} would deal damage, you may destroy this card to increase that damage by 2."
@@ -330,7 +380,12 @@
             "keywords": [
                 "ongoing"
             ],
-            "icons": [],
+            "icons": [
+                "CannotUsePowers",
+                "CannotDrawCards",
+                "StartOfTurnAction",
+                "DestroySelf"
+            ],
             "body": [
                 "Skip any effects which would act at the end of the villain turn.",
                 "You may not use Powers. You may not draw cards.",
@@ -351,7 +406,12 @@
             "keywords": [
                 "ongoing"
             ],
-            "icons": [],
+            "icons": [
+                "DealDamageInfernal",
+                "DealDamageFire",
+                "HasPower",
+                "DestroySelf"
+            ],
             "body": "When this card is destroyed, {Titan} deals 1 villain target 5 infernal damage. If Titanform is in play, {Titan} also deals that target 2 fire damage.",
             "powers": [
                 "Destroy this card."
@@ -365,7 +425,7 @@
             "flavorReference": "The Archive #1"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "TitanCharacter",
             "promoIdentifier": "MinistryOfStrategicScienceTitanCharacter",
@@ -399,7 +459,7 @@
                 "DealDamagePsychic",
                 "DrawCardNow",
                 "DestroyEnvironment",
-                "PreventDamage"
+                "ImmuneToDamage"
             ],
             "openingLines": {
                 "default": "default placeholder",
@@ -440,6 +500,46 @@
                 "DrawCardNow",
                 "GainHP",
                 "DestroyOngoing"
+            ],
+            "openingLines": {
+                "default": "default placeholder",
+                "MythosCharacter": "Mythos placeholder"
+            },
+            "complexity": 2
+        },
+        {
+            "identifier": "TitanCharacter",
+            "promoIdentifier": "OniTitanCharacter",
+            "count": 1,
+            "title": "Titan",
+            "promoTitle": "Titan: Oni",
+            "shortPromoTitle": "Titan: Oni",
+            "body": "Enrage",
+            "backgroundColor": "e68078",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "e68078",
+            "character": true,
+            "powers": [
+                "Titan regains 1HP. Search your deck, trash, and hand for Titanform and play it. Shuffle your deck."
+            ],
+            "icons": [
+                "HasPower",
+                "GainHP",
+                "Search"
+            ],
+            "hitpoints": 27,
+            "nemesisIdentifiers": [
+                "Titan"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now,",
+                "One Hero may use a power now.",
+                "One hero may discard a card to reduce damage dealt to them by 1 until the start of your turn."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "UsePowerNow",
+                "ReduceDamageTaken"
             ],
             "openingLines": {
                 "default": "default placeholder",
