@@ -33,7 +33,7 @@
             ],
             "flippedIcons": [
                 "DestroyOngoing",
-                "DrawCardsNow",
+                "DrawCardNow",
                 "Discard",
                 "Manipulate"
             ],
@@ -105,7 +105,7 @@
             ],
             "icons": [
                 "Manipulate",
-                "DealDamageLightining",
+                "DealDamageLightning",
                 "DealDamageMelee"
             ],
             "body": [
@@ -155,10 +155,8 @@
             ],
             "icons": [
                 "StartOfTurnAction",
-                "CannotUsePowers",
-                "PlayExtraCard",
-                "DestroySelf",
-                "GainHP"
+                "MakeDecision",
+                "PlayCardExtra"
             ],
             "body": [
                 "At the start of a player's turn, that player may choose to skip their power Phase. If they do, they may play 1 additional card during their play Phase.",
@@ -230,10 +228,9 @@
                 "limited"
             ],
             "icons": [
-                "PreverntPlayCard",
-                "UseExtraPower",
-                "DestroySelf",
-                "GainHP"
+                "StartOfTurnAction",
+                "MakeDecision",
+                "UsePowerExtra"
             ],
             "body": [
                 "At the start of a player's turn, that player may choose to skip their play Phase. If they do, they may use 1 additional power during their power Phase.",
@@ -314,7 +311,7 @@
                 "Discard",
                 "DrawCardNow",
                 "DestroySelf",
-                "DrawExtraCard"
+                "DrawCardExtra"
             ],
             "body": [
                 "At the start of your turn, you may discard a card. If you do not, draw a card and destroy this card.",
@@ -438,7 +435,7 @@
                 "limited"
             ],
             "icons": [
-                "DealDamageLightining",
+                "DealDamageLightning",
                 "HasPower"
             ],
             "body": "At the end of your turn, {Echelon} may deal 1 target X lightning damage, where X is the number of Tactics destroyed during your turn.",
@@ -464,9 +461,7 @@
             "icons": [
                 "HasPower",
                 "DealDamageProjectile",
-                "GainHP",
-                "DestroySelf",
-                "DrawCardNow"
+                "GainHP"
             ],
             "powers": [
                 "{Echelon} deals 1 target 1 projectile damage and regains 2HP.",
@@ -512,7 +507,7 @@
                 "Destroy an environment card."
             ],
             "flippedIcons": [
-                "PlayCardsNow",
+                "PlayCardNow",
                 "Manipulate",
                 "DestroyEnvironment"
             ],
@@ -552,7 +547,7 @@
                 "Reveal the top card of 2 decks, play 1 and replace the other."
             ],
             "flippedIcons": [
-                "PlayCardsNow"
+                "PlayCardNow"
             ],
             "openingLines": {
                 "default": "default placeholder",

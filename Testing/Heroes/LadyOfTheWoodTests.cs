@@ -1174,7 +1174,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestRebirthMoveCardToHand()
+        public void TestRebirthMoveCardToHandByDestroy()
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
@@ -1205,6 +1205,45 @@ namespace CauldronTests
             QuickHandStorage(ladyOfTheWood);
             //have lady of the wood destroy mdp
             DestroyCard(battalion, haka.CharacterCard);
+            //nothing should have been moved to hand
+            QuickHandCheck(0);
+            AssertNumberOfCardsUnderCard(rebirth, 2);
+            AssertUnderCard(rebirth, spring);
+            AssertUnderCard(rebirth, fall);
+        }
+
+
+        [Test()]
+        public void TestRebirthMoveCardToHandByDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card battalion = PlayCard("BladeBattalion");
+
+            //stack trash
+            Card spring = PutInTrash("Spring");
+            Card fall = PutInTrash("Fall");
+            Card summer = PutInTrash("Summer");
+
+            //Whenever LadyOfTheWood destroys a target, put a card from beneath this one into your hand.
+            DecisionSelectCards = new Card[] { spring, fall, summer, summer };
+            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
+
+            QuickHandStorage(ladyOfTheWood);
+            //have lady of the wood destroy mdp
+            DealDamage(ladyOfTheWood.CharacterCard, mdp, 99, DamageType.Psychic);
+            //summer should have been moved to hand
+            QuickHandCheck(1);
+            AssertNumberOfCardsUnderCard(rebirth, 2);
+            AssertUnderCard(rebirth, spring);
+            AssertUnderCard(rebirth, fall);
+            AssertInHand(summer);
+
+            //check doesn't move when another hero destroys a target
+            QuickHandStorage(ladyOfTheWood);
+            DealDamage(haka.CharacterCard, battalion, 99, DamageType.Infernal);
             //nothing should have been moved to hand
             QuickHandCheck(0);
             AssertNumberOfCardsUnderCard(rebirth, 2);

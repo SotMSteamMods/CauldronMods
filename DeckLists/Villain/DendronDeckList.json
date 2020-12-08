@@ -400,11 +400,8 @@
             ],
             "flippedAdvanced": "Increase damage dealt by {Dendron} to hero targets by {H - 2}.",
             "flippedIcons": [
-                "StartOfTurnAction",
-                "DestroyOngoing",
                 "DealDamageRadiant",
                 "DealDamageToxic",
-                "EndOfTurnAction",
                 "PlayCardNow"
             ],
             "flippedAdvancedIcons": [

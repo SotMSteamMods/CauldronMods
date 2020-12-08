@@ -169,7 +169,7 @@
             "icons": [
                 "EndOfTurnAction",
                 "DealDamageEnergy",
-                "IrreducibleDamage"
+                "MakeDamageIrreducible"
             ],
             "body": [
                 "At the end of the environment turn, this card deals the 2 non-environment targets with the highest HP 2 irreducible energy damage each.",

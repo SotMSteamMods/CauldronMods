@@ -34,7 +34,6 @@
             ],
             "advanced": "Increase damage dealt to Up Close heroes by 1.",
             "icons": [
-                "StartAndEndOfTurnAction",
                 "ReduceDamageTaken",
                 "IncreaseDamageDealt",
                 "DealDamageMelee"
@@ -388,9 +387,6 @@
                 "StartOfTurnAction",
                 "IncreaseDamageDealtProjectile"
             ],
-            "flippedAdvancedIcons": [
-                "PlayCardNow"
-            ],
             "difficulty": 1,
             "openingLines": {
                 "default": "default placeholder",
@@ -451,15 +447,10 @@
             ],
             "advanced": "Reduce damage dealt to {AdmiralWinters} by 1.",
             "icons": [
-                "CannotWin",
-                "StartOfTurnAction",
-                "ImmuneToDamage",
+                "CannotWinTheGame",
                 "RedirectDamage",
                 "DealDamageProjectile",
                 "PlayCardNow"
-            ],
-            "advancedIcons": [
-                "ReduceDamageTaken"
             ],
             "flippedBody": "Incapacitated",
             "flippedGameplay": [

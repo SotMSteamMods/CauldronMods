@@ -32,7 +32,6 @@
             "advanced": "When an enclosure enters play, put the top card of the villain deck beneath it.",
             "icons": [
                 "PlayCardNow",
-                "EndOfTurnAction",
                 "Indestructible",
                 "LoseTheGame"
             ],
@@ -52,11 +51,7 @@
                 "Manipulate",
                 "RemoveFromGame",
                 "Discard",
-                "EndOfTurnAction",
                 "DealDamageProjectile"
-            ],
-            "flippedAdvancedIcons": [
-                "Manipulate"
             ],
             "difficulty": 2,
             "openingLines": {

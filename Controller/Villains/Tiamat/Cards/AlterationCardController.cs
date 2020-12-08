@@ -5,22 +5,17 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Tiamat
 {
-    public class AlterationCardController : CardController
-    {
-        #region Constructors
+	public class AlterationCardController : CardController
+	{
+		public AlterationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+		{
 
-        public AlterationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
-        {
+		}
 
-        }
-
-        #endregion Constructors
-
-        #region Methods
-        public override IEnumerator Play()
-        {
+		public override IEnumerator Play()
+		{
 			//Play the top card of the environment deck. Play the top card of the villain deck.
-			IEnumerator message1 = GameController.SendMessageAction(Card.Title + " plays the top card of the environment deck...", Priority.High, GetCardSource(),showCardSource: true);
+			IEnumerator message1 = GameController.SendMessageAction(Card.Title + " plays the top card of the environment deck...", Priority.High, GetCardSource(), showCardSource: true);
 			IEnumerator coroutine = base.GameController.PlayTopCard(this.DecisionMaker, base.FindEnvironment(), cardSource: base.GetCardSource());
 			IEnumerator message2 = GameController.SendMessageAction(Card.Title + " plays the top card of the villain deck...", Priority.High, GetCardSource(), showCardSource: true);
 			IEnumerator coroutine2 = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, cardSource: base.GetCardSource());
@@ -40,7 +35,5 @@ namespace Cauldron.Tiamat
 			}
 			yield break;
 		}
-
-        #endregion Methods
-    }
+	}
 }

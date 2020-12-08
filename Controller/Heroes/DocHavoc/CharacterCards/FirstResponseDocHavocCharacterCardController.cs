@@ -36,9 +36,9 @@ namespace Cauldron.DocHavoc
 
             int targetsNumeral = GetPowerNumeral(0, PowerNumberOfTargets);
             int damageNumeral = GetPowerNumeral(1, PowerDamageToDeal);
-            DamageSource ds = new DamageSource(this.GameController, this.TurnTaker);
+            DamageSource ds = new DamageSource(this.GameController, this.Card);
             IEnumerator routine2 = base.GameController.SelectTargetsAndDealDamage(this.HeroTurnTakerController, ds, damageNumeral,
-                DamageType.Melee, targetsNumeral, true, 0, cardSource: base.GetCardSource());
+                DamageType.Melee, targetsNumeral, false, 0, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine2);

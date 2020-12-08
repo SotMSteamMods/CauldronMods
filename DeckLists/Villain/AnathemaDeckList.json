@@ -52,10 +52,6 @@
                 "EndOfTurnAction",
                 "Discard"
             ],
-            "flippedAdvancedIcons": [
-                "StartOfTurnAction",
-                "Discard"
-            ],
             "difficulty": 2,
             "openingLines": {
                 "default": "Give it up, heroes - what chance do you have against the pinnacle of evolution?",

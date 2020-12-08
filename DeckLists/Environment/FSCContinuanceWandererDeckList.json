@@ -81,11 +81,10 @@
             "count": 1,
             "title": "Superimposed Realities",
             "icons": [
-                "PlayExtraCard",
-                "DrawExtraCard",
-                "UseExtraPower",
-                "StartOfTurnAction",
-                "DestroySelf"
+                "PlayCardExtra",
+                "DrawCardExtra",
+                "UsePowerExtra",
+                "StartOfTurnAction"
             ],
             "body": [
                 "Play this card next to a hero.",

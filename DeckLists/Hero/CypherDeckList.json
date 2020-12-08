@@ -32,9 +32,8 @@
                 "One target regains 1 HP."
             ],
             "flippedIcons": [
-                "DestroyOngoing",
+                "Destroy",
                 "DrawCardNow",
-                "DestroyEquipment",
                 "PlayCardNow",
                 "GainHP"
             ],
@@ -145,7 +144,7 @@
             ],
             "icons": [
                 "Manipulate",
-                "dealDamageMelee",
+                "DealDamageMelee",
                 "DrawCardNow"
             ],
             "body": [
@@ -216,7 +215,7 @@
                 "augment"
             ],
             "icons": [
-                "UseExtraPower"
+                "UsePowerExtra"
             ],
             "body": [
                 "Play this card next to a hero. The hero next to this card is augmented.",
@@ -451,7 +450,7 @@
                 "augment"
             ],
             "icons": [
-                "PlayExtraCard"
+                "PlayCardExtra"
             ],
             "body": [
                 "Play this card next to a hero. The hero next to this card is augmented.",

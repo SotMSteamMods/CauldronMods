@@ -70,7 +70,7 @@
                 "ongoing"
             ],
             "icons": [
-                "RemoveToken",
+                "RemoveTokens",
                 "DealDamageCold",
                 "DestroySelf"
             ],
@@ -174,9 +174,8 @@
             ],
             "icons": [
                 "Indestructible",
-                "RemoveFromGame",
                 "IncreaseDamageDealt",
-                "AddToken",
+                "AddTokens",
                 "GainHP"
             ],
             "body": [
@@ -194,8 +193,8 @@
                 "limited"
             ],
             "icons": [
-                "AddToken",
-                "RemoveToken",
+                "AddTokens",
+                "RemoveTokens",
                 "IncreaseDamageDealt"
             ],
             "body": [
@@ -220,8 +219,7 @@
             "icons": [
                 "HasPower",
                 "DealDamageCold",
-                "AddToken",
-                "RemoveToken",
+                "AddOrRemoveTokens",
                 "ReduceDamageDealt"
             ],
             "powers": [
@@ -243,8 +241,7 @@
                 "equipment"
             ],
             "icons": [
-                "AddToken",
-                "Destroy",
+                "AddTokens",
                 "HasPower",
                 "DealDamageCold",
                 "DealDamageProjectile"
@@ -275,7 +272,7 @@
             "icons": [
                 "PlayCardNow",
                 "DealDamageInfernal",
-                "AddToken"
+                "AddTokens"
             ],
             "body": [
                 "You may put a target from the villain trash into play. If that target has more than 5HP, reduce its current HP to 5. That target deals up to 2 other targets 5 infernal damage each.",
@@ -298,10 +295,8 @@
             ],
             "icons": [
                 "Indestructible",
-                "RemoveFromGame",
                 "DrawCardNow",
-                "AddToken",
-                "RemoveToken",
+                "AddOrRemoveTokens",
                 "DealDamageCold"
             ],
             "body": [
@@ -376,10 +371,10 @@
                 "one-shot"
             ],
             "icons": [
-                "AddToken",
+                "AddTokens",
                 "UsePowerNow",
                 "Discard",
-                "AddToken"
+                "AddTokens"
             ],
             "body": [
                 "Add 3 tokens to your Wrath pool.",
@@ -409,7 +404,7 @@
                 "Indestructible",
                 "RemoveFromGame",
                 "EndOfTurnAction",
-                "AddToken"
+                "AddTokens"
             ],
             "body": [
                 "This card and {Terminus} are indestructible. If another Memento would enter play, instead remove it from the game. If all other heroes are incapacitated, the heroes lose.",
@@ -433,8 +428,7 @@
             "icons": [
                 "DrawCardNow",
                 "IncreaseDamageDealt",
-                "AddToken",
-                "RemoveToken",
+                "AddOrRemoveTokens",
                 "PlayCardNow"
             ],
             "body": [
@@ -459,7 +453,7 @@
             ],
             "icons": [
                 "Manipulate",
-                "AddToken",
+                "AddTokens",
                 "DealDamageCold"
             ],
             "body": [
@@ -483,8 +477,7 @@
             ],
             "icons": [
                 "PlayCardNow",
-                "EndOfTurnAction",
-                "RemoveToken",
+                "RemoveTokens",
                 "GainHP",
                 "DestroyOngoing"
             ],
@@ -508,7 +501,7 @@
                 "one-shot"
             ],
             "icons": [
-                "AddToken",
+                "AddTokens",
                 "DealDamageCold",
                 "IncreaseDamageDealt"
             ],
@@ -543,7 +536,7 @@
             ],
             "icons": [
                 "HasPower",
-                "RemoveToken",
+                "RemoveTokens",
                 "DealDamageCold",
                 "GainHP"
             ],
