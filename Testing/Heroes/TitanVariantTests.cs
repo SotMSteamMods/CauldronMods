@@ -139,14 +139,14 @@ namespace CauldronTests
             //If Titanform is in play, 1 target deals {Titan} 1 melee damage. Otherwise, play the top card of your deck.
             Card tform = PutOnDeck("Titanform");
             //Otherwise, play the top card of your deck.
-            QuickHPStorage(apostate);
+            QuickHPStorage(titan, apostate);
             UsePower(titan);
-            QuickHPCheck(0);
+            QuickHPCheck(0, 0);
             AssertIsInPlay(tform);
             //If Titanform is in play, 1 target deals {Titan} 1 melee damage. 
-            QuickHPStorage(apostate);
+            QuickHPStorage(titan, apostate);
             UsePower(titan);
-            QuickHPCheck(-1);
+            QuickHPCheck(-1, 0);
         }
 
         [Test()]

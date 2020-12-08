@@ -71,7 +71,17 @@ namespace Cauldron.Titan
                 //If Titanform is in play, 1 target deals {Titan} 1 melee damage. 
                 int targetNumeral = base.GetPowerNumeral(0, 1);
                 int damageNumeral = base.GetPowerNumeral(1, 1);
-                coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), damageNumeral, DamageType.Melee, targetNumeral, false, targetNumeral, cardSource: base.GetCardSource());
+                List<SelectCardsDecision> storedResults = new List<SelectCardsDecision>();
+                var targets = FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsTarget);
+                //Select a target. 
+                coroutine = base.GameController.SelectCardsAndStoreResults(base.HeroTurnTakerController,
+                                                                        SelectionType.CardToDealDamage,
+                                                                        (Card c) => c.IsInPlayAndHasGameText && c.IsTarget,
+                                                                        targetNumeral,
+                                                                        storedResults,
+                                                                        false,
+                                                                        targetNumeral,
+                                                                        cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -79,6 +89,23 @@ namespace Cauldron.Titan
                 else
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                if(DidSelectCards(storedResults))
+                { 
+                    //That target (those targets) deals Titan one melee damage
+                    coroutine = DealDamage((Card c) => storedResults.FirstOrDefault().SelectCardDecisions.Any((SelectCardDecision scd) => scd.SelectedCard == c),
+                                          (Card c) => c == base.CharacterCard,
+                                          (Card c) => damageNumeral,
+                                          DamageType.Melee);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
             else
