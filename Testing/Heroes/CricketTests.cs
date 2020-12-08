@@ -435,5 +435,91 @@ namespace CauldronTests
             //All draw 1, Cricket -3 for other heroes, Legacy -1 for Cricket
             QuickHandCheck(-2, 0, 1, 1);
         }
+
+        [Test()]
+        public void TestSwarmingFrequency()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Magmaria");
+            StartGame();
+
+            PutOnDeck("ArborealPhalanges");
+            PutOnDeck("EnsnaringBrambles");
+            PutOnDeck("LivingRockslide");
+
+            Card swarm = PlayCard("SwarmingFrequency");
+            //If there is at least 1 environment target in play, redirect all damage dealt by villain targets to the environment target with the lowest HP.
+
+            //No environment
+            QuickHPStorage(cricket);
+            DealDamage(akash, cricket, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            Card defender = PlayCard("SeismicDefender");
+            Card tunneler = PlayCard("InnerCoreTunneler");
+            //Redirect to Lowest
+            QuickHPStorage(cricket.CharacterCard, akash.CharacterCard, tunneler, defender);
+            DealDamage(akash, cricket, 2, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, -2);
+
+            QuickHPStorage(cricket.CharacterCard, akash.CharacterCard, tunneler, defender);
+            DealDamage(akash, akash, 2, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, -2);
+
+            QuickHPStorage(cricket.CharacterCard, akash.CharacterCard, tunneler, defender);
+            DealDamage(akash, tunneler, 2, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, -2);
+
+            //Only villain damage
+            QuickHPStorage(cricket.CharacterCard, akash.CharacterCard, tunneler, defender);
+            DealDamage(cricket, akash, 2, DamageType.Melee);
+            QuickHPCheck(0, -2, 0, 0);
+
+            QuickHPStorage(cricket.CharacterCard, akash.CharacterCard, tunneler, defender);
+            DealDamage(cricket, tunneler, 2, DamageType.Melee);
+            QuickHPCheck(0, 0, -2, 0);
+
+            QuickHPStorage(cricket.CharacterCard, akash.CharacterCard, tunneler, defender);
+            DealDamage(tunneler, cricket, 2, DamageType.Melee);
+            QuickHPCheck(-2, 0, 0, 0);
+
+            //At the start of your turn, destroy this card.
+            GoToStartOfTurn(cricket);
+            AssertInTrash(swarm);
+        }
+
+        [Test()]
+        public void TestTelescopingStaff()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Magmaria");
+            StartGame();
+
+            Card sub = PutInHand("SubharmonicReceiver");
+            DecisionSelectCard = sub;
+
+            Card staff = PlayCard("TelescopingStaff");
+            //{Cricket} deals 1 target 1 melee damage. You may play a card.
+            QuickHPStorage(akash);
+            UsePower(staff);
+            QuickHPCheck(-1);
+            AssertIsInPlay(sub);
+        }
+
+        [Test()]
+        public void TestVantagePoint()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Magmaria");
+            StartGame();
+
+            Card staff = PutInTrash("TelescopingStaff");
+            Card ring = PutInTrash("TheLegacyRing");
+            Card flak = PutInTrash("FlakCannon");
+            Card loose = PutInTrash("KnowWhenToTurnLoose");
+
+            Card vant = PlayCard("VantagePoint");
+            //Each player may put a card other than Vantage Point from their trash into their hand. Destroy this card.
+            UsePower(vant);
+            AssertInHand(new Card[] { staff, ring, flak, loose });
+            AssertInTrash(vant);
+        }
     }
 }
