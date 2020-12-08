@@ -1590,6 +1590,27 @@ namespace CauldronTests
             QuickHPStorage(parse, haka, bunker);
             PlayCard("ElementOfLightning");
             QuickHPCheck(-2, -2, -2);
+
+            
+        }
+
+        [Test()]
+        public void TestNoWinConditionWhenInfernoMouthInstructionsFrontOut()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "WagerMaster", "Parse", "Bunker", "Haka", "Megalopolis" });
+            StartGame();
+            IEnumerable<Card> wagerCardsToDestroy = FindCardsWhere((Card c) => c.Owner == wager.TurnTaker && c.IsInPlay);
+            DestroyCards(wagerCardsToDestroy);
+            GoToPlayCardPhase(wager);
+            SetHitPoints(parse, 10);
+            SetHitPoints(bunker, 10);
+            SetHitPoints(haka, 10);
+
+            PlayCard("LosingToTheOdds");
+            GoToEndOfTurn(wager);
+
+            AssertNotGameOver();
+
         }
     }
 }
