@@ -2,155 +2,155 @@
 
 "BankHeist.png":
 {
-	"frame": {"x":2049,"y":0,"w":689,"h":507},
+	"frame": {"x":0,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "CatharticDemolition.png":
 {
-	"frame": {"x":2741,"y":0,"w":689,"h":507},
+	"frame": {"x":259,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "Copperhead.png":
 {
-	"frame": {"x":0,"y":991,"w":689,"h":507},
+	"frame": {"x":518,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "CrimeSpree.png":
 {
-	"frame": {"x":692,"y":991,"w":689,"h":507},
+	"frame": {"x":777,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "DynamoCharacter.png":
 {
-	"frame": {"x":0,"y":0,"w":680,"h":988},
+	"frame": {"x":259,"y":382,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
-	"sourceSize": {"w":680,"h":988}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "DynamoCharacterBack.png":
 {
-	"frame": {"x":683,"y":0,"w":680,"h":988},
+	"frame": {"x":438,"y":382,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
-	"sourceSize": {"w":680,"h":988}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "DynamoDeckBack.png":
 {
-	"frame": {"x":1366,"y":0,"w":680,"h":988},
+	"frame": {"x":617,"y":382,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
-	"sourceSize": {"w":680,"h":988}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "EnergyConversion.png":
 {
-	"frame": {"x":1384,"y":991,"w":689,"h":507},
+	"frame": {"x":1036,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "HardenedCriminals.png":
 {
-	"frame": {"x":2076,"y":991,"w":689,"h":507},
+	"frame": {"x":1295,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "HelemtedCharge.png":
 {
-	"frame": {"x":2768,"y":991,"w":689,"h":507},
+	"frame": {"x":1554,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "HeresThePlan.png":
 {
-	"frame": {"x":0,"y":1501,"w":689,"h":507},
+	"frame": {"x":0,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "ImperviousAdvance.png":
 {
-	"frame": {"x":692,"y":1501,"w":689,"h":507},
+	"frame": {"x":259,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "KineticEnergyBeam.png":
 {
-	"frame": {"x":1384,"y":1501,"w":689,"h":507},
+	"frame": {"x":518,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "Python.png":
 {
-	"frame": {"x":2076,"y":1501,"w":689,"h":507},
+	"frame": {"x":777,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "SlipperyThief.png":
 {
-	"frame": {"x":2768,"y":1501,"w":689,"h":507},
+	"frame": {"x":1036,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "Stranglehold.png":
 {
-	"frame": {"x":0,"y":2011,"w":689,"h":507},
+	"frame": {"x":1295,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "TakeItOutside.png":
 {
-	"frame": {"x":692,"y":2011,"w":689,"h":507},
+	"frame": {"x":1554,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "WantonDestruction.png":
 {
-	"frame": {"x":1384,"y":2011,"w":689,"h":507},
+	"frame": {"x":0,"y":382,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "DynamoAtlas0.png",
 	"format": "RGBA8888",
-	"size": {"w":4096,"h":4096},
+	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:a449fd02f17d49f1304c325ecbab1156:627ea9b15a1a1282f2d2e3d50783cefd:a2789ecf38b345423a0ea711d5167eb4$"
+	"smartupdate": "$TexturePacker:SmartUpdate:01944123e2bc2f653e23d704ca7c372f:a45f0e626e6f50adbb586710d83e564d:a2789ecf38b345423a0ea711d5167eb4$"
 }
 }

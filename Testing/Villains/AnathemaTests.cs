@@ -260,6 +260,62 @@ namespace CauldronTests
             QuickHPCheck(2);
         }
 
+
+        [Test()]
+        public void TestAnathemaGainsHPWhenVillainKillsArm()
+        {
+            SetupGameController("Cauldron.Anathema", "Ra", "Megalopolis");
+
+            StartGame();
+
+            //set anathema hp to 30 to give room to heal
+            SetHitPoints(anathema.CharacterCard, 30);
+            QuickHPStorage(anathema);
+
+            List<Card> arms = GetListOfArmsInPlay(anathema);
+            //have anathema destroy the arm to trigger healing
+            DealDamage(anathema.CharacterCard, arms[0], 99, DamageType.Psychic);
+
+            QuickHPCheck(2);
+        }
+
+        [Test()]
+        public void TestAnathemaGainsHPWhenVillainKillsBody()
+        {
+            SetupGameController("Cauldron.Anathema", "Ra", "Megalopolis");
+
+            StartGame();
+
+            //set anathema hp to 30 to give room to heal
+            SetHitPoints(anathema.CharacterCard, 30);
+            QuickHPStorage(anathema);
+
+            List<Card> body = GetListOfBodyInPlay(anathema);
+            //have anathema destroy the body to trigger healing
+            DealDamage(anathema.CharacterCard, body[0], 99, DamageType.Psychic);
+
+            QuickHPCheck(2);
+        }
+
+        [Test()]
+        public void TestAnathemaGainsHPWhenVillainKillsHead()
+        {
+            SetupGameController("Cauldron.Anathema", "Ra", "Megalopolis");
+
+            StartGame();
+
+            //set anathema hp to 30 to give room to heal
+            SetHitPoints(anathema.CharacterCard, 30);
+            QuickHPStorage(anathema);
+
+            List<Card> heads = GetListOfHeadsInPlay(anathema);
+            //have anathema destroy the head to trigger healing
+            DealDamage(anathema.CharacterCard, heads[0], 99, DamageType.Psychic);
+
+            QuickHPCheck(2);
+        }
+
+
         [Test()]
         public void TestAnathemaFlipsWhen0VillainTargets()
         {
@@ -683,6 +739,42 @@ namespace CauldronTests
 
             //no damage was dealt, so haka should not have destroyed any cards
             Assert.AreEqual(numCardsInPlayBefore, numCardsInPlayAfter);
+        }
+
+        [Test()]
+        public void TestKnuckleDraggerEndOfTurn_CheckForOriginalTarget()
+        {
+            SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Luminary", "Megalopolis");
+
+            StartGame();
+            ResetAnathemaDeck();
+            GoToPlayCardPhase(anathema);
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(luminary.CharacterCard, 25);
+
+
+            //put an ongoing in play for haka to destroy
+            Card plan = PutIntoPlay("AllAccordingToPlan");
+            Card defender = PutIntoPlay("DisposableDefender");
+
+            //Put Knuckle Dragger in play. 
+            PutIntoPlay("KnuckleDragger");
+
+            int? numCardsInPlayBefore = GetNumberOfCardsInPlay(luminary);
+
+            QuickHPStorage(luminary);
+            //at the end of turn, anathema deals the Hero character with the highest HP {H+1} melee damage.
+            //since disposable defender is in, no damage should be dealt to original target
+            GoToEndOfTurn(anathema);
+            QuickHPCheck(0);
+
+            int? numCardsInPlayAfter = GetNumberOfCardsInPlay(luminary);
+
+            //no damage was dealt, so haka should not have destroyed any cards
+
+            Assert.AreEqual(numCardsInPlayBefore, numCardsInPlayAfter);
+            AssertInPlayArea(luminary, plan);
         }
 
         [Test()]
@@ -1297,6 +1389,28 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestBiofeedbackNoGainHPOnNoDamage()
+        {
+            SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis");
+
+            StartGame();
+
+            PutIntoPlay("FleshOfTheSunGod");
+
+            ResetAnathemaDeck();
+            SetHitPoints(anathema.CharacterCard, 30);
+            GoToPlayCardPhase(anathema);
+
+            //put biofeedback in play
+            PutIntoPlay("Biofeedback");
+
+            //Whenever anathema deals damage to a Hero target, he regains 1 HP.
+            QuickHPStorage(anathema);
+            DealDamage(anathema, ra, 5, DamageType.Fire);
+            QuickHPCheck(0);
+        }
+
+        [Test()]
         public void TestBiofeedbackSelfDamage()
         {
             SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis");
@@ -1307,16 +1421,21 @@ namespace CauldronTests
             GoToPlayCardPhase(anathema);
 
             //put an arm in play to test effect
-            PlayCard("KnuckleDragger");
+            var knuckle = PlayCard("KnuckleDragger");
 
             //put biofeedback in play
             PutIntoPlay("Biofeedback");
 
             //Whenever an arm, body, or head is destroyed by a Hero target, Anathema deals himself 2 psychic damage.
             QuickHPStorage(anathema);
-            DestroyCard(GetListOfArmsInPlay(anathema)[0], ra.CharacterCard);
+            DestroyCard(knuckle, ra.CharacterCard);
             QuickHPCheck(-2);
 
+            //reset and test with damage.
+            PlayCard(knuckle);
+            QuickHPStorage(anathema);
+            DealDamage(ra.CharacterCard, knuckle, 99, DamageType.Fire, true);
+            QuickHPCheck(-2);
 
         }
 
