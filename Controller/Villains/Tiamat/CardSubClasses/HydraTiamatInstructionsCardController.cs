@@ -39,7 +39,7 @@ namespace Cauldron.Tiamat
             else //Back Triggers
             {
                 //Each card has an alternate response if its firstHead's element enters play when the firstHead is incap'd
-                base.AddSideTrigger(base.AddTrigger<PlayCardAction>((PlayCardAction action) => action.WasCardPlayed && action.CardToPlay.Identifier == this.element && this.firstHead.Card.IsFlipped && !this.secondHead.Card.IsFlipped, (PlayCardAction action) => this.AlternateElementRepsonse(action), TriggerType.DealDamage, TriggerTiming.After));
+                base.AddSideTrigger(base.AddTrigger<PlayCardAction>((PlayCardAction action) => action.WasCardPlayed && action.CardToPlay.Identifier == this.element && this.firstHead.Card.IsFlipped && !this.secondHead.Card.IsFlipped, (PlayCardAction action) => this.AlternateElementResponse(action), TriggerType.DealDamage, TriggerTiming.After));
                 base.AddSideTriggers(this.AddBackTriggers());
             };
         }
@@ -92,9 +92,9 @@ namespace Cauldron.Tiamat
             }
             return result != 0;
         }
-        private IEnumerator AlternateElementRepsonse(PlayCardAction action)
+        private IEnumerator AlternateElementResponse(PlayCardAction action)
         {
-            //Whenever the corresponding "Element of" Card enters play and the firstHead is decapitated, if the secondHead is active do the alterante response.
+            //Whenever the corresponding "Element of" Card enters play and the firstHead is decapitated, if the secondHead is active do the alternate response.
             IEnumerator coroutine = alternateElementCoroutine;
             if (base.UseUnityCoroutines)
             {

@@ -19,7 +19,7 @@ namespace Cauldron.Tiamat
             this.secondHead = base.GameController.FindCardController("HydraDecayTiamatCharacter");
             this.element = "ElementOfFire";
             //Whenever Element of Fire enters play and {InfernoTiamatCharacter} is decapitated, if {DecayTiamatCharacter} is active she deals each hero target X toxic damage, where X = 2 plus the number of Acid Breaths in the villain trash.
-            this.alternateElementCoroutine = base.DealDamage(this.secondHead.Card, (Card c) => c.IsHero, (Card c) => this.PlusNumberOfACardInTrash(2, "AcidBreath"), DamageType.Toxic);
+            this.alternateElementCoroutine = base.DealDamage(this.secondHead.Card, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => this.PlusNumberOfACardInTrash(2, "AcidBreath"), DamageType.Toxic);
             yield break;
         }
 
@@ -39,7 +39,7 @@ namespace Cauldron.Tiamat
             return new ITrigger[]
             {
                 //The first time {InfernoTiamatCharacter} deals damage each turn, increase that damage by 2.
-                base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.Card == firstHead.Card && !this.DidDealDamageThisTurn(firstHead.Card), (DealDamageAction action) => 2)
+                base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card == firstHead.Card && !this.DidDealDamageThisTurn(firstHead.Card), 2)
             };
         }
 
@@ -67,12 +67,12 @@ namespace Cauldron.Tiamat
             if (!base.Card.IsFlipped)
             {//Front End of Turn Damage
                 //...{InfernoTiamatCharacter} deals the hero target with the highest HP 2 fire damage.
-                coroutine = base.DealDamageToHighestHP(this.firstHead.Card, 1, (Card c) => c.IsHero, (Card c) => new int?(2), DamageType.Fire);
+                coroutine = base.DealDamageToHighestHP(this.firstHead.Card, 1, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => new int?(2), DamageType.Fire);
             }
             else
             {//Back End of Turn Damage
                 //At the end of the villain turn, if {InfernoTiamatCharacter} is active, she deals the hero target with the second highest HP 1 fire damage.
-                coroutine = base.DealDamageToHighestHP(this.firstHead.Card, 2, (Card c) => c.IsHero, (Card c) => new int?(1), DamageType.Fire);
+                coroutine = base.DealDamageToHighestHP(this.firstHead.Card, 2, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => new int?(1), DamageType.Fire);
             }
             if (base.UseUnityCoroutines)
             {
