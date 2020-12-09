@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Linq;
 
-namespace Cauldron.Phase
+namespace Cauldron.PhaseVillain
 {
     public class InsubstantialMatadorCardController : CardController
     {
