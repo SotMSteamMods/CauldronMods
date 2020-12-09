@@ -145,7 +145,6 @@ namespace Cauldron.Baccarat
                     base.GameController.ExhaustCoroutine(e2);
                 }
                 this.LogActedCard(card);
-                e2 = null;
             }
             yield break;
         }

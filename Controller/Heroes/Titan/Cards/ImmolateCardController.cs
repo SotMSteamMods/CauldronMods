@@ -27,7 +27,7 @@ namespace Cauldron.Titan
             }
 
             //Play this card next to a target.
-            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsTarget, "targets"), storedResults, true, decisionSources);
+            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsTarget, "target"), storedResults, true, decisionSources);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -42,15 +42,15 @@ namespace Cauldron.Titan
         public override void AddTriggers()
         {
             //The first time that target deals damage each turn, it deals itself 1 fire damage.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.Card == base.GetCardThisCardIsNextTo() && !base.IsPropertyTrue("FirstTimeDealingDamage", null), this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
-            base.AddAfterLeavesPlayAction((GameAction ga) => base.ResetFlagAfterLeavesPlay("FirstTimeDealingDamage"), TriggerType.Hidden);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.Card == base.GetCardThisCardIsNextTo() && !base.IsPropertyTrue(FirstTimeDealingDamage, null), this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+            base.AddAfterLeavesPlayAction((GameAction ga) => base.ResetFlagAfterLeavesPlay(FirstTimeDealingDamage), TriggerType.Hidden);
             //If that target leaves play, destroy this card.
             base.AddIfTheTargetThatThisCardIsNextToLeavesPlayDestroyThisCardTrigger();
         }
 
         private IEnumerator DealDamageResponse(DealDamageAction action)
         {
-            base.SetCardPropertyToTrueIfRealAction("FirstTimeDealingDamage");
+            base.SetCardPropertyToTrueIfRealAction(FirstTimeDealingDamage);
             IEnumerator coroutine = base.DealDamage(base.GetCardThisCardIsNextTo(), base.GetCardThisCardIsNextTo(), 1, DamageType.Fire, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {

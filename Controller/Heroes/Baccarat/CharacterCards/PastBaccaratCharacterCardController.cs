@@ -13,8 +13,6 @@ namespace Cauldron.Baccarat
 
         }
 
-        private List<Card> actedHeroes;
-
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
             switch (index)
@@ -63,37 +61,6 @@ namespace Cauldron.Baccarat
                     }
             }
             yield break;
-        }
-        private IEnumerator DealDamageAndDrawResponse(Card card)
-        {
-            if (card != null)
-            {
-                IEnumerator coroutine = base.DealDamage(card, card, 1, DamageType.Toxic, cardSource: base.GetCardSource());
-                IEnumerator coroutine2 = base.DrawCard(card.Owner.ToHero());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                    yield return base.GameController.StartCoroutine(coroutine2);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                    base.GameController.ExhaustCoroutine(coroutine2);
-                }
-                this.LogActedCard(card);
-                coroutine2 = null;
-            }
-            yield break;
-        }
-
-        private void LogActedCard(Card card)
-        {
-            if (card.SharedIdentifier != null)
-            {
-                IEnumerable<Card> collection = base.FindCardsWhere((Card c) => c.SharedIdentifier != null && c.SharedIdentifier == card.SharedIdentifier && c != card, false, null, false);
-                this.actedHeroes.AddRange(collection);
-
-            }
         }
 
         public override IEnumerator UsePower(int index = 0)

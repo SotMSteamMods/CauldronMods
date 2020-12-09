@@ -26,7 +26,7 @@ namespace Cauldron.Vector
             base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker, StartOfTurnResponse, TriggerType.GainHP);
 
             // Reduce damage dealt to this card by 1.
-            base.AddReduceDamageTrigger((Card c) => c == base.Card, 1);
+            base.AddReduceDamageTrigger((Card c) => c == base.Card, ReduceDamageAmount);
 
             base.AddTriggers();
         }

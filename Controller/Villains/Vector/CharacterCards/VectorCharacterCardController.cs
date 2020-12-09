@@ -91,7 +91,7 @@ namespace Cauldron.Vector
                 if (this.IsGameAdvanced)
                 {
                     // Increase damage dealt by {Vector} by 2.
-                    base.SideTriggers.Add(base.AddIncreaseDamageTrigger(dd => dd.DamageSource != null && dd.DamageSource.IsSameCard(base.CharacterCard), dd => 2));
+                    base.SideTriggers.Add(base.AddIncreaseDamageTrigger(dd => dd.DamageSource != null && dd.DamageSource.IsSameCard(base.CharacterCard), dd => AdvancedDamageIncrease));
 
                 }
             }

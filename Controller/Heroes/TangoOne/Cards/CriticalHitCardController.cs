@@ -85,7 +85,7 @@ namespace Cauldron.TangoOne
                     {
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
-                    coroutine = GameController.IncreaseDamage(dda, 3, false, GetCardSource());
+                    coroutine = GameController.IncreaseDamage(dda, DamageIncrease, false, GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);

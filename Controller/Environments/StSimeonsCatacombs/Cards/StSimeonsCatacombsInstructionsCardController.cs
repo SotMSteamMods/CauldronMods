@@ -184,6 +184,7 @@ namespace Cauldron.StSimeonsCatacombs
             yield break;
         }
 
+        /*
         private IEnumerator AddSideStatusEffect()
         {
             //if on the front side, add the environment can't play cards status effect
@@ -204,6 +205,7 @@ namespace Cauldron.StSimeonsCatacombs
 
             yield break;
         }
+        */
 
         private void RemoveSideEffects()
         {
