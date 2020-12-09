@@ -34,9 +34,9 @@ namespace Cauldron.Oriphel
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if(biggestHandHero.FirstOrDefault() != null)
+            if (biggestHandHero.FirstOrDefault() != null)
             {
-                var target = biggestHandHero.FirstOrDefault(); 
+                var target = biggestHandHero.FirstOrDefault();
                 coroutine = GameController.SelectTargetsAndDealDamage(FindHeroTurnTakerController(target.ToHero()),
                                                                     new DamageSource(GameController, this.Card),
                                                                     2,

@@ -35,7 +35,7 @@ namespace Cauldron.Oriphel
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            if(storedRelic.FirstOrDefault() != null && storedRelic.FirstOrDefault().FoundMatchingCards)
+            if (storedRelic.FirstOrDefault() != null && storedRelic.FirstOrDefault().FoundMatchingCards)
             {
                 //...and play it. 
                 Card relic = storedRelic.FirstOrDefault().MatchingCards.FirstOrDefault();

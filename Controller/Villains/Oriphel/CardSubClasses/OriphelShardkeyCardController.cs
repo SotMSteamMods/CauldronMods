@@ -38,7 +38,7 @@ namespace Cauldron.Oriphel
             if (revealedCard != null)
             {
                 //If a Transformation card is revealed, play it.
-                if(IsTransformation(revealedCard))
+                if (IsTransformation(revealedCard))
                 {
                     coroutine = GameController.PlayCard(DecisionMaker, revealedCard, cardSource: GetCardSource());
                     if (UseUnityCoroutines)

@@ -16,7 +16,7 @@ namespace Cauldron.Oriphel
 
         public override void AddSideTriggers()
         {
-            if(!Card.IsFlipped)
+            if (!Card.IsFlipped)
             {
                 //"Whenever a villain relic enters play, play the top card of the villain deck.",
                 AddSideTrigger(AddTrigger((CardEntersPlayAction cep) => cep.CardEnteringPlay != null && cep.CardEnteringPlay.IsRelic && IsVillain(cep.CardEnteringPlay),
@@ -45,7 +45,7 @@ namespace Cauldron.Oriphel
                 //"When there are 2 villain relics in the villain trash, flip {Oriphel}'s villain character cards."
                 AddSideTrigger(AddTrigger<GameAction>(CheckCardsInTrashCriteria, FlipThisCharacterCardResponse, TriggerType.FlipCard, TriggerTiming.After));
 
-                if(Game.IsAdvanced)
+                if (Game.IsAdvanced)
                 {
                     //"Reduce damage dealt to {Oriphel} by 1.",
                     AddSideTrigger(AddReduceDamageTrigger((Card c) => c == this.Card, 1));
@@ -53,7 +53,7 @@ namespace Cauldron.Oriphel
             }
             AddDefeatedIfDestroyedTriggers();
         }
-        
+
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
             RemoveSideTriggers();

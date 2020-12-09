@@ -18,7 +18,7 @@ namespace Cauldron.Oriphel
             base.AddTriggers();
 
             //"Whenever another villain target is destroyed, play the top card of the villain deck."
-            AddTrigger((DestroyCardAction dc) => dc.WasCardDestroyed && dc.CardToDestroy.Card.IsVillainTarget && dc.CardToDestroy != this, 
+            AddTrigger((DestroyCardAction dc) => dc.WasCardDestroyed && dc.CardToDestroy.Card.IsVillainTarget && dc.CardToDestroy != this,
                             PlayTheTopCardOfTheVillainDeckResponse, TriggerType.PlayCard, TriggerTiming.After);
         }
     }

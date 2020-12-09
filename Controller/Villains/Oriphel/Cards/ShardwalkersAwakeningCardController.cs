@@ -29,7 +29,7 @@ namespace Cauldron.Oriphel
                 }
             }
             //"If Jade is in play, flip her villain character cards."
-            if(jadeIfInPlay != null)
+            if (jadeIfInPlay != null)
             {
                 coroutine = GameController.FlipCard(FindCardController(jadeIfInPlay), cardSource: GetCardSource());
                 if (UseUnityCoroutines)
