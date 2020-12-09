@@ -201,9 +201,6 @@
             "identifier": "Replication",
             "count": 1,
             "title": "Replication",
-            "keywords": [
-                "other"
-            ],
             "icons": [
                 "PlayCardNow",
                 "EndOfTurnAction",
@@ -234,9 +231,6 @@
             "identifier": "SystemCrash",
             "count": 1,
             "title": "System Crash",
-            "keywords": [
-                "other"
-            ],
             "icons": [
                 "StartOfTurnAction",
                 "LoseTheGame"
@@ -248,9 +242,6 @@
             "identifier": "YourMindMakesItReal",
             "count": 1,
             "title": "Your Mind Makes it Real",
-            "keywords": [
-                "other"
-            ],
             "icons": [
                 "DealDamageLightning",
                 "EndOfTurnAction",

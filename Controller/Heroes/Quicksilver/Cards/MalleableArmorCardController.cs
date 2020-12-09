@@ -42,30 +42,76 @@ namespace Cauldron.Quicksilver
         }
         public override void AddTriggers()
         {
-            //If {Quicksilver} would be reduced from greater than 1 HP to 0 or fewer HP...
-            base.AddTrigger<DealDamageAction>(delegate (DealDamageAction action)
-            {
-                if (action.Target == base.CharacterCard && base.CharacterCard.HitPoints > 1)
-                {
-                    int amount = action.Amount;
-                    int? hitPoints = action.Target.HitPoints;
-                    return amount >= hitPoints.GetValueOrDefault() & hitPoints != null;
-                }
-                return false;
-            }, new Func<DealDamageAction, IEnumerator>(this.DealDamageResponse), new TriggerType[]
-            {
-                TriggerType.WouldBeDealtDamage,
-                TriggerType.GainHP
-            }, TriggerTiming.Before);
+			//If {Quicksilver} would be reduced from greater than 1 HP to 0 or fewer HP, restore her to 1HP.
+
+			//The default "AddWhenHPDropsToZeroOrBelowRestoreHPTriggers" doesn't let you put a criterion on the restore
+			//So I'll have to roll my own.
+
+			AddTrigger((DestroyCardAction dc) => dc.CardToDestroy.Card == this.CharacterCard && this.CharacterCard.HitPoints <= 0 && DestroyIsDueToDamageFromHighHitPoints(dc),
+						(DestroyCardAction dc) => PreventDestroyAndRestoreHitPointsResponse(dc, this.CharacterCard, 1),
+						new TriggerType[] { TriggerType.CancelAction },
+						TriggerTiming.Before);
         }
 
-        private IEnumerator DealDamageResponse(DealDamageAction action)
+		private bool DestroyIsDueToDamageFromHighHitPoints(DestroyCardAction dc)
         {
-            //I think this has the possibility to interact incorrectly with some esoteric effects.
-            //Not sure of a better way to do it, though.
-            //...restore her to 1HP.
-            base.CharacterCard.SetHitPoints(action.Amount + 1);
-            yield break;
+			if(dc.ActionSource != null && dc.ActionSource is DealDamageAction)
+            {
+				var damageAction = dc.ActionSource as DealDamageAction;
+				return damageAction.TargetHitPointsBeforeBeingDealtDamage > 1;
+            }
+			return false;
         }
+
+		//copy-pasted from ILSpy, then pared down
+		private IEnumerator PreventDestroyAndRestoreHitPointsResponse(GameAction action, Card cardThatGetsRestored, int numberOfHitPoints)
+		{
+			DestroyCardAction destroyCardAction = null;
+			DealDamageAction dealDamageAction = null;
+			if (action is DealDamageAction)
+			{
+				dealDamageAction = action as DealDamageAction;
+			}
+			if (action is DestroyCardAction)
+			{
+				destroyCardAction = action as DestroyCardAction;
+				if (destroyCardAction.ActionSource is DealDamageAction)
+				{
+					dealDamageAction = destroyCardAction.ActionSource as DealDamageAction;
+				}
+			}
+			if (numberOfHitPoints > 0)
+			{
+				if ((destroyCardAction != null && destroyCardAction.CardToDestroy.Card == cardThatGetsRestored) || (dealDamageAction != null && dealDamageAction.Target == cardThatGetsRestored))
+				{
+					IEnumerator coroutine = CancelAction(action);
+					if (UseUnityCoroutines)
+					{
+						yield return GameController.StartCoroutine(coroutine);
+					}
+					else
+					{
+						GameController.ExhaustCoroutine(coroutine);
+					}
+				}
+				IEnumerator coroutine2;
+
+				if (cardThatGetsRestored.MaximumHitPoints.HasValue)
+				{
+					numberOfHitPoints = Math.Min(numberOfHitPoints, cardThatGetsRestored.MaximumHitPoints.Value);
+				}
+				coroutine2 = GameController.SetHP(cardThatGetsRestored, numberOfHitPoints, GetCardSource());
+				
+				if (UseUnityCoroutines)
+				{
+					yield return GameController.StartCoroutine(coroutine2);
+				}
+				else
+				{
+					GameController.ExhaustCoroutine(coroutine2);
+				}
+			}
+			yield break;
+		}
     }
 }
