@@ -114,11 +114,30 @@ namespace Cauldron.Baccarat
             int X = 0;
             bool skipped = false;
             List<SelectCardDecision> decisions = new List<SelectCardDecision>();
-            Card selectedCard;
             List<Card> playedCards = new List<Card>();
             int upTo = GetPowerNumeral(0, 3);
             int discardBase = GetPowerNumeral(1, 3);
-            IEnumerator coroutine;
+
+            //Max for Select Number Decision for Number of Euchres to play
+            int max = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Identifier == "AfterlifeEuchre" && c.Location == base.TurnTaker.Trash)).Count();
+            //If Max is greater than the number of Euchres the power allows, switch it to that number
+            if (max > upTo)
+            {
+                max = upTo;
+            }
+            List<SelectNumberDecision> numberDecision = new List<SelectNumberDecision>();
+            //Player selects number of Euchres to play
+            IEnumerator coroutine = base.GameController.SelectNumber(base.HeroTurnTakerController, SelectionType.PlayExtraCard, 0, max, storedResults: numberDecision, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            //Number of Euchres the power will play
+            upTo = numberDecision.FirstOrDefault().SelectedNumber ?? upTo;
             while (X < upTo && !skipped)
             {
                 //Play X copies of Afterlife Euchre from your trash (up to 3).
@@ -131,7 +150,7 @@ namespace Cauldron.Baccarat
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-                selectedCard = decisions.LastOrDefault<SelectCardDecision>().SelectedCard;
+                Card selectedCard = decisions.LastOrDefault<SelectCardDecision>().SelectedCard;
                 if (decisions.Count() > X && selectedCard != null)
                 {
                     playedCards.Add(selectedCard);
