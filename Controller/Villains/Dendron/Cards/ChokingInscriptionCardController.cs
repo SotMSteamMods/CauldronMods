@@ -114,8 +114,10 @@ namespace Cauldron.Dendron
         {
             System.Console.WriteLine("### DEBUG ### - ChokingInspiration.PreventPlaysThisTurnEffect triggered");
 
-            CannotPlayCardsStatusEffect effect = new CannotPlayCardsStatusEffect();
-            effect.CardSource = sourceEffect.CardSource;
+            CannotPlayCardsStatusEffect effect = new CannotPlayCardsStatusEffect
+            {
+                CardSource = sourceEffect.CardSource
+            };
             effect.TurnTakerCriteria.IsSpecificTurnTaker = base.Game.ActiveTurnTaker;
             effect.UntilThisTurnIsOver(base.Game);
             IEnumerator coroutine = base.AddStatusEffect(effect);
