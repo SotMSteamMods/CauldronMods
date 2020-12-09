@@ -32,7 +32,7 @@ namespace Cauldron.Oriphel
                                                                                 1,
                                                                                 false,
                                                                                 1,
-                                                                                additionalCriteria: (Card c) => c.Owner == Game.ActiveTurnTaker && c.IsInPlayAndHasGameText && c.IsCharacter,
+                                                                                additionalCriteria: (Card c) => c.Owner == Game.ActiveTurnTaker && c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame,
                                                                                 cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
