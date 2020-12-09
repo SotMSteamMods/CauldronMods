@@ -128,7 +128,7 @@ namespace Cauldron.PhaseVillain
 
         private bool IsObstacle(Card c)
         {
-            return c.DoKeywordsContain("Obstacle");
+            return c.DoKeywordsContain("obstacle");
         }
 
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
