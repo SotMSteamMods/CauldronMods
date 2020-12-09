@@ -22,18 +22,16 @@ namespace Cauldron.Oriphel
 
             //"The first time any hero target deals damage to any villain target each turn, this card deals that hero target 3 cold damage.",
 
-            AddTrigger((DealDamageAction dd) => dd.DidDealDamage && dd.DamageSource != null && dd.DamageSource.IsHero && dd.DamageSource.IsTarget && dd.Target.IsVillain && RetaliationAvailable(),
+            AddTrigger((DealDamageAction dd) => dd.DidDealDamage && dd.DamageSource != null && dd.DamageSource.IsHero && dd.DamageSource.IsTarget && IsVillain(dd.Target) && RetaliationAvailable(),
                             DealRetaliationDamage,
                             TriggerType.DealDamage,
                             TriggerTiming.After,
                             ActionDescription.DamageTaken);
-
-            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(phaolKey), TriggerType.Hidden);
         }
 
         private bool RetaliationAvailable()
         {
-            return !IsPropertyTrue(phaolKey);
+            return !Journal.CardPropertiesEntriesThisTurn(Card).Any(j => j.Key == phaolKey && j.BoolValue == true);
         }
 
         private IEnumerator DealRetaliationDamage(DealDamageAction dd)
