@@ -37,8 +37,8 @@ namespace Cauldron.Cypher
             }
 
             // Play any number of Augments from your hand
-            routine = base.GameController.PlayCards(this.DecisionMaker, card => card.IsInHand && IsAugment(card), true, true, 
-                null, cardSource: GetCardSource());
+            routine = base.GameController.SelectAndPlayCardsFromHand(base.HeroTurnTakerController, 40, 
+                false, 0, new LinqCardCriteria(IsAugment));
 
             if (base.UseUnityCoroutines)
             {

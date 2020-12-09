@@ -1,7 +1,8 @@
-﻿using Handelabra.Sentinels.Engine.Controller;
-using Handelabra.Sentinels.Engine.Model;
-using System;
+﻿using System;
 using System.Collections;
+
+using Handelabra.Sentinels.Engine.Controller;
+using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Cypher
 {
@@ -18,19 +19,17 @@ namespace Cauldron.Cypher
         {
         }
 
-        public override IEnumerator Play()
+        public override void AddTriggers()
         {
-            IEnumerator routine = base.IncreasePhaseActionCountIfInPhase(tt => tt == base.TurnTaker, 
-                Phase.PlayCard, 1);
-            
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
+            //They may play an additional card during their play phase.
+            base.AddAdditionalPhaseActionTrigger(this.ShouldIncreasePhaseActionCount, Phase.PlayCard, 1);
+
+            base.AddTriggers();
+        }
+
+        private bool ShouldIncreasePhaseActionCount(TurnTaker tt)
+        {
+            return tt == base.GetCardThisCardIsNextTo(true).Owner;
         }
     }
 }
