@@ -95,13 +95,43 @@ namespace CauldronTests
             AssertFlipped(phase);
         }
 
+        [Test()]
         public void TestPhaseFrontIncreaseDamage()
         {
             SetupGameController("Cauldron.PhaseVillain", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
             //Increase damage dealt by {PhaseVillain} by 1 for each obstacle that has been removed from the game.
+            //0 out of game
             QuickHPStorage(haka);
+            DealDamage(phase, haka, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //1 out of game
+            MoveCard(phase, "VaultDoor", phase.TurnTaker.OutOfGame);
+            QuickHPStorage(haka);
+            DealDamage(phase, haka, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            //2 out of game
+            Card wall = GetCard("ReinforcedWall");
+            SetHitPoints(wall, 0);
+            MoveCard(phase, wall, phase.TurnTaker.OutOfGame);
+            QuickHPStorage(haka);
+            DealDamage(phase, haka, 2, DamageType.Melee);
+            QuickHPCheck(-4);
+
+            //3 out of game
+            MoveCard(phase, "BlockedSightline", phase.TurnTaker.OutOfGame);
+            QuickHPStorage(haka);
+            DealDamage(phase, haka, 2, DamageType.Melee);
+            QuickHPCheck(-5);
+
+            //4 out of game
+            MoveCard(phase, "PrecariousRubble", phase.TurnTaker.OutOfGame);
+            QuickHPStorage(haka);
+            DealDamage(phase, haka, 2, DamageType.Melee);
+            QuickHPCheck(-6);
         }
     }
 }
