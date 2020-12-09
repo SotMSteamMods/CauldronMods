@@ -373,5 +373,44 @@ namespace CauldronTests
             AssertNotFlipped(anathema.CharacterCard);
 
         }
+
+        [Test()]
+        public void TestAcceleratedEvolutionAnathemaAdvancedEndOfTurnBack()
+        {
+            SetupGameController(new string[] { "Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis" }, advanced: true);
+            StartGame();
+            FlipCard(anathema);
+            SetHitPoints(anathema, 30);
+            //At the end of the villain turn {Anathema} regains 1 HP for each villain target in play.
+            //should be 1 target in play
+            QuickHPStorage(anathema);
+            GoToEndOfTurn(anathema);
+            if(FindCardInPlay("MetabolicArmor") != null)
+            {
+                QuickHPCheck(6);
+
+            } else
+            {
+                QuickHPCheck(5);
+            }
+
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionAnathemaAdvancedEndOfTurnFront()
+        {
+            SetupGameController(new string[] { "Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis" }, advanced: true);
+            StartGame();
+            SetHitPoints(anathema, 30);
+            DestroyCards(FindCardsWhere((Card c) => !c.IsCharacter && c.IsInPlayAndHasGameText && anathema.TurnTaker.PlayArea.HasCard(c)));
+            //At the end of the villain turn, {Anathema} regains {H - 2} HP.
+            //H = 3 -> regain 1 HP
+            QuickHPStorage(anathema);
+            GoToEndOfTurn(anathema);
+            QuickHPCheck(1);
+
+
+        }
     }
 }

@@ -67,6 +67,8 @@ namespace Cauldron.Anathema
 				if (base.IsGameAdvanced)
 				{
 					//At the end of the villain turn, {Anathema} regains {H - 2} HP.
+					this.SideTriggers.Add(AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, AdvancedEndOfTurnFrontResponse, TriggerType.GainHP));
+
 				}
 			}
 			else
@@ -79,10 +81,43 @@ namespace Cauldron.Anathema
 				if (base.IsGameAdvanced)
 				{
 					//At the end of the villain turn {Anathema} regains 1 HP for each villain target in play.
+					this.SideTriggers.Add(AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, AdvancedEndOfTurnBackResponse, TriggerType.GainHP));
 				}
 			}
 
 			base.AddDefeatedIfDestroyedTriggers();
+		}
+
+        private IEnumerator AdvancedEndOfTurnFrontResponse(PhaseChangeAction arg)
+        {
+			//At the end of the villain turn, {Anathema} regains {H - 2} HP.
+			IEnumerator coroutine = base.GameController.GainHP(base.CharacterCard, Game.H - 2, cardSource: GetCardSource());
+			if (base.UseUnityCoroutines)
+			{
+				yield return base.GameController.StartCoroutine(coroutine);
+			}
+			else
+			{
+				base.GameController.ExhaustCoroutine(coroutine);
+			}
+
+			yield break;
+		}
+
+        private IEnumerator AdvancedEndOfTurnBackResponse(PhaseChangeAction arg)
+        {
+			//Anathema} regains 1 HP for each villain target in play.
+			IEnumerator coroutine = base.GameController.GainHP(base.CharacterCard, null, () => FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsVillainTarget).Count(), cardSource: GetCardSource());
+			if (base.UseUnityCoroutines)
+			{
+				yield return base.GameController.StartCoroutine(coroutine);
+			}
+			else
+			{
+				base.GameController.ExhaustCoroutine(coroutine);
+			}
+
+			yield break;
 		}
 
         private IEnumerator EndOfTurnFrontResponse(PhaseChangeAction arg)
