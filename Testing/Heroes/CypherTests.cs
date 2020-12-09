@@ -197,7 +197,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestBackupPlan()
+        public void TestBackupPlan_Destroy()
         {
 
             // When a non-hero card enters play, you may destroy this card.
@@ -207,6 +207,10 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
             StartGame();
+
+            SetHitPoints(new[] {Cypher.CharacterCard, ra.CharacterCard, tachyon.CharacterCard}, 18);
+
+            Card bladeBattallon = GetCard("BladeBattalion");
 
             Card muscleAug = GetCard(MuscleAugCardController.Identifier);
             Card dermalAug = GetCard(DermalAugCardController.Identifier);
@@ -219,12 +223,19 @@ namespace CauldronTests
 
             Card backupPlan = GetCard(BackupPlanCardController.Identifier);
 
+            DecisionYesNo = true;
+            QuickHPStorage(Cypher, ra, tachyon);
 
             // Act
-            
+            GoToPlayCardPhase(Cypher);
+            PlayCard(backupPlan);
+            DecisionSelectCards = new[] {muscleAug};
+            PlayCard(bladeBattallon);
 
             // Assert
-            Assert.True(false, "TODO");
+            AssertInTrash(backupPlan);
+            QuickHPCheck(0, 2, 2);
+            
 
         }
 

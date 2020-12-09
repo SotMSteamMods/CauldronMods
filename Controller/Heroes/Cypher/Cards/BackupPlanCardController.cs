@@ -34,8 +34,11 @@ namespace Cauldron.Cypher
 
         private IEnumerator DestroySelfResponse(CardEntersPlayAction cepa)
         {
-            List<DestroyCardAction> dcas = new List<DestroyCardAction>();
-            IEnumerator routine = this.GameController.DestroyCard(this.DecisionMaker, this.Card, true, dcas, cardSource: GetCardSource());
+            // Ask player if they want to destroy this card
+            List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
+            IEnumerator routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
+                SelectionType.DestroySelf, base.Card, storedResults: storedResults, cardSource: base.GetCardSource());
+
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
@@ -45,35 +48,92 @@ namespace Cauldron.Cypher
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            if (!base.DidDestroyCard(dcas))
+            if (!base.DidPlayerAnswerYes(storedResults))
             {
                 yield break;
             }
 
-            // If you do, select any number of Augments in play and move
-            // each one next to a new hero. Then, each augmented hero regains 2HP.
-            List<Card> augmentsInPlay = GetAugmentsInPlay();
-
-            IEnumerable<Function> functionsBasedOnCard(Card c) => new Function[]
+            if (!base.GameController.IsCardIndestructible(base.Card))
             {
-                //new Function(base.FindCardController(c).DecisionMaker, "Deal self 3 toxic damage to play a card now.", SelectionType.PlayCard, () => this.DealDamageAndDrawResponse(c))
-                //new Function(this.HeroTurnTakerController, "Move augment", SelectionType.MoveCardNextToCard, )
-            };
+                // If you do, select any number of Augments in play and move
+                // each one next to a new hero. Then, each augmented hero regains 2HP.
+
+                
+                SelectCardDecision scd = new SelectCardDecision(GameController, DecisionMaker,
+                    SelectionType.MoveCardNextToCard, GetAugmentsInPlay(), isOptional: true, cardSource: GetCardSource());
+
+                IEnumerable<Function> FunctionsBasedOnCard(Card c) => new[]
+                {
+                    new Function(this.HeroTurnTakerController, $"Move {c.Title}", SelectionType.MoveCardNextToCard, () => MoveAugment(scd) )
+                };
+
+                routine = base.GameController.SelectCardsAndPerformFunction(this.HeroTurnTakerController,
+                    new LinqCardCriteria(c => GetAugmentsInPlay().Contains(c)), FunctionsBasedOnCard, true, GetCardSource());
+
+                
+
+                /*
+                List<SelectCardsDecision> scds = new List<SelectCardsDecision>();
+                 routine = base.GameController.SelectCardsAndStoreResults(base.HeroTurnTakerController,
+                    SelectionType.MoveCard, c => GetAugmentsInPlay().Contains(c), 5, scds, false,
+                    cardSource: GetCardSource());
+                */
+
+                
+                //List<MoveCardDestination> list = new List<MoveCardDestination>();
+                //list.Add(new MoveCardDestination(base.HeroTurnTaker.Hand));
+                //routine = base.GameController.SelectCardsFromLocationAndMoveThem(base.HeroTurnTakerController,
+                    //base.TurnTaker., 0, 5, new LinqCardCriteria(IsAugment), list);
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
 
 
-            //base.GameController.SelectCardsAndPerformFunction(this.HeroTurnTakerController, new LinqCardCriteria(c => GetAugmentsInPlay().Contains(c)), ), 
+                // Then, each augmented hero regains 2HP.
+                routine = this.GameController.GainHP(this.HeroTurnTakerController, IsAugmented, HpGain,
+                    cardSource: GetCardSource());
 
-            // Then, each augmented hero regains 2HP.
-            routine = this.GameController.GainHP(this.HeroTurnTakerController, IsAugmented, HpGain,
-                cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
 
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
+
+                // Destroy card
+                List<DestroyCardAction> dcas = new List<DestroyCardAction>();
+                routine = this.GameController.DestroyCard(this.DecisionMaker, this.Card, storedResults: dcas, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
             }
             else
             {
-                base.GameController.ExhaustCoroutine(routine);
+                routine = base.GameController.SendMessageAction(base.Card.Title + " is indestructible, so it cannot be destroyed for an extra actions.", 
+                    Priority.Medium, base.GetCardSource(), null, true);
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
             }
         }
     }
