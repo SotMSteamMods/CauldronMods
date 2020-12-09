@@ -49,10 +49,21 @@ namespace Cauldron.Anathema
 			if (!base.Card.IsFlipped)
 			{
 				//Whenever {Anathema} destroys an arm or head card, put that under {Anathema}'s villain character card.
+				this.SideTriggers.Add(AddTrigger((DestroyCardAction destroy) => destroy.CardSource != null && destroy.CardToDestroy.CanBeDestroyed && destroy.WasCardDestroyed && destroy.CardSource.Card.Owner == base.TurnTaker && IsArmOrHead(destroy.CardToDestroy.Card) && destroy.PostDestroyDestinationCanBeChanged, PutUnderThisCardResponse, new TriggerType[2]
+						{
+							TriggerType.MoveCard,
+							TriggerType.ChangePostDestroyDestination
+						}, TriggerTiming.After));
 
 				//At the end of the villain turn, reveal the top card of the villain deck. If an arm or head card is revealed, put it under {Anathema}'s character card, otherwise discard it. 
 				//Then if there are {H} or more cards under {Anathema}, flip his villain character card.
-				
+				this.SideTriggers.Add(AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, EndOfTurnFrontResponse, new TriggerType[]
+				{
+					TriggerType.RevealCard,
+					TriggerType.MoveCard,
+					TriggerType.FlipCard
+				}));
+
 				if (base.IsGameAdvanced)
 				{
 					//At the end of the villain turn, {Anathema} regains {H - 2} HP.
@@ -72,6 +83,61 @@ namespace Cauldron.Anathema
 			}
 
 			base.AddDefeatedIfDestroyedTriggers();
+		}
+
+        private IEnumerator EndOfTurnFrontResponse(PhaseChangeAction arg)
+        {
+			//reveal the top card of the villain deck. If an arm or head card is revealed, put it under {Anathema}'s character card, otherwise discard it. 
+			List<Card> storedResults = new List<Card>();
+			IEnumerator coroutine = base.GameController.RevealCards(base.TurnTakerController,base.TurnTaker.Deck, 1, storedResults, cardSource: GetCardSource());
+			if (base.UseUnityCoroutines)
+			{
+				yield return base.GameController.StartCoroutine(coroutine);
+			}
+			else
+			{
+				base.GameController.ExhaustCoroutine(coroutine);
+			}
+
+			if(storedResults.Count > 0)
+            {
+				Card cardToMove = storedResults.First();
+				Location location;
+				if(IsArmOrHead(cardToMove))
+                {
+					location = base.CharacterCard.UnderLocation;
+				} else
+                {
+					location = base.TurnTaker.Trash;
+                }
+				coroutine = GameController.MoveCard(base.TurnTakerController, cardToMove, location, showMessage: true, cardSource: GetCardSource());
+				if (base.UseUnityCoroutines)
+				{
+					yield return base.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					base.GameController.ExhaustCoroutine(coroutine);
+				}
+			} 
+
+			//Then if there are {H} or more cards under {Anathema}, flip his villain character card.
+			int numCardsUnderAnathema = base.CharacterCard.UnderLocation.NumberOfCards;
+
+			if(numCardsUnderAnathema >= Game.H)
+            {
+				coroutine = base.GameController.FlipCard(this, cardSource: GetCardSource());
+				if (base.UseUnityCoroutines)
+				{
+					yield return base.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					base.GameController.ExhaustCoroutine(coroutine);
+				}
+			}
+
+			yield break;
 		}
 
 		public override IEnumerator AfterFlipCardImmediateResponse()
@@ -111,6 +177,12 @@ namespace Cauldron.Anathema
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
 			yield break;
+		}
+
+		private IEnumerator PutUnderThisCardResponse(DestroyCardAction destroyCard)
+		{
+			destroyCard.SetPostDestroyDestination(base.Card.UnderLocation, cardSource: GetCardSource());
+			yield return null;
 		}
 
 

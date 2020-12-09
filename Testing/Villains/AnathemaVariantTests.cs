@@ -28,13 +28,13 @@ namespace CauldronTests
 
         protected List<Card> GetListOfArmsInPlay(TurnTakerController ttc)
         {
-            var cardsInPlay = ttc.TurnTaker.GetAllCards().Where(c => c.IsInPlay && this.IsArm(c));
-            List<Card> listOfHead = new List<Card>();
+            var cardsInPlay = ttc.TurnTaker.GetAllCards().Where(c => c.IsInPlayAndNotUnderCard && this.IsArm(c));
+            List<Card> listofArms = new List<Card>();
             foreach (Card c in cardsInPlay)
             {
-                listOfHead.Add(c);
+                listofArms.Add(c);
             }
-            return listOfHead;
+            return listofArms;
         }
 
         protected void AssertNumberOfHeadInPlay(TurnTakerController ttc, int number)
@@ -145,7 +145,7 @@ namespace CauldronTests
         [Test()]
         public void TestAcceleratedEvolutionAnathemaStartGame()
         {
-            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Megalopolis");
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
 
             StartGame();
 
@@ -166,7 +166,7 @@ namespace CauldronTests
         [Test()]
         public void TestAcceleratedEvolutionAnathemaOnFlip_ShuffleExplosiveTransformations()
         {
-            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Megalopolis");
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
 
             IEnumerable<Card> transformations = FindCardsWhere((Card c) => anathema.TurnTaker.Deck.HasCard(c) && c.Identifier == "ExplosiveTransformation");
@@ -186,7 +186,7 @@ namespace CauldronTests
         [Test()]
         public void TestAcceleratedEvolutionAnathemaOnFlip_PlayAllUnderCards()
         {
-            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Megalopolis");
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
 
             IEnumerable<Card> cardsUnder = GetCards("Biofeedback", "TheStuffOfNightmares", "HeavyCarapace");
@@ -202,8 +202,176 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestAcceleratedEvolutionAnathemaMoveCardsUnder_AnathemaDestroysArm()
+        {
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
 
+            Card armToDestroy = GetListOfArmsInPlay(anathema).First();
+            AssertIsInPlayAndNotUnderCard(armToDestroy);
+            //Whenever {Anathema} destroys an arm or head card, put that under {Anathema}'s villain character card.
+            DestroyCard(armToDestroy, anathema.CharacterCard);
+            AssertUnderCard(anathema.CharacterCard, armToDestroy);
 
+        }
 
+        [Test()]
+        public void TestAcceleratedEvolutionAnathemaDontMoveCardsUnder_OtherDestroysArm()
+        {
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card armToDestroy = GetListOfArmsInPlay(anathema).First();
+            AssertIsInPlayAndNotUnderCard(armToDestroy);
+            //Whenever {Anathema} destroys an arm or head card, put that under {Anathema}'s villain character card.
+            DestroyCard(armToDestroy, legacy.CharacterCard);
+            AssertInTrash(armToDestroy);
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionAnathemaMoveCardsUnder_AnathemaDestroysHead()
+        {
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card headToDestroy = GetListOfHeadsInPlay(anathema).First();
+            AssertIsInPlayAndNotUnderCard(headToDestroy);
+            //Whenever {Anathema} destroys an arm or head card, put that under {Anathema}'s villain character card.
+            DestroyCard(headToDestroy, anathema.CharacterCard);
+            AssertUnderCard(anathema.CharacterCard, headToDestroy);
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionAnathemaDontMoveCardsUnder_OtherDestroysHead()
+        {
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card headToDestroy = GetListOfHeadsInPlay(anathema).First();
+            AssertIsInPlayAndNotUnderCard(headToDestroy);
+            //Whenever {Anathema} destroys an arm or head card, put that under {Anathema}'s villain character card.
+            DestroyCard(headToDestroy, legacy.CharacterCard);
+            AssertInTrash(headToDestroy);
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionAnathemaDontMoveCardsUnder_AnathemaDestroysBody()
+        {
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card bodyToDestroy = GetListOfBodyInPlay(anathema).First();
+            AssertIsInPlayAndNotUnderCard(bodyToDestroy);
+            //Whenever {Anathema} destroys an arm or head card, put that under {Anathema}'s villain character card.
+            DestroyCard(bodyToDestroy, anathema.CharacterCard);
+            AssertInTrash(bodyToDestroy);
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionAnathemaMoveCardsUnder_HeadDestroysHead()
+        {
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card headToDestroy = GetListOfHeadsInPlay(anathema).First();
+            Card headToPlay = FindCardsWhere((Card c) => anathema.TurnTaker.Deck.HasCard(c) && IsHead(c)).First();
+            AssertIsInPlayAndNotUnderCard(headToDestroy);
+            //Whenever {Anathema} destroys an arm or head card, put that under {Anathema}'s villain character card.
+            PlayCard(headToPlay);
+            AssertUnderCard(anathema.CharacterCard, headToDestroy);
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionAnathemaEndOfTurnFront_ArmOnTop_NoFlip()
+        {
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card armOnDeck = PutOnDeck("WhipTendril");
+            AssertInDeck(armOnDeck);
+            //At the end of the villain turn, reveal the top card of the villain deck. If an arm or head card is revealed, put it under {Anathema}'s character card, otherwise discard it. 
+            //Then if there are {H} or more cards under {Anathema}, flip his villain character card.           
+            GoToEndOfTurn(anathema);
+            AssertUnderCard(anathema.CharacterCard, armOnDeck);
+            AssertNumberOfCardsInRevealed(anathema, 0);
+            AssertNotFlipped(anathema.CharacterCard);
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionAnathemaEndOfTurnFront_ArmOnTop_Flip()
+        {
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            IEnumerable<Card> cardsUnder = GetCards("Biofeedback", "TheStuffOfNightmares", "HeavyCarapace", "RazorScales");
+            MoveCards(anathema, cardsUnder, anathema.CharacterCard.UnderLocation);
+            Card armOnDeck = PutOnDeck("WhipTendril");
+            AssertInDeck(armOnDeck);
+            //At the end of the villain turn, reveal the top card of the villain deck. If an arm or head card is revealed, put it under {Anathema}'s character card, otherwise discard it. 
+            //Then if there are {H} or more cards under {Anathema}, flip his villain character card.  
+            AssertNotFlipped(anathema.CharacterCard);
+            GoToEndOfTurn(anathema);
+            AssertFlipped(anathema.CharacterCard);
+            AssertNumberOfCardsInRevealed(anathema, 0);
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionAnathemaEndOfTurnFront_HeadOnTop_NoFlip()
+        {
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card headOnDeck = PutOnDeck("ReflexBooster");
+            AssertInDeck(headOnDeck);
+            //At the end of the villain turn, reveal the top card of the villain deck. If an arm or head card is revealed, put it under {Anathema}'s character card, otherwise discard it. 
+            //Then if there are {H} or more cards under {Anathema}, flip his villain character card.           
+            GoToEndOfTurn(anathema);
+            AssertUnderCard(anathema.CharacterCard, headOnDeck);
+            AssertNumberOfCardsInRevealed(anathema, 0);
+            AssertNotFlipped(anathema.CharacterCard);
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionAnathemaEndOfTurnFront_HeadOnTop_Flip()
+        {
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            IEnumerable<Card> cardsUnder = GetCards("Biofeedback", "TheStuffOfNightmares", "HeavyCarapace", "RazorScales");
+            MoveCards(anathema, cardsUnder, anathema.CharacterCard.UnderLocation);
+            Card headOnDeck = PutOnDeck("ReflexBooster");
+            AssertInDeck(headOnDeck);
+            //At the end of the villain turn, reveal the top card of the villain deck. If an arm or head card is revealed, put it under {Anathema}'s character card, otherwise discard it. 
+            //Then if there are {H} or more cards under {Anathema}, flip his villain character card.  
+            AssertNotFlipped(anathema.CharacterCard);
+            GoToEndOfTurn(anathema);
+            AssertFlipped(anathema.CharacterCard);
+            AssertNumberOfCardsInRevealed(anathema, 0);
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionAnathemaEndOfTurnFront_NonArmHead()
+        {
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card headOnDeck = PutOnDeck("Biofeedback");
+            AssertInDeck(headOnDeck);
+            //At the end of the villain turn, reveal the top card of the villain deck. If an arm or head card is revealed, put it under {Anathema}'s character card, otherwise discard it. 
+            //Then if there are {H} or more cards under {Anathema}, flip his villain character card.           
+            GoToEndOfTurn(anathema);
+            AssertInTrash(headOnDeck);
+            AssertNumberOfCardsInRevealed(anathema, 0);
+            AssertNotFlipped(anathema.CharacterCard);
+
+        }
     }
 }
