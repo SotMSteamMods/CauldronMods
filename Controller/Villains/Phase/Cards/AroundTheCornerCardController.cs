@@ -9,7 +9,7 @@ namespace Cauldron.Phase
     {
         public AroundTheCornerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisTurn("FirstTimeDestroyed"), () => "An obstacle has been destroyed this turn.", () => "An obstacle has not been destroyed this turn.");
         }
 
         private const string FirstTimeDamageDealt = "FirstTimeDestroyed";

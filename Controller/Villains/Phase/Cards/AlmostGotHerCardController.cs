@@ -11,7 +11,7 @@ namespace Cauldron.Phase
     {
         public AlmostGotHerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisRound("FirstTimeDamageDeal"), () => "Phase has dealt damage to a target this round.", () => "Phase has not dealt damage to a target this round.");
         }
 
         private const string FirstTimeDamageDealt = "FirstTimeDamageDeal";
