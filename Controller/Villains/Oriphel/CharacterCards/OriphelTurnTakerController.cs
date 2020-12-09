@@ -20,7 +20,7 @@ namespace Cauldron.Oriphel
 
             //"Reveal cards from the top of the villain deck until {H - 2} guardians are revealed and put them into play. 
             //Shuffle the villain deck."
-            IEnumerator coroutine = PutCardsIntoPlay(new LinqCardCriteria(IsGuardian), H - 2, true);
+            IEnumerator coroutine = PutCardsIntoPlay(new LinqCardCriteria(IsGuardian, "guardian"), H - 2, true);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
