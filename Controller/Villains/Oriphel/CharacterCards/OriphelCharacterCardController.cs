@@ -31,25 +31,27 @@ namespace Cauldron.Oriphel
                 if (Game.IsAdvanced)
                 {
                     //"Increase damage dealt by villain targets by 1.",
-                    AddSideTrigger(AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsVillainTarget, 1));
+                    AddSideTrigger(AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && IsVillainTarget(dd.DamageSource.Card), 1));
                 }
             }
             else
             {
                 //"Reduce damage dealt to {Oriphel} by 1.",
-                AddSideTrigger(AddReduceDamageTrigger((Card c) => c == this.Card, 1));
+                if (!Game.IsAdvanced)
+                {
+                    AddSideTrigger(AddReduceDamageTrigger((Card c) => c == this.Card, 1));
+                }
+                else //Game.IsAdvanced
+                {
+                    //"Reduce damage dealt to {Oriphel} by 1.", X 2
+                    AddSideTrigger(AddReduceDamageTrigger((Card c) => c == this.Card, 2));
+                }
 
                 //"At the end of the villain turn, {Oriphel} deals the 2 hero targets with the highest HP {H - 1} infernal damage each.",
                 AddSideTrigger(AddDealDamageAtEndOfTurnTrigger(this.TurnTaker, this.Card, (Card c) => c.IsHero, TargetType.HighestHP, H - 1, DamageType.Infernal, numberOfTargets: 2));
 
                 //"When there are 2 villain relics in the villain trash, flip {Oriphel}'s villain character cards."
                 AddSideTrigger(AddTrigger<GameAction>(CheckCardsInTrashCriteria, FlipThisCharacterCardResponse, TriggerType.FlipCard, TriggerTiming.After));
-
-                if (Game.IsAdvanced)
-                {
-                    //"Reduce damage dealt to {Oriphel} by 1.",
-                    AddSideTrigger(AddReduceDamageTrigger((Card c) => c == this.Card, 1));
-                }
             }
             AddDefeatedIfDestroyedTriggers();
         }
