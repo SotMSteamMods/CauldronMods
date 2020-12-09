@@ -1,5 +1,6 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+using Handelabra;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace Cauldron.Anathema
 			}
 			DealDamageAction dd = storedResults.FirstOrDefault();
 			//If that Hero takes damage this way, they must destroy 1 of their ongoing cards.
-			if (dd != null && dd.DidDealDamage)
+			if (dd != null && dd.DidDealDamage && DidIntendedTargetTakeDamage(new DealDamageAction[] { dd }, dd.OriginalTarget))
 			{
 				HeroTurnTakerController httc = base.FindHeroTurnTakerController(dd.Target.Owner.ToHero());
 				coroutine = base.GameController.SelectAndDestroyCard(httc, new LinqCardCriteria((Card c) => c.IsOngoing && c.Owner == dd.Target.Owner, "ongoing"), false, cardSource: base.GetCardSource());

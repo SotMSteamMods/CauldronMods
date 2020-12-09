@@ -58,8 +58,7 @@ namespace Cauldron.Anathema
 				base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction destroyCard) => destroyCard.WasCardDestroyed 
 						&& this.IsArmHeadOrBody(destroyCard.CardToDestroy.Card) 
 						&& base.GameController.IsCardVisibleToCardSource(destroyCard.CardToDestroy.Card, this.GetCardSource())
-						&& destroyCard.CardSource != null
-						&& base.IsVillain(destroyCard.CardSource.Card),
+						&& destroyCard.WasDestroyedBy(c => IsVillain(c)),
 					new Func<DestroyCardAction, IEnumerator>(this.GainHpResponse), TriggerType.GainHP, TriggerTiming.After));
 				
 				if (base.IsGameAdvanced)

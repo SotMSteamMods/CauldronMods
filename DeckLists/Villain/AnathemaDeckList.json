@@ -52,10 +52,6 @@
                 "EndOfTurnAction",
                 "Discard"
             ],
-            "flippedAdvancedIcons": [
-                "StartOfTurnAction",
-                "Discard"
-            ],
             "difficulty": 2,
             "openingLines": {
                 "default": "Give it up, heroes - what chance do you have against the pinnacle of evolution?",
@@ -141,7 +137,7 @@
         },
         {
             "identifier": "DoppelgangerStrike",
-            "count": 1,
+            "count": 2,
             "title": "Doppelganger Strike",
             "keywords": [
                 "one-shot"
@@ -165,7 +161,7 @@
         },
         {
             "identifier": "EnhancedSenses",
-            "count": 1,
+            "count": 2,
             "title": "Enhanced Senses",
             "keywords": [
                 "head"
@@ -213,7 +209,7 @@
         },
         {
             "identifier": "HeavyCarapace",
-            "count": 1,
+            "count": 2,
             "title": "Heavy Carapace",
             "keywords": [
                 "body"

@@ -145,7 +145,7 @@
             ],
             "icons": [
                 "Search",
-                "IrreducibleDamage",
+                "MakeDamageIrreducible",
                 "StartOfTurnAction",
                 "DestroySelf"
             ],
@@ -267,7 +267,7 @@
             ],
             "icons": [
                 "DealDamageMelee",
-                "ReduceGain",
+                "ReduceGainHP",
                 "StartOfTurnAction",
                 "DestroySelf"
             ],

@@ -53,7 +53,49 @@ namespace CauldronTests
             QuickHPCheck(-1);
             QuickHandCheck(1);
         }
+        [Test]
+        public void TestInnatePowerFirstResponseIsFromHavocCard()
+        {
+            SetupGameController("BaronBlade", DeckNamespaceFirstResponse, "Ra", "Legacy", "Megalopolis");
 
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            QuickHPStorage(mdp);
+            QuickHandStorage(DocHavoc);
+            DecisionYesNo = true;
+            DecisionSelectTarget = mdp;
+            UsePower(legacy);
+            // Act
+            GoToUsePowerPhase(DocHavoc);
+            UsePower(DocHavoc);
+
+            // Assert
+            QuickHPCheck(-2);
+            QuickHandCheck(1);
+        }
+        [Test]
+        public void TestInnatePowerFirstResponseIsStandardMayDamage()
+        {
+            SetupGameController("BaronBlade", DeckNamespaceFirstResponse, "Ra", "Legacy", "Megalopolis");
+
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            QuickHPStorage(mdp);
+            QuickHandStorage(DocHavoc);
+            DecisionYesNo = false;
+            DecisionSelectTargets = new Card[] { mdp, mdp, null };
+            // Act
+            GoToUsePowerPhase(DocHavoc);
+            UsePower(DocHavoc);
+            UsePower(DocHavoc);
+            UsePower(DocHavoc);
+
+            // Assert
+            QuickHPCheck(-2);
+            QuickHandCheck(3);
+        }
         [Test]
         public void TestInnatePowerFirstResponseNoDamage()
         {

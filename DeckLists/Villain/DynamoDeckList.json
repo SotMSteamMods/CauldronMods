@@ -33,7 +33,6 @@
             "icons": [
                 "StartOfTurnAction","Discard","DealDamageEnergy","EndOfTurnAction"
             ],
-            "advancedIcons": ["Discard"],
             "flippedBody": "Fully Charged",
             "flippedGameplay": [
                 "When Dynamo flips to this side, play the top 2 cards of the villain deck. Then, shuffle the villain trash, put it on the bottom of the villain deck, and flip {Dynamo}'s villain character cards."

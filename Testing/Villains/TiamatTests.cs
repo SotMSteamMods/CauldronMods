@@ -31,11 +31,11 @@ namespace CauldronTests
         {
             CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new CannotDealDamageStatusEffect();
             cannotDealDamageStatusEffect.NumberOfUses = 1;
-            cannotDealDamageStatusEffect.SourceCriteria.IsSpecificCard = card; 
+            cannotDealDamageStatusEffect.SourceCriteria.IsSpecificCard = card;
             this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
         }
 
-        private void AddShuffleTrashCounterAttackTrigger(TurnTakerController ttc, TurnTaker turnTakerToReshuffleTrash) 
+        private void AddShuffleTrashCounterAttackTrigger(TurnTakerController ttc, TurnTaker turnTakerToReshuffleTrash)
         {
             Func<DealDamageAction, bool> criteria = (DealDamageAction dd) => dd.Target == ttc.CharacterCard;
             Func<DealDamageAction, IEnumerator> response = (DealDamageAction dd) => this.GameController.ShuffleTrashIntoDeck(this.GameController.FindTurnTakerController(turnTakerToReshuffleTrash));
@@ -51,7 +51,7 @@ namespace CauldronTests
         public void TestTiamatLoad()
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
-
+            StartGame();
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
 
             Assert.IsNotNull(tiamat);
@@ -127,10 +127,10 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-            SetupIncap(legacy, winter);
+            SetupIncap(legacy, inferno);
             //Flipped heads cannot deal damage
             QuickHPStorage(legacy);
-            DealDamage(winter, legacy, 2, DamageType.Cold);
+            DealDamage(inferno, legacy, 2, DamageType.Cold);
             QuickHPCheck(0);
         }
 
@@ -400,10 +400,12 @@ namespace CauldronTests
             SetupGameController("Cauldron.Tiamat", "AbsoluteZero", "Ra", "Haka", "TheBlock");
             StartGame();
 
+            GoToPlayCardPhase(tiamat);
+
             //set hp of heads
-            SetHitPoints(inferno, 20);
-            SetHitPoints(storm, 15);
-            SetHitPoints(winter, 25);
+            SetHitPoints(winter, 10);
+            SetHitPoints(storm, 5);
+            SetHitPoints(inferno, 14);
 
             Card glacial = GetCard("GlacialStructure");
             PlayCards(new Card[] {
@@ -425,8 +427,8 @@ namespace CauldronTests
 
             //damage should be dealt by highest hp, which is winter
             //adding cannot deal damage status effects to storm and inferno
-            AddCannotDealNextDamageTrigger(tiamat, inferno);
-            AddCannotDealNextDamageTrigger(tiamat, storm);
+            AddCannotDealNextDamageTrigger(ra, winter);
+            AddCannotDealNextDamageTrigger(ra, storm);
             PlayCard(GetCard("AcidBreath"));
             QuickHPCheck(-3, -3, 0);
         }
@@ -715,7 +717,7 @@ namespace CauldronTests
 
             //Inferno deals 2+X damage to each hero where X is the number of Element of Fires in trash
             QuickHPStorage(legacy, bunker, haka);
-            PlayCard(tiamat,fire);
+            PlayCard(tiamat, fire);
             AddCannotDealNextDamageTrigger(tiamat, storm);
             AddCannotDealNextDamageTrigger(tiamat, winter);
             QuickHPCheck(-4, -4, -4);
@@ -923,12 +925,13 @@ namespace CauldronTests
             DrawCard(bunker);
             //The hero with most cards in hand cannot draw cards until start of next villain turn
             PlayCard(tiamat, GetCard("ElementOfLightning"));
-            GoToDrawCardPhase(legacy);
-            AssertCanPerformPhaseAction();
-            GoToDrawCardPhase(bunker);
-            AssertCannotPerformPhaseAction();
-            GoToDrawCardPhase(haka);
-            AssertCanPerformPhaseAction();
+            GoToStartOfTurn(legacy);
+            QuickHandStorage(legacy, bunker, haka);
+            DrawCard(legacy);
+            DrawCard(bunker);
+            DrawCard(haka);
+            PrintJournal();
+            QuickHandCheck(1, 0, 1);
         }
 
         [Test()]
@@ -961,7 +964,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
-          
+
             List<Card> spellCards = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementOfFire").Take(2)).ToList();
             PutInTrash(spellCards);
 
@@ -1042,12 +1045,12 @@ namespace CauldronTests
             AssertNumberOfCardsUnderCard(frenzy, 6);
             AssertNumberOfCardsInTrash(tiamat, 1);
             AssertInTrash(ward);
-            foreach(Card card in spellCards)
+            foreach (Card card in spellCards)
             {
                 Assert.IsTrue(!card.IsFaceUp, $"{card.Title} was face up.");
                 AssertUnderCard(frenzy, card);
             }
-            
+
         }
 
         [Test()]

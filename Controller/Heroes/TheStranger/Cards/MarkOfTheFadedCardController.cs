@@ -32,7 +32,7 @@ namespace Cauldron.TheStranger
 
 			//select hero with a higher hp
 			List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-			IEnumerator coroutine2 = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.RedirectDamage, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.HitPoints.Value > base.GetCardThisCardIsNextTo(true).HitPoints,"a hero with higher HP"), storedResults, true);
+			IEnumerator coroutine2 = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.RedirectDamage, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && !c.IsOffToTheSide && c.HitPoints.Value > base.GetCardThisCardIsNextTo(true).HitPoints,"a hero with higher HP"), storedResults, true);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine2);

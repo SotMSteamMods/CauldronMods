@@ -490,7 +490,7 @@
             "icons": [
                 "ReduceDamageTaken",
                 "EndOfTurnAction",
-                "dealDamageEnergy",
+                "DealDamageEnergy",
                 "GainHP"
             ],
             "body": [

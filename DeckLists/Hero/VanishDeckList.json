@@ -250,7 +250,6 @@
                 "Discard",
                 "UsePowerNow",
                 "HasPower",
-                "DestroySelf",
                 "DrawCardNow"
             ],
             "body": "Once per turn when a Hero target is dealt damage by a non-hero card, you may discard a card. If you do, you may use a power.",
