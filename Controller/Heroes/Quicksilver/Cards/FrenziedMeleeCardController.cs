@@ -16,13 +16,13 @@ namespace Cauldron.Quicksilver
             //Increase all damage dealt by 1.
             base.AddIncreaseDamageTrigger((DealDamageAction action) => true, 1);
             //The first time a hero target would be dealt damage by a non-hero target during the villain turn, you may redirect that damage to {Quicksilver}.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn("FirstTimeDamageDealt") && base.IsVillain(base.GameController.ActiveTurnPhase.TurnTaker) && !action.DamageSource.IsHero && action.Target.IsHero, (DealDamageAction action) => this.RedirectDamageResponse(action), TriggerType.RedirectDamage, TriggerTiming.Before, isActionOptional: true);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt) && base.IsVillain(base.GameController.ActiveTurnPhase.TurnTaker) && !action.DamageSource.IsHero && action.Target.IsHero, (DealDamageAction action) => this.RedirectDamageResponse(action), TriggerType.RedirectDamage, TriggerTiming.Before, isActionOptional: true);
         }
 
         private IEnumerator RedirectDamageResponse(DealDamageAction action)
         {
             //The first time...
-            base.SetCardPropertyToTrueIfRealAction("FirstTimeDamageDealt");
+            base.SetCardPropertyToTrueIfRealAction(FirstTimeDamageDealt);
             //...redirect that damage to {Quicksilver}.
             IEnumerator coroutine = base.RedirectDamage(action, TargetType.HighestHP, (Card c) => c == base.CharacterCard, optional: true);
             if (base.UseUnityCoroutines)

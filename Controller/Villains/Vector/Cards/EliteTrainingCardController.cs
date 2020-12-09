@@ -24,7 +24,7 @@ namespace Cauldron.Vector
         public override void AddTriggers()
         {
             base.AddWhenDestroyedTrigger(DestroyCardResponse, TriggerType.DiscardCard);
-            base.AddIncreaseDamageTrigger((DealDamageAction dda) => dda.DamageSource != null && IsVillainTarget(dda.DamageSource.Card), 1);
+            base.AddIncreaseDamageTrigger((DealDamageAction dda) => dda.DamageSource != null && IsVillainTarget(dda.DamageSource.Card), IncreaseDamageAmount);
 
             base.AddTriggers();
         }
