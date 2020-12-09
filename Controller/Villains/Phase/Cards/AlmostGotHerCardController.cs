@@ -14,7 +14,7 @@ namespace Cauldron.Phase
             base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisRound("FirstTimeDamageDeal"), () => "Phase has dealt damage to a target this round.", () => "Phase has not dealt damage to a target this round.");
         }
 
-        private const string FirstTimeDamageDealt = "FirstTimeDamageDeal";
+        private const string FirstTimeDamageDeal = "FirstTimeDamageDeal";
 
         public override void AddTriggers()
         {
