@@ -208,18 +208,95 @@ namespace CauldronTests
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             Card muscleAug = GetCard(MuscleAugCardController.Identifier);
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { muscleAug}}
+            });
+
             Card cyborgBlaster = GetCard(CyborgBlasterCardController.Identifier);
+            QuickHPStorage(mdp);
 
-            DecisionSelectCards = new[] {ra.CharacterCard, muscleAug, tachyon.CharacterCard, mdp};
-            DecisionSelectTarget = mdp;
+            DecisionSelectCards = new[] {muscleAug, tachyon.CharacterCard, mdp};
 
-
-            PlayCard(muscleAug);
             PlayCard(cyborgBlaster);
 
-            Assert.True(false, "TODO");
-
+            Assert.True(AreAugmented(new List<Card>() { tachyon.CharacterCard}));
+            Assert.True(AreNotAugmented(new List<Card>() { ra.CharacterCard}));
+            Assert.True(HasAugment(tachyon.CharacterCard, muscleAug));
+            QuickHPCheck(-3); // +2 from Cyborg Blaster, +1 from Muscle Aug
         }
+
+        [Test]
+        public void TestCyborgBlasterMultipleAugmentsOnOneHero()
+        {
+            // You may move 1 Augment in play next to a new hero.
+            // One augmented hero deals 1 target 2 lightning damage.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card muscleAug = GetCard(MuscleAugCardController.Identifier);
+            Card dermalAug = GetCard(DermalAugCardController.Identifier);
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { muscleAug, dermalAug}}
+            });
+
+            Card cyborgBlaster = GetCard(CyborgBlasterCardController.Identifier);
+            QuickHPStorage(mdp);
+
+            DecisionSelectCards = new[] {muscleAug, tachyon.CharacterCard, mdp};
+            DecisionSelectTurnTaker = tachyon.TurnTaker;
+
+            PlayCard(cyborgBlaster);
+
+            Assert.True(AreAugmented(new List<Card>() { tachyon.CharacterCard}));
+            Assert.True(HasAugment(tachyon.CharacterCard, muscleAug));
+            Assert.True(AreAugmented(new List<Card>() { ra.CharacterCard}));
+            Assert.True(HasAugment(ra.CharacterCard, dermalAug));
+            QuickHPCheck(-3); // +2 from Cyborg Blaster, +1 from Muscle Aug
+        }
+
+        [Test]
+        public void TestCyborgBlasterAugmentsOnMultipleHeroes()
+        {
+            // You may move 1 Augment in play next to a new hero.
+            // One augmented hero deals 1 target 2 lightning damage.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card muscleAug = GetCard(MuscleAugCardController.Identifier);
+            Card dermalAug = GetCard(DermalAugCardController.Identifier);
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { muscleAug}},
+                { tachyon.CharacterCard, new List<Card>() { dermalAug}}
+            });
+
+            Card cyborgBlaster = GetCard(CyborgBlasterCardController.Identifier);
+            QuickHPStorage(mdp);
+
+            DecisionSelectCards = new[] {muscleAug, tachyon.CharacterCard, mdp};
+            DecisionSelectTurnTaker = tachyon.TurnTaker;
+
+            PlayCard(cyborgBlaster);
+
+            Assert.True(AreAugmented(new List<Card>() { tachyon.CharacterCard}));
+            Assert.True(AreNotAugmented(new List<Card>() { ra.CharacterCard}));
+            Assert.True(HasAugment(tachyon.CharacterCard, muscleAug));
+            Assert.True(HasAugment(tachyon.CharacterCard, dermalAug));
+            QuickHPCheck(-3); // +2 from Cyborg Blaster, +1 from Muscle Aug
+        }
+
+
 
         [Test]
         public void TestCyborgPunch()
@@ -233,21 +310,107 @@ namespace CauldronTests
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             Card muscleAug = GetCard(MuscleAugCardController.Identifier);
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { muscleAug}}
+            });
+
             Card cyborgPunch = GetCard(CyborgPunchCardController.Identifier);
 
-            DecisionSelectCards = new[] { ra.CharacterCard, muscleAug, tachyon.CharacterCard, mdp };
-            DecisionSelectTarget = mdp;
+            DecisionSelectCards = new[] { muscleAug, tachyon.CharacterCard, mdp };
 
+            QuickHandStorage(tachyon);
+            QuickHPStorage(mdp);
 
-            PlayCard(muscleAug);
             PlayCard(cyborgPunch);
 
-            Assert.True(false, "TODO");
-
+            // Assert
+            Assert.True(AreAugmented(new List<Card>() { tachyon.CharacterCard}));
+            Assert.True(AreNotAugmented(new List<Card>() { ra.CharacterCard}));
+            Assert.True(HasAugment(tachyon.CharacterCard, muscleAug));
+            QuickHPCheck(-2); // +1 from Cyborg Blaster, +1 from Muscle Aug
+            QuickHandCheck(1);
         }
 
         [Test]
-        public void TesDermalAug()
+        public void TestCyborgPunchMultipleAugmentsOnOneHero()
+        {
+            // You may move 1 Augment in play next to a new hero.
+            // One augmented hero deals 1 target 1 melee damage and draws a card now.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card muscleAug = GetCard(MuscleAugCardController.Identifier);
+            Card dermalAug = GetCard(DermalAugCardController.Identifier);
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { muscleAug, dermalAug}}
+            });
+
+            Card cyborgPunch = GetCard(CyborgPunchCardController.Identifier);
+
+            DecisionSelectCards = new[] { muscleAug, tachyon.CharacterCard, mdp };
+            DecisionSelectTurnTaker = tachyon.TurnTaker;
+
+            QuickHandStorage(tachyon);
+            QuickHPStorage(mdp);
+
+            PlayCard(cyborgPunch);
+
+            // Assert
+            Assert.True(AreAugmented(new List<Card>() { tachyon.CharacterCard}));
+            Assert.True(HasAugment(tachyon.CharacterCard, muscleAug));
+            Assert.True(AreAugmented(new List<Card>() { ra.CharacterCard}));
+            Assert.True(HasAugment(ra.CharacterCard, dermalAug));
+            QuickHPCheck(-2); // +1 from Cyborg Blaster, +1 from Muscle Aug
+            QuickHandCheck(1);
+        }
+
+        [Test]
+        public void TestCyborgPunchAugmentsOnMultipleHeroes()
+        {
+            // You may move 1 Augment in play next to a new hero.
+            // One augmented hero deals 1 target 1 melee damage and draws a card now.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card muscleAug = GetCard(MuscleAugCardController.Identifier);
+            Card dermalAug = GetCard(DermalAugCardController.Identifier);
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { muscleAug}},
+                { tachyon.CharacterCard, new List<Card>() { dermalAug}}
+            });
+
+            Card cyborgPunch = GetCard(CyborgPunchCardController.Identifier);
+
+            DecisionSelectCards = new[] { muscleAug, tachyon.CharacterCard, mdp };
+            DecisionSelectTurnTaker = tachyon.TurnTaker;
+
+            QuickHandStorage(tachyon);
+            QuickHPStorage(mdp);
+
+            PlayCard(cyborgPunch);
+
+            // Assert
+            Assert.True(AreAugmented(new List<Card>() { tachyon.CharacterCard}));
+            Assert.True(AreNotAugmented(new List<Card>() { ra.CharacterCard}));
+            Assert.True(HasAugment(tachyon.CharacterCard, muscleAug));
+            QuickHPCheck(-2); // +1 from Cyborg Blaster, +1 from Muscle Aug
+            QuickHandCheck(1);
+        }
+
+        [Test]
+        public void TestDermalAug()
         {
             // Play this card next to a hero. The hero next to this card is augmented.
             // Reduce damage dealt to that hero by 1.
@@ -257,17 +420,20 @@ namespace CauldronTests
 
             StartGame();
 
-            DecisionSelectTarget = Cypher.CharacterCard;
-
             Card dermalAug = GetCard(DermalAugCardController.Identifier);
 
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { tachyon.CharacterCard, new List<Card>() { dermalAug}}
+            });
 
-            GoToPlayCardPhase(Cypher);
-            PlayCard(dermalAug);
-            GoToEndOfTurn(Cypher);
+            QuickHPStorage(tachyon);
 
-            Assert.True(false, "TODO");
+            DealDamage(baron, tachyon, 2, DamageType.Energy);
 
+            QuickHPCheck(-1);
+            Assert.True(AreAugmented(new List<Card>() { tachyon.CharacterCard}));
+            Assert.True(HasAugment(tachyon.CharacterCard, dermalAug));
         }
 
         [Test]
@@ -280,22 +446,90 @@ namespace CauldronTests
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
             StartGame();
 
-            Card electroCloak = GetCard(ElectroOpticalCloakCardController.Identifier);
             Card muscleAug = GetCard(MuscleAugCardController.Identifier);
+            Card dermalAug = GetCard(DermalAugCardController.Identifier);
+            Card electroCloak = GetCard(ElectroOpticalCloakCardController.Identifier);
 
-            DecisionSelectCard = tachyon.CharacterCard;
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { muscleAug}},
+                { tachyon.CharacterCard, new List<Card>() { dermalAug}}
+            });
 
             GoToPlayCardPhase(Cypher);
-            PlayCard(muscleAug);
+
+            QuickHPStorage(Cypher, ra, tachyon);
+
             PlayCard(electroCloak);
 
+            DealDamage(baron, Cypher.CharacterCard, 4, DamageType.Energy);
+            DealDamage(baron, ra.CharacterCard, 4, DamageType.Energy);
             DealDamage(baron, tachyon.CharacterCard, 4, DamageType.Energy);
 
-            //GoToStartOfTurn(Cypher);
+            GoToStartOfTurn(Cypher);
             
-            Assert.True(false, "TODO");
+            // Assert
+            Assert.True(AreAugmented(new List<Card>() { ra.CharacterCard, tachyon.CharacterCard}));
+            Assert.True(AreNotAugmented(new List<Card>() { Cypher.CharacterCard}));
+            Assert.True(HasAugment(ra.CharacterCard, muscleAug));
+            Assert.True(HasAugment(tachyon.CharacterCard, dermalAug));
+            QuickHPCheck(-4, 0, 0);
+            AssertInTrash(electroCloak);
+
         }
 
+        [Test]
+        public void TestFusionAug()
+        {
+            // Play this card next to a hero. The hero next to this card is augmented.
+            // That hero may use an additional power during their power phase.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card fusionAug = GetCard(FusionAugCardController.Identifier);
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { fusionAug}}
+            });
+
+            GoToUsePowerPhase(ra);
+            AssertPhaseActionCount(2);
+
+            // Assert
+            Assert.True(AreAugmented(new List<Card>() { ra.CharacterCard}));
+            Assert.True(HasAugment(ra.CharacterCard, fusionAug));
+        }
+
+        [Test]
+        public void TestHackingProgram()
+        {
+            // POWER: {Cypher} deals himself 2 irreducible energy damage.
+            // If he takes damage this way, destroy 1 ongoing or environment card.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card policeBackup = GetCard("PoliceBackup");
+            PlayCard(policeBackup);
+            DecisionSelectCard = policeBackup;
+
+            Card hackingProgram = GetCard(HackingProgramCardController.Identifier);
+
+            QuickHPStorage(Cypher);
+
+            // Act
+            GoToPlayCardPhase(Cypher);
+            PlayCard(hackingProgram);
+            GoToUsePowerPhase(Cypher);
+            UsePower(hackingProgram);
+
+            // Assert
+            AssertInTrash(policeBackup);
+            QuickHPCheck(-2);
+        }
 
         [Test]
         public void TestMuscleAug()
@@ -308,14 +542,24 @@ namespace CauldronTests
 
             StartGame();
 
-
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
             Card muscleAug = GetCard(MuscleAugCardController.Identifier);
 
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { muscleAug}}
+            });
 
-            GoToPlayCardPhase(Cypher);
-            PlayCard(muscleAug);
+            DecisionSelectTarget = mdp;
+            QuickHPStorage(mdp);
 
-            Assert.True(false, "TODO");
+            GoToUsePowerPhase(ra);
+            UsePower(ra);
+
+            // Assert
+            Assert.True(AreAugmented(new List<Card>() { ra.CharacterCard}));
+            Assert.True(HasAugment(ra.CharacterCard, muscleAug));
+            QuickHPCheck(-3); // +2 from Pyre, +1 from Muscle Aug
         }
 
         [Test]
@@ -421,6 +665,11 @@ namespace CauldronTests
         private bool AreNotAugmented(List<Card> heroes)
         {
             return !AreAugmented(heroes);
+        }
+
+        private bool HasAugment(Card hero, Card augment)
+        {
+            return FindCardsWhere(card => card == hero && card.GetAllNextToCards(false).Contains(augment)).Any();
         }
 
         private List<Card> GetAugmentsInPlay()

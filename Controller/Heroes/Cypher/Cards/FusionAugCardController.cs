@@ -1,11 +1,12 @@
-﻿using Handelabra.Sentinels.Engine.Controller;
-using Handelabra.Sentinels.Engine.Model;
-using System;
+﻿using System;
 using System.Collections;
+
+using Handelabra.Sentinels.Engine.Controller;
+using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Cypher
 {
-    public class FusionAugCardController : CardController
+    public class FusionAugCardController : AugBaseCardController
     {
         //==============================================================
         // Play this card next to a hero. The hero next to this card is augmented.
@@ -16,22 +17,14 @@ namespace Cauldron.Cypher
 
         public FusionAugCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            AddThisCardControllerToList(CardControllerListType.IncreasePhaseActionCount);
         }
 
-        public override IEnumerator Play()
+        public override void AddTriggers()
         {
-            IEnumerator routine = base.IncreasePhaseActionCountIfInPhase(tt => tt == base.TurnTaker,
-                Phase.UsePower, 1);
+            base.AddAdditionalPhaseActionTrigger(tt => tt == base.GetCardThisCardIsNextTo().Owner, Phase.UsePower, 1);
 
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
+            base.AddTriggers();
         }
     }
 }
