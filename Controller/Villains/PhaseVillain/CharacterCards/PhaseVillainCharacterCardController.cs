@@ -17,8 +17,6 @@ namespace Cauldron.PhaseVillain
             }
         }
 
-        private const string FirstTimeDamageDealt = "FirstTimeDamageDealt";
-
         public override void AddSideTriggers()
         {
             if (!base.Card.IsFlipped)

@@ -140,6 +140,12 @@ namespace CauldronTests
             SetupGameController(new string[] { "Cauldron.PhaseVillain", "Haka", "Bunker", "TheScholar", "Megalopolis" }, true);
             StartGame();
 
+            PutOnDeck("AroundTheCorner");
+
+            Card wall = GetCard("ReinforcedWall");
+            SetHitPoints(wall, 0);
+            DestroyCard(wall);
+
             //When {Phase} is damaged, she becomes immune to damage until the end of the turn.
             QuickHPStorage(phase);
             DealDamage(haka, phase, 2, DamageType.Melee);

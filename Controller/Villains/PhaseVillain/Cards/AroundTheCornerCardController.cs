@@ -9,21 +9,21 @@ namespace Cauldron.PhaseVillain
     {
         public AroundTheCornerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisTurn("FirstTimeDestroyed"), () => "An obstacle has been destroyed this turn.", () => "An obstacle has not been destroyed this turn.");
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisTurn(FirstTimeDestroyed), () => "An obstacle has been destroyed this turn.", () => "An obstacle has not been destroyed this turn.");
         }
 
-        private const string FirstTimeDamageDealt = "FirstTimeDestroyed";
+        private const string FirstTimeDestroyed = "FirstTimeDestroyed";
 
         public override void AddTriggers()
         {
             //The first time an Obstacle is destroyed each turn, {Phase} deals each hero target 2 radiant damage.
-            base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => !base.HasBeenSetToTrueThisTurn("FirstTimeDestroyed") && base.IsObstacle(action.CardToDestroy.Card) && action.WasCardDestroyed, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeDestroyed) && base.IsObstacle(action.CardToDestroy.Card) && action.WasCardDestroyed, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
         }
 
         private IEnumerator DealDamageResponse(DestroyCardAction action)
         {
             //The first time an Obstacle is destroyed each turn, {Phase} deals each hero target 2 radiant damage.
-            base.SetCardPropertyToTrueIfRealAction("FirstTimeDestroyed");
+            base.SetCardPropertyToTrueIfRealAction(FirstTimeDestroyed);
             IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsHero, 2, DamageType.Radiant);
             if (base.UseUnityCoroutines)
             {

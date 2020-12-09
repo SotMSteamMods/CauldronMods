@@ -10,10 +10,8 @@ namespace Cauldron.PhaseVillain
     {
         public InsubstantialMatadorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisTurn("FirstTimeDamageDeal"), () => "Phase has been dealt damage by this hero this turn.", () => "Phase has not been dealt damage by this hero this turn.");
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.DidDamageVillainThisTurn(), () => "Phase has been dealt damage by this hero this turn.", () => "Phase has not been dealt damage by this hero this turn.");
         }
-
-        private const string FirstTimeDamageDealt = "FirstTimeDamageDeal";
 
         public override IEnumerator Play()
         {
