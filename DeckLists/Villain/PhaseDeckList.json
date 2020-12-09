@@ -161,7 +161,7 @@
             ],
             "body": [
                 "Increase damage dealt to non-villain targets by 1.",
-                "When this card enters play, it deals the {H}-1 hero targets with the lowest HP 2 lightning damage each."
+                "When this card enters play, it deals the {H - 1} hero targets with the lowest HP 2 lightning damage each."
             ],
             "flavorQuotes": [
                 {
