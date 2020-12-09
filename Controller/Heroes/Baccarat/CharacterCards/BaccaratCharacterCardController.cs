@@ -15,7 +15,7 @@ namespace Cauldron.Baccarat
     {
         public BaccaratCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.DoKeywordsContain("trick") && c.IsInTrash));
+            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.DoKeywordsContain("trick") && c.IsInTrash, "trick"));
         }
 
         private List<Card> actedHeroes;

@@ -23,13 +23,13 @@ namespace Cauldron.SwarmEater
             {
                 //If Single-Minded Pursuit leaves play, flip {SwarmEater}'s villain character cards.
                 base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => action.CardToDestroy.Card.Identifier == SingleMindedPursuitIdent && action.WasCardDestroyed, base.FlipThisCharacterCardResponse, TriggerType.FlipCard, TriggerTiming.After));
-                
+
                 //At the start of the villain turn, {SwarmEater} deals the pursued target 3 psychic damage.
                 base.AddSideTrigger(base.AddDealDamageAtStartOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => this.IsPursued(c), TargetType.All, 3, DamageType.Psychic));
-                
+
                 //Whenever a pursued hero deals damage to a target other than {SwarmEater}, you may move Single-Minded Pursuit next to that target.
                 base.AddSideTrigger(base.AddTrigger<DealDamageAction>((DealDamageAction action) => this.IsPursued(action.DamageSource.Card) && action.DamageSource.Card.IsHeroCharacterCard && action.Target != base.Card && action.Target != action.DamageSource.Card, this.ChangePursuedResponse, TriggerType.MoveCard, TriggerTiming.After));
-                
+
                 if (base.Game.IsAdvanced)
                 {
                     //Increase damage dealt by {SwarmEater} to environment targets by 1.
@@ -45,7 +45,7 @@ namespace Cauldron.SwarmEater
                 /**************Trigger added to Single-Minded Pursuit****************/
 
                 //Whenever a villain card is played {SwarmEater} deals the non-hero target other than itself with the lowest HP 3 melee damage.
-                base.AddSideTrigger(base.AddTrigger<PlayCardAction>((PlayCardAction action) => action.CardToPlay.IsVillain && action.WasCardPlayed, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After));
+                base.AddSideTrigger(base.AddTrigger<PlayCardAction>((PlayCardAction action) => action.CardToPlay.IsVillain && action.WasCardPlayed && !action.IsPutIntoPlay, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After));
                 if (base.Game.IsAdvanced)
                 {
                     //Whenever {SwarmEater} destroys a villain target, play the top card of the villain deck.
