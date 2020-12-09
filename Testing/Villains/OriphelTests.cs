@@ -169,7 +169,7 @@ namespace CauldronTests
             AssertNumberOfCardsInPlay((Card c) => c.IsRelic && c.IsVillain, 0);
         }
         [Test]
-        public void TestOriphelSetup([Values(new string[] { }, new string[] { "Bunker" }, new string[] {"Bunker", "Fanatic"})] string[] extraHeroes)
+        public void TestOriphelSetup([Values(new string[] { }, new string[] { "Bunker" }, new string[] { "Bunker", "Fanatic" })] string[] extraHeroes)
         {
             var startStrings = new List<string> { "Cauldron.Oriphel", "Legacy", "Ra", "Tempest" };
             startStrings.AddRange(extraHeroes);
@@ -579,7 +579,7 @@ namespace CauldronTests
             PlayCard("MejiNomad");
             var guardians = FindCardsWhere((Card c) => IsGuardian(c)).ToList();
             Card guardian;
-            for(int i = 0; i < numGuardians; i++)
+            for (int i = 0; i < numGuardians; i++)
             {
                 guardian = guardians[i];
                 PlayCard(guardian);
@@ -603,7 +603,7 @@ namespace CauldronTests
             var guardians = FindCardsWhere((Card c) => IsGuardian(c)).ToList();
             QuickHPStorage(legacy);
 
-            foreach(Card guardian in guardians)
+            foreach (Card guardian in guardians)
             {
                 PlayCard(guardian);
                 DealDamage(guardian, legacy, 1, DTM);
@@ -671,7 +671,7 @@ namespace CauldronTests
 
             var safeCards = new string[] { "PoliceBackup", "TrafficPileup", "ImpendingCasualty" };
 
-            for(int i = 0; i < environCards; i++)
+            for (int i = 0; i < environCards; i++)
             {
                 PlayCard(safeCards[i]);
             }
