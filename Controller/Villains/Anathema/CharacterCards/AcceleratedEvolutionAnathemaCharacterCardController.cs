@@ -12,6 +12,9 @@ namespace Cauldron.Anathema
 		public AcceleratedEvolutionAnathemaCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
 			base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
+			SpecialString ss = base.SpecialStringMaker.ShowNumberOfCardsUnderCard(base.Card);
+			ss.Condition = () => !base.CharacterCard.IsFlipped;
+
 		}
 
 		//number of villain targets in play other than Anathema
