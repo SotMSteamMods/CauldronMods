@@ -12,6 +12,10 @@ namespace Cauldron.SwarmEater
         public DistributedHivemindSwarmEaterCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => this.IsNanomutant(c), "nanomutant"));
+            if (base.IsGameAdvanced)
+            {
+                base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
+            }
         }
 
         private bool IsNanomutant(Card c)

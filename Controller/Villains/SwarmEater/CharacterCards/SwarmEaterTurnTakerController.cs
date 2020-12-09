@@ -88,7 +88,7 @@ namespace Cauldron.SwarmEater
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            else if (base.CharacterCardController is DistributedHivemindSwarmEaterCharacter)
+            else if (base.CharacterCardController is DistributedHivemindSwarmEaterCharacterCardController)
             {
                 //Search the villain deck for Converted Biomass and Absorbed Nanites and remove them from the game.
                 IEnumerator coroutine = base.RemoveCardsFromGame((Card c) => base.FindCardController(c) is AbsorbedNanitesCardController || base.FindCardController(c) is ConvertedBiomassCardController);
