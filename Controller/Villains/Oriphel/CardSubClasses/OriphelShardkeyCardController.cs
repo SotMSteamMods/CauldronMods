@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Cauldron.Oriphel
 {
-    public class OriphelShardkeyCardController : OriphelUtilityCardController
+    public abstract class OriphelShardkeyCardController : OriphelUtilityCardController
     {
-        public OriphelShardkeyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected OriphelShardkeyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
 

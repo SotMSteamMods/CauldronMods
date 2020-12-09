@@ -7,9 +7,9 @@ using Handelabra;
 
 namespace Cauldron.Oriphel
 {
-    public class OriphelGuardianCardController : OriphelUtilityCardController
+    public abstract class OriphelGuardianCardController : OriphelUtilityCardController
     {
-        public OriphelGuardianCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected OriphelGuardianCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowListOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria((Card c) => c.IsRelic, "relic"));
         }
