@@ -133,5 +133,28 @@ namespace CauldronTests
             DealDamage(phase, haka, 2, DamageType.Melee);
             QuickHPCheck(-6);
         }
+
+        [Test()]
+        public void TestPhaseFrontAdvanced()
+        {
+            SetupGameController(new string[] { "Cauldron.PhaseVillain", "Haka", "Bunker", "TheScholar", "Megalopolis" }, true);
+            StartGame();
+
+            //When {Phase} is damaged, she becomes immune to damage until the end of the turn.
+            QuickHPStorage(phase);
+            DealDamage(haka, phase, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //After taking damage is immune
+            QuickHPStorage(phase);
+            DealDamage(haka, phase, 2, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //Next turn not immune
+            GoToStartOfTurn(haka);
+            QuickHPStorage(phase);
+            DealDamage(haka, phase, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+        }
     }
 }
