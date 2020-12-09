@@ -9,7 +9,7 @@ namespace Cauldron.PhaseVillain
     {
         public ResidualDesynchronizationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisTurn("FirstTimeDamageDealt"), () => "A villain target has been dealt damage this turn.", () => "A villain target has not been dealt damage this turn.");
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt), () => "A villain target has been dealt damage this turn.", () => "A villain target has not been dealt damage this turn.");
         }
 
         private const string FirstTimeDamageDealt = "FirstTimeDamageDealt";
@@ -25,7 +25,7 @@ namespace Cauldron.PhaseVillain
         private IEnumerator DealDamageResponse(DealDamageAction action)
         {
             ////The first time a villain target is dealt damage each turn...
-            base.SetCardPropertyToTrueIfRealAction("FirstTimeDamageDealt");
+            base.SetCardPropertyToTrueIfRealAction(FirstTimeDamageDealt);
             //...it deals the source of that damage 2 energy damage.
             IEnumerator coroutine = base.DealDamage(action.Target, action.DamageSource.Card, 2, DamageType.Energy, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
