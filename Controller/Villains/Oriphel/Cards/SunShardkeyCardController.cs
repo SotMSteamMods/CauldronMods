@@ -18,7 +18,7 @@ namespace Cauldron.Oriphel
             base.AddTriggers();
 
             //"Whenever a hero uses a power, that hero deals themselves 2 psychic damage."
-            AddTrigger((UsePowerAction p) => true, SelfDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+            AddTrigger((UsePowerAction p) => p.HeroUsingPower != null, SelfDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
         }
 
         private IEnumerator SelfDamageResponse(UsePowerAction upa)
@@ -37,7 +37,7 @@ namespace Cauldron.Oriphel
             if (storedHero.FirstOrDefault() != null)
             {
                 var hero = storedHero.FirstOrDefault();
-                coroutine = DealDamage(hero, hero, 2, DamageType.Psychic);
+                coroutine = DealDamage(hero, hero, 2, DamageType.Psychic, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
