@@ -19,7 +19,7 @@ namespace Cauldron.Oriphel
             //"Shuffle the villain trash and reveal cards until X Goons are revealed, where X is 1 plus the number of environment cards in play.",
             //"Put the revealed Goons into play and discard the other cards."
             //this function autoshuffles the trash, so we don't need to specify it ourselves
-            IEnumerator coroutine = RevealCards_PutSomeIntoPlay_DiscardRemaining(TurnTakerController, TurnTaker.Trash, null, new LinqCardCriteria((Card c) => IsGoon(c)), revealUntilNumberOfMatchingCards: EnoughGoons);
+            IEnumerator coroutine = RevealCards_PutSomeIntoPlay_DiscardRemaining(TurnTakerController, TurnTaker.Trash, null, new LinqCardCriteria((Card c) => IsGoon(c), "goon"), revealUntilNumberOfMatchingCards: EnoughGoons);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
