@@ -110,7 +110,7 @@ namespace Cauldron.Dendron
             }
         }
 
-        public IEnumerator PreventPlaysThisTurnEffect(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
+        public IEnumerator PreventPlaysThisTurnEffect(PhaseChangeAction _, OnPhaseChangeStatusEffect sourceEffect)
         {
             System.Console.WriteLine("### DEBUG ### - ChokingInspiration.PreventPlaysThisTurnEffect triggered");
 
@@ -130,7 +130,7 @@ namespace Cauldron.Dendron
             yield break;
         }
 
-        public IEnumerator PreventDrawsThisTurnEffect(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
+        public IEnumerator PreventDrawsThisTurnEffect(PhaseChangeAction _, OnPhaseChangeStatusEffect sourceEffect)
         {
             System.Console.WriteLine("### DEBUG ### - ChokingInspiration.PreventDrawsThisTurnEffect triggered");
 
@@ -157,7 +157,7 @@ namespace Cauldron.Dendron
             yield break;
         }
 
-        public IEnumerator ResumeDrawEffect(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
+        public IEnumerator ResumeDrawEffect(PhaseChangeAction _, OnPhaseChangeStatusEffect sourceEffect)
         {
             System.Console.WriteLine("### DEBUG ### - ChokingInspiration.ResumeDrawEffect triggered");
 
