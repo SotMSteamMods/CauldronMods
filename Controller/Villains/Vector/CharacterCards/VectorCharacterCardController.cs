@@ -221,7 +221,7 @@ namespace Cauldron.Vector
 
         public int? FindNumberOfVillainCardsInPlay()
         {
-            return base.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.IsVillainTarget).Count();
+            return base.FindCardsWhere(c => c.IsInPlayAndHasGameText && IsVillainTarget(c)).Count();
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Cauldron.SwarmEater
 
         private IEnumerator PlayVillainTargetResponse(PhaseChangeAction p)
         {
-            IEnumerable<Card> source = base.FindCardsWhere((Card c) => c.IsVillainTarget && c.Location.IsVillain && c.Location.IsTrash);
+            IEnumerable<Card> source = base.FindCardsWhere((Card c) => IsVillainTarget(c) && c.Location.IsVillain && c.Location.IsTrash);
             if (source.Count<Card>() == 1)
             {
                 string message = $"{base.Card.Title} moves {source.First<Card>().Title} from the villain trash into play.";
@@ -46,7 +46,7 @@ namespace Cauldron.SwarmEater
             GameController gameController = base.GameController;
             IEnumerator coroutine2 = null;
             Random rng = Game.RNG;
-            IEnumerable<Card> trashTargets = base.FindCardsWhere(new LinqCardCriteria(c => c.IsVillainTarget && c.IsInTrash));
+            IEnumerable<Card> trashTargets = base.FindCardsWhere(new LinqCardCriteria(c => IsVillainTarget(c) && c.IsInTrash, "villain targets", false));
             Card cardToPlay = trashTargets.ElementAt(rng.Next(0, trashTargets.Count()));
             if (cardToPlay != null)
             {
