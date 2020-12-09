@@ -17,7 +17,7 @@ namespace Cauldron.Cypher
 
         public static string Identifier = "CyborgPunch";
 
-        private const int DamageToDeal = 2;
+        private const int DamageToDeal = 1;
 
         public CyborgPunchCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
