@@ -16,7 +16,7 @@ namespace Cauldron.Oriphel
         {
             //"Reveal the top 2 cards of the villain deck. Put any revealed targets or Transformation cards into play and discard the rest.",
             var fakeStorage = new List<Card> { };
-            IEnumerator coroutine = RevealCards_PutSomeIntoPlay_DiscardRemaining(TurnTakerController, TurnTaker.Deck, 2, new LinqCardCriteria((Card c) => c.IsTarget || IsTransformation(c)), true, fakeStorage, fakeStorage, fakeStorage);
+            IEnumerator coroutine = RevealCards_PutSomeIntoPlay_DiscardRemaining(TurnTakerController, TurnTaker.Deck, 2, new LinqCardCriteria((Card c) => c.IsTarget || IsTransformation(c), "target or transformation"), true, fakeStorage, fakeStorage, fakeStorage);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -44,9 +44,9 @@ namespace Cauldron.Oriphel
             yield break;
         }
 
-        private IEnumerator HitHighestHP(Card c)
+        private IEnumerator HitHighestHP(Card goon)
         {
-            IEnumerator coroutine = DealDamageToHighestHP(c, 1, (Card target) => target.IsHero, (target) => 1, DamageType.Fire);
+            IEnumerator coroutine = DealDamageToHighestHP(goon, 1, (Card target) => target.IsHero, (target) => 1, DamageType.Fire);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
