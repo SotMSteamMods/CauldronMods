@@ -1,14 +1,13 @@
 {
-    "name": "Phase",
+    "name": "PhaseVillain",
     "kind": "Villain",
     "expansionIdentifier": "CauldronStormfall",
     "initialCardIdentifiers": [
-        "PhaseCharacter",
-        "ReinforcedWall"
+        "PhaseVillainCharacter"
     ],
     "cards": [
         {
-            "identifier": "PhaseCharacter",
+            "identifier": "PhaseVillainCharacter",
             "count": 1,
             "title": "Phase",
             "keywords": [
@@ -23,16 +22,16 @@
                 "Impact"
             ],
             "setup": [
-                "At the start of the game, put {Phase}'s villain character cards into play, “Intagible Saboteur“ side up.",
+                "At the start of the game, put {PhaseVillain}'s villain character cards into play, “Intagible Saboteur“ side up.",
                 "Search the villain deck for the card Reinforced Wall and put it into play. Shuffle the villain deck."
             ],
             "gameplay": [
-                "At the start of the villain turn, if there are 3 or more obstacles in play, flip {Phase}'s villain character cards.",
-                "Increase damage dealt by {Phase} by 1 for each obstacle that has been removed from the game.",
+                "At the start of the villain turn, if there are 3 or more obstacles in play, flip {PhaseVillain}'s villain character cards.",
+                "Increase damage dealt by {PhaseVillain} by 1 for each obstacle that has been removed from the game.",
                 "Phase is immune to damage dealt by environment cards.",
                 "At the end of the villain turn, play the top card of the villain deck."
             ],
-            "advanced": "When {Phase} is damaged, she becomes immune to damage until the end of the turn.",
+            "advanced": "When {PhaseVillain} is damaged, she becomes immune to damage until the end of the turn.",
             "icons": [
                 "IncreaseDamageDealt",
                 "ImmuneToDamage",
@@ -40,10 +39,10 @@
             ],
             "flippedBody": "New Job, New Gear",
             "flippedGameplay": [
-                "When {Phase} flips to this side, destroy the obstacle with the lowest HP and remove it from the game. If the card Insubstantial Matador is in play, destroy it.",
-                "At the end of the villain turn, {Phase} deals each hero target {H} radiant damage. Then, flip {Phase}'s villain character cards."
+                "When {PhaseVillain} flips to this side, destroy the obstacle with the lowest HP and remove it from the game. If the card Insubstantial Matador is in play, destroy it.",
+                "At the end of the villain turn, {PhaseVillain} deals each hero target {H} radiant damage. Then, flip {PhaseVillain}'s villain character cards."
             ],
-            "flippedAdvanced": "When {Phase} flips to this side, destroy {H - 2} hero ongoing cards.",
+            "flippedAdvanced": "When {PhaseVillain} flips to this side, destroy {H - 2} hero ongoing cards.",
             "flippedIcons": [
                 "Destroy",
                 "RemoveFromGame",
@@ -74,8 +73,8 @@
                 "DestroySelf"
             ],
             "body": [
-                "Increase damage dealt to Obstacles by 1 by the first hero target damaged by {Phase} each round.",
-                "Damage dealt by {Phase} is irreducible.",
+                "Increase damage dealt to Obstacles by 1 by the first hero target damaged by {PhaseVillain} each round.",
+                "Damage dealt by {PhaseVillain} is irreducible.",
                 "At the start of the villain turn, if there are 1 or 0 Obstacles in play, each player must discard a card. Then, this card is destroyed."
             ],
             "flavorText": "His hand made contact just as{BR}the saboteur began to shimmer, and{BR}Impact found himself sinking through the{BR}wall along with her."
@@ -90,7 +89,7 @@
             "icons": [
                 "DealDamageRadiant"
             ],
-            "body": "The first time an Obstacle is destroyed each turn, {Phase} deals each hero target 2 radiant damage.",
+            "body": "The first time an Obstacle is destroyed each turn, {PhaseVillain} deals each hero target 2 radiant damage.",
             "flavorQuotes": [
                 {
                     "identifier": "Phase",
@@ -111,8 +110,8 @@
                 "DealDamageRadiant"
             ],
             "body": [
-                "Whenever {Phase} would be dealt damage, reduce that damage to 0.",
-                "When this card is destroyed, {Phase} deals the 2 hero targets with the highest HP {H} irreducible radiant damage each."
+                "Whenever {PhaseVillain} would be dealt damage, reduce that damage to 0.",
+                "When this card is destroyed, {PhaseVillain} deals the 2 hero targets with the highest HP {H} irreducible radiant damage each."
             ],
             "flavorQuotes": [
                 {
@@ -136,8 +135,8 @@
                 "DealDamageRadiant"
             ],
             "body": [
-                "Reduce damage dealt to {Phase} by 1.",
-                "At the end of the villain turn, {Phase} deals each hero target except the hero target with the lowest HP 2 radiant damage."
+                "Reduce damage dealt to {PhaseVillain} by 1.",
+                "At the end of the villain turn, {PhaseVillain} deals each hero target except the hero target with the lowest HP 2 radiant damage."
             ],
             "flavorQuotes": [
                 {
@@ -212,8 +211,8 @@
                 "DestroyEquipment"
             ],
             "body": [
-                "{Phase} regains X HP, where X is the number of Obstacle cards in play.",
-                "{Phase} deals the hero target with the highest HP {H} irreducible radiant damage and destroys 1 ongoing and 1 equipment card belonging to that hero."
+                "{PhaseVillain} regains X HP, where X is the number of Obstacle cards in play.",
+                "{PhaseVillain} deals the hero target with the highest HP {H} irreducible radiant damage and destroys 1 ongoing and 1 equipment card belonging to that hero."
             ],
             "flavorQuotes": [
                 {
@@ -236,8 +235,8 @@
                 "DealDamageMelee"
             ],
             "body": [
-                "When this card enters play, {Phase} deals the hero target with the second lowest HP {H - 1} radiant damage.",
-                "At the end of each hero's turn, if that hero dealt {Phase} no damage, that hero deals themselves 1 irreducible melee damage."
+                "When this card enters play, {PhaseVillain} deals the hero target with the second lowest HP {H - 1} radiant damage.",
+                "At the end of each hero's turn, if that hero dealt {PhaseVillain} no damage, that hero deals themselves 1 irreducible melee damage."
             ],
             "flavorQuotes": [
                 {
@@ -282,7 +281,7 @@
             ],
             "body": [
                 "When this card enters play, it deals the hero target with the lowest HP {H - 1} projectile damage. Then, play the top card of the villain deck.",
-                "{Phase} is immune to damage."
+                "{PhaseVillain} is immune to damage."
             ],
             "flavorQuotes": [
                 {
@@ -305,7 +304,7 @@
                 "Indestructible"
             ],
             "body": [
-                "{Phase} is immune to damage.",
+                "{PhaseVillain} is immune to damage.",
                 "This card is indestructible while it has more than 0 HP.",
                 "Other Obstacles that enter play are immune to damage while this card is in play."
             ],
@@ -356,7 +355,7 @@
             ],
             "body": [
                 "At the end of the villain turn, play the top card of the villain deck.",
-                "Destroy this card when {Phase} is dealt {H * 2} or more damage in 1 round."
+                "Destroy this card when {PhaseVillain} is dealt {H * 2} or more damage in 1 round."
             ],
             "flavorQuotes": [
                 {
@@ -378,7 +377,7 @@
                 "CancelledDamageGreen"
             ],
             "body": [
-                "{Phase} is immune to damage.",
+                "{PhaseVillain} is immune to damage.",
                 "When this card would be dealt 2 or less damage, prevent that damage."
             ],
             "flavorQuotes": [

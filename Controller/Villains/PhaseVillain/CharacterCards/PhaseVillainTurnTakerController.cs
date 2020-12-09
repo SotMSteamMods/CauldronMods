@@ -5,9 +5,9 @@ using System.Collections;
 
 namespace Cauldron.PhaseVillain
 {
-    public class PhaseTurnTakerController : TurnTakerController
+    public class PhaseVillainTurnTakerController : TurnTakerController
     {
-        public PhaseTurnTakerController(TurnTaker turnTaker, GameController gameController) : base(turnTaker, gameController)
+        public PhaseVillainTurnTakerController(TurnTaker turnTaker, GameController gameController) : base(turnTaker, gameController)
         {
 
         }

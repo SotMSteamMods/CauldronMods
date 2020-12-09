@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace Cauldron.PhaseVillain
 {
-    public class PhaseCharacterCardController : VillainCharacterCardController
+    public class PhaseVillainCharacterCardController : VillainCharacterCardController
     {
-        public PhaseCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public PhaseVillainCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             if (base.Game.IsAdvanced)
             {
@@ -46,7 +46,7 @@ namespace Cauldron.PhaseVillain
             {
                 //Back
                 //At the end of the villain turn, {Phase} deals each hero target {H} radiant damage. Then, flip {Phase}'s villain character cards.
-                base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
+                base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage));
             }
         }
 
