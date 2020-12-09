@@ -44,7 +44,6 @@ namespace Cauldron.SwarmEater
             }
 
             GameController gameController = base.GameController;
-            bool optional = false;
             IEnumerator coroutine2 = null;
             Random rng = Game.RNG;
             IEnumerable<Card> trashTargets = base.FindCardsWhere(new LinqCardCriteria(c => c.IsVillainTarget && c.IsInTrash));
