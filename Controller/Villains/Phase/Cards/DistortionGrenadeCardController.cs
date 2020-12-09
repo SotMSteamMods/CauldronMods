@@ -15,7 +15,7 @@ namespace Cauldron.PhaseVillain
         public override void AddTriggers()
         {
             //Increase damage dealt to non-villain targets by 1.
-            base.AddIncreaseDamageTrigger((DealDamageAction action) => !action.Target.IsVillain, 1);
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => !base.IsVillainTarget(action.Target), 1);
         }
 
         public override IEnumerator Play()
