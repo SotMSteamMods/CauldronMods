@@ -2,7 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 
-namespace Cauldron.Phase
+namespace Cauldron.PhaseVillain
 {
     public class VaultDoorCardController : CardController
     {

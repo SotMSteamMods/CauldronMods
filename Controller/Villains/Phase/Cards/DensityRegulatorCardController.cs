@@ -3,7 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
 
-namespace Cauldron.Phase
+namespace Cauldron.PhaseVillain
 {
     public class DensityRegulatorCardController : CardController
     {
