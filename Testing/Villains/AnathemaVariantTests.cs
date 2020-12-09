@@ -422,5 +422,138 @@ namespace CauldronTests
             AssertNotFlipped(anathema);
 
         }
+
+        [Test()]
+        public void TestAcceleratedEvolutionHeadIndestructibilityTest_NonFlippedVillainTurn()
+        {
+            //Flipped: Arm and head cards are indestructible during the villain turn.
+
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card headToDestroy = GetListOfHeadsInPlay(anathema).First();
+            DestroyCard(headToDestroy, ra.CharacterCard);
+            AssertInTrash(headToDestroy);
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionHeadIndestructibilityTest_NonFlippedHeroTurn()
+        {
+            //Flipped: Arm and head cards are indestructible during the villain turn.
+
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            GoToStartOfTurn(legacy);
+            Card headToDestroy = GetListOfHeadsInPlay(anathema).First();
+            DestroyCard(headToDestroy, ra.CharacterCard);
+            AssertInTrash(headToDestroy);
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionHeadIndestructibilityTest_FlippedVillainTurn()
+        {
+            //Flipped: Arm and head cards are indestructible during the villain turn.
+
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            FlipCard(anathema.CharacterCard);
+            AssertFlipped(anathema);
+            Card headToDestroy = GetListOfHeadsInPlay(anathema).First();
+            DestroyCard(headToDestroy, ra.CharacterCard);
+            AssertInPlayArea(anathema, headToDestroy);
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionHeadIndestructibilityTest_FlippedHeroTurn()
+        {
+            //Flipped: Arm and head cards are indestructible during the villain turn.
+
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            FlipCard(anathema.CharacterCard);
+            AssertFlipped(anathema);
+            GoToStartOfTurn(legacy);
+            Card headToDestroy = GetListOfHeadsInPlay(anathema).First();
+            DestroyCard(headToDestroy, ra.CharacterCard);
+            AssertInTrash(headToDestroy);
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionArmIndestructibilityTest_NonFlippedVillainTurn()
+        {
+            //Flipped: Arm and head cards are indestructible during the villain turn.
+
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card armToDestroy = GetListOfArmsInPlay(anathema).First();
+            DestroyCard(armToDestroy, ra.CharacterCard);
+            AssertInTrash(armToDestroy);
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionArmIndestructibilityTest_NonFlippedHeroTurn()
+        {			
+            //Flipped: Arm and head cards are indestructible during the villain turn.
+
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            GoToStartOfTurn(legacy);
+            Card armToDestroy = GetListOfArmsInPlay(anathema).First();
+            DestroyCard(armToDestroy, ra.CharacterCard);
+            AssertInTrash(armToDestroy);
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionArmIndestructibilityTest_FlippedVillainTurn()
+        {
+            //Flipped: Arm and head cards are indestructible during the villain turn.
+
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            FlipCard(anathema.CharacterCard);
+            AssertFlipped(anathema);
+            Card armToDestroy = GetListOfArmsInPlay(anathema).First();
+            DestroyCard(armToDestroy, ra.CharacterCard);
+            AssertInPlayArea(anathema, armToDestroy);
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionArmsIndestructibilityTest_FlippedHeroTurn()
+        {
+            //Flipped: Arm and head cards are indestructible during the villain turn.
+
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            FlipCard(anathema.CharacterCard);
+            AssertFlipped(anathema);
+            GoToStartOfTurn(legacy);
+            Card armToDestroy = GetListOfArmsInPlay(anathema).First();
+            DestroyCard(armToDestroy, ra.CharacterCard);
+            AssertInTrash(armToDestroy);
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionBodyIndestructibilityTest_FlippedVillainTurn()
+        {
+            //Flipped: Arm and head cards are indestructible during the villain turn.
+
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            FlipCard(anathema.CharacterCard);
+            AssertFlipped(anathema);
+            Card bodyToDestroy = GetListOfBodyInPlay(anathema).First();
+            DestroyCard(bodyToDestroy, ra.CharacterCard);
+            AssertInTrash(bodyToDestroy);
+
+        }
     }
 }

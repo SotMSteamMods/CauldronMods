@@ -11,7 +11,7 @@ namespace Cauldron.Anathema
 	{
 		public AcceleratedEvolutionAnathemaCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
-			
+			base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
 		}
 
 		//number of villain targets in play other than Anathema
@@ -73,8 +73,6 @@ namespace Cauldron.Anathema
 			}
 			else
 			{
-				//Arm and head cards are indestructible during the villain turn.
-
 				//When explosive transformation enters play, flip {Anathema}'s character cards.
 				this.SideTriggers.Add(AddTrigger<CardEntersPlayAction>((CardEntersPlayAction cpe) => cpe.CardEnteringPlay != null && cpe.CardEnteringPlay.Identifier == "ExplosiveTransformation" && cpe.IsSuccessful, FlipThisCharacterCardResponse, TriggerType.FlipCard, TriggerTiming.After));
 
@@ -222,6 +220,13 @@ namespace Cauldron.Anathema
 		{
 			destroyCard.SetPostDestroyDestination(base.Card.UnderLocation, cardSource: GetCardSource());
 			yield return null;
+		}
+
+		public override bool AskIfCardIsIndestructible(Card card)
+		{
+			//Flipped: Arm and head cards are indestructible during the villain turn.
+
+			return base.CharacterCard.IsFlipped && Game.ActiveTurnTaker.IsVillain && IsArmOrHead(card);
 		}
 
 
