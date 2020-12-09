@@ -73,7 +73,8 @@ namespace Cauldron.Oriphel
                     }
                 }
             }
-
+            // TODO - CleanupRevealedCards can interfere with other in progress actions that reveal cards.
+            //        Should be replaced with the guys of CleanupRevealedCards - BulkMoveaction + Inhibitor
             coroutine = CleanupRevealedCards(TurnTaker.Revealed, TurnTaker.Deck);
             if (UseUnityCoroutines)
             {
