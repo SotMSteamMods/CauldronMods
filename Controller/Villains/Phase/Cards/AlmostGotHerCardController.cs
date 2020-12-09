@@ -23,7 +23,7 @@ namespace Cauldron.PhaseVillain
             //Damage dealt by {Phase} is irreducible.
             base.AddMakeDamageIrreducibleTrigger((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard);
             //At the start of the villain turn, if there are 1 or 0 Obstacles in play, each player must discard a card. Then, this card is destroyed.
-            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker && base.FindCardsWhere(new LinqCardCriteria((Card c) => base.IsObstacle(c))).Count() > 1, this.DiscardCardsAndDestroyThisCardResponse, TriggerType.DestroySelf);
+            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker && base.FindCardsWhere(new LinqCardCriteria((Card c) => base.IsObstacle(c) && c.IsInPlayAndHasGameText)).Count() > 1, this.DiscardCardsAndDestroyThisCardResponse, TriggerType.DestroySelf);
         }
 
         private IEnumerator FirstTimeDealDamageResponse(DealDamageAction action)
