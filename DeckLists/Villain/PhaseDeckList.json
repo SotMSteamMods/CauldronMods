@@ -356,7 +356,7 @@
             ],
             "body": [
                 "At the end of the villain turn, play the top card of the villain deck.",
-                "Destroy this card when {Phase} is dealt 2 times {H} or more damage in 1 round."
+                "Destroy this card when {Phase} is dealt {H * 2} or more damage in 1 round."
             ],
             "flavorQuotes": [
                 {
