@@ -83,7 +83,7 @@ namespace Cauldron.Tiamat
             yield break;
         }
 
-        public IEnumerator ResumeDrawEffect(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
+        public IEnumerator ResumeDrawEffect(PhaseChangeAction _, OnPhaseChangeStatusEffect _2)
         {
             System.Console.WriteLine("### DEBUG ### - ElementOfLightning.ResumeDrawEffect triggered");
 
