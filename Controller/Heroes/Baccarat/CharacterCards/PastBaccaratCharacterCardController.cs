@@ -13,8 +13,6 @@ namespace Cauldron.Baccarat
 
         }
 
-        private List<Card> actedHeroes;
-
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
             switch (index)
