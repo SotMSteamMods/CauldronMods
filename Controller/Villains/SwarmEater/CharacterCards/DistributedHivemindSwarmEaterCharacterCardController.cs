@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace Cauldron.SwarmEater
 {
-    public class DistributedHivemindSwarmEaterCharacter : VillainCharacterCardController
+    public class DistributedHivemindSwarmEaterCharacterCardController : VillainCharacterCardController
     {
-        public DistributedHivemindSwarmEaterCharacter(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public DistributedHivemindSwarmEaterCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => this.IsNanomutant(c), "nanomutant"));
         }
