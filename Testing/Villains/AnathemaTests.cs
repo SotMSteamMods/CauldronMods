@@ -812,11 +812,8 @@ namespace CauldronTests
             SetHitPoints(haka.CharacterCard, 25);
             SetHitPoints(bunker.CharacterCard, 26);
 
-
             //Put Thresher Claw in play. 
             PutIntoPlay("ThresherClaw");
-
-            int? numCardsInPlayBefore = GetNumberOfCardsInPlay(haka);
 
             int?[] beforeHps = { haka.CharacterCard.HitPoints, bunker.CharacterCard.HitPoints };
 
