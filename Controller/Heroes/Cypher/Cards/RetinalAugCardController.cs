@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace Cauldron.Cypher
 {
-    public class RetinalAugCardController : CardController
+    public class RetinalAugCardController : AugBaseCardController
     {
         //==============================================================
         // Play this card next to a hero. The hero next to this card is augmented.

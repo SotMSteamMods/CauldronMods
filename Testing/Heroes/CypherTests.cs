@@ -31,7 +31,7 @@ namespace CauldronTests
             Assert.AreEqual(26, Cypher.CharacterCard.HitPoints);
         }
 
-        [Test()]
+        [Test]
         public void TestCypherDecklist()
         {
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
@@ -194,6 +194,38 @@ namespace CauldronTests
             // Assert
             AssertIncapacitated(Cypher);
             QuickHPCheck(1);
+        }
+
+        [Test]
+        public void TestBackupPlan()
+        {
+
+            // When a non-hero card enters play, you may destroy this card.
+            // If you do, select any number of Augments in play and move each one next to a new hero.
+            // Then, each augmented hero regains 2HP.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card muscleAug = GetCard(MuscleAugCardController.Identifier);
+            Card dermalAug = GetCard(DermalAugCardController.Identifier);
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { muscleAug}},
+                { tachyon.CharacterCard, new List<Card>() { dermalAug}}
+            });
+
+            Card backupPlan = GetCard(BackupPlanCardController.Identifier);
+
+
+            // Act
+            
+
+            // Assert
+            Assert.True(false, "TODO");
+
         }
 
         [Test]
@@ -532,6 +564,201 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestHeuristicAlgorithm_PutAugInPlay()
+        {
+            // Reveal cards from the top of your deck until you reveal an Augment.
+            // Put it into play or into your trash. Shuffle the rest of the revealed cards into your deck.
+            // If you did not put an Augment into play this way, draw 2 cards.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            
+            Card cyborgPunch = GetCard(CyborgPunchCardController.Identifier);
+            PutOnDeck(Cypher, cyborgPunch); // Put a non augment on top so we guarantee a deck shuffle after revealing
+
+            StartGame();
+
+
+            Card heuristicAlg = GetCard(HeuristicAlgorithmCardController.Identifier);
+
+            DecisionSelectFunction = 0;
+            DecisionSelectCard = Cypher.CharacterCard;
+
+
+            GoToPlayCardPhase(Cypher);
+
+            QuickShuffleStorage(Cypher);
+
+            PlayCard(heuristicAlg);
+
+            // Assert
+            Assert.True(AreAugmented(new List<Card>() { Cypher.CharacterCard}));
+            QuickShuffleCheck(1);
+        }
+
+        [Test]
+        public void TestHeuristicAlgorithm_PutAugInTrash()
+        {
+            // Reveal cards from the top of your deck until you reveal an Augment.
+            // Put it into play or into your trash. Shuffle the rest of the revealed cards into your deck.
+            // If you did not put an Augment into play this way, draw 2 cards.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            
+            Card cyborgPunch = GetCard(CyborgPunchCardController.Identifier);
+            PutOnDeck(Cypher, cyborgPunch); // Put a non augment on top so we guarantee a deck shuffle after revealing
+
+            StartGame();
+
+            Card heuristicAlg = GetCard(HeuristicAlgorithmCardController.Identifier);
+
+            DecisionSelectFunction = 1;
+
+            GoToPlayCardPhase(Cypher);
+            QuickHandStorage(Cypher);
+            QuickShuffleStorage(Cypher);
+
+            PlayCard(heuristicAlg);
+
+            // Assert
+            Assert.True(AreNotAugmented(new List<Card>() { Cypher.CharacterCard}));
+            QuickShuffleCheck(1);
+            QuickHandCheck(2); // No Augment was put into play so 2 cards were drawn
+        }
+
+        [Test]
+        public void TestInitiatedUpgrade_SearchDeck_DrawCard()
+        {
+            // Search your deck or trash for an Augment card and put it into play. If you searched your deck, shuffle it.
+            // You may draw a card.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            
+            StartGame();
+
+            // Act
+            Card initiatedUpgrade = GetCard(InitiatedUpgradeCardController.Identifier);
+
+            Card dermalAug = GetCard(DermalAugCardController.Identifier);
+            
+            DecisionSelectLocation = new LocationChoice(Cypher.TurnTaker.Deck);
+            DecisionSelectCards = new[] {dermalAug, Cypher.CharacterCard};
+            QuickShuffleStorage(Cypher);
+            QuickHandStorage(Cypher);
+            DecisionYesNo = true;
+
+            PlayCard(initiatedUpgrade);
+
+            // Assert
+            Assert.True(AreAugmented(new List<Card>() { Cypher.CharacterCard}));
+            Assert.True(HasAugment(Cypher.CharacterCard, dermalAug));
+            AssertIsInPlay(dermalAug);
+            QuickShuffleCheck(1);
+            QuickHandCheck(1);
+        }
+
+        [Test]
+        public void TestInitiatedUpgrade_SearchDeck_DontDrawCard()
+        {
+            // Search your deck or trash for an Augment card and put it into play. If you searched your deck, shuffle it.
+            // You may draw a card.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            
+            StartGame();
+
+            // Act
+            Card initiatedUpgrade = GetCard(InitiatedUpgradeCardController.Identifier);
+
+            Card dermalAug = GetCard(DermalAugCardController.Identifier);
+            
+            DecisionSelectLocation = new LocationChoice(Cypher.TurnTaker.Deck);
+            DecisionSelectCards = new[] {dermalAug, Cypher.CharacterCard};
+            QuickShuffleStorage(Cypher);
+            QuickHandStorage(Cypher);
+            DecisionYesNo = false;
+
+            PlayCard(initiatedUpgrade);
+
+            // Assert
+            Assert.True(AreAugmented(new List<Card>() { Cypher.CharacterCard}));
+            Assert.True(HasAugment(Cypher.CharacterCard, dermalAug));
+            AssertIsInPlay(dermalAug);
+            QuickShuffleCheck(1);
+            QuickHandCheck(0);
+        }
+
+        [Test]
+        public void TestInitiatedUpgrade_SearchTrash_AugmentsInTrash()
+        {
+            // Search your deck or trash for an Augment card and put it into play. If you searched your deck, shuffle it.
+            // You may draw a card.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            
+
+            StartGame();
+
+            // Act
+            Card initiatedUpgrade = GetCard(InitiatedUpgradeCardController.Identifier);
+
+            Card dermalAug = GetCard(DermalAugCardController.Identifier);
+            Card muscleAug = GetCard(MuscleAugCardController.Identifier);
+            PutInTrash(Cypher, dermalAug);
+            PutInTrash(Cypher, muscleAug);
+
+            
+            DecisionSelectLocation = new LocationChoice(Cypher.TurnTaker.Trash);
+            DecisionSelectCards = new[] {dermalAug, Cypher.CharacterCard};
+            QuickShuffleStorage(Cypher);
+            QuickHandStorage(Cypher);
+            DecisionYesNo = true;
+
+            PlayCard(initiatedUpgrade);
+
+            // Assert
+            Assert.True(AreAugmented(new List<Card>() { Cypher.CharacterCard}));
+            Assert.True(HasAugment(Cypher.CharacterCard, dermalAug));
+            AssertIsInPlay(dermalAug);
+            QuickShuffleCheck(0);
+            QuickHandCheck(1);
+        }
+
+        [Test]
+        public void TestInitiatedUpgrade_SearchTrash_NoAugmentsInTrash()
+        {
+            // Search your deck or trash for an Augment card and put it into play. If you searched your deck, shuffle it.
+            // You may draw a card.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            
+
+            StartGame();
+
+            // Act
+            Card initiatedUpgrade = GetCard(InitiatedUpgradeCardController.Identifier);
+
+            
+            DecisionSelectLocation = new LocationChoice(Cypher.TurnTaker.Trash);
+            QuickShuffleStorage(Cypher);
+            QuickHandStorage(Cypher);
+            DecisionYesNo = true;
+
+            PlayCard(initiatedUpgrade);
+
+            // Assert
+            Assert.True(AreNotAugmented(new List<Card>() { Cypher.CharacterCard}));
+            QuickShuffleCheck(0);
+            QuickHandCheck(1);
+        }
+
+
+        [Test]
         public void TestMuscleAug()
         {
             // Play this card next to a hero. The hero next to this card is augmented.
@@ -560,6 +787,88 @@ namespace CauldronTests
             Assert.True(AreAugmented(new List<Card>() { ra.CharacterCard}));
             Assert.True(HasAugment(ra.CharacterCard, muscleAug));
             QuickHPCheck(-3); // +2 from Pyre, +1 from Muscle Aug
+        }
+
+        [Test]
+        public void TestNaniteSurge()
+        {
+            // You may draw a card.
+            // You may play a card.
+            // Each augmented hero regains X HP, where X is the number of Augments next to them.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(new[] {ra, tachyon}, 20);
+
+            Card muscleAug = GetCard(MuscleAugCardController.Identifier);
+            Card dermalAug = GetCard(DermalAugCardController.Identifier);
+            Card retinalAug = GetCard(RetinalAugCardController.Identifier);
+            Card electroCloak = GetCard(ElectroOpticalCloakCardController.Identifier);
+            PutInHand(Cypher, electroCloak);
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { muscleAug, retinalAug }},
+                { tachyon.CharacterCard, new List<Card>() { dermalAug }},
+            });;
+
+            // Act
+            Card naniteSurge = GetCard(NaniteSurgeCardController.Identifier);
+
+            DecisionYesNo = false;
+            DecisionSelectCard = electroCloak;
+
+            GoToPlayCardPhase(Cypher);
+            
+            
+            QuickHPStorage(ra, tachyon);
+
+            PlayCard(naniteSurge);
+            
+            // Assert
+            Assert.True(AreAugmented(new List<Card>() { ra.CharacterCard, tachyon.CharacterCard}));
+            Assert.True(HasAugments(ra.CharacterCard, new List<Card>() {muscleAug, retinalAug}));
+            Assert.True(HasAugment(tachyon.CharacterCard, dermalAug));
+            QuickHPCheck(2, 1); // Ra has 2 augs, Tachyon has 1
+        }
+
+        [Test]
+        public void TestNetworkedAttack()
+        {
+            // Each augmented hero may use a power now.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card muscleAug = GetCard(MuscleAugCardController.Identifier);
+            Card dermalAug = GetCard(DermalAugCardController.Identifier);
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { muscleAug }},
+                { tachyon.CharacterCard, new List<Card>() { dermalAug }},
+            });;
+
+            // Act
+            Card networkedAttack = GetCard(NetworkedAttackCardController.Identifier);
+
+            GoToPlayCardPhase(Cypher);
+
+            QuickHandStorage(tachyon);
+            DecisionSelectTarget = mdp;
+            QuickHPStorage(mdp);
+
+            PlayCard(networkedAttack);
+
+            // Assert
+            QuickHPCheck(-3);
+            QuickHandCheck(1);
+            Assert.True(false, "TODO");
+
         }
 
         [Test]
@@ -669,7 +978,12 @@ namespace CauldronTests
 
         private bool HasAugment(Card hero, Card augment)
         {
-            return FindCardsWhere(card => card == hero && card.GetAllNextToCards(false).Contains(augment)).Any();
+            return HasAugments(hero, new List<Card>() {augment});
+        }
+
+        private bool HasAugments(Card hero, List<Card> augments)
+        {
+            return FindCardsWhere(card => card == hero && card.Location.IsNextToCard).All(augments.Contains);
         }
 
         private List<Card> GetAugmentsInPlay()
@@ -682,9 +996,10 @@ namespace CauldronTests
         {
             foreach (KeyValuePair<Card, List<Card>> kvp in augDictionary)
             {
-                DecisionSelectCard = kvp.Key;
+                
                 foreach (Card aug in kvp.Value)
                 {
+                    DecisionSelectCard = kvp.Key;
                     PlayCard(aug);
                 }
             }

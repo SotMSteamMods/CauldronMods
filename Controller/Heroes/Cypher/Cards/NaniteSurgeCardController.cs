@@ -24,7 +24,7 @@ namespace Cauldron.Cypher
         public override IEnumerator Play()
         {
             // You may draw a card.
-            IEnumerator routine = base.DrawCard(null, true);
+            IEnumerator routine = base.DrawCard(null, true, allowAutoDraw: false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);

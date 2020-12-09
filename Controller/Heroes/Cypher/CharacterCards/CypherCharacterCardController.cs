@@ -1,9 +1,10 @@
-﻿using Handelabra.Sentinels.Engine.Controller;
-using Handelabra.Sentinels.Engine.Model;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
+using Handelabra.Sentinels.Engine.Controller;
+using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Cypher
 {
@@ -19,7 +20,7 @@ namespace Cauldron.Cypher
 
         public CypherCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowSpecialString(() => $"There is currently {GetAugmentsInPlay().Count} augment(s) in play");
         }
 
         public override IEnumerator UsePower(int index = 0)
