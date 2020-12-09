@@ -50,6 +50,8 @@ namespace Cauldron.Oriphel
                 }
             }
 
+            // TODO - CleanupRevealedCards can interfere with other in progress actions that reveal cards.
+            //        Should be replaced with the guys of CleanupRevealedCards - BulkMoveaction + Inhibitor
             //Shuffle the remaining cards into the villain deck.
             coroutine = CleanupRevealedCards(TurnTaker.Revealed, TurnTaker.Deck, shuffleAfterwards: true);
             if (UseUnityCoroutines)
