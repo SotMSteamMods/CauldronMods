@@ -2,7 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 
-namespace Cauldron
+namespace Cauldron.Phase
 {
     public class DistortionNetCardController : CardController
     {
@@ -10,5 +10,9 @@ namespace Cauldron
         {
 
         }
+
+        //When this card enters play, place it next to the hero with the highest HP.
+        //Reduce damage dealt by that hero by 2.
+        //At the start of that hero's turn, this card deals them {H} toxic damage.
     }
 }
