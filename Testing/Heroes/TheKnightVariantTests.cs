@@ -25,25 +25,11 @@ namespace CauldronTests
             SetHitPoints(knight, 1);
             DealDamage(villain, knight, 2, DamageType.Melee);
         }
-        
+
+        private readonly string MessageTerminator = "There should have been no other messages.";
         #endregion
 
-        [Test]
-        public void TestFairKnightLoads()
-        {
-            SetupGameController("BaronBlade", "Cauldron.TheKnight/FairTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
 
-            Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
-
-            Assert.IsNotNull(knight);
-            Assert.IsInstanceOf(typeof(FairTheKnightCharacterCardController), knight.CharacterCardController);
-
-            Assert.AreEqual(25, knight.CharacterCard.HitPoints);
-
-            StartGame();
-            Assert.AreEqual(knight.TurnTaker.InTheBox, youngKnight.Location);
-            Assert.AreEqual(knight.TurnTaker.InTheBox, oldKnight.Location);
-        }
         [Test]
         public void TestBerzerkerKnightLoads()
         {
@@ -55,6 +41,109 @@ namespace CauldronTests
             Assert.IsInstanceOf(typeof(BerzerkerTheKnightCharacterCardController), knight.CharacterCardController);
 
             Assert.AreEqual(27, knight.CharacterCard.HitPoints);
+
+            StartGame();
+            Assert.AreEqual(knight.TurnTaker.InTheBox, youngKnight.Location);
+            Assert.AreEqual(knight.TurnTaker.InTheBox, oldKnight.Location);
+        }
+        [Test]
+        public void TestBerzerkerKnightPowerSimple()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerzerkerTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            Card mail = PlayCard("PlateMail");
+            QuickHPStorage(baron, knight, wraith);
+            UsePower(knight);
+            QuickHPCheck(-6, 0, 0);
+            AssertInTrash(mail);
+        }
+        [Test]
+        public void TestBerzerkerKnightPowerNoArmorToDestroy()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerzerkerTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            AssertNextMessages("There are no equipment targets.", MessageTerminator);
+            QuickHPStorage(baron, knight, wraith);
+            UsePower(knight);
+            QuickHPCheck(-0, 0, 0);
+        }
+        [Test]
+        public void TestBerzerkerKnightPowerDamageVariesWithArmorHP()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerzerkerTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            PlayCard("PlateHelm");
+            QuickHPStorage(baron, knight, wraith);
+            UsePower(knight);
+            QuickHPCheck(-4, 0, 0);
+
+            Card helm = PlayCard("PlateHelm");
+            SetHitPoints(helm, 1);
+            UsePower(knight);
+            QuickHPCheck(-2, 0, 0);
+        }
+        [Test]
+        public void TestBerzerkerKnightPowerCanBorrowAnimatedEquipment()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerzerkerTheKnightCharacter", "Ra", "TheWraith", "RealmOfDiscord");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            PlayCard("ImbuedVitality");
+            Card bolt = PlayCard("StunBolt");
+
+            QuickHPStorage(baron, knight, wraith);
+            UsePower(knight);
+            QuickHPCheck(-7, 0, 0);
+            AssertInTrash(bolt);
+        }
+        [Test]
+        public void TestBerzerkerKnightPowerWhenIndestructible()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerzerkerTheKnightCharacter", "Ra", "TheWraith", "TimeCataclysm");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            PlayCard("FixedPoint");
+            Card helm = PlayCard("PlateHelm");
+
+            QuickHPStorage(baron, knight, wraith);
+            UsePower(knight);
+            QuickHPCheck(-4, 0, 0);
+            AssertIsInPlay(helm);
+        }
+        [Test]
+        public void TestBerzerkerKnightPowerWhenDestroyReplaced()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerzerkerTheKnightCharacter", "ChronoRanger", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            Card helm = PlayCard("PlateHelm");
+            PlayCard("NoExecutions");
+
+            QuickHPStorage(baron, knight, wraith);
+            UsePower(knight);
+            QuickHPCheck(-4, 0, 0);
+            AssertNotInTrash(helm);
+        }
+        [Test]
+        public void TestFairKnightLoads()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/FairTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+
+            Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(knight);
+            Assert.IsInstanceOf(typeof(FairTheKnightCharacterCardController), knight.CharacterCardController);
+
+            Assert.AreEqual(25, knight.CharacterCard.HitPoints);
 
             StartGame();
             Assert.AreEqual(knight.TurnTaker.InTheBox, youngKnight.Location);
@@ -95,8 +184,6 @@ namespace CauldronTests
             AssertNumberOfCardsInPlay(knight, 2);
             Assert.AreEqual(15, youngKnight.HitPoints);
             Assert.AreEqual(18, oldKnight.HitPoints);
-
-
         }
     }
 }

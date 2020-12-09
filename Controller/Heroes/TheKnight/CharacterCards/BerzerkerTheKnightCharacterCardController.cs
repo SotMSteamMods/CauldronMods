@@ -14,7 +14,44 @@ namespace Cauldron.TheKnight
 
         public override IEnumerator UsePower(int index = 0)
         {
-            //"Destroy an equipment target. {TheKnight} deals 1 target X psychic damage, where X is the HP of the equipment before it was destroyed by 1."
+            //"Destroy an equipment target. {TheKnight} deals 1 target X psychic damage, where X is the HP of the equipment before it was destroyed plus 1."
+            int numTargets = GetPowerNumeral(0, 1);
+            int numDamModifier = GetPowerNumeral(1, 1);
+            var storedArmor = new List<SelectCardDecision> { };
+            IEnumerator coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.DestroyCard, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && IsEquipment(c) && c.IsTarget, "", false, false, singular:"equipment target", plural:"equipment targets"), storedArmor, false, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if (DidSelectCard(storedArmor))
+            {
+                Card armor = storedArmor.FirstOrDefault().SelectedCard;
+                int armorHP = armor.HitPoints ?? 0;
+                coroutine = GameController.DestroyCard(DecisionMaker, armor, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, this.Card), armorHP + numDamModifier, DamageType.Psychic, numTargets, false, numTargets, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
             yield break;
         }
         public override IEnumerator UseIncapacitatedAbility(int index)
