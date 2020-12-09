@@ -13,7 +13,7 @@ namespace Cauldron.PhaseVillain
 
         public bool IsObstacle(Card c)
         {
-            return c.DoKeywordsContain("Obstacle");
+            return c.DoKeywordsContain("obstacle");
         }
     }
 }
