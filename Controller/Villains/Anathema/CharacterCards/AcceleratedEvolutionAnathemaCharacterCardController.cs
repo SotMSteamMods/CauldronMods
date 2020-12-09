@@ -76,7 +76,7 @@ namespace Cauldron.Anathema
 				//Arm and head cards are indestructible during the villain turn.
 
 				//When explosive transformation enters play, flip {Anathema}'s character cards.
-
+				this.SideTriggers.Add(AddTrigger<CardEntersPlayAction>((CardEntersPlayAction cpe) => cpe.CardEnteringPlay != null && cpe.CardEnteringPlay.Identifier == "ExplosiveTransformation" && cpe.IsSuccessful, FlipThisCharacterCardResponse, TriggerType.FlipCard, TriggerTiming.After));
 
 				if (base.IsGameAdvanced)
 				{
@@ -188,29 +188,33 @@ namespace Cauldron.Anathema
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
 
-			//When {Anathema} flips to this side, put all cards from underneath him into play. 
-			IEnumerable<Card> cardsToMove = base.CharacterCard.UnderLocation.Cards;
-			coroutine = GameController.MoveCards(base.TurnTakerController, cardsToMove, (Card c) => new MoveCardDestination(c.Owner.PlayArea), isPutIntoPlay: true, cardSource: GetCardSource());
-			if (base.UseUnityCoroutines)
-			{
-				yield return base.GameController.StartCoroutine(coroutine);
-			}
-			else
-			{
-				base.GameController.ExhaustCoroutine(coroutine);
-			}
+			if(base.CharacterCard.IsFlipped)
+            {
+				//When {Anathema} flips to this side, put all cards from underneath him into play. 
+				IEnumerable<Card> cardsToMove = base.CharacterCard.UnderLocation.Cards;
+				coroutine = GameController.MoveCards(base.TurnTakerController, cardsToMove, (Card c) => new MoveCardDestination(c.Owner.PlayArea), isPutIntoPlay: true, cardSource: GetCardSource());
+				if (base.UseUnityCoroutines)
+				{
+					yield return base.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					base.GameController.ExhaustCoroutine(coroutine);
+				}
 
-			//Shuffle all copies of explosive transformation from the villain trash into the villain deck.
-			IEnumerable<Card> cardsToShuffle = FindCardsWhere((Card c) => c.Identifier == "ExplosiveTransformation" && base.TurnTaker.Trash.HasCard(c));
-			coroutine = GameController.ShuffleCardsIntoLocation(DecisionMaker, cardsToShuffle, base.TurnTaker.Deck, cardSource: GetCardSource());
-			if (base.UseUnityCoroutines)
-			{
-				yield return base.GameController.StartCoroutine(coroutine);
+				//Shuffle all copies of explosive transformation from the villain trash into the villain deck.
+				IEnumerable<Card> cardsToShuffle = FindCardsWhere((Card c) => c.Identifier == "ExplosiveTransformation" && base.TurnTaker.Trash.HasCard(c));
+				coroutine = GameController.ShuffleCardsIntoLocation(DecisionMaker, cardsToShuffle, base.TurnTaker.Deck, cardSource: GetCardSource());
+				if (base.UseUnityCoroutines)
+				{
+					yield return base.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					base.GameController.ExhaustCoroutine(coroutine);
+				}
 			}
-			else
-			{
-				base.GameController.ExhaustCoroutine(coroutine);
-			}
+			
 			yield break;
 		}
 

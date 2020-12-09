@@ -379,21 +379,16 @@ namespace CauldronTests
         {
             SetupGameController(new string[] { "Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis" }, advanced: true);
             StartGame();
+            MoveCards(anathema, FindCardsWhere((Card c) => !c.IsCharacter && c.IsInPlayAndHasGameText && anathema.TurnTaker.PlayArea.HasCard(c)), anathema.TurnTaker.Deck);
+            PlayCard("WhipTendril");
             FlipCard(anathema);
+
             SetHitPoints(anathema, 30);
             //At the end of the villain turn {Anathema} regains 1 HP for each villain target in play.
-            //should be 1 target in play
+            //should be 2 targets in play
             QuickHPStorage(anathema);
             GoToEndOfTurn(anathema);
-            if(FindCardInPlay("MetabolicArmor") != null)
-            {
-                QuickHPCheck(6);
-
-            } else
-            {
-                QuickHPCheck(5);
-            }
-
+            QuickHPCheck(2);
 
         }
 
@@ -410,6 +405,21 @@ namespace CauldronTests
             GoToEndOfTurn(anathema);
             QuickHPCheck(1);
 
+
+        }
+
+        [Test()]
+        public void TestAcceleratedEvolutionAnathemaBackFlipEffect()
+        {
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            FlipCard(anathema.CharacterCard);
+            AssertFlipped(anathema);
+
+            //When explosive transformation enters play, flip {Anathema}'s character cards.
+            PlayCard("ExplosiveTransformation");
+            AssertNotFlipped(anathema);
 
         }
     }
