@@ -21,7 +21,7 @@ namespace Cauldron.Phase
         public override IEnumerator Play()
         {
             //When this card enters play, it deals the {H}-1 hero targets with the lowest HP 2 lightning damage each.
-            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, (Card c) => c.IsHero, 2, DamageType.Lightning, numberOfTargets: Game.H - 1);
+            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, (Card c) => c.IsHero, (Card c) => 2, DamageType.Lightning, numberOfTargets: Game.H - 1);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
