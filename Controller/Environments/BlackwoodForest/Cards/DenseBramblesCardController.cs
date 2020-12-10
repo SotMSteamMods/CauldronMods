@@ -18,8 +18,7 @@ namespace Cauldron.BlackwoodForest
 
         public DenseBramblesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            this.SpecialStringMaker.ShowLowestHP(1, () => Game.H - 1,
-                new LinqCardCriteria(c => c.IsTarget && c.IsInPlay));
+            this.SpecialStringMaker.ShowLowestHP(1, () => Game.H - 1, new LinqCardCriteria(c => c.IsTarget && c.IsInPlay, "targets", false));
             AllowFastCoroutinesDuringPretend = false;
         }
 
@@ -50,7 +49,7 @@ namespace Cauldron.BlackwoodForest
                 }
                 this.PerformImmune = storedResults.Count() > 0 && storedResults.First();
             }
-            
+
             if (this.PerformImmune != null && this.PerformImmune.Value)
             {
                 IEnumerator coroutine2 = base.GameController.ImmuneToDamage(action, this.GetCardSource());
@@ -86,7 +85,7 @@ namespace Cauldron.BlackwoodForest
                 List<YesNoCardDecision> yesNoResults = new List<YesNoCardDecision>();
                 // Not quite correct, but without custom decision strings, this may be close enough.
                 SelectionType type = SelectionType.LowestHP;
-                IEnumerator coroutine = GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, type, card, action, yesNoResults, null, base.GetCardSource());
+                IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, type, card, action, yesNoResults, null, base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
