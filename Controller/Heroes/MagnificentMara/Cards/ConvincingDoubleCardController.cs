@@ -122,6 +122,17 @@ namespace Cauldron.MagnificentMara
             CardController passedController = FindCardController(_passedCard);
             passedController.AddAssociatedCardSource(GetCardSource());
 
+            //send a message to tell the player what is happening
+            IEnumerator sendMessage = GameController.SendMessageAction(receiver.CharacterCard.Title + " puts " + passedCard.Title + " into play!", Priority.High, cardSource: GetCardSource(), showCardSource: true);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(sendMessage);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(sendMessage);
+            }
+
             //"who then puts that card into play as if it were their card, treating any hero name on the card as the name of their hero instead."
             IEnumerator swappedPlay = GameController.PlayCard(_receiverController, passedCard, true, cardSource: GetCardSource());
 
