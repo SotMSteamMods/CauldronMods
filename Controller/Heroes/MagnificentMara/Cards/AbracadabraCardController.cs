@@ -23,7 +23,7 @@ namespace Cauldron.MagnificentMara
                                                                                 !dc.CardToDestroy.Card.IsCharacter &&
                                                                                 dc.CardToDestroy.Card.Owner != TurnTaker &&
                                                                                 dc.WasCardDestroyed;
-            AddTrigger(validCardDestroyed, MayReturnDestroyedResponse, new TriggerType[] { TriggerType.MoveCard, TriggerType.DestroyCard }, TriggerTiming.After);
+            AddTrigger(validCardDestroyed, MayReturnDestroyedResponse, new TriggerType[] { TriggerType.MoveCard, TriggerType.DestroySelf }, TriggerTiming.After);
             AddWhenDestroyedTrigger(OnePlayerMayPlayCardResponse, TriggerType.PlayCard);
         }
 
@@ -70,7 +70,7 @@ namespace Cauldron.MagnificentMara
 
         private IEnumerator OnePlayerMayPlayCardResponse(DestroyCardAction dc)
         {
-            IEnumerator coroutine = GameController.SelectHeroToPlayCard(DecisionMaker, true, true, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectHeroToPlayCard(DecisionMaker, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

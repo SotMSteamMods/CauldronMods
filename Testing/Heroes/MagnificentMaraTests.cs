@@ -140,6 +140,7 @@ namespace CauldronTests
 
             DestroyCard(surge);
 
+            AssertInTrash(abra);
             AssertInHand(surge);
             AssertIsInPlay(plating);
         }
@@ -159,7 +160,7 @@ namespace CauldronTests
             DecisionSelectCard = plating;
 
             DestroyCard(plating);
-
+            AssertInTrash(abra);
             AssertIsInPlay(plating);
         }
         [Test]
