@@ -234,7 +234,7 @@ namespace CauldronTests
             DealDamage(baron, ra, 3, DamageType.Toxic); // Ra is immune
             DealDamage(baron, mdp, 3, DamageType.Toxic); // MDP is immune
 
-            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra.");
+            AssertCardSpecialString(denseBrambles, 0, "2 targets with the lowest HP: Mobile Defense Platform, Ra.");
 
             GoToStartOfTurn(BlackwoodForest); // Dense Brambles is destroyed
 
@@ -263,7 +263,7 @@ namespace CauldronTests
             Card denseBrambles = GetCardInPlay(DenseBramblesCardController.Identifier);
 
             // All 3 targets are listed as the 2 lowest
-            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
+            AssertCardSpecialString(denseBrambles, 0, "2 targets with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
 
             QuickHPStorage(ra.CharacterCard, mdp);
 
@@ -293,7 +293,7 @@ namespace CauldronTests
             Card denseBrambles = GetCardInPlay(DenseBramblesCardController.Identifier);
 
             // All 3 targets are listed as the 2 lowest
-            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
+            AssertCardSpecialString(denseBrambles, 0, "2 targets with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
 
             QuickHPStorage(ra.CharacterCard, mdp);
 
@@ -324,7 +324,7 @@ namespace CauldronTests
             Card denseBrambles = GetCardInPlay(DenseBramblesCardController.Identifier);
 
             // All 3 targets are listed as the 2 lowest
-            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
+            AssertCardSpecialString(denseBrambles, 0, "2 targets with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
 
             QuickHPStorage(mdp, legacy.CharacterCard, ra.CharacterCard);
 
