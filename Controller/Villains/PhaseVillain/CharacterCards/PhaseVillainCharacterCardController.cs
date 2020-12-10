@@ -13,13 +13,13 @@ namespace Cauldron.PhaseVillain
         {
             if (base.Game.IsAdvanced)
             {
-                base.SpecialStringMaker.ShowIfElseSpecialString(() => base.Game.Journal.DealDamageEntriesThisRound().Where((DealDamageJournalEntry entry) => entry.TargetCard == base.CharacterCard).Any(), () => "Phase has been dealt damage this turn.", () => "Phase has not been dealt damage this turn.");
+                base.SpecialStringMaker.ShowIfElseSpecialString(() => base.Game.Journal.DealDamageEntriesThisTurn().Where((DealDamageJournalEntry entry) => entry.TargetCard == base.CharacterCard).Any(), () => "Phase has been dealt damage this turn.", () => "Phase has not been dealt damage this turn.");
             }
         }
 
         public override void AddSideTriggers()
         {
-            if (!base.Card.IsFlipped)
+            if (!base.CharacterCard.IsFlipped)
             {
                 //Front
                 //At the start of the villain turn, if there are 3 or more obstacles in play, flip {Phase}'s villain character cards.
@@ -32,20 +32,21 @@ namespace Cauldron.PhaseVillain
                 base.AddSideTrigger(base.AddImmuneToDamageTrigger((DealDamageAction action) => action.Target == base.CharacterCard && action.DamageSource.Card.IsEnvironment));
 
                 //At the end of the villain turn, play the top card of the villain deck.
-                base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, base.PlayTheTopCardOfTheVillainDeckResponse, TriggerType.PlayCard));
+                base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.PlayTheTopCardOfTheVillainDeckResponse, TriggerType.PlayCard));
                 if (base.Game.IsAdvanced)
                 {
                     //Front - Advanced
                     //When {Phase} is damaged, she becomes immune to damage until the end of the turn.
-                    base.AddSideTrigger(base.AddImmuneToDamageTrigger((DealDamageAction action) => action.Target == base.CharacterCard && base.Game.Journal.DealDamageEntriesThisRound().Where((DealDamageJournalEntry entry) => entry.TargetCard == base.CharacterCard).Any()));
+                    base.AddSideTrigger(base.AddImmuneToDamageTrigger((DealDamageAction action) => action.Target == base.CharacterCard && base.Game.Journal.DealDamageEntriesThisTurn().Where((DealDamageJournalEntry entry) => entry.TargetCard == base.CharacterCard).Any()));
                 }
             }
-            else
+            if (base.CharacterCard.IsFlipped)
             {
                 //Back
                 //At the end of the villain turn, {Phase} deals each hero target {H} radiant damage. Then, flip {Phase}'s villain character cards.
                 base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage));
             }
+            base.AddDefeatedIfDestroyedTriggers();
         }
 
         public override IEnumerator AfterFlipCardImmediateResponse()
@@ -57,7 +58,7 @@ namespace Cauldron.PhaseVillain
                 //When {Phase} flips to this side, destroy the obstacle with the lowest HP and remove it from the game. If the card Insubstantial Matador is in play, destroy it.
                 List<Card> list = new List<Card>();
                 //...obstacle with the lowest HP...
-                coroutine = base.GameController.FindTargetWithLowestHitPoints(1, (Card c) => this.IsObstacle(c), list, cardSource: base.GetCardSource());
+                coroutine = base.GameController.FindTargetsWithLowestHitPoints(1, 1, (Card c) => this.IsObstacle(c), list, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -107,19 +108,17 @@ namespace Cauldron.PhaseVillain
                     //Back - Advanced
                     //When {Phase} flips to this side, destroy {H - 2} hero ongoing cards.
                     coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && c.IsHero), Game.H - 2, cardSource: base.GetCardSource());
-                    if (matador.IsInPlayAndHasGameText)
+                    if (base.UseUnityCoroutines)
                     {
-                        coroutine = base.GameController.DestroyCard(this.DecisionMaker, matador);
-                        if (base.UseUnityCoroutines)
-                        {
-                            yield return base.GameController.StartCoroutine(coroutine);
-                        }
-                        else
-                        {
-                            base.GameController.ExhaustCoroutine(coroutine);
-                        }
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
                     }
                 }
+                base.RemoveAllTriggers();
+                this.AddSideTriggers();
                 yield break;
             }
         }
@@ -143,7 +142,7 @@ namespace Cauldron.PhaseVillain
             }
 
             //Then, flip {Phase}'s villain character cards.
-            coroutine = base.GameController.FlipCard(this);
+            coroutine = base.GameController.FlipCard(this, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

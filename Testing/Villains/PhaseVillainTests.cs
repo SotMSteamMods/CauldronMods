@@ -162,5 +162,48 @@ namespace CauldronTests
             DealDamage(haka, phase, 2, DamageType.Melee);
             QuickHPCheck(-2);
         }
+
+        [Test()]
+        public void TestPhaseBack()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card mat = PlayCard("InsubstantialMatador");
+            Card door = GetCard("VaultDoor", 0);
+            Card rub = GetCard("PrecariousRubble");
+            Card door2 = GetCard("VaultDoor", 1);
+            PutOnDeck(phase, door2);
+            PutOnDeck(phase, door);
+            PutOnDeck(phase, rub);
+            Card wall = GetCardInPlay("ReinforcedWall");
+            //When {Phase} flips to this side, destroy the obstacle with the lowest HP and remove it from the game. If the card Insubstantial Matador is in play, destroy it.
+            GoToStartOfTurn(phase);
+            AssertOutOfGame(rub);
+            AssertInTrash(mat);
+            AssertIsInPlay(new Card[] { wall, door });
+
+            //At the end of the villain turn, {Phase} deals each hero target {H} radiant damage. Then, flip {Phase}'s villain character cards.
+            QuickHPStorage(haka, bunker, scholar);
+            GoToEndOfTurn(phase);
+            QuickHPCheck(-3, -3, -3);
+            AssertNotFlipped(phase);
+        }
+
+        [Test()]
+        public void TestPhaseBackAdvanced()
+        {
+            SetupGameController(new string[] { "Cauldron.PhaseVillain", "Haka", "Bunker", "TheScholar", "Megalopolis" }, true);
+            StartGame();
+
+            //When {PhaseVillain} flips to this side, destroy {H - 2} hero ongoing cards.
+            Card moko = PlayCard("TaMoko");
+            Card iron = PlayCard("FleshToIron");
+
+            FlipCard(phase);
+
+            AssertIsInPlay(iron);
+            AssertInTrash(moko);
+        }
     }
 }
