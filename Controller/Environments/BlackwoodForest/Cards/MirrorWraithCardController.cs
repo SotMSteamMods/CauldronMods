@@ -22,25 +22,14 @@ namespace Cauldron.BlackwoodForest
         // Current: Issues
         //==============================================================
         /*
-         * Unable to respond to keyword queries for cards that ask
-         * for keywords via Definition.Keywords rather than the newer
-         * GameController.DoesHaveKeywords which allows cards to tap into
-         * the queries to generate desired responses
-         *
-         * Examples:
-         *
-         * Proletariat: A copied clone will not be destroyed by 'Regroup & Recover'
-         *
-         * Akash'Thriya: Copying a primordial seed will not be an available choice of cards
-         * if Akash plays 'Verdant Explosion'
-         *
-         */
-        /*
          * Since the card transforms as part of Play, triggers for CardPlay/EntersPlay and copied card's on entering play text aren't triggered.
          * Reworking to play logic to happen during 'DeterminePlayLocation' might resolve this.
          * 
-         * Copied cards that are Played Next to a Target (Pins) probally won't work.  Moving logic up to DeterminePlayArea, and calling the copied cards version of that might
+         * Copied cards that are Played Next to a Target (Pins) probally won't work.  Calling the copied cards version of that might
          * work.
+         * 
+         * Unclear if the implementation correctly captures SelfDestruction/Leaves play type triggers.
+         * 
          */
         //==============================================================
 
