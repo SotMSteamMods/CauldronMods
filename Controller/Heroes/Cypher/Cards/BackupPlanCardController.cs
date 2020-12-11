@@ -15,9 +15,7 @@ namespace Cauldron.Cypher
         //==============================================================
 
         public static string Identifier = "BackupPlan";
-
         private const int HpGain = 2;
-
 
         public BackupPlanCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -32,12 +30,12 @@ namespace Cauldron.Cypher
             base.AddTriggers();
         }
 
-        private IEnumerator DestroySelfResponse(CardEntersPlayAction cepa)
+        private IEnumerator DestroySelfResponse(CardEntersPlayAction _)
         {
             // Ask player if they want to destroy this card
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
             IEnumerator routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.DestroySelf, base.Card, storedResults: storedResults, cardSource: base.GetCardSource());
+                SelectionType.DestroySelf, base.Card, storedResults: storedResults, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -55,12 +53,7 @@ namespace Cauldron.Cypher
 
             if (!base.GameController.IsCardIndestructible(base.Card))
             {
-                // If you do, select any number of Augments in play and move
-                // each one next to a new hero. Then, each augmented hero regains 2HP.
-
-                
-                SelectCardDecision scd = new SelectCardDecision(GameController, DecisionMaker,
-                    SelectionType.MoveCardNextToCard, GetAugmentsInPlay(), isOptional: true, cardSource: GetCardSource());
+                // If you do, select any number of Augments in play and move each one next to a new hero. 
 
                 IEnumerable<Function> FunctionsBasedOnCard(Card c) => new[]
                 {
@@ -69,21 +62,6 @@ namespace Cauldron.Cypher
 
                 routine = base.GameController.SelectCardsAndPerformFunction(this.HeroTurnTakerController,
                     new LinqCardCriteria(c => GetAugmentsInPlay().Contains(c)), FunctionsBasedOnCard, true, GetCardSource());
-
-                
-
-                /*
-                List<SelectCardsDecision> scds = new List<SelectCardsDecision>();
-                 routine = base.GameController.SelectCardsAndStoreResults(base.HeroTurnTakerController,
-                    SelectionType.MoveCard, c => GetAugmentsInPlay().Contains(c), 5, scds, false,
-                    cardSource: GetCardSource());
-                */
-
-                
-                //List<MoveCardDestination> list = new List<MoveCardDestination>();
-                //list.Add(new MoveCardDestination(base.HeroTurnTaker.Hand));
-                //routine = base.GameController.SelectCardsFromLocationAndMoveThem(base.HeroTurnTakerController,
-                    //base.TurnTaker., 0, 5, new LinqCardCriteria(IsAugment), list);
 
                 if (base.UseUnityCoroutines)
                 {
@@ -94,8 +72,7 @@ namespace Cauldron.Cypher
                     base.GameController.ExhaustCoroutine(routine);
                 }
 
-
-                // Then, each augmented hero regains 2HP.
+                // ...Then, each augmented hero regains 2HP.
                 routine = this.GameController.GainHP(this.HeroTurnTakerController, IsAugmented, HpGain,
                     cardSource: GetCardSource());
 
@@ -108,8 +85,7 @@ namespace Cauldron.Cypher
                     base.GameController.ExhaustCoroutine(routine);
                 }
 
-
-                // Destroy card
+                // Destroy this card
                 List<DestroyCardAction> dcas = new List<DestroyCardAction>();
                 routine = this.GameController.DestroyCard(this.DecisionMaker, this.Card, storedResults: dcas, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
@@ -123,8 +99,8 @@ namespace Cauldron.Cypher
             }
             else
             {
-                routine = base.GameController.SendMessageAction(base.Card.Title + " is indestructible, so it cannot be destroyed for an extra actions.", 
-                    Priority.Medium, base.GetCardSource(), null, true);
+                routine = base.GameController.SendMessageAction(base.Card.Title + " is indestructible, so it cannot be destroyed for extra effects.", 
+                    Priority.Medium, GetCardSource(), null, true);
 
                 if (base.UseUnityCoroutines)
                 {

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Cauldron.Cypher;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
 using NUnit.Framework;
+using Cauldron.Cypher;
 
 namespace CauldronTests
 {
@@ -197,9 +195,8 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestBackupPlan_Destroy()
+        public void TestBackupPlan_NoDestroy()
         {
-
             // When a non-hero card enters play, you may destroy this card.
             // If you do, select any number of Augments in play and move each one next to a new hero.
             // Then, each augmented hero regains 2HP.
@@ -210,7 +207,51 @@ namespace CauldronTests
 
             SetHitPoints(new[] {cypher.CharacterCard, ra.CharacterCard, tachyon.CharacterCard}, 18);
 
-            Card bladeBattallon = GetCard("BladeBattalion");
+            Card BladeBattalion = GetCard("BladeBattalion");
+
+            Card muscleAug = GetCard(MuscleAugCardController.Identifier);
+            Card dermalAug = GetCard(DermalAugCardController.Identifier);
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { muscleAug}},
+                { tachyon.CharacterCard, new List<Card>() { dermalAug}}
+            });
+
+            Card backupPlan = GetCard(BackupPlanCardController.Identifier);
+
+            DecisionYesNo = false;
+            QuickHPStorage(cypher, ra, tachyon);
+
+            // Act
+            GoToPlayCardPhase(cypher);
+
+            PlayCard(backupPlan);
+            PlayCard(BladeBattalion); // Triggers Backup plan
+
+            // Assert
+            AssertNotInTrash(backupPlan);
+            Assert.True(AreAugmented(new List<Card>() { ra.CharacterCard, tachyon.CharacterCard}));
+            Assert.True(HasAugment(ra.CharacterCard, muscleAug));
+            Assert.True(HasAugment(tachyon.CharacterCard, dermalAug));
+            Assert.True(AreNotAugmented(new List<Card>() { cypher.CharacterCard}));
+            QuickHPCheck(0, 0, 0); // Backup plan wasn't destroyed so no HP was gained
+        }
+
+        [Test]
+        public void TestBackupPlan_Destroy()
+        {
+            // When a non-hero card enters play, you may destroy this card.
+            // If you do, select any number of Augments in play and move each one next to a new hero.
+            // Then, each augmented hero regains 2HP.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(new[] {cypher.CharacterCard, ra.CharacterCard, tachyon.CharacterCard}, 18);
+
+            Card BladeBattalion = GetCard("BladeBattalion");
 
             Card muscleAug = GetCard(MuscleAugCardController.Identifier);
             Card dermalAug = GetCard(DermalAugCardController.Identifier);
@@ -228,15 +269,20 @@ namespace CauldronTests
 
             // Act
             GoToPlayCardPhase(cypher);
+            Assert.True(AreAugmented(new List<Card>() { ra.CharacterCard, tachyon.CharacterCard}));
+            Assert.True(HasAugment(ra.CharacterCard, muscleAug));
+            Assert.True(HasAugment(tachyon.CharacterCard, dermalAug));
+
             PlayCard(backupPlan);
             DecisionSelectCards = new[] {muscleAug, cypher.CharacterCard};
-            PlayCard(bladeBattallon);
+            PlayCard(BladeBattalion); // Triggers Backup plan
 
             // Assert
             AssertInTrash(backupPlan);
-            QuickHPCheck(0, 2, 2);
-            
-
+            Assert.True(AreAugmented(new List<Card>() { cypher.CharacterCard}));
+            Assert.True(HasAugments(cypher.CharacterCard, new List<Card>() { muscleAug, dermalAug }));
+            Assert.True(AreNotAugmented(new List<Card>() { ra.CharacterCard, tachyon.CharacterCard}));
+            QuickHPCheck(2, 0, 0); // Only Cypher is augmented now
         }
 
         [Test]
