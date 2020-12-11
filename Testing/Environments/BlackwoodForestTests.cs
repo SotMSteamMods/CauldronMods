@@ -703,7 +703,7 @@ namespace CauldronTests
             GoToPlayCardPhase(unity);
             PlayCard(modularWorkbench);
             GoToDrawCardPhase(unity);
-            
+
             //AssertPhaseActionCount(3); // Normal draw + 1 from swiftbot + 1 from mirror wraith
             GoToEndOfTurn(unity);
 
@@ -832,6 +832,19 @@ namespace CauldronTests
             AssertInTrash(BlackwoodForest, mirrorWraith);
             QuickHPCheck(-2, -2, -2, -2);
 
+        }
+
+        [Test]
+        public void TestMirrorWraith_Limited()
+        {
+            SetupGameController("AkashBhuta", "CaptainCosmic", "Legacy", "Haka", DeckNamespace);
+            StartGame();
+
+            Card crest = PlayCard("CosmicCrest");
+            Card mirrorWraith1 = PlayCard(MirrorWraithCardController.Identifier, 0);
+            //Mirror Wraith 1 is limited and thus prevents the play of another Mirror Wraith
+            Card mirrorWraith2 = PlayCard(MirrorWraithCardController.Identifier, 1);
+            AssertInTrash(mirrorWraith2);
         }
 
         [Test]
