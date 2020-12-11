@@ -461,7 +461,9 @@ namespace Handelabra.Sentinels.UnitTest
 
         protected GameController SetupGameController(Game game)
         {
+#pragma warning disable IDE0017 // Simplify object initialization
             GameController gameController = new GameController(game);
+#pragma warning restore IDE0017 // Simplify object initialization
             gameController.StartCoroutine = StartCoroutine;
             gameController.ExhaustCoroutine = RunCoroutine;
             gameController.OnMakeDecisions -= this.MakeDecisions;
@@ -522,9 +524,13 @@ namespace Handelabra.Sentinels.UnitTest
 
         protected T GetPersistentValueFromView<T>(string key)
         {
+#pragma warning disable IDE0034 // Simplify 'default' expression
             T result = default(T);
+#pragma warning restore IDE0034 // Simplify 'default' expression
 
+#pragma warning disable IDE0038 // Use pattern matching
             if (_savedViewData.ContainsKey(key) && _savedViewData[key] is T)
+#pragma warning restore IDE0038 // Use pattern matching
             {
                 result = (T)_savedViewData[key];
             }
@@ -4081,7 +4087,9 @@ namespace Handelabra.Sentinels.UnitTest
 
         protected TurnTakerController FindVillain(string identifier = null)
         {
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             TurnTakerController result = null;
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
 
             if (identifier != null)
             {
@@ -4099,7 +4107,9 @@ namespace Handelabra.Sentinels.UnitTest
 
         protected TurnTakerController FindVillainTeamMember(string identifier)
         {
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             TurnTakerController result = null;
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
 
             if (identifier.Contains("Team"))
             {
@@ -4780,7 +4790,9 @@ namespace Handelabra.Sentinels.UnitTest
             MoveCard(FindTurnTakerController(card.Owner), card, card.NativeDeck, toBottom);
         }
 
+#pragma warning disable IDE0044 // Add readonly modifier
         Dictionary<Location, string[]> _stackAfterReshuffle = new Dictionary<Location, string[]>();
+#pragma warning restore IDE0044 // Add readonly modifier
 
         private IEnumerator StackCardsResponse(ShuffleCardsAction action)
         {
@@ -4828,7 +4840,9 @@ namespace Handelabra.Sentinels.UnitTest
         {
             Assert.AreEqual(cards.Count(), hpChanges.Count(), "AssertHPAtEndOfTurn: The number of cards provided and the number of expected results do not match up: " + cards.Count() + " and " + hpChanges.Count());
             int index = this.GameController.TurnTakerControllers.IndexOf(ttc).Value;
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             TurnTakerController previousTTC = null;
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
             if (index > 0)
             {
                 previousTTC = this.GameController.TurnTakerControllers.ElementAt(index - 1);
@@ -4869,7 +4883,9 @@ namespace Handelabra.Sentinels.UnitTest
                 controller = this.GameController;
             }
 
+#pragma warning disable IDE0017 // Simplify object initialization
             BinaryFormatter formatter = new BinaryFormatter();
+#pragma warning restore IDE0017 // Simplify object initialization
             formatter.AssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple;
             FileStream stream = null;
             try
@@ -4908,7 +4924,9 @@ namespace Handelabra.Sentinels.UnitTest
         {
             if (File.Exists(path))
             {
+#pragma warning disable IDE0017 // Simplify object initialization
                 BinaryFormatter formatter = new BinaryFormatter();
+#pragma warning restore IDE0017 // Simplify object initialization
                 formatter.AssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple;
                 FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
                 try
@@ -5460,7 +5478,9 @@ namespace Handelabra.Sentinels.UnitTest
 
         protected void SelectTurnTakerControllersForNextDecision(params TurnTakerController[] ttcs)
         {
+#pragma warning disable IDE0031 // Use null propagation
             var tts = ttcs.Select(ttc => ttc == null ? null : ttc.TurnTaker);
+#pragma warning restore IDE0031 // Use null propagation
             SelectTurnTakersForNextDecision(tts.ToArray());
         }
 
@@ -5911,7 +5931,9 @@ namespace Handelabra.Sentinels.UnitTest
             }
         }
 
+#pragma warning disable IDE0051 // Remove unused private members
         private void PrintReplayDecisionAnswers()
+#pragma warning restore IDE0051 // Remove unused private members
         {
             Console.WriteLine(this.ReplayDecisionAnswers.Select(d => d.DecisionIdentifier).ToCommaList());
         }

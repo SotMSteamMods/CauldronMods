@@ -27,7 +27,7 @@ namespace Cauldron.Quicksilver
 
         private int DynamicDamage(Card c)
         {
-            int amount = 0;
+            int amount;
             if (c != null && c.IsTarget && c.HitPoints > 8)
             {
                 amount = 6;

@@ -77,6 +77,11 @@ namespace Cauldron.BlackwoodForest
 
         private IEnumerator DealDamageResponse(DealDamageAction dda)
         {
+            if (!dda.DidDealDamage)
+            {
+                yield break;
+            }
+
             base.SetCardPropertyToTrueIfRealAction(FirstTimeDamageDealtPropName);
 
             IEnumerator dealDamageRoutine = base.DealDamage(this.Card, card => !dda.AllTargets.Contains(card), 
