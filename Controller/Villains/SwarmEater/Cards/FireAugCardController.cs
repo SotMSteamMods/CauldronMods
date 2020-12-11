@@ -1,6 +1,7 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Cauldron.SwarmEater
 {
@@ -49,8 +50,9 @@ namespace Cauldron.SwarmEater
 
         private IEnumerator AbsorbDiscardResponse(PhaseChangeAction action)
         {
+            SelectTurnTakersDecision turnTakerDecision = new SelectTurnTakersDecision(base.GameController, this.DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero), SelectionType.DiscardCard, Game.H - 2, cardSource: base.GetCardSource());
             //...{H - 2} players must discard a card.
-            IEnumerator coroutine = base.GameController.EachPlayerDiscardsCards(1, 1, requiredNumberOfHeroes: Game.H - 2, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTurnTakersAndDoAction(turnTakerDecision, (TurnTaker tt) => base.GameController.SelectAndDiscardCard(base.FindHeroTurnTakerController(tt.ToHero()), cardSource: base.GetCardSource()), cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -59,6 +61,7 @@ namespace Cauldron.SwarmEater
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+
         }
     }
 }
