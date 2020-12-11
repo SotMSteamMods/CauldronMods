@@ -473,9 +473,9 @@ namespace CauldronTests
             DealDamage(swarm, fire, 75, DamageType.Melee);
             AssertUnderCard(GetCard("AbsorbedNanites"), fire);
             //Absorb: at the start of the villain turn, {H - 2} players must discard a card.
-            QuickHandStorage(legacy);
+            QuickHandStorage(legacy, haka, unity);
             GoToStartOfTurn(swarm);
-            QuickHandCheck(-1);
+            QuickHandCheck(-1, 0, 0);
         }
 
         [Test()]
@@ -958,7 +958,7 @@ namespace CauldronTests
             AssertUnderCard(GetCard("AbsorbedNanites"), venom);
 
             //Absorb: Whenever {SwarmEater} deals damage to another target, that target deals itself 1 toxic damage.
-            
+
             QuickHPStorage(haka);
             DealDamage(swarm, haka, 2, DamageType.Melee);
 
