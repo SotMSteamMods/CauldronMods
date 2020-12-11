@@ -22,9 +22,6 @@ namespace Cauldron.BlackwoodForest
         // Current: Issues
         //==============================================================
         /*
-         * Since the card transforms as part of Play, triggers for CardPlay/EntersPlay and copied card's on entering play text aren't triggered.
-         * Reworking to play logic to happen during 'DeterminePlayLocation' might resolve this.
-         * 
          * Copied cards that are Played Next to a Target (Pins) probally won't work.  Calling the copied cards version of that might
          * work.
          * 
@@ -79,7 +76,7 @@ namespace Cauldron.BlackwoodForest
             List<Card> storedResults = new List<Card>();
             IEnumerator coroutine = base.GameController.FindTargetWithLowestHitPoints(1,
                 c => c.IsTarget && c.IsInPlay && !c.IsCharacter
-                     && !c.Equals(this.Card), storedResults, cardSource: this.GetCardSource());
+                     && !c.Equals(this.Card), storedResults, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -92,6 +89,8 @@ namespace Cauldron.BlackwoodForest
 
             if (!storedResults.Any())
             {
+                System.Console.WriteLine("**DEBUG** No Results from query.");
+
                 // No eligible targets were found, deal all targets 2 sonic damage
                 IEnumerator dealDamageRoutine
                     = this.DealDamage(this.Card, card => card.IsTarget && !card.Equals(this.Card), DamageToDeal,
@@ -126,8 +125,17 @@ namespace Cauldron.BlackwoodForest
                 // Identify this card controller as one who can modify card source query answers
                 base.AddThisCardControllerToList(CardControllerListType.ReplacesCardSource);
 
-                // Identify this card controller as one who can turntaker query answers
-                //base.AddThisCardControllerToList(CardControllerListType.ReplacesTurnTakerController);
+                // Identify this card controller as one who can potentially be indestructible
+                if (GameController.IsInCardControllerList(copiedCard, CardControllerListType.MakesIndestructible))
+                {
+                    base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
+                }
+
+                //identify this card as one that could potentially increase phase actions
+                if (GameController.IsInCardControllerList(copiedCard, CardControllerListType.IncreasePhaseActionCount))
+                {
+                    base.RemoveThisCardControllerFromList(CardControllerListType.IncreasePhaseActionCount);
+                }
 
                 // Set HP
                 IEnumerator makeTargetRoutine = this.GameController.MakeTargettable(CardWithoutReplacements, copiedCard.MaximumHitPoints.Value, copiedCard.MaximumHitPoints.Value,
@@ -146,6 +154,16 @@ namespace Cauldron.BlackwoodForest
                 CopyGameText(copiedCard);
                 ModifyDefinitionKeywords(BaseKeywords.Concat(copiedCard.Definition.Keywords));
 
+                var messageRoutine = GameController.SendMessageAction($"{Card.Title} copies {copiedCard.Title}.", Priority.High, GetCardSource(), new[] { copiedCard });
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(messageRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(messageRoutine);
+                }
+
                 var playRoutine = DupliPlayCopiedCard(copiedCard);
                 if (base.UseUnityCoroutines)
                 {
@@ -160,11 +178,11 @@ namespace Cauldron.BlackwoodForest
 
         private IEnumerator DupliPlayCopiedCard(Card card)
         {
-            CardController cc = FindCardController(card);
+            var cc = FindCardController(card);
             CardSource source = GetCardSource();
             source.SourceLimitation = CardSource.Limitation.Play;
             cc.AddAssociatedCardSource(source);
-            IEnumerator coroutine = cc.Play();
+            var coroutine = cc.Play();
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -185,6 +203,56 @@ namespace Cauldron.BlackwoodForest
                 var newList = newKeywords.ToList();
                 fi.SetValue(CardWithoutReplacements.Definition, newList);
             }
+        }
+
+        public override bool AskIfActionCanBePerformed(GameAction gameAction)
+        {
+            var card = CopiedCard;
+            //if the card is in play it will do the prevention itself, only if it is out of play do we need to proxy the effect
+            if (card != null && !card.IsInPlayAndHasGameText)
+            {
+                var cc = FindCardController(card);
+                return cc.AskIfActionCanBePerformed(gameAction);
+            }
+
+            return base.AskIfActionCanBePerformed(gameAction);
+        }
+
+        public override bool AskIfCardIsIndestructible(Card card)
+        {
+            //this isn't called unless the card is in the MakeIndestrucible list
+
+            var copiedCard = CopiedCard;
+            if (copiedCard != null)
+            {
+                var cc = FindCardController(copiedCard);
+                if (card == Card)
+                {
+                    //asking for a friend bro.  This is a mixed bag.  If the card makes itself immune, this returns true
+                    //but if it's looking at state on the itself/card this fails.
+                    //There's probally someway
+                    return cc.AskIfCardIsIndestructible(copiedCard);
+                }
+                else
+                {
+                    //proxy to the other cardController
+                    return cc.AskIfCardIsIndestructible(card);
+                }
+            }
+
+            return base.AskIfCardIsIndestructible(card);
+        }
+
+        public override bool AskIfIncreasingCurrentPhaseActionCount()
+        {
+            //only called if CC is in associated list
+            var card = CopiedCard;
+            if (card != null)
+            {
+                var cc = FindCardController(card);
+                return cc.AskIfIncreasingCurrentPhaseActionCount();
+            }
+            return base.AskIfIncreasingCurrentPhaseActionCount();
         }
 
         public override void AddTriggers()
@@ -211,7 +279,14 @@ namespace Cauldron.BlackwoodForest
             base.RemoveThisCardControllerFromList(CardControllerListType.ModifiesKeywords);
             base.RemoveThisCardControllerFromList(CardControllerListType.ReplacesCards);
             base.RemoveThisCardControllerFromList(CardControllerListType.ReplacesCardSource);
-            //base.RemoveThisCardControllerFromList(CardControllerListType.ReplacesTurnTakerController);
+            if (GameController.IsInCardControllerList(Card, CardControllerListType.MakesIndestructible))
+            {
+                base.RemoveThisCardControllerFromList(CardControllerListType.MakesIndestructible);
+            }
+            if (GameController.IsInCardControllerList(Card, CardControllerListType.IncreasePhaseActionCount))
+            {
+                base.RemoveThisCardControllerFromList(CardControllerListType.IncreasePhaseActionCount);
+            }
 
             coroutine = ResetFlagAfterLeavesPlay(CopiedCardKey);
             if (base.UseUnityCoroutines)
@@ -313,21 +388,6 @@ namespace Cauldron.BlackwoodForest
 
             return result;
         }
-
-        //public override TurnTakerController AskIfTurnTakerControllerIsReplaced(TurnTakerController ttc, CardSource cardSource)
-        //{
-        //    var copiedCard = CopiedCard;
-        //    if (cardSource != null && cardSource.AllowReplacements && copiedCard != null && cardSource.CardController == this)
-        //    {
-        //        Card card = cardSource.AssociatedCardSources.Select((CardSource cs) => cs.Card).FirstOrDefault((Card a) => a == copiedCard);
-        //        if (card != null && ttc.TurnTaker == card.Owner)
-        //        {
-        //            return base.TurnTakerController;
-        //        }
-        //    }
-        //    return null;
-        //}
-
         private void CopyGameText(Card sourceCard)
         {
             IEnumerable<ITrigger> triggers =
@@ -344,7 +404,7 @@ namespace Cauldron.BlackwoodForest
                 clonedTrigger.CardSource = base.FindCardController(sourceCard).GetCardSource();
                 clonedTrigger.CardSource.AddAssociatedCardSource(base.GetCardSource());
                 clonedTrigger.SetCopyingCardController(this);
-                
+
                 base.AddTrigger(clonedTrigger);
                 this._copiedTriggers.Add(clonedTrigger);
             }

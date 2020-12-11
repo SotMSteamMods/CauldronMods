@@ -773,6 +773,28 @@ namespace CauldronTests
 
 
         [Test]
+        [Ignore("Current implementation cannot handle cards that Move Next to other cards.")]
+        public void TestMirrorWraithEligibleTargets_ClonePin()
+        {
+            // Arrange
+            SetupGameController("GloomWeaver", "Ra", "Legacy", "AkashThriya", DeckNamespace);
+
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            var pin = GetCard("CrimsonPin");
+            PlayCard(pin);
+            AssertNextToCard(pin, thriya.CharacterCard);
+
+            GoToStartOfTurn(BlackwoodForest);
+            Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
+
+            PlayCard(mirrorWraith);
+            AssertNextToCard(mirrorWraith, thriya.CharacterCard);
+        }
+
+
+        [Test]
         public void TestMirrorWraithEligibleTargets_CloneAcrossReload()
         {
             // Arrange
@@ -837,7 +859,7 @@ namespace CauldronTests
         [Test]
         public void TestMirrorWraith_Limited()
         {
-            SetupGameController("AkashBhuta", "CaptainCosmic", "Legacy", "Haka", DeckNamespace);
+            SetupGameController("BaronBlade", "CaptainCosmic", "Legacy", "Haka", DeckNamespace);
             StartGame();
 
             Card crest = PlayCard("CosmicCrest");
