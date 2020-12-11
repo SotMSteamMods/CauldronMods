@@ -94,7 +94,10 @@ namespace Cauldron.Necro
                 case 1:
                     {
                         //Destroy 1 ongoing card.
-                        IEnumerator coroutine2 = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsOngoing, "ongoing"), optional: false, cardSource: GetCardSource());
+                        IEnumerator coroutine2 = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController,
+                                new LinqCardCriteria((Card c) => c.IsOngoing && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "ongoing"),
+                                optional: false,
+                                cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine2);
@@ -126,7 +129,7 @@ namespace Cauldron.Necro
             yield break;
         }
 
-        public IEnumerator DrawTwoCardsResponse(DestroyCardAction dca, HeroTurnTaker htt, WhenCardIsDestroyedStatusEffect effect, int[] PowerNumerals = null)
+        public IEnumerator DrawTwoCardsResponse(DestroyCardAction dca, HeroTurnTaker htt, WhenCardIsDestroyedStatusEffect _, int[] _2 = null)
         {
             if (dca.WasCardDestroyed)
             {

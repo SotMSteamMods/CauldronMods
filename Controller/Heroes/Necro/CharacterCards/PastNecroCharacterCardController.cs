@@ -61,7 +61,11 @@ namespace Cauldron.Necro
                         //One hero target deals itself 3 toxic damage.
                         IEnumerable<Card> choices = FindCardsWhere((Card c) => c.IsInPlayAndNotUnderCard && c.IsTarget && c.IsHero);
                         List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                        IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.SelectTarget, choices, storedResults);
+                        var damageInfo = new DealDamageAction(GetCardSource(), new DamageSource(GameController, TurnTaker), null, 3, DamageType.Toxic);
+                        IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.DealDamageSelf, choices, storedResults,
+                            optional: false,
+                            dealDamageInfo: new[] { damageInfo },
+                            cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -89,7 +93,7 @@ namespace Cauldron.Necro
                     {
                         //One hero may use their innate power, then draw a card.
                         List<SelectTurnTakerDecision> storedResults = new List<SelectTurnTakerDecision>();
-                        IEnumerator coroutine2 = base.GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.UsePowerOnCard, false, false, storedResults,cardSource: GetCardSource());
+                        IEnumerator coroutine2 = base.GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.UsePowerOnCard, false, false, storedResults, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine2);
@@ -122,7 +126,7 @@ namespace Cauldron.Necro
                                 base.GameController.ExhaustCoroutine(coroutine2);
                             }
                         }
-                        
+
                         break;
                     }
                 case 2:
@@ -211,6 +215,5 @@ namespace Cauldron.Necro
             }
             yield break;
         }
-
     }
 }
