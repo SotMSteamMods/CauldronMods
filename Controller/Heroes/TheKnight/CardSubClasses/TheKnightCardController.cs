@@ -11,9 +11,31 @@ namespace Cauldron.TheKnight
     public abstract class TheKnightCardController : CardController
     {
         public const string SingleHandKeyword = "single hand";
-
+        private readonly string VigilarKey = "PastKnightVigilarKey";
+        private readonly string RoninKey = "WastelandRoninKnightOwnershipKey";
         protected TheKnightCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => $"This card is currently being used by {VigilarOwnerName()}").Condition = () => VigilarOwnerName() != null;
+            SpecialStringMaker.ShowSpecialString(() => $"This card is currently being used by {RoninOwnerName()}").Condition = () => RoninOwnerName() != null;
+        }
+
+        private string VigilarOwnerName()
+        {
+            var lentTo = GetCardPropertyJournalEntryCard(VigilarKey);
+            if (lentTo != null)
+            {
+                return lentTo.Title;
+            }
+            return null;
+        }
+        private string RoninOwnerName()
+        {
+            var usedBy = GetCardPropertyJournalEntryCard(RoninKey);
+            if (usedBy != null)
+            {
+                return usedBy.Title;
+            }
+            return null;
         }
 
         public bool IsSingleHandCard(Card card)

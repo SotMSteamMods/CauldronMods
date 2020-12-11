@@ -293,6 +293,98 @@ namespace CauldronTests
             Assert.AreEqual(knight.TurnTaker.InTheBox, oldKnight.Location);
         }
         [Test]
+        public void TestPastKnightPowerSimple()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/PastTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            Card helm = PutInHand("PlateHelm");
+            Card mail = PutInHand("PlateMail");
+            DecisionSelectCards = new Card[] { helm, ra.CharacterCard };
+            QuickHandStorage(knight, ra);
+
+            UsePower(knight);
+            AssertInPlayArea(ra, helm);
+            //replaces "knight" but not "you" - Knight plays card + draws card, Ra stands pat
+            QuickHandCheck(0, 0);
+
+            QuickHPStorage(knight.CharacterCard, ra.CharacterCard, helm);
+            DecisionYesNo = true;
+            //should be able to redirect damage from Ra
+            DealDamage(baron, ra, 1, DTM);
+            QuickHPCheck(0, 0, -1);
+
+            //should not be able to redirect damage from Knight
+            DealDamage(baron, knight, 1, DTM);
+            QuickHPCheck(-1, 0, 0);
+        }
+        [Test]
+        public void TestPastKnightPowerDoesNotAllowUnplayableCards()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/PastTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            Card helm1 = PlayCard("PlateHelm");
+            PutOnDeck(knight, knight.HeroTurnTaker.Hand.Cards);
+            Card helm2 = PutInHand("PlateHelm");
+
+            AssertNoDecision();
+            UsePower(knight);
+            AssertInHand(helm2);
+        }
+        [Test]
+        public void TestPastKnightPowerEndsWhenTargetLeavesPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/PastTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            Card helm = PutInHand("PlateHelm");
+            Card mail = PutInHand("PlateMail");
+            DecisionSelectCards = new Card[] { helm, ra.CharacterCard };
+
+            UsePower(knight);
+            QuickHPStorage(knight.CharacterCard, ra.CharacterCard, helm);
+            DecisionYesNo = true;
+            //should be able to redirect damage from Ra
+            DealDamage(baron, ra, 1, DTM);
+            QuickHPCheck(0, 0, -1);
+
+            DestroyCard(helm);
+            PlayCard(helm);
+            QuickHPStorage(knight.CharacterCard, ra.CharacterCard, helm);
+
+            //Ra should no longer have the Helm's protection
+            DealDamage(baron, ra, 1, DTM);
+            QuickHPCheck(0, -1, 0);
+
+            DealDamage(baron, knight, 1, DTM);
+            QuickHPCheck(0, 0, -1);
+
+        }
+        [Test]
+        public void TestPastKnightImbuedVitality()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/PastTheKnightCharacter", "Ra", "TheWraith", "RealmOfDiscord");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            Card helm = PutInHand("PlateHelm");
+            Card mail = PutInHand("PlateMail");
+            Card sword = PutInHand("ShortSword");
+            DecisionSelectCards = new Card[] { sword, ra.CharacterCard, knight.CharacterCard, baron.CharacterCard };
+            PlayCard("ImbuedVitality");
+            
+            UsePower(knight);
+            //short sword should be in play by Ra
+            AssertInPlayArea(ra, sword);
+
+            //sword's damage should be done by Ra, so we make the Knight unable to deal any
+            PlayCard("ThroatJab");
+            QuickHPStorage(baron);
+            UsePower(sword);
+            QuickHPCheck(-3);
+        }
+        [Test]
         public void TestRoninKnightLoads()
         {
             SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
