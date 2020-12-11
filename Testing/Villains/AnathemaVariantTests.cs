@@ -1,14 +1,12 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.Engine.Controller;
-using System.Linq;
-using System.Collections;
 using Handelabra.Sentinels.UnitTest;
-using System.Reflection;
 using Cauldron.Anathema;
 using Handelabra;
-using System.Collections.Generic;
 
 namespace CauldronTests
 {
@@ -17,116 +15,62 @@ namespace CauldronTests
     {
         #region AnathemaHelperFunctions
 
-        protected TurnTakerController anathema { get { return FindVillain("Anathema"); } }
+        protected TurnTakerController anathema => FindVillain("Anathema");
 
         protected void AssertNumberOfArmsInPlay(TurnTakerController ttc, int number)
         {
             var cardsInPlay = ttc.TurnTaker.GetAllCards().Where(c => c.IsInPlay && this.IsArm(c));
             var actual = cardsInPlay.Count();
-            Assert.AreEqual(number, actual, String.Format("{0} should have had {1} cards in play, but actually had {2}: {3}", ttc.Name, number, actual, cardsInPlay.Select(c => c.Title).ToCommaList()));
+            Assert.AreEqual(number, actual, $"{ttc.Name} should have had {number} cards in play, but actually had {actual}: {cardsInPlay.Select(c => c.Title).ToCommaList()}");
         }
 
         protected List<Card> GetListOfArmsInPlay(TurnTakerController ttc)
         {
             var cardsInPlay = ttc.TurnTaker.GetAllCards().Where(c => c.IsInPlayAndNotUnderCard && this.IsArm(c));
-            List<Card> listofArms = new List<Card>();
-            foreach (Card c in cardsInPlay)
-            {
-                listofArms.Add(c);
-            }
-            return listofArms;
+            return cardsInPlay.ToList();
         }
 
         protected void AssertNumberOfHeadInPlay(TurnTakerController ttc, int number)
         {
             var cardsInPlay = ttc.TurnTaker.GetAllCards().Where(c => c.IsInPlay && this.IsHead(c));
             var actual = cardsInPlay.Count();
-            Assert.AreEqual(number, actual, String.Format("{0} should have had {1} cards in play, but actually had {2}: {3}", ttc.Name, number, actual, cardsInPlay.Select(c => c.Title).ToCommaList()));
+            Assert.AreEqual(number, actual, $"{ttc.Name} should have had {number} cards in play, but actually had {actual}: {cardsInPlay.Select(c => c.Title).ToCommaList()}");
         }
 
         protected List<Card> GetListOfHeadsInPlay(TurnTakerController ttc)
         {
             var cardsInPlay = ttc.TurnTaker.GetAllCards().Where(c => c.IsInPlay && this.IsHead(c));
-            List<Card> listOfHead = new List<Card>();
-            foreach(Card c in cardsInPlay)
-            {
-                listOfHead.Add(c);
-            }
-            return listOfHead;
+            return cardsInPlay.ToList();
         }
 
         protected void AssertNumberOfBodyInPlay(TurnTakerController ttc, int number)
         {
             var cardsInPlay = ttc.TurnTaker.GetAllCards().Where(c => c.IsInPlay && this.IsBody(c));
             var actual = cardsInPlay.Count();
-            Assert.AreEqual(number, actual, String.Format("{0} should have had {1} cards in play, but actually had {2}: {3}", ttc.Name, number, actual, cardsInPlay.Select(c => c.Title).ToCommaList()));
+            Assert.AreEqual(number, actual, $"{ttc.Name} should have had {number} cards in play, but actually had {actual}: {cardsInPlay.Select(c => c.Title).ToCommaList()}");
         }
 
         protected List<Card> GetListOfBodyInPlay(TurnTakerController ttc)
         {
             var cardsInPlay = ttc.TurnTaker.GetAllCards().Where(c => c.IsInPlay && this.IsBody(c));
-            List<Card> listOfHead = new List<Card>();
-            foreach (Card c in cardsInPlay)
-            {
-                listOfHead.Add(c);
-            }
-            return listOfHead;
+            return cardsInPlay.ToList();
         }
 
         private bool IsArm(Card card)
         {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "arm", false, false);
+            return card != null && base.GameController.DoesCardContainKeyword(card, "arm");
         }
 
         private bool IsHead(Card card)
         {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "head", false, false);
+            return card != null && base.GameController.DoesCardContainKeyword(card, "head");
         }
 
         private bool IsBody(Card card)
         {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "body", false, false);
+            return card != null && base.GameController.DoesCardContainKeyword(card, "body");
         }
 
-        private bool IsArmHeadOrBody(Card c)
-        {
-            return IsArm(c) || IsHead(c) || IsBody(c);
-        }
-
-
-        private void ResetAnathemaDeck()
-        {
-            //Destroy all arms, heads, and body in play
-            DestroyCards((Card c) => this.IsArmHeadOrBody(c));
-            //Shuffle all arms, heads, and body back into the deck
-            ShuffleTrashIntoDeck(anathema);
-        }
-        protected void AddImmuneToDamageTrigger(TurnTakerController ttc, bool heroesImmune, bool villainsImmune)
-        {
-            ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect();
-            immuneToDamageStatusEffect.TargetCriteria.IsHero = new bool?(heroesImmune);
-            immuneToDamageStatusEffect.TargetCriteria.IsVillain = new bool?(villainsImmune);
-            immuneToDamageStatusEffect.UntilStartOfNextTurn(ttc.TurnTaker);
-            this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
-        }
-
-        protected void AssertDamageTypeChanged(HeroTurnTakerController httc, Card source, Card target, int amount, DamageType initialDamageType, DamageType expectedDamageType)
-        {
-            List<DealDamageAction> storedResults = new List<DealDamageAction>();
-            this.RunCoroutine(this.GameController.DealDamage(httc, source, (Card c) => c == target, amount, initialDamageType, false, false, storedResults, null, null, false, null, null, false, false, new CardSource(GetCardController(source))));
-            
-            if(storedResults != null)
-            {
-                DealDamageAction dd = storedResults.FirstOrDefault<DealDamageAction>();
-                DamageType actualDamageType = dd.DamageType;
-                Assert.AreEqual(expectedDamageType, actualDamageType, $"Expected damage type: {expectedDamageType}. Actual damage type: {actualDamageType}");
-            }
-            else
-            {
-                Assert.Fail("storedResults was null");
-            }
-
-        }
         #endregion
 
         [Test()]
@@ -198,8 +142,6 @@ namespace CauldronTests
             AssertFlipped(anathema);
             AssertNumberOfCardsUnderCard(anathema.CharacterCard, 0);
             AssertInPlayArea(anathema, cardsUnder);
-           
-
         }
 
         [Test()]
@@ -213,7 +155,6 @@ namespace CauldronTests
             //Whenever {Anathema} destroys an arm or head card, put that under {Anathema}'s villain character card.
             DestroyCard(armToDestroy, anathema.CharacterCard);
             AssertUnderCard(anathema.CharacterCard, armToDestroy);
-
         }
 
         [Test()]
@@ -227,7 +168,6 @@ namespace CauldronTests
             //Whenever {Anathema} destroys an arm or head card, put that under {Anathema}'s villain character card.
             DestroyCard(armToDestroy, legacy.CharacterCard);
             AssertInTrash(armToDestroy);
-
         }
 
         [Test()]
@@ -241,7 +181,6 @@ namespace CauldronTests
             //Whenever {Anathema} destroys an arm or head card, put that under {Anathema}'s villain character card.
             DestroyCard(headToDestroy, anathema.CharacterCard);
             AssertUnderCard(anathema.CharacterCard, headToDestroy);
-
         }
 
         [Test()]
@@ -255,7 +194,6 @@ namespace CauldronTests
             //Whenever {Anathema} destroys an arm or head card, put that under {Anathema}'s villain character card.
             DestroyCard(headToDestroy, legacy.CharacterCard);
             AssertInTrash(headToDestroy);
-
         }
 
         [Test()]
@@ -269,7 +207,6 @@ namespace CauldronTests
             //Whenever {Anathema} destroys an arm or head card, put that under {Anathema}'s villain character card.
             DestroyCard(bodyToDestroy, anathema.CharacterCard);
             AssertInTrash(bodyToDestroy);
-
         }
 
         [Test()]
@@ -284,7 +221,6 @@ namespace CauldronTests
             //Whenever {Anathema} destroys an arm or head card, put that under {Anathema}'s villain character card.
             PlayCard(headToPlay);
             AssertUnderCard(anathema.CharacterCard, headToDestroy);
-
         }
 
         [Test()]
@@ -301,7 +237,6 @@ namespace CauldronTests
             AssertUnderCard(anathema.CharacterCard, armOnDeck);
             AssertNumberOfCardsInRevealed(anathema, 0);
             AssertNotFlipped(anathema.CharacterCard);
-
         }
 
         [Test()]
@@ -319,7 +254,6 @@ namespace CauldronTests
             GoToEndOfTurn(anathema);
             AssertFlipped(anathema.CharacterCard);
             AssertNumberOfCardsInRevealed(anathema, 0);
-
         }
 
         [Test()]
@@ -336,7 +270,6 @@ namespace CauldronTests
             AssertUnderCard(anathema.CharacterCard, headOnDeck);
             AssertNumberOfCardsInRevealed(anathema, 0);
             AssertNotFlipped(anathema.CharacterCard);
-
         }
 
         [Test()]
@@ -354,7 +287,6 @@ namespace CauldronTests
             GoToEndOfTurn(anathema);
             AssertFlipped(anathema.CharacterCard);
             AssertNumberOfCardsInRevealed(anathema, 0);
-
         }
 
         [Test()]
@@ -371,7 +303,6 @@ namespace CauldronTests
             AssertInTrash(headOnDeck);
             AssertNumberOfCardsInRevealed(anathema, 0);
             AssertNotFlipped(anathema.CharacterCard);
-
         }
 
         [Test()]
@@ -389,7 +320,6 @@ namespace CauldronTests
             QuickHPStorage(anathema);
             GoToEndOfTurn(anathema);
             QuickHPCheck(2);
-
         }
 
         [Test()]
@@ -405,7 +335,6 @@ namespace CauldronTests
             GoToEndOfTurn(anathema);
             QuickHPCheck(1);
 
-
         }
 
         [Test()]
@@ -420,7 +349,6 @@ namespace CauldronTests
             //When explosive transformation enters play, flip {Anathema}'s character cards.
             PlayCard("ExplosiveTransformation");
             AssertNotFlipped(anathema);
-
         }
 
         [Test()]
@@ -434,7 +362,6 @@ namespace CauldronTests
             Card headToDestroy = GetListOfHeadsInPlay(anathema).First();
             DestroyCard(headToDestroy, ra.CharacterCard);
             AssertInTrash(headToDestroy);
-
         }
 
         [Test()]
@@ -448,7 +375,6 @@ namespace CauldronTests
             Card headToDestroy = GetListOfHeadsInPlay(anathema).First();
             DestroyCard(headToDestroy, ra.CharacterCard);
             AssertInTrash(headToDestroy);
-
         }
 
         [Test()]

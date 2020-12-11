@@ -8,22 +8,16 @@ using Handelabra.Sentinels.Engine.Model;
 namespace Cauldron.Anathema
 {
 	public class AcceleratedEvolutionAnathemaCharacterCardController : VillainCharacterCardController
-	{
+    {
+
+        private const string ExplosiveTransformationKeyword = "ExplosiveTransformation";
+
 		public AcceleratedEvolutionAnathemaCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
 			base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
 			SpecialString ss = base.SpecialStringMaker.ShowNumberOfCardsUnderCard(base.Card);
 			ss.Condition = () => !base.CharacterCard.IsFlipped;
 
-		}
-
-		//number of villain targets in play other than Anathema
-		private int NumberOfVillainTargetsInPlay
-		{
-			get
-			{ 
-				return base.FindCardsWhere((Card c) => base.IsVillainTarget(c) && c.IsInPlay && c != base.CharacterCard).Count();
-			}
 		}
 
 		private bool IsArm(Card card)
@@ -71,13 +65,12 @@ namespace Cauldron.Anathema
 				{
 					//At the end of the villain turn, {Anathema} regains {H - 2} HP.
 					this.SideTriggers.Add(AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, AdvancedEndOfTurnFrontResponse, TriggerType.GainHP));
-
-				}
+                }
 			}
 			else
 			{
 				//When explosive transformation enters play, flip {Anathema}'s character cards.
-				this.SideTriggers.Add(AddTrigger<CardEntersPlayAction>((CardEntersPlayAction cpe) => cpe.CardEnteringPlay != null && cpe.CardEnteringPlay.Identifier == "ExplosiveTransformation" && cpe.IsSuccessful, FlipThisCharacterCardResponse, TriggerType.FlipCard, TriggerTiming.After));
+				this.SideTriggers.Add(AddTrigger<CardEntersPlayAction>((CardEntersPlayAction cpe) => cpe.CardEnteringPlay != null && cpe.CardEnteringPlay.Identifier == ExplosiveTransformationKeyword && cpe.IsSuccessful, FlipThisCharacterCardResponse, TriggerType.FlipCard, TriggerTiming.After));
 
 				if (base.IsGameAdvanced)
 				{
@@ -101,9 +94,7 @@ namespace Cauldron.Anathema
 			{
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
-
-			yield break;
-		}
+        }
 
         private IEnumerator AdvancedEndOfTurnBackResponse(PhaseChangeAction arg)
         {
@@ -117,8 +108,6 @@ namespace Cauldron.Anathema
 			{
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
-
-			yield break;
 		}
 
         private IEnumerator EndOfTurnFrontResponse(PhaseChangeAction arg)
@@ -138,16 +127,10 @@ namespace Cauldron.Anathema
 			if(storedResults.Count > 0)
             {
 				Card cardToMove = storedResults.First();
-				Location location;
-				if(IsArmOrHead(cardToMove))
-                {
-					location = base.CharacterCard.UnderLocation;
-				} else
-                {
-					location = base.TurnTaker.Trash;
-                }
+                Location location = IsArmOrHead(cardToMove) ? base.CharacterCard.UnderLocation : base.TurnTaker.Trash;
 				coroutine = GameController.MoveCard(base.TurnTakerController, cardToMove, location, showMessage: true, cardSource: GetCardSource());
-				if (base.UseUnityCoroutines)
+				
+                if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);
 				}
@@ -159,22 +142,22 @@ namespace Cauldron.Anathema
 
 			//Then if there are {H} or more cards under {Anathema}, flip his villain character card.
 			int numCardsUnderAnathema = base.CharacterCard.UnderLocation.NumberOfCards;
-
-			if(numCardsUnderAnathema >= Game.H)
+            if (numCardsUnderAnathema < Game.H)
             {
-				coroutine = base.GameController.FlipCard(this, cardSource: GetCardSource());
-				if (base.UseUnityCoroutines)
-				{
-					yield return base.GameController.StartCoroutine(coroutine);
-				}
-				else
-				{
-					base.GameController.ExhaustCoroutine(coroutine);
-				}
-			}
+                yield break;
+            }
 
-			yield break;
-		}
+			// Flip
+            coroutine = base.GameController.FlipCard(this, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
 
 		public override IEnumerator AfterFlipCardImmediateResponse()
 		{
@@ -189,34 +172,34 @@ namespace Cauldron.Anathema
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
 
-			if(base.CharacterCard.IsFlipped)
+            if (!base.CharacterCard.IsFlipped)
             {
-				//When {Anathema} flips to this side, put all cards from underneath him into play. 
-				IEnumerable<Card> cardsToMove = base.CharacterCard.UnderLocation.Cards;
-				coroutine = GameController.MoveCards(base.TurnTakerController, cardsToMove, (Card c) => new MoveCardDestination(c.Owner.PlayArea), isPutIntoPlay: true, cardSource: GetCardSource());
-				if (base.UseUnityCoroutines)
-				{
-					yield return base.GameController.StartCoroutine(coroutine);
-				}
-				else
-				{
-					base.GameController.ExhaustCoroutine(coroutine);
-				}
+                yield break;
+            }
 
-				//Shuffle all copies of explosive transformation from the villain trash into the villain deck.
-				IEnumerable<Card> cardsToShuffle = FindCardsWhere((Card c) => c.Identifier == "ExplosiveTransformation" && base.TurnTaker.Trash.HasCard(c));
-				coroutine = GameController.ShuffleCardsIntoLocation(DecisionMaker, cardsToShuffle, base.TurnTaker.Deck, cardSource: GetCardSource());
-				if (base.UseUnityCoroutines)
-				{
-					yield return base.GameController.StartCoroutine(coroutine);
-				}
-				else
-				{
-					base.GameController.ExhaustCoroutine(coroutine);
-				}
-			}
-			
-			yield break;
+            //When {Anathema} flips to this side, put all cards from underneath him into play. 
+            IEnumerable<Card> cardsToMove = base.CharacterCard.UnderLocation.Cards;
+            coroutine = GameController.MoveCards(base.TurnTakerController, cardsToMove, (Card c) => new MoveCardDestination(c.Owner.PlayArea), isPutIntoPlay: true, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //Shuffle all copies of explosive transformation from the villain trash into the villain deck.
+            IEnumerable<Card> cardsToShuffle = FindCardsWhere((Card c) => c.Identifier == ExplosiveTransformationKeyword && base.TurnTaker.Trash.HasCard(c));
+            coroutine = GameController.ShuffleCardsIntoLocation(DecisionMaker, cardsToShuffle, base.TurnTaker.Deck, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
 		}
 
 		private IEnumerator PutUnderThisCardResponse(DestroyCardAction destroyCard)
@@ -228,11 +211,7 @@ namespace Cauldron.Anathema
 		public override bool AskIfCardIsIndestructible(Card card)
 		{
 			//Flipped: Arm and head cards are indestructible during the villain turn.
-
-			return base.CharacterCard.IsFlipped && Game.ActiveTurnTaker.IsVillain && IsArmOrHead(card);
+            return base.CharacterCard.IsFlipped && Game.ActiveTurnTaker.IsVillain && IsArmOrHead(card);
 		}
-
-
-
-	}
+    }
 }
