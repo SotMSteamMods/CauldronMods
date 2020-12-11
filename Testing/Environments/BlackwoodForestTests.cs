@@ -597,7 +597,7 @@ namespace CauldronTests
             // Assert
 
             AssertHitPoints(mirrorWraith, 5); // Mirror Wraith now has max HP of BB
-            AssertCardHasKeyword(mirrorWraith, "minion", true);
+            AssertCardHasKeyword(mirrorWraith, "minion", false);
             QuickHPCheck(-5, -5); // Legacy hit for 5 by real BB, Ra then hit for 5 from Mirror Wraith (BB game text)
         }
 
@@ -628,7 +628,7 @@ namespace CauldronTests
             // Assert
 
             AssertHitPoints(mirrorWraith, 2); // Mirror Wraith now has max HP of Raptor Bot
-            AssertCardHasKeyword(mirrorWraith, "mechanical golem", true);
+            AssertCardHasKeyword(mirrorWraith, "mechanical golem", false);
             QuickHPCheck(-8); // Raptor 1st hit (2), 2nd hit (3 Mirror wraith clone boosting it by 1), 3rd hit by MW for 3
         }
 
@@ -660,7 +660,7 @@ namespace CauldronTests
             // Assert
 
             AssertHitPoints(mirrorWraith, 8); // Mirror Wraith now has max HP of Champion Bot
-            AssertCardHasKeyword(mirrorWraith, "mechanical golem", true);
+            AssertCardHasKeyword(mirrorWraith, "mechanical golem", false);
 
             /* Raptor
              * 6 Damage dealt
@@ -703,22 +703,21 @@ namespace CauldronTests
             GoToPlayCardPhase(unity);
             PlayCard(modularWorkbench);
             GoToDrawCardPhase(unity);
-            AssertPhaseActionCount(3); // Normal draw + 1 from swiftbot + 1 from mirror wraith
+            
+            //AssertPhaseActionCount(3); // Normal draw + 1 from swiftbot + 1 from mirror wraith
             GoToEndOfTurn(unity);
 
             // Assert
             AssertHitPoints(mirrorWraith, 6); // Mirror Wraith now has max HP of Swift Bot
-            AssertCardHasKeyword(mirrorWraith, "mechanical golem", true);
+            AssertCardHasKeyword(mirrorWraith, "mechanical golem", false);
 
         }
 
         [Test]
-        [Ignore("Currently inaccurate due to engine")]
         public void TestMirrorWraithEligibleTargets_CloneProletariatClone()
         {
             // Arrange
             SetupGameController("ProletariatTeam", "Ra", "FrightTrainTeam", "Legacy", DeckNamespace);
-
 
             Card regroupAndRecover = GetCard("RegroupAndRecover");
 
@@ -730,18 +729,51 @@ namespace CauldronTests
             GoToPlayCardPhase(BlackwoodForest);
             Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
             PlayCard(mirrorWraith);
+            AssertCardHasKeyword(mirrorWraith, "clone", false);
 
             GoToStartOfTurn(proleTeam);
             PlayCard(regroupAndRecover);
 
             // Assert
-            AssertCardHasKeyword(mirrorWraith, "clone", false);
             AssertInTrash(mirrorWraith);
         }
 
         [Test]
-        [Ignore("Currently inaccurate due to engine")]
         public void TestMirrorWraithEligibleTargets_CloneAkashSeed()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "AkashThriya", DeckNamespace);
+
+            Card healingPollen = GetCard("HealingPollen");
+            Card healingPollen2 = GetCard("HealingPollen", 1);
+            PutInHand(thriya, healingPollen);
+            PutInHand(thriya, healingPollen2);
+
+            StartGame();
+            DecisionLowestHP = healingPollen;
+
+            Card verdantExplosion = GetCard("VerdantExplosion");
+
+            GoToPlayCardPhase(thriya);
+            var p1 = PlayCardFromHand(thriya, "HealingPollen");
+            var p2 = PlayCardFromHand(thriya, "HealingPollen");
+
+            GoToStartOfTurn(BlackwoodForest);
+            Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
+            PlayCard(mirrorWraith);
+            AssertCardHasKeyword(mirrorWraith, "primordial seed", false);
+
+            GoToPlayCardPhase(thriya);
+
+            PlayCard(verdantExplosion);
+            AssertInTrash(mirrorWraith);
+            AssertInTrash(p1);
+            AssertInTrash(p2);
+        }
+
+
+        [Test]
+        public void TestMirrorWraithEligibleTargets_CloneAcrossReload()
         {
             // Arrange
             SetupGameController("BaronBlade", "Ra", "Legacy", "AkashThriya", DeckNamespace);
@@ -763,14 +795,18 @@ namespace CauldronTests
             GoToStartOfTurn(BlackwoodForest);
             Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
             PlayCard(mirrorWraith);
+            var cc = FindCardController(mirrorWraith);
+            var sss = cc.GetSpecialStrings(false, true).Select(ss => ss.GeneratedString()).ToArray();
 
             GoToPlayCardPhase(thriya);
-            PlayCard(verdantExplosion);
 
-            // Assert
-            AssertCardHasKeyword(mirrorWraith, "primordial seed", false);
+            var cards = FindCardsWhere(c => c.IsPrimordialSeed && c.IsInPlay).ToList();
+            Assert.AreEqual(3, cards.Count, "There should be 3 primodialSeeds in play, 2 real, 1 mirror wraith");
 
+            SaveAndLoad();
 
+            cards = FindCardsWhere(c => c.IsPrimordialSeed && c.IsInPlay).ToList();
+            Assert.AreEqual(3, cards.Count, "There should be 3 primodialSeeds in play, 2 real, 1 mirror wraith");
         }
 
         [Test]
