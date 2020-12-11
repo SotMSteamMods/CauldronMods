@@ -279,7 +279,6 @@ namespace CauldronTests
         {
             // Arrange
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
-
             StartGame();
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
