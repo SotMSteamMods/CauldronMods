@@ -345,5 +345,131 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestWardenOfChaosNecrooLoads()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/WardenOfChaosNecroCharacter", "Megalopolis");
+
+            Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(necro);
+            Assert.IsInstanceOf(typeof(WardenOfChaosNecroCharacterCardController), necro.CharacterCardController);
+
+            Assert.AreEqual(25, necro.CharacterCard.HitPoints);
+        }
+
+        [Test()]
+        public void TestWardenOfChaosNecroInnatePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/WardenOfChaosNecroCharacter", "Megalopolis");
+            StartGame();
+
+            GoToStartOfTurn(necro);
+            Card abomination = PutOnDeck("Abomination");
+            AssertInDeck(abomination);
+            //Put the top card of your deck into play.
+            GoToUsePowerPhase(necro);
+            UsePower(necro);
+            AssertInPlayArea(necro, abomination);
+
+        }
+
+        [Test()]
+        public void TestWardenOfChaosNecroInnatePower_NoDeck()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/WardenOfChaosNecroCharacter", "Megalopolis");
+            StartGame();
+
+            GoToStartOfTurn(necro);
+            DiscardTopCards(necro.TurnTaker.Deck, 36);
+            //Put the top card of your deck into play.
+            GoToUsePowerPhase(necro);
+            QuickShuffleStorage(necro);
+            UsePower(necro);
+            QuickShuffleCheck(0);
+            
+        }
+
+        [Test()]
+        public void TestWardenOfChaosNecroIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/WardenOfChaosNecroCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+            AssertIncapacitated(necro);
+            GoToUseIncapacitatedAbilityPhase(necro);
+
+            IEnumerable<Card> toTrash = FindCardsWhere((Card c) => legacy.TurnTaker.Deck.HasCard(c) && (c.IsOngoing || IsEquipment(c))).Take(5);
+            PutInTrash(toTrash);
+            //One hero may put a random card from their trash into play.
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            AssertNumberOfCardsInTrash(legacy, 5);
+            AssertNumberOfCardsInPlay(legacy, 1);
+            UseIncapacitatedAbility(necro, 0);
+            AssertNumberOfCardsInTrash(legacy, 4);
+            AssertNumberOfCardsInPlay(legacy, 2);
+            AssertNumberOfCardsInRevealed(legacy, 0);
+        }
+
+        [Test()]
+        public void TestWardenOfChaosNecroIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/WardenOfChaosNecroCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+            AssertIncapacitated(necro);
+
+            Card field = PlayCard("LivingForceField");
+            Card fire = PlayCard("ImbuedFire");
+
+            //Destroy 1 ongoing card
+            GoToUseIncapacitatedAbilityPhase(necro);
+            DecisionSelectCard = field;
+            AssertInPlayArea(baron, field);
+            AssertInPlayArea(ra, fire);
+            UseIncapacitatedAbility(necro, 1);
+            AssertInTrash(field);
+            AssertInPlayArea(ra, fire);
+        }
+
+        [Test()]
+        public void TestWardenOfChaosNecroIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/WardenOfChaosNecroCharacter", "Legacy", "Unity", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+            AssertIncapacitated(necro);
+
+            Card raptor = PlayCard("RaptorBot");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+
+            //The next time a target is destroyed, 1 player may draw 2 cards.
+            GoToUseIncapacitatedAbilityPhase(necro);
+            UseIncapacitatedAbility(necro, 2);
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            QuickHandStorage(legacy);
+            DealDamage(baron, raptor, 50, DamageType.Melee);
+            QuickHandCheck(2);
+
+            //only 1 use
+            PlayCard(raptor);
+            QuickHandStorage(legacy);
+            DealDamage(baron, raptor, 50, DamageType.Melee);
+            QuickHandCheck(0);
+
+            //check villain targets
+            UseIncapacitatedAbility(necro, 2);
+            QuickHandStorage(legacy);
+            DealDamage(baron, mdp, 50, DamageType.Melee);
+            QuickHandCheck(2);
+
+            //only 1 use
+            PlayCard(mdp);
+            QuickHandStorage(legacy);
+            DealDamage(baron, mdp, 50, DamageType.Melee);
+            QuickHandCheck(0);
+
+        }
     }
 }

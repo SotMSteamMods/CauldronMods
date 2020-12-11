@@ -395,7 +395,7 @@
             "hitpointColor": "8F859A",
             "character": true,
             "powers": [
-                "Put the top 2 cards of your deck into play."
+                "Put the top card of your deck into play."
             ],
             "icons": [
                 "HasPower",
