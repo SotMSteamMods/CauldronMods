@@ -17,7 +17,7 @@ namespace Cauldron.MagnificentMara
         {
             //"One player may return one of their non-character cards in play to their hand.",
             //"If they do, they may select a card in their trash that shares a keyword with that card and put it into play."
-            var validHeroes = new SelectTurnTakerDecision(GameController, DecisionMaker, GameController.AllHeroControllers.Select((HeroTurnTakerController httc) => httc.TurnTaker), SelectionType.TurnTaker, isOptional: true, cardSource: GetCardSource());
+            var validHeroes = new SelectTurnTakerDecision(GameController, DecisionMaker, GameController.AllHeroControllers.Select((HeroTurnTakerController httc) => httc.TurnTaker), SelectionType.TurnTaker, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectTurnTakerAndDoAction(validHeroes, ReturnCardAndRescueMatching);
             if (UseUnityCoroutines)
             {
