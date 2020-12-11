@@ -973,7 +973,40 @@ namespace CauldronTests
             // Played all 3 cards underneath, The Black Tree should now have destroyed itself
             AssertInTrash(BlackwoodForest, theBlackTree);
         }
+        [Test]
+        public void TestMirrorWraithCopiesImpeccablePompadour()
+        {
+            SetupGameController("BaronBladeTeam", "Ra", "GreazerTeam", "TheWraith", "FrictionTeam", "Haka", "Cauldron.BlackwoodForest");
+            StartGame();
 
+            DestroyCards((Card c) => c.IsVillain && !c.IsCharacter);
 
+            Card hair = GetCardInPlay("ImpeccablePompadour");
+
+            GoToStartOfTurn(ra);
+
+            QuickHPStorage(ra, greazerTeam);
+            DealDamage(ra, hair, 1, DamageType.Melee);
+            QuickHPCheck(-2, 0);
+
+            Card mirror = PlayCard("MirrorWraith");
+            AssertMaximumHitPoints(mirror, 4);
+
+            //inherits retaliation damage
+            DealDamage(ra, mirror, 1, DamageType.Melee);
+            QuickHPCheck(-2, 0);
+
+            //inherits indestructibility
+            DealDamage(haka, hair, 5, DamageType.Melee);
+            DealDamage(haka, mirror, 5, DamageType.Melee);
+            AssertIsInPlay(hair);
+            AssertIsInPlay(mirror);
+
+            //inherits geazer self-damage
+            GoToStartOfTurn(greazerTeam);
+            QuickHPCheck(0, -6);
+            //3 for real pompadour, 3, for the wraith
+            Assert.AreEqual(4, mirror.HitPoints);
+        }
     }
 }
