@@ -163,21 +163,41 @@ namespace CauldronTests
         [Test()]
         public void TestNonCharacterCardHeroCantMoveSingleMindedPursuit()
         {
-            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "CaptainCosmic", "Megalopolis");
             Card pursuit = GetCard("SingleMindedPursuit");
             Card stalker = GetCard("StalkerAug");
             Card fire = GetCard("FireAug");
             PutOnDeck(swarm, new Card[] { stalker, fire });
             AddCannotDealNextDamageTrigger(swarm, swarm.CharacterCard);
-            Card swift = PlayCard("SwiftBot");
+            Card crest = PlayCard("CosmicCrest");
             StartGame();
 
             //Whenever a pursued hero deals damage to a target other than {SwarmEater}, you may move Single-Minded Pursuit next to that target.
             //Only Hero Character Cards can move it
             DecisionYesNo = true;
-            AssertNextToCard(pursuit, swift);
-            DealDamage(swift, stalker, 2, DamageType.Melee);
-            AssertNextToCard(pursuit, swift);
+            AssertNextToCard(pursuit, crest);
+            DealDamage(crest, stalker, 2, DamageType.Melee);
+            AssertNextToCard(pursuit, crest);
+        }
+
+        [Test]
+        public void TestNonCharacterCardHeroCantMoveSingleMindedPursuit_Seed1342227959()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "CaptainCosmic", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire });
+            AddCannotDealNextDamageTrigger(swarm, swarm.CharacterCard);
+            Card crest = PlayCard("CosmicCrest");
+            StartGame();
+
+            //Whenever a pursued hero deals damage to a target other than {SwarmEater}, you may move Single-Minded Pursuit next to that target.
+            //Only Hero Character Cards can move it
+            DecisionYesNo = true;
+            AssertNextToCard(pursuit, crest);
+            DealDamage(crest, stalker, 2, DamageType.Melee);
+            AssertNextToCard(pursuit, crest);
         }
 
         [Test()]
