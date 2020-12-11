@@ -361,13 +361,14 @@ namespace CauldronTests
             DecisionSelectCard = crystal;
             Card topOfDeck = GetTopCardOfDeck(baron);
             QuickHandStorage(mara);
-
+            DecisionYesNo = true;
             PlayCard(glimpse);
 
             AssertOnTopOfDeck(topOfDeck);
             AssertInTrash(glimpse);
             AssertIsInPlay(crystal);
             QuickHandCheck(-1);
+            AssertNumberOfCardsInRevealed(baron, 0);
         }
         [Test]
         public void TestHandIsFasterThanTheEye()
