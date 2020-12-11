@@ -229,7 +229,7 @@ namespace CauldronTests
             // Act
             GoToPlayCardPhase(Cypher);
             PlayCard(backupPlan);
-            DecisionSelectCards = new[] {muscleAug};
+            DecisionSelectCards = new[] {muscleAug, Cypher.CharacterCard};
             PlayCard(bladeBattallon);
 
             // Assert

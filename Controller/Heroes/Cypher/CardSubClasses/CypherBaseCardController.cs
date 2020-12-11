@@ -61,6 +61,15 @@ namespace Cauldron.Cypher
             return new LinqCardCriteria(IsAugmented);
         }
 
+        protected IEnumerator MoveAugment(Card card)
+        {
+            SelectCardDecision scd = new SelectCardDecision(GameController, DecisionMaker,
+                SelectionType.MoveCardNextToCard, GetAugmentsInPlay(), true, cardSource: GetCardSource());
+            scd.SelectedCard = card;
+
+            return MoveAugment(scd);
+        }
+
         protected IEnumerator MoveAugment(SelectCardDecision scd)
         {
             if (scd.SelectedCard == null)

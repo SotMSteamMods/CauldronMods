@@ -64,7 +64,7 @@ namespace Cauldron.Cypher
 
                 IEnumerable<Function> FunctionsBasedOnCard(Card c) => new[]
                 {
-                    new Function(this.HeroTurnTakerController, $"Move {c.Title}", SelectionType.MoveCardNextToCard, () => MoveAugment(scd) )
+                    new Function(this.HeroTurnTakerController, $"Move {c.Title}", SelectionType.MoveCardNextToCard, () => MoveAugment(c) )
                 };
 
                 routine = base.GameController.SelectCardsAndPerformFunction(this.HeroTurnTakerController,
