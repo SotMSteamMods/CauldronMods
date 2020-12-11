@@ -209,6 +209,23 @@ namespace CauldronTests
             Assert.AreEqual(knight.TurnTaker.InTheBox, oldKnight.Location);
         }
         [Test]
+        public void TestFairKnightPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/FairTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            Card helm = PlayCard("PlateHelm");
+            Card mail = PlayCard("PlateMail");
+
+            SetHitPoints(new Card[] { knight.CharacterCard, helm, mail, wraith.CharacterCard }, 2);
+            QuickHPStorage(knight.CharacterCard, helm, mail, wraith.CharacterCard);
+
+            AssertNoDecision();
+            UsePower(knight);
+            QuickHPCheck(2, 1, 2, 0);
+        }
+        [Test]
         public void TestPastKnightLoads()
         {
             SetupGameController("BaronBlade", "Cauldron.TheKnight/PastTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");

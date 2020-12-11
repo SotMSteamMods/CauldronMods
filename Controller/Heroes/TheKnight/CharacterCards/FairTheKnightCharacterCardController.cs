@@ -15,6 +15,15 @@ namespace Cauldron.TheKnight
         public override IEnumerator UsePower(int index = 0)
         {
             //"{TheKnight} and all her targets regain 2 HP."
+            IEnumerator coroutine = GameController.GainHP(DecisionMaker, (Card c) => c.IsInPlayAndHasGameText && c.IsTarget && c.Owner == this.TurnTaker, 2, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
         public override IEnumerator UseIncapacitatedAbility(int index)
@@ -25,6 +34,7 @@ namespace Cauldron.TheKnight
                 case 0:
                     {
                         //"One player may play a card now.",
+                        coroutine = GameController.SelectHeroToPlayCard(DecisionMaker, cardSource: GetCardSource());
                         yield break;
                     }
                 case 1:
