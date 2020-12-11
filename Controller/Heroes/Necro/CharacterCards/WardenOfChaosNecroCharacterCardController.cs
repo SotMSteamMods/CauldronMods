@@ -65,7 +65,8 @@ namespace Cauldron.Necro
                         {
                             TurnTaker tt = GetSelectedTurnTaker(storedResults);
                             HeroTurnTakerController httc = FindHeroTurnTakerController(tt.ToHero());
-                            coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, tt.Trash, false, true, false, new LinqCardCriteria((Card c) => true), 1, shuffleBeforehand: true);
+                            List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
+                            coroutine = GameController.MakeYesNoCardDecision(httc, SelectionType.PlayCard, base.Card, storedResults: storedYesNoResults, cardSource: GetCardSource());
                             if (base.UseUnityCoroutines)
                             {
                                 yield return base.GameController.StartCoroutine(coroutine);
@@ -74,6 +75,18 @@ namespace Cauldron.Necro
                             {
                                 base.GameController.ExhaustCoroutine(coroutine);
                             }
+                            if (DidPlayerAnswerYes(storedYesNoResults))
+                            {
+                                coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, tt.Trash, false, true, false, new LinqCardCriteria((Card c) => true), 1, shuffleBeforehand: true);
+                                if (base.UseUnityCoroutines)
+                                {
+                                    yield return base.GameController.StartCoroutine(coroutine);
+                                }
+                                else
+                                {
+                                    base.GameController.ExhaustCoroutine(coroutine);
+                                }
+                            }
                         }
 
                         break;
@@ -81,7 +94,7 @@ namespace Cauldron.Necro
                 case 1:
                     {
                         //Destroy 1 ongoing card.
-                        IEnumerator coroutine2 = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsOngoing, "ongoing"), optional: false, null, null, GetCardSource());
+                        IEnumerator coroutine2 = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsOngoing, "ongoing"), optional: false, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine2);
@@ -95,7 +108,7 @@ namespace Cauldron.Necro
                 case 2:
                     {
                         //The next time a target is destroyed, 1 player may draw 2 cards.
-                        WhenCardIsDestroyedStatusEffect effect = new WhenCardIsDestroyedStatusEffect(base.Card, "DrawTwoCardsResponse", "1 player may draw 2 cards", new TriggerType[] { TriggerType.DrawCard }, DecisionMaker.HeroTurnTaker, base.Card);
+                        WhenCardIsDestroyedStatusEffect effect = new WhenCardIsDestroyedStatusEffect(base.Card, "DrawTwoCardsResponse", "The next time a target is destroyed, 1 player may draw 2 cards", new TriggerType[] { TriggerType.DrawCard }, DecisionMaker.HeroTurnTaker, base.Card);
                         effect.NumberOfUses = 1;
                         effect.CardDestroyedCriteria.IsTarget = true;
                         IEnumerator coroutine3 = AddStatusEffect(effect);

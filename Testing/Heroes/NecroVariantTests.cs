@@ -346,7 +346,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestWardenOfChaosNecrooLoads()
+        public void TestWardenOfChaosNecroLoads()
         {
             SetupGameController("BaronBlade", "Cauldron.Necro/WardenOfChaosNecroCharacter", "Megalopolis");
 
@@ -403,6 +403,7 @@ namespace CauldronTests
             PutInTrash(toTrash);
             //One hero may put a random card from their trash into play.
             DecisionSelectTurnTaker = legacy.TurnTaker;
+            DecisionYesNo = true;
             AssertNumberOfCardsInTrash(legacy, 5);
             AssertNumberOfCardsInPlay(legacy, 1);
             UseIncapacitatedAbility(necro, 0);
@@ -469,6 +470,122 @@ namespace CauldronTests
             QuickHandStorage(legacy);
             DealDamage(baron, mdp, 50, DamageType.Melee);
             QuickHandCheck(0);
+
+        }
+
+        [Test()]
+        public void TestLastOfTheForgottenOrderNecroLoads()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/LastOfTheForgottenOrderNecroCharacter", "Megalopolis");
+
+            Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(necro);
+            Assert.IsInstanceOf(typeof(LastOfTheForgottenOrderNecroCharacterCardController), necro.CharacterCardController);
+
+            Assert.AreEqual(26, necro.CharacterCard.HitPoints);
+        }
+
+        [Test()]
+        public void TestLastOfTheForgottenOrderNecroInnatePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/LastOfTheForgottenOrderNecroCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            GoToStartOfTurn(necro);
+
+            Card zombie = PlayCard("NecroZombie");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            //The next time an undead target is destroyed, 1 hero deals a target 1 fire damage and draws a card.
+            GoToUsePowerPhase(necro);
+            UsePower(necro);
+
+            DecisionSelectCard = ra.CharacterCard;
+            DecisionSelectTarget = haka.CharacterCard;
+
+            QuickHPStorage(ra, haka);
+            QuickHandStorage(ra, haka);
+            DealDamage(baron, zombie, 50, DamageType.Melee);
+            QuickHPCheck(0, -1);
+            QuickHandCheck(1, 0);
+
+            //check only 1 time
+            PlayCard(zombie);
+            QuickHPUpdate();
+            QuickHandUpdate();
+            DealDamage(baron, zombie, 50, DamageType.Melee);
+            QuickHPCheck(0, 0);
+            QuickHandCheck(0, 0);
+
+            UsePower(necro);
+
+            //only undead targets
+            QuickHPUpdate();
+            QuickHandUpdate();
+            DealDamage(baron, mdp, 50, DamageType.Melee);
+            QuickHPCheck(0, 0);
+            QuickHandCheck(0, 0);
+
+        }
+
+        [Test()]
+        public void TestLastOfTheForgottenOrderNecroIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/LastOfTheForgottenOrderNecroCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+            AssertIncapacitated(necro);
+
+            //One player may draw a card now.
+            GoToUseIncapacitatedAbilityPhase(necro);
+            DecisionSelectTurnTaker = haka.TurnTaker;
+            QuickHandStorage(haka);
+            UseIncapacitatedAbility(necro, 0);
+            QuickHandCheck(1);
+
+        }
+
+        [Test()]
+        public void TestLastOfTheForgottenOrderNecroIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/LastOfTheForgottenOrderNecroCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+            AssertIncapacitated(necro);
+
+            Card police = PlayCard("PoliceBackup");
+            //Destroy an environment card.
+            GoToUseIncapacitatedAbilityPhase(necro);
+            DecisionSelectCard = police;
+            AssertInPlayArea(env, police);
+            UseIncapacitatedAbility(necro, 1);
+            AssertInTrash(police);
+
+        }
+
+        [Test()]
+        public void TestLastOfTheForgottenOrderNecroIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/LastOfTheForgottenOrderNecroCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+            AssertIncapacitated(necro);
+
+            DiscardAllCards(haka);
+            IEnumerable<Card> toHand = FindCardsWhere((Card c) => haka.TurnTaker.Deck.HasCard(c) && (c.IsOngoing || IsEquipment(c)) && !c.IsLimited).Take(4);
+            PutInHand(toHand);
+
+            //One player may play 2 random cards from their hand now.
+            GoToUseIncapacitatedAbilityPhase(necro);
+            DecisionSelectTurnTaker = haka.TurnTaker ;
+            DecisionYesNo = true;
+            AssertNumberOfCardsInHand(haka, 4);
+            AssertNumberOfCardsInPlay(haka, 1);
+            UseIncapacitatedAbility(necro, 2);
+            AssertNumberOfCardsInHand(haka, 2);
+            AssertNumberOfCardsInPlay(haka, 3);
+            AssertNumberOfCardsInRevealed(haka, 0);
 
         }
     }
