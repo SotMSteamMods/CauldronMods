@@ -140,6 +140,7 @@ namespace CauldronTests
 
             DestroyCard(surge);
 
+            AssertInTrash(abra);
             AssertInHand(surge);
             AssertIsInPlay(plating);
         }
@@ -159,7 +160,7 @@ namespace CauldronTests
             DecisionSelectCard = plating;
 
             DestroyCard(plating);
-
+            AssertInTrash(abra);
             AssertIsInPlay(plating);
         }
         [Test]
@@ -360,13 +361,14 @@ namespace CauldronTests
             DecisionSelectCard = crystal;
             Card topOfDeck = GetTopCardOfDeck(baron);
             QuickHandStorage(mara);
-
+            DecisionYesNo = true;
             PlayCard(glimpse);
 
             AssertOnTopOfDeck(topOfDeck);
             AssertInTrash(glimpse);
             AssertIsInPlay(crystal);
             QuickHandCheck(-1);
+            AssertNumberOfCardsInRevealed(baron, 0);
         }
         [Test]
         public void TestHandIsFasterThanTheEye()
@@ -681,6 +683,38 @@ namespace CauldronTests
 
             DestroyCard(charge);
             AssertIsInPlay(charge);
+            AssertInTrash(enhance);
+        }
+
+        [Test]
+        public void TestMysticalEnhancementDestroyInsteadResponse_OnCharacter_LessThan0()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            DecisionSelectCard = legacy.CharacterCard;
+
+            Card enhance = PlayCard("MysticalEnhancement");
+
+            DealDamage(baron, legacy, 50, DamageType.Infernal);
+            AssertIncapacitated(legacy);
+            AssertInTrash(enhance);
+        }
+
+        [Test]
+        public void TestMysticalEnhancementDestroyInsteadResponse_OnCharacter_DestroyedWithEffect()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "Tachyon", "Megalopolis");
+
+            StartGame();
+            SetHitPoints(legacy, 1);
+            DecisionSelectCard = legacy.CharacterCard;
+
+            Card enhance = PlayCard("MysticalEnhancement");
+
+            PlayCard("SuckerPunch");
+            AssertNotIncapacitatedOrOutOfGame(legacy);
             AssertInTrash(enhance);
         }
         [Test]

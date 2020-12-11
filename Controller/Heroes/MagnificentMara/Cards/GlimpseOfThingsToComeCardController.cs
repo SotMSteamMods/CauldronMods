@@ -77,7 +77,7 @@ namespace Cauldron.MagnificentMara
                 }
             }
             //"You may draw a card.",
-            coroutine = DrawCard();
+            coroutine = DrawCard(this.HeroTurnTaker, optional: true);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

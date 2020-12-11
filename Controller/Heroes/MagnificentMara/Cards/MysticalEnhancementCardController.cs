@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Handelabra;
 
 namespace Cauldron.MagnificentMara
 {
@@ -45,7 +46,7 @@ namespace Cauldron.MagnificentMara
 
         public IEnumerator DestroyThisCardInsteadResponse(DestroyCardAction dc)
         {
-            IEnumerator coroutine = CancelAction(dc);
+            IEnumerator coroutine = GetCardThisCardIsNextTo().HitPoints == null || !(GetCardThisCardIsNextTo().HitPoints.HasValue) || GetCardThisCardIsNextTo().HitPoints.Value > 0 ? CancelAction(dc, showOutput: true, cancelFutureRelatedDecisions: true, null, isPreventEffect: true) : GameController.SendMessageAction("The card this is next to has less than 0 HP! We can't save it!", Priority.Medium, GetCardSource(), showCardSource: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
