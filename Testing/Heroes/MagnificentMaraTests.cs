@@ -651,6 +651,38 @@ namespace CauldronTests
             AssertIsInPlay(charge);
             AssertInTrash(enhance);
         }
+
+        [Test]
+        public void TestMysticalEnhancementDestroyInsteadResponse_OnCharacter_LessThan0()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            DecisionSelectCard = legacy.CharacterCard;
+
+            Card enhance = PlayCard("MysticalEnhancement");
+
+            DealDamage(baron, legacy, 50, DamageType.Infernal);
+            AssertIncapacitated(legacy);
+            AssertInTrash(enhance);
+        }
+
+        [Test]
+        public void TestMysticalEnhancementDestroyInsteadResponse_OnCharacter_DestroyedWithEffect()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "Tachyon", "Megalopolis");
+
+            StartGame();
+            SetHitPoints(legacy, 1);
+            DecisionSelectCard = legacy.CharacterCard;
+
+            Card enhance = PlayCard("MysticalEnhancement");
+
+            PlayCard("SuckerPunch");
+            AssertNotIncapacitatedOrOutOfGame(legacy);
+            AssertInTrash(enhance);
+        }
         [Test]
         public void TestPostHypnoticCuePower()
         {
