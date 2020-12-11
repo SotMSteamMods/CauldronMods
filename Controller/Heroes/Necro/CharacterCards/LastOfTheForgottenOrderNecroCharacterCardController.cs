@@ -24,7 +24,7 @@ namespace Cauldron.Necro
             };
 
             //The next time an undead target is destroyed, 1 hero deals a target 1 fire damage and draws a card.
-            WhenCardIsDestroyedStatusEffect effect = new WhenCardIsDestroyedStatusEffect(base.Card, "DealDamageAndDrawResponse", "The next time an undead target is destroyed, 1 hero deals a target 1 fire damage and draws a card", new TriggerType[] { TriggerType.DealDamage, TriggerType.DrawCard }, DecisionMaker.HeroTurnTaker, base.Card, powerNumerals) ;
+            WhenCardIsDestroyedStatusEffect effect = new WhenCardIsDestroyedStatusEffect(base.Card, "DealDamageAndDrawResponse", "The next time an undead target is destroyed, 1 hero deals a target 1 fire damage and draws a card", new TriggerType[] { TriggerType.DealDamage, TriggerType.DrawCard }, DecisionMaker.HeroTurnTaker, base.Card, powerNumerals);
             effect.NumberOfUses = 1;
             effect.CardDestroyedCriteria.IsTarget = true;
             effect.CardDestroyedCriteria.HasAnyOfTheseKeywords = new List<string>() { "undead" };
@@ -47,7 +47,7 @@ namespace Cauldron.Necro
                 case 0:
                     {
                         //One player may draw a card now.
-                        IEnumerator coroutine = GameController.SelectHeroToDrawCard(DecisionMaker);
+                        IEnumerator coroutine = GameController.SelectHeroToDrawCard(DecisionMaker, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -61,7 +61,10 @@ namespace Cauldron.Necro
                 case 1:
                     {
                         //Destroy an environment card.
-                        IEnumerator coroutine2 = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsEnvironment, "environment"), optional: false, cardSource: GetCardSource());
+                        IEnumerator coroutine2 = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController,
+                            new LinqCardCriteria((Card c) => c.IsEnvironment && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "environment"),
+                            optional: false,
+                            cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine2);
@@ -90,7 +93,7 @@ namespace Cauldron.Necro
                             TurnTaker tt = GetSelectedTurnTaker(storedResults);
                             HeroTurnTakerController httc = FindHeroTurnTakerController(tt.ToHero());
                             List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
-                            coroutine3 = GameController.MakeYesNoCardDecision(httc, SelectionType.PlayCard, base.Card,storedResults: storedYesNoResults, cardSource: GetCardSource());
+                            coroutine3 = GameController.MakeYesNoCardDecision(httc, SelectionType.PlayCard, base.Card, storedResults: storedYesNoResults, cardSource: GetCardSource());
                             if (base.UseUnityCoroutines)
                             {
                                 yield return base.GameController.StartCoroutine(coroutine3);
@@ -121,24 +124,17 @@ namespace Cauldron.Necro
 
         public IEnumerator DealDamageAndDrawResponse(DestroyCardAction dca, HeroTurnTaker htt, WhenCardIsDestroyedStatusEffect effect, int[] powerNumerals = null)
         {
-            int? target = null;
-            int? amount = null;
-            if (powerNumerals != null)
-            {
-                target = powerNumerals.ElementAt(0);
-                amount = powerNumerals.ElementAt(1);
-            }
-            if (!target.HasValue || !amount.HasValue)
-            {
-                target = 1;
-                amount = 1;
-            }
+            int target = powerNumerals?[0] ?? 1;
+            int amount = powerNumerals?[1] ?? 1;
+
             if (dca.WasCardDestroyed)
             {
                 //1 hero deals a target 1 fire damage and draws a card.
-
                 List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.CardToDealDamage, new LinqCardCriteria((Card c) => c.IsInPlay && c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, "hero character", useCardsSuffix: false), storedResults,false, cardSource: GetCardSource());
+                IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.CardToDealDamage,
+                    new LinqCardCriteria((Card c) => c.IsInPlay && c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "hero character", useCardsSuffix: false),
+                    storedResults, false,
+                    cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -151,7 +147,7 @@ namespace Cauldron.Necro
                 if (DidSelectCard(storedResults))
                 {
                     Card selectedCard = GetSelectedCard(storedResults);
-                    coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, selectedCard), amount.Value, DamageType.Fire, target, optional: false, target, cardSource: GetCardSource());
+                    coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, selectedCard), amount, DamageType.Fire, target, optional: false, target, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
