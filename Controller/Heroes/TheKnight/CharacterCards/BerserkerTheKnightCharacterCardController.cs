@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Cauldron.TheKnight
 {
-    public class BerzerkerTheKnightCharacterCardController : TheKnightUtilityCharacterCardController
+    public class BerserkerTheKnightCharacterCardController : TheKnightUtilityCharacterCardController
     {
-        public BerzerkerTheKnightCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public BerserkerTheKnightCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
 

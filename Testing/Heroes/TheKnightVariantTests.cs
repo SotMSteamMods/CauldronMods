@@ -31,14 +31,14 @@ namespace CauldronTests
 
 
         [Test]
-        public void TestBerzerkerKnightLoads()
+        public void TestBerserkerKnightLoads()
         {
-            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerzerkerTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerserkerTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
 
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
 
             Assert.IsNotNull(knight);
-            Assert.IsInstanceOf(typeof(BerzerkerTheKnightCharacterCardController), knight.CharacterCardController);
+            Assert.IsInstanceOf(typeof(BerserkerTheKnightCharacterCardController), knight.CharacterCardController);
 
             Assert.AreEqual(27, knight.CharacterCard.HitPoints);
 
@@ -47,9 +47,9 @@ namespace CauldronTests
             Assert.AreEqual(knight.TurnTaker.InTheBox, oldKnight.Location);
         }
         [Test]
-        public void TestBerzerkerKnightPowerSimple()
+        public void TestBerserkerKnightPowerSimple()
         {
-            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerzerkerTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerserkerTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
             StartGame();
             DestroyCard("MobileDefensePlatform");
 
@@ -60,9 +60,9 @@ namespace CauldronTests
             AssertInTrash(mail);
         }
         [Test]
-        public void TestBerzerkerKnightPowerNoArmorToDestroy()
+        public void TestBerserkerKnightPowerNoArmorToDestroy()
         {
-            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerzerkerTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerserkerTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
             StartGame();
             DestroyCard("MobileDefensePlatform");
 
@@ -72,9 +72,9 @@ namespace CauldronTests
             QuickHPCheck(-0, 0, 0);
         }
         [Test]
-        public void TestBerzerkerKnightPowerDamageVariesWithArmorHP()
+        public void TestBerserkerKnightPowerDamageVariesWithArmorHP()
         {
-            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerzerkerTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerserkerTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
             StartGame();
             DestroyCard("MobileDefensePlatform");
 
@@ -89,9 +89,9 @@ namespace CauldronTests
             QuickHPCheck(-2, 0, 0);
         }
         [Test]
-        public void TestBerzerkerKnightPowerCanBorrowAnimatedEquipment()
+        public void TestBerserkerKnightPowerCanBorrowAnimatedEquipment()
         {
-            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerzerkerTheKnightCharacter", "Ra", "TheWraith", "RealmOfDiscord");
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerserkerTheKnightCharacter", "Ra", "TheWraith", "RealmOfDiscord");
             StartGame();
             DestroyCard("MobileDefensePlatform");
 
@@ -104,9 +104,9 @@ namespace CauldronTests
             AssertInTrash(bolt);
         }
         [Test]
-        public void TestBerzerkerKnightPowerWhenIndestructible()
+        public void TestBerserkerKnightPowerWhenIndestructible()
         {
-            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerzerkerTheKnightCharacter", "Ra", "TheWraith", "TimeCataclysm");
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerserkerTheKnightCharacter", "Ra", "TheWraith", "TimeCataclysm");
             StartGame();
             DestroyCard("MobileDefensePlatform");
 
@@ -119,9 +119,9 @@ namespace CauldronTests
             AssertIsInPlay(helm);
         }
         [Test]
-        public void TestBerzerkerKnightPowerWhenDestroyReplaced()
+        public void TestBerserkerKnightPowerWhenDestroyReplaced()
         {
-            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerzerkerTheKnightCharacter", "ChronoRanger", "TheWraith", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerserkerTheKnightCharacter", "ChronoRanger", "TheWraith", "Megalopolis");
             StartGame();
             DestroyCard("MobileDefensePlatform");
 
