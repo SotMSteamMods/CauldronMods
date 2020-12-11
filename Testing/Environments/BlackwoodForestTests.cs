@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Collections.Generic;
 
 using Cauldron.BlackwoodForest;
 using Handelabra.Sentinels.Engine.Controller;
@@ -233,7 +234,7 @@ namespace CauldronTests
             DealDamage(baron, ra, 3, DamageType.Toxic); // Ra is immune
             DealDamage(baron, mdp, 3, DamageType.Toxic); // MDP is immune
 
-            AssertCardSpecialString(denseBrambles, 0, $"{denseBrambles.Title} is currently making Ra, Mobile Defense Platform immune to damage");
+            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra.");
 
             GoToStartOfTurn(BlackwoodForest); // Dense Brambles is destroyed
 
@@ -269,7 +270,7 @@ namespace CauldronTests
             DealDamage(baron, ra, 3, DamageType.Toxic); // Ra is immune
 
             // Will only show Ra as immune as MDP hasn't been dealt damage yet to trigger the immunity
-            AssertCardSpecialString(denseBrambles, 0, $"{denseBrambles.Title} is currently making Ra immune to damage");
+            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
             
             GoToStartOfTurn(BlackwoodForest); // Dense Brambles is destroyed
 
@@ -356,6 +357,9 @@ namespace CauldronTests
             PutIntoPlay(dangerSense.Identifier);
 
             DecisionSelectCard = legacyRing;
+
+            //pick a card that definitely won't give the players another SelectCardDecision
+            PutOnDeck("DenseBrambles");
 
             // Act
             PutIntoPlay(TheHoundCardController.Identifier);
@@ -617,8 +621,10 @@ namespace CauldronTests
             Card modularWorkbench = GetCard("ModularWorkbench");
 
             // Act
-            GoToPlayCardPhase(unity);
+            //Can't play Swift Bot during Unity's play phase, if it happens to end up in hand.
             PlayCard(swiftBot);
+
+            GoToPlayCardPhaseAndPlayCard(unity, "ConstructionPylon");
             GoToDrawCardPhase(unity);
 
             AssertPhaseActionCount(2); // Normal draw + 1 from swiftbot
@@ -829,7 +835,7 @@ namespace CauldronTests
             QuickHPStorage(ra, legacy);
             QuickHandStorage(ra, legacy);
 
-            DecisionsYesNo = new[] { false, true };
+            DecisionSelectFunctions = new int?[] { 1, 0 };
 
             // Act
             Card desolation = GetCard(DesolationCardController.Identifier);

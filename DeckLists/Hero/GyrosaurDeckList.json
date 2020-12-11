@@ -436,7 +436,7 @@
             "hitpoints": 2
         }
     ],
-    "promoCards": [
+    "notPromoCards": [
         {
             "identifier": "GyrosaurCharacter",
             "promoIdentifier": "SpeedDemonGyrosaurCharacter",

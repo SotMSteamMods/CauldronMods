@@ -59,7 +59,7 @@ namespace Cauldron.DocHavoc
 
             // Villain targets gain 2 HP
             IEnumerator gainHpRoutine = this.GameController.GainHP(this.HeroTurnTakerController,
-                (Func<Card, bool>)(c => c.IsVillainTarget), HpGain,
+                (Func<Card, bool>)(c => IsVillainTarget(c)), HpGain,
                 cardSource: this.GetCardSource());
 
             if (this.UseUnityCoroutines)

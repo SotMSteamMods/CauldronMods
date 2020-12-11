@@ -15,7 +15,7 @@ namespace Cauldron.StSimeonsCatacombs
         public override void AddTriggers()
         {
             //Reduce damage dealt to villain targets by 1.
-            AddReduceDamageTrigger((Card c) => c.IsVillainTarget, 1);
+            AddReduceDamageTrigger((Card c) => IsVillainTarget(c), 1);
 
             base.AddTriggers();
         }

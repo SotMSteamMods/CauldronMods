@@ -19,7 +19,7 @@ namespace Cauldron.Gray
             //Increase damage dealt by environment cards by 1.
             base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.IsEnvironmentCard, 1);
             //Whenever a villain target would be dealt damage by an environment card, redirect that damage to the hero target with the highest HP.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.IsEnvironmentSource && action.Target.IsVillainTarget, new Func<DealDamageAction, IEnumerator>(this.RedirectResponse), TriggerType.RedirectDamage, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.IsEnvironmentSource && IsVillainTarget(action.Target), new Func<DealDamageAction, IEnumerator>(this.RedirectResponse), TriggerType.RedirectDamage, TriggerTiming.Before);
             //At the end of the villain turn, play the top card of the environment deck.
             base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, base.PlayTheTopCardOfTheEnvironmentDeckResponse, TriggerType.PlayCard);
         }

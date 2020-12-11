@@ -377,8 +377,8 @@ namespace CauldronTests
 
             StartGame();
 
-            Card battalion = PlayCard("BladeBattalion");
             Card hand = PlayCard("HandIsFasterThanTheEye");
+            Card battalion = PlayCard("BladeBattalion");
 
             GoToStartOfTurn(mara);
 
@@ -392,9 +392,9 @@ namespace CauldronTests
 
             StartGame();
 
-            Card hand = PlayCard("HandIsFasterThanTheEye");
             Card battalion1 = PlayCard("BladeBattalion");
             Card battalion2 = PlayCard("BladeBattalion");
+            Card hand = PlayCard("HandIsFasterThanTheEye");
 
             GoToStartOfTurn(mara);
 
@@ -429,12 +429,15 @@ namespace CauldronTests
             Card battalion = PlayCard("BladeBattalion");
             Card turret = PlayCard("PoweredRemoteTurret");
 
-            GoToStartOfTurn(mara);
+            QuickHPStorage(mara, legacy, scholar);
 
+            GoToStartOfTurn(mara);
             AssertInTrash(battalion);
             AssertInTrash(faster);
             AssertIsInPlay(turret);
+            //QuickHPCheck(-3, -3, -3);
 
+            GoToPlayCardPhase(baron);
             PlayCard(faster);
             PlayCard(battalion);
             GoToStartOfTurn(mara);
@@ -457,6 +460,37 @@ namespace CauldronTests
             GoToStartOfTurn(dawn);
 
             AssertInTrash(eclipse);
+        }
+        [Test]
+        public void TestHandIsFasterThanTheEyeWhenPlayedMidEndPhase()
+        {
+            SetupGameController("Apostate", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+
+            StartGame();
+            Card imp = PlayCard("ImpPilferer");
+            Card fiend = PlayCard("FiendishPugilist");
+            Card spirit = PlayCard("RelicSpirit");
+            Card sword = GetCardInPlay("Condemnation");
+
+            SetHitPoints(legacy, 10);
+            SetHitPoints(sword, 5);
+            QuickHPStorage(sword);
+            PlayCard("Abracadabra");
+            Card iron = PlayCard("FleshToIron");
+
+            Card faster = PutInHand("HandIsFasterThanTheEye");
+
+            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { iron, faster };
+            DecisionSelectTurnTaker = mara.TurnTaker;
+
+            GoToEndOfTurn(apostate);
+            //Assert.Ignore("There may be a way to manage this, but it's a difficult problem.");
+
+            QuickHPCheck(1);
+            AssertIsInPlay(imp);
+            AssertInTrash(fiend);
+
         }
         [Test]
         public void TestImprobableEscapeCardDraw()
@@ -536,6 +570,7 @@ namespace CauldronTests
         [Test]
         public void TestMesmerPendant()
         {
+            Assert.Ignore("Mesmer Pendant is non-functional");
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
 
             StartGame();
@@ -546,11 +581,11 @@ namespace CauldronTests
 
             GoToStartOfTurn(mara);
 
-            Assert.Ignore("Mesmer Pendant is non-functional");
         }
         [Test]
         public void TestMesmerPendantNonVillain()
         {
+            Assert.Ignore("Mesmer Pendant is non-functional");
             SetupGameController("AkashBhuta", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
 
             StartGame();
@@ -561,11 +596,11 @@ namespace CauldronTests
 
             GoToStartOfTurn(mara);
 
-            Assert.Ignore("Mesmer Pendant is non-functional");
         }
         [Test]
         public void TestMesmerPendantCryoBot()
         {
+            Assert.Ignore("MesmerPendant is non-functional");
             SetupGameController("AkashBhuta", "Cauldron.MagnificentMara", "Legacy", "Unity", "RealmOfDiscord");
 
             StartGame();
@@ -576,7 +611,6 @@ namespace CauldronTests
             Card bot = PlayCard("CryoBot");
             PlayCard("MesmerPendant");
 
-            Assert.Ignore("MesmerPendant is non-functional");
         }
         [Test]
         public void TestMisdirection()
@@ -816,6 +850,68 @@ namespace CauldronTests
 
             AssertIsInPlay(wand);
             AssertInTrash(crystal);
+        }
+        [Test]
+        public void TestBootlegMesmerPendant()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            DestroyCard(MDP);
+            PlayCard("BladeBattalion");
+            PlayCard("BootlegMesmerPendant");
+
+            QuickHPStorage(baron);
+            GoToStartOfTurn(mara);
+            QuickHPCheck(-5);
+        }
+        [Test]
+        public void TestBootlegMesmerPendantOncePer()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            DestroyCard(MDP);
+            Card turret = PlayCard("PoweredRemoteTurret");
+            PlayCard("BootlegMesmerPendant");
+
+            QuickHPStorage(baron.CharacterCard, turret, mara.CharacterCard, legacy.CharacterCard, scholar.CharacterCard);
+            GoToStartOfTurn(mara);
+            QuickHPCheck(-2, -2, 0, 0, -2);
+        }
+        [Test]
+        public void TestBootlegMesmerPendantIndirect()
+        {
+            SetupGameController("Apostate", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            QuickHPStorage(apostate);
+            PlayCard("BootlegMesmerPendant");
+
+            GoToStartOfTurn(mara);
+            QuickHPCheck(-3);
+        }
+        [Test]
+        public void TestBootlegMesmerPendantSwitchesOngoing()
+        {
+            SetupGameController("Apostate", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            DestroyNonCharacterVillainCards();
+
+            Card abra = PlayCard("Abracadabra");
+            Card apoc = PlayCard("Apocalypse");
+            PlayCard("ImpPilferer");
+            QuickHPStorage(apostate);
+            PlayCard("BootlegMesmerPendant");
+
+            GoToStartOfTurn(mara);
+            AssertIsInPlay(abra);
+            AssertInTrash(apoc);
         }
     }
 }

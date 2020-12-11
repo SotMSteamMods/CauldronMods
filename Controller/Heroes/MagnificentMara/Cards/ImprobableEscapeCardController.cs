@@ -15,12 +15,13 @@ namespace Cauldron.MagnificentMara
         public override void AddTriggers()
         {
             //"When a hero character is reduced to 0 or fewer HP, restore them to 2HP, then destroy this card.",
-            //"When this card or any of your ongoing cards are destroyed you may draw a card."
             var heroCharacters = FindCardsWhere(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard));
             foreach (Card hero in heroCharacters)
             {
                 AddWhenHPDropsToZeroOrBelowRestoreHPTriggers(() => hero, () => 2, true, preventDamage: false);
             }
+
+            //"When this card or any of your ongoing cards are destroyed you may draw a card."
             AddTrigger((DestroyCardAction dc) => dc.CardToDestroy != null &&
                                                 dc.CardToDestroy.Card.IsOngoing &&
                                                 dc.CardToDestroy.Card.Owner == TurnTaker &&

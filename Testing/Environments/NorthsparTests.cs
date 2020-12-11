@@ -965,6 +965,9 @@ namespace CauldronTests
             PlayCard("MakeshiftShelter");
             PlayCard("SupplyDepot");
 
+            //stack the deck one deeper so Landing Site's play won't cause another shuffle
+            PutOnDeck("SnowShrieker");
+
             Card landing = PutOnDeck("LandingSite");
             //At the start of the environment turn, search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play, then shuffle the deck and destroy this card.
             DecisionSelectCard = landing;

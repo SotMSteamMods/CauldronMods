@@ -159,7 +159,7 @@ namespace Cauldron.MagnificentMara
                 new Function(deckController, $"Put {cardToMove.Title} back on top of the deck", SelectionType.MoveCardOnDeck, () => GameController.MoveCard(deckController, cardToMove, deckItCameFrom, responsibleTurnTaker: DecisionMaker.TurnTaker, cardSource: GetCardSource())),
                 new Function(deckController, $"Discard {cardToMove.Title}", SelectionType.DiscardCard, () => GameController.MoveCard(deckController, cardToMove, cardToMove.NativeTrash, responsibleTurnTaker: DecisionMaker.TurnTaker, cardSource:GetCardSource()))
             };
-            var selectFunction = new SelectFunctionDecision(GameController, deckController, functions, optional: false, cardSource: GetCardSource());
+            var selectFunction = new SelectFunctionDecision(GameController, deckController, functions, optional: false, associatedCards: new List<Card> { cardToMove }, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectAndPerformFunction(selectFunction, associatedCards: new List<Card> { cardToMove });
             if (UseUnityCoroutines)
             {

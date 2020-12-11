@@ -36,7 +36,7 @@ namespace Cauldron.Vanish
             {
                 var card = scd.SelectedCard;
 
-                var coroutine = GameController.MoveCard(DecisionMaker, card, card.Owner.Deck,
+                var coroutine = GameController.MoveCard(DecisionMaker, card, card.NativeDeck,
                                     showMessage: true,
                                     decisionSources: new IDecision[] { scd },
                                     evenIfIndestructible: false,
