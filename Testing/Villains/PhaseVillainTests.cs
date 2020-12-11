@@ -603,5 +603,29 @@ namespace CauldronTests
             //8 total
             AssertInTrash(prog);
         }
+
+        [Test()]
+        public void TestVaultDoor()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Legacy", "TheScholar", "Parse", "Megalopolis");
+            StartGame();
+
+            DestroyWall();
+            Card door = PlayCard("VaultDoor");
+
+            //{PhaseVillain} is immune to damage.
+            QuickHPStorage(phase);
+            DealDamage(haka, phase, 2, DamageType.Melee);
+            QuickHPCheckZero();
+
+            //When this card would be dealt 2 or less damage, prevent that damage.
+            QuickHPStorage(door);
+            DealDamage(haka, door, 2, DamageType.Melee);
+            QuickHPCheckZero();
+            //more than 2
+            QuickHPStorage(door);
+            DealDamage(haka, door, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+        }
     }
 }
