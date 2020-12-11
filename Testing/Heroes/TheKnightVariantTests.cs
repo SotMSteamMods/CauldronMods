@@ -226,6 +226,57 @@ namespace CauldronTests
             QuickHPCheck(2, 1, 2, 0);
         }
         [Test]
+        public void TestFairKnightIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/FairTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            PutInHand("StunBolt");
+            AssertIncapLetsHeroPlayCard(knight, 0, wraith, "StunBolt");
+        }
+        [Test]
+        public void TestFairKnightIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/FairTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            AssertIncapLetsHeroDrawCard(knight, 1, ra, 1);
+        }
+        [Test]
+        public void TestFairKnightIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/FairTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card police = PlayCard("PoliceBackup");
+
+            QuickHPStorage(baron, ra, wraith);
+
+            UseIncapacitatedAbility(knight, 2);
+            
+            //reduce damage from any environment to hero
+            DealDamage(traffic, ra, 3, DTM);
+            DealDamage(police, wraith, 4, DTM);
+            //not from environment to villain
+            DealDamage(traffic, baron, 1, DTM);
+            QuickHPCheck(-1, -1, -2);
+
+            //not from hero or villain to hero
+            DealDamage(baron, ra, 1, DTM);
+            DealDamage(ra, wraith, 1, DTM);
+
+            QuickHPCheck(0, -1, -1);
+
+            //only until next turn
+            GoToStartOfTurn(knight);
+            DealDamage(traffic, ra, 1, DTM);
+            QuickHPCheck(0, -1, 0);
+        }
+        [Test]
         public void TestPastKnightLoads()
         {
             SetupGameController("BaronBlade", "Cauldron.TheKnight/PastTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");

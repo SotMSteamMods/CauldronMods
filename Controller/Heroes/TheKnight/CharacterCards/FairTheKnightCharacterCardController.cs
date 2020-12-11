@@ -35,16 +35,47 @@ namespace Cauldron.TheKnight
                     {
                         //"One player may play a card now.",
                         coroutine = GameController.SelectHeroToPlayCard(DecisionMaker, cardSource: GetCardSource());
-                        yield break;
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                        break;
                     }
                 case 1:
                     {
                         //"One player may draw a card now.",
+                        coroutine = GameController.SelectHeroToDrawCard(DecisionMaker, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case 2:
                     {
                         //"Until the start of your next turn, reduce damage dealt by environment cards to hero targets by 2."
+                        ReduceDamageStatusEffect reduceDamage = new ReduceDamageStatusEffect(2);
+                        reduceDamage.SourceCriteria.IsEnvironment = true;
+                        reduceDamage.TargetCriteria.IsHero = true;
+                        reduceDamage.UntilStartOfNextTurn(this.TurnTaker);
+
+                        coroutine = GameController.AddStatusEffect(reduceDamage, true, GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
             }
