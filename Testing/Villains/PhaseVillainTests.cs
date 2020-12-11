@@ -420,5 +420,188 @@ namespace CauldronTests
             PlayCard("FrequencyShift");
             QuickHPCheck(3);
         }
+
+        [Test()]
+        public void TestInsubstantialMatador()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Parse", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyWall();
+
+            //When this card enters play, {PhaseVillain} deals the hero target with the second lowest HP {H - 1} radiant damage.
+            QuickHPStorage(scholar);
+            Card mat = PlayCard("InsubstantialMatador");
+            QuickHPCheck(-2);
+
+            //At the end of each hero's turn, if that hero dealt {PhaseVillain} no damage, that hero deals themselves 1 irreducible melee damage.
+            QuickHPStorage(haka);
+            PlayCard("TaMoko");
+            GoToEndOfTurn(haka);
+            QuickHPCheck(-1);
+
+            //Did deal damage to Phase
+            QuickHPStorage(parse);
+            GoToStartOfTurn(parse);
+            DealDamage(parse, phase, 2, DamageType.Melee);
+            GoToEndOfTurn(parse);
+            QuickHPCheckZero();
+        }
+
+        [Test()]
+        public void TestNowhereToGoButDown()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Parse", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //Reveal cards from the top of the villain deck until {H - 1} Obstacle cards are revealed. Shuffle the other revealed cards back into the villain deck.
+            Card mat = GetCard("InsubstantialMatador");
+            Card door0 = GetCard("VaultDoor", 0);
+            Card door1 = GetCard("VaultDoor", 1);
+            PutOnDeck(phase, new Card[] { door0, mat, door1 });
+            //Put the Obstacles into play in the order they were revealed.
+            PlayCard("NowhereToGoButDown");
+            AssertIsInPlay(new Card[] { door0, door1 });
+            AssertInDeck(mat);
+            //Just Nowhere to go but down
+            AssertNumberOfCardsInTrash(phase, 1);
+        }
+
+        [Test()]
+        public void TestPrecariousRubble()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Parse", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyWall();
+            Card door = PutOnDeck("VaultDoor");
+            //When this card enters play, it deals the hero target with the lowest HP {H - 1} projectile damage. 
+            QuickHPStorage(parse);
+            PlayCard("PrecariousRubble");
+            QuickHPCheck(-2);
+            //Then, play the top card of the villain deck.
+            AssertIsInPlay(door);
+            //{PhaseVillain} is immune to damage.
+            DestroyCard(door);
+            QuickHPStorage(phase);
+            DealDamage(haka, phase, 2, DamageType.Melee);
+            QuickHPCheckZero();
+        }
+
+        [Test()]
+        public void TestReinforcedWall()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Parse", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card wall = GetCardInPlay("ReinforcedWall");
+
+            //{PhaseVillain} is immune to damage.
+            QuickHPStorage(phase);
+            DealDamage(haka, phase, 2, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //This card is indestructible while it has more than 0 HP.
+            SetHitPoints(wall, 1);
+            DestroyCard(wall);
+            AssertIsInPlay(wall);
+
+            //Other Obstacles that enter play are immune to damage while this card is in play.
+            Card door = PlayCard("VaultDoor");
+            QuickHPStorage(door);
+            DealDamage(haka, door, 3, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //This card is indestructible while it has more than 0 HP.
+            //0 hp = destroyable
+            SetHitPoints(wall, 0);
+            DestroyCard(wall);
+            AssertInTrash(wall);
+
+            //Other Obstacles that enter play are immune to damage while this card is in play.
+            //wall renentered play after door already was in play
+            PlayCard(wall);
+            QuickHPStorage(door);
+            DealDamage(haka, door, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+        }
+
+        [Test()]
+        public void TestResidualDesynchronization()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Parse", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card wall = GetCardInPlay("ReinforcedWall");
+            Card door = PlayCard("VaultDoor");
+            PlayCard("ResidualDesynchronization");
+
+            //Reduce damage dealt to Obstacles by 1.
+            //The first time a villain target is dealt damage each turn, it deals the source of that damage 2 energy damage.
+            QuickHPStorage(haka.CharacterCard, wall);
+            DealDamage(haka, wall, 2, DamageType.Melee);
+            QuickHPCheck(-2, -1);
+            //Only first time is there retaliation
+            QuickHPStorage(haka.CharacterCard, wall);
+            DealDamage(haka, wall, 2, DamageType.Melee);
+            QuickHPCheck(0, -1);
+            DestroyWall();
+            //First time each turn - not per target
+            QuickHPStorage(haka.CharacterCard, door);
+            DealDamage(haka, door, 4, DamageType.Melee);
+            QuickHPCheck(0, -3);
+            PlayCard(wall);
+            //New turn
+            GoToStartOfTurn(haka);
+            QuickHPStorage(haka.CharacterCard, wall);
+            DealDamage(haka, wall, 2, DamageType.Melee);
+            QuickHPCheck(-2, -1);
+        }
+
+        [Test()]
+        public void TestUnimpededProgress()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Legacy", "TheScholar", "Parse", "Megalopolis");
+            StartGame();
+
+            Card prog = PlayCard("UnimpededProgress");
+            Card mat = PutOnDeck("InsubstantialMatador");
+            Card door = PutOnDeck("VaultDoor");
+
+            //At the end of the villain turn, play the top card of the villain deck.
+            GoToEndOfTurn(phase);
+            //Phase Character Card plays a card at end of turn
+            AssertIsInPlay(new Card[] { mat, door });
+
+            //Destroy this card when {PhaseVillain} is dealt {H * 2} or more damage in 1 round.
+            //H * 2 = 8
+            DestroyCards(new Card[] { mat, door });
+            DestroyWall();
+            DealDamage(haka, phase, 6, DamageType.Melee);
+            //6 total
+            AssertIsInPlay(prog);
+
+            GoToEndOfTurn(legacy);
+            DealDamage(phase, phase, 1, DamageType.Melee);
+            //7 total
+            AssertIsInPlay(prog);
+
+            PlayCard("TakeDown");
+
+            GoToStartOfTurn(phase);
+            DealDamage(haka, phase, 1, DamageType.Melee);
+            //1 total
+            AssertIsInPlay(prog);
+
+            GoToStartOfTurn(haka);
+            DealDamage(phase, phase, 1, DamageType.Melee);
+            //2 total
+            AssertIsInPlay(prog);
+
+            GoToStartOfTurn(env);
+            DealDamage(haka, phase, 6, DamageType.Melee);
+            //8 total
+            AssertInTrash(prog);
+        }
     }
 }
