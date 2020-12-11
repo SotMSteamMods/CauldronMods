@@ -16,7 +16,7 @@ namespace Cauldron.PhaseVillain
 
         public override IEnumerator Play()
         {
-            Func<int> X = () => base.FindCardsWhere(new LinqCardCriteria((Card c) => base.IsObstacle(c))).Count();
+            Func<int> X = () => base.FindCardsWhere(new LinqCardCriteria((Card c) => base.IsObstacle(c) && c.IsInPlayAndHasGameText)).Count();
             //{Phase} regains X HP, where X is the number of Obstacle cards in play.
             IEnumerator coroutine = base.GameController.GainHP(base.CharacterCard, null, X, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
@@ -40,8 +40,9 @@ namespace Cauldron.PhaseVillain
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
+            TurnTaker targetTurnTaker = targetedHero.FirstOrDefault().Target.Owner;
             //...destroys 1 ongoing...
-            coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing), false, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && c.Owner == targetTurnTaker), false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -52,7 +53,7 @@ namespace Cauldron.PhaseVillain
             }
 
             //...and 1 equipment card belonging to that hero.
-            coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c)), false, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c) && c.Owner == targetTurnTaker), false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

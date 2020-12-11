@@ -383,5 +383,42 @@ namespace CauldronTests
             GoToStartOfTurn(haka);
             QuickHPCheck(-3);
         }
+
+        [Test()]
+        public void TestFrequencyShift1Obstacle()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(phase, 17);
+            Card flak = PlayCard("FlakCannon");
+            Card iron = PlayCard("FleshToIron");
+            Card punish = PlayCard("PunishTheWeak");
+            Card moko = PlayCard("TaMoko");
+            Card mere = PlayCard("Mere");
+
+            //{PhaseVillain} regains X HP, where X is the number of Obstacle cards in play.
+            //{PhaseVillain} deals the hero target with the highest HP {H} irreducible radiant damage and destroys 1 ongoing and 1 equipment card belonging to that hero.
+            QuickHPStorage(phase, haka);
+            PlayCard("FrequencyShift");
+            QuickHPCheck(1, -3);
+            AssertInTrash(new Card[] { mere, punish });
+            AssertIsInPlay(new Card[] { flak, iron, moko });
+        }
+
+        [Test()]
+        public void TestFrequencyShift3Obstacle()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(phase, 17);
+            PlayCards((Card c) => c.DoKeywordsContain("obstacle"), 2);
+
+            //{PhaseVillain} regains X HP, where X is the number of Obstacle cards in play.
+            QuickHPStorage(phase);
+            PlayCard("FrequencyShift");
+            QuickHPCheck(3);
+        }
     }
 }
