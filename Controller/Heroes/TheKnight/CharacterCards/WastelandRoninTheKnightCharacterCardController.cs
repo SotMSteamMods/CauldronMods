@@ -48,7 +48,7 @@ namespace Cauldron.TheKnight
             
             //"If you have no hero character targets in play, flip this card.",
 			//"When 1 of your equipment cards enter play, put it next to 1 of your active knights.",
-			//"When your cards refer to “The Knight”, put it next to 1 of your active knights. For equipment cards, you must choose the knight they are next to. Stalwart Shield does not reduce damage to the other knight's equipment targets.",
+			//"When your cards refer to “The Knight”, choose 1 of your active knights. For equipment cards, you must choose the knight they are next to. Stalwart Shield does not reduce damage to the other knight's equipment targets.",
 			//"Whenever an equipment enters play next to The Young Knight, she deals 1 target 1 toxic damage.",
 			//"Whenever an equipment card enters play next to The Old Knight, draw a card."
             
