@@ -26,6 +26,8 @@ namespace CauldronTests
             DealDamage(villain, knight, 2, DamageType.Melee);
         }
 
+        private readonly DamageType DTM = DamageType.Melee;
+
         private readonly string MessageTerminator = "There should have been no other messages.";
         #endregion
 
@@ -132,6 +134,63 @@ namespace CauldronTests
             UsePower(knight);
             QuickHPCheck(-4, 0, 0);
             AssertNotInTrash(helm);
+        }
+        [Test]
+        public void TestBerserkerKnightIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerserkerTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            SetupIncap(baron);
+            AssertIncapLetsHeroDrawCard(knight, 0, ra, 1);
+        }
+        [Test]
+        public void TestBerserkerKnightIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerserkerTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            SetupIncap(baron);
+            Card traffic = PlayCard("TrafficPileup");
+
+            UseIncapacitatedAbility(knight, 1);
+
+            QuickHPStorage(ra, baron, wraith);
+            DealDamage(ra, baron, 1, DTM);
+            QuickHPCheck(0, -2, 0);
+            DealDamage(baron, ra, 1, DTM);
+            QuickHPCheck(-2, 0, 0);
+            DealDamage(traffic, ra, 1, DTM);
+            QuickHPCheck(-2, 0, 0);
+
+            GoToStartOfTurn(knight);
+            DealDamage(baron, ra, 1, DTM);
+            QuickHPCheck(-1, 0, 0);
+        }
+        [Test]
+        public void TestBerserkerKnightIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/BerserkerTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            SetupIncap(baron);
+
+            DecisionSelectTargets = new Card[] { wraith.CharacterCard, baron.CharacterCard, ra.CharacterCard, wraith.CharacterCard };
+            PlayCard("StunBolt");
+            UsePower("StunBolt");
+            PlayCard("TheStaffOfRa");
+
+            QuickHPStorage(baron, ra, wraith);
+
+            for (int i = 0; i < 3; i++)
+            {
+                UseIncapacitatedAbility(knight, 2);
+            }
+            //Blade deals himself normal damage, Ra has +1 from Staff, Wraith has -1 from Stun Bolt
+            QuickHPCheck(-1, -2, 0);
         }
         [Test]
         public void TestFairKnightLoads()

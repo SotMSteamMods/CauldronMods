@@ -62,16 +62,45 @@ namespace Cauldron.TheKnight
                 case 0:
                     {
                         //"One player may draw a card now.",
+                        coroutine = GameController.SelectHeroToDrawCard(DecisionMaker, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         yield break;
                     }
                 case 1:
                     {
                         //"Increase all damage by 1 until the start of your next turn.",
+                        IncreaseDamageStatusEffect globalBoost = new IncreaseDamageStatusEffect(1);
+                        globalBoost.UntilStartOfNextTurn(this.TurnTaker);
+                        coroutine = GameController.AddStatusEffect(globalBoost, true, GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case 2:
                     {
                         //"One target deals itself 1 psychic damage."
+                        coroutine = GameController.SelectTargetsToDealDamageToSelf(DecisionMaker, 1, DamageType.Psychic, 1, false, 1, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
             }
