@@ -77,6 +77,18 @@ namespace Cauldron.TheKnight
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
+
+                OnPhaseChangeStatusEffect messageStatusEffect = new OnPhaseChangeStatusEffect(this.Card, "DoNothing", $"{Card.Title}'s name is treated as {hero.Title} on {equipment.Title}", new TriggerType[] { TriggerType.Other }, equipment);
+                messageStatusEffect.UntilCardLeavesPlay(equipment);
+                coroutine = GameController.AddStatusEffect(messageStatusEffect, false, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             else
             {
@@ -103,6 +115,7 @@ namespace Cauldron.TheKnight
         }
         public override void AddTriggers()
         {
+            //cleans up Vigilar assignment
             AddTrigger((MoveCardAction mc) => mc.Origin.IsInPlay && !mc.Destination.IsInPlay && mc.WasCardMoved && WasCardPlayedWithVigilar(mc.CardToMove), RemoveVigilarKey, TriggerType.Hidden, TriggerTiming.After);
         }
         public override Card AskIfCardIsReplaced(Card originalCard, CardSource effectSource)
@@ -120,24 +133,150 @@ namespace Cauldron.TheKnight
             {
                 case 0:
                     {
-                        
                         //"One player may draw a card now.",
-				
-				
+                        coroutine = GameController.SelectHeroToDrawCard(DecisionMaker, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         yield break;
                     }
                 case 1:
                     {
                         //"Reveal the top card of the villain deck, then replace it.",
+                        coroutine = RevealTopCardOfVillainDeck();
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case 2:
                     {
-                        //"Select a target, increase the next damage dealt to and by that target by 2."
+                        //"Select a target..."
+                        var storedResults = new List<SelectCardDecision> { };
+                        coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.IncreaseNextDamage, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsTarget), storedResults, false, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+
+                        if (DidSelectCard(storedResults))
+                        {
+                            //"...increase the next damage dealt to and by that target by 2."
+                            var target = storedResults.FirstOrDefault().SelectedCard;
+                            IncreaseDamageStatusEffect fromTarget = new IncreaseDamageStatusEffect(2);
+                            fromTarget.SourceCriteria.IsSpecificCard = target;
+                            fromTarget.UntilCardLeavesPlay(target);
+                            fromTarget.NumberOfUses = 1;
+
+                            IncreaseDamageStatusEffect toTarget = new IncreaseDamageStatusEffect(2);
+                            toTarget.TargetCriteria.IsSpecificCard = target;
+                            toTarget.UntilCardLeavesPlay(target);
+                            toTarget.NumberOfUses = 1;
+
+                            coroutine = AddStatusEffect(fromTarget);
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine);
+                            }
+                            coroutine = AddStatusEffect(toTarget);
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine);
+                            }
+
+                        }
                         break;
                     }
             }
             yield break;
+        }
+
+        private IEnumerator RevealTopCardOfVillainDeck()
+        {
+            var storedResults = new List<SelectLocationDecision> { };
+
+            //"Reveal the top card of the Villain deck, then replace it.",
+            IEnumerator coroutine = GameController.SelectADeck(DecisionMaker, SelectionType.RevealTopCardOfDeck, (Location deck) => IsVillain(deck.OwnerTurnTaker), storedResults, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if (DidSelectLocation(storedResults))
+            {
+                Location villainDeck = storedResults.FirstOrDefault().SelectedLocation.Location;
+                var revealStorage = new List<RevealCardsAction> { };
+                coroutine = GameController.RevealCards(DecisionMaker, villainDeck, (Card c) => true, 1, revealStorage, revealedCardDisplay: RevealedCardDisplay.None, cardSource: GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+                if (revealStorage.Any() && revealStorage.FirstOrDefault().RevealedCards.Any())
+                {
+                    Card c = revealStorage.FirstOrDefault().RevealedCards.First();
+                    coroutine = GameController.SendMessageAction($"{this.Card.Title} reveals {c.Title}", Priority.Medium, GetCardSource(), new Card[] { c });
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                    coroutine = GameController.MoveCard(DecisionMaker, c, villainDeck, cardSource: GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+                else
+                {
+                    coroutine = GameController.SendMessageAction($"There were no cards to reveal!", Priority.Medium, GetCardSource());
+
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+            }
         }
     }
 }

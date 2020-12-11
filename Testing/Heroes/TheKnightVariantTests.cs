@@ -385,6 +385,52 @@ namespace CauldronTests
             QuickHPCheck(-3);
         }
         [Test]
+        public void TestPastKnightIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/PastTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapLetsHeroDrawCard(knight, 0, ra, 1);
+        }
+        [Test]
+        public void TestPastKnightIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/PastTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            Card topCard = GetTopCardOfDeck(baron);
+            AssertNextMessages($"The Knight 1929 reveals {topCard.Title}", MessageTerminator);
+            UseIncapacitatedAbility(knight, 1);
+            AssertOnTopOfDeck(topCard);
+            AssertNumberOfCardsAtLocation(baron.TurnTaker.Revealed, 0);
+        }
+        [Test]
+        public void TestPastKnightIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/PastTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            SetupIncap(baron);
+            DecisionSelectTarget = baron.CharacterCard;
+            UseIncapacitatedAbility(knight, 2);
+
+            QuickHPStorage(baron, ra);
+            //increase damage dealt by 2, but only once
+            DealDamage(baron, ra, 1, DTM);
+            QuickHPCheck(0, -3);
+            DealDamage(baron, ra, 1, DTM);
+            QuickHPCheck(0, -1);
+
+            //increase damage taken by 2, but only once
+            DealDamage(ra, baron, 1, DTM);
+            QuickHPCheck(-3, 0);
+            DealDamage(ra, baron, 1, DTM);
+            QuickHPCheck(-1, 0);
+        }
+        [Test]
         public void TestRoninKnightLoads()
         {
             SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
