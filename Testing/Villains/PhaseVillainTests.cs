@@ -22,6 +22,13 @@ namespace CauldronTests
             }
         }
 
+        private void DestroyWall()
+        {
+            Card wall = GetCardInPlay("ReinforcedWall");
+            SetHitPoints(wall, 0);
+            DestroyCard(wall);
+        }
+
         [Test()]
         public void TestPhaseLoad()
         {
@@ -141,10 +148,7 @@ namespace CauldronTests
             StartGame();
 
             PutOnDeck("AroundTheCorner");
-
-            Card wall = GetCard("ReinforcedWall");
-            SetHitPoints(wall, 0);
-            DestroyCard(wall);
+            DestroyWall();
 
             //When {Phase} is damaged, she becomes immune to damage until the end of the turn.
             QuickHPStorage(phase);
@@ -284,6 +288,100 @@ namespace CauldronTests
             GoToStartOfTurn(phase);
             QuickHandCheck(-1, -1, -1);
             AssertInTrash(almost);
+        }
+
+        [Test()]
+        public void TestAroundTheCorner()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //The first time an Obstacle is destroyed each turn, {PhaseVillain} deals each hero target 2 radiant damage.
+            PlayCard("AroundTheCorner");
+            QuickHPStorage(haka, bunker, scholar);
+            DestroyWall();
+            QuickHPCheck(-2, -2, -2);
+            //only first time
+            Card door = PlayCard("VaultDoor");
+            QuickHPStorage(haka, bunker, scholar);
+            DestroyCard(door);
+            QuickHPCheck(0, 0, 0);
+
+            //New turn new damage
+            PutOnDeck("ReinforcedWall");
+            GoToNextTurn();
+            QuickHPStorage(haka, bunker, scholar);
+            DestroyWall();
+            QuickHPCheck(-2, -2, -2);
+        }
+
+        [Test()]
+        public void TestBlockedSightline()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Parse", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card block = PlayCard("BlockedSightline");
+            DestroyWall();
+
+            //Whenever {PhaseVillain} would be dealt damage, reduce that damage to 0.
+            QuickHPStorage(phase);
+            DealDamage(haka, phase, 2, DamageType.Melee);
+            QuickHPCheckZero();
+
+            //Reduces damage to 0, irreducible means we can deal damage
+            PlayCard("RevealTheFlaws");
+            DealDamage(haka, phase, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            PlayCard("TaMoko");
+            //When this card is destroyed, {PhaseVillain} deals the 2 hero targets with the highest HP {H} irreducible radiant damage each.
+            QuickHPStorage(haka, parse, scholar);
+            DestroyCard(block);
+            QuickHPCheck(-3, 0, -3);
+        }
+
+        [Test()]
+        public void TestDistortionGrenade()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Parse", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //Increase damage dealt to non-villain targets by 1.
+            //When this card enters play, it deals the {H - 1} hero targets with the lowest HP 2 lightning damage each.
+            QuickHPStorage(haka, parse, scholar);
+            PlayCard("DistortionGrenade");
+            QuickHPCheck(0, -3, -3);
+
+            Card wall = GetCard("ReinforcedWall");
+            //Only non-villains take more damge
+            QuickHPStorage(wall);
+            DealDamage(haka, wall, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //environment targets are non-villain
+            Card rail = PlayCard("PlummetingMonorail");
+        }
+
+        [Test()]
+        public void TestDistortionNet()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Parse", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //When this card enters play, place it next to the hero with the highest HP.
+            Card net = PlayCard("DistortionNet");
+            AssertNextToCard(net, haka.CharacterCard);
+
+            //Reduce damage dealt by that hero by 2.
+            QuickHPStorage(scholar);
+            DealDamage(haka, scholar, 3, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            //At the start of that hero's turn, this card deals them {H} toxic damage.
+            QuickHPStorage(haka);
+            GoToStartOfTurn(haka);
+            QuickHPCheck(-3);
         }
     }
 }
