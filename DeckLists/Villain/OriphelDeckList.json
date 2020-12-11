@@ -1,484 +1,456 @@
 {
-    "name": "Oriphel",
-    "kind": "Villain",
-    "expansionIdentifier": "CauldronExperimental",
-    "initialCardIdentifiers": [
-        "OriphelCharacter"
-    ],
-    "cards": [
-        {
-            "identifier": "OriphelCharacter",
-            "count": 1,
-            "title": "Oriphel",
-            "keywords": [
-                "villain"
-            ],
-            "body": "Shardwalker",
-            "backgroundColor": "f2b67c",
-            "foilBackgroundColor": "CD96C0",
-            "character": true,
-            "hitpoints": 80,
-            "nemesisIdentifiers": [
-                "Mailchae"
-            ],
-            "setup": [
-                "At the start of the game, put {Oriphel}'s villain character cards into play, 'Shardwalker' side up.",
-		"Reveal cards from the top of the villain deck until {H - 2} guardians are revealed and put them into play. Shuffle the villain deck."
-            ],
-            "gameplay": [
-                "Whenever a villain relic enters play, play the top card of the villain deck.",
-                "Whenever a villain ongoing card enters play, destroy it and play the top card of the villain deck."
-            ],
-            "advanced": "Increase damage dealt by villain targets by 1.",
-            "icons": [
-                "PlayCardNow"
-            ],
-            "advancedIcons": [
-                "IncreaseDamageDealt"
-            ],
-            "flippedBody": "Summoned Marid",
-            "flippedGameplay": [
-                "When {Oriphel} is flipped to this side, shuffle all relics in the villain trash into the villain deck.",
-                "Reduce damage dealt to {Oriphel} by 1.",
-                "At the end of the villain turn, {Oriphel} deals the 2 hero targets with the highest HP {H - 1} infernal damage each.",
-                "When there are 2 villain relics in the villain trash, flip {Oriphel}'s villain character cards."
-            ],
-            "flippedAdvanced": "Reduce damage dealt to {Oriphel} by 1.",
-            "flippedIcons": [
-                "ReduceDamageTaken",
-                "EndOfTurnAction",
-                "DealDamageInfernal"
-            ],
-            "flippedAdvancedIcons": [
-                "ReduceDamageTaken"
-            ],
-            "difficulty": 2,
-            "openingLines": {
-                "default": "You're too late, heroes! Soon I will break the veil between our worlds, and rule over both!",
-                "MailchaeCharacter": "Mailchae placeholder",
-                "ShardmasterMailchaeCharacter": "Shardmaster Mailchae placeholder",
-                "MinistryOfStrategicScienceMailchaeCharacter": "Ministry Of Strategic Science Mailchae placeholder"
-            }
-        },
-        {
-            "identifier": "GrandOriphel",
-            "count": 1,
-            "title": "Grand Oriphel",
-            "keywords": [
-                "ongoing",
-                "transformation"
-            ],
-            "icons": [
-                "StartOfTurnAction",
-                "DestroySelf",
-                "IncreaseDamageDealt",
-                "ReduceDamageTaken",
-                "EndOfTurnAction",
-                "DealDamageInfernal",
-                "DealDamageProjectile"
-            ],
-            "body": [
-                "At the start of the villain turn, destroy this card unless it entered play this turn.",
-                "Increase damage dealt by {Oriphel} by 1. Reduce damage dealt to {Oriphel} by 1.",
-                "At the end of the villain turn, {Oriphel} deals each hero target 1 infernal damage and 1 projectile damage."
-            ],
-            "flavorText": "Oriphel, the Breathing Shadow.",
-            "flavorReference": "Entry in the Scrolls of Zephaeren"
-        },
-        {
-            "identifier": "HighAsriel",
-            "count": 1,
-            "title": "High Asriel",
-            "keywords": [
-                "guardian"
-            ],
-            "icons": [
-                "DealDamagePsychic",
-                "PlayCardNow"
-            ],
-            "body": [
-                "When a hero card is played, this card deals the hero with the highest HP 2 psychic damage.",
-                "When this card is destroyed, reveal cards from the top of the villain deck until a Relic is revealed and play it. Shuffle the remaining cards into the villain deck."
-            ],
-            "flavorText": "Asriel, the Burning Witch.",
-            "flavorReference": "Entry in the Scrolls of Zephaeren",
-            "hitpoints": 12
-        },
-        {
-            "identifier": "HighDjaril",
-            "count": 1,
-            "title": "High Djaril",
-            "keywords": [
-                "guardian"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "DealDamageLightning",
-                "PlayCardNow"
-            ],
-            "body": [
-                "At the end of the villain turn, this card deals the hero target with the highest HP {H} lightning damage.",
-                "When this card is destroyed, reveal cards from the top of the villain deck until a Relic is revealed and play it. Shuffle the remaining cards into the villain deck."
-            ],
-            "flavorText": "Djaril, the Sculpted Engine.",
-            "flavorReference": "Entry in the Scrolls of Zephaeren",
-            "hitpoints": 12
-        },
-        {
-            "identifier": "HighPhaol",
-            "count": 1,
-            "title": "High Phaol",
-            "keywords": [
-                "guardian"
-            ],
-            "icons": [
-                "CounterDamage",
-                "DealDamageCold",
-                "PlayCardNow"
-            ],
-            "body": [
-                "The first time any hero target deals damage to any villain target each turn, this card deals that hero target 3 cold damage.",
-                "When this card is destroyed, reveal cards from the top of the villain deck until a Relic is revealed and play it. Shuffle the remaining cards into the villain deck."
-            ],
-            "flavorText": "Phaol, the Water Bearer.",
-            "flavorReference": "Entry in the Scrolls of Zephaeren",
-            "hitpoints": 12
-        },
-        {
-            "identifier": "HighTormul",
-            "count": 1,
-            "title": "High Tormul",
-            "keywords": [
-                "guardian"
-            ],
-            "icons": [
-                "StartOfTurnAction",
-                "DealDamageToxic",
-                "PlayCardNow"
-            ],
-            "body": [
-                "At the start of each hero turn, this card deals that hero 2 toxic damage.",
-                "When this card is destroyed, reveal cards from the top of the villain deck until a Relic is revealed and play it. Shuffle the remaining cards into the villain deck."
-            ],
-            "flavorText": "Tormul, the Scabbed Viper.",
-            "flavorReference": "Entry in the Scrolls of Zephaeren",
-            "hitpoints": 12
-        },
-        {
-            "identifier": "MejiClanLeader",
-            "count": 1,
-            "title": "Meji Clan Leader",
-            "keywords": [
-                "goon"
-            ],
-            "icons": [
-                "ReduceDamageTaken",
-                "EndOfTurnAction",
-                "DealDamageMelee"
-            ],
-            "body": [
-                "Reduce damage dealt to Goons by 1.",
-                "At the end of the villain turn, this card deals each hero target 3 melee damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "ClanLeaderAnwar",
-                    "text": "As you wish."
-                }
-            ],
-            "flavorReference": "Clan Leader Anwar, Arabian Nightmare #3",
-            "hitpoints": 4
-        },
-        {
-            "identifier": "MejiGuard",
-            "count": 2,
-            "title": "Meji Guard",
-            "keywords": [
-                "goon"
-            ],
-            "icons": [
-                "ReduceDamageTaken",
-                "EndOfTurnAction",
-                "DealDamageMelee"
-            ],
-            "body": [
-                "Reduce damage dealt to Guardians by 1.",
-                "At the end of the villain turn, this card deals the hero with the most cards in hand 2 melee damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Cricket",
-                    "text": "The desert boys are back."
-                }
-            ],
-            "flavorReference": "Cricket, Experimental One-shot",
-            "hitpoints": 4
-        },
-        {
-            "identifier": "MejiNomad",
-            "count": 2,
-            "title": "Meji Nomad",
-            "keywords": [
-                "goon"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "DealDamageProjectile"
-            ],
-            "body": "At the end of the villain turn, this card deals the hero target with the highest HP X projectile damage, where X is the number of Guardians in play plus 2.",
-            "flavorQuotes": [
-                {
-                    "identifier": "Jade",
-                    "text": "There are djinn that lurk{BR}on this side of the Veil, eternal{BR}Guardians of the keys. Find them."
-                }
-            ],
-            "flavorReference": "Jade, Arabian Nightmare #2",
-            "hitpoints": 6
-        },
-        {
-            "identifier": "Mirage",
-            "count": 3,
-            "title": "Mirage",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Manipulate",
-                "DealDamageFire"
-            ],
-            "body": [
-                "Reveal the top 2 cards of the villain deck. Put any revealed targets or Transformation cards into play and discard the rest.",
-                "Each Goon deals the hero target with the highest HP 1 fire damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Oriphel",
-                    "text": "What is real?"
-                }
-            ],
-            "flavorReference": "Oriphel, Shardwalker One-shot"
-        },
-        {
-            "identifier": "MoonShardkey",
-            "count": 1,
-            "title": "Moon Shardkey",
-            "keywords": [
-                "relic"
-            ],
-            "icons": [
-                "StartOfTurnAction",
-                "Manipulate",
-                "EndOfTurnAction",
-                "DealDamageEnergy"
-            ],
-            "body": [
-                "At the start of the villain turn, reveal the top card of the villain deck. If a Transformation card is revealed, play it, otherwise put it on the bottom of the villain deck.",
-                "At the end of the villain turn, the villain target with the highest HP deals the hero target with the highest HP 2 energy damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Malichae",
-                    "text": "Bathiel has a score to settle with you."
-                }
-            ],
-            "flavorReference": "Malichae, Shardwalker One-shot",
-            "hitpoints": 4
-        },
-        {
-            "identifier": "Sandstorm",
-            "count": 2,
-            "title": "Sandstorm",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Manipulate"
-            ],
-            "body": [
-                "Shuffle the villain trash and reveal cards until X Goons are revealed, where X is 1 plus the number of environment cards in play.",
-                "Put the revealed Goons into play and discard the other cards."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Jade",
-                    "text": "Phaol was standing watch{BR}over these ruins. The shardkey{BR}must be here somewhere!"
-                }
-            ],
-            "flavorReference": "Jade, Book of the Dead #1131"
-        },
-        {
-            "identifier": "ScrollsOfZephaeren",
-            "count": 2,
-            "title": "Scrolls of Zephaeren",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Manipulate",
-                "PlayCardNow",
-                "DealDamageMelee"
-            ],
-            "body": [
-                "Shuffle all Guardians from the villain trash into the villain deck.",
-                "Play the top card of the villain deck.",
-                "If {Oriphel} is in play, he deals the hero target with the second lowest HP 3 melee damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Cricket",
-                    "text": "There's giant monsters fighting{BR}each other! Am I in the right place?"
-                }
-            ],
-            "flavorReference": "Cricket, First Response #1"
-        },
-        {
-            "identifier": "ShardbearerNathaniel",
-            "count": 1,
-            "title": "Shardbearer Nathaniel",
-            "keywords": [
-                "goon"
-            ],
-            "icons": [
-                "IncreaseDamageDealt"
-            ],
-            "body": "Increase damage dealt by Guardians and {Oriphel} by 1.",
-            "flavorQuotes": [
-                {
-                    "identifier": "ShardbearerNathaniel",
-                    "text": "Greetings, Shardcatcher.{BR}I see you brought your pets."
-                }
-            ],
-            "flavorReference": "Nathaniel, Shardmaster Malichae #1",
-            "hitpoints": 5
-        },
-        {
-            "identifier": "ShardwalkersAwakening",
-            "count": 2,
-            "title": "Shardwalker's Awakening",
-            "keywords": [
-                "one-shot",
-                "transformation"
-            ],
-            "icons": [
-                "DealDamageInfernal",
-                "DealDamageProjectile"
-            ],
-            "body": [
-                "If {Oriphel} is in play, he deals each hero target 1 infernal and 1 projectile damage.",
-                "If Jade is in play, flip her villain character cards."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TheScholar",
-                    "text": "With the assembled keys, she{BR}won't need a summoning crystal to{BR}bring Oriphel into this realm."
-                }
-            ],
-            "flavorReference": "The Scholar, Arabian Nightmares #3"
-        },
-        {
-            "identifier": "SunShardkey",
-            "count": 1,
-            "title": "Sun Shardkey",
-            "keywords": [
-                "relic"
-            ],
-            "icons": [
-                "StartOfTurnAction",
-                "Manipulate",
-                "DealDamagePsychic"
-            ],
-            "body": [
-                "At the start of the villain turn, reveal the top card of the villain deck. If a Transformation card is revealed, play it, otherwise put it on the bottom of the villain deck.",
-                "Whenever a hero uses a power, that hero deals themselves 2 psychic damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Malichae",
-                    "text": "You'll go mad! Your mind{BR}cannot share its vessel with a{BR}being of such power."
-                }
-            ],
-            "flavorReference": "Malichae, Shardcatcher Malichae #299",
-            "hitpoints": 4
-        },
-        {
-            "identifier": "UmbralJavelin",
-            "count": 1,
-            "title": "Umbral Javelin",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Manipulate",
-                "DestroyOngoing",
-                "DestroyEquipment",
-                "PlayCardNow"
-            ],
-            "body": [
-                "If Jade is in play, reveal the top {H} cards of the villain deck. Put any revealed Goons and Guardians into play and discard the rest.",
-                "If {Oriphel} is in play, destroy {H} hero ongoing and/or equipment cards. Play the top card of the villain deck."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TheStranger",
-                    "text": "What is she trying{BR}so desperately to find{BR}with that compass?"
-                },
-                {
-                    "identifier": "Malichae",
-                    "text": "Not what. Who."
-                }
-            ],
-            "flavorReference": "Djinn & Tonic One-shot"
-        },
-        {
-            "identifier": "VeilShardkey",
-            "count": 1,
-            "title": "Veil Shardkey",
-            "keywords": [
-                "relic"
-            ],
-            "icons": [
-                "StartOfTurnAction",
-                "Manipulate",
-                "PlayCardNow"
-            ],
-            "body": [
-                "At the start of the villain turn, reveal the top card of the villain deck. If a Transformation card is revealed, play it, otherwise put it on the bottom of the villain deck.",
-                "Whenever another villain target is destroyed, play the top card of the villain deck."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Ra",
-                    "text": "We must disrupt the{BR}ritual before it's too late."
-                }
-            ],
-            "flavorReference": "Ra, Shatterpoint #25",
-            "hitpoints": 4
-        },
-        {
-            "identifier": "WorldShardkey",
-            "count": 1,
-            "title": "World Shardkey",
-            "keywords": [
-                "relic"
-            ],
-            "icons": [
-                "StartOfTurnAction",
-                "Manipulate",
-                "EndOfTurnAction",
-                "DealDamageMelee"
-            ],
-            "body": [
-                "At the start of the villain turn, reveal the top card of the villain deck. If a Transformation card is revealed, play it, otherwise put it on the bottom of the villain deck.",
-                "At the end of the villain turn, the villain target with the highest HP deals the hero target with the lowest HP 2 melee damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Jade",
-                    "text": "...He has whispered to me from{BR}the other side. My flesh will be the{BR}instrument of summoning!"
-                }
-            ],
-            "flavorReference": "Jade, Shardcatcher Malichae #67",
-            "hitpoints": 4
-        }
-    ]
+	"name": "Oriphel",
+	"kind": "Villain",
+	"expansionIdentifier": "CauldronExperimental",
+	"initialCardIdentifiers": [
+		"OriphelCharacter"
+	],
+	"cards": [{
+			"identifier": "OriphelCharacter",
+			"count": 1,
+			"title": "Jade",
+			"keywords": [
+				"villain"
+			],
+			"body": "Shardwalker",
+			"backgroundColor": "f2b67c",
+			"foilBackgroundColor": "CD96C0",
+			"character": true,
+			"hitpoints": 80,
+			"nemesisIdentifiers": [
+				"Malichae"
+			],
+			"setup": [
+				"At the start of the game, put {Oriphel}'s villain character cards into play, 'Shardwalker' side up.",
+				"Reveal cards from the top of the villain deck until {H - 2} guardians are revealed and put them into play. Shuffle the villain deck."
+			],
+			"gameplay": [
+				"Whenever a villain relic enters play, play the top card of the villain deck.",
+				"Whenever a villain ongoing card enters play, destroy it and play the top card of the villain deck."
+			],
+			"advanced": "Increase damage dealt by villain targets by 1.",
+			"icons": [
+				"PlayCardNow"
+			],
+			"advancedIcons": [
+				"IncreaseDamageDealt"
+			],
+			"flippedTitle": "Oriphel",
+			"flippedBody": "Summoned Marid",
+			"flippedGameplay": [
+				"When {Oriphel} is flipped to this side, shuffle all relics in the villain trash into the villain deck.",
+				"Reduce damage dealt to {Oriphel} by 1.",
+				"At the end of the villain turn, {Oriphel} deals the 2 hero targets with the highest HP {H - 1} infernal damage each.",
+				"When there are 2 villain relics in the villain trash, flip {Oriphel}'s villain character cards."
+			],
+			"flippedAdvanced": "Reduce damage dealt to {Oriphel} by 1.",
+			"flippedIcons": [
+				"ReduceDamageTaken",
+				"EndOfTurnAction",
+				"DealDamageInfernal"
+			],
+			"flippedAdvancedIcons": [
+				"ReduceDamageTaken"
+			],
+			"difficulty": 2,
+			"openingLines": {
+				"default": "You're too late, heroes! Soon I will break the veil between our worlds, and rule over both!",
+				"MailchaeCharacter": "Mailchae placeholder",
+				"ShardmasterMailchaeCharacter": "Shardmaster Mailchae placeholder",
+				"MinistryOfStrategicScienceMailchaeCharacter": "Ministry Of Strategic Science Mailchae placeholder"
+			}
+		},
+		{
+			"identifier": "GrandOriphel",
+			"count": 1,
+			"title": "Grand Oriphel",
+			"keywords": [
+				"ongoing",
+				"transformation"
+			],
+			"icons": [
+				"IncreaseDamageDealt",
+				"ReduceDamageTaken",
+				"DealDamageInfernal",
+				"DealDamageProjectile"
+			],
+			"body": [
+				"At the start of the villain turn, destroy this card unless it entered play this turn.",
+				"Increase damage dealt by {Oriphel} by 1. Reduce damage dealt to {Oriphel} by 1.",
+				"At the end of the villain turn, {Oriphel} deals each hero target 1 infernal damage and 1 projectile damage."
+			],
+			"flavorText": "Oriphel, the Breathing Shadow.",
+			"flavorReference": "Entry in the Scrolls of Zephaeren"
+		},
+		{
+			"identifier": "HighAsriel",
+			"count": 1,
+			"title": "High Asriel",
+			"keywords": [
+				"guardian"
+			],
+			"icons": [
+				"DealDamagePsychic",
+				"PlayCardNow"
+			],
+			"body": [
+				"When a hero card is played, this card deals the hero with the highest HP 2 psychic damage.",
+				"When this card is destroyed, reveal cards from the top of the villain deck until a Relic is revealed and play it. Shuffle the remaining cards into the villain deck."
+			],
+			"flavorText": "Asriel, the Burning Witch.",
+			"flavorReference": "Entry in the Scrolls of Zephaeren",
+			"hitpoints": 12
+		},
+		{
+			"identifier": "HighDjaril",
+			"count": 1,
+			"title": "High Djaril",
+			"keywords": [
+				"guardian"
+			],
+			"icons": [
+				"EndOfTurnAction",
+				"DealDamageLightning",
+				"PlayCardNow"
+			],
+			"body": [
+				"At the end of the villain turn, this card deals the hero target with the highest HP {H} lightning damage.",
+				"When this card is destroyed, reveal cards from the top of the villain deck until a Relic is revealed and play it. Shuffle the remaining cards into the villain deck."
+			],
+			"flavorText": "Djaril, the Sculpted Engine.",
+			"flavorReference": "Entry in the Scrolls of Zephaeren",
+			"hitpoints": 12
+		},
+		{
+			"identifier": "HighPhaol",
+			"count": 1,
+			"title": "High Phaol",
+			"keywords": [
+				"guardian"
+			],
+			"icons": [
+				"CounterDamage",
+				"DealDamageCold",
+				"PlayCardNow"
+			],
+			"body": [
+				"The first time any hero target deals damage to any villain target each turn, this card deals that hero target 3 cold damage.",
+				"When this card is destroyed, reveal cards from the top of the villain deck until a Relic is revealed and play it. Shuffle the remaining cards into the villain deck."
+			],
+			"flavorText": "Phaol, the Water Bearer.",
+			"flavorReference": "Entry in the Scrolls of Zephaeren",
+			"hitpoints": 12
+		},
+		{
+			"identifier": "HighTormul",
+			"count": 1,
+			"title": "High Tormul",
+			"keywords": [
+				"guardian"
+			],
+			"icons": [
+				"StartOfTurnAction",
+				"DealDamageToxic",
+				"PlayCardNow"
+			],
+			"body": [
+				"At the start of each hero turn, this card deals that hero 2 toxic damage.",
+				"When this card is destroyed, reveal cards from the top of the villain deck until a Relic is revealed and play it. Shuffle the remaining cards into the villain deck."
+			],
+			"flavorText": "Tormul, the Scabbed Viper.",
+			"flavorReference": "Entry in the Scrolls of Zephaeren",
+			"hitpoints": 12
+		},
+		{
+			"identifier": "MejiClanLeader",
+			"count": 1,
+			"title": "Meji Clan Leader",
+			"keywords": [
+				"goon"
+			],
+			"icons": [
+				"ReduceDamageTaken",
+				"EndOfTurnAction",
+				"DealDamageMelee"
+			],
+			"body": [
+				"Reduce damage dealt to Goons by 1.",
+				"At the end of the villain turn, this card deals each hero target 3 melee damage."
+			],
+			"flavorQuotes": [{
+				"identifier": "ClanLeaderAnwar",
+				"text": "As you wish."
+			}],
+			"flavorReference": "Clan Leader Anwar, Arabian Nightmare #3",
+			"hitpoints": 4
+		},
+		{
+			"identifier": "MejiGuard",
+			"count": 2,
+			"title": "Meji Guard",
+			"keywords": [
+				"goon"
+			],
+			"icons": [
+				"ReduceDamageTaken",
+				"EndOfTurnAction",
+				"DealDamageMelee"
+			],
+			"body": [
+				"Reduce damage dealt to Guardians by 1.",
+				"At the end of the villain turn, this card deals the hero with the most cards in hand 2 melee damage."
+			],
+			"flavorQuotes": [{
+				"identifier": "Cricket",
+				"text": "The desert boys are back."
+			}],
+			"flavorReference": "Cricket, Experimental One-shot",
+			"hitpoints": 4
+		},
+		{
+			"identifier": "MejiNomad",
+			"count": 2,
+			"title": "Meji Nomad",
+			"keywords": [
+				"goon"
+			],
+			"icons": [
+				"EndOfTurnAction",
+				"DealDamageProjectile"
+			],
+			"body": "At the end of the villain turn, this card deals the hero target with the highest HP X projectile damage, where X is the number of Guardians in play plus 2.",
+			"flavorQuotes": [{
+				"identifier": "Jade",
+				"text": "There are djinn that lurk{BR}on this side of the Veil, eternal{BR}Guardians of the keys. Find them."
+			}],
+			"flavorReference": "Jade, Arabian Nightmare #2",
+			"hitpoints": 6
+		},
+		{
+			"identifier": "Mirage",
+			"count": 3,
+			"title": "Mirage",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"Manipulate",
+				"DealDamageFire"
+			],
+			"body": [
+				"Reveal the top 2 cards of the villain deck. Put any revealed targets or Transformation cards into play and discard the rest.",
+				"Each Goon deals the hero target with the highest HP 1 fire damage."
+			],
+			"flavorQuotes": [{
+				"identifier": "Oriphel",
+				"text": "What is real?"
+			}],
+			"flavorReference": "Oriphel, Shardwalker One-shot"
+		},
+		{
+			"identifier": "MoonShardkey",
+			"count": 1,
+			"title": "Moon Shardkey",
+			"keywords": [
+				"relic"
+			],
+			"icons": [
+				"StartOfTurnAction",
+				"Manipulate",
+				"EndOfTurnAction",
+				"DealDamageEnergy"
+			],
+			"body": [
+				"At the start of the villain turn, reveal the top card of the villain deck. If a Transformation card is revealed, play it, otherwise put it on the bottom of the villain deck.",
+				"At the end of the villain turn, the villain target with the highest HP deals the hero target with the highest HP 2 energy damage."
+			],
+			"flavorQuotes": [{
+				"identifier": "Malichae",
+				"text": "Bathiel has a score to settle with you."
+			}],
+			"flavorReference": "Malichae, Shardwalker One-shot",
+			"hitpoints": 4
+		},
+		{
+			"identifier": "Sandstorm",
+			"count": 2,
+			"title": "Sandstorm",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"Manipulate"
+			],
+			"body": [
+				"Shuffle the villain trash and reveal cards until X Goons are revealed, where X is 1 plus the number of environment cards in play.",
+				"Put the revealed Goons into play and discard the other cards."
+			],
+			"flavorQuotes": [{
+				"identifier": "Jade",
+				"text": "Phaol was standing watch{BR}over these ruins. The shardkey{BR}must be here somewhere!"
+			}],
+			"flavorReference": "Jade, Book of the Dead #1131"
+		},
+		{
+			"identifier": "ScrollsOfZephaeren",
+			"count": 2,
+			"title": "Scrolls of Zephaeren",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"Manipulate",
+				"PlayCardNow",
+				"DealDamageMelee"
+			],
+			"body": [
+				"Shuffle all Guardians from the villain trash into the villain deck.",
+				"Play the top card of the villain deck.",
+				"If {Oriphel} is in play, he deals the hero target with the second lowest HP 3 melee damage."
+			],
+			"flavorQuotes": [{
+				"identifier": "Cricket",
+				"text": "There's giant monsters fighting{BR}each other! Am I in the right place?"
+			}],
+			"flavorReference": "Cricket, First Response #1"
+		},
+		{
+			"identifier": "ShardbearerNathaniel",
+			"count": 1,
+			"title": "Shardbearer Nathaniel",
+			"keywords": [
+				"goon"
+			],
+			"icons": [
+				"IncreaseDamageDealt"
+			],
+			"body": "Increase damage dealt by Guardians and {Oriphel} by 1.",
+			"flavorQuotes": [{
+				"identifier": "ShardbearerNathaniel",
+				"text": "Greetings, Shardcatcher.{BR}I see you brought your pets."
+			}],
+			"flavorReference": "Nathaniel, Shardmaster Malichae #1",
+			"hitpoints": 5
+		},
+		{
+			"identifier": "ShardwalkersAwakening",
+			"count": 2,
+			"title": "Shardwalker's Awakening",
+			"keywords": [
+				"one-shot",
+				"transformation"
+			],
+			"icons": [
+				"DealDamageInfernal",
+				"DealDamageProjectile"
+			],
+			"body": [
+				"If {Oriphel} is in play, he deals each hero target 1 infernal and 1 projectile damage.",
+				"If Jade is in play, flip her villain character cards."
+			],
+			"flavorQuotes": [{
+				"identifier": "TheScholar",
+				"text": "With the assembled keys, she{BR}won't need a summoning crystal to{BR}bring Oriphel into this realm."
+			}],
+			"flavorReference": "The Scholar, Arabian Nightmares #3"
+		},
+		{
+			"identifier": "SunShardkey",
+			"count": 1,
+			"title": "Sun Shardkey",
+			"keywords": [
+				"relic"
+			],
+			"icons": [
+				"StartOfTurnAction",
+				"Manipulate",
+				"DealDamagePsychic"
+			],
+			"body": [
+				"At the start of the villain turn, reveal the top card of the villain deck. If a Transformation card is revealed, play it, otherwise put it on the bottom of the villain deck.",
+				"Whenever a hero uses a power, that hero deals themselves 2 psychic damage."
+			],
+			"flavorQuotes": [{
+				"identifier": "Malichae",
+				"text": "You'll go mad! Your mind{BR}cannot share its vessel with a{BR}being of such power."
+			}],
+			"flavorReference": "Malichae, Shardcatcher Malichae #299",
+			"hitpoints": 4
+		},
+		{
+			"identifier": "UmbralJavelin",
+			"count": 1,
+			"title": "Umbral Javelin",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"Manipulate",
+				"DestroyOngoing",
+				"DestroyEquipment",
+				"PlayCardNow"
+			],
+			"body": [
+				"If Jade is in play, reveal the top {H} cards of the villain deck. Put any revealed Goons and Guardians into play and discard the rest.",
+				"If {Oriphel} is in play, destroy {H} hero ongoing and/or equipment cards. Play the top card of the villain deck."
+			],
+			"flavorQuotes": [{
+					"identifier": "TheStranger",
+					"text": "What is she trying{BR}so desperately to find{BR}with that compass?"
+				},
+				{
+					"identifier": "Malichae",
+					"text": "Not what. Who."
+				}
+			],
+			"flavorReference": "Djinn & Tonic One-shot"
+		},
+		{
+			"identifier": "VeilShardkey",
+			"count": 1,
+			"title": "Veil Shardkey",
+			"keywords": [
+				"relic"
+			],
+			"icons": [
+				"StartOfTurnAction",
+				"Manipulate",
+				"PlayCardNow"
+			],
+			"body": [
+				"At the start of the villain turn, reveal the top card of the villain deck. If a Transformation card is revealed, play it, otherwise put it on the bottom of the villain deck.",
+				"Whenever another villain target is destroyed, play the top card of the villain deck."
+			],
+			"flavorQuotes": [{
+				"identifier": "Ra",
+				"text": "We must disrupt the{BR}ritual before it's too late."
+			}],
+			"flavorReference": "Ra, Shatterpoint #25",
+			"hitpoints": 4
+		},
+		{
+			"identifier": "WorldShardkey",
+			"count": 1,
+			"title": "World Shardkey",
+			"keywords": [
+				"relic"
+			],
+			"icons": [
+				"StartOfTurnAction",
+				"Manipulate",
+				"EndOfTurnAction",
+				"DealDamageMelee"
+			],
+			"body": [
+				"At the start of the villain turn, reveal the top card of the villain deck. If a Transformation card is revealed, play it, otherwise put it on the bottom of the villain deck.",
+				"At the end of the villain turn, the villain target with the highest HP deals the hero target with the lowest HP 2 melee damage."
+			],
+			"flavorQuotes": [{
+				"identifier": "Jade",
+				"text": "...He has whispered to me from{BR}the other side. My flesh will be the{BR}instrument of summoning!"
+			}],
+			"flavorReference": "Jade, Shardcatcher Malichae #67",
+			"hitpoints": 4
+		}
+	]
 }

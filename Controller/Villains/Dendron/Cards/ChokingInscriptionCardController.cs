@@ -110,12 +110,14 @@ namespace Cauldron.Dendron
             }
         }
 
-        public IEnumerator PreventPlaysThisTurnEffect(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
+        public IEnumerator PreventPlaysThisTurnEffect(PhaseChangeAction _, OnPhaseChangeStatusEffect sourceEffect)
         {
             System.Console.WriteLine("### DEBUG ### - ChokingInspiration.PreventPlaysThisTurnEffect triggered");
 
-            CannotPlayCardsStatusEffect effect = new CannotPlayCardsStatusEffect();
-            effect.CardSource = sourceEffect.CardSource;
+            CannotPlayCardsStatusEffect effect = new CannotPlayCardsStatusEffect
+            {
+                CardSource = sourceEffect.CardSource
+            };
             effect.TurnTakerCriteria.IsSpecificTurnTaker = base.Game.ActiveTurnTaker;
             effect.UntilThisTurnIsOver(base.Game);
             IEnumerator coroutine = base.AddStatusEffect(effect);
@@ -130,7 +132,7 @@ namespace Cauldron.Dendron
             yield break;
         }
 
-        public IEnumerator PreventDrawsThisTurnEffect(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
+        public IEnumerator PreventDrawsThisTurnEffect(PhaseChangeAction _, OnPhaseChangeStatusEffect sourceEffect)
         {
             System.Console.WriteLine("### DEBUG ### - ChokingInspiration.PreventDrawsThisTurnEffect triggered");
 
@@ -157,7 +159,7 @@ namespace Cauldron.Dendron
             yield break;
         }
 
-        public IEnumerator ResumeDrawEffect(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
+        public IEnumerator ResumeDrawEffect(PhaseChangeAction _, OnPhaseChangeStatusEffect sourceEffect)
         {
             System.Console.WriteLine("### DEBUG ### - ChokingInspiration.ResumeDrawEffect triggered");
 

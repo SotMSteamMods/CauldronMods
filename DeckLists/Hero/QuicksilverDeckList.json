@@ -102,7 +102,7 @@
                 "limited"
             ],
             "icons": [
-                "PreventDamage"
+                "CancelledDamageGreen"
             ],
             "body": "The first time each turn that {Quicksilver} would deal herself damage to play a Combo card, prevent that damage.",
             "flavorText": "The liquid metal skin of her hand{BR}shifted rapidly, forming spines, blades,{BR}and an assortment of other unfriendly{BR}implements."
@@ -340,7 +340,7 @@
             ],
             "icons": [
                 "GainHP",
-                "EndTurn"
+                "SkipTurn"
             ],
             "body": [
                 "{Quicksilver} regains 6HP.",
@@ -363,7 +363,7 @@
                 "limited"
             ],
             "icons": [
-                "DrawExtraCard"
+                "DrawCardExtra"
             ],
             "body": "You may draw an extra card during your draw phase.",
             "flavorText": "“I'm still not sure what they did{BR}to me,” she replied, through the haze{BR}of images. She glanced up at Havoc.{BR}“or if they did anything at all.”"

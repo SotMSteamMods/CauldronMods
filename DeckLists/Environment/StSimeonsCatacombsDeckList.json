@@ -175,8 +175,8 @@
             "count": 1,
             "title": "Panic",
             "icons": [
-                "UseExtraPower",
-                "EndTurn",
+                "UsePowerExtra",
+                "SkipTurn",
                 "DestroySelf"
             ],
             "body": [

@@ -9,6 +9,16 @@ namespace Cauldron.Titan
 {
     public class StubbornGoliathCardController : CardController
     {
+        public override bool AllowFastCoroutinesDuringPretend {
+            get
+            {
+                if(Game.StatusEffects.Any((StatusEffect se) => se.CardSource == this.Card))
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
         public StubbornGoliathCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
@@ -32,41 +42,37 @@ namespace Cauldron.Titan
             }
 
             //Until the start of your next turn, when those targets would deal damage, you may redirect that damage to {Titan}.
-            if (storedSelect.FirstOrDefault() != null && storedSelect.FirstOrDefault().SelectedCard != null)
+            if (storedSelect.FirstOrDefault() != null)
             {
-                Card firstCard = storedSelect.FirstOrDefault().SelectedCard;
-                Card secondCard = storedSelect.LastOrDefault().SelectedCard;
                 List<StatusEffect> redirects = new List<StatusEffect> { };
 
-                if (firstCard.IsInPlay)
+                foreach (SelectCardDecision decision in storedSelect)
                 {
-                    RedirectDamageStatusEffect redirectDamageStatusEffect = new RedirectDamageStatusEffect();
-                    //Until the start of your next turn...
-                    redirectDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-                    //...when those targets would deal damage...
-                    redirectDamageStatusEffect.SourceCriteria.IsSpecificCard = firstCard;
-                    //...you may redirect...
-                    redirectDamageStatusEffect.IsOptional = true;
-                    //...that damage to {Titan}.
-                    redirectDamageStatusEffect.RedirectTarget = base.CharacterCard;
-                    redirectDamageStatusEffect.UntilTargetLeavesPlay(firstCard);
+                    if (decision.SelectedCard != null && decision.SelectedCard.IsInPlayAndHasGameText)
+                    {
+                        OnDealDamageStatusEffect onDealDamageStatusEffect = new OnDealDamageStatusEffect(this.CardWithoutReplacements,
+                                                                                                "MaybeRedirectDamageResponse",
+                                                                                                $"When {decision.SelectedCard.Title} would deal damage, {DecisionMaker.Name} may redirect it to themselves.",
+                                                                                                new TriggerType[] { TriggerType.RedirectDamage, TriggerType.WouldBeDealtDamage },
+                                                                                                this.TurnTaker,
+                                                                                                this.Card);
 
-                    //prevent it from asking to redirect from Titan to Titan
-                    redirectDamageStatusEffect.TargetCriteria.IsNotSpecificCard = base.CharacterCard;
+                        //Until the start of your next turn...
+                        onDealDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+                        //...when those targets would deal damage...
+                        onDealDamageStatusEffect.SourceCriteria.IsSpecificCard = decision.SelectedCard;
+                        onDealDamageStatusEffect.DamageAmountCriteria.GreaterThan = 0;
 
-                    redirects.Add(redirectDamageStatusEffect);
+                        //prevent it from asking to redirect from Titan to Titan
+                        onDealDamageStatusEffect.TargetCriteria.IsNotSpecificCard = this.CharacterCard;
+
+                        onDealDamageStatusEffect.UntilTargetLeavesPlay(decision.SelectedCard);
+                        onDealDamageStatusEffect.BeforeOrAfter = BeforeOrAfter.Before;
+
+                        redirects.Add(onDealDamageStatusEffect);
+                    }
                 }
-                if (firstCard != secondCard && secondCard.IsInPlay)
-                {
-                    RedirectDamageStatusEffect redirectDamageStatusEffect = new RedirectDamageStatusEffect();
-                    redirectDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-                    redirectDamageStatusEffect.SourceCriteria.IsSpecificCard = secondCard;
-                    redirectDamageStatusEffect.IsOptional = true;
-                    redirectDamageStatusEffect.RedirectTarget = base.CharacterCard;
-                    redirectDamageStatusEffect.UntilTargetLeavesPlay(secondCard);
-                    redirectDamageStatusEffect.TargetCriteria.IsNotSpecificCard = base.CharacterCard;
-                    redirects.Add(redirectDamageStatusEffect);
-                }
+
                 foreach (StatusEffect effect in redirects)
                 {
                     coroutine = base.AddStatusEffect(effect);
@@ -78,6 +84,34 @@ namespace Cauldron.Titan
                     {
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
+                }
+            }
+            yield break;
+        }
+
+        public IEnumerator MaybeRedirectDamageResponse(DealDamageAction dd, TurnTaker hero, StatusEffect effect, int[] powerNumerals = null)
+        {
+            //...you may redirect that damage to Titan.
+            var storedYesNo = new List<YesNoCardDecision> { };
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(FindHeroTurnTakerController(hero.ToHero()), SelectionType.RedirectDamage, this.Card, storedResults: storedYesNo, cardSource:GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            if (DidPlayerAnswerYes(storedYesNo))
+            {
+                coroutine = RedirectDamage(dd, TargetType.SelectTarget, (Card c) => hero.CharacterCards.Contains(c));
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
             yield break;

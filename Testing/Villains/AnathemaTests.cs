@@ -763,11 +763,11 @@ namespace CauldronTests
 
             int? numCardsInPlayBefore = GetNumberOfCardsInPlay(luminary);
 
-            QuickHPStorage(luminary);
+            QuickHPStorage(luminary.CharacterCard, defender);
             //at the end of turn, anathema deals the Hero character with the highest HP {H+1} melee damage.
             //since disposable defender is in, no damage should be dealt to original target
             GoToEndOfTurn(anathema);
-            QuickHPCheck(0);
+            QuickHPCheck(0, -4);
 
             int? numCardsInPlayAfter = GetNumberOfCardsInPlay(luminary);
 
@@ -812,11 +812,8 @@ namespace CauldronTests
             SetHitPoints(haka.CharacterCard, 25);
             SetHitPoints(bunker.CharacterCard, 26);
 
-
             //Put Thresher Claw in play. 
             PutIntoPlay("ThresherClaw");
-
-            int? numCardsInPlayBefore = GetNumberOfCardsInPlay(haka);
 
             int?[] beforeHps = { haka.CharacterCard.HitPoints, bunker.CharacterCard.HitPoints };
 

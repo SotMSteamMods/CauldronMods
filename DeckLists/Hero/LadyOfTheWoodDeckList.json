@@ -211,7 +211,6 @@
                 "relic"
             ],
             "icons": [
-                "HasPower",
                 "DealDamageToxic",
                 "DealDamageFire",
                 "DealDamageLightning",
@@ -272,7 +271,7 @@
                 "limited"
             ],
             "icons": [
-                "PreventDamage",
+                "CancelledDamageGreen",
                 "GainHP",
                 "HasPower",
                 "DrawCardNow"
@@ -353,7 +352,7 @@
                 "season"
             ],
             "icons": [
-                "IncreaseFireDamageDealt"
+                "IncreaseDamageDealtFire"
             ],
             "body": "Increase fire damage dealt by {LadyOfTheWood} by 2.",
             "flavorQuotes": [
@@ -400,7 +399,7 @@
                 "limited"
             ],
             "icons": [
-                "IrreducibleDamage",
+                "MakeDamageIrreducible",
                 "HasPower",
                 "DealDamageLightning"
             ],
@@ -439,7 +438,7 @@
             "flavorReference": "Starlight And Lady Of The Wood, Starcrossed #72"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "LadyOfTheWoodCharacter",
             "promoIdentifier": "SeasonsOfChangeLadyOfTheWoodCharacter",
@@ -473,7 +472,7 @@
                 "GainHP",
                 "Discard",
                 "DrawCardNow",
-                "IrreducibleDamage"
+                "MakeDamageIrreducible"
             ],
             "openingLines": {
                 "default": "The turn of the seasons will wipe this land clean of evil.",
@@ -499,8 +498,8 @@
             ],
             "icons": [
                 "HasPower",
-                "AddToken",
-                "RemoveToken"
+                "AddTokens",
+                "RemoveTokens"
             ],
             "hitpoints": 19,
             "nemesisIdentifiers": [
@@ -513,8 +512,8 @@
             ],
             "flippedIcons": [
                 "PlayCardNow",
-                "AddToken",
-                "RemoveToken",
+                "AddTokens",
+                "RemoveTokens",
                 "DealDamage"
             ],
             "openingLines": {
@@ -522,7 +521,15 @@
                 "CeladrochCharacter": "Adventure, discovery, life - all will exist after this. All but you, Celadroch.",
                 "TiamatElementalCharacter": "Tiamat Elemental placeholder"
             },
-            "complexity": 3
+            "complexity": 3,
+             "tokenPools":[
+		 	{
+		 		"identifier":"LadyOfTheWoodElementPool",
+		 		"name":"Lady of the Wood's Element Pool",
+		 		"initialValue":0,
+		 		"minimumValue":0,
+		 		"color":"D1426D"
+		 	}]
         },
         {
             "identifier": "LadyOfTheWoodCharacter",

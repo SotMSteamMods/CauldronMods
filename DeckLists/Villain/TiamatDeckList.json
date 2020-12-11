@@ -279,7 +279,7 @@
                 "Manipulate",
                 "EndOfTurnAction",
                 "PlayCardNow",
-                "DesroySelf"
+                "DestroySelf"
             ],
             "body": [
                 "When this card enters play, shuffle all Spell cards from the villain trash and place them beneath this card face down.",
@@ -653,7 +653,7 @@
             ],
             "advanced": "The first time {InfernoTiamatCharacter} deals damage each turn, increase that damage by 2.",
             "icons": [
-                "CannotWin",
+                "CannotWinTheGame",
                 "StartAndEndOfTurnAction",
                 "DealDamageFire"
             ],
@@ -697,10 +697,7 @@
                 "StartAndEndOfTurnAction",
                 "Discard"
             ],
-            "advancedIcons": [
-                "Discard"
-            ],
-            "flippedBody": "The Frigid Earth",
+            "flippedBody": "The Noxious Fire",
             "flippedGameplay": [
                 "Face down heads are indestructible and have no game text.",
                 "If a head would be destroyed, flip it instead.",

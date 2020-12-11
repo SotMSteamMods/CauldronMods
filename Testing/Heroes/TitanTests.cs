@@ -859,7 +859,7 @@ namespace CauldronTests
 
             PutOnDeck(omnitron, GetCard("Terraforming", 0));
             Card epe = PlayCard("ElectroPulseExplosive");
-
+            DecisionYesNo = true;
             Card gol = PlayCard("StubbornGoliath");
             UsePower(gol);
             //{Titan} deals up to 2 non-hero targets 2 infernal damage each.{BR}Until the start of your next turn, when those targets would deal damage, you may redirect that damage to {Titan}.
@@ -883,7 +883,7 @@ namespace CauldronTests
 
             PutOnDeck(omnitron, GetCard("Terraforming", 0));
             Card epe = PlayCard("ElectroPulseExplosive");
-
+            DecisionYesNo = true;
             Card gol = PlayCard("StubbornGoliath");
             UsePower(gol);
             //{Titan} deals up to 2 non-hero targets 2 infernal damage each.{BR}Until the start of your next turn, when those targets would deal damage, you may redirect that damage to {Titan}.
@@ -893,6 +893,40 @@ namespace CauldronTests
             DealDamage(omnitron, haka, 2, DamageType.Melee);
             DealDamage(epe, haka, 2, DamageType.Melee);
             QuickHPCheck(-2, -2);
+        }
+        [Test]
+        public void TestStubbornGoliathFewerTargetsThanAllowed()
+        { 
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PutOnDeck(omnitron, GetCard("Terraforming", 0));
+            Card epe = PlayCard("ElectroPulseExplosive");
+            DecisionYesNo = true;
+            Card gol = PlayCard("StubbornGoliath");
+            DecisionSelectTargets = new Card[] { epe, null };
+            UsePower(gol);
+            QuickHPStorage(haka, titan);
+            DealDamage(omnitron, haka, 2, DamageType.Melee);
+            DealDamage(epe, haka, 2, DamageType.Melee);
+            QuickHPCheck(-2, -2);
+        }
+        [Test]
+        public void TestStubbornGoliathRedirectOptional()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PutOnDeck(omnitron, GetCard("Terraforming", 0));
+            Card epe = PlayCard("ElectroPulseExplosive");
+            DecisionYesNo = false;
+            Card gol = PlayCard("StubbornGoliath");
+            DecisionSelectTargets = new Card[] { epe, omnitron.CharacterCard };
+            UsePower(gol);
+            QuickHPStorage(haka, titan);
+            DealDamage(omnitron, haka, 2, DamageType.Melee);
+            DealDamage(epe, haka, 2, DamageType.Melee);
+            QuickHPCheck(-4, 0);
         }
         [Test()]
         public void TestTheChaplianPower1()

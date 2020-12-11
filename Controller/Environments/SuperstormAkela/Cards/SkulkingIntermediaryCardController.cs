@@ -21,7 +21,7 @@ namespace Cauldron.SuperstormAkela
             AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, HealNonHeroTargetsResponse, TriggerType.GainHP);
 
             //This card is immune to damage dealt by villain targets.
-            AddImmuneToDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card.IsVillainTarget && dd.Target == base.Card);
+            AddImmuneToDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && IsVillainTarget(dd.DamageSource.Card) && dd.Target == base.Card);
         }
 
         private IEnumerator HealNonHeroTargetsResponse(PhaseChangeAction arg)

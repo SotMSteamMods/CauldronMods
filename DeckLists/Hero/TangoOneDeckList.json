@@ -53,7 +53,7 @@
             ],
             "icons": [
                 "Discard",
-                "PreventDamage"
+                "CancelledDamageGreen"
             ],
             "body": "Whenever {TangoOne} would be dealt damage, you may reveal and discard the top card of your deck. If it is a Critical card, prevent that damage.",
             "flavorQuotes": [

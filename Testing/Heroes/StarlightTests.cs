@@ -21,6 +21,13 @@ namespace CauldronTests
             DealDamage(villain, starlight, 2, DamageType.Melee);
         }
 
+        private void ReviveFromIncap(int revivedHP, Card ritesOfRevival)
+        {
+            CardController revivalController = base.GameController.FindCardController(ritesOfRevival);
+            List<UnincapacitateHeroAction> storedResults = new List<UnincapacitateHeroAction>();
+            base.RunCoroutine(base.GameController.UnincapacitateHero(base.GameController.FindCardController(starlight.CharacterCard), revivedHP, 2, storedResults, revivalController.GetCardSource()));
+        }
+
         private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
         {
             foreach (var id in identifiers)
@@ -205,6 +212,7 @@ namespace CauldronTests
             SetupIncap(baron);
             AssertIncapacitated(starlight);
             Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card impendingCasualty = GetCard("ImpendingCasualty");
 
             GoToUseIncapacitatedAbilityPhase(starlight);
             UseIncapacitatedAbility(starlight, 0);
@@ -213,6 +221,12 @@ namespace CauldronTests
             QuickHPStorage(mdp);
             DealDamage(haka, mdp, 2, DamageType.Melee);
             QuickHPCheck(0);
+
+            //Mobile Defense Platform is also immune to damage from non-target sources
+            PlayCard(impendingCasualty);
+            DealDamage(impendingCasualty, mdp, 2, DamageType.Energy);
+            QuickHPCheck(0);
+            DestroyCard(impendingCasualty);
 
             //But it should not be able to deal damage either.
             QuickHPStorage(haka);
@@ -235,6 +249,98 @@ namespace CauldronTests
             GoToStartOfTurn(starlight);
             QuickHPStorage(battalion);
             DealDamage(haka, battalion, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+        }
+        [Test()]
+        public void TestStarlightIncap1_TiedLowest()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(starlight);
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToUseIncapacitatedAbilityPhase(starlight);
+            UseIncapacitatedAbility(starlight, 0);
+
+            //MDP and Ra are tied for lowest HP target
+            SetHitPoints(mdp, 10);
+            SetHitPoints(ra, 10);
+
+            //Choose MDP as lowest HP target, it should be immune to damage
+            DecisionsYesNo = new bool[] { true };
+            QuickHPStorage(mdp);
+            DealDamage(haka, mdp, 2, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //Choose MDP as lowest HP target, it should be unable to deal damage
+            base.ResetDecisions();
+            DecisionsYesNo = new bool[] { true };
+            QuickHPStorage(haka);
+            DealDamage(mdp, haka, 2, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //Deny MDP as lowest HP target, it should deal damage normally
+            base.ResetDecisions();
+            DecisionsYesNo = new bool[] { false };
+            QuickHPStorage(haka);
+            DealDamage(mdp, haka, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //Deny MDP as lowest HP target, it should take damage normally
+            base.ResetDecisions();
+            DecisionsYesNo = new bool[] { false };
+            QuickHPStorage(mdp);
+            DealDamage(haka, mdp, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //An unambiguously lowest HP target shouldn't get a choice
+            base.ResetDecisions();
+            DecisionsYesNo = new bool[] { };
+            PutIntoPlay("BladeBattalion");
+            Card battalion = GetCardInPlay("BladeBattalion");
+            QuickHPStorage(battalion);
+            DealDamage(haka, battalion, 2, DamageType.Melee);
+            QuickHPCheck(0);
+        }
+        [Test()]
+        public void TestStarlightIncap1_Revived()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheTempleOfZhuLong");
+            StartGame();
+
+            SetupIncap(baron);
+            AssertIncapacitated(starlight);
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            GoToUseIncapacitatedAbilityPhase(starlight);
+            UseIncapacitatedAbility(starlight, 0);
+
+            //as lowest HP target, Mobile Defense Platform should be immune to damage
+            QuickHPStorage(mdp);
+            DealDamage(haka, mdp, 2, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //Revive Starlight
+            Card revival = GetCard("RitesOfRevival");
+            PlayCard(revival);
+            ReviveFromIncap(25, revival);
+            AssertHitPoints(starlight.CharacterCard, 25);
+
+            //Incap status effects are cleared when a hero is revived
+            //Mobile Defense Platform is no longer immune to damage
+            QuickHPStorage(mdp);
+            DealDamage(haka, mdp, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //Re-incap Starlight
+            SetupIncap(baron);
+            AssertIncapacitated(starlight);
+
+            //Mobile Defense Platform still takes damage normally
+            QuickHPStorage(mdp);
+            DealDamage(haka, mdp, 2, DamageType.Melee);
             QuickHPCheck(-2);
         }
         [Test()]

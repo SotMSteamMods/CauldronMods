@@ -36,7 +36,7 @@
             "flippedIcons": [
                 "UsePowerNow",
                 "DealDamageProjectile",
-                "IrreducibleDamage"
+                "MakeDamageIrreducible"
             ],
             "openingLines": {
                 "default": "default placeholder",
@@ -169,7 +169,7 @@
             "icons": [
                 "DealDamageInfernal",
                 "DestroySelf",
-                "PreventDamage"
+                "CancelledDamageRed"
             ],
             "body": [
                 "Play this card next to a target. {Impact} deals that target 2 infernal damage.",
@@ -247,10 +247,9 @@
             ],
             "icons": [
                 "GainHP",
-                "PreventDamage",
+                "CancelledDamageGreen",
                 "HasPower",
-                "DealDamageSonic",
-                "DestroySelf"
+                "DealDamageSonic"
             ],
             "body": [
                 "When this card enters play, {Impact} regains 1HP.",
@@ -424,7 +423,7 @@
                 "The environment deals 1 target 2 projectile damage."
             ],
             "flippedIcons": [
-                "IrreducibleDamage",
+                "MakeDamageIrreducible",
                 "UsePowerNow",
                 "DealDamageProjectile"
             ],
@@ -466,7 +465,7 @@
             "flippedIcons": [
                 "UsePowerNow",
                 "CannotPlayCards",
-                "IrreducibleDamage"
+                "MakeDamageIrreducible"
             ],
             "openingLines": {
                 "default": "default placeholder",
