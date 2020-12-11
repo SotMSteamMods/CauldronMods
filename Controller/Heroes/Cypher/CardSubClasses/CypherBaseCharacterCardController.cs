@@ -9,7 +9,6 @@ namespace Cauldron.Cypher
     {
         public CypherBaseCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         protected bool IsAugment(Card card)
@@ -19,7 +18,7 @@ namespace Cauldron.Cypher
 
         protected List<Card> GetAugmentsInPlay()
         {
-            return FindCardsWhere(c => c.IsInPlay && IsAugment(c)).ToList();
+            return FindCardsWhere(c => c.IsInPlayAndHasGameText && IsAugment(c)).ToList();
         }
 
         protected List<TurnTaker> GetAugmentedHeroTurnTakers()
@@ -27,11 +26,6 @@ namespace Cauldron.Cypher
             return FindTurnTakersWhere(tt =>
                 tt.IsHero && tt.CharacterCard.NextToLocation.HasCards &&
                 tt.CharacterCard.NextToLocation.Cards.Any(IsAugment)).ToList();
-        }
-
-        protected List<Card> GetAugmentedHeroes()
-        {
-            return FindCardsWhere(c => c.IsHeroCharacterCard && c.NextToLocation.HasCards && c.NextToLocation.Cards.Any(IsAugment)).ToList();
         }
     }
 }

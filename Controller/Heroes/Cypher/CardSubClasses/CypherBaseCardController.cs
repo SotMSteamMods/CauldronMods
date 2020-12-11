@@ -25,7 +25,7 @@ namespace Cauldron.Cypher
 
         protected List<Card> GetAugmentsInPlay()
         {
-            return FindCardsWhere(c => c.IsInPlay && IsAugment(c)).ToList();
+            return FindCardsWhere(c => c.IsInPlayAndHasGameText && IsAugment(c)).ToList();
         }
 
         protected List<Card> GetAugmentedHeroCards()
@@ -44,16 +44,6 @@ namespace Cauldron.Cypher
         protected List<Card> GetAugmentsForHero(Card hero)
         {
             return !IsAugmented(hero) ? new List<Card>() : hero.GetAllNextToCards(false).Where(IsAugment).ToList();
-        }
-
-        protected List<Card> GetValidAugmentMoveHeroes(Card sourceHero)
-        {
-            return FindCardsWhere(c => c != sourceHero && c.IsHeroCharacterCard).ToList();
-        }
-
-        protected List<TurnTaker> GetValidAugmentMoveHeroes(TurnTaker sourceHero)
-        {
-            return FindTurnTakersWhere(tt => tt != sourceHero && tt.IsHero).ToList();
         }
 
         protected LinqCardCriteria AugmentedHeroes()
