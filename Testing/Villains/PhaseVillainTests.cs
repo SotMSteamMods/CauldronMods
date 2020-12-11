@@ -205,5 +205,85 @@ namespace CauldronTests
             AssertIsInPlay(iron);
             AssertInTrash(moko);
         }
+
+        [Test()]
+        public void TestAlmostGotHerDamageEffects()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard("AlmostGotHer");
+            PlayCard("TaMoko");
+            Card wall = GetCard("ReinforcedWall");
+            Card block = PutOnDeck("BlockedSightline");
+
+            //Increase damage dealt to Obstacles by 1 by the first hero target damaged by {PhaseVillain} each round.
+            //no one's beem hit yet
+            QuickHPStorage(wall);
+            DealDamage(haka, wall, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //Damage dealt by {PhaseVillain} is irreducible.
+            QuickHPStorage(haka);
+            DealDamage(phase, haka, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+            //Haka was first hit this round
+            QuickHPStorage(wall);
+            DealDamage(haka, wall, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+
+
+            DealDamage(phase, bunker, 2, DamageType.Melee);
+            //Bunker was not first hit
+            QuickHPStorage(wall);
+            DealDamage(bunker, wall, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            SetHitPoints(wall, 0);
+            DestroyCard(wall);
+
+            GoToStartOfTurn(env);
+            //haka is still first
+            QuickHPStorage(block);
+            DealDamage(haka, block, 1, DamageType.Melee);
+            QuickHPCheck(-2);
+            //bunker still not first
+            QuickHPStorage(block);
+            DealDamage(bunker, block, 1, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            //New round
+            GoToStartOfTurn(phase);
+            QuickHPStorage(block);
+            DealDamage(haka, block, 1, DamageType.Melee);
+            QuickHPCheck(-1);
+        }
+
+        [Test()]
+        public void TestAlmostGotHerNotDestroySelf()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card almost = PlayCard("AlmostGotHer");
+            PutOnDeck("VaultDoor");
+            //At the start of the villain turn, if there are 1 or 0 Obstacles in play, each player must discard a card. Then, this card is destroyed.
+            GoToStartOfTurn(phase);
+            AssertIsInPlay(almost);
+        }
+
+        [Test()]
+        public void TestAlmostGotHerDestroySelf()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card almost = PutOnDeck("AlmostGotHer");
+            //At the start of the villain turn, if there are 1 or 0 Obstacles in play, each player must discard a card. Then, this card is destroyed.
+            QuickHandStorage(haka, scholar, bunker);
+            GoToStartOfTurn(phase);
+            QuickHandCheck(-1, -1, -1);
+            AssertInTrash(almost);
+        }
     }
 }
