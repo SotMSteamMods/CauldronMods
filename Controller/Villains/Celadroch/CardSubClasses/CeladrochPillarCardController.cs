@@ -10,8 +10,8 @@ namespace Cauldron.Celadroch
     {
         private readonly CeladrochPillarRewards _rewards;
         private readonly TriggerType _rewardType;
-        private readonly string PendingTriggerKey = "PendingTriggerKey";
-        private readonly string DebugRewardCountKey = "RewardCountKey";
+        private readonly string PendingTriggersKey = "PendingTriggersKey";
+        private readonly string CompletedTriggersKey = "CompletedTriggersKey";
 
         protected CeladrochPillarCardController(Card card, TurnTakerController turnTakerController, TriggerType rewardType) : base(card, turnTakerController)
         {
@@ -21,8 +21,8 @@ namespace Cauldron.Celadroch
             SpecialStringMaker.ShowSpecialString(RemainingRewardsSpecialString);
             SpecialStringMaker.ShowSpecialString(HpTilNextRewardSpecialString).Condition = () => _rewards.HpTillNextTrigger(Card.HitPoints.Value) > 0;
 
-            SpecialStringMaker.ShowSpecialString(() => $"DEBUG - Pending Triggers {GetCardPropertyJournalEntryInteger(PendingTriggerKey) ?? 0}");
-            SpecialStringMaker.ShowSpecialString(() => $"DEBUG - Reward Triggers {GetCardPropertyJournalEntryInteger(DebugRewardCountKey) ?? 0}");
+            SpecialStringMaker.ShowSpecialString(() => $"DEBUG - Pending Triggers {GetCardPropertyJournalEntryInteger(PendingTriggersKey) ?? 0}");
+            SpecialStringMaker.ShowSpecialString(() => $"DEBUG - Completed Triggers {GetCardPropertyJournalEntryInteger(CompletedTriggersKey) ?? 0}");
         }
 
         // This card may not regain HP.
@@ -62,26 +62,27 @@ namespace Cauldron.Celadroch
             //plan:
             // pull pending triggers
             // push new trigger count
-            // do loop
-            // pull pending triggers
-            // if triggers, loop
+            // pull completed triggers
+            // do loop, if pending > completed
+            // push +1 complted
             // fire the trigger
+            // pull pending & completed
             // loop
 
-            int pendingTriggers = GetCardPropertyJournalEntryInteger(PendingTriggerKey) ?? 0;
+            int pendingTriggers = GetCardPropertyJournalEntryInteger(PendingTriggersKey) ?? 0;
             int beforeHp = action.TargetHitPointsBeforeBeingDealtDamage.Value;
             int afterHp = action.TargetHitPointsAfterBeingDealtDamage.Value;
             System.Console.WriteLine($"{Card.Title} - before = {beforeHp}, after = {afterHp}");
             int newTriggers = _rewards.NumberOfTriggers(beforeHp, afterHp);
             pendingTriggers += newTriggers;
 
-            SetCardProperty(PendingTriggerKey, pendingTriggers);
-            while (pendingTriggers > 0)
+            SetCardProperty(PendingTriggersKey, pendingTriggers);
+            int completedTriggers = GetCardPropertyJournalEntryInteger(CompletedTriggersKey) ?? 0;
+            while (pendingTriggers > completedTriggers)
             {
                 System.Console.WriteLine($"{Card.Title} - Reward Trigger");
-
-                int triggerCount = GetCardPropertyJournalEntryInteger(DebugRewardCountKey) ?? 0;
-                SetCardProperty(DebugRewardCountKey, triggerCount + 1);
+                               
+                SetCardProperty(CompletedTriggersKey, completedTriggers + 1);
 
                 List<SelectTurnTakerDecision> selected = new List<SelectTurnTakerDecision>();
                 var coroutine = SelectHeroAndGrantReward(selected);
@@ -94,15 +95,15 @@ namespace Cauldron.Celadroch
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                pendingTriggers = GetCardPropertyJournalEntryInteger(PendingTriggerKey) ?? 0;
-                if (pendingTriggers > 0)
-                    pendingTriggers--;
+                pendingTriggers = GetCardPropertyJournalEntryInteger(PendingTriggersKey) ?? 0;
+                completedTriggers = GetCardPropertyJournalEntryInteger(CompletedTriggersKey) ?? 0;
+
                 if (!DidSelectTurnTaker(selected))
                 {
-                    pendingTriggers = 0; // skip == done
+                    //skip remaining triggers if any remain
+                    SetCardProperty(CompletedTriggersKey, pendingTriggers);
+                    completedTriggers = pendingTriggers;
                 }
-
-                SetCardProperty(PendingTriggerKey, pendingTriggers);
             }
         }
 
@@ -141,7 +142,24 @@ namespace Cauldron.Celadroch
         private IEnumerator MoveOutOfPlayResponse(MoveCardAction action)
         {
             action.SetDestination(TurnTaker.OutOfGame);
-            return DoNothing();
+            var coroutine = ResetFlagAfterLeavesPlay(PendingTriggersKey);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            coroutine = ResetFlagAfterLeavesPlay(CompletedTriggersKey);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
     }
 }
