@@ -459,7 +459,7 @@
 			"incapacitatedAbilities": [
 				"One player may play a card now.",
 				"One player may draw a card now.",
-				"Until the start of your next turn, reduce damage dealt to hero targets by 2."
+				"Until the start of your next turn, reduce damage dealt by environment cards to hero targets by 2."
 			],
 			"flippedIcons": [
 				"PlayCardNow",

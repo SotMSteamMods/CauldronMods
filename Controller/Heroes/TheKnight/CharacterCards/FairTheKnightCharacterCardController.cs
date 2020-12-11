@@ -34,7 +34,7 @@ namespace Cauldron.TheKnight
                     }
                 case 2:
                     {
-                        //"Until the start of your next turn, reduce damage dealt to hero targets by 2."
+                        //"Until the start of your next turn, reduce damage dealt by environment cards to hero targets by 2."
                         break;
                     }
             }
