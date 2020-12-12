@@ -690,5 +690,35 @@ namespace CauldronTests
             QuickHandCheck(1);
             QuickHPCheck(0);
         }
+        [Test]
+        public void TestRoninKnightOldKnightPowerDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "SkyScraper", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            PlayCard("LivingForceField");
+            QuickHPStorage(baron.CharacterCard, oldKnight);
+            UsePower(oldKnight);
+            QuickHPCheck(-2, 0);
+        }
+        [Test]
+        public void TestRoninKnightOldKnightPowerReturn()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "SkyScraper", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            Card shield = PlayCard("StalwartShield");
+            Card mail = PlayCard("PlateMail");
+            AssertIsInPlay(shield);
+            AssertIsInPlay(mail);
+
+            DecisionSelectCards = new Card[] { baron.CharacterCard, shield };
+
+            UsePower(oldKnight);
+            AssertIsInPlay(mail);
+            AssertInHand(shield);
+        }
     }
 }
