@@ -1448,5 +1448,40 @@ namespace CauldronTests
             DestroyCard(card);
             QuickHPCheck(0, -1, -1, -1);
         }
+
+
+        [Test()]
+        public void TestTheMountainsMadess()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            SuppressCeladrochMinionPlay();
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+
+            StartGame(false);
+
+            var card = GetCard("TheMountainsMadness");
+
+            MoveCards(celadroch, celadroch.TurnTaker.Deck.Cards.Where(c => c.DoKeywordsContain("chosen")), celadroch.TurnTaker.Trash);
+            MoveCards(celadroch, celadroch.TurnTaker.Deck.Cards.TakeRandom(10, GameController.Game.RNG), celadroch.TurnTaker.Trash);
+            StackDeck(new[] { "AvatarOfDeath" });
+            var tCount = celadroch.TurnTaker.Trash.Cards.Count(celadroch => celadroch.IsTarget);
+
+            GoToPlayCardPhase(celadroch);
+
+            QuickShuffleStorage(celadroch);
+            StackDeckAfterShuffle(celadroch, new[] { "AvatarOfDeath", });
+
+            PlayCard(card);
+            AssertInTrash(celadroch, card);
+
+            var top = GetCard("AvatarOfDeath");
+            AssertInPlayArea(celadroch, top);
+
+            tCount = celadroch.TurnTaker.Trash.Cards.Count(celadroch => celadroch.IsTarget);
+
+            Assert.AreEqual(0, tCount);
+        }
     }
 }

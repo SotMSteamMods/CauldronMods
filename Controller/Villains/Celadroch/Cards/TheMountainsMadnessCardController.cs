@@ -17,5 +17,28 @@ namespace Cauldron.Celadroch
         {
 
         }
+
+        public override IEnumerator Play()
+        {
+            var coroutine = GameController.ShuffleCardsIntoLocation(DecisionMaker, TurnTaker.Trash.Cards.Where(c => c.IsTarget), TurnTaker.Deck, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = PlayTheTopCardOfTheVillainDeckResponse(null);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
     }
 }
