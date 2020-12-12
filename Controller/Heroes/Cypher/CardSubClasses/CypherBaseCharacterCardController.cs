@@ -24,8 +24,7 @@ namespace Cauldron.Cypher
         protected List<TurnTaker> GetAugmentedHeroTurnTakers()
         {
             return FindTurnTakersWhere(tt =>
-                tt.IsHero && tt.CharacterCard.NextToLocation.HasCards &&
-                tt.CharacterCard.NextToLocation.Cards.Any(IsAugment)).ToList();
+                tt.IsHero && tt.CharacterCards.Any(card => card.NextToLocation.HasCards && card.NextToLocation.Cards.Any(IsAugment))).ToList();
         }
     }
 }
