@@ -28,7 +28,7 @@ namespace Cauldron.Celadroch
         {
             AddEndOfTurnTrigger(tt => tt == TurnTaker, pca => GameController.GainHP(DecisionMaker, c => IsVillainTarget(c), 2, cardSource: GetCardSource()), TriggerType.GainHP);
 
-            AddAfterDestroyedAction(ga => GameController.GainHP(TurnTaker.CharacterCard, 10, cardSource: GetCardSource()));
+            AddBeforeDestroyAction(ga => GameController.GainHP(TurnTaker.CharacterCard, 10, cardSource: GetCardSource()));
         }
 
     }

@@ -1417,5 +1417,36 @@ namespace CauldronTests
             // deth = H + 2 to all
             QuickHPCheck(-5, -9, -9);
         }
+
+
+        [Test()]
+        public void TestRattlingWind()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            SuppressCeladrochMinionPlay();
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            StackDeckAfterShuffle(celadroch, new[] { "AvatarOfDeath", "TatteredDevil" });
+            StartGame(false);
+
+            var card = PlayCard("RattlingWind");
+            AssertInPlayArea(celadroch, card);
+
+            var top = GetCard("AvatarOfDeath");
+            AssertInPlayArea(celadroch, top);
+
+            QuickHPStorage(ra, haka, legacy);
+            DrawCard(ra, 2);
+            QuickHPCheck(-2, 0, 0);
+
+            QuickHPStorage(ra, haka, legacy);
+            DrawCard(legacy, 1);
+            QuickHPCheck(0, 0, -1);
+
+            QuickHPStorage(celadroch, ra, haka, legacy);
+            DestroyCard(card);
+            QuickHPCheck(0, -1, -1, -1);
+        }
     }
 }

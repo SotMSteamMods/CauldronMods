@@ -27,7 +27,7 @@ namespace Cauldron.Celadroch
         {
             AddStartOfTurnTrigger(tt => tt == TurnTaker, pca => DestroyThisCardResponse(pca), TriggerType.DestroySelf);
 
-            AddAfterDestroyedAction(IncreaseDamageStatusEffectResponse);
+            AddBeforeDestroyAction(IncreaseDamageStatusEffectResponse);
         }
 
         private IEnumerator IncreaseDamageStatusEffectResponse(GameAction _)

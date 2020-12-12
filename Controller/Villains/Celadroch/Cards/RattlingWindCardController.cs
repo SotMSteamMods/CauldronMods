@@ -16,7 +16,47 @@ namespace Cauldron.Celadroch
 
         public RattlingWindCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
+
+        public override IEnumerator Play()
+        {
+            return base.Play();
+        }
+
+        public override void AddTriggers()
+        {
+            AddTrigger<DrawCardAction>(dca => dca.DidDrawCard, DrawCardDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+            AddBeforeDestroyAction(ga => GameController.DealDamage(DecisionMaker, CharacterCard, c => c.IsHero && c.IsTarget, 1, DamageType.Cold, cardSource: GetCardSource()));
+        }
+
+        private IEnumerator DrawCardDamageResponse(DrawCardAction dca)
+        {
+            var result = new List<Card>();
+            var coroutine = FindCharacterCardToTakeDamage(dca.HeroTurnTaker, result, CharacterCard, 1, DamageType.Projectile);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            var card = result.First();
+            if (card != null)
+            {
+                coroutine = DealDamage(CharacterCard, card, 1, DamageType.Projectile, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+        }
+
+
     }
 }
