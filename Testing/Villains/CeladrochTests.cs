@@ -1084,7 +1084,7 @@ namespace CauldronTests
 
             QuickHPStorage(ra, haka, legacy);
             GoToEndOfTurn(celadroch);
-            
+
             //includes cela's end of turn
             QuickHPCheck(-2, -4, -4);
 
@@ -1204,6 +1204,46 @@ namespace CauldronTests
             GoToStartOfTurn(celadroch);
             var devil = GetCard("TatteredDevil");
             AssertInPlayArea(celadroch, devil);
+        }
+
+        [Test()]
+        public void TestLaughingHag([Values("Dominion", "TheLegacyRing")] string cardToDestroy)
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            SuppressCeladrochMinionPlay();
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            StackDeckAfterShuffle(celadroch, new[] { "LaughingHag", "TatteredDevil" });
+            StartGame(false);
+
+            GoToPlayCardPhase(celadroch);
+
+            var card = GetCard("LaughingHag");
+            PlayCard(card);
+            AssertInPlayArea(celadroch, card);
+
+            var destroy = PlayCard(cardToDestroy);
+
+            GoToEndOfTurn(celadroch);
+
+            AssertInTrash(destroy);
+
+            //test immune to fire, lightning, cold, toxic
+            QuickHPStorage(card);
+            DealDamage(celadroch, card, 1, DamageType.Fire, true);
+            DealDamage(haka, card, 1, DamageType.Lightning, true);
+            DealDamage(ra, card, 1, DamageType.Cold, true);
+            DealDamage(card, card, 1, DamageType.Toxic, true);
+            DealDamage(haka, card, 1, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            //test hero's take additional damage
+            QuickHPStorage(ra, haka, legacy);
+            DealDamage(celadroch, ra, 1, DamageType.Fire);
+            DealDamage(ra, haka, 1, DamageType.Melee);
+            DealDamage(card, legacy, 1, DamageType.Projectile);
+            QuickHPCheck(-2, -2, -2);
         }
     }
 }
