@@ -559,12 +559,8 @@ namespace CauldronTests
             DecisionSelectTarget = haka.CharacterCard;
             DecisionSelectPower = legacy.CharacterCard;
             DecisionSelectPowerIndex = 1;
-            bool skipped;
-            SelectAndUsePower(legacy, out skipped);
+            SelectAndUsePower(legacy, out bool _);
             QuickHPCheck(-1);
-
-
-
         }
 
         [Test()]

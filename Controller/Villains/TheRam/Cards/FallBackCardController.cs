@@ -19,14 +19,29 @@ namespace Cauldron.TheRam
         public override IEnumerator Play()
         {
             //"When this card enters play, {TheRam} deals each Up Close hero target {H - 1} melee damage."
-            IEnumerator damage = DealDamage(GetRam, (Card c) => c.IsInPlayAndHasGameText && c.IsTarget && c.IsHero && IsUpClose(c), H - 1, DamageType.Melee);
-            if (base.UseUnityCoroutines)
+            if (RamIfInPlay != null)
             {
-                yield return base.GameController.StartCoroutine(damage);
+                IEnumerator damage = DealDamage(RamIfInPlay, (Card c) => c.IsInPlayAndHasGameText && c.IsTarget && c.IsHero && IsUpClose(c), H - 1, DamageType.Melee);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(damage);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(damage);
+                }
             }
             else
             {
-                base.GameController.ExhaustCoroutine(damage);
+                IEnumerator message = MessageNoRamToAct(GetCardSource(), "deal damage");
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(message);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(message);
+                }
             }
 
             // "Destroy all copies of Up Close in play."

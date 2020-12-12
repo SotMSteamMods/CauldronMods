@@ -1,6 +1,6 @@
 {"frames": {
 
-"AceOfSorrowsBaccaratCharacter.jpg":
+"AcceleratedEvolutionAnathemaCharacter.jpg":
 {
 	"frame": {"x":0,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -8,7 +8,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"AceOfSwordsBaccaratCharacter.jpg":
+"AceOfSorrowsBaccaratCharacter.jpg":
 {
 	"frame": {"x":176,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -16,7 +16,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"AreaStarlightCharacter.png":
+"AceOfSwordsBaccaratCharacter.jpg":
 {
 	"frame": {"x":352,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -24,7 +24,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"BaccaratCharacter.jpg":
+"AnathemaCharacter.jpg":
 {
 	"frame": {"x":528,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -32,7 +32,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"BerserkerTheKnightCharacterCard.jpg":
+"AreaStarlightCharacter.png":
 {
 	"frame": {"x":704,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -40,7 +40,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"BlackwoodForestDeckBack.jpg":
+"BaccaratCharacter.jpg":
 {
 	"frame": {"x":880,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -48,7 +48,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"CaptainGyrosaurCharacter.png":
+"BerserkerTheKnightCharacter.jpg":
 {
 	"frame": {"x":1056,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -56,7 +56,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"CatchwaterHarborDeckBack.png":
+"BlackwoodForestDeckBack.jpg":
 {
 	"frame": {"x":1232,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -64,7 +64,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"CornTheStrangerCharacter.png":
+"CatchwaterHarborDeckBack.png":
 {
 	"frame": {"x":1408,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -72,7 +72,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"CreedOfTheSniperTangoOne.png":
+"CornTheStrangerCharacter.png":
 {
 	"frame": {"x":1584,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -80,7 +80,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"CricketCharacter.png":
+"CreedOfTheSniperTangoOne.png":
 {
 	"frame": {"x":1760,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -88,7 +88,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"CypherCharacter.png":
+"CricketCharacter.png":
 {
 	"frame": {"x":0,"y":256,"w":176,"h":256},
 	"rotated": false,
@@ -96,7 +96,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"DocHavocCharacter.jpg":
+"CypherCharacter.png":
 {
 	"frame": {"x":176,"y":256,"w":176,"h":256},
 	"rotated": false,
@@ -104,7 +104,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"DragonRangerGargoyleCharacter.png":
+"DendronCharacter.jpg":
 {
 	"frame": {"x":352,"y":256,"w":176,"h":256},
 	"rotated": false,
@@ -112,7 +112,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"DriftCharacter.png":
+"DistributedHivemindSwarmEaterCharacter.png":
 {
 	"frame": {"x":528,"y":256,"w":176,"h":256},
 	"rotated": false,
@@ -120,7 +120,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"EchelonCharacter.png":
+"DocHavocCharacter.jpg":
 {
 	"frame": {"x":704,"y":256,"w":176,"h":256},
 	"rotated": false,
@@ -128,7 +128,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"FairTheKnightCharacterCard.jpg":
+"EchelonCharacter.png":
 {
 	"frame": {"x":880,"y":256,"w":176,"h":256},
 	"rotated": false,
@@ -136,7 +136,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"FirstResponseCricketCharacter.png":
+"FairTheKnightCharacterCard.jpg":
 {
 	"frame": {"x":1056,"y":256,"w":176,"h":256},
 	"rotated": false,
@@ -144,7 +144,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"FirstResponseCypherCharacter.png":
+"FirstResponseCricketCharacter.png":
 {
 	"frame": {"x":1232,"y":256,"w":176,"h":256},
 	"rotated": false,
@@ -152,7 +152,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"FirstResponseDocHavocCharacter.png":
+"FirstResponseCypherCharacter.png":
 {
 	"frame": {"x":1408,"y":256,"w":176,"h":256},
 	"rotated": false,
@@ -160,7 +160,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"FirstResponseEchelonCharacter.png":
+"FirstResponseDocHavocCharacter.png":
 {
 	"frame": {"x":1584,"y":256,"w":176,"h":256},
 	"rotated": false,
@@ -168,7 +168,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"FirstResponseVanishCharacter.jpg":
+"FirstResponseEchelonCharacter.png":
 {
 	"frame": {"x":1760,"y":256,"w":176,"h":256},
 	"rotated": false,
@@ -176,7 +176,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"FSCContinuanceWandererDeckBack.jpg":
+"FirstResponseVanishCharacter.jpg":
 {
 	"frame": {"x":0,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -184,7 +184,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"FutureDocHavocCharacter.png":
+"FSCContinuanceWandererDeckBack.jpg":
 {
 	"frame": {"x":176,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -192,7 +192,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"FutureEchelonCharacter.png":
+"FutureDocHavocCharacter.png":
 {
 	"frame": {"x":352,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -200,7 +200,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"FutureGargoyleCharacter.png":
+"FutureEchelonCharacter.png":
 {
 	"frame": {"x":528,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -216,7 +216,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"FutureTerminusCharacter.png":
+"FutureTitanCharacter.png":
 {
 	"frame": {"x":880,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -224,7 +224,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"FutureTitanCharacter.png":
+"GenesisStarlightCharacter.jpg":
 {
 	"frame": {"x":1056,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -232,7 +232,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"GargoyleCharacter.png":
+"GhostOpsTangoOneCharacter.jpg":
 {
 	"frame": {"x":1232,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -240,7 +240,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"GenesisStarlightCharacter.jpg":
+"GrayCharacter.jpg":
 {
 	"frame": {"x":1408,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -248,7 +248,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"GhostOpsTangoOneCharacter.jpg":
+"HalberdExperimentalResearchCenterDeckBack.jpg":
 {
 	"frame": {"x":1584,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -256,7 +256,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"GyrosaurCharacter.png":
+"HydraWinterTiamatCharacter.jpg":
 {
 	"frame": {"x":1760,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -264,7 +264,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"HalberdDriftCharacter.png":
+"ImpactCharacter.png":
 {
 	"frame": {"x":0,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -272,7 +272,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"HalberdExperimentalResearchCenterDeckBack.jpg":
+"LadyOfTheWoodCharacter.jpg":
 {
 	"frame": {"x":176,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -280,7 +280,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"ImpactCharacter.png":
+"MagnificentMaraCharacter.png":
 {
 	"frame": {"x":352,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -288,7 +288,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"LadyOfTheWoodCharacter.jpg":
+"MalichaeCharacter.jpg":
 {
 	"frame": {"x":528,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -296,7 +296,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"MagnificentMaraCharacter.png":
+"MenagerieCharacter.png":
 {
 	"frame": {"x":704,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -304,7 +304,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"MalichaeCharacter.jpg":
+"MinistryOfStrategicScienceLadyOfTheWoodCharacter.png":
 {
 	"frame": {"x":880,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -312,7 +312,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"MinistryOfStrategicScienceLadyOfTheWoodCharacter.png":
+"MinistryOfStrategicScienceMagnificentMaraCharacter.png":
 {
 	"frame": {"x":1056,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -320,7 +320,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"MinistryOfStrategicScienceMagnificentMaraCharacter.png":
+"MinistryOfStrategicScienceMalichaeCharacter.png":
 {
 	"frame": {"x":1232,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -328,7 +328,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"MinistryOfStrategicScienceMalichaeCharacter.png":
+"MinistryOfStrategicScienceTitanCharacter.png":
 {
 	"frame": {"x":1408,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -336,7 +336,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"MinistryOfStrategicScienceTerminusCharacter.png":
+"NecroCharacter.jpg":
 {
 	"frame": {"x":1584,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -344,7 +344,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"MinistryOfStrategicScienceTitanCharacter.png":
+"NightloreCouncilDeckBack.png":
 {
 	"frame": {"x":1760,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -352,7 +352,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"NecroCharacter.jpg":
+"NorthsparDeckBack.jpg":
 {
 	"frame": {"x":0,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -360,7 +360,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"NightloreCouncilDeckBack.png":
+"OniTitanCharacter.png":
 {
 	"frame": {"x":176,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -368,7 +368,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"NorthsparDeckBack.jpg":
+"OriphelCharacter.png":
 {
 	"frame": {"x":352,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -376,7 +376,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"OniTitanCharacter.png":
+"PastBaccaratCharacter.png":
 {
 	"frame": {"x":528,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -384,7 +384,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PastBaccaratCharacter.png":
+"PastMagnificentMaraCharacter.png":
 {
 	"frame": {"x":704,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -392,7 +392,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PastMagnificentMaraCharacter.png":
+"PastNecroCharacter.png":
 {
 	"frame": {"x":880,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -400,7 +400,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PastNecroCharacter.png":
+"PastTangoOneCharacter.png":
 {
 	"frame": {"x":1056,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -408,7 +408,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PastTangoOneCharacter.png":
+"PastTheKnightCharacterCard.png":
 {
 	"frame": {"x":1232,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -416,7 +416,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PastTheKnightCharacterCard.png":
+"PastTheRamCharacter.png":
 {
 	"frame": {"x":1408,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -440,7 +440,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PyreCharacter.png":
+"PhaseVillainCharacter.png":
 {
 	"frame": {"x":0,"y":1280,"w":176,"h":256},
 	"rotated": false,
@@ -464,7 +464,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"RenegadeGyrosaurCharacter.png":
+"RenegadeImpactCharacter.png":
 {
 	"frame": {"x":528,"y":1280,"w":176,"h":256},
 	"rotated": false,
@@ -472,7 +472,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"RenegadeImpactCharacter.png":
+"RenegadeQuicksilverCharacter.png":
 {
 	"frame": {"x":704,"y":1280,"w":176,"h":256},
 	"rotated": false,
@@ -480,7 +480,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"RenegadeQuicksilverCharacter.png":
+"RunecarvedTheStrangerCharacter.jpg":
 {
 	"frame": {"x":880,"y":1280,"w":176,"h":256},
 	"rotated": false,
@@ -488,7 +488,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"RunecarvedTheStrangerCharacter.jpg":
+"SeasonsOfChangeLadyOfTheWoodCharacter.jpg":
 {
 	"frame": {"x":1056,"y":1280,"w":176,"h":256},
 	"rotated": false,
@@ -496,7 +496,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"SeasonsOfChangeLadyOfTheWoodCharacter.jpg":
+"ShardmasterMalichaeCharacter.jpg":
 {
 	"frame": {"x":1232,"y":1280,"w":176,"h":256},
 	"rotated": false,
@@ -504,7 +504,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"ShardmasterMalichaeCharacter.jpg":
+"StarlightCharacter.jpg":
 {
 	"frame": {"x":1408,"y":1280,"w":176,"h":256},
 	"rotated": false,
@@ -512,7 +512,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"SpeedDemonGyrosaurCharacter.png":
+"StSimeonsCatacombsDeckBack.jpg":
 {
 	"frame": {"x":1584,"y":1280,"w":176,"h":256},
 	"rotated": false,
@@ -520,7 +520,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"StarlightCharacter.jpg":
+"SuperstormAkelaDeckBack.png":
 {
 	"frame": {"x":1760,"y":1280,"w":176,"h":256},
 	"rotated": false,
@@ -528,7 +528,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"StSimeonsCatacombsDeckBack.jpg":
+"SwarmEaterCharacter.png":
 {
 	"frame": {"x":0,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -536,7 +536,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"SuperstormAkelaDeckBack.png":
+"SwarmingProtocolCypherCharacter.png":
 {
 	"frame": {"x":176,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -544,7 +544,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"SwarmingProtocolCypherCharacter.png":
+"TangoOneCharacter.jpg":
 {
 	"frame": {"x":352,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -552,7 +552,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TangoOneCharacter.jpg":
+"TheKnightCharacter.jpg":
 {
 	"frame": {"x":528,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -560,7 +560,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TerminusCharacter.png":
+"TheRamCharacter.jpg":
 {
 	"frame": {"x":704,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -568,7 +568,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TheChasmOfAThousandNightsDeckBack.png":
+"TheStrangerCharacter.jpg":
 {
 	"frame": {"x":880,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -576,7 +576,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TheCybersphereDeckBack.png":
+"TheWanderingIsleDeckBack.jpg":
 {
 	"frame": {"x":1056,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -584,7 +584,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TheKnightCharacter.jpg":
+"TitanCharacter.png":
 {
 	"frame": {"x":1232,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -592,7 +592,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TheStrangerCharacter.jpg":
+"UncannyQuicksilverCharacter.jpg":
 {
 	"frame": {"x":1408,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -600,7 +600,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TheWanderingIsleDeckBack.jpg":
+"VanishCharacter.png":
 {
 	"frame": {"x":1584,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -608,7 +608,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"ThroughTheBreachDriftCharacter.png":
+"VectorCharacter.jpg":
 {
 	"frame": {"x":1760,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -616,7 +616,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TitanCharacter.png":
+"WardenOfChaosNecroCharacter.jpg":
 {
 	"frame": {"x":0,"y":1792,"w":176,"h":256},
 	"rotated": false,
@@ -624,7 +624,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"UncannyQuicksilverCharacter.jpg":
+"WastelandRoninCricketCharacter.png":
 {
 	"frame": {"x":176,"y":1792,"w":176,"h":256},
 	"rotated": false,
@@ -632,7 +632,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"UnstablePyreCharacter.png":
+"WastelandRoninImpactCharacter.png":
 {
 	"frame": {"x":352,"y":1792,"w":176,"h":256},
 	"rotated": false,
@@ -640,7 +640,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"VanishCharacter.png":
+"WastelandRoninTheKnightBack.png":
 {
 	"frame": {"x":528,"y":1792,"w":176,"h":256},
 	"rotated": false,
@@ -648,7 +648,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"VaultFiveDeckBack.png":
+"WastelandRoninTheStrangerCharacter.png":
 {
 	"frame": {"x":704,"y":1792,"w":176,"h":256},
 	"rotated": false,
@@ -656,49 +656,9 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WardenOfChaosNecroCharacter.jpg":
+"WinterTiamatCharacter.jpg":
 {
 	"frame": {"x":880,"y":1792,"w":176,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
-},
-"WastelandRoninGargoyleCharacter.png":
-{
-	"frame": {"x":1056,"y":1792,"w":176,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
-},
-"WastelandRoninImpactCharacter.png":
-{
-	"frame": {"x":1232,"y":1792,"w":176,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
-},
-"WastelandRoninPyreCharacter.png":
-{
-	"frame": {"x":1408,"y":1792,"w":176,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
-},
-"WastelandRoninTheStrangerCharacter.png":
-{
-	"frame": {"x":1584,"y":1792,"w":176,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
-},
-"WindmillCityDeckBack.png":
-{
-	"frame": {"x":1760,"y":1792,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -707,10 +667,10 @@
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "SetupGameAtlas0.png",
+	"image": "SetupGame0.png",
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:795e9accaf11a139d3db491c10777552:f42cc5c00da4ae2c346821bd2ae0bd6e:e8469e75710a0a76e175297ef640a81a$"
+	"smartupdate": "$TexturePacker:SmartUpdate:249b46ee2fa5c2b20d19d227bb6d5a84:7dd4564388a8619624545a860eb11af9:4ee285c32a91b7652e02ac049f918b2a$"
 }
 }

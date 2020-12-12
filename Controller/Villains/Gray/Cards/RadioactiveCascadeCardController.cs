@@ -30,7 +30,7 @@ namespace Cauldron.Gray
         public override void AddTriggers()
         {
             //When another villain card is destroyed, destroy this card.
-            base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => action.CardToDestroy.Card.IsVillain && action.WasCardDestroyed, base.DestroyThisCardResponse, TriggerType.DestroySelf, TriggerTiming.After);
+            base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => action.WasCardDestroyed && IsVillain(action.CardToDestroy.Card), base.DestroyThisCardResponse, TriggerType.DestroySelf, TriggerTiming.After);
         }
     }
 }

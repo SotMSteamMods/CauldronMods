@@ -13,7 +13,7 @@ namespace Cauldron.Anathema
 
 		public override IEnumerator StartGame()
 		{
-			if (base.CharacterCardController is AnathemaCharacterCardController)
+			if (base.CharacterCardController is AnathemaCharacterCardController || base.CharacterCardController is AcceleratedEvolutionAnathemaCharacterCardController)
 			{
 				IEnumerator arms = base.PutCardsIntoPlay(new LinqCardCriteria((Card c) => this.IsArm(c), "arm"), 2, false);
 				IEnumerator body = base.PutCardsIntoPlay(new LinqCardCriteria((Card c) => this.IsBody(c), "body"), 1, false);

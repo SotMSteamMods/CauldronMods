@@ -50,7 +50,7 @@ namespace Cauldron.SuperstormAkela
             if(storedResults.Any())
             {
                 TurnTakerController selectedVillainTurnTakerController = storedResults.First();
-                coroutine = GameController.ShuffleCardsInPlayArea(selectedVillainTurnTakerController, new LinqCardCriteria((Card c) => !c.IsCharacter && c.IsVillain, "non-character villain card"), cardSource: GetCardSource());
+                coroutine = GameController.ShuffleCardsInPlayArea(selectedVillainTurnTakerController, new LinqCardCriteria((Card c) => !c.IsCharacter && IsVillain(c), "non-character villain card"), cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

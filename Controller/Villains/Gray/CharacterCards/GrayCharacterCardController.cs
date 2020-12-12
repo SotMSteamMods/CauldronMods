@@ -41,7 +41,7 @@ namespace Cauldron.Gray
                 //Advanced - Reduce damage dealt to villain targets by 1.
                 if (Game.IsAdvanced)
                 {
-                    base.AddSideTrigger(base.AddReduceDamageTrigger((Card c) => c.IsVillain, 1));
+                    base.AddSideTrigger(base.AddReduceDamageTrigger((Card c) => IsVillain(c), 1));
                 }
             }
             AddDefeatedIfDestroyedTriggers();

@@ -137,7 +137,7 @@
         },
         {
             "identifier": "DoppelgangerStrike",
-            "count": 1,
+            "count": 2,
             "title": "Doppelganger Strike",
             "keywords": [
                 "one-shot"
@@ -161,7 +161,7 @@
         },
         {
             "identifier": "EnhancedSenses",
-            "count": 1,
+            "count": 2,
             "title": "Enhanced Senses",
             "keywords": [
                 "head"
@@ -209,7 +209,7 @@
         },
         {
             "identifier": "HeavyCarapace",
-            "count": 1,
+            "count": 2,
             "title": "Heavy Carapace",
             "keywords": [
                 "body"
@@ -425,7 +425,7 @@
             "hitpoints": 7
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "AnathemaCharacter",
             "promoIdentifier": "AcceleratedEvolutionAnathemaCharacter",

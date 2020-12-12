@@ -37,7 +37,7 @@ namespace Cauldron.SuperstormAkela
         public override void AddTriggers()
         {
             //Reduce damage dealt to villain cards by 1.
-            AddReduceDamageTrigger((Card c) => c.IsVillain, 1);
+            AddReduceDamageTrigger((Card c) => IsVillain(c), 1);
         }
 
     }
