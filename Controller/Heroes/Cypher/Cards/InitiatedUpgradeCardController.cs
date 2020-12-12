@@ -38,7 +38,7 @@ namespace Cauldron.Cypher
             }
 
             // You may draw a card.
-            routine = base.DrawCard(this.HeroTurnTaker, optional: true, allowAutoDraw: false);
+            routine = base.DrawCard(this.HeroTurnTaker, optional: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
