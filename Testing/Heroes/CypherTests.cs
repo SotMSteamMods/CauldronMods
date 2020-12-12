@@ -347,6 +347,49 @@ namespace CauldronTests
             Assert.True(AreNotAugmented(new List<Card>() { ra.CharacterCard, tachyon.CharacterCard}));
             QuickHPCheck(2, 0, 0); // Only Cypher is augmented now
         }
+        [Test]
+        public void TestCyberdefenseSimple()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card batt = PlayCard("BladeBattalion");
+            Card redist = PlayCard("ElementalRedistributor");
+
+            Card dermal = PlayCard("DermalAug");
+            Card retinal = PlayCard("RetinalAug");
+
+            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { dermal, retinal };
+            DecisionAutoDecideIfAble = true;
+            QuickHPStorage(mdp, batt, redist);
+            PlayCard("Cyberdefense");
+            QuickHPCheck(-2, -2, -2);
+            AssertInTrash(dermal, retinal);
+        }
+        [Test]
+        public void TestCyberdefenseDestroyLessThanMax()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card batt = PlayCard("BladeBattalion");
+            Card redist = PlayCard("ElementalRedistributor");
+
+            Card dermal = PlayCard("DermalAug");
+            Card retinal = PlayCard("RetinalAug");
+
+            DecisionYesNo = true;
+            DecisionAutoDecideIfAble = true;
+            DecisionSelectCards = new Card[] { dermal, null };
+            QuickHPStorage(mdp, batt, redist);
+            PlayCard("Cyberdefense");
+            QuickHPCheck(-1, -1, -1);
+            AssertInTrash(dermal);
+            AssertIsInPlay(retinal);
+        }
 
         [Test]
         public void TestCyborgBlaster()
