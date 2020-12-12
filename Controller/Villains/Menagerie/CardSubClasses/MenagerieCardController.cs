@@ -15,5 +15,10 @@ namespace Cauldron.Menagerie
         {
             return c.DoKeywordsContain("specimen");
         }
+
+        public bool IsMercenary(Card c)
+        {
+            return c.DoKeywordsContain("mercenary");
+        }
     }
 }
