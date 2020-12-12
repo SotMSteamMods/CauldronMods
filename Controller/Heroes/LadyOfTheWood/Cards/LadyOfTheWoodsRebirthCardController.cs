@@ -50,7 +50,7 @@ namespace Cauldron.LadyOfTheWood
 		public override void AddTriggers()
 		{
 			//Whenever LadyOfTheWood destroys a target, put a card from beneath this one into your hand.
-			Func<DestroyCardAction, bool> moveCriteria = (DestroyCardAction destroy) => destroy.CardSource != null && destroy.CardToDestroy.CanBeDestroyed && destroy.WasCardDestroyed && destroy.CardSource.Card.Owner == base.TurnTaker && destroy.CardToDestroy.Card.IsTarget;
+			Func<DestroyCardAction, bool> moveCriteria = (DestroyCardAction dca) => dca.GetCardDestroyer()?.Owner == base.TurnTaker && dca.CardToDestroy.CanBeDestroyed && dca.WasCardDestroyed  && dca.CardToDestroy.Card.IsTarget;
 			base.AddTrigger<DestroyCardAction>(moveCriteria, new Func<DestroyCardAction, IEnumerator>(this.MoveCardResponse), new TriggerType[] { TriggerType.MoveCard }, TriggerTiming.After);
 
 			//When there are no cards beneath this one, destroy this card.

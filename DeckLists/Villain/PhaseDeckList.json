@@ -34,14 +34,9 @@
             ],
             "advanced": "When {Phase} is damaged, she becomes immune to damage until the end of the turn.",
             "icons": [
-                "StartOfTurnAction",
                 "IncreaseDamageDealt",
                 "ImmuneToDamage",
-                "EndOfTurnAction",
                 "PlayCardNow"
-            ],
-            "advancedIcons": [
-                "ImmuneToDamage"
             ],
             "flippedBody": "New Job, New Gear",
             "flippedGameplay": [
@@ -52,7 +47,6 @@
             "flippedIcons": [
                 "Destroy",
                 "RemoveFromGame",
-                "EndOfTurnAction",
                 "DealDamageRadiant"
             ],
             "flippedAdvancedIcons": [
@@ -75,8 +69,7 @@
             ],
             "icons": [
                 "IncreaseDamageTaken",
-                "IrreducibleDamage",
-                "StartOfTurnAction",
+                "MakeDamageIrreducible",
                 "Discard",
                 "DestroySelf"
             ],
@@ -164,7 +157,7 @@
             ],
             "icons": [
                 "IncreaseDamageDealt",
-                "dealDamageLighting"
+                "DealDamageLightning"
             ],
             "body": [
                 "Increase damage dealt to non-villain targets by 1.",
@@ -382,7 +375,7 @@
             ],
             "icons": [
                 "ImmuneToDamage",
-                "PreventDamage"
+                "CancelledDamageGreen"
             ],
             "body": [
                 "{Phase} is immune to damage.",

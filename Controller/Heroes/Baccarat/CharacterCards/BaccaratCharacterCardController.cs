@@ -15,7 +15,7 @@ namespace Cauldron.Baccarat
     {
         public BaccaratCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.DoKeywordsContain("trick") && c.IsInTrash));
+            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.DoKeywordsContain("trick") && c.IsInTrash, "trick"));
         }
 
         private List<Card> actedHeroes;
@@ -145,7 +145,6 @@ namespace Cauldron.Baccarat
                     base.GameController.ExhaustCoroutine(e2);
                 }
                 this.LogActedCard(card);
-                e2 = null;
             }
             yield break;
         }
@@ -164,7 +163,7 @@ namespace Cauldron.Baccarat
         {
             List<Function> list = new List<Function>();
             //Discard the top card of your deck...
-            list.Add(new Function(this.DecisionMaker, "Discard the top card of your deck", SelectionType.DiscardFromDeck, () => base.DiscardCardsFromTopOfDeck(this.TurnTakerController, 1, false, null, false, this.TurnTaker)));
+            list.Add(new Function(this.DecisionMaker, "Discard the top card of your deck", SelectionType.DiscardFromDeck, () => base.GameController.DiscardTopCard(base.TurnTaker.Deck, null, (Card c) => true, cardSource: base.GetCardSource())));
             //...or put up to 2 trick cards with the same name from your trash into play.
             list.Add(new Function(this.DecisionMaker, "Put up to 2 trick cards with the same name from your trash into play", SelectionType.PlayCard, () => this.PlayTricksFromTrash()));
             SelectFunctionDecision selectFunction = new SelectFunctionDecision(base.GameController, this.DecisionMaker, list, false, null, null, null, base.GetCardSource(null));

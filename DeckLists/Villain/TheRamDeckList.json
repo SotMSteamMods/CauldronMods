@@ -37,7 +37,6 @@
             ],
             "advanced": "Increase damage dealt to Up Close heroes by 1.",
             "icons": [
-                "StartAndEndOfTurnAction",
                 "ReduceDamageTaken",
                 "IncreaseDamageDealt",
                 "DealDamageMelee"
@@ -440,9 +439,6 @@
                 "PlayCardNow",
                 "StartOfTurnAction",
                 "IncreaseDamageDealtProjectile"
-            ],
-            "flippedAdvancedIcons": [
-                "PlayCardNow"
             ],
             "difficulty": 1,
             "openingLines": {

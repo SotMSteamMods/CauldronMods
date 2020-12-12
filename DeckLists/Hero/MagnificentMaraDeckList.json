@@ -118,7 +118,7 @@
         {
             "identifier": "GlimpseOfThingsToCome",
             "count": 4,
-            "title": "Glimpse of things to come",
+            "title": "Glimpse of Things to Come",
             "keywords": [
                 "one-shot"
             ],
@@ -215,7 +215,7 @@
             ]
         },
         {
-            "identifier": "“LookingForThis?”",
+            "identifier": "LookingForThis",
             "count": 3,
             "title": "Looking for this?",
             "keywords": [
@@ -237,7 +237,7 @@
             "flavorReference": "Magnificent Mara,{BR}Smoke and Mirrors #20"
         },
         {
-            "identifier": "MesmerPendant",
+            "identifier": "BootlegMesmerPendant",
             "count": 2,
             "title": "Mesmer Pendant",
             "keywords": [
@@ -250,7 +250,9 @@
                 "DestroySelf"
             ],
             "body": [
-                "Play this card next to a non-character target. Treat the words 'Hero Target', 'Hero Ongoing', and 'Non-Villain target' on that card as 'Villain Target', 'Villain Ongoing' and 'Non-Hero target' instead.",
+                "Play this card next to a non-character target.",
+                "When that card would cause damage to a hero target, redirect it to a villain target that hasn't been damaged this way this turn.",
+                "When it would destroy a hero ongoing, prevent it and destroy a villain ongoing.",
                 "At the start of your turn destroy this card."
             ],
             "flavorText": "Frost noticed that she{BR}carefully avoided touching the eye{BR}itself. Behind the laughter and stagecraft{BR}he caught a sense of unease."
@@ -357,7 +359,7 @@
                 "ongoing"
             ],
             "icons": [
-                "PreventDamage",
+                "CancelledDamageGreen",
                 "DestroySelf"
             ],
             "body": "When a hero target would be dealt damage, you may prevent that damage. If you do, destroy this card.",
@@ -392,10 +394,31 @@
             "flavorReference": "Absolute Zero,{BR}Carnival of Heroes #14"
         }
     ],
+    "unimplementableCards": [
+        {
+            "identifier": "MesmerPendant",
+            "count": 2,
+            "title": "Mesmer Pendant",
+            "keywords": [
+                "equipment",
+                "relic",
+                "limited"
+            ],
+            "icons": [
+                "StartOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "Play this card next to a non-character target. Treat the words 'Hero Target', 'Hero Ongoing', and 'Non-Villain target' on that card as 'Villain Target', 'Villain Ongoing' and 'Non-Hero target' instead.",
+                "At the start of your turn destroy this card."
+            ],
+            "flavorText": "Frost noticed that she{BR}carefully avoided touching the eye{BR}itself. Behind the laughter and stagecraft{BR}he caught a sense of unease."
+        }
+    ],
     "notPromoCards": [
         {
             "identifier": "MagnificentMaraCharacter",
-            "promoIdentifiers": "MinistryOfStrategicScienceMagnificentMaraCharacter",
+            "promoIdentifier": "MinistryOfStrategicScienceMagnificentMaraCharacter",
             "count": 1,
             "title": "Magnificent Mara",
             "promoTitle": "Ministry Of Strategic Science Magnificent Mara",
@@ -435,7 +458,7 @@
         },
         {
             "identifier": "MagnificentMaraCharacter",
-            "promoIdentifiers": "PastMagnificentMaraCharacter",
+            "promoIdentifier": "PastMagnificentMaraCharacter",
             "count": 1,
             "title": "Magnificent Mara",
             "promoTitle": "Magnificent Mara 1929",

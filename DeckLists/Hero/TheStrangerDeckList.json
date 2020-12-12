@@ -97,7 +97,7 @@
                 "glyph"
             ],
             "icons": [
-                "PreventDamage",
+                "CancelledDamageGreen",
                 "DealDamageFire"
             ],
             "body": [
@@ -121,7 +121,7 @@
                 "glyph"
             ],
             "icons": [
-                "PreventDamage",
+                "CancelledDamageGreen",
                 "HasPower",
                 "PlayCardNow",
                 "DealDamageToxic"
@@ -147,7 +147,7 @@
                 "glyph"
             ],
             "icons": [
-                "PreventDamage",
+                "CancelledDamageGreen",
                 "HasPower",
                 "DrawCardNow"
             ],
@@ -172,7 +172,7 @@
                 "glyph"
             ],
             "icons": [
-                "PreventDamage",
+                "CancelledDamageGreen",
                 "PlayCardNow"
             ],
             "body": [
@@ -267,7 +267,7 @@
                 "rune"
             ],
             "icons": [
-                "PlayExtraCard",
+                "PlayCardExtra",
                 "StartOfTurnAction",
                 "DealDamageToxic"
             ],
@@ -448,7 +448,7 @@
             "flavorReference": "The Stranger, Strange Roads #187"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "TheStrangerCharacter",
             "promoIdentifier": "RunecarvedTheStrangerCharacter",
@@ -560,7 +560,7 @@
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
-                "One hero target deals itself 1 infernal damage.",
+                "One hero target deals 1 target 1 infernal damage.",
                 "Destroy all environment cards. Play the top card of the environment deck."
             ],
             "flippedIcons": [
@@ -583,35 +583,33 @@
             "promoIdentifier": "CornTheStrangerCharacter",
             "count": 1,
             "title": "The Stranger",
-            "promoTitle": "Stranger in the Corn",
+            "promoTitle": "The Stranger in the Corn",
             "shortPromoTitle": "Corn Stranger",
-            "body": "",
-            "backgroundColor": "",
+            "body": "Fields of Terror",
+            "backgroundColor": "ECA547",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "",
+            "hitpointColor": "ECA547",
             "character": true,
             "powers": [
-                ""
+                "{TheStranger} or a target next to a Rune deals 1 target 2 psychic damage."
             ],
             "icons": [
                 "HasPower",
-                "Discard",
-                "DealDamageInfernal"
+                "DealDamagePsychic"
             ],
-            "hitpoints": 1,
+            "hitpoints": 27,
             "nemesisIdentifiers": [
                 "TheStranger"
             ],
             "incapacitatedAbilities": [
-                "",
-                "",
-                ""
+                "One player may draw a card now.",
+                "One hero may use a power now.",
+                "One target deals itself 1 irreducible toxic damage."
             ],
             "flippedIcons": [
                 "DrawCardNow",
-                "DealDamageInfernal",
-                "DestroyEnvironment",
-                "PlayCardNow"
+                "UsePowerNow",
+                "DealDamageToxic"
             ],
             "openingLines": {
                 "default": "Flee in terror at my visage!",

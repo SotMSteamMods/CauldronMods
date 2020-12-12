@@ -34,7 +34,6 @@
             "icons": [
                 "Indestructible",
                 "ImmuneToDamage",
-                "EndOfTurnAction",
                 "PlayCardNow"
             ],
             "advancedIcons": [
@@ -51,13 +50,11 @@
             ],
             "flippedAdvanced": "Activate all {MythosDanger} effects.",
             "flippedIcons": [
-                "RemoveFromGame",
                 "ReduceDamageTaken",
                 "EndOfTurnAction",
                 "PlayCardNow",
                 "DealDamageInfernal"
             ],
-            "flippedAdvancedIcons": [],
             "difficulty": 3,
             "openingLines": {
                 "default": "You can't begin to understand the horrors that have been set in motion - or your part in them. ",
@@ -79,7 +76,6 @@
                 "{MythosDanger}"
             ],
             "icons": [
-                "EndOfTurnAction",
                 "DealDamageMelee",
                 "Discard",
                 "GainHP",
@@ -137,7 +133,7 @@
             "icons": [
                 "EndOfTurnAction",
                 "PlayCardNow",
-                "AddToken",
+                "AddTokens",
                 "DealDamageInfernal"
             ],
             "body": [

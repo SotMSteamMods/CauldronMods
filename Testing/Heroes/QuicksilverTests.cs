@@ -607,6 +607,22 @@ namespace CauldronTests
             DealDamage(apostate, quicksilver, 30, DamageType.Infernal);
             AssertHitPoints(quicksilver.CharacterCard, 1);
         }
+        [Test]
+        public void TestMalleableArmorWithRedirect()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "TheScholar", "RookCity");
+            StartGame();
+
+            //If {Quicksilver} would be reduced from greater than 1 HP to 0 or fewer HP, restore her to 1HP.
+            PlayCard("MalleableArmor");
+
+            PlayCard("AlchemicalRedirection");
+
+            SetHitPoints(quicksilver, 5);
+
+            DealDamage(apostate, quicksilver, 10, DamageType.Infernal);
+            AssertHitPoints(quicksilver.CharacterCard, 5);
+        }
 
         [Test]
         public void TestMalleableArmorDoesNotModifyDamageAmount()

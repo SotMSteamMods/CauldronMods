@@ -25,11 +25,7 @@ namespace Cauldron.TangoOne
         private bool LineEmUpTriggerCondition(DestroyCardAction destroyCard)
         {
             return destroyCard.WasCardDestroyed &&
-                    base.GameController.IsCardVisibleToCardSource(destroyCard.CardToDestroy.Card, base.GetCardSource()) &&
-                    (
-                        (destroyCard.ResponsibleCard != null && destroyCard.ResponsibleCard.Owner == this.TurnTaker) ||
-                        (destroyCard.CardSource != null && destroyCard.CardSource.Card != null && destroyCard.CardSource.Card.Owner == this.TurnTaker)
-                    );
+                    base.GameController.IsCardVisibleToCardSource(destroyCard.CardToDestroy.Card, base.GetCardSource()) && destroyCard.GetCardDestroyer()?.Owner == this.TurnTaker;
         }
 
         public override void AddTriggers()

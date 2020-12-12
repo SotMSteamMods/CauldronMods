@@ -12,17 +12,24 @@ namespace Cauldron.Gray
 
         public ContaminationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            this.GameActionCriteria = (DestroyCardAction action) => action.CardSource != null && action.CardSource.Card.ResponsibleTarget != null && (from e in this.GetHeroCardsDestroyedThisRound() where e.CardSource != null && e.CardSource == base.Card select e).Count<DestroyCardJournalEntry>() >= Game.H;
         }
 
-        private Func<DestroyCardAction, bool> GameActionCriteria;
+        private bool SelfDestructionCriteria(DestroyCardAction action)
+        {
+            //Destroy this card when {H} hero cards are destroyed this way in one round.
+            //prefilter to events that destroyed a hero ongoing before hitting the Journal
+            var destroyedCard = action.CardToDestroy?.Card;
+
+            return  destroyedCard != null && destroyedCard.IsHero && (destroyedCard.IsOngoing || IsEquipment(destroyedCard)) &&
+                    this.GetHeroCardsDestroyedThisRound().Where(e => (e.Card.IsOngoing || IsEquipment(e.Card)) && e.CardSource == this.Card).Count() >= Game.H;
+        }
 
         public override void AddTriggers()
         {
             //Whenever a hero deals damage to a villain target, that hero must destroy 1 of their ongoing or equipment cards.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.IsHero && action.Target.IsVillain && action.IsSuccessful, new Func<DealDamageAction, IEnumerator>(this.DestroyHeroCardResponse), TriggerType.DestroyCard, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.IsHero && IsVillain(action.Target) && action.IsSuccessful, new Func<DealDamageAction, IEnumerator>(this.DestroyHeroCardResponse), TriggerType.DestroyCard, TriggerTiming.After);
             //Destroy this card when {H} hero cards are destroyed this way in one round.
-            base.AddTrigger<DestroyCardAction>(this.GameActionCriteria, base.DestroyThisCardResponse, TriggerType.DestroySelf, TriggerTiming.After);
+            base.AddTrigger<DestroyCardAction>(SelfDestructionCriteria, base.DestroyThisCardResponse, TriggerType.DestroySelf, TriggerTiming.After);
         }
 
         private IEnumerator DestroyHeroCardResponse(DealDamageAction action)

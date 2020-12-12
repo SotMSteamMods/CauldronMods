@@ -21,8 +21,7 @@
             ],
             "icons": [
                 "HasPower",
-                "{DriftL}",
-                "{DriftR}",
+                "Manipulate",
                 "GainHP"
             ],
             "hitpoints": 26,
@@ -38,7 +37,6 @@
                 "UsePowerNow",
                 "GainHP",
                 "DealDamageRadiant",
-                "Discard",
                 "DrawCardNow"
             ],
             "openingLines": {
@@ -94,8 +92,7 @@
                 "one-shot"
             ],
             "icons": [
-                "{DriftL}",
-                "{DriftR}",
+                "Manipulate",
                 "GainHP",
                 "DealDamageRadiant"
             ],
@@ -149,9 +146,8 @@
             ],
             "icons": [
                 "PlayCardNow",
-                "{DriftR}",
-                "DealDamageRadiant",
-                "{DriftR}"
+                "Manipulate",
+                "DealDamageRadiant"
             ],
             "body": [
                 "{DriftPast} You may play an onoing card from your trash, or one player may play a card now. Shift {DriftR}",
@@ -173,10 +169,7 @@
                 "one-shot"
             ],
             "icons": [
-                "{DriftL}",
-                "{DriftR}",
-                "GainHP",
-                "DealDamageRadiant",
+                "Manipulate",
                 "DrawCardNow",
                 "PlayCardNow"
             ],
@@ -203,7 +196,6 @@
             ],
             "icons": [
                 "Manipulate",
-                "{DriftR}",
                 "DealDamageRadiant"
             ],
             "body": [
@@ -228,8 +220,7 @@
             "icons": [
                 "Destroy",
                 "PlayCardNow",
-                "{DriftL}",
-                "{DriftR}"
+                "Manipulate"
             ],
             "body": [
                 "When this card enters play, destroy all other copies of Knight's Heritage and play up to 2 ongoing cards from your hand.",
@@ -253,9 +244,8 @@
             "icons": [
                 "DrawCardNow",
                 "ReduceDamageTaken",
-                "{DriftL}",
-                "IncreaseDamageDealt",
-                "{DriftR}"
+                "Manipulate",
+                "IncreaseDamageDealt"
             ],
             "body": [
                 "Draw a card.",
@@ -328,7 +318,7 @@
             ],
             "icons": [
                 "Manipulate",
-                "{DriftL}",
+                "Manipulate",
                 "PlayCardNow"
             ],
             "body": [
@@ -386,10 +376,9 @@
             ],
             "icons": [
                 "HasPower",
+                "Manipulate",
                 "DrawCardNow",
-                "{DriftR}",
-                "DealDamageRadiant",
-                "{DriftL}"
+                "DealDamageRadiant"
             ],
             "powers": [
                 "{DriftPast} Draw a card. Shift {DriftR}.",
@@ -413,9 +402,8 @@
             "icons": [
                 "HasPower",
                 "GainHP",
-                "{DriftR}",
-                "DealDamageRadiant",
-                "{DriftL}"
+                "Manipulate",
+                "DealDamageRadiant"
             ],
             "powers": [
                 "{DriftPast} 1 target regains 2 HP. {DriftRR}.",
@@ -481,7 +469,6 @@
                 "Move 1 environment card from play to the of its deck."
             ],
             "flippedIcons": [
-                "UsePowerNow",
                 "DrawCardNow",
                 "UsePowerNow",
                 "ReduceDamageDealt",
@@ -531,8 +518,7 @@
             "icons": [
                 "HasPower",
                 "Manipulate",
-                "Discard",
-                "{DriftL}"
+                "Discard"
             ],
             "hitpoints": 15,
             "nemesisIdentifiers": [
@@ -576,8 +562,7 @@
             "icons": [
                 "HasPower",
                 "PlayCardNow",
-                "Manipulate",
-                "{DriftR}"
+                "Manipulate"
             ],
             "hitpoints": 16,
             "nemesisIdentifiers": [
@@ -585,13 +570,11 @@
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
-                "Reveal the top card of a hero deck and replace it. If that card dhas a power on it. Play it and that hero uses that power.",
+                "Reveal the top card of a hero deck and replace it. If that card has a power on it. Play it and that hero uses that power.",
                 "One target regains 2 HP."
             ],
             "flippedIcons": [
                 "DrawCardNow",
-                "PlayCardNow",
-                "UsePowerNow",
                 "Manipulate",
                 "GainHP"
             ],

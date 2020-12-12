@@ -33,8 +33,7 @@
             "advanced": "At the end of the villain turn, {Vector} regains 2 HP.",
             "icons": [
                 "PlayCardNow",
-                "Indestructible",
-                "ImmuneToDamage"
+                "Indestructible"
             ],
             "advancedIcons": [
                 "EndOfTurnAction",
@@ -50,7 +49,6 @@
             "flippedIcons": [
                 "RemoveFromGame",
                 "ReduceDamageTaken",
-                "EndOfTurnAction",
                 "PlayCardNow"
             ],
             "flippedAdvancedIcons": [
@@ -118,9 +116,8 @@
                 "virus"
             ],
             "icons": [
-                "StartOfTurnAction",
+                "StartAndEndOfTurnAction",
                 "Manipulate",
-                "EndOfTurnAction",
                 "DealDamageProjectile",
                 "DealDamageToxic"
             ],

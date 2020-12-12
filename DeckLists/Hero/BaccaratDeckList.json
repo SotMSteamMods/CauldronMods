@@ -21,7 +21,6 @@
             "icons": [
                 "HasPower",
                 "Discard",
-                "Manipulate",
                 "PlayCardNow"
             ],
             "hitpoints": 27,
@@ -79,7 +78,7 @@
             ],
             "body": [
                 "You may play a card.",
-                "You may use {Baccarat}'s innate power twice during your phase this turn."
+                "You may use {Baccarat}'s innate power twice during your power phase this turn."
             ],
             "flavorQuotes": [
                 {
@@ -243,8 +242,7 @@
             ],
             "icons": [
                 "Discard",
-                "Manipulate",
-                "PlayCardNow"
+                "Search"
             ],
             "body": [
                 "Discard the top card of your deck.",

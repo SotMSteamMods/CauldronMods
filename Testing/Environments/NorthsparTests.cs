@@ -109,7 +109,7 @@ namespace CauldronTests
 
         [Test()]
         [Sequential]
-        public void DecklistTest_Frozen_IsFrozen([Values("LostInTheSnow", "RagingBlizzard", "Frostbite", "SnowShrieker", "FrozenSolid","WhatsLeftOfThem", "BitterCold" )] string frozen)
+        public void DecklistTest_Frozen_IsFrozen([Values("LostInTheSnow", "RagingBlizzard", "Frostbite", "SnowShrieker", "FrozenSolid", "WhatsLeftOfThem", "BitterCold")] string frozen)
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
             StartGame();
@@ -423,7 +423,7 @@ namespace CauldronTests
             StartGame();
 
             Card makeshift = PlayCard("MakeshiftShelter");
-            
+
             Card bitter = PutInTrash("BitterCold");
             //At the start of the environment turn, you may shuffle a card from the environment trash into the deck. if Tak Ahab is in the environment trash, shuffle him into the deck."
             DecisionYesNo = true;
@@ -515,7 +515,7 @@ namespace CauldronTests
             Card supply = PlayCard("SupplyDepot");
             AssertInPlayArea(northspar, bitter);
             AssertInTrash(supply);
-        
+
         }
 
         [Test()]
@@ -559,12 +559,8 @@ namespace CauldronTests
             DecisionSelectTarget = haka.CharacterCard;
             DecisionSelectPower = legacy.CharacterCard;
             DecisionSelectPowerIndex = 1;
-            bool skipped;
-            SelectAndUsePower(legacy, out skipped);
+            SelectAndUsePower(legacy, out bool _);
             QuickHPCheck(-1);
-
-
-
         }
 
         [Test()]
@@ -590,11 +586,11 @@ namespace CauldronTests
             AssertOnTopOfDeck(northsparTop);
 
             //grab new top cards  for when we will move all cards from under him later
-           baronTop = baron.TurnTaker.Deck.TopCard;
-           raTop = ra.TurnTaker.Deck.TopCard;
-           legacyTop = legacy.TurnTaker.Deck.TopCard;
-           hakaTop = haka.TurnTaker.Deck.TopCard;
-           northsparTop = northspar.TurnTaker.Deck.TopCard;
+            baronTop = baron.TurnTaker.Deck.TopCard;
+            raTop = ra.TurnTaker.Deck.TopCard;
+            legacyTop = legacy.TurnTaker.Deck.TopCard;
+            hakaTop = haka.TurnTaker.Deck.TopCard;
+            northsparTop = northspar.TurnTaker.Deck.TopCard;
 
             MoveAllCards(northspar, takAhab.UnderLocation, northspar.TurnTaker.Trash);
 
@@ -686,8 +682,24 @@ namespace CauldronTests
             Card takAhab = PlayCard("TakAhab");
             AssertOnTopOfDeck(villainTopCard);
             //    If this card is destroyed by a hero card and Tak Ahab is in play, place the top card of the villain deck beneath him.",
-            
+
             DestroyCard(vein, ra.CharacterCard);
+            AssertUnderCard(takAhab, villainTopCard);
+        }
+
+        [Test()]
+        public void TestAethiumVein_KilledByHero_TakAhabInPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            Card vein = PlayCard("AethiumVein");
+            Card villainTopCard = baron.TurnTaker.Deck.TopCard;
+            Card takAhab = PlayCard("TakAhab");
+            AssertOnTopOfDeck(villainTopCard);
+            //    If this card is destroyed by a hero card and Tak Ahab is in play, place the top card of the villain deck beneath him.",
+
+            DealDamage(ra.CharacterCard, vein, 99, DamageType.Energy);
             AssertUnderCard(takAhab, villainTopCard);
         }
 
@@ -708,6 +720,22 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestAethiumVein_KilledByNonHero_TakAhabInPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            Card vein = PlayCard("AethiumVein");
+            Card villainTopCard = baron.TurnTaker.Deck.TopCard;
+            Card takAhab = PlayCard("TakAhab");
+            AssertOnTopOfDeck(villainTopCard);
+            //    If this card is destroyed by a hero card and Tak Ahab is in play, place the top card of the villain deck beneath him.",
+
+            DealDamage(baron.CharacterCard, vein, 99, DamageType.Energy);
+            AssertOnTopOfDeck(villainTopCard);
+        }
+
+        [Test()]
         public void TestAethiumVein_DestroyedByHero_TakAhabNotInPlay()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
@@ -718,6 +746,20 @@ namespace CauldronTests
             AssertOnTopOfDeck(villainTopCard);
             //  If this card is destroyed by a hero card and Tak Ahab is in play, place the top card of the villain deck beneath him.
             DestroyCard(vein, ra.CharacterCard);
+            AssertOnTopOfDeck(villainTopCard);
+        }
+
+        [Test()]
+        public void TestAethiumVein_KilledByHero_TakAhabNotInPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            Card vein = PlayCard("AethiumVein");
+            Card villainTopCard = baron.TurnTaker.Deck.TopCard;
+            AssertOnTopOfDeck(villainTopCard);
+            //  If this card is destroyed by a hero card and Tak Ahab is in play, place the top card of the villain deck beneath him.
+            DealDamage(ra.CharacterCard, vein, 99, DamageType.Energy);
             AssertOnTopOfDeck(villainTopCard);
         }
 
@@ -980,8 +1022,8 @@ namespace CauldronTests
             AssertInTrash(eerie);
 
         }
-        
-         [Test()]
+
+        [Test()]
         public void TestFrostbite_EndOfTurn()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "AbsoluteZero", "Cauldron.Northspar");
@@ -1265,7 +1307,7 @@ namespace CauldronTests
             //there are 4 frozen cards
             QuickShuffleStorage(northspar);
             GoToEndOfTurn(northspar);
-            if(FindCardsWhere((Card c) => IsFrozen(c) && northspar.TurnTaker.Trash.Cards.Contains(c) && c != ragingBlizzard).Count() == 2)
+            if (FindCardsWhere((Card c) => IsFrozen(c) && northspar.TurnTaker.Trash.Cards.Contains(c) && c != ragingBlizzard).Count() == 2)
             {
                 AssertNumberOfCardsInTrash(northspar, 3);
 

@@ -216,7 +216,6 @@
                 "Indestructible",
                 "StartOfTurnAction",
                 "DestroySelf",
-                "Search",
                 "ReduceDamageTaken"
             ],
             "body": [
@@ -237,7 +236,6 @@
                 "Indestructible",
                 "StartOfTurnAction",
                 "DestroySelf",
-                "Search",
                 "IncreaseDamageDealt"
             ],
             "body": [

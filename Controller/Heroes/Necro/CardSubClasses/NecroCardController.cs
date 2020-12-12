@@ -22,11 +22,19 @@ namespace Cauldron.Necro
 
         protected bool IsHeroConsidering1929(Card card)
         {
+            if(GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, "HeroVillainFlipped") == true)
+            {
+                return IsVillain(card);
+            }
             return card.IsHero;
         }
 
         protected bool IsVillianConsidering1929(Card card)
         {
+            if (GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, "HeroVillainFlipped") == true)
+            {
+                return card.IsHero;
+            }
             return base.IsVillain(card);
         }
 
@@ -34,6 +42,10 @@ namespace Cauldron.Necro
         {
             get
             {
+                if (GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, "HeroVillainFlipped") == true)
+                {
+                    return "villain";
+                }
                 return "hero";
             }
         }
@@ -42,6 +54,10 @@ namespace Cauldron.Necro
         {
             get
             {
+                if (GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, "HeroVillainFlipped") == true)
+                {
+                    return "hero";
+                }
                 return "villian";
             }
         }

@@ -47,8 +47,7 @@
             "flippedIcons": [
                 "StartOfTurnAction",
                 "Destroy",
-                "DealDamageEnergy",
-                "PlayCardNow"
+                "DealDamageEnergy"
             ],
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"

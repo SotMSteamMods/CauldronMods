@@ -33,7 +33,6 @@
                 "One player may discard 2 cards, then draw 2 cards."
             ],
             "flippedIcons": [
-                "Discard",
                 "DrawCardNow",
                 "PlayCardNow",
                 "UsePowerNow",
@@ -396,9 +395,8 @@
             ],
             "icons": [
                 "HasPower",
-                "{PyreIrradiate}",
-                "PlayCardNow",
-                "Manipulate"
+                "Manipulate",
+                "PlayCardNow"
             ],
             "hitpoints": 33,
             "nemesisIdentifiers": [
