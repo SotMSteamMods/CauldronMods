@@ -671,7 +671,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestCeladroch_CardsPlayedNoDestoryCards()
+        public void TestCeladroch_CardsPlayedNoDestroyCards()
         {
             SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
             SuppressCeladrochMinionPlay();
@@ -949,6 +949,26 @@ namespace CauldronTests
             DealDamage(legacy, c2, 2, DamageType.Cold);
             QuickHPCheck(0, -2);
         }
+
+        [Test()]
+        public void TestOngoings_PlayCard([Values("HoursTilDawn", "LingeringExhalation", "NightUnderTheMountain", "RattlingWind", "ScreamingGale")] string identifier)
+        {
+
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StackAfterShuffle(celadroch.TurnTaker.Deck, new[] { identifier, "AvatarOfDeath" });
+            StartGame(false);
+
+            var card = GetTopCardOfDeck(celadroch);
+            var second = GetTopCardOfDeck(celadroch, 1);
+
+            GoToPlayCardPhase(celadroch);
+            PlayTopCard(celadroch);
+            AssertInPlayArea(celadroch, card);
+            AssertInPlayArea(celadroch, second);
+        }
+
 
         [Test()]
         public void TestAvatarOfDeath_StartOfTurn()
@@ -1254,7 +1274,7 @@ namespace CauldronTests
             SuppressCeladrochMinionPlay();
             AddTokensToPool(stormPool, 3);
             DecisionYesNo = false;
-            
+
             StackDeckAfterShuffle(celadroch, new[] { "GallowsBlast" });
             StartGame(false);
 
@@ -1300,7 +1320,7 @@ namespace CauldronTests
             var card = GetCard("GallowsBlast");
 
             AssertNumberOfStatusEffectsInPlay(0);
-            
+
             PlayCard(card);
             AssertInTrash(celadroch, card);
 
