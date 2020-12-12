@@ -39,28 +39,33 @@ namespace Cauldron.Cricket
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            Location selectedLocation = storedResults.FirstOrDefault().SelectedLocation.Location;
-            List<Card> list = new List<Card>();
-            //Reveal the top card of 1 deck, then replace it.
-            coroutine = base.GameController.RevealCards(base.TurnTakerController, selectedLocation, 1, list, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
+            if(DidSelectLocation(storedResults))
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
+                Location selectedLocation = GetSelectedLocation(storedResults);
+                List<Card> list = new List<Card>();
+                //Reveal the top card of 1 deck, then replace it.
+                coroutine = base.GameController.RevealCards(base.TurnTakerController, selectedLocation, 1, list, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
 
-            coroutine = base.CleanupRevealedCards(selectedLocation.OwnerTurnTaker.Revealed, selectedLocation);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
+                coroutine = base.CleanupRevealedCards(selectedLocation.OwnerTurnTaker.Revealed, selectedLocation);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
+            
+           
             yield break;
         }
     }

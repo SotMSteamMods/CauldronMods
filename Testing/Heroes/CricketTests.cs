@@ -151,6 +151,12 @@ namespace CauldronTests
             QuickHPStorage(legacy, cricket);
             DealDamage(apostate, cricket, 2, DamageType.Melee);
             QuickHPCheck(-2, 0);
+
+            //can redirect away from any hero target
+            GoToNextTurn();
+            QuickHPStorage(legacy, bunker);
+            DealDamage(apostate, bunker, 2, DamageType.Melee);
+            QuickHPCheck(-2, 0);
         }
 
         [Test()]
@@ -169,6 +175,7 @@ namespace CauldronTests
             QuickHandCheck(3);
             //Make sure the revealed card was put back
             AssertOnTopOfDeck(revealed);
+            AssertNumberOfCardsInRevealed(apostate, 0);
         }
 
         [Test()]
@@ -311,7 +318,7 @@ namespace CauldronTests
         [Test()]
         public void TestInfrasonicCollapseDestroyEnvironment()
         {
-            SetupGameController(new string[] { "AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis" });
+            SetupGameController(new string[] { "AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis" }, randomSeed: new int?(-1486032106));
             StartGame();
 
             Card phlange = PlayCard("ArborealPhalanges");
@@ -331,11 +338,18 @@ namespace CauldronTests
             //Destroy 1 ongoing or environment card.
             AssertInTrash(rail0);
             //If you destroyed an environment card this way, {Cricket} deals each non-hero target 1 sonic damage.
-           if(FindCardsWhere((Card c) => c.Identifier == "RooftopCombat" && c.IsInPlayAndHasGameText).Any())
+           if(FindCardsWhere((Card c) => c.Identifier == "RooftopCombat" && c.IsInPlayAndHasGameText).Any() && !FindCardsWhere((Card c) => c.Identifier == "MountainousCarapace" && c.IsInPlayAndHasGameText).Any())
             { 
                 //the only way rooftop combat is in play is if disrupt the field came out, and played it
                 //that would have destroyed the other monorail
                 QuickHPCheck(-2, -2, -2, -2, 0, 0);
+            } else if((FindCardsWhere((Card c) => c.Identifier == "RooftopCombat" && c.IsInPlayAndHasGameText).Any() && FindCardsWhere((Card c) => c.Identifier == "MountainousCarapace" && c.IsInPlayAndHasGameText).Any()))
+            {
+                QuickHPCheck(-1, -2, -2, -2, 0, 0);
+            }
+            else if ((!FindCardsWhere((Card c) => c.Identifier == "RooftopCombat" && c.IsInPlayAndHasGameText).Any() && FindCardsWhere((Card c) => c.Identifier == "MountainousCarapace" && c.IsInPlayAndHasGameText).Any()))
+             {
+                QuickHPCheck(-0, -1, -1, -1, -1, 0);
             } else
             {
                 QuickHPCheck(-1, -1, -1, -1, -1, 0);
