@@ -11,9 +11,14 @@ namespace Cauldron.Menagerie
 
         }
 
-        public bool IsSpecimen(Card c)
+        public bool IsEnclosure(Card c)
         {
-            return c.DoKeywordsContain("specimen");
+            return c.DoKeywordsContain("enclosure");
+        }
+
+        public bool IsInsect(Card c)
+        {
+            return c.DoKeywordsContain("insect");
         }
 
         public bool IsMercenary(Card c)
@@ -21,9 +26,9 @@ namespace Cauldron.Menagerie
             return c.DoKeywordsContain("mercenary");
         }
 
-        public bool IsEnclosure(Card c)
+        public bool IsSpecimen(Card c)
         {
-            return c.DoKeywordsContain("enclosure");
+            return c.DoKeywordsContain("specimen");
         }
     }
 }
