@@ -888,7 +888,7 @@ namespace CauldronTests
 
             // Act
             Card initiatedUpgrade = GetCard(InitiatedUpgradeCardController.Identifier);
-
+            PutOnDeck(cypher, initiatedUpgrade); //avoid bad seeds putting all copies in hand
             Card dermalAug = GetCard(DermalAugCardController.Identifier);
             
             DecisionSelectLocation = new LocationChoice(cypher.TurnTaker.Deck);
@@ -920,7 +920,7 @@ namespace CauldronTests
 
             // Act
             Card initiatedUpgrade = GetCard(InitiatedUpgradeCardController.Identifier);
-
+            PutOnDeck(cypher, initiatedUpgrade); //avoid bad seeds putting all copies in hand
             Card dermalAug = GetCard(DermalAugCardController.Identifier);
             
             DecisionSelectLocation = new LocationChoice(cypher.TurnTaker.Deck);
