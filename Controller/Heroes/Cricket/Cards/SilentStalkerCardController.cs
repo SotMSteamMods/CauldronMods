@@ -21,7 +21,7 @@ namespace Cauldron.Cricket
 
         private IEnumerator UsePowerResponse(PhaseChangeAction action)
         {
-            IEnumerator coroutine = base.GameController.SelectAndUsePower(base.HeroTurnTakerController);
+            IEnumerator coroutine = base.GameController.SelectAndUsePower(base.HeroTurnTakerController, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

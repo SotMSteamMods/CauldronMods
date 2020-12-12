@@ -501,6 +501,24 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestSilentStalker_DealtDamage()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DecisionSelectPowers = new Card[] { cricket.CharacterCard, null };
+            GoToPlayCardPhase(cricket);
+            DealDamage(cricket, bunker, 2, DamageType.Sonic);
+            PlayCard("SilentStalker");
+            //At the end of your turn, if {Cricket} dealt no damage this turn, you may use a power.
+            GoToEndOfTurn(cricket);
+            //power should not have been used
+            QuickHPStorage(legacy);
+            DealDamage(akash, legacy, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
         public void TestSonicAmplifier()
         {
             SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
