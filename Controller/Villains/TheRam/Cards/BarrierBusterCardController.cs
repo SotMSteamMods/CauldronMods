@@ -22,9 +22,7 @@ namespace Cauldron.TheRam
             IEnumerator coroutine = DestroyCardsAndDoActionBasedOnNumberOfCardsDestroyed(
                                                     DecisionMaker, 
                                                     new LinqCardCriteria((Card c) => c.IsEnvironment), 
-                                                    (int X) => DealDamage(GetRam, (Card c) => c.IsHero, 
-                                                                X + 3, 
-                                                                DamageType.Melee));
+                                                    DamageIfRamInPlay);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -32,6 +30,36 @@ namespace Cauldron.TheRam
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        private IEnumerator DamageIfRamInPlay(int cardsDestroyed)
+        {
+            IEnumerator coroutine;
+            if(RamIfInPlay != null)
+            {
+                coroutine = DealDamage(GetRam, (Card c) => c.IsHero, cardsDestroyed + 3, DamageType.Melee);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            else
+            {
+                coroutine = MessageNoRamToAct(GetCardSource(), "deal damage");
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }

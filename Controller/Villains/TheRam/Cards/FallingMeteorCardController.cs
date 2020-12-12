@@ -77,14 +77,29 @@ namespace Cauldron.TheRam
             }
 
             //"{TheRam} deals each non-villain target {H} projectile damage."
-            IEnumerator damage = DealDamage(GetRam, (Card c) => c.IsInPlayAndHasGameText && c.IsNonVillainTarget, H, DamageType.Projectile);
-            if (base.UseUnityCoroutines)
+            if (RamIfInPlay != null)
             {
-                yield return base.GameController.StartCoroutine(damage);
+                IEnumerator damage = DealDamage(GetRam, (Card c) => c.IsInPlayAndHasGameText && c.IsNonVillainTarget, H, DamageType.Projectile);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(damage);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(damage);
+                }
             }
             else
             {
-                base.GameController.ExhaustCoroutine(damage);
+                IEnumerator message = MessageNoRamToAct(GetCardSource(), "deal damage");
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(message);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(message);
+                }
             }
             yield break;
         }
