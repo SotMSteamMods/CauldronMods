@@ -29,7 +29,7 @@ namespace Cauldron.Cricket
             }
 
             //For each target dealt damage this way, draw a card.
-            coroutine = base.DrawCards(base.HeroTurnTakerController, targets.Where((DealDamageAction action) => action.Amount > 0).Count());
+            coroutine = base.DrawCards(base.HeroTurnTakerController, targets.Where((DealDamageAction action) => action.DidDealDamage).Count());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

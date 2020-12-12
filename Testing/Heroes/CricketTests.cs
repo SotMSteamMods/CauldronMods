@@ -430,6 +430,21 @@ namespace CauldronTests
             //For each target dealt damage this way, draw a card.
             QuickHandCheck(1);
         }
+        [Test()]
+        public void TestReturnPulse1Target_ImmuneToDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            QuickHandStorage(cricket);
+            DecisionSelectTargets = new Card[] { baron.CharacterCard, null };
+            PlayCard("ReturnPulse");
+            //{Cricket} deals up to 3 non-hero targets 1 sonic damage each.
+            //For each target dealt damage this way, draw a card.
+            //baron is immune to damage, so a card should not have been drawn
+            QuickHandCheck(0);
+        }
+
 
         [Test()]
         public void TestReturnPulse3Target()
@@ -447,6 +462,25 @@ namespace CauldronTests
             QuickHPCheck(-1, -1, -1);
             //For each target dealt damage this way, draw a card.
             QuickHandCheck(3);
+        }
+
+        [Test()]
+        public void TestReturnPulse3Targets_UpTo()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card rocks = PutOnDeck("LivingRockslide");
+            Card rail0 = PlayCard("PlummetingMonorail");
+
+            QuickHandStorage(cricket);
+            QuickHPStorage(akash.CharacterCard, rocks, rail0);
+            DecisionSelectTargets = new Card[] { akash.CharacterCard, rocks, null };
+            PlayCard("ReturnPulse");
+            //{Cricket} deals up to 3 non-hero targets 1 sonic damage each.
+            QuickHPCheck(-1, -1, 0);
+            //For each target dealt damage this way, draw a card.
+            QuickHandCheck(2);
         }
 
         [Test()]
