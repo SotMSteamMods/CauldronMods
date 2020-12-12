@@ -337,7 +337,7 @@ namespace CauldronTests
             Assert.True(HasAugment(tachyon.CharacterCard, dermalAug));
 
             PlayCard(backupPlan);
-            DecisionSelectCards = new[] {muscleAug, cypher.CharacterCard};
+            DecisionSelectCards = new[] {muscleAug, cypher.CharacterCard, dermalAug, cypher.CharacterCard};
             PlayCard(BladeBattalion); // Triggers Backup plan
 
             // Assert
