@@ -55,6 +55,24 @@ namespace Cauldron.TheKnight
             }
             yield break;
         }
-        //"flippedBody": "When {TheOldKnightCharacter} flips to this side, destroy all equipment cards next to him.",
+
+        public override IEnumerator AfterFlipCardImmediateResponse()
+        {
+            //"flippedBody": "When {TheOldKnightCharacter} flips to this side, destroy all equipment cards next to him.",
+            yield return base.AfterFlipCardImmediateResponse();
+            if (this.Card.IsFlipped)
+            {
+                IEnumerator coroutine = GameController.DestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => GetKnightCardUser(c) == this.Card, $"equipment by The Old Knight", false), cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
+        }
     }
 }

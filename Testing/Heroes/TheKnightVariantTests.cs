@@ -734,5 +734,44 @@ namespace CauldronTests
             UsePower(youngKnight);
             QuickHPCheck(0, -2, -2, 0, -2, 0, 0);
         }
+        [Test]
+        public void TestRoninKnightSubCharacterFlipTrigger()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "SkyScraper", "Megalopolis");
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            DecisionSelectCard = oldKnight;
+            Card stone = PlayCard("Whetstone");
+            DecisionSelectCard = youngKnight;
+            Card shield = PlayCard("StalwartShield");
+
+            DealDamage(baron, youngKnight, 30, DTM);
+            AssertFlipped(youngKnight);
+            AssertNotFlipped(oldKnight);
+            AssertInTrash(shield);
+        }
+        [Test]
+        public void TestRoninKnightIncapacitatesOldFirst()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "SkyScraper", "Megalopolis");
+            StartGame();
+
+            DealDamage(baron, oldKnight, 30, DTM);
+            AssertNotIncapacitatedOrOutOfGame(knight);
+            DealDamage(baron, youngKnight, 30, DTM);
+            AssertIncapacitated(knight);
+        }
+        [Test]
+        public void TestRoninKnightIncapacitatesYoungFirst()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "SkyScraper", "Megalopolis");
+            StartGame();
+
+            DealDamage(baron, youngKnight, 30, DTM);
+            AssertNotIncapacitatedOrOutOfGame(knight);
+            DealDamage(baron, oldKnight, 30, DTM);
+            AssertIncapacitated(knight);
+        }
     }
 }
