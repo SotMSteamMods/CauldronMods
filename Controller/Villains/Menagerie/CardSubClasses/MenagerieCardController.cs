@@ -1,6 +1,7 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using System;
+using System.Linq;
 
 namespace Cauldron.Menagerie
 {
@@ -9,6 +10,12 @@ namespace Cauldron.Menagerie
         public MenagerieCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
+        }
+
+        public bool IsCaptured(TurnTaker tt)
+        {
+            Card prize = FindCard("PrizedCatch");
+            return prize.Location.IsNextToCard && tt.GetAllCards().Contains(base.GetCardThisCardIsNextTo());
         }
 
         public bool IsEnclosure(Card c)
