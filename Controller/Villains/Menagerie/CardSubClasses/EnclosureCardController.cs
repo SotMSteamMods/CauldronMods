@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace Cauldron.Menagerie
 {
-    public class EnclosureCardController : CardController
+    public class EnclosureCardController : MenagerieCardController
     {
         public EnclosureCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

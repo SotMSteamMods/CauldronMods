@@ -14,8 +14,7 @@ namespace Cauldron.Menagerie
 
         public override IEnumerator Play()
         {
-            //When this card enters play, place the top card of the villain deck beneath it face down. Then, play the top card of the villain deck.
-            //Whenever a Specimen enters play, it deals the non-villain target with the lowest HP {H - 2} melee damage.
+            //When this card enters play, place the top card of the villain deck beneath it face down. 
             IEnumerator coroutine = base.EncloseTopCardResponse();
             if (base.UseUnityCoroutines)
             {
@@ -25,8 +24,29 @@ namespace Cauldron.Menagerie
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+            //Then, play the top card of the villain deck.
+            coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
 
-            coroutine = base.EncloseTopCardResponse();
+        public override void AddTriggers()
+        {
+            //Whenever a Specimen enters play, it deals the non-villain target with the lowest HP {H - 2} melee damage.
+            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => base.IsSpecimen(action.CardEnteringPlay) && action.IsSuccessful, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+        }
+
+        private IEnumerator DealDamageResponse(CardEntersPlayAction action)
+        {
+            //...it deals the non-villain target with the lowest HP {H - 2} melee damage.
+            IEnumerator coroutine = base.DealDamageToLowestHP(action.CardEnteringPlay, 1, (Card c) => !base.IsVillainTarget(c), (Card c) => Game.H - 2, DamageType.Melee);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
