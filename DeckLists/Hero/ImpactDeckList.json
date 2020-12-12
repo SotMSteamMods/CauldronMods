@@ -90,7 +90,7 @@
         {
             "identifier": "DecayingOrbit",
             "count": 3,
-            "title": "Decaying orbit",
+            "title": "Decaying Orbit",
             "keywords": [
                 "ongoing"
             ],
@@ -133,12 +133,12 @@
                     "text": "You're taking this{BR}all rather personally."
                 }
             ],
-            "flavorReference": "Phase, Pieces of the Sky Limited Series"
+            "flavorReference": "Phase, Pieces of the Sky{BR}Limited Series"
         },
         {
             "identifier": "GravitationalLensing",
             "count": 3,
-            "title": "Gravitational lensing",
+            "title": "Gravitational Lensing",
             "keywords": [
                 "ongoing",
                 "limited"
@@ -320,7 +320,7 @@
         {
             "identifier": "RepulsionField",
             "count": 3,
-            "title": "Repulsion field",
+            "title": "Repulsion Field",
             "keywords": [
                 "ongoing",
                 "limited"
@@ -440,7 +440,7 @@
             "title": "Impact",
             "promoTitle": "Wasteland Ronin Impact",
             "shortPromoTitle": "Wasteland Impact",
-            "body": "Force Blast",
+            "body": "Impulse",
             "backgroundColor": "D4E6B5",
             "foilBackgroundColor": "FEFEFE",
             "hitpointColor": "D4E6B5",
@@ -460,7 +460,7 @@
             "incapacitatedAbilities": [
                 "One hero may use a power now.",
                 "Environment cards cannot be played during the next environment turn.",
-                "Select a target, the next damage it deals is irreducible."
+                "Select a target. The next damage it deals is irreducible."
             ],
             "flippedIcons": [
                 "UsePowerNow",
