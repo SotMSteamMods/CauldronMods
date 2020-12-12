@@ -5,7 +5,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Cypher
 {
-    public class CypherBaseCharacterCardController : HeroCharacterCardController
+    public abstract class CypherBaseCharacterCardController : HeroCharacterCardController
     {
         public CypherBaseCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

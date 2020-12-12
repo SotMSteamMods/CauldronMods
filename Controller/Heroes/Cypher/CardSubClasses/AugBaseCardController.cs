@@ -6,7 +6,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Cypher
 {
-    public class AugBaseCardController : CardController
+    public abstract class AugBaseCardController : CardController
     {
         public AugBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

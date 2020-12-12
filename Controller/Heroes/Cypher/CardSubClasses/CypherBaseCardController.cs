@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.Cypher
 {
-    public class CypherBaseCardController : CardController
+    public abstract class CypherBaseCardController : CardController
     {
         public CypherBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
