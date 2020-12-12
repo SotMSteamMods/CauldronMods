@@ -10,7 +10,7 @@ namespace Cauldron.Cricket
     {
         public SilentStalkerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.DidDealDamageThisTurn(), () => "Cricket has dealt damage this turn.", () => "Cricket has not dealt damage this turn.");
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => !this.DidDealDamageThisTurn(), () => "Cricket has dealt damage this turn.", () => "Cricket has not dealt damage this turn.");
         }
 
         //At the end of your turn, if {Cricket} dealt no damage this turn, you may use a power.
@@ -35,7 +35,10 @@ namespace Cauldron.Cricket
 
         private bool DidDealDamageThisTurn()
         {
-            return !base.Journal.DealDamageEntriesThisTurnSinceCardWasPlayed(base.CharacterCard).Any();
+            bool dealtDamage = (from e in base.GameController.Game.Journal.DealDamageEntriesThisTurn()
+                                where e.SourceCard == base.CharacterCard
+                                select e).Any();
+            return !dealtDamage;
         }
     }
 }
