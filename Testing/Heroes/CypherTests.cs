@@ -841,7 +841,40 @@ namespace CauldronTests
             QuickShuffleCheck(1);
             QuickHandCheck(2); // No Augment was put into play so 2 cards were drawn
         }
+        [Test]
+        public void TestHeuristicAlgorithm_NoAugsInDeck()
+        {
+            // Reveal cards from the top of your deck until you reveal an Augment.
+            // Put it into play or into your trash. Shuffle the rest of the revealed cards into your deck.
+            // If you did not put an Augment into play this way, draw 2 cards.
 
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+
+            PutInTrash(cypher, (Card c) => IsAugment(c));
+
+            Card cyborgPunch = GetCard(CyborgPunchCardController.Identifier);
+            PutOnDeck(cypher, cyborgPunch); // Put a non augment on top so we guarantee a deck shuffle after revealing
+
+
+            StartGame();
+
+            Card heuristicAlg = GetCard(HeuristicAlgorithmCardController.Identifier);
+
+            DecisionSelectFunction = 1;
+
+            GoToPlayCardPhase(cypher);
+            QuickHandStorage(cypher);
+            QuickShuffleStorage(cypher);
+
+            AssertNoDecision();
+            PlayCard(heuristicAlg);
+
+            // Assert
+            Assert.True(AreNotAugmented(new List<Card>() { cypher.CharacterCard }));
+            QuickShuffleCheck(1);
+            QuickHandCheck(2); // No Augment was put into play so 2 cards were drawn
+        }
         [Test]
         public void TestInitiatedUpgrade_SearchDeck_DrawCard()
         {
