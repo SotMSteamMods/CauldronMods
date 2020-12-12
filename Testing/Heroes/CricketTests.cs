@@ -279,13 +279,27 @@ namespace CauldronTests
             SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
+            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(bunker.TurnTaker.Deck), new LocationChoice(env.TurnTaker.Deck) };
             Card hear = PlayCard("EnhancedHearing");
             //At the start of your turn, reveal the top card of 2 different decks, then replace them.
             GoToStartOfTurn(cricket);
+            AssertNumberOfCardsInRevealed(bunker, 0);
+            AssertNumberOfCardsInRevealed(env, 0);
             //Increase sonic damage dealt to {Cricket} by 1.
             QuickHPStorage(cricket);
             DealDamage(akash, cricket, 2, DamageType.Sonic);
             QuickHPCheck(-3);
+
+            //check only sonic damage
+            QuickHPUpdate();
+            DealDamage(akash, cricket, 2, DamageType.Fire);
+            QuickHPCheck(-2);
+
+            //check only cricket
+            QuickHPStorage(bunker);
+            DealDamage(akash, bunker, 2, DamageType.Sonic);
+            QuickHPCheck(-2);
+
             //Power: Destroy this card.
             UsePower(hear);
             AssertInTrash(hear);
