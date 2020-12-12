@@ -544,6 +544,7 @@ namespace CauldronTests
 
             Card amp = PlayCard("SonicAmplifier");
             Card top = cricket.TurnTaker.Deck.TopCard;
+            DecisionYesNo = true;
             //Whenever {Cricket} deals sonic damage to a target, you may put the top card of your deck beneath this one. Cards beneath this one are not considered to be in play.
             DealDamage(cricket, akash, 2, DamageType.Sonic);
             AssertUnderCard(amp, top);
@@ -562,6 +563,21 @@ namespace CauldronTests
             QuickHPStorage(akash);
             UsePower(amp);
             QuickHPCheck(-4);
+        }
+
+        [Test()]
+        public void TestSonicAmplifier_Optional()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card amp = PlayCard("SonicAmplifier");
+            Card top = cricket.TurnTaker.Deck.TopCard;
+            DecisionYesNo = false;
+            //Whenever {Cricket} deals sonic damage to a target, you may put the top card of your deck beneath this one. Cards beneath this one are not considered to be in play.
+            DealDamage(cricket, akash, 2, DamageType.Sonic);
+            AssertOnTopOfDeck(top);
+
         }
 
         [Test()]

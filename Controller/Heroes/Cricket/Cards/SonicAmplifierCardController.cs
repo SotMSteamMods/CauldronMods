@@ -2,6 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Cauldron.Cricket
 {
@@ -15,13 +16,14 @@ namespace Cauldron.Cricket
         public override void AddTriggers()
         {
             //Whenever {Cricket} deals sonic damage to a target, you may put the top card of your deck beneath this one. Cards beneath this one are not considered to be in play.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Amount > 0 && action.DamageType == DamageType.Sonic && action.DamageSource.Card == base.CharacterCard, this.MoveCardResponse, new TriggerType[] { TriggerType.MoveCard }, TriggerTiming.After, isActionOptional: true);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DidDealDamage && action.DamageType == DamageType.Sonic && action.DamageSource != null && action.DamageSource.Card == base.CharacterCard, this.MoveCardResponse, new TriggerType[] { TriggerType.MoveCard }, TriggerTiming.After);
         }
 
         private IEnumerator MoveCardResponse(DealDamageAction action)
         {
             //...you may put the top card of your deck beneath this one.
-            IEnumerator coroutine = base.GameController.MoveCard(base.TurnTakerController, base.TurnTaker.Deck.TopCard, base.Card.UnderLocation, cardSource: base.GetCardSource());
+            List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
+            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.MoveCardToUnderCard, base.Card, storedResults: storedResults, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -29,6 +31,18 @@ namespace Cauldron.Cricket
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
+            }
+            if(DidPlayerAnswerYes(storedResults))
+            {
+                coroutine = base.GameController.MoveCard(base.TurnTakerController, base.TurnTaker.Deck.TopCard, base.Card.UnderLocation, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }
