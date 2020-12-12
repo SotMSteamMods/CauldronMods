@@ -314,6 +314,7 @@ namespace CauldronTests
             Card rail1 = PlayCard("PlummetingMonorail", 1);
 
             QuickHPStorage(akash.CharacterCard, phlange, bramb, rocks, rail1);
+            DecisionSelectCard = rail0;
             PlayCard("InfrasonicCollapse");
             //Destroy 1 ongoing or environment card.
             AssertInTrash(rail0);
