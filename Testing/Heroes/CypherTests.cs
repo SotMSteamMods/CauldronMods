@@ -1314,6 +1314,30 @@ namespace CauldronTests
             Assert.True(HasAugment(cypher.CharacterCard, vascularAug));
             QuickHPCheck(1);
         }
+        [Test]
+        public void TestVascularAugEndOfTheirTurn()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+
+            StartGame();
+
+            SetHitPoints(ra, 16);
+
+            Card vascularAug = GetCard(VascularAugCardController.Identifier);
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { vascularAug }}
+            });
+
+            // Act
+            QuickHPStorage(ra);
+            GoToEndOfTurn(cypher);
+            QuickHPCheck(0);
+            GoToEndOfTurn(ra);
+            QuickHPCheck(1);
+        }
 
         private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
         {
