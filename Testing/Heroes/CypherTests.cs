@@ -390,7 +390,29 @@ namespace CauldronTests
             AssertInTrash(dermal);
             AssertIsInPlay(retinal);
         }
+        [Test]
+        public void TestCyberintegration()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
 
+            SetHitPoints(new[] { cypher.CharacterCard, ra.CharacterCard, tachyon.CharacterCard }, 18);
+            Card muscleAug = GetCard(MuscleAugCardController.Identifier);
+            Card dermalAug = GetCard(DermalAugCardController.Identifier);
+            Card retinalAug = GetCard(RetinalAugCardController.Identifier);
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { muscleAug, retinalAug}},
+                { tachyon.CharacterCard, new List<Card>() { dermalAug}}
+            });
+
+            QuickHPStorage(cypher, ra, tachyon);
+
+            DecisionSelectCards = new Card[] { muscleAug, retinalAug, null };
+            PlayCard("Cyberintegration");
+            QuickHPCheck(0, 6, 0);
+        }
         [Test]
         public void TestCyborgBlaster()
         {

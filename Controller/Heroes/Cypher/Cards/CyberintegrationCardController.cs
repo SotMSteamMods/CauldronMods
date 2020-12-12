@@ -26,10 +26,23 @@ namespace Cauldron.Cypher
         public override IEnumerator Play()
         {
             // Destroy any number of Augments.
-            List<DestroyCardAction> storedResults = new List<DestroyCardAction>();
-            IEnumerator routine = base.GameController.SelectAndDestroyCards(this.HeroTurnTakerController, new LinqCardCriteria(IsAugment),
-                null, true, storedResultsAction: storedResults, cardSource: base.GetCardSource());
+            IEnumerator routine = GameController.SelectCardsAndDoAction(DecisionMaker, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && IsAugment(c), "augment"), SelectionType.DestroyCard, DestroyAugAndHeal, requiredDecisions: 0, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
+            yield break;
+        }
 
+        private IEnumerator DestroyAugAndHeal(Card card)
+        {
+            Card heroToHeal = card.Location.OwnerCard;
+            var storedDestroy = new List<DestroyCardAction> { };
+            IEnumerator routine = GameController.DestroyCard(DecisionMaker, card, storedResults: storedDestroy, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
@@ -39,25 +52,21 @@ namespace Cauldron.Cypher
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            if (!storedResults.Any())
+            if (DidDestroyCard(storedDestroy) && heroToHeal != null)
             {
-                yield break;
+                // When an Augment is destroyed this way, the hero it was next to regains 3HP
+                routine = GameController.GainHP(heroToHeal, 3, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
             }
 
-            // When an Augment is destroyed this way, the hero it was next to regains 3HP
-            List<Card> ownerCards = storedResults.Select(dca => dca.CardToDestroy.Card.NextToLocation.OwnerCard).Distinct().ToList();
-
-            routine = this.GameController.GainHP(DecisionMaker, c => c.IsHero && c.IsInPlayAndHasGameText 
-                                    && ownerCards.Contains(c), HpGain, cardSource: GetCardSource());
-            
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
+            yield break;
         }
     }
 }
