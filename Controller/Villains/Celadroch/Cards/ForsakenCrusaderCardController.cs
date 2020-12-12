@@ -14,12 +14,18 @@ namespace Cauldron.Celadroch
          * "At the start of the villain turn, play the top card of the villain deck.",
 		   "At the end of the villain turn, this card deals the 2 hero targets with the highest HP {H - 2} melee damage each."
          */
-         
 
         //IE - Mountain's Special Boy
         public ForsakenCrusaderCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(1, 2);
         }
+
+        public override void AddTriggers()
+        {
+            AddStartOfTurnTrigger(tt => tt == TurnTaker, pca => GameController.PlayTopCard(DecisionMaker, TurnTakerController, cardSource: GetCardSource()), TriggerType.PlayCard);
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => c.IsHero && c.IsTarget, TargetType.HighestHP, H - 2, DamageType.Melee, numberOfTargets: 2);
+        }
+
     }
 }

@@ -1172,5 +1172,38 @@ namespace CauldronTests
             //includes cela's end of turn
             QuickHPCheck(-2, -2, -2);
         }
+
+
+        [Test()]
+        public void TestForsakenCrusader()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            SuppressCeladrochMinionPlay();
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            StackDeckAfterShuffle(celadroch, new[] { "ForsakenCrusader", "TatteredDevil" });
+            StartGame(false);
+
+            SetHitPoints(ra.CharacterCard, 15);
+            GoToPlayCardPhase(celadroch);
+
+            var card = GetCard("ForsakenCrusader");
+            PlayCard(card);
+            AssertInPlayArea(celadroch, card);
+
+            QuickHPStorage(ra, haka, legacy);
+            GoToEndOfTurn(celadroch);
+
+            //includes cela's end of turn
+            QuickHPCheck(0, -3, -3);
+
+            GoToEndOfTurn(env);
+            AssertInPlayArea(celadroch, card);
+
+            GoToStartOfTurn(celadroch);
+            var devil = GetCard("TatteredDevil");
+            AssertInPlayArea(celadroch, devil);
+        }
     }
 }
