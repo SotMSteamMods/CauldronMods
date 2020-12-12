@@ -1510,7 +1510,7 @@ namespace CauldronTests
 
             DestroyCard(avatar); //send to trash
             AssertInTrash(avatar);
-            
+
             //card destroys self
             DealDamage(ra, celadroch, 16, DamageType.Cold);
             AssertInTrash(card);
@@ -1596,6 +1596,74 @@ namespace CauldronTests
             AssertNextToCard(c1, ra.CharacterCard);
             AssertInDeck(celadroch, c2);
             AssertInDeck(celadroch, c3);
+        }
+
+
+        [Test()]
+        public void TestLordOfTheMidnightRevel_CounterDamage()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            SuppressCeladrochMinionPlay();
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            StackDeckAfterShuffle(celadroch, new[] { "LordOfTheMidnightRevel" });
+            StartGame(false);
+            SafetyRemovePillars();
+            GoToPlayCardPhase(celadroch);
+
+            var card = GetCard("LordOfTheMidnightRevel");
+            PlayCard(card);
+            AssertInPlayArea(celadroch, card);
+
+            QuickHPStorage(celadroch.CharacterCard, card, ra.CharacterCard, haka.CharacterCard, legacy.CharacterCard);
+            //deal damage to lord, no response
+            DealDamage(ra, card, 2, DamageType.Fire);
+            QuickHPCheck(0, -2, 0, 0, 0);
+
+            QuickHPUpdate();
+            //damage to celadroch, counter damage
+            DealDamage(ra, celadroch, 2, DamageType.Fire);
+            QuickHPCheck(-2, 0, -3, 0, 0);
+
+            QuickHPUpdate();
+            //counter damage, once per turn
+            DealDamage(ra, celadroch, 2, DamageType.Fire);
+            QuickHPCheck(-2, 0, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestLordOfTheMidnightRevel_DestructionEffect()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            StackDeckAfterShuffle(celadroch, new[] { "LordOfTheMidnightRevel" });
+            StartGame(false);
+            SafetyRemovePillars();
+            GoToPlayCardPhase(celadroch);
+
+            var card = GetCard("LordOfTheMidnightRevel");
+            PlayCard(card);
+            AssertInPlayArea(celadroch, card);
+
+            //load out a bunch of hero ongoings and equipments
+            var c1 = PlayCard("Dominion");
+            var c2 = PlayCard("TheLegacyRing");
+            var c3 = PlayCard("NextEvolution");
+            var c4 = PlayCard("ImbuedFire");
+            var c5 = PlayCard("WrathfulGaze");
+
+            DecisionSelectCards = new[] { c1, c2, c3, c4, c5 };
+
+            DestroyCard(card, ra.CharacterCard);
+            //2 other non-character targets in play, so 2 cards destoryed;
+            AssertInTrash(c1);
+            AssertInTrash(c2);
+            AssertIsInPlay(c3);
+            AssertIsInPlay(c4);
+            AssertIsInPlay(c5);
         }
     }
 }
