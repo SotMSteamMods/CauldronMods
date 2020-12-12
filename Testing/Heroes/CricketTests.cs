@@ -219,6 +219,28 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestChirp3Cards_UpTo()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card phlange = PlayCard("ArborealPhalanges");
+            Card bramb = PlayCard("EnsnaringBrambles");
+            Card rocks = PlayCard("LivingRockslide");
+
+            DecisionYesNo = true;
+
+            //Discard up to 3 cards.
+            QuickHandStorage(cricket);
+            QuickHPStorage(phlange, bramb, rocks, akash.CharacterCard);
+            DecisionSelectTargets = new Card[] { phlange, bramb, rocks, null };
+            PlayCard("Chirp");
+            QuickHandCheck(-3);
+            //{Cricket} deals up to 4 targets X sonic damage each, where X is 1 plus the number of cards discarded this way.
+            QuickHPCheck(-4, -4, -4, -0);
+        }
+
+        [Test()]
         public void TestEchonavigation()
         {
             SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
