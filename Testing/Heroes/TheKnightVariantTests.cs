@@ -720,5 +720,19 @@ namespace CauldronTests
             AssertIsInPlay(mail);
             AssertInHand(shield);
         }
+        [Test]
+        public void TestRoninKnightYoungKnightPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "SkyScraper", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card batt = PlayCard("BladeBattalion");
+
+            DecisionSelectCards = new Card[] { mdp, batt };
+            QuickHPStorage(baron.CharacterCard, mdp, batt, oldKnight, youngKnight, ra.CharacterCard, wraith.CharacterCard);
+            UsePower(youngKnight);
+            QuickHPCheck(0, -2, -2, 0, -2, 0, 0);
+        }
     }
 }

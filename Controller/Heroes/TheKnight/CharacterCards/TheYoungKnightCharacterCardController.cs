@@ -15,8 +15,28 @@ namespace Cauldron.TheKnight
 
         public override IEnumerator UsePower(int index = 0)
         {
-            //"{TheYoungKnightCharacter} deals herself and 2 other targets 2 toxic damage each"
-
+            int otherTargets = GetPowerNumeral(0, 2);
+            int damage = GetPowerNumeral(1, 2);
+            //"{TheYoungKnightCharacter} deals herself... 2 toxic damage"
+            IEnumerator coroutine = DealDamage(this.Card, this.Card, damage, DamageType.Toxic, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            //...[Knight deals] 2 other targets 2 toxic damage each
+            coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, this.Card), damage, DamageType.Toxic, otherTargets, false, otherTargets, additionalCriteria:(Card c) => c != this.Card, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
 
