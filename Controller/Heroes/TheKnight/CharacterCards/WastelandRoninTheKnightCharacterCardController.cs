@@ -108,22 +108,65 @@ namespace Cauldron.TheKnight
         }
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
+            IEnumerator coroutine;
             switch (index)
             {
                 case 0:
                     {
                         //"One hero deals 1 target 1 projectile damage.",
+                        coroutine = GameController.SelectHeroToSelectTargetAndDealDamage(DecisionMaker, 1, DamageType.Projectile, optionalDealDamage: false, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case 1:
                     {
                         //"One target regains 1 HP.",
-
+                        coroutine = GameController.SelectAndGainHP(DecisionMaker, 1, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case 2:
                     {
                         //"One player may discard a card to play 2 cards now."
+                        var storedHero = new List<SelectTurnTakerDecision> { };
+                        var storedDiscard = new List<DiscardCardAction> { };
+                        coroutine = GameController.SelectHeroToDiscardCard(DecisionMaker, storedResultsTurnTaker: storedHero, storedResultsDiscard: storedDiscard, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+
+                        if(DidDiscardCards(storedDiscard) && DidSelectTurnTaker(storedHero))
+                        {
+                            var hero = FindHeroTurnTakerController(storedHero.FirstOrDefault().SelectedTurnTaker.ToHero());
+                            coroutine = GameController.SelectAndPlayCardsFromHand(hero, 2, false, 2, cardSource: GetCardSource());
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine);
+                            }
+                        }
                         break;
                     }
             }

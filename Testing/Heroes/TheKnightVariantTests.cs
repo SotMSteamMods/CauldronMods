@@ -773,5 +773,78 @@ namespace CauldronTests
             DealDamage(baron, oldKnight, 30, DTM);
             AssertIncapacitated(knight);
         }
+        [Test]
+        public void TestRoninKnightIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "SkyScraper", "Megalopolis");
+            StartGame();
+            DealDamage(baron, youngKnight, 30, DTM);
+            DealDamage(baron, oldKnight, 30, DTM);
+
+            //"One hero deals 1 target 1 projectile damage.",
+            DestroyCard("MobileDefensePlatform");
+            AssertNextDecisionChoices(new TurnTaker[] { ra.TurnTaker, wraith.TurnTaker, sky.TurnTaker }, new TurnTaker[] { knight.TurnTaker, baron.TurnTaker });
+            QuickHPStorage(baron);
+            UseIncapacitatedAbility(knight, 0);
+            QuickHPCheck(-1);
+
+            PlayCard("MicroTargetingComputer");
+            DecisionSelectTurnTaker = wraith.TurnTaker;
+            UseIncapacitatedAbility(knight, 0);
+            QuickHPCheck(-3);
+        }
+        [Test]
+        public void TestRoninKnightIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "SkyScraper", "Megalopolis");
+            StartGame();
+            DealDamage(baron, youngKnight, 30, DTM);
+            DealDamage(baron, oldKnight, 30, DTM);
+
+            SetHitPoints(ra, 20);
+            SetHitPoints(wraith, 20);
+            SetHitPoints(baron, 20);
+
+            QuickHPStorage(ra, wraith, baron);
+            UseIncapacitatedAbility(knight, 1);
+            QuickHPCheck(0, 0, 1);
+        }
+        [Test]
+        public void TestRoninKnightIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "SkyScraper", "Megalopolis");
+            StartGame();
+            DealDamage(baron, youngKnight, 30, DTM);
+            DealDamage(baron, oldKnight, 30, DTM);
+
+            Card stun = PutInHand("StunBolt");
+            Card belt = PutInHand("UtilityBelt");
+            Card knives = PutInHand("ThrowingKnives");
+
+            DecisionSelectTurnTaker = wraith.TurnTaker;
+            DecisionSelectCards = new Card[] { stun, belt, knives };
+
+            UseIncapacitatedAbility(knight, 2);
+            AssertInTrash(stun);
+            AssertIsInPlay(belt, knives);
+        }
+        [Test]
+        public void TestRoninKnightIncap3Optional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "SkyScraper", "Megalopolis");
+            StartGame();
+            DealDamage(baron, youngKnight, 30, DTM);
+            DealDamage(baron, oldKnight, 30, DTM);
+
+            Card stun = PutInHand("StunBolt");
+            Card belt = PutInHand("UtilityBelt");
+            Card knives = PutInHand("ThrowingKnives");
+
+            DecisionSelectTurnTaker = wraith.TurnTaker;
+            DecisionSelectCards = new Card[] { null, belt, knives };
+
+            UseIncapacitatedAbility(knight, 2);
+            AssertInHand(stun, belt, knives);
+        }
     }
 }
