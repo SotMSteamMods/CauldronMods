@@ -1245,5 +1245,70 @@ namespace CauldronTests
             DealDamage(card, legacy, 1, DamageType.Projectile);
             QuickHPCheck(-2, -2, -2);
         }
+
+
+        [Test()]
+        public void TestGallowsBlast_Play()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            SuppressCeladrochMinionPlay();
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            
+            StackDeckAfterShuffle(celadroch, new[] { "GallowsBlast" });
+            StartGame(false);
+
+            GoToPlayCardPhase(celadroch);
+
+            var card = GetCard("GallowsBlast");
+
+            base.AssertNumberOfCardsInTrash(ra, 0);
+            base.AssertNumberOfCardsInTrash(haka, 0);
+            base.AssertNumberOfCardsInTrash(legacy, 0);
+            base.AssertNumberOfCardsInHand(ra, 4);
+            base.AssertNumberOfCardsInHand(haka, 4);
+            base.AssertNumberOfCardsInHand(legacy, 4);
+
+            QuickHPStorage(ra, haka, legacy);
+            PlayCard(card);
+            AssertInTrash(celadroch, card);
+            QuickHPCheck(-5, -5, -5);
+
+            base.AssertNumberOfCardsInTrash(ra, 1);
+            base.AssertNumberOfCardsInTrash(haka, 1);
+            base.AssertNumberOfCardsInTrash(legacy, 1);
+
+            base.AssertNumberOfCardsInHand(ra, 3);
+            base.AssertNumberOfCardsInHand(haka, 3);
+            base.AssertNumberOfCardsInHand(legacy, 3);
+        }
+
+
+        [Test()]
+        public void TestGallowsBlast_StatusEffect()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            SuppressCeladrochMinionPlay();
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+
+            StackDeckAfterShuffle(celadroch, new[] { "GallowsBlast" });
+            StartGame(false);
+
+            GoToPlayCardPhase(celadroch);
+
+            var card = GetCard("GallowsBlast");
+
+            AssertNumberOfStatusEffectsInPlay(0);
+            
+            PlayCard(card);
+            AssertInTrash(celadroch, card);
+
+            AssertNumberOfStatusEffectsInPlay(1);
+            AssertStatusEffectsContains("");
+
+        }
+
+
     }
 }

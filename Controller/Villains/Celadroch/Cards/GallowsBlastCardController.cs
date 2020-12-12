@@ -15,7 +15,45 @@ namespace Cauldron.Celadroch
 
         public GallowsBlastCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
 
+        public override IEnumerator Play()
+        {
+            var coroutine = GameController.DealDamage(DecisionMaker, CharacterCard, c => c.IsHeroCharacterCard, 5, DamageType.Infernal, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = GameController.EachPlayerDiscardsCards(1, 1, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            var effect = new ReduceDamageStatusEffect(2);
+            effect.TargetCriteria.IsVillain = true;
+            effect.TargetCriteria.IsTarget = true;
+            effect.UntilStartOfNextTurn(TurnTaker);
+            effect.CardSource = Card;
+
+            coroutine = AddStatusEffect(effect);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
     }
 }
