@@ -23,7 +23,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestLoadCrickett()
+        public void TestLoadCricket()
         {
             SetupGameController("BaronBlade", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
 
@@ -353,6 +353,24 @@ namespace CauldronTests
             AssertInTrash(entomb);
             //If you destroyed an ongoing card this way, {Cricket} deals 1 target 2 sonic damage.
             QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestInfrasonicCollapseDestroyOngoing_UnableToDestroy()
+        {
+            SetupGameController("IronLegacy", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card galvanized = PlayCard("Galvanized");
+
+            QuickHPStorage(iron);
+            DecisionSelectCard = galvanized;
+            PlayCard("InfrasonicCollapse");
+            //Destroy 1 ongoing or environment card.
+            AssertInPlayArea(iron, galvanized);
+            //If you destroyed an ongoing card this way, {Cricket} deals 1 target 2 sonic damage.
+            //galvanized is indestructible, so couldn't be destroyed, so no damage should be dealt
+            QuickHPCheck(0);
         }
 
         [Test()]

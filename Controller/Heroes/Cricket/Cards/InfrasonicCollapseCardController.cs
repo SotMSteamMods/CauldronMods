@@ -29,9 +29,9 @@ namespace Cauldron.Cricket
             }
 
             //based on the card type do something
-            if (storedResults != null && storedResults.FirstOrDefault().CardToDestroy.Card != null)
+            if (DidDestroyCard(storedResults))
             {
-                Card destroyedCard = storedResults.FirstOrDefault().CardToDestroy.Card;
+                Card destroyedCard = GetDestroyedCards(storedResults).FirstOrDefault();
                 if (destroyedCard.IsOngoing)
                 {
                     //If you destroyed an ongoing card this way, {Cricket} deals 1 target 2 sonic damage.
