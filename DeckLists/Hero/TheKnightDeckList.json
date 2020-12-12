@@ -566,6 +566,7 @@
 			"promoIdentifier": "WastelandRoninTheKnightCharacter",
 			"count": 1,
 			"isReal": false,
+			"character": true,
 			"title": "The Knight",
 			"promoTitle": "The Knights: Wasteland Ronin",
 			"shortPromoTitle": "The Wasteland Knights",
