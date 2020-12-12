@@ -27,7 +27,7 @@ namespace Cauldron.Cypher
             List<SelectCardsDecision> storedResults = new List<SelectCardsDecision>();
             IEnumerator routine = base.GameController.SelectCardsAndStoreResults(this.DecisionMaker, SelectionType.SearchTrash, 
                 c => c.Location.Name == LocationName.Trash && IsAugment(c), 
-                2, storedResults, false, 0, cardSource: base.GetCardSource());
+                2, storedResults, false, 2, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
