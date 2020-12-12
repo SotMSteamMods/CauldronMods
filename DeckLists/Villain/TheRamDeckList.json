@@ -366,9 +366,6 @@
             ],
             "advanced": "Reduce damage dealt to {AdmiralWinters} by 1.",
             "icons": [
-                "CannotWin",
-                "StartOfTurnAction",
-                "ImmuneToDamage",
                 "RedirectDamage",
                 "DealDamageProjectile",
                 "PlayCardNow"
