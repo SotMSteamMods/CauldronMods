@@ -9,6 +9,7 @@ namespace Cauldron.TheKnight
     public class TheKnightUtilityCharacterCardController : HeroCharacterCardController
     {
         protected bool IsCoreCharacterCard = true;
+        protected readonly string RoninKey = "WastelandRoninKnightOwnershipKey";
         public TheKnightUtilityCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
@@ -19,6 +20,30 @@ namespace Cauldron.TheKnight
             {
                 (TurnTakerController as TheKnightTurnTakerController).ManageCharactersOffToTheSide(true);
             }
+        }
+
+        protected Card GetKnightCardUser(Card c)
+        {
+            if (c == null)
+            {
+                return null;
+            }
+
+            if (this.TurnTakerControllerWithoutReplacements.HasMultipleCharacterCards)
+            {
+                if (c.Location.IsNextToCard)
+                {
+                    return c.Location.OwnerCard;
+                }
+
+                if (c.Owner == this.TurnTaker)
+                {
+                    var propCard = GameController.GetCardPropertyJournalEntryCard(c, RoninKey);
+                    return propCard ?? this.CharacterCard;
+                }
+            }
+
+            return this.CharacterCard;
         }
     }
 }

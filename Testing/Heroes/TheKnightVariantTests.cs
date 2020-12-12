@@ -524,8 +524,9 @@ namespace CauldronTests
             StartGame();
             DestroyCard("MobileDefensePlatform");
 
-            DecisionSelectCard = youngKnight;
-            Card sword = PlayCard("ShortSword");
+            Card sword = GetCard("ShortSword");
+            DecisionSelectCards = new Card[] { youngKnight, sword, baron.CharacterCard };
+            PlayCard(sword);
             //this one does *not* go in the NextToLocation, as that breaks the power-use UI
             AssertAtLocation(sword, knight.TurnTaker.PlayArea);
 
@@ -554,7 +555,11 @@ namespace CauldronTests
 
             DecisionSelectCard = oldKnight;
             Card helm = PlayCard("PlateHelm");
-            Card shield = PlayCard("StalwartShield");
+
+            Card shield = GetCard("StalwartShield");
+            DecisionSelectCards = new Card[] { oldKnight, shield };
+            PlayCard(shield);
+            AssertNextToCard(shield, oldKnight);
 
             QuickHPStorage(oldKnight, helm, youngKnight, mail);
             DecisionYesNo = false;
@@ -618,6 +623,72 @@ namespace CauldronTests
             QuickHPCheck(0, 2);
             PlayCard("CatchYourBreath");
             QuickHPCheck(2, 0);
+        }
+        [Test]
+        public void TestRoninKnightYoungDamageTrigger()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "SkyScraper", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            var simpleDamage = new Card[] { youngKnight, baron.CharacterCard };
+            DecisionSelectCards = simpleDamage;
+            PutOnDeck(knight, knight.HeroTurnTaker.Hand.Cards);
+            QuickHandStorage(knight);
+
+            QuickHPStorage(baron.CharacterCard);
+            //regular put-next-to equipment
+            PlayCard("PlateMail");
+            QuickHandCheck(0);
+            QuickHPCheck(-1);
+
+            DecisionSelectCardsIndex = 0;
+            Card sword = GetCard("ShortSword");
+            DecisionSelectCards = new Card[] { youngKnight, sword, baron.CharacterCard };
+            //Short Sword's weird associated-but-not-actually-next-to
+            PlayCard(sword);
+            QuickHandCheck(0);
+            QuickHPCheck(-2);
+
+            DecisionSelectCardsIndex = 0;
+            DecisionSelectCards = simpleDamage;
+            //Other player's equipment that go next to a character
+            PlayCard("MicroAssembler");
+            QuickHandCheck(0);
+            QuickHPCheck(-2);
+        }
+        [Test]
+        public void TestRoninKnightOldDrawTrigger()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "SkyScraper", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            var simpleDamage = new Card[] { oldKnight, baron.CharacterCard };
+            DecisionSelectCards = simpleDamage;
+            PutOnDeck(knight, knight.HeroTurnTaker.Hand.Cards);
+            QuickHandStorage(knight);
+
+            QuickHPStorage(baron.CharacterCard);
+            //regular put-next-to equipment
+            PlayCard("PlateMail");
+            QuickHandCheck(1);
+            QuickHPCheck(0);
+
+            DecisionSelectCardsIndex = 0;
+            Card sword = GetCard("ShortSword");
+            DecisionSelectCards = new Card[] { oldKnight, sword, baron.CharacterCard };
+            //Short Sword's weird associated-but-not-actually-next-to
+            PlayCard(sword);
+            QuickHandCheck(1);
+            QuickHPCheck(0);
+
+            DecisionSelectCardsIndex = 0;
+            DecisionSelectCards = simpleDamage;
+            //Other player's equipment that go next to a character
+            PlayCard("MicroAssembler");
+            QuickHandCheck(1);
+            QuickHPCheck(0);
         }
     }
 }

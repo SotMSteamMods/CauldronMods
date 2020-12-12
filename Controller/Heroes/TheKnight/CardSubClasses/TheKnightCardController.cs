@@ -107,8 +107,11 @@ namespace Cauldron.TheKnight
                     return c.Location.OwnerCard;
                 }
 
-                var propCard = GameController.GetCardPropertyJournalEntryCard(c, RoninKey);
-                return propCard ?? this.CharacterCard;
+                if(c.Owner == this.TurnTaker)
+                {
+                    var propCard = GameController.GetCardPropertyJournalEntryCard(c, RoninKey);
+                    return propCard ?? this.CharacterCard;
+                }
             }
 
             return this.CharacterCard;

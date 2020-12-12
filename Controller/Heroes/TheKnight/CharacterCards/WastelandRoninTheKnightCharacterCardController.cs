@@ -45,13 +45,42 @@ namespace Cauldron.TheKnight
             _youngKnight = cards.Where((Card c) => c.Identifier == "TheYoungKnightCharacter").FirstOrDefault();
             _oldKnight = cards.Where((Card c) => c.Identifier == "TheOldKnightCharacter").FirstOrDefault();
 
-            
+
             //"If you have no hero character targets in play, flip this card.",
-			//"When 1 of your equipment cards enter play, put it next to 1 of your active knights.",
-			//"When your cards refer to “The Knight”, choose 1 of your active knights. For equipment cards, you must choose the knight they are next to. Stalwart Shield does not reduce damage to the other knight's equipment targets.",
-			//"Whenever an equipment enters play next to The Young Knight, she deals 1 target 1 toxic damage.",
-			//"Whenever an equipment card enters play next to The Old Knight, draw a card."
-            
+            //"When 1 of your equipment cards enter play, put it next to 1 of your active knights.",
+            //"When your cards refer to “The Knight”, choose 1 of your active knights. For equipment cards, you must choose the knight they are next to. Stalwart Shield does not reduce damage to the other knight's equipment targets.",
+
+            //"Whenever an equipment enters play next to The Young Knight, she deals 1 target 1 toxic damage.",
+            AddTrigger((CardEntersPlayAction cep) => IsEquipment(cep.CardEnteringPlay) && GetKnightCardUser(cep.CardEnteringPlay) == youngKnight, YoungKnightDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+            //"Whenever an equipment card enters play next to The Old Knight, draw a card."
+            AddTrigger((CardEntersPlayAction cep) => IsEquipment(cep.CardEnteringPlay) && GetKnightCardUser(cep.CardEnteringPlay) == oldKnight, OldKnightDrawResponse, TriggerType.DealDamage, TriggerTiming.After);
+        }
+
+        private IEnumerator YoungKnightDamageResponse(CardEntersPlayAction cep)
+        {
+            IEnumerator coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, youngKnight), 1, DamageType.Toxic, 1, false, 1, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+        private IEnumerator OldKnightDrawResponse(CardEntersPlayAction cep)
+        {
+            IEnumerator coroutine = DrawCard();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
 
         public override void AddSideTriggers()
@@ -98,8 +127,6 @@ namespace Cauldron.TheKnight
                         break;
                     }
             }
-
-
             yield break;
         }
     }

@@ -29,7 +29,7 @@ namespace Cauldron.TheKnight
                     return false;
                 }
                 
-                return GetKnightCardUser(this.Card) == GetKnightCardUser(c);
+                return c.Owner == this.TurnTaker && GetKnightCardUser(this.Card) == GetKnightCardUser(c);
             }
             return base.IsEquipment(c) && c.Owner == base.TurnTaker;
         }
