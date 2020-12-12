@@ -15,7 +15,20 @@ namespace Cauldron.Celadroch
 
         public SummersWrathCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => $"{Card.Title} is immune to damage.")
+                .Condition = () => ImmuneToDamageCriteria();
+        }
 
+        private bool ImmuneToDamageCriteria()
+        {
+            return !Journal.DealDamageEntriesThisTurn().Any(j => j.TargetCard != Card && IsVillain(j.TargetCard) && j.Amount > 0);
+        }
+
+        public override void AddTriggers()
+        {
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => c.IsHero && c.IsTarget, TargetType.All, 2, DamageType.Fire);
+
+            AddImmuneToDamageTrigger(dda => dda.Target == Card && ImmuneToDamageCriteria());
         }
     }
 }

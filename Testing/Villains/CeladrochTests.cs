@@ -632,7 +632,7 @@ namespace CauldronTests
         public void TestCeladroch_PlayCardToRemoveTokens()
         {
             SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
-            
+
             StackAfterShuffle(celadroch.TurnTaker.Deck, new[] { "AvatarOfDeath" });
 
             AddTokensToPool(stormPool, 3);
@@ -736,8 +736,8 @@ namespace CauldronTests
             GoToPlayCardPhase(celadroch);
             PlayTopCard(celadroch);
             AssertIsInPlay(topCard);
-            
-            foreach(var c in cards)
+
+            foreach (var c in cards)
             {
                 AssertIsInPlay(c);
             }
@@ -745,7 +745,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestZombies_MoveNextToAndDealDamage([Values("GraspingBreath","LeechingBreath","WhisperingBreath")] string zombie)
+        public void TestZombies_MoveNextToAndDealDamage([Values("GraspingBreath", "LeechingBreath", "WhisperingBreath")] string zombie)
         {
             SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
             AddTokensToPool(stormPool, 3);
@@ -938,7 +938,7 @@ namespace CauldronTests
             var c2 = GetCard("TatteredDevil");
             PlayCard(c1);
             PlayCard(c2);
-                        
+
             QuickHPStorage(c1, c2);
             DealDamage(haka, c1, 2, DamageType.Cold);
             DealDamage(legacy, c1, 2, DamageType.Cold);
@@ -1037,6 +1037,140 @@ namespace CauldronTests
             DealDamage(celadroch.CharacterCard, haka, 2, DamageType.Psychic);
             DealDamage(top, ra, 2, DamageType.Radiant);
             QuickHPCheck(-3, -3, 0);
+        }
+
+
+        [Test()]
+        public void TestAutumnsTorment()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            SuppressCeladrochMinionPlay();
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            StackDeckAfterShuffle(celadroch, new[] { "AvatarOfDeath", "TatteredDevil" });
+            StartGame(false);
+
+            var e1 = PlayCard("PlummetingMonorail");
+            AssertInPlayArea(env, e1);
+
+            var card = PlayCard("AutumnsTorment");
+            AssertInPlayArea(celadroch, card);
+
+            AssertInTrash(e1);
+
+            QuickHPStorage(ra, haka, legacy);
+            PlayCard("Dominion");
+
+            QuickHPCheck(0, -2, 0);
+        }
+
+        [Test()]
+        public void TestSummersWrath()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            SuppressCeladrochMinionPlay();
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            StackDeckAfterShuffle(celadroch, new[] { "SummersWrath" });
+            StartGame(false);
+
+            GoToPlayCardPhase(celadroch);
+
+            var card = GetCard("SummersWrath");
+            PlayCard(card);
+            AssertInPlayArea(celadroch, card);
+
+            QuickHPStorage(ra, haka, legacy);
+            GoToEndOfTurn(celadroch);
+            
+            //includes cela's end of turn
+            QuickHPCheck(-2, -4, -4);
+
+            //test dr
+            QuickHPStorage(card, celadroch.CharacterCard);
+            DealDamage(haka.CharacterCard, card, 1, DamageType.Cold, true);
+            QuickHPCheck(0, 0); //immune
+
+            QuickHPStorage(card, celadroch.CharacterCard);
+            DealDamage(haka.CharacterCard, celadroch.CharacterCard, 3, DamageType.Cold);
+            QuickHPCheck(0, 0); //dr reduces to zero
+
+            QuickHPStorage(card, celadroch.CharacterCard);
+            DealDamage(haka.CharacterCard, card, 1, DamageType.Cold, true);
+            QuickHPCheck(0, 0); //still immune
+
+            QuickHPStorage(card, celadroch.CharacterCard);
+            DealDamage(haka.CharacterCard, celadroch.CharacterCard, 3, DamageType.Cold, true);
+            DealDamage(haka.CharacterCard, card, 1, DamageType.Cold, true);
+            QuickHPCheck(-1, -3); //no longer immune
+
+            GoToStartOfTurn(ra);
+
+            QuickHPStorage(card, celadroch.CharacterCard);
+            DealDamage(haka.CharacterCard, card, 1, DamageType.Cold, true);
+            QuickHPCheck(0, 0); //immune again
+
+        }
+
+        [Test()]
+        public void TestWintersBane()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            SuppressCeladrochMinionPlay();
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            StackDeckAfterShuffle(celadroch, new[] { "WintersBane" });
+            StartGame(false);
+
+            GoToPlayCardPhase(celadroch);
+
+            var card = GetCard("WintersBane");
+            PlayCard(card);
+            AssertInPlayArea(celadroch, card);
+
+            QuickHPStorage(ra, haka, legacy);
+            GoToEndOfTurn(celadroch);
+
+            //includes cela's end of turn
+            QuickHPCheck(0, -5, -2);
+
+            //test dr
+            QuickHPStorage(card, celadroch.CharacterCard);
+            DealDamage(haka.CharacterCard, card, 1, DamageType.Cold);
+            QuickHPCheck(0, 0);
+
+            QuickHPStorage(card, celadroch.CharacterCard);
+            DealDamage(haka.CharacterCard, card, 1, DamageType.Cold, true);
+            QuickHPCheck(-1, 0);
+        }
+
+
+        [Test()]
+        public void TestSpringsAtrophy()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            SuppressCeladrochMinionPlay();
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            StackDeckAfterShuffle(celadroch, new[] { "SpringsAtrophy" });
+            StartGame(false);
+
+            SetHitPoints(ra.CharacterCard, 15);
+            GoToPlayCardPhase(celadroch);
+
+            var card = GetCard("SpringsAtrophy");
+            PlayCard(card);
+            AssertInPlayArea(celadroch, card);
+
+            QuickHPStorage(ra, haka, legacy);
+            GoToEndOfTurn(celadroch);
+
+            //includes cela's end of turn
+            QuickHPCheck(-2, -2, -2);
         }
     }
 }

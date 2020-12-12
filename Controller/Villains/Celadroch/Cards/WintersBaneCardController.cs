@@ -15,7 +15,14 @@ namespace Cauldron.Celadroch
 
         public WintersBaneCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
+        }
 
+        public override void AddTriggers()
+        {
+            AddReduceDamageTrigger(c => IsVillain(c), 1);
+
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => c.IsHero && c.IsTarget, TargetType.HighestHP, H, DamageType.Cold);
         }
     }
 }

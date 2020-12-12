@@ -14,7 +14,12 @@ namespace Cauldron.Celadroch
 
         public SpringsAtrophyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroTargetWithLowestHP();
+        }
 
+        public override void AddTriggers()
+        {
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => c.IsHero && c.IsTarget, TargetType.LowestHP, H - 1, DamageType.Toxic);
         }
     }
 }
