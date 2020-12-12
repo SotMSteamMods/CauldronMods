@@ -1359,5 +1359,63 @@ namespace CauldronTests
             QuickHPCheck(10, 0);
         }
 
+        [Test()]
+        public void TestNightUnderTheMountain_DestroyAtStart()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            SuppressCeladrochMinionPlay();
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            StackDeckAfterShuffle(celadroch, new[] { "AvatarOfDeath", "TatteredDevil" });
+            StartGame(false);
+
+            var card = PlayCard("NightUnderTheMountain");
+            AssertInPlayArea(celadroch, card);
+
+            var top = GetCard("AvatarOfDeath");
+            AssertInPlayArea(celadroch, top);
+
+            GoToEndOfTurn(celadroch);
+
+            GoToEndOfTurn(env);
+
+            AssertInPlayArea(celadroch, card);
+            AssertNumberOfStatusEffectsInPlay(0);
+            GoToStartOfTurn(celadroch);
+            AssertInTrash(card);
+
+            AssertNumberOfStatusEffectsInPlay(1);
+        }
+
+        [Test()]
+        public void TestNightUnderTheMountain_StatusEffect()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            SuppressCeladrochMinionPlay();
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            StackDeckAfterShuffle(celadroch, new[] { "AvatarOfDeath", "TatteredDevil" });
+            StartGame(false);
+
+            var card = PlayCard("NightUnderTheMountain");
+            AssertInPlayArea(celadroch, card);
+
+            var top = GetCard("AvatarOfDeath");
+            AssertInPlayArea(celadroch, top);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+            DestroyCard(card);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            QuickHPStorage(ra, haka, legacy);
+            GoToEndOfTurn(celadroch);
+
+            //includes cela's end of turn
+            // cele = 2 + 2 = 4 to two highest
+            // deth = H + 2 to all
+            QuickHPCheck(-5, -9, -9);
+        }
     }
 }

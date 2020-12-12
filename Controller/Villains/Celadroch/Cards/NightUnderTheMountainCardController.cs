@@ -16,7 +16,29 @@ namespace Cauldron.Celadroch
 
         public NightUnderTheMountainCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
 
+        public override IEnumerator Play()
+        {
+            return base.Play();
+        }
+
+        public override void AddTriggers()
+        {
+            AddStartOfTurnTrigger(tt => tt == TurnTaker, pca => DestroyThisCardResponse(pca), TriggerType.DestroySelf);
+
+            AddAfterDestroyedAction(IncreaseDamageStatusEffectResponse);
+        }
+
+        private IEnumerator IncreaseDamageStatusEffectResponse(GameAction _)
+        {
+            var effect = new IncreaseDamageStatusEffect(2);
+            effect.SourceCriteria.IsVillain = true;
+            effect.SourceCriteria.IsTarget = true;
+            effect.UntilEndOfNextTurn(TurnTaker);
+            effect.CardSource = Card;
+
+            return AddStatusEffect(effect);
         }
     }
 }
