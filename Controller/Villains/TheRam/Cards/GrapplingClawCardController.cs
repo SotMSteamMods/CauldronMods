@@ -71,14 +71,29 @@ namespace Cauldron.TheRam
             }
 
             //{TheRam} deals {H - 2} projectile damage to the hero with the lowest HP that is not Up Close.
-            IEnumerator damage = DealDamage(GetRam, target, H - 2, DamageType.Projectile, cardSource: GetCardSource());
-            if (UseUnityCoroutines)
+            if (RamIfInPlay != null)
             {
-                yield return GameController.StartCoroutine(damage);
+                IEnumerator damage = DealDamage(GetRam, target, H - 2, DamageType.Projectile, cardSource: GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(damage);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(damage);
+                }
             }
             else
             {
-                GameController.ExhaustCoroutine(damage);
+                IEnumerator message = MessageNoRamToAct(GetCardSource(), "deal damage");
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(message);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(message);
+                }
             }
 
             if (target.Owner.IsIncapacitatedOrOutOfGame)
