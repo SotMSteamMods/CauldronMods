@@ -86,6 +86,8 @@ namespace CauldronTests
             //Look at the top card of a deck and replace or discard it.
             UseIncapacitatedAbility(cricket, 1);
             AssertOnTopOfDeck(ring);
+            AssertNumberOfCardsInRevealed(cricket, 0);
+
         }
 
         [Test()]
@@ -102,6 +104,7 @@ namespace CauldronTests
             //Look at the top card of a deck and replace or discard it.
             UseIncapacitatedAbility(cricket, 1);
             AssertOnTopOfTrash(legacy, ring);
+            AssertNumberOfCardsInRevealed(cricket, 0);
         }
 
         [Test()]
@@ -258,7 +261,7 @@ namespace CauldronTests
         [Test()]
         public void TestGrasshopperKick()
         {
-            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController(new string[] { "AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis" });
             StartGame();
 
             Card kick = PlayCard("GrasshopperKick");
@@ -281,6 +284,10 @@ namespace CauldronTests
             GoToStartOfTurn(cricket);
             //Until Start of next turn
             QuickHPStorage(cricket);
+            if(!rail.IsInPlayAndHasGameText)
+            {
+                PlayCard(rail);
+            }
             DealDamage(rail, cricket, 2, DamageType.Melee);
             QuickHPCheck(-2);
         }
@@ -304,7 +311,7 @@ namespace CauldronTests
         [Test()]
         public void TestInfrasonicCollapseDestroyEnvironment()
         {
-            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController(new string[] { "AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis" });
             StartGame();
 
             Card phlange = PlayCard("ArborealPhalanges");
@@ -313,13 +320,28 @@ namespace CauldronTests
             Card rail0 = PlayCard("PlummetingMonorail", 0);
             Card rail1 = PlayCard("PlummetingMonorail", 1);
 
-            QuickHPStorage(akash.CharacterCard, phlange, bramb, rocks, rail1);
+            QuickHPStorage(akash.CharacterCard, phlange, bramb, rocks, rail1, legacy.CharacterCard);
             DecisionSelectCard = rail0;
+            DecisionAutoDecideIfAble = true;
+            if (!rail0.IsInPlayAndHasGameText)
+            {
+                PlayCard(rail0, isPutIntoPlay: true);
+            }
             PlayCard("InfrasonicCollapse");
             //Destroy 1 ongoing or environment card.
             AssertInTrash(rail0);
             //If you destroyed an environment card this way, {Cricket} deals each non-hero target 1 sonic damage.
-            QuickHPCheck(-1, -1, -1, -1, -1);
+           if(FindCardsWhere((Card c) => c.Identifier == "RooftopCombat" && c.IsInPlayAndHasGameText).Any())
+            { 
+                //the only way rooftop combat is in play is if disrupt the field came out, and played it
+                //that would have destroyed the other monorail
+                QuickHPCheck(-2, -2, -2, -2, 0, 0);
+            } else
+            {
+                QuickHPCheck(-1, -1, -1, -1, -1, 0);
+
+            }
+
         }
 
         [Test()]
