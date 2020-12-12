@@ -55,7 +55,7 @@ namespace Cauldron.Cypher
             if (DidDestroyCard(storedDestroy) && heroToHeal != null)
             {
                 // When an Augment is destroyed this way, the hero it was next to regains 3HP
-                routine = GameController.GainHP(heroToHeal, 3, cardSource: GetCardSource());
+                routine = GameController.GainHP(heroToHeal, HpGain, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(routine);

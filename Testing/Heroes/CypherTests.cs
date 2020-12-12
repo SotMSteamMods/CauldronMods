@@ -747,6 +747,36 @@ namespace CauldronTests
             AssertInTrash(policeBackup);
             QuickHPCheck(-2);
         }
+        [Test]
+        public void TestHackingProgramDamageRedirected()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card policeBackup = GetCard("PoliceBackup");
+            PlayCard(policeBackup);
+            DecisionSelectCard = policeBackup;
+
+            PlayCard("AlchemicalRedirection");
+
+            Card hackingProgram = GetCard(HackingProgramCardController.Identifier);
+            PlayCard(hackingProgram);
+            UsePower(hackingProgram);
+            AssertIsInPlay(policeBackup);
+        }
+        [Test]
+        public void TestHackingProgramNotOptional()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card hackingProgram = PlayCard("HackingProgram");
+
+            DecisionYesNo = false;
+            AssertNoDecision();
+            UsePower(hackingProgram);
+            AssertInTrash(hackingProgram);
+        }
 
         [Test]
         public void TestHeuristicAlgorithm_PutAugInPlay()
