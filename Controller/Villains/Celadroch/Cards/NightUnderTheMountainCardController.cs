@@ -27,10 +27,10 @@ namespace Cauldron.Celadroch
         {
             AddStartOfTurnTrigger(tt => tt == TurnTaker, pca => DestroyThisCardResponse(pca), TriggerType.DestroySelf);
 
-            AddBeforeDestroyAction(IncreaseDamageStatusEffectResponse);
+            AddWhenDestroyedTrigger(dca => IncreaseDamageStatusEffectResponse(), TriggerType.CreateStatusEffect);
         }
 
-        private IEnumerator IncreaseDamageStatusEffectResponse(GameAction _)
+        private IEnumerator IncreaseDamageStatusEffectResponse()
         {
             var effect = new IncreaseDamageStatusEffect(2);
             effect.SourceCriteria.IsVillain = true;

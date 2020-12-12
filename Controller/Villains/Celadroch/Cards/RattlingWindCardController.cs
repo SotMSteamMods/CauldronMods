@@ -26,7 +26,8 @@ namespace Cauldron.Celadroch
         public override void AddTriggers()
         {
             AddTrigger<DrawCardAction>(dca => dca.DidDrawCard, DrawCardDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
-            AddBeforeDestroyAction(ga => GameController.DealDamage(DecisionMaker, CharacterCard, c => c.IsHero && c.IsTarget, 1, DamageType.Cold, cardSource: GetCardSource()));
+
+            AddWhenDestroyedTrigger(ga => GameController.DealDamage(DecisionMaker, CharacterCard, c => c.IsHero && c.IsTarget, 1, DamageType.Cold, cardSource: GetCardSource()), TriggerType.DealDamage);
         }
 
         private IEnumerator DrawCardDamageResponse(DrawCardAction dca)
