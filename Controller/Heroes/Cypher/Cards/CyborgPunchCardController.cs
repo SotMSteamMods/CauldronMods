@@ -40,9 +40,8 @@ namespace Cauldron.Cypher
             }
 
             // One augmented hero deals 1 target 1 melee damage and draws a card now.
-            List<SelectTurnTakerDecision> sttd = new List<SelectTurnTakerDecision>();
-            routine = this.GameController.SelectHeroTurnTaker(this.HeroTurnTakerController, SelectionType.CardToDealDamage, false, false, sttd,
-                new LinqTurnTakerCriteria(tt => GetAugmentedHeroTurnTakers().Contains(tt)), cardSource: GetCardSource());
+            List<SelectCardDecision> storedHeroCard = new List<SelectCardDecision> { };
+            routine = this.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.HeroToDealDamage, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && IsAugmented(c), "augmented hero character"), storedHeroCard, false, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -53,18 +52,19 @@ namespace Cauldron.Cypher
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            if (!sttd.Any())
+            if (!DidSelectCard(storedHeroCard))
             {
                 yield break;
             }
 
-            HeroTurnTakerController httc = base.FindHeroTurnTakerController(sttd.First().SelectedTurnTaker.ToHero());
+            var selectedHero = storedHeroCard.FirstOrDefault().SelectedCard;
+            var heroController = FindHeroTurnTakerController(selectedHero.Owner.ToHero());
 
-            routine = base.GameController.SelectTargetsAndDealDamage(httc,
-                new DamageSource(base.GameController, httc.CharacterCard), DamageToDeal, DamageType.Melee, 1,
-                false, 1, cardSource: httc.CharacterCardController.GetCardSource());
+            routine = base.GameController.SelectTargetsAndDealDamage(heroController,
+                new DamageSource(base.GameController, selectedHero), DamageToDeal, DamageType.Melee, 1,
+                false, 1, cardSource: GetCardSource());
 
-            IEnumerator routine2 = base.GameController.DrawCard(sttd.First().SelectedTurnTaker.ToHero(), false,
+            IEnumerator routine2 = base.GameController.DrawCard(heroController.HeroTurnTaker, false,
                 cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)

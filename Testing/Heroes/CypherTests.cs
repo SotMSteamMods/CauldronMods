@@ -466,8 +466,7 @@ namespace CauldronTests
             Card cyborgBlaster = GetCard(CyborgBlasterCardController.Identifier);
             QuickHPStorage(mdp);
 
-            DecisionSelectCards = new[] {muscleAug, tachyon.CharacterCard, mdp};
-            DecisionSelectTurnTaker = tachyon.TurnTaker;
+            DecisionSelectCards = new[] {muscleAug, tachyon.CharacterCard, tachyon.CharacterCard, mdp};
 
             PlayCard(cyborgBlaster);
 
@@ -571,8 +570,7 @@ namespace CauldronTests
 
             Card cyborgPunch = GetCard(CyborgPunchCardController.Identifier);
 
-            DecisionSelectCards = new[] { muscleAug, tachyon.CharacterCard, mdp };
-            DecisionSelectTurnTaker = tachyon.TurnTaker;
+            DecisionSelectCards = new[] { muscleAug, tachyon.CharacterCard, tachyon.CharacterCard, mdp };
 
             QuickHandStorage(tachyon);
             QuickHPStorage(mdp);
