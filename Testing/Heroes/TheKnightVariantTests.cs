@@ -450,5 +450,121 @@ namespace CauldronTests
             Assert.AreEqual(15, youngKnight.HitPoints);
             Assert.AreEqual(18, oldKnight.HitPoints);
         }
+        [Test]
+        public void TestRoninKnightAssignsArmor([Values("PlateHelm", "PlateMail")] string armorName)
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            DecisionSelectCard = youngKnight;
+            Card armor = PlayCard(armorName);
+            AssertNextToCard(armor, youngKnight);
+
+            QuickHPStorage(oldKnight, youngKnight, armor);
+            DecisionYesNo = true;
+
+            //armor should protect Young Knight and not Old Knight
+            DealDamage(baron, oldKnight, 1, DTM);
+            QuickHPCheck(-1, 0, 0);
+            DealDamage(baron, youngKnight, 1, DTM);
+            QuickHPCheck(0, 0, -1);
+
+            DestroyCard(armor);
+            DecisionSelectCard = oldKnight;
+            PlayCard(armor);
+
+            //now the other way around
+            QuickHPStorage(oldKnight, youngKnight, armor);
+            DealDamage(baron, oldKnight, 1, DTM);
+            QuickHPCheck(0, 0, -1);
+            DealDamage(baron, youngKnight, 1, DTM);
+            QuickHPCheck(0, -1, 0);
+        }
+        [Test]
+        public void TestRoninKnightAssignsWhetstone()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            DecisionSelectCard = youngKnight;
+            Card stone = PlayCard("Whetstone");
+            AssertNextToCard(stone, youngKnight);
+
+            QuickHPStorage(baron);
+
+            //should not be affected by Whetstone
+            DealDamage(oldKnight, baron, 1, DTM);
+            DealDamage(oldKnight, baron, 1, DamageType.Lightning);
+            QuickHPCheck(-2);
+
+            //should get +1 on the melee damage from Whetstone
+            DealDamage(youngKnight, baron, 1, DTM);
+            DealDamage(youngKnight, baron, 1, DamageType.Toxic);
+            QuickHPCheck(-3);
+
+            DecisionSelectCard = oldKnight;
+            DestroyCard(stone);
+            PlayCard(stone);
+
+            //should now have Whetstone
+            DealDamage(oldKnight, baron, 1, DTM);
+            DealDamage(oldKnight, baron, 1, DamageType.Lightning);
+            QuickHPCheck(-3);
+
+            //should no longer have the +1 damage from Whetstone
+            DealDamage(youngKnight, baron, 1, DTM);
+            DealDamage(youngKnight, baron, 1, DamageType.Toxic);
+            QuickHPCheck(-2);
+        }
+        [Test]
+        public void TestRoninKnightAssignsShortSword()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            DecisionSelectCard = youngKnight;
+            Card sword = PlayCard("ShortSword");
+            //this one does *not* go in the NextToLocation, as that breaks the power-use UI
+            AssertAtLocation(sword, knight.TurnTaker.PlayArea);
+
+            //should have the damage boost only on Young Knight
+            QuickHPStorage(baron.CharacterCard, youngKnight, oldKnight);
+            DealDamage(oldKnight, baron, 1, DTM);
+            QuickHPCheck(-1, 0, 0);
+            DealDamage(youngKnight, baron, 1, DTM);
+            QuickHPCheck(-2, 0, 0);
+
+            //power should NOT check which knight to use, but automatically pick YoungKnight
+            AssertNextDecisionChoices(included: new Card[] { baron.CharacterCard });
+            PlayCard("BacklashField");
+            UsePower(sword);
+            QuickHPCheck(-3, -3, 0);
+        }
+        [Test]
+        public void TestRoninKnightAssignsStalwartShield()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            DecisionSelectCard = youngKnight;
+            Card mail = PlayCard("PlateMail");
+
+            DecisionSelectCard = oldKnight;
+            Card helm = PlayCard("PlateHelm");
+            Card shield = PlayCard("StalwartShield");
+
+            QuickHPStorage(oldKnight, helm, youngKnight, mail);
+            DecisionYesNo = false;
+
+            //should protect Old Knight and his Plate Helm, should not protect Young Knight or her Plate Mail
+            DealDamage(baron, oldKnight, 2, DTM);
+            DealDamage(baron, helm, 2, DTM);
+            DealDamage(baron, youngKnight, 2, DTM);
+            DealDamage(baron, mail, 2, DTM);
+            QuickHPCheck(-1, -1, -2, -2);
+        }
     }
 }
