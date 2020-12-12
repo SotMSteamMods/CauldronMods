@@ -22,6 +22,15 @@ namespace Cauldron.TheKnight
 
         private bool IsOwnEquipment(Card c)
         {
+            if(this.TurnTakerControllerWithoutReplacements.HasMultipleCharacterCards)
+            {
+                if(c.Owner != this.TurnTaker || !IsEquipment(c))
+                {
+                    return false;
+                }
+                
+                return GetKnightCardUser(this.Card) == GetKnightCardUser(c);
+            }
             return base.IsEquipment(c) && c.Owner == base.TurnTaker;
         }
     }

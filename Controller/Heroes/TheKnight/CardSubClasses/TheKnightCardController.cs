@@ -12,11 +12,11 @@ namespace Cauldron.TheKnight
     {
         public const string SingleHandKeyword = "single hand";
         private readonly string VigilarKey = "PastKnightVigilarKey";
-        private readonly string RoninKey = "WastelandRoninKnightOwnershipKey";
+        protected readonly string RoninKey = "WastelandRoninKnightOwnershipKey";
         protected TheKnightCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowSpecialString(() => $"This card is currently being used by {VigilarOwnerName()}").Condition = () => VigilarOwnerName() != null;
-            SpecialStringMaker.ShowSpecialString(() => $"This card is currently being used by {RoninOwnerName()}").Condition = () => RoninOwnerName() != null;
+            SpecialStringMaker.ShowSpecialString(() => $"This card is currently being used by {VigilarOwnerName()}").Condition = () => this.Card.Location.OwnerTurnTaker != this.TurnTaker && VigilarOwnerName() != null;
+            SpecialStringMaker.ShowSpecialString(() => $"This card is currently being used by {RoninOwnerName()}").Condition = () => this.TurnTakerController.HasMultipleCharacterCards && RoninOwnerName() != null;
         }
 
         private string VigilarOwnerName()
@@ -45,7 +45,22 @@ namespace Cauldron.TheKnight
 
         protected bool IsEquipmentEffectingCard(Card card)
         {
-            return base.IsThisCardNextToCard(card) || (!base.Card.Location.IsNextToCard && card == base.CharacterCard);
+            if (this.TurnTakerControllerWithoutReplacements.HasMultipleCharacterCards)
+            {
+                if(this.Card.Location.IsNextToCard)
+                {
+                    return card == this.Card.Location.OwnerCard;
+                }
+                else
+                {
+                    var owner = GetCardPropertyJournalEntryCard(RoninKey);
+                    return card == owner;
+                }
+            }
+            else
+            {
+                return card == base.CharacterCard;
+            }
         }
 
         protected bool IsOwnCharacterCard(Card card)
@@ -78,5 +93,25 @@ namespace Cauldron.TheKnight
             yield break;
         }
 
+        protected Card GetKnightCardUser(Card c)
+        {
+            if (c == null)
+            {
+                return null;
+            }
+
+            if (this.TurnTakerControllerWithoutReplacements.HasMultipleCharacterCards)
+            {
+                if (c.Location.IsNextToCard)
+                {
+                    return c.Location.OwnerCard;
+                }
+
+                var propCard = GameController.GetCardPropertyJournalEntryCard(c, RoninKey);
+                return propCard ?? this.CharacterCard;
+            }
+
+            return this.CharacterCard;
+        }
     }
 }
