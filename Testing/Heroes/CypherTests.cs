@@ -140,6 +140,30 @@ namespace CauldronTests
             AssertInTrash(fleshOfTheSunGod);
             QuickHandCheck(3);
         }
+        [Test]
+        public void TestIncapacitateOption1Optional()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card fleshOfTheSunGod = GetCard("FleshOfTheSunGod");
+            PlayCard(fleshOfTheSunGod);
+
+            SetHitPoints(cypher.CharacterCard, 1);
+            DealDamage(baron, cypher, 2, DamageType.Melee);
+
+            QuickHandStorage(ra);
+
+            DecisionSelectCards = new Card[] { null, GetCard("TheStaffOfRa") };
+            // Act
+            GoToUseIncapacitatedAbilityPhase(cypher);
+            UseIncapacitatedAbility(cypher, 0);
+
+            // Assert
+            AssertIncapacitated(cypher);
+            AssertIsInPlay(fleshOfTheSunGod);
+            QuickHandCheck(0);
+        }
 
         [Test]
         public void TestIncapacitateOption2()
@@ -153,12 +177,17 @@ namespace CauldronTests
             Card hudGoogles = GetCard("HUDGoggles");
             PlayCard(hudGoogles);
 
+            Card syn = PutInHand("SynapticInterruption");
+            Card grant = PutInHand("ResearchGrant");
+            Card push = PutInHand("PushingTheLimits");
+
             SetHitPoints(cypher.CharacterCard, 1);
             DealDamage(baron, cypher, 2, DamageType.Melee);
 
-            DecisionSelectCard = tachyon.CharacterCard;
+            DecisionSelectTurnTaker = tachyon.TurnTaker;
             QuickHandStorage(tachyon);
 
+            DecisionSelectCards = new Card[] { hudGoogles, syn, grant, push };
             // Act
             GoToUseIncapacitatedAbilityPhase(cypher);
             UseIncapacitatedAbility(cypher, 1);
@@ -166,7 +195,41 @@ namespace CauldronTests
             // Assert
             AssertIncapacitated(cypher);
             AssertInTrash(hudGoogles);
-            QuickHandCheck(3);
+            QuickHandCheck(-3);
+            AssertIsInPlay(syn, grant, push);
+        }
+        [Test]
+        public void TestIncapacitateOption2Optional()
+        {
+            // One player may destroy 1 of their equipment cards to play 3 cards.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card hudGoogles = GetCard("HUDGoggles");
+            PlayCard(hudGoogles);
+
+            Card syn = PutInHand("SynapticInterruption");
+            Card grant = PutInHand("ResearchGrant");
+            Card push = PutInHand("PushingTheLimits");
+
+            SetHitPoints(cypher.CharacterCard, 1);
+            DealDamage(baron, cypher, 2, DamageType.Melee);
+
+            DecisionSelectTurnTaker = tachyon.TurnTaker;
+            QuickHandStorage(tachyon);
+
+            DecisionSelectCards = new Card[] { null, syn, grant, push };
+            // Act
+            GoToUseIncapacitatedAbilityPhase(cypher);
+            UseIncapacitatedAbility(cypher, 1);
+
+            // Assert
+            AssertIncapacitated(cypher);
+            AssertIsInPlay(hudGoogles);
+            QuickHandCheck(0);
+            AssertInHand(syn, grant, push);
         }
 
         [Test]
