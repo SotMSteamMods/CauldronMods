@@ -581,5 +581,43 @@ namespace CauldronTests
             DealDamage(baron, ra, 1, DTM);
             QuickHPCheck(0, 0, -1);
         }
+        [Test]
+        public void TestRoninKnightKnightSpecificOneShots()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            DecisionSelectCard = youngKnight;
+            PlayCard("Whetstone"); //to make it clear who is doing what
+            DecisionSelectCard = null;
+
+            DecisionSelectCards = new Card[] { youngKnight, baron.CharacterCard, oldKnight, baron.CharacterCard};
+            QuickHPStorage(baron);
+            DecisionSelectCardsIndex = 0;
+            PlayCard("HeavySwing");
+            QuickHPCheck(-4);
+            PlayCard("HeavySwing");
+            QuickHPCheck(-3);
+
+            DecisionSelectCards = new Card[] { youngKnight, baron.CharacterCard, null, oldKnight, baron.CharacterCard, null };
+            DecisionSelectCardsIndex = 0;
+            QuickHPStorage(baron);
+            PlayCard("SwiftStrikes");
+            QuickHPCheck(-2);
+            PlayCard("SwiftStrikes");
+            QuickHPCheck(-1);
+
+            DecisionSelectCards = new Card[] { youngKnight, oldKnight };
+            DecisionSelectCardsIndex = 0;
+            SetHitPoints(youngKnight, 5);
+            SetHitPoints(oldKnight, 5);
+
+            QuickHPStorage(oldKnight, youngKnight);
+            PlayCard("CatchYourBreath");
+            QuickHPCheck(0, 2);
+            PlayCard("CatchYourBreath");
+            QuickHPCheck(2, 0);
+        }
     }
 }
