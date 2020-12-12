@@ -16,7 +16,7 @@ namespace Cauldron.Celadroch
 
         public LingeringExhalationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(c => c.IsTarget, "target", false));
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(c => c.IsTarget, "target"));
         }
 
         public override void AddTriggers()
