@@ -255,10 +255,14 @@ namespace CauldronTests
             Card topScholar = scholar.TurnTaker.Deck.TopCard;
             Card topEnv = env.TurnTaker.Deck.TopCard;
 
+            Card echo = PutInHand("Echonavigation");
+
             //One player may draw a card now.
             QuickHandStorage(cricket);
-            PlayCard("Echonavigation");
-            QuickHandCheck(1);
+            DecisionSelectCard = cricket.CharacterCard;
+            PlayCard(echo);
+            //played echo from hand, drew a card, net 0
+            QuickHandCheck(0);
             //Reveal the top card of each deck. You may replace or discard each card.
             AssertOnTopOfTrash(akash, topAkash);
             //Echonavigation gets put on top
