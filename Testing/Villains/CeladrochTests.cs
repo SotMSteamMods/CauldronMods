@@ -1483,5 +1483,119 @@ namespace CauldronTests
 
             Assert.AreEqual(0, tCount);
         }
+
+
+        [Test()]
+        public void TestLingeringExhalation_TestDoesntTriggerMinionPlay()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            StackDeckAfterShuffle(celadroch, new[] { "AvatarOfDeath" });
+            StartGame(false);
+            SafetyRemovePillars();
+
+            var card = GetCard("LingeringExhalation");
+            var avatar = GetCard("AvatarOfDeath");
+            var c1 = PutInTrash("WintersBane");
+            var c2 = GetCard("SummersWrath");
+            var c3 = GetCard("SpringsAtrophy");
+            var c4 = GetCard("AutumnsTorment");
+
+            GoToPlayCardPhase(celadroch);
+            PlayCard(card);
+            AssertInPlayArea(celadroch, card);
+            AssertInPlayArea(celadroch, avatar); //played by ongong
+
+            DestroyCard(avatar); //send to trash
+            AssertInTrash(avatar);
+            
+            //card destroys self
+            DealDamage(ra, celadroch, 16, DamageType.Cold);
+            AssertInTrash(card);
+
+            AssertInPlayArea(celadroch, avatar);
+            AssertInPlayArea(celadroch, c1);
+            AssertInDeck(celadroch, c2);
+            AssertInDeck(celadroch, c3);
+            AssertInDeck(celadroch, c4);
+
+        }
+
+        [Test()]
+        public void TestLingeringExhalation_Basic()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            SuppressCeladrochMinionPlay();
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            StackDeckAfterShuffle(celadroch, new[] { "AvatarOfDeath" });
+            StartGame(false);
+            SafetyRemovePillars();
+
+            var card = GetCard("LingeringExhalation");
+            var avatar = GetCard("AvatarOfDeath");
+
+            GoToPlayCardPhase(celadroch);
+            PlayCard(card);
+            AssertInPlayArea(celadroch, card);
+            AssertInPlayArea(celadroch, avatar); //played by ongong
+
+            DestroyCard(avatar); //send to trash
+            AssertInTrash(avatar);
+
+            //nothing happens
+            DealDamage(ra, celadroch, 5, DamageType.Cold);
+            AssertInPlayArea(celadroch, card);
+
+            //nothing happens
+            DealDamage(ra, celadroch, 10, DamageType.Cold);
+            AssertInPlayArea(celadroch, card);
+
+            //card destroys self
+            DealDamage(ra, celadroch, 1, DamageType.Cold);
+            AssertInTrash(card);
+
+            AssertInPlayArea(celadroch, avatar);
+        }
+
+
+        [Test()]
+        public void TestLingeringExhalation_TestZombiesGetPlayedCorrectly()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            StackDeckAfterShuffle(celadroch, new[] { "AvatarOfDeath" });
+            StartGame(false);
+            SafetyRemovePillars();
+
+            DrawCard(ra);
+            var card = GetCard("LingeringExhalation");
+            var avatar = GetCard("AvatarOfDeath");
+            var c1 = PutInTrash("GraspingBreath");
+            var c2 = GetCard("LeechingBreath");
+            var c3 = GetCard("WhisperingBreath");
+
+            GoToPlayCardPhase(celadroch);
+            PlayCard(card);
+            AssertInPlayArea(celadroch, card);
+            AssertInPlayArea(celadroch, avatar); //played by ongong
+
+            DestroyCard(avatar); //send to trash
+            AssertInTrash(avatar);
+
+            //card destroys self
+            DealDamage(ra, celadroch, 16, DamageType.Cold);
+            AssertInTrash(card);
+
+            AssertInPlayArea(celadroch, avatar);
+            AssertNextToCard(c1, ra.CharacterCard);
+            AssertInDeck(celadroch, c2);
+            AssertInDeck(celadroch, c3);
+        }
     }
 }
