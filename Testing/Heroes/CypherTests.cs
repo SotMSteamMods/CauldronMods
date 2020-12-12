@@ -912,7 +912,7 @@ namespace CauldronTests
             // You may draw a card.
 
             // Arrange
-            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            SetupGameController("Omnitron", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
             
             StartGame();
 
@@ -920,6 +920,9 @@ namespace CauldronTests
             Card initiatedUpgrade = GetCard(InitiatedUpgradeCardController.Identifier);
             PutOnDeck(cypher, initiatedUpgrade); //avoid bad seeds putting all copies in hand
             Card dermalAug = GetCard(DermalAugCardController.Identifier);
+
+            PlayCard("InterpolationBeam");
+            //allows us to expose optional draw
             
             DecisionSelectLocation = new LocationChoice(cypher.TurnTaker.Deck);
             DecisionSelectCards = new[] {dermalAug, cypher.CharacterCard};
@@ -1126,6 +1129,7 @@ namespace CauldronTests
             Card muscleAug = GetCard(MuscleAugCardController.Identifier);
             Card neuralInterface = GetCard(NeuralInterfaceCardController.Identifier);
 
+            DecisionYesNo = true;
             PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
             {
                 { ra.CharacterCard, new List<Card>() { muscleAug }}
@@ -1134,7 +1138,7 @@ namespace CauldronTests
             // Act
             GoToPlayCardPhase(cypher);
 
-            DecisionSelectCards = new[] {muscleAug, tachyon.CharacterCard, GetCardFromHand(cypher, 0)};
+            DecisionSelectCards = new[] {tachyon.CharacterCard, GetCardFromHand(cypher, 0)};
 
             PlayCard(neuralInterface);
             GoToUsePowerPhase(cypher);
@@ -1223,8 +1227,10 @@ namespace CauldronTests
 
             Card dermal = GetCard(DermalAugCardController.Identifier);
             Card muscle = GetCard(MuscleAugCardController.Identifier);
+            Card retinal = GetCard(RetinalAugCardController.Identifier);
             PutInTrash(cypher, dermal);
             PutInTrash(cypher, muscle);
+            PutInTrash(cypher, retinal);
 
             Card fleshOfTheSunGod = GetCard("FleshOfTheSunGod");
             PutInHand(ra, fleshOfTheSunGod);
@@ -1247,6 +1253,7 @@ namespace CauldronTests
             Assert.True(AreAugmented(new List<Card>() { ra.CharacterCard }));
             Assert.True(HasAugment(ra.CharacterCard, muscle));
             AssertInHand(dermal);
+            AssertInTrash(retinal);
             Assert.AreEqual(raCardsInPlay + 1, GetNumberOfCardsInPlay(ra)); // Ra was augmented by Rebuilt and was able to play a card
         }
 
