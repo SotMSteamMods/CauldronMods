@@ -566,5 +566,20 @@ namespace CauldronTests
             DealDamage(baron, mail, 2, DTM);
             QuickHPCheck(-1, -1, -2, -2);
         }
+        [Test]
+        public void TestRoninKnightHonorRedirectsToEither()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            DecisionSelectCards = new Card[] { ra.CharacterCard, oldKnight, youngKnight };
+            PlayCard("KnightsHonor");
+
+            QuickHPStorage(ra.CharacterCard, oldKnight, youngKnight);
+            DealDamage(baron, ra, 1, DTM);
+            QuickHPCheck(0, -1, 0);
+            DealDamage(baron, ra, 1, DTM);
+            QuickHPCheck(0, 0, -1);
+        }
     }
 }
