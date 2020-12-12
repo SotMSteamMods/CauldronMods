@@ -31,8 +31,8 @@
             ],
             "advanced": "When an enclosure enters play, put the top card of the villain deck beneath it.",
             "icons": [
+                "EndOfTurnAction",
                 "PlayCardNow",
-                "Indestructible",
                 "LoseTheGame"
             ],
             "advancedIcons": [
@@ -69,7 +69,12 @@
             "keywords": [
                 "specimen"
             ],
-            "icons": [],
+            "icons": [
+                "EndOfTurnAction",
+                "PlayCardNow",
+                "DealDamageMelee",
+                "GainHP"
+            ],
             "body": [
                 "At the end of the villain turn, play the top card of the villain deck.",
                 "Whenever a target enters play, this card deals that target 2 melee damage and regains 6HP."
@@ -90,7 +95,10 @@
             "keywords": [
                 "enclosure"
             ],
-            "icons": [],
+            "icons": [
+                "Manipulate",
+                "Discard"
+            ],
             "body": [
                 "When this card enters play, place the top card of the villain deck beneath it face down.",
                 "Whenever a hero uses a power, they must discard a card."
@@ -111,7 +119,11 @@
             "keywords": [
                 "enclosure"
             ],
-            "icons": [],
+            "icons": [
+                "Manipulate",
+                "PlayCardNow",
+                "DealDamageMelee"
+            ],
             "body": [
                 "When this card enters play, place the top card of the villain deck beneath it face down. Then, play the top card of the villain deck.",
                 "Whenever a Specimen enters play, it deals the non-villain target with the lowest HP {H - 2} melee damage."
@@ -132,7 +144,11 @@
             "keywords": [
                 "enclosure"
             ],
-            "icons": [],
+            "icons": [
+                "Manipulate",
+                "StartOfTurnAction",
+                "DealDamageToxic"
+            ],
             "body": [
                 "When this card enters play, place the top 2 cards of the villain deck beneath it face down.",
                 "At the start of each hero's turn, this card deals the non-villain target with the highest HP {H - 1} toxic damage."
@@ -153,7 +169,10 @@
             "keywords": [
                 "ongoing"
             ],
-            "icons": [],
+            "icons": [
+                "Search",
+                "ReduceDamageTaken"
+            ],
             "body": [
                 "When this card enters play, put all Mercenary cards from the villain trash into play.",
                 "Reduce damage dealt to Mercenaries by X, where X is the number of Specimens in play."
@@ -173,7 +192,11 @@
             "keywords": [
                 "specimen"
             ],
-            "icons": [],
+            "icons": [
+                "IncreaseDamageTaken",
+                "EndOfTurnAction",
+                "DealDamageCold"
+            ],
             "body": [
                 "Increase damage dealt to Enclosures by 1.",
                 "At the end of the villain turn, this card deals each non-Specimen target 2 cold damage."
@@ -195,7 +218,12 @@
                 "specimen",
                 "test subject"
             ],
-            "icons": [],
+            "icons": [
+                "IncreaseDamageDealt",
+                "EndOfTurnAction",
+                "DealDamageToxic",
+                "Search"
+            ],
             "body": [
                 "Increase damage dealt by insects by 1.",
                 "At the end of the villain turn, this card deals the hero target with the lowest HP 2 toxic damage. Then, put all Insects in the villain trash into play."
