@@ -1330,5 +1330,34 @@ namespace CauldronTests
         }
 
 
+        [Test()]
+        public void TestHoursTilDawn()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            SuppressCeladrochMinionPlay();
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            StackDeckAfterShuffle(celadroch, new[] { "AvatarOfDeath", "TatteredDevil" });
+            StartGame(false);
+
+            SetHitPoints(celadroch.CharacterCard, 70);
+
+            var card = PlayCard("HoursTilDawn");
+            AssertInPlayArea(celadroch, card);
+
+            var top = GetCard("AvatarOfDeath");
+            SetHitPoints(top, 15);
+            AssertInPlayArea(celadroch, top);
+
+            QuickHPStorage(celadroch.CharacterCard, top);
+            GoToEndOfTurn(celadroch);
+            QuickHPCheck(2, 2);
+
+            QuickHPStorage(celadroch.CharacterCard, top);
+            DestroyCard(card);
+            QuickHPCheck(10, 0);
+        }
+
     }
 }
