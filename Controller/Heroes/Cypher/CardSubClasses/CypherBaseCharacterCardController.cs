@@ -5,7 +5,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Cypher
 {
-    public class CypherBaseCharacterCardController : HeroCharacterCardController
+    public abstract class CypherBaseCharacterCardController : HeroCharacterCardController
     {
         public CypherBaseCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -24,8 +24,7 @@ namespace Cauldron.Cypher
         protected List<TurnTaker> GetAugmentedHeroTurnTakers()
         {
             return FindTurnTakersWhere(tt =>
-                tt.IsHero && tt.CharacterCard.NextToLocation.HasCards &&
-                tt.CharacterCard.NextToLocation.Cards.Any(IsAugment)).ToList();
+                tt.IsHero && tt.CharacterCards.Any(card => card.NextToLocation.HasCards && card.NextToLocation.Cards.Any(IsAugment))).ToList();
         }
     }
 }

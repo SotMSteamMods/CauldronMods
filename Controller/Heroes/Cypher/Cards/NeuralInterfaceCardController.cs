@@ -23,11 +23,12 @@ namespace Cauldron.Cypher
 
         public override IEnumerator UsePower(int index = 0)
         {
+            int augsToMove = GetPowerNumeral(0, 1);
             // You may move 1 Augment in play next to a new hero.
-            SelectCardDecision scd = new SelectCardDecision(GameController, DecisionMaker,
-                SelectionType.MoveCardNextToCard, GetAugmentsInPlay(), true, cardSource: GetCardSource());
+            SelectCardsDecision scd = new SelectCardsDecision(GameController, DecisionMaker, (Card c) => c.IsInPlayAndHasGameText && IsAugment(c),
+                SelectionType.MoveCardNextToCard, augsToMove, true, augsToMove, eliminateOptions: true, cardSource: GetCardSource());
 
-            IEnumerator routine = base.GameController.SelectCardAndDoAction(scd, MoveAugment);
+            IEnumerator routine = base.GameController.SelectCardsAndDoAction(scd, MoveAugment);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
@@ -38,7 +39,7 @@ namespace Cauldron.Cypher
             }
 
             // Draw 2 cards.
-            int cardsToDrawNumeral = GetPowerNumeral(0, CardsToDraw);
+            int cardsToDrawNumeral = GetPowerNumeral(1, CardsToDraw);
             routine = base.DrawCards(this.HeroTurnTakerController, cardsToDrawNumeral);
             if (base.UseUnityCoroutines)
             {
@@ -50,8 +51,7 @@ namespace Cauldron.Cypher
             }
 
             // Discard a card
-            int cardsToDiscardNumeral = GetPowerNumeral(1, CardsToDiscard);
-            routine = base.GameController.SelectAndDiscardCards(this.HeroTurnTakerController, cardsToDiscardNumeral, false,
+            routine = base.GameController.SelectAndDiscardCards(this.HeroTurnTakerController, CardsToDiscard, false,
                 CardsToDiscard, cardSource: GetCardSource());
             
             if (base.UseUnityCoroutines)

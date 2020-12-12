@@ -29,6 +29,7 @@ namespace Cauldron.Cypher
         public override IEnumerator UsePower(int index = 0)
         {
             int powerNumeral = GetPowerNumeral(0, DamageToDealSelf);
+            int toDestroyNumeral = GetPowerNumeral(1, EnvOrOngoingToDestroy);
 
             List<DealDamageAction> storedResults = new List<DealDamageAction>();
             IEnumerator routine = this.GameController.DealDamageToSelf(this.DecisionMaker, c => c == this.CharacterCard, powerNumeral,
@@ -43,24 +44,22 @@ namespace Cauldron.Cypher
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            // If no result or no damage was taken, return
-            if (!storedResults.Any() || !storedResults.First().DidDealDamage)
+            if (DidDealDamage(storedResults, this.CharacterCard))
             {
-                yield break;
-            }
+                routine = base.GameController.SelectAndDestroyCards(base.HeroTurnTakerController,
+                    new LinqCardCriteria(c => c.IsEnvironment || c.IsOngoing, "environment or ongoing"),
+                    toDestroyNumeral, requiredDecisions: toDestroyNumeral, cardSource: GetCardSource());
 
-            routine = base.GameController.SelectAndDestroyCards(base.HeroTurnTakerController,
-                new LinqCardCriteria(c => c.IsEnvironment || c.IsOngoing, "environment or ongoing"),
-                EnvOrOngoingToDestroy, requiredDecisions: 0, cardSource: GetCardSource());
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
             }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
+            yield break;
         }
     }
 }

@@ -140,6 +140,30 @@ namespace CauldronTests
             AssertInTrash(fleshOfTheSunGod);
             QuickHandCheck(3);
         }
+        [Test]
+        public void TestIncapacitateOption1Optional()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card fleshOfTheSunGod = GetCard("FleshOfTheSunGod");
+            PlayCard(fleshOfTheSunGod);
+
+            SetHitPoints(cypher.CharacterCard, 1);
+            DealDamage(baron, cypher, 2, DamageType.Melee);
+
+            QuickHandStorage(ra);
+
+            DecisionSelectCards = new Card[] { null, GetCard("TheStaffOfRa") };
+            // Act
+            GoToUseIncapacitatedAbilityPhase(cypher);
+            UseIncapacitatedAbility(cypher, 0);
+
+            // Assert
+            AssertIncapacitated(cypher);
+            AssertIsInPlay(fleshOfTheSunGod);
+            QuickHandCheck(0);
+        }
 
         [Test]
         public void TestIncapacitateOption2()
@@ -153,12 +177,17 @@ namespace CauldronTests
             Card hudGoogles = GetCard("HUDGoggles");
             PlayCard(hudGoogles);
 
+            Card syn = PutInHand("SynapticInterruption");
+            Card grant = PutInHand("ResearchGrant");
+            Card push = PutInHand("PushingTheLimits");
+
             SetHitPoints(cypher.CharacterCard, 1);
             DealDamage(baron, cypher, 2, DamageType.Melee);
 
-            DecisionSelectCard = tachyon.CharacterCard;
+            DecisionSelectTurnTaker = tachyon.TurnTaker;
             QuickHandStorage(tachyon);
 
+            DecisionSelectCards = new Card[] { hudGoogles, syn, grant, push };
             // Act
             GoToUseIncapacitatedAbilityPhase(cypher);
             UseIncapacitatedAbility(cypher, 1);
@@ -166,7 +195,41 @@ namespace CauldronTests
             // Assert
             AssertIncapacitated(cypher);
             AssertInTrash(hudGoogles);
-            QuickHandCheck(3);
+            QuickHandCheck(-3);
+            AssertIsInPlay(syn, grant, push);
+        }
+        [Test]
+        public void TestIncapacitateOption2Optional()
+        {
+            // One player may destroy 1 of their equipment cards to play 3 cards.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card hudGoogles = GetCard("HUDGoggles");
+            PlayCard(hudGoogles);
+
+            Card syn = PutInHand("SynapticInterruption");
+            Card grant = PutInHand("ResearchGrant");
+            Card push = PutInHand("PushingTheLimits");
+
+            SetHitPoints(cypher.CharacterCard, 1);
+            DealDamage(baron, cypher, 2, DamageType.Melee);
+
+            DecisionSelectTurnTaker = tachyon.TurnTaker;
+            QuickHandStorage(tachyon);
+
+            DecisionSelectCards = new Card[] { null, syn, grant, push };
+            // Act
+            GoToUseIncapacitatedAbilityPhase(cypher);
+            UseIncapacitatedAbility(cypher, 1);
+
+            // Assert
+            AssertIncapacitated(cypher);
+            AssertIsInPlay(hudGoogles);
+            QuickHandCheck(0);
+            AssertInHand(syn, grant, push);
         }
 
         [Test]
@@ -274,7 +337,7 @@ namespace CauldronTests
             Assert.True(HasAugment(tachyon.CharacterCard, dermalAug));
 
             PlayCard(backupPlan);
-            DecisionSelectCards = new[] {muscleAug, cypher.CharacterCard};
+            DecisionSelectCards = new[] {muscleAug, cypher.CharacterCard, dermalAug, cypher.CharacterCard};
             PlayCard(BladeBattalion); // Triggers Backup plan
 
             // Assert
@@ -284,7 +347,72 @@ namespace CauldronTests
             Assert.True(AreNotAugmented(new List<Card>() { ra.CharacterCard, tachyon.CharacterCard}));
             QuickHPCheck(2, 0, 0); // Only Cypher is augmented now
         }
+        [Test]
+        public void TestCyberdefenseSimple()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
 
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card batt = PlayCard("BladeBattalion");
+            Card redist = PlayCard("ElementalRedistributor");
+
+            Card dermal = PlayCard("DermalAug");
+            Card retinal = PlayCard("RetinalAug");
+
+            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { dermal, retinal };
+            DecisionAutoDecideIfAble = true;
+            QuickHPStorage(mdp, batt, redist);
+            PlayCard("Cyberdefense");
+            QuickHPCheck(-2, -2, -2);
+            AssertInTrash(dermal, retinal);
+        }
+        [Test]
+        public void TestCyberdefenseDestroyLessThanMax()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card batt = PlayCard("BladeBattalion");
+            Card redist = PlayCard("ElementalRedistributor");
+
+            Card dermal = PlayCard("DermalAug");
+            Card retinal = PlayCard("RetinalAug");
+
+            DecisionYesNo = true;
+            DecisionAutoDecideIfAble = true;
+            DecisionSelectCards = new Card[] { dermal, null };
+            QuickHPStorage(mdp, batt, redist);
+            PlayCard("Cyberdefense");
+            QuickHPCheck(-1, -1, -1);
+            AssertInTrash(dermal);
+            AssertIsInPlay(retinal);
+        }
+        [Test]
+        public void TestCyberintegration()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(new[] { cypher.CharacterCard, ra.CharacterCard, tachyon.CharacterCard }, 18);
+            Card muscleAug = GetCard(MuscleAugCardController.Identifier);
+            Card dermalAug = GetCard(DermalAugCardController.Identifier);
+            Card retinalAug = GetCard(RetinalAugCardController.Identifier);
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { muscleAug, retinalAug}},
+                { tachyon.CharacterCard, new List<Card>() { dermalAug}}
+            });
+
+            QuickHPStorage(cypher, ra, tachyon);
+
+            DecisionSelectCards = new Card[] { muscleAug, retinalAug, null };
+            PlayCard("Cyberintegration");
+            QuickHPCheck(0, 6, 0);
+        }
         [Test]
         public void TestCyborgBlaster()
         {
@@ -338,8 +466,7 @@ namespace CauldronTests
             Card cyborgBlaster = GetCard(CyborgBlasterCardController.Identifier);
             QuickHPStorage(mdp);
 
-            DecisionSelectCards = new[] {muscleAug, tachyon.CharacterCard, mdp};
-            DecisionSelectTurnTaker = tachyon.TurnTaker;
+            DecisionSelectCards = new[] {muscleAug, tachyon.CharacterCard, tachyon.CharacterCard, mdp};
 
             PlayCard(cyborgBlaster);
 
@@ -443,8 +570,7 @@ namespace CauldronTests
 
             Card cyborgPunch = GetCard(CyborgPunchCardController.Identifier);
 
-            DecisionSelectCards = new[] { muscleAug, tachyon.CharacterCard, mdp };
-            DecisionSelectTurnTaker = tachyon.TurnTaker;
+            DecisionSelectCards = new[] { muscleAug, tachyon.CharacterCard, tachyon.CharacterCard, mdp };
 
             QuickHandStorage(tachyon);
             QuickHPStorage(mdp);
@@ -619,6 +745,36 @@ namespace CauldronTests
             AssertInTrash(policeBackup);
             QuickHPCheck(-2);
         }
+        [Test]
+        public void TestHackingProgramDamageRedirected()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card policeBackup = GetCard("PoliceBackup");
+            PlayCard(policeBackup);
+            DecisionSelectCard = policeBackup;
+
+            PlayCard("AlchemicalRedirection");
+
+            Card hackingProgram = GetCard(HackingProgramCardController.Identifier);
+            PlayCard(hackingProgram);
+            UsePower(hackingProgram);
+            AssertIsInPlay(policeBackup);
+        }
+        [Test]
+        public void TestHackingProgramNotOptional()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card hackingProgram = PlayCard("HackingProgram");
+
+            DecisionYesNo = false;
+            AssertNoDecision();
+            UsePower(hackingProgram);
+            AssertInTrash(hackingProgram);
+        }
 
         [Test]
         public void TestHeuristicAlgorithm_PutAugInPlay()
@@ -683,7 +839,40 @@ namespace CauldronTests
             QuickShuffleCheck(1);
             QuickHandCheck(2); // No Augment was put into play so 2 cards were drawn
         }
+        [Test]
+        public void TestHeuristicAlgorithm_NoAugsInDeck()
+        {
+            // Reveal cards from the top of your deck until you reveal an Augment.
+            // Put it into play or into your trash. Shuffle the rest of the revealed cards into your deck.
+            // If you did not put an Augment into play this way, draw 2 cards.
 
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+
+            PutInTrash(cypher, (Card c) => IsAugment(c));
+
+            Card cyborgPunch = GetCard(CyborgPunchCardController.Identifier);
+            PutOnDeck(cypher, cyborgPunch); // Put a non augment on top so we guarantee a deck shuffle after revealing
+
+
+            StartGame();
+
+            Card heuristicAlg = GetCard(HeuristicAlgorithmCardController.Identifier);
+
+            DecisionSelectFunction = 1;
+
+            GoToPlayCardPhase(cypher);
+            QuickHandStorage(cypher);
+            QuickShuffleStorage(cypher);
+
+            AssertNoDecision();
+            PlayCard(heuristicAlg);
+
+            // Assert
+            Assert.True(AreNotAugmented(new List<Card>() { cypher.CharacterCard }));
+            QuickShuffleCheck(1);
+            QuickHandCheck(2); // No Augment was put into play so 2 cards were drawn
+        }
         [Test]
         public void TestInitiatedUpgrade_SearchDeck_DrawCard()
         {
@@ -697,7 +886,7 @@ namespace CauldronTests
 
             // Act
             Card initiatedUpgrade = GetCard(InitiatedUpgradeCardController.Identifier);
-
+            PutOnDeck(cypher, initiatedUpgrade); //avoid bad seeds putting all copies in hand
             Card dermalAug = GetCard(DermalAugCardController.Identifier);
             
             DecisionSelectLocation = new LocationChoice(cypher.TurnTaker.Deck);
@@ -723,14 +912,17 @@ namespace CauldronTests
             // You may draw a card.
 
             // Arrange
-            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            SetupGameController("Omnitron", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
             
             StartGame();
 
             // Act
             Card initiatedUpgrade = GetCard(InitiatedUpgradeCardController.Identifier);
-
+            PutOnDeck(cypher, initiatedUpgrade); //avoid bad seeds putting all copies in hand
             Card dermalAug = GetCard(DermalAugCardController.Identifier);
+
+            PlayCard("InterpolationBeam");
+            //allows us to expose optional draw
             
             DecisionSelectLocation = new LocationChoice(cypher.TurnTaker.Deck);
             DecisionSelectCards = new[] {dermalAug, cypher.CharacterCard};
@@ -937,6 +1129,7 @@ namespace CauldronTests
             Card muscleAug = GetCard(MuscleAugCardController.Identifier);
             Card neuralInterface = GetCard(NeuralInterfaceCardController.Identifier);
 
+            DecisionYesNo = true;
             PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
             {
                 { ra.CharacterCard, new List<Card>() { muscleAug }}
@@ -945,7 +1138,7 @@ namespace CauldronTests
             // Act
             GoToPlayCardPhase(cypher);
 
-            DecisionSelectCards = new[] {muscleAug, tachyon.CharacterCard, GetCardFromHand(cypher, 0)};
+            DecisionSelectCards = new[] {tachyon.CharacterCard, GetCardFromHand(cypher, 0)};
 
             PlayCard(neuralInterface);
             GoToUsePowerPhase(cypher);
@@ -1034,8 +1227,10 @@ namespace CauldronTests
 
             Card dermal = GetCard(DermalAugCardController.Identifier);
             Card muscle = GetCard(MuscleAugCardController.Identifier);
+            Card retinal = GetCard(RetinalAugCardController.Identifier);
             PutInTrash(cypher, dermal);
             PutInTrash(cypher, muscle);
+            PutInTrash(cypher, retinal);
 
             Card fleshOfTheSunGod = GetCard("FleshOfTheSunGod");
             PutInHand(ra, fleshOfTheSunGod);
@@ -1058,6 +1253,7 @@ namespace CauldronTests
             Assert.True(AreAugmented(new List<Card>() { ra.CharacterCard }));
             Assert.True(HasAugment(ra.CharacterCard, muscle));
             AssertInHand(dermal);
+            AssertInTrash(retinal);
             Assert.AreEqual(raCardsInPlay + 1, GetNumberOfCardsInPlay(ra)); // Ra was augmented by Rebuilt and was able to play a card
         }
 
@@ -1116,6 +1312,30 @@ namespace CauldronTests
             Assert.True(AreAugmented(new List<Card>() { cypher.CharacterCard}));
             Assert.True(AreNotAugmented(new List<Card>() { ra.CharacterCard, tachyon.CharacterCard}));
             Assert.True(HasAugment(cypher.CharacterCard, vascularAug));
+            QuickHPCheck(1);
+        }
+        [Test]
+        public void TestVascularAugEndOfTheirTurn()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+
+            StartGame();
+
+            SetHitPoints(ra, 16);
+
+            Card vascularAug = GetCard(VascularAugCardController.Identifier);
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { vascularAug }}
+            });
+
+            // Act
+            QuickHPStorage(ra);
+            GoToEndOfTurn(cypher);
+            QuickHPCheck(0);
+            GoToEndOfTurn(ra);
             QuickHPCheck(1);
         }
 

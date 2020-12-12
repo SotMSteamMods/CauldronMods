@@ -23,7 +23,7 @@ namespace Cauldron.Cypher
 
         public override void AddTriggers()
         {
-            this.AddEndOfTurnTrigger(tt => tt == base.TurnTaker, this.GainHpResponse, TriggerType.GainHP);
+            this.AddEndOfTurnTrigger(tt => GetCardThisCardIsNextTo() != null && tt == GetCardThisCardIsNextTo().Owner, this.GainHpResponse, TriggerType.GainHP);
 
             base.AddTriggers();
         }

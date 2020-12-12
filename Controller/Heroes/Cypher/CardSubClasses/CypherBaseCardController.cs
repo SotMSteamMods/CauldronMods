@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.Cypher
 {
-    public class CypherBaseCardController : CardController
+    public abstract class CypherBaseCardController : CardController
     {
         public CypherBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -37,8 +37,7 @@ namespace Cauldron.Cypher
         protected List<TurnTaker> GetAugmentedHeroTurnTakers()
         {
             return FindTurnTakersWhere(tt =>
-                tt.IsHero && tt.CharacterCard.NextToLocation.HasCards &&
-                tt.CharacterCard.NextToLocation.Cards.Any(IsAugment)).ToList();
+                tt.IsHero && tt.CharacterCards.Any(card => card.NextToLocation.HasCards && card.NextToLocation.Cards.Any(IsAugment))).ToList();
         }
 
         protected List<Card> GetAugmentsForHero(Card hero)

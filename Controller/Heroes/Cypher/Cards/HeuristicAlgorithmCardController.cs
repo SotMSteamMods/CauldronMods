@@ -29,7 +29,7 @@ namespace Cauldron.Cypher
             // Reveal cards from the top of your deck until you reveal an Augment.
             List<RevealCardsAction> revealedCardActions = new List<RevealCardsAction>();
             IEnumerator routine = base.GameController.RevealCards(base.HeroTurnTakerController, base.TurnTaker.Deck, IsAugment, 1, 
-                revealedCardActions, RevealedCardDisplay.ShowRevealedCards, this.GetCardSource());
+                revealedCardActions, RevealedCardDisplay.ShowMatchingCards, this.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -46,20 +46,32 @@ namespace Cauldron.Cypher
             
             if (augmentCards.Any())
             {
-
+                Card aug = augmentCards.FirstOrDefault();
                 IEnumerable<Function> functionChoices = new[]
                 {
                     // Put it into play...
-                    new Function(base.HeroTurnTakerController, "Put into play", SelectionType.PlayCard, 
+                    new Function(base.HeroTurnTakerController, $"Put {aug.Title} into play", SelectionType.PlayCard, 
                         () => base.GameController.PlayCard(base.HeroTurnTakerController, augmentCards.First(), true, storedResults: playCardActions, cardSource: GetCardSource())),
 
                     //...or into your trash
-                    new Function(base.HeroTurnTakerController, "Put in trash", SelectionType.MoveCardToTrash, () => base.GameController.MoveCard(this.HeroTurnTakerController, augmentCards.First(), base.HeroTurnTaker.Trash, cardSource: GetCardSource()))
+                    new Function(base.HeroTurnTakerController, $"Put {aug.Title} in trash", SelectionType.MoveCardToTrash, () => base.GameController.MoveCard(this.HeroTurnTakerController, augmentCards.First(), base.HeroTurnTaker.Trash, cardSource: GetCardSource()))
                 };
 
                 SelectFunctionDecision selectFunction = new SelectFunctionDecision(base.GameController, base.HeroTurnTakerController, functionChoices, false);
                 
-                routine = base.GameController.SelectAndPerformFunction(selectFunction);
+                routine = base.GameController.SelectAndPerformFunction(selectFunction, associatedCards: augmentCards);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
+            }
+            else
+            {
+                routine = GameController.SendMessageAction($"There were no Augments in {TurnTaker.Deck.GetFriendlyName()}", Priority.Medium, GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(routine);

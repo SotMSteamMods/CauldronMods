@@ -12,10 +12,8 @@ namespace Cauldron.Cypher
     {
 
         private const int PowerCardsToDraw = 1;
-        private const int Incapacitate1OngoingToDestroy = 1;
         private const int Incapacitate1CardsToDraw = 3;
-        private const int Incapacitate2EquipmentToDestroy = 1;
-        private const int Incapacitate2CardsToDraw = 3;
+        private const int Incapacitate2CardsToPlay = 3;
         private const int Incapacitate3HpGain = 1;
 
         public CypherCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
@@ -46,18 +44,23 @@ namespace Cauldron.Cypher
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
             IEnumerator routine;
-            List<SelectCardDecision> storedHero;
-            LinqCardCriteria criteria;
+            List<SelectTurnTakerDecision> storedHero;
+            List<DestroyCardAction> storedDestroy;
+            LinqCardCriteria cardCriteria;
+            LinqTurnTakerCriteria heroCriteria;
 
             switch (index)
             {
                 case 0:
 
                     // One player may destroy 1 of their ongoing cards to draw 3 cards.
-                    storedHero = new List<SelectCardDecision>();
-                    criteria = new LinqCardCriteria(c => c.IsInPlayAndHasGameText && c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, "hero", false);
-                    routine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.DestroyCard, criteria, storedHero, false, cardSource: base.GetCardSource());
 
+                    storedDestroy = new List<DestroyCardAction> { };
+                    storedHero = new List<SelectTurnTakerDecision> { };
+                    cardCriteria = new LinqCardCriteria(c => c.IsOngoing, "ongoing");
+                    heroCriteria = new LinqTurnTakerCriteria(tt => tt.GetCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsOngoing).Any());
+
+                    routine = GameController.SelectHeroToDestroyTheirCard(DecisionMaker, (httc) => cardCriteria, additionalCriteria: heroCriteria, storedResultsTurnTaker: storedHero, storedResultsAction: storedDestroy, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(routine);
@@ -67,16 +70,12 @@ namespace Cauldron.Cypher
                         base.GameController.ExhaustCoroutine(routine);
                     }
 
-                    if (DidSelectCard(storedHero))
+                    if (DidDestroyCard(storedDestroy))
                     {
-                        // Ask hero if they want to destroy one of their ongoings
-                        Card heroCard = GetSelectedCard(storedHero);
-                        HeroTurnTakerController httc = base.FindHeroTurnTakerController(heroCard.Owner.ToHero());
 
-                        List<DestroyCardAction> dcas = new List<DestroyCardAction>();
-                        routine = base.GameController.SelectAndDestroyCard(httc,
-                            new LinqCardCriteria(c => c.IsOngoing), false, dcas, cardSource: GetCardSource());
+                        HeroTurnTakerController httc = base.FindHeroTurnTakerController(GetSelectedTurnTaker(storedHero).ToHero());
 
+                        routine = GameController.DrawCards(httc, Incapacitate1CardsToDraw, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(routine);
@@ -84,31 +83,20 @@ namespace Cauldron.Cypher
                         else
                         {
                             base.GameController.ExhaustCoroutine(routine);
-                        }
-
-                        if (dcas.Any() && dcas.First().WasCardDestroyed)
-                        {
-                            routine = base.GameController.DrawCards(httc, Incapacitate1CardsToDraw);
-                            if (base.UseUnityCoroutines)
-                            {
-                                yield return base.GameController.StartCoroutine(routine);
-                            }
-                            else
-                            {
-                                base.GameController.ExhaustCoroutine(routine);
-                            }
                         }
                     }
 
                     break;
 
                 case 1:
-                    
+
                     // One player may destroy 1 of their equipment cards to play 3 cards.
-                    storedHero = new List<SelectCardDecision>();
-                    criteria = new LinqCardCriteria(c => c.IsInPlayAndHasGameText && c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, "hero", false);
-                    routine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.DestroyCard, criteria, storedHero, false, cardSource: base.GetCardSource());
-                    
+                    storedDestroy = new List<DestroyCardAction> { };
+                    storedHero = new List<SelectTurnTakerDecision> { };
+                    cardCriteria = new LinqCardCriteria(c => IsEquipment(c), "equipment");
+                    heroCriteria = new LinqTurnTakerCriteria(tt => tt.GetCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsEquipment(c)).Any());
+
+                    routine = GameController.SelectHeroToDestroyTheirCard(DecisionMaker, (httc) => cardCriteria, additionalCriteria: heroCriteria, storedResultsTurnTaker: storedHero, storedResultsAction: storedDestroy, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(routine);
@@ -118,16 +106,12 @@ namespace Cauldron.Cypher
                         base.GameController.ExhaustCoroutine(routine);
                     }
 
-                    if (DidSelectCard(storedHero))
+                    if (DidDestroyCard(storedDestroy))
                     {
-                        // Ask hero if they want to destroy one of their equipment
-                        Card heroCard = GetSelectedCard(storedHero);
-                        HeroTurnTakerController httc = base.FindHeroTurnTakerController(heroCard.Owner.ToHero());
 
-                        List<DestroyCardAction> dcas = new List<DestroyCardAction>();
-                        routine = base.GameController.SelectAndDestroyCard(httc,
-                            new LinqCardCriteria(c => IsEquipment(c)), false, dcas, cardSource: GetCardSource());
+                        HeroTurnTakerController httc = base.FindHeroTurnTakerController(GetSelectedTurnTaker(storedHero).ToHero());
 
+                        routine = GameController.SelectAndPlayCardsFromHand(httc, Incapacitate2CardsToPlay, false, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(routine);
@@ -135,19 +119,6 @@ namespace Cauldron.Cypher
                         else
                         {
                             base.GameController.ExhaustCoroutine(routine);
-                        }
-
-                        if (dcas.Any() && dcas.First().WasCardDestroyed)
-                        {
-                            routine = base.GameController.DrawCards(httc, Incapacitate2CardsToDraw);
-                            if (base.UseUnityCoroutines)
-                            {
-                                yield return base.GameController.StartCoroutine(routine);
-                            }
-                            else
-                            {
-                                base.GameController.ExhaustCoroutine(routine);
-                            }
                         }
                     }
 

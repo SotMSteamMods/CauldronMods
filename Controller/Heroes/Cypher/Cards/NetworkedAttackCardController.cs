@@ -29,7 +29,7 @@ namespace Cauldron.Cypher
 
 
             IEnumerator routine = base.GameController.SelectCardsAndPerformFunction(this.DecisionMaker, 
-                new LinqCardCriteria(IsAugmented, "augmented heroes", false), FunctionsBasedOnCard, true, base.GetCardSource());
+                new LinqCardCriteria(IsAugmented, "augmented heroes", false), FunctionsBasedOnCard, false, base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -49,7 +49,7 @@ namespace Cauldron.Cypher
             }
 
             CardController cc = base.FindCardController(card);
-            IEnumerator routine = base.SelectAndUsePower(cc, false);
+            IEnumerator routine = base.SelectAndUsePower(cc, true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);

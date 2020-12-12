@@ -27,7 +27,7 @@ namespace Cauldron.Cypher
             // Destroy any number of Augments.
             List<DestroyCardAction> storedResults = new List<DestroyCardAction>();
             IEnumerator routine = base.GameController.SelectAndDestroyCards(this.HeroTurnTakerController, new LinqCardCriteria(IsAugment), 
-                null, true, storedResultsAction: storedResults, cardSource: base.GetCardSource());
+                null, false, 0, storedResultsAction: storedResults, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -44,7 +44,7 @@ namespace Cauldron.Cypher
             }
 
             // Cypher deals each non-hero target X lightning damage, where X equals the number of cards destroyed this way.
-            int damageAmount = storedResults.Count();
+            int damageAmount = storedResults.Where((DestroyCardAction dc) => dc.WasCardDestroyed).Count();
             routine = base.GameController.DealDamage(this.HeroTurnTakerController, this.CharacterCard, c => !c.IsHero,
                 damageAmount, DamageType.Lightning, cardSource: base.GetCardSource());
 
