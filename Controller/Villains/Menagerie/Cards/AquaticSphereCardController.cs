@@ -3,9 +3,9 @@ using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
 
-namespace Cauldron
+namespace Cauldron.Menagerie
 {
-    public class AquaticSphereCardController : CardController
+    public class AquaticSphereCardController : EnclosureCardController
     {
         public AquaticSphereCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -15,8 +15,7 @@ namespace Cauldron
         public override IEnumerator Play()
         {
             //When this card enters play, place the top card of the villain deck beneath it face down.
-            IEnumerator coroutine = base.GameController.MoveCard(base.TurnTakerController, base.TurnTaker.Deck.TopCard, base.Card.UnderLocation, flipFaceDown: true, cardSource: base.GetCardSource());
-            coroutine = base.GameController.GainHP(base.Card, 6, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.EncloseTopCardResponse();
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
