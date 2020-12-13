@@ -13,7 +13,7 @@ namespace Cauldron.Cypher
         {
         }
 
-        protected LinqCardCriteria AugmentCardCriteria(Func<Card,bool> additionalCriteria = null)
+        protected LinqCardCriteria AugmentCardCriteria(Func<Card, bool> additionalCriteria = null)
         {
             if (additionalCriteria != null)
             {
@@ -84,15 +84,6 @@ namespace Cauldron.Cypher
             return !IsAugmentedHeroCharacterCard(hero) ? new List<Card>() : hero.GetAllNextToCards(false).Where(IsAugment).ToList();
         }
 
-        protected IEnumerator MoveAugment(Card card)
-        {
-            SelectCardDecision scd = new SelectCardDecision(GameController, DecisionMaker,
-                SelectionType.MoveCardNextToCard, GetAugmentsInPlay(), true, cardSource: GetCardSource());
-            scd.SelectedCard = card;
-
-            return MoveAugment(scd);
-        }
-
         protected IEnumerator MoveAugment(SelectCardDecision scd)
         {
             if (scd.SelectedCard == null)
@@ -100,9 +91,9 @@ namespace Cauldron.Cypher
                 yield break;
             }
 
-            List<MoveCardDestination> otherHeroLocations = FindCardsWhere(c => c != scd.SelectedCard.Location.OwnerCard && c.IsHeroCharacterCard
-                                && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame).ToList()
-                .Select(h => new MoveCardDestination(h.NextToLocation, showMessage: true)).ToList();
+            var otherHeroLocations = FindCardsWhere(c => c != scd.SelectedCard.Location.OwnerCard && c.IsHeroCharacterCard &&
+                                                         c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame)
+                                    .Select(h => new MoveCardDestination(h.NextToLocation, showMessage: true)).ToList();
 
             IEnumerator routine = GameController.SelectLocationAndMoveCard(this.DecisionMaker, scd.SelectedCard,
                 otherHeroLocations, cardSource: GetCardSource());
