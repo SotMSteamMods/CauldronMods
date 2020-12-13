@@ -77,5 +77,48 @@ namespace CauldronTests
                 "MassDriver"
             });
         }
+        [Test]
+        public void TestImpactPowerSimple()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            QuickHPStorage(baron);
+            UsePower(impact);
+            QuickHPCheck(-1);
+        }
+        [Test]
+        public void TestImpactPowerDestroyOngoing()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            DecisionYesNo = true;
+            QuickHPStorage(baron);
+            Card moko = PlayCard("TaMoko");
+            UsePower(impact);
+            QuickHPCheck(-3);
+            AssertInTrash(moko);
+            UsePower(impact);
+            QuickHPCheck(-1);
+        }
+        [Test]
+        public void TestImpactPowerDestroyOngoingIsOptional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            DecisionYesNo = false;
+            QuickHPStorage(baron);
+            Card moko = PlayCard("TaMoko");
+            UsePower(impact);
+            QuickHPCheck(-1);
+            AssertIsInPlay(moko);
+            UsePower(impact);
+            QuickHPCheck(-1);
+        }
     }
 }

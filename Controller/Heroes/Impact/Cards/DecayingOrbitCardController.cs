@@ -7,9 +7,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Impact
 {
-    public class GenericCardController : CardController
+    public class DecayingOrbitCardController : CardController
     {
-        public GenericCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public DecayingOrbitCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
 
