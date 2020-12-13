@@ -535,9 +535,9 @@ namespace CauldronTests
             SetupGameController("Apostate", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
 
             StartGame();
+            Card spirit = PlayCard("RelicSpirit");
             Card imp = PlayCard("ImpPilferer");
             Card fiend = PlayCard("FiendishPugilist");
-            Card spirit = PlayCard("RelicSpirit");
             Card sword = GetCardInPlay("Condemnation");
 
             SetHitPoints(legacy, 10);
@@ -559,6 +559,27 @@ namespace CauldronTests
             AssertIsInPlay(imp);
             AssertInTrash(fiend);
 
+        }
+        [Test]
+        public void TestHandIsFasterThanTheEyeNotCancelOnDestruction()
+        {
+            SetupGameController("BiomancerTeam", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card duplex = PutInTrash("Duplexpatriette");
+
+            GoToStartOfTurn(scholar);
+            Card faster = PlayCard("HandIsFasterThanTheEye");
+            Card rebirth = PlayCard("MassRebirth");
+
+            SetHitPoints(biomancerTeam, 1);
+            QuickHPStorage(biomancerTeam);
+            GoToStartOfTurn(biomancerTeam);
+            AssertInTrash(faster);
+            AssertInTrash(rebirth);
+            AssertInTrash(duplex);
+            QuickHPCheck(10);
         }
         [Test]
         public void TestImprobableEscapeCardDraw()
