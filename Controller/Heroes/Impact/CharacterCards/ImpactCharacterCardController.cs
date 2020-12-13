@@ -22,6 +22,7 @@ namespace Cauldron.Impact
             int numToDestroy = GetPowerNumeral(2, 1);
             int numBoost = GetPowerNumeral(3, 2);
 
+            //select the targets
             var targetDecision = new SelectTargetsDecision(GameController,
                                             DecisionMaker,
                                             (Card c) => c.IsInPlayAndHasGameText && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()),
@@ -50,6 +51,7 @@ namespace Cauldron.Impact
                 yield break;
             }
 
+            //potentially destroy ongoings to boost the upcoming damage
             ITrigger boostTrigger = null;
             bool didDestroyCards = false;
             if (GameController.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsOngoing && c.IsHero && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Count() >= numToDestroy)
@@ -82,6 +84,7 @@ namespace Cauldron.Impact
                 }
             }
 
+            //actually deal the damage
             coroutine = GameController.DealDamage(DecisionMaker, this.Card, (Card c) => selectedTargets.Contains(c), numDamage, DamageType.Infernal, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
@@ -107,31 +110,64 @@ namespace Cauldron.Impact
                 case 0:
                     {
                         //"One hero may use a power now.",
+                        coroutine = GameController.SelectHeroToUsePower(DecisionMaker, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         yield break;
                     }
                 case 1:
                     {
                         //"Select a hero target. That target deals 1 other target 1 projectile damage.",
+                        var storedTarget = new List<SelectCardDecision> { };
+                        coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.CardToDealDamage, new LinqCardCriteria(c => c.IsInPlayAndHasGameText && c.IsTarget && c.IsHero), storedTarget, false, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                        if(DidSelectCard(storedTarget))
+                        {
+                            Card damageDealer = GetSelectedCard(storedTarget);
+                            coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, damageDealer), 1, DamageType.Projectile, 1, false, 1, additionalCriteria: (Card c) => c != damageDealer, cardSource: GetCardSource());
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine);
+                            }
+                        }
                         break;
                     }
                 case 2:
                     {
                         //"Damage dealt to environment cards is irreducible until the start of your turn."
+                        var envDamageEffect = new MakeDamageIrreducibleStatusEffect();
+                        envDamageEffect.TargetCriteria.IsEnvironment = true;
+                        envDamageEffect.UntilStartOfNextTurn(this.TurnTaker);
+                        coroutine = GameController.AddStatusEffect(envDamageEffect, true, GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
             }
             yield break;
-        }
-
-        private PhaseChangeAction FakeAction()
-        {
-            return new PhaseChangeAction(GetCardSource(), Game.ActiveTurnPhase, Game.ActiveTurnPhase, true);
-        }
-
-        private bool LogAndReturnTrue(Card c)
-        {
-            Log.Debug("Examining card " + c.Title);
-            return true;
         }
     }
 }

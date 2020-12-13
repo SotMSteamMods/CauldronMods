@@ -120,5 +120,50 @@ namespace CauldronTests
             UsePower(impact);
             QuickHPCheck(-1);
         }
+        [Test]
+        public void TestImpactIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            SetupIncap(baron);
+            AssertIncapLetsHeroUsePower(impact, 0, haka);
+        }
+        [Test]
+        public void TestImpactIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Ra", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+            SetupIncap(baron);
+            DecisionSelectCards = new Card[] { haka.CharacterCard, baron.CharacterCard, ra.CharacterCard, baron.CharacterCard };
+            PlayCard("TheStaffOfRa");
+
+            QuickHPStorage(baron);
+            UseIncapacitatedAbility(impact, 1);
+            QuickHPCheck(-1);
+            UseIncapacitatedAbility(impact, 1);
+            QuickHPCheck(-2);
+        }
+        [Test]
+        public void TestImpactIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheScholar", "DokThorathCapital");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            Card mil = PlayCard("ThorathianMilitary");
+            QuickHPStorage(mil);
+            DealDamage(haka, mil, 1, DamageType.Melee);
+            QuickHPCheck(0);
+            UseIncapacitatedAbility(impact, 2);
+            DealDamage(haka, mil, 1, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            GoToStartOfTurn(impact);
+            DealDamage(haka, mil, 1, DamageType.Melee);
+            QuickHPCheck(0);
+        }
     }
 }
