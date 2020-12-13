@@ -378,6 +378,44 @@ namespace CauldronTests
             PlayCard(mdp);
         }
         [Test]
+        public void TestDowsingCrystalReactionPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Mordengrad");
+            StartGame();
+            Card crystal = PlayCard("DowsingCrystal");
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card batt = PutOnDeck("BladeBattalion");
+
+            Card tank = PlayCard("RemoteWalkingTank");
+            SetHitPoints(tank, 1);
+
+            UsePower(crystal); //SE1
+            UsePower(crystal); //SE2
+            UsePower(crystal); //SE3
+            DestroyCard(crystal); //to avoid having to decide whether to destroy it for extra damage
+
+            QuickHPStorage(mdp, idealist);
+
+            DecisionsYesNo = new bool[] { false, true, true, true, true };
+            DecisionSelectCards = new Card[] { mainstay, tank, mainstay, mdp, mainstay, mdp, mainstay, idealist, mainstay, idealist, mainstay, idealist };
+            //once we get more than we "should" we will start hitting Idealist
+
+            //Expected behavior: 
+            //Backlash Field enters play. SE1 is skipped. SE2 is used to destroy the Tank, causing... 
+            //Battalion enters play. SE1 is used to hit the MDP. SE2 recognizes it is being used. SE3 is used to hit the MDP.
+            //...and we get back to the Backlash Field triggers. SE2 wraps up, SE3 recognizes it has already been used.
+            PlayCard("BacklashField");
+            QuickHPCheck(-4, 0);
+
+            //all Dowsing Crytal effects should have expired
+            var statusEffects = GameController.StatusEffectManager
+                                            .GetStatusEffectControllersInList(CardControllerListType.ActivatesEffects)
+                                            .Where((StatusEffectController sec) => (sec.StatusEffect as ActivateEffectStatusEffect).EffectName == "Dowsing Crystal trigger")
+                                            .ToList();
+            Assert.AreEqual(0, statusEffects.Count());
+        }
+        [Test]
         public void TestGlimpse()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
