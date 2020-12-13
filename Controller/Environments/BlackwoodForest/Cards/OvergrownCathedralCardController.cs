@@ -30,13 +30,10 @@ namespace Cauldron.BlackwoodForest
         public override void AddTriggers()
         {
             // Give option to destroy this at start of env. turn
-            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, DestructionChoiceResponse, TriggerType.DestroySelf);
+            AddStartOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DestructionChoiceResponse, TriggerType.DestroySelf);
 
             // Deal damage reaction
-            base.AddTrigger<DealDamageAction>(p => !base.IsPropertyTrue(FirstTimeDamageDealtPropName), 
-                this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After, 
-                ActionDescription.Unspecified, false, true, null, 
-                false, null, null);
+            AddTrigger<DealDamageAction>(dda => dda.DidDealDamage && !IsPropertyTrue(FirstTimeDamageDealtPropName), DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
 
             AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeDamageDealtPropName), TriggerType.Hidden);
 
@@ -48,8 +45,10 @@ namespace Cauldron.BlackwoodForest
             List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
 
             // Ask if player wants to destroy this card
-            IEnumerator routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.DestroyCard, this.Card, null, storedYesNoResults, null, GetCardSource());
+            IEnumerator routine = GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.DestroyCard, Card,
+                action: pca,
+                storedResults: storedYesNoResults,
+                cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -79,16 +78,11 @@ namespace Cauldron.BlackwoodForest
 
         private IEnumerator DealDamageResponse(DealDamageAction dda)
         {
-            if (!dda.DidDealDamage)
-            {
-                yield break;
-            }
+            SetCardPropertyToTrueIfRealAction(FirstTimeDamageDealtPropName);
 
-            base.SetCardPropertyToTrueIfRealAction(FirstTimeDamageDealtPropName);
+            var alreadyDamaged = Journal.DealDamageEntriesThisTurn().Where(j => j.Amount > 0).Select(j => j.TargetCard).ToList();
 
-            IEnumerator dealDamageRoutine = base.DealDamage(this.Card, card => !dda.AllTargets.Contains(card), 
-                DamageToDeal, DamageType.Psychic);
-
+            IEnumerator dealDamageRoutine = DealDamage(Card, card => !alreadyDamaged.Contains(card), DamageToDeal, DamageType.Psychic);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(dealDamageRoutine);
