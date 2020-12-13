@@ -106,7 +106,7 @@ namespace Cauldron.MagnificentMara
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && IsVillain(c)), false, cardSource: GetCardSource());
+            coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && IsVillain(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "villain ongoing"), false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
