@@ -1103,11 +1103,11 @@ namespace CauldronTests
         [Test()]
         public void TestFrozenSolid_SkipPlay()
         {
-            SetupGameController("WagerMaster", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            SetupGameController(new string[] { "WagerMaster", "AbsoluteZero", "Legacy", "Ra", "Tachyon", "Haka", "Cauldron.Northspar" }, randomSeed: new int?(-1447644233));
             StartGame();
             SetHitPoints(az, 10);
             SetHitPoints(legacy, 10);
-
+            DestroyNonCharacterVillainCards();
             PlayCard("BreakingTheRules");
 
             DecisionSelectCard = az.CharacterCard;
