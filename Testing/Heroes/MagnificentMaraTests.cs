@@ -944,6 +944,31 @@ namespace CauldronTests
             AssertIsInPlay(smoke2);
         }
         [Test]
+        public void TestSmokeAndMirrorsSpecificMultiCardSetup()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "TheVisionary", "Legacy", "RuinsOfAtlantis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            GoToStartOfTurn(legacy);
+            SetHitPoints(legacy, 7);
+            Card lev = PlayCard("MassLevitation");
+            UsePower(lev);
+            Card smoke1 = PlayCard("SmokeAndMirrors");
+            Card smoke2 = PlayCard("SmokeAndMirrors");
+
+            PlayCard("TheKraken");
+
+            DecisionsYesNo = new bool[] { true, true };
+            DecisionSelectCard = smoke1;
+            QuickHPStorage(legacy);
+
+            GoToStartOfTurn(baron);
+            AssertInTrash(smoke1);
+            AssertIsInPlay(smoke2);
+            QuickHPCheck(0);
+        }
+        [Test]
         public void TestWandOfBanishmentTop()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "VoidGuardMainstay", "TheScholar", "Megalopolis");
