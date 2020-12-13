@@ -241,8 +241,44 @@ namespace CauldronTests
             //Increase damage dealt by {Cricket} during your next turn by 1.
             GoToStartOfTurn(cricket);
             QuickHPStorage(choke);
-            UsePower(cricket);
+            DealDamage(cricket, choke, 1, DamageType.Sonic);
             QuickHPCheck(-2);
+
+            //only the next turn
+            GoToStartOfTurn(cricket);
+            QuickHPStorage(choke);
+            DealDamage(cricket, choke, 1, DamageType.Sonic);
+            QuickHPCheck(-1);
+        }
+
+        [Test()]
+        public void TestWastelandRoninCricketInnatePower_BreakingTheRules()
+        {
+            SetupGameController("WagerMaster", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCards(FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && !c.IsCharacter && c.IsVillain));
+
+            PlayCard("BreakingTheRules");
+
+            //Increase damage dealt by {Cricket} during your next turn by 1. {Cricket} may deal 1 target 1 sonic damage.
+
+            //{Cricket} may deal 1 target 1 sonic damage.
+            DecisionDoNotSelectCard = SelectionType.SelectTarget;
+            UsePower(cricket);
+
+            //{Cricket} may deal 1 target 1 sonic damage.
+            //Increase damage dealt by {Cricket} during your next turn by 1.
+            GoToEndOfTurn(cricket);
+            QuickHPStorage(bunker);
+            DealDamage(cricket, bunker, 1, DamageType.Sonic);
+            QuickHPCheck(-2);
+
+            //only the next turn
+            GoToEndOfTurn(cricket);
+            QuickHPStorage(bunker);
+            DealDamage(cricket, bunker, 1, DamageType.Sonic);
+            QuickHPCheck(-1);
         }
 
         [Test()]
@@ -260,8 +296,8 @@ namespace CauldronTests
             QuickHPStorage(scholar);
             UseIncapacitatedAbility(cricket, 0);
             UseIncapacitatedAbility(cricket, 0);
-            QuickHandCheck(2);
-            QuickHPCheck(2);
+            QuickHandCheck(1);
+            QuickHPCheck(1);
         }
 
         [Test()]
@@ -272,7 +308,6 @@ namespace CauldronTests
             SetupIncap(apostate);
 
             UseIncapacitatedAbility(cricket, 1);
-
             //Select a power on a card in play. The next time a hero uses it. They may immediately use it again.
             QuickHandStorage(bunker);
             UsePower(bunker);

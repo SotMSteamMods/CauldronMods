@@ -11,7 +11,6 @@ namespace Cauldron.Cricket
     {
         public WastelandRoninCricketCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override IEnumerator UseIncapacitatedAbility(int index)
@@ -117,7 +116,7 @@ namespace Cauldron.Cricket
                         }
                         if (DidSelectLocation(storedLocation))
                         {
-                            Location selectedDeck = storedLocation.FirstOrDefault().SelectedLocation.Location;
+                            Location selectedDeck = GetSelectedLocation(storedLocation);
                             coroutine = base.GameController.MoveCard(base.TurnTakerController, selectedDeck.BottomCard, selectedDeck, showMessage: true, cardSource: base.GetCardSource());
                             if (base.UseUnityCoroutines)
                             {
@@ -158,19 +157,8 @@ namespace Cauldron.Cricket
                 {
                     //remove the fake status effect
                     base.GameController.StatusEffectManager.RemoveStatusEffect(statusEffect);
-                    List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
-                    IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(action.HeroUsingPower, SelectionType.UsePowerAgain, action.Power.CardSource.Card, storedResults: storedResults, cardSource: base.GetCardSource());
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
-                    }
-                    if (base.DidPlayerAnswerYes(storedResults))
-                    {
-                        coroutine = UsePowerOnOtherCard(action.Power.CardSource.Card, action.Power.Index);
+
+                        IEnumerator coroutine = UsePowerOnOtherCard(action.Power.CardSource.Card, action.Power.Index);
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -179,8 +167,8 @@ namespace Cauldron.Cricket
                         {
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
-                    }
                 }
+                
             }
             yield break;
         }
@@ -191,11 +179,13 @@ namespace Cauldron.Cricket
             int increaseNumeral = GetPowerNumeral(0, 1);
             int targetNumeral = GetPowerNumeral(1, 1);
             int damageNumeral = GetPowerNumeral(2, 1);
+
             //Increase damage dealt by {Cricket} during your next turn by 1.
             OnPhaseChangeStatusEffect statusEffect = new OnPhaseChangeStatusEffect(base.Card, "IncreaseDamageResponse" + increaseNumeral, "Increase damage dealt by {Cricket} during your next turn by 1", new TriggerType[] { TriggerType.IncreaseDamage }, base.Card);
             statusEffect.TurnTakerCriteria.IsSpecificTurnTaker = base.TurnTaker;
-            statusEffect.TurnPhaseCriteria.Phase = Phase.Start;
-            statusEffect.UntilEndOfNextTurn(base.TurnTaker);
+            statusEffect.TurnIndexCriteria.GreaterThan = Game.TurnIndex;
+            statusEffect.TurnPhaseCriteria.TurnTaker = base.TurnTaker;
+            statusEffect.NumberOfUses = 1;
             statusEffect.UntilTargetLeavesPlay(base.CharacterCard);
 
             IEnumerator coroutine = base.AddStatusEffect(statusEffect);
@@ -224,7 +214,7 @@ namespace Cauldron.Cricket
         private IEnumerator IncreaseDamageResponse(int increaseNumeral)
         {
             IncreaseDamageStatusEffect statusEffect = new IncreaseDamageStatusEffect(increaseNumeral);
-            statusEffect.UntilEndOfPhase(base.TurnTaker, Phase.End);
+            statusEffect.UntilThisTurnIsOver(Game);
             statusEffect.UntilTargetLeavesPlay(base.CharacterCard);
             IEnumerator coroutine = base.AddStatusEffect(statusEffect);
             if (base.UseUnityCoroutines)
