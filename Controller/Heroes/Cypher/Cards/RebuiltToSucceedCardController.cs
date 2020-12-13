@@ -27,7 +27,7 @@ namespace Cauldron.Cypher
             // Select two Augments in your trash. Put one into your hand and one into play.
             List<SelectCardsDecision> storedResults = new List<SelectCardsDecision>();
             IEnumerator routine = base.GameController.SelectCardsAndStoreResults(this.DecisionMaker, SelectionType.SearchTrash, 
-                c => c.Location.Name == LocationName.Trash && IsAugment(c), 
+                c => c.Location == TurnTaker.Trash && IsAugment(c), 
                 2, storedResults, false, 2, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
@@ -97,26 +97,13 @@ namespace Cauldron.Cypher
                 yield break;
             }
 
-            card = cards[1];
-
-            Location destination = moveResult.First().Destination.IsInPlay ? base.HeroTurnTaker.Hand : base.TurnTaker.PlayArea;
-
-            routine = base.GameController.MoveCard(this.DecisionMaker, card, destination, isPutIntoPlay: true, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
+            if (cards.Count == 2)
             {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
+                card = cards[1];
 
-            if (destination == base.TurnTaker.PlayArea)
-            {
-                // The hero you augment this way may play a card now.
-                HeroTurnTakerController httc = FindHeroTurnTakerController(card.Location.OwnerTurnTaker.ToHero());
+                Location destination = moveResult.First().Destination.IsInPlay ? base.HeroTurnTaker.Hand : base.TurnTaker.PlayArea;
 
-                routine = base.SelectAndPlayCardFromHand(httc);
+                routine = base.GameController.MoveCard(this.DecisionMaker, card, destination, isPutIntoPlay: true, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(routine);
@@ -124,6 +111,22 @@ namespace Cauldron.Cypher
                 else
                 {
                     base.GameController.ExhaustCoroutine(routine);
+                }
+
+                if (destination == base.TurnTaker.PlayArea)
+                {
+                    // The hero you augment this way may play a card now.
+                    HeroTurnTakerController httc = FindHeroTurnTakerController(card.Location.OwnerTurnTaker.ToHero());
+
+                    routine = base.SelectAndPlayCardFromHand(httc);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(routine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(routine);
+                    }
                 }
             }
         }
