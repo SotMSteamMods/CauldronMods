@@ -1511,6 +1511,25 @@ namespace CauldronTests
             AssertCardHasKeyword(card, "one-shot", false);
         }
 
+        [Test]
+        public void TestAnathemaHealingInteractions()
+        {
+            // Arrange
+            SetupGameController("Cauldron.Anathema", "Tachyon", "TheScholar", "VoidGuardWrithe", "InsulaPrimalis");
+
+            StartGame();
+            DestroyCards(FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && !c.IsCharacter && c.IsVillain));
+            Card head = PlayCard("EnhancedSenses");
+
+            SetHitPoints(anathema, 20);
+            Card siphon = PlayCard("UmbralSiphon");
+            DecisionSelectTarget = anathema.CharacterCard;
+            UsePower(siphon);
+
+            QuickHPStorage(anathema);
+            DestroyCard(head, anathema.CharacterCard);
+            QuickHPCheck(0);
+        }
 
 
 

@@ -125,7 +125,7 @@ namespace Cauldron.Vector
 
                 // Regain {H x 2} HP
                 int hpGain = base.Game.H * 2;
-                routine = this.GameController.GainHP(this.CharacterCard, hpGain);
+                routine = this.GameController.GainHP(this.CharacterCard, hpGain, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(routine);
