@@ -30,7 +30,7 @@ namespace Cauldron.Vector
         {
             int eligibleCards = FindCardsWhere(c => c.Owner.IsHero && c.IsInPlayAndNotUnderCard && (c.IsOngoing || IsEquipment(c))).Count();
 
-            IEnumerator routine = this.GameController.GainHP(this.CharacterCard, eligibleCards);
+            IEnumerator routine = this.GameController.GainHP(this.CharacterCard, eligibleCards, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);

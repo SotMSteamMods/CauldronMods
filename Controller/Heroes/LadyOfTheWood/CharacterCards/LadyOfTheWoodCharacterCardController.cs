@@ -93,7 +93,7 @@ namespace Cauldron.LadyOfTheWood
 						if (base.DidDiscardCards(storedResults2, new int?(1)))
 						{
 							Card hero = storedResults2[0].HeroTurnTakerController.CharacterCard;
-							coroutine3 = base.GameController.GainHP(hero, new int?(3));
+							coroutine3 = base.GameController.GainHP(hero, new int?(3), cardSource: GetCardSource());
 							if (base.UseUnityCoroutines)
 							{
 								yield return base.GameController.StartCoroutine(coroutine3);
