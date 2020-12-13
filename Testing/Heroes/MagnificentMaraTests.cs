@@ -325,6 +325,31 @@ namespace CauldronTests
             AssertInTrash(crystal);
         }
         [Test]
+        public void TestDowsingCrystalSaveReload()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            Card crystal = PlayCard("DowsingCrystal");
+            UsePower("DowsingCrystal");
+
+            AssertNumberOfStatusEffectsInPlay(1);
+            UsePower("DowsingCrystal");
+
+            AssertNumberOfStatusEffectsInPlay(2);
+            DecisionYesNo = true;
+            SaveAndLoad();
+
+            QuickHPStorage(baron);
+            PlayCard("BladeBattalion");
+
+            AssertNumberOfStatusEffectsInPlay(0);
+            QuickHPCheck(-6);
+            AssertInTrash("DowsingCrystal");
+        }
+        [Test]
         public void TestDowsingCrystalOptional()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
@@ -374,6 +399,38 @@ namespace CauldronTests
             QuickHPCheck(0, 0);
             Assert.IsTrue(batt.HitPoints < batt.MaximumHitPoints, "The Blade Battalion has not been damaged.");
 
+            AssertNoDecision();
+            PlayCard(mdp);
+        }
+        [Test]
+        public void TestDowsingCrystalMaySkipFirstCardPlaySaveAndReload()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+            StartGame();
+            Card mdp = DestroyCard("MobileDefensePlatform");
+            Card crystal = PlayCard("DowsingCrystal");
+
+            Card lash = GetCard("BacklashField");
+            DecisionsYesNo = new bool[] { false, true, false };
+
+            //expected behavior: Backlash Field enters play, we do nothing.
+            //Battalion enters play, we get to punch it
+            //MDP enters play, no responses
+            UsePower("DowsingCrystal");
+
+            QuickHPStorage(baron, legacy);
+            PlayCard(lash);
+            QuickHPCheck(0, 0);
+
+            SaveAndLoad();
+
+            Card batt = GetCard("BladeBattalion");
+            DecisionSelectCards = new Card[] { legacy.CharacterCard, batt };
+            PlayCard(batt);
+            QuickHPCheck(0, 0);
+            Assert.IsTrue(batt.HitPoints < batt.MaximumHitPoints, "The Blade Battalion has not been damaged.");
+
+            mdp = GetCard("MobileDefensePlatform");
             AssertNoDecision();
             PlayCard(mdp);
         }
