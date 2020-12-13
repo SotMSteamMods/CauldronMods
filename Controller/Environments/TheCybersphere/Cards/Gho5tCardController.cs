@@ -26,7 +26,7 @@ namespace Cauldron.TheCybersphere
         private IEnumerator DrawCardsResponse(DestroyCardAction dca)
         {
             //Each player may draw a card.
-            IEnumerator coroutine = base.EachPlayerDrawsACard((HeroTurnTaker t) => t.IsHero && !t.ToHero().IsIncapacitatedOrOutOfGame);
+            IEnumerator coroutine = base.EachPlayerDrawsACard((HeroTurnTaker t) => t.IsHero && !t.ToHero().IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(t, GetCardSource()));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -40,8 +40,8 @@ namespace Cauldron.TheCybersphere
         private IEnumerator DestroyCardsResponse(PhaseChangeAction pca)
         {
             //Each hero must destroy 1 of their ongoing or equipment cards.
-            LinqCardCriteria cardCriteria = new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || IsEquipment(c)), "hero ongoing or equipment");
-            IEnumerator coroutine = base.EachPlayerDestroysTheirCards(new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero, "heroes"), cardCriteria,numberOfCards: new int?(1), requiredNumberOfCards: new int?(1));
+            LinqCardCriteria cardCriteria = new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || IsEquipment(c)) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "hero ongoing or equipment");
+            IEnumerator coroutine = base.EachPlayerDestroysTheirCards(new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero, "heroes"), cardCriteria, numberOfCards: new int?(1), requiredNumberOfCards: new int?(1));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

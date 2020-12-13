@@ -48,6 +48,7 @@ namespace Cauldron.TheCybersphere
             effect.UntilCardLeavesPlay(dd.Target);
             effect.UntilStartOfNextTurn(base.TurnTaker);
             effect.SourceCriteria.IsSpecificCard = dd.Target;
+            effect.CardSource = Card;
             IEnumerator coroutine = AddStatusEffect(effect);
             if (base.UseUnityCoroutines)
             {
@@ -57,7 +58,7 @@ namespace Cauldron.TheCybersphere
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            
+
 
             yield break;
         }
