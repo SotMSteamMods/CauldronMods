@@ -24,13 +24,16 @@ namespace Cauldron.Cypher
         {
             IEnumerable<Function> FunctionsBasedOnCard(Card c) => new Function[]
             {
-                new Function(base.FindCardController(c).DecisionMaker, "Use a power", SelectionType.UsePower, 
+                new Function(base.FindCardController(c).DecisionMaker, "Use a power", SelectionType.UsePower,
                     () => this.UsePowerResponse(c))
             };
 
 
-            IEnumerator routine = base.GameController.SelectCardsAndPerformFunction(this.DecisionMaker, 
-                base.AugmentedHeroCharacterCardCriteria(), FunctionsBasedOnCard, false, base.GetCardSource());
+            IEnumerator routine = base.GameController.SelectCardsAndPerformFunction(this.DecisionMaker,
+                        base.AugmentedHeroCharacterCardCriteria(c => GameController.IsCardVisibleToCardSource(c, GetCardSource())),
+                        FunctionsBasedOnCard,
+                        false,
+                        base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {

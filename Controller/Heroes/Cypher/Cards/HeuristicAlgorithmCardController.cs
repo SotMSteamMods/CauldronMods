@@ -112,7 +112,6 @@ namespace Cauldron.Cypher
                 yield break;
             }
 
-
             // If you did not put an Augment into play this way, draw 2 cards.
             routine = base.DrawCards(this.HeroTurnTakerController, CardsToDraw);
             if (this.UseUnityCoroutines)
