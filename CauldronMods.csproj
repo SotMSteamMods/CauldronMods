@@ -48,4 +48,8 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controller\Heroes\Echelon\CardSubClasses\" />
+  </ItemGroup>
+
 </Project>
