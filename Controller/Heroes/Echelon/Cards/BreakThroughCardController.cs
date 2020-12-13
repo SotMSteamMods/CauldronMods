@@ -7,6 +7,9 @@ namespace Cauldron.Echelon
     public class BreakThroughCardController : CardController
     {
         //==============================================================
+        // At the start of your turn, destroy this card.
+        // Once during their turn, when 1 of a player's targets would deal damage,
+        // they may increase that damage by 2
         //==============================================================
 
         public static string Identifier = "BreakThrough";
@@ -16,5 +19,12 @@ namespace Cauldron.Echelon
 
         }
 
+        public override void AddTriggers()
+        {
+            // At the start of your turn, destroy this card.
+            base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker, base.DestroyThisCardResponse, TriggerType.DestroySelf);
+
+            base.AddTriggers();
+        }
     }
 }
