@@ -349,6 +349,35 @@ namespace CauldronTests
             QuickHPCheck(0);
         }
         [Test]
+        public void TestDowsingCrystalMaySkipFirstCardPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+            StartGame();
+            Card mdp = DestroyCard("MobileDefensePlatform");
+            Card crystal = PlayCard("DowsingCrystal");
+
+            Card batt = GetCard("BladeBattalion");
+            Card lash = GetCard("BacklashField");
+            DecisionsYesNo = new bool[] { false, true, false };
+            DecisionSelectCards = new Card[] { legacy.CharacterCard, batt };
+
+            //expected behavior: Backlash Field enters play, we do nothing.
+            //Battalion enters play, we get to punch it
+            //MDP enters play, no responses
+            UsePower("DowsingCrystal");
+
+            QuickHPStorage(baron, legacy);
+            PlayCard(lash);
+            QuickHPCheck(0, 0);
+
+            PlayCard(batt);
+            QuickHPCheck(0, 0);
+            Assert.IsTrue(batt.HitPoints < batt.MaximumHitPoints, "The Blade Battalion has not been damaged.");
+
+            AssertNoDecision();
+            PlayCard(mdp);
+        }
+        [Test]
         public void TestGlimpse()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
