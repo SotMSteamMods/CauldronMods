@@ -165,5 +165,28 @@ namespace CauldronTests
             DealDamage(haka, mil, 1, DamageType.Melee);
             QuickHPCheck(0);
         }
+        [Test]
+        public void TestAcceleratedCollision()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheScholar", "DokThorathCapital");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            PutOnDeck(impact, impact.HeroTurnTaker.Hand.Cards);
+            Card coll1 = PutInHand("AcceleratedCollision");
+            Card coll2 = PutInHand("AcceleratedCollision");
+            Card fin = PutInHand("SpatialFinesse");
+            Assert.AreNotSame(coll1, coll2, "Somehow managed to get the same card twice");
+
+            DecisionSelectCards = new Card[] { baron.CharacterCard, coll2, baron.CharacterCard, null };
+            QuickHPStorage(baron);
+            PlayCard(coll1);
+            //got hit with 2 copies of Accelerated Collision
+            QuickHPCheck(-4);
+
+            AssertInTrash(coll1, coll2);
+            //extra play is optional
+            AssertInHand(fin);
+        }
     }
 }
