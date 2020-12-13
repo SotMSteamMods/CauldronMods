@@ -45,6 +45,7 @@ namespace CauldronTests
             SetupGameController("Apostate", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             //Play X copies of Afterlife Euchre from your trash (up to 3). Discard the top 3 - X cards of your deck.
+            DecisionSelectNumber = 1;
             GoToUsePowerPhase(baccarat);
             //Pick deal damage on Afterlife Euchre
             DecisionSelectFunction = 1;
@@ -61,6 +62,7 @@ namespace CauldronTests
             SetupGameController("Apostate", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             //Play X copies of Afterlife Euchre from your trash (up to 3). Discard the top 3 - X cards of your deck.
+            DecisionSelectNumber = 2;
             GoToUsePowerPhase(baccarat);
             //Pick deal damage on Afterlife Euchre
             DecisionSelectFunction = 1;
@@ -78,6 +80,7 @@ namespace CauldronTests
             SetupGameController(new string[] { "Apostate", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis" });//, randomSeed: 1961543406
             StartGame();
             //Play X copies of Afterlife Euchre from your trash (up to 3). Discard the top 3 - X cards of your deck.
+            DecisionSelectNumber = 3;
             GoToUsePowerPhase(baccarat);
             //Pick deal 2 damage on Afterlife Euchre
             DecisionSelectFunction = 1;
@@ -91,11 +94,12 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestBaccaratAceOfSwordsInnatePower4EuchreInTrash()
+        public void TestBaccaratAceOfSwordsInnatePowerPick2ToPlay()
         {
             SetupGameController("Apostate", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             //Play X copies of Afterlife Euchre from your trash (up to 3). Discard the top 3 - X cards of your deck.
+            DecisionSelectNumber = 2;
             GoToUsePowerPhase(baccarat);
             //Pick deal 2 damage on Afterlife Euchre
             DecisionSelectFunction = 1;
@@ -105,30 +109,8 @@ namespace CauldronTests
             PutInTrash("AfterlifeEuchre", 3);
             QuickHPStorage(apostate);
             UsePower(baccarat.CharacterCard);
-            QuickHPCheck(-6);
-            AssertNumberOfCardsInTrash(baccarat, 4);
-        }
-
-        [Test()]
-        [Ignore("SelectAndMoveACard's optional paramter does not work")]
-        public void TestBaccaratAceOfSwordsInnatePowerSelect0Euchre()
-        {
-            SetupGameController("Apostate", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
-            //Play X copies of Afterlife Euchre from your trash (up to 3). Discard the top 3 - X cards of your deck.
-            GoToUsePowerPhase(baccarat);
-            //Pick deal 2 damage on Afterlife Euchre
-            DecisionSelectFunction = 1;
-            PutInTrash("AfterlifeEuchre", 0);
-            PutInTrash("AfterlifeEuchre", 1);
-            PutInTrash("AfterlifeEuchre", 2);
-            PutInTrash("AfterlifeEuchre", 3);
-            //SelectAndMoveACard's optional paramter does not work
-            DecisionDoNotSelectCard = SelectionType.MoveCard;
-            QuickHPStorage(spite);
-            UsePower(baccarat.CharacterCard);
-            QuickHPCheck(0);
-            AssertNumberOfCardsInTrash(baccarat, 4);
+            QuickHPCheck(-4);
+            AssertNumberOfCardsInTrash(baccarat, 5);
         }
 
         [Test()]
@@ -274,7 +256,7 @@ namespace CauldronTests
         [Test()]
         public void TestBaccaratAceOfSwordsAceInTheHoleTwoPowerPhase()
         {
-            SetupGameController("Spite", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("AkashBhuta", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             Card ace = GetCard("AceInTheHole");
             //Pick deal damage on Afterlife Euchre
@@ -286,8 +268,10 @@ namespace CauldronTests
             //Don't play card
             DecisionDoNotSelectCard = SelectionType.PlayCard;
 
+            //Play max number of cards
+            DecisionSelectNumber = 2;
             //You may use {Baccarat}'s innate power twice during your phase this turn.
-            QuickHPStorage(spite);
+            QuickHPStorage(akash);
             GoToPlayCardPhase(baccarat);
             AssertNumberOfUsablePowers(baccarat, 1);
             PlayCard(ace);

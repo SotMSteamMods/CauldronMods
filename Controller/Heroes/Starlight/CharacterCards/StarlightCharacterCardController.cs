@@ -119,9 +119,8 @@ namespace Cauldron.Starlight
                 base.AddSideTrigger(base.AddTrigger<DealDamageAction>(PreventDamageViaIncapCriteria, PreventDamageViaIncapResponse, TriggerType.CancelAction, TriggerTiming.Before));
                 Func<ExpireStatusEffectAction, bool> clearIncapEffectCriteria = (ExpireStatusEffectAction action) =>
                 {
-                    if (action.StatusEffect is OnPhaseChangeStatusEffect)
+                    if (action.StatusEffect is OnPhaseChangeStatusEffect effect)
                     {
-                        OnPhaseChangeStatusEffect effect = (OnPhaseChangeStatusEffect)action.StatusEffect;
                         return effect.CardWithMethod == base.Card && effect.MethodToExecute == PreventDamageViaIncapEffectMarker;
                     }
                     return false;

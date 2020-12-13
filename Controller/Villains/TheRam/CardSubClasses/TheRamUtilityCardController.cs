@@ -29,6 +29,31 @@ namespace Cauldron.TheRam
                 }
             }
         }
+
+        protected Card RamIfInPlay
+        {
+            get
+            {
+                Card ram = TurnTaker.CharacterCards.Where((Card c) => c.Identifier == "TheRamCharacter").FirstOrDefault();
+                if (ram != null && ram.IsInPlay)
+                {
+                    return ram;
+                }
+                return null;
+            }
+        }protected IEnumerator MessageNoRamToAct(CardSource actingCard, string missingAction = "act")
+        {
+            IEnumerator coroutine = GameController.SendMessageAction($"The Ram is not in play, so it does not {missingAction}.", Priority.Medium, actingCard);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
         protected bool IsUpClose(Card c)
         {
             return c.IsTarget && IsUpClose(c.Owner);

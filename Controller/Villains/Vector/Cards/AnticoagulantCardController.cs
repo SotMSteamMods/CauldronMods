@@ -29,7 +29,7 @@ namespace Cauldron.Vector
             AddTrigger((DealDamageAction dda) => dda.Target == base.CharacterCard && dda.DidDealDamage, DealDamageResponse,
                 new []{TriggerType.DealDamage, TriggerType.DestroySelf}, timing: TriggerTiming.After);
 
-            AddIncreaseDamageTrigger((DealDamageAction dda) => dda.Target == base.CharacterCard, 1);
+            AddIncreaseDamageTrigger((DealDamageAction dda) => dda.Target == base.CharacterCard, IncreaseDamageAmount);
 
             base.AddTriggers();
         }

@@ -17,6 +17,8 @@ namespace Cauldron.TheRam
         {
             if (CharacterCardController is TheRamCharacterCardController)
             {
+                //"At the start of the game, put {TheRam}'s villain character cards into play, “Mechanical Juggernaut” side up.",
+
                 IEnumerator coroutine = HandleWinters(banish: true);
                 if (UseUnityCoroutines)
                 {
@@ -27,6 +29,7 @@ namespace Cauldron.TheRam
                     GameController.ExhaustCoroutine(coroutine);
                 }
 
+                //"Search the villain deck for all copies of Up Close and put them in the trash. 
                 coroutine = MoveUpCloseToTrash();
                 if (UseUnityCoroutines)
                 {
@@ -37,6 +40,7 @@ namespace Cauldron.TheRam
                     GameController.ExhaustCoroutine(coroutine);
                 }
 
+                //Put Grappling Claw into play. Shuffle the villain deck."
                 coroutine = GameController.PlayCard(this, FindCardsWhere((Card c) => c.Identifier == "GrapplingClaw").FirstOrDefault(), cardSource: new CardSource(CharacterCardController));
                 if (base.UseUnityCoroutines)
                 {
@@ -58,6 +62,41 @@ namespace Cauldron.TheRam
                     GameController.ExhaustCoroutine(coroutine);
                 }
             }
+            else
+            {
+                //"At the start of the game, put {TheRam} and {AdmiralWinters}' villain character cards into play, “Amphibious Dreadnought” and “Dreadnought Pilot” sides up. 
+
+                IEnumerator coroutine = HandleWinters(banish: false);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+                //Search the villain deck for all copies of Up Close and put them in the trash. 
+                coroutine = MoveUpCloseToTrash();
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
+                //Put 2 copies of Remote Mortar into play. Shuffle the villain deck."
+                coroutine = PutCardsIntoPlay(new LinqCardCriteria((Card c) => c.Identifier == "RemoteMortar"), 2);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
             yield break;
         }
 
@@ -69,6 +108,22 @@ namespace Cauldron.TheRam
 
         private IEnumerator HandleWinters(bool banish = true)
         {
+            Card winters = FindCardsWhere((Card c) => c.Title == "Admiral Winters").FirstOrDefault();
+            if (winters == null || winters.Location != TurnTaker.OffToTheSide)
+            {
+                yield break;
+            }
+
+            Location targetLocation = banish ? TurnTaker.InTheBox : TurnTaker.PlayArea;
+            IEnumerator coroutine = GameController.MoveCard(this, winters, targetLocation);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
     }
