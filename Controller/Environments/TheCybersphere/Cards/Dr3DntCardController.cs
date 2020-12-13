@@ -17,9 +17,7 @@ namespace Cauldron.TheCybersphere
         public override void AddTriggers()
         {
             //At the end of the environment turn, this card deals each other target 2 projectile damage.
-            AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsTarget && c != base.Card, TargetType.All, 2, DamageType.Projectile);
+            AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsTarget && c != base.Card && GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.All, 2, DamageType.Projectile);
         }
-
-
     }
 }

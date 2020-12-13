@@ -36,7 +36,7 @@ namespace Cauldron.TheWanderingIsle
             //Then, if Submerge is in play, this card regains 6HP.
             if (GameController.FindCardsWhere(c => c.IsInPlayAndHasGameText && c.Identifier == "Submerge").Any())
             {
-                IEnumerator gainHp = base.GameController.GainHP(base.Card, 6);
+                IEnumerator gainHp = base.GameController.GainHP(base.Card, 6, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(gainHp);

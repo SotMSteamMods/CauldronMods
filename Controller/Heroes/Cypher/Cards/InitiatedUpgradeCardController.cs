@@ -20,13 +20,15 @@ namespace Cauldron.Cypher
 
         public InitiatedUpgradeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowSpecialStringNumberOfAugmentsAtLocation(TurnTaker.Deck);
+            ShowSpecialStringNumberOfAugmentsAtLocation(TurnTaker.Trash);
         }
 
         public override IEnumerator Play()
         {
             // Search your deck or trash for an Augment card and put it into play.
             IEnumerator routine = base.SearchForCards(base.HeroTurnTakerController, true, true, CardsToPlay, CardsToPlay, 
-                new LinqCardCriteria(IsAugment, "augment"), true, false, false);
+                base.AugmentCardCriteria(), true, false, false);
 
             if (base.UseUnityCoroutines)
             {

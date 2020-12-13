@@ -53,7 +53,7 @@ namespace Cauldron.LadyOfTheWood
 				}
 
 				//you may draw a card.
-				IEnumerator coroutine3 = base.DrawCards(this.DecisionMaker, 1, upTo: true, allowAutoDraw: false);
+				IEnumerator coroutine3 = base.DrawCards(this.DecisionMaker, 1, upTo: true);
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine3);

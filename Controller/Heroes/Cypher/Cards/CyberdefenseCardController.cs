@@ -20,13 +20,14 @@ namespace Cauldron.Cypher
 
         public CyberdefenseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowSpecialStringNumberOfAugmentsInPlay();
         }
 
         public override IEnumerator Play()
         {
             // Destroy any number of Augments.
             List<DestroyCardAction> storedResults = new List<DestroyCardAction>();
-            IEnumerator routine = base.GameController.SelectAndDestroyCards(this.HeroTurnTakerController, new LinqCardCriteria(IsAugment), 
+            IEnumerator routine = base.GameController.SelectAndDestroyCards(this.HeroTurnTakerController, base.AugmentCardCriteria(), 
                 null, false, 0, storedResultsAction: storedResults, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)

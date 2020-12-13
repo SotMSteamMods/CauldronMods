@@ -111,7 +111,7 @@ namespace Cauldron.Vector
            if(!IsVectorFlipped())
             {
                 // {Vector} deals each hero 1 toxic damage
-                routine = base.DealDamage(this.CharacterCard, c => c.IsHero && c.IsTarget && c.IsInPlay,
+                routine = base.DealDamage(this.CharacterCard, c => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame,
                     DamageToDeal, DamageType.Toxic);
 
                 if (base.UseUnityCoroutines)
@@ -125,7 +125,7 @@ namespace Cauldron.Vector
 
                 // Regain {H x 2} HP
                 int hpGain = base.Game.H * 2;
-                routine = this.GameController.GainHP(this.CharacterCard, hpGain);
+                routine = this.GameController.GainHP(this.CharacterCard, hpGain, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(routine);
