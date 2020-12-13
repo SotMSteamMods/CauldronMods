@@ -27,16 +27,20 @@ namespace Cauldron.Cricket
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
-            coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, storedResults.FirstOrDefault().SelectedLocation.Location, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
+            if(DidSelectLocation(storedResults))
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                Location deck = GetSelectedLocation(storedResults);
+                coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController,deck, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
+            
             yield break;
         }
     }
