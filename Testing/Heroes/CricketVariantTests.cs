@@ -128,10 +128,13 @@ namespace CauldronTests
             AssertIsInPlay(staff);
 
             DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
+            DecisionDoNotSelectCard = SelectionType.DiscardCard;
             QuickHandStorage(cricket);
             UsePower(cricket);
-            QuickHandCheck(-1);
-            AssertIsInPlay(ring);
+            QuickHandCheck(0);
+            AssertInHand(legacy, ring);
+
+
         }
 
         [Test()]
@@ -166,9 +169,21 @@ namespace CauldronTests
             StartGame();
             SetupIncap(apostate);
 
-            //Shuffle the environment trash into the environment deck.
+            //Discard the top 2 cards of the villain deck.
             UseIncapacitatedAbility(cricket, 1);
             AssertNumberOfCardsInTrash(apostate, 2);
+        }
+
+        [Test()]
+        public void TestRenegadeCricketIncap2_MultipleVillainDecks()
+        {
+            SetupGameController("KaargraWarfang", "Cauldron.Cricket/RenegadeCricketCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(warfang);
+
+            //Discard the top 2 cards of the villain deck.
+            UseIncapacitatedAbility(cricket, 1);
+            AssertNumberOfCardsInTrash(warfang, 2);
         }
 
         [Test()]
@@ -183,9 +198,16 @@ namespace CauldronTests
             Card defender = PutInTrash("SeismicDefender");
 
             //Shuffle 1 card from a trash back into its deck.
+            QuickShuffleStorage(akash.TurnTaker.Deck);
             UseIncapacitatedAbility(cricket, 2);
+            QuickShuffleCheck(0);//this adds however much is in the shuffle storage, so this is actually checking that there has been 1 shuffle
+            QuickShuffleStorage(legacy.TurnTaker.Deck);
             UseIncapacitatedAbility(cricket, 2);
+            QuickShuffleCheck(0);
+            QuickShuffleStorage(env.TurnTaker.Deck);
             UseIncapacitatedAbility(cricket, 2);
+            QuickShuffleCheck(0);
+
             AssertInDeck(new Card[] { phlange, ring, defender });
         }
 

@@ -36,7 +36,7 @@ namespace Cauldron.Cricket
 
                         if (DidSelectDeck(storedResults))
                         {
-                            Location selectedDeck = storedResults.FirstOrDefault().SelectedLocation.Location;
+                            Location selectedDeck = GetSelectedLocation(storedResults);
                             //put its top card into play.
                             coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, selectedDeck, isPutIntoPlay: true, cardSource: base.GetCardSource());
                             if (base.UseUnityCoroutines)
@@ -53,26 +53,31 @@ namespace Cauldron.Cricket
                 case 1:
                     {
                         //Discard the top 2 cards of the villain deck.
-                        List<SelectLocationDecision> storedLocation = new List<SelectLocationDecision>();
-                        coroutine = base.FindVillainDeck(base.HeroTurnTakerController, SelectionType.DiscardCard, storedLocation, (Location deck) => true);
+                        List<SelectLocationDecision> storedVillain = new List<SelectLocationDecision>();
+                        IEnumerator coroutine4 = FindVillainDeck(DecisionMaker, SelectionType.DiscardFromDeck, storedVillain, (Location l) => true);
                         if (base.UseUnityCoroutines)
                         {
-                            yield return base.GameController.StartCoroutine(coroutine);
+                            yield return base.GameController.StartCoroutine(coroutine4);
                         }
                         else
                         {
-                            base.GameController.ExhaustCoroutine(coroutine);
+                            base.GameController.ExhaustCoroutine(coroutine4);
                         }
+                        Location selectedLocation = GetSelectedLocation(storedVillain);
 
-                        coroutine = base.GameController.DiscardTopCards(base.HeroTurnTakerController, storedLocation.FirstOrDefault().SelectedLocation.Location, 2, cardSource: base.GetCardSource());
-                        if (base.UseUnityCoroutines)
+                        if(selectedLocation != null)
                         {
-                            yield return base.GameController.StartCoroutine(coroutine);
+                            coroutine = base.GameController.DiscardTopCards(base.HeroTurnTakerController, selectedLocation, 2, cardSource: base.GetCardSource());
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine);
+                            }
                         }
-                        else
-                        {
-                            base.GameController.ExhaustCoroutine(coroutine);
-                        }
+                      
                         break;
                     }
                 case 2:
@@ -110,9 +115,9 @@ namespace Cauldron.Cricket
 
             if (DidSelectDeck(storedResults))
             {
-                Location selectedDeck = storedResults.FirstOrDefault().SelectedLocation.Location;
+                Location selectedDeck = GetSelectedLocation(storedResults);
                 List<Card> revealedCards = new List<Card>();
-                //Reveral the top card of a hero deck.
+                //Reveal the top card of a hero deck.
                 coroutine = base.GameController.RevealCards(base.TurnTakerController, selectedDeck, 1, revealedCards, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
@@ -135,7 +140,7 @@ namespace Cauldron.Cricket
 
                 List<DiscardCardAction> discardResults = new List<DiscardCardAction>();
                 //You may discard a card...
-                coroutine = base.GameController.SelectAndDiscardCard(base.HeroTurnTakerController, true, storedResults: discardResults, selectionType: SelectionType.PlayTopCard, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectAndDiscardCard(base.HeroTurnTakerController, true, storedResults: discardResults, selectionType: SelectionType.DiscardCard, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
