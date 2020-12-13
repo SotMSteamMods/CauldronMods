@@ -188,5 +188,48 @@ namespace CauldronTests
             //extra play is optional
             AssertInHand(fin);
         }
+        [Test]
+        public void TestCrushingRift()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheScholar", "DokThorathCapital");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            SetHitPoints(mdp, 9);
+            QuickHPStorage(mdp);
+            PlayCard("CrushingRift");
+            QuickHPCheck(-4);
+        }
+        [Test]
+        public void TestCrushingRiftIgnoresImmunity()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheScholar", "RealmOfDiscord");
+            StartGame();
+
+            PlayCard("ClaustrophobicDelusion");
+            PlayCard("BladeBattalion");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            SetHitPoints(mdp, 9);
+            QuickHPStorage(mdp);
+            DealDamage(impact, mdp, 1, DamageType.Melee);
+            QuickHPCheck(0);
+            PlayCard("CrushingRift");
+            QuickHPCheck(-4);
+        }
+        [Test]
+        public void TestCrushingRiftIgnoredUndamagedAndCharacter()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheScholar", "TheWraith", "RealmOfDiscord");
+            StartGame();
+
+            Card batt = PlayCard("BladeBattalion");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            SetHitPoints(batt, 4);
+            SetHitPoints(baron, 20);
+            QuickHPStorage(baron.CharacterCard, mdp, batt);
+            AssertNoDecision();
+            PlayCard("CrushingRift");
+            QuickHPCheck(0, 0, -2);
+        }
     }
 }
