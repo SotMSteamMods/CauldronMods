@@ -40,7 +40,7 @@ namespace Cauldron.Cricket
                         Location envDeck = base.Game.EnvironmentTurnTakers.FirstOrDefault().Deck;
                         if (base.Game.EnvironmentTurnTakers.Count() > 1)
                         {
-                            coroutine = base.GameController.SelectADeck(base.HeroTurnTakerController, SelectionType.ShuffleTrashIntoDeck, null, storedLocation, cardSource: base.GetCardSource());
+                            coroutine = base.GameController.SelectADeck(base.HeroTurnTakerController, SelectionType.ShuffleTrashIntoDeck, (Location l) => l.IsEnvironment, storedLocation, cardSource: base.GetCardSource());
                             if (base.UseUnityCoroutines)
                             {
                                 yield return base.GameController.StartCoroutine(coroutine);
@@ -51,7 +51,7 @@ namespace Cauldron.Cricket
                             }
                             if (DidSelectLocation(storedLocation))
                             {
-                                envDeck = storedLocation.FirstOrDefault().SelectedLocation.Location;
+                                envDeck = GetSelectedLocation(storedLocation);
                             }
                         }
                         coroutine = base.GameController.ShuffleTrashIntoDeck(base.TurnTakerController, overrideDeck: envDeck);
