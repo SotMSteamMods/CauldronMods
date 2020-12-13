@@ -148,9 +148,18 @@ namespace CauldronTests
             "RemoveDevastation",
             "AddDevastation",
 
-            //not supoorted yet, but planned to be added
+            //not supported yet, but planned to be added
             "ImmuneToDamageRadiant",
-            "DealDAmageRadiant",
+            "IncreaseDamageDealtRadiant",
+            "IncreaseDamageTakenRadiant",
+            "RedirectDamageRadiant",
+            "ReduceDamageTakenRadiant",
+
+            "ImmuneToDamageSonic",
+            "IncreaseDamageDealtSonic",
+            "IncreaseDamageTakenSonic",
+            "RedirectDamageSonic",
+            "ReduceDamageTakenSonic",
         };
 
         #endregion Data
