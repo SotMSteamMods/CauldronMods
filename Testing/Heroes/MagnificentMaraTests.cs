@@ -325,6 +325,31 @@ namespace CauldronTests
             AssertInTrash(crystal);
         }
         [Test]
+        public void TestDowsingCrystalSaveReload()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            Card crystal = PlayCard("DowsingCrystal");
+            UsePower("DowsingCrystal");
+
+            AssertNumberOfStatusEffectsInPlay(1);
+            UsePower("DowsingCrystal");
+
+            AssertNumberOfStatusEffectsInPlay(2);
+            DecisionYesNo = true;
+            SaveAndLoad();
+
+            QuickHPStorage(baron);
+            PlayCard("BladeBattalion");
+
+            AssertNumberOfStatusEffectsInPlay(0);
+            QuickHPCheck(-6);
+            AssertInTrash("DowsingCrystal");
+        }
+        [Test]
         public void TestDowsingCrystalOptional()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
@@ -347,6 +372,106 @@ namespace CauldronTests
 
             AssertNumberOfStatusEffectsInPlay(2);
             QuickHPCheck(0);
+        }
+        [Test]
+        public void TestDowsingCrystalMaySkipFirstCardPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+            StartGame();
+            Card mdp = DestroyCard("MobileDefensePlatform");
+            Card crystal = PlayCard("DowsingCrystal");
+
+            Card batt = GetCard("BladeBattalion");
+            Card lash = GetCard("BacklashField");
+            DecisionsYesNo = new bool[] { false, true, false };
+            DecisionSelectCards = new Card[] { legacy.CharacterCard, batt };
+
+            //expected behavior: Backlash Field enters play, we do nothing.
+            //Battalion enters play, we get to punch it
+            //MDP enters play, no responses
+            UsePower("DowsingCrystal");
+
+            QuickHPStorage(baron, legacy);
+            PlayCard(lash);
+            QuickHPCheck(0, 0);
+
+            PlayCard(batt);
+            QuickHPCheck(0, 0);
+            Assert.IsTrue(batt.HitPoints < batt.MaximumHitPoints, "The Blade Battalion has not been damaged.");
+
+            AssertNoDecision();
+            PlayCard(mdp);
+        }
+        [Test]
+        public void TestDowsingCrystalMaySkipFirstCardPlaySaveAndReload()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+            StartGame();
+            Card mdp = DestroyCard("MobileDefensePlatform");
+            Card crystal = PlayCard("DowsingCrystal");
+
+            Card lash = GetCard("BacklashField");
+            DecisionsYesNo = new bool[] { false, true, false };
+
+            //expected behavior: Backlash Field enters play, we do nothing.
+            //Battalion enters play, we get to punch it
+            //MDP enters play, no responses
+            UsePower("DowsingCrystal");
+
+            QuickHPStorage(baron, legacy);
+            PlayCard(lash);
+            QuickHPCheck(0, 0);
+
+            SaveAndLoad();
+
+            Card batt = GetCard("BladeBattalion");
+            DecisionSelectCards = new Card[] { legacy.CharacterCard, batt };
+            PlayCard(batt);
+            QuickHPCheck(0, 0);
+            Assert.IsTrue(batt.HitPoints < batt.MaximumHitPoints, "The Blade Battalion has not been damaged.");
+
+            mdp = GetCard("MobileDefensePlatform");
+            AssertNoDecision();
+            PlayCard(mdp);
+        }
+        [Test]
+        public void TestDowsingCrystalReactionPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Mordengrad");
+            StartGame();
+            Card crystal = PlayCard("DowsingCrystal");
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card turret = PlayCard("PoweredRemoteTurret");
+            Card batt = PutOnDeck("BladeBattalion");
+
+            Card tank = PlayCard("RemoteWalkingTank");
+            SetHitPoints(tank, 1);
+
+            UsePower(crystal); //SE1
+            UsePower(crystal); //SE2
+            UsePower(crystal); //SE3
+            DestroyCard(crystal); //to avoid having to decide whether to destroy it for extra damage
+
+            QuickHPStorage(mdp, turret);
+
+            DecisionsYesNo = new bool[] { false, true, true, true, true };
+            DecisionSelectCards = new Card[] { mainstay, tank, mainstay, mdp, mainstay, mdp, mainstay, turret, mainstay, turret, mainstay, turret };
+            //once we get more than we "should" we will start hitting the turret
+
+            //Expected behavior: 
+            //Backlash Field enters play. SE1 is skipped. SE2 is used to destroy the Tank, causing... 
+            //Battalion enters play. SE1 is used to hit the MDP. SE2 recognizes it is being used. SE3 is used to hit the MDP.
+            //...and we get back to the Backlash Field triggers. SE2 wraps up, SE3 recognizes it has already been used.
+            PlayCard("BacklashField");
+            QuickHPCheck(-4, 0);
+
+            //all Dowsing Crytal effects should have expired
+            var statusEffects = GameController.StatusEffectManager
+                                            .GetStatusEffectControllersInList(CardControllerListType.ActivatesEffects)
+                                            .Where((StatusEffectController sec) => (sec.StatusEffect as ActivateEffectStatusEffect).EffectName == "Dowsing Crystal trigger")
+                                            .ToList();
+            Assert.AreEqual(0, statusEffects.Count());
         }
         [Test]
         public void TestGlimpse()
@@ -467,9 +592,9 @@ namespace CauldronTests
             SetupGameController("Apostate", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
 
             StartGame();
+            Card spirit = PlayCard("RelicSpirit");
             Card imp = PlayCard("ImpPilferer");
             Card fiend = PlayCard("FiendishPugilist");
-            Card spirit = PlayCard("RelicSpirit");
             Card sword = GetCardInPlay("Condemnation");
 
             SetHitPoints(legacy, 10);
@@ -491,6 +616,27 @@ namespace CauldronTests
             AssertIsInPlay(imp);
             AssertInTrash(fiend);
 
+        }
+        [Test]
+        public void TestHandIsFasterThanTheEyeNotCancelOnDestruction()
+        {
+            SetupGameController("BiomancerTeam", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card duplex = PutInTrash("Duplexpatriette");
+
+            GoToStartOfTurn(scholar);
+            Card faster = PlayCard("HandIsFasterThanTheEye");
+            Card rebirth = PlayCard("MassRebirth");
+
+            SetHitPoints(biomancerTeam, 1);
+            QuickHPStorage(biomancerTeam);
+            GoToStartOfTurn(biomancerTeam);
+            AssertInTrash(faster);
+            AssertInTrash(rebirth);
+            AssertInTrash(duplex);
+            QuickHPCheck(10);
         }
         [Test]
         public void TestImprobableEscapeCardDraw()
@@ -778,6 +924,49 @@ namespace CauldronTests
             DealDamage(baron, mara, 2, DTM);
             QuickHPCheck(-2);
             AssertIsInPlay(smoke);
+        }
+        [Test]
+        public void TestSmokeAndMirrorsMultipleCompetingTriggers()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            Card smoke1 = PlayCard("SmokeAndMirrors");
+            Card smoke2 = PlayCard("SmokeAndMirrors");
+            DecisionsYesNo = new bool[] { true, true };
+            DecisionSelectCard = smoke1;
+            QuickHPStorage(mara);
+
+            DealDamage(baron, mara, 2, DTM);
+            QuickHPCheck(0);
+            AssertInTrash(smoke1);
+            AssertIsInPlay(smoke2);
+        }
+        [Test]
+        public void TestSmokeAndMirrorsSpecificMultiCardSetup()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "TheVisionary", "Legacy", "RuinsOfAtlantis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            GoToStartOfTurn(legacy);
+            SetHitPoints(legacy, 7);
+            Card lev = PlayCard("MassLevitation");
+            UsePower(lev);
+            Card smoke1 = PlayCard("SmokeAndMirrors");
+            Card smoke2 = PlayCard("SmokeAndMirrors");
+
+            PlayCard("TheKraken");
+
+            DecisionsYesNo = new bool[] { true, true };
+            DecisionSelectCard = smoke1;
+            QuickHPStorage(legacy);
+
+            GoToStartOfTurn(baron);
+            AssertInTrash(smoke1);
+            AssertIsInPlay(smoke2);
+            QuickHPCheck(0);
         }
         [Test]
         public void TestWandOfBanishmentTop()

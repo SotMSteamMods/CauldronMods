@@ -16,7 +16,7 @@ namespace Cauldron.MagnificentMara
         public override void AddTriggers()
         {
             //"When a hero target would be dealt damage, you may prevent that damage. If you do, destroy this card.",
-            AddTrigger((DealDamageAction dd) => dd.Target.IsHero && dd.Amount > 0 && !this.IsBeingDestroyed, PreventDamageResponse, TriggerType.WouldBeDealtDamage, TriggerTiming.Before);
+            AddTrigger((DealDamageAction dd) => dd.Target.IsHero && dd.Amount > 0 && !this.IsBeingDestroyed, PreventDamageResponse, TriggerType.WouldBeDealtDamage, TriggerTiming.Before, isActionOptional: true);
         }
 
         private IEnumerator PreventDamageResponse(DealDamageAction dd)
@@ -43,14 +43,17 @@ namespace Cauldron.MagnificentMara
                 {
                     GameController.ExhaustCoroutine(coroutine);
                 }
-                coroutine = DestroyThisCardResponse(dd);
-                if (UseUnityCoroutines)
+                if (IsRealAction())
                 {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
+                    coroutine = GameController.DestroyCard(DecisionMaker, this.Card, cardSource: GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
             yield break;
