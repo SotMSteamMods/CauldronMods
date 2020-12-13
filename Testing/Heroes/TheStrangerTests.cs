@@ -13,7 +13,7 @@ using Handelabra.Sentinels.Engine.Controller.ChronoRanger;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class TheStranger : BaseTest
+    public class TheStrangerTests : BaseTest
     {
         #region TheStrangerHelperFunctions
         protected HeroTurnTakerController stranger { get { return FindHero("TheStranger"); } }

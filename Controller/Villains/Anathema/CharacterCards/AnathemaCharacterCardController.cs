@@ -108,7 +108,7 @@ namespace Cauldron.Anathema
 		private IEnumerator GainHpResponse(DestroyCardAction dca)
 		{
 			//Anathema regains 2HP
-			IEnumerator coroutine = base.GameController.GainHP(base.CharacterCard, new int?(2));
+			IEnumerator coroutine = base.GameController.GainHP(base.CharacterCard, new int?(2), cardSource: GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);

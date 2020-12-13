@@ -24,7 +24,7 @@ namespace Cauldron.TheCybersphere
         private IEnumerator DealDamageResponse(DestroyCardAction dca)
         {
             //it deals the non-environment target with the second highest HP 5 lightning damage.
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 2, (Card c) => c.IsNonEnvironmentTarget, (Card c) => new int?(5), DamageType.Lightning);
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 2, (Card c) => c.IsNonEnvironmentTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), (Card c) => new int?(5), DamageType.Lightning);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -35,7 +35,5 @@ namespace Cauldron.TheCybersphere
             }
             yield break;
         }
-
-
     }
 }

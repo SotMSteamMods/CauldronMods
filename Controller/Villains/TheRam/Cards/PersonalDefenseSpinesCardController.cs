@@ -18,15 +18,31 @@ namespace Cauldron.TheRam
 
         public override IEnumerator Play()
         {
+            IEnumerator coroutine;
             //"{TheRam} deals each Up Close hero target {H + 2} melee damage. 
-            IEnumerator coroutine = DealDamage(GetRam, (Card c) => c.IsHero && c.IsTarget && IsUpClose(c), H + 2, DamageType.Melee);
-            if (base.UseUnityCoroutines)
+            if (RamIfInPlay != null)
             {
-                yield return GameController.StartCoroutine(coroutine);
+                coroutine = DealDamage(GetRam, (Card c) => c.IsHero && c.IsTarget && IsUpClose(c), H + 2, DamageType.Melee);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
             }
             else
             {
-                GameController.ExhaustCoroutine(coroutine);
+                IEnumerator message = MessageNoRamToAct(GetCardSource(), "deal damage");
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(message);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(message);
+                }
             }
 
             //Destroy all ongoing and equipment cards belonging to those heroes.
@@ -41,14 +57,17 @@ namespace Cauldron.TheRam
             }
 
             //{TheRam} deals each other hero target 2 projectile damage."
-            coroutine = DealDamage(GetRam, (Card c) => c.IsHero && c.IsTarget && !IsUpClose(c), 2, DamageType.Projectile);
-            if (base.UseUnityCoroutines)
+            if (RamIfInPlay != null)
             {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
+                coroutine = DealDamage(GetRam, (Card c) => c.IsHero && c.IsTarget && !IsUpClose(c), 2, DamageType.Projectile);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }

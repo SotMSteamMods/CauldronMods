@@ -381,7 +381,7 @@
             "hitpointText": "#"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "NecroCharacter",
             "promoIdentifier": "WardenOfChaosNecroCharacter",
@@ -395,7 +395,7 @@
             "hitpointColor": "8F859A",
             "character": true,
             "powers": [
-                "Put the top 2 cards of your deck into play."
+                "Put the top card of your deck into play."
             ],
             "icons": [
                 "HasPower",
@@ -473,31 +473,30 @@
             "title": "Necro",
             "promoTitle": "Last of The Forgotten Order Necro",
             "shortPromoTitle": "Mythos - Necro",
-            "body": "Turn Undead",
+            "body": "Last Rites",
             "backgroundColor": "",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "",
+            "foilBackgroundColor": "98C176",
+            "hitpointColor": "98C176",
             "character": true,
             "powers": [
-                ""
+                "The next time an undead target is destroyed, 1 hero deals a target 1 fire damage and draws a card."
             ],
             "icons": [
                 "HasPower"
             ],
-            "hitpoints": 1,
+            "hitpoints": 26,
             "nemesisIdentifiers": [
                 "Necro"
             ],
             "incapacitatedAbilities": [
-                "",
-                "",
-                ""
+                "One player may draw a card now.",
+                "Destroy an environment card.",
+                "One player may play 2 random cards from their hand now."
             ],
             "flippedIcons": [
-                "DealDamageToxic",
+                "DealDamageFire",
                 "UsePowerNow",
-                "DrawCardNow",
-                "Discard"
+                "DrawCardNow"
             ],
             "openingLines": {
                 "default": "We must all... repent... before it is... too late.",
