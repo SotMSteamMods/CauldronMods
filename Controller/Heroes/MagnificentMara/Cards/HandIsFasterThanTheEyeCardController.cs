@@ -59,8 +59,11 @@ namespace Cauldron.MagnificentMara
             //we'll have to see what crops up
             if(IsRealAction(ga) && !(ga is MessageAction))
             {
+                
                 //Log.Debug($"Would interrupt the trigger {_justActivatedTrigger}");
                 Card cardToDestroy = ga.CardSource.Card;
+                //prevent ourselves from canceling its destruction effects too
+                _justActivatedTrigger = null;
                 IEnumerator coroutine = GameController.SendMessageAction($"{this.Card.Title} interrupts the {Game.ActiveTurnPhase.FriendlyPhaseName} trigger on {cardToDestroy.Title}!", Priority.High, GetCardSource());
                 if (UseUnityCoroutines)
                 {
@@ -70,6 +73,13 @@ namespace Cauldron.MagnificentMara
                 {
                     GameController.ExhaustCoroutine(coroutine);
                 }
+
+                //needed to prevent "put-into-play" triggers
+                if(ga is PlayCardAction pca)
+                {
+                    pca.AllowPutIntoPlayCancel = true;
+                }
+
                 coroutine = GameController.CancelAction(ga, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
@@ -88,6 +98,7 @@ namespace Cauldron.MagnificentMara
                 {
                     GameController.ExhaustCoroutine(coroutine);
                 }
+                
                 coroutine = DestroyThisCardResponse(ga);
                 if (UseUnityCoroutines)
                 {
