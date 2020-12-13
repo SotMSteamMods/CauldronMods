@@ -23,7 +23,6 @@ namespace Cauldron.Cypher
 
         public HackingProgramCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override IEnumerator UsePower(int index = 0)

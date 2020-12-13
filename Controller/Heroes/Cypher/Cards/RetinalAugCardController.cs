@@ -17,6 +17,7 @@ namespace Cauldron.Cypher
 
         public RetinalAugCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            
         }
 
         public override void AddTriggers()

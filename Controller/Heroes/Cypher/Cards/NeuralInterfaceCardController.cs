@@ -19,6 +19,7 @@ namespace Cauldron.Cypher
 
         public NeuralInterfaceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowSpecialStringAugmentsInPlay();
         }
 
         public override IEnumerator UsePower(int index = 0)

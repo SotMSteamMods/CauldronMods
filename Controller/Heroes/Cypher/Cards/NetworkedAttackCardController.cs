@@ -17,6 +17,7 @@ namespace Cauldron.Cypher
 
         public NetworkedAttackCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowSpecialStringAugmentedHeroes();
         }
 
         public override IEnumerator Play()
@@ -29,7 +30,7 @@ namespace Cauldron.Cypher
 
 
             IEnumerator routine = base.GameController.SelectCardsAndPerformFunction(this.DecisionMaker, 
-                new LinqCardCriteria(IsAugmented, "augmented heroes", false), FunctionsBasedOnCard, false, base.GetCardSource());
+                base.AugmentedHeroCharacterCardCriteria(), FunctionsBasedOnCard, false, base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {

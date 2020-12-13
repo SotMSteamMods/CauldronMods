@@ -6,10 +6,11 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Cypher
 {
-    public abstract class AugBaseCardController : CardController
+    public abstract class AugBaseCardController : CypherBaseCardController
     {
-        public AugBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected AugBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowCardThisCardIsNextTo(Card);
         }
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources,

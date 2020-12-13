@@ -20,6 +20,7 @@ namespace Cauldron.Cypher
 
         public RapidPrototypingCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowSpecialStringNumberOfAugmentsAtLocation(HeroTurnTaker.Hand);
         }
 
         public override IEnumerator Play()
@@ -38,7 +39,7 @@ namespace Cauldron.Cypher
 
             // Play any number of Augments from your hand
             routine = base.GameController.SelectAndPlayCardsFromHand(base.HeroTurnTakerController, 40, 
-                false, 0, new LinqCardCriteria(IsAugment));
+                false, 0, base.AugmentCardCriteria());
 
             if (base.UseUnityCoroutines)
             {

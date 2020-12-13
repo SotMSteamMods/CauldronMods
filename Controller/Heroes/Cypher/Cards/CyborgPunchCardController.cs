@@ -21,6 +21,7 @@ namespace Cauldron.Cypher
 
         public CyborgPunchCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowSpecialStringAugmentsInPlay();
         }
 
         public override IEnumerator Play()
@@ -41,7 +42,7 @@ namespace Cauldron.Cypher
 
             // One augmented hero deals 1 target 1 melee damage and draws a card now.
             List<SelectCardDecision> storedHeroCard = new List<SelectCardDecision> { };
-            routine = this.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.HeroToDealDamage, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && IsAugmented(c), "augmented hero character"), storedHeroCard, false, cardSource: GetCardSource());
+            routine = this.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.HeroToDealDamage, base.AugmentedHeroCharacterCardCriteria(c => c.IsInPlayAndHasGameText), storedHeroCard, false, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
             {

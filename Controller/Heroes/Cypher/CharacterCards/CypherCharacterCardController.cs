@@ -18,7 +18,7 @@ namespace Cauldron.Cypher
 
         public CypherCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowSpecialString(() => $"There is currently {GetAugmentsInPlay().Count} augment(s) in play");
+            ShowSpecialStringAugmentedHeroes();
         }
 
         public override IEnumerator UsePower(int index = 0)
@@ -28,7 +28,7 @@ namespace Cauldron.Cypher
             int drawNumeral = base.GetPowerNumeral(0, PowerCardsToDraw);
 
             IEnumerator routine = base.GameController.SelectHeroToDrawCard(this.HeroTurnTakerController,
-                additionalCriteria: new LinqTurnTakerCriteria(ttc => GetAugmentedHeroTurnTakers().Contains(ttc)), 
+                additionalCriteria: new LinqTurnTakerCriteria(ttc => GetAugmentedHeroTurnTakers().Contains(ttc)),
                 numberOfCards: drawNumeral, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)

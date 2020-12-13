@@ -19,6 +19,7 @@ namespace Cauldron.Cypher
 
         public RebuiltToSucceedCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowSpecialStringNumberOfAugmentsAtLocation(TurnTaker.Trash);
         }
 
         public override IEnumerator Play()

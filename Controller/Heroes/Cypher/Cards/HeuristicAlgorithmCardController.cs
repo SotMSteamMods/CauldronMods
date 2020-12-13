@@ -22,6 +22,7 @@ namespace Cauldron.Cypher
 
         public HeuristicAlgorithmCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowSpecialStringNumberOfAugmentsAtLocation(TurnTaker.Deck);
         }
 
         public override IEnumerator Play()

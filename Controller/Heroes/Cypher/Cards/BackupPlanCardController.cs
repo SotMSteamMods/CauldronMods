@@ -19,6 +19,7 @@ namespace Cauldron.Cypher
 
         public BackupPlanCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowSpecialStringAugmentsInPlay();
         }
 
         public override void AddTriggers()
@@ -109,7 +110,7 @@ namespace Cauldron.Cypher
             }
 
             // ...Then, each augmented hero regains 2HP.
-            routine = this.GameController.GainHP(this.HeroTurnTakerController, IsAugmented, HpGain,
+            routine = this.GameController.GainHP(this.HeroTurnTakerController, IsAugmentedHeroCharacterCard, HpGain,
                 cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
