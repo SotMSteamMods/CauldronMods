@@ -22,10 +22,11 @@ namespace Cauldron.MagnificentMara
             //for Dowsing Crystal's power
 
             //"(Once before your next turn,) when a non-hero card enters play..."
-            AddTrigger((CardEntersPlayAction cep) => IsTriggerAvailable() && CanActivateEffect(this.Card, "Dowsing Crystal trigger") && cep.CardEnteringPlay != null && !cep.CardEnteringPlay.IsHero,
+            AddTrigger((CardEntersPlayAction cep) => CanActivateEffect(this.Card, "Dowsing Crystal trigger") && cep.CardEnteringPlay != null && !cep.CardEnteringPlay.IsHero,
                             DowsingCrystalDamage,
                             TriggerType.DealDamage,
                             TriggerTiming.After);       
+            //clean up in-use trigger list
             AddTrigger((PhaseChangeAction pc) => true, _ => ClearTriggerLists(), TriggerType.HiddenLast, TriggerTiming.Before);
         }
 
@@ -219,11 +220,6 @@ namespace Cauldron.MagnificentMara
             _hasBeenUsedTriggers.Clear();
             yield return null;
             yield break;
-        }
-        private bool IsTriggerAvailable()
-        {
-            //return Game.Journal.CardPropertiesEntriesThisTurn(Card).Any(j => j.Key == "InUse") != true;
-            return true;
         }
         private bool IsSpecificTriggerAvailable(StatusEffectController sec)
         {
