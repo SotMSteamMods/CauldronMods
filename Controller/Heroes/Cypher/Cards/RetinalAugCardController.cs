@@ -17,7 +17,7 @@ namespace Cauldron.Cypher
 
         public RetinalAugCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            
+            AddThisCardControllerToList(CardControllerListType.IncreasePhaseActionCount);
         }
 
         public override void AddTriggers()
