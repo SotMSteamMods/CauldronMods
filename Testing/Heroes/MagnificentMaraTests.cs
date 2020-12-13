@@ -385,6 +385,7 @@ namespace CauldronTests
             Card crystal = PlayCard("DowsingCrystal");
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card turret = PlayCard("PoweredRemoteTurret");
             Card batt = PutOnDeck("BladeBattalion");
 
             Card tank = PlayCard("RemoteWalkingTank");
@@ -395,11 +396,11 @@ namespace CauldronTests
             UsePower(crystal); //SE3
             DestroyCard(crystal); //to avoid having to decide whether to destroy it for extra damage
 
-            QuickHPStorage(mdp, idealist);
+            QuickHPStorage(mdp, turret);
 
             DecisionsYesNo = new bool[] { false, true, true, true, true };
-            DecisionSelectCards = new Card[] { mainstay, tank, mainstay, mdp, mainstay, mdp, mainstay, idealist, mainstay, idealist, mainstay, idealist };
-            //once we get more than we "should" we will start hitting Idealist
+            DecisionSelectCards = new Card[] { mainstay, tank, mainstay, mdp, mainstay, mdp, mainstay, turret, mainstay, turret, mainstay, turret };
+            //once we get more than we "should" we will start hitting the turret
 
             //Expected behavior: 
             //Backlash Field enters play. SE1 is skipped. SE2 is used to destroy the Tank, causing... 
