@@ -23,7 +23,7 @@ namespace Cauldron.BlackwoodForest
 
         public OvergrownCathedralCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowHasBeenUsedThisTurn("FirstTimeDamageIsDealt", 
+            base.SpecialStringMaker.ShowHasBeenUsedThisTurn(FirstTimeDamageDealtPropName, 
                 "{0} has already taken effect this turn.", "{0} has not yet taken effect this turn.", null);
         }
 
@@ -37,6 +37,8 @@ namespace Cauldron.BlackwoodForest
                 this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After, 
                 ActionDescription.Unspecified, false, true, null, 
                 false, null, null);
+
+            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeDamageDealtPropName), TriggerType.Hidden);
 
             base.AddTriggers();
         }

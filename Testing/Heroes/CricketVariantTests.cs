@@ -274,6 +274,8 @@ namespace CauldronTests
             DealDamage(cricket, bunker, 1, DamageType.Sonic);
             QuickHPCheck(-2);
 
+
+
             //only the next turn
             GoToEndOfTurn(cricket);
             QuickHPStorage(bunker);

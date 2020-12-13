@@ -11,7 +11,7 @@ namespace Cauldron.Cricket
     {
         public AcousticDistortionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowHasBeenUsedThisTurn("OncePerTurn");
+            base.SpecialStringMaker.ShowHasBeenUsedThisTurn(FirstTimeWouldBeDealtDamage);
             AllowFastCoroutinesDuringPretend = false;
         }
 
@@ -20,7 +20,9 @@ namespace Cauldron.Cricket
         public override void AddTriggers()
         {
             //Once per turn when a hero target would be dealt damage, you may redirect that damage to another hero target.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn("OncePerTurn") && action.Target.IsHero, this.RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeWouldBeDealtDamage) && action.Target.IsHero, this.RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
+
+            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeWouldBeDealtDamage), TriggerType.Hidden);
         }
 
         private IEnumerator RedirectDamageResponse(DealDamageAction action)
@@ -38,7 +40,7 @@ namespace Cauldron.Cricket
             }
             if (storedResults.Any((SelectCardDecision d) => d.Completed && d.SelectedCard != null))
             {
-                base.SetCardPropertyToTrueIfRealAction("OncePerTurn");
+                base.SetCardPropertyToTrueIfRealAction(FirstTimeWouldBeDealtDamage);
             }
             yield break;
         }
