@@ -969,7 +969,7 @@ namespace CauldronTests
         [Test()]
         public void TestHeavyCarapaceReduceDamage()
         {
-            SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis");
+            SetupGameController(new string[] { "Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis" }, randomSeed: new int?(245202465));
 
             StartGame();
             ResetAnathemaDeck();
@@ -978,15 +978,15 @@ namespace CauldronTests
 
 
             //Put Heavy Carapace in play
-            PutIntoPlay("HeavyCarapace");
+            Card heavy = PutIntoPlay("HeavyCarapace");
 
             //Reduce damage dealt to Villain targets by 2
             QuickHPStorage(anathema);
             DealDamage(haka, anathema, 5, DamageType.Melee, false);
             QuickHPCheck(-3);
 
-            QuickHPStorage(GetCard("HeavyCarapace"));
-            DealDamage(haka.CharacterCard, GetCard("HeavyCarapace"), 5, DamageType.Melee, false);
+            QuickHPStorage(heavy);
+            DealDamage(haka, heavy, 5, DamageType.Melee, false);
             QuickHPCheck(-3);
         }
         [Test()]
