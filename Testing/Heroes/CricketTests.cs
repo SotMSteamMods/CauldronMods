@@ -686,6 +686,23 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestTelescopingStaff_Optional()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Magmaria");
+            StartGame();
+
+            Card sub = PutInHand("SubharmonicReceiver");
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+
+            Card staff = PlayCard("TelescopingStaff");
+            //{Cricket} deals 1 target 1 melee damage. You may play a card.
+            QuickHPStorage(akash);
+            UsePower(staff);
+            QuickHPCheck(-1);
+            AssertInHand(sub);
+        }
+
+        [Test()]
         public void TestVantagePoint()
         {
             SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Magmaria");
