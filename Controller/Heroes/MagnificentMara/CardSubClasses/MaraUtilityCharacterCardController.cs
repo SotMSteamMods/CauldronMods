@@ -18,7 +18,7 @@ namespace Cauldron.MagnificentMara
             //for Dowsing Crystal's power
 
             //"(Once before your next turn,) when a non-hero card enters play..."
-            AddTrigger((CardEntersPlayAction cep) => CanActivateEffect(this.Card, "Dowsing Crystal trigger") && cep.CardEnteringPlay != null && !cep.CardEnteringPlay.IsHero,
+            AddTrigger((CardEntersPlayAction cep) => IsTriggerAvailable() && CanActivateEffect(this.Card, "Dowsing Crystal trigger") && cep.CardEnteringPlay != null && !cep.CardEnteringPlay.IsHero,
                             DowsingCrystalDamage,
                             TriggerType.DealDamage,
                             TriggerTiming.After);             
@@ -26,12 +26,13 @@ namespace Cauldron.MagnificentMara
 
         public IEnumerator DowsingCrystalDamage(CardEntersPlayAction cep)
         {
+            base.SetCardPropertyToTrueIfRealAction("InUse");
             //Log.Debug("DowsingCrystalDamage triggers");
             var dcTriggers = GameController.StatusEffectManager
                                             .GetStatusEffectControllersInList(CardControllerListType.ActivatesEffects)
                                             .Where((StatusEffectController sec) => (sec.StatusEffect as ActivateEffectStatusEffect).EffectName == "Dowsing Crystal trigger")
                                             .ToList();
-            
+
             //for each of the various Dowsing Crystal uses that have happened...
             foreach(StatusEffectController seController in dcTriggers)
             {
@@ -58,10 +59,11 @@ namespace Cauldron.MagnificentMara
 
                 if (DidPlayerAnswerYes(storedYesNo))
                 {
+                   
                     //"one hero target (may deal damage...)"
                     var storedDamageSource = new List<SelectTargetDecision> { };
-                    var heroTargets = GameController.FindCardsWhere(new LinqCardCriteria((Card c) => c != null && c.IsTarget && c.IsHero), visibleToCard: crystalSource);
-                    coroutine = GameController.SelectTargetAndStoreResults(DecisionMaker, heroTargets, storedDamageSource, damageAmount: (Card c) => 2, selectionType: SelectionType.SelectTargetFriendly, cardSource: crystalSource);
+                    var heroTargets = GameController.FindCardsWhere(new LinqCardCriteria((Card c) => c != null && c.IsTarget && c.IsHero && c.IsInPlayAndHasGameText), visibleToCard: crystalSource);
+                    coroutine = GameController.SelectTargetAndStoreResults(DecisionMaker, heroTargets, storedDamageSource, damageAmount: (Card c) => 2, selectionType: SelectionType.HeroToDealDamage, cardSource: crystalSource);
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -131,6 +133,8 @@ namespace Cauldron.MagnificentMara
                     {
                         GameController.ExhaustCoroutine(coroutine);
                     }
+
+
                 }
             }
 
@@ -145,6 +149,7 @@ namespace Cauldron.MagnificentMara
 
         public IEnumerator DestroyCrystalToBoostDamageResponse(DealDamageAction dd)
         {
+            
             Card sourceCrystal = dd.CardSource.Card;
             if (sourceCrystal != null && sourceCrystal.IsInPlay)
             {
@@ -189,8 +194,15 @@ namespace Cauldron.MagnificentMara
                 GameController.RemoveInhibitor(FindCardController(sourceCrystal));
             }
 
+            
+
 
             yield break;
+        }
+
+        private bool IsTriggerAvailable()
+        {
+            return Game.Journal.CardPropertiesEntriesThisTurn(Card).Any(j => j.Key == "InUse") != true;
         }
     }
 }
