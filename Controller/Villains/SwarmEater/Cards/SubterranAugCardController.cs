@@ -24,6 +24,8 @@ namespace Cauldron.SwarmEater
 
             //Absorb: The first time {SwarmEater} would be dealt damage each turn, reduce that damage by 1.
             this._reduceDamage = base.AddReduceDamageTrigger((DealDamageAction action) => action.Amount > 0 && base.Card.Location.IsUnderCard && !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt), this.ReduceDamageResponse, (Card c) => c == this.CardThatAbsorbedThis(), true);
+
+            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeDamageDealt), TriggerType.Hidden);
         }
 
         private IEnumerator PlayVillainTargetResponse(PhaseChangeAction p)

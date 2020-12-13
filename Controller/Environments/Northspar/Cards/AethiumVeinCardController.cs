@@ -18,7 +18,7 @@ namespace Cauldron.Northspar
         public override void AddTriggers()
         {
             //If this card is destroyed by a hero card and Tak Ahab is in play, place the top card of the villain deck beneath him.
-            Func<DestroyCardAction, bool> criteria = (DestroyCardAction dca) => dca.WasDestroyedBy(c =>c.IsHero) && base.IsTakAhabInPlay();
+            Func<DestroyCardAction, bool> criteria = (DestroyCardAction dca) => dca.WasDestroyedBy(c => c.IsHero) && base.IsTakAhabInPlay();
             base.AddWhenDestroyedTrigger(this.WhenDestroyedResponse, new TriggerType[] { TriggerType.MoveCard }, criteria);
 
             //At the start of the environment turn, destroy this card and Tak Ahab's end of turn effect acts twice this turn.
@@ -61,11 +61,11 @@ namespace Cauldron.Northspar
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if(base.DidSelectLocation(storedResults))
+            if (base.DidSelectLocation(storedResults))
             {
                 Location villainDeck = storedResults.First().SelectedLocation.Location;
                 Card takAhab = base.FindTakAhabInPlay();
-                coroutine = base.GameController.MoveCard(base.DecisionMaker, villainDeck.TopCard , takAhab.UnderLocation, showMessage: true, cardSource: base.GetCardSource());
+                coroutine = base.GameController.MoveCard(base.DecisionMaker, villainDeck.TopCard, takAhab.UnderLocation, showMessage: true, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -75,7 +75,7 @@ namespace Cauldron.Northspar
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            
+
             yield break;
         }
 

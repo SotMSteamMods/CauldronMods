@@ -17,6 +17,8 @@ namespace Cauldron.Quicksilver
         {
             //The first time each turn that {Quicksilver} would deal herself damage to play a Combo card, prevent that damage.
             base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt) && base.CharacterCardController.IsPropertyTrue("ComboSelfDamage"), (DealDamageAction action) => this.PreventDamageResponse(action), TriggerType.CancelAction, TriggerTiming.Before, isActionOptional: false);
+
+            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeDamageDealt), TriggerType.Hidden);
         }
 
         private IEnumerator PreventDamageResponse(DealDamageAction action)

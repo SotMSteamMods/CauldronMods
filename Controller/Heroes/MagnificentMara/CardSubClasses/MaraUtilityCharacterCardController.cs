@@ -9,8 +9,12 @@ namespace Cauldron.MagnificentMara
 {
     class MaraUtilityCharacterCardController : HeroCharacterCardController
     {
+        private List<StatusEffectController> _inUseTriggers;
+        private List<StatusEffectController> _hasBeenUsedTriggers;
         public MaraUtilityCharacterCardController(Card card, TurnTakerController ttc) : base(card, ttc)
         {
+            _inUseTriggers = new List<StatusEffectController> { };
+            _hasBeenUsedTriggers = new List<StatusEffectController> { };
         }
 
         public override void AddTriggers()
@@ -18,15 +22,17 @@ namespace Cauldron.MagnificentMara
             //for Dowsing Crystal's power
 
             //"(Once before your next turn,) when a non-hero card enters play..."
-            AddTrigger((CardEntersPlayAction cep) => IsTriggerAvailable() && CanActivateEffect(this.Card, "Dowsing Crystal trigger") && cep.CardEnteringPlay != null && !cep.CardEnteringPlay.IsHero,
+            AddTrigger((CardEntersPlayAction cep) => CanActivateEffect(this.Card, "Dowsing Crystal trigger") && cep.CardEnteringPlay != null && !cep.CardEnteringPlay.IsHero,
                             DowsingCrystalDamage,
                             TriggerType.DealDamage,
-                            TriggerTiming.After);             
+                            TriggerTiming.After);       
+            //clean up in-use trigger list
+            AddTrigger((PhaseChangeAction pc) => true, _ => ClearTriggerLists(), TriggerType.HiddenLast, TriggerTiming.Before);
         }
 
         public IEnumerator DowsingCrystalDamage(CardEntersPlayAction cep)
         {
-            base.SetCardPropertyToTrueIfRealAction("InUse");
+            //base.SetCardPropertyToTrueIfRealAction("InUse");
             //Log.Debug("DowsingCrystalDamage triggers");
             var dcTriggers = GameController.StatusEffectManager
                                             .GetStatusEffectControllersInList(CardControllerListType.ActivatesEffects)
@@ -39,6 +45,12 @@ namespace Cauldron.MagnificentMara
                 var currentTriggerEffect = seController.StatusEffect as ActivateEffectStatusEffect;
                 Card triggeringCrystal = currentTriggerEffect.CardSource;
                 CardSource crystalSource = new CardSource(FindCardController(triggeringCrystal));
+
+                if(!IsSpecificTriggerAvailable(seController))
+                {
+                    continue;
+                }
+                _inUseTriggers.Add(seController);
 
                 if(!crystalSource.Card.IsInPlay)
                 {
@@ -59,7 +71,7 @@ namespace Cauldron.MagnificentMara
 
                 if (DidPlayerAnswerYes(storedYesNo))
                 {
-                   
+
                     //"one hero target (may deal damage...)"
                     var storedDamageSource = new List<SelectTargetDecision> { };
                     var heroTargets = GameController.FindCardsWhere(new LinqCardCriteria((Card c) => c != null && c.IsTarget && c.IsHero && c.IsInPlayAndHasGameText), visibleToCard: crystalSource);
@@ -101,15 +113,17 @@ namespace Cauldron.MagnificentMara
 
                         //attempts to give the damage a destroy-dowsing-crystal-for-boost effect
 
-                        var damageSourceTempVar = (Card)AddTemporaryVariable("DowsingCrystalDamageSource", damageSource);
+                        //does not seem to be needed yet, causes warnings in multiple-play-reactions
+                        //may be required in some future scenario
+                        //var damageSourceTempVar = (Card)AddTemporaryVariable("DowsingCrystalDamageSource", damageSource);
 
-                        var boostDamageTrigger = new IncreaseDamageTrigger(GameController, (DealDamageAction dd) => LogAndReturnTrue(dd) && dd.DamageSource.Card == damageSourceTempVar && dd.CardSource == crystalSource && triggeringCrystal.IsInPlay, DestroyCrystalToBoostDamageResponse, null, TriggerPriority.Low, false, crystalSource);
+                        var boostDamageTrigger = new IncreaseDamageTrigger(GameController, (DealDamageAction dd) => LogAndReturnTrue(dd) && dd.DamageSource.Card == damageSource && dd.CardSource == crystalSource && triggeringCrystal.IsInPlay, DestroyCrystalToBoostDamageResponse, null, TriggerPriority.Low, false, crystalSource);
 
                         AddTrigger(boostDamageTrigger);
 
                         //"deal a non-hero target 2 damage"
 
-                        coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, damageSourceTempVar), 2, selectedDamage, 1, false, 1, additionalCriteria:((Card c) => !c.IsHero), cardSource: crystalSource);
+                        coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, damageSource), 2, selectedDamage, 1, false, 1, additionalCriteria:((Card c) => !c.IsHero), cardSource: crystalSource);
                         if (UseUnityCoroutines)
                         {
                             yield return GameController.StartCoroutine(coroutine);
@@ -120,7 +134,7 @@ namespace Cauldron.MagnificentMara
                         }
 
                         RemoveTrigger(boostDamageTrigger);
-                        RemoveTemporaryVariables();
+                        //RemoveTemporaryVariables();
                     }
 
                     //"Once before your next turn..."
@@ -133,9 +147,9 @@ namespace Cauldron.MagnificentMara
                     {
                         GameController.ExhaustCoroutine(coroutine);
                     }
-
-
+                    _hasBeenUsedTriggers.Add(seController);
                 }
+                _inUseTriggers.Remove(seController);
             }
 
             yield break;
@@ -200,9 +214,20 @@ namespace Cauldron.MagnificentMara
             yield break;
         }
 
-        private bool IsTriggerAvailable()
+        private IEnumerator ClearTriggerLists()
         {
-            return Game.Journal.CardPropertiesEntriesThisTurn(Card).Any(j => j.Key == "InUse") != true;
+            _inUseTriggers.Clear();
+            _hasBeenUsedTriggers.Clear();
+            yield return null;
+            yield break;
+        }
+        private bool IsSpecificTriggerAvailable(StatusEffectController sec)
+        {
+            if(_inUseTriggers.Contains(sec) || _hasBeenUsedTriggers.Contains(sec))
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
