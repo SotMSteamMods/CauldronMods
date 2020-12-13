@@ -30,67 +30,63 @@ namespace Cauldron.TheCybersphere
 
         private IEnumerator EachPlayerDiscardsCardsToDestroyCard(PhaseChangeAction pca)
         {
-			if (FindTurnTakersWhere((TurnTaker tt) => tt.BattleZone == BattleZone && tt.IsHero).Any())
-			{
-				//each player may discard up to 2 cards
-				List<DiscardCardAction> storedDiscards = new List<DiscardCardAction>();
-				IEnumerator coroutine = GameController.EachPlayerDiscardsCards(0, 2, storedResultsDiscard: storedDiscards, cardSource: GetCardSource());
-				if (UseUnityCoroutines)
-				{
-					yield return GameController.StartCoroutine(coroutine);
-				}
-				else
-				{
-					GameController.ExhaustCoroutine(coroutine);
-				}
-
-				//Then, unless {H} cards were discarded this way, destroy this card.
-				//confirmed with tosx, this must be exact
-				if (storedDiscards.Count() == base.H)
+            if (FindTurnTakersWhere((TurnTaker tt) => tt.IsHero).Any())
+            {
+                //each player may discard up to 2 cards
+                List<DiscardCardAction> storedDiscards = new List<DiscardCardAction>();
+                IEnumerator coroutine = GameController.EachPlayerDiscardsCards(0, 2, storedResultsDiscard: storedDiscards, cardSource: GetCardSource());
+                if (UseUnityCoroutines)
                 {
-
-					coroutine = GameController.SendMessageAction("Exactly " + storedDiscards.Count() + " cards were discarded for " + Card.Title + ", so it remains in play.", Priority.High, GetCardSource(), new Card[1]
-					{
-						base.Card
-					});
-					if (UseUnityCoroutines)
-					{
-						yield return GameController.StartCoroutine(coroutine);
-					}
-					else
-					{
-						GameController.ExhaustCoroutine(coroutine);
-					}
-					
-				} else
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
                 {
-					coroutine = DestroyThisCardResponse(pca);
-					if (UseUnityCoroutines)
-					{
-						yield return GameController.StartCoroutine(coroutine);
-					}
-					else
-					{
-						GameController.ExhaustCoroutine(coroutine);
-					}
-				}
-			}
-			else
-			{
-				string message = $"There are no players in the {BattleZone.Name} to discard for {Card.Title}.";
-				IEnumerator coroutine4 = GameController.SendMessageAction(message, Priority.Low, GetCardSource(), new Card[1]
-				{
-					base.Card
-				});
-				if (UseUnityCoroutines)
-				{
-					yield return GameController.StartCoroutine(coroutine4);
-				}
-				else
-				{
-					GameController.ExhaustCoroutine(coroutine4);
-				}
-			}
-		}
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
+                //Then, unless {H} cards were discarded this way, destroy this card.
+                //confirmed with tosx, this must be exact
+                if (storedDiscards.Count() == base.H)
+                {
+                    coroutine = GameController.SendMessageAction($"Exactly {storedDiscards.Count()} cards were discarded for {Card.Title}, so it remains in play.", Priority.High, GetCardSource(), new[] { base.Card });
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+                else
+                {
+                    coroutine = DestroyThisCardResponse(pca);
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+            }
+            else
+            {
+                string message = $"There are no players in the {BattleZone.Name} to discard for {Card.Title}.";
+                IEnumerator coroutine4 = GameController.SendMessageAction(message, Priority.Low, GetCardSource(), new Card[1]
+                {
+                    base.Card
+                });
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine4);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine4);
+                }
+            }
+        }
     }
 }
