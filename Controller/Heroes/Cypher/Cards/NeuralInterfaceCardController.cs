@@ -26,8 +26,12 @@ namespace Cauldron.Cypher
         {
             int augsToMove = GetPowerNumeral(0, 1);
             // You may move 1 Augment in play next to a new hero.
-            SelectCardsDecision scd = new SelectCardsDecision(GameController, DecisionMaker, (Card c) => c.IsInPlayAndHasGameText && IsAugment(c),
-                SelectionType.MoveCardNextToCard, augsToMove, true, augsToMove, eliminateOptions: true, cardSource: GetCardSource());
+            var scd = new SelectCardsDecision(GameController, DecisionMaker, (Card c) => c.IsInPlayAndHasGameText && IsAugment(c), SelectionType.MoveCardNextToCard,
+                            numberOfCards: augsToMove,
+                            isOptional: false,
+                            requiredDecisions: 0,
+                            eliminateOptions: true,
+                            cardSource: GetCardSource());
 
             IEnumerator routine = base.GameController.SelectCardsAndDoAction(scd, MoveAugment);
             if (base.UseUnityCoroutines)
@@ -54,7 +58,7 @@ namespace Cauldron.Cypher
             // Discard a card
             routine = base.GameController.SelectAndDiscardCards(this.HeroTurnTakerController, CardsToDiscard, false,
                 CardsToDiscard, cardSource: GetCardSource());
-            
+
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
