@@ -11,20 +11,26 @@ namespace Cauldron.Cypher
         {
         }
 
+        protected SpecialString ShowSpecialStringAugmentedHeroes()
+        {
+            return SpecialStringMaker.ShowListOfCardsInPlay(new LinqCardCriteria(IsAugmentedHeroCharacterCard, "augmented heroes", false));
+        }
+
+        protected bool IsAugmentedHeroCharacterCard(Card hero)
+        {
+            return hero.IsHeroCharacterCard && hero.IsInPlayAndHasGameText && !hero.IsIncapacitatedOrOutOfGame
+                && hero.NextToLocation.HasCards && hero.GetAllNextToCards(false).Any(IsAugment);
+        }
+
         protected bool IsAugment(Card card)
         {
             return card != null && base.GameController.DoesCardContainKeyword(card, "augment");
         }
 
-        protected List<Card> GetAugmentsInPlay()
-        {
-            return FindCardsWhere(c => c.IsInPlayAndHasGameText && IsAugment(c)).ToList();
-        }
-
         protected List<TurnTaker> GetAugmentedHeroTurnTakers()
         {
             return FindTurnTakersWhere(tt =>
-                tt.IsHero && tt.CharacterCards.Any(card => card.NextToLocation.HasCards && card.NextToLocation.Cards.Any(IsAugment))).ToList();
+                tt.IsHero && tt.CharacterCards.Any(IsAugmentedHeroCharacterCard)).ToList();
         }
     }
 }

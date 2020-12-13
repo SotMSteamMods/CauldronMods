@@ -20,7 +20,7 @@ namespace Cauldron.Cypher
 
         public CyborgBlasterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowListOfCards(AugmentedHeroes());
+            ShowSpecialStringAugmentsInPlay();
         }
 
         public override IEnumerator Play()
@@ -45,7 +45,7 @@ namespace Cauldron.Cypher
             //    new LinqTurnTakerCriteria(tt => GetAugmentedHeroTurnTakers().Contains(tt)), cardSource: GetCardSource());
 
             List<SelectCardDecision> storedHeroCard = new List<SelectCardDecision> { };
-            routine = this.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.HeroToDealDamage, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && IsAugmented(c), "augmented hero character"), storedHeroCard, false, cardSource: GetCardSource()); 
+            routine = this.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.HeroToDealDamage, base.AugmentedHeroCharacterCardCriteria(c => c.IsInPlayAndHasGameText), storedHeroCard, false, cardSource: GetCardSource()); 
 
             if (base.UseUnityCoroutines)
             {
