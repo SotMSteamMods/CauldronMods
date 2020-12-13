@@ -264,17 +264,19 @@ namespace CauldronTests
         [Test()]
         public void TestAnathemaGainsHPWhenVillainKillsArm()
         {
-            SetupGameController("Cauldron.Anathema", "Ra", "Megalopolis");
+            SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis");
 
             StartGame();
+
+            DestroyNonCharacterVillainCards();
+            Card arm = PlayCard("WhipTendril");
 
             //set anathema hp to 30 to give room to heal
             SetHitPoints(anathema.CharacterCard, 30);
             QuickHPStorage(anathema);
 
-            List<Card> arms = GetListOfArmsInPlay(anathema);
             //have anathema destroy the arm to trigger healing
-            DealDamage(anathema.CharacterCard, arms[0], 99, DamageType.Psychic);
+            DealDamage(anathema.CharacterCard, arm, 99, DamageType.Psychic);
 
             QuickHPCheck(2);
         }
@@ -282,17 +284,19 @@ namespace CauldronTests
         [Test()]
         public void TestAnathemaGainsHPWhenVillainKillsBody()
         {
-            SetupGameController("Cauldron.Anathema", "Ra", "Megalopolis");
+            SetupGameController("Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis");
 
             StartGame();
+
+            DestroyNonCharacterVillainCards();
+            Card body = PlayCard("MetabolicArmor");
 
             //set anathema hp to 30 to give room to heal
             SetHitPoints(anathema.CharacterCard, 30);
             QuickHPStorage(anathema);
 
-            List<Card> body = GetListOfBodyInPlay(anathema);
             //have anathema destroy the body to trigger healing
-            DealDamage(anathema.CharacterCard, body[0], 99, DamageType.Psychic);
+            DealDamage(anathema.CharacterCard, body, 99, DamageType.Psychic);
 
             QuickHPCheck(2);
         }
@@ -300,17 +304,19 @@ namespace CauldronTests
         [Test()]
         public void TestAnathemaGainsHPWhenVillainKillsHead()
         {
-            SetupGameController("Cauldron.Anathema", "Ra", "Megalopolis");
+            SetupGameController(new string[] { "Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis" });
 
             StartGame();
+
+            DestroyNonCharacterVillainCards();
+            Card head = PlayCard("EnhancedSenses");
 
             //set anathema hp to 30 to give room to heal
             SetHitPoints(anathema.CharacterCard, 30);
             QuickHPStorage(anathema);
 
-            List<Card> heads = GetListOfHeadsInPlay(anathema);
             //have anathema destroy the head to trigger healing
-            DealDamage(anathema.CharacterCard, heads[0], 99, DamageType.Psychic);
+            DealDamage(anathema.CharacterCard, head, 99, DamageType.Psychic);
 
             QuickHPCheck(2);
         }
@@ -969,7 +975,7 @@ namespace CauldronTests
         [Test()]
         public void TestHeavyCarapaceReduceDamage()
         {
-            SetupGameController(new string[] { "Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis" }, randomSeed: new int?(245202465));
+            SetupGameController(new string[] { "Cauldron.Anathema", "Ra", "Legacy", "Haka", "Megalopolis" });
 
             StartGame();
             ResetAnathemaDeck();
