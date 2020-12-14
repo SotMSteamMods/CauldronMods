@@ -16,7 +16,6 @@ namespace Cauldron.Menagerie
         {
             //When this card enters play, place the top card of the villain deck beneath it face down.
             IEnumerator coroutine = base.GameController.MoveCard(base.TurnTakerController, base.TurnTaker.Deck.TopCard, base.Card.UnderLocation, flipFaceDown: true, cardSource: base.GetCardSource());
-            coroutine = base.GameController.GainHP(base.Card, 6, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
