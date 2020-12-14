@@ -31,8 +31,7 @@ namespace Cauldron.Tiamat
             Card hydraEarthInstructions = base.TurnTaker.GetCardByIdentifier("HydraFrigidEarthTiamatInstructions");
             Card hydraDecayInstructions = base.TurnTaker.GetCardByIdentifier("HydraNoxiousFireTiamatInstructions");
             Card hydraWindInstructions = base.TurnTaker.GetCardByIdentifier("HydraThunderousGaleTiamatInstructions");
-
-            if (base.CharacterCard.PromoIdentifierOrIdentifier == "WinterTiamatCharacter")
+            if (base.FindCardController(base.CharacterCard) is WinterTiamatCharacterCardController)
             {//Regular Tiamat
                 this.inPlay = new Card[] { inferno, storm };
                 this.inBox = new Card[] { hydraInferno, hydraStorm, hydraEarth, hydraDecay, hydraWind, hydraEarthInstructions, hydraDecayInstructions, hydraWindInstructions };
@@ -46,7 +45,7 @@ namespace Cauldron.Tiamat
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            else if (base.CharacterCard.PromoIdentifierOrIdentifier == "HydraWinterTiamatCharacter")
+            if (base.FindCardController(base.CharacterCard) is HydraWinterTiamatCharacterCardController)
             {//Elemental Hydra
                 this.inBox = new Card[] { inferno, storm };
                 this.inPlay = new Card[] { hydraInferno, hydraStorm, hydraEarthInstructions, hydraDecayInstructions, hydraWindInstructions };
