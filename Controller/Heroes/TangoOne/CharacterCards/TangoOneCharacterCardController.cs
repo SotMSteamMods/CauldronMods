@@ -53,7 +53,7 @@ namespace Cauldron.TangoOne
                     // One player may draw a card now.
                     //==============================================================
 
-                    IEnumerator drawCardRoutine = base.GameController.SelectHeroToDrawCard(this.HeroTurnTakerController);
+                    IEnumerator drawCardRoutine = base.GameController.SelectHeroToDrawCard(DecisionMaker, cardSource: GetCardSource());
 
                     if (base.UseUnityCoroutines)
                     {
@@ -75,7 +75,7 @@ namespace Cauldron.TangoOne
                     // Select deck
                     List<SelectLocationDecision> locationResults = new List<SelectLocationDecision>();
                     IEnumerator selectDeckRoutine = base.GameController.SelectADeck(this.DecisionMaker, SelectionType.RevealTopCardOfDeck,
-                        location => location.IsDeck && !location.OwnerTurnTaker.IsIncapacitatedOrOutOfGame, locationResults);
+                        location => location.IsDeck && !location.OwnerTurnTaker.IsIncapacitatedOrOutOfGame, locationResults, cardSource: GetCardSource());
 
                     if (base.UseUnityCoroutines)
                     {
@@ -120,7 +120,7 @@ namespace Cauldron.TangoOne
                     IEnumerator selectCardsRoutine
                         = base.GameController.SelectCardsAndStoreResults(base.HeroTurnTakerController,
                             SelectionType.PlayCard, c => c.IsInHand && c.Location.IsHero && c.IsOngoing, Incapacitate3OngoingCardCount,
-                            storedCardResults, true, 0);
+                            storedCardResults, true, 0, cardSource: GetCardSource());
 
                     if (base.UseUnityCoroutines)
                     {
