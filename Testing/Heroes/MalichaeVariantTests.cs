@@ -118,5 +118,105 @@ namespace CauldronTests
 
             QuickHandCheck(1, 0);
         }
+
+
+
+        [Test()]
+        public void TestMinistryOfStrategicScienceMalichaeLoads()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae/MinistryOfStrategicScienceMalichaeCharacter", "Megalopolis");
+
+            Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(Malichae);
+            Assert.IsInstanceOf(typeof(MinistryOfStrategicScienceMalichaeCharacterCardController), Malichae.CharacterCardController);
+
+            Assert.AreEqual(24, Malichae.CharacterCard.HitPoints);
+        }
+
+        [Test()]
+        [Ignore("Not Implemented")]
+        public void TestMinistryOfStrategicScienceMalichaePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae/MinistryOfStrategicScienceMalichaeCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            GoToUsePowerPhase(Malichae);
+
+            QuickShuffleStorage(Malichae);
+            var card = Malichae.TurnTaker.Deck.Cards.First(c => c.DoKeywordsContain("djinn"));
+            DecisionSelectCard = card;
+
+            UsePower(Malichae.CharacterCard);
+
+            AssertInHand(card);
+            QuickShuffleCheck(1);
+        }
+
+
+        [Test()]
+        public void TestMinistryOfStrategicScienceMalichaeIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae/MinistryOfStrategicScienceMalichaeCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            var mdp = GetMobileDefensePlatform().Card;
+
+            SetupIncap(Malichae);
+
+            GoToUseIncapacitatedAbilityPhase(Malichae);
+
+            DecisionSelectTurnTaker = ra.TurnTaker;
+            DecisionSelectCards = new Card[] { mdp };
+
+            QuickHPStorage(mdp);
+            UseIncapacitatedAbility(Malichae, 0);
+
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestMinistryOfStrategicScienceMalichaeIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae/MinistryOfStrategicScienceMalichaeCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(Malichae);
+
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(haka.CharacterCard, 20);
+            SetHitPoints(baron.CharacterCard, 20);
+
+            GoToUseIncapacitatedAbilityPhase(Malichae);
+
+            QuickHPStorage(baron, ra, haka);
+            DecisionSelectCards = new[] { ra.CharacterCard, haka.CharacterCard };
+            UseIncapacitatedAbility(Malichae, 1);
+
+            QuickHPCheck(0, 1, 1);
+        }
+
+        [Test()]
+        public void TestMinistryOfStrategicScienceMalichaeIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae/MinistryOfStrategicScienceMalichaeCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(Malichae);
+
+            GoToUseIncapacitatedAbilityPhase(Malichae);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+            UseIncapacitatedAbility(Malichae, 2);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            QuickHPStorage(ra.CharacterCard, haka.CharacterCard);
+            DealDamage(baron, ra, 1, DamageType.Cold);
+            QuickHPCheck(0, 0);
+
+            QuickHPStorage(ra.CharacterCard, haka.CharacterCard);
+            DealDamage(baron, haka, 2, DamageType.Cold);
+            QuickHPCheck(0, -2);
+        }
+
     }
 }
