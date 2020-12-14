@@ -46,7 +46,7 @@
                 "Cards beneath enclosures are not considered in play. When an enclosure leaves play, discard all cards beneath it.",
                 "At the end of the villain turn, play the top card of the villain deck. Then, for each enclosure in play, Menagerie deals the hero next to it X projectile damage, where X is the number of cards beneath that enclosure."
             ],
-            "flippedAdvanced": "When an enclosure enters play, put the top card of the villain deck beneath it.",
+            "flippedAdvanced": "At the start of the villain turn, if each active hero has an enclosure in their play area, the heroes lose the game.",
             "flippedIcons": [
                 "Manipulate",
                 "RemoveFromGame",

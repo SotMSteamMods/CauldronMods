@@ -11,7 +11,7 @@ namespace Cauldron.Menagerie
     {
         public PrizedCatchCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
         }
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> destination, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
@@ -41,6 +41,28 @@ namespace Cauldron.Menagerie
             base.AddIncreaseDamageTrigger((DealDamageAction action) => base.IsCaptured(action.DamageSource.Card.Owner) && base.IsEnclosure(action.Target), 1);
             //Reduce damage dealt by Captured targets to non-Enclosure targets by 1.
             base.AddReduceDamageTrigger((DealDamageAction action) => base.IsCaptured(action.DamageSource.Card.Owner) && !base.IsEnclosure(action.Target), (DealDamageAction action) => 1);
+            //Front: The heroes lose if the captured hero is incapacitated.
+            base.AddTrigger<FlipCardAction>((FlipCardAction action) => !base.CharacterCard.IsFlipped && base.FindCardsWhere((Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame).Count() > 0 && !base.IsTurnTakerActiveInThisGame(base.Card.Location.OwnerName) && action.CardToFlip.TurnTaker == base.Card.Location.OwnerTurnTaker && action.CardToFlip.Card.IsCharacter, this.LoseTheGameResponse, new TriggerType[] { TriggerType.GameOver }, TriggerTiming.After);
+        }
+
+        private IEnumerator LoseTheGameResponse(FlipCardAction action)
+        {
+            IEnumerator coroutine = base.GameController.GameOver(EndingResult.AlternateDefeat, "the captured hero was incapacitated", true, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+                yield break;
+            }
+        }
+
+        public override bool AskIfCardIsIndestructible(Card card)
+        {
+            //Front: Prized Catch is Indestructible.
+            return !base.CharacterCard.IsFlipped && card == base.Card;
         }
     }
 }
