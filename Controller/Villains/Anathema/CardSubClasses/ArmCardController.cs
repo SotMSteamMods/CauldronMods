@@ -11,7 +11,7 @@ namespace Cauldron.Anathema
 
         public ArmCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+			SpecialStringMaker.ShowHighestHP(cardCriteria: new LinqCardCriteria((Card c) => IsArm(c) && c.IsInPlayAndHasGameText, "arm"));
         }
 
 		public override IEnumerator Play()

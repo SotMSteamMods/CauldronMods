@@ -11,6 +11,7 @@ namespace Cauldron.Anathema
     {
 		public AnathemaRampageCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
+			SpecialStringMaker.ShowHeroWithMostCards(true);
 		}
 
 		public override IEnumerator Play()
