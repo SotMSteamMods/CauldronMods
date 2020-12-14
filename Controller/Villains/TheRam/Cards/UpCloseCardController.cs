@@ -15,6 +15,7 @@ namespace Cauldron.TheRam
         private Location NextToHeroToGoTo = null;
         public UpCloseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            AddThisCardControllerToList(CardControllerListType.AddsPowers);
         }
 
         public override IEnumerator Play()
