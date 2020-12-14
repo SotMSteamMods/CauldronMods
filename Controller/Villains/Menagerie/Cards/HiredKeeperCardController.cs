@@ -23,7 +23,7 @@ namespace Cauldron.Menagerie
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...this card deals the 2 non-Captured hero targets with the highest HP 2 sonic damage each.
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => base.IsCaptured(c.Owner) && c.IsHero, (Card c) => 2, DamageType.Sonic, numberOfTargets: () => 2);
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => !base.IsCaptured(c.Owner) && c.IsHero, (Card c) => 2, DamageType.Sonic, numberOfTargets: () => 2);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
