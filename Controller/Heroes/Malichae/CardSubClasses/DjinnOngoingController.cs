@@ -17,6 +17,8 @@ namespace Cauldron.Malichae
         {
             _requiredIdentifier = requiredIdentifier;
             _attachIdentifier = attachIdentifier;
+
+            AddThisCardControllerToList(CardControllerListType.AddsPowers);
         }
 
         //This is here for possible Promo support.
