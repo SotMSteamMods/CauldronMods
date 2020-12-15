@@ -136,7 +136,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"SubharmonicReciever.png":
+"SubharmonicReceiver.png":
 {
 	"frame": {"x":1036,"y":191,"w":256,"h":188},
 	"rotated": false,
@@ -191,6 +191,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:6b49450f0ea6f64d4110d87d38776562:fee6dd946864c93abe494f8899619217:0165dcf957fb02ef9cc4eff0a6390faa$"
+	"smartupdate": "$TexturePacker:SmartUpdate:ea1dc09f8e3900fe47c707c112e1cfa1:fee6dd946864c93abe494f8899619217:0165dcf957fb02ef9cc4eff0a6390faa$"
 }
 }
