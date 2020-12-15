@@ -13,7 +13,6 @@ namespace Cauldron.Northspar
         public SupplyDepotCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
-            base.AddThisCardControllerToList(CardControllerListType.AddsPowers);
         }
 
         public override void AddTriggers()
