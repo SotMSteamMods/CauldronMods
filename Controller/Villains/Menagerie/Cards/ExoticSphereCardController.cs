@@ -33,6 +33,7 @@ namespace Cauldron.Menagerie
 
         public override void AddTriggers()
         {
+            base.AddTriggers();
             //At the start of each hero's turn, this card deals the non-villain target with the highest HP {H - 1} toxic damage.
             base.AddStartOfTurnTrigger((TurnTaker tt) => tt.IsHero, this.DealDamageResponse, TriggerType.DealDamage);
         }

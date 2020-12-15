@@ -39,6 +39,7 @@ namespace Cauldron.Menagerie
 
         public override void AddTriggers()
         {
+            base.AddTriggers();
             //Whenever a Specimen enters play, it deals the non-villain target with the lowest HP {H - 2} melee damage.
             base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => base.IsSpecimen(action.CardEnteringPlay) && action.IsSuccessful, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
         }

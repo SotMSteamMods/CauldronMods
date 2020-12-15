@@ -39,14 +39,16 @@ namespace Cauldron.Menagerie
             yield break;
         }
 
-        //The Captured hero and their cards cannot affect or be affected by cards or effects from other hero decks
         public override void AddTriggers()
         {
+            base.AddTriggers();
+            //The Captured hero and their cards cannot affect or be affected by cards or effects from other hero decks
             base.AddTrigger<MakeDecisionsAction>((MakeDecisionsAction md) => md.CardSource != null && md.CardSource.Card.Owner.IsHero, new Func<MakeDecisionsAction, IEnumerator>(this.RemoveDecisionsFromMakeDecisionsResponse), TriggerType.RemoveDecision, TriggerTiming.Before);
         }
 
         public override bool AskIfActionCanBePerformed(GameAction g)
         {
+            //The Captured hero and their cards cannot affect or be affected by cards or effects from other hero decks
             if (this.GetCapturedHero() != null)
             {
                 bool? flag = g.DoesFirstCardAffectSecondCard((Card c) => c.Owner == this.GetCapturedHero(), (Card c) => c.Owner != this.GetCapturedHero() && c.Owner.IsHero);
@@ -63,6 +65,7 @@ namespace Cauldron.Menagerie
 
         private IEnumerator RemoveDecisionsFromMakeDecisionsResponse(MakeDecisionsAction md)
         {
+            //The Captured hero and their cards cannot affect or be affected by cards or effects from other hero decks
             md.RemoveDecisions((IDecision d) => d.CardSource.Card.Owner != this.GetCapturedHero() && d.HeroTurnTakerController.TurnTaker == this.GetCapturedHero());
             md.RemoveDecisions((IDecision d) => d.CardSource.Card.Owner == this.GetCapturedHero() && d.HeroTurnTakerController.TurnTaker != this.GetCapturedHero());
             yield return base.DoNothing();
@@ -81,11 +84,13 @@ namespace Cauldron.Menagerie
 
         public override bool? AskIfCardIsVisibleToCardSource(Card card, CardSource cardSource)
         {
+            //The Captured hero and their cards cannot affect or be affected by cards or effects from other hero decks
             return this.AskIfTurnTakerIsVisibleToCardSource(card.Owner, cardSource);
         }
 
         public override bool? AskIfTurnTakerIsVisibleToCardSource(TurnTaker tt, CardSource cardSource)
         {
+            //The Captured hero and their cards cannot affect or be affected by cards or effects from other hero decks
             if (cardSource == null || !cardSource.Card.IsHero || !tt.IsHero)
             {
                 return new bool?(true);
