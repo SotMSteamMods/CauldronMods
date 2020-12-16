@@ -517,5 +517,46 @@ namespace CauldronTests
             DealDamage(haka, impact, 5, DTM);
             QuickHPCheck(-5);
         }
+        [Test]
+        public void TestMassDriverDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            Card orb1 = PlayCard("DecayingOrbit");
+            PlayCard("DecayingOrbit");
+
+            QuickHPStorage(baron);
+
+            //2 ongoings in play, 2 damage
+            PlayCard("MassDriver");
+            QuickHPCheck(-2);
+
+            //1 ongoing in play, 1 damage
+            DestroyCard(orb1);
+            PlayCard("MassDriver");
+            QuickHPCheck(-1);
+
+            //does not count ally cards
+            PlayCard("TaMoko");
+            PlayCard("MassDriver");
+            QuickHPCheck(-1);
+        }
+        [Test]
+        public void TestMassDriverDestruction()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card police = PlayCard("PoliceBackup");
+
+            DecisionSelectCard = traffic;
+
+            PlayCard("MassDriver");
+            AssertInTrash(traffic);
+            AssertIsInPlay(police);
+        }
     }
 }
