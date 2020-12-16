@@ -694,5 +694,63 @@ namespace CauldronTests
             QuickHPCheck(-2, -2, -2, 0);
             AssertInTrash(orb1, orb2);
         }
+        [Test]
+        public void TestSpatialFinessePlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            PutOnDeck(impact, impact.HeroTurnTaker.Hand.Cards);
+            Card fin1 = PutInHand("SpatialFinesse");
+            Card fin2 = PutInHand("SpatialFinesse");
+
+            QuickHandStorage(impact);
+            PlayCard(fin1);
+            QuickHandCheck(1);
+            AssertIsInPlay(fin1);
+
+            PlayCard(fin2);
+            QuickHandCheck(1);
+            AssertInTrash(fin1);
+            AssertIsInPlay(fin2);
+        }
+        [Test]
+        public void TestSpatialFinesseRescue()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+
+            Card orbit = PlayCard("DecayingOrbit");
+            Card fin = PlayCard("SpatialFinesse");
+
+            DecisionYesNo = true;
+            QuickHPStorage(baron);
+
+            DestroyCard(orbit);
+            QuickHPCheck(-2);
+            AssertIsInPlay(orbit);
+            AssertInTrash(fin);
+        }
+        [Test]
+        public void TestSpatialFinesseRescueOptional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+
+            Card orbit = PlayCard("DecayingOrbit");
+            Card fin = PlayCard("SpatialFinesse");
+
+            DecisionYesNo = false;
+            QuickHPStorage(baron);
+
+            DestroyCard(orbit);
+            QuickHPCheck(0);
+            AssertIsInPlay(fin);
+            AssertInTrash(orbit);
+        }
     }
 }
