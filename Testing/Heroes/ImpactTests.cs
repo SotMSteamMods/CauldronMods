@@ -28,6 +28,7 @@ namespace CauldronTests
                 AssertCardHasKeyword(card, keyword, false);
             }
         }
+        private DamageType DTM = DamageType.Melee;
 
         #endregion
         [Test]
@@ -321,6 +322,69 @@ namespace CauldronTests
             //make sure it is optional
             PlayCard("EscapeVelocity");
             AssertIsInPlay(moko);
+        }
+        [Test]
+        public void TestGravitationalLensingPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+
+            Card escape = PutOnDeck("EscapeVelocity");
+            Card orbit = PutOnDeck("DecayingOrbit");
+
+            DecisionSelectCard = escape;
+            PlayCard("GravitationalLensing");
+            AssertInTrash(orbit);
+            AssertOnTopOfDeck(escape);
+        }
+        [Test]
+        public void TestGravitationalLensingDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+
+            PlayCard("GravitationalLensing");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            QuickHPStorage(mdp);
+            DealDamage(impact, mdp, 1, DTM);
+            QuickHPCheck(-2);
+        }
+        [Test]
+        public void TestGraviticOrbPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            DecisionSelectCard = mdp;
+            QuickHPStorage(mdp);
+            Card orb = PlayCard("GraviticOrb");
+
+            QuickHPCheck(-2);
+            AssertNextToCard(orb, mdp);
+            DestroyCard(mdp);
+            AssertIsInPlay(orb);
+            AssertNotNextToCard(orb, mdp);
+        }
+        [Test]
+        public void TestGraviticOrbPrevent()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            DecisionSelectCard = mdp;
+            Card orb = PlayCard("GraviticOrb");
+
+            QuickHPStorage(impact);
+            DealDamage(mdp, impact, 5, DTM);
+            QuickHPCheckZero();
+            AssertInTrash(orb);
+            DealDamage(mdp, impact, 5, DTM);
+            QuickHPCheck(-5);
         }
     }
 }
