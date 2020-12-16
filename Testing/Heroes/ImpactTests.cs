@@ -231,5 +231,54 @@ namespace CauldronTests
             PlayCard("CrushingRift");
             QuickHPCheck(0, 0, -2);
         }
+        [Test]
+        public void TestDecayingOrbitPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheScholar", "TheWraith", "RealmOfDiscord");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            DecisionSelectCards = new Card[] { mdp };
+
+            QuickHPStorage(mdp);
+            PlayCard("DecayingOrbit");
+            QuickHPCheck(-2);
+        }
+        [Test]
+        public void TestDecayingOrbitStartOfTurnOptional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheScholar", "TheWraith", "RealmOfDiscord");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DecisionSelectCards = new Card[] { mdp, null };
+            
+            Card orbit = PlayCard("DecayingOrbit");
+
+            QuickHPStorage(mdp);
+            GoToStartOfTurn(impact);
+            QuickHPCheck(0);
+            AssertIsInPlay(orbit);
+        }
+        [Test]
+        public void TestDecayingOrbitStartOfTurnDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheScholar", "TheWraith", "RealmOfDiscord");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card tamoko = PlayCard("TaMoko");
+            Card lash = PlayCard("BacklashField");
+            DecisionSelectCards = new Card[] { mdp, mdp };
+
+            Card orbit = PlayCard("DecayingOrbit");
+
+            //decide who to deal damage to, then Orbit is the only choice to destroy
+            AssertMaxNumberOfDecisions(1);
+
+            QuickHPStorage(mdp);
+            GoToStartOfTurn(impact);
+            QuickHPCheck(-2);
+            AssertInTrash(orbit);
+            AssertIsInPlay(tamoko);
+        }
     }
 }
