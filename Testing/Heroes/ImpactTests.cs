@@ -471,5 +471,51 @@ namespace CauldronTests
             UsePower(pull);
             QuickHPCheckZero();
         }
+        [Test]
+        public void TestLocalMicrogravityPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+
+            SetHitPoints(impact, 20);
+            QuickHPStorage(impact);
+            PlayCard("LocalMicrogravity");
+            QuickHPCheck(1);
+        }
+        [Test]
+        public void TestLocalMicrogravityPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            Card micro = PlayCard("LocalMicrogravity");
+            QuickHPStorage(baron);
+            UsePower(micro);
+            QuickHPCheck(-3);
+            AssertInTrash(micro);
+        }
+        [Test]
+        public void TestLocalMicrogravityPrevention()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+
+            GoToStartOfTurn(visionary);
+            PlayCard("LocalMicrogravity");
+            QuickHPStorage(impact);
+
+            //not in non-environment
+            DealDamage(haka, impact, 1, DTM);
+            QuickHPCheck(-1);
+
+            GoToStartOfTurn(FindEnvironment());
+            DealDamage(haka, impact, 5, DTM);
+            QuickHPCheck(0);
+
+            //only once
+            DealDamage(haka, impact, 5, DTM);
+            QuickHPCheck(-5);
+        }
     }
 }
