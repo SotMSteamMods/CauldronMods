@@ -46,7 +46,7 @@ namespace Cauldron.Echelon
                 MoveCardDestination playArea = new MoveCardDestination(base.HeroTurnTaker.PlayArea);
 
                 routine = base.GameController.SelectCardsFromLocationAndMoveThem(base.HeroTurnTakerController,
-                    base.TurnTaker.Trash, CardsFromTrash, CardsFromTrash, new LinqCardCriteria(IsTactic),
+                    base.TurnTaker.Trash, 0, CardsFromTrash, new LinqCardCriteria(IsTactic),
                     playArea.ToEnumerable(), cardSource: GetCardSource());
 
                 if (base.UseUnityCoroutines)
@@ -73,6 +73,17 @@ namespace Cauldron.Echelon
                 }
 
                 int i = 0;
+                // TODO: check if hand was thrown out
+
+                routine = base.DrawCards(this.HeroTurnTakerController, CardsToDraw);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
             }
 
         }

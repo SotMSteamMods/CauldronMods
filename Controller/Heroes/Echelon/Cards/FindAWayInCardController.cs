@@ -110,7 +110,7 @@ namespace Cauldron.Echelon
                 yield break;
             }
 
-            // each hero target regains 2 HP
+            // each hero target regains 1 HP
             routine = base.GameController.GainHP(this.HeroTurnTakerController,
                 c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText && GameController.IsCardVisibleToCardSource(c, GetCardSource()), HpGain, cardSource: GetCardSource());
 
