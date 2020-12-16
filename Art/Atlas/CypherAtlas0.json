@@ -2,15 +2,15 @@
 
 "BackupPlan.png":
 {
-	"frame": {"x":1074,"y":0,"w":256,"h":188},
+	"frame": {"x":1255,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"CyberDefense.png":
+"Cyberdefense.png":
 {
-	"frame": {"x":1333,"y":0,"w":256,"h":188},
+	"frame": {"x":1514,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -18,7 +18,7 @@
 },
 "Cyberintegration.png":
 {
-	"frame": {"x":1592,"y":0,"w":256,"h":188},
+	"frame": {"x":1773,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -55,6 +55,14 @@
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
+},
+"CypherDeckBack.jpg":
+{
+	"frame": {"x":1074,"y":0,"w":178,"h":249},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":249},
+	"sourceSize": {"w":178,"h":249}
 },
 "DermalAug.png":
 {
@@ -104,7 +112,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"HeuresticAlgorithm.png":
+"HeuristicAlgorithm.png":
 {
 	"frame": {"x":1554,"y":259,"w":256,"h":188},
 	"rotated": false,
@@ -207,6 +215,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:89b5ccd187aa66de136e4009d0b0b36a:a2eddcd292285f1f141c659c7b13e371:678c0924d6ef8d6ab6aed6d2f5acc0fb$"
+	"smartupdate": "$TexturePacker:SmartUpdate:5285e0c28e3347c33f94d24fbb5f6a3a:7817e518877d3a73e976d61c18be0f06:678c0924d6ef8d6ab6aed6d2f5acc0fb$"
 }
 }
