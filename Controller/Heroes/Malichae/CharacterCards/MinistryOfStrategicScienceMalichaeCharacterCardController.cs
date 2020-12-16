@@ -14,10 +14,82 @@ namespace Cauldron.Malichae
 
         public override IEnumerator UsePower(int index = 0)
         {
-            var coroutine = SearchForCards(DecisionMaker, true, false, 1, 1,
-                new LinqCardCriteria(c => c.DoKeywordsContain(MalichaeCardController.DjinnKeyword), "djinn"),
-                false, true, false,
-                shuffleAfterwards: true);
+            List<DiscardCardAction> results = new List<DiscardCardAction>();
+            //"Discard a card. Use that card's power, replacing any djinn's name with {Malichae}. Draw a card."
+            var coroutine = base.SelectAndDiscardCards(DecisionMaker, 1,
+                                requiredDecisions: 1,
+                                storedResults: results,
+                                selectionType: SelectionType.DiscardCard);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if (DidDiscardCards(results, 1))
+            {
+                var discarded = results.First().CardToDiscard;
+                //cases:
+                //1: Card is DjinnOnging, get GrantedPower, execute
+                //2: Card has powers and I'm the owner, UsePowerOnOtherCard
+                //3: Card has no powers, proceed
+
+                var cc = FindCardController(discarded);
+                if (cc is DjinnOngoingController djinn)
+                {
+                    var pwr = djinn.GetGrantedPower(this);
+                    coroutine = GameController.UsePower(pwr, true, DecisionMaker, GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+                else if (discarded.HasPowers && discarded.Owner == TurnTaker)
+                {
+                    coroutine = base.UsePowerOnOtherCard(discarded);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+                else if (discarded.HasPowers)
+                {
+                    coroutine = GameController.SendMessageAction("Congratulations! You've found a way to discard a card with a power that you don't own! You should open a issue for this!", Priority.High, GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+                else
+                {
+                    coroutine = GameController.SendMessageAction($"{discarded.Title} does not have a power that can be used.", Priority.Medium, GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+            }
+
+            coroutine = DrawCard(DecisionMaker.HeroTurnTaker);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -28,6 +100,7 @@ namespace Cauldron.Malichae
             }
             yield break;
         }
+
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
             /*
