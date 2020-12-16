@@ -48,7 +48,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"BerzerkerTheKnightCharacter.jpg":
+"BerserkerTheKnightCharacter.jpg":
 {
 	"frame": {"x":1056,"y":0,"w":176,"h":256},
 	"rotated": false,

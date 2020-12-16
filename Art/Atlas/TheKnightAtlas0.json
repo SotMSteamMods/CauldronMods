@@ -16,7 +16,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"BerzerkerTheKnightCharacterCard.jpg":
+"BerserkerTheKnightCharacterCard.jpg":
 {
 	"frame": {"x":0,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -24,7 +24,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"BerzerkerTheKnightCharacterCardBack.jpg":
+"BerserkerTheKnightCharacterCardBack.jpg":
 {
 	"frame": {"x":179,"y":0,"w":176,"h":256},
 	"rotated": false,
