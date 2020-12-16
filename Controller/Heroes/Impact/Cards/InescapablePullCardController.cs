@@ -11,7 +11,7 @@ namespace Cauldron.Impact
     {
         public InescapablePullCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowListOfCardsInPlay(new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsTarget && HasDamagedTargetThisTurn(c), "", false, false, "target damaged by Impact this turn", "targets damaged by Impact this turn"));
+            SpecialStringMaker.ShowSpecialString(TargetsDamagedThisTurn);
         }
 
         public override IEnumerator Play()
@@ -62,6 +62,29 @@ namespace Cauldron.Impact
         private bool HasDamagedTargetThisTurn(Card c)
         {
             return Journal.DealDamageEntriesThisTurn().Any((DealDamageJournalEntry ddj) => ddj.SourceCard == this.CharacterCard && ddj.TargetCard == c);
+        }
+
+        private string TargetsDamagedThisTurn()
+        {
+            string start = $"Targets dealt damage by {this.TurnTaker.Name} this turn: ";
+            var damagedTargets = GameController.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsTarget && HasDamagedTargetThisTurn(c)), visibleToCard: GetCardSource());
+            string end = "";
+            if (damagedTargets.FirstOrDefault() == null)
+            {
+                end += "None";
+            }
+            else
+            {
+                foreach(Card target in damagedTargets)
+                {
+                    if(target != damagedTargets.FirstOrDefault())
+                    {
+                        end += ", ";
+                    }
+                    end += target.Title;
+                }
+            }
+            return start + end + ".";
         }
     }
 }
