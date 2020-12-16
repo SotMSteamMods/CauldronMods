@@ -37,7 +37,7 @@ namespace Cauldron.Malichae
                     {
                         List<RevealCardsAction> storedResultsReveal = new List<RevealCardsAction>();
                         List<SelectTurnTakerDecision> storedResultsTurnTaker = new List<SelectTurnTakerDecision>();
-                        var coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.RevealCardsFromDeck, true, true, storedResultsTurnTaker,
+                        var coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.RevealCardsFromDeck, true, false, storedResultsTurnTaker,
                                             cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
@@ -55,7 +55,7 @@ namespace Cauldron.Malichae
                             var orderedDestinations = new[]
                             {
                                 new MoveCardDestination(tt.Trash),
-                                new MoveCardDestination(tt.Deck, true)
+                                new MoveCardDestination(tt.Deck)
                             };
 
                             coroutine = base.RevealCardsFromDeckToMoveToOrderedDestinations(httc, tt.Deck, orderedDestinations,
