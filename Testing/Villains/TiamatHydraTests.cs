@@ -344,7 +344,7 @@ namespace CauldronTests
             GoToEndOfTurn(tiamat);
             QuickHPCheck(-3, -1, -1);
             QuickHandCheck(-1);
-            
+
         }
 
         [Test()]
@@ -1590,8 +1590,6 @@ namespace CauldronTests
             QuickHPStorage(parse, haka, bunker);
             PlayCard("ElementOfLightning");
             QuickHPCheck(-2, -2, -2);
-
-            
         }
 
         [Test()]
@@ -1610,7 +1608,18 @@ namespace CauldronTests
             GoToEndOfTurn(wager);
 
             AssertNotGameOver();
+        }
 
+        [Test()]
+        public void TestReloadNotLosingInformation()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Parse", "Bunker", "Haka", "Megalopolis" });
+            StartGame();
+            SaveAndLoad();
+
+            SetupIncap(haka, storm);
+            GoToStartOfTurn(tiamat);
+            AssertIsInPlayAndNotUnderCard(wind);
         }
     }
 }
