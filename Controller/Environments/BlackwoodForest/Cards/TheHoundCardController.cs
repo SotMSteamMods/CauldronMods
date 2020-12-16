@@ -12,8 +12,8 @@ namespace Cauldron.BlackwoodForest
         //==============================================================
         // When this card enters play, it deals the non-environment target
         // with the lowest HP {H + 1} melee damage and
-        // destroys 1 hero ongoing or equipment card. Then, play
-        // the top card of the environment deck
+        // destroys 1 hero ongoing or equipment card.
+        // Then, play the top card of the environment deck
         // and shuffle this card back into the environment deck.
         //==============================================================
 
@@ -23,62 +23,77 @@ namespace Cauldron.BlackwoodForest
 
         public TheHoundCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNonEnvironmentTargetWithLowestHP();
         }
 
         public override IEnumerator Play()
         {
             List<Card> storedResults = new List<Card>();
-            IEnumerator findTargetWithLowestHpRoutine = base.GameController.FindTargetsWithLowestHitPoints(1, TargetsToHit,
-                c => c.IsTarget && !c.IsEnvironment, storedResults);
-
+            var damageInfo = new DealDamageAction(GameController, new DamageSource(GameController, Card), null, H + 1, DamageType.Melee);
+            var coroutine = base.GameController.FindTargetsWithLowestHitPoints(1, TargetsToHit,
+                                c => c.IsTarget && !c.IsEnvironment, storedResults,
+                                dealDamageInfo: new[] { damageInfo },
+                                evenIfCannotDealDamage: true,
+                                cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(findTargetWithLowestHpRoutine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(findTargetWithLowestHpRoutine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
 
             if (storedResults.Any())
             {
                 // Deals the non-environment target with the lowest HP {H + 1} melee damage
-                int damageToDeal = Game.H + 1;
-
-                IEnumerator dealDamageRoutine = this.DealDamage(this.Card, storedResults.First(), damageToDeal, DamageType.Melee);
+                coroutine = this.DealDamage(Card, storedResults.First(), H + 1, DamageType.Melee);
                 if (base.UseUnityCoroutines)
                 {
-                    yield return base.GameController.StartCoroutine(dealDamageRoutine);
+                    yield return base.GameController.StartCoroutine(coroutine);
                 }
                 else
                 {
-                    base.GameController.ExhaustCoroutine(dealDamageRoutine);
+                    base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
 
             // Destroy 1 hero ongoing or equipment card
-            IEnumerator destroyCardRoutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker,
-                new LinqCardCriteria(card => card.IsHero && (IsEquipment(card) || card.IsOngoing)), false, cardSource: this.GetCardSource());
-
-            // Play the top card of the environment deck
-            IEnumerator playCardRoutine = this.GameController.PlayTopCard(this.DecisionMaker, this.TurnTakerController);
-
-            // Shuffle The Hound back into the environment deck
-            IEnumerator shuffleCardIntoRoutine = this.GameController.ShuffleCardIntoLocation(this.DecisionMaker, this.Card, this.TurnTaker.Deck, false, cardSource: this.GetCardSource());
-
+            coroutine = base.GameController.SelectAndDestroyCard(DecisionMaker,
+                            new LinqCardCriteria(card => card.IsHero && (IsEquipment(card) || card.IsOngoing), "hero ongoing or equipment"),
+                            false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(destroyCardRoutine);
-                yield return base.GameController.StartCoroutine(playCardRoutine);
-                yield return base.GameController.StartCoroutine(shuffleCardIntoRoutine);
+                yield return base.GameController.StartCoroutine(coroutine);
 
             }
             else
             {
-                base.GameController.ExhaustCoroutine(destroyCardRoutine);
-                base.GameController.ExhaustCoroutine(playCardRoutine);
-                base.GameController.ExhaustCoroutine(shuffleCardIntoRoutine);
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            // Play the top card of the environment deck
+            coroutine = this.GameController.PlayTopCard(DecisionMaker, TurnTakerController);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            // Shuffle The Hound back into the environment deck
+            coroutine = this.GameController.ShuffleCardIntoLocation(DecisionMaker, Card, Card.NativeDeck, false, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
         }
     }

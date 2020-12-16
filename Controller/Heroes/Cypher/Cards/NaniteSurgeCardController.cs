@@ -19,6 +19,7 @@ namespace Cauldron.Cypher
 
         public NaniteSurgeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowSpecialStringAugmentedHeroes();
         }
 
         public override IEnumerator Play()
@@ -46,7 +47,7 @@ namespace Cauldron.Cypher
             }
 
             // Each augmented hero regains X HP, where X is the number of Augments next to them.
-            routine = base.GameController.GainHP(base.HeroTurnTakerController, IsAugmented, 
+            routine = base.GameController.GainHP(base.HeroTurnTakerController, IsAugmentedHeroCharacterCard, 
                 c => GetAugmentsForHero(c).Count, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)

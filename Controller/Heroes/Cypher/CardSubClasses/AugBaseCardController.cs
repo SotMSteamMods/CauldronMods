@@ -6,22 +6,20 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Cypher
 {
-    public abstract class AugBaseCardController : CardController
+    public abstract class AugBaseCardController : CypherBaseCardController
     {
-        public AugBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected AugBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowCardThisCardIsNextTo(Card);
         }
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources,
             Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
-            //When this card enters play, place it next to a hero target.
-            LinqCardCriteria validTargets = new LinqCardCriteria(c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText, "hero target");
+            //When this card enters play, place it next to a hero character.
+            LinqCardCriteria validTargets = new LinqCardCriteria(c => c.IsHeroCharacterCard && c.IsTarget && c.IsInPlayAndHasGameText && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), "hero character card");
 
-            IEnumerator routine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria(c => validTargets.Criteria(c) &&
-                    (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), validTargets.Description),
-                storedResults, isPutIntoPlay, decisionSources);
-
+            IEnumerator routine = base.SelectCardThisCardWillMoveNextTo(validTargets, storedResults, isPutIntoPlay, decisionSources);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);

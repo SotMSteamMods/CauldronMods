@@ -17,9 +17,11 @@ namespace Cauldron.TheCybersphere
         public override void AddTriggers()
         {
             //At the end of the environment turn, this card deals the non-environment target with the second lowest HP 4 fire damage.
-            AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsNonEnvironmentTarget, TargetType.LowestHP, 4, DamageType.Fire, highestLowestRanking: 2);
+            AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card,
+                (Card c) => c.IsNonEnvironmentTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()),
+                TargetType.LowestHP,
+                4, DamageType.Fire,
+                highestLowestRanking: 2);
         }
-
-
     }
 }

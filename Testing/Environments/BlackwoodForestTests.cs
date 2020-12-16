@@ -234,7 +234,7 @@ namespace CauldronTests
             DealDamage(baron, ra, 3, DamageType.Toxic); // Ra is immune
             DealDamage(baron, mdp, 3, DamageType.Toxic); // MDP is immune
 
-            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra.");
+            AssertCardSpecialString(denseBrambles, 0, "2 targets with the lowest HP: Mobile Defense Platform, Ra.");
 
             GoToStartOfTurn(BlackwoodForest); // Dense Brambles is destroyed
 
@@ -263,7 +263,7 @@ namespace CauldronTests
             Card denseBrambles = GetCardInPlay(DenseBramblesCardController.Identifier);
 
             // All 3 targets are listed as the 2 lowest
-            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
+            AssertCardSpecialString(denseBrambles, 0, "2 targets with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
 
             QuickHPStorage(ra.CharacterCard, mdp);
 
@@ -279,7 +279,6 @@ namespace CauldronTests
         {
             // Arrange
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
-
             StartGame();
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
@@ -293,7 +292,7 @@ namespace CauldronTests
             Card denseBrambles = GetCardInPlay(DenseBramblesCardController.Identifier);
 
             // All 3 targets are listed as the 2 lowest
-            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
+            AssertCardSpecialString(denseBrambles, 0, "2 targets with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
 
             QuickHPStorage(ra.CharacterCard, mdp);
 
@@ -324,7 +323,7 @@ namespace CauldronTests
             Card denseBrambles = GetCardInPlay(DenseBramblesCardController.Identifier);
 
             // All 3 targets are listed as the 2 lowest
-            AssertCardSpecialString(denseBrambles, 0, "2 cards with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
+            AssertCardSpecialString(denseBrambles, 0, "2 targets with the lowest HP: Mobile Defense Platform, Ra, Legacy.");
 
             QuickHPStorage(mdp, legacy.CharacterCard, ra.CharacterCard);
 
@@ -597,7 +596,7 @@ namespace CauldronTests
             // Assert
 
             AssertHitPoints(mirrorWraith, 5); // Mirror Wraith now has max HP of BB
-            AssertCardHasKeyword(mirrorWraith, "minion", true);
+            AssertCardHasKeyword(mirrorWraith, "minion", false);
             QuickHPCheck(-5, -5); // Legacy hit for 5 by real BB, Ra then hit for 5 from Mirror Wraith (BB game text)
         }
 
@@ -628,7 +627,7 @@ namespace CauldronTests
             // Assert
 
             AssertHitPoints(mirrorWraith, 2); // Mirror Wraith now has max HP of Raptor Bot
-            AssertCardHasKeyword(mirrorWraith, "mechanical golem", true);
+            AssertCardHasKeyword(mirrorWraith, "mechanical golem", false);
             QuickHPCheck(-8); // Raptor 1st hit (2), 2nd hit (3 Mirror wraith clone boosting it by 1), 3rd hit by MW for 3
         }
 
@@ -660,7 +659,7 @@ namespace CauldronTests
             // Assert
 
             AssertHitPoints(mirrorWraith, 8); // Mirror Wraith now has max HP of Champion Bot
-            AssertCardHasKeyword(mirrorWraith, "mechanical golem", true);
+            AssertCardHasKeyword(mirrorWraith, "mechanical golem", false);
 
             /* Raptor
              * 6 Damage dealt
@@ -703,22 +702,21 @@ namespace CauldronTests
             GoToPlayCardPhase(unity);
             PlayCard(modularWorkbench);
             GoToDrawCardPhase(unity);
-            AssertPhaseActionCount(3); // Normal draw + 1 from swiftbot + 1 from mirror wraith
+
+            //AssertPhaseActionCount(3); // Normal draw + 1 from swiftbot + 1 from mirror wraith
             GoToEndOfTurn(unity);
 
             // Assert
             AssertHitPoints(mirrorWraith, 6); // Mirror Wraith now has max HP of Swift Bot
-            AssertCardHasKeyword(mirrorWraith, "mechanical golem", true);
+            AssertCardHasKeyword(mirrorWraith, "mechanical golem", false);
 
         }
 
         [Test]
-        [Ignore("Currently inaccurate due to engine")]
         public void TestMirrorWraithEligibleTargets_CloneProletariatClone()
         {
             // Arrange
             SetupGameController("ProletariatTeam", "Ra", "FrightTrainTeam", "Legacy", DeckNamespace);
-
 
             Card regroupAndRecover = GetCard("RegroupAndRecover");
 
@@ -730,18 +728,73 @@ namespace CauldronTests
             GoToPlayCardPhase(BlackwoodForest);
             Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
             PlayCard(mirrorWraith);
+            AssertCardHasKeyword(mirrorWraith, "clone", false);
 
             GoToStartOfTurn(proleTeam);
             PlayCard(regroupAndRecover);
 
             // Assert
-            AssertCardHasKeyword(mirrorWraith, "clone", false);
             AssertInTrash(mirrorWraith);
         }
 
         [Test]
-        [Ignore("Currently inaccurate due to engine")]
         public void TestMirrorWraithEligibleTargets_CloneAkashSeed()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "AkashThriya", DeckNamespace);
+
+            Card healingPollen = GetCard("HealingPollen");
+            Card healingPollen2 = GetCard("HealingPollen", 1);
+            PutInHand(thriya, healingPollen);
+            PutInHand(thriya, healingPollen2);
+
+            StartGame();
+            DecisionLowestHP = healingPollen;
+
+            Card verdantExplosion = GetCard("VerdantExplosion");
+
+            GoToPlayCardPhase(thriya);
+            var p1 = PlayCardFromHand(thriya, "HealingPollen");
+            var p2 = PlayCardFromHand(thriya, "HealingPollen");
+
+            GoToStartOfTurn(BlackwoodForest);
+            Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
+            PlayCard(mirrorWraith);
+            AssertCardHasKeyword(mirrorWraith, "primordial seed", false);
+
+            GoToPlayCardPhase(thriya);
+
+            PlayCard(verdantExplosion);
+            AssertInTrash(mirrorWraith);
+            AssertInTrash(p1);
+            AssertInTrash(p2);
+        }
+
+
+        [Test]
+        [Ignore("Current implementation cannot handle cards that Move Next to other cards.")]
+        public void TestMirrorWraithEligibleTargets_ClonePin()
+        {
+            // Arrange
+            SetupGameController("GloomWeaver", "Ra", "Legacy", "AkashThriya", DeckNamespace);
+
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            var pin = GetCard("CrimsonPin");
+            PlayCard(pin);
+            AssertNextToCard(pin, thriya.CharacterCard);
+
+            GoToStartOfTurn(BlackwoodForest);
+            Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
+
+            PlayCard(mirrorWraith);
+            AssertNextToCard(mirrorWraith, thriya.CharacterCard);
+        }
+
+
+        [Test]
+        public void TestMirrorWraithEligibleTargets_CloneAcrossReload()
         {
             // Arrange
             SetupGameController("BaronBlade", "Ra", "Legacy", "AkashThriya", DeckNamespace);
@@ -763,14 +816,18 @@ namespace CauldronTests
             GoToStartOfTurn(BlackwoodForest);
             Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
             PlayCard(mirrorWraith);
+            var cc = FindCardController(mirrorWraith);
+            var sss = cc.GetSpecialStrings(false, true).Select(ss => ss.GeneratedString()).ToArray();
 
             GoToPlayCardPhase(thriya);
-            PlayCard(verdantExplosion);
 
-            // Assert
-            AssertCardHasKeyword(mirrorWraith, "primordial seed", false);
+            var cards = FindCardsWhere(c => c.IsPrimordialSeed && c.IsInPlay).ToList();
+            Assert.AreEqual(3, cards.Count, "There should be 3 primodialSeeds in play, 2 real, 1 mirror wraith");
 
+            SaveAndLoad();
 
+            cards = FindCardsWhere(c => c.IsPrimordialSeed && c.IsInPlay).ToList();
+            Assert.AreEqual(3, cards.Count, "There should be 3 primodialSeeds in play, 2 real, 1 mirror wraith");
         }
 
         [Test]
@@ -796,6 +853,19 @@ namespace CauldronTests
             AssertInTrash(BlackwoodForest, mirrorWraith);
             QuickHPCheck(-2, -2, -2, -2);
 
+        }
+
+        [Test]
+        public void TestMirrorWraith_Limited()
+        {
+            SetupGameController("BaronBlade", "CaptainCosmic", "Legacy", "Haka", DeckNamespace);
+            StartGame();
+
+            Card crest = PlayCard("CosmicCrest");
+            Card mirrorWraith1 = PlayCard(MirrorWraithCardController.Identifier, 0);
+            //Mirror Wraith 1 is limited and thus prevents the play of another Mirror Wraith
+            Card mirrorWraith2 = PlayCard(MirrorWraithCardController.Identifier, 1);
+            AssertInTrash(mirrorWraith2);
         }
 
         [Test]
@@ -973,7 +1043,40 @@ namespace CauldronTests
             // Played all 3 cards underneath, The Black Tree should now have destroyed itself
             AssertInTrash(BlackwoodForest, theBlackTree);
         }
+        [Test]
+        public void TestMirrorWraithCopiesImpeccablePompadour()
+        {
+            SetupGameController("BaronBladeTeam", "Ra", "GreazerTeam", "TheWraith", "FrictionTeam", "Haka", "Cauldron.BlackwoodForest");
+            StartGame();
 
+            DestroyCards((Card c) => c.IsVillain && !c.IsCharacter);
 
+            Card hair = GetCardInPlay("ImpeccablePompadour");
+
+            GoToStartOfTurn(ra);
+
+            QuickHPStorage(ra, greazerTeam);
+            DealDamage(ra, hair, 1, DamageType.Melee);
+            QuickHPCheck(-2, 0);
+
+            Card mirror = PlayCard("MirrorWraith");
+            AssertMaximumHitPoints(mirror, 4);
+
+            //inherits retaliation damage
+            DealDamage(ra, mirror, 1, DamageType.Melee);
+            QuickHPCheck(-2, 0);
+
+            //inherits indestructibility
+            DealDamage(haka, hair, 5, DamageType.Melee);
+            DealDamage(haka, mirror, 5, DamageType.Melee);
+            AssertIsInPlay(hair);
+            AssertIsInPlay(mirror);
+
+            //inherits geazer self-damage
+            GoToStartOfTurn(greazerTeam);
+            QuickHPCheck(0, -6);
+            //3 for real pompadour, 3, for the wraith
+            Assert.AreEqual(4, mirror.HitPoints);
+        }
     }
 }

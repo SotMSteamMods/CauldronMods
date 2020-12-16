@@ -888,6 +888,7 @@ namespace CauldronTests
             Card initiatedUpgrade = GetCard(InitiatedUpgradeCardController.Identifier);
             PutOnDeck(cypher, initiatedUpgrade); //avoid bad seeds putting all copies in hand
             Card dermalAug = GetCard(DermalAugCardController.Identifier);
+            PutInDeck(dermalAug);
             
             DecisionSelectLocation = new LocationChoice(cypher.TurnTaker.Deck);
             DecisionSelectCards = new[] {dermalAug, cypher.CharacterCard};
@@ -1129,7 +1130,7 @@ namespace CauldronTests
             Card muscleAug = GetCard(MuscleAugCardController.Identifier);
             Card neuralInterface = GetCard(NeuralInterfaceCardController.Identifier);
 
-            DecisionYesNo = true;
+            //DecisionYesNo = true;
             PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
             {
                 { ra.CharacterCard, new List<Card>() { muscleAug }}
@@ -1138,7 +1139,7 @@ namespace CauldronTests
             // Act
             GoToPlayCardPhase(cypher);
 
-            DecisionSelectCards = new[] {tachyon.CharacterCard, GetCardFromHand(cypher, 0)};
+            DecisionSelectCards = new[] { muscleAug, tachyon.CharacterCard, GetCardFromHand(cypher, 0)};
 
             PlayCard(neuralInterface);
             GoToUsePowerPhase(cypher);

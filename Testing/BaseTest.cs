@@ -2627,7 +2627,7 @@ namespace Handelabra.Sentinels.UnitTest
 
         protected void GainHP(Card card, int amount)
         {
-            this.RunCoroutine(this.GameController.GainHP(card, amount));
+            this.RunCoroutine(this.GameController.GainHP(card, amount, cardSource: FindCardController(card).GetCardSource()));
         }
 
         protected void RestoreToMaxHP(TurnTakerController ttc)

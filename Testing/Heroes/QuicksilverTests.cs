@@ -771,6 +771,25 @@ namespace CauldronTests
             DealDamage(legacy, scholar, 2, DamageType.Melee);
             QuickHPCheck(0, -2);
         }
+        [Test()]
+        public void TestMirrorShardNoSameTargetRedirect()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "TheScholar", "TheCourtOfBlood");
+            StartGame();
+
+            PlayCard("MirrorShard");
+
+            DecisionYesNo = true;
+            DecisionSelectTarget = apostate.CharacterCard;
+
+            QuickHPStorage(apostate, quicksilver);
+            DealDamage(legacy, quicksilver, 2, DamageType.Melee);
+            QuickHPCheck(0, -2);
+
+            PlayCard("AlchemicalRedirection");
+            DealDamage(legacy, quicksilver, 2, DamageType.Melee);
+            QuickHPCheck(-3, -2);
+        }
 
         [Test()]
         public void TestStressHardening()
