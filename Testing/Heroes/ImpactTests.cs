@@ -558,5 +558,57 @@ namespace CauldronTests
             AssertInTrash(traffic);
             AssertIsInPlay(police);
         }
+        [Test]
+        public void TestMeditateDraw()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card med = PutInHand("Meditate");
+            Card orb = PutOnDeck("GraviticOrb");
+
+            QuickHandStorage(impact);
+            PlayCard(med);
+            AssertInHand(orb);
+            QuickHandCheck(0);
+        }
+        [Test]
+        public void TestMeditateDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            PlayCard("LivingForceField");
+            DestroyCard("MobileDefensePlatform");
+            DecisionYesNo = true;
+
+            Card meditate = PlayCard("Meditate");
+
+            QuickHPStorage(baron);
+            DealDamage(impact, baron, 5, DTM);
+            //5 -> 4 on the original damage, 4 -> 3 on the repeat
+            QuickHPCheck(-7);
+
+            AssertInTrash(meditate);
+        }
+        [Test]
+        public void TestMeditateTriggerOptional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            PlayCard("LivingForceField");
+            DestroyCard("MobileDefensePlatform");
+            DecisionYesNo = false;
+
+            Card meditate = PlayCard("Meditate");
+
+            QuickHPStorage(baron);
+            DealDamage(impact, baron, 5, DTM);
+            //5 -> 4 on the original damage, no repeat
+            QuickHPCheck(-4);
+
+            AssertIsInPlay(meditate);
+        }
     }
 }
