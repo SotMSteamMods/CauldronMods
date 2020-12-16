@@ -13,6 +13,7 @@ namespace Cauldron.Necro
         public NecroCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
         public override IEnumerator UsePower(int index = 0)
         {
             //PowerNumerals Required on powers

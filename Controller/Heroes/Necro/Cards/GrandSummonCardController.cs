@@ -12,7 +12,7 @@ namespace Cauldron.Necro
     {
         public GrandSummonCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria(c => IsUndead(c), "undead"));
         }
         public override IEnumerator Play()
         {

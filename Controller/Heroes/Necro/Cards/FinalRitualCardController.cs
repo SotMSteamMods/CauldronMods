@@ -12,6 +12,7 @@ namespace Cauldron.Necro
     {
         public FinalRitualCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(c => IsUndead(c), "undead"));
         }
         public override IEnumerator Play()
         {
