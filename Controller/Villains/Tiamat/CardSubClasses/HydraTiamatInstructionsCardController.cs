@@ -13,6 +13,7 @@ namespace Cauldron.Tiamat
         public HydraTiamatInstructionsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
            
+            SpecialStringMaker.ShowIfElseSpecialString(() => this.firstHead.Card.IsFlipped, () => firstHead.Card.Title + " is decapitated.", () => firstHead.Card.Title + " is not decapitated.").Condition = () => !base.Card.IsFlipped;
         }
 
         protected abstract ITrigger[] AddFrontTriggers();
