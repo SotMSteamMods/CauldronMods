@@ -10,7 +10,7 @@ namespace Cauldron.BlackwoodForest
     {
         //==============================================================
         // Environment cards may not be played during the environment turn.
-        // At the end of the villain turn play the top 2 cards of the environment deck.
+        // At the end of the villain turn play the top 2 cards of the environment deck. 
         //==============================================================
 
         public static readonly string Identifier = "WillOTheWisp";
@@ -19,35 +19,29 @@ namespace Cauldron.BlackwoodForest
 
         public WillOTheWispCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddTriggers()
         {
             // Environment cards may not be played during the environment turn
-            base.CannotPlayCards((TurnTakerController ttc) => ttc.TurnTaker.IsEnvironment && base.Game.ActiveTurnPhase.IsEnvironment);
+            base.CannotPlayCards((TurnTakerController ttc) => ttc.TurnTaker.IsEnvironment && base.Game.ActiveTurnPhase.IsEnvironment && GameController.IsTurnTakerVisibleToCardSource(ttc.TurnTaker, GetCardSource()));
 
             // At the end of the villain turn play the top 2 cards of the environment deck.
-            base.AddEndOfTurnTrigger(tt => tt.IsVillain, PlayCardsResponse, new[]
-            {
-                TriggerType.PlayCard
-            });
+            base.AddEndOfTurnTrigger(tt => tt.IsVillain && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()), PlayCardsResponse, TriggerType.PlayCard);
 
             base.AddTriggers();
         }
 
         private IEnumerator PlayCardsResponse(PhaseChangeAction pca)
         {
-            IEnumerator drawCardsRoutine = this.GameController.PlayTopCard(this.DecisionMaker, this.TurnTakerController,
-                false, EnvironmentCardsToDraw);
-
+            var coroutine = this.GameController.PlayTopCard(this.DecisionMaker, this.TurnTakerController, false, EnvironmentCardsToDraw, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(drawCardsRoutine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(drawCardsRoutine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
         }
     }

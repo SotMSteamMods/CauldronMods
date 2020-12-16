@@ -14,7 +14,7 @@ namespace Cauldron.Quicksilver
         public override IEnumerator Play()
         {
             //{Quicksilver} regains 6HP.
-            IEnumerator coroutine = base.GameController.GainHP(base.CharacterCard, 6);
+            IEnumerator coroutine = base.GameController.GainHP(base.CharacterCard, 6, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

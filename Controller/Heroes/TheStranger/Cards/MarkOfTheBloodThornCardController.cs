@@ -22,6 +22,8 @@ namespace Cauldron.TheStranger
             base.AddTriggers();
             //Play this next to a hero target. The first time that target is dealt damage each turn, it deals 1 target 1 toxic damage.
             base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DidDealDamage && dd.Target == base.GetCardThisCardIsNextTo(true) && !base.IsPropertyTrue(FirstTimeWouldBeDealtDamage), new Func<DealDamageAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, TriggerTiming.After);
+
+            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeWouldBeDealtDamage), TriggerType.Hidden);
         }
 
         private IEnumerator DealDamageResponse(DealDamageAction dd)

@@ -7,10 +7,10 @@ using System.Linq;
 
 namespace Cauldron.TheCybersphere
 {
-    public class TheCybersphereCardController : CardController
+    public abstract class TheCybersphereCardController : CardController
     {
 
-        public TheCybersphereCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected TheCybersphereCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
@@ -26,6 +26,5 @@ namespace Cauldron.TheCybersphere
         {
             return base.FindCardsWhere(c => c.IsInPlayAndHasGameText && this.IsGridVirus(c)).Count();
         }
-
     }
 }

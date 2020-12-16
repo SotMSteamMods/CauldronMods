@@ -81,7 +81,7 @@ namespace Cauldron.TheStranger
 
             //define function options
             Func<IEnumerator> draw = new Func<IEnumerator>(() => base.DrawCard(base.HeroTurnTaker, false, null, true));
-            Func<IEnumerator> gainHp = new Func<IEnumerator>(() => base.GameController.GainHP(base.CharacterCard, new int?(1)));
+            Func<IEnumerator> gainHp = new Func<IEnumerator>(() => base.GameController.GainHP(base.CharacterCard, new int?(1), cardSource: GetCardSource()));
             string drawCardsMessage = "You may draw a card";
             string gainHpMessage = "Regain 1 HP";
             List<Function> list2 = new List<Function>();

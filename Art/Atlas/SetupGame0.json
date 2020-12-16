@@ -552,7 +552,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TheKnightCharacter.jpg":
+"TheCybersphereDeckBack.png":
 {
 	"frame": {"x":528,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -560,7 +560,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TheRamCharacter.jpg":
+"TheKnightCharacter.jpg":
 {
 	"frame": {"x":704,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -568,7 +568,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TheStrangerCharacter.jpg":
+"TheRamCharacter.jpg":
 {
 	"frame": {"x":880,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -576,7 +576,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TheWanderingIsleDeckBack.jpg":
+"TheStrangerCharacter.jpg":
 {
 	"frame": {"x":1056,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -584,7 +584,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TitanCharacter.png":
+"TheWanderingIsleDeckBack.jpg":
 {
 	"frame": {"x":1232,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -592,7 +592,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"UncannyQuicksilverCharacter.jpg":
+"TitanCharacter.png":
 {
 	"frame": {"x":1408,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -600,7 +600,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"VanishCharacter.png":
+"UncannyQuicksilverCharacter.jpg":
 {
 	"frame": {"x":1584,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -608,7 +608,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"VectorCharacter.jpg":
+"VanishCharacter.png":
 {
 	"frame": {"x":1760,"y":1536,"w":176,"h":256},
 	"rotated": false,
@@ -616,7 +616,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WardenOfChaosNecroCharacter.jpg":
+"VectorCharacter.jpg":
 {
 	"frame": {"x":0,"y":1792,"w":176,"h":256},
 	"rotated": false,
@@ -624,7 +624,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WastelandRoninCricketCharacter.png":
+"WardenOfChaosNecroCharacter.jpg":
 {
 	"frame": {"x":176,"y":1792,"w":176,"h":256},
 	"rotated": false,
@@ -632,7 +632,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WastelandRoninImpactCharacter.png":
+"WastelandRoninCricketCharacter.png":
 {
 	"frame": {"x":352,"y":1792,"w":176,"h":256},
 	"rotated": false,
@@ -640,7 +640,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WastelandRoninTheKnightBack.png":
+"WastelandRoninImpactCharacter.png":
 {
 	"frame": {"x":528,"y":1792,"w":176,"h":256},
 	"rotated": false,
@@ -648,7 +648,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WastelandRoninTheStrangerCharacter.png":
+"WastelandRoninTheKnightBack.png":
 {
 	"frame": {"x":704,"y":1792,"w":176,"h":256},
 	"rotated": false,
@@ -656,9 +656,17 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WinterTiamatCharacter.jpg":
+"WastelandRoninTheStrangerCharacter.png":
 {
 	"frame": {"x":880,"y":1792,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"WinterTiamatCharacter.jpg":
+{
+	"frame": {"x":1056,"y":1792,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -671,6 +679,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:249b46ee2fa5c2b20d19d227bb6d5a84:7dd4564388a8619624545a860eb11af9:4ee285c32a91b7652e02ac049f918b2a$"
+	"smartupdate": "$TexturePacker:SmartUpdate:222ab9ca6a81817b5fe6d96b1796edc2:d68ef545d034796a661efe6dcba0fd1f:4ee285c32a91b7652e02ac049f918b2a$"
 }
 }

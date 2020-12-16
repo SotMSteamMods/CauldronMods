@@ -27,6 +27,8 @@ namespace Cauldron.Oriphel
                             TriggerType.DealDamage,
                             TriggerTiming.After,
                             ActionDescription.DamageTaken);
+
+            base.AddAfterLeavesPlayAction((GameAction ga) => base.ResetFlagAfterLeavesPlay(phaolKey), TriggerType.Hidden);
         }
 
         private bool RetaliationAvailable()

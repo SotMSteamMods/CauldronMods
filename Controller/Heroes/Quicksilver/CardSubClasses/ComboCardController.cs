@@ -19,7 +19,7 @@ namespace Cauldron.Quicksilver
             //You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo.
             List<Function> functions = new List<Function> {
                 //You may play a Finisher,...
-                new Function(base.HeroTurnTakerController, "Play a finisher", SelectionType.PlayCard, () => base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("finisher")), cardSource: base.GetCardSource())),
+                new Function(base.HeroTurnTakerController, "Play a finisher", SelectionType.PlayCard, () => base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("finisher"), "finisher"), cardSource: base.GetCardSource())),
                 //...{Quicksilver} may deal herself 2 melee damage and play a Combo.
                 new Function(base.HeroTurnTakerController, "Deal yourself 2 melee damage and play a combo", SelectionType.PlayCard, () => ContinueComboResponse())
             };
@@ -50,7 +50,7 @@ namespace Cauldron.Quicksilver
             }
             base.CharacterCardController.SetCardProperty("ComboSelfDamage", false);
             //...play a Combo.
-            coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("combo")), cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("combo"), "combo"), cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

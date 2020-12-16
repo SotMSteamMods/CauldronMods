@@ -25,6 +25,8 @@ namespace Cauldron.SuperstormAkela
             {
                 TriggerType.ChangePhaseOrder
             }, TriggerTiming.Before);
+
+            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagsAfterLeavesPlay("VillainTargetWouldBeDealtDamage"), TriggerType.Hidden);
         }
 
         private IEnumerator RedirectToThisCardResponse(DealDamageAction dd)
