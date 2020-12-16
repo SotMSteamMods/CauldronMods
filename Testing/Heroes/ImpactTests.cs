@@ -610,5 +610,89 @@ namespace CauldronTests
 
             AssertIsInPlay(meditate);
         }
+        [Test]
+        public void TestRepulsionFieldPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card batt = PlayCard("BladeBattalion");
+            Card traffic = PlayCard("TrafficPileup");
+
+            QuickHPStorage(mdp, batt, traffic, impact.CharacterCard);
+            PlayCard("RepulsionField");
+            QuickHPCheck(-1, -1, -1, 0);
+        }
+        [Test]
+        public void TestRepulsionFieldReduction()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            PlayCard("RepulsionField");
+
+            QuickHPStorage(impact, haka);
+
+            DealDamage(traffic, impact, 2, DTM);
+            DealDamage(traffic, haka, 2, DTM);
+            QuickHPCheck(-1, -2);
+
+            DealDamage(mdp, impact, 2, DTM);
+            DealDamage(mdp, haka, 2, DTM);
+            QuickHPCheck(-1, -2);
+
+            DealDamage(impact, impact, 2, DTM);
+            DealDamage(impact, haka, 2, DTM);
+            QuickHPCheck(-1, -2);
+        }
+        [Test]
+        public void TestSlingshotTrajectoryPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+
+            QuickHPStorage(baron);
+            PlayCard("SlingshotTrajectory");
+            QuickHPCheck(-2);
+        }
+        [Test]
+        public void TestSlingshotTrajectoryNoDestroy()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+
+            Card sling = PlayCard("SlingshotTrajectory");
+
+            QuickHPStorage(baron, impact, haka, bunker);
+            DecisionSelectCards = new Card[] { null, baron.CharacterCard };
+            UsePower(sling);
+            QuickHPCheck(-2, 0, 0, 0);
+        }
+        [Test]
+        public void TestSlingshotTrajectoryTwoDestroy()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+
+            Card sling = PlayCard("SlingshotTrajectory");
+            Card orb1 = PlayCard("GraviticOrb");
+            Card orb2 = PlayCard("GraviticOrb");
+
+            QuickHPStorage(baron, impact, haka, bunker);
+            DecisionSelectCards = new Card[] { orb1, orb2, null, baron.CharacterCard, impact.CharacterCard, haka.CharacterCard, bunker.CharacterCard };
+            UsePower(sling);
+            QuickHPCheck(-2, -2, -2, 0);
+            AssertInTrash(orb1, orb2);
+        }
     }
 }

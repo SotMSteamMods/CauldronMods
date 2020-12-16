@@ -16,12 +16,22 @@ namespace Cauldron.Impact
         public override IEnumerator Play()
         {
             //"When this card enters play, {Impact} deals each non-hero target 1 energy damage.",
+            IEnumerator coroutine = DealDamage(this.CharacterCard, (Card c) => !c.IsHero, 1, DamageType.Energy);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
 
         public override void AddTriggers()
         {
             //"Reduce damage dealt to {Impact} by 1."
+            AddReduceDamageTrigger((Card c) => c == this.CharacterCard, 1);
         }
     }
 }
