@@ -16,7 +16,61 @@ namespace Cauldron.Impact
         public override IEnumerator Play()
         {
             //"You may destroy 1 ongoing card.",
-            //"Select up to 3 non-character targets in play with 2 or fewer HP. Place those targets on the bottom of their associated decks in any order."
+            IEnumerator coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsOngoing, "ongoing"), true, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            //"Select up to 3 non-character targets in play with 2 or fewer HP. 
+            var storedTargets = new List<SelectCardsDecision> { };
+            coroutine = GameController.SelectCardsAndStoreResults(DecisionMaker, SelectionType.MoveCardOnBottomOfDeck, (Card c) => c.IsInPlayAndHasGameText && c.IsTarget && !c.IsCharacter && c.HitPoints <= 2 && GameController.IsCardVisibleToCardSource(c, GetCardSource()),
+                                                3, storedTargets, false, 0, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if(DidSelectCards(storedTargets))
+            {
+                //Place those targets on the bottom of their associated decks in any order."
+                var targetsToMove = GetSelectedCards(storedTargets);
+                var moveDecision = new SelectCardsDecision(GameController, DecisionMaker, (Card c) => targetsToMove.Contains(c), SelectionType.MoveCardOnBottomOfDeck, targetsToMove.Count(), requiredDecisions: targetsToMove.Count(), eliminateOptions: true, allowAutoDecide: true, cardSource: GetCardSource());
+                coroutine = GameController.SelectCardsAndDoAction(moveDecision, MoveToBottomOfDeck, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
+        }
+
+        private IEnumerator MoveToBottomOfDeck(SelectCardDecision scd)
+        {
+            if(scd.SelectedCard != null)
+            {
+                var card = scd.SelectedCard;
+                IEnumerator coroutine = GameController.MoveCard(DecisionMaker, card, card.NativeDeck, toBottom: true, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
             yield break;
         }
     }

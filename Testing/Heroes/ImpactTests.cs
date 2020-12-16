@@ -280,5 +280,47 @@ namespace CauldronTests
             AssertInTrash(orbit);
             AssertIsInPlay(tamoko);
         }
+        [Test]
+        public void TestEscapeVelocityBottomOfDeck()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card batt = PlayCard("BladeBattalion");
+            Card turret = PlayCard("PoweredRemoteTurret");
+            Card decoy = PlayCard("DecoyProjection");
+            Card bubbles = PlayCard("ExplosiveBubbles");
+            Card bonds = PlayCard("EtherealBonds");
+
+            var viableTargets = new Card[] { mdp, turret, decoy, bonds };
+            SetHitPoints(viableTargets, 1);
+            SetHitPoints(haka, 1);
+            SetHitPoints(baron, 1);
+
+            AssertNextDecisionChoices(viableTargets, new Card[] { batt, bubbles, haka.CharacterCard, baron.CharacterCard });
+
+            PlayCard("EscapeVelocity");
+            AssertOnBottomOfDeck(mdp, 1);
+            AssertOnBottomOfDeck(turret);
+            AssertOnBottomOfDeck(decoy);
+            AssertIsInPlay(bonds);
+        }
+        [Test]
+        public void TestEscapeVelocityDestroyOngoing()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+
+            Card lash = PlayCard("BacklashField");
+            Card moko = PlayCard("TaMoko");
+
+            DecisionSelectCards = new Card[] { lash, null };
+
+            PlayCard("EscapeVelocity");
+            AssertInTrash(lash);
+            //make sure it is optional
+            PlayCard("EscapeVelocity");
+            AssertIsInPlay(moko);
+        }
     }
 }
