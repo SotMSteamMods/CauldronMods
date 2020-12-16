@@ -16,13 +16,25 @@ namespace Cauldron.Impact
         public override IEnumerator Play()
         {
             //"When this card enters play, {Impact} deals up to 3 targets 1 projectile damage each.",
+            IEnumerator coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, this.CharacterCard), 1, DamageType.Projectile, 3, false, 0, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
 
         public override void AddTriggers()
         {
             //"Reduce damage dealt by villain targets by 1.",
+            AddReduceDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsTarget && IsVillain(dd.DamageSource.Card), dd => 1);
+
             //"At the start of your turn, destroy this card."
+            AddStartOfTurnTrigger(tt => tt == this.TurnTaker, DestroyThisCardResponse, TriggerType.DestroySelf);
         }
     }
 }

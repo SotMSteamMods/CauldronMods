@@ -386,5 +386,48 @@ namespace CauldronTests
             DealDamage(mdp, impact, 5, DTM);
             QuickHPCheck(-5);
         }
+        [Test]
+        public void TestHurledObstructionPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DecisionSelectCards = new Card[] { mdp, haka.CharacterCard, null };
+            QuickHPStorage(mdp, impact.CharacterCard, haka.CharacterCard, bunker.CharacterCard);
+            PlayCard("HurledObstruction");
+            QuickHPCheck(-1, 0, -1, 0);
+        }
+        [Test]
+        public void TestHurledObstructionDamageReduction()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            PlayCard("HurledObstruction");
+
+            QuickHPStorage(mdp, impact.CharacterCard, haka.CharacterCard);
+            //reduces damage from villains to anywhere
+            DealDamage(mdp, impact, 1, DTM);
+            DealDamage(baron, mdp, 1, DTM);
+            QuickHPCheck(0, 0, 0);
+
+            //does not reduce other damage
+            DealDamage(haka, impact, 1, DTM);
+            DealDamage(impact, mdp, 1, DTM);
+            QuickHPCheck(-1, -1, 0);
+        }
+        [Test]
+        public void TestHurledObstructionSelfDestroy()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+
+            Card hurl = PlayCard("HurledObstruction");
+            GoToStartOfTurn(impact);
+            AssertInTrash(hurl);
+        }
     }
 }
