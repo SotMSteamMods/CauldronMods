@@ -429,5 +429,47 @@ namespace CauldronTests
             GoToStartOfTurn(impact);
             AssertInTrash(hurl);
         }
+        [Test]
+        public void TestInescapablePullDraw()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+
+            Card pull = PutInHand("InescapablePull");
+            QuickHandStorage(impact);
+            PlayCard(pull);
+            QuickHandCheck(0);
+        }
+        [Test]
+        public void TestInescapablePullDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            Card pull = PlayCard("InescapablePull");
+
+            //can't hit anything if there's nothing that's been damaged
+            QuickHPStorage(baron, impact, haka, bunker, visionary);
+            UsePower(pull);
+            QuickHPCheckZero();
+
+            AssertMaxNumberOfDecisions(1);
+
+            //no choice, must hit haka
+            DealDamage(impact, haka, 1, DTM);
+            UsePower(pull);
+            QuickHPCheck(0, 0, -5, 0, 0);
+
+            //may choose haka or blade
+            DealDamage(impact, baron, 1, DTM);
+            UsePower(pull);
+            QuickHPCheck(-5, 0, 0, 0, 0);
+
+            //turn reset, no damage options
+            GoToStartOfTurn(impact);
+            UsePower(pull);
+            QuickHPCheckZero();
+        }
     }
 }
