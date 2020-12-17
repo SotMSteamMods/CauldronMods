@@ -128,6 +128,14 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
+"PyreDeckBack.jpg":
+{
+	"frame": {"x":876,"y":382,"w":177,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":177,"h":256},
+	"sourceSize": {"w":177,"h":256}
+},
 "RogueFissionCascade.png":
 {
 	"frame": {"x":0,"y":382,"w":256,"h":188},
@@ -146,7 +154,7 @@
 },
 "UnstablePyreCharacter.png":
 {
-	"frame": {"x":876,"y":382,"w":176,"h":256},
+	"frame": {"x":1056,"y":382,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -154,7 +162,7 @@
 },
 "UnstablePyreCharacterBack.png":
 {
-	"frame": {"x":1055,"y":382,"w":176,"h":256},
+	"frame": {"x":1235,"y":382,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -162,7 +170,7 @@
 },
 "WastelandRoninPyreCharacter.png":
 {
-	"frame": {"x":1234,"y":382,"w":176,"h":256},
+	"frame": {"x":1414,"y":382,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -170,7 +178,7 @@
 },
 "WastelandRoninPyreCharacterBack.png":
 {
-	"frame": {"x":1413,"y":382,"w":176,"h":256},
+	"frame": {"x":1593,"y":382,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -183,6 +191,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:558d16a5c55e3f9fab2a3371f4b0ded2:235b71d7b2ac2dce19ce896735940952:e1f4dcba79ebab48f31e4698511f345c$"
+	"smartupdate": "$TexturePacker:SmartUpdate:e03b3d9e6e62d2e3470110e41b8be3db:e67bbb41e6ba8356f61720ec920edd68:e1f4dcba79ebab48f31e4698511f345c$"
 }
 }

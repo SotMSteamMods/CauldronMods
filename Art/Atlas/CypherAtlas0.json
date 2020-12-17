@@ -2,7 +2,7 @@
 
 "BackupPlan.png":
 {
-	"frame": {"x":1255,"y":0,"w":256,"h":188},
+	"frame": {"x":1253,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -10,7 +10,7 @@
 },
 "Cyberdefense.png":
 {
-	"frame": {"x":1514,"y":0,"w":256,"h":188},
+	"frame": {"x":1512,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -18,7 +18,7 @@
 },
 "Cyberintegration.png":
 {
-	"frame": {"x":1773,"y":0,"w":256,"h":188},
+	"frame": {"x":1771,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -58,11 +58,11 @@
 },
 "CypherDeckBack.jpg":
 {
-	"frame": {"x":1074,"y":0,"w":178,"h":249},
+	"frame": {"x":358,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":249},
-	"sourceSize": {"w":178,"h":249}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "DermalAug.png":
 {
@@ -82,7 +82,7 @@
 },
 "FirstResponseCypherCharacter.png":
 {
-	"frame": {"x":358,"y":0,"w":176,"h":256},
+	"frame": {"x":537,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -90,7 +90,7 @@
 },
 "FirstResponseCypherCharacterBack.png":
 {
-	"frame": {"x":537,"y":0,"w":176,"h":256},
+	"frame": {"x":716,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -186,7 +186,7 @@
 },
 "SwarmingProtocolCypherCharacter.png":
 {
-	"frame": {"x":716,"y":0,"w":176,"h":256},
+	"frame": {"x":895,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -194,7 +194,7 @@
 },
 "SwarmingProtocolCypherCharacterBack.png":
 {
-	"frame": {"x":895,"y":0,"w":176,"h":256},
+	"frame": {"x":1074,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -215,6 +215,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:5285e0c28e3347c33f94d24fbb5f6a3a:7817e518877d3a73e976d61c18be0f06:678c0924d6ef8d6ab6aed6d2f5acc0fb$"
+	"smartupdate": "$TexturePacker:SmartUpdate:59c291a5eb55e6ba9bade0ecfda1db48:c18e68f697e7c04448898f607dc2484f:678c0924d6ef8d6ab6aed6d2f5acc0fb$"
 }
 }
