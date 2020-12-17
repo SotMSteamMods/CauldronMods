@@ -30,5 +30,29 @@ namespace CauldronTests
         }
 
         #endregion
+        [Test]
+        public void TestRenegadeLoads()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact/RenegadeImpactCharacter", "Megalopolis");
+
+            Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(impact);
+            Assert.IsInstanceOf(typeof(RenegadeImpactCharacterCardController), impact.CharacterCardController);
+
+            Assert.AreEqual(27, impact.CharacterCard.HitPoints);
+        }
+        [Test]
+        public void TestWastelandRoninLoads()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact/WastelandRoninImpactCharacter", "Megalopolis");
+
+            Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(impact);
+            Assert.IsInstanceOf(typeof(WastelandRoninImpactCharacterCardController), impact.CharacterCardController);
+
+            Assert.AreEqual(26, impact.CharacterCard.HitPoints);
+        }
     }
 }

@@ -391,7 +391,7 @@
             "flavorReference": "Echelon, Impact #2"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "ImpactCharacter",
             "promoIdentifier": "RenegadeImpactCharacter",
