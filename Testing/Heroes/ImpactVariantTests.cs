@@ -43,6 +43,41 @@ namespace CauldronTests
             Assert.AreEqual(27, impact.CharacterCard.HitPoints);
         }
         [Test]
+        public void TestRenegadePowerNoDestroy()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact/RenegadeImpactCharacter", "Haka", "Bunker", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            Card orb = PutInHand("GraviticOrb");
+            Card hurl = PutInHand("HurledObstruction");
+
+            DecisionSelectCard = hurl;
+            UsePower(impact);
+            AssertInHand(orb, hurl);
+        }
+        [Test]
+        public void TestRenegadePowerDestroy()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact/RenegadeImpactCharacter", "Haka", "Bunker", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            Card orb = PlayCard("GraviticOrb");
+            Card pull = PlayCard("InescapablePull");
+
+            Card hurl = PutInHand("HurledObstruction");
+            Card orbit = PutInHand("DecayingOrbit");
+
+            Card velocity = PutOnDeck("EscapeVelocity");
+            
+            DecisionSelectCards = new Card[] { orb, hurl, null };
+            UsePower(impact);
+            AssertInHand(orbit, velocity);
+            AssertIsInPlay(hurl, pull);
+            AssertInTrash(orb);
+        }
+        [Test]
         public void TestWastelandRoninLoads()
         {
             SetupGameController("BaronBlade", "Cauldron.Impact/WastelandRoninImpactCharacter", "Megalopolis");
