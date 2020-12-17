@@ -22,18 +22,23 @@ namespace Cauldron.Impact
             int numToDestroy = GetPowerNumeral(2, 1);
             int numBoost = GetPowerNumeral(3, 2);
 
+            if(numTargets < 1)
+            {
+                yield break;
+            }
+
             //select the targets
             var targetDecision = new SelectTargetsDecision(GameController,
                                             DecisionMaker,
                                             (Card c) => c.IsInPlayAndHasGameText && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()),
-                                            numTargets,
+                                            1,
                                             false,
-                                            numTargets,
+                                            1,
                                             false,
                                             new DamageSource(GameController, this.Card),
                                             numDamage,
                                             DamageType.Infernal,
-                                            selectTargetsEvenIfCannotPerformAction: true,
+                                            selectTargetsEvenIfCannotPerformAction: false,
                                             cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectCardsAndDoAction(targetDecision, _ => DoNothing());
             if (base.UseUnityCoroutines)
@@ -93,6 +98,19 @@ namespace Cauldron.Impact
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if(numTargets > 1)
+            {
+                coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, this.Card), numDamage, DamageType.Infernal, numTargets - 1, false, numTargets - 1, additionalCriteria: (Card c) => !selectedTargets.Contains(c), cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
 
             if (didDestroyCards)
