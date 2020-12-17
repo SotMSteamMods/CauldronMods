@@ -29,6 +29,8 @@ namespace CauldronTests
             }
         }
 
+        private DamageType DTM = DamageType.Melee;
+
         #endregion
         [Test]
         public void TestRenegadeLoads()
@@ -76,6 +78,50 @@ namespace CauldronTests
             AssertInHand(orbit, velocity);
             AssertIsInPlay(hurl, pull);
             AssertInTrash(orb);
+        }
+        [Test]
+        public void TestRenegadeIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact/RenegadeImpactCharacter", "Haka", "Bunker", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            SetupIncap(baron);
+
+            PlayCard("LivingForceField");
+
+            QuickHPStorage(baron);
+            DecisionSelectCard = haka.CharacterCard;
+            UseIncapacitatedAbility(impact, 0);
+
+            //not active yet
+            DealDamage(haka, baron, 2, DTM);
+            QuickHPCheck(-1);
+
+            //GoToStartOfTurn(haka);
+            GoToPlayCardPhase(haka);
+            DealDamage(haka, baron, 2, DTM);
+            QuickHPCheck(-2);
+
+            GoToStartOfTurn(bunker);
+            DealDamage(haka, baron, 2, DTM);
+            QuickHPCheck(-1);
+        }
+        public void TestRenegadeIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact/RenegadeImpactCharacter", "Haka", "Bunker", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            SetupIncap(baron);
+        }
+        public void TestRenegadeIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact/RenegadeImpactCharacter", "Haka", "Bunker", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            SetupIncap(baron);
         }
         [Test]
         public void TestWastelandRoninLoads()

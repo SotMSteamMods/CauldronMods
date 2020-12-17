@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+using Handelabra;
+
 namespace Cauldron.Impact
 {
     public class RenegadeImpactCharacterCardController : HeroCharacterCardController
@@ -127,8 +129,10 @@ namespace Cauldron.Impact
                 var holderEffect = IrreducibleNextTurnHolder(card);
                 holderEffect.UntilCardLeavesPlay(card);
                 holderEffect.CanEffectStack = true;
+                holderEffect.TurnPhaseCriteria.IsEphemeral = false;
                 holderEffect.TurnTakerCriteria.IsSpecificTurnTaker = card.Owner;
                 holderEffect.NumberOfUses = 1;
+                holderEffect.BeforeOrAfter = BeforeOrAfter.After;
 
                 GameController.AddCardPropertyJournalEntry(card, renegadeKey, true);
                 IEnumerator coroutine = GameController.AddStatusEffect(holderEffect, true, GetCardSource());
@@ -149,7 +153,7 @@ namespace Cauldron.Impact
             return new OnPhaseChangeStatusEffect(this.Card, "ActivateThisTurnIrreducible", $"On {chosenCard.Owner.Name}'s next turn, damage dealt by {chosenCard.Title} is irreducible.", new TriggerType[] { TriggerType.Hidden }, this.Card);
         }
 
-        private IEnumerator ActivateThisTurnIrreducible()
+        public IEnumerator ActivateThisTurnIrreducible(PhaseChangeAction _, StatusEffect _2)
         {
             var needsIrreducibleEffect = GameController.FindCardsWhere(new LinqCardCriteria(c => c.IsTarget && c.IsInPlayAndHasGameText && c.Owner == Game.ActiveTurnTaker && IsRenegadeMarked(c)));
             foreach(Card c in needsIrreducibleEffect)
@@ -172,40 +176,5 @@ namespace Cauldron.Impact
             }
             yield break;
         }
-
-        /*
-        private IEnumerator MakeIrreducibleThisTurn(Card card, OnPhaseChangeStatusEffect holder)
-        {
-            if (!Game.StatusEffects.Contains(holder))
-            {
-                //the status effect is already gone, don't bother with it
-                yield break;
-            }
-            IEnumerator coroutine = GameController.ExpireStatusEffect(holder, GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            var activeEffect = new MakeDamageIrreducibleStatusEffect();
-            activeEffect.UntilThisTurnIsOver(Game);
-            activeEffect.SourceCriteria.IsSpecificCard = card;
-            activeEffect.UntilCardLeavesPlay(card);
-
-            coroutine = GameController.AddStatusEffect(activeEffect, true, GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
-        }
-        */
     }
 }
