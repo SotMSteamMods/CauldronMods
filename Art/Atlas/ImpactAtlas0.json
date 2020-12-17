@@ -2,171 +2,179 @@
 
 "AcceleratedCollision.png":
 {
-	"frame": {"x":0,"y":991,"w":689,"h":507},
+	"frame": {"x":1255,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "CrushingRift.png":
 {
-	"frame": {"x":692,"y":991,"w":689,"h":507},
+	"frame": {"x":1514,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "DecayingOrbit.png":
 {
-	"frame": {"x":1384,"y":991,"w":689,"h":507},
+	"frame": {"x":1773,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "EscapeVelocity.png":
 {
-	"frame": {"x":2076,"y":991,"w":689,"h":507},
+	"frame": {"x":0,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "GravitationalLensing.png":
 {
-	"frame": {"x":2768,"y":991,"w":689,"h":507},
+	"frame": {"x":259,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "GraviticOrb.png":
 {
-	"frame": {"x":0,"y":1501,"w":689,"h":507},
+	"frame": {"x":518,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "HurledObstruction.png":
 {
-	"frame": {"x":692,"y":1501,"w":689,"h":507},
+	"frame": {"x":777,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "ImpactCharacter.png":
 {
-	"frame": {"x":0,"y":0,"w":680,"h":988},
+	"frame": {"x":0,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
-	"sourceSize": {"w":680,"h":988}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "ImpactCharacterBack.png":
 {
-	"frame": {"x":683,"y":0,"w":680,"h":988},
+	"frame": {"x":179,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
-	"sourceSize": {"w":680,"h":988}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"ImpactDeckBack.jpg":
+{
+	"frame": {"x":1074,"y":0,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "InescapablePull.png":
 {
-	"frame": {"x":1384,"y":1501,"w":689,"h":507},
+	"frame": {"x":1036,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "LocalMicrogravity.png":
 {
-	"frame": {"x":2076,"y":1501,"w":689,"h":507},
+	"frame": {"x":1295,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "MassDriver.png":
 {
-	"frame": {"x":2768,"y":1501,"w":689,"h":507},
+	"frame": {"x":1554,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "Meditate.png":
 {
-	"frame": {"x":0,"y":2011,"w":689,"h":507},
+	"frame": {"x":0,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "RenegadeImpactCharacter.png":
 {
-	"frame": {"x":1366,"y":0,"w":680,"h":988},
+	"frame": {"x":358,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
-	"sourceSize": {"w":680,"h":988}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "RenegadeImpactCharacterBack.png":
 {
-	"frame": {"x":2049,"y":0,"w":680,"h":988},
+	"frame": {"x":537,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
-	"sourceSize": {"w":680,"h":988}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "RepulsionField.png":
 {
-	"frame": {"x":692,"y":2011,"w":689,"h":507},
+	"frame": {"x":259,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "SlingshotTrajectory.png":
 {
-	"frame": {"x":1384,"y":2011,"w":689,"h":507},
+	"frame": {"x":518,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "SpatialFinesse.png":
 {
-	"frame": {"x":2076,"y":2011,"w":689,"h":507},
+	"frame": {"x":777,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":689,"h":507},
-	"sourceSize": {"w":689,"h":507}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "WastelandRoninImpactCharacter.png":
 {
-	"frame": {"x":2732,"y":0,"w":680,"h":988},
+	"frame": {"x":716,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
-	"sourceSize": {"w":680,"h":988}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "WastelandRoninImpactCharacterBack.png":
 {
-	"frame": {"x":3415,"y":0,"w":680,"h":988},
+	"frame": {"x":895,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":988},
-	"sourceSize": {"w":680,"h":988}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "ImpactAtlas0.png",
 	"format": "RGBA8888",
-	"size": {"w":4096,"h":4096},
+	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:5cfa5290d523233591d659ca058d87ba:52e4c7d4003daea042f02bf965d6ab3a:812c137cb790d224a1ebc67bbea2e329$"
+	"smartupdate": "$TexturePacker:SmartUpdate:666949f824e79317183e7440322a957a:d0d19a03e1fbe38a6f26f0aa84006ee5:812c137cb790d224a1ebc67bbea2e329$"
 }
 }
