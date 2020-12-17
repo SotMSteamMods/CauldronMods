@@ -12,6 +12,7 @@ namespace Cauldron.Impact
         private readonly string microKey = "LocalMicrogravityPreventionKey";
         public LocalMicrogravityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHasBeenUsedThisTurn(microKey).Condition = () => Game.ActiveTurnTaker.IsEnvironment;
         }
 
         public override IEnumerator Play()

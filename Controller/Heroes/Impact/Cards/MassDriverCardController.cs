@@ -11,6 +11,7 @@ namespace Cauldron.Impact
     {
         public MassDriverCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => c.IsOngoing && c.Owner == this.TurnTaker, "ongoing"));
         }
 
         public override IEnumerator Play()
