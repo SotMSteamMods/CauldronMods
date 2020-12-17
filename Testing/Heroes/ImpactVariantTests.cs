@@ -182,5 +182,59 @@ namespace CauldronTests
             DestroyCard(pull);
             AssertInTrash(pull);
         }
+        [Test]
+        public void TestWastelandRoninIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact/WastelandRoninImpactCharacter", "Haka", "Bunker", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            SetupIncap(baron);
+
+            AssertIncapLetsHeroUsePower(impact, 0, haka);
+        }
+        [Test]
+        public void TestWastelandRoninIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact/WastelandRoninImpactCharacter", "Haka", "Bunker", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            SetupIncap(baron);
+            UseIncapacitatedAbility(impact, 1);
+
+            GoToStartOfTurn(bunker);
+            Card police = PlayCard("PoliceBackup");
+            AssertIsInPlay(police);
+
+            GoToNextTurn();
+            Card traffic = PlayCard("TrafficPileup");
+            AssertNotInPlay(traffic);
+
+            GoToNextTurn();
+            PlayCard(traffic);
+            AssertIsInPlay(traffic);
+
+        }
+        [Test]
+        public void TestWastelandRoninIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact/WastelandRoninImpactCharacter", "Haka", "Bunker", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            SetupIncap(baron);
+
+            DecisionSelectCard = bunker.CharacterCard;
+
+            UseIncapacitatedAbility(impact, 2);
+
+            PlayCard("LivingForceField");
+            QuickHPStorage(baron);
+            DealDamage(bunker, baron, 2, DTM);
+            QuickHPCheck(-2);
+            DealDamage(bunker, baron, 2, DTM);
+            QuickHPCheck(-1);
+        }
     }
 }

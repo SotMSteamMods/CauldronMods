@@ -69,18 +69,89 @@ namespace Cauldron.Impact
                 case 0:
                     {
                         //"One hero may use a power now.",
+                        coroutine = GameController.SelectHeroToUsePower(DecisionMaker, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         yield break;
                     }
                 case 1:
                     {
                         //"Environment cards cannot be played during the next environment turn.",
+                        var holderEffect = new OnPhaseChangeStatusEffect(this.Card, "EnvironmentCannotPlayEffect", "During the next environment turn, environment cards cannot be played.", new TriggerType[] { TriggerType.Hidden }, this.Card);
+                        holderEffect.NumberOfUses = 1;
+                        holderEffect.TurnTakerCriteria.IsEnvironment = true;
+                        holderEffect.TurnPhaseCriteria.IsEphemeral = false;
+
+                        coroutine = AddStatusEffect(holderEffect);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case 2:
                     {
                         //"Select a target. The next damage it deals is irreducible."
+                        var storedTarget = new List<SelectCardDecision> { };
+                        coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.SelectTargetFriendly, FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsTarget && AskIfCardIsVisibleToCardSource(c, GetCardSource()) != false), storedTarget, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+
+                        if (storedTarget.FirstOrDefault() != null && storedTarget.FirstOrDefault().SelectedCard != null)
+                        {
+                            var target = storedTarget.FirstOrDefault().SelectedCard;
+                            var irreducibleEffect = new MakeDamageIrreducibleStatusEffect();
+                            irreducibleEffect.SourceCriteria.IsSpecificCard = target;
+                            irreducibleEffect.NumberOfUses = 1;
+                            irreducibleEffect.CreateImplicitExpiryConditions();
+
+                            coroutine = AddStatusEffect(irreducibleEffect);
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine);
+                            }
+                        }
+
                         break;
                     }
+            }
+            yield break;
+        }
+
+        public IEnumerator EnvironmentCannotPlayEffect(PhaseChangeAction pc, StatusEffect effect)
+        {
+            var newEffect = new CannotPlayCardsStatusEffect();
+            newEffect.UntilThisTurnIsOver(Game);
+            newEffect.TurnTakerCriteria.IsEnvironment = true;
+
+            IEnumerator coroutine = AddStatusEffect(newEffect);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
         }
