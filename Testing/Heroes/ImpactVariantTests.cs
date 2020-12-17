@@ -107,6 +107,7 @@ namespace CauldronTests
             DealDamage(haka, baron, 2, DTM);
             QuickHPCheck(-1);
         }
+        [Test]
         public void TestRenegadeIncap2()
         {
             SetupGameController("BaronBlade", "Cauldron.Impact/RenegadeImpactCharacter", "Haka", "Bunker", "Megalopolis");
@@ -114,7 +115,10 @@ namespace CauldronTests
             DestroyCard("MobileDefensePlatform");
 
             SetupIncap(baron);
+
+            AssertIncapLetsHeroUsePower(impact, 1, haka);
         }
+        [Test]
         public void TestRenegadeIncap3()
         {
             SetupGameController("BaronBlade", "Cauldron.Impact/RenegadeImpactCharacter", "Haka", "Bunker", "Megalopolis");
@@ -122,6 +126,12 @@ namespace CauldronTests
             DestroyCard("MobileDefensePlatform");
 
             SetupIncap(baron);
+
+            QuickHPStorage(haka, bunker);
+            DecisionSelectTarget = bunker.CharacterCard;
+
+            UseIncapacitatedAbility(impact, 2);
+            QuickHPCheck(0, -2);
         }
         [Test]
         public void TestWastelandRoninLoads()
