@@ -147,7 +147,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestMenagerieFrontEnclosureLeavesPlay()
+        public void TestMenagerieFrontEnclosureDestroyActionLeavesPlay()
         {
             SetupGameController("Cauldron.Menagerie", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -164,6 +164,58 @@ namespace CauldronTests
             AssertIsInPlay(hive);
             //...put it under [Menagerie]
             AssertUnderCard(menagerie.CharacterCard, sphere);
+        }
+
+        [Test()]
+        public void TestMenagerieFrontEnclosureMoveActionLeavesPlay()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //When an enclosure leaves play, put it under this card, discarding all cards beneath it. Put any discarded targets into play.
+            Card hive = PutOnDeck("HalberdHive");
+            Card sphere = PlayCard("AquaticSphere");
+            Card feeding = MoveCard(menagerie, "FeedingTime", sphere.UnderLocation);
+            AssertNumberOfCardsUnderCard(sphere, 2);
+
+            PlayCard("IntoTheStratosphere");
+            //...discarding all cards beneath it. Put any discarded targets into play.
+            AssertInTrash(feeding);
+            AssertIsInPlay(hive);
+            //...put it under [Menagerie]
+            AssertUnderCard(menagerie.CharacterCard, sphere);
+        }
+
+        [Test()]
+        public void TestMeagerieFrontAlternateLose()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //The heroes lose if the captured hero is incapacitated.
+            Card prize = FindCardInPlay("PrizedCatch");
+            Card captured = prize.Location.OwnerCard;
+            DealDamage(menagerie, captured, 100, DamageType.Melee);
+            AssertGameOver(EndingResult.AlternateDefeat);
+        }
+
+        [Test()]
+        public void TestMeagerieFrontAlternateLose_TheSentinels()
+        {
+            SetupGameController("Cauldron.Menagerie", "TheSentinels", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DiscardAllCards(new HeroTurnTakerController[] { bunker, scholar });
+
+            //The heroes lose if the captured hero is incapacitated.
+            Card prize = FindCardInPlay("PrizedCatch");
+            DealDamage(menagerie, idealist, 100, DamageType.Melee);
+            AssertNotGameOver();
+            DealDamage(menagerie, mainstay, 100, DamageType.Melee);
+            AssertNotGameOver();
+            DealDamage(menagerie, medico, 100, DamageType.Melee);
+            AssertNotGameOver();
+            DealDamage(menagerie, writhe, 100, DamageType.Melee);
+            AssertGameOver(EndingResult.AlternateDefeat);
         }
 
         [Test()]
