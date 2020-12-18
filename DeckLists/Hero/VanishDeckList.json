@@ -337,7 +337,7 @@
             "flavorReference": "The Stranger #32"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "VanishCharacter",
             "promoIdentifier": "FirstResponseVanishCharacter",
@@ -391,7 +391,7 @@
             "hitpointColor": "E6C8DA",
             "character": true,
             "powers": [
-                "Draw a card. Increase damage delat by hero targets until the end of the round."
+                "Draw a card. Increase damage dealt by hero targets by 1 until the end of the round."
             ],
             "icons": [
                 "HasPower",
@@ -404,8 +404,8 @@
             ],
             "incapacitatedAbilities": [
                 "One player may play a card now.",
-                "The next turn a target enters play, it deals itself 1 energy damage.",
-                "Shuffle up to 2 non-target environment carsd into their deck."
+                "The next time a target enters play, it deals itself 1 energy damage.",
+                "Shuffle up to 2 non-target environment cards into their deck."
             ],
             "flippedIcons": [
                 "PlayCardNow",
