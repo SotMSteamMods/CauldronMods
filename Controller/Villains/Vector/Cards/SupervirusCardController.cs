@@ -27,6 +27,7 @@ namespace Cauldron.Vector
         public SupervirusCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(base.Card.UnderLocation).Condition = ()=> base.Card.IsInPlayAndHasGameText ;
         }
 
         public override void AddTriggers()
