@@ -13,6 +13,13 @@ namespace Cauldron.Menagerie
         {
 
         }
+        public override bool AllowFastCoroutinesDuringPretend
+        {
+            get
+            {
+                return !base.Card.IsFlipped;
+            }
+        }
 
         private bool IsEnclosure(Card c)
         {
@@ -34,7 +41,10 @@ namespace Cauldron.Menagerie
         {
             if (!base.Card.IsFlipped)
             { //Front
-                //Cards beneath villain cards are not considered in play. When an enclosure leaves play, put it under this card, discarding all cards beneath it. Put any discarded targets into play.
+                //Cards beneath villain cards are not considered in play. When an enclosure leaves play, put it under this card... 
+                base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => this.IsEnclosure(action.CardToDestroy.Card) && action.PostDestroyDestinationCanBeChanged && action.CardToDestroy.CanBeDestroyed && action.WasCardDestroyed, this.PutUnderThisCardResponse, TriggerType.MoveCard, TriggerTiming.Before));
+                base.AddSideTrigger(base.AddTrigger<MoveCardAction>((MoveCardAction action) => this.IsEnclosure(action.CardToMove) && action.CanChangeDestination && action.Origin.IsInPlayAndNotUnderCard, this.PutUnderThisCardResponse, TriggerType.MoveCard, TriggerTiming.Before));
+                //...discarding all cards beneath it. Put any discarded targets into play.
                 /**logic added to enclosures**/
 
                 //At the end of the villain turn, reveal cards from the top of the villain deck until an enclosure is revealed, play it, and shuffle the other revealed cards back into the deck. Then if {H} enclosures are beneath this card, flip {Menagerie}'s character cards.
@@ -64,6 +74,18 @@ namespace Cauldron.Menagerie
                 }
             }
             base.AddDefeatedIfDestroyedTriggers();
+        }
+
+        private IEnumerator PutUnderThisCardResponse(DestroyCardAction action)
+        {
+            action.SetPostDestroyDestination(base.Card.UnderLocation, cardSource: base.GetCardSource());
+            yield break;
+        }
+
+        private IEnumerator PutUnderThisCardResponse(MoveCardAction action)
+        {
+            action.SetDestination(base.CharacterCard.UnderLocation);
+            yield break;
         }
 
         private IEnumerator PlayEnclosureMaybeFlipResponse(PhaseChangeAction action)

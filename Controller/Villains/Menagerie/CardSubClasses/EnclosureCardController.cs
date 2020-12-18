@@ -54,32 +54,32 @@ namespace Cauldron.Menagerie
 
         private IEnumerator HandleEnclosureCardsResponse(GameAction gameAction)
         {
-            if (!base.CharacterCard.IsFlipped)
-            {
-                //Front: When an enclosure leaves play, put it under [Menagerie]...
-                if (gameAction is DestroyCardAction)
-                {
-                    (gameAction as DestroyCardAction).SetPostDestroyDestination(base.CharacterCard.UnderLocation, cardSource: base.GetCardSource());
-                }
-                else if (gameAction is MoveCardAction && (gameAction as MoveCardAction).Origin.IsInPlay)
-                {
-                    (gameAction as MoveCardAction).SetDestination(base.CharacterCard.UnderLocation);
-                }
-            }
-
             //...discarding all cards beneath it. 
-            while (base.CharacterCard.UnderLocation.HasCards)
+            while (base.Card.UnderLocation.HasCards)
             {
-                Card topCard = base.CharacterCard.UnderLocation.TopCard;
+                IEnumerator coroutine;
+                Card topCard = base.Card.UnderLocation.TopCard;
+                if (topCard.IsFlipped)
+                {
+                    coroutine = base.GameController.FlipCard(base.FindCardController(topCard), cardSource: base.GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
                 Location destination = topCard.Owner.Trash;
                 bool isPutIntoPlay = false;
                 //Front: Put any discarded targets into play.
-                if (topCard.IsTarget && !base.CharacterCard.IsFlipped)
+                if (topCard.MaximumHitPoints.HasValue && !base.CharacterCard.IsFlipped)
                 {
                     destination = topCard.Owner.PlayArea;
                     isPutIntoPlay = true;
                 }
-                IEnumerator coroutine = base.GameController.MoveCard(base.TurnTakerController, topCard, destination, isPutIntoPlay: isPutIntoPlay, cardSource: base.GetCardSource());
+                coroutine = base.GameController.MoveCard(base.TurnTakerController, topCard, destination, isPutIntoPlay: isPutIntoPlay, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
