@@ -10,10 +10,7 @@ namespace Cauldron.SwarmEater
     {
         public VenomAugCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            if (base.Card.IsInPlayAndNotUnderCard)
-            {
-                base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
-            }
+               base.SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => base.Card.IsInPlayAndNotUnderCard;
         }
 
         public override void AddTriggers()
