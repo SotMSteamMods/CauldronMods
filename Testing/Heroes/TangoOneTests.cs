@@ -254,6 +254,8 @@ namespace CauldronTests
             Card nextEvolution = GetCardFromHand("NextEvolution");
 
             DecisionYesNo = false;
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+            QuickHandStorage(ra, legacy);
 
             // Act
             GoToUseIncapacitatedAbilityPhase(TangoOne);
@@ -262,6 +264,63 @@ namespace CauldronTests
             // Assert
             AssertIncapacitated(TangoOne);
             AssertNotInPlay(dangerSense, nextEvolution);
+            QuickHandCheck(0, 0);
+        }
+
+        [Test]
+        public void TestIncapacitateOption3MakeOneChoice()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
+
+            StartGame();
+
+            SetHitPoints(TangoOne.CharacterCard, 1);
+            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+
+            PutInHand("DangerSense");
+            Card dangerSense = GetCardFromHand("DangerSense");
+            PutInHand("NextEvolution");
+            Card nextEvolution = GetCardFromHand("NextEvolution");
+
+            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { dangerSense, null };
+
+            // Act
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            UseIncapacitatedAbility(TangoOne, 2);
+
+            // Assert
+            AssertIncapacitated(TangoOne);
+            AssertNotInPlay(nextEvolution);
+            AssertIsInPlay(dangerSense);
+        }
+        [Test]
+        public void TestIncapacitateOption3NotAllowLimited()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
+
+            StartGame();
+
+            SetHitPoints(TangoOne.CharacterCard, 1);
+            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            PutOnDeck(legacy, legacy.HeroTurnTaker.Hand.Cards);
+            Card inPlayFortitude = PlayCard("Fortitude");
+            Card handFortitude = PutInHand("Fortitude");
+            PutInHand("DangerSense");
+            Card dangerSense = GetCardFromHand("DangerSense");
+            PutInHand("NextEvolution");
+            Card nextEvolution = GetCardFromHand("NextEvolution");
+
+            AssertNextDecisionChoices(included: new Card[] { dangerSense, nextEvolution }, notIncluded: new Card[] { handFortitude, inPlayFortitude });
+            // Act
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            UseIncapacitatedAbility(TangoOne, 2);
+
+            // Assert
+            AssertIncapacitated(TangoOne);
+            AssertNotInPlay(handFortitude);
         }
 
         [Test]

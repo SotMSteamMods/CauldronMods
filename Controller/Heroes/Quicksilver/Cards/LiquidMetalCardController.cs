@@ -55,7 +55,7 @@ namespace Cauldron.Quicksilver
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
-            coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.PlayCard, base.Card, storedResults: storedResults);
+            coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.DealDamageSelf, base.Card, storedResults: storedResults);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -79,7 +79,7 @@ namespace Cauldron.Quicksilver
                 }
                 base.CharacterCardController.SetCardProperty("ComboSelfDamage", false);
                 //...play a Combo.
-                coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("combo")), cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("combo"), "combo"), cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

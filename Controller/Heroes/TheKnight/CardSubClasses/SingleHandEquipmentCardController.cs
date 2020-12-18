@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Cauldron.TheKnight
 {
-    public abstract class SingleHandEquipmentCardController : TheKnightCardController
+    public abstract class SingleHandEquipmentCardController : RoninAssignableCardController
     {
         protected SingleHandEquipmentCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -18,6 +18,7 @@ namespace Cauldron.TheKnight
         {
             var trigger = base.AddTrigger<CardEntersPlayAction>(ca => ca.CardEnteringPlay == this.Card, ca => DestroyExcessSingleHandCardReponse(), TriggerType.DestroyCard, TriggerTiming.After);
             base.AddToTemporaryTriggerList(trigger);
+            base.AddTriggers();
         }
 
         private IEnumerator DestroyExcessSingleHandCardReponse()

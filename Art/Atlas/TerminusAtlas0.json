@@ -2,7 +2,7 @@
 
 "BoneChillingTouch.png":
 {
-	"frame": {"x":1074,"y":0,"w":256,"h":188},
+	"frame": {"x":1254,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -10,7 +10,7 @@
 },
 "CovenantOfWrath.png":
 {
-	"frame": {"x":1333,"y":0,"w":256,"h":188},
+	"frame": {"x":1513,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -18,7 +18,7 @@
 },
 "EtheralArmory.png":
 {
-	"frame": {"x":1592,"y":0,"w":256,"h":188},
+	"frame": {"x":1772,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -176,6 +176,14 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
+"TerminusDeckBack.jpg":
+{
+	"frame": {"x":1074,"y":0,"w":177,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":177,"h":256},
+	"sourceSize": {"w":177,"h":256}
+},
 "TheChainConductor.png":
 {
 	"frame": {"x":1554,"y":450,"w":256,"h":188},
@@ -207,6 +215,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:6a38e5333afe75fd1851d4d18d9614c7:9a5856bfcc2764928d629fc8bc4a47ea:2e2478deffd9efa46f1f6149704d1eea$"
+	"smartupdate": "$TexturePacker:SmartUpdate:76a7c3cf291f4e0e01d35c072b25d54d:6f21f5c21c141bca38c55de3646c0dff:2e2478deffd9efa46f1f6149704d1eea$"
 }
 }

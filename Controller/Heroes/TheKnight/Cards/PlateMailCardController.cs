@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Cauldron.TheKnight
 {
-    public class PlateMailCardController : TheKnightCardController
+    public class PlateMailCardController : RoninAssignableCardController
     {
         public PlateMailCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -18,6 +18,8 @@ namespace Cauldron.TheKnight
             base.AddRedirectDamageTrigger(dd => IsEquipmentEffectingCard(dd.Target), c => base.Card, true);
 
             base.AddMaintainTargetTriggers((Card c) => c.Owner == base.Card.Owner && c.Identifier == Card.Identifier, 5, new List<string> { "equipment" });
+
+            base.AddTriggers();
         }
     }
 }

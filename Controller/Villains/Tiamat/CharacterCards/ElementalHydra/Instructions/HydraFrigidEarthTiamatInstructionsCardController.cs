@@ -7,7 +7,7 @@ namespace Cauldron.Tiamat
 {
     public class HydraFrigidEarthTiamatInstructionsCardController : HydraTiamatInstructionsCardController
     {
-        public HydraFrigidEarthTiamatInstructionsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public HydraFrigidEarthTiamatInstructionsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "HydraWinterTiamatCharacter", "HydraEarthTiamatCharacter", "ElementOfIce")
         {
             SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => base.Card.IsFlipped && firstHead.Card.IsFlipped && !secondHead.Card.IsFlipped && secondHead.Card.IsInPlayAndNotUnderCard;
             SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "SkyBreaker", "sky breaker")).Condition = () => base.Card.IsFlipped && firstHead.Card.IsFlipped && !secondHead.Card.IsFlipped && secondHead.Card.IsInPlayAndNotUnderCard;
@@ -17,11 +17,8 @@ namespace Cauldron.Tiamat
 
         public override IEnumerator Play()
         {
-            this.firstHead = base.GameController.FindCardController("HydraWinterTiamatCharacter");
-            this.secondHead = base.GameController.FindCardController("HydraEarthTiamatCharacter");
-            this.element = "ElementOfIce";
             //Whenever Element of Ice enters play and {WinterTiamatCharacter} is decapitated, if {EarthTiamatCharacter} is active she deals the hero target with the highest HP X melee damage, where X = {H} plus the number of Sky Breaker cards in the villain trash.
-            this.alternateElementCoroutine = base.DealDamageToHighestHP(this.secondHead.Card, 1, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => this.PlusNumberOfACardInTrash(Game.H, "SkyBreaker"), DamageType.Melee);
+            this.alternateElementCoroutine = base.DealDamageToHighestHP(base.SecondHeadCardController().Card, 1, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => this.PlusNumberOfACardInTrash(Game.H, "SkyBreaker"), DamageType.Melee);
             yield break;
         }
 
@@ -48,7 +45,7 @@ namespace Cauldron.Tiamat
             return new ITrigger[]
             {
                 //At the end of the villain turn, if {WinterTiamatCharacter} is active, she deals the hero target with the lowest HP 1 cold damage.
-                base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage, (PhaseChangeAction action) => !firstHead.Card.IsFlipped)
+                base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage, (PhaseChangeAction action) => !base.FirstHeadCardController().Card.IsFlipped)
             };
         }
 
@@ -71,7 +68,7 @@ namespace Cauldron.Tiamat
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...if {WinterTiamatCharacter} is active, she deals the hero target with the lowest HP 1 cold damage.
-            IEnumerator coroutine = base.DealDamageToLowestHP(this.firstHead.Card, 1, (Card c) => c.IsHero, (Card c) => new int?(1), DamageType.Cold);
+            IEnumerator coroutine = base.DealDamageToLowestHP(base.FirstHeadCardController().Card, 1, (Card c) => c.IsHero, (Card c) => new int?(1), DamageType.Cold);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

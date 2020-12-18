@@ -60,6 +60,7 @@ namespace CauldronTests
             RunCoroutine(cc.SelectOwnCharacterCard(results, SelectionType.None));
 
             Assert.IsTrue(results.Count == 1 && results[0].SelectedCard == HeroController.CharacterCard, "Own CharacterCard was not selected");
+            AssertNumberOfCardsInPlay(HeroController, 1);
         }
 
         [Test]
