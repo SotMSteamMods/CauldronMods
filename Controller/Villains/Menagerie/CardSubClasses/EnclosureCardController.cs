@@ -44,9 +44,11 @@ namespace Cauldron.Menagerie
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-                yield break;
             }
-            base.DeterminePlayLocation(storedResults, isPutIntoPlay, decisionSources);
+            if (storedResults != null && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(this.TurnTaker)))
+            {
+                storedResults.Add(new MoveCardDestination(this.TurnTaker.PlayArea));
+            }
             yield break;
         }
 

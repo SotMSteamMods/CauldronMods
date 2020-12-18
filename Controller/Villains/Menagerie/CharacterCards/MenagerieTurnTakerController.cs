@@ -15,7 +15,7 @@ namespace Cauldron.Menagerie
         public override IEnumerator StartGame()
         {
             //Search the villain deck for the card Prized Catch and put it into play.
-            IEnumerator coroutine = base.PutCardIntoPlay("PrizedCatch");
+            IEnumerator coroutine = base.GameController.PlayCard(this, base.GameController.FindCard("PrizedCatch"));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

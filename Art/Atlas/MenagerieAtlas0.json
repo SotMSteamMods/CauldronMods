@@ -1,6 +1,6 @@
 {"frames": {
 
-"AborealSphere.png":
+"AngryLethovore.png":
 {
 	"frame": {"x":0,"y":0,"w":256,"h":188},
 	"rotated": false,
@@ -8,7 +8,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"AngryLethovore.png":
+"AquaticSphere.png":
 {
 	"frame": {"x":259,"y":0,"w":256,"h":188},
 	"rotated": false,
@@ -16,7 +16,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"AquaticSphere.png":
+"ArborealSphere.png":
 {
 	"frame": {"x":518,"y":0,"w":256,"h":188},
 	"rotated": false,
@@ -144,7 +144,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"SpecimentCollector.png":
+"SpecimenCollector.png":
 {
 	"frame": {"x":777,"y":450,"w":256,"h":188},
 	"rotated": false,
@@ -183,6 +183,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:c402d88ad3cf3e3c6c511a7f1a4eea43:cbbe9f1122ebbd961f2284a74a19e0dc:778bcb855de00368ec98eb5a1e0ec1bc$"
+	"smartupdate": "$TexturePacker:SmartUpdate:91596a455c85da726c90617b28e64939:7d8660ae9dca2a80347822461ce19498:778bcb855de00368ec98eb5a1e0ec1bc$"
 }
 }
