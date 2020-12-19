@@ -130,5 +130,122 @@ namespace CauldronTests
         }
 
 
+        [Test()]
+        [Order(0)]
+        public void PastVanishLoad()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/PastVanishCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+
+            Assert.AreEqual(6, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(vanish);
+            Assert.IsInstanceOf(typeof(PastVanishCharacterCardController), vanish.CharacterCardController);
+
+            foreach (var card in vanish.HeroTurnTaker.GetAllCards())
+            {
+                var cc = GetCardController(card);
+                Assert.IsTrue(cc.GetType() != typeof(CardController), $"{card.Identifier} is does not have a CardController");
+            }
+
+            Assert.AreEqual(27, vanish.CharacterCard.HitPoints);
+        }
+
+
+        [Test]
+        public void PastVanishInnatePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/PastVanishCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            var minion = PlayCard("BladeBattalion");
+
+            GoToUsePowerPhase(vanish);
+
+            QuickHandStorage(vanish, haka, bunker);
+            AssertNumberOfStatusEffectsInPlay(0);
+            UsePower(vanish);
+            AssertNumberOfStatusEffectsInPlay(1);
+            QuickHandCheck(1, 0, 0);
+
+            QuickHPStorage(baron.CharacterCard, vanish.CharacterCard, haka.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, minion);
+            DealDamage(vanish, minion, 1, DamageType.Cold);
+            QuickHPCheck(0, 0, 0, 0, 0, -2);
+
+            QuickHPStorage(baron.CharacterCard, vanish.CharacterCard, haka.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, minion);
+            DealDamage(haka, minion, 1, DamageType.Cold);
+            QuickHPCheck(0, 0, 0, 0, 0, -2);
+
+            GoToStartOfTurn(haka);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+        }
+
+        [Test]
+        public void PastVanishIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/PastVanishCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            SetupIncap(baron);
+            AssertIncapacitated(vanish);
+
+            var card = PutInHand("ElbowSmash");
+
+            GoToUseIncapacitatedAbilityPhase(vanish);
+            DecisionSelectTurnTaker = haka.TurnTaker;
+            DecisionSelectCard = card;
+            DecisionSelectTarget = baron.CharacterCard;
+            QuickHPStorage(baron.CharacterCard, haka.CharacterCard, bunker.CharacterCard, scholar.CharacterCard);
+            UseIncapacitatedAbility(vanish, 0);
+            QuickHPCheck(-3, 0, 0, 0);
+        }
+
+        [Test]
+        public void PastVanishIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/PastVanishCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            SetupIncap(baron);
+            AssertIncapacitated(vanish);
+
+            GoToUseIncapacitatedAbilityPhase(vanish);
+            UseIncapacitatedAbility(vanish, 1);
+
+            var uses = GameController.Game.Journal.GetCardPropertiesInteger(vanish.CharacterCard, "Incap2");
+
+
+            var minion = PlayCard("BladeBattalion");
+            AssertHitPoints(minion, 4);
+        }
+
+        [Test]
+        public void PastVanishIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/PastVanishCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+
+            SetupIncap(baron);
+            AssertIncapacitated(vanish);
+
+            var c1 = PlayCard("CrampedQuartersCombat");
+            var c2 = PlayCard("HostageSituation");
+
+            GoToUseIncapacitatedAbilityPhase(vanish);
+
+            QuickShuffleStorage(env);
+            DecisionSelectCards = new[] { c1, c2 };
+            UseIncapacitatedAbility(vanish, 2);
+
+            QuickShuffleCheck(1);
+
+            AssertInDeck(c1);
+            AssertInDeck(c2);
+        }
     }
 }

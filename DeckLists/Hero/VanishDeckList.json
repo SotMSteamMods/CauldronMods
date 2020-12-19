@@ -391,7 +391,7 @@
             "hitpointColor": "E6C8DA",
             "character": true,
             "powers": [
-                "Draw a card. Increase damage dealt by hero targets by 1 until the end of the round."
+                "Draw a card. Increase damage dealt by hero targets by 1 until the end of the turn."
             ],
             "icons": [
                 "HasPower",
