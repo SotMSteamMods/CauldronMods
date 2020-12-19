@@ -9,7 +9,8 @@ namespace Cauldron.Gray
     {
         public RadioactiveCascadeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => c.DoKeywordsContain("radiation")));
+            base.SpecialStringMaker.ShowHeroCharacterCardWithHighestHP();
+            base.SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => c.DoKeywordsContain("radiation"), "radiation"));
         }
 
         public override IEnumerator Play()
@@ -30,7 +31,7 @@ namespace Cauldron.Gray
         public override void AddTriggers()
         {
             //When another villain card is destroyed, destroy this card.
-            base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => action.CardToDestroy.Card.IsVillain && action.WasCardDestroyed, base.DestroyThisCardResponse, TriggerType.DestroySelf, TriggerTiming.After);
+            base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => action.WasCardDestroyed && IsVillain(action.CardToDestroy.Card), base.DestroyThisCardResponse, TriggerType.DestroySelf, TriggerTiming.After);
         }
     }
 }

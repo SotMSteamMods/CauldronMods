@@ -12,7 +12,7 @@ namespace Cauldron.Tiamat
         public ElementOfLightningCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowHeroWithMostCards(true);
-            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "ElementOfLightning"));
+            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "ElementOfLightning", "element of lightning"));
         }
 
         public static readonly string PreventDrawPropertyKey = "ElementOfLightningCannotDraw";
@@ -32,8 +32,7 @@ namespace Cauldron.Tiamat
             //If {Tiamat}, The Eye of the Storm is active, she deals each hero target 2+X lightning damage, where X is the number of Element of Lightning cards in the villain trash.
             if (characterCard.IsInPlayAndHasGameText && !characterCard.IsFlipped)
             {
-                Func<Card, int?> X = (Card c) => new int?(PlusNumberOfThisCardInTrash(2));
-                coroutine = base.DealDamage(characterCard, (Card c) => c.IsHero, X, DamageType.Lightning);
+                coroutine = base.DealDamage(characterCard, (Card c) => c.IsHero, (Card c) => PlusNumberOfThisCardInTrash(2), DamageType.Lightning);
 
                 if (base.UseUnityCoroutines)
                 {
@@ -83,7 +82,7 @@ namespace Cauldron.Tiamat
             yield break;
         }
 
-        public IEnumerator ResumeDrawEffect(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
+        public IEnumerator ResumeDrawEffect(PhaseChangeAction _, OnPhaseChangeStatusEffect _2)
         {
             System.Console.WriteLine("### DEBUG ### - ElementOfLightning.ResumeDrawEffect triggered");
 

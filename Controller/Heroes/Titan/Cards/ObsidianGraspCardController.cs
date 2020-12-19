@@ -30,7 +30,7 @@ namespace Cauldron.Titan
             }
 
             //If Titanform is in play... 
-            if (base.GetTitanform().IsInPlayAndNotUnderCard && storedTarget.Any())
+            if (base.GetTitanform().IsInPlayAndNotUnderCard && storedTarget.Any() && storedTarget.FirstOrDefault().SelectedCard.Location.IsInPlayAndNotUnderCard)
             {
                 //you may discard a card...
                 List<DiscardCardAction> storedResult = new List<DiscardCardAction>();
@@ -70,14 +70,14 @@ namespace Cauldron.Titan
                     }
                 }
             }
-
             yield break;
         }
+
         private IEnumerator SearchLocationAndPlayImmolateByTarget(Location toSearch, Card target)
         {
             IEnumerator coroutine;
             var foundImmolate = FindCardsWhere((Card c) => c.Location == toSearch && c.Identifier == "Immolate").FirstOrDefault();
-            if(foundImmolate != null)
+            if (foundImmolate != null)
             {
                 var controller = FindCardController(foundImmolate);
                 if (controller is ImmolateCardController)

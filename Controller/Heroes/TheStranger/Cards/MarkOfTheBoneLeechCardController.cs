@@ -11,7 +11,7 @@ namespace Cauldron.TheStranger
 
         public MarkOfTheBoneLeechCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new LinqCardCriteria((Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame, "hero targets", false, false, null, null, false))
         {
-            base.SpecialStringMaker.ShowHasBeenUsedThisTurn("FirstTimeDealingDamage", null, null, null);
+            base.SpecialStringMaker.ShowHasBeenUsedThisTurn(FirstTimeDealingDamage, null, null, null);
         }
 
         #endregion Constructors
@@ -21,12 +21,14 @@ namespace Cauldron.TheStranger
         {
             base.AddTriggers();
             //The first time that target deals damage each turn, it regains 1HP.
-            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DidDealDamage && dd.DamageSource != null && dd.DamageSource.Card ==  base.GetCardThisCardIsNextTo(true) && !base.IsPropertyTrue("FirstTimeDealingDamage", null), new Func<DealDamageAction, IEnumerator>(this.GainHpResponse), TriggerType.GainHP, TriggerTiming.After, ActionDescription.DamageTaken, false, true, null, false, null, null, false, false);
+            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DidDealDamage && dd.DamageSource != null && dd.DamageSource.Card ==  base.GetCardThisCardIsNextTo(true) && !base.IsPropertyTrue(FirstTimeDealingDamage), new Func<DealDamageAction, IEnumerator>(this.GainHpResponse), TriggerType.GainHP, TriggerTiming.After, ActionDescription.DamageTaken, false, true, null, false, null, null, false, false);
+
+            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeDealingDamage), TriggerType.Hidden);
         }
 
         private IEnumerator GainHpResponse(DealDamageAction dd)
         {
-            base.SetCardPropertyToTrueIfRealAction("FirstTimeDealingDamage", null);
+            base.SetCardPropertyToTrueIfRealAction(FirstTimeDealingDamage, null);
             //it regains 1HP.
             IEnumerator coroutine = base.GameController.GainHP(base.GetCardThisCardIsNextTo(true), new int?(1), null, null, base.GetCardSource(null));
             if (base.UseUnityCoroutines)

@@ -31,7 +31,7 @@ namespace CauldronTests
             return tt.HasCardsWhere((Card c) => c.NextToLocation != null && c.NextToLocation.Cards.Any((Card nextTo) => nextTo.Identifier == "UpClose"));
         }
 
-        private string MessageTerminator = "There should have been no other messages.";
+        private readonly string MessageTerminator = "There should have been no other messages.";
         protected void CheckFinalMessage()
         {
             GameController.ExhaustCoroutine(GameController.SendMessageAction(MessageTerminator, Priority.High, null));

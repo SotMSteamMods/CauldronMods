@@ -163,21 +163,41 @@ namespace CauldronTests
         [Test()]
         public void TestNonCharacterCardHeroCantMoveSingleMindedPursuit()
         {
-            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "CaptainCosmic", "Megalopolis");
             Card pursuit = GetCard("SingleMindedPursuit");
             Card stalker = GetCard("StalkerAug");
             Card fire = GetCard("FireAug");
             PutOnDeck(swarm, new Card[] { stalker, fire });
             AddCannotDealNextDamageTrigger(swarm, swarm.CharacterCard);
-            Card swift = PlayCard("SwiftBot");
+            Card crest = PlayCard("CosmicCrest");
             StartGame();
 
             //Whenever a pursued hero deals damage to a target other than {SwarmEater}, you may move Single-Minded Pursuit next to that target.
             //Only Hero Character Cards can move it
             DecisionYesNo = true;
-            AssertNextToCard(pursuit, swift);
-            DealDamage(swift, stalker, 2, DamageType.Melee);
-            AssertNextToCard(pursuit, swift);
+            AssertNextToCard(pursuit, crest);
+            DealDamage(crest, stalker, 2, DamageType.Melee);
+            AssertNextToCard(pursuit, crest);
+        }
+
+        [Test]
+        public void TestNonCharacterCardHeroCantMoveSingleMindedPursuit_Seed1342227959()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "CaptainCosmic", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire });
+            AddCannotDealNextDamageTrigger(swarm, swarm.CharacterCard);
+            Card crest = PlayCard("CosmicCrest");
+            StartGame();
+
+            //Whenever a pursued hero deals damage to a target other than {SwarmEater}, you may move Single-Minded Pursuit next to that target.
+            //Only Hero Character Cards can move it
+            DecisionYesNo = true;
+            AssertNextToCard(pursuit, crest);
+            DealDamage(crest, stalker, 2, DamageType.Melee);
+            AssertNextToCard(pursuit, crest);
         }
 
         [Test()]
@@ -473,9 +493,9 @@ namespace CauldronTests
             DealDamage(swarm, fire, 75, DamageType.Melee);
             AssertUnderCard(GetCard("AbsorbedNanites"), fire);
             //Absorb: at the start of the villain turn, {H - 2} players must discard a card.
-            QuickHandStorage(legacy);
+            QuickHandStorage(legacy, haka, unity);
             GoToStartOfTurn(swarm);
-            QuickHandCheck(-1);
+            QuickHandCheck(-1, 0, 0);
         }
 
         [Test()]
@@ -958,7 +978,7 @@ namespace CauldronTests
             AssertUnderCard(GetCard("AbsorbedNanites"), venom);
 
             //Absorb: Whenever {SwarmEater} deals damage to another target, that target deals itself 1 toxic damage.
-            
+
             QuickHPStorage(haka);
             DealDamage(swarm, haka, 2, DamageType.Melee);
 

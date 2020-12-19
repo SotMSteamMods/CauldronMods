@@ -78,7 +78,7 @@ namespace Cauldron.Vector
             }
 
             SelectFunctionDecision selectFunctionDecision 
-                = new SelectFunctionDecision(base.GameController, this.DecisionMaker, choices, false, cardSource: base.GetCardSource());
+                = new SelectFunctionDecision(base.GameController, this.DecisionMaker, choices, false, associatedCards: revealedCards, cardSource: base.GetCardSource());
 
             IEnumerator routine = base.GameController.SelectAndPerformFunction(selectFunctionDecision);
             if (base.UseUnityCoroutines)

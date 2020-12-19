@@ -15,6 +15,8 @@ namespace Cauldron.TheRam
         public FallingMeteorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowNumberOfCardsAtLocations(() => new Location[] { TurnTaker.Trash, TurnTaker.Deck }, new LinqCardCriteria((Card c) => c.Identifier == "UpClose", "", false, singular: "copy of Up Close", plural: "copies of Up Close"));
+            SpecialStringMaker.ShowHighestHP(1, () => Game.H - 2, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !IsUpClose(c), "", false, singular: "hero that is not Up Close", plural: "heroes that are not Up Close"));
+
         }
 
         public override IEnumerator Play()
@@ -77,14 +79,29 @@ namespace Cauldron.TheRam
             }
 
             //"{TheRam} deals each non-villain target {H} projectile damage."
-            IEnumerator damage = DealDamage(GetRam, (Card c) => c.IsInPlayAndHasGameText && c.IsNonVillainTarget, H, DamageType.Projectile);
-            if (base.UseUnityCoroutines)
+            if (RamIfInPlay != null)
             {
-                yield return base.GameController.StartCoroutine(damage);
+                IEnumerator damage = DealDamage(GetRam, (Card c) => c.IsInPlayAndHasGameText && c.IsNonVillainTarget, H, DamageType.Projectile);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(damage);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(damage);
+                }
             }
             else
             {
-                base.GameController.ExhaustCoroutine(damage);
+                IEnumerator message = MessageNoRamToAct(GetCardSource(), "deal damage");
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(message);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(message);
+                }
             }
             yield break;
         }

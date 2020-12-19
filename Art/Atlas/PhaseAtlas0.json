@@ -72,7 +72,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"PhaseCharacter.png":
+"PhaseVillainCharacter.png":
 {
 	"frame": {"x":518,"y":191,"w":176,"h":256},
 	"rotated": false,
@@ -80,7 +80,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PhaseCharacterBack.png":
+"PhaseVillainCharacterBack.png":
 {
 	"frame": {"x":697,"y":191,"w":176,"h":256},
 	"rotated": false,
@@ -88,7 +88,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PhaseDeckBack.png":
+"PhaseVillainDeckBack.png":
 {
 	"frame": {"x":876,"y":191,"w":176,"h":256},
 	"rotated": false,
@@ -143,6 +143,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:57cd51904551fceaf0427a45340f1fac:3c4efa5dd76b55c0bb65da00ca773f83:f60581755079fd6acb7449f5097e4bee$"
+	"smartupdate": "$TexturePacker:SmartUpdate:54ad8fd9b5392e04e8f0f90793fef7db:315c8600a4e2ef03693c360996d2d8cf:f60581755079fd6acb7449f5097e4bee$"
 }
 }

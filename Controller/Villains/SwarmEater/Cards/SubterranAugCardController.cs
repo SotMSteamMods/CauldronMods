@@ -24,11 +24,13 @@ namespace Cauldron.SwarmEater
 
             //Absorb: The first time {SwarmEater} would be dealt damage each turn, reduce that damage by 1.
             this._reduceDamage = base.AddReduceDamageTrigger((DealDamageAction action) => action.Amount > 0 && base.Card.Location.IsUnderCard && !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt), this.ReduceDamageResponse, (Card c) => c == this.CardThatAbsorbedThis(), true);
+
+            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeDamageDealt), TriggerType.Hidden);
         }
 
         private IEnumerator PlayVillainTargetResponse(PhaseChangeAction p)
         {
-            IEnumerable<Card> source = base.FindCardsWhere((Card c) => c.IsVillainTarget && c.Location.IsVillain && c.Location.IsTrash);
+            IEnumerable<Card> source = base.FindCardsWhere((Card c) => IsVillainTarget(c) && c.Location.IsVillain && c.Location.IsTrash);
             if (source.Count<Card>() == 1)
             {
                 string message = $"{base.Card.Title} moves {source.First<Card>().Title} from the villain trash into play.";
@@ -44,10 +46,9 @@ namespace Cauldron.SwarmEater
             }
 
             GameController gameController = base.GameController;
-            bool optional = false;
             IEnumerator coroutine2 = null;
             Random rng = Game.RNG;
-            IEnumerable<Card> trashTargets = base.FindCardsWhere(new LinqCardCriteria(c => c.IsVillainTarget && c.IsInTrash));
+            IEnumerable<Card> trashTargets = base.FindCardsWhere(new LinqCardCriteria(c => IsVillainTarget(c) && c.IsInTrash, "villain targets", false));
             Card cardToPlay = trashTargets.ElementAt(rng.Next(0, trashTargets.Count()));
             if (cardToPlay != null)
             {

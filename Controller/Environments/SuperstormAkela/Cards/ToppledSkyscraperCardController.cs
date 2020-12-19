@@ -18,13 +18,15 @@ namespace Cauldron.SuperstormAkela
         public override void AddTriggers()
         {
             //The first time a villain target would be dealt damage each turn, redirect it to this card.
-            AddTrigger((DealDamageAction dd) => dd.Target.IsVillainTarget && !IsPropertyTrue(GeneratePerTargetKey("VillainTargetWouldBeDealtDamage", dd.Target)) && !base.Journal.DealDamageEntriesThisTurn().Any((DealDamageJournalEntry ddje) => ddje.TargetCard == dd.Target), RedirectToThisCardResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
+            AddTrigger((DealDamageAction dd) => IsVillainTarget(dd.Target) && !IsPropertyTrue(GeneratePerTargetKey("VillainTargetWouldBeDealtDamage", dd.Target)) && !base.Journal.DealDamageEntriesThisTurn().Any((DealDamageJournalEntry ddje) => ddje.TargetCard == dd.Target), RedirectToThisCardResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
 
             //At the start of each hero’s turn, they may choose what order to perform that turn's play, power, and draw phases in.
             AddTrigger((PhaseChangeAction p) => p.FromPhase.TurnTaker.IsHero && p.FromPhase.TurnTaker == p.ToPhase.TurnTaker && !p.FromPhase.TurnTaker.IsIncapacitatedOrOutOfGame && !p.FromPhase.IsBeforeStart && !p.FromPhase.IsAfterEnd && !p.ToPhase.IsBeforeStart && !p.ToPhase.IsAfterEnd, (PhaseChangeAction p) => base.GameController.ChooseNextPhase(p, cardSource: GetCardSource()), new TriggerType[1]
             {
                 TriggerType.ChangePhaseOrder
             }, TriggerTiming.Before);
+
+            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagsAfterLeavesPlay("VillainTargetWouldBeDealtDamage"), TriggerType.Hidden);
         }
 
         private IEnumerator RedirectToThisCardResponse(DealDamageAction dd)

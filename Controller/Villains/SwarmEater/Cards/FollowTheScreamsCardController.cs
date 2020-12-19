@@ -9,7 +9,8 @@ namespace Cauldron.SwarmEater
     {
         public FollowTheScreamsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowLowestHP(numberOfTargets: () => Game.H, cardCriteria: new LinqCardCriteria((Card c) => !c.IsCharacter, "non-character"));
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
         public override IEnumerator Play()

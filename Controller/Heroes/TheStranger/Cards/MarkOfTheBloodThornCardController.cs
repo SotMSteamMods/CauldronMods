@@ -11,7 +11,7 @@ namespace Cauldron.TheStranger
 
         public MarkOfTheBloodThornCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new LinqCardCriteria((Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame, "hero targets", false, false, null, null, false))
         {
-            base.SpecialStringMaker.ShowHasBeenUsedThisTurn("FirstTimeWouldBeDealtDamage", null, null, null);
+            base.SpecialStringMaker.ShowHasBeenUsedThisTurn(FirstTimeWouldBeDealtDamage, null, null, null);
         }
 
         #endregion Constructors
@@ -21,12 +21,14 @@ namespace Cauldron.TheStranger
         {
             base.AddTriggers();
             //Play this next to a hero target. The first time that target is dealt damage each turn, it deals 1 target 1 toxic damage.
-            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DidDealDamage && dd.Target == base.GetCardThisCardIsNextTo(true) && !base.IsPropertyTrue("FirstTimeWouldBeDealtDamage", null), new Func<DealDamageAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DidDealDamage && dd.Target == base.GetCardThisCardIsNextTo(true) && !base.IsPropertyTrue(FirstTimeWouldBeDealtDamage), new Func<DealDamageAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, TriggerTiming.After);
+
+            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeWouldBeDealtDamage), TriggerType.Hidden);
         }
 
         private IEnumerator DealDamageResponse(DealDamageAction dd)
         {
-            base.SetCardPropertyToTrueIfRealAction("FirstTimeWouldBeDealtDamage", null);
+            base.SetCardPropertyToTrueIfRealAction(FirstTimeWouldBeDealtDamage, null);
             //it deals 1 target 1 toxic damage.
             IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.FindHeroTurnTakerController(base.GetCardThisCardIsNextTo(true).Owner.ToHero()), new DamageSource(base.GameController, base.GetCardThisCardIsNextTo(true)), 1, DamageType.Toxic, new int?(1), false, new int?(1), false, false, false, null, null, null, null, null, false, null, null, false, null, base.GetCardSource(null));
             if (base.UseUnityCoroutines)

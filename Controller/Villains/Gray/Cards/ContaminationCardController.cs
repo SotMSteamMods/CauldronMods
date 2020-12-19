@@ -12,6 +12,7 @@ namespace Cauldron.Gray
 
         public ContaminationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowIfElseSpecialString(() => GetHeroCardsDestroyedThisRound().Where(e => (e.Card.IsOngoing || IsEquipment(e.Card)) && e.CardSource == this.Card).Count() > 0, () => GetHeroCardsDestroyedThisRound().Where(e => (e.Card.IsOngoing || IsEquipment(e.Card)) && e.CardSource == this.Card).Count() + " hero card(s) have been destroyed by this card this round.", () => "No hero cards have been destroyed by this card this round.");
         }
 
         private bool SelfDestructionCriteria(DestroyCardAction action)
@@ -27,7 +28,7 @@ namespace Cauldron.Gray
         public override void AddTriggers()
         {
             //Whenever a hero deals damage to a villain target, that hero must destroy 1 of their ongoing or equipment cards.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.IsHero && action.Target.IsVillain && action.IsSuccessful, new Func<DealDamageAction, IEnumerator>(this.DestroyHeroCardResponse), TriggerType.DestroyCard, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.IsHero && IsVillain(action.Target) && action.IsSuccessful, new Func<DealDamageAction, IEnumerator>(this.DestroyHeroCardResponse), TriggerType.DestroyCard, TriggerTiming.After);
             //Destroy this card when {H} hero cards are destroyed this way in one round.
             base.AddTrigger<DestroyCardAction>(SelfDestructionCriteria, base.DestroyThisCardResponse, TriggerType.DestroySelf, TriggerTiming.After);
         }

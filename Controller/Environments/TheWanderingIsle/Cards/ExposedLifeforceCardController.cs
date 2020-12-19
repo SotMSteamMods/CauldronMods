@@ -17,7 +17,7 @@ namespace Cauldron.TheWanderingIsle
         public override void AddTriggers()
         {
             //Increase damage dealt by villain cards by 1.
-            base.AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource.Card.IsVillain, 1);
+            base.AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsCard && IsVillain(dd.DamageSource.Card), 1);
             //Destroy this card if Teryx regains 10HP in a single round.
             base.AddTrigger<GainHPAction>((GainHPAction gh) => gh.HpGainer.Identifier == TeryxIdentifier && this.DidTeryxGain10OrMoreHpThisRound(), this.DestroyCardResponse, new TriggerType[] { TriggerType.DestroySelf }, TriggerTiming.After);
         }

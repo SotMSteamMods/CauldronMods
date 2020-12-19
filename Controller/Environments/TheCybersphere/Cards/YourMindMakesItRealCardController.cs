@@ -11,7 +11,6 @@ namespace Cauldron.TheCybersphere
 
         public YourMindMakesItRealCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddTriggers()
@@ -23,7 +22,7 @@ namespace Cauldron.TheCybersphere
         public override IEnumerator Play()
         {
             //When this card enters play, it deals each target 3 lightning damage.
-            IEnumerator coroutine = base.DealDamage(base.Card, (Card c) => c.IsTarget, 3, DamageType.Lightning);
+            IEnumerator coroutine = base.DealDamage(base.Card, (Card c) => c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 3, DamageType.Lightning);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -34,6 +33,5 @@ namespace Cauldron.TheCybersphere
             }
             yield break;
         }
-
     }
 }

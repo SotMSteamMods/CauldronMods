@@ -13,8 +13,8 @@ namespace Cauldron.SwarmEater
 
         public SwarmEaterCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => !base.Card.IsFlipped, () => this.PursuedCard().AlternateTitleOrTitle + " is the pursued target.", () => "No one is being pursued");
-            base.SpecialStringMaker.ShowLowestHP(cardCriteria: new LinqCardCriteria((Card c) => c != base.Card));
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => !base.Card.IsFlipped, () => this.PursuedCard().AlternateTitleOrTitle + " is the pursued target.", () => "No one is being pursued").Condition = ()=> Game.HasGameStarted;
+            base.SpecialStringMaker.ShowLowestHP(cardCriteria: new LinqCardCriteria((Card c) => c != base.Card)).Condition = () => base.Card.IsFlipped;
         }
 
         public override void AddSideTriggers()
@@ -45,11 +45,11 @@ namespace Cauldron.SwarmEater
                 /**************Trigger added to Single-Minded Pursuit****************/
 
                 //Whenever a villain card is played {SwarmEater} deals the non-hero target other than itself with the lowest HP 3 melee damage.
-                base.AddSideTrigger(base.AddTrigger<PlayCardAction>((PlayCardAction action) => action.CardToPlay.IsVillain && action.WasCardPlayed && !action.IsPutIntoPlay, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After));
+                base.AddSideTrigger(base.AddTrigger<PlayCardAction>((PlayCardAction action) => IsVillain(action.CardToPlay) && action.WasCardPlayed && !action.IsPutIntoPlay, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After));
                 if (base.Game.IsAdvanced)
                 {
                     //Whenever {SwarmEater} destroys a villain target, play the top card of the villain deck.
-                    base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => action.ResponsibleCard == base.Card && action.WasCardDestroyed && action.CardToDestroy.Card.IsVillain, base.PlayTheTopCardOfTheVillainDeckResponse, TriggerType.PlayCard, TriggerTiming.After));
+                    base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => action.ResponsibleCard == base.Card && action.WasCardDestroyed && IsVillain(action.CardToDestroy.Card), base.PlayTheTopCardOfTheVillainDeckResponse, TriggerType.PlayCard, TriggerTiming.After));
                 }
             }
             base.AddDefeatedIfDestroyedTriggers();

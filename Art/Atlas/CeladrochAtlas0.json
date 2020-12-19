@@ -64,7 +64,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"HollowedAngel.png":
+"HollowAngel.png":
 {
 	"frame": {"x":1295,"y":0,"w":256,"h":188},
 	"rotated": false,
@@ -72,7 +72,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"HoursTillDawn.png":
+"HoursTilDawn.png":
 {
 	"frame": {"x":1554,"y":0,"w":256,"h":188},
 	"rotated": false,
@@ -160,7 +160,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"SpringAtrophy.png":
+"SpringsAtrophy.png":
 {
 	"frame": {"x":777,"y":382,"w":256,"h":188},
 	"rotated": false,
@@ -215,6 +215,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:ce33b37752bc75917ddd849a75129d91:5974ef77dc5c8abfa99bc6dba95b4509:8784e4e0512fb42530df1a81f2c7f37e$"
+	"smartupdate": "$TexturePacker:SmartUpdate:6ef86c974749c9fa6708335ed3ecb91b:288a9c2f872747d604e4ea13b7093be1:6d211a259d56d1b0cf19d2085fbd3f3b$"
 }
 }

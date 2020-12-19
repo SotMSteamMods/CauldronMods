@@ -13,7 +13,6 @@ namespace Cauldron.SuperstormAkela
 
         public ScatterburstCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SetCardProperty("TurnEnteredPlay", false);
         }
 
         public override IEnumerator Play()
@@ -29,7 +28,7 @@ namespace Cauldron.SuperstormAkela
 
             //AddPhaseChangeTrigger(tt => DidEnterPlayLastTurn(), p => p == Phase.Start, _ => true, ShuffleResponse, new TriggerType[] { TriggerType.ShuffleCards, TriggerType.GainHP, TriggerType.DestroySelf }, TriggerTiming.Before);
             base.AddTrigger<PhaseChangeAction>((PhaseChangeAction p) => DidEnterPlayLastTurn() && p.FromPhase.IsEnd, ShuffleResponse, new TriggerType[] { TriggerType.ShuffleCards, TriggerType.GainHP, TriggerType.DestroySelf }, TriggerTiming.Before);
-
+            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay("TurnEnteredPlay"), TriggerType.Hidden);
         }
 
         private IEnumerator ShuffleResponse(PhaseChangeAction pca)
@@ -50,7 +49,7 @@ namespace Cauldron.SuperstormAkela
             if(storedResults.Any())
             {
                 TurnTakerController selectedVillainTurnTakerController = storedResults.First();
-                coroutine = GameController.ShuffleCardsInPlayArea(selectedVillainTurnTakerController, new LinqCardCriteria((Card c) => !c.IsCharacter && c.IsVillain, "non-character villain card"), cardSource: GetCardSource());
+                coroutine = GameController.ShuffleCardsInPlayArea(selectedVillainTurnTakerController, new LinqCardCriteria((Card c) => !c.IsCharacter && IsVillain(c), "non-character villain card"), cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

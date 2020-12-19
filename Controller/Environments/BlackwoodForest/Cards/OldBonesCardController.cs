@@ -22,15 +22,12 @@ namespace Cauldron.BlackwoodForest
 
         public OldBonesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddTriggers()
         {
             // Destroy self at start of next env. turn
-            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker,
-                base.DestroyThisCardResponse,
-                TriggerType.DestroySelf);
+            AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, DestroyThisCardResponse, TriggerType.DestroySelf);
 
             base.AddTriggers();
         }
@@ -56,48 +53,43 @@ namespace Cauldron.BlackwoodForest
         private IEnumerator ShuffleTrashResponse(Location trash)
         {
             // Shuffle trash pile
-            IEnumerator shuffleTrashRoutine = base.GameController.ShuffleLocation(trash);
-
+            var coroutine = base.GameController.ShuffleLocation(trash);
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(shuffleTrashRoutine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(shuffleTrashRoutine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
 
             List<Card> revealedCards = new List<Card>();
-            IEnumerator revealCardsRoutine = base.GameController.RevealCards(this.TurnTakerController, trash, CardsToMove, revealedCards,
-                revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: this.GetCardSource());
-
+            coroutine = GameController.RevealCards(this.TurnTakerController, trash, CardsToMove, revealedCards,
+                revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards,
+                cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(revealCardsRoutine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(revealCardsRoutine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (!revealedCards.Any())
+            if (revealedCards.Any())
             {
-                yield break;
-            }
+                Card revealedCard = revealedCards.First();
 
-            Card revealedCard = revealedCards.First();
-
-            // Top deck the card 
-            IEnumerator moveCardsRoutine = base.GameController.MoveCard(this.TurnTakerController, revealedCard, revealedCard.NativeDeck,
-                cardSource: base.GetCardSource());
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(moveCardsRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(moveCardsRoutine);
+                // Top deck the card 
+                coroutine = GameController.MoveCard(this.TurnTakerController, revealedCard, revealedCard.NativeDeck, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
         }
     }

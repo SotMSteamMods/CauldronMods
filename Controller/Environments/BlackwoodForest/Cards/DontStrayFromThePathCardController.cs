@@ -29,9 +29,7 @@ namespace Cauldron.BlackwoodForest
 
         public override void AddTriggers()
         {
-            base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker,
-                StartOfTurnResponse,
-                TriggerType.RevealCard);
+            base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker, StartOfTurnResponse, TriggerType.RevealCard);
 
             base.AddTriggers();
         }
@@ -43,58 +41,51 @@ namespace Cauldron.BlackwoodForest
 
         private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
         {
-            LinqCardCriteria envCardsInPlay =
-                new LinqCardCriteria(card => !card.Equals(this.Card) && card.IsInPlayAndHasGameText && card.IsEnvironment);
+            var criteria = new LinqCardCriteria(card => this.Card != card && card.IsInPlayAndHasGameText && card.IsEnvironment && GameController.IsCardVisibleToCardSource(card, GetCardSource()));
+            IEnumerable<Card> cardResults = FindCardsWhere(criteria);
+            if (cardResults.Any())
+            {
+                // At least one other env. card is in play that isn't this card, proceed
+                List<Card> revealedCards = new List<Card>();
+                var coroutine = GameController.RevealCards(TurnTakerController, FindEnvironment().TurnTaker.Deck, CardsToReveal, revealedCards, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                //deck could be empty
+                if (revealedCards.Any())
+                {
+                    var revealedCard = revealedCards.First();
+                    if (IsHound(revealedCard))
+                    {
+                        // The Hound revealed, put into play
+                        coroutine = base.GameController.PlayCard(TurnTakerController, revealedCard, true);
+                    }
+                    else
+                    {
+                        // Discard
+                        coroutine = base.GameController.MoveCard(TurnTakerController, revealedCard, FindEnvironment().TurnTaker.Trash);
+                    }
 
-            IEnumerable<Card> cardResults = FindCardsWhere(envCardsInPlay);
-
-            if (!cardResults.Any())
-            {
-                yield break;
-            }
-
-            // At least one other env. card is in play that isn't this card, proceed
-            List<Card> revealedCards = new List<Card>();
-            IEnumerator revealCardsRoutine = base.GameController.RevealCards(this.TurnTakerController, base.FindEnvironment().TurnTaker.Deck, 
-                CardsToReveal, revealedCards, cardSource: base.GetCardSource());
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(revealCardsRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(revealCardsRoutine);
-            }
-
-            IEnumerator cardActionRoutine;
-            if (revealedCards.Any() && IsHound(revealedCards.First()))
-            {
-                // The Hound revealed, put into play
-                cardActionRoutine = base.GameController.PlayCard(this.TurnTakerController, revealedCards.First(), true);
-            }
-            else
-            {
-                // Discard
-                cardActionRoutine = base.GameController.MoveCard(this.TurnTakerController, revealedCards.First(),
-                    FindEnvironment().TurnTaker.Trash);
-            }
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(cardActionRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(cardActionRoutine);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
             }
         }
 
         private bool IsHound(Card card)
         {
-            return card != null 
-                && card.Identifier.Equals(TheHoundCardController.Identifier) 
-                && base.GameController.DoesCardContainKeyword(card, "grim", false, false);
+            return card != null && card.Identifier.Equals(TheHoundCardController.Identifier);
         }
     }
 }

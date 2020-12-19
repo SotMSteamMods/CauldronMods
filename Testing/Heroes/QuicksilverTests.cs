@@ -607,6 +607,22 @@ namespace CauldronTests
             DealDamage(apostate, quicksilver, 30, DamageType.Infernal);
             AssertHitPoints(quicksilver.CharacterCard, 1);
         }
+        [Test]
+        public void TestMalleableArmorWithRedirect()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "TheScholar", "RookCity");
+            StartGame();
+
+            //If {Quicksilver} would be reduced from greater than 1 HP to 0 or fewer HP, restore her to 1HP.
+            PlayCard("MalleableArmor");
+
+            PlayCard("AlchemicalRedirection");
+
+            SetHitPoints(quicksilver, 5);
+
+            DealDamage(apostate, quicksilver, 10, DamageType.Infernal);
+            AssertHitPoints(quicksilver.CharacterCard, 5);
+        }
 
         [Test]
         public void TestMalleableArmorDoesNotModifyDamageAmount()
@@ -754,6 +770,25 @@ namespace CauldronTests
             QuickHPStorage(apostate, scholar);
             DealDamage(legacy, scholar, 2, DamageType.Melee);
             QuickHPCheck(0, -2);
+        }
+        [Test()]
+        public void TestMirrorShardNoSameTargetRedirect()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "TheScholar", "TheCourtOfBlood");
+            StartGame();
+
+            PlayCard("MirrorShard");
+
+            DecisionYesNo = true;
+            DecisionSelectTarget = apostate.CharacterCard;
+
+            QuickHPStorage(apostate, quicksilver);
+            DealDamage(legacy, quicksilver, 2, DamageType.Melee);
+            QuickHPCheck(0, -2);
+
+            PlayCard("AlchemicalRedirection");
+            DealDamage(legacy, quicksilver, 2, DamageType.Melee);
+            QuickHPCheck(-3, -2);
         }
 
         [Test()]
