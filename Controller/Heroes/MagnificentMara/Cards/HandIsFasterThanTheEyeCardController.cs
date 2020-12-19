@@ -38,7 +38,7 @@ namespace Cauldron.MagnificentMara
         {
             //"When a non-relic, non-character villain card would activate start of turn or end of turn text,
             //destroy it instead. Then, destroy this card."
-            AddTrigger((GameAction ga) => _justActivatedTrigger != null && ga.CardSource != null && ga.CardSource.Card == _justActivatedTrigger.CardSource.Card && IsFirstOrOnlyCopyOfThisCardInPlay(),
+            AddTrigger((GameAction ga) => !this.IsBeingDestroyed && _justActivatedTrigger != null && ga.CardSource != null && ga.CardSource.Card == _justActivatedTrigger.CardSource.Card && IsFirstOrOnlyCopyOfThisCardInPlay(),
                             (GameAction ga) => InterruptAction(ga),
                             TriggerType.CancelAction,
                             TriggerTiming.Before);

@@ -15,7 +15,7 @@ namespace Cauldron.MagnificentMara
         public override void AddTriggers()
         {
             //"When a non-character card from another deck would be destroyed, you may put it on the top or bottom of its deck instead. If you do, destroy this card.",
-            AddTrigger((DestroyCardAction dc) => !dc.CardToDestroy.Card.IsCharacter && dc.CardToDestroy.TurnTaker != this.TurnTaker && !GameController.IsCardIndestructible(dc.CardToDestroy.Card),
+            AddTrigger((DestroyCardAction dc) => !this.IsBeingDestroyed && !dc.CardToDestroy.Card.IsCharacter && dc.CardToDestroy.TurnTaker != this.TurnTaker && !GameController.IsCardIndestructible(dc.CardToDestroy.Card),
                                                 MaybeMoveInsteadResponse,
                                                 new TriggerType[] { TriggerType.MoveCard, TriggerType.DestroySelf },
                                                 TriggerTiming.Before);
