@@ -13,12 +13,8 @@ namespace Cauldron.Tiamat
 
         }
 
-        public override IEnumerator Play()
-        {
-            //Whenever Element of Fire enters play and {InfernoTiamatCharacter} is decapitated, if {DecayTiamatCharacter} is active she deals each hero target X toxic damage, where X = 2 plus the number of Acid Breaths in the villain trash.
-            this.alternateElementCoroutine = base.DealDamage(base.SecondHeadCardController().Card, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => this.PlusNumberOfACardInTrash(2, "AcidBreath"), DamageType.Toxic);
-            yield break;
-        }
+        //Whenever Element of Fire enters play and {InfernoTiamatCharacter} is decapitated, if {DecayTiamatCharacter} is active she deals each hero target X toxic damage, where X = 2 plus the number of Acid Breaths in the villain trash.
+        protected override IEnumerator alternateElementCoroutine => base.DealDamage(base.SecondHeadCardController().Card, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => this.PlusNumberOfACardInTrash(2, "AcidBreath"), DamageType.Toxic);
 
         protected override ITrigger[] AddFrontTriggers()
         {

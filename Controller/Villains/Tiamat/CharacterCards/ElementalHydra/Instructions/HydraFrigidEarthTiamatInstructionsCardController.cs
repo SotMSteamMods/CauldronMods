@@ -12,12 +12,8 @@ namespace Cauldron.Tiamat
 
         }
 
-        public override IEnumerator Play()
-        {
-            //Whenever Element of Ice enters play and {WinterTiamatCharacter} is decapitated, if {EarthTiamatCharacter} is active she deals the hero target with the highest HP X melee damage, where X = {H} plus the number of Sky Breaker cards in the villain trash.
-            this.alternateElementCoroutine = base.DealDamageToHighestHP(base.SecondHeadCardController().Card, 1, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => this.PlusNumberOfACardInTrash(Game.H, "SkyBreaker"), DamageType.Melee);
-            yield break;
-        }
+        //Whenever Element of Ice enters play and {WinterTiamatCharacter} is decapitated, if {EarthTiamatCharacter} is active she deals the hero target with the highest HP X melee damage, where X = {H} plus the number of Sky Breaker cards in the villain trash.
+        protected override IEnumerator alternateElementCoroutine => base.DealDamageToHighestHP(base.SecondHeadCardController().Card, 1, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => this.PlusNumberOfACardInTrash(Game.H, "SkyBreaker"), DamageType.Melee);
 
         protected override ITrigger[] AddFrontTriggers()
         {

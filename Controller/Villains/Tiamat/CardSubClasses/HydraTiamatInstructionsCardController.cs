@@ -19,7 +19,7 @@ namespace Cauldron.Tiamat
         protected abstract ITrigger[] AddFrontTriggers();
         protected abstract ITrigger[] AddFrontAdvancedTriggers();
         protected abstract ITrigger[] AddBackTriggers();
-        protected IEnumerator alternateElementCoroutine;
+        protected virtual IEnumerator alternateElementCoroutine => null;
 
         public string FirstHead { get; }
         public string SecondHead { get; }
@@ -107,6 +107,8 @@ namespace Cauldron.Tiamat
         {
             //Whenever the corresponding "Element of" Card enters play and the firstHead is decapitated, if the secondHead is active do the alternate response.
             IEnumerator coroutine = alternateElementCoroutine;
+            Log.Debug("Attempting AlternateElementResponse.");
+            Log.Debug($"Possible nulls: Firsthead? {FirstHeadCardController() == null} SecondHead? {SecondHeadCardController() == null} Alt coroutine? {alternateElementCoroutine == null}");
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
