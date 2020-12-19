@@ -14,6 +14,12 @@ namespace Cauldron.TheRam
             AddUpCloseTrackers();
         }
 
+        public override void AddStartOfGameTriggers()
+        {
+            base.AddStartOfGameTriggers();
+            (TurnTakerController as TheRamTurnTakerController).HandleWintersEarly(true);
+        }
+
         public override void AddSideTriggers()
         {
             if(!Card.IsFlipped)

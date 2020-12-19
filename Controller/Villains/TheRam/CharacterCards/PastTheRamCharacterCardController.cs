@@ -15,6 +15,12 @@ namespace Cauldron.TheRam
             SpecialStringMaker.ShowListOfCardsAtLocation(this.Card.UnderLocation, new LinqCardCriteria());
         }
 
+        public override void AddStartOfGameTriggers()
+        {
+            base.AddStartOfGameTriggers();
+            (TurnTakerController as TheRamTurnTakerController).HandleWintersEarly(false);
+        }
+
         public override void AddSideTriggers()
         {
             if(!Card.IsFlipped)
