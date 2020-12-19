@@ -15,6 +15,12 @@ namespace Cauldron.TheRam
             SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
+        public override void AddStartOfGameTriggers()
+        {
+            base.AddStartOfGameTriggers();
+            (TurnTakerController as TheRamTurnTakerController).HandleWintersEarly(true);
+        }
+
         public override void AddSideTriggers()
         {
             if(!Card.IsFlipped)

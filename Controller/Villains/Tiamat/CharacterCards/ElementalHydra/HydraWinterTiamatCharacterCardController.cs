@@ -11,6 +11,12 @@ namespace Cauldron.Tiamat
 
         }
 
+        public override void AddStartOfGameTriggers()
+        {
+            base.AddStartOfGameTriggers();
+            (TurnTakerController as TiamatTurnTakerController).MoveStartingCards();
+        }
+
         protected override ITrigger[] AddFrontTriggers()
         {
             return new ITrigger[]

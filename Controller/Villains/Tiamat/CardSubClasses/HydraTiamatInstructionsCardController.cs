@@ -22,7 +22,7 @@ namespace Cauldron.Tiamat
         protected abstract ITrigger[] AddFrontTriggers();
         protected abstract ITrigger[] AddFrontAdvancedTriggers();
         protected abstract ITrigger[] AddBackTriggers();
-        protected IEnumerator alternateElementCoroutine;
+        protected virtual IEnumerator alternateElementCoroutine => DoNothing();
 
         public string FirstHead { get; }
         public string SecondHead { get; }

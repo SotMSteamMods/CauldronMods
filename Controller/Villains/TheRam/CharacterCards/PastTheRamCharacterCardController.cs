@@ -15,6 +15,12 @@ namespace Cauldron.TheRam
             SpecialStringMaker.ShowNumberOfCardsUnderCard(base.Card).Condition = () => !base.CharacterCard.IsFlipped;
         }
 
+        public override void AddStartOfGameTriggers()
+        {
+            base.AddStartOfGameTriggers();
+            (TurnTakerController as TheRamTurnTakerController).HandleWintersEarly(false);
+        }
+
         public override void AddSideTriggers()
         {
             if(!Card.IsFlipped)
