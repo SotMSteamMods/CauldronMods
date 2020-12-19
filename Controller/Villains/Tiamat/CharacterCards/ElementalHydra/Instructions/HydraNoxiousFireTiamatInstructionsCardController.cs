@@ -14,8 +14,8 @@ namespace Cauldron.Tiamat
             SpecialStringMaker.ShowSpecialString(() => "The heroes may not win the game.").Condition = () => !base.Card.IsFlipped;
             SpecialStringMaker.ShowNumberOfCards(new LinqCardCriteria((Card c) => c.DoKeywordsContain("head") && c.IsFlipped, "", useCardsSuffix: false, singular: "decapitated head", plural: "decapitated heads")).Condition = () => base.Card.IsFlipped;
             SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => !base.Card.IsFlipped;
-            SpecialStringMaker.ShowHeroTargetWithHighestHP(ranking: 2).Condition = () => base.Card.IsFlipped && !firstHead.Card.IsFlipped;
-            SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "AcidBreath", "acid breath")).Condition = () => base.Card.IsFlipped && firstHead.Card.IsFlipped && !secondHead.Card.IsFlipped && secondHead.Card.IsInPlayAndNotUnderCard;
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(ranking: 2).Condition = () => base.Card.IsFlipped && !FirstHeadCardController().Card.IsFlipped;
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "AcidBreath", "acid breath")).Condition = () => base.Card.IsFlipped && FirstHeadCardController().Card.IsFlipped && !SecondHeadCardController().Card.IsFlipped && SecondHeadCardController().Card.IsInPlayAndNotUnderCard;
 
 
         }

@@ -9,9 +9,9 @@ namespace Cauldron.Tiamat
     {
         public HydraFrigidEarthTiamatInstructionsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "HydraWinterTiamatCharacter", "HydraEarthTiamatCharacter", "ElementOfIce")
         {
-            SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => base.Card.IsFlipped && firstHead.Card.IsFlipped && !secondHead.Card.IsFlipped && secondHead.Card.IsInPlayAndNotUnderCard;
-            SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "SkyBreaker", "sky breaker")).Condition = () => base.Card.IsFlipped && firstHead.Card.IsFlipped && !secondHead.Card.IsFlipped && secondHead.Card.IsInPlayAndNotUnderCard;
-            SpecialStringMaker.ShowHeroTargetWithLowestHP().Condition = () => base.Card.IsFlipped && !firstHead.Card.IsFlipped;
+            SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => base.Card.IsFlipped && FirstHeadCardController().Card.IsFlipped && !SecondHeadCardController().Card.IsFlipped && SecondHeadCardController().Card.IsInPlayAndNotUnderCard;
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "SkyBreaker", "sky breaker")).Condition = () => base.Card.IsFlipped && FirstHeadCardController().Card.IsFlipped && !SecondHeadCardController().Card.IsFlipped && SecondHeadCardController().Card.IsInPlayAndNotUnderCard;
+            SpecialStringMaker.ShowHeroTargetWithLowestHP().Condition = () => base.Card.IsFlipped && !FirstHeadCardController().Card.IsFlipped;
 
         }
 

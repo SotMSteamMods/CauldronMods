@@ -13,8 +13,8 @@ namespace Cauldron.Tiamat
         {
            
             SpecialStringMaker.ShowSpecialString(() => BuildDecapitatedHeadList());
-            SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: 1 + NumberOfOngoingsInTrash()).Condition = () => base.Card.IsFlipped && firstHead.Card.IsFlipped && !secondHead.Card.IsFlipped && secondHead.Card.IsInPlayAndNotUnderCard;
-            SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => base.Card.IsFlipped && !firstHead.Card.IsFlipped;
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: 1 + NumberOfOngoingsInTrash()).Condition = () => base.Card.IsFlipped && FirstHeadCardController().Card.IsFlipped && !SecondHeadCardController().Card.IsFlipped && SecondHeadCardController().Card.IsInPlayAndNotUnderCard;
+            SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => base.Card.IsFlipped && !FirstHeadCardController().Card.IsFlipped;
         }
 
         public override IEnumerator Play()
