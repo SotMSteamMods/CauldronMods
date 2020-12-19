@@ -1037,7 +1037,7 @@ namespace CauldronTests
 
             Card wand = PlayCard("WandOfBanishment");
             Card bike = PlayCard("SweetRhonda");
-            DecisionSelectFunction = 1;
+            DecisionSelectFunction = 0;
             QuickHandStorage(voidMainstay);
 
             DestroyCard(bike);
@@ -1055,7 +1055,7 @@ namespace CauldronTests
 
             Card wand = PlayCard("WandOfBanishment");
             Card bike = PlayCard("SweetRhonda");
-            DecisionSelectFunction = 2;
+            DecisionSelectFunction = 1;
             QuickHandStorage(voidMainstay);
 
             DestroyCard(bike);
@@ -1073,7 +1073,7 @@ namespace CauldronTests
 
             Card wand = PlayCard("WandOfBanishment");
             Card bike = PlayCard("SweetRhonda");
-            DecisionSelectFunction = 0;
+            DecisionDoNotSelectFunction = true;
             QuickHandStorage(voidMainstay);
 
             DestroyCard(bike);
@@ -1091,7 +1091,7 @@ namespace CauldronTests
 
             Card wand = PlayCard("WandOfBanishment");
             Card crystal = PlayCard("DowsingCrystal");
-            DecisionSelectFunction = 2;
+            DecisionSelectFunction = 1;
 
             AssertNoDecision();
 

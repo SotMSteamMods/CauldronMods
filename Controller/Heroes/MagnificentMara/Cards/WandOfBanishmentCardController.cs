@@ -27,11 +27,10 @@ namespace Cauldron.MagnificentMara
             Card card = dc.CardToDestroy.Card;
             var functions = new List<Function>
             {
-                new Function(DecisionMaker, $"Let {card.Title} be destroyed", SelectionType.None, () => GameController.DoNothing()),
                 new Function(DecisionMaker, $"Put {card.Title} on top of its deck", SelectionType.MoveCardOnDeck, () => CancelDestructionAndMoveCard(dc, card.NativeDeck)),
                 new Function(DecisionMaker, $"Put {card.Title} on the bottom of its deck", SelectionType.MoveCardOnBottomOfDeck, () => CancelDestructionAndMoveCard(dc, card.NativeDeck, true))
             };
-            var selectFunction = new SelectFunctionDecision(GameController, DecisionMaker, functions, optional: false, associatedCards: new Card[] { card }, cardSource: GetCardSource());
+            var selectFunction = new SelectFunctionDecision(GameController, DecisionMaker, functions, optional: true, associatedCards: new Card[] { card }, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectAndPerformFunction(selectFunction);
             if (UseUnityCoroutines)
             {
