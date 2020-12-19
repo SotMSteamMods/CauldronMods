@@ -88,8 +88,15 @@ namespace Cauldron.Starlight
             {
                 if (InstructionCardController != null)
                 {
-                    Log.Warning("There was a request for Nightlore Council Starlight's character card, which should be null.");
-                    return null;
+                    if (this.HasMultipleCharacterCards)
+                    {
+                        Log.Warning("There was a request for Nightlore Council Starlight's character card, which should be null.");
+                        return null;
+                    }
+                    else
+                    {
+                        Log.Debug("There was a request for Nightlore Council Starlight's character card before setup was complete. Returning instruction card to avoid potential null reference errors.");
+                    }
                 }
                 return base.CharacterCard;
             }
