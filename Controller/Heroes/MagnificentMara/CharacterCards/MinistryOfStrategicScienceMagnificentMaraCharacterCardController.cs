@@ -15,8 +15,41 @@ namespace Cauldron.MagnificentMara
         public override IEnumerator UsePower(int index = 0)
         {
             //"{MagnificentMara} deals 1 target 2 radiant damage. Increase damage dealt by that target by 1 until the start of your next turn."
+            int numTargets = GetPowerNumeral(0, 1);
+            int numDamage = GetPowerNumeral(1, 2);
+            int numBoost = GetPowerNumeral(2, 1);
 
+            IEnumerator coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, this.Card), numDamage, DamageType.Radiant, numTargets, false, numTargets,
+                                                                addStatusEffect: dd => IncreaseDamageDealtByThatTargetResponse(dd, numBoost), selectTargetsEvenIfCannotDealDamage: true, cardSource: this.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
+        }
+
+        private IEnumerator IncreaseDamageDealtByThatTargetResponse(DealDamageAction dd, int numBoost)
+        {
+            //Increase damage dealt by that target by 1 until the start of your next turn.
+            var target = dd.Target;
+            var boostEffect = new IncreaseDamageStatusEffect(numBoost);
+            boostEffect.UntilStartOfNextTurn(this.TurnTaker);
+            boostEffect.SourceCriteria.IsSpecificCard = target;
+            boostEffect.UntilCardLeavesPlay(target);
+
+            IEnumerator coroutine = AddStatusEffect(boostEffect);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
 
         public override IEnumerator UseIncapacitatedAbility(int index)

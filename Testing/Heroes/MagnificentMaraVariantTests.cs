@@ -51,5 +51,34 @@ namespace CauldronTests
 
             Assert.AreEqual(25, mara.CharacterCard.HitPoints);
         }
+        [Test]
+        public void TestMOSSMaraPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara/MinistryOfStrategicScienceMagnificentMaraCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DecisionSelectTargets = new Card[] { bunker.CharacterCard, baron.CharacterCard };
+
+            QuickHPStorage(baron.CharacterCard, bunker.CharacterCard, MDP);
+
+            DealDamage(bunker, MDP, 1, DTM);
+            QuickHPCheck(0, 0, -1);
+
+            UsePower(mara);
+            DealDamage(bunker, MDP, 1, DTM);
+            //bunker takes 2 from power, MDP takes 1 + 1 boost
+            QuickHPCheck(0, -2, -2);
+
+            UsePower(mara);
+            DealDamage(baron, bunker, 1, DTM);
+            //should not require damage to go through for the boost to happen
+            QuickHPCheck(0, -2, 0);
+
+            //wears off on Mara's turn
+            GoToStartOfTurn(mara);
+            DealDamage(bunker, MDP, 1, DTM);
+            DealDamage(baron, bunker, 1, DTM);
+            QuickHPCheck(0, -1, -1);
+        }
     }
 }
