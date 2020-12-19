@@ -91,27 +91,6 @@ namespace Cauldron.TheRam
             return GameController.DoAction(upCloseToTrash);
         }
 
-        private IEnumerator HandleWinters(bool banish = true)
-        {
-            Card winters = FindCardsWhere((Card c) => c.Title == "Admiral Winters").FirstOrDefault();
-            if (winters == null || winters.Location != TurnTaker.OffToTheSide)
-            {
-                yield break;
-            }
-
-            Location targetLocation = banish ? TurnTaker.InTheBox : TurnTaker.PlayArea;
-            IEnumerator coroutine = GameController.MoveCard(this, winters, targetLocation);
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
-        }
-
         public void HandleWintersEarly(bool banish = true)
         {
             Card winters = TurnTaker.FindCard("AdmiralWintersCharacter", true);

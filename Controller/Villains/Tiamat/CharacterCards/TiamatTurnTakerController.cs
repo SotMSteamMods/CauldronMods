@@ -93,37 +93,5 @@ namespace Cauldron.Tiamat
                 TurnTaker.MoveCard(c, TurnTaker.InTheBox);
             }
         }
-
-        private IEnumerator ManageCharacters()
-        {
-            IEnumerator coroutine;
-            //Start in play
-            foreach (Card c in this.inPlay)
-            {
-                coroutine = base.GameController.PlayCard(this, c);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-            //Banish to Box
-            foreach (Card c in this.inBox)
-            {
-                coroutine = base.GameController.MoveCard(this, c, base.TurnTaker.InTheBox);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-            yield break;
-        }
     }
 }
