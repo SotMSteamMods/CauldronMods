@@ -9,9 +9,7 @@ namespace Cauldron.SwarmEater
     {
         public JumperAugCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            
-           base.SpecialStringMaker.ShowHeroTargetWithLowestHP(numberOfTargets: 2).Condition = () => base.Card.IsInPlayAndNotUnderCard;
-         
+            base.SpecialStringMaker.ShowHeroTargetWithLowestHP(numberOfTargets: 2).Condition = () => base.Card.IsInPlayAndNotUnderCard;
         }
 
         public override void AddTriggers()
@@ -22,7 +20,7 @@ namespace Cauldron.SwarmEater
             base.AddEndOfTurnTrigger((TurnTaker tt) => base.Card.IsInPlayAndNotUnderCard && tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
 
             //Absorb: reduce damage dealt to {SwarmEater} by 1.
-            base.AddReduceDamageTrigger((Card c) => base.Card.Location.IsUnderCard && c == this.CardThatAbsorbedThis(), 1);
+            base.AddReduceDamageTrigger((Card c) => CanAbsorbEffectTrigger() && c == this.CardThatAbsorbedThis(), 1);
         }
 
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
