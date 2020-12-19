@@ -32,9 +32,11 @@ namespace Cauldron.TheKnight
                 Card target = TurnTaker.FindCard(charID);
                 characterCards.Add(target);
 
-                Location destination = target.Location;
-                if (destination.Name == LocationName.OffToTheSide)
+                Location currentLoc = target.Location;
+
+                if (currentLoc.IsOffToTheSide)
                 {
+                    Location destination;
                     //Log.Debug("Looking for destination...");
                     if (banish)
                     {
@@ -46,13 +48,7 @@ namespace Cauldron.TheKnight
                         //Log.Debug("Putting in play...");
                         destination = TurnTaker.PlayArea;
                     }
-                    destination.AddCard(target);
-                    if (target.Location.Name == LocationName.PlayArea && !GameController.Game.OrderedCardsInPlay.Contains(target))
-                    {
-                        //Log.Debug("But the game does not know that it is in play");
-                        GameController.Game.AssignPlayCardIndex(target);
-                        //Log.Debug($"Given index {target.PlayIndex}");
-                    }
+                    TurnTaker.MoveCard(target, destination);
                 }
 
             }

@@ -32,8 +32,9 @@ namespace Cauldron.Starlight
                 Card target = TurnTaker.FindCard(charID);
                 characterCards.Add(target);
 
-                Location destination = target.Location;
-                if (destination.Name == LocationName.OffToTheSide)
+                Location oldLocation = target.Location;
+                Location destination;
+                if (oldLocation.IsOffToTheSide)
                 {
                     //Log.Debug("Looking for destination...");
                     if (banish)
@@ -46,13 +47,19 @@ namespace Cauldron.Starlight
                         //Log.Debug("Putting in play...");
                         destination = TurnTaker.PlayArea;
                     }
+
+                    TurnTaker.MoveCard(target, destination);
+                    /*
+                    oldLocation.RemoveCard(target);
                     destination.AddCard(target);
+                    
                     if (target.Location.Name == LocationName.PlayArea && !GameController.Game.OrderedCardsInPlay.Contains(target))
                     {
                         //Log.Debug("But the game does not know that it is in play");
                         GameController.Game.AssignPlayCardIndex(target);
                         //Log.Debug($"Given index {target.PlayIndex}");
                     }
+                    */
                 }
 
             }
