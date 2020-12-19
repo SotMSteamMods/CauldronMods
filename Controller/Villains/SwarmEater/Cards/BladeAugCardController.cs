@@ -9,9 +9,8 @@ namespace Cauldron.SwarmEater
     {
         public BladeAugCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
-            base.SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = ()=> base.Card.IsInPlayAndNotUnderCard;
-            base.SpecialStringMaker.ShowHighestHP(cardCriteria: new LinqCardCriteria((Card c) => c != this.CardThatAbsorbedThis())).Condition = () => base.Card.IsUnderCard;
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => base.Card.IsInPlayAndNotUnderCard;
+            base.SpecialStringMaker.ShowHighestHP(cardCriteria: new LinqCardCriteria((Card c) => c != this.CardThatAbsorbedThis())).Condition = () => CanAbsorbEffectTrigger();
         }
 
         public override void AddTriggers()
@@ -20,7 +19,7 @@ namespace Cauldron.SwarmEater
             base.AddEndOfTurnTrigger((TurnTaker tt) => base.Card.IsInPlayAndNotUnderCard && tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
 
             //Absorb: at the end of the villain turn, {SwarmEater} deals the target other than itself with the highest HP 2 lightning damage.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => base.Card.Location.IsUnderCard && tt == base.TurnTaker, this.AbsorbDealDamageResponse, TriggerType.DealDamage);
+            base.AddEndOfTurnTrigger((TurnTaker tt) => CanAbsorbEffectTrigger() && tt == base.TurnTaker, this.AbsorbDealDamageResponse, TriggerType.DealDamage);
         }
 
         private IEnumerator DealDamageResponse(PhaseChangeAction action)

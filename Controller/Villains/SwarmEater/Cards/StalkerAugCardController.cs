@@ -19,7 +19,7 @@ namespace Cauldron.SwarmEater
             base.AddEndOfTurnTrigger((TurnTaker tt) => base.Card.IsInPlayAndNotUnderCard && tt == base.TurnTaker, this.DealDamageExceptLowestResponse, TriggerType.DealDamage);
 
             //At the end of the villain turn, {SwarmEater} deals each other target 1 irreducible energy damage.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => base.Card.Location.IsUnderCard && tt == base.TurnTaker, this.AbsorbDealDamageResponse, TriggerType.DealDamage);
+            base.AddEndOfTurnTrigger((TurnTaker tt) => CanAbsorbEffectTrigger() && tt == base.TurnTaker, this.AbsorbDealDamageResponse, TriggerType.DealDamage);
         }
 
         private IEnumerator DealDamageExceptLowestResponse(PhaseChangeAction action)
@@ -33,7 +33,7 @@ namespace Cauldron.SwarmEater
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            if (base.FindActiveHeroTurnTakerControllers().Count<HeroTurnTakerController>() == 1)
+            if (base.FindActiveHeroTurnTakerControllers().Count() == 1)
             {
                 coroutine = base.GameController.SendMessageAction(base.Card.Title + " does not deal damage because there is only one hero target.", Priority.Medium, base.GetCardSource(null), null, false);
                 if (base.UseUnityCoroutines)
