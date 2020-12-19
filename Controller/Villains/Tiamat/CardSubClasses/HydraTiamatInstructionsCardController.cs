@@ -16,7 +16,7 @@ namespace Cauldron.Tiamat
             SecondHead = secondHead;
             Element = element;
             
-             SpecialStringMaker.ShowIfElseSpecialString(() => this.firstHead.Card.IsFlipped, () => firstHead.Card.Title + " is decapitated.", () => firstHead.Card.Title + " is not decapitated.").Condition = () => !base.Card.IsFlipped;
+             SpecialStringMaker.ShowIfElseSpecialString(() => FirstHeadCardController().Card.IsFlipped, () => FirstHeadCardController().Card.Title + " is decapitated.", () => FirstHeadCardController().Card.Title + " is not decapitated.").Condition = () => !base.Card.IsFlipped;
         }
 
         protected abstract ITrigger[] AddFrontTriggers();
