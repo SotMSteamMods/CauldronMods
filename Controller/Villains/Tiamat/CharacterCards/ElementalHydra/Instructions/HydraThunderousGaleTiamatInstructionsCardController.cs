@@ -11,7 +11,10 @@ namespace Cauldron.Tiamat
     {
         public HydraThunderousGaleTiamatInstructionsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "HydraStormTiamatCharacter", "HydraWindTiamatCharacter", "ElementOfLightning")
         {
-
+           
+            SpecialStringMaker.ShowSpecialString(() => BuildDecapitatedHeadList());
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: 1 + NumberOfOngoingsInTrash()).Condition = () => base.Card.IsFlipped && firstHead.Card.IsFlipped && !secondHead.Card.IsFlipped && secondHead.Card.IsInPlayAndNotUnderCard;
+            SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => base.Card.IsFlipped && !firstHead.Card.IsFlipped;
         }
 
         public override IEnumerator Play()
@@ -55,7 +58,7 @@ namespace Cauldron.Tiamat
         private IEnumerator GrowHeadResponse(PhaseChangeAction action)
         {
             IEnumerable<Card> decapitatedHeads = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsFlipped && c.DoKeywordsContain("head") && c.IsInPlayAndNotUnderCard));
-            SelectCardDecision cardDecision = new SelectCardDecision(this.GameController, this.DecisionMaker, SelectionType.CharacterCard, decapitatedHeads, cardSource: base.GetCardSource());
+            SelectCardDecision cardDecision = new SelectCardDecision(this.GameController, this.DecisionMaker, SelectionType.FlipCardFaceUp, decapitatedHeads, cardSource: base.GetCardSource());
             //...flip 1 decapitated head...
             IEnumerator coroutine = base.GameController.SelectCardAndDoAction(cardDecision, (SelectCardDecision decision) => this.GrowHeadAction(decision));
             if (base.UseUnityCoroutines)

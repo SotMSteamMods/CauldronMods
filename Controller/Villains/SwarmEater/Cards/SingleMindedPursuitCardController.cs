@@ -11,7 +11,7 @@ namespace Cauldron.SwarmEater
     {
         public SingleMindedPursuitCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowSpecialString(() => base.Card.Location.OwnerTurnTaker.Name + " is pursued.", null, () => new Card[]
+            base.SpecialStringMaker.ShowSpecialString(() => base.Card.Location.OwnerCard.Title + " is pursued.", null, () => new Card[]
             {
                 base.Card.Location.OwnerCard
             }).Condition = (() => base.Card.Location.IsNextToCard);

@@ -10,7 +10,7 @@ namespace Cauldron.Oriphel
     {
         public HighAsrielCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowHeroTargetWithHighestHP();
+            SpecialStringMaker.ShowHeroCharacterCardWithHighestHP();
         }
 
         public override void AddTriggers()

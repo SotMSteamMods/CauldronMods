@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -47,6 +48,9 @@ namespace Cauldron.Vector
 
         public VectorCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowIfElseSpecialString(() => IsSuperVirusInPlay(), () => GetSuperVirusCard().Title + " is in play.", () => GetSuperVirusCardNotInPlay().Title + " is not in play.").Condition = () => !base.Card.IsFlipped;
+            SpecialStringMaker.ShowIfElseSpecialString(() => IsSuperVirusInPlay(), () => "There " + GetSuperVirusCard().UnderLocation.Cards.Count().ToString_NumberOfCards() + " under " + GetSuperVirusCard().AlternateTitleOrTitle + ".", () => "").Condition = () => IsSuperVirusInPlay() && !base.Card.IsFlipped;
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => IsVillainTarget(c), "", useCardsSuffix: false, singular: "villain target", plural: "villain targets")).Condition = () => base.Card.IsFlipped;
         }
 
         public override void AddSideTriggers()

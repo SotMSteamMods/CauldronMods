@@ -11,7 +11,8 @@ namespace Cauldron.Tiamat
     {
         public ManaChargeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Deck, new LinqCardCriteria((Card c) => c.DoKeywordsContain("spell"), "spell"));
+            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "ElementalFrenzy", "elemental frenzy"));
         }
 
         public override IEnumerator Play()

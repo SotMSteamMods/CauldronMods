@@ -9,7 +9,7 @@ namespace Cauldron.Gray
     {
         public HeavyRadiationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => c.DoKeywordsContain("radiation")));
+            base.SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => c.DoKeywordsContain("radiation"), "radiation"));
         }
 
         public override void AddTriggers()

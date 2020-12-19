@@ -10,10 +10,7 @@ namespace Cauldron.SwarmEater
     {
         public StalkerAugCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            if (base.Card.IsInPlayAndNotUnderCard)
-            {
-                base.SpecialStringMaker.ShowHeroTargetWithLowestHP();
-            }
+            base.SpecialStringMaker.ShowHeroTargetWithLowestHP().Condition = () => base.Card.IsInPlayAndNotUnderCard;
         }
 
         public override void AddTriggers()

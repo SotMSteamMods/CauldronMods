@@ -7,6 +7,7 @@ namespace Cauldron.Tiamat
     {
         public HydraWinterTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            base.SpecialStringMaker.ShowSpecialString(() => base.Card.Title + " is immune to Cold damage.").Condition = () => !base.Card.IsFlipped;
 
         }
 

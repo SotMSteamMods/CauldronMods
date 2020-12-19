@@ -12,6 +12,7 @@ namespace Cauldron.Anathema
     {
 		public KnuckleDraggerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
+			SpecialStringMaker.ShowHeroCharacterCardWithHighestHP();
 		}
 
 		public override void AddTriggers()
