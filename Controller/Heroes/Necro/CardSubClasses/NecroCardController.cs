@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System.Collections;
 using System.Linq;
 using System;
+using Handelabra;
 
 namespace Cauldron.Necro
 {
