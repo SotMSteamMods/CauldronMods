@@ -639,6 +639,66 @@ namespace CauldronTests
             QuickHPCheck(10);
         }
         [Test]
+        public void TestHandIsFasterThanTheEyeEndOfWrongTurnDestroyTrigger()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.MagnificentMara", "Unity", "TheWraith", "Megalopolis");
+            StartGame();
+
+            GoToStartOfTurn(mara);
+            Card brambles = PlayCard("EnsnaringBrambles");
+            Card bot = PlayCard("RaptorBot");
+            SetHitPoints(brambles, 1);
+            DecisionSelectTarget = brambles;
+            Card faster = PlayCard("HandIsFasterThanTheEye");
+
+            GoToEndOfTurn(unity);
+            AssertIsInPlay(faster);
+        }
+        [Test]
+        public void TestHandisFasterThanTheEyeStatusEffectExpiry()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.MagnificentMara", "Unity", "TheWraith", "Megalopolis");
+            StartGame();
+
+            Card brambles = PlayCard("EnsnaringBrambles");
+            Card bot = PlayCard("RaptorBot");
+            GoToStartOfTurn(wraith);
+
+            Card faster = PlayCard("HandIsFasterThanTheEye");
+
+            GoToStartOfTurn(akash);
+            AssertIsInPlay(brambles);
+            AssertIsInPlay(faster);
+        }
+        [Test]
+        public void TestHandIsFasterThanTheEyeMultipleCopies()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Unity", "TheWraith", "Megalopolis");
+            StartGame();
+
+            Card battalion = PlayCard("BladeBattalion");
+            Card faster1 = PlayCard("HandIsFasterThanTheEye");
+            Card faster2 = PlayCard("HandIsFasterThanTheEye");
+
+            GoToStartOfTurn(mara);
+            AssertInTrash(faster1);
+            AssertIsInPlay(faster2);
+        }
+        [Test]
+        public void TestHandIsFasterThanTheEyeWithYeahImThatGuy()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Unity", "Guise", "Megalopolis");
+            StartGame();
+
+            Card battalion = PlayCard("BladeBattalion");
+            Card thatguy = PlayCard("UhYeahImThatGuy");
+            Card faster = PlayCard("HandIsFasterThanTheEye");
+
+            GoToStartOfTurn(mara);
+            AssertInTrash(thatguy);
+            AssertIsInPlay(faster);
+        }
+        [Test]
         public void TestImprobableEscapeCardDraw()
         {
             SetupGameController("Apostate", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
