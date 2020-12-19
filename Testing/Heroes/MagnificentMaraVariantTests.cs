@@ -80,5 +80,58 @@ namespace CauldronTests
             DealDamage(baron, bunker, 1, DTM);
             QuickHPCheck(0, -1, -1);
         }
+        [Test]
+        public void TestMOSSMaraIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara/MinistryOfStrategicScienceMagnificentMaraCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+
+            AssertIncapLetsHeroDrawCard(mara, 0, legacy, 1);
+        }
+        [Test]
+        public void TestMOSSMaraIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara/MinistryOfStrategicScienceMagnificentMaraCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+            DestroyCard(MDP);
+
+            QuickHPStorage(bunker, baron);
+            UseIncapacitatedAbility(mara, 1);
+            //does not affect villains
+            DealDamage(bunker, baron, 3, DTM);
+            QuickHPCheck(0, -3);
+
+            DealDamage(baron, bunker, 3, DTM);
+            QuickHPCheck(-1, 0);
+
+            //only happens once
+            DealDamage(baron, bunker, 3, DTM);
+            QuickHPCheck(-3, 0);
+        }
+        [Test]
+        public void TestMOSSMaraIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara/MinistryOfStrategicScienceMagnificentMaraCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+
+            Card fort = PlayCard("Fortitude");
+            Card lash = PlayCard("BacklashField");
+            UseIncapacitatedAbility(mara, 2);
+
+            //does not affect villain cards
+            DestroyCard(lash);
+            AssertInTrash(lash);
+
+            DestroyCard(fort);
+            AssertInHand(fort);
+
+            //only happens once
+            PlayCard(fort);
+            DestroyCard(fort);
+            AssertInTrash(fort);
+        }
     }
 }

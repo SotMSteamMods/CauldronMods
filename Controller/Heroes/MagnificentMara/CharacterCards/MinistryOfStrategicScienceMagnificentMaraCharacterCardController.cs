@@ -60,19 +60,63 @@ namespace Cauldron.MagnificentMara
                 case (0):
                     {
                         //"One player may draw a card now.",
+                        coroutine = GameController.SelectHeroToDrawCard(DecisionMaker, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case (1):
                     {
                         //"Reduce the next damage dealt to a hero target by 2.",
-
+                        var reduceEffect = new ReduceDamageStatusEffect(2);
+                        reduceEffect.NumberOfUses = 1;
+                        reduceEffect.TargetCriteria.IsHero = true;
+                        coroutine = AddStatusEffect(reduceEffect);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case (2):
                     {
                         //"The next time a hero ongoing card is destroyed, put that card in its owner's hand."
+                        var rescueEffect = new WhenCardIsDestroyedStatusEffect(this.Card, "RescueOngoingResponse", "The next time a hero ongoing card is destroyed, put that card in its owner's hand.", new TriggerType[] { TriggerType.MoveCard }, DecisionMaker.HeroTurnTaker, this.Card);
+                        rescueEffect.NumberOfUses = 1;
+                        rescueEffect.CardDestroyedCriteria.IsHero = true;
+                        rescueEffect.CardDestroyedCriteria.HasAnyOfTheseKeywords = new List<string> { "ongoing" };
+
+                        coroutine = AddStatusEffect(rescueEffect);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
+            }
+            yield break;
+        }
+
+        public IEnumerator RescueOngoingResponse(DestroyCardAction dc, HeroTurnTaker hero, StatusEffect effect, int[] powerNumerals = null)
+        {
+            if(dc.PostDestroyDestinationCanBeChanged && dc.CardToDestroy != null)
+            {
+                dc.PostDestroyDestinationCanBeChanged = false;
+                dc.AddAfterDestroyedAction(() => GameController.MoveCard(DecisionMaker, dc.CardToDestroy.Card, dc.CardToDestroy.HeroTurnTaker.Hand, cardSource: GetCardSource()), this);
             }
             yield break;
         }
