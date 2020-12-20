@@ -1374,6 +1374,20 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestHoursTilDawn_PlayedOnFront()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            
+            StartGame();
+
+            var card = PlayCard("HoursTilDawn",isPutIntoPlay: true);
+            AssertInPlayArea(celadroch, card);
+
+            DestroyCard(card);
+            AssertNotGameOver();
+        }
+
+        [Test()]
         public void TestNightUnderTheMountain_DestroyAtStart()
         {
             SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
