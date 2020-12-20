@@ -369,7 +369,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestCeladroch_PillarCard_RemoveFromGameDamge([Values("PillarOfNight", "PillarOfSky", "PillarOfStorms")] string pillar)
+        public void TestCeladroch_PillarCard_RemoveFromGameDamage([Values("PillarOfNight", "PillarOfSky", "PillarOfStorms")] string pillar)
         {
             SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Megalopolis" }, advanced: false);
             StartGame();

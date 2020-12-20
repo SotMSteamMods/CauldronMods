@@ -21,8 +21,8 @@ namespace Cauldron.Celadroch
             SpecialStringMaker.ShowSpecialString(RemainingRewardsSpecialString);
             SpecialStringMaker.ShowSpecialString(HpTilNextRewardSpecialString).Condition = () => _rewards.HpTillNextTrigger(Card.HitPoints.Value) > 0;
 
-            SpecialStringMaker.ShowSpecialString(() => $"DEBUG - Pending Triggers {GetCardPropertyJournalEntryInteger(PendingTriggersKey) ?? 0}");
-            SpecialStringMaker.ShowSpecialString(() => $"DEBUG - Completed Triggers {GetCardPropertyJournalEntryInteger(CompletedTriggersKey) ?? 0}");
+            //SpecialStringMaker.ShowSpecialString(() => $"DEBUG - Pending Triggers {GetCardPropertyJournalEntryInteger(PendingTriggersKey) ?? 0}");
+            //SpecialStringMaker.ShowSpecialString(() => $"DEBUG - Completed Triggers {GetCardPropertyJournalEntryInteger(CompletedTriggersKey) ?? 0}");
         }
 
         // This card may not regain HP.
