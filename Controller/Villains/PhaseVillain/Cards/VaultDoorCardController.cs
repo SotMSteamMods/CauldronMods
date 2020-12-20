@@ -4,11 +4,10 @@ using System;
 
 namespace Cauldron.PhaseVillain
 {
-    public class VaultDoorCardController : CardController
+    public class VaultDoorCardController : PhaseVillainCardController
     {
         public VaultDoorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddTriggers()

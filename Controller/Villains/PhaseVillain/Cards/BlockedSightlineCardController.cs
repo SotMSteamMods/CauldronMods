@@ -5,11 +5,11 @@ using System.Collections;
 
 namespace Cauldron.PhaseVillain
 {
-    public class BlockedSightlineCardController : CardController
+    public class BlockedSightlineCardController : PhaseVillainCardController
     {
         public BlockedSightlineCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: 2);
         }
 
         public override void AddTriggers()

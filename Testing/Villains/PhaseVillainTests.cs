@@ -428,6 +428,7 @@ namespace CauldronTests
             StartGame();
 
             DestroyWall();
+            PutOnDeck("AroundTheCorner");
             var mat = PutOnDeck("InsubstantialMatador");
 
             //When this card enters play, {PhaseVillain} deals the hero target with the second lowest HP {H - 1} radiant damage.

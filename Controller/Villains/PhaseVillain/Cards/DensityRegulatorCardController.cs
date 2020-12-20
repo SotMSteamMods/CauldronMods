@@ -5,11 +5,11 @@ using System.Collections;
 
 namespace Cauldron.PhaseVillain
 {
-    public class DensityRegulatorCardController : CardController
+    public class DensityRegulatorCardController : PhaseVillainCardController
     {
         public DensityRegulatorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHeroTargetWithLowestHP(ranking: 1);
         }
 
         public override void AddTriggers()

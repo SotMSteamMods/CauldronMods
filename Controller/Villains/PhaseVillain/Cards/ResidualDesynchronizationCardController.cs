@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace Cauldron.PhaseVillain
 {
-    public class ResidualDesynchronizationCardController : PhaseCardController
+    public class ResidualDesynchronizationCardController : PhaseVillainCardController
     {
         public ResidualDesynchronizationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -20,6 +20,8 @@ namespace Cauldron.PhaseVillain
             base.AddReduceDamageTrigger((Card c) => base.IsObstacle(c), 1);
             //The first time a villain target is dealt damage each turn, it deals the source of that damage 2 energy damage.
             base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn("FirstTimeDamageDealt") && base.IsVillainTarget(action.Target), this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+
+            base.AddAfterLeavesPlayAction(() => ResetFlagAfterLeavesPlay(FirstTimeDamageDealt));
         }
 
         private IEnumerator DealDamageResponse(DealDamageAction action)

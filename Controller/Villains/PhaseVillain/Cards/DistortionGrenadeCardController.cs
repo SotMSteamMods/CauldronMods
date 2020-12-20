@@ -5,11 +5,10 @@ using System.Collections;
 
 namespace Cauldron.PhaseVillain
 {
-    public class DistortionGrenadeCardController : CardController
+    public class DistortionGrenadeCardController : PhaseVillainCardController
     {
         public DistortionGrenadeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
         public override void AddTriggers()

@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace Cauldron.PhaseVillain
 {
-    public class PrecariousRubbleCardController : CardController
+    public class PrecariousRubbleCardController : PhaseVillainCardController
     {
         public PrecariousRubbleCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

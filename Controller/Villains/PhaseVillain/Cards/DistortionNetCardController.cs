@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Cauldron.PhaseVillain
 {
-    public class DistortionNetCardController : CardController
+    public class DistortionNetCardController : PhaseVillainCardController
     {
         public DistortionNetCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

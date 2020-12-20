@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace Cauldron.PhaseVillain
 {
-    public class AroundTheCornerCardController : PhaseCardController
+    public class AroundTheCornerCardController : PhaseVillainCardController
     {
         public AroundTheCornerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -18,6 +18,8 @@ namespace Cauldron.PhaseVillain
         {
             //The first time an Obstacle is destroyed each turn, {Phase} deals each hero target 2 radiant damage.
             base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeDestroyed) && base.IsObstacle(action.CardToDestroy.Card) && action.WasCardDestroyed, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+
+            base.AddAfterLeavesPlayAction(() => ResetFlagAfterLeavesPlay(FirstTimeDestroyed));
         }
 
         private IEnumerator DealDamageResponse(DestroyCardAction action)

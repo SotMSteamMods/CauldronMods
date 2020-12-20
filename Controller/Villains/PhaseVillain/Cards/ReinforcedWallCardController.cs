@@ -4,7 +4,7 @@ using System;
 
 namespace Cauldron.PhaseVillain
 {
-    public class ReinforcedWallCardController : PhaseCardController
+    public class ReinforcedWallCardController : PhaseVillainCardController
     {
         public ReinforcedWallCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

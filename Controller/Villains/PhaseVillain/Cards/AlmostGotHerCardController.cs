@@ -7,11 +7,11 @@ using System.Linq;
 
 namespace Cauldron.PhaseVillain
 {
-    public class AlmostGotHerCardController : PhaseCardController
+    public class AlmostGotHerCardController : PhaseVillainCardController
     {
         public AlmostGotHerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisRound(FirstTimeDealDamage), () => "Phase has dealt damage to a target this round.", () => "Phase has not dealt damage to a target this round.");
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisRound(FirstTimeDealDamage), () => $"{CharacterCard.Title} has dealt damage to a target this round.", () => $"{CharacterCard.Title} has not dealt damage to a target this round.");
         }
 
         private const string FirstTimeDealDamage = "FirstTimeDealDamage";
@@ -24,6 +24,8 @@ namespace Cauldron.PhaseVillain
             base.AddMakeDamageIrreducibleTrigger((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard);
             //At the start of the villain turn, if there are 1 or 0 Obstacles in play, each player must discard a card. Then, this card is destroyed.
             base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker && base.FindCardsWhere(new LinqCardCriteria((Card c) => base.IsObstacle(c) && c.IsInPlayAndHasGameText)).Count() <= 1, this.DiscardCardsAndDestroyThisCardResponse, TriggerType.DestroySelf);
+
+            base.AddAfterLeavesPlayAction(() => ResetFlagAfterLeavesPlay(FirstTimeDealDamage));
         }
 
         private IEnumerator FirstTimeDealDamageResponse(DealDamageAction action)

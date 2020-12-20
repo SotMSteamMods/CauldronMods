@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Cauldron.PhaseVillain
 {
-    public class FrequencyShiftCardController : PhaseCardController
+    public class FrequencyShiftCardController : PhaseVillainCardController
     {
         public FrequencyShiftCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -42,7 +42,7 @@ namespace Cauldron.PhaseVillain
 
             TurnTaker targetTurnTaker = targetedHero.FirstOrDefault().Target.Owner;
             //...destroys 1 ongoing...
-            coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && c.Owner == targetTurnTaker), false, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && c.Owner == targetTurnTaker, "ongoing"), false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -53,7 +53,7 @@ namespace Cauldron.PhaseVillain
             }
 
             //...and 1 equipment card belonging to that hero.
-            coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c) && c.Owner == targetTurnTaker), false, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c) && c.Owner == targetTurnTaker, "equipment"), false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

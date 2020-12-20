@@ -4,9 +4,9 @@ using System;
 
 namespace Cauldron.PhaseVillain
 {
-    public class PhaseCardController : CardController
+    public abstract class PhaseVillainCardController : CardController
     {
-        public PhaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected  PhaseVillainCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }

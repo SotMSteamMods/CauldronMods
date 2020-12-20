@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace Cauldron.PhaseVillain
 {
-    public class UnimpededProgressCardController : CardController
+    public class UnimpededProgressCardController : PhaseVillainCardController
     {
         public UnimpededProgressCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowSpecialString(() => "Phase hase been dealt damage " + base.Game.Journal.DealDamageEntriesThisRound().Where((DealDamageJournalEntry entry) => entry.TargetCard == base.CharacterCard).Sum((DealDamageJournalEntry entry) => entry.Amount) + " times this round.");
+            base.SpecialStringMaker.ShowSpecialString(() => $"{CharacterCard.Title} hase been dealt damage {base.Game.Journal.DealDamageEntriesThisRound().Where((DealDamageJournalEntry entry) => entry.TargetCard == base.CharacterCard).Sum((DealDamageJournalEntry entry) => entry.Amount)} times this round.");
         }
 
         public override void AddTriggers()

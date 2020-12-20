@@ -11,6 +11,8 @@ namespace Cauldron.PhaseVillain
     {
         public PhaseVillainCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => IsObstacle(c), "obstacle"));
+
             if (base.Game.IsAdvanced)
             {
                 base.SpecialStringMaker.ShowIfElseSpecialString(() => base.Game.Journal.DealDamageEntriesThisTurn().Where((DealDamageJournalEntry entry) => entry.TargetCard == base.CharacterCard).Any(), () => "Phase has been dealt damage this turn.", () => "Phase has not been dealt damage this turn.");
@@ -107,7 +109,7 @@ namespace Cauldron.PhaseVillain
                 {
                     //Back - Advanced
                     //When {Phase} flips to this side, destroy {H - 2} hero ongoing cards.
-                    coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && c.IsHero), Game.H - 2, cardSource: base.GetCardSource());
+                    coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && c.IsHero, "hero ongoing"), Game.H - 2, cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);

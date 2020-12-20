@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.PhaseVillain
 {
-    public class InsubstantialMatadorCardController : CardController
+    public class InsubstantialMatadorCardController : PhaseVillainCardController
     {
         public InsubstantialMatadorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
