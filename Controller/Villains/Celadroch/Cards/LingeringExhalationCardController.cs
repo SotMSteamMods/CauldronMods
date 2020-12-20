@@ -16,6 +16,7 @@ namespace Cauldron.Celadroch
 
         public LingeringExhalationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => CharacterCard.AlternateTitleOrTitle + " has been dealt " + Journal.DealDamageEntriesThisRound().Where(j => j.TargetCard == CharacterCard).Sum(j => j.Amount) + " damage this round.").Condition = () => Card.IsInPlayAndHasGameText;
             SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(c => c.IsTarget, "target"));
         }
 
