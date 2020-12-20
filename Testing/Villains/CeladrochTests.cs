@@ -72,6 +72,14 @@ namespace CauldronTests
             this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
         }
 
+        protected void AddCannotDealDamageTrigger(TurnTakerController ttc, Card specificCard)
+        {
+            CannotDealDamageStatusEffect cannotDealDamageEffect = new CannotDealDamageStatusEffect();
+            cannotDealDamageEffect.SourceCriteria.IsSpecificCard = specificCard;
+            cannotDealDamageEffect.UntilStartOfNextTurn(ttc.TurnTaker);
+            this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageEffect, true, new CardSource(ttc.CharacterCardController)));
+        }
+
         protected void AssertDamageTypeChanged(HeroTurnTakerController httc, Card source, Card target, int amount, DamageType initialDamageType, DamageType expectedDamageType)
         {
             List<DealDamageAction> storedResults = new List<DealDamageAction>();
@@ -122,7 +130,7 @@ namespace CauldronTests
             AssertInPlayArea(celadroch, p3);
 
             var topCard = celadroch.TurnTaker.Deck.TopCard;
-            AssertCardSpecialString(celadroch.CharacterCard, 0, $"Celadroch's top card is {topCard.Title}");
+            AssertCardSpecialString(celadroch.CharacterCard, 1, $"Celadroch's top card is {topCard.Title}");
 
             AssertNumberOfCardsInRevealed(celadroch, 0);
         }
@@ -1009,10 +1017,13 @@ namespace CauldronTests
 
             DecisionAutoDecideIfAble = true;
             QuickHPStorage(ra, haka, legacy);
+
+            //suppress celadroch's end of turn damage
+            AddCannotDealDamageTrigger(celadroch, celadroch.CharacterCard);
+
             GoToEndOfTurn(celadroch);
 
-            //celadroch's end of turn damage is included.
-            QuickHPCheck(-3, -5, -5);
+            QuickHPCheck(-3, -3, -3);
         }
 
         public void TestAvatarOfDeath_ReduceDamage()
