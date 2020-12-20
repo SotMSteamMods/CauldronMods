@@ -26,8 +26,8 @@ namespace Cauldron.DocHavoc
         {
 
             base.AddTrigger<DealDamageAction>(dealDamageAction => dealDamageAction.DamageSource != null
-                    && dealDamageAction.DamageSource.IsSameCard(base.CharacterCard),
-                ChooseDamageOrHealResponse, TriggerType.DealDamage, TriggerTiming.Before);
+                    && dealDamageAction.DamageSource.IsSameCard(base.CharacterCard) && dealDamageAction.Amount > 0,
+                ChooseDamageOrHealResponse, TriggerType.WouldBeDealtDamage, TriggerTiming.Before, isActionOptional: true);
 
             base.AddTriggers();
         }

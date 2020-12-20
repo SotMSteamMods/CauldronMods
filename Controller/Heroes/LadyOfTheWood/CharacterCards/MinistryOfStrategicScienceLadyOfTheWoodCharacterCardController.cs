@@ -25,7 +25,7 @@ namespace Cauldron.LadyOfTheWood
             {
                 TriggerType.ModifyTokens,
                 TriggerType.ChangeDamageType
-            }, TriggerTiming.Before);
+            }, TriggerTiming.Before, isActionOptional: true);
         }
 
         private TokenPool GetElementTokenPool()
@@ -70,7 +70,15 @@ namespace Cauldron.LadyOfTheWood
 					base.GameController.ExhaustCoroutine(coroutine);
 				}
 				DamageType damageType = GetSelectedDamageType(storedDamageTypeResults).Value;
-				dd.DamageType = damageType;
+				coroutine = GameController.ChangeDamageType(dd, damageType, GetCardSource());
+				if (base.UseUnityCoroutines)
+				{
+					yield return base.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					base.GameController.ExhaustCoroutine(coroutine);
+				}
 			}
 			yield break;
 		}
