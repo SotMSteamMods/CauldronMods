@@ -42,7 +42,10 @@ namespace Cauldron.Celadroch
 
         public CeladrochCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowSpecialString(TopCardSpecialString, null, () => new[] { FindCeladrochsTopCard() }).Condition = () => Card.IsInPlay && !Card.IsFlipped;
+            SpecialStringMaker.ShowTokenPool(base.CharacterCard.FindTokenPool(StormPoolIdentifier)).Condition = () => Card.IsInPlay && !Card.IsFlipped;
+            SpecialStringMaker.ShowSpecialString(TopCardSpecialString, null, () => new[] { FindCeladrochsTopCard() }).Condition = () => Game.HasGameStarted && Card.IsInPlay && !Card.IsFlipped;
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: Game.H - 1).Condition = () => Card.IsInPlay && Card.IsFlipped;
+            SpecialStringMaker.ShowIfElseSpecialString(() => Game.Journal.CardEntersPlayEntriesThisTurn().Any(e => e.Card.IsVillain), () => "A villain card has entered play this turn.", () => "A villain card has not entered play this turn.").Condition = () => Card.IsInPlay && Card.IsFlipped && Game.ActiveTurnTaker == TurnTaker;
         }
 
         private Card FindCeladrochsTopCard()
@@ -213,7 +216,7 @@ namespace Cauldron.Celadroch
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                var msg = GameController.SendMessageAction($"{Card.Title} remove 2 tokens from the Storm Pool and plays the top card of the villain deck...", Priority.High, GetCardSource());
+                var msg = GameController.SendMessageAction($"{Card.Title} removes 2 tokens from the Storm Pool and plays the top card of the villain deck...", Priority.High, GetCardSource());
                 coroutine = PlayTheTopCardOfTheVillainDeckResponse(action);
                 if (base.UseUnityCoroutines)
                 {
@@ -333,7 +336,7 @@ namespace Cauldron.Celadroch
             bool villainCardPlayed = Game.Journal.CardEntersPlayEntriesThisTurn().Any(e => e.Card.IsVillain);
             if (!villainCardPlayed)
             {
-                var coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria(c => (c.IsOngoing || IsEquipment(c)) && c.IsInPlayAndNotUnderCard, "equipment or ongoing"), H, cardSource: GetCardSource());
+                var coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria(c => c.IsHero && (c.IsOngoing || IsEquipment(c)) && c.IsInPlayAndNotUnderCard, "hero equipment or ongoing"), H, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
