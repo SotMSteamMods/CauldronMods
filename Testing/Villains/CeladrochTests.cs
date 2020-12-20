@@ -905,10 +905,11 @@ namespace CauldronTests
 
             DecisionAutoDecideIfAble = true;
             QuickHPStorage(ra, haka, legacy);
+
+            AddCannotDealDamageTrigger(celadroch, celadroch.CharacterCard);
             GoToEndOfTurn(celadroch);
 
-            //celadroch's end of turn damage is included.
-            QuickHPCheck(-2, -4, -4);
+            QuickHPCheck(-2, -2, -2);
         }
 
         [Test()]
