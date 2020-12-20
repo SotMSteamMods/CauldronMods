@@ -11,7 +11,10 @@ namespace Cauldron.PhaseVillain
     {
         public AlmostGotHerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisRound(FirstTimeDealDamage), () => $"{CharacterCard.Title} has dealt damage to a target this round.", () => $"{CharacterCard.Title} has not dealt damage to a target this round.");
+            var ss = base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisRound(FirstTimeDealDamage),
+                () => $"{CharacterCard.Title} has dealt damage to a target this round.",
+                () => $"{CharacterCard.Title} has not dealt damage to a target this round.");
+            ss.Condition = () => Card.IsInPlay;
         }
 
         private const string FirstTimeDealDamage = "FirstTimeDealDamage";

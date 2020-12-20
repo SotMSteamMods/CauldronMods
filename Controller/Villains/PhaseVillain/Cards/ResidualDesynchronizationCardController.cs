@@ -9,7 +9,10 @@ namespace Cauldron.PhaseVillain
     {
         public ResidualDesynchronizationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt), () => "A villain target has been dealt damage this turn.", () => "A villain target has not been dealt damage this turn.");
+            var ss = base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt),
+                () => "A villain target has been dealt damage this turn.",
+                () => "A villain target has not been dealt damage this turn.");
+            ss.Condition = () => Card.IsInPlay;
         }
 
         private const string FirstTimeDamageDealt = "FirstTimeDamageDealt";

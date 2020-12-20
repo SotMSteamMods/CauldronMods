@@ -1,5 +1,5 @@
 {
-	"name": "PhaseVillain",
+	"name": "Phase",
 	"kind": "Villain",
 	"expansionIdentifier": "CauldronStormfall",
 	"initialCardIdentifiers": [
@@ -12,7 +12,7 @@
 			"keywords": [
 				"villain"
 			],
-			"body": "Intagible Saboteur",
+			"body": "Intangible Saboteur",
 			"backgroundColor": "c175b2",
 			"foilBackgroundColor": "CD96C0",
 			"character": true,
@@ -21,7 +21,7 @@
 				"Impact"
 			],
 			"setup": [
-				"At the start of the game, put {PhaseVillain}'s villain character cards into play, “Intagible Saboteur“ side up.",
+				"At the start of the game, put {PhaseVillain}'s villain character cards into play, “Intangible Saboteur“ side up.",
 				"Search the villain deck for the card Reinforced Wall and put it into play. Shuffle the villain deck."
 			],
 			"gameplay": [
