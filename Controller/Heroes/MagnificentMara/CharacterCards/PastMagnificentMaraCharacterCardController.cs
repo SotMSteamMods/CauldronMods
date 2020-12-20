@@ -256,8 +256,113 @@ namespace Cauldron.MagnificentMara
                 case (2):
                     {
                         //"One player selects a keyword and reveals the top 3 cards of their deck, putting any revealed cards with that keyword into their hand and discarding the rest."
+                        var selectHero = new SelectTurnTakerDecision(GameController, DecisionMaker, GameController.AllTurnTakers.Where(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame), SelectionType.RevealCardsFromDeck, cardSource: GetCardSource());
+                        coroutine = GameController.SelectTurnTakerAndDoAction(selectHero, SelectKeywordThenRevealAndMoveCards);
+                        if (UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
+            }
+            yield break;
+        }
+
+        private IEnumerator SelectKeywordThenRevealAndMoveCards(TurnTaker tt)
+        {
+            
+            var player = tt == null ? null : GameController.FindHeroTurnTakerController(tt.ToHero());
+            if (player == null)
+            {
+                yield break;
+            }
+
+            var deck = tt.Deck;
+
+            if (deck.Cards.Count() > 0)
+            {
+                //Selects a keyword
+                IOrderedEnumerable<string> words = from s in deck.Cards.SelectMany((Card c) => GameController.GetAllKeywords(c)).Distinct()
+                                                   orderby s
+                                                   select s;
+                var wordsPlus = words.ToList();
+                wordsPlus.Add("Discard All");
+                List<SelectWordDecision> storedResults = new List<SelectWordDecision>();
+                IEnumerator coroutine = GameController.SelectWord(player, wordsPlus, SelectionType.SelectKeyword, storedResults, optional: false, null, GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+                if (!DidSelectWord(storedResults))
+                {
+                    yield break;
+                }
+                string keyword = GetSelectedWord(storedResults);
+
+                //Reveal top 3 cards
+                List<Card> revealStored = new List<Card>();
+                coroutine = GameController.RevealCards(player, deck, 3, revealStored, fromBottom: false, RevealedCardDisplay.Message, null, GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
+                //Put any revealed cards with that keyword into their hand and discarding the rest.
+                foreach (Card c in revealStored)
+                {
+                    if(GameController.DoesCardContainKeyword(c, keyword))
+                    {
+                        coroutine = GameController.MoveCard(DecisionMaker, c, player.HeroTurnTaker.Hand, cardSource: GetCardSource());
+                    }
+                    else
+                    {
+                        coroutine = GameController.MoveCard(DecisionMaker, c, c.NativeTrash, isDiscard: true, cardSource: GetCardSource());
+                    }
+
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+
+                //cleanup if needed
+                coroutine = CleanupCardsAtLocations(new List<Location> { tt.Revealed }, tt.Trash, isDiscard: true, isReturnedToOriginalLocation: false, cardsInList: revealStored);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            else
+            {
+                IEnumerator coroutine2 = GameController.SendMessageAction(tt.Name + "'s deck has no cards for " + this.Card.Title + " to reveal.", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine2);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine2);
+                }
             }
             yield break;
         }

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cauldron.MagnificentMara;
+using System.Collections;
 
 namespace CauldronTests
 {
@@ -305,13 +306,31 @@ namespace CauldronTests
             AssertInTrash(sword);
             AssertOnBottomOfDeck(mdp);
         }
-        public void TestPastMaraIncap3()
+        [Test]
+        public void TestPastMaraIncap3MakeLog()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara/PastMagnificentMaraCharacter", "Fanatic", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             SetupIncap(baron);
 
-            UseIncapacitatedAbility(mara, 0);
+            UseIncapacitatedAbility(mara, 2);
+        }
+        [Test]
+        public void TestPastMaraIncap3TooFewCards()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara/PastMagnificentMaraCharacter", "Fanatic", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+
+            IEnumerator coroutine = GameController.BulkMoveCards(mara, fanatic.TurnTaker.Deck.Cards, fanatic.TurnTaker.Trash);
+            GameController.ExhaustCoroutine(coroutine);
+
+            Card sword = PutOnDeck("Absolution");
+            Card dive = PutOnDeck("FinalDive");
+
+            UseIncapacitatedAbility(mara, 2);
+            AssertInHand(sword);
+            AssertInTrash(dive);
         }
     }
 }
