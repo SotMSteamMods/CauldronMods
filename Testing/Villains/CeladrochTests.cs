@@ -1224,10 +1224,11 @@ namespace CauldronTests
             AssertInPlayArea(celadroch, card);
 
             QuickHPStorage(ra, haka, legacy);
+
+            AddCannotDealDamageTrigger(celadroch, celadroch.CharacterCard);
             GoToEndOfTurn(celadroch);
 
-            //includes cela's end of turn
-            QuickHPCheck(0, -3, -3);
+            QuickHPCheck(0, -1, -1);
 
             GoToEndOfTurn(env);
             AssertInPlayArea(celadroch, card);

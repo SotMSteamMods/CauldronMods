@@ -18,12 +18,12 @@ namespace Cauldron.Celadroch
         //IE - Mountain's Special Boy
         public ForsakenCrusaderCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowHeroTargetWithHighestHP(1, 2);
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: 2);
         }
 
         public override void AddTriggers()
         {
-            AddStartOfTurnTrigger(tt => tt == TurnTaker, pca => GameController.PlayTopCard(DecisionMaker, TurnTakerController, cardSource: GetCardSource()), TriggerType.PlayCard);
+            AddStartOfTurnTrigger(tt => tt == TurnTaker, PlayTheTopCardOfTheVillainDeckWithMessageResponse, TriggerType.PlayCard);
             AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => c.IsHero && c.IsTarget, TargetType.HighestHP, H - 2, DamageType.Melee, numberOfTargets: 2);
         }
 
