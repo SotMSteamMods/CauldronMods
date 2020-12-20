@@ -200,12 +200,57 @@ namespace Cauldron.MagnificentMara
                 case (0):
                     {
                         //"One target deals another target 1 melee damage.",
+                        List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
+                        coroutine = GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.SelectTargetNoDamage, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsTarget, "target to deal damage", false), storedResults, false, cardSource: base.GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(coroutine);
+                        }
+                        if (DidSelectCard(storedResults))
+                        {
+                            Card selectedCard = GetSelectedCard(storedResults);
+                            coroutine = GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(GameController, selectedCard), 1, DamageType.Melee, 1, false, 1, additionalCriteria: (Card c) => c != selectedCard, cardSource: GetCardSource());
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                GameController.ExhaustCoroutine(coroutine);
+                            }
+                        }
                         break;
                     }
                 case (1):
                     {
                         //"Put a card in a trash pile under its associated deck.",
+                        var TrashesWithCards = GameController.AllTurnTakers.Where(tt => tt.Trash.HasCards && AskIfTurnTakerIsVisibleToCardSource(tt, GetCardSource()) != false).Select(tt => new LocationChoice(tt.Trash));
+                        Func<Location, List<MoveCardDestination>> bottomOfSameDeck = (Location trash) => new List<MoveCardDestination> { new MoveCardDestination(trash.OwnerTurnTaker.Deck, toBottom: true) };
 
+                        if (TrashesWithCards.Count() == 1)
+                        {
+                            var trash = TrashesWithCards.FirstOrDefault().Location;
+                            coroutine = GameController.SelectCardsFromLocationAndMoveThem(DecisionMaker, trash, 1, 1, new LinqCardCriteria(c => true), bottomOfSameDeck(trash), cardSource: GetCardSource());
+                        }
+                        else
+                        { 
+                            var selectLocation = new SelectLocationDecision(GameController, DecisionMaker, TrashesWithCards, SelectionType.MoveCardOnBottomOfDeck, false, cardSource: GetCardSource());
+                            coroutine = GameController.SelectLocationAndDoAction(selectLocation,
+                                                            trash => GameController.SelectCardsFromLocationAndMoveThem(DecisionMaker, trash, 1, 1, new LinqCardCriteria(c => true), bottomOfSameDeck(trash), cardSource: GetCardSource()));
+                        }
+
+                        if (UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case (2):

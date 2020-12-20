@@ -268,5 +268,50 @@ namespace CauldronTests
             AssertInHand(kalpak);
             AssertOnTopOfDeck(crystal);
         }
+        [Test]
+        public void TestPastMaraIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara/PastMagnificentMaraCharacter", "Fanatic", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+
+            PlayCard("TurretMode");
+
+            DecisionSelectCards = new Card[] { fanatic.CharacterCard, MDP, bunker.CharacterCard, MDP };
+
+            QuickHPStorage(MDP);
+            UseIncapacitatedAbility(mara, 0);
+            QuickHPCheck(-1);
+            UseIncapacitatedAbility(mara, 0);
+            QuickHPCheck(-2);
+
+        }
+        [Test]
+        public void TestPastMaraIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara/PastMagnificentMaraCharacter", "Fanatic", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+
+            Card sword = PutInTrash("Absolution");
+            UseIncapacitatedAbility(mara, 1);
+            AssertOnBottomOfDeck(sword);
+
+            Card mdp = MDP;
+
+            PutInTrash(sword);
+            DestroyCard(mdp);
+            UseIncapacitatedAbility(mara, 1);
+            AssertInTrash(sword);
+            AssertOnBottomOfDeck(mdp);
+        }
+        public void TestPastMaraIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara/PastMagnificentMaraCharacter", "Fanatic", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+
+            UseIncapacitatedAbility(mara, 0);
+        }
     }
 }
