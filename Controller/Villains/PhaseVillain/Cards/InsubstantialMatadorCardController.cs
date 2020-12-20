@@ -31,7 +31,7 @@ namespace Cauldron.PhaseVillain
         public override void AddTriggers()
         {
             //At the end of each hero's turn, if that hero dealt {Phase} no damage, that hero deals themselves 1 irreducible melee damage.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt.IsHero && this.DidDamageVillainThisTurn(), this.DealDamageResponse, TriggerType.DealDamage);
+            base.AddEndOfTurnTrigger((TurnTaker tt) => tt.IsHero && !this.DidDamageVillainThisTurn(), this.DealDamageResponse, TriggerType.DealDamage);
         }
 
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
@@ -60,7 +60,7 @@ namespace Cauldron.PhaseVillain
 
         private bool DidDamageVillainThisTurn()
         {
-            return base.Journal.DealDamageEntriesThisTurnSinceCardWasPlayed(base.Card).Where((DealDamageJournalEntry entry) => entry.TargetCard == base.CharacterCard && entry.SourceTurnTaker == base.Game.ActiveTurnTaker && entry.Amount > 0).Any();
+            return base.Journal.DealDamageEntriesThisTurnSinceCardWasPlayed(base.Card).Any((DealDamageJournalEntry entry) => entry.TargetCard == base.CharacterCard && entry.Amount > 0);
         }
     }
 }
