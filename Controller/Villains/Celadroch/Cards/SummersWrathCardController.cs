@@ -16,7 +16,7 @@ namespace Cauldron.Celadroch
         public SummersWrathCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowSpecialString(() => $"{Card.Title} is immune to damage.")
-                .Condition = () => ImmuneToDamageCriteria();
+                .Condition = () => Card.IsInPlayAndHasGameText && ImmuneToDamageCriteria();
         }
 
         private bool ImmuneToDamageCriteria()
