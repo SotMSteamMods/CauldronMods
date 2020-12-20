@@ -16,6 +16,7 @@ namespace Cauldron.Celadroch
 
         public LaughingHagCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => Card.Title + " is immune to fire, lightning, cold, and toxic damage.").Condition = () => Card.IsInPlayAndHasGameText;
         }
 
         public override void AddTriggers()
