@@ -16,7 +16,7 @@ namespace Cauldron.Celadroch
 
         public override IEnumerator Play()
         {
-            var coroutine = PlayTheTopCardOfTheVillainDeckResponse(null);
+            var coroutine = PlayTheTopCardOfTheVillainDeckWithMessageResponse(null);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
