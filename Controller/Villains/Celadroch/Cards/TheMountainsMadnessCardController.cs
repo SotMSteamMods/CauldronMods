@@ -30,7 +30,7 @@ namespace Cauldron.Celadroch
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = PlayTheTopCardOfTheVillainDeckResponse(null);
+            coroutine = PlayTheTopCardOfTheVillainDeckWithMessageResponse(null);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
