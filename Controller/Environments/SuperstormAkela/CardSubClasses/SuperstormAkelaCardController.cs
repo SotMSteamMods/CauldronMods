@@ -277,7 +277,49 @@ namespace Cauldron.SuperstormAkela
         }
 
 
+        protected string BuildCardsLeftOfThisSpecialString()
+        {
+            int numCardsToLeft = GetNumberOfCardsToTheLeftOfThisOne(base.Card).Value;
+            string cardsToLeftString = "There ";
+            if(numCardsToLeft == 1)
+            {
+                cardsToLeftString += "is 1 card ";
+            } else if(numCardsToLeft == 0)
+            {
+                cardsToLeftString += "are no cards ";
+            } else
+            {
+                cardsToLeftString += "are " + numCardsToLeft + " cards ";
+            }
 
+            cardsToLeftString += "to the left of this one.";
+
+            return cardsToLeftString;
+           
+        }
+
+        protected string BuildCardsRightOfThisSpecialString()
+        {
+            int numCardsToRight = GetNumberOfCardsToTheRightOfThisOne(base.Card).Value;
+            string cardsToRightString = "There ";
+            if (numCardsToRight == 1)
+            {
+                cardsToRightString += "is 1 card ";
+            }
+            else if (numCardsToRight == 0)
+            {
+                cardsToRightString += "are no cards ";
+            }
+            else
+            {
+                cardsToRightString += "are " + numCardsToRight + " cards ";
+            }
+
+            cardsToRightString += "to the right of this one.";
+
+            return cardsToRightString;
+
+        }
 
 
 
