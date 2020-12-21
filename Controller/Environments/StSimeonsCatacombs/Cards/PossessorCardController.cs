@@ -12,7 +12,7 @@ namespace Cauldron.StSimeonsCatacombs
 
         public PossessorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { TortureChamberCardController.Identifier }, false)
         {
-
+            SpecialStringMaker.ShowHeroWithMostCards(true).Condition = () => !Card.IsInPlayAndHasGameText;
         }
 
         public override void AddTriggers()
