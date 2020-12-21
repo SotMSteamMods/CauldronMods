@@ -140,16 +140,16 @@ namespace CauldronTests
         [Test()]
         public void TestRenegadeCricketIncap1()
         {
-            SetupGameController("AkashBhuta", "Cauldron.Cricket/RenegadeCricketCharacter", "Legacy", "Bunker", "TheScholar", "Magmaria");
+            SetupGameController("BaronBlade", "Cauldron.Cricket/RenegadeCricketCharacter", "Legacy", "Bunker", "TheScholar", "Magmaria");
             StartGame();
-            SetupIncap(akash);
+            SetupIncap(baron);
 
-            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(akash.TurnTaker.Deck), new LocationChoice(legacy.TurnTaker.Deck), new LocationChoice(env.TurnTaker.Deck) };
+            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(baron.TurnTaker.Deck), new LocationChoice(legacy.TurnTaker.Deck), new LocationChoice(env.TurnTaker.Deck) };
 
-            Card phlange = PutOnDeck("ArborealPhalanges");
+            Card battalion = PutOnDeck("BladeBattalion");
             //Select a deck and put its top card into play.
             UseIncapacitatedAbility(cricket, 0);
-            AssertIsInPlay(phlange);
+            AssertIsInPlay(battalion);
 
             Card ring = PutOnDeck("TheLegacyRing");
             //Select a deck and put its top card into play.
@@ -273,6 +273,8 @@ namespace CauldronTests
             QuickHPStorage(bunker);
             DealDamage(cricket, bunker, 1, DamageType.Sonic);
             QuickHPCheck(-2);
+
+
 
             //only the next turn
             GoToEndOfTurn(cricket);

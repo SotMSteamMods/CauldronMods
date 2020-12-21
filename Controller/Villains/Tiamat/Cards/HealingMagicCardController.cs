@@ -11,7 +11,10 @@ namespace Cauldron.Tiamat
     {
         public HealingMagicCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowVillainTargetWithLowestHP();
+            base.SpecialStringMaker.ShowLowestHP(ranking: 1, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("head"), "head", false));
+
+            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "HealingMagic", "healing magic"));
+
         }
 
         public override IEnumerator Play()
@@ -33,7 +36,7 @@ namespace Cauldron.Tiamat
 
             //The Head with the lowest HP regains {H} + X HP, where X is the number of Healing Magic cards in the villain trash.
             Func<int> X = () => PlusNumberOfThisCardInTrash(base.H);
-            coroutine = base.GameController.GainHP(lowestHPHead, PlusNumberOfThisCardInTrash(base.H), X);
+            coroutine = base.GameController.GainHP(lowestHPHead, PlusNumberOfThisCardInTrash(base.H), X, cardSource: GetCardSource());
             //Play the top card of the villain deck.
             IEnumerator coroutine2 = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)

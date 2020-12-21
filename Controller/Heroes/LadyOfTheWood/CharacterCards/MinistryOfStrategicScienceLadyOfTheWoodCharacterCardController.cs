@@ -19,26 +19,33 @@ namespace Cauldron.LadyOfTheWood
 
         public override void AddTriggers()
         {
-			//When {LadyOfTheWood} would deal damage, you may change its type by spending a token.
-			AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card == base.CharacterCard, SpendTokenResponse, new TriggerType[]
-			{
-				TriggerType.ModifyTokens,
-				TriggerType.ChangeDamageType
-			}, TriggerTiming.Before);
-		}
+            TokenPool elementPool = GetElementTokenPool();
+            //When {LadyOfTheWood} would deal damage, you may change its type by spending a token.
+            AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card == base.CharacterCard && elementPool.CurrentValue > 0, SpendTokenResponse, new TriggerType[]
+            {
+                TriggerType.ModifyTokens,
+                TriggerType.ChangeDamageType
+            }, TriggerTiming.Before, isActionOptional: true);
+        }
+
+        private TokenPool GetElementTokenPool()
+        {
+            TokenPool elementPool = base.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
+            if (elementPool == null || !base.TurnTaker.IsHero)
+            {
+                TurnTaker turnTaker = FindTurnTakersWhere((TurnTaker tt) => tt.Identifier == "LadyOfTheWood").FirstOrDefault();
+                if (turnTaker != null)
+                {
+                    elementPool = turnTaker.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
+                }
+            }
+
+            return elementPool;
+        }
 
         private IEnumerator SpendTokenResponse(DealDamageAction dd)
         {
-			TokenPool elementPool = base.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
-			if (elementPool == null || !base.TurnTaker.IsHero)
-			{
-				TurnTaker turnTaker = FindTurnTakersWhere((TurnTaker tt) => tt.Identifier == "LadyOfTheWood").FirstOrDefault();
-				if (turnTaker != null)
-				{
-					elementPool = turnTaker.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
-				}
-			}
-
+			TokenPool elementPool = GetElementTokenPool();
 			List<RemoveTokensFromPoolAction> storedResults = new List<RemoveTokensFromPoolAction>();
 			IEnumerator coroutine = base.GameController.RemoveTokensFromPool(elementPool, 1, storedResults: storedResults, optional: true, cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
@@ -63,7 +70,15 @@ namespace Cauldron.LadyOfTheWood
 					base.GameController.ExhaustCoroutine(coroutine);
 				}
 				DamageType damageType = GetSelectedDamageType(storedDamageTypeResults).Value;
-				dd.DamageType = damageType;
+				coroutine = GameController.ChangeDamageType(dd, damageType, GetCardSource());
+				if (base.UseUnityCoroutines)
+				{
+					yield return base.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					base.GameController.ExhaustCoroutine(coroutine);
+				}
 			}
 			yield break;
 		}

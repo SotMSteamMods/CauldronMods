@@ -516,6 +516,48 @@ namespace CauldronTests
             AssertNumberOfCardsInRevealed(env, 0);
         }
 
+        [Test]
+        public void FlashRecon_OnlyCleanUpOwnRevealed()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "TheArgentAdept/DarkConductorArgentAdept", "Megalopolis");
+            StartGame();
+
+            //stack decks with harmless cards
+            var played = StackDeck(baron, "MobileDefensePlatform");
+            StackDeck(vanish, "FocusingGauntlet");
+            StackDeck(ra, "FleshOfTheSunGod");
+            StackDeck(wraith, "StunBolt");
+            StackDeck(env, "PoliceBackup");
+
+            Card adeptDiscard = PutOnDeck("TheStaffOfRa");
+            Card adeptPlay = PutOnDeck("FlashRecon");
+
+            DecisionSelectLocations = new[]
+            {
+                new LocationChoice(vanish.TurnTaker.Deck),
+                new LocationChoice(ra.TurnTaker.Deck),
+                new LocationChoice(baron.TurnTaker.Deck),
+                new LocationChoice(vanish.TurnTaker.Deck),
+                new LocationChoice(ra.TurnTaker.Deck),
+                new LocationChoice(wraith.TurnTaker.Deck),
+                new LocationChoice(adept.TurnTaker.Deck),
+                //new LocationChoice(env.TurnTaker.Deck), env deck is selected automatically since it's the last selection, yuck
+                new LocationChoice(baron.TurnTaker.Deck)
+            };
+            DecisionSelectCard = adeptPlay;
+
+            UsePower(adept);
+            AssertInTrash(vanish, adeptPlay);
+            AssertInTrash(ra, adeptDiscard);
+
+            AssertInPlayArea(baron, played);
+            AssertNumberOfCardsInRevealed(baron, 0);
+            AssertNumberOfCardsInRevealed(vanish, 0);
+            AssertNumberOfCardsInRevealed(ra, 0);
+            AssertNumberOfCardsInRevealed(wraith, 0);
+            AssertNumberOfCardsInRevealed(env, 0);
+        }
+
         public void TacticalRelocation_()
         {
             SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");

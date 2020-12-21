@@ -17,6 +17,7 @@ namespace Cauldron.Vector
 
         public HyperactiveImmuneSystemCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => c.Owner.IsHero && c.IsInPlayAndNotUnderCard && (c.IsOngoing || IsEquipment(c)), "hero Ongoing and Equipment"));
         }
 
         public override void AddTriggers()
@@ -30,7 +31,7 @@ namespace Cauldron.Vector
         {
             int eligibleCards = FindCardsWhere(c => c.Owner.IsHero && c.IsInPlayAndNotUnderCard && (c.IsOngoing || IsEquipment(c))).Count();
 
-            IEnumerator routine = this.GameController.GainHP(this.CharacterCard, eligibleCards);
+            IEnumerator routine = this.GameController.GainHP(this.CharacterCard, eligibleCards, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);

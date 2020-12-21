@@ -11,7 +11,8 @@ namespace Cauldron.Gray
     {
         public CriticalMassCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNumberOfCardsAtLocations(() => new List<Location>() { base.TurnTaker.Deck, base.TurnTaker.Trash }, new LinqCardCriteria((Card c) => c.Identifier == "ChainReaction", "chain reaction"));
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "UnstableIsotope", "unstable isotope"));
         }
         public override IEnumerator Play()
         {

@@ -2,7 +2,7 @@
 
 "AdvanceAndRegroup.png":
 {
-	"frame": {"x":1074,"y":0,"w":256,"h":188},
+	"frame": {"x":1255,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -10,7 +10,7 @@
 },
 "BreakThrough.png":
 {
-	"frame": {"x":1333,"y":0,"w":256,"h":188},
+	"frame": {"x":1514,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -18,7 +18,7 @@
 },
 "CommandAndConquer.png":
 {
-	"frame": {"x":1592,"y":0,"w":256,"h":188},
+	"frame": {"x":1773,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -47,6 +47,14 @@
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
+},
+"EchelonDeckBack.jpg":
+{
+	"frame": {"x":1074,"y":0,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "FindAWayIn.png":
 {
@@ -191,6 +199,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:2cdb2813223350848732f391cfa758a4:2c01136fb9a3d041d3be5ac34741e352:a8f546a1f79afa9a08f864c22904df54$"
+	"smartupdate": "$TexturePacker:SmartUpdate:4b14add4947e87a5d8eb3e0706c16d26:9206b589bd5b759231c4d629ebb96436:a8f546a1f79afa9a08f864c22904df54$"
 }
 }

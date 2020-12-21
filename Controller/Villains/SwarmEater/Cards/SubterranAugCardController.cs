@@ -11,7 +11,8 @@ namespace Cauldron.SwarmEater
     {
         public SubterranAugCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            var ss = SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(c => IsVillainTarget(c), "villain target"));
+            ss.Condition = () => base.Card.IsInPlayAndNotUnderCard;
         }
 
         private ITrigger _reduceDamage;
@@ -23,7 +24,9 @@ namespace Cauldron.SwarmEater
             base.AddStartOfTurnTrigger((TurnTaker tt) => base.Card.IsInPlayAndNotUnderCard && tt == base.TurnTaker, this.PlayVillainTargetResponse, TriggerType.PlayCard);
 
             //Absorb: The first time {SwarmEater} would be dealt damage each turn, reduce that damage by 1.
-            this._reduceDamage = base.AddReduceDamageTrigger((DealDamageAction action) => action.Amount > 0 && base.Card.Location.IsUnderCard && !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt), this.ReduceDamageResponse, (Card c) => c == this.CardThatAbsorbedThis(), true);
+            this._reduceDamage = base.AddReduceDamageTrigger((DealDamageAction action) => action.Amount > 0 && CanAbsorbEffectTrigger() && !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt), this.ReduceDamageResponse, (Card c) => c == this.CardThatAbsorbedThis(), true);
+
+            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeDamageDealt), TriggerType.Hidden);
         }
 
         private IEnumerator PlayVillainTargetResponse(PhaseChangeAction p)

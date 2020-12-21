@@ -20,6 +20,7 @@ namespace Cauldron.Vector
 
         public AssassinsSignatureCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
         public override IEnumerator Play()

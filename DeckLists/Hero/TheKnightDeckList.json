@@ -6,6 +6,10 @@
 	"initialCardIdentifiers": [
 		"TheKnightCharacter"
 	],
+	"initialOffToTheSideCardIdentifiers": [
+		"TheYoungKnightCharacter",
+		"TheOldKnightCharacter"
+	],
 	"cards": [{
 			"identifier": "TheKnightCharacter",
 			"count": 1,
@@ -352,9 +356,84 @@
 				"text": "A warrior is only as good as his{BR}equipment."
 			}],
 			"flavorReference": "The Knight, The Wanderer's Ballad #3"
+		},
+		{
+			"identifier": "TheOldKnightCharacter",
+			"promoIdentifier": "TheOldKnightCharacter",
+			"count": 1,
+			"title": "The Old Knight",
+			"promoTitle": "The Old Knight: Wasteland Ronin",
+			"shortPromoTitle": "The Old Knight",
+			"body": "Destroyer",
+			"backgroundColor": "D4E6B5",
+			"foilBackgroundColor": "FEFEFE",
+			"hitpointColor": "D4E6B5",
+			"character": true,
+			"powers": [
+				"{TheOldKnightCharacter} deals 1 target 2 irreducible lightning damage. Return 1 of your equipment cards in play to your hand."
+			],
+			"icons": [
+				"HasPower",
+				"DealDamageLightning",
+				"Manipulate"
+			],
+			"hitpoints": 18,
+			"nemesisIdentifiers": [
+				"TheKnight"
+			],
+			"flippedTitle": "Incapacitated",
+			"flippedBody": "When {TheOldKnightCharacter} flips to this side, destroy all equipment cards next to him.",
+			"flippedIcons": [
+				"DestroyEquipment"
+			],
+			"openingLines": {
+				"default": "default placeholder",
+				"OutlanderCharacter": "Outlander placeholder",
+				"PastTheRamCharacter": "1929 Ram placeholder",
+				"TiamatCharacter": "Tiamat placeholder",
+				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+			},
+			"complexity": 1
+		},
+		{
+			"identifier": "TheYoungKnightCharacter",
+			"promoIdentifier": "TheYoungKnightCharacter",
+			"count": 1,
+			"title": "The Young Knight",
+			"promoTitle": "The Young Knight: Wasteland Ronin",
+			"shortPromoTitle": "The Young Knight",
+			"body": "Dragon's Dance",
+			"backgroundColor": "D4E6B5",
+			"foilBackgroundColor": "FEFEFE",
+			"hitpointColor": "D4E6B5",
+			"character": true,
+			"powers": [
+				"{TheYoungKnightCharacter} deals herself and 2 other targets 2 toxic damage each"
+			],
+			"icons": [
+				"HasPower",
+				"DealDamageToxic"
+			],
+			"hitpoints": 15,
+			"nemesisIdentifiers": [
+				"TheKnight"
+			],
+			"flippedTitle": "Incapacitated",
+			"flippedBody": "When {TheYoungKnightCharacter} flips to this side, destroy all equipment cards next to her.",
+			"flippedIcons": [
+				"DestroyEquipment"
+			],
+			"openingLines": {
+				"default": "default placeholder",
+				"OutlanderCharacter": "Outlander placeholder",
+				"PastTheRamCharacter": "1929 Ram placeholder",
+				"TiamatCharacter": "Tiamat placeholder",
+				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+			},
+			"complexity": 1
 		}
 	],
-	"notPromoCards": [{
+	"promoCards": [{
 			"identifier": "TheKnightCharacter",
 			"promoIdentifier": "FairTheKnightCharacter",
 			"count": 1,
@@ -380,7 +459,7 @@
 			"incapacitatedAbilities": [
 				"One player may play a card now.",
 				"One player may draw a card now.",
-				"Until the start of your next turn, reduce damage dealt to hero targets by 2."
+				"Until the start of your next turn, reduce damage dealt by environment cards to hero targets by 2."
 			],
 			"flippedIcons": [
 				"PlayCardNow",
@@ -398,11 +477,11 @@
 		},
 		{
 			"identifier": "TheKnightCharacter",
-			"promoIdentifier": "BerzerkerTheKnightCharacter",
+			"promoIdentifier": "BerserkerTheKnightCharacter",
 			"count": 1,
 			"title": "The Knight",
-			"promoTitle": "The Berzerker Knight",
-			"shortPromoTitle": "Berzerk Knight",
+			"promoTitle": "The Berserker Knight",
+			"shortPromoTitle": "Berserker Knight",
 			"body": "Rage",
 			"backgroundColor": "CF5240",
 			"foilBackgroundColor": "FEFEFE",
@@ -486,6 +565,8 @@
 			"identifier": "TheKnightCharacter",
 			"promoIdentifier": "WastelandRoninTheKnightCharacter",
 			"count": 1,
+			"isReal": false,
+			"character": true,
 			"title": "The Knight",
 			"promoTitle": "The Knights: Wasteland Ronin",
 			"shortPromoTitle": "The Wasteland Knights",
@@ -493,7 +574,7 @@
 			"foilBackgroundColor": "FEFEFE",
 			"hitpointColor": "C94742",
 			"setup": [
-				"At the start of the game, put the caharacter cards for the Young and Old Knights into play, active side up.",
+				"At the start of the game, put the character cards for the Young and Old Knights into play, active side up.",
 				"Shuffle the hero deck and draw 4 cards."
 			],
 			"gameplay": [
@@ -521,81 +602,6 @@
 			],
 			"openingLines": {
 				"default": "We survived the Wastelands; this should be easy!",
-				"OutlanderCharacter": "Outlander placeholder",
-				"PastTheRamCharacter": "1929 Ram placeholder",
-				"TiamatCharacter": "Tiamat placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
-			},
-			"complexity": 1
-		},
-		{
-			"identifier": "TheKnightCharacter",
-			"promoIdentifier": "WastelandRoninTheKnightCharacter",
-			"count": 1,
-			"title": "The Knight",
-			"promoTitle": "The Old Knight: Wasteland Ronin",
-			"shortPromoTitle": "The Old Knight",
-			"body": "Destroyer",
-			"backgroundColor": "D4E6B5",
-			"foilBackgroundColor": "FEFEFE",
-			"hitpointColor": "D4E6B5",
-			"character": true,
-			"powers": [
-				"{TheKnight} deals 1 target 2 irreducible lightning damage. Return 1 of your equipment cards in play to your hand."
-			],
-			"icons": [
-				"HasPower",
-				"DealDamageLightning",
-				"Manipulate"
-			],
-			"hitpoints": 18,
-			"nemesisIdentifiers": [
-				"TheKnight"
-			],
-			"flippedTitle": "Incapacitated",
-			"flippedBody": "When {TheKnight} flips to this side, destroy all equipment cards next to him.",
-			"flippedIcons": [
-				"DestroyEquipment"
-			],
-			"openingLines": {
-				"default": "default placeholder",
-				"OutlanderCharacter": "Outlander placeholder",
-				"PastTheRamCharacter": "1929 Ram placeholder",
-				"TiamatCharacter": "Tiamat placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
-			},
-			"complexity": 1
-		},
-		{
-			"identifier": "TheKnightCharacter",
-			"promoIdentifier": "WastelandRoninTheKnightCharacter",
-			"count": 1,
-			"title": "The Knight",
-			"promoTitle": "The Young Knight: Wasteland Ronin",
-			"shortPromoTitle": "The Young Knight",
-			"body": "Dragon's Dance",
-			"backgroundColor": "D4E6B5",
-			"foilBackgroundColor": "FEFEFE",
-			"hitpointColor": "D4E6B5",
-			"character": true,
-			"powers": [
-				"{TheKnight} deals herself and 2 other targets 2 toxic damage each"
-			],
-			"icons": [
-				"HasPower",
-				"DealDamageToxic"
-			],
-			"hitpoints": 15,
-			"nemesisIdentifiers": [
-				"TheKnight"
-			],
-			"flippedTitle": "Incapacitated",
-			"flippedBody": "When {TheKnight} flips to this side, destroy all equipment cards next to her.",
-			"flippedIcons": [
-				"DestroyEquipment"
-			],
-			"openingLines": {
-				"default": "default placeholder",
 				"OutlanderCharacter": "Outlander placeholder",
 				"PastTheRamCharacter": "1929 Ram placeholder",
 				"TiamatCharacter": "Tiamat placeholder",

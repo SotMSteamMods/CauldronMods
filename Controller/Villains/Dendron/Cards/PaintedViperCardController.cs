@@ -20,6 +20,7 @@ namespace Cauldron.Dendron
 
         public PaintedViperCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroTargetWithLowestHP();
         }
 
         public override void AddTriggers()

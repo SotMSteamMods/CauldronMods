@@ -9,7 +9,6 @@ namespace Cauldron.Gray
     {
         public GrayCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowNumberOfCards(new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.DoKeywordsContain("radiation"), "radiation"));
         }
 
         public int? FindNumberOfRadiationCardsInPlay()

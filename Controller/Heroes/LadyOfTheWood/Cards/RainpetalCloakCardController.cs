@@ -20,6 +20,8 @@ namespace Cauldron.LadyOfTheWood
 			{
 				TriggerType.GainHP
 			}, true);
+
+			AddAfterLeavesPlayAction((GameAction ga) => ResetFlagsAfterLeavesPlay("FirstDamageTakenThisTurn"), TriggerType.Hidden);
 		}
 
 

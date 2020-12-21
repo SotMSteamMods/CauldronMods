@@ -22,6 +22,7 @@ namespace Cauldron.Cypher
 
         public HeuristicAlgorithmCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowSpecialStringNumberOfAugmentsAtLocation(TurnTaker.Deck);
         }
 
         public override IEnumerator Play()
@@ -110,7 +111,6 @@ namespace Cauldron.Cypher
             {
                 yield break;
             }
-
 
             // If you did not put an Augment into play this way, draw 2 cards.
             routine = base.DrawCards(this.HeroTurnTakerController, CardsToDraw);

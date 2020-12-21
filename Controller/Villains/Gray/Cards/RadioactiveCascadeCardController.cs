@@ -9,7 +9,8 @@ namespace Cauldron.Gray
     {
         public RadioactiveCascadeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => c.DoKeywordsContain("radiation")));
+            base.SpecialStringMaker.ShowHeroCharacterCardWithHighestHP();
+            base.SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => c.DoKeywordsContain("radiation"), "radiation"));
         }
 
         public override IEnumerator Play()
