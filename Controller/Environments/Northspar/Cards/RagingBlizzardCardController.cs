@@ -12,7 +12,7 @@ namespace Cauldron.Northspar
 
         public RagingBlizzardCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria(c => IsFrozen(c), "frozen"));
         }
 
         public override void AddTriggers()

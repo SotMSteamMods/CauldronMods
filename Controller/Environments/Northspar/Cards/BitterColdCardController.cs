@@ -12,7 +12,8 @@ namespace Cauldron.Northspar
 
         public BitterColdCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHighestHP(ranking: 3);
+            SpecialStringMaker.ShowSpecialString(() => BuildTargetsWhoWereDealtColdDamageThisTurnSpecialString());
         }
 
         public override void AddTriggers()
@@ -71,6 +72,25 @@ namespace Cauldron.Northspar
                         .Where(e => e.TargetCard.IsTarget && e.DamageType == DamageType.Cold && e.TargetCard.IsInPlayAndHasGameText)
                         .Select(e => e.TargetCard)
                         .ToList();
+        }
+
+        private string BuildTargetsWhoWereDealtColdDamageThisTurnSpecialString()
+        {
+            var targetList = GetTargetsWhoWereDealtColdDamageThisTurn();
+            string targetListSpecial = "Targets who were dealt cold damage this turn: ";
+            if (targetList.Any())
+            {
+                targetListSpecial += targetList.FirstOrDefault().AlternateTitleOrTitle;
+                for (int i = 1; i < targetList.Count(); i++)
+                {
+                    targetListSpecial += ", " + targetList[i].AlternateTitleOrTitle;
+                }
+            }
+            else
+            {
+                targetListSpecial += "None";
+            }
+            return targetListSpecial;
         }
     }
 }
