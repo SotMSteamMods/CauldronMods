@@ -11,6 +11,7 @@ namespace Cauldron.Anathema
     {
 		public ThresherClawCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
+			SpecialStringMaker.ShowHeroCharacterCardWithHighestHP(numberOfTargets: Game.H - 2);
 		}
 
 		public override void AddTriggers()

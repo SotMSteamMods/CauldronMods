@@ -11,7 +11,7 @@ namespace Cauldron.Gray
     {
         public UnstableIsotopeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Deck, new LinqCardCriteria((Card c) => c.DoKeywordsContain("radiation"), "radiation"));
         }
 
         public override IEnumerator Play()

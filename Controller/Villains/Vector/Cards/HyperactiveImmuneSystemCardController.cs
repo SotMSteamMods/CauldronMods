@@ -17,6 +17,7 @@ namespace Cauldron.Vector
 
         public HyperactiveImmuneSystemCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => c.Owner.IsHero && c.IsInPlayAndNotUnderCard && (c.IsOngoing || IsEquipment(c)), "hero Ongoing and Equipment"));
         }
 
         public override void AddTriggers()

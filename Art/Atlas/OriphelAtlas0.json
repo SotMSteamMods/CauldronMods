@@ -152,7 +152,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"VielShardkey.png":
+"VeilShardkey.png":
 {
 	"frame": {"x":518,"y":382,"w":256,"h":188},
 	"rotated": false,
@@ -175,6 +175,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:1cc9a0a7778c5525a052196d6a2ec4db:2c45b909f96947488c7ffb1a902cf79d:e17cd8f176c7c28f39486be4e1e7266f$"
+	"smartupdate": "$TexturePacker:SmartUpdate:801ca4a7023eb55cfc85d09e1ae0188f:2c45b909f96947488c7ffb1a902cf79d:e17cd8f176c7c28f39486be4e1e7266f$"
 }
 }

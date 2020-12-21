@@ -10,6 +10,7 @@ namespace Cauldron.Anathema
     {
 		public RazorScalesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
+			SpecialStringMaker.ShowIfElseSpecialString(() => !base.IsPropertyTrue(FirstDamageToVillainTargetThisTurn), () => "A villain target has not been dealt damage this turn.", () => "A villain target has been dealt damage this turn.");
 		}
 
 		public override void AddTriggers()

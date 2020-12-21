@@ -22,6 +22,7 @@ namespace Cauldron.Dendron
 
         public UrsaMajorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
         public override void AddTriggers()
