@@ -12,7 +12,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
 
         public HrCombatPheromonesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowLocationOfCards(new LinqCardCriteria(c => c.Identifier == "HalberdOmega", "Halberd - 12: Omega", useCardsSuffix: false)).Condition = () => Game.HasGameStarted && !Card.IsInPlayAndHasGameText;
         }
 
         #endregion Constructors

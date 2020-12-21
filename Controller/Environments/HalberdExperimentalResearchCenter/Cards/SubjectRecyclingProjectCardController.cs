@@ -13,7 +13,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
 
         public SubjectRecyclingProjectCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+			SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(c => IsTestSubject(c), "test subject")).Condition = () => !Card.IsInPlayAndHasGameText;
         }
 
         #endregion Constructors
