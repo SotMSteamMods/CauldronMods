@@ -11,6 +11,8 @@ namespace Cauldron.TheWanderingIsle
     {
         public AmphibiousAssaultCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowVillainTargetWithLowestHP(numberOfTargets: Game.H - 1);
+            SpecialStringMaker.ShowIfElseSpecialString(() => WasHeroCardPlayedThisRound(), () => "A hero card has been played this round.", () => "A hero card has not been played this round.");
         }
 
         public override void AddTriggers()

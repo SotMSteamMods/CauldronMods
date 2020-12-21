@@ -13,6 +13,8 @@ namespace Cauldron.TheWanderingIsle
         {
             //This card is indestructible
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
+
+            SpecialStringMaker.ShowVillainTargetWithHighestHP();
         }
 
         public override void AddTriggers()

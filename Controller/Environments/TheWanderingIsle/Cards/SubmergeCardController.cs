@@ -9,6 +9,7 @@ namespace Cauldron.TheWanderingIsle
     {
         public SubmergeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowLocationOfCards(new LinqCardCriteria(c => c.Identifier == "Teryx", "Teryx", useCardsSuffix: false)).Condition = () => !Card.IsInPlayAndHasGameText;
         }
 
         public override void AddTriggers()

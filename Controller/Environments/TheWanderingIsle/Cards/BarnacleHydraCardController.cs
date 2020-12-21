@@ -10,6 +10,8 @@ namespace Cauldron.TheWanderingIsle
     {
         public BarnacleHydraCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNonEnvironmentTargetWithLowestHP();
+            SpecialStringMaker.ShowIfSpecificCardIsInPlay("Submerge");
         }
 
         public override void AddTriggers()
