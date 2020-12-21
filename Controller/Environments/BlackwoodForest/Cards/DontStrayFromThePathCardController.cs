@@ -25,6 +25,7 @@ namespace Cauldron.BlackwoodForest
         {
             // Make this card indestructible
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => c.IsEnvironment && c != Card, "other environment"));
         }
 
         public override void AddTriggers()
