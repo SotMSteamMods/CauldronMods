@@ -21,6 +21,15 @@ namespace CauldronTests
             return card != null && card.Definition.Keywords.Contains("room");
         }
 
+        protected void AddImmuneToDamageTrigger(TurnTakerController ttc, bool heroesImmune, bool villainsImmune)
+        {
+            ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect();
+            immuneToDamageStatusEffect.TargetCriteria.IsHero = new bool?(heroesImmune);
+            immuneToDamageStatusEffect.TargetCriteria.IsVillain = new bool?(villainsImmune);
+            immuneToDamageStatusEffect.UntilStartOfNextTurn(ttc.TurnTaker);
+            this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
+        }
+
         #endregion
 
         [Test()]
@@ -1430,17 +1439,20 @@ namespace CauldronTests
             SetHitPoints(legacy.CharacterCard, 1);
             SetHitPoints(haka.CharacterCard, 1);
 
+            GoToPlayCardPhase(catacombs);
+            AddImmuneToDamageTrigger(env, true, false);
+
             GoToEndOfTurn(catacombs);
             Card playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
 
             //make sure it is Torture Chamber in play to avoid shenanigans
             if (playedRoom.Identifier != "TortureChamber")
             {
-                DecisionSelectCards = new Card[] { GetCard("TortureChamber"), null, ra.CharacterCard, ra.CharacterCard };
+                DecisionSelectCards = new Card[] { GetCard("TortureChamber"), null, null,  ra.CharacterCard, ra.CharacterCard };
                 DestroyCard(playedRoom, ra.CharacterCard);
             } else
             {
-                DecisionSelectCards = new Card[] {  null, ra.CharacterCard, ra.CharacterCard };
+                DecisionSelectCards = new Card[] {  null, null,  ra.CharacterCard, ra.CharacterCard };
             }
 
             GoToPlayCardPhase(catacombs);
