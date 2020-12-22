@@ -46,7 +46,7 @@ namespace Cauldron.Echelon
                 MoveCardDestination playArea = new MoveCardDestination(base.HeroTurnTaker.PlayArea);
 
                 routine = base.GameController.SelectCardsFromLocationAndMoveThem(base.HeroTurnTakerController,
-                    base.TurnTaker.Trash, 0, CardsFromTrash, new LinqCardCriteria(IsTactic),
+                    base.TurnTaker.Trash, 0, CardsFromTrash, new LinqCardCriteria(IsTactic, "tactic"),
                     playArea.ToEnumerable(), cardSource: GetCardSource());
 
                 if (base.UseUnityCoroutines)
@@ -61,8 +61,9 @@ namespace Cauldron.Echelon
             else
             {
                 // If you did not discard a card, you may discard your hand and draw 4 cards.
-                List<DiscardCardAction> discardHandActions = new List<DiscardCardAction>();
-                routine = base.GameController.DiscardHand(this.HeroTurnTakerController, true, discardHandActions, this.TurnTaker, GetCardSource());
+                var storedYesNo = new List<YesNoCardDecision>();
+
+                routine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.DiscardHand, this.Card, storedResults: storedYesNo, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(routine);
@@ -72,17 +73,27 @@ namespace Cauldron.Echelon
                     base.GameController.ExhaustCoroutine(routine);
                 }
 
-                int i = 0;
-                // TODO: check if hand was thrown out
+                if (DidPlayerAnswerYes(storedYesNo))
+                {
+                    routine = GameController.DiscardHand(DecisionMaker, false, discardResults, DecisionMaker.TurnTaker, GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(routine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(routine);
+                    }
 
-                routine = base.DrawCards(this.HeroTurnTakerController, CardsToDraw);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(routine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(routine);
+                    routine = base.DrawCards(this.HeroTurnTakerController, CardsToDraw);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(routine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(routine);
+                    }
                 }
             }
 

@@ -428,26 +428,62 @@ namespace CauldronTests
             AssertInTrash(wayin);
             QuickHPCheck(1, 1, 1, 1, 0);
         }
-        /*
+        
         [Test]
-        public void TestFirstResponder()
+        public void TestFirstResponderReturnTactics()
         {
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
             StartGame();
 
             Card firstRespond = GetCard(FirstResponderCardController.Identifier);
 
-            DecisionSelectCards = null;
-            DecisionDiscardCard = null;
+            Card advance = PutInTrash("AdvanceAndRegroup");
+            Card bt = PutInTrash("BreakThrough");
+            Card command = PutInHand("CommandAndConquer");
+            DecisionSelectCards = new Card[] { command, advance, bt };
 
             GoToPlayCardPhase(echelon);
             PlayCard(firstRespond);
-
-            DecisionYesNo = false;
-
-            Assert.True(false, "TODO");
+            AssertInTrash(command);
+            AssertIsInPlay(advance, bt);
         }
-        */
+        [Test]
+        public void TestFirstResponderRedrawHand()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
 
+            Card advance = PutInTrash("AdvanceAndRegroup");
+            Card bt = PutInTrash("BreakThrough");
+            Card command = PutInHand("CommandAndConquer");
+            DecisionSelectCards = new Card[] { null, advance, bt };
+            DecisionYesNo = true;
+            int startingHand = GetNumberOfCardsInHand(echelon);
+
+            PlayCard("FirstResponder");
+            //the two tactics put there, the First Responder, and her hand
+            AssertNumberOfCardsInTrash(echelon, startingHand + 3);
+
+            AssertNumberOfCardsInHand(echelon, 4);
+
+        }
+        [Test]
+        public void TestFirstResponderDoNothing()        
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card advance = PutInTrash("AdvanceAndRegroup");
+            Card bt = PutInTrash("BreakThrough");
+            Card command = PutInHand("CommandAndConquer");
+            DecisionSelectCards = new Card[] { null, advance, bt };
+            DecisionYesNo = false;
+            Card respond = PutOnDeck("FirstResponder");
+            QuickHandStorage(echelon);
+
+            PlayCard(respond);
+            QuickHandCheckZero();
+            AssertInTrash(advance, bt, respond);
+        }
     }
 }
