@@ -41,6 +41,7 @@ namespace Cauldron.Impact
             statusEffect.CardDestroyedCriteria.OwnedBy = this.TurnTaker;
             statusEffect.CardDestroyedCriteria.HasAnyOfTheseKeywords = new List<string> { "ongoing" };
             statusEffect.PostDestroyDestinationMustBeChangeable = true;
+            statusEffect.CardSource = CharacterCard;
 
             IEnumerator coroutine = AddStatusEffect(statusEffect);
             if (base.UseUnityCoroutines)
@@ -87,6 +88,7 @@ namespace Cauldron.Impact
                         holderEffect.NumberOfUses = 1;
                         holderEffect.TurnTakerCriteria.IsEnvironment = true;
                         holderEffect.TurnPhaseCriteria.IsEphemeral = false;
+                        holderEffect.CardSource = CharacterCard;
 
                         coroutine = AddStatusEffect(holderEffect);
                         if (base.UseUnityCoroutines)
@@ -119,6 +121,7 @@ namespace Cauldron.Impact
                             var irreducibleEffect = new MakeDamageIrreducibleStatusEffect();
                             irreducibleEffect.SourceCriteria.IsSpecificCard = target;
                             irreducibleEffect.NumberOfUses = 1;
+                            irreducibleEffect.CardSource = CharacterCard;
                             irreducibleEffect.CreateImplicitExpiryConditions();
 
                             coroutine = AddStatusEffect(irreducibleEffect);
@@ -131,7 +134,6 @@ namespace Cauldron.Impact
                                 base.GameController.ExhaustCoroutine(coroutine);
                             }
                         }
-
                         break;
                     }
             }
@@ -141,8 +143,9 @@ namespace Cauldron.Impact
         public IEnumerator EnvironmentCannotPlayEffect(PhaseChangeAction pc, StatusEffect effect)
         {
             var newEffect = new CannotPlayCardsStatusEffect();
-            newEffect.UntilThisTurnIsOver(Game);
             newEffect.TurnTakerCriteria.IsEnvironment = true;
+            newEffect.CardSource = CharacterCard;
+            newEffect.UntilThisTurnIsOver(Game);
 
             IEnumerator coroutine = AddStatusEffect(newEffect);
             if (base.UseUnityCoroutines)
