@@ -1,6 +1,9 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Cauldron.Echelon
 {
@@ -19,9 +22,24 @@ namespace Cauldron.Echelon
             this.DrawWhenDropping = false;
         }
 
+        public override IEnumerator Play()
+        {
+            IEnumerator coroutine = EachPlayerDrawsACard(optional: true);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
         protected override void AddTacticEffectTrigger()
         {
             //"Reduce damage dealt to hero targets by hero targets by 1."
+            AddReduceDamageTrigger((DealDamageAction dd) => dd.Target.IsHero && dd.DamageSource.IsHero && dd.DamageSource.IsTarget, _ => 1);
         }
     }
 }

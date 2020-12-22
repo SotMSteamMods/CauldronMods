@@ -584,5 +584,29 @@ namespace CauldronTests
             DealDamage(MDP, ra, 1, DTM);
             QuickHPCheck(-1, 0, 0);
         }
+        [Test]
+        public void TestPracticedTeamwork()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Haka", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+
+            Card practice = PutOnDeck("PracticedTeamwork");
+            QuickHandStorage(echelon, ra, haka);
+            QuickHPStorage(baron, echelon, ra, haka);
+            PlayCard(practice);
+
+            //Each player draws on entry
+            QuickHandCheck(1, 1, 1);
+
+            DealDamage(echelon, echelon, 1, DTM);
+            DealDamage(ra, echelon, 1, DTM);
+            DealDamage(haka, ra, 1, DTM);
+            QuickHPCheckZero();
+
+            DealDamage(echelon, baron, 1, DTM);
+            DealDamage(baron, echelon, 1, DTM);
+            QuickHPCheck(-1, -1, 0, 0);
+        }
     }
 }
