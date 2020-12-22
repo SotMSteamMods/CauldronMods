@@ -42,45 +42,6 @@ namespace Cauldron.Echelon
 
             List<Card> tacticCards = GetRevealedCards(revealedCardActions).Where(IsTactic).Take(2).ToList();
             List<Card> otherCards = GetRevealedCards(revealedCardActions).Where(c => !tacticCards.Contains(c)).ToList();
-            List<PlayCardAction> playCardActions = new List<PlayCardAction>();
-            
-            if (tacticCards.Any())
-            {
-                Card tactic = tacticCards.FirstOrDefault();
-                IEnumerable<Function> functionChoices = new[]
-                {
-                    // Put it into play...
-                    new Function(base.HeroTurnTakerController, $"Put {tactic.Title} into play", SelectionType.PlayCard, 
-                        () => base.GameController.PlayCard(base.HeroTurnTakerController, tacticCards.First(), true, storedResults: playCardActions, cardSource: GetCardSource())),
-
-                    //...or into your trash
-                    new Function(base.HeroTurnTakerController, $"Put {tactic.Title} in trash", SelectionType.MoveCardToTrash, () => base.GameController.MoveCard(this.HeroTurnTakerController, tacticCards.First(), base.HeroTurnTaker.Trash, cardSource: GetCardSource()))
-                };
-
-                SelectFunctionDecision selectFunction = new SelectFunctionDecision(base.GameController, base.HeroTurnTakerController, functionChoices, false);
-                
-                routine = base.GameController.SelectAndPerformFunction(selectFunction, associatedCards: tacticCards);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(routine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(routine);
-                }
-            }
-            else
-            {
-                routine = GameController.SendMessageAction($"There were no Tactics in {TurnTaker.Deck.GetFriendlyName()}", Priority.Medium, GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(routine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(routine);
-                }
-            }
 
             if (otherCards.Any())
             {
@@ -106,9 +67,80 @@ namespace Cauldron.Echelon
                 }
             }
 
+            List<PlayCardAction> playCardActions = new List<PlayCardAction>();
+            
+            if (tacticCards.Any())
+            {
+                routine = GameController.SelectAndPlayCard(DecisionMaker, tacticCards, false, true, playCardActions, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
+
+                if(DidPlayCards(playCardActions))
+                {
+                    tacticCards.Remove(playCardActions.FirstOrDefault().CardToPlay);
+                }
+
+                foreach(Card left in tacticCards)
+                {
+                    var destinations = new List<MoveCardDestination>
+                    {
+                        new MoveCardDestination(TurnTaker.Deck),
+                        new MoveCardDestination(TurnTaker.Deck, toBottom: true)
+                    };
+                    routine = GameController.SelectLocationAndMoveCard(DecisionMaker, left, destinations, cardSource: GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(routine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(routine);
+                    }
+                }
+            }
+            else
+            {
+                routine = GameController.SendMessageAction($"There were no Tactics in {TurnTaker.Deck.GetFriendlyName()}", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
+            }
+
+
             // {Echelon} deals 1 target 2 lightning or 2 melee damage.
+            var typeStorage = new List<SelectDamageTypeDecision>();
+            routine = GameController.SelectDamageType(DecisionMaker, typeStorage, new DamageType[] { DamageType.Melee, DamageType.Lightning }, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
 
-
+            var selectedType = GetSelectedDamageType(typeStorage) ?? DamageType.Melee;
+            
+            routine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, this.CharacterCard), 2, selectedType, 1, false, 1, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
         }
     }
 }

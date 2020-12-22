@@ -296,6 +296,29 @@ namespace CauldronTests
             DealDamage(visionary, baron, 1, DTM);
             QuickHPCheck(-1);
         }
+        [Test]
+        public void TestCommandAndConquer()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+
+            Card advance = PutOnDeck("AdvanceAndRegroup");
+            Card tesla = PutOnDeck("TeslaKnuckles");
+            Card bt = PutOnDeck("BreakThrough");
+
+            QuickShuffleStorage(echelon);
+            DecisionSelectCards = new Card[] { advance, baron.CharacterCard };
+
+            //does not seem to be a way to distinguish top/bottom of same deck in a SelectLocationDecision
+            //DecisionSelectLocation = new LocationChoice(echelon.TurnTaker.Deck, toBottom: true);
+            PlayCard("CommandAndConquer");
+
+            AssertIsInPlay(advance);
+            AssertOnTopOfDeck(bt);
+            QuickShuffleCheck(1);
+            AssertNumberOfCardsAtLocation(echelon.TurnTaker.Revealed, 0);
+        }
         /*
         [Test]
         public void TestFindAwayIn()
