@@ -40,7 +40,13 @@ namespace Cauldron.Impact
         public override void AddTriggers()
         {
             //"Whenever one of your Ongoing cards other than Spatial Finesse is destroyed, you may destroy this card to put it back into play."
-            AddTrigger((DestroyCardAction dca) => !this.IsBeingDestroyed && dca.PostDestroyDestinationCanBeChanged && dca.WasCardDestroyed && dca.CardToDestroy.TurnTaker == this.TurnTaker && dca.CardToDestroy.Card.IsOngoing && dca.CardToDestroy.Card.Identifier != "SpatialFinesse", MayReturnDestroyedResponse, new TriggerType[] { TriggerType.ChangePostDestroyDestination, TriggerType.PutIntoPlay }, TriggerTiming.After, isActionOptional: true);
+            AddTrigger<DestroyCardAction>(DestroyCardCriteria, MayReturnDestroyedResponse, new TriggerType[] { TriggerType.ChangePostDestroyDestination, TriggerType.PutIntoPlay }, TriggerTiming.After, isActionOptional: true);
+        }
+
+        private bool DestroyCardCriteria(DestroyCardAction dca)
+        {
+            var card = dca.CardToDestroy.Card;
+            return !this.IsBeingDestroyed && dca.PostDestroyDestinationCanBeChanged && dca.WasCardDestroyed && card.Owner == this.TurnTaker && card.IsOngoing && card.Identifier != "SpatialFinesse";
         }
 
         private IEnumerator MayReturnDestroyedResponse(DestroyCardAction dca)
