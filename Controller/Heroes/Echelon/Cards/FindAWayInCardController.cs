@@ -35,7 +35,7 @@ namespace Cauldron.Echelon
             });
 
             // At the start of a player's turn, that player may choose to skip their power Phase.
-            AddStartOfTurnTrigger(tt => tt != base.TurnTaker && tt.IsHero, StartOfTurnResponse,
+            AddStartOfTurnTrigger(tt => tt != base.TurnTaker && tt.IsHero, StartOfTurnPhaseShiftResponse,
                 new[] {TriggerType.ReducePhaseActionCount, TriggerType.IncreasePhaseActionCount});
 
             //base.AddAdditionalPhaseActionTrigger(tt => tt != base.TurnTaker && tt.IsHero && this.ShouldIncreasePhaseActionCount(tt), Phase.DrawCard, 1);
@@ -44,7 +44,7 @@ namespace Cauldron.Echelon
             base.AddTriggers();
         }
 
-        private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
+        private IEnumerator StartOfTurnPhaseShiftResponse(PhaseChangeAction pca)
         {
             TurnTaker heroTT = pca.GameController.ActiveTurnTaker;
             HeroTurnTakerController heroTTC = pca.GameController.ActiveTurnTakerController.ToHero();

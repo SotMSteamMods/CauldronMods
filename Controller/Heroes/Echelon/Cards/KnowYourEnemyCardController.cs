@@ -15,6 +15,7 @@ namespace Cauldron.Echelon
         //==============================================================
 
         public static string Identifier = "KnowYourEnemy";
+        private readonly string drawKey = "KnowYourEnemyDrawnCardThisTurnKey";
 
         public KnowYourEnemyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -24,7 +25,36 @@ namespace Cauldron.Echelon
         protected override void AddTacticEffectTrigger()
         {
             //The first time a hero destroys a non-hero target each turn, you may draw a card.
+            AddTrigger((DestroyCardAction dc) => dc.WasCardDestroyed && dc.CardToDestroy.Card.IsTarget && !dc.CardToDestroy.Card.IsHero && !HasBeenSetToTrueThisTurn(drawKey) && IsByHero(dc),
+                                FirstDrawResponse, TriggerType.DrawCard, TriggerTiming.After);
         }
 
+        private bool IsByHero(DestroyCardAction dc)
+        {
+            if(dc != null && dc.ActionSource is DealDamageAction damage)
+            {
+                return damage.DamageSource.IsHero;
+            }
+            else if (dc != null && dc.CardSource != null)
+            {
+                return dc.CardSource.Card.IsHero;
+            }
+            return false;
+        }
+
+        private IEnumerator FirstDrawResponse(DestroyCardAction _)
+        {
+            SetCardPropertyToTrueIfRealAction(drawKey);
+            IEnumerator coroutine = DrawCard(DecisionMaker.HeroTurnTaker, optional: true);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
     }
 }

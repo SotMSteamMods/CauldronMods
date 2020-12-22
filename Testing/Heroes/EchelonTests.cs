@@ -485,5 +485,75 @@ namespace CauldronTests
             QuickHandCheckZero();
             AssertInTrash(advance, bt, respond);
         }
+        [Test]
+        public void TestKnowYourEnemy()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhaseAndPlayCard(echelon, "KnowYourEnemy");
+            QuickHandStorage(echelon);
+            Card mdp = MDP;
+
+            DealDamage(echelon, mdp, 12, DTM);
+            QuickHandCheck(1);
+
+            //only once per turn
+            PlayCard(mdp);
+            DealDamage(ra, mdp, 12, DTM);
+            QuickHandCheckZero();
+
+            GoToStartOfTurn(ra);
+
+            //not by villains
+            PlayCard(mdp);
+            DealDamage(baron, mdp, 12, DTM);
+            QuickHandCheckZero();
+
+            //non-damage destroy counts
+            PlayCard(mdp);
+            Card gaze = PlayCard("WrathfulGaze");
+            SetHitPoints(mdp, 1);
+            UsePower(gaze);
+            QuickHandCheck(1);
+        }
+        [Test]
+        public void TestNeedAWayOutPhaseShifting()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card wayout = GetCard("NeedAWayOut");
+
+            GoToPlayCardPhase(echelon);
+            PlayCard(wayout);
+
+            DecisionYesNo = true;
+
+            GoToStartOfTurn(ra);
+            GoToPlayCardPhase(ra);
+            AssertPhaseActionCount(null);
+            GoToUsePowerPhase(ra);
+            AssertPhaseActionCount(2);
+        }
+        [Test]
+        public void TestNeedAWayOutDestroyAndHeal()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card decoy = PlayCard("DecoyProjection");
+            var interestingCards = new Card[] { echelon.CharacterCard, ra.CharacterCard, visionary.CharacterCard, decoy, MDP };
+            SetHitPoints(interestingCards, 3);
+            QuickHPStorage(interestingCards);
+
+            Card wayout = PlayCard("NeedAWayOut");
+
+            AssertNoDecision();
+
+            GoToStartOfTurn(echelon);
+            AssertInTrash(wayout);
+            QuickHPCheck(1, 1, 1, 1, 0);
+        }
     }
 }
