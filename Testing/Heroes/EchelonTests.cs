@@ -261,6 +261,41 @@ namespace CauldronTests
             DestroyCard(traffic);
             QuickHPCheck(2, 0);
         }
+        [Test]
+        public void TestBreakThroughEffect()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+
+            DecisionYesNo = true;
+            GoToPlayCardPhaseAndPlayCard(echelon, "BreakThrough");
+
+            QuickHPStorage(baron);
+            //must be owning player's turn
+            DealDamage(ra, baron, 1, DTM);
+            QuickHPCheck(-1);
+
+            DealDamage(echelon, baron, 1, DTM);
+            QuickHPCheck(-3);
+
+            //only once
+            DealDamage(echelon, baron, 1, DTM);
+            QuickHPCheck(-1);
+
+            //valid sources change with turn
+            GoToStartOfTurn(ra);
+            DealDamage(ra, baron, 1, DTM);
+            QuickHPCheck(-3);
+
+            //also works with non-character targets
+            Card decoy = PlayCard("DecoyProjection");
+            GoToStartOfTurn(visionary);
+            DealDamage(decoy, baron, 1, DTM);
+            QuickHPCheck(-3);
+            DealDamage(visionary, baron, 1, DTM);
+            QuickHPCheck(-1);
+        }
         /*
         [Test]
         public void TestFindAwayIn()
