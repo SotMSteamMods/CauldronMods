@@ -671,5 +671,41 @@ namespace CauldronTests
             DealDamage(echelon, redist, 1, DTM);
             QuickHPCheck(-2);
         }
+        [Test]
+        public void TestStaggeredAssault()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+
+            GoToPlayCardPhaseAndPlayCard(echelon, "StaggeredAssault");
+            QuickHPStorage(baron);
+            DealDamage(ra, baron, 2, DTM);
+            QuickHPCheck(-3);
+
+            //once per turn
+            QuickHPStorage(baron);
+            DealDamage(ra, baron, 2, DTM);
+            QuickHPCheck(-2);
+
+            GoToStartOfTurn(ra);
+
+            //does not trigger on less-than-two
+            DealDamage(ra, baron, 1, DTM);
+            QuickHPCheck(-1);
+            DealDamage(ra, baron, 2, DTM);
+            QuickHPCheck(-3);
+
+            DecisionSelectTargets = new Card[] { null, baron.CharacterCard };
+
+            GoToStartOfTurn(visionary);
+            Card decoy = PlayCard("DecoyProjection");
+
+            //optional, and trigger on non-character
+            DealDamage(decoy, baron, 2, DTM);
+            QuickHPCheck(-2);
+            DealDamage(decoy, baron, 2, DTM);
+            QuickHPCheck(-3);
+        }
     }
 }
