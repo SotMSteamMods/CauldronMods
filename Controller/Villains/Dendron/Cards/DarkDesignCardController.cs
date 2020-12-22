@@ -17,7 +17,7 @@ namespace Cauldron.Dendron
 
         public DarkDesignCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowIfElseSpecialString(() => GetLastHeroToDamageVillainTarget() != null, () => "Last hero to deal damage to a villain target: " + GetLastHeroToDamageVillainTarget().Title, () => "No heroes have dealt damage to a villain target.");
+            SpecialStringMaker.ShowIfElseSpecialString(() => GetLastHeroToDamageVillainTarget() != null , () => "Last hero to deal damage to a villain target: " + GetLastHeroToDamageVillainTarget().Owner.Name, () => "No heroes have dealt damage to a villain target.");
         }
 
         public override IEnumerator Play()
