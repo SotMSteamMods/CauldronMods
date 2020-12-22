@@ -26,21 +26,10 @@ namespace Cauldron.DocHavoc
 
         public override void AddTriggers()
         {
-            /*
-            base.AddTrigger<DealDamageAction>(dealDamageAction => dealDamageAction.DamageSource != null
-                    && dealDamageAction.DamageSource.IsSameCard(base.CharacterCard) && dealDamageAction.Amount > 0,
-                ChooseDamageOrHealResponse, new TriggerType[] { TriggerType.WouldBeDealtDamage, TriggerType.GainHP }, TriggerTiming.Before, isActionOptional: true);
-            */
-            BuildConditionalPreventDamageResponse((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.IsSameCard(this.CharacterCard) && dd.Amount > 0,
+            AddOptionalPreventDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.IsSameCard(this.CharacterCard) && dd.Amount > 0,
                                     GainHPBasedOnDamagePrevented, new TriggerType[] { TriggerType.GainHP }, true);
 
             base.AddTriggers();
-        }
-
-        public override IEnumerator Play()
-        {
-
-            return base.Play();
         }
 
         private IEnumerator GainHPBasedOnDamagePrevented(DealDamageAction dd)
@@ -56,93 +45,7 @@ namespace Cauldron.DocHavoc
             }
             yield break;
         }
-
-        private IEnumerator ChooseDamageOrHealResponse(DealDamageAction dd)
-        {
-            Card card = dd.Target;
-
-            List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
-
-            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(this.DecisionMaker,
-                SelectionType.GainHP, card, storedResults: storedResults, cardSource: base.GetCardSource());
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            // If not true, just return and let the original damage happen
-            if (!base.DidPlayerAnswerYes(storedResults))
-            {
-                yield break;
-            }
-
-
-            // Cancel original damage
-
-            var storedCancel = new List<CancelAction>();
-            coroutine = base.CancelAction(dd, storedResults: storedCancel, isPreventEffect: true);
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            var gainHPStorage = new List<GainHPAction>();
-
-            if (storedCancel.FirstOrDefault() != null && storedCancel.FirstOrDefault().ActionToCancel.IsSuccessful == false)
-            {
-                // Gain HP instead of dealing damage
-                //coroutine = this.GameController.GainHP(card, dd.Amount, storedResults: gainHPStorage, cardSource: GetCardSource());
-                coroutine = GameController.SelectAndGainHP(DecisionMaker, dd.Amount, false, (Card c) => c == dd.Target, 1, 1, true, storedResults: gainHPStorage, cardSource: GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-
-
-            //see if we can get the game to wait for Medico Malpractice's effect
-            if (IsRealAction())
-            {
-                if (gainHPStorage.FirstOrDefault() != null)
-                {
-                    var gainHP = gainHPStorage.FirstOrDefault();
-                    Log.Debug($"Did action get canceled? {gainHP.IsSuccessful == false}");
-                    Log.Debug($"Caused {gainHP.AmountActuallyGained} HP gain");
-                    coroutine = DoNothing();
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
-                    }
-                }
-                else
-                {
-                    Log.Warning("Cauterize rushing ahead");
-                }
-            }
-        
-
-            yield break;
-        }
-
-        private ITrigger BuildConditionalPreventDamageResponse(Func<DealDamageAction, bool> damageCriteria, Func<DealDamageAction, IEnumerator> followUpResponse = null, IEnumerable<TriggerType> followUpTriggerTypes = null, bool isPreventEffect = false)
+        private ITrigger AddOptionalPreventDamageTrigger(Func<DealDamageAction, bool> damageCriteria, Func<DealDamageAction, IEnumerator> followUpResponse = null, IEnumerable<TriggerType> followUpTriggerTypes = null, bool isPreventEffect = false)
         {
             DealDamageAction preventedDamage = null;
             List<CancelAction> cancelDamage = null;
