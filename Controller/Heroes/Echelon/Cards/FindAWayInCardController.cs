@@ -35,10 +35,10 @@ namespace Cauldron.Echelon
             });
 
             // At the start of a player's turn, that player may choose to skip their power Phase.
-            //base.AddStartOfTurnTrigger(tt => tt != base.TurnTaker && tt.IsHero, StartOfTurnResponse,
-                //new[] {TriggerType.ReducePhaseActionCount, TriggerType.IncreasePhaseActionCount});
+            AddStartOfTurnTrigger(tt => tt != base.TurnTaker && tt.IsHero, StartOfTurnResponse,
+                new[] {TriggerType.ReducePhaseActionCount, TriggerType.IncreasePhaseActionCount});
 
-            base.AddAdditionalPhaseActionTrigger(tt => tt != base.TurnTaker && tt.IsHero && this.ShouldIncreasePhaseActionCount(tt), Phase.DrawCard, 1);
+            //base.AddAdditionalPhaseActionTrigger(tt => tt != base.TurnTaker && tt.IsHero && this.ShouldIncreasePhaseActionCount(tt), Phase.DrawCard, 1);
             
 
             base.AddTriggers();
@@ -50,7 +50,7 @@ namespace Cauldron.Echelon
             HeroTurnTakerController heroTTC = pca.GameController.ActiveTurnTakerController.ToHero();
 
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
-            IEnumerator routine = base.GameController.MakeYesNoCardDecision(heroTTC, SelectionType.DrawExtraCard, this.Card,
+            IEnumerator routine = base.GameController.MakeYesNoCardDecision(heroTTC, SelectionType.PlayExtraCard, this.Card,
                 storedResults: storedResults, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
@@ -67,7 +67,13 @@ namespace Cauldron.Echelon
                 yield break;
             }
 
-            routine = base.ReducePhaseActionCountIfInPhase(tt => tt == heroTT, Phase.UsePower, 1);
+            var extraPlay = new IncreasePhaseActionCountStatusEffect(1);
+            extraPlay.UntilThisTurnIsOver(Game);
+            extraPlay.ToTurnPhaseCriteria.Phase = Phase.PlayCard;
+            extraPlay.ToTurnPhaseCriteria.TurnTaker = GameController.ActiveTurnTaker;
+            extraPlay.CardSource = this.Card;
+
+            routine = AddStatusEffect(extraPlay);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
@@ -77,7 +83,13 @@ namespace Cauldron.Echelon
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            routine = base.IncreasePhaseActionCountIfInPhase(tt => tt == heroTT, Phase.DrawCard, 1);
+            var skipPower = new PreventPhaseActionStatusEffect();
+            skipPower.UntilThisTurnIsOver(Game);
+            skipPower.ToTurnPhaseCriteria.Phase = Phase.UsePower;
+            skipPower.ToTurnPhaseCriteria.TurnTaker = GameController.ActiveTurnTaker;
+            skipPower.CardSource = this.Card;
+
+            routine = AddStatusEffect(skipPower);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
@@ -86,32 +98,14 @@ namespace Cauldron.Echelon
             {
                 base.GameController.ExhaustCoroutine(routine);
             }
-
-            //routine = base.AddAdditionalPhaseActionTrigger((TurnTaker tt) => tt == pca.DecisionMaker.TurnTaker, Phase.DrawCard, 1);
+            yield break;
         }
 
         private IEnumerator DestroyAndHealResponse(PhaseChangeAction pca)
         {
-            List<DestroyCardAction> storedResults = new List<DestroyCardAction>();
-            IEnumerator routine = base.GameController.DestroyCard(this.HeroTurnTakerController, this.Card, storedResults: storedResults,
-                cardSource: GetCardSource());
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-
-            if (!storedResults.Any() || !base.DidDestroyCard(storedResults.First()))
-            {
-                yield break;
-            }
 
             // each hero target regains 1 HP
-            routine = base.GameController.GainHP(this.HeroTurnTakerController,
+           IEnumerator routine = base.GameController.GainHP(this.HeroTurnTakerController,
                 c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText && GameController.IsCardVisibleToCardSource(c, GetCardSource()), HpGain, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
@@ -122,20 +116,19 @@ namespace Cauldron.Echelon
             {
                 base.GameController.ExhaustCoroutine(routine);
             }
-        }
 
-        private bool ShouldIncreasePhaseActionCount(TurnTaker tt)
-        {
+            List<DestroyCardAction> storedResults = new List<DestroyCardAction>();
+            routine = base.GameController.DestroyCard(this.HeroTurnTakerController, this.Card, storedResults: storedResults,
+                cardSource: GetCardSource());
 
-
-
-            return true;
-            //return tt == base.TurnTaker;
-        }
-
-        private bool DidHeroUsePowerDuringPowerPhaseThisTurn(TurnTaker tt)
-        {
-            return tt.IsHero && base.Journal.UsePowerEntriesThisTurn().Any(p => p.PowerUser == tt && p.TurnPhase.TurnTaker == tt && p.TurnPhase.IsUsePower);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(routine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(routine);
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Cauldron.Echelon;
+using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
@@ -319,9 +320,9 @@ namespace CauldronTests
             QuickShuffleCheck(1);
             AssertNumberOfCardsAtLocation(echelon.TurnTaker.Revealed, 0);
         }
-        /*
+        
         [Test]
-        public void TestFindAwayIn()
+        public void TestFindAWayInPhaseShifting()
         {
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
             StartGame();
@@ -335,16 +336,32 @@ namespace CauldronTests
 
             GoToStartOfTurn(ra);
             GoToPlayCardPhase(ra);
-            PlayCard(ra, GetCardFromHand(ra, 0));
-            //GoToUsePowerPhase(ra);
-            //UsePower(ra);
-
-
-            GoToEndOfTurn(ra);
-
-            Assert.True(false, "TODO");
+            AssertPhaseActionCount(2);
+            GoToUsePowerPhase(ra);
+            AssertPhaseActionCount(null);
         }
+        [Test]
+        public void TestFindAWayInDestroyAndHeal()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
 
+            Card decoy = PlayCard("DecoyProjection");
+            var interestingCards = new Card[] { echelon.CharacterCard, ra.CharacterCard, visionary.CharacterCard, decoy, MDP };
+            SetHitPoints(interestingCards, 3);
+            QuickHPStorage(interestingCards);
+
+            Card wayin = PlayCard("FindAWayIn");
+
+            AssertNoDecision();
+
+            GoToStartOfTurn(echelon);
+            AssertInTrash(wayin);
+            QuickHPCheck(1, 1, 1, 1, 0);
+        }
+        /*
+         * [Test]
+         * 
         [Test]
         public void TestFirstResponder()
         {
