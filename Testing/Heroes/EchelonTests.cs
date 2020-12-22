@@ -707,5 +707,19 @@ namespace CauldronTests
             DealDamage(decoy, baron, 2, DTM);
             QuickHPCheck(-3);
         }
+        [Test]
+        public void TestStrategicDeployment()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card obs = PutOnDeck("RemoteObservation");
+            DecisionSelectCard = obs;
+
+            QuickShuffleStorage(echelon);
+            PlayCard("StrategicDeployment");
+            AssertIsInPlay(obs);
+            QuickShuffleCheck(1);
+        }
     }
 }

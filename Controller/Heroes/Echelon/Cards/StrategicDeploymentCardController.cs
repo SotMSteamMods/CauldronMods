@@ -1,7 +1,9 @@
 ﻿using System;
-using System.Collections;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Cauldron.Echelon
 {
@@ -21,7 +23,7 @@ namespace Cauldron.Echelon
         public override IEnumerator Play()
         {
             LinqCardCriteria criteria = new LinqCardCriteria(this.IsTactic, "tactic");
-            IEnumerator routine = base.SearchForCards(this.DecisionMaker, true, false, 1, 1, criteria, false, true, false, shuffleAfterwards: true);
+            IEnumerator routine = base.SearchForCards(this.DecisionMaker, true, false, 1, 1, criteria, true, false, false, shuffleAfterwards: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
