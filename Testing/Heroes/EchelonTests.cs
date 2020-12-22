@@ -18,6 +18,17 @@ namespace CauldronTests
 
         private const string DeckNamespace = "Cauldron.Echelon";
 
+        private readonly DamageType DTM = DamageType.Melee;
+        private Card MDP => GetCardInPlay("MobileDefensePlatform");
+        
+        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
+        {
+            foreach (var id in identifiers)
+            {
+                AssertCardHasKeyword(GetCard(id), keyword, false);
+            }
+        }
+        #endregion
         [Test]
         public void TestEchelonLoads()
         {
@@ -30,19 +41,6 @@ namespace CauldronTests
             Assert.IsInstanceOf(typeof(EchelonCharacterCardController), echelon.CharacterCardController);
 
             Assert.AreEqual(27, echelon.CharacterCard.HitPoints);
-        }
-
-
-        private readonly DamageType DTM = DamageType.Melee;
-        private Card MDP => GetCardInPlay("MobileDefensePlatform");
-        #endregion
-
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                AssertCardHasKeyword(GetCard(id), keyword, false);
-            }
         }
         [Test]
         public void TestEchelonDecklist()
@@ -154,6 +152,90 @@ namespace CauldronTests
             AssertNoDecision();
             GoToStartOfTurn(echelon);
             AssertInTrash(tactic);
+        }
+        [Test]
+        public void TestEchelonPower()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+
+            QuickHPStorage(baron);
+            UsePower(echelon);
+            QuickHPCheck(-1);
+
+            PlayCard("LivingForceField");
+            UsePower(echelon);
+            QuickHPCheck(-1);
+        }
+        [Test]
+        public void TestEchelonIncap1()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+            DealDamage(baron, echelon, 50, DTM);
+
+            Card flesh = PlayCard("FleshOfTheSunGod");
+            UseIncapacitatedAbility(echelon, 0);
+            AssertInTrash(flesh);
+        }
+        [Test]
+        public void TestEchelonIncap2()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+            DealDamage(baron, echelon, 50, DTM);
+
+            Card punch = PutInHand("SuckerPunch");
+            Card assault = PutInHand("AcceleratedAssault");
+            Card goggles = PutOnDeck("HUDGoggles");
+            Card limit = PutOnDeck("PushingTheLimits");
+            DecisionYesNo = true;
+            DecisionSelectTurnTaker = tachyon.TurnTaker;
+            DecisionSelectCards = new Card[] { punch, goggles };
+
+            QuickHandStorage(tachyon, ra);
+            UseIncapacitatedAbility(echelon, 1);
+            QuickHandCheckZero();
+            AssertInTrash(punch, goggles);
+            AssertInHand(assault, limit);
+        }
+        [Test]
+        public void TestEchelonIncap2Optional()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+            DealDamage(baron, echelon, 50, DTM);
+
+            Card punch = PutInHand("SuckerPunch");
+            Card assault = PutInHand("AcceleratedAssault");
+            DecisionSelectTurnTaker = tachyon.TurnTaker;
+
+            Card goggles = PutOnDeck("HUDGoggles");
+            Card limit = PutOnDeck("PushingTheLimits");
+            DecisionYesNo = false;
+
+            QuickHandStorage(tachyon, ra);
+            UseIncapacitatedAbility(echelon, 1);
+            QuickHandCheckZero();
+            AssertInHand(punch, assault);
+            AssertOnTopOfDeck(limit);
+            AssertOnTopOfDeck(goggles, 1);
+        }
+        [Test]
+        public void TestEchelonIncap3()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+            DealDamage(baron, echelon, 50, DTM);
+
+            Card topOfDeck = GetTopCardOfDeck(baron);
+            UseIncapacitatedAbility(echelon, 2);
+            AssertOnBottomOfDeck(topOfDeck);
         }
         /*
         [Test]

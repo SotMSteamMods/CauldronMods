@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+
+using Handelabra;
 
 namespace Cauldron.Echelon
 {
@@ -62,9 +65,12 @@ namespace Cauldron.Echelon
                     break;
 
                 case 1:
-                    // One player may draw 2 cards,
-                    
-                    routine = base.GameController.SelectHeroToDrawCards(this.HeroTurnTakerController, Incap2CardsToDraw, cardSource: GetCardSource());
+                    // One player may draw 2 cards, then discard 2 cards.
+
+                    List<TurnTaker> viableHeroes = GameController.AllHeroes.Where((HeroTurnTaker tt) => !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())).Select(htt => htt as TurnTaker).ToList();
+                    var selectTurnTaker = new SelectTurnTakerDecision(GameController, DecisionMaker, viableHeroes, SelectionType.DiscardAndDrawCard, numberOfCards: 2, cardSource: GetCardSource());
+
+                    routine = GameController.SelectTurnTakerAndDoAction(selectTurnTaker, MayDrawTwoDiscardTwo);
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(routine);
@@ -73,18 +79,13 @@ namespace Cauldron.Echelon
                     {
                         base.GameController.ExhaustCoroutine(routine);
                     }
-
-                    // .. then discard 2 cards.
-                    // TODO:
-
-
                     break;
 
                 case 2:
 
                     // Move the top card of the villain deck to the bottom of the villain deck.
                     List<SelectLocationDecision> storedResults = new List<SelectLocationDecision>();
-                    routine = FindVillainDeck(this.HeroTurnTakerController, SelectionType.MoveCard, storedResults, null);
+                    routine = FindVillainDeck(this.HeroTurnTakerController, SelectionType.MoveCard, storedResults, loc => !loc.IsSubDeck);
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(routine);
@@ -111,6 +112,50 @@ namespace Cauldron.Echelon
 
                     break;
             }
+        }
+
+        private IEnumerator MayDrawTwoDiscardTwo(TurnTaker tt)
+        {
+            var player = FindHeroTurnTakerController(tt?.ToHero());
+            if (player == null)
+            {
+                yield break;
+            }
+
+            var storedYesNo = new List<YesNoCardDecision>();
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(player, SelectionType.DiscardAndDrawCard, this.Card, storedResults: storedYesNo, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if(DidPlayerAnswerYes(storedYesNo))
+            {
+                coroutine = GameController.DrawCards(player, 2, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                coroutine = GameController.SelectAndDiscardCards(player, 2, false, 2, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
         }
     }
 }
