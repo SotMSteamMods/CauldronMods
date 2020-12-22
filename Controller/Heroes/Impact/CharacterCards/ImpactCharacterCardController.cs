@@ -22,7 +22,7 @@ namespace Cauldron.Impact
             int numToDestroy = GetPowerNumeral(2, 1);
             int numBoost = GetPowerNumeral(3, 2);
 
-            if(numTargets < 1)
+            if (numTargets < 1)
             {
                 yield break;
             }
@@ -51,7 +51,7 @@ namespace Cauldron.Impact
             }
 
             var selectedTargets = targetDecision.SelectCardDecisions.Select(scd => scd.SelectedCard).Where((Card c) => c != null);
-            if(selectedTargets.Count() == 0)
+            if (selectedTargets.Count() == 0)
             {
                 yield break;
             }
@@ -72,7 +72,7 @@ namespace Cauldron.Impact
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                if(DidPlayerAnswerYes(storedYesNo))
+                if (DidPlayerAnswerYes(storedYesNo))
                 {
                     coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria(c => c.IsInPlayAndHasGameText && c.IsOngoing && c.IsHero && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "hero ongoing"), numToDestroy, false, numToDestroy, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
@@ -100,7 +100,7 @@ namespace Cauldron.Impact
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if(numTargets > 1)
+            if (numTargets > 1)
             {
                 coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, this.Card), numDamage, DamageType.Infernal, numTargets - 1, false, numTargets - 1, additionalCriteria: (Card c) => !selectedTargets.Contains(c), cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
@@ -152,7 +152,7 @@ namespace Cauldron.Impact
                         {
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
-                        if(DidSelectCard(storedTarget))
+                        if (DidSelectCard(storedTarget))
                         {
                             Card damageDealer = GetSelectedCard(storedTarget);
                             coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, damageDealer), 1, DamageType.Projectile, 1, false, 1, additionalCriteria: (Card c) => c != damageDealer, cardSource: GetCardSource());
@@ -173,6 +173,7 @@ namespace Cauldron.Impact
                         var envDamageEffect = new MakeDamageIrreducibleStatusEffect();
                         envDamageEffect.TargetCriteria.IsEnvironment = true;
                         envDamageEffect.UntilStartOfNextTurn(this.TurnTaker);
+                        envDamageEffect.CardSource = CharacterCard;
                         coroutine = GameController.AddStatusEffect(envDamageEffect, true, GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
