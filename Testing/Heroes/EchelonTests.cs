@@ -784,5 +784,50 @@ namespace CauldronTests
             DealDamage(voss, voidMainstay, 1, DTM);
             QuickHPCheck(-4);
         }
+        [Test]
+        public void TestTeslaKnucklesPower()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+
+            Card turret = PlayCard("PoweredRemoteTurret");
+            Card traffic = PlayCard("TrafficPileup");
+            Card batt = PlayCard("BladeBattalion");
+            Card knuckles = PlayCard("TeslaKnuckles");
+
+            QuickHPStorage(baron.CharacterCard, turret, batt, traffic, echelon.CharacterCard, ra.CharacterCard, visionary.CharacterCard);
+            UsePower(knuckles);
+            QuickHPCheck(-1, -1, -1, -1, 0, 0, 0);
+        }
+        [Test]
+        public void TestTeslaKnucklesEndOfTurn([Values(-1, 0, 1, 2, 3, 4)] int numDestroys)
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+            Card advance = GetCard("AdvanceAndRegroup");
+            GoToPlayCardPhase(echelon);
+            PlayCard("TeslaKnuckles");
+
+            int damage = numDestroys;
+            //-1 tests that the damage is optional
+            if(numDestroys == -1)
+            {
+                DecisionSelectCards = new Card[] { null, echelon.CharacterCard };
+                damage = 0;
+                numDestroys = 1;
+            }
+
+            for(int i = 0; i < numDestroys; i++)
+            {
+                PlayCard(advance);
+                DestroyCard(advance);
+            }
+            
+            QuickHPStorage(baron);
+            GoToEndOfTurn(echelon);
+            QuickHPCheck(-damage);
+        }
     }
 }
