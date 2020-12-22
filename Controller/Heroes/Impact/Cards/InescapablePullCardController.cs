@@ -31,9 +31,11 @@ namespace Cauldron.Impact
 
         public override IEnumerator UsePower(int index = 0)
         {
+            int damages = GetPowerNumeral(0, 4);
+
             var selectedCard = new List<SelectCardDecision> { };
             //"Select a target that {Impact} damaged this turn. {Impact} deals that target 4 infernal damage."
-            IEnumerator coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, this.CharacterCard), 4, DamageType.Infernal, 1, false, 1,
+            IEnumerator coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, this.CharacterCard), damages, DamageType.Infernal, 1, false, 1,
                                                         additionalCriteria: (Card c) => HasDamagedTargetThisTurn(c), storedResultsDecisions: selectedCard, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
@@ -44,7 +46,7 @@ namespace Cauldron.Impact
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            if(!DidSelectCard(selectedCard))
+            if (!DidSelectCard(selectedCard))
             {
                 coroutine = GameController.SendMessageAction($"{this.CharacterCard.Title} has not damaged any targets this turn, so no damage can be dealt.", Priority.Medium, GetCardSource());
                 if (UseUnityCoroutines)
@@ -68,21 +70,14 @@ namespace Cauldron.Impact
         {
             string start = $"Targets dealt damage by {this.TurnTaker.Name} this turn: ";
             var damagedTargets = GameController.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsTarget && HasDamagedTargetThisTurn(c)), visibleToCard: GetCardSource());
-            string end = "";
+            string end;
             if (damagedTargets.FirstOrDefault() == null)
             {
-                end += "None";
+                end = "None";
             }
             else
             {
-                foreach(Card target in damagedTargets)
-                {
-                    if(target != damagedTargets.FirstOrDefault())
-                    {
-                        end += ", ";
-                    }
-                    end += target.Title;
-                }
+                end = string.Join(", ", damagedTargets.Select(c => c.Title).ToArray());
             }
             return start + end + ".";
         }
