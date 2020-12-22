@@ -8,8 +8,8 @@ namespace Cauldron.Echelon
     public class TheKestrelMarkIICardController : CardController
     {
         //==============================================================
-        // {Echelon} deals 1 target 1 projectile damage and regains 2HP.
-        // Destroy this card. One player draws 2 cards.
+        // Power: {Echelon} deals 1 target 1 projectile damage and regains 2HP.
+        // Power: Destroy this card. One player draws 2 cards.
         //==============================================================
 
         public static string Identifier = "TheKestrelMarkII";
