@@ -13,6 +13,7 @@ namespace Cauldron.StSimeonsCatacombs
 
         public BreathStealerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { AqueductsCardController.Identifier }, false)
         {
+            SpecialStringMaker.ShowHeroCharacterCardWithLowestHP().Condition = () => !Card.IsInPlayAndHasGameText;
         }
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)

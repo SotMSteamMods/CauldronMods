@@ -8,7 +8,7 @@ namespace Cauldron.FSCContinuanceWanderer
 
         public PrehistoricBehemothCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: Game.H - 2);
         }
 
         public override void AddTriggers()

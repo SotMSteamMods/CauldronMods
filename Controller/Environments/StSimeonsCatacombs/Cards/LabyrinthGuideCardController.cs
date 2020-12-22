@@ -13,7 +13,7 @@ namespace Cauldron.StSimeonsCatacombs
 
         public LabyrinthGuideCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowIfSpecificCardIsInPlay("TwistingPassages");
         }
 
         public override void AddTriggers()

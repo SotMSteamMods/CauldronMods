@@ -11,6 +11,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
 
         public HtAggressionStimulantCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowLocationOfCards(new LinqCardCriteria(c => c.Identifier == "HalberdAlpha", "Halberd - 04: Alpha", useCardsSuffix: false)).Condition = () => !Card.IsInPlayAndHasGameText;
 
         }
 

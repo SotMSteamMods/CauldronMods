@@ -12,7 +12,8 @@ namespace Cauldron.Northspar
 
         public SnowShriekerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNonEnvironmentTargetWithLowestHP(ranking: 2);
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(c => IsFrozen(c), "frozen"));
         }
 
         public override void AddTriggers()
