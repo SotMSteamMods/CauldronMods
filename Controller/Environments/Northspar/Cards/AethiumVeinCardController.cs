@@ -12,7 +12,7 @@ namespace Cauldron.Northspar
 
         public AethiumVeinCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowIfSpecificCardIsInPlay("TakAhab");
         }
 
         public override void AddTriggers()

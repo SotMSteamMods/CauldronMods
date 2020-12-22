@@ -11,7 +11,9 @@ namespace Cauldron.SuperstormAkela
 
         public GeminiIndraCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.PlayArea, new LinqCardCriteria((Card c) => IsLeftOfThisCard(c, base.Card), "card(s) left of this"));
+            base.SpecialStringMaker.ShowHighestHP(numberOfTargets: () => 2);
+            base.SpecialStringMaker.ShowSpecialString(() => BuildCardsLeftOfThisSpecialString()).Condition = () => Card.IsInPlayAndHasGameText;
+
         }
         public override void AddTriggers()
         {

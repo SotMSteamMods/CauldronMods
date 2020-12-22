@@ -11,7 +11,7 @@ namespace Cauldron.SuperstormAkela
 
         public SkulkingIntermediaryCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.PlayArea, new LinqCardCriteria((Card c) => IsLeftOfThisCard(c, base.Card), "card(s) left of this"));
+            base.SpecialStringMaker.ShowSpecialString(() => BuildCardsLeftOfThisSpecialString()).Condition = () => Card.IsInPlayAndHasGameText;
 
         }
 

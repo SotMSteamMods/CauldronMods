@@ -2,6 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Cauldron.StSimeonsCatacombs
@@ -12,8 +13,8 @@ namespace Cauldron.StSimeonsCatacombs
         {
             this.AffectedIdentifiers = affectedIdentifiers;
             this.FlipIdentiferInPlayCondition = flipIdentiferInPlayCondition;
-            //TODO: Add a conditional special string that says something like "AffectedCard is in play so it is affected by Hero cards" and the reverse
             base.AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
+            SpecialStringMaker.ShowSpecialString(() => BuildAffectedCardString());
         }
 
         public override void AddTriggers()
@@ -53,7 +54,7 @@ namespace Cauldron.StSimeonsCatacombs
             }
             return true;
         }
-        private bool IsAffectedCardInPlay()
+        protected bool IsAffectedCardInPlay()
         {
             bool identiferInPlay = base.FindCardsWhere(c => c.IsInPlayAndHasGameText && AffectedIdentifiers.Contains(c.Identifier)).Any();
             return FlipIdentiferInPlayCondition ? !identiferInPlay : identiferInPlay;
@@ -61,5 +62,55 @@ namespace Cauldron.StSimeonsCatacombs
 
         protected string[] AffectedIdentifiers { get; }
         protected bool FlipIdentiferInPlayCondition { get; }
+
+        protected Card GetAffectedCardInPlay()
+        {
+            IEnumerable<Card> cardsInPlay = base.FindCardsWhere(c => (FlipIdentiferInPlayCondition ? !c.IsInPlayAndHasGameText : c.IsInPlayAndHasGameText) && AffectedIdentifiers.Contains(c.Identifier));
+            return cardsInPlay.FirstOrDefault();
+        }
+
+        protected IEnumerable<Card> AffectedCards
+        {
+            get
+            {
+                return FindCardsWhere(c => AffectedIdentifiers.Contains(c.Identifier));
+            }
+        }
+
+        private string BuildAffectedCardString()
+        {
+            var affectedRoomInPlay = GetAffectedCardInPlay(); ;
+            string affectedRoomString = "";
+            if (affectedRoomInPlay != null)
+            {
+
+                affectedRoomString += affectedRoomInPlay.Title + " is ";
+                if (FlipIdentiferInPlayCondition)
+                {
+                    affectedRoomString += "not ";
+
+                }
+                affectedRoomString += "in play. " + Card.Title + " is affected by Hero cards.";
+            }
+            else
+            {
+                var affectedRoomsList = AffectedCards;
+                affectedRoomString += affectedRoomsList.First().Title + " ";
+                if (affectedRoomsList.Count() > 1)
+                {
+                    affectedRoomString += "and " + affectedRoomsList.Last().Title + " are ";
+                }
+                else
+                {
+                    affectedRoomString += "is ";
+                }
+                if (!FlipIdentiferInPlayCondition)
+                {
+                    affectedRoomString += "not ";
+                }
+                affectedRoomString += "in play. " + Card.Title + " is unaffected by Hero cards.";
+            }
+            return affectedRoomString;
+        }
     }
 }
