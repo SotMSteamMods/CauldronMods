@@ -555,5 +555,34 @@ namespace CauldronTests
             AssertInTrash(wayout);
             QuickHPCheck(1, 1, 1, 1, 0);
         }
+        [Test]
+        public void TestOverwatch()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
+            StartGame();
+
+            Card overwatch = PlayCard("Overwatch");
+            DecisionsYesNo = new bool[] { false, true, true };
+            PlayCard("Fortitude");
+
+            UsePower(overwatch);
+            QuickHPStorage(ra.CharacterCard, legacy.CharacterCard, MDP);
+
+            //is optional
+            DealDamage(MDP, ra, 1, DTM);
+            QuickHPCheck(-1, 0, 0);
+
+            //must deal damage
+            DealDamage(MDP, legacy, 1, DTM);
+            QuickHPCheckZero();
+
+            //effect happens
+            DealDamage(MDP, ra, 1, DTM);
+            QuickHPCheck(-1, 0, -3);
+
+            //only once
+            DealDamage(MDP, ra, 1, DTM);
+            QuickHPCheck(-1, 0, 0);
+        }
     }
 }
