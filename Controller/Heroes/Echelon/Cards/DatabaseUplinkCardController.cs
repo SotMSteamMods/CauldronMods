@@ -21,7 +21,7 @@ namespace Cauldron.Echelon
 
         public DatabaseUplinkCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowNumberOfCardsAtLocations(() => new[] { HeroTurnTaker.Hand }, new LinqCardCriteria(IsTactic, "tactic"));
+            SpecialStringMaker.ShowListOfCardsAtLocation(HeroTurnTaker.Hand, new LinqCardCriteria(IsTactic, "tactic"));
         }
 
         public override void AddTriggers()

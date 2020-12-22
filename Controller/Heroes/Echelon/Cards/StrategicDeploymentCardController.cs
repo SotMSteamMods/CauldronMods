@@ -17,7 +17,7 @@ namespace Cauldron.Echelon
 
         public StrategicDeploymentCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowListOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria(IsTactic, "tactic"));
         }
 
         public override IEnumerator Play()

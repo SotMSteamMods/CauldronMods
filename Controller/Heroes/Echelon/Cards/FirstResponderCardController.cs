@@ -21,7 +21,7 @@ namespace Cauldron.Echelon
 
         public FirstResponderCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowListOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(IsTactic, "tactic"));
         }
 
         public override IEnumerator Play()

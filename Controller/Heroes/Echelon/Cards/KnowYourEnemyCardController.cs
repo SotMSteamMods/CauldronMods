@@ -19,7 +19,7 @@ namespace Cauldron.Echelon
 
         public KnowYourEnemyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHasBeenUsedThisTurn(drawKey);
         }
 
         protected override void AddTacticEffectTrigger()

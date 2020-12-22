@@ -20,7 +20,7 @@ namespace Cauldron.Echelon
 
         public CommandAndConquerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowListOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria(IsTactic, "Tactic"));
         }
 
         public override IEnumerator Play()

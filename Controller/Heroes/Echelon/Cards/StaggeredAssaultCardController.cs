@@ -19,7 +19,7 @@ namespace Cauldron.Echelon
 
         public StaggeredAssaultCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHasBeenUsedThisTurn(damageKey);
         }
 
         protected override void AddTacticEffectTrigger()

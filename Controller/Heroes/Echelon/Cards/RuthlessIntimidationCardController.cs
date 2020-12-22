@@ -25,6 +25,7 @@ namespace Cauldron.Echelon
         {
             AllowFastCoroutinesDuringPretend = false;
             RunModifyDamageAmountSimulationForThisCard = false;
+            SpecialStringMaker.ShowNonHeroTargetWithLowestHP(1, 1);
         }
 
         protected override void AddTacticEffectTrigger()

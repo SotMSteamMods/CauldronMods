@@ -28,6 +28,7 @@ namespace Cauldron.Echelon
         public BreakThroughCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             this.CanExtend = false;
+            SpecialStringMaker.ShowHasBeenUsedThisTurn(damageKey);
         }
 
         protected override void AddTacticEffectTrigger()
