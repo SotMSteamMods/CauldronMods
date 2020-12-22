@@ -628,5 +628,48 @@ namespace CauldronTests
             GoToEndOfTurn(ra);
             QuickHandCheck(-1);
         }
+        [Test]
+        public void TestRuthlessIntimidation()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            PlayCard("RuthlessIntimidation");
+            Card mdp = MDP;
+
+            //boost damage to lowest HP
+            QuickHPStorage(mdp);
+            DealDamage(echelon, mdp, 1, DTM);
+            QuickHPCheck(-2);
+
+            //regardless of source
+            Card traffic = PlayCard("TrafficPileup");
+            DealDamage(traffic, mdp, 1, DTM);
+            QuickHPCheck(-2);
+
+            DestroyCard(mdp);
+
+            Card redist = PlayCard("ElementalRedistributor");
+            QuickHPStorage(redist);
+
+            //allows deciding on tie
+            DecisionYesNo = false;
+            DealDamage(echelon, redist, 1, DTM);
+            QuickHPCheck(-1);
+
+            DealDamage(echelon, redist, 1, DTM);
+            QuickHPCheck(-2);
+
+            //counts non-villain
+            SetHitPoints(traffic, 4);
+            DealDamage(echelon, redist, 1, DTM);
+            QuickHPCheck(-1);
+
+            //does not count non-villain
+            SetHitPoints(haka, 1);
+            DestroyCard(traffic);
+            DealDamage(echelon, redist, 1, DTM);
+            QuickHPCheck(-2);
+        }
     }
 }
