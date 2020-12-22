@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Cauldron.Echelon
 {
-    public class KnowYourEnemyCardController : CardController
+    public class KnowYourEnemyCardController : TacticBaseCardController
     {
         //==============================================================
         // At the start of your turn, you may discard a card.
@@ -21,60 +21,10 @@ namespace Cauldron.Echelon
 
         }
 
-        public override void AddTriggers()
+        protected override void AddTacticEffectTrigger()
         {
-            base.AddStartOfTurnTrigger(tt => tt == this.TurnTaker, StartOfTurnResponse,
-                new[]
-                {
-                    TriggerType.DiscardCard, 
-                    TriggerType.DrawCard, 
-                    TriggerType.DestroySelf
-                });
-
-            base.AddTriggers();
+            //The first time a hero destroys a non-hero target each turn, you may draw a card.
         }
 
-        private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
-        {
-            // you may discard a card.
-            List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
-            IEnumerator routine = base.GameController.SelectAndDiscardCards(this.HeroTurnTakerController, 1, true, 0, storedResults,
-                cardCriteria: new LinqCardCriteria(c => true), cardSource: GetCardSource());
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-
-            if (base.DidDiscardCards(storedResults, 1))
-            {
-                yield break;
-            }
-
-            // ... If you do not, draw a card and destroy this card.
-            routine = base.DrawCard(this.HeroTurnTaker);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-
-            routine = base.GameController.DestroyCard(this.HeroTurnTakerController, this.Card);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-        }
     }
 }

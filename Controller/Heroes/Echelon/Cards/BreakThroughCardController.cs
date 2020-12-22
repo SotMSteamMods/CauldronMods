@@ -4,7 +4,7 @@ using System;
 
 namespace Cauldron.Echelon
 {
-    public class BreakThroughCardController : CardController
+    public class BreakThroughCardController : TacticBaseCardController
     {
         //==============================================================
         // At the start of your turn, destroy this card.
@@ -16,15 +16,13 @@ namespace Cauldron.Echelon
 
         public BreakThroughCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            this.CanExtend = false;
         }
 
-        public override void AddTriggers()
+        protected override void AddTacticEffectTrigger()
         {
-            // At the start of your turn, destroy this card.
-            base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker, base.DestroyThisCardResponse, TriggerType.DestroySelf);
-
-            base.AddTriggers();
+            // Once during their turn, when 1 of a player's targets would deal damage,
+            // they may increase that damage by 2
         }
     }
 }

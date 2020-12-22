@@ -21,13 +21,11 @@ namespace Cauldron.Echelon
 
         public AdvanceAndRegroupCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            this.CanExtend = false;
         }
 
-        public override void AddTriggers()
+        protected override void AddTacticEffectTrigger()
         {
-            // At the start of your turn, destroy this card.
-            base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker, base.DestroyThisCardResponse, TriggerType.DestroySelf);
-
             // Whenever a non-hero target is destroyed, 1 hero target regains 2HP.
             base.AddTrigger<DestroyCardAction>(dca => dca.WasCardDestroyed && !dca.CardToDestroy.Card.IsHero 
                             && !dca.CardToDestroy.Card.IsTarget && base.GameController.IsCardVisibleToCardSource(dca.CardToDestroy.Card, GetCardSource()),
