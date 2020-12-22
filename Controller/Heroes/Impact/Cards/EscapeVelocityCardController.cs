@@ -38,7 +38,7 @@ namespace Cauldron.Impact
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if(DidSelectCards(storedTargets))
+            if (DidSelectCards(storedTargets))
             {
                 //Place those targets on the bottom of their associated decks in any order."
                 var targetsToMove = GetSelectedCards(storedTargets);
@@ -58,7 +58,7 @@ namespace Cauldron.Impact
 
         private IEnumerator MoveToBottomOfDeck(SelectCardDecision scd)
         {
-            if(scd.SelectedCard != null)
+            if (scd.SelectedCard != null)
             {
                 var card = scd.SelectedCard;
                 IEnumerator coroutine = GameController.MoveCard(DecisionMaker, card, card.NativeDeck, toBottom: true, cardSource: GetCardSource());

@@ -46,7 +46,7 @@ namespace Cauldron.Impact
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
-            if(DidPlayerAnswerYes(storedYesNo))
+            if (DidPlayerAnswerYes(storedYesNo))
             {
                 var destroyTrigger = AddWhenDestroyedTrigger(dca => RepeatDamageResponse(dd, dca), TriggerType.DealDamage);
                 coroutine = GameController.DestroyCard(DecisionMaker, this.Card, cardSource: GetCardSource());
@@ -65,7 +65,7 @@ namespace Cauldron.Impact
 
         private IEnumerator RepeatDamageResponse(DealDamageAction dd, DestroyCardAction dca)
         {
-            if(dca.CardSource == null || dca.CardSource.Card != this.Card)
+            if (dca.CardSource == null || dca.CardSource.Card != this.Card)
             {
                 yield break;
             }

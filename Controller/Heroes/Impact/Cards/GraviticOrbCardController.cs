@@ -43,7 +43,7 @@ namespace Cauldron.Impact
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            yield break;  
+            yield break;
         }
 
         public override void AddTriggers()

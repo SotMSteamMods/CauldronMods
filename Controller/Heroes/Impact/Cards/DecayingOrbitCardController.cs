@@ -47,7 +47,7 @@ namespace Cauldron.Impact
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            if(DidDealDamage(storedDamage))
+            if (DidDealDamage(storedDamage))
             {
                 //If he does, destroy 1 of your ongoing cards.
                 coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.Owner == this.TurnTaker && c.IsOngoing, "ongoing"), false, cardSource: GetCardSource());

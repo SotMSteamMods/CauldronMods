@@ -20,7 +20,7 @@ namespace Cauldron.Impact
             //"Destroy 1 of your ongoing cards. If you do, play a card and draw a card."
             int numToDestroy = GetPowerNumeral(0, 1);
             var storedDestroy = new List<DestroyCardAction> { };
-            IEnumerator coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => c.Owner == this.TurnTaker && c.IsOngoing && !c.IsBeingDestroyed, "ongoing"), 
+            IEnumerator coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => c.Owner == this.TurnTaker && c.IsOngoing && !c.IsBeingDestroyed, "ongoing"),
                                                                                                         numToDestroy, false, numToDestroy, storedResultsAction: storedDestroy, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
@@ -30,7 +30,7 @@ namespace Cauldron.Impact
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            if(GetNumberOfCardsDestroyed(storedDestroy) >= numToDestroy)
+            if (GetNumberOfCardsDestroyed(storedDestroy) >= numToDestroy)
             {
                 coroutine = GameController.SelectAndPlayCardFromHand(DecisionMaker, false, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
@@ -123,7 +123,7 @@ namespace Cauldron.Impact
         }
         private IEnumerator MakeIrreducibleNextTurn(SelectCardDecision scd)
         {
-            if(scd.SelectedCard != null)
+            if (scd.SelectedCard != null)
             {
                 var card = scd.SelectedCard;
                 var holderEffect = IrreducibleNextTurnHolder(card);
@@ -133,6 +133,7 @@ namespace Cauldron.Impact
                 holderEffect.TurnTakerCriteria.IsSpecificTurnTaker = card.Owner;
                 holderEffect.NumberOfUses = 1;
                 holderEffect.BeforeOrAfter = BeforeOrAfter.After;
+                holderEffect.CardSource = CharacterCard;
 
                 GameController.AddCardPropertyJournalEntry(card, renegadeKey, true);
                 IEnumerator coroutine = GameController.AddStatusEffect(holderEffect, true, GetCardSource());
@@ -156,11 +157,12 @@ namespace Cauldron.Impact
         public IEnumerator ActivateThisTurnIrreducible(PhaseChangeAction _, StatusEffect _2)
         {
             var needsIrreducibleEffect = GameController.FindCardsWhere(new LinqCardCriteria(c => c.IsTarget && c.IsInPlayAndHasGameText && c.Owner == Game.ActiveTurnTaker && IsRenegadeMarked(c)));
-            foreach(Card c in needsIrreducibleEffect)
+            foreach (Card c in needsIrreducibleEffect)
             {
                 var activeEffect = new MakeDamageIrreducibleStatusEffect();
                 activeEffect.UntilThisTurnIsOver(Game);
                 activeEffect.SourceCriteria.IsSpecificCard = c;
+                activeEffect.CardSource = CharacterCard;
                 activeEffect.UntilCardLeavesPlay(c);
 
                 IEnumerator coroutine = AddStatusEffect(activeEffect, showMessage: true);
