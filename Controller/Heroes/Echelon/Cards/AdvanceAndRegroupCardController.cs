@@ -34,9 +34,6 @@ namespace Cauldron.Echelon
                 {
                     TriggerType.DestroyCard
                 }, TriggerTiming.After, null, false, true, true);
-
-
-            base.AddTriggers();
         }
 
         private IEnumerator DestroyNonHeroTargetResponse(DestroyCardAction dca)

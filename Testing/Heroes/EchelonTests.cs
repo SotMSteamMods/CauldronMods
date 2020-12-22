@@ -13,12 +13,13 @@ namespace CauldronTests
     [TestFixture]
     public class EchelonTests : BaseTest
     {
+        #region echelonhelperfunctions
         protected HeroTurnTakerController echelon => FindHero("Echelon");
 
         private const string DeckNamespace = "Cauldron.Echelon";
 
         [Test]
-        public void TestCypherLoads()
+        public void TestEchelonLoads()
         {
             // Arrange & Act
             SetupGameController("BaronBlade", DeckNamespace, "Megalopolis");
@@ -31,6 +32,18 @@ namespace CauldronTests
             Assert.AreEqual(27, echelon.CharacterCard.HitPoints);
         }
 
+
+        private readonly DamageType DTM = DamageType.Melee;
+        private Card MDP => GetCardInPlay("MobileDefensePlatform");
+        #endregion
+
+        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
+        {
+            foreach (var id in identifiers)
+            {
+                AssertCardHasKeyword(GetCard(id), keyword, false);
+            }
+        }
         [Test]
         public void TestEchelonDecklist()
         {
@@ -87,7 +100,62 @@ namespace CauldronTests
                 "StrategicDeployment"
             });
         }
+        [Test]
+        public void TestExtensibleTacticKeep([Values("KnowYourEnemy",
+                                            "PracticedTeamwork",
+                                            "RemoteObservation",
+                                            "RuthlessIntimidation",
+                                            "StaggeredAssault",
+                                            "SurpriseAttack")] string tacticID)
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
 
+            Card tactic = PlayCard(tacticID);
+
+            QuickHandStorage(echelon);
+            GoToStartOfTurn(echelon);
+            AssertIsInPlay(tactic);
+            QuickHandCheck(-1);
+        }
+        [Test]
+        public void TestExtensibleTacticDrop([Values("KnowYourEnemy",
+                                            "PracticedTeamwork",
+                                            "RemoteObservation",
+                                            "RuthlessIntimidation",
+                                            "StaggeredAssault",
+                                            "SurpriseAttack")] string tacticID)
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            //Practiced Teamwork is the only extensible tactic that doesn't draw when dropped 
+            //(it gives you the draw up-front instead)
+            int gain = tacticID == "PracticedTeamwork" ? 0 : 1;
+            Card tactic = PlayCard(tacticID);
+
+            DecisionDoNotSelectCard = SelectionType.DiscardCard;
+
+            QuickHandStorage(echelon);
+
+            GoToStartOfTurn(echelon);
+            AssertInTrash(tactic);
+            QuickHandCheck(gain);
+        }
+        
+        [Test]
+        public void TestNonExtensibleTacticSelfDestroy([Values("AdvanceAndRegroup", "BreakThrough")] string tacticID)
+        {        
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card tactic = PlayCard(tacticID);
+
+            AssertNoDecision();
+            GoToStartOfTurn(echelon);
+            AssertInTrash(tactic);
+        }
+        /*
         [Test]
         public void TestFindAwayIn()
         {
@@ -131,13 +199,7 @@ namespace CauldronTests
 
             Assert.True(false, "TODO");
         }
+        */
 
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                AssertCardHasKeyword(GetCard(id), keyword, false);
-            }
-        }
     }
 }
