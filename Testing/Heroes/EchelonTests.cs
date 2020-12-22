@@ -721,5 +721,68 @@ namespace CauldronTests
             AssertIsInPlay(obs);
             QuickShuffleCheck(1);
         }
+        [Test]
+        public void TestSurpriseAttackBasic()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+
+            PlayCard("SurpriseAttack");
+
+            QuickHPStorage(baron, visionary);
+            UsePower(ra);
+            QuickHPCheck(-3, 0);
+
+            DecisionSelectDamageTypes = new DamageType?[] { DamageType.Psychic, DamageType.Fire };
+
+            PlayCard("ElementalRedistributor");
+
+            //when picking psychic, shouldn't get redirected
+            UsePower(ra);
+            QuickHPCheck(-3, 0);
+
+            //now that we are picking fire, should redirect the damage to Visionary
+            UsePower(ra);
+            QuickHPCheck(0, -3);
+        }
+        [Test]
+        public void TestSurpriseAttackLastingStatusEffect()
+        {
+            SetupGameController("GrandWarlordVoss", DeckNamespace, "Ra", "VoidGuardMainstay/VoidGuardRoadWarriorMainstayCharacter", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card weaver = PlayCard("GeneBoundPsiWeaver");
+            Card spaceship = PlayCard("TcfConqueror");
+            PlayCard("SurpriseAttack");
+
+            DecisionYesNo = true;
+            QuickHPStorage(weaver, spaceship);
+
+            UsePower(voidMainstay);
+            //damage should be psychic
+
+            DealDamage(spaceship, voidMainstay, 1, DTM);
+            QuickHPCheck(0, -2);
+            DealDamage(weaver, voidMainstay, 1, DTM);
+            QuickHPCheckZero();
+
+            DecisionYesNo = false;
+            //can choose to let it be melee, but only at power-use time
+            UsePower(voidMainstay);
+            DecisionYesNo = true;
+
+            DealDamage(spaceship, voidMainstay, 1, DTM);
+            DealDamage(weaver, voidMainstay, 1, DTM);
+            QuickHPCheck(-2, -2);
+
+            //both effects should continue dealing damage
+            DestroyCard(weaver);
+            DestroyCard(spaceship);
+            QuickHPStorage(voss);
+            DealDamage(voss, voidMainstay, 1, DTM);
+            QuickHPCheck(-4);
+        }
     }
 }
