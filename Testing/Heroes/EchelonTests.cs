@@ -608,5 +608,25 @@ namespace CauldronTests
             DealDamage(baron, echelon, 1, DTM);
             QuickHPCheck(-1, -1, 0, 0);
         }
+        [Test]
+        public void TestRemoteObservation()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhaseAndPlayCard(echelon, "RemoteObservation");
+
+            GoToDrawCardPhase(echelon);
+            AssertPhaseActionCount(2);
+            QuickHandStorage(echelon);
+            GoToEndOfTurn(echelon);
+            QuickHandCheck(-1);
+
+            GoToDrawCardPhase(ra);
+            AssertPhaseActionCount(3);
+            QuickHandStorage(ra);
+            GoToEndOfTurn(ra);
+            QuickHandCheck(-1);
+        }
     }
 }
