@@ -65,8 +65,6 @@ namespace Cauldron.StSimeonsCatacombs
 
         protected Card GetAffectedCardInPlay()
         {
-           
-            
             IEnumerable<Card> cardsInPlay = base.FindCardsWhere(c => (FlipIdentiferInPlayCondition ? !c.IsInPlayAndHasGameText : c.IsInPlayAndHasGameText) && AffectedIdentifiers.Contains(c.Identifier));
             return cardsInPlay.FirstOrDefault();
         }
@@ -98,7 +96,7 @@ namespace Cauldron.StSimeonsCatacombs
             {
                 var affectedRoomsList = AffectedCards;
                 affectedRoomString += affectedRoomsList.First().Title + " ";
-                if(affectedRoomsList.Count() > 1)
+                if (affectedRoomsList.Count() > 1)
                 {
                     affectedRoomString += "and " + affectedRoomsList.Last().Title + " are ";
                 }
@@ -115,6 +113,4 @@ namespace Cauldron.StSimeonsCatacombs
             return affectedRoomString;
         }
     }
-
-
 }
