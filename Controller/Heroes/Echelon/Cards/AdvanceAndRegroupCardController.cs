@@ -28,44 +28,26 @@ namespace Cauldron.Echelon
         {
             // Whenever a non-hero target is destroyed, 1 hero target regains 2HP.
             base.AddTrigger<DestroyCardAction>(dca => dca.WasCardDestroyed && !dca.CardToDestroy.Card.IsHero 
-                            && !dca.CardToDestroy.Card.IsTarget && base.GameController.IsCardVisibleToCardSource(dca.CardToDestroy.Card, GetCardSource()),
+                            && dca.CardToDestroy.Card.IsTarget && base.GameController.IsCardVisibleToCardSource(dca.CardToDestroy.Card, GetCardSource()),
                 this.DestroyNonHeroTargetResponse,
                 new[]
                 {
-                    TriggerType.DestroyCard
+                    TriggerType.GainHP
                 }, TriggerTiming.After, null, false, true, true);
         }
 
         private IEnumerator DestroyNonHeroTargetResponse(DestroyCardAction dca)
         {
-            // .. 1 hero target regains 2HP.
-            List<SelectTargetDecision> selectedTarget = new List<SelectTargetDecision>();
-            IEnumerable<Card> choices = base.FindCardsWhere(new LinqCardCriteria(c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText));
-            
-            IEnumerator routine = base.GameController.SelectTargetAndStoreResults(base.HeroTurnTakerController, choices, selectedTarget, selectionType: SelectionType.GainHP, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectAndGainHP(DecisionMaker, HpToGain, false, (Card c) => c.IsHero, 1, 1, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(routine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(routine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
-
-            if (!selectedTarget.Any())
-            {
-                yield break;
-            }
-
-            routine = base.GameController.GainHP(selectedTarget.FirstOrDefault()?.SelectedCard, HpToGain, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
+            yield break;
         }
     }
 }

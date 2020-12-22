@@ -237,6 +237,30 @@ namespace CauldronTests
             UseIncapacitatedAbility(echelon, 2);
             AssertOnBottomOfDeck(topOfDeck);
         }
+        [Test]
+        public void TestAdvanceAndRegroupEffect()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            PlayCard("AdvanceAndRegroup");
+            SetHitPoints(echelon, 20);
+            SetHitPoints(ra, 20);
+
+            QuickHPStorage(ra, echelon);
+            DecisionSelectCards = new Card[] { echelon.CharacterCard, ra.CharacterCard };
+
+            DestroyCard(MDP);
+            QuickHPCheck(0, 2);
+
+            Card batt = PlayCard("BladeBattalion");
+            DestroyCard(batt);
+            QuickHPCheck(2, 0);
+
+            Card traffic = PlayCard("TrafficPileup");
+            DestroyCard(traffic);
+            QuickHPCheck(2, 0);
+        }
         /*
         [Test]
         public void TestFindAwayIn()
