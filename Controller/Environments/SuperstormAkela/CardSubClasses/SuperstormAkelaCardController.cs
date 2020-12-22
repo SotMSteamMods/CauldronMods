@@ -68,8 +68,6 @@ namespace Cauldron.SuperstormAkela
 
                 Log.Debug(card.Title + " was played to the far left of the environment's play area.");
             }
-
-
             yield break;
         }
 
@@ -99,16 +97,13 @@ namespace Cauldron.SuperstormAkela
 
                 Log.Debug(card.Title + " was moved to the far right of the environment's play area.");
             }
-
-
             yield break;
         }
 
         protected IEnumerator MoveCardOneToTheRight(Card card, bool noMessage = false)
         {
             List<Card> list = GetOrderedCardsInLocation(TurnTaker.PlayArea).ToList();
-
-            if(list.Last() == card)
+            if (list.Last() == card)
             {
                 IEnumerator coroutine = GameController.SendMessageAction("Can't move " + card.Title + " any farther right in the environment's play area.", Priority.Medium, GetCardSource());
                 if (base.UseUnityCoroutines)
@@ -148,8 +143,6 @@ namespace Cauldron.SuperstormAkela
 
                 Log.Debug(card.Title + " was moved one space to the right in the environment's play area.");
             }
-
-
             yield break;
         }
 
@@ -247,7 +240,6 @@ namespace Cauldron.SuperstormAkela
             return GetOrderedCardsInLocation(location).ToList().IndexOf(c);
         }
 
-
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             if (playToTheLeft != null && playToTheLeft.Value)
@@ -268,11 +260,11 @@ namespace Cauldron.SuperstormAkela
             yield return null;
         }
 
-        private bool? playToTheLeft {
+        private bool? playToTheLeft
+        {
             get
             {
                 return Game.Journal.GetCardPropertiesBoolean(GameController.FindCard("FracturedSky"), "PlayToTheLeft");
-                
             }
         }
 
@@ -281,13 +273,15 @@ namespace Cauldron.SuperstormAkela
         {
             int numCardsToLeft = GetNumberOfCardsToTheLeftOfThisOne(base.Card).Value;
             string cardsToLeftString = "There ";
-            if(numCardsToLeft == 1)
+            if (numCardsToLeft == 1)
             {
                 cardsToLeftString += "is 1 card ";
-            } else if(numCardsToLeft == 0)
+            }
+            else if (numCardsToLeft == 0)
             {
                 cardsToLeftString += "are no cards ";
-            } else
+            }
+            else
             {
                 cardsToLeftString += "are " + numCardsToLeft + " cards ";
             }
@@ -295,7 +289,6 @@ namespace Cauldron.SuperstormAkela
             cardsToLeftString += "to the left of this one.";
 
             return cardsToLeftString;
-           
         }
 
         protected string BuildCardsRightOfThisSpecialString()
@@ -318,11 +311,6 @@ namespace Cauldron.SuperstormAkela
             cardsToRightString += "to the right of this one.";
 
             return cardsToRightString;
-
         }
-
-
-
-
     }
 }
