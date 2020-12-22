@@ -829,5 +829,33 @@ namespace CauldronTests
             GoToEndOfTurn(echelon);
             QuickHPCheck(-damage);
         }
+        [Test]
+        public void TestTheKestrelMarkIIPower1()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+
+            Card kestrel = PlayCard("TheKestrelMarkII");
+            SetHitPoints(echelon, 20);
+            QuickHPStorage(baron, echelon);
+            UsePower(kestrel, 0);
+            QuickHPCheck(-1, 2);
+        }
+        [Test]
+        public void TestTheKestrelMarkIIPower2()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+
+            Card kestrel = PlayCard("TheKestrelMarkII");
+
+            QuickHandStorage(echelon, ra, visionary);
+            DecisionSelectTurnTaker = ra.TurnTaker;
+            UsePower(kestrel, 1);
+            AssertInTrash(kestrel);
+            QuickHandCheck(0, 2, 0);
+        }
     }
 }
