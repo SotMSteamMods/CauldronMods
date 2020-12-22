@@ -35,12 +35,8 @@ namespace Cauldron.Echelon
         public override IEnumerator UsePower(int index = 0)
         {
             // Put a Tactic from your hand into play.
-            int powerNumeral = GetPowerNumeral(0, CardsToPlay);
 
-            //IEnumerator routine = base.SelectAndPlayCardFromHand(this.HeroTurnTakerController, false,
-                //cardCriteria: new LinqCardCriteria(IsTactic));
-
-            IEnumerator routine = base.SelectAndPlayCardsFromHand(this.HeroTurnTakerController, powerNumeral, false, powerNumeral, new LinqCardCriteria(IsTactic));
+            IEnumerator routine = base.SelectAndPlayCardsFromHand(this.HeroTurnTakerController, 1, false, 1, isPutIntoPlay: true, cardCriteria: new LinqCardCriteria(IsTactic, "tactic"));
 
             if (base.UseUnityCoroutines)
             {
@@ -56,8 +52,8 @@ namespace Cauldron.Echelon
         {
             // At the end of your turn, you may discard a Tactic.
             List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
-            IEnumerator routine = base.GameController.SelectAndDiscardCards(this.HeroTurnTakerController, 1, true, 0, storedResults,
-                cardCriteria: new LinqCardCriteria(IsTactic), cardSource: GetCardSource());
+            IEnumerator routine = base.GameController.SelectAndDiscardCards(this.HeroTurnTakerController, 1, false, 0, storedResults,
+                cardCriteria: new LinqCardCriteria(IsTactic, "tactic"), cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
             {

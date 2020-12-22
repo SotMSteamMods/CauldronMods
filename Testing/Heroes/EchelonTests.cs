@@ -320,7 +320,76 @@ namespace CauldronTests
             QuickShuffleCheck(1);
             AssertNumberOfCardsAtLocation(echelon.TurnTaker.Revealed, 0);
         }
-        
+        [Test]
+        public void TestDatabaseUplinkEndOfTurn()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            PutOnDeck(echelon, echelon.HeroTurnTaker.Hand.Cards);
+
+            Card advance = PutInHand("AdvanceAndRegroup");
+            Card bt = PutInHand("BreakThrough");
+            Card command = PutInHand("CommandAndConquer");
+
+            Card kestrel = PutOnDeck("TheKestrelMarkII");
+            PlayCard("DatabaseUplink");
+            QuickHandStorage(echelon);
+            DecisionSelectCard = advance;
+
+            AssertNextDecisionChoices(new Card[] { advance, bt }, new Card[] { command });
+
+            GoToEndOfTurn(echelon);
+            QuickHandCheckZero();
+            AssertInHand(kestrel);
+            AssertInTrash(advance);
+        }
+        [Test]
+        public void TestDatabaseUplinkEndOfTurnOptional()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            PutOnDeck(echelon, echelon.HeroTurnTaker.Hand.Cards);
+
+            Card advance = PutInHand("AdvanceAndRegroup");
+            Card bt = PutInHand("BreakThrough");
+            Card command = PutInHand("CommandAndConquer");
+
+            Card kestrel = PutOnDeck("TheKestrelMarkII");
+            PlayCard("DatabaseUplink");
+            QuickHandStorage(echelon);
+            DecisionSelectCards = new Card[] { null, advance };
+
+            AssertNextDecisionChoices(new Card[] { advance, bt }, new Card[] { command });
+
+            GoToEndOfTurn(echelon);
+            QuickHandCheckZero();
+            AssertInHand(advance);
+            AssertOnTopOfDeck(kestrel);
+        }
+        [Test]
+        public void TestDatabaseUplinkPower()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+
+            Card uplink = PlayCard("DatabaseUplink");
+
+            //should be "put into play" effect
+            PlayCard("HostageSituation");
+
+            Card advance = PutInHand("AdvanceAndRegroup");
+            Card bt = PutInHand("BreakThrough");
+            Card command = PutInHand("CommandAndConquer");
+
+            DecisionSelectCard = advance;
+
+            AssertNextDecisionChoices(new Card[] { advance, bt }, new Card[] { command });
+
+            UsePower(uplink);
+            AssertIsInPlay(advance);
+        }
         [Test]
         public void TestFindAWayInPhaseShifting()
         {
@@ -360,8 +429,6 @@ namespace CauldronTests
             QuickHPCheck(1, 1, 1, 1, 0);
         }
         /*
-         * [Test]
-         * 
         [Test]
         public void TestFirstResponder()
         {
