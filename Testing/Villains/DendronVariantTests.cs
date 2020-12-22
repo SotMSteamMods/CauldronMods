@@ -31,6 +31,15 @@ namespace CauldronTests
             return GetCardInPlay(PaintedViperCardController.Identifier);
         }
 
+        private void AddCannotPlayCardsStatusEffect(TurnTakerController ttc, bool heroes, bool villains)
+        {
+            CannotPlayCardsStatusEffect effect = new CannotPlayCardsStatusEffect();
+            effect.CardCriteria.IsHero = heroes;
+            effect.CardCriteria.IsVillain = villains;
+            effect.UntilStartOfNextTurn(ttc.TurnTaker);
+            RunCoroutine(GameController.AddStatusEffect(effect, true, ttc.CharacterCardController.GetCardSource()));
+        }
+
 
         [Test]
         public void TestWindcolorDendronLoads()
@@ -54,7 +63,8 @@ namespace CauldronTests
 
             AssertNotFlipped(Dendron);
 
-            var cards = FindCardsWhere(card => card.Identifier == StainedWolfCardController.Identifier);
+            var cards = FindCardsWhere(card => card.Identifier == StainedWolfCardController.Identifier || card.Identifier == PaintedViperCardController.Identifier);
+
             foreach (var card in cards)
             {
                 AssertAtLocation(card, Dendron.CharacterCard.UnderLocation);
@@ -68,10 +78,10 @@ namespace CauldronTests
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            var c1 = PutOnDeck("PaintedViper");
-            var c2 = PutOnDeck("PaintedViper");
+            var c1 = PutOnDeck("UrsaMajor");
+            var c2 = PutOnDeck("ShadedOwl");
 
-            var cards = FindCardsWhere(card => card.Identifier == StainedWolfCardController.Identifier);
+            var cards = FindCardsWhere(card => card.Identifier == StainedWolfCardController.Identifier || card.Identifier == PaintedViperCardController.Identifier);
             PutInTrash(cards);
 
             AssertNotFlipped(Dendron);
@@ -93,7 +103,7 @@ namespace CauldronTests
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            PutOnDeck("PaintedViper");
+            PutOnDeck("UrsaMajor");
 
             AssertNotFlipped(Dendron);
 
@@ -102,8 +112,8 @@ namespace CauldronTests
 
             GoToEndOfTurn(Dendron);
 
-            int count = FindCardsWhere(card => card.Identifier == StainedWolfCardController.Identifier).Count(c => c.IsInPlayAndNotUnderCard && c.Location == Dendron.TurnTaker.PlayArea);
-            Assert.AreEqual(2, count, "2 Stained Wolfs should be played");
+            int count = FindCardsWhere(card => card.Identifier == StainedWolfCardController.Identifier || card.Identifier == PaintedViperCardController.Identifier).Count(c => c.IsInPlayAndNotUnderCard && c.Location == Dendron.TurnTaker.PlayArea);
+            Assert.AreEqual(2, count, "2 Stained Wolfs or Painted Vipers should be played");
         }
 
         [Test]
@@ -111,11 +121,17 @@ namespace CauldronTests
         {
             // Arrange
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Tachyon", "Megalopolis");
-            FlipCard(Dendron.CharacterCard);
+
             var card = PlayCard("BloodThornAura");
 
             QuickHPStorage(Dendron.CharacterCard, legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, tachyon.CharacterCard);
             StartGame();
+            GoToPlayCardPhase(Dendron);
+            AddCannotPlayCardsStatusEffect(Dendron, false, true);
+            var cards = FindCardsWhere(c => c.Identifier == StainedWolfCardController.Identifier || c.Identifier == PaintedViperCardController.Identifier);
+            PutInTrash(cards);
+            FlipCard(Dendron.CharacterCard);
+            GoToStartOfTurn(Dendron);
             QuickHPCheck(0, -2, -2, -2, -2);
 
             AssertInTrash(card);
@@ -131,7 +147,7 @@ namespace CauldronTests
 
             FlipCard(Dendron.CharacterCard);
 
-            var c1 = PlayCard("PaintedViper");
+            var c1 = PlayCard("UrsaMajor");
             AssertInPlayArea(Dendron, c1);
 
             DestroyCard(c1);

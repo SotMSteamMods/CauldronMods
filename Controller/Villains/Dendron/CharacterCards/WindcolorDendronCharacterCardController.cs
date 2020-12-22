@@ -14,7 +14,7 @@ namespace Cauldron.Dendron
          * Setup:
          *
          * At the start of the game, put {Dendron}'s villain character cards into play, 'Outside The Lines' side up.
-         * Search the deck for all copies of Stained Wolf Painted Viper. Place them beneath this card and shuffle the villain deck.
+         * Search the deck for all copies of Painted Viper and Stained Wolf. Place them beneath this card and shuffle the villain deck.
          *
          * Gameplay:
          *
@@ -41,7 +41,8 @@ namespace Cauldron.Dendron
 
         public WindcolorDendronCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(CharacterCard.UnderLocation).Condition = () => !Card.IsFlipped;
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(CharacterCard.UnderLocation, cardCriteria: new LinqCardCriteria(c => IsTattoo(c), "tatoo")).Condition = () => Card.IsFlipped;
         }
 
         public override void AddSideTriggers()
@@ -69,7 +70,7 @@ namespace Cauldron.Dendron
                 base.SideTriggers.Add(base.AddStartOfTurnTrigger(tt => tt == TurnTaker, DestroyOngoingToDealDamage, new[] { TriggerType.DestroyCard, TriggerType.DealDamage }));
                 base.SideTriggers.Add(base.AddTrigger<DestroyCardAction>(dca => dca.CardToDestroy != null && IsTattoo(dca.CardToDestroy.Card), MoveBeneathThisCard, TriggerType.MoveCard, TriggerTiming.Before));
                 base.SideTriggers.Add(base.AddStartOfTurnTrigger(tt => tt == TurnTaker && CharacterCard.UnderLocation.NumberOfCards >= 6, FlipBack, new[] { TriggerType.FlipCard, TriggerType.DealDamage }));
-                base.SideTriggers.Add(base.AddEndOfTurnTrigger(tt => tt == TurnTaker, PlayCardResponse, TriggerType.PlayCard));
+                base.SideTriggers.Add(base.AddEndOfTurnTrigger(tt => tt == TurnTaker, PlayTheTopCardOfTheVillainDeckWithMessageResponse, TriggerType.PlayCard));
 
                 if (this.IsGameAdvanced)
                 {
@@ -120,7 +121,7 @@ namespace Cauldron.Dendron
 
             if (CharacterCard.UnderLocation.NumberOfCards == 0)
             {
-                var coroutine = GameController.SendMessageAction($"{CharacterCard.Title} has no cards to play, so she flips.", Priority.High, GetCardSource());
+                var coroutine = GameController.SendMessageAction($"{CharacterCard.AlternateTitleOrTitle} has no cards to play, so she flips.", Priority.High, GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -142,7 +143,7 @@ namespace Cauldron.Dendron
             else
             {
                 //get up to two cards from the underneth location.
-                var coroutine = GameController.SendMessageAction($"{CharacterCard.Title} plays 2 random cards from beneath her.", Priority.High, GetCardSource());
+                var coroutine = GameController.SendMessageAction($"{CharacterCard.AlternateTitleOrTitle} plays 2 random cards from beneath her.", Priority.High, GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -151,35 +152,23 @@ namespace Cauldron.Dendron
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-
-                var cards = CharacterCard.UnderLocation.Cards.ToList().Shuffle(Game.RNG);
-                for (int index = 0; index < cards.Count; index++)
+                IEnumerator coroutine2 = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, CharacterCard.UnderLocation, false, true, false,cardCriteria: new LinqCardCriteria(c => true), new int?(2), shuffleBeforehand: true);
+                if (base.UseUnityCoroutines)
                 {
-                    if (index == 2)
-                        break;
-
-                    var card = cards[index];
-
-                    coroutine = GameController.PlayCard(DecisionMaker, card,
-                                    isPutIntoPlay: true, optional: false,
-                                    reassignPlayIndex: true, actionSource: action,
-                                    cardSource: GetCardSource());
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
-                    }
+                    yield return base.GameController.StartCoroutine(coroutine2);
                 }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine2);
+                }
+
             }
         }
 
         private IEnumerator DestroyOngoingToDealDamage(PhaseChangeAction action)
         {
             List<DestroyCardAction> results = new List<DestroyCardAction>();
-            var coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria(c => IsVillain(c) && c.IsOngoing, "villain ongoing"), false, results, cardSource: GetCardSource());
+            var coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria(c => IsVillain(c) && c.IsOngoing && c.IsInPlayAndHasGameText, "villain ongoing"), false, results, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -249,19 +238,6 @@ namespace Cauldron.Dendron
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
-            }
-        }
-
-        private IEnumerator PlayCardResponse(PhaseChangeAction pca)
-        {
-            IEnumerator playCardRoutine = base.GameController.PlayTopCard(DecisionMaker, TurnTakerController, cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(playCardRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(playCardRoutine);
             }
         }
     }

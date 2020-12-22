@@ -35,10 +35,10 @@ namespace Cauldron.Dendron
             {
                 /*
                  * At the start of the game, put {Dendron}'s villain character cards into play, 'Outside The Lines' side up.
-                 * Search the deck for all copies of Stained Wolf Painted Viper. Place them beneath this card and shuffle the villain deck.
+                 * Search the deck for all copies of Painted Viper and Stained Wolf. Place them beneath this card and shuffle the villain deck.
                  */
                 
-                var coroutine = GameController.MoveCards(this, FindCardsWhere(c => c.Identifier == "StainedWolf"), CharacterCard.UnderLocation, cardSource: CharacterCardController.GetCardSource());
+                var coroutine = GameController.MoveCards(this, FindCardsWhere(c => c.Identifier == "StainedWolf" || c.Identifier == "PaintedViper"), CharacterCard.UnderLocation, cardSource: CharacterCardController.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
