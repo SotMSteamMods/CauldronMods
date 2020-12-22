@@ -23,7 +23,6 @@ namespace Cauldron.Northspar
 
             base.AddTrigger<CardEntersPlayAction>(criteria, this.EnterPlayResponse, TriggerType.DealDamage, TriggerTiming.After);
 
-
             //At the end of each turn, all targets that were dealt cold damage during that turn deal themselves 1 psychic damage.
             base.AddEndOfTurnTrigger((TurnTaker tt) => true, this.EndOfTurnResponse, TriggerType.DealDamage);
         }
@@ -33,7 +32,7 @@ namespace Cauldron.Northspar
             //all targets that were dealt cold damage during that turn deal themselves 1 psychic damage
             List<Card> targets = this.GetTargetsWhoWereDealtColdDamageThisTurn();
             IEnumerator coroutine;
-            foreach(Card target in targets)
+            foreach (Card target in targets)
             {
                 coroutine = base.DealDamage(target, target, 1, DamageType.Psychic, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
@@ -80,11 +79,7 @@ namespace Cauldron.Northspar
             string targetListSpecial = "Targets who were dealt cold damage this turn: ";
             if (targetList.Any())
             {
-                targetListSpecial += targetList.FirstOrDefault().AlternateTitleOrTitle;
-                for (int i = 1; i < targetList.Count(); i++)
-                {
-                    targetListSpecial += ", " + targetList[i].AlternateTitleOrTitle;
-                }
+                targetListSpecial += string.Join(", ", targetList.Select(c => c.AlternateTitleOrTitle).ToArray());
             }
             else
             {
