@@ -50,14 +50,14 @@ namespace Cauldron.Echelon
             int numDamage = powerNumerals?[0] ?? 3;
             var player = FindHeroTurnTakerController(hero?.ToHero());
 
-            if(dd.DamageSource.IsCard && dd.DamageSource.IsTarget && player != null)
+            if(dd.DamageSource.IsCard && dd.DamageSource.IsTarget && player != null && !dd.DamageSource.Card.IsBeingDestroyed && effect.CardMovedExpiryCriteria.Card == null)
             {
                 var target = dd.DamageSource.Card;
 
                 
                 //...{Echelon} may...
                 var storedYesNo = new List<YesNoCardDecision>();
-                IEnumerator coroutine = GameController.MakeYesNoCardDecision(player, SelectionType.DealDamage, this.Card, storedResults: storedYesNo, associatedCards: new Card[] { target }, cardSource: GetCardSource());
+                IEnumerator coroutine = GameController.MakeYesNoCardDecision(player, SelectionType.DealDamage, this.Card, storedResults: storedYesNo, associatedCards: new Card[] { target }, cardSource: GetCardSource(effect));
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -73,6 +73,21 @@ namespace Cauldron.Echelon
                 }
 
                 //Once before the start of your next turn...
+                //we set a criterion that will (hopefully) not matter much so that future reactions know it's being used
+                effect.CardMovedExpiryCriteria.Card = CharacterCard;
+
+                var damageSource = CharacterCard;
+                //deal the source of that damage 3 melee damage
+                coroutine = DealDamage(damageSource, target, numDamage, DamageType.Melee, isCounterDamage: true, cardSource: GetCardSource(effect));
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
                 coroutine = GameController.ExpireStatusEffect(effect, GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
@@ -83,21 +98,10 @@ namespace Cauldron.Echelon
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                var damageSource = CharacterCard;
+                
                 if (effect is OnDealDamageStatusEffect oddEffect)
                 {
                     damageSource = oddEffect.TargetLeavesPlayExpiryCriteria.Card ?? damageSource;
-                }
-
-                //deal the source of that damage 3 melee damage
-                coroutine = DealDamage(damageSource, target, numDamage, DamageType.Melee, isCounterDamage: true, cardSource: GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
             yield break;
