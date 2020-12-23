@@ -57,23 +57,30 @@ namespace Cauldron.Echelon
         private ITrigger AddChangeTypeTrigger(Func<DealDamageAction, bool> criteria)
         {
             //Log.Debug("Makes immediate change-type trigger");
-            var trigger = new ChangeDamageTypeTrigger(GameController, criteria, MaybeMakeDamagePsychic, new TriggerType[] { TriggerType.ChangeDamageType }, null, GetCardSource());
+            var trigger = new ChangeDamageTypeTrigger(GameController, criteria, MaybeMakeDamagePsychic, new TriggerType[] { TriggerType.ChangeDamageType }, new DamageType[] { DamageType.Psychic }, GetCardSource());
             return AddTrigger(trigger);
         }
         private IEnumerator MaybeMakeDamagePsychic(DealDamageAction dd)
         {
             //Log.Debug("Maybe-make-damage-psychic goes off");
-            var types = new DamageType[] { dd.DamageType, DamageType.Psychic };
+            IEnumerator coroutine;
             var storedType = new List<SelectDamageTypeDecision>();
-            IEnumerator coroutine = GameController.SelectDamageType(DecisionMaker, storedType, types, dd, cardSource: GetCardSource());
-            if (UseUnityCoroutines)
+
+            if(dd.OriginalDamageType != DamageType.Psychic)
             {
-                yield return GameController.StartCoroutine(coroutine);
+                var types = new DamageType[] { dd.OriginalDamageType, DamageType.Psychic };
+                coroutine = GameController.SelectDamageType(DecisionMaker, storedType, types, dd, cardSource: GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
             }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
+
+            
 
             var selectedType = storedType.FirstOrDefault()?.SelectedDamageType;
             if(selectedType != null)
