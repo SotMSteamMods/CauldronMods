@@ -801,6 +801,18 @@ namespace CauldronTests
             QuickHPCheck(-4);
         }
         [Test]
+        public void TestSurpriseAttackMultipleTypeChangers()
+        {
+            SetupGameController("GrandWarlordVoss", DeckNamespace, "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            PlayCard("SurpriseAttack");
+            PlayCard("ImbuedFire");
+
+            UsePower(tempest);
+        }
+        [Test]
         public void TestTeslaKnucklesPower()
         {
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "TheVisionary", "Megalopolis");
