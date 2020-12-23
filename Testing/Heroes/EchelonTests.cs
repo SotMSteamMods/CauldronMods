@@ -29,6 +29,15 @@ namespace CauldronTests
                 AssertCardHasKeyword(GetCard(id), keyword, false);
             }
         }
+        private void AddImmuneToNextDamageEffect(TurnTakerController ttc, bool villains, bool heroes)
+        {
+            ImmuneToDamageStatusEffect effect = new ImmuneToDamageStatusEffect();
+            effect.TargetCriteria.IsVillain = villains;
+            effect.TargetCriteria.IsHero = heroes;
+            effect.NumberOfUses = 1;
+            RunCoroutine(GameController.AddStatusEffect(effect, true, ttc.CharacterCardController.GetCardSource()));
+        }
+
         #endregion
         [Test]
         public void TestEchelonLoads()
@@ -674,7 +683,7 @@ namespace CauldronTests
         [Test]
         public void TestStaggeredAssault()
         {
-            SetupGameController("BaronBlade", DeckNamespace, "Ra", "TheVisionary", "Megalopolis");
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Haka", "TheVisionary", "Megalopolis");
             StartGame();
             DestroyCard(MDP);
 
@@ -695,6 +704,13 @@ namespace CauldronTests
             QuickHPCheck(-1);
             DealDamage(ra, baron, 2, DTM);
             QuickHPCheck(-3);
+
+            //does not trigger if damage was prevented
+            GoToStartOfTurn(haka);
+            AddImmuneToNextDamageEffect(baron, true, false);
+            QuickHPUpdate();
+            DealDamage(haka, baron, 3, DTM);
+            QuickHPCheckZero();
 
             DecisionSelectTargets = new Card[] { null, baron.CharacterCard };
 
