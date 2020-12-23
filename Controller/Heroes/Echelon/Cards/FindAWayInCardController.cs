@@ -105,20 +105,11 @@ namespace Cauldron.Echelon
         {
 
             // each hero target regains 1 HP
-           IEnumerator routine = base.GameController.GainHP(this.HeroTurnTakerController,
+           IEnumerator healRoutine = base.GameController.GainHP(this.HeroTurnTakerController,
                 c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText && GameController.IsCardVisibleToCardSource(c, GetCardSource()), HpGain, cardSource: GetCardSource());
 
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(routine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(routine);
-            }
-
             List<DestroyCardAction> storedResults = new List<DestroyCardAction>();
-            routine = base.GameController.DestroyCard(this.HeroTurnTakerController, this.Card, storedResults: storedResults,
+            IEnumerator routine = base.GameController.DestroyCard(this.HeroTurnTakerController, this.Card, storedResults: storedResults,postDestroyAction: () => healRoutine,
                 cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
