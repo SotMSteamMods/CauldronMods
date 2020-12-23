@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TheMistressOfFate
 {
-    public class TheMistressOfFateCharacterCardController : CardController
+    public class TangledWeftCardController : TheMistressOfFateUtilityCardController
     {
-        public TheMistressOfFateCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public TangledWeftCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }
