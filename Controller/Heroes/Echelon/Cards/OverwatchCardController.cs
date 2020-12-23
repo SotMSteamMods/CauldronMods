@@ -77,6 +77,11 @@ namespace Cauldron.Echelon
                 effect.CardMovedExpiryCriteria.Card = CharacterCard;
 
                 var damageSource = CharacterCard;
+                if (effect is OnDealDamageStatusEffect oddEffect)
+                {
+                    damageSource = oddEffect.TargetLeavesPlayExpiryCriteria.Card ?? damageSource;
+                }
+
                 //deal the source of that damage 3 melee damage
                 coroutine = DealDamage(damageSource, target, numDamage, DamageType.Melee, isCounterDamage: true, cardSource: GetCardSource(effect));
                 if (base.UseUnityCoroutines)
@@ -99,10 +104,7 @@ namespace Cauldron.Echelon
                 }
 
                 
-                if (effect is OnDealDamageStatusEffect oddEffect)
-                {
-                    damageSource = oddEffect.TargetLeavesPlayExpiryCriteria.Card ?? damageSource;
-                }
+
             }
             yield break;
         }
