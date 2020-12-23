@@ -10,7 +10,7 @@ namespace Cauldron.Gyrosaur
 {
     public class GyrosaurSpecificCardController : GyrosaurUtilityCardController
     {
-        protected GyrosaurSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public GyrosaurSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

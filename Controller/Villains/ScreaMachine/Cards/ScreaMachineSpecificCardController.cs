@@ -10,7 +10,7 @@ namespace Cauldron.ScreaMachine
 {
     public class ScreaMachineSpecificCardController : ScreaMachineUtilityCardController
     {
-        protected ScreaMachineSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public ScreaMachineSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

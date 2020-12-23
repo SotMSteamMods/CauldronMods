@@ -10,7 +10,7 @@ namespace Cauldron.Pyre
 {
     public class PyreSpecificCardController : PyreUtilityCardController
     {
-        protected PyreSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public PyreSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

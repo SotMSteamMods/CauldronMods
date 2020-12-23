@@ -10,7 +10,7 @@ namespace Cauldron.VaultFive
 {
     public class VaultFiveSpecificCardController : VaultFiveUtilityCardController
     {
-        protected VaultFiveSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public VaultFiveSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

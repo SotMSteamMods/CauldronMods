@@ -10,7 +10,7 @@ namespace Cauldron.CatchwaterHarbor
 {
     public class CatchwaterHarborSpecificCardController : CatchwaterHarborUtilityCardController
     {
-        protected CatchwaterHarborSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public CatchwaterHarborSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

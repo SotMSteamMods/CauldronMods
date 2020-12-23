@@ -10,7 +10,7 @@ namespace Cauldron.DungeonsOfTerror
 {
     public class DungeonsOfTerrorSpecificCardController : DungeonsOfTerrorUtilityCardController
     {
-        protected DungeonsOfTerrorSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public DungeonsOfTerrorSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

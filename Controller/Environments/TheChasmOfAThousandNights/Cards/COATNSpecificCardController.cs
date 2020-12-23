@@ -10,7 +10,7 @@ namespace Cauldron.TheChasmOfAThousandNights
 {
     public class TheChasmOfAThousandNightsSpecificCardController : TheChasmOfAThousandNightsUtilityCardController
     {
-        protected TheChasmOfAThousandNightsSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public TheChasmOfAThousandNightsSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

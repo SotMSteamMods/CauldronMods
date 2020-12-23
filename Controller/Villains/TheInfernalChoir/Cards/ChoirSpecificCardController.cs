@@ -10,7 +10,7 @@ namespace Cauldron.TheInfernalChoir
 {
     public class TheInfernalChoirSpecificCardController : TheInfernalChoirUtilityCardController
     {
-        protected TheInfernalChoirSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public TheInfernalChoirSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

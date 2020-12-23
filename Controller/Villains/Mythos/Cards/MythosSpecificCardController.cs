@@ -10,7 +10,7 @@ namespace Cauldron.Mythos
 {
     public class MythosSpecificCardController : MythosUtilityCardController
     {
-        protected MythosSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public MythosSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

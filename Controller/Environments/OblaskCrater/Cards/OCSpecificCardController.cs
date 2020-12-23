@@ -10,7 +10,7 @@ namespace Cauldron.OblaskCrater
 {
     public class OblaskCraterSpecificCardController : OblaskCraterUtilityCardController
     {
-        protected OblaskCraterSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public OblaskCraterSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

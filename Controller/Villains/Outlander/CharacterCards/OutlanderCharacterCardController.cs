@@ -10,7 +10,7 @@ namespace Cauldron.Outlander
 {
     public class OutlanderCharacterCardController : CardController
     {
-        protected OutlanderCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public OutlanderCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

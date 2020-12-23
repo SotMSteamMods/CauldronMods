@@ -10,7 +10,7 @@ namespace Cauldron.Drift
 {
     public class DriftSpecificCardController : DriftUtilityCardController
     {
-        protected DriftSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public DriftSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

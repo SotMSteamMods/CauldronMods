@@ -10,7 +10,7 @@ namespace Cauldron.Dynamo
 {
     public class DynamoCharacterCardController : CardController
     {
-        protected DynamoCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public DynamoCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

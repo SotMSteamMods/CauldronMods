@@ -10,7 +10,7 @@ namespace Cauldron.Gargoyle
 {
     public class GargoyleSpecificCardController : GargoyleUtilityCardController
     {
-        protected GargoyleSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public GargoyleSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

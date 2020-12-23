@@ -10,7 +10,7 @@ namespace Cauldron.NightloreCitadel
 {
     public class NightloreCitadelSpecificCardController : NightloreCitadelUtilityCardController
     {
-        protected NightloreCitadelSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public NightloreCitadelSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

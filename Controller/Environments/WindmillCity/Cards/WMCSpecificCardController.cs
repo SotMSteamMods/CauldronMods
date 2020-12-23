@@ -10,7 +10,7 @@ namespace Cauldron.WindmillCity
 {
     public class WindmillCitySpecificCardController : WindmillCityUtilityCardController
     {
-        protected WindmillCitySpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public WindmillCitySpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

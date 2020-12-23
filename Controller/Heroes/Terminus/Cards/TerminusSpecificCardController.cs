@@ -10,7 +10,7 @@ namespace Cauldron.Terminus
 {
     public class TerminusSpecificCardController : TerminusUtilityCardController
     {
-        protected TerminusSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public TerminusSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }
