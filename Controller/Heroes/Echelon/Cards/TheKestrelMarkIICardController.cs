@@ -73,17 +73,9 @@ namespace Cauldron.Echelon
 
                     int cardsNumeral = GetPowerNumeral(0, CardsToDraw);
 
-                    routine = base.GameController.SelectHeroToDrawCards(this.HeroTurnTakerController, cardsNumeral, optionalDrawCards: false, cardSource: GetCardSource());
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(routine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(routine);
-                    }
-
-                    routine = base.GameController.DestroyCard(this.HeroTurnTakerController, this.Card);
+                    IEnumerator drawRoutine = base.GameController.SelectHeroToDrawCards(this.HeroTurnTakerController, cardsNumeral, optionalDrawCards: false, cardSource: GetCardSource());
+                    
+                    routine = base.GameController.DestroyCard(this.HeroTurnTakerController, this.Card, postDestroyAction: () => drawRoutine, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(routine);
