@@ -1270,10 +1270,15 @@ namespace CauldronTests
 
             Card retinalAug = GetCard(RetinalAugCardController.Identifier);
 
+            GoToPlayCardPhase(cypher);
+            AssertPhaseActionCount(1);
+
             PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
             {
                 { ra.CharacterCard, new List<Card>() { retinalAug }}
-            });;
+            });
+
+            AssertPhaseActionCount(0);
 
             // Act
             GoToPlayCardPhase(ra);
@@ -1281,6 +1286,70 @@ namespace CauldronTests
 
             // Assert
             Assert.True(AreAugmented(new List<Card>() { ra.CharacterCard}));
+            Assert.True(HasAugment(ra.CharacterCard, retinalAug));
+        }
+
+
+        [Test]
+        public void TestRetinalAugSameTurnBuff()
+        {
+            // Play this card next to a hero. The hero next to this card is augmented.
+            // During their play phase, that hero may play an additional card.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card retinalAug = GetCard(RetinalAugCardController.Identifier);
+
+            GoToPlayCardPhase(cypher);
+            AssertPhaseActionCount(1);
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { cypher.CharacterCard, new List<Card>() { retinalAug }}
+            }); ;
+
+            AssertPhaseActionCount(1);
+
+            // Assert
+            Assert.True(AreAugmented(new List<Card>() { cypher.CharacterCard }));
+            Assert.True(HasAugment(cypher.CharacterCard, retinalAug));
+        }
+
+
+        [Test]
+        public void TestRetinalAugBuffMovesWithAug()
+        {
+            // Play this card next to a hero. The hero next to this card is augmented.
+            // During their play phase, that hero may play an additional card.
+
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card retinalAug = GetCard(RetinalAugCardController.Identifier);
+
+            GoToPlayCardPhase(cypher);
+            AssertPhaseActionCount(1);
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { cypher.CharacterCard, new List<Card>() { retinalAug }}
+            }); ;
+
+            AssertPhaseActionCount(1);
+
+            GoToPlayCardPhase(ra);
+
+            AssertPhaseActionCount(1);
+
+            MoveCard(cypher, retinalAug, ra.CharacterCard.NextToLocation, false, true, false, cypher.CharacterCardController.GetCardSource());
+
+            AssertPhaseActionCount(2);
+
+            // Assert
+            Assert.True(AreAugmented(new List<Card>() { ra.CharacterCard }));
             Assert.True(HasAugment(ra.CharacterCard, retinalAug));
         }
 
