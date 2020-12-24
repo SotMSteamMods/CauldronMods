@@ -42,7 +42,7 @@ namespace Cauldron
         public override void AddTriggers()
         {
             // Once during your turn when The Stranger would deal himself damage, prevent that damage.
-            base.AddTrigger<DealDamageAction>(dda => IsPreventionAvailable() && dda.DamageSource.IsSameCard(base.CharacterCard) && dda.Target == base.CharacterCard, this.DamagePreventionResponse, TriggerType.CancelAction, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>(dda => IsPreventionAvailable() && dda.DamageSource.IsSameCard(base.CharacterCard) && dda.Target == base.CharacterCard, this.DamagePreventionResponse, TriggerType.CancelAction, TriggerTiming.Before, isActionOptional: true);
 
             AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay("PreventionUsed"), TriggerType.Hidden);
         }

@@ -47,7 +47,7 @@
         {
             "identifier": "AdvanceAndRegroup",
             "count": 2,
-            "title": "Advance and Regroup",
+            "title": "Advance And Regroup",
             "keywords": [
                 "ongoing",
                 "tactic"
@@ -99,7 +99,7 @@
         {
             "identifier": "CommandAndConquer",
             "count": 4,
-            "title": "Command and Conquer",
+            "title": "Command And Conquer",
             "keywords": [
                 "one-shot"
             ],
@@ -115,7 +115,7 @@
             "flavorQuotes": [
                 {
                     "identifier": "Zevach",
-                    "text": "She's got a whole team with her, and they know every move before we make it!"
+                    "text": "She's got a whole team with{BR}her, and they know every move before{BR}we make it!"
                 }
             ],
             "flavorReference": "Zevach, The Consultant #3"
@@ -165,7 +165,7 @@
             "flavorQuotes": [
                 {
                     "identifier": "Echelon",
-                    "text": "I've disabled the motion sensors. Your target is three floors above you."
+                    "text": "I've disabled the{BR}motion sensors. Your target is{BR}three floors above you."
                 }
             ],
             "flavorReference": "Echelon, The Consultant #3"
@@ -189,7 +189,7 @@
             "flavorQuotes": [
                 {
                     "identifier": "DocHavoc",
-                    "text": "Don't tell me you haven't missed this."
+                    "text": "Don't tell me you{BR}haven't missed this."
                 }
             ],
             "flavorReference": "Doc Havoc, Stormfront One-shot"
@@ -197,7 +197,7 @@
         {
             "identifier": "KnowYourEnemy",
             "count": 2,
-            "title": "Know your enemy",
+            "title": "Know Your Enemy",
             "keywords": [
                 "ongoing",
                 "tactic"
@@ -222,7 +222,7 @@
         {
             "identifier": "NeedAWayOut",
             "count": 2,
-            "title": "Need a Way Out",
+            "title": "Need A Way Out",
             "keywords": [
                 "ongoing",
                 "limited"
@@ -354,7 +354,7 @@
         {
             "identifier": "StaggeredAssault",
             "count": 2,
-            "title": "Staggered assault",
+            "title": "Staggered Assault",
             "keywords": [
                 "ongoing",
                 "tactic"
@@ -466,6 +466,9 @@
             "powers": [
                 "{Echelon} deals 1 target 1 projectile damage and regains 2HP.",
                 "Destroy this card. One player draws 2 cards."
+            ],
+            "extraConfirmationIndices": [
+                1
             ],
             "flavorQuotes": [
                 {

@@ -5,6 +5,8 @@ using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
+using Handelabra;
+
 namespace Cauldron.TheRam
 {
     public class TheRamTurnTakerController : TurnTakerController
@@ -18,16 +20,7 @@ namespace Cauldron.TheRam
             if (CharacterCardController is TheRamCharacterCardController)
             {
                 //"At the start of the game, put {TheRam}'s villain character cards into play, “Mechanical Juggernaut” side up.",
-
-                IEnumerator coroutine = HandleWinters(banish: true);
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
+                IEnumerator coroutine;
 
                 //"Search the villain deck for all copies of Up Close and put them in the trash. 
                 coroutine = MoveUpCloseToTrash();
@@ -65,16 +58,8 @@ namespace Cauldron.TheRam
             else
             {
                 //"At the start of the game, put {TheRam} and {AdmiralWinters}' villain character cards into play, “Amphibious Dreadnought” and “Dreadnought Pilot” sides up. 
+                IEnumerator coroutine;
 
-                IEnumerator coroutine = HandleWinters(banish: false);
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
                 //Search the villain deck for all copies of Up Close and put them in the trash. 
                 coroutine = MoveUpCloseToTrash();
                 if (UseUnityCoroutines)
@@ -106,25 +91,17 @@ namespace Cauldron.TheRam
             return GameController.DoAction(upCloseToTrash);
         }
 
-        private IEnumerator HandleWinters(bool banish = true)
+        public void HandleWintersEarly(bool banish = true)
         {
-            Card winters = FindCardsWhere((Card c) => c.Title == "Admiral Winters").FirstOrDefault();
+            Card winters = TurnTaker.FindCard("AdmiralWintersCharacter", true);
             if (winters == null || winters.Location != TurnTaker.OffToTheSide)
             {
-                yield break;
+                Log.Debug("Failed to find Admiral Winters");
+                return;
             }
 
             Location targetLocation = banish ? TurnTaker.InTheBox : TurnTaker.PlayArea;
-            IEnumerator coroutine = GameController.MoveCard(this, winters, targetLocation);
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
+            TurnTaker.MoveCard(winters, targetLocation);
         }
     }
 }

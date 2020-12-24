@@ -10,6 +10,8 @@ namespace Cauldron.Oriphel
     {
         public MirageCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => IsGoon(c), "goon"));
+
         }
 
         public override IEnumerator Play()

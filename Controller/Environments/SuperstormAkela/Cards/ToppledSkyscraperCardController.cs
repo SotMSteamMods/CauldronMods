@@ -12,7 +12,7 @@ namespace Cauldron.SuperstormAkela
 
         public ToppledSkyscraperCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHasBeenUsedThisTurn("VillainTargetWouldBeDealtDamage");
         }
 
         public override void AddTriggers()

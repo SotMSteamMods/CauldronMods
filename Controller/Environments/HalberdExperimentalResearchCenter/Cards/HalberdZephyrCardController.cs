@@ -11,6 +11,8 @@ namespace Cauldron.HalberdExperimentalResearchCenter
 
         public HalberdZephyrCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroTargetWithLowestHP().Condition = () => !IsChemicalTriggerInPlay();
+            SpecialStringMaker.ShowVillainTargetWithLowestHP().Condition = () => IsChemicalTriggerInPlay();
 
         }
 

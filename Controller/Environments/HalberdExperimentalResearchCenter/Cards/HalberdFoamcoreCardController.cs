@@ -33,7 +33,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
 
         public HalberdFoamcoreCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowHeroTargetWithLowestHP();
+            base.SpecialStringMaker.ShowHeroTargetWithLowestHP().Condition = () => !IsChemicalTriggerInPlay();
         }
 
         #endregion Constructors

@@ -11,7 +11,8 @@ namespace Cauldron.HalberdExperimentalResearchCenter
 
         public HalberdSplinterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHeroTargetWithLowestHP(numberOfTargets: 3).Condition = () => IsChemicalTriggerInPlay();
+            SpecialStringMaker.ShowVillainTargetWithLowestHP(numberOfTargets: 3).Condition = () => !IsChemicalTriggerInPlay();
         }
 
         #endregion Constructors

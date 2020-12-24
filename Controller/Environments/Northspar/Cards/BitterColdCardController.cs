@@ -12,7 +12,8 @@ namespace Cauldron.Northspar
 
         public BitterColdCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHighestHP(ranking: 3);
+            SpecialStringMaker.ShowSpecialString(() => BuildTargetsWhoWereDealtColdDamageThisTurnSpecialString());
         }
 
         public override void AddTriggers()
@@ -21,7 +22,6 @@ namespace Cauldron.Northspar
             Func<CardEntersPlayAction, bool> criteria = (CardEntersPlayAction cp) => cp.CardEnteringPlay != null && cp.CardEnteringPlay.IsEnvironment;
 
             base.AddTrigger<CardEntersPlayAction>(criteria, this.EnterPlayResponse, TriggerType.DealDamage, TriggerTiming.After);
-
 
             //At the end of each turn, all targets that were dealt cold damage during that turn deal themselves 1 psychic damage.
             base.AddEndOfTurnTrigger((TurnTaker tt) => true, this.EndOfTurnResponse, TriggerType.DealDamage);
@@ -32,7 +32,7 @@ namespace Cauldron.Northspar
             //all targets that were dealt cold damage during that turn deal themselves 1 psychic damage
             List<Card> targets = this.GetTargetsWhoWereDealtColdDamageThisTurn();
             IEnumerator coroutine;
-            foreach(Card target in targets)
+            foreach (Card target in targets)
             {
                 coroutine = base.DealDamage(target, target, 1, DamageType.Psychic, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
@@ -71,6 +71,21 @@ namespace Cauldron.Northspar
                         .Where(e => e.TargetCard.IsTarget && e.DamageType == DamageType.Cold && e.TargetCard.IsInPlayAndHasGameText)
                         .Select(e => e.TargetCard)
                         .ToList();
+        }
+
+        private string BuildTargetsWhoWereDealtColdDamageThisTurnSpecialString()
+        {
+            var targetList = GetTargetsWhoWereDealtColdDamageThisTurn();
+            string targetListSpecial = "Targets who were dealt cold damage this turn: ";
+            if (targetList.Any())
+            {
+                targetListSpecial += string.Join(", ", targetList.Select(c => c.AlternateTitleOrTitle).ToArray());
+            }
+            else
+            {
+                targetListSpecial += "None";
+            }
+            return targetListSpecial;
         }
     }
 }

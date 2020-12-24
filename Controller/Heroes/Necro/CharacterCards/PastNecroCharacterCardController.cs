@@ -12,7 +12,10 @@ namespace Cauldron.Necro
     {
         public PastNecroCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SetCardProperty("HeroVillainFlipped", false);
+            if(GetCardPropertyJournalEntryBoolean("HeroVillainFlipped") == null)
+            {
+                SetCardProperty("HeroVillainFlipped", false);
+            }
             SpecialString ss = base.SpecialStringMaker.ShowIfElseSpecialString(() => true, () => "Replacing the word “Hero” on " + base.Card.Title + "'s cards with “Villain”, and vice versa", () => "", showInEffectsList: () => true);
             ss.Condition = () => GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, "HeroVillainFlipped") != null && GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, "HeroVillainFlipped").Value;
         }

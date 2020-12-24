@@ -12,7 +12,7 @@ namespace Cauldron.Tiamat
         public ElementOfLightningCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowHeroWithMostCards(true);
-            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "ElementOfLightning"));
+            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "ElementOfLightning", "element of lightning"));
         }
 
         public static readonly string PreventDrawPropertyKey = "ElementOfLightningCannotDraw";

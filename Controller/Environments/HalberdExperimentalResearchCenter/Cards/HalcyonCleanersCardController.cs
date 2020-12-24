@@ -11,7 +11,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
 
         public HalcyonCleanersCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowLowestHP(ranking: 2, cardCriteria: new LinqCardCriteria(c => c != Card, "other"));
         }
 
         #endregion Constructors

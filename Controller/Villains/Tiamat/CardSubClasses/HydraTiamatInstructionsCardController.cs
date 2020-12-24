@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Cauldron.Tiamat
@@ -14,12 +15,14 @@ namespace Cauldron.Tiamat
             FirstHead = firstHead;
             SecondHead = secondHead;
             Element = element;
+            
+             SpecialStringMaker.ShowIfElseSpecialString(() => FirstHeadCardController().Card.IsFlipped, () => FirstHeadCardController().Card.Title + " is decapitated.", () => FirstHeadCardController().Card.Title + " is not decapitated.").Condition = () => !base.Card.IsFlipped;
         }
 
         protected abstract ITrigger[] AddFrontTriggers();
         protected abstract ITrigger[] AddFrontAdvancedTriggers();
         protected abstract ITrigger[] AddBackTriggers();
-        protected IEnumerator alternateElementCoroutine;
+        protected virtual IEnumerator alternateElementCoroutine => DoNothing();
 
         public string FirstHead { get; }
         public string SecondHead { get; }
@@ -123,6 +126,25 @@ namespace Cauldron.Tiamat
             return value + (from card in base.TurnTaker.Trash.Cards
                             where card.Identifier == identifier
                             select card).Count<Card>();
+        }
+
+        protected string BuildDecapitatedHeadList()
+        {
+            IEnumerable<Card> decappedHeads = FindCardsWhere((Card c) => c.IsFlipped && c.DoKeywordsContain("head") && c.IsInPlayAndNotUnderCard).ToList();
+            string decappedHeadsSpecial = "Decapitated heads: ";
+            if (decappedHeads.Any())
+            {
+                decappedHeadsSpecial += decappedHeads.FirstOrDefault().Title;
+                for (int i = 1; i < decappedHeads.Count(); i++)
+                {
+                    decappedHeadsSpecial += ", " + decappedHeads.ElementAt(i).Title;
+                }
+            }
+            else
+            {
+                decappedHeadsSpecial += "None";
+            }
+            return decappedHeadsSpecial;
         }
     }
 }

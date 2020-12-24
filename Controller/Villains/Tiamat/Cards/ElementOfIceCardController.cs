@@ -13,7 +13,7 @@ namespace Cauldron.Tiamat
         public ElementOfIceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
-            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "ElementOfIce"));
+            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "ElementOfIce", "element of ice"));
         }
 
         public override IEnumerator Play()

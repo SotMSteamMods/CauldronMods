@@ -12,7 +12,8 @@ namespace Cauldron.Northspar
 
         public EerieStillnessCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowListOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria(c => IsWaypoint(c), "waypoint"));
+            SpecialStringMaker.ShowListOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(c => IsWaypoint(c), "waypoint"));
         }
 
 
@@ -53,7 +54,7 @@ namespace Cauldron.Northspar
                     Location origin = storedLocation.FirstOrDefault().SelectedLocation.Location;
 
                     LinqCardCriteria criteria = new LinqCardCriteria((Card c) => base.IsWaypoint(c), "waypoint");
-                    IEnumerator coroutine2 = GameController.SelectCardsFromLocationAndMoveThem(base.DecisionMaker, origin, 1, 1, criteria, moveDestinations,isPutIntoPlay: true, cardSource: base.GetCardSource());
+                    IEnumerator coroutine2 = GameController.SelectCardsFromLocationAndMoveThem(base.DecisionMaker, origin, 1, 1, criteria, moveDestinations, isPutIntoPlay: true, cardSource: base.GetCardSource());
                     if (UseUnityCoroutines)
                     {
                         yield return GameController.StartCoroutine(coroutine2);
