@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Mythos
 {
-    public class MythosSpecificCardController : MythosUtilityCardController
+    public class OtherworldlyAlignmentCardController : MythosUtilityCardController
     {
-        public MythosSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public OtherworldlyAlignmentCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }
