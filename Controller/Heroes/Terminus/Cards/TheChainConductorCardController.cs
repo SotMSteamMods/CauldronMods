@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Terminus
 {
-    public class TerminusSpecificCardController : TerminusUtilityCardController
+    public class TheChainConductorCardController : TerminusUtilityCardController
     {
-        public TerminusSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public TheChainConductorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }
