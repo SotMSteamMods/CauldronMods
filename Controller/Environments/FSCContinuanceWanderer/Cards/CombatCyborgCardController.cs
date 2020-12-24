@@ -8,7 +8,7 @@ namespace Cauldron.FSCContinuanceWanderer
 
         public CombatCyborgCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNonEnvironmentTargetWithLowestHP();
         }
 
         public override void AddTriggers()

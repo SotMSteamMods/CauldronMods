@@ -27,7 +27,7 @@ namespace Cauldron.BlackwoodForest
 
         public VengefulSpiritsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowListOfCardsAtLocation(FindLocationsWhere(location => location.IsRealTrash && location.IsVillain && GameController.IsLocationVisibleToSource(location, GetCardSource())).First(), new LinqCardCriteria(c => c.IsTarget, "target", useCardsSuffix: false, singular: "target", plural: "targets"));       
         }
 
         public override void AddTriggers()

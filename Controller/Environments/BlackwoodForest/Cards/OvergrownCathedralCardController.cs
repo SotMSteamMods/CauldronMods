@@ -25,6 +25,7 @@ namespace Cauldron.BlackwoodForest
         {
             base.SpecialStringMaker.ShowHasBeenUsedThisTurn(FirstTimeDamageDealtPropName, 
                 "{0} has already taken effect this turn.", "{0} has not yet taken effect this turn.", null);
+            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria(c => c.IsTarget && c.IsInPlayAndHasGameText && !Journal.DealDamageEntriesThisTurn().Where(j => j.Amount > 0).Select(j => j.TargetCard).Contains(c), "targets that have not been dealt damage this turn", useCardsSuffix: false)).Condition = () => Game.HasGameStarted;
         }
 
         public override void AddTriggers()

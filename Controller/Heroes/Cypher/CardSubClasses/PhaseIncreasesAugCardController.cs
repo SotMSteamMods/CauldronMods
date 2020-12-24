@@ -19,7 +19,7 @@ namespace Cauldron.Cypher
 
         public override IEnumerator Play()
         {
-            IEnumerator coroutine = IncreasePhaseActionCountIfInPhase((TurnTaker tt) => tt == base.TurnTaker, _phaseToIncrease, 1);
+            IEnumerator coroutine = IncreasePhaseActionCountIfInPhase((TurnTaker tt) => tt == base.GetCardThisCardIsNextTo(true).Owner, _phaseToIncrease, 1);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

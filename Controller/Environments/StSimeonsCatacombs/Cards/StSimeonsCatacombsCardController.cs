@@ -18,22 +18,6 @@ namespace Cauldron.StSimeonsCatacombs
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
 		}
 
-		public override IEnumerator Play()
-		{
-			//Environment cards cannot be played
-			StSimeonsCatacombsInstructionsCardController instructions = FindCardController(FindCardsWhere((Card c) => c.Identifier == StSimeonsCatacombsInstructionsCardController.Identifier, realCardsOnly: false).First()) as StSimeonsCatacombsInstructionsCardController;
-			IEnumerator coroutine = instructions.AddCannotPlayCardsEffect(instructions);
-			if (base.UseUnityCoroutines)
-			{
-				yield return base.GameController.StartCoroutine(coroutine);
-			}
-			else
-			{
-				base.GameController.ExhaustCoroutine(coroutine);
-
-			}
-			yield break;
-		}
 
 		public override bool AskIfCardIsIndestructible(Card card)
 		{

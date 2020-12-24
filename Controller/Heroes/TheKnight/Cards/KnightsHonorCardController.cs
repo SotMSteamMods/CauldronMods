@@ -15,13 +15,60 @@ namespace Cauldron.TheKnight
 
         public override void AddTriggers()
         {
-            //TODO - Promo Support - Need to select target to redirect damage too
-            base.AddRedirectDamageTrigger(dd => IsThisCardNextToCard(dd.Target), dd => base.CharacterCard, false);
-            base.AddMakeDamageIrreducibleTrigger(dd => dd.Target == base.CharacterCard && dd.NumberOfTimesRedirected > 0 && IsThisCardNextToCard(dd.OriginalTarget));
+            base.AddTrigger((DealDamageAction dd) => dd.Amount > 0 && IsThisCardNextToCard(dd.Target), RedirectToKnight, TriggerType.RedirectDamage, TriggerTiming.Before);
+
             Card cardThisCardIsNextTo = base.GetCardThisCardIsNextTo(true);
             base.AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(true, cardThisCardIsNextTo != null && !cardThisCardIsNextTo.IsHeroCharacterCard);
         }
 
+        private IEnumerator RedirectToKnight(DealDamageAction dd)
+        {
+            if(!dd.IsRedirectable)
+            {
+                yield break;
+            }
+            var selectedKnight = new List<SelectCardDecision> { };
+            IEnumerator coroutine = SelectOwnCharacterCard(selectedKnight, SelectionType.RedirectDamage);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            if(!DidSelectCard(selectedKnight))
+            {
+                yield break;
+            }
+
+            Card knight = selectedKnight.FirstOrDefault().SelectedCard;
+            RedirectDamageAction redirect = new RedirectDamageAction(GetCardSource(), dd, knight);
+            coroutine = DoAction(redirect);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if(dd.DamageModifiers.Any((ModifyDealDamageAction mdda) => mdda.CardSource != null && mdda.CardSource.Card == this.Card))
+            {
+                var irreducible = new MakeDamageIrreducibleAction(GetCardSource(), dd);
+                coroutine = DoAction(irreducible);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
+        }
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             //"Play this card next to a target.",

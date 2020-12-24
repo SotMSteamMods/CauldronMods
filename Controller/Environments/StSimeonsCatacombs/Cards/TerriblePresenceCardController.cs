@@ -11,7 +11,7 @@ namespace Cauldron.StSimeonsCatacombs
 
         public TerriblePresenceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { TortureChamberCardController.Identifier, AqueductsCardController.Identifier }, false)
         {
-
+            SpecialStringMaker.ShowLowestHP(numberOfTargets: () => 2, cardCriteria: new LinqCardCriteria(c => !IsGhost(c) && c.IsTarget, "", useCardsSuffix: false, singular: "non-ghost target", plural: "non-ghost targets"));
         }
 
         public override void AddTriggers()

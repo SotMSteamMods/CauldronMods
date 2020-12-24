@@ -9,20 +9,16 @@ namespace Cauldron.Tiamat
 {
     public class HydraThunderousGaleTiamatInstructionsCardController : HydraTiamatInstructionsCardController
     {
-        public HydraThunderousGaleTiamatInstructionsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public HydraThunderousGaleTiamatInstructionsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "HydraStormTiamatCharacter", "HydraWindTiamatCharacter", "ElementOfLightning")
         {
-
+           
+            SpecialStringMaker.ShowSpecialString(() => BuildDecapitatedHeadList());
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: 1 + NumberOfOngoingsInTrash()).Condition = () => base.Card.IsFlipped && FirstHeadCardController().Card.IsFlipped && !SecondHeadCardController().Card.IsFlipped && SecondHeadCardController().Card.IsInPlayAndNotUnderCard;
+            SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => base.Card.IsFlipped && !FirstHeadCardController().Card.IsFlipped;
         }
-
-        public override IEnumerator Play()
-        {
-            this.firstHead = base.GameController.FindCardController("HydraStormTiamatCharacter");
-            this.secondHead = base.GameController.FindCardController("HydraWindTiamatCharacter");
-            this.element = "ElementOfLightning";
-            //Whenever Element of Lightning enters play and {StormTiamatCharacter} is decapitated, if {WindTiamatCharacter} is active she deals the X hero targets with the Highest HP {H - 1} projectile damage each, where X = 1 plus the number of ongoing cards in the villain trash.
-            this.alternateElementCoroutine = base.DealDamageToHighestHP(this.secondHead.Card, 1, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => new int?(Game.H - 1), DamageType.Projectile, numberOfTargets: () => 1 + NumberOfOngoingsInTrash());
-            yield break;
-        }
+        
+        //Whenever Element of Lightning enters play and {StormTiamatCharacter} is decapitated, if {WindTiamatCharacter} is active she deals the X hero targets with the Highest HP {H - 1} projectile damage each, where X = 1 plus the number of ongoing cards in the villain trash.
+        protected override IEnumerator alternateElementCoroutine => base.DealDamageToHighestHP(base.SecondHeadCardController().Card, 1, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => new int?(Game.H - 1), DamageType.Projectile, numberOfTargets: () => 1 + NumberOfOngoingsInTrash());
 
         protected override ITrigger[] AddFrontTriggers()
         {
@@ -31,7 +27,7 @@ namespace Cauldron.Tiamat
                 //At the start of the villain turn, flip 1 decapitated head to its active side and restore it to 2 times {H} HP (3 times H if any Instruction is flipped and advanced).
                 base.AddStartOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, this.GrowHeadResponse, TriggerType.FlipCard),
                 //At the end of the villain turn, {StormTiamatCharacter} deals each hero target 1 lightning damage.
-                base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, DealDamageResponse, TriggerType.DealDamage, (PhaseChangeAction action) => !firstHead.Card.IsFlipped)
+                base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, DealDamageResponse, TriggerType.DealDamage, (PhaseChangeAction action) => !base.FirstHeadCardController().Card.IsFlipped)
             };
         }
 
@@ -40,7 +36,7 @@ namespace Cauldron.Tiamat
             return new ITrigger[]
             {
                 //The first time {StormTiamatCharacter} deals damage each turn, increase that damage by 2.
-                base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.Card == firstHead.Card && !this.DidDealDamageThisTurn(firstHead.Card), (DealDamageAction action) => 2)
+                base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.Card == base.FirstHeadCardController().Card && !this.DidDealDamageThisTurn(base.FirstHeadCardController().Card), (DealDamageAction action) => 2)
             };
         }
 
@@ -51,14 +47,14 @@ namespace Cauldron.Tiamat
                 //At the start of the villain turn, flip 1 decapitated head to its active side and restore it to 2 times {H} HP (3 times H if any Instruction is flipped and advanced).
                 base.AddStartOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, this.GrowHeadResponse, TriggerType.FlipCard),
                 //At the end of the villain turn, if {StormTiamatCharacter} is active, it the hero target with the highest HP 1 lightning damage.
-                base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, DealDamageResponse, TriggerType.DealDamage, (PhaseChangeAction action) => !firstHead.Card.IsFlipped)
+                base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, DealDamageResponse, TriggerType.DealDamage, (PhaseChangeAction action) => !base.FirstHeadCardController().Card.IsFlipped)
             };
         }
 
         private IEnumerator GrowHeadResponse(PhaseChangeAction action)
         {
             IEnumerable<Card> decapitatedHeads = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsFlipped && c.DoKeywordsContain("head") && c.IsInPlayAndNotUnderCard));
-            SelectCardDecision cardDecision = new SelectCardDecision(this.GameController, this.DecisionMaker, SelectionType.CharacterCard, decapitatedHeads, cardSource: base.GetCardSource());
+            SelectCardDecision cardDecision = new SelectCardDecision(this.GameController, this.DecisionMaker, SelectionType.FlipCardFaceUp, decapitatedHeads, cardSource: base.GetCardSource());
             //...flip 1 decapitated head...
             IEnumerator coroutine = base.GameController.SelectCardAndDoAction(cardDecision, (SelectCardDecision decision) => this.GrowHeadAction(decision));
             if (base.UseUnityCoroutines)
@@ -104,12 +100,12 @@ namespace Cauldron.Tiamat
             if (!base.Card.IsFlipped)
             {//Front End of Turn Damage
                 //...{StormTiamatCharacter} deals each hero target 1 lightning damage.
-                coroutine = base.DealDamage(this.firstHead.Card, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, 1, DamageType.Lightning);
+                coroutine = base.DealDamage(base.FirstHeadCardController().Card, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, 1, DamageType.Lightning);
             }
             else
             {//Back End of Turn Damage
                 //At the end of the villain turn, if {StormTiamatCharacter} is active, she deals the hero target with the highest HP 1 lightning damage.
-                coroutine = base.DealDamageToHighestHP(this.firstHead.Card, 1, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => new int?(1), DamageType.Lightning);
+                coroutine = base.DealDamageToHighestHP(base.FirstHeadCardController().Card, 1, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => new int?(1), DamageType.Lightning);
             }
             if (base.UseUnityCoroutines)
             {
