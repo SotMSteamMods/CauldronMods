@@ -26,5 +26,13 @@ namespace Cauldron
             return criteria(card);
         }
 
+        public static void SetPowerNumeralsArray(this ReflectionStatusEffect effect, int[] array)
+        {
+            var p1 = effect.GetType().GetProperty("PowerNumeralsToChange");
+            var p2 = p1.DeclaringType.GetProperty("PowerNumeralsToChange");
+
+            p2.SetValue(effect, array, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance, null, null, null);
+        }
+
     }
 }
