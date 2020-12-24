@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Pyre
 {
-    public class PyreSpecificCardController : PyreUtilityCardController
+    public class FissionRegulatorCardController : PyreUtilityCardController
     {
-        public PyreSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public FissionRegulatorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }
