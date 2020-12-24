@@ -612,7 +612,23 @@ namespace CauldronTests
             AssertInTrash(z2);
             AssertIsInPlay(z3);
         }
+        [Test()]
+        public void TestLastOfTheForgottenOrderNecroInnatePower_PowerModifiersTrack()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/LastOfTheForgottenOrderNecroCharacter", "Unity", "Haka", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
 
+            Card z1 = PlayCard("NecroZombie");
+
+            QuickHPStorage(baron);
+            DecisionSelectCards = new Card[] { haka.CharacterCard, baron.CharacterCard };
+
+            PlayCard("HastyAugmentation");
+
+            DestroyCard(z1);
+            QuickHPCheck(-3);
+        }
 
         [Test()]
         public void TestLastOfTheForgottenOrderNecroIncap1()

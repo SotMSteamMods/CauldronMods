@@ -24,11 +24,11 @@ namespace Cauldron.TangoOne
             // Select a target, at the start of your next turn,
             // {TangoOne} deals that target 3 projectile damage.
             //==============================================================
-
+            int numDamage = GetPowerNumeral(0, PowerDamageToDeal);
             IEnumerable<Card> targets = GameController.FindTargetsInPlay();
             List<SelectTargetDecision> storedResults = new List<SelectTargetDecision>();
             IEnumerator coroutine = GameController.SelectTargetAndStoreResults(DecisionMaker, targets, storedResults,
-                    damageSource: CharacterCard, damageAmount: card => 3, damageType: DamageType.Projectile,
+                    damageSource: CharacterCard, damageAmount: card => numDamage, damageType: DamageType.Projectile,
                     selectionType: SelectionType.SelectTargetNoDamage, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
@@ -43,7 +43,7 @@ namespace Cauldron.TangoOne
             if (target != null)
             {
                 OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(this.CardWithoutReplacements,
-                    nameof(StartOfTurnDealDamageResponse),
+                    nameof(StartOfTurnDealDamageResponse) + numDamage.ToString(),
                     $"{base.Card.Title} will deal {PowerDamageToDeal} projectile damage to {target.Title} at the start of her next turn",
                     new[] { TriggerType.DealDamage }, this.Card);
                 effect.UntilEndOfNextTurn(base.HeroTurnTaker);
@@ -53,6 +53,8 @@ namespace Cauldron.TangoOne
                 effect.BeforeOrAfter = BeforeOrAfter.After;
                 effect.CanEffectStack = true;
                 effect.CardSource = this.Card;
+                effect.NumberOfUses = 1;
+                effect.DoesDealDamage = true;
 
                 IEnumerator addStatusEffectRoutine = base.GameController.AddStatusEffect(effect, true, GetCardSource());
                 if (base.UseUnityCoroutines)
@@ -66,15 +68,28 @@ namespace Cauldron.TangoOne
             }
         }
 
-        public IEnumerator StartOfTurnDealDamageResponse(PhaseChangeAction _, OnPhaseChangeStatusEffect sourceEffect)
+        public IEnumerator StartOfTurnDealDamageResponse2(PhaseChangeAction pca, OnPhaseChangeStatusEffect sourceEffect)
+        {
+            return StartOfTurnDealDamageResponse(pca, sourceEffect, 2);
+        }
+        public IEnumerator StartOfTurnDealDamageResponse3(PhaseChangeAction pca, OnPhaseChangeStatusEffect sourceEffect)
+        {
+            return StartOfTurnDealDamageResponse(pca, sourceEffect, 3);
+        }
+        public IEnumerator StartOfTurnDealDamageResponse4(PhaseChangeAction pca, OnPhaseChangeStatusEffect sourceEffect)
+        {
+            return StartOfTurnDealDamageResponse(pca, sourceEffect, 4);
+        }
+
+        public IEnumerator StartOfTurnDealDamageResponse(PhaseChangeAction _, OnPhaseChangeStatusEffect sourceEffect, int damageToDeal)
         {
             var target = sourceEffect.TargetLeavesPlayExpiryCriteria.IsOneOfTheseCards.FirstOrDefault();
 
-            int powerNumeral = GetPowerNumeral(0, PowerDamageToDeal);
+            int powerNumeral = damageToDeal;
 
             if (!CharacterCard.IsIncapacitatedOrOutOfGame && target.IsTarget && target.IsInPlayAndNotUnderCard)
             {
-                if (GameController.IsCardVisibleToCardSource(target, GetCardSource()) != true)
+                if (GameController.IsCardVisibleToCardSource(target, GetCardSource(sourceEffect)) != true)
                 {
                     var coroutine = GameController.SendMessageAction($"{CharacterCard.Title} misses! {target.Title} is no longer visible!", Priority.Medium, GetCardSource(), new[] { target });
                     if (base.UseUnityCoroutines)
@@ -88,7 +103,7 @@ namespace Cauldron.TangoOne
                 }
                 else
                 {
-                    IEnumerator dealDamageRoutine = this.DealDamage(CharacterCard, target, powerNumeral, DamageType.Projectile);
+                    IEnumerator dealDamageRoutine = this.DealDamage(CharacterCard, target, powerNumeral, DamageType.Projectile, cardSource: GetCardSource(sourceEffect));
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(dealDamageRoutine);
@@ -99,7 +114,6 @@ namespace Cauldron.TangoOne
                     }
                 }
             }
-            GameController.StatusEffectManager.RemoveStatusEffect(sourceEffect);
         }
 
         public override IEnumerator UseIncapacitatedAbility(int index)

@@ -253,8 +253,18 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(0); //status effect should have expired.
             QuickHPCheck(0); // Damage should not have been attempted
         }
+        [Test]
+        public void TestInnatePower1929_PowerModifiersTrack()
+        {
+            SetupGameController("BaronBlade", DeckNamespace1929, "Unity", "Legacy", "Megalopolis");
+            StartGame();
 
-
+            QuickHPStorage(legacy);
+            DecisionSelectTarget = legacy.CharacterCard;
+            PlayCard("HastyAugmentation");
+            GoToStartOfTurn(TangoOne);
+            QuickHPCheck(-5);
+        }
         [Test]
         public void Test1929IncapacitateOption1()
         {
