@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TheInfernalChoir
 {
-    public class TheInfernalChoirSpecificCardController : TheInfernalChoirUtilityCardController
+    public class RedSunXuCardController : TheInfernalChoirUtilityCardController
     {
-        public TheInfernalChoirSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public RedSunXuCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }
