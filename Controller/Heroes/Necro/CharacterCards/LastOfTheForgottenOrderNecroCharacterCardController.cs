@@ -28,6 +28,7 @@ namespace Cauldron.Necro
             effect.NumberOfUses = 1;
             effect.CardDestroyedCriteria.IsTarget = true;
             effect.CardDestroyedCriteria.HasAnyOfTheseKeywords = new List<string>() { "undead" };
+            effect.CanEffectStack = true;
             IEnumerator coroutine3 = AddStatusEffect(effect);
             if (base.UseUnityCoroutines)
             {
