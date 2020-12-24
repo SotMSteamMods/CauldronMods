@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.DungeonsOfTerror
 {
-    public class DungeonsOfTerrorSpecificCardController : DungeonsOfTerrorUtilityCardController
+    public class RovingSlimeCardController : DungeonsOfTerrorUtilityCardController
     {
-        public DungeonsOfTerrorSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public RovingSlimeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

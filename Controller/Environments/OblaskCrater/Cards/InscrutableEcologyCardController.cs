@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.OblaskCrater
 {
-    public class OblaskCraterSpecificCardController : OblaskCraterUtilityCardController
+    public class InscrutableEcologyCardController : OblaskCraterUtilityCardController
     {
-        public OblaskCraterSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public InscrutableEcologyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }
