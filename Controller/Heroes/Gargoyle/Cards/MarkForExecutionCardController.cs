@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Gargoyle
 {
-    public class GargoyleSpecificCardController : GargoyleUtilityCardController
+    public class MarkForExecutionCardController : GargoyleUtilityCardController
     {
-        public GargoyleSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public MarkForExecutionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }
