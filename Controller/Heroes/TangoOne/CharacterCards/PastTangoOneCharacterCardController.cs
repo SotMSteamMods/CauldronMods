@@ -51,6 +51,7 @@ namespace Cauldron.TangoOne
                 effect.UntilTargetLeavesPlay(target);
                 effect.TurnPhaseCriteria.Phase = Phase.Start;
                 effect.BeforeOrAfter = BeforeOrAfter.After;
+                effect.CanEffectStack = true;
                 effect.CardSource = this.Card;
 
                 IEnumerator addStatusEffectRoutine = base.GameController.AddStatusEffect(effect, true, GetCardSource());
@@ -257,6 +258,7 @@ namespace Cauldron.TangoOne
             effect.TurnTakerCriteria.IsSpecificTurnTaker = base.HeroTurnTaker;
             effect.TurnPhaseCriteria.Phase = Phase.Start;
             effect.BeforeOrAfter = BeforeOrAfter.After;
+            effect.CanEffectStack = true;
             effect.UntilCardLeavesPlay(base.Card);
 
             return effect;

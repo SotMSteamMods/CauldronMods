@@ -32,6 +32,7 @@ namespace Cauldron.Echelon
             statusEffect.UntilTargetLeavesPlay(CharacterCard);
             statusEffect.BeforeOrAfter = BeforeOrAfter.After;
             statusEffect.DoesDealDamage = true;
+            statusEffect.CanEffectStack = true;
 
             IEnumerator coroutine = AddStatusEffect(statusEffect);
             if (base.UseUnityCoroutines)

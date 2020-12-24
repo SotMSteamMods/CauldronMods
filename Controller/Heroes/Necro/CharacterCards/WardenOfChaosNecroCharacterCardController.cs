@@ -113,7 +113,9 @@ namespace Cauldron.Necro
                         //The next time a target is destroyed, 1 player may draw 2 cards.
                         WhenCardIsDestroyedStatusEffect effect = new WhenCardIsDestroyedStatusEffect(base.Card, "DrawTwoCardsResponse", "The next time a target is destroyed, 1 player may draw 2 cards", new TriggerType[] { TriggerType.DrawCard }, DecisionMaker.HeroTurnTaker, base.Card);
                         effect.NumberOfUses = 1;
+                        effect.CanEffectStack = true;
                         effect.CardDestroyedCriteria.IsTarget = true;
+                        effect.CanEffectStack = true;
                         IEnumerator coroutine3 = AddStatusEffect(effect);
                         if (base.UseUnityCoroutines)
                         {

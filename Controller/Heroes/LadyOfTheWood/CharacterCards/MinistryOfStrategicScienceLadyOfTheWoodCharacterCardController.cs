@@ -121,6 +121,7 @@ namespace Cauldron.LadyOfTheWood
 				effect.SourceCriteria.IsSpecificCard = base.Card;
 				effect.UntilTargetLeavesPlay(base.Card);
 				effect.BeforeOrAfter = BeforeOrAfter.Before;
+				effect.CanEffectStack = true;
 				coroutine = AddStatusEffect(effect);
 				if (base.UseUnityCoroutines)
 				{

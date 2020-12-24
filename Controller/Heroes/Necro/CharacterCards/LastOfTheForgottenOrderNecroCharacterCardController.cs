@@ -13,6 +13,7 @@ namespace Cauldron.Necro
         public LastOfTheForgottenOrderNecroCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
         public override IEnumerator UsePower(int index = 0)
         {
             //PowerNumerals Required on powers
@@ -26,8 +27,10 @@ namespace Cauldron.Necro
             //The next time an undead target is destroyed, 1 hero deals a target 1 fire damage and draws a card.
             WhenCardIsDestroyedStatusEffect effect = new WhenCardIsDestroyedStatusEffect(base.Card, "DealDamageAndDrawResponse", "The next time an undead target is destroyed, 1 hero deals a target 1 fire damage and draws a card", new TriggerType[] { TriggerType.DealDamage, TriggerType.DrawCard }, DecisionMaker.HeroTurnTaker, base.Card, powerNumerals);
             effect.NumberOfUses = 1;
+            effect.CanEffectStack = true;
             effect.CardDestroyedCriteria.IsTarget = true;
             effect.CardDestroyedCriteria.HasAnyOfTheseKeywords = new List<string>() { "undead" };
+            effect.CanEffectStack = true;
             IEnumerator coroutine3 = AddStatusEffect(effect);
             if (base.UseUnityCoroutines)
             {
@@ -129,9 +132,19 @@ namespace Cauldron.Necro
 
             if (dca.WasCardDestroyed)
             {
+                IEnumerator coroutine = GameController.ExpireStatusEffect(effect, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
                 //1 hero deals a target 1 fire damage and draws a card.
                 List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.CardToDealDamage,
+                coroutine = base.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.CardToDealDamage,
                     new LinqCardCriteria((Card c) => c.IsInPlay && c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "hero character", useCardsSuffix: false),
                     storedResults, false,
                     cardSource: GetCardSource());

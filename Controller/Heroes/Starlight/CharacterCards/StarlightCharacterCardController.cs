@@ -62,6 +62,7 @@ namespace Cauldron.Starlight
                         //The method name is fake. Another trigger clears the above property when this status effect is removed.
                         OnPhaseChangeStatusEffect displayEffect = new OnPhaseChangeStatusEffect(Card, PreventDamageViaIncapEffectMarker, "The target with the lowest HP is immune to damage and cannot deal damage.", new TriggerType[] { }, base.Card);
                         displayEffect.UntilStartOfNextTurn(base.TurnTaker);
+                        displayEffect.CanEffectStack = true;
                         IEnumerator coroutine = base.AddStatusEffect(displayEffect);
 
                         if (base.UseUnityCoroutines)

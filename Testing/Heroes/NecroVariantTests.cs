@@ -407,7 +407,7 @@ namespace CauldronTests
             QuickShuffleStorage(necro);
             UsePower(necro);
             QuickShuffleCheck(0);
-            
+
         }
 
         [Test()]
@@ -549,6 +549,71 @@ namespace CauldronTests
 
         }
 
+
+        [Test()]
+        public void TestLastOfTheForgottenOrderNecroInnatePower_EffectStacks()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/LastOfTheForgottenOrderNecroCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            GoToStartOfTurn(necro);
+
+            Card zombie = PlayCard("NecroZombie");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            //use the power twice
+            UsePower(necro);
+
+            //The next time an undead target is destroyed, 1 hero deals a target 1 fire damage and draws a card.
+            GoToUsePowerPhase(necro);
+            UsePower(necro);
+
+            DecisionSelectCard = ra.CharacterCard;
+            DecisionSelectTarget = haka.CharacterCard;
+
+            QuickHPStorage(ra, haka);
+            DealDamage(baron, zombie, 50, DamageType.Melee);
+
+            //should trigger twice
+            QuickHPCheck(0, -2);
+        }
+
+
+
+        [Test()]
+        public void TestLastOfTheForgottenOrderNecroInnatePower_NoChainKills()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/LastOfTheForgottenOrderNecroCharacter", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            DiscardAllCards(necro);
+            PutInHand("Ghoul");
+
+            GoToStartOfTurn(necro);
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            Card z1 = PlayCard("NecroZombie", 0);
+            Card z2 = PlayCard("NecroZombie", 1);
+            Card z3 = PlayCard("NecroZombie", 2);
+
+            SetHitPoints(z1, 1);
+            SetHitPoints(z2, 1);
+            SetHitPoints(z3, 1);
+
+            //The next time an undead target is destroyed, 1 hero deals a target 1 fire damage and draws a card.
+            GoToUsePowerPhase(necro);
+            UsePower(necro);
+
+            DecisionSelectCards = new Card[] { ra.CharacterCard, z2, ra.CharacterCard, z3, ra.CharacterCard, mdp};
+
+            DealDamage(baron, z1, 50, DamageType.Melee);
+
+            //ra should kill z2, but not z3
+            AssertInTrash(z2);
+            AssertIsInPlay(z3);
+        }
+
+
         [Test()]
         public void TestLastOfTheForgottenOrderNecroIncap1()
         {
@@ -598,7 +663,7 @@ namespace CauldronTests
 
             //One player may play 2 random cards from their hand now.
             GoToUseIncapacitatedAbilityPhase(necro);
-            DecisionSelectTurnTaker = haka.TurnTaker ;
+            DecisionSelectTurnTaker = haka.TurnTaker;
             DecisionYesNo = true;
             AssertNumberOfCardsInHand(haka, 4);
             AssertNumberOfCardsInPlay(haka, 1);
