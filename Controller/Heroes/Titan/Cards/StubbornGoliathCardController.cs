@@ -68,6 +68,7 @@ namespace Cauldron.Titan
 
                         onDealDamageStatusEffect.UntilTargetLeavesPlay(decision.SelectedCard);
                         onDealDamageStatusEffect.BeforeOrAfter = BeforeOrAfter.Before;
+                        onDealDamageStatusEffect.CanEffectStack = true;
 
                         redirects.Add(onDealDamageStatusEffect);
                     }

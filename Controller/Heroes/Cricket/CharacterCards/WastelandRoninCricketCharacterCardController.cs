@@ -88,7 +88,8 @@ namespace Cauldron.Cricket
                             //The next time a hero uses it. They may immediately use it again.
                             OnPhaseChangeStatusEffect statusEffect = new OnPhaseChangeStatusEffect(base.CharacterCard, "FakeStatusEffect", "The " + powerString + selectedCard.Title + " will be used twice next time it is used by a hero.", new TriggerType[] { TriggerType.UsePower }, base.CharacterCard);
                             statusEffect.CardDestroyedExpiryCriteria.Card = selectedCard;
-                            statusEffect.NumberOfUses = powerIndex + 1;
+                            statusEffect.NumberOfUses = powerIndex + 1; //cheat to store the powerIndex in the statusEffect
+                            statusEffect.CanEffectStack = true;
                             coroutine = base.AddStatusEffect(statusEffect);
                             if (base.UseUnityCoroutines)
                             {
@@ -186,6 +187,7 @@ namespace Cauldron.Cricket
             statusEffect.TurnIndexCriteria.GreaterThan = Game.TurnIndex;
             statusEffect.TurnPhaseCriteria.TurnTaker = base.TurnTaker;
             statusEffect.NumberOfUses = 1;
+            statusEffect.CanEffectStack = true;
             statusEffect.UntilTargetLeavesPlay(base.CharacterCard);
 
             IEnumerator coroutine = base.AddStatusEffect(statusEffect);

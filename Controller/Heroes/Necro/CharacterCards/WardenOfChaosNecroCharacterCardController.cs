@@ -115,6 +115,7 @@ namespace Cauldron.Necro
                         effect.NumberOfUses = 1;
                         effect.CanEffectStack = true;
                         effect.CardDestroyedCriteria.IsTarget = true;
+                        effect.CanEffectStack = true;
                         IEnumerator coroutine3 = AddStatusEffect(effect);
                         if (base.UseUnityCoroutines)
                         {

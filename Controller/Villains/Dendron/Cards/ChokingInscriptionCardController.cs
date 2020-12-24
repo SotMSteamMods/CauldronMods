@@ -143,6 +143,7 @@ namespace Cauldron.Dendron
             OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(base.CardWithoutReplacements, "ResumeDrawEffect", $"{htt.Name} cannot draw cards.", new TriggerType[] { TriggerType.Hidden }, base.Card);
             effect.TurnTakerCriteria.IsSpecificTurnTaker = htt;
             effect.TurnPhaseCriteria.Phase = Phase.End;
+            effect.CanEffectStack = true;
             effect.UntilThisTurnIsOver(Game);
 
             //We secretly set a property on the victim's character card to indicate that they can't draw cards.

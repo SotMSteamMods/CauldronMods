@@ -174,6 +174,7 @@ namespace Cauldron.Starlight
                         chooseNextHeroDamageType.SourceCriteria.IsHero = true;
                         chooseNextHeroDamageType.SourceCriteria.IsTarget = true;
                         chooseNextHeroDamageType.BeforeOrAfter = BeforeOrAfter.Before;
+                        chooseNextHeroDamageType.CanEffectStack = true;
                         IEnumerator coroutine3 = AddStatusEffect(chooseNextHeroDamageType);
                         if (UseUnityCoroutines)
                         {

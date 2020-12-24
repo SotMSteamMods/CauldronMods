@@ -280,6 +280,7 @@ namespace Cauldron.LadyOfTheWood
 			effect.DamageTypeCriteria.AddType(DamageType.Toxic);
 			effect.UntilStartOfNextTurn(base.TurnTaker);
 			effect.BeforeOrAfter = BeforeOrAfter.After;
+			effect.CanEffectStack = true;
 			IEnumerator coroutine = AddStatusEffect(effect);
 			if (base.UseUnityCoroutines)
 			{
@@ -340,6 +341,7 @@ namespace Cauldron.LadyOfTheWood
 			effect.UntilStartOfNextTurn(base.TurnTaker);
 			effect.DamageTypeCriteria.AddType(DamageType.Cold);
 			effect.BeforeOrAfter = BeforeOrAfter.After;
+			effect.CanEffectStack = true;
 			IEnumerator coroutine = AddStatusEffect(effect);
 			if (base.UseUnityCoroutines)
 			{
@@ -381,6 +383,7 @@ namespace Cauldron.LadyOfTheWood
 			effect.DamageTypeCriteria.AddType(DamageType.Lightning);
 			effect.UntilStartOfNextTurn(base.TurnTaker);
 			effect.BeforeOrAfter = BeforeOrAfter.After;
+			effect.CanEffectStack = true;
 			IEnumerator coroutine = AddStatusEffect(effect);
 			if (base.UseUnityCoroutines)
 			{

@@ -41,6 +41,7 @@ namespace Cauldron.Impact
             statusEffect.CardDestroyedCriteria.OwnedBy = this.TurnTaker;
             statusEffect.CardDestroyedCriteria.HasAnyOfTheseKeywords = new List<string> { "ongoing" };
             statusEffect.PostDestroyDestinationMustBeChangeable = true;
+            statusEffect.CanEffectStack = true;
             statusEffect.CardSource = CharacterCard;
 
             IEnumerator coroutine = AddStatusEffect(statusEffect);
@@ -89,6 +90,7 @@ namespace Cauldron.Impact
                         holderEffect.TurnTakerCriteria.IsEnvironment = true;
                         holderEffect.TurnPhaseCriteria.IsEphemeral = false;
                         holderEffect.CardSource = CharacterCard;
+                        holderEffect.CanEffectStack = true;
 
                         coroutine = AddStatusEffect(holderEffect);
                         if (base.UseUnityCoroutines)

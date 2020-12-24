@@ -69,6 +69,7 @@ namespace Cauldron.Tiamat
                 effect.UntilStartOfNextTurn(base.TurnTaker);
                 effect.TurnTakerCriteria.IsSpecificTurnTaker = base.TurnTaker;
                 effect.TurnPhaseCriteria.Phase = Phase.Start;
+                effect.CanEffectStack = true;
                 coroutine = base.AddStatusEffect(effect);
                 if (base.UseUnityCoroutines)
                 {
