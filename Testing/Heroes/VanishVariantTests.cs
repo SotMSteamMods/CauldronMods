@@ -247,5 +247,151 @@ namespace CauldronTests
             AssertInDeck(c1);
             AssertInDeck(c2);
         }
+
+
+
+        [Test()]
+        [Order(0)]
+        public void TombOfThievesVanishLoad()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/TombOfThievesVanishCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+
+            Assert.AreEqual(6, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(vanish);
+            Assert.IsInstanceOf(typeof(TombOfThievesVanishCharacterCardController), vanish.CharacterCardController);
+
+            foreach (var card in vanish.HeroTurnTaker.GetAllCards())
+            {
+                var cc = GetCardController(card);
+                Assert.IsTrue(cc.GetType() != typeof(CardController), $"{card.Identifier} is does not have a CardController");
+            }
+
+            Assert.AreEqual(26, vanish.CharacterCard.HitPoints);
+        }
+
+
+        [Test]
+        public void TombOfThievesVanishInnatePowerDraw()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/TombOfThievesVanishCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            var minion = PlayCard("BladeBattalion");
+
+            GoToUsePowerPhase(vanish);
+
+            QuickHandStorage(vanish, haka, bunker);
+            AssertNumberOfStatusEffectsInPlay(0);
+            UsePower(vanish);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            DecisionSelectFunction = 1;
+                        
+            DealDamage(minion, vanish, 1, DamageType.Cold);
+            QuickHandCheck(1, 0, 0);
+        }
+
+        [Test]
+        public void TombOfThievesVanishInnatePowerPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/TombOfThievesVanishCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            var minion = PlayCard("BladeBattalion");
+            var c = PutInHand("JauntingReflex");
+
+
+            GoToUsePowerPhase(vanish);
+
+            QuickHandStorage(vanish, haka, bunker);
+            AssertNumberOfStatusEffectsInPlay(0);
+            UsePower(vanish);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            DecisionSelectFunction = 0;
+            DecisionSelectCard = c;
+            DealDamage(minion, vanish, 1, DamageType.Cold);
+            QuickHandCheck(-1, 0, 0);
+        }
+
+
+        [Test]
+        public void TombOfThievesVanishIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/TombOfThievesVanishCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            SetupIncap(baron);
+            AssertIncapacitated(vanish);
+
+            GoToUseIncapacitatedAbilityPhase(vanish);
+            DecisionSelectTurnTaker = haka.TurnTaker;
+            DecisionSelectTarget = baron.CharacterCard;
+            QuickHPStorage(baron.CharacterCard, haka.CharacterCard, bunker.CharacterCard, scholar.CharacterCard);
+            UseIncapacitatedAbility(vanish, 0);
+            QuickHPCheck(-2, 0, 0, 0);
+        }
+
+        [Test]
+        public void TombOfThievesVanishIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/TombOfThievesVanishCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            SetupIncap(baron);
+            AssertIncapacitated(vanish);
+
+            var c = PlayCard("Dominion");
+
+            GoToUseIncapacitatedAbilityPhase(vanish);
+            DecisionSelectCard = c;
+            UseIncapacitatedAbility(vanish, 1);
+            AssertInTrash(c);
+        }
+
+        [Test]
+        public void TombOfThievesVanishIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/TombOfThievesVanishCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+
+            SetupIncap(baron);
+            AssertIncapacitated(vanish);
+
+            var c1 = PlayCard("PlummetingMonorail");
+
+            GoToUseIncapacitatedAbilityPhase(vanish);
+            AssertNumberOfStatusEffectsInPlay(0);
+            DecisionSelectCard = c1;
+            UseIncapacitatedAbility(vanish, 2);
+            AssertNumberOfStatusEffectsInPlay(2);
+
+            QuickHPStorage(c1);
+            DealDamage(baron, c1, 99, DamageType.Cold);
+            AssertInPlayArea(env, c1);
+            QuickHPCheckZero();
+
+            GoToEndOfTurn(baron);
+            AssertInPlayArea(env, c1);
+
+            GoToStartOfTurn(vanish);
+            AssertInTrash(env, c1);
+            AssertNumberOfStatusEffectsInPlay(0);
+
+
+
+
+
+
+
+
+        }
     }
 }
