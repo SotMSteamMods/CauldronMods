@@ -9,10 +9,7 @@ namespace Cauldron.SwarmEater
     {
         public FireAugCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            if (base.Card.IsInPlayAndNotUnderCard)
-            {
-                base.SpecialStringMaker.ShowHeroTargetWithHighestHP(2);
-            }
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP(2).Condition = () => base.Card.IsInPlayAndNotUnderCard;
         }
 
         public override void AddTriggers()
@@ -21,7 +18,7 @@ namespace Cauldron.SwarmEater
             base.AddEndOfTurnTrigger(tt => base.Card.IsInPlayAndNotUnderCard && tt == base.TurnTaker, this.DealDamageAndDiscardCardResponse, new[] { TriggerType.DealDamage, TriggerType.DiscardCard });
 
             //Absorb: at the start of the villain turn, {H - 2} players must discard a card.
-            base.AddStartOfTurnTrigger(tt => base.Card.Location.IsUnderCard && tt == base.TurnTaker, this.AbsorbDiscardResponse, TriggerType.DiscardCard);
+            base.AddStartOfTurnTrigger(tt => CanAbsorbEffectTrigger() && tt == base.TurnTaker, this.AbsorbDiscardResponse, TriggerType.DiscardCard);
         }
 
         private IEnumerator DealDamageAndDiscardCardResponse(PhaseChangeAction action)

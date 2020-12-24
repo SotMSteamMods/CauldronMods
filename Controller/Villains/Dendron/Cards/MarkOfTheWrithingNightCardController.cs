@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -28,6 +29,10 @@ namespace Cauldron.Dendron
 
         public MarkOfTheWrithingNightCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroCharacterCardWithHighestHP();
+            SpecialStringMaker.ShowHeroCharacterCardWithLowestHP();
+            SpecialStringMaker.ShowSpecialString(ShowHeroWithFewestCardsInPlay);
+            SpecialStringMaker.ShowHeroWithMostCards(false);
         }
 
         public override IEnumerator Play()
@@ -155,6 +160,35 @@ namespace Cauldron.Dendron
                     base.GameController.ExhaustCoroutine(destroyTwoEquipmentRoutine);
                 }
             }
+        }
+
+        public string ShowHeroWithFewestCardsInPlay()
+        {
+        
+            IEnumerable<TurnTaker> enumerable = GameController.FindTurnTakersWhere((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame, BattleZone);
+            List<string> list = new List<string>();
+            int num = 999;
+            foreach (HeroTurnTaker hero in enumerable)
+            {
+                IEnumerable<Card> cardsWhere = hero.GetCardsWhere((Card c) => c.IsInPlay && c.Location.OwnerTurnTaker == hero);
+                List<Card> source = cardsWhere.ToList();
+                if (source.Count() < num)
+                {
+                    list.RemoveAll((string htt) => true);
+                    list.Add(hero.Name);
+                    num = source.Count();
+                }
+                else if (source.Count() == num)
+                {
+                    list.Add(hero.Name);
+                }
+            }
+            string text = list.Count().ToString_SingularOrPlural("Hero", "Heroes");
+            string text2 = " in play";
+            string text3 = " cards";
+                
+            return (list.Count() > 0) ? string.Format("{0} with the fewest{3}{2}: {1}.", text, list.ToRecursiveString(), text2, text3) : "Warning: No heroes found";
+            
         }
     }
 }

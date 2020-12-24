@@ -18,6 +18,7 @@ namespace Cauldron.Dendron
 
         public StainedWolfCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
         public override void AddTriggers()

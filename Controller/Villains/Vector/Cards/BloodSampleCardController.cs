@@ -23,6 +23,10 @@ namespace Cauldron.Vector
 
         public BloodSampleCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowIfElseSpecialString(() => IsSuperVirusInPlay(), () => GetSuperVirusCard().Title + " is in play.", () => GetSuperVirusCardNotInPlay().Title + " is not in play.");
+            SpecialStringMaker.ShowSpecialString(() => base.CharacterCard.AlternateTitleOrTitle + " has been dealt " + GetAmountOfDamageThisRound + " damage this round.").Condition = () => IsSuperVirusInPlay();
+            SpecialStringMaker.ShowSpecialString(() => base.CharacterCard.AlternateTitleOrTitle + " was dealt " + GetAmountOfDamageLastRound + " damage last round.").Condition = () => IsSuperVirusInPlay() && Game.ActiveTurnTaker == base.TurnTaker;
+
         }
 
         public override void AddTriggers()
@@ -97,6 +101,17 @@ namespace Cauldron.Vector
                 && j.Round == Game.Round - 1).Select(j => j.Amount).Sum();
 
             return damageLastRound >= damageThreshold;
+        }
+
+        private int GetAmountOfDamageThisRound { get { return base.GameController.Game.Journal.DealDamageEntries().Where(j => j.TargetCard == this.CharacterCard
+                && j.Round == Game.Round).Select(j => j.Amount).Sum(); }}
+        private int GetAmountOfDamageLastRound
+        {
+            get
+            {
+                return base.GameController.Game.Journal.DealDamageEntries().Where(j => j.TargetCard == this.CharacterCard
+&& j.Round == Game.Round - 1).Select(j => j.Amount).Sum();
+            }
         }
     }
 }

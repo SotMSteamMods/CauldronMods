@@ -21,7 +21,7 @@ namespace Cauldron.StSimeonsCatacombs
                                 select c).ToList();
 
             Card catacombs = base.TurnTaker.FindCard(StSimeonsCatacombsCardController.Identifier);
-            IEnumerator playCatacombs = base.GameController.PlayCard(this, catacombs);
+            IEnumerator playCatacombs = base.GameController.PlayCard(this, catacombs, isPutIntoPlay: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(playCatacombs);

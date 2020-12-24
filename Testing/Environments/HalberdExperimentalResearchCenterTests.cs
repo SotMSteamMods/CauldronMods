@@ -673,7 +673,7 @@ namespace CauldronTests
             AssertIsInPlay(foamcore);
 
             //If there are no Chemical Triggers in play, reduce damage dealt to the hero target with the lowest HP by 1.
-            AssertCardSpecialString(foamcore, 0, "Hero target with the lowest HP: Haka.");
+            AssertCardSpecialString(foamcore, 1, "Hero target with the lowest HP: Haka.");
 
             //haka has the lowest hitpoints
             QuickHPStorage(haka.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard);
@@ -715,7 +715,7 @@ namespace CauldronTests
             AssertIsInPlay(foamcore);
 
             //If there are no Chemical Triggers in play, reduce damage dealt to the hero target with the lowest HP by 1.
-            AssertCardSpecialString(foamcore, 0, "Hero targets with the lowest HP: Legacy, Haka.");
+            AssertCardSpecialString(foamcore, 1, "Hero targets with the lowest HP: Legacy, Haka.");
 
             //choose haka as the lowest hitpoints when asked
             DecisionYesNo = true;
@@ -971,7 +971,7 @@ namespace CauldronTests
             AssertIsInPlay(ether);
 
             //If there are no Chemical Triggers in play, increase damage dealt by the hero target with the highest HP by 1.
-            AssertCardSpecialString(ether, 0, "Hero target with the highest HP: Ra.");
+            AssertCardSpecialString(ether, 1, "Hero target with the highest HP: Ra.");
 
             //ra is the highest hp
             QuickHPStorage(mdp);
@@ -1013,7 +1013,7 @@ namespace CauldronTests
             AssertIsInPlay(ether);
 
             //If there are no Chemical Triggers in play, increase damage dealt by the hero target with the highest HP by 1.
-            AssertCardSpecialString(ether, 0, "Hero targets with the highest HP: Ra, Legacy.");
+            AssertCardSpecialString(ether, 1, "Hero targets with the highest HP: Ra, Legacy.");
 
             //choose ra as the highest hitpoints when asked
             DecisionYesNo = true;

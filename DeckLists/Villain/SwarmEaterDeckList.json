@@ -456,7 +456,7 @@
             "hitpoints": 15
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "SwarmEaterCharacter",
             "promoIdentifier": "DistributedHivemindSwarmEaterCharacter",

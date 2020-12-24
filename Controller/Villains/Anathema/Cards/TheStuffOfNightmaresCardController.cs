@@ -11,6 +11,7 @@ namespace Cauldron.Anathema
     {
 		public TheStuffOfNightmaresCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
+            SpecialStringMaker.ShowHeroTargetWithLowestHP(ranking: 2);
 		}
 
 		public override void AddTriggers()
