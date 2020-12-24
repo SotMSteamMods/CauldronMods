@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Outlander
 {
-    public class OutlanderSpecificCardController : OutlanderUtilityCardController
+    public class RiftbladeStrikesCardController : OutlanderUtilityCardController
     {
-        public OutlanderSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public RiftbladeStrikesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }
