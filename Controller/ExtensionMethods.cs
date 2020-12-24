@@ -28,8 +28,8 @@ namespace Cauldron
 
         public static void SetPowerNumeralsArray(this ReflectionStatusEffect effect, int[] array)
         {
-            var p1 = effect.GetType().GetProperty("PowerNumeralsToChange");
-            var p2 = p1.DeclaringType.GetProperty("PowerNumeralsToChange");
+            var p1 = effect.GetType().GetProperty(nameof(effect.PowerNumeralsToChange));
+            var p2 = p1.DeclaringType.GetProperty(nameof(effect.PowerNumeralsToChange));
 
             p2.SetValue(effect, array, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance, null, null, null);
         }
