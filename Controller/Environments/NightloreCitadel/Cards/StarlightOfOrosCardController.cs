@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.NightloreCitadel
 {
-    public class NightloreCitadelSpecificCardController : NightloreCitadelUtilityCardController
+    public class StarlightOfOrosCardController : NightloreCitadelUtilityCardController
     {
-        public NightloreCitadelSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public StarlightOfOrosCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }

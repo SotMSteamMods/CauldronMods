@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.VaultFive
 {
-    public class VaultFiveSpecificCardController : VaultFiveUtilityCardController
+    public class DeeperIntoTheVaultCardController : VaultFiveUtilityCardController
     {
-        public VaultFiveSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public DeeperIntoTheVaultCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }
