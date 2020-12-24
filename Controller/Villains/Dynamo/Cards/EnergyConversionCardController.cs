@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Dynamo
 {
-    public class DynamoSpecificCardController : DynamoUtilityCardController
+    public class EnergyConversionCardController : DynamoUtilityCardController
     {
-        public DynamoSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public EnergyConversionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }
