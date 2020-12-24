@@ -12,7 +12,7 @@ namespace Cauldron.Northspar
 
         public LandingSiteCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "DemolishedCamp")
         {
-
+            SpecialStringMaker.ShowIfSpecificCardIsInPlay("TakAhab");
         }
 
         public override void AddTriggers()

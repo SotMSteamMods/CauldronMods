@@ -6,6 +6,8 @@ using System.Text;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
+using Handelabra;
+
 namespace Cauldron.DocHavoc
 {
     public class CauterizeCardController : CardController
@@ -24,28 +26,67 @@ namespace Cauldron.DocHavoc
 
         public override void AddTriggers()
         {
-
-            base.AddTrigger<DealDamageAction>(dealDamageAction => dealDamageAction.DamageSource != null
-                    && dealDamageAction.DamageSource.IsSameCard(base.CharacterCard),
-                ChooseDamageOrHealResponse, TriggerType.DealDamage, TriggerTiming.Before);
+            AddOptionalPreventDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.IsSameCard(this.CharacterCard) && dd.Amount > 0,
+                                    GainHPBasedOnDamagePrevented, new TriggerType[] { TriggerType.GainHP }, true);
 
             base.AddTriggers();
         }
 
-        public override IEnumerator Play()
+        private IEnumerator GainHPBasedOnDamagePrevented(DealDamageAction dd)
         {
-
-            return base.Play();
+            IEnumerator coroutine = GameController.GainHP(dd.Target, dd.Amount, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+        private ITrigger AddOptionalPreventDamageTrigger(Func<DealDamageAction, bool> damageCriteria, Func<DealDamageAction, IEnumerator> followUpResponse = null, IEnumerable<TriggerType> followUpTriggerTypes = null, bool isPreventEffect = false)
+        {
+            DealDamageAction preventedDamage = null;
+            List<CancelAction> cancelDamage = null;
+            Func<DealDamageAction, IEnumerator> response = delegate (DealDamageAction dd)
+            {
+                preventedDamage = dd;
+                cancelDamage = new List<CancelAction>();
+                IEnumerator enumerator2 = AskAndMaybeCancelAction(dd, showOutput: true, cancelFutureRelatedDecisions: true, cancelDamage, isPreventEffect);
+                if (UseUnityCoroutines)
+                {
+                    return enumerator2;
+                }
+                GameController.ExhaustCoroutine(enumerator2);
+                return DoNothing();
+            };
+            Func<DealDamageAction, IEnumerator> response2 = delegate (DealDamageAction dd)
+            {
+                preventedDamage = null;
+                cancelDamage = null;
+                IEnumerator enumerator = followUpResponse(dd);
+                if (UseUnityCoroutines)
+                {
+                    return enumerator;
+                }
+                GameController.ExhaustCoroutine(enumerator);
+                return DoNothing();
+            };
+            ITrigger result = AddTrigger((DealDamageAction dd) => damageCriteria(dd) && dd.Amount > 0 && dd.CanDealDamage, response, TriggerType.WouldBeDealtDamage, TriggerTiming.Before, isActionOptional: true);
+            if (followUpResponse != null && followUpTriggerTypes != null)
+            {
+                AddTrigger((DealDamageAction dd) => dd == preventedDamage && !dd.IsSuccessful && cancelDamage != null && cancelDamage.FirstOrDefault() != null && cancelDamage.First().CardSource.Card == Card, response2, followUpTriggerTypes, TriggerTiming.After, null, isConditional: false, requireActionSuccess: false);
+            }
+            return result;
         }
 
-        private IEnumerator ChooseDamageOrHealResponse(DealDamageAction dd)
+        private IEnumerator AskAndMaybeCancelAction(GameAction ga, bool showOutput = true, bool cancelFutureRelatedDecisions = true, List<CancelAction> storedResults = null, bool isPreventEffect= false)
         {
-            Card card = dd.Target;
-
-            List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
+            List<YesNoCardDecision> storedYesNo = new List<YesNoCardDecision>();
 
             IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(this.DecisionMaker,
-                SelectionType.GainHP, card, storedResults: storedResults, cardSource: base.GetCardSource());
+                SelectionType.GainHP, this.Card, storedResults: storedYesNo, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -57,15 +98,12 @@ namespace Cauldron.DocHavoc
             }
 
             // If not true, just return and let the original damage happen
-            if (!base.DidPlayerAnswerYes(storedResults))
+            if (!base.DidPlayerAnswerYes(storedYesNo))
             {
                 yield break;
             }
 
-
-            // Cancel original damage
-            coroutine = base.CancelAction(dd);
-
+            coroutine = base.CancelAction(ga, showOutput: showOutput, cancelFutureRelatedDecisions: cancelFutureRelatedDecisions, storedResults: storedResults, isPreventEffect: isPreventEffect);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -75,20 +113,6 @@ namespace Cauldron.DocHavoc
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            // Gain HP instead of dealing damage
-            coroutine = this.GameController.GainHP(card, dd.Amount, cardSource: GetCardSource());
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-        
-
-            yield break;
         }
     }
 }

@@ -14,6 +14,8 @@ namespace Cauldron.Northspar
         public TakAhabCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SetCardProperty("aethiumTriggers", false);
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(Card.UnderLocation);
+            SpecialStringMaker.ShowSpecialString(() => Card.Title + "'s end of turn effect will trigger twice this turn.").Condition = () => IsPropertyTrue("aethiumTriggers");
         }
 
         public override void AddTriggers()

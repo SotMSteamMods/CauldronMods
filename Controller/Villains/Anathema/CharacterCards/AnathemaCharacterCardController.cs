@@ -11,7 +11,9 @@ namespace Cauldron.Anathema
 		public AnathemaCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
 			//show the number of villain targets in play
-			base.SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => base.IsVillainTarget(c), "villain")).Condition = (() => true);
+			base.SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => base.IsVillainTarget(c) && c != base.CharacterCard, useCardsSuffix: false, singular: "other villain target", plural: "other villain targets")).Condition = (() => true);
+			SpecialString ss = base.SpecialStringMaker.ShowIfElseSpecialString(() => NumberOfVillainTargetsInPlay >= 4 || (Game.IsAdvanced && NumberOfVillainTargetsInPlay >= 3), () => base.Card.Title + " is immune to damage.", () => "", () => true);
+			ss.Condition = () => !base.CharacterCard.IsFlipped && (NumberOfVillainTargetsInPlay >= 4 || (Game.IsAdvanced && NumberOfVillainTargetsInPlay >= 3));
 		}
 
 		//number of villain targets in play other than Anathema

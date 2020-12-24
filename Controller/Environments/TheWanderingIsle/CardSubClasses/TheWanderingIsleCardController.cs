@@ -62,5 +62,14 @@ namespace Cauldron.TheWanderingIsle
         {
             return card.DoKeywordsContain("creature");
         }
+
+        private IEnumerable<Card> FindTeryxList()
+        {
+            return base.FindCardsWhere(c => c.Identifier == "Teryx");
+        }
+        protected bool IsTeryxInPlay()
+        {
+            return FindTeryxList().Where(c => c.IsInPlayAndHasGameText).Any();
+        }
     }
 }

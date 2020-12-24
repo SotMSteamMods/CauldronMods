@@ -10,6 +10,9 @@ namespace Cauldron.Anathema
     {
 		public DoppelgangerStrikeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
+			SpecialStringMaker.ShowHeroTargetWithHighestHP();
+			SpecialStringMaker.ShowHeroCharacterCardWithLowestHP();
+			SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => c.IsVillainTarget, useCardsSuffix: false, singular: "villain target", plural: "villain targets"));
 		}
 
 		public override IEnumerator Play()

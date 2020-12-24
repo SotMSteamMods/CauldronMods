@@ -10,6 +10,7 @@ namespace Cauldron.Oriphel
     {
         public ShardwalkersAwakeningCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowIfElseSpecialString(() => base.CharacterCard.Title == "Oriphel", () => "Oriphel is in play.", () => "Jade is in play.");
         }
 
         public override IEnumerator Play()

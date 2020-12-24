@@ -8,6 +8,7 @@ namespace Cauldron.SwarmEater
     {
         public NaniteCorruptionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowLowestHP(numberOfTargets: () => Game.H, cardCriteria: new LinqCardCriteria((Card c) => c != base.Card, "other"));
         }
 
         public override IEnumerator Play()

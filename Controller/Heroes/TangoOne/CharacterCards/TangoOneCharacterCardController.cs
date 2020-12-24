@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+
+using Handelabra;
 
 namespace Cauldron.TangoOne
 {
@@ -54,7 +57,6 @@ namespace Cauldron.TangoOne
                     //==============================================================
 
                     IEnumerator drawCardRoutine = base.GameController.SelectHeroToDrawCard(DecisionMaker, cardSource: GetCardSource());
-
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(drawCardRoutine);
@@ -76,7 +78,6 @@ namespace Cauldron.TangoOne
                     List<SelectLocationDecision> locationResults = new List<SelectLocationDecision>();
                     IEnumerator selectDeckRoutine = base.GameController.SelectADeck(this.DecisionMaker, SelectionType.RevealTopCardOfDeck,
                         location => location.IsDeck && !location.OwnerTurnTaker.IsIncapacitatedOrOutOfGame, locationResults, cardSource: GetCardSource());
-
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(selectDeckRoutine);
@@ -114,46 +115,38 @@ namespace Cauldron.TangoOne
                     // Up to 2 ongoing hero cards may be played now.
                     //==============================================================
 
-                    // Choose up to 2 cards
-                    List<SelectCardsDecision> storedCardResults = new List<SelectCardsDecision>();
-
-                    IEnumerator selectCardsRoutine
-                        = base.GameController.SelectCardsAndStoreResults(base.HeroTurnTakerController,
-                            SelectionType.PlayCard, c => c.IsInHand && c.Location.IsHero && c.IsOngoing, Incapacitate3OngoingCardCount,
-                            storedCardResults, true, 0, cardSource: GetCardSource());
-
+                    
+                    //Play first ongoing
+                    var storedPlay = new List<PlayCardAction> { };
+                    Func<Card, bool> playableOngoingInHand = (delegate (Card c)
+                    {
+                        return c.IsInHand && c.IsHero && c.IsOngoing &&
+                                  AskIfCardIsVisibleToCardSource(c, GetCardSource()) != false &&
+                                  GameController.CanPlayCard(FindCardController(c)) == CanPlayCardResult.CanPlay;
+                    });
+                    IEnumerator coroutine = GameController.SelectAndPlayCard(DecisionMaker, playableOngoingInHand, true, cardSource: GetCardSource(), noValidCardsMessage: "There were no playable ongoing cards", storedResults: storedPlay);
                     if (base.UseUnityCoroutines)
                     {
-                        yield return base.GameController.StartCoroutine(selectCardsRoutine);
+                        yield return base.GameController.StartCoroutine(coroutine);
                     }
                     else
                     {
-                        base.GameController.ExhaustCoroutine(selectCardsRoutine);
+                        base.GameController.ExhaustCoroutine(coroutine);
                     }
 
-                    if (storedCardResults[0].NumberOfCards > 0)
+                    //If we did pick one, play another
+                    if(storedPlay.FirstOrDefault() != null && storedPlay.FirstOrDefault().CardToPlay != null)
                     {
-                        // Play each selected card
-                        foreach (SelectCardDecision scd in storedCardResults[0].SelectCardDecisions)
+                        coroutine = GameController.SelectAndPlayCard(DecisionMaker, playableOngoingInHand, true, cardSource: GetCardSource(), noValidCardsMessage: "There were no more playable ongoing cards");
+                        if (base.UseUnityCoroutines)
                         {
-                            Card selectedCard = scd.SelectedCard;
-
-                            HeroTurnTakerController hero = (base.FindTurnTakerController(selectedCard.Location.OwnerTurnTaker)).ToHero();
-
-                            IEnumerator selectCardRoutine = this.SelectAndPlayCardFromHand(hero, false, null,
-                                new LinqCardCriteria(c => c == selectedCard), true);
-
-                            if (base.UseUnityCoroutines)
-                            {
-                                yield return base.GameController.StartCoroutine(selectCardRoutine);
-                            }
-                            else
-                            {
-                                base.GameController.ExhaustCoroutine(selectCardRoutine);
-                            }
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
                         }
                     }
-
                     break;
             }
         }
@@ -202,7 +195,7 @@ namespace Cauldron.TangoOne
             };
 
             IEnumerator setLocationAndMoveRoutine = this.GameController.SelectLocationAndMoveCard(this.HeroTurnTakerController, card,
-                possibleDestinations, false, true, null, null, storedResults, false, false, responsibleTurnTaker, isDiscard, this.GetCardSource(null));
+                possibleDestinations, false, true, null, null, storedResults, false, false, responsibleTurnTaker, isDiscard, this.GetCardSource());
 
             if (this.UseUnityCoroutines)
             {

@@ -11,7 +11,7 @@ namespace Cauldron.Northspar
 
         public FrostbiteCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNonEnvironmentTargetWithLowestHP(numberOfTargets: Game.H + 1);
         }
 
         public override void AddTriggers()

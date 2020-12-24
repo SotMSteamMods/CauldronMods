@@ -12,6 +12,7 @@ namespace Cauldron.TheWanderingIsle
     {
         public ThroughTheHurricaneCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHighestHP(ranking: 3);
         }
 
         public override void AddTriggers()

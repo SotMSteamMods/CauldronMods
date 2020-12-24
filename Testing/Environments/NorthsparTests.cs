@@ -1458,6 +1458,37 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestSupplyDepot_Issue287SequenceBug()
+        {
+            //replicating: https://github.com/SotMSteamMods/CauldronMods/issues/287
 
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            DestroyNonCharacterVillainCards();
+
+            var depot = GetCard("SupplyDepot");
+            var whats = GetCard("WhatsLeftOfThem");
+            var shelter = GetCard("MakeshiftShelter");
+
+            StackDeck(env, new[] { shelter, whats, depot });
+
+            GoToEndOfTurn(haka);
+
+            DecisionSelectLocation = new LocationChoice(env.TurnTaker.Deck);
+            DecisionSelectCard = shelter;
+
+            PrintSeparator("Start");
+            GoToPlayCardPhase(env);
+
+            AssertOnTopOfDeck(env, depot);
+
+            PlayTopCard(env);
+
+            AssertInTrash(depot);
+            AssertIsInPlay(whats);
+            AssertIsInPlay(shelter);
+        }
     }
 }

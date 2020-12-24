@@ -21,7 +21,7 @@ namespace Cauldron.Titan
             base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Target == base.CharacterCard && !action.DamageSource.IsSameCard(this.CharacterCard) && action.DidDealDamage, this.DealtDamageResponse, TriggerType.CreateStatusEffect, TriggerTiming.After);
 
             //When {Titan} would deal damage, you may destroy this card to increase that damage by 2.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard, this.DestroyThisCardToIncreaseDamageResponse, new TriggerType[] { TriggerType.DestroySelf, TriggerType.IncreaseDamage }, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard, this.DestroyThisCardToIncreaseDamageResponse, new TriggerType[] { TriggerType.DestroySelf, TriggerType.IncreaseDamage }, TriggerTiming.Before, isActionOptional: true);
         }
 
         private IEnumerator DealtDamageResponse(DealDamageAction action)

@@ -13,10 +13,23 @@ namespace Cauldron.Tiamat
         public ElementalFrenzyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowNumberOfCardsUnderCard(base.Card);
-            this._primed = false;
+            this._primed = true;
         }
 
         private bool _primed;
+
+        public override void AddStartOfGameTriggers()
+        {
+            this._primed = true;
+            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction cpa) => cpa.CardEnteringPlay == base.Card, this.MarkNotPrimed, TriggerType.Hidden, TriggerTiming.Before);
+        }
+
+        private IEnumerator MarkNotPrimed(CardEntersPlayAction cpa)
+        {
+            this._primed = false;
+            yield return null;
+            yield break;
+        }
 
         public override IEnumerator Play()
         {

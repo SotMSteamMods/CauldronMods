@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Cauldron.TheKnight
 {
-    public class WhetstoneCardController : TheKnightCardController
+    public class WhetstoneCardController : RoninAssignableCardController
     {
         public WhetstoneCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -16,6 +16,7 @@ namespace Cauldron.TheKnight
         public override void AddTriggers()
         {
             base.AddIncreaseDamageTrigger(dd => dd.DamageType == DamageType.Melee && IsEquipmentEffectingCard(dd.DamageSource.Card), 1);
+            base.AddTriggers();
         }
     }
 }

@@ -16,7 +16,8 @@ namespace Cauldron.TheRam
         public AdmiralWintersCharacterCardController(Card card, TurnTakerController ttc) : base(card, ttc)
         {
             AddUpCloseTrackers();
-            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => c.Identifier == "UpClose", "", false, false, "copy of Up Close", "copies of Up Close"));
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "UpClose", "", false, false, "copy of Up Close", "copies of Up Close"));
+
         }
 
         public override void AddSideTriggers()

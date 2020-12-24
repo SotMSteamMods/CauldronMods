@@ -11,7 +11,8 @@ namespace Cauldron.Tiamat
     {
         public SkyBreakerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowVillainTargetWithHighestHP();
+            base.SpecialStringMaker.ShowHighestHP(ranking: 1, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("head"), "head", false));
+
         }
 
         public override IEnumerator Play()

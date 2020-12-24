@@ -25,19 +25,10 @@ namespace Cauldron.Northspar
             //    "Power: this hero deals 1 target 1 fire damage."
             if (!this.IsMakeshiftShelterInPlay())
             {
-                // When this card enters play, play the top card of the environment deck...
-                IEnumerator coroutine = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                // ...and destroy this card
-                coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card, cardSource: base.GetCardSource());
+                //When this card enters play, destroy it and play the top card of the environment deck if Makeshift Shelter is not in play.
+                var coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card,
+                                    postDestroyAction: () => GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, cardSource: base.GetCardSource()),
+                                    cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

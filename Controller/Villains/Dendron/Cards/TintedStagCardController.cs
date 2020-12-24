@@ -20,6 +20,7 @@ namespace Cauldron.Dendron
 
         public TintedStagCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => IsTattoo(c), "tattoo"));
         }
 
         public override void AddTriggers()

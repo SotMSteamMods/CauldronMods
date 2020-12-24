@@ -11,7 +11,8 @@ namespace Cauldron.HalberdExperimentalResearchCenter
 
         public HalberdPlasmaCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowVillainTargetWithHighestHP().Condition = () => !IsChemicalTriggerInPlay();
+            SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => IsChemicalTriggerInPlay();
         }
 
         #endregion Constructors
