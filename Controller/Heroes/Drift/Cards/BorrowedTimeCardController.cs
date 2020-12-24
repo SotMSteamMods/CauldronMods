@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Drift
 {
-    public class DriftSpecificCardController : DriftUtilityCardController
+    public class BorrowedTimeCardController : DriftUtilityCardController
     {
-        public DriftSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public BorrowedTimeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }
