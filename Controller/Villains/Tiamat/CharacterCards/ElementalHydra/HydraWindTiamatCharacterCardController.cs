@@ -9,6 +9,7 @@ namespace Cauldron.Tiamat
     {
         public HydraWindTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            base.SpecialStringMaker.ShowSpecialString(() => base.Card.Title + " is immune to Projectile damage.").Condition = () => !base.Card.IsFlipped;
 
         }
 

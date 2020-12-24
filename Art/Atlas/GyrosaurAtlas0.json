@@ -2,7 +2,7 @@
 
 "AMerryChase.png":
 {
-	"frame": {"x":1432,"y":0,"w":256,"h":188},
+	"frame": {"x":0,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -10,7 +10,7 @@
 },
 "CaptainGyrosaurCharacter.png":
 {
-	"frame": {"x":0,"y":0,"w":176,"h":256},
+	"frame": {"x":259,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -18,7 +18,7 @@
 },
 "CaptainGyrosaurCharacterBack.png":
 {
-	"frame": {"x":179,"y":0,"w":176,"h":256},
+	"frame": {"x":438,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -26,7 +26,7 @@
 },
 "GyrosaurCharacter.png":
 {
-	"frame": {"x":358,"y":0,"w":176,"h":256},
+	"frame": {"x":617,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -34,15 +34,23 @@
 },
 "GyrosaurCharacterBack.png":
 {
-	"frame": {"x":537,"y":0,"w":176,"h":256},
+	"frame": {"x":796,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
+"GyrosaurDeckBack.jpg":
+{
+	"frame": {"x":975,"y":0,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
 "GyroStabilizer.png":
 {
-	"frame": {"x":1691,"y":0,"w":256,"h":188},
+	"frame": {"x":1156,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -50,7 +58,7 @@
 },
 "HiddenDetour.png":
 {
-	"frame": {"x":0,"y":259,"w":256,"h":188},
+	"frame": {"x":1415,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -58,7 +66,7 @@
 },
 "Hyperspin.png":
 {
-	"frame": {"x":259,"y":259,"w":256,"h":188},
+	"frame": {"x":1674,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -66,7 +74,7 @@
 },
 "IndiscriminatePass.png":
 {
-	"frame": {"x":518,"y":259,"w":256,"h":188},
+	"frame": {"x":0,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -74,7 +82,7 @@
 },
 "Omnivore.png":
 {
-	"frame": {"x":777,"y":259,"w":256,"h":188},
+	"frame": {"x":259,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -82,7 +90,7 @@
 },
 "OnARoll.png":
 {
-	"frame": {"x":1036,"y":259,"w":256,"h":188},
+	"frame": {"x":518,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -90,7 +98,7 @@
 },
 "ProtectiveEscort.png":
 {
-	"frame": {"x":1295,"y":259,"w":256,"h":188},
+	"frame": {"x":777,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -98,7 +106,7 @@
 },
 "RapturianShell.png":
 {
-	"frame": {"x":1554,"y":259,"w":256,"h":188},
+	"frame": {"x":1036,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -106,7 +114,7 @@
 },
 "ReadTheTerrain.png":
 {
-	"frame": {"x":0,"y":450,"w":256,"h":188},
+	"frame": {"x":1295,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -114,7 +122,7 @@
 },
 "RecklessAlienTacingTortoise.png":
 {
-	"frame": {"x":259,"y":450,"w":256,"h":188},
+	"frame": {"x":1554,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -122,7 +130,7 @@
 },
 "RenegadeGyrosaurCharacter.png":
 {
-	"frame": {"x":716,"y":0,"w":176,"h":256},
+	"frame": {"x":1813,"y":259,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -130,7 +138,7 @@
 },
 "RenegadeGyrosaurCharacterBack.png":
 {
-	"frame": {"x":895,"y":0,"w":176,"h":256},
+	"frame": {"x":0,"y":518,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -138,7 +146,7 @@
 },
 "Ricochet.png":
 {
-	"frame": {"x":518,"y":450,"w":256,"h":188},
+	"frame": {"x":179,"y":518,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -146,7 +154,7 @@
 },
 "SpeedDemonGyrosaurCharacter.png":
 {
-	"frame": {"x":1074,"y":0,"w":176,"h":256},
+	"frame": {"x":438,"y":518,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -154,7 +162,7 @@
 },
 "SpeedDemonGyrosaurCharacterBack.png":
 {
-	"frame": {"x":1253,"y":0,"w":176,"h":256},
+	"frame": {"x":617,"y":518,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -162,7 +170,7 @@
 },
 "SphereOfDevastation.png":
 {
-	"frame": {"x":777,"y":450,"w":256,"h":188},
+	"frame": {"x":796,"y":518,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -170,7 +178,7 @@
 },
 "TerrifyingMomentum.png":
 {
-	"frame": {"x":1036,"y":450,"w":256,"h":188},
+	"frame": {"x":1055,"y":518,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -178,7 +186,7 @@
 },
 "Wipeout.png":
 {
-	"frame": {"x":1295,"y":450,"w":256,"h":188},
+	"frame": {"x":1314,"y":518,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -186,7 +194,7 @@
 },
 "WreckingBall.png":
 {
-	"frame": {"x":1554,"y":450,"w":256,"h":188},
+	"frame": {"x":1573,"y":518,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -199,6 +207,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:139e22f52965767e2410cd66eff0630d:3428798cc0163ea4a927761e3d30886e:22ae0bb6386e2e6014c43684eaefc09c$"
+	"smartupdate": "$TexturePacker:SmartUpdate:d0e11e80fbd08d996fcea8112de6fe85:419258f06d2d816d0a0c0996a1ef3f37:22ae0bb6386e2e6014c43684eaefc09c$"
 }
 }

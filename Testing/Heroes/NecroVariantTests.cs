@@ -83,6 +83,26 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestPastNecroInnatePowerOnReload()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/PastNecroCharacter", "Fanatic", "Haka", "Megalopolis");
+            StartGame();
+
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+            Card battalion = PlayCard("BladeBattalion");
+            Card ghoul = PlayCard("Ghoul");
+
+            //Until the start of your next turn, replace the word “hero” on your cards with “villain”, and vice versa.
+            GoToUsePowerPhase(necro);
+            UsePower(necro.CharacterCard);
+            SaveAndLoad();
+            QuickHPStorage(baron.CharacterCard, battalion, necro.CharacterCard, fanatic.CharacterCard, haka.CharacterCard);
+            GoToEndOfTurn(necro);
+            QuickHPCheck(-2, 0, 0, 0, 0);
+        }
+
+
+        [Test()]
         public void TestPastNecroInnatePowerBloodRite()
         {
             SetupGameController("BaronBlade", "Cauldron.Necro/PastNecroCharacter", "Fanatic", "Haka", "Megalopolis");

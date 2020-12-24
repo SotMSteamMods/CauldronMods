@@ -11,6 +11,7 @@ namespace Cauldron.TheCybersphere
 
         public ReplicationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => IsGridVirus(c), "grid virus"));
         }
 
         public override void AddTriggers()

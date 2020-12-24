@@ -13,6 +13,7 @@ namespace Cauldron.StSimeonsCatacombs
 
         public DarkPassengerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new string[] { CursedVaultCardController.Identifier }, false)
         {
+            SpecialStringMaker.ShowHeroCharacterCardWithHighestHP(ranking: 2).Condition = () => !Card.IsInPlayAndHasGameText;
         }
 
         public override void AddTriggers()
@@ -31,7 +32,7 @@ namespace Cauldron.StSimeonsCatacombs
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             List<Card> foundTarget = new List<Card>();
-            IEnumerator coroutine = base.GameController.FindTargetWithHighestHitPoints(2, (Card c) => c.IsHero && (overridePlayArea == null || c.IsAtLocationRecursive(overridePlayArea)), foundTarget, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.FindTargetWithHighestHitPoints(2, (Card c) => c.IsHeroCharacterCard && (overridePlayArea == null || c.IsAtLocationRecursive(overridePlayArea)), foundTarget, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

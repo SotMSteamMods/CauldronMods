@@ -18,6 +18,8 @@ namespace Cauldron.Vector
 
         public LethalForceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(ranking: 2);
+            SpecialStringMaker.ShowHeroTargetWithLowestHP();
         }
 
         public override IEnumerator Play()

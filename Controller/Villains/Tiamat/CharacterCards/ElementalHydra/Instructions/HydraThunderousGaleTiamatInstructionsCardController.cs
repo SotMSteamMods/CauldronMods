@@ -11,15 +11,14 @@ namespace Cauldron.Tiamat
     {
         public HydraThunderousGaleTiamatInstructionsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "HydraStormTiamatCharacter", "HydraWindTiamatCharacter", "ElementOfLightning")
         {
-
+           
+            SpecialStringMaker.ShowSpecialString(() => BuildDecapitatedHeadList());
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: 1 + NumberOfOngoingsInTrash()).Condition = () => base.Card.IsFlipped && FirstHeadCardController().Card.IsFlipped && !SecondHeadCardController().Card.IsFlipped && SecondHeadCardController().Card.IsInPlayAndNotUnderCard;
+            SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => base.Card.IsFlipped && !FirstHeadCardController().Card.IsFlipped;
         }
-
-        public override IEnumerator Play()
-        {
-            //Whenever Element of Lightning enters play and {StormTiamatCharacter} is decapitated, if {WindTiamatCharacter} is active she deals the X hero targets with the Highest HP {H - 1} projectile damage each, where X = 1 plus the number of ongoing cards in the villain trash.
-            this.alternateElementCoroutine = base.DealDamageToHighestHP(base.SecondHeadCardController().Card, 1, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => new int?(Game.H - 1), DamageType.Projectile, numberOfTargets: () => 1 + NumberOfOngoingsInTrash());
-            yield break;
-        }
+        
+        //Whenever Element of Lightning enters play and {StormTiamatCharacter} is decapitated, if {WindTiamatCharacter} is active she deals the X hero targets with the Highest HP {H - 1} projectile damage each, where X = 1 plus the number of ongoing cards in the villain trash.
+        protected override IEnumerator alternateElementCoroutine => base.DealDamageToHighestHP(base.SecondHeadCardController().Card, 1, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => new int?(Game.H - 1), DamageType.Projectile, numberOfTargets: () => 1 + NumberOfOngoingsInTrash());
 
         protected override ITrigger[] AddFrontTriggers()
         {
@@ -55,7 +54,7 @@ namespace Cauldron.Tiamat
         private IEnumerator GrowHeadResponse(PhaseChangeAction action)
         {
             IEnumerable<Card> decapitatedHeads = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsFlipped && c.DoKeywordsContain("head") && c.IsInPlayAndNotUnderCard));
-            SelectCardDecision cardDecision = new SelectCardDecision(this.GameController, this.DecisionMaker, SelectionType.CharacterCard, decapitatedHeads, cardSource: base.GetCardSource());
+            SelectCardDecision cardDecision = new SelectCardDecision(this.GameController, this.DecisionMaker, SelectionType.FlipCardFaceUp, decapitatedHeads, cardSource: base.GetCardSource());
             //...flip 1 decapitated head...
             IEnumerator coroutine = base.GameController.SelectCardAndDoAction(cardDecision, (SelectCardDecision decision) => this.GrowHeadAction(decision));
             if (base.UseUnityCoroutines)

@@ -12,6 +12,8 @@ namespace Cauldron.TheWanderingIsle
     {
         public ExposedLifeforceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowLocationOfCards(new LinqCardCriteria(c => c.Identifier == "Teryx", "Teryx", useCardsSuffix: false)).Condition = () => !Card.IsInPlayAndHasGameText;
+            SpecialStringMaker.ShowSpecialString(() => $"Teryx has gained {GetAmountTeryxGainedThisRound()} HP this round.").Condition = () => Card.IsInPlayAndHasGameText && IsTeryxInPlay();
         }
 
         public override void AddTriggers()
@@ -50,6 +52,13 @@ namespace Cauldron.TheWanderingIsle
             return base.GameController.Game.Journal.GainHPEntries()
                        .Where(e => e.Round == this.Game.Round && IsTeryx(e.TargetCard))
                        .Sum(e => e.Amount) >= 10;
+        }
+
+        private int GetAmountTeryxGainedThisRound()
+        {
+            return base.GameController.Game.Journal.GainHPEntries()
+                       .Where(e => e.Round == this.Game.Round && IsTeryx(e.TargetCard))
+                       .Sum(e => e.Amount);
         }
     }
 }

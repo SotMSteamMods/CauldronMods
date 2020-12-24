@@ -15,6 +15,8 @@ namespace Cauldron.TheRam
         public FallingMeteorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowNumberOfCardsAtLocations(() => new Location[] { TurnTaker.Trash, TurnTaker.Deck }, new LinqCardCriteria((Card c) => c.Identifier == "UpClose", "", false, singular: "copy of Up Close", plural: "copies of Up Close"));
+            SpecialStringMaker.ShowHighestHP(1, () => Game.H - 2, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !IsUpClose(c), "", false, singular: "hero that is not Up Close", plural: "heroes that are not Up Close"));
+
         }
 
         public override IEnumerator Play()

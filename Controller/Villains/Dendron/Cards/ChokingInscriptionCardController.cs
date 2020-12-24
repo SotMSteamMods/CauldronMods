@@ -22,6 +22,8 @@ namespace Cauldron.Dendron
         public ChokingInscriptionCardController(Card card, TurnTakerController turnTakerController) : base(card,
             turnTakerController)
         {
+            SpecialStringMaker.ShowHeroWithMostCards(true);
+            SpecialStringMaker.ShowHeroWithMostCards(false);
         }
 
         public override IEnumerator Play()

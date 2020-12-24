@@ -11,7 +11,10 @@ namespace Cauldron.Tiamat
     {
         public HealingMagicCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowVillainTargetWithLowestHP();
+            base.SpecialStringMaker.ShowLowestHP(ranking: 1, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("head"), "head", false));
+
+            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "HealingMagic", "healing magic"));
+
         }
 
         public override IEnumerator Play()
