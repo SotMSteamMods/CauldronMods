@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Gyrosaur
 {
-    public class GyrosaurSpecificCardController : GyrosaurUtilityCardController
+    public class IndiscriminatePassCardController : GyrosaurUtilityCardController
     {
-        public GyrosaurSpecificCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public IndiscriminatePassCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
     }
