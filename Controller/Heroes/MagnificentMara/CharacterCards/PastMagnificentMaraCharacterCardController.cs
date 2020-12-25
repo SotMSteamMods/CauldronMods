@@ -228,17 +228,17 @@ namespace Cauldron.MagnificentMara
                 case (1):
                     {
                         //"Put a card in a trash pile under its associated deck.",
-                        var TrashesWithCards = GameController.AllTurnTakers.Where(tt => tt.Trash.HasCards && AskIfTurnTakerIsVisibleToCardSource(tt, GetCardSource()) != false).Select(tt => new LocationChoice(tt.Trash));
+                        var trashesWithCards = GameController.AllTurnTakers.Where(tt => tt.Trash.HasCards && AskIfTurnTakerIsVisibleToCardSource(tt, GetCardSource()) != false).Select(tt => new LocationChoice(tt.Trash));
                         Func<Location, List<MoveCardDestination>> bottomOfSameDeck = (Location trash) => new List<MoveCardDestination> { new MoveCardDestination(trash.OwnerTurnTaker.Deck, toBottom: true) };
 
-                        if (TrashesWithCards.Count() == 1)
+                        if (trashesWithCards.Count() == 1)
                         {
-                            var trash = TrashesWithCards.FirstOrDefault().Location;
+                            var trash = trashesWithCards.FirstOrDefault().Location;
                             coroutine = GameController.SelectCardsFromLocationAndMoveThem(DecisionMaker, trash, 1, 1, new LinqCardCriteria(c => true), bottomOfSameDeck(trash), cardSource: GetCardSource());
                         }
                         else
                         { 
-                            var selectLocation = new SelectLocationDecision(GameController, DecisionMaker, TrashesWithCards, SelectionType.MoveCardOnBottomOfDeck, false, cardSource: GetCardSource());
+                            var selectLocation = new SelectLocationDecision(GameController, DecisionMaker, trashesWithCards, SelectionType.MoveCardOnBottomOfDeck, false, cardSource: GetCardSource());
                             coroutine = GameController.SelectLocationAndDoAction(selectLocation,
                                                             trash => GameController.SelectCardsFromLocationAndMoveThem(DecisionMaker, trash, 1, 1, new LinqCardCriteria(c => true), bottomOfSameDeck(trash), cardSource: GetCardSource()));
                         }
@@ -274,7 +274,6 @@ namespace Cauldron.MagnificentMara
 
         private IEnumerator SelectKeywordThenRevealAndMoveCards(TurnTaker tt)
         {
-            
             var player = tt == null ? null : GameController.FindHeroTurnTakerController(tt.ToHero());
             if (player == null)
             {
