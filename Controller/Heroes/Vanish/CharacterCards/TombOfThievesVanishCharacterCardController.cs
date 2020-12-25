@@ -121,9 +121,11 @@ namespace Cauldron.Vanish
                                 base.GameController.ExhaustCoroutine(coroutine);
                             }
 
-                            var effect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, "DestroyMarkedTarget", $"Will be destroyed at the start of {CharacterCard.Title}'s next turn.", new[] { TriggerType.DestroyCard }, CharacterCard);
+                            var effect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, "DestroyMarkedTarget", $"{card.Title} will be destroyed at the start of {CharacterCard.Title}'s next turn.", new[] { TriggerType.DestroyCard }, CharacterCard);
                             effect.TurnPhaseCriteria.TurnTaker = TurnTaker;
                             effect.TurnPhaseCriteria.Phase = Phase.Start;
+                            effect.NumberOfUses = 1;
+                            effect.CanEffectStack = true;
                             effect.UntilTargetLeavesPlay(card);
 
                             coroutine = base.AddStatusEffect(effect, true);
@@ -155,7 +157,7 @@ namespace Cauldron.Vanish
 
                 var coroutine = GameController.DestroyCard(DecisionMaker, card,
                                     actionSource: action,
-                                    cardSource: GetCardSource());
+                                    cardSource: GetCardSource(sourceEffect));
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
