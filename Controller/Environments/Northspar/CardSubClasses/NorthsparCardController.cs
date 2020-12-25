@@ -13,6 +13,7 @@ namespace Cauldron.Northspar
         public static readonly string SecondWaypointKeyword = "second waypoint";
         public static readonly string ThirdWaypointKeyword = "third waypoint";
         public static readonly string TakAhabIdentifier = "TakAhab";
+        public static readonly string AethiumTriggerKey = "aethiumTriggers";
 
         protected NorthsparCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

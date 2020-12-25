@@ -13,9 +13,8 @@ namespace Cauldron.Northspar
 
         public TakAhabCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SetCardProperty("aethiumTriggers", false);
             SpecialStringMaker.ShowNumberOfCardsAtLocation(Card.UnderLocation);
-            SpecialStringMaker.ShowSpecialString(() => Card.Title + "'s end of turn effect will trigger twice this turn.").Condition = () => IsPropertyTrue("aethiumTriggers");
+            SpecialStringMaker.ShowSpecialString(() => Card.Title + "'s end of turn effect will trigger twice this turn.").Condition = () => IsPropertyTrue(AethiumTriggerKey);
         }
 
         public override void AddTriggers()
@@ -34,11 +33,23 @@ namespace Cauldron.Northspar
             });
 
             //add duplicate trigger if aethium vein causes extra end of turn trigger
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.EndOfTurnResponse, new TriggerType[]
-           {
+            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.EndOfTurnResponseWithReset, new TriggerType[]
+            {
                 TriggerType.MoveCard,
                 TriggerType.DealDamage
-             }, (PhaseChangeAction pca) => base.IsPropertyTrue("aethiumTriggers"));
+            }, (PhaseChangeAction pca) => base.IsPropertyTrue(AethiumTriggerKey));
+
+            AddAfterLeavesPlayAction(() => ResetFlagAfterLeavesPlay(AethiumTriggerKey));
+        }
+
+        private IEnumerator EndOfTurnResponseWithReset(PhaseChangeAction arg)
+        {
+            if (IsRealAction())
+            {
+                Journal.RecordCardProperties(CharacterCard, AethiumTriggerKey, (bool?)null);
+            }
+
+            return EndOfTurnResponse(arg);
         }
 
         private IEnumerator EndOfTurnResponse(PhaseChangeAction arg)

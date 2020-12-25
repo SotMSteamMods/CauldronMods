@@ -12,7 +12,7 @@ namespace Cauldron.Northspar
 
         public AethiumVeinCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowIfSpecificCardIsInPlay("TakAhab");
+            SpecialStringMaker.ShowIfSpecificCardIsInPlay(TakAhabIdentifier);
         }
 
         public override void AddTriggers()
@@ -31,9 +31,12 @@ namespace Cauldron.Northspar
 
         private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
         {
-
             //Tak Ahab's end of turn effect acts twice this turn.
-            FindCardController(base.FindTakAhabAnywhere()).SetCardPropertyToTrueIfRealAction("aethiumTriggers");
+            var card = base.FindTakAhabInPlay();
+            if (card != null && IsRealAction())
+            {
+                Journal.RecordCardProperties(card, AethiumTriggerKey, true);
+            }
 
             // destroy this card
             IEnumerator coroutine = base.DestroyThisCardResponse(pca);
@@ -75,9 +78,7 @@ namespace Cauldron.Northspar
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-
             yield break;
         }
-
     }
 }
