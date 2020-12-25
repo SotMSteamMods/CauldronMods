@@ -105,7 +105,6 @@ namespace Cauldron.Starlight
                     }
             }
 
-
             yield break;
         }
 
@@ -122,7 +121,7 @@ namespace Cauldron.Starlight
                 {
                     if (action.StatusEffect is OnPhaseChangeStatusEffect effect)
                     {
-                        return effect.CardWithMethod == base.Card && effect.MethodToExecute == PreventDamageViaIncapEffectMarker;
+                        return effect.CardWithMethod == CardWithoutReplacements && effect.MethodToExecute == nameof(DoNothing);
                     }
                     return false;
                 };
