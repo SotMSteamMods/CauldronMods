@@ -98,6 +98,7 @@ namespace Cauldron.Vanish
                         messageEffect.TurnTakerCriteria.IsHero = false;
                         messageEffect.TurnPhaseCriteria.TurnTaker = this.TurnTaker;
                         messageEffect.CanEffectStack = true;
+                        messageEffect.CardSource = this.Card;
                         //impossible to activate - non-hero turns with a phase belonging to this hero
 
                         IEnumerator coroutine = GameController.AddStatusEffect(messageEffect, true, GetCardSource());

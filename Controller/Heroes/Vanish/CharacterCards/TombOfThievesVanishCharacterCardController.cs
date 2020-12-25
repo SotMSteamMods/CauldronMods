@@ -122,16 +122,12 @@ namespace Cauldron.Vanish
                                 base.GameController.ExhaustCoroutine(coroutine);
                             }
 
-<<<<<<< HEAD
-                            var effect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, "DestroyMarkedTarget", $"{card.Title} will be destroyed at the start of {CharacterCard.Title}'s next turn.", new[] { TriggerType.DestroyCard }, CharacterCard);
-=======
-                            var effect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(DestroyMarkedTarget), $"Will be destroyed at the start of {CharacterCard.Title}'s next turn.", new[] { TriggerType.DestroyCard }, CharacterCard);
-                            effect.CardSource = CharacterCard;
->>>>>>> 40bab51cf44a9352223a18fe31cbeeaa162f8255
+                            var effect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(DestroyMarkedTarget), $"{card.Title} will be destroyed at the start of {CharacterCard.Title}'s next turn.", new[] { TriggerType.DestroyCard }, CharacterCard);
                             effect.TurnPhaseCriteria.TurnTaker = TurnTaker;
                             effect.TurnPhaseCriteria.Phase = Phase.Start;
                             effect.NumberOfUses = 1;
                             effect.CanEffectStack = true;
+                            effect.CardSource = CharacterCard;
                             effect.UntilTargetLeavesPlay(card);
 
                             coroutine = base.AddStatusEffect(effect, true);
@@ -161,18 +157,11 @@ namespace Cauldron.Vanish
                     Journal.RecordCardProperties(card, "MarkedForDestruction", (bool?)null);
                 }
 
-<<<<<<< HEAD
-                var coroutine = GameController.DestroyCard(DecisionMaker, card,
-                                    actionSource: action,
-                                    cardSource: GetCardSource(sourceEffect));
-                if (base.UseUnityCoroutines)
-=======
                 if (card.IsInPlay)
->>>>>>> 40bab51cf44a9352223a18fe31cbeeaa162f8255
                 {
                     var coroutine = GameController.DestroyCard(DecisionMaker, card,
                                         actionSource: action,
-                                        cardSource: GetCardSource());
+                                        cardSource: GetCardSource(sourceEffect));
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
