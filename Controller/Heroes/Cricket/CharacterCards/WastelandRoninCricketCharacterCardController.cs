@@ -85,8 +85,9 @@ namespace Cauldron.Cricket
                                     }
                                 }
                             }
+
                             //The next time a hero uses it. They may immediately use it again.
-                            OnPhaseChangeStatusEffect statusEffect = new OnPhaseChangeStatusEffect(base.CharacterCard, "FakeStatusEffect", "The " + powerString + selectedCard.Title + " will be used twice next time it is used by a hero.", new TriggerType[] { TriggerType.UsePower }, base.CharacterCard);
+                            OnPhaseChangeStatusEffect statusEffect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(DoNothing), "The " + powerString + selectedCard.Title + " will be used twice next time it is used by a hero.", new TriggerType[] { TriggerType.UsePower }, base.CharacterCard);
                             statusEffect.CardDestroyedExpiryCriteria.Card = selectedCard;
                             statusEffect.NumberOfUses = powerIndex + 1; //cheat to store the powerIndex in the statusEffect
                             statusEffect.CanEffectStack = true;
@@ -159,17 +160,17 @@ namespace Cauldron.Cricket
                     //remove the fake status effect
                     base.GameController.StatusEffectManager.RemoveStatusEffect(statusEffect);
 
-                        IEnumerator coroutine = UsePowerOnOtherCard(action.Power.CardSource.Card, action.Power.Index);
-                        if (base.UseUnityCoroutines)
-                        {
-                            yield return base.GameController.StartCoroutine(coroutine);
-                        }
-                        else
-                        {
-                            base.GameController.ExhaustCoroutine(coroutine);
-                        }
+                    IEnumerator coroutine = UsePowerOnOtherCard(action.Power.CardSource.Card, action.Power.Index);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
-                
+
             }
             yield break;
         }
@@ -182,13 +183,14 @@ namespace Cauldron.Cricket
             int damageNumeral = GetPowerNumeral(2, 1);
 
             //Increase damage dealt by {Cricket} during your next turn by 1.
-            OnPhaseChangeStatusEffect statusEffect = new OnPhaseChangeStatusEffect(base.Card, "IncreaseDamageResponse" + increaseNumeral, "Increase damage dealt by {Cricket} during your next turn by 1", new TriggerType[] { TriggerType.IncreaseDamage }, base.Card);
+            OnPhaseChangeStatusEffect statusEffect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(IncreaseDamageResponse), "Increase damage dealt by {Cricket} during your next turn by 1", new TriggerType[] { TriggerType.IncreaseDamage }, base.Card);
             statusEffect.TurnTakerCriteria.IsSpecificTurnTaker = base.TurnTaker;
             statusEffect.TurnIndexCriteria.GreaterThan = Game.TurnIndex;
             statusEffect.TurnPhaseCriteria.TurnTaker = base.TurnTaker;
             statusEffect.NumberOfUses = 1;
             statusEffect.CanEffectStack = true;
             statusEffect.UntilTargetLeavesPlay(base.CharacterCard);
+            statusEffect.SetPowerNumeralsArray(new int[] { increaseNumeral });
 
             IEnumerator coroutine = base.AddStatusEffect(statusEffect);
             if (base.UseUnityCoroutines)
@@ -213,40 +215,14 @@ namespace Cauldron.Cricket
             yield break;
         }
 
-        private IEnumerator IncreaseDamageResponse(int increaseNumeral)
+        public IEnumerator IncreaseDamageResponse(PhaseChangeAction _, OnPhaseChangeStatusEffect sourceEffect)
         {
+            int increaseNumeral = sourceEffect.PowerNumeralsToChange[0];
+
             IncreaseDamageStatusEffect statusEffect = new IncreaseDamageStatusEffect(increaseNumeral);
             statusEffect.UntilThisTurnIsOver(Game);
             statusEffect.UntilTargetLeavesPlay(base.CharacterCard);
             IEnumerator coroutine = base.AddStatusEffect(statusEffect);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
-        }
-
-        public IEnumerator IncreaseDamageResponse1(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
-        {
-            IEnumerator coroutine = this.IncreaseDamageResponse(1);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
-        }
-
-        public IEnumerator IncreaseDamageResponse2(PhaseChangeAction action, OnPhaseChangeStatusEffect sourceEffect)
-        {
-            IEnumerator coroutine = this.IncreaseDamageResponse(2);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
