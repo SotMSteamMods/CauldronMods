@@ -5,6 +5,8 @@ using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
+using Handelabra;
+
 namespace Cauldron.Impact
 {
     public class EscapeVelocityCardController : CardController
@@ -38,11 +40,12 @@ namespace Cauldron.Impact
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (DidSelectCards(storedTargets))
+            var targetsToMove = GetSelectedCards(storedTargets);
+            if (targetsToMove.Any())
             {
+                var numToMove = targetsToMove.Count();
                 //Place those targets on the bottom of their associated decks in any order."
-                var targetsToMove = GetSelectedCards(storedTargets);
-                var moveDecision = new SelectCardsDecision(GameController, DecisionMaker, (Card c) => targetsToMove.Contains(c), SelectionType.MoveCardOnBottomOfDeck, targetsToMove.Count(), requiredDecisions: targetsToMove.Count(), eliminateOptions: true, allowAutoDecide: true, cardSource: GetCardSource());
+                var moveDecision = new SelectCardsDecision(GameController, DecisionMaker, (Card c) => targetsToMove.Contains(c), SelectionType.MoveCardOnBottomOfDeck, numToMove, requiredDecisions: numToMove, eliminateOptions: true, allowAutoDecide: true, cardSource: GetCardSource());
                 coroutine = GameController.SelectCardsAndDoAction(moveDecision, MoveToBottomOfDeck, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
