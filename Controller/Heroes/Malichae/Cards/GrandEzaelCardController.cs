@@ -21,15 +21,17 @@ namespace Cauldron.Malichae
 
         public override Power GetGrantedPower(CardController cardController)
         {
-            return new Power(cardController.HeroTurnTakerController, cardController, "All hero targets regain 3HP.", UseGrantedPower(), 0, null, GetCardSource());
+            return new Power(cardController.HeroTurnTakerController, this, "All hero targets regain 3HP.", UseGrantedPower(), 0, null, cardController.GetCardSource());
         }
 
         private IEnumerator UseGrantedPower()
         {
             int hp = GetPowerNumeral(0, 3);
 
-            var card = GetCardThisCardIsNextTo();
-            var coroutine = base.GameController.GainHP(DecisionMaker, c => c.IsTarget && c.IsHero && c.IsInPlayAndHasGameText, hp, cardSource: GetCardSource());
+            var usePowerAction = ActionSources.OfType<UsePowerAction>().First();
+            var cs = usePowerAction.CardSource ?? usePowerAction.Power.CardSource;
+
+            var coroutine = base.GameController.GainHP(DecisionMaker, c => c.IsTarget && c.IsHero && c.IsInPlayAndHasGameText, hp, cardSource: cs);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
