@@ -14,7 +14,7 @@ namespace Cauldron.Vanish
         public override IEnumerator UsePower(int index = 0)
         {
             //"The next time {Vanish} is dealt damage, draw or play a card."
-            var effect = new OnDealDamageStatusEffect(CardWithoutReplacements, "DrawOrPlayResponse", $"The next time {CharacterCard.Title} is dealt damage, draw or play a card.", new[] { TriggerType.DrawCard, TriggerType.PlayCard }, TurnTaker, CharacterCard);
+            var effect = new OnDealDamageStatusEffect(CardWithoutReplacements, nameof(DrawOrPlayResponse), $"The next time {CharacterCard.Title} is dealt damage, draw or play a card.", new[] { TriggerType.DrawCard, TriggerType.PlayCard }, TurnTaker, CharacterCard);
             effect.NumberOfUses = 1;
             effect.TargetCriteria.IsSpecificCard = CharacterCard;
             effect.CardSource = CharacterCard;
@@ -33,7 +33,7 @@ namespace Cauldron.Vanish
             }
         }
 
-        public IEnumerator DrawOrPlayResponse(DealDamageAction dd, TurnTaker hero, StatusEffect effect, int[] powerNumerals = null)
+        public IEnumerator DrawOrPlayResponse(DealDamageAction _1, TurnTaker _2, StatusEffect _3, int[] _4 = null)
         {
             var coroutine = DrawACardOrPlayACard(DecisionMaker, false);
             if (base.UseUnityCoroutines)
@@ -108,6 +108,7 @@ namespace Cauldron.Vanish
                                 Journal.RecordCardProperties(card, "MarkedForDestruction", true);
                             }
                             var immune = new ImmuneToDamageStatusEffect();
+                            immune.CardSource = CharacterCard;
                             immune.TargetCriteria.IsSpecificCard = card;
                             immune.UntilCardLeavesPlay(card);
 
@@ -121,7 +122,12 @@ namespace Cauldron.Vanish
                                 base.GameController.ExhaustCoroutine(coroutine);
                             }
 
+<<<<<<< HEAD
                             var effect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, "DestroyMarkedTarget", $"{card.Title} will be destroyed at the start of {CharacterCard.Title}'s next turn.", new[] { TriggerType.DestroyCard }, CharacterCard);
+=======
+                            var effect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(DestroyMarkedTarget), $"Will be destroyed at the start of {CharacterCard.Title}'s next turn.", new[] { TriggerType.DestroyCard }, CharacterCard);
+                            effect.CardSource = CharacterCard;
+>>>>>>> 40bab51cf44a9352223a18fe31cbeeaa162f8255
                             effect.TurnPhaseCriteria.TurnTaker = TurnTaker;
                             effect.TurnPhaseCriteria.Phase = Phase.Start;
                             effect.NumberOfUses = 1;
@@ -148,25 +154,34 @@ namespace Cauldron.Vanish
         {
             //the target to be destroyed will be in the target leaves play criteria, and have the marked card prop.
             var card = sourceEffect.TargetLeavesPlayExpiryCriteria.IsOneOfTheseCards?.First() ?? sourceEffect.TargetLeavesPlayExpiryCriteria.Card;
-            if (card != null && card.IsInPlay && Journal.GetCardPropertiesBoolean(card, "MarkedForDestruction") == true)
+            if (card != null && Journal.GetCardPropertiesBoolean(card, "MarkedForDestruction") == true)
             {
                 if (IsRealAction())
                 {
                     Journal.RecordCardProperties(card, "MarkedForDestruction", (bool?)null);
                 }
 
+<<<<<<< HEAD
                 var coroutine = GameController.DestroyCard(DecisionMaker, card,
                                     actionSource: action,
                                     cardSource: GetCardSource(sourceEffect));
                 if (base.UseUnityCoroutines)
+=======
+                if (card.IsInPlay)
+>>>>>>> 40bab51cf44a9352223a18fe31cbeeaa162f8255
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
+                    var coroutine = GameController.DestroyCard(DecisionMaker, card,
+                                        actionSource: action,
+                                        cardSource: GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
             }
         }
     }
