@@ -7,11 +7,12 @@ using Handelabra;
 
 namespace Cauldron.MagnificentMara
 {
-    class MaraUtilityCharacterCardController : HeroCharacterCardController
+    public class MaraUtilityCharacterCardController : HeroCharacterCardController
     {
         private List<StatusEffectController> _inUseTriggers;
         private List<StatusEffectController> _hasBeenUsedTriggers;
-        public MaraUtilityCharacterCardController(Card card, TurnTakerController ttc) : base(card, ttc)
+
+        protected MaraUtilityCharacterCardController(Card card, TurnTakerController ttc) : base(card, ttc)
         {
             _inUseTriggers = new List<StatusEffectController> { };
             _hasBeenUsedTriggers = new List<StatusEffectController> { };

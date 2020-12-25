@@ -7,7 +7,7 @@ using System;
 
 namespace Cauldron.MagnificentMara
 {
-    class PastMagnificentMaraCharacterCardController : MaraUtilityCharacterCardController
+    public class PastMagnificentMaraCharacterCardController : MaraUtilityCharacterCardController
     {
         public PastMagnificentMaraCharacterCardController(Card card, TurnTakerController ttc) : base(card, ttc)
         {

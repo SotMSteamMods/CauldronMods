@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.MagnificentMara
 {
-    class MinistryOfStrategicScienceMagnificentMaraCharacterCardController : MaraUtilityCharacterCardController
+    public class MinistryOfStrategicScienceMagnificentMaraCharacterCardController : MaraUtilityCharacterCardController
     {
         public MinistryOfStrategicScienceMagnificentMaraCharacterCardController(Card card, TurnTakerController ttc) : base(card, ttc)
         {
