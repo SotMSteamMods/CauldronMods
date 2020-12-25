@@ -21,7 +21,7 @@ namespace Cauldron.Malichae
 
         public override Power GetGrantedPower(CardController cardController)
         {
-            return new Power(cardController.HeroTurnTakerController, cardController, $"{cardController.Card.Title} deals 1 target 4 energy damage. Destroy {this.Card.Title}.", UseGrantedPower(), 0, null, GetCardSource());
+            return new Power(cardController.HeroTurnTakerController, this, $"{cardController.Card.Title} deals 1 target 4 energy damage. Destroy {this.Card.Title}.", UseGrantedPower(), 0, null, cardController.GetCardSource());
         }
 
         private IEnumerator UseGrantedPower()
@@ -29,8 +29,10 @@ namespace Cauldron.Malichae
             int targets = GetPowerNumeral(0, 1);
             int damages = GetPowerNumeral(1, 4);
 
-            var card = GetCardThisCardIsNextTo(); //TODO - PROMO - DamageSource can be Malichae
-            var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, card), damages, DamageType.Energy, targets, false, targets, cardSource: GetCardSource());
+            var usePowerAction = ActionSources.OfType<UsePowerAction>().First();
+            var cs = usePowerAction.CardSource ?? usePowerAction.Power.CardSource;
+
+            var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, cs.Card), damages, DamageType.Energy, targets, false, targets, cardSource: cs);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -39,14 +41,18 @@ namespace Cauldron.Malichae
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            coroutine = DestroySelf();
-            if (base.UseUnityCoroutines)
+            //when played via discard, I'll already be in the trash, so skip
+            if (!Card.IsInTrash)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                coroutine = DestroySelf();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }

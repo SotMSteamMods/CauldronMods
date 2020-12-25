@@ -415,7 +415,7 @@
             "flavorText": "Frost noticed that she{BR}carefully avoided touching the eye{BR}itself. Behind the laughter and stagecraft{BR}he caught a sense of unease."
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "MagnificentMaraCharacter",
             "promoIdentifier": "MinistryOfStrategicScienceMagnificentMaraCharacter",

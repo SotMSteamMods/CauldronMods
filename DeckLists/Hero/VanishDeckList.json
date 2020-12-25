@@ -337,7 +337,7 @@
             "flavorReference": "The Stranger #32"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "VanishCharacter",
             "promoIdentifier": "FirstResponseVanishCharacter",
@@ -373,7 +373,7 @@
             ],
             "openingLines": {
                 "default": "I'll get everyone into position. Who's ready to jump?",
-                "GrayCharacter": "In and out, just like we practiced. This'll be a [b]good[/b] takedown.",
+                "GrayCharacter": "If you keep at it, you'll only destroy yourself. Much as I'd love to watch that, we can't have you melt down in public.",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 2
@@ -391,7 +391,7 @@
             "hitpointColor": "E6C8DA",
             "character": true,
             "powers": [
-                "Draw a card. Increase damage delat by hero targets until the end of the round."
+                "Draw a card. Increase damage dealt by hero targets by 1 until the end of the turn."
             ],
             "icons": [
                 "HasPower",
@@ -404,8 +404,8 @@
             ],
             "incapacitatedAbilities": [
                 "One player may play a card now.",
-                "The next turn a target enters play, it deals itself 1 energy damage.",
-                "Shuffle up to 2 non-target environment carsd into their deck."
+                "The next time a target enters play, it deals itself 1 energy damage.",
+                "Shuffle up to 2 non-target environment cards into their deck."
             ],
             "flippedIcons": [
                 "PlayCardNow",
@@ -414,7 +414,49 @@
             ],
             "openingLines": {
                 "default": "I'll scout ahead. There must be some advantage we can exploit.",
-                "GrayCharacter": "Gray placeholder",
+                "GrayCharacter": "Hey, the best part of 1929 was that you weren't trying to kill me.",
+                "PastTheRamCharacter": "1929 Ram placeholder",
+                "MistressOfFate": "Uh, you're welcome. But I'm afraid that we're here to stop you, not help you."
+            },
+            "complexity": 2
+        },
+        {
+            "identifier": "VanishCharacter",
+            "promoIdentifier": "TombOfThievesVanishCharacter",
+            "count": 1,
+            "title": "Vanish",
+            "promoTitle": "Tomb of Thieves Vanish",
+            "shortPromoTitle": "Vanish",
+            "body": "Instinctive Teleport",
+            "backgroundColor": "8D96C9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "8D96C9",
+            "character": true,
+            "powers": [
+                "The next time {Vanish} is dealt damage, draw or play a card."
+            ],
+            "icons": [
+                "HasPower",
+                "DrawCardNow",
+                "PlayCardNow"
+            ],
+            "hitpoints": 26,
+            "nemesisIdentifiers": [
+                "Vanish"
+            ],
+            "incapacitatedAbilities": [
+                "One player may use a power now.",
+                "Destroy 1 ongoing card.",
+                "Select 1 environment target in play. Destroy it at the start of your next turn. Until then, it is immune to damage."
+            ],
+            "flippedIcons": [
+                "UsePowerNow",
+                "DestroyOngoing",
+                "DestroyEnvironment"
+            ],
+            "openingLines": {
+                "default": "This isn't my usual scene, but I'll manage.",
+                "GrayCharacter": "I'm just keeping things safe from the real thieves!",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 2

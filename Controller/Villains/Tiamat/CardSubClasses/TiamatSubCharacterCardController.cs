@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Cauldron.Tiamat
 {
-    public class TiamatSubCharacterCardController : VillainCharacterCardController
+    public abstract class TiamatSubCharacterCardController : VillainCharacterCardController
     {
-        public TiamatSubCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected TiamatSubCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }

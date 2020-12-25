@@ -38,7 +38,7 @@ namespace Cauldron.MagnificentMara
         {
             //"When a non-relic, non-character villain card would activate start of turn or end of turn text,
             //destroy it instead. Then, destroy this card."
-            AddTrigger((GameAction ga) => _justActivatedTrigger != null && ga.CardSource != null && ga.CardSource.Card == _justActivatedTrigger.CardSource.Card,
+            AddTrigger((GameAction ga) => !this.IsBeingDestroyed && _justActivatedTrigger != null && ga.CardSource != null && ga.CardSource.Card == _justActivatedTrigger.CardSource.Card && IsFirstOrOnlyCopyOfThisCardInPlay(),
                             (GameAction ga) => InterruptAction(ga),
                             TriggerType.CancelAction,
                             TriggerTiming.Before);
@@ -53,11 +53,20 @@ namespace Cauldron.MagnificentMara
             yield return null;
             yield break;
         }
+
+        private bool IsBookkeepingAction(GameAction ga)
+        {
+            if(ga is MessageAction || ga is ExpireStatusEffectAction || ga is DoneRoundOfDamageAction)
+            {
+                return true;
+            }
+            return false;
+        }
         private IEnumerator InterruptAction(GameAction ga)
         {
             //May end up with false positives from "fake" actions like messages -
             //we'll have to see what crops up
-            if(IsRealAction(ga) && !(ga is MessageAction))
+            if(IsRealAction(ga) && !IsBookkeepingAction(ga))
             {
                 
                 //Log.Debug($"Would interrupt the trigger {_justActivatedTrigger}");
@@ -154,7 +163,8 @@ namespace Cauldron.MagnificentMara
         {
             if (!_surveilledTriggers.Contains(trigger))
             {
-                Func<PhaseChangeAction, bool> spy = (PhaseChangeAction pca) => UpdateActed(trigger);
+                //the CardSource check lets us examine whether the card would react to the *current* phase change without an infinite loop
+                Func<PhaseChangeAction, bool> spy = (PhaseChangeAction pca) => (pca.CardSource != null && pca.CardSource.Card == this.Card) || UpdateActed(trigger, pca);
 
                 trigger.AddAdditionalCriteria(spy);
                 _surveilledTriggers.Add(trigger);
@@ -162,11 +172,19 @@ namespace Cauldron.MagnificentMara
             }
         }
 
-        private bool UpdateActed(PhaseChangeTrigger trigger)
+        private bool UpdateActed(PhaseChangeTrigger trigger, PhaseChangeAction pca)
         {
-            if (GameController.RealMode)
+            if (GameController.RealMode && IsFirstOrOnlyCopyOfThisCardInPlay() && !trigger.Types.Any((TriggerType t) => t == TriggerType.Hidden || t == TriggerType.HiddenLast))
             {
-                _justActivatedTrigger = trigger;
+                var TestPhaseChange = new PhaseChangeAction(GetCardSource(), pca.FromPhase, pca.ToPhase, true);
+                if (trigger.DoesMatchTypeAndCriteria(TestPhaseChange))
+                {
+                    _justActivatedTrigger = trigger;
+                }
+                else
+                {
+                    _justActivatedTrigger = null;
+                }
             }
             return true;
         }

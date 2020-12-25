@@ -15,7 +15,7 @@ namespace Cauldron.MagnificentMara
         public override void AddTriggers()
         {
             //"When a non-character card from another deck would be destroyed, you may put it on the top or bottom of its deck instead. If you do, destroy this card.",
-            AddTrigger((DestroyCardAction dc) => !dc.CardToDestroy.Card.IsCharacter && dc.CardToDestroy.TurnTaker != this.TurnTaker && !GameController.IsCardIndestructible(dc.CardToDestroy.Card),
+            AddTrigger((DestroyCardAction dc) => !this.IsBeingDestroyed && !dc.CardToDestroy.Card.IsCharacter && dc.CardToDestroy.TurnTaker != this.TurnTaker && !GameController.IsCardIndestructible(dc.CardToDestroy.Card),
                                                 MaybeMoveInsteadResponse,
                                                 new TriggerType[] { TriggerType.MoveCard, TriggerType.DestroySelf },
                                                 TriggerTiming.Before);
@@ -27,11 +27,10 @@ namespace Cauldron.MagnificentMara
             Card card = dc.CardToDestroy.Card;
             var functions = new List<Function>
             {
-                new Function(DecisionMaker, $"Let {card.Title} be destroyed", SelectionType.None, () => GameController.DoNothing()),
                 new Function(DecisionMaker, $"Put {card.Title} on top of its deck", SelectionType.MoveCardOnDeck, () => CancelDestructionAndMoveCard(dc, card.NativeDeck)),
                 new Function(DecisionMaker, $"Put {card.Title} on the bottom of its deck", SelectionType.MoveCardOnBottomOfDeck, () => CancelDestructionAndMoveCard(dc, card.NativeDeck, true))
             };
-            var selectFunction = new SelectFunctionDecision(GameController, DecisionMaker, functions, optional: false, associatedCards: new Card[] { card }, cardSource: GetCardSource());
+            var selectFunction = new SelectFunctionDecision(GameController, DecisionMaker, functions, optional: true, associatedCards: new Card[] { card }, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectAndPerformFunction(selectFunction);
             if (UseUnityCoroutines)
             {
