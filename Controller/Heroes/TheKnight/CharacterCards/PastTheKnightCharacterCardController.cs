@@ -78,7 +78,7 @@ namespace Cauldron.TheKnight
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                OnPhaseChangeStatusEffect messageStatusEffect = new OnPhaseChangeStatusEffect(this.Card, "DoNothing", $"{Card.Title}'s name is treated as {hero.Title} on {equipment.Title}", new TriggerType[] { TriggerType.Other }, equipment);
+                OnPhaseChangeStatusEffect messageStatusEffect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(DoNothing), $"{Card.Title}'s name is treated as {hero.Title} on {equipment.Title}", new TriggerType[] { TriggerType.Other }, equipment);
                 messageStatusEffect.UntilCardLeavesPlay(equipment);
                 messageStatusEffect.CanEffectStack = true;
                 coroutine = GameController.AddStatusEffect(messageStatusEffect, false, GetCardSource());

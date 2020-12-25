@@ -12,13 +12,13 @@ namespace Cauldron.Starlight
         public NightloreCouncilStarlightCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowSpecialString(() => $"{terra.Title} is next to a constellation", relatedCards: () => new Card[] { terra }).Condition = () => IsNextToConstellation(terra);
-            SpecialStringMaker.ShowSpecialString( () => $"{asheron.Title} is next to a constellation", relatedCards: () => new Card[] { asheron }).Condition = () => IsNextToConstellation(asheron);
+            SpecialStringMaker.ShowSpecialString(() => $"{asheron.Title} is next to a constellation", relatedCards: () => new Card[] { asheron }).Condition = () => IsNextToConstellation(asheron);
             SpecialStringMaker.ShowListOfCards(new LinqCardCriteria(
                                                         (Card c) => (c == terra || c == asheron || c == cryos) &&
                                                                         c.NextToLocation.Cards.Any((Card nextTo) => nextTo.Identifier == "RetreatIntoTheNebula"),
-                                                        "", 
-                                                        useCardsSuffix: false, 
-                                                        singular: "Starlight being protected by Retreat into the Nebula", 
+                                                        "",
+                                                        useCardsSuffix: false,
+                                                        singular: "Starlight being protected by Retreat into the Nebula",
                                                         plural: "Starlights being protected by Retreat into the Nebula"))
                                     .Condition = () => FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "RetreatIntoTheNebula")).Any();
         }
@@ -78,7 +78,7 @@ namespace Cauldron.Starlight
         public IEnumerator TerraHealTeamResponse()
         {
             //"If Starlight of Terra has a constellation next to her at the start of your turn, each Starlight regains 1 HP."
-            IEnumerator heal = GameController.GainHP(ToHeroTurnTakerController(TurnTaker), (Card c) => c == terra || c == asheron || c == cryos, 1, optional:false, cardSource: GetCardSource());
+            IEnumerator heal = GameController.GainHP(ToHeroTurnTakerController(TurnTaker), (Card c) => c == terra || c == asheron || c == cryos, 1, optional: false, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(heal);
@@ -120,7 +120,7 @@ namespace Cauldron.Starlight
 
         private bool FlipCriteria(GameAction ga)
         {
-            return((ga is FlipCardAction || ga is BulkRemoveTargetsAction || ga is MoveCardAction) && !base.Card.IsFlipped && FindCardsWhere((Card c) => c.Owner == base.TurnTaker && c.IsHeroCharacterCard && c.IsActive && c != base.Card).Count() == 0);
+            return ((ga is FlipCardAction || ga is BulkRemoveTargetsAction || ga is MoveCardAction) && !base.Card.IsFlipped && FindCardsWhere((Card c) => c.Owner == base.TurnTaker && c.IsHeroCharacterCard && c.IsActive && c != base.Card).Count() == 0);
         }
 
         public override IEnumerator AfterFlipCardImmediateResponse()
@@ -164,8 +164,8 @@ namespace Cauldron.Starlight
                 case 2:
                     {
                         //"The next time a hero target deals damage, choose the type of that damage."
-                        OnDealDamageStatusEffect chooseNextHeroDamageType = new OnDealDamageStatusEffect(this.Card,
-                                                                                    "ChooseDamageTypeResponse",
+                        OnDealDamageStatusEffect chooseNextHeroDamageType = new OnDealDamageStatusEffect(CardWithoutReplacements,
+                                                                                    nameof(ChooseDamageTypeResponse),
                                                                                     "The next time a hero target deals damage, Starlight chooses the type of that damage.",
                                                                                     new TriggerType[1] { TriggerType.ChangeDamageType },
                                                                                     TurnTaker,

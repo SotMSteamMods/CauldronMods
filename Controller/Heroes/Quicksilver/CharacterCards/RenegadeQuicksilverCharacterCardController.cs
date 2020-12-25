@@ -36,7 +36,7 @@ namespace Cauldron.Quicksilver
                 case 1:
                     {
                         //The next time a hero is dealt damage, they may play a card.
-                        OnDealDamageStatusEffect statusEffect = new OnDealDamageStatusEffect(base.Card, "PlayCardResponse", "The next time a hero is dealt damage, they may play a card.", new TriggerType[] { TriggerType.PlayCard }, base.TurnTaker, base.Card);
+                        OnDealDamageStatusEffect statusEffect = new OnDealDamageStatusEffect(base.Card, nameof(PlayCardResponse), "The next time a hero is dealt damage, they may play a card.", new TriggerType[] { TriggerType.PlayCard }, base.TurnTaker, base.Card);
                         statusEffect.NumberOfUses = 1;
                         statusEffect.CanEffectStack = true;
                         Incap2Count++;
@@ -84,7 +84,7 @@ namespace Cauldron.Quicksilver
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             //Search your deck or trash for Iron Retort and put it into your hand. 
-            coroutine = base.SearchForCards(base.HeroTurnTakerController, true, true, 1, 1, new LinqCardCriteria((Card c) => c.Identifier == "IronRetort"), false, true, false, autoDecideCard: true, shuffleAfterwards:false);
+            coroutine = base.SearchForCards(base.HeroTurnTakerController, true, true, 1, 1, new LinqCardCriteria((Card c) => c.Identifier == "IronRetort"), false, true, false, autoDecideCard: true, shuffleAfterwards: false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

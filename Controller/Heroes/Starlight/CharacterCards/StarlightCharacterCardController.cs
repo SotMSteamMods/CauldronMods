@@ -12,7 +12,7 @@ namespace Cauldron.Starlight
     {
 
         private static readonly string PreventDamageViaIncapPropertyKey = "StarlightIncapPreventDamageToOrByLowest";
-        private static readonly string PreventDamageViaIncapEffectMarker = "NeverCalledStarlightIncapPreventDamageToOrByLowest";
+
         private bool? PreventDamageViaIncap
         {
             get;
@@ -60,7 +60,7 @@ namespace Cauldron.Starlight
                         base.AddCardPropertyJournalEntry(PreventDamageViaIncapPropertyKey, true);
                         //This status effect displays UI text but provides no behavior on its own.
                         //The method name is fake. Another trigger clears the above property when this status effect is removed.
-                        OnPhaseChangeStatusEffect displayEffect = new OnPhaseChangeStatusEffect(Card, PreventDamageViaIncapEffectMarker, "The target with the lowest HP is immune to damage and cannot deal damage.", new TriggerType[] { }, base.Card);
+                        OnPhaseChangeStatusEffect displayEffect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(DoNothing), "The target with the lowest HP is immune to damage and cannot deal damage.", new TriggerType[] { }, base.Card);
                         displayEffect.UntilStartOfNextTurn(base.TurnTaker);
                         displayEffect.CanEffectStack = true;
                         IEnumerator coroutine = base.AddStatusEffect(displayEffect);

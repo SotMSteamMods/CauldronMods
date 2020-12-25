@@ -47,7 +47,7 @@ namespace Cauldron.Dendron
                 excludedTurnTakers.Add(biggestHandTurnTaker);
 
                 //The status effect must last slightly longer than the triggering phase action, or the effect will not fire.
-                OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(base.CardWithoutReplacements, "PreventDrawsThisTurnEffect", $"{biggestHandTurnTaker.Name} cannot draw cards on their turn.", new TriggerType[] { TriggerType.CreateStatusEffect }, base.Card);
+                OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(PreventDrawsThisTurnEffect), $"{biggestHandTurnTaker.Name} cannot draw cards on their turn.", new TriggerType[] { TriggerType.CreateStatusEffect }, base.Card);
                 effect.TurnTakerCriteria.IsSpecificTurnTaker = biggestHandTurnTaker;
                 effect.TurnPhaseCriteria.Phase = Phase.Start;
                 effect.UntilEndOfNextTurn(biggestHandTurnTaker);
@@ -83,7 +83,7 @@ namespace Cauldron.Dendron
 
                 //The status effect must last slightly longer than the triggering phase action, or the effect will not fire.
                 // This hero may not play cards during their next turn.
-                OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(base.CardWithoutReplacements, "PreventPlaysThisTurnEffect", $"{mostCardsTurnTaker.Name} cannot play cards on their turn.", new TriggerType[] { TriggerType.CreateStatusEffect }, base.Card);
+                OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(PreventPlaysThisTurnEffect), $"{mostCardsTurnTaker.Name} cannot play cards on their turn.", new TriggerType[] { TriggerType.CreateStatusEffect }, base.Card);
                 effect.TurnTakerCriteria.IsSpecificTurnTaker = mostCardsTurnTaker;
                 effect.TurnPhaseCriteria.Phase = Phase.Start;
                 effect.UntilEndOfNextTurn(mostCardsTurnTaker);
@@ -140,7 +140,7 @@ namespace Cauldron.Dendron
 
             //The status effect must last slightly longer than the triggering phase action, or the effect will not fire.
             HeroTurnTaker htt = sourceEffect.TurnTakerCriteria.IsSpecificTurnTaker.ToHero();
-            OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(base.CardWithoutReplacements, "ResumeDrawEffect", $"{htt.Name} cannot draw cards.", new TriggerType[] { TriggerType.Hidden }, base.Card);
+            OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(ResumeDrawEffect), $"{htt.Name} cannot draw cards.", new TriggerType[] { TriggerType.Hidden }, base.Card);
             effect.TurnTakerCriteria.IsSpecificTurnTaker = htt;
             effect.TurnPhaseCriteria.Phase = Phase.End;
             effect.CanEffectStack = true;

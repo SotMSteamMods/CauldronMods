@@ -151,7 +151,7 @@ namespace Cauldron.Impact
 
         private OnPhaseChangeStatusEffect IrreducibleNextTurnHolder(Card chosenCard)
         {
-            return new OnPhaseChangeStatusEffect(this.Card, "ActivateThisTurnIrreducible", $"On {chosenCard.Owner.Name}'s next turn, damage dealt by {chosenCard.Title} is irreducible.", new TriggerType[] { TriggerType.Hidden }, this.Card);
+            return new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(ActivateThisTurnIrreducible), $"On {chosenCard.Owner.Name}'s next turn, damage dealt by {chosenCard.Title} is irreducible.", new TriggerType[] { TriggerType.Hidden }, this.Card);
         }
 
         public IEnumerator ActivateThisTurnIrreducible(PhaseChangeAction _, StatusEffect _2)

@@ -36,7 +36,7 @@ namespace Cauldron.Impact
 
         private IEnumerator AddOngoingDestructionTrigger()
         {
-            var statusEffect = new WhenCardIsDestroyedStatusEffect(this.Card, "PlayDestroyedOngoing", $"The next time one of {this.TurnTaker.Name}'s ongoings is destroyed, they play it again.", new TriggerType[] { TriggerType.PlayCard }, DecisionMaker.HeroTurnTaker, this.Card);
+            var statusEffect = new WhenCardIsDestroyedStatusEffect(CardWithoutReplacements, nameof(PlayDestroyedOngoing), $"The next time one of {this.TurnTaker.Name}'s ongoings is destroyed, they play it again.", new TriggerType[] { TriggerType.PlayCard }, DecisionMaker.HeroTurnTaker, this.Card);
             statusEffect.NumberOfUses = 1;
             statusEffect.CardDestroyedCriteria.OwnedBy = this.TurnTaker;
             statusEffect.CardDestroyedCriteria.HasAnyOfTheseKeywords = new List<string> { "ongoing" };
@@ -85,7 +85,7 @@ namespace Cauldron.Impact
                 case 1:
                     {
                         //"Environment cards cannot be played during the next environment turn.",
-                        var holderEffect = new OnPhaseChangeStatusEffect(this.Card, "EnvironmentCannotPlayEffect", "During the next environment turn, environment cards cannot be played.", new TriggerType[] { TriggerType.Hidden }, this.Card);
+                        var holderEffect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(EnvironmentCannotPlayEffect), "During the next environment turn, environment cards cannot be played.", new TriggerType[] { TriggerType.Hidden }, this.Card);
                         holderEffect.NumberOfUses = 1;
                         holderEffect.TurnTakerCriteria.IsEnvironment = true;
                         holderEffect.TurnPhaseCriteria.IsEphemeral = false;
