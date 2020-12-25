@@ -136,13 +136,13 @@ namespace CauldronTests
         [Test()]
         public void TestMinistryOfStrategicScienceMalichaePower()
         {
-            SetupGameController("BaronBlade", "Cauldron.Malichae/MinistryOfStrategicScienceMalichaeCharacter", "Ra", "Haka", "Megalopolis");
+            SetupGameController(new string[] { "BaronBlade", "Cauldron.Malichae/MinistryOfStrategicScienceMalichaeCharacter", "Ra", "Haka", "Megalopolis" });
             StartGame();
 
             GoToUsePowerPhase(Malichae);
 
-            var top = GetTopCardOfDeck(Malichae);
             var card = PutInHand("Reshiel");
+            var top = GetTopCardOfDeck(Malichae);
             DecisionSelectCard = card;
 
             QuickHandStorage(Malichae);

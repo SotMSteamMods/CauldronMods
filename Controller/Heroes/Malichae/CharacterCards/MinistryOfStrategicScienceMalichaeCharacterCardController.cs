@@ -141,7 +141,7 @@ namespace Cauldron.Malichae
                     {
                         var effect = new ImmuneToDamageStatusEffect();
                         effect.DamageAmountCriteria.EqualTo = 1;
-                        effect.TargetCriteria.IsHero = true;
+                        effect.TargetCriteria.IsHeroCharacterCard = true;
                         effect.UntilStartOfNextTurn(TurnTaker);
 
                         var coroutine = AddStatusEffect(effect, true);
