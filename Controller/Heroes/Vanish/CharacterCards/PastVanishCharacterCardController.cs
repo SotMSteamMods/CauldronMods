@@ -93,8 +93,14 @@ namespace Cauldron.Vanish
                 case 1:
                     {
                         AddIncap2Use();
-                        //"The next time a target enters play, it deals itself 1 energy damage.",
-                        IEnumerator coroutine = GameController.SendMessageAction("Applying ongoing effect: The next time a target enters play, it deals itself 1 energy damage.", Priority.High, GetCardSource(), showCardSource: true);
+
+                        var messageEffect = new OnPhaseChangeStatusEffect(this.CardWithoutReplacements, "PastVanishIncap2Message", "The next time a target enters play, it deals itself 1 energy damage.", new TriggerType[] { TriggerType.DealDamage }, this.Card);
+                        messageEffect.TurnTakerCriteria.IsHero = false;
+                        messageEffect.TurnPhaseCriteria.TurnTaker = this.TurnTaker;
+                        messageEffect.CanEffectStack = true;
+                        //impossible to activate - non-hero turns with a phase belonging to this hero
+
+                        IEnumerator coroutine = GameController.AddStatusEffect(messageEffect, true, GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -103,6 +109,7 @@ namespace Cauldron.Vanish
                         {
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
+
                         break;
                     }
                 case 2:
@@ -148,6 +155,7 @@ namespace Cauldron.Vanish
 
         public override void AddTriggers()
         {
+            base.AddTriggers();
             AddTrigger<CardEntersPlayAction>(cpa => cpa.CardEnteringPlay != null && cpa.CardEnteringPlay.IsTarget && Incap2Uses().HasValue, cpa => TargetEntersPlayResponse(cpa.CardEnteringPlay), TriggerType.DealDamage, TriggerTiming.After, outOfPlayTrigger: true);
         }
 
@@ -171,6 +179,24 @@ namespace Cauldron.Vanish
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
                 }
+
+                var incap2MessageEffects = GameController.StatusEffectControllers.Where((StatusEffectController sec) => sec.StatusEffect.CardSource == this.CardWithoutReplacements && sec.StatusEffect is OnPhaseChangeStatusEffect).ToList();
+                foreach(StatusEffectController sec in incap2MessageEffects)
+                {
+                    if(sec.StatusEffect is OnPhaseChangeStatusEffect opcEffect && opcEffect.MethodToExecute == "PastVanishIncap2Message")
+                    {
+                        var coroutine = GameController.ExpireStatusEffect(opcEffect, GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                    }
+                }
+
             }
 
         }

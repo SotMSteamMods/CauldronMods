@@ -214,12 +214,14 @@ namespace CauldronTests
 
             GoToUseIncapacitatedAbilityPhase(vanish);
             UseIncapacitatedAbility(vanish, 1);
-
-            var uses = GameController.Game.Journal.GetCardPropertiesInteger(vanish.CharacterCard, "Incap2");
-
+            AssertNumberOfStatusEffectsInPlay(1);
+            UseIncapacitatedAbility(vanish, 1);
+            AssertNumberOfStatusEffectsInPlay(2);
 
             var minion = PlayCard("BladeBattalion");
-            AssertHitPoints(minion, 4);
+            AssertHitPoints(minion, 3);
+
+            AssertNumberOfStatusEffectsInPlay(0);
         }
 
         [Test]
