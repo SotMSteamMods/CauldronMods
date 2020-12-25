@@ -31,6 +31,11 @@ namespace Cauldron.Tiamat
             yield break;
         }
 
+        private bool IsPotentialEmptierAction(GameAction ga)
+        {
+            return ga is PlayCardAction || ga is DiscardCardAction || ga is MoveCardAction || ga is DestroyCardAction || ga is BulkMoveCardsAction || ga is CompletedCardPlayAction;
+        }
+
         public override IEnumerator Play()
         {
             //When this card enters play, shuffle all Spell cards from the villain trash and place them beneath this card face down.
@@ -59,7 +64,7 @@ namespace Cauldron.Tiamat
             IEnumerator playTopCard = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, showMessage: true, overrideDeck: base.Card.UnderLocation, cardSource: base.GetCardSource());
             base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, (PhaseChangeAction p) => playTopCard, TriggerType.PlayCard);
             //When this pile is depleted, destroy this card.
-            base.AddTrigger<GameAction>((GameAction action) => this._primed && base.Card.UnderLocation.Cards.Count() == 0, new Func<GameAction, IEnumerator>(this.DestroyThisCardResponse), TriggerType.DestroySelf, TriggerTiming.After);
+            base.AddTrigger<GameAction>((GameAction action) => this._primed && base.Card.UnderLocation.Cards.Count() == 0 && IsPotentialEmptierAction(action), new Func<GameAction, IEnumerator>(this.DestroyThisCardResponse), TriggerType.DestroySelf, TriggerTiming.After);
             //If this card is destroyed, move all cards under it into the trash
             base.AddBeforeLeavesPlayAction(new Func<GameAction, IEnumerator>(this.MoveCardsUnderThisCardToTrash), TriggerType.MoveCard);
             //When this card is destroyed, play the top card of the villain deck.
