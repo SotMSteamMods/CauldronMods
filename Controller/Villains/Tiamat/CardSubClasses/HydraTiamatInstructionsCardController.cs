@@ -10,7 +10,7 @@ namespace Cauldron.Tiamat
 {
     public abstract class HydraTiamatInstructionsCardController : TiamatSubCharacterCardController
     {
-        public HydraTiamatInstructionsCardController(Card card, TurnTakerController turnTakerController, string firstHead, string secondHead, string element) : base(card, turnTakerController)
+        protected HydraTiamatInstructionsCardController(Card card, TurnTakerController turnTakerController, string firstHead, string secondHead, string element) : base(card, turnTakerController)
         {
             FirstHead = firstHead;
             SecondHead = secondHead;
