@@ -91,7 +91,7 @@ namespace Cauldron.MagnificentMara
                 case (2):
                     {
                         //"The next time a hero ongoing card is destroyed, put that card in its owner's hand."
-                        var rescueEffect = new WhenCardIsDestroyedStatusEffect(this.Card, "RescueOngoingResponse", "The next time a hero ongoing card is destroyed, put that card in its owner's hand.", new TriggerType[] { TriggerType.MoveCard }, DecisionMaker.HeroTurnTaker, this.Card);
+                        var rescueEffect = new WhenCardIsDestroyedStatusEffect(CardWithoutReplacements, nameof(RescueOngoingResponse), "The next time a hero ongoing card is destroyed, put that card in its owner's hand.", new TriggerType[] { TriggerType.MoveCard }, DecisionMaker.HeroTurnTaker, this.Card);
                         rescueEffect.NumberOfUses = 1;
                         rescueEffect.CardDestroyedCriteria.IsHero = true;
                         rescueEffect.CardDestroyedCriteria.HasAnyOfTheseKeywords = new List<string> { "ongoing" };
@@ -111,7 +111,7 @@ namespace Cauldron.MagnificentMara
             yield break;
         }
 
-        public IEnumerator RescueOngoingResponse(DestroyCardAction dc, HeroTurnTaker hero, StatusEffect effect, int[] powerNumerals = null)
+        public IEnumerator RescueOngoingResponse(DestroyCardAction dc, HeroTurnTaker _1, StatusEffect _2, int[] _3 = null)
         {
             if(dc.PostDestroyDestinationCanBeChanged && dc.CardToDestroy != null)
             {
