@@ -27,8 +27,12 @@ namespace Cauldron.LadyOfTheWood
 			yield return null;
 			yield break;
         }
+		private bool IsPotentialEmptierAction(GameAction ga)
+		{
+			return ga is PlayCardAction || ga is DiscardCardAction || ga is MoveCardAction || ga is DestroyCardAction || ga is BulkMoveCardsAction || ga is CompletedCardPlayAction;
+		}
 
-        public override IEnumerator Play()
+		public override IEnumerator Play()
 		{
 			//When this card enters play, put up to 3 cards from your trash beneath it.
 			List<MoveCardDestination> list = new List<MoveCardDestination>();
@@ -54,7 +58,7 @@ namespace Cauldron.LadyOfTheWood
 			base.AddTrigger<DestroyCardAction>(moveCriteria, new Func<DestroyCardAction, IEnumerator>(this.MoveCardResponse), new TriggerType[] { TriggerType.MoveCard }, TriggerTiming.After);
 
 			//When there are no cards beneath this one, destroy this card.
-			Func<GameAction, bool> destroyCriteria = (GameAction action) => this._primed && base.Card.UnderLocation.Cards.Count<Card>() == 0;
+			Func<GameAction, bool> destroyCriteria = (GameAction action) => this._primed && base.Card.UnderLocation.Cards.Count<Card>() == 0 && IsPotentialEmptierAction(action);
 			base.AddTrigger<GameAction>(destroyCriteria, new Func<GameAction, IEnumerator>(this.DestroyThisCardResponse), TriggerType.DestroySelf, TriggerTiming.After);
 
 			//If this card is destroyed, move all cards under it into the trash
