@@ -16,7 +16,8 @@ namespace Cauldron.MagnificentMara
         public override void AddTriggers()
         {
             //"When a non-character card belonging to another hero is destroyed, you may return it to that player's hand. If you do, destroy this card.",
-            Func<DestroyCardAction, bool> validCardDestroyed = (DestroyCardAction dc) => dc.CardToDestroy != null &&
+            Func<DestroyCardAction, bool> validCardDestroyed = (DestroyCardAction dc) => !this.IsBeingDestroyed &&
+                                                                                dc.CardToDestroy != null &&
                                                                                 dc.CardToDestroy.Card != null &&
                                                                                 dc.CardToDestroy.Card.IsHero &&
                                                                                 !dc.CardToDestroy.Card.IsCharacter &&

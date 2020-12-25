@@ -9,7 +9,7 @@ namespace Cauldron.Tiamat
 {
     public abstract class HydraTiamatCharacterCardController : VillainCharacterCardController
     {
-        public HydraTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected HydraTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }

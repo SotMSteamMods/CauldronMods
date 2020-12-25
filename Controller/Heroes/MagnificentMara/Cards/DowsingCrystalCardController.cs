@@ -38,7 +38,7 @@ namespace Cauldron.MagnificentMara
             
 
             ActivateEffectStatusEffect dowsingTrigger = new ActivateEffectStatusEffect(TurnTaker, TurnTaker.CharacterCard, "Dowsing Crystal trigger");
-            dowsingTrigger.UntilEndOfNextTurn(TurnTaker);
+            dowsingTrigger.UntilStartOfNextTurn(TurnTaker);
             IEnumerator coroutine = GameController.AddStatusEffect(dowsingTrigger, false, GetCardSource());
             if (base.UseUnityCoroutines)
             {

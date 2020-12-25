@@ -40,7 +40,7 @@ namespace Cauldron.MagnificentMara
                             TriggerType.IncreaseDamage,
                             TriggerTiming.Before);
             //"If that card would be destroyed, destroy this card instead."
-            AddTrigger((DestroyCardAction dc) => dc.CardToDestroy.Card == GetCardThisCardIsNextTo() && !GameController.IsCardIndestructible(dc.CardToDestroy.Card), DestroyThisCardInsteadResponse, TriggerType.CancelAction, TriggerTiming.Before);
+            AddTrigger((DestroyCardAction dc) => !this.IsBeingDestroyed && dc.CardToDestroy.Card == GetCardThisCardIsNextTo() && !GameController.IsCardIndestructible(dc.CardToDestroy.Card), DestroyThisCardInsteadResponse, TriggerType.CancelAction, TriggerTiming.Before);
             AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(alsoRemoveTriggersFromThisCard: true);
         }
 
