@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace Cauldron.Quicksilver
 {
-    public class ViciousMemoriesCardController : CardController
+    public class ViciousMemoriesCardController : QuicksilverBaseCardController
     {
         public ViciousMemoriesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

@@ -6,22 +6,43 @@ using System.Collections.Generic;
 
 namespace Cauldron.Quicksilver
 {
-    public class ComboCardController : CardController
+    public abstract class QuicksilverBaseCardController : CardController
     {
-        public ComboCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public static readonly string ComboSelfDamageKey = "ComboSelfDamage";
+        public static readonly string ComboKeyword = "combo";
+        public static readonly string FinisherKeyword = "finisher";
+
+        protected QuicksilverBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
 
-        public bool ContinueComboDamage;
+        protected void FlagCharacterTakingComboDamage()
+        {
+            base.CharacterCardController.SetCardPropertyToTrueIfRealAction(ComboSelfDamageKey);
+        }
 
-        public IEnumerator ComboResponse()
+        protected void ClearCharacterTakingComboDamage()
+        {
+            if (IsRealAction())
+            {
+                base.CharacterCardController.SetCardProperty(ComboSelfDamageKey, false);
+            }
+        }
+
+        protected bool IsCharacterTakingComboDamage()
+        {
+            return base.CharacterCardController.IsPropertyTrue(ComboSelfDamageKey);
+        }
+
+
+        public IEnumerator ComboOrFinisherResponse()
         {
             //You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo.
             List<Function> functions = new List<Function> {
                 //You may play a Finisher,...
                 new Function(base.HeroTurnTakerController, "Play a finisher", SelectionType.PlayCard, () => base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("finisher"), "finisher"), cardSource: base.GetCardSource())),
                 //...{Quicksilver} may deal herself 2 melee damage and play a Combo.
-                new Function(base.HeroTurnTakerController, "Deal yourself 2 melee damage and play a combo", SelectionType.PlayCard, () => ContinueComboResponse())
+                new Function(base.HeroTurnTakerController, "Deal yourself 2 melee damage and play a combo", SelectionType.PlayCard, () => ContinueWithComboResponse())
             };
             IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, functions, true);
             if (base.UseUnityCoroutines)
@@ -35,9 +56,9 @@ namespace Cauldron.Quicksilver
             yield break;
         }
 
-        public IEnumerator ContinueComboResponse()
+        public IEnumerator ContinueWithComboResponse()
         {
-            base.CharacterCardController.SetCardPropertyToTrueIfRealAction("ComboSelfDamage");
+            FlagCharacterTakingComboDamage();
             //...{Quicksilver} may deal herself 2 melee damage...
             IEnumerator coroutine = base.DealDamage(base.CharacterCard, base.CharacterCard, 2, DamageType.Melee, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
@@ -48,7 +69,7 @@ namespace Cauldron.Quicksilver
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            base.CharacterCardController.SetCardProperty("ComboSelfDamage", false);
+            ClearCharacterTakingComboDamage();
             //...play a Combo.
             coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("combo"), "combo"), cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)

@@ -4,7 +4,7 @@ using System;
 
 namespace Cauldron.Quicksilver
 {
-    public class StressHardeningCardController : CardController
+    public class StressHardeningCardController : QuicksilverBaseCardController
     {
         public StressHardeningCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -14,10 +14,10 @@ namespace Cauldron.Quicksilver
         {
             //If {Quicksilver} currently has less than her max HP, increase damage she deals to non-hero targets by 1.
             //If {Quicksilver} has 10 or fewer HP, increase damage she deals to non-hero targets by an additional 1.
-            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard && !action.Target.IsHero, (DealDamageAction action) => DamageIncrease(action));
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard && !action.Target.IsHero, _ => DamageIncrease());
         }
 
-        private int DamageIncrease(DealDamageAction action)
+        private int DamageIncrease()
         {
             int increase = 0;
             //If {Quicksilver} currently has less than her max HP, increase damage she deals to non-hero targets by 1.
