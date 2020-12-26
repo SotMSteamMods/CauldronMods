@@ -217,6 +217,30 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestFlailingWires_DestroyedByReaction()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela" });
+            StartGame();
+            GoToPlayCardPhase(superstorm);
+            Card wires = GetCard("FlailingWires");
+            PlayCard("PressureDrop");
+            //stack deck to prevent extra damage
+            PutOnDeck("ToppledSkyscraper");
+            PlayCard(wires);
+
+            //set up lethal reaction damage
+            PlayCard("TheStaffOfRa");
+            PlayCard("FlameBarrier");
+            SetHitPoints(legacy, 20);
+
+            QuickHPStorage(ra, legacy, haka);
+            //At the end of the environment turn, this card deals the X+1 hero targets with the highest HP 1 lightning damage each, where X is the number of environment cards to the left of this one.
+            PrintPlayAreaPositions(superstorm.TurnTaker);
+            GoToEndOfTurn(superstorm);
+            QuickHPCheck(-1, 0, 0);
+
+        }
+        [Test()]
         public void TestFlailingWires_Play()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela");

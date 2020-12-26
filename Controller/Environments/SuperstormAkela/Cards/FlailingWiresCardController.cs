@@ -45,7 +45,7 @@ namespace Cauldron.SuperstormAkela
         {
             // this card deals the X+1 hero targets with the highest HP 1 lightning damage each, where X is the number of environment cards to the left of this one.
 
-            Func<int> numTargets = () => GetNumberOfCardsToTheLeftOfThisOne(base.Card).Value + 1;
+            Func<int> numTargets = () => (GetNumberOfCardsToTheLeftOfThisOne(base.Card) ?? 0) + 1;
             IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => new int?(1), DamageType.Lightning, numberOfTargets: numTargets);
             if (base.UseUnityCoroutines)
             {

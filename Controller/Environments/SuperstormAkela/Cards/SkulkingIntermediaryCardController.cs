@@ -27,7 +27,7 @@ namespace Cauldron.SuperstormAkela
         private IEnumerator HealNonHeroTargetsResponse(PhaseChangeAction arg)
         {
             //Each environment and villain target regains X+1 HP, where X is the number of environment cards to the left of this one.
-            Func<Card, int> X = (Card c) => GetNumberOfCardsToTheLeftOfThisOne(base.Card).Value + 1;
+            Func<Card, int> X = (Card c) => (GetNumberOfCardsToTheLeftOfThisOne(base.Card) ?? 0) + 1;
             IEnumerator coroutine = GameController.GainHP(DecisionMaker, (Card c) => base.IsVillainTarget(c) || c.IsEnvironmentTarget, X, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {

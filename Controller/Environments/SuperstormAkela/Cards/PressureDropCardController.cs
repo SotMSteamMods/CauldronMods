@@ -36,7 +36,7 @@ namespace Cauldron.SuperstormAkela
             {
                 Card heroCard = storedResults.First();
                 HeroTurnTakerController hero = FindHeroTurnTakerController(heroCard.Owner.ToHero());
-                int? X = GetNumberOfCardsToTheLeftOfThisOne(base.Card);
+                int X = (GetNumberOfCardsToTheLeftOfThisOne(base.Card) ?? 0);
                 coroutine = base.GameController.SelectAndDiscardCards(hero, X, false, X, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
