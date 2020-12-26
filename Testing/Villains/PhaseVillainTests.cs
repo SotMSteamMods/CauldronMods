@@ -369,6 +369,8 @@ namespace CauldronTests
             SetupGameController("Cauldron.PhaseVillain", "Haka", "Parse", "TheScholar", "Megalopolis");
             StartGame();
 
+            PutOnDeck("AroundTheCorner");
+
             //When this card enters play, place it next to the hero with the highest HP.
             Card net = PlayCard("DistortionNet");
             AssertNextToCard(net, haka.CharacterCard);
