@@ -218,6 +218,8 @@ namespace Cauldron.Cricket
             IncreaseDamageStatusEffect statusEffect = new IncreaseDamageStatusEffect(increaseNumeral);
             statusEffect.UntilThisTurnIsOver(Game);
             statusEffect.UntilTargetLeavesPlay(base.CharacterCard);
+            statusEffect.SourceCriteria.IsSpecificCard = base.CharacterCard;
+
             IEnumerator coroutine = base.AddStatusEffect(statusEffect);
             if (base.UseUnityCoroutines)
             {
