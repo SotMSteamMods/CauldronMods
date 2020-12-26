@@ -78,9 +78,11 @@ namespace CauldronTests
             StartGame();
 
             //At then end of the villain turn, if there are no nanomutants in play, play the top card of the villain deck.
+            Card jumper = PutOnDeck("JumperAug");
             Card fire = PutOnDeck("FireAug");
             GoToEndOfTurn(swarm);
             AssertIsInPlay(fire);
+            AssertUnderCard(fire, jumper);
 
             //Whenever a villain target would deal damage to another villain target, redirect that damage to the hero target with the highest HP.
             QuickHPStorage(haka);
@@ -105,11 +107,13 @@ namespace CauldronTests
 
             //check triggers: 
             //Blade deals highest hero 2 damage at EOT
-            //Fire absorb causes H - 2 (in this case 1) discards at EOT
+            //Fire absorb causes H - 2 (in this case 1) discards at start of turn
             QuickHPStorage(legacy, haka, ra);
             QuickHandStorage(legacy, haka, ra);
             GoToEndOfTurn(swarm);
             QuickHPCheck(0, -2, 0);
+
+            GoToStartOfTurn(swarm);
             QuickHandCheck(-1, 0, 0);
         }
 
