@@ -254,8 +254,10 @@ namespace CauldronTests
         {
             SetupGameController("WagerMaster", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
-
-            DestroyCards(FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && !c.IsCharacter && c.IsVillain));
+                        
+            DestroyNonCharacterVillainCards();
+            //losingtothe odds causes a game over mid test, banish it.
+            PutInTrash("LosingToTheOdds", "LosingToTheOdds", "LosingToTheOdds");
 
             PlayCard("BreakingTheRules");
 
