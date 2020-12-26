@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace Cauldron.Quicksilver
 {
-    public class FrenziedMeleeCardController : CardController
+    public class FrenziedMeleeCardController : QuicksilverBaseCardController
     {
         public FrenziedMeleeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

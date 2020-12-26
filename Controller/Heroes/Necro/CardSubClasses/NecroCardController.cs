@@ -11,6 +11,7 @@ namespace Cauldron.Necro
     {
         public static readonly string RitualKeyword = "ritual";
         public static readonly string UndeadKeyword = "undead";
+        public static readonly string PastNecroPowerKey = "HeroVillainFlipped";
 
         protected NecroCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -23,7 +24,7 @@ namespace Cauldron.Necro
 
         protected bool IsHeroConsidering1929(Card card)
         {
-            if(GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, "HeroVillainFlipped") == true)
+            if (GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, PastNecroPowerKey) == true)
             {
                 return IsVillain(card);
             }
@@ -32,7 +33,7 @@ namespace Cauldron.Necro
 
         protected bool IsVillianConsidering1929(Card card)
         {
-            if (GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, "HeroVillainFlipped") == true)
+            if (GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, PastNecroPowerKey) == true)
             {
                 return card.IsHero;
             }
@@ -43,7 +44,7 @@ namespace Cauldron.Necro
         {
             get
             {
-                if (GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, "HeroVillainFlipped") == true)
+                if (GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, PastNecroPowerKey) == true)
                 {
                     return "villain";
                 }
@@ -55,7 +56,7 @@ namespace Cauldron.Necro
         {
             get
             {
-                if (GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, "HeroVillainFlipped") == true)
+                if (GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, PastNecroPowerKey) == true)
                 {
                     return "hero";
                 }

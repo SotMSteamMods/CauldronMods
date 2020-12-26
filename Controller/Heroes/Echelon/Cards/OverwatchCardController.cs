@@ -25,7 +25,7 @@ namespace Cauldron.Echelon
             int numDamage = GetPowerNumeral(0, 3);
 
             //"Once before your next turn, when a hero target is dealt damage, {Echelon} may deal the source of that damage 3 melee damage"
-            var statusEffect = new OnDealDamageStatusEffect(this.CardWithoutReplacements, "MaybeCounterDamageResponse", $"Once before their next turn, when a hero target is dealt damage {DecisionMaker.Name} may deal the source of that damage {numDamage} melee damage.", new TriggerType[] { TriggerType.DealDamage }, DecisionMaker.TurnTaker, this.Card, new int[] { numDamage });
+            var statusEffect = new OnDealDamageStatusEffect(CardWithoutReplacements, nameof(MaybeCounterDamageResponse), $"Once before their next turn, when a hero target is dealt damage {DecisionMaker.Name} may deal the source of that damage {numDamage} melee damage.", new TriggerType[] { TriggerType.DealDamage }, DecisionMaker.TurnTaker, this.Card, new int[] { numDamage });
             statusEffect.TargetCriteria.IsHero = true;
             statusEffect.DamageAmountCriteria.GreaterThan = 0;
             statusEffect.UntilStartOfNextTurn(DecisionMaker.TurnTaker);

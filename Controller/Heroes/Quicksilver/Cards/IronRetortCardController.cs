@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace Cauldron.Quicksilver
 {
-    public class IronRetortCardController : CardController
+    public class IronRetortCardController : QuicksilverBaseCardController
     {
         public IronRetortCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

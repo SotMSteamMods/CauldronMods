@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace Cauldron.Quicksilver
 {
-    public class MercuryStrikeCardController : ComboCardController
+    public class MercuryStrikeCardController : QuicksilverBaseCardController
     {
         public MercuryStrikeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -28,7 +28,7 @@ namespace Cauldron.Quicksilver
                 base.GameController.ExhaustCoroutine(coroutine2);
             }
             //You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo.
-            coroutine = this.ComboResponse();
+            coroutine = this.ComboOrFinisherResponse();
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

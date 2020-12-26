@@ -65,7 +65,7 @@ namespace Cauldron.Tiamat
                 GameController.AddCardPropertyJournalEntry(biggestHandTurnTaker.CharacterCard, PreventDrawPropertyKey, true);
 
                 //This status effect makes them able to draw again at start of next villain
-                OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(base.CardWithoutReplacements, "", $"{biggestHandTurnTaker.Name} cannot draw cards.", new TriggerType[] { TriggerType.CreateStatusEffect }, base.Card);
+                OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(DoNothing), $"{biggestHandTurnTaker.Name} cannot draw cards.", new TriggerType[] { TriggerType.CreateStatusEffect }, base.Card);
                 effect.UntilStartOfNextTurn(base.TurnTaker);
                 effect.TurnTakerCriteria.IsSpecificTurnTaker = base.TurnTaker;
                 effect.TurnPhaseCriteria.Phase = Phase.Start;

@@ -8,7 +8,7 @@ using Handelabra;
 
 namespace Cauldron.Quicksilver
 {
-    public class MirrorShardCardController : CardController
+    public class MirrorShardCardController : QuicksilverBaseCardController
     {
         public MirrorShardCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -48,7 +48,7 @@ namespace Cauldron.Quicksilver
             }
 
             List<YesNoCardDecision> didRedirect = new List<YesNoCardDecision> { };
-            IEnumerator askForRedirect = GameController.MakeYesNoCardDecision(HeroTurnTakerController, SelectionType.RedirectDamage, this.Card, action: action, storedResults: didRedirect, cardSource: GetCardSource());
+            IEnumerator askForRedirect = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.RedirectDamage, this.Card, action: action, storedResults: didRedirect, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(askForRedirect);
@@ -78,7 +78,7 @@ namespace Cauldron.Quicksilver
         {
             if (action.Target == base.CharacterCard && action.DidDealDamage)
             {
-                IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), action.Amount + 1, action.DamageType, 1, false, 1, cardSource: base.GetCardSource());
+                IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), action.Amount + 1, action.DamageType, 1, false, 1, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

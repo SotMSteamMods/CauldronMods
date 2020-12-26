@@ -42,15 +42,13 @@ namespace CauldronTests
             StartGame();
 
             //{Cricket} deals 2 targets 1 sonic damage each. You may use a power now.
-            //Second power will be Subharmonic Reciever
-            PlayCard("SubharmonicReceiver");
-            QuickHandStorage(cricket, legacy, bunker, scholar);
-            QuickHPStorage(choke, cricket);
+            //Second power will be GrasshopperKick
+            var card = PlayCard("GrasshopperKick");
+            QuickHPStorage(choke, cricket, legacy);
+            DecisionSelectCards = new Card[] { choke.CharacterCard, cricket.CharacterCard, legacy.CharacterCard };
+
             UsePower(cricket);
-            QuickHPCheck(-1, -1);
-            //Each player may draw a card. When a player draws a card this way, 1 other player must discard a card.
-            //All draw 1, Cricket -3 for other heroes, Legacy -1 for Cricket
-            QuickHandCheck(-2, 0, 1, 1);
+            QuickHPCheck(-1, -1, -2);
         }
 
         [Test()]
@@ -256,8 +254,10 @@ namespace CauldronTests
         {
             SetupGameController("WagerMaster", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
-
-            DestroyCards(FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && !c.IsCharacter && c.IsVillain));
+                        
+            DestroyNonCharacterVillainCards();
+            //losingtothe odds causes a game over mid test, banish it.
+            PutInTrash("LosingToTheOdds", "LosingToTheOdds", "LosingToTheOdds");
 
             PlayCard("BreakingTheRules");
 

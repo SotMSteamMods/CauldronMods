@@ -6,8 +6,8 @@ using System.Linq;
 
 namespace Cauldron.Quicksilver
 {
-    public class MalleableArmorCardController : CardController
-    {
+    public class MalleableArmorCardController : QuicksilverBaseCardController
+	{
         public MalleableArmorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowSpecialString(() => Journal.DealDamageEntriesThisTurn().Where((DealDamageJournalEntry ddje) => ddje.SourceCard == this.CharacterCard && ddje.Amount > 0).Any() ? "Quicksilver has dealt damage this turn." : "Quicksilver has not dealt damage this turn.");

@@ -13,22 +13,22 @@ namespace Cauldron.StSimeonsCatacombs
 
         public StSimeonsCatacombsInstructionsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SetCardProperty("Indestructible", false);
             SpecialStringMaker.ShowSpecialString(() => BuildNumberOfRoomsEnteredPlaySpecialString()).Condition = () => Card.IsFlipped;
             SpecialStringMaker.ShowSpecialString(() => "Environment cards cannot be played.", showInEffectsList: () => true).Condition = () => !Card.IsFlipped;
+            AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
         }
 
         public override void AddTriggers()
         {
             CannotPlayCards(ttc => ttc == FindTurnTakerController(TurnTaker) && !Card.IsFlipped);
             //At the end of the environment turn, put a random room card from beneath this one into play and flip this card
-            AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.MoveRandomRoomIntoPlayThenFlip), TriggerType.MoveCard, additionalCriteria: pca => !Card.IsFlipped);
+            AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.MoveRandomRoomIntoPlayThenFlip, TriggerType.MoveCard, additionalCriteria: pca => !Card.IsFlipped);
             //Whenever a room card would leave play, instead place it face up beneath this card. Then choose a different room beneath this card and put it into play.
-            base.AddTrigger<MoveCardAction>((MoveCardAction mc) => Card.IsFlipped && mc.CardToMove.IsRoom && mc.Destination != base.TurnTaker.PlayArea && mc.Destination != Catacombs.UnderLocation, new Func<MoveCardAction, IEnumerator>(this.ChangeRoomPostLeaveResponse), TriggerType.MoveCard, TriggerTiming.Before);
+            base.AddTrigger<MoveCardAction>((MoveCardAction mc) => Card.IsFlipped && mc.CardToMove.IsRoom && mc.Destination != base.TurnTaker.PlayArea && mc.Destination != Catacombs.UnderLocation, this.ChangeRoomPostLeaveResponse, TriggerType.MoveCard, TriggerTiming.Before);
             //If you change rooms this way three times in a turn, room cards become indestructible until the end of the turn.
-            base.AddTrigger<GameAction>((GameAction ga) => Card.IsFlipped && NumberOfRoomsEnteredPlayThisTurn() >= 3 && !base.IsPropertyTrue("Indestructible", null), new Func<GameAction, IEnumerator>(this.SetRoomsIndestructibleResponse), TriggerType.CreateStatusEffect, TriggerTiming.Before);
+            base.AddTrigger<GameAction>((GameAction ga) => Card.IsFlipped && NumberOfRoomsEnteredPlayThisTurn() >= 3 && !base.IsPropertyTrue("Indestructible"), SetRoomsIndestructibleResponse, TriggerType.CreateStatusEffect, TriggerTiming.Before);
             //At the end of the environment turn, if no room cards have entered play this turn, you may destroy a room card.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.FreeDestroyRoomResponse), TriggerType.DestroyCard, (PhaseChangeAction pca) => Card.IsFlipped && NumberOfRoomsEnteredPlayThisTurn() == 0);
+            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.FreeDestroyRoomResponse, TriggerType.DestroyCard, (PhaseChangeAction pca) => Card.IsFlipped && NumberOfRoomsEnteredPlayThisTurn() == 0);
         }
 
 
@@ -112,10 +112,10 @@ namespace Cauldron.StSimeonsCatacombs
         private IEnumerator SetRoomsIndestructibleResponse(GameAction ga)
         {
             //room cards become indestructible until the end of the turn
-            base.SetCardPropertyToTrueIfRealAction("Indestructible", null);
+            base.SetCardPropertyToTrueIfRealAction("Indestructible");
             MakeIndestructibleStatusEffect makeIndestructibleStatusEffect = new MakeIndestructibleStatusEffect();
             makeIndestructibleStatusEffect.CardsToMakeIndestructible.HasAnyOfTheseKeywords = new List<string>() { "room" };
-            makeIndestructibleStatusEffect.ToTurnPhaseExpiryCriteria.Phase = new Phase?(Phase.End);
+            makeIndestructibleStatusEffect.ToTurnPhaseExpiryCriteria.Phase = Phase.End;
             IEnumerator coroutine = base.AddStatusEffect(makeIndestructibleStatusEffect, true);
 
             if (base.UseUnityCoroutines)
@@ -131,6 +131,11 @@ namespace Cauldron.StSimeonsCatacombs
 
         private IEnumerator FreeDestroyRoomResponse(PhaseChangeAction pca)
         {
+            if (IsRealAction())
+            {
+                Journal.RecordCardProperties(Card, "Indestructible", (bool?)null);
+            }
+
             //you may destroy a room card.
             IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsRoom, "room"), true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)

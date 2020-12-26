@@ -616,7 +616,7 @@ namespace CauldronTests
             StartGame();
 
             Card sub = PlayCard("SubharmonicReceiver");
-
+            DecisionYesNo = true;
             //Each player may draw a card. When a player draws a card this way, 1 other player must discard a card.
             QuickHandStorage(cricket, legacy, bunker, scholar);
             UsePower(sub);

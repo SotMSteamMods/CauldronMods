@@ -43,7 +43,7 @@ namespace Cauldron.TangoOne
             if (target != null)
             {
                 OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(this.CardWithoutReplacements,
-                    nameof(StartOfTurnDealDamageResponse) + numDamage.ToString(),
+                    nameof(StartOfTurnDealDamageResponse),
                     $"{base.Card.Title} will deal {PowerDamageToDeal} projectile damage to {target.Title} at the start of her next turn",
                     new[] { TriggerType.DealDamage }, this.Card);
                 effect.UntilEndOfNextTurn(base.HeroTurnTaker);
@@ -55,6 +55,7 @@ namespace Cauldron.TangoOne
                 effect.CardSource = this.Card;
                 effect.NumberOfUses = 1;
                 effect.DoesDealDamage = true;
+                effect.SetPowerNumeralsArray(new int[] { numDamage });
 
                 IEnumerator addStatusEffectRoutine = base.GameController.AddStatusEffect(effect, true, GetCardSource());
                 if (base.UseUnityCoroutines)
@@ -68,24 +69,11 @@ namespace Cauldron.TangoOne
             }
         }
 
-        public IEnumerator StartOfTurnDealDamageResponse2(PhaseChangeAction pca, OnPhaseChangeStatusEffect sourceEffect)
-        {
-            return StartOfTurnDealDamageResponse(pca, sourceEffect, 2);
-        }
-        public IEnumerator StartOfTurnDealDamageResponse3(PhaseChangeAction pca, OnPhaseChangeStatusEffect sourceEffect)
-        {
-            return StartOfTurnDealDamageResponse(pca, sourceEffect, 3);
-        }
-        public IEnumerator StartOfTurnDealDamageResponse4(PhaseChangeAction pca, OnPhaseChangeStatusEffect sourceEffect)
-        {
-            return StartOfTurnDealDamageResponse(pca, sourceEffect, 4);
-        }
-
-        public IEnumerator StartOfTurnDealDamageResponse(PhaseChangeAction _, OnPhaseChangeStatusEffect sourceEffect, int damageToDeal)
+        public IEnumerator StartOfTurnDealDamageResponse(PhaseChangeAction _, OnPhaseChangeStatusEffect sourceEffect)
         {
             var target = sourceEffect.TargetLeavesPlayExpiryCriteria.IsOneOfTheseCards.FirstOrDefault();
 
-            int powerNumeral = damageToDeal;
+            int powerNumeral = sourceEffect.PowerNumeralsToChange[0];
 
             if (!CharacterCard.IsIncapacitatedOrOutOfGame && target.IsTarget && target.IsInPlayAndNotUnderCard)
             {
