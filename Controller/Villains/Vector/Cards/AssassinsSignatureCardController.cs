@@ -29,7 +29,7 @@ namespace Cauldron.Vector
 
             List<DealDamageAction> ddas = new List<DealDamageAction>();
             IEnumerator damageRoutine 
-                = base.DealDamageToHighestHP(base.CharacterCard, 1, card => card.IsHero && card.IsTarget && card.IsInPlay, 
+                = base.DealDamageToHighestHP(base.CharacterCard, 1, card => card.IsHero && card.IsTarget && card.IsInPlay,
                     card => damageAmount, DamageType.Projectile, storedResults: ddas);
 
             if (base.UseUnityCoroutines)

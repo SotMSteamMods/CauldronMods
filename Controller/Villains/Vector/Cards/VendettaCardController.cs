@@ -38,7 +38,7 @@ namespace Cauldron.Vector
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            if(storedResults != null)
+            if (storedResults.FirstOrDefault() != null)
             {
                 Card target = storedResults.First().OriginalTarget;
                 
