@@ -262,7 +262,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            Card headOnDeck = PutOnDeck("ReflexBooster");
+            Card headOnDeck = PutOnDeck("CarapaceHelmet");
             AssertInDeck(headOnDeck);
             //At the end of the villain turn, reveal the top card of the villain deck. If an arm or head card is revealed, put it under {Anathema}'s character card, otherwise discard it. 
             //Then if there are {H} or more cards under {Anathema}, flip his villain character card.           
@@ -279,7 +279,7 @@ namespace CauldronTests
             StartGame();
             IEnumerable<Card> cardsUnder = GetCards("Biofeedback", "TheStuffOfNightmares", "HeavyCarapace", "RazorScales");
             MoveCards(anathema, cardsUnder, anathema.CharacterCard.UnderLocation);
-            Card headOnDeck = PutOnDeck("ReflexBooster");
+            Card headOnDeck = PutOnDeck("CarapaceHelmet");
             AssertInDeck(headOnDeck);
             //At the end of the villain turn, reveal the top card of the villain deck. If an arm or head card is revealed, put it under {Anathema}'s character card, otherwise discard it. 
             //Then if there are {H} or more cards under {Anathema}, flip his villain character card.  
