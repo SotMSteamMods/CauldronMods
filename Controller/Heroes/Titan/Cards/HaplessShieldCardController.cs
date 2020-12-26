@@ -16,7 +16,7 @@ namespace Cauldron.Titan
 
         public override IEnumerator Play()
         {
-            IEnumerable<Card> choices = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInPlay && !c.IsHero));
+            IEnumerable<Card> choices = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInPlay && !c.IsHero && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "", false, singular: "non-hero target", plural:"non-hero targets"));
             List<SelectTargetDecision> storedResults = new List<SelectTargetDecision>();
             //Select a non-hero target. 
             IEnumerator coroutine = base.GameController.SelectTargetAndStoreResults(base.HeroTurnTakerController, choices, storedResults, selectionType: SelectionType.None, cardSource: base.GetCardSource());
