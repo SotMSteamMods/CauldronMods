@@ -936,6 +936,24 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestMarkOfQuickeningModifiesCurrentPhase()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToPlayCardPhase(stranger);
+
+            //Play this next to a hero. They may play an additional card during their play phase.
+            DecisionSelectCard = stranger.CharacterCard;
+            Card mark = PlayCard("MarkOfQuickening");
+
+            AssertPhaseActionCount(new int?(1));
+
+            DestroyCard(mark);
+            AssertPhaseActionCount(0);
+        }
+
+        [Test()]
         public void TestMarkOfTheBloodThornDestroySuccessful()
         {
             SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
