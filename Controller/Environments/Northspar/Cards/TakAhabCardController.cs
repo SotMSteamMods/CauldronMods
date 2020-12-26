@@ -14,7 +14,7 @@ namespace Cauldron.Northspar
         public TakAhabCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowNumberOfCardsAtLocation(Card.UnderLocation);
-            SpecialStringMaker.ShowSpecialString(() => Card.Title + "'s end of turn effect will trigger twice this turn.").Condition = () => IsPropertyTrue(AethiumTriggerKey);
+            SpecialStringMaker.ShowSpecialString(() => Card.Title + "'s end of turn effect will trigger twice this turn.").Condition = () => GetCardPropertyJournalEntryInteger(AethiumTriggerKey) == Game.TurnIndex;
         }
 
         public override void AddTriggers()
@@ -37,7 +37,7 @@ namespace Cauldron.Northspar
             {
                 TriggerType.MoveCard,
                 TriggerType.DealDamage
-            }, (PhaseChangeAction pca) => base.IsPropertyTrue(AethiumTriggerKey));
+            }, (PhaseChangeAction pca) => GetCardPropertyJournalEntryInteger(AethiumTriggerKey) == Game.TurnIndex);
 
             AddAfterLeavesPlayAction(() => ResetFlagAfterLeavesPlay(AethiumTriggerKey));
         }
@@ -46,7 +46,7 @@ namespace Cauldron.Northspar
         {
             if (IsRealAction())
             {
-                Journal.RecordCardProperties(CharacterCard, AethiumTriggerKey, (bool?)null);
+                Journal.RecordCardProperties(CharacterCard, AethiumTriggerKey, (int?)null);
             }
 
             return EndOfTurnResponse(arg);

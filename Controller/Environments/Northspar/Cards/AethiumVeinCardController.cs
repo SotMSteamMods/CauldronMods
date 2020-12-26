@@ -32,10 +32,10 @@ namespace Cauldron.Northspar
         private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
         {
             //Tak Ahab's end of turn effect acts twice this turn.
-            var card = base.FindTakAhabInPlay();
+            var card = base.FindTakAhabAnywhere();
             if (card != null && IsRealAction())
             {
-                Journal.RecordCardProperties(card, AethiumTriggerKey, true);
+                Journal.RecordCardProperties(card, AethiumTriggerKey, Game.TurnIndex);
             }
 
             // destroy this card
