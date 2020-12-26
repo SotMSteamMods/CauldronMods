@@ -1032,11 +1032,15 @@ namespace CauldronTests
             QuickHPCheck(-2);
 
             SaveAndLoad();
-
             QuickHPStorage(legacy);
             DealDamage(swarm, legacy, 1, DamageType.Melee);
             QuickHPCheck(-2);
 
+            //make sure we're not making some kind of trigger-stacking monstrosity
+            SaveAndLoad();
+            QuickHPStorage(legacy);
+            DealDamage(swarm, legacy, 1, DamageType.Melee);
+            QuickHPCheck(-2);
         }
     }
 }

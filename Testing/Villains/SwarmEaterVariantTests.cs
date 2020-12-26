@@ -287,5 +287,27 @@ namespace CauldronTests
             GoToEndOfTurn(swarm);
             QuickHPCheck(-2, -4, 0);
         }
+        [Test()]
+        public void TestAbsorbAbilitiesPersistThroughSaveLoad()
+        {
+            SetupGameController("Cauldron.SwarmEater/DistributedHivemindSwarmEaterCharacter", "Legacy", "Haka", "Ra", "Megalopolis");
+            StartGame();
+
+            Card speed = PutOnDeck("SpeedAug");
+            Card jumper = PlayCard("JumperAug");
+            AssertIsInPlay(jumper);
+            AssertUnderCard(jumper, speed);
+
+            QuickHPStorage(legacy);
+            DealDamage(jumper, legacy, 1, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            SaveAndLoad();
+            
+            jumper = GetCardInPlay("JumperAug");
+            QuickHPStorage(legacy);
+            DealDamage(jumper, legacy, 1, DamageType.Melee);
+            QuickHPCheck(-2);
+        }
     }
 }
