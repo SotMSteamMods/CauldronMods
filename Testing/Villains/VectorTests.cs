@@ -1005,7 +1005,30 @@ namespace CauldronTests
             AssertStatusEffectsContains(messageText);
         }
 
+        [Test]
+        public void TestHostageShieldAnyHeroMayRemove()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
 
+            Card hostageShield = GetCard(HostageShieldCardController.Identifier);
+
+            StartGame();
+
+            DecisionYesNo = true;
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(hostageShield);
+
+            string messageText = $"Prevent damage from Ra.";
+            AssertStatusEffectsContains(messageText);
+            AssertNextToCard(hostageShield, ra.CharacterCard);
+
+            GoToStartOfTurn(legacy);
+            AssertNotNextToCard(hostageShield, ra.CharacterCard);
+            AssertStatusEffectsDoesNotContain(messageText);
+        }
 
         [Test]
         public void TestHotZone()
