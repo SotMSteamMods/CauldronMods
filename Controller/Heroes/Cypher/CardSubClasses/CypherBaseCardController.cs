@@ -62,7 +62,7 @@ namespace Cauldron.Cypher
             string augListSpecial = "Augments in play: ";
             if (augList.Any())
             {
-                if (augList.FirstOrDefault().IsFaceUp)
+                if (!augList.FirstOrDefault().IsFlipped)
                 {
                     augListSpecial += augList.FirstOrDefault().Title;
                 }
@@ -72,13 +72,13 @@ namespace Cauldron.Cypher
                 }
                 for (int i = 1; i < augList.Count(); i++)
                 {
-                    if (augList.FirstOrDefault().IsFaceUp)
+                    if (!augList.ElementAt(i).IsFlipped)
                     {
                         augListSpecial += ", " + augList.ElementAt(i).Title;
                     }
                     else
                     {
-                        augListSpecial += ", " + augList.FirstOrDefault().Title + " (flipped)";
+                        augListSpecial += ", " + augList.ElementAt(i).Title + " (flipped)";
                     }
                 }
             }
