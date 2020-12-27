@@ -327,7 +327,7 @@ namespace CauldronTests
 
             var fauxAug = SetupSwarmingAugment(ra);
             Card neuralInterface = GetCard(NeuralInterfaceCardController.Identifier);
-
+            Assert.AreNotEqual(fauxAug, neuralInterface);
             // Act
             GoToPlayCardPhase(cypher);
 
@@ -337,14 +337,16 @@ namespace CauldronTests
             PrintSeparator();
 
             QuickHandStorage(cypher);
-            
+
             UsePower(neuralInterface);
 
             // Assert
-            Assert.True(AreAugmented(new List<Card>() { cypher.CharacterCard }));
-            Assert.True(HasAugment(cypher.CharacterCard, fauxAug));
-            Assert.True(AreNotAugmented(new List<Card>() { ra.CharacterCard }));
+            Assert.True(AreAugmented(new List<Card>() { cypher.CharacterCard }), "Cypher should be augmented.");
+            Assert.True(HasAugment(cypher.CharacterCard, fauxAug), "Cypher should have a nanocloud aug");
+            Assert.True(AreNotAugmented(new List<Card>() { ra.CharacterCard }), "Ra should not be augmented");
             QuickHandCheck(1);
+            AssertFlipped(fauxAug);
+            
         }
 
 

@@ -68,11 +68,6 @@ namespace Cauldron.Cypher
             AddTrigger<BulkMoveCardsAction>(bma => bma.Origins.Any(kvp => kvp.Value.IsInPlay) && !bma.Destination.IsInPlay && bma.CardsToMove.Any(c => c.Owner == TurnTaker), bma => BulkResetNanocloudFlags(bma.CardsToMove), TriggerType.HiddenLast, TriggerTiming.After);
         }
 
-        protected bool IsNanocloud(Card c)
-        {
-            return GameController.GetCardPropertyJournalEntryBoolean(c, CypherBaseCardController.NanocloudKey) == true;
-        }
-
         private IEnumerator BulkResetNanocloudFlags(IEnumerable<Card> cards)
         {
             if (IsRealAction())

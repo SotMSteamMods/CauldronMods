@@ -29,7 +29,7 @@ namespace Cauldron.Cypher
             SelectCardDecision scd = new SelectCardDecision(GameController, DecisionMaker,
                 SelectionType.MoveCardNextToCard, GetAugmentsInPlay(), true, cardSource: GetCardSource());
 
-            IEnumerator routine = base.GameController.SelectCardAndDoAction(scd, MoveAugment);
+            IEnumerator routine = base.GameController.SelectCardAndDoAction(scd, MoveInPlayAugment);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);

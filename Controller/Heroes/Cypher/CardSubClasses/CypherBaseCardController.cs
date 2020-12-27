@@ -102,7 +102,6 @@ namespace Cauldron.Cypher
             return false;
         }
 
-
         protected bool IsAugmentedHeroCharacterCard(Card hero)
         {
             return hero.IsHeroCharacterCard && hero.IsInPlayAndHasGameText && !hero.IsIncapacitatedOrOutOfGame
@@ -125,7 +124,7 @@ namespace Cauldron.Cypher
             return !IsAugmentedHeroCharacterCard(hero) ? new List<Card>() : hero.GetAllNextToCards(false).Where(IsAugment).ToList();
         }
 
-        protected IEnumerator MoveAugment(SelectCardDecision scd)
+        protected IEnumerator MoveInPlayAugment(SelectCardDecision scd)
         {
             if (scd.SelectedCard == null)
             {
@@ -136,8 +135,10 @@ namespace Cauldron.Cypher
                                                          c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame)
                                     .Select(h => new MoveCardDestination(h.NextToLocation, showMessage: true)).ToList();
 
-            IEnumerator routine = GameController.SelectLocationAndMoveCard(this.DecisionMaker, scd.SelectedCard,
-                otherHeroLocations, cardSource: GetCardSource());
+            IEnumerator routine = GameController.SelectLocationAndMoveCard(this.DecisionMaker, scd.SelectedCard, otherHeroLocations,
+                                    isPutIntoPlay: false,
+                                    playIfMovingToPlayArea: false,
+                                    cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
             {

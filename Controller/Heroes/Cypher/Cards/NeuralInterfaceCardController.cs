@@ -33,7 +33,7 @@ namespace Cauldron.Cypher
                             eliminateOptions: true,
                             cardSource: GetCardSource());
 
-            IEnumerator routine = base.GameController.SelectCardsAndDoAction(scd, MoveAugment);
+            IEnumerator routine = base.GameController.SelectCardsAndDoAction(scd, MoveInPlayAugment);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
