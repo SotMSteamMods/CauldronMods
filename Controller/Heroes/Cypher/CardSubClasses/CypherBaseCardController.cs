@@ -14,7 +14,7 @@ namespace Cauldron.Cypher
 
         protected CypherBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            
+
         }
 
         protected LinqCardCriteria AugmentCardCriteria(Func<Card, bool> additionalCriteria = null)
@@ -58,29 +58,11 @@ namespace Cauldron.Cypher
 
         private string GetAugListSpecial()
         {
-            var augList = FindCardsWhere(c => IsInPlayAugment(c));
+            var augList = GetAugmentsInPlay();
             string augListSpecial = "Augments in play: ";
             if (augList.Any())
             {
-                if (!augList.FirstOrDefault().IsFlipped)
-                {
-                    augListSpecial += augList.FirstOrDefault().Title;
-                }
-                else
-                {
-                    augListSpecial += augList.FirstOrDefault().Title + " (flipped)";
-                }
-                for (int i = 1; i < augList.Count(); i++)
-                {
-                    if (!augList.ElementAt(i).IsFlipped)
-                    {
-                        augListSpecial += ", " + augList.ElementAt(i).Title;
-                    }
-                    else
-                    {
-                        augListSpecial += ", " + augList.ElementAt(i).Title + " (flipped)";
-                    }
-                }
+                augListSpecial += string.Join(", ", augList.Select(c => c.Title + (c.IsFlipped ? " (flipped)" : "")).ToArray());
             }
             else
             {
