@@ -56,8 +56,9 @@
             "openingLines": {
                 "default": "Give it up, heroes - what chance do you have against the pinnacle of evolution?",
                 "TangoOneCharacter": "Sniper girl! I remember you. What say we knock over a town, for old time's sake?",
-                "GhostOpsTangoOneCharacter": "Ghost Ops Tango One placeholder",
-                "1929TangoOneCharacter": "1929 Tango One placeholder"
+                "GhostOpsTangoOneCharacter": "Come out, come out, wherever you are!",
+                "PastTangoOneCharacter": "That gun is so last century. Today it's all about bioweapons, and you're looking at the best one there is!",
+                "CreedOfTheSniperTangoOneCharacter": "Let's play a game: It's one where I eat a bunch of second-rate heroes."
             }
         },
         {
@@ -480,7 +481,8 @@
                 "default": "I've picked up a few new tricks - and limbs. Care to see?",
                 "TangoOneCharacter": "Tango One placeholder",
                 "GhostOpsTangoOneCharacter": "Ghost Ops Tango One placeholder",
-                "1929TangoOneCharacter": "1929 Tango One placeholder"
+                "PastTangoOneCharacter": "1929 Tango One placeholder",
+                "CreedOfTheSniperTangoOneCharacter": "Creed of the Sniper Tango One placeholder"
             }
         }
     ]

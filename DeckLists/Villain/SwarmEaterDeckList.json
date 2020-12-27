@@ -52,9 +52,9 @@
             "difficulty": 4,
             "openingLines": {
                 "default": "Obstruction analysis complete. Assigned secondary priority. Primary priority unchanged: incorporate targets, enhance self.",
-                "CypherCharacter": "Cypher placeholder",
-                "FirstResponseCypherCharacter": "First Response Cypher placeholder",
-                "SwarmingProtocolCypherCharacter": "Swarming Protocol Cypher placeholder"
+                "CypherCharacter": "I will absorb your power!",
+                "FirstResponseCypherCharacter": "I...hunger.",
+                "SwarmingProtocolCypherCharacter": "We are the same. Soon, we will be one!"
             }
         },
         {
@@ -506,7 +506,7 @@
             ],
             "difficulty": 2,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "We are legion. Soon all will join the hive mind.",
                 "CypherCharacter": "Cypher placeholder",
                 "FirstResponseCypherCharacter": "First Response Cypher placeholder",
                 "SwarmingProtocolCypherCharacter": "Swarming Protocol Cypher placeholder"

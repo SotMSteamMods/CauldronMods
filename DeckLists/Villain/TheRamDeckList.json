@@ -60,9 +60,10 @@
             "difficulty": 2,
             "openingLines": {
                 "default": "Target Aquired//Status//Hostile//Initiate Neutralization Protocol",
-                "QuicksilverCharacter": "Quicksilver placeholder",
-                "UncannyQuicksilverCharacter": "Uncanny Quicksilver placeholder",
-                "RenegadeQuicksilverCharacter": "Renegade Quicksilver placeholder"
+                "QuicksilverCharacter": "Primary target identified//Halberd-19//Initiate R43 combat retrieval",
+                "UncannyQuicksilverCharacter": "Primary target identified//Halberd-19 morphology has changed//Deploy increased countermeasures",
+                "RenegadeQuicksilverCharacter": "Primary target identified//Halberd-19 appears to be evading law enforcement//Exploit opportunity",
+                "HarbingerQuicksilverCharacter": "Primary target identified//Reclamation already completed//Presence does not compute//Attack anyway"
             }
         },
         {
@@ -442,8 +443,8 @@
             ],
             "difficulty": 1,
             "openingLines": {
-                "default": "default placeholder",
-                "QuicksilverCharacter": "Quicksilver placeholder",
+                "default": "ADMIRAL WINTERS: I'll blast you all back to whatever time you came from, even if I have to destroy this whole place!",
+                "QuicksilverCharacter": "I see I am not the only one with a metal shell to fight in.",
                 "UncannyQuicksilverCharacter": "Uncanny Quicksilver placeholder",
                 "RenegadeQuicksilverCharacter": "Renegade Quicksilver placeholder",
                 "TheStrangerCharacter": "The Stranger placeholder",
@@ -459,7 +460,7 @@
                 "BaccaratCharacter": "Baccarat placeholder",
                 "AceOfSorrowsBaccaratCharacter": "Ace Of Sorrows Baccarat placeholder",
                 "AceOfSwordsBaccaratCharacter": "Ace Of Swords Baccarat placeholder",
-                "1929BaccaratCharacter": "Baccarat 1929 placeholder",
+                "PastBaccaratCharacter": "Baccarat 1929 placeholder",
                 "TheKnightCharacter": "The Knight placeholder",
                 "BerserkerTheKnightCharacter": "The Berserker Knight placeholder",
                 "FairTheKnightCharacter": "The Fair Knight placeholder",
