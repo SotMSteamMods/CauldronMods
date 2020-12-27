@@ -119,10 +119,10 @@ namespace Cauldron.PhaseVillain
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
                 }
-                base.RemoveAllTriggers();
-                this.AddSideTriggers();
-                yield break;
             }
+            base.RemoveAllTriggers();
+            this.AddSideTriggers();
+            yield break;
         }
 
         private bool IsObstacle(Card c)
