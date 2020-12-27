@@ -117,14 +117,15 @@ namespace Cauldron.TangoOne
 
                     
                     //Play first ongoing
-                    var storedPlay = new List<PlayCardAction> { };
+                    var storedResults = new List<SelectCardsDecision> { };
                     Func<Card, bool> playableOngoingInHand = (delegate (Card c)
                     {
                         return c.IsInHand && c.IsHero && c.IsOngoing &&
                                   AskIfCardIsVisibleToCardSource(c, GetCardSource()) != false &&
                                   GameController.CanPlayCard(FindCardController(c)) == CanPlayCardResult.CanPlay;
                     });
-                    IEnumerator coroutine = GameController.SelectAndPlayCard(DecisionMaker, playableOngoingInHand, true, cardSource: GetCardSource(), noValidCardsMessage: "There were no playable ongoing cards", storedResults: storedPlay);
+                    IEnumerator coroutine = GameController.SelectCardsAndStoreResults(DecisionMaker, SelectionType.PlayCard, playableOngoingInHand, 2, storedResults, false, 0, cardSource: GetCardSource());
+                        //GameController.SelectAndPlayCard(DecisionMaker, playableOngoingInHand, true, cardSource: GetCardSource(), noValidCardsMessage: "There were no playable ongoing cards", storedResults: storedPlay);
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -134,10 +135,10 @@ namespace Cauldron.TangoOne
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
 
-                    //If we did pick one, play another
-                    if(storedPlay.FirstOrDefault() != null && storedPlay.FirstOrDefault().CardToPlay != null)
+                    var cards = GetSelectedCards(storedResults);
+                    foreach(var card in cards)
                     {
-                        coroutine = GameController.SelectAndPlayCard(DecisionMaker, playableOngoingInHand, true, cardSource: GetCardSource(), noValidCardsMessage: "There were no more playable ongoing cards");
+                        coroutine = GameController.PlayCard(FindTurnTakerController(card.Owner), card, responsibleTurnTaker: TurnTaker, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
