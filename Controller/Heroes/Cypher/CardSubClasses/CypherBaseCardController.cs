@@ -4,6 +4,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Handelabra;
 
 namespace Cauldron.Cypher
 {
@@ -52,7 +53,40 @@ namespace Cauldron.Cypher
 
         protected SpecialString ShowSpecialStringAugmentsInPlay()
         {
-            return SpecialStringMaker.ShowListOfCardsInPlay(AugmentCardCriteria());
+            return SpecialStringMaker.ShowSpecialString(() => GetAugListSpecial());
+        }
+
+        private string GetAugListSpecial()
+        {
+            var augList = FindCardsWhere(c => IsInPlayAugment(c));
+            string augListSpecial = "Augments in play: ";
+            if (augList.Any())
+            {
+                if (augList.FirstOrDefault().IsFaceUp)
+                {
+                    augListSpecial += augList.FirstOrDefault().Title;
+                }
+                else
+                {
+                    augListSpecial += augList.FirstOrDefault().Title + " (flipped)";
+                }
+                for (int i = 1; i < augList.Count(); i++)
+                {
+                    if (augList.FirstOrDefault().IsFaceUp)
+                    {
+                        augListSpecial += ", " + augList.ElementAt(i).Title;
+                    }
+                    else
+                    {
+                        augListSpecial += ", " + augList.FirstOrDefault().Title + " (flipped)";
+                    }
+                }
+            }
+            else
+            {
+                augListSpecial += "None";
+            }
+            return augListSpecial;
         }
 
         protected SpecialString ShowSpecialStringAugmentedHeroes()
