@@ -28,7 +28,7 @@ namespace Cauldron.SuperstormAkela
         {
             // this card deals the 2 targets with the highest HP X+1 projectile damage each, where X is the number of environment cards to the left of this one.
 
-            Func<Card, int?> amount = (Card c) => GetNumberOfCardsToTheLeftOfThisOne(base.Card) + 1;
+            Func<Card, int?> amount = (Card c) => (GetNumberOfCardsToTheLeftOfThisOne(base.Card) ?? 0) + 1;
             IEnumerator coroutine = DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsTarget, amount, DamageType.Projectile, numberOfTargets: () => 2);
             if (base.UseUnityCoroutines)
             {

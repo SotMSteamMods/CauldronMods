@@ -302,7 +302,21 @@ namespace CauldronTests
             PlayCard("HaplessShield");
             QuickHPCheck(-1);
         }
+        [Test]
+        public void TestHaplessShieldOnlyPicksTargets()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
 
+            Card train = PlayCard("PlummetingMonorail");
+            Card epe = PlayCard("ElectroPulseExplosive");
+            Card police = PlayCard("PoliceBackup");
+            Card beam = PlayCard("InterpolationBeam");
+
+            AssertNextDecisionChoices(included: new Card[] { train, epe, omnitron.CharacterCard }, notIncluded: new Card[] { police, beam });
+            PlayCard("HaplessShield");
+
+        }
         [Test()]
         public void TestImmolate()
         {

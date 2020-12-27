@@ -489,6 +489,38 @@ namespace CauldronTests
             AssertInPlayArea(haka, new[] { mere, savageMana });
             AssertInTrash(haka, dominion);
         }
+        [Test]
+        public void TestAssassinsSignature_DestructionEvenIfCannotDealDamage()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card mere = GetCard("Mere");
+            Card dominion = GetCard("Dominion");
+            Card savageMana = GetCard("SavageMana");
+            Card groundPound = GetCard("GroundPound");
+
+            DecisionYesNo = true;
+            PlayCard(groundPound);
+            PlayCard(mere);
+            PlayCard(dominion);
+            PlayCard(savageMana);
+
+            DecisionSelectCard = dominion;
+            QuickHPStorage(Vector, legacy, ra, haka);
+
+            AddImmuneToDamageTrigger(ra, true, false);
+
+            // Act
+            Card aSig = PlayCard(AssassinsSignatureCardController.Identifier);
+
+
+            // Assert
+            QuickHPCheck(0, 0, 0, 0);
+            AssertInPlayArea(haka, new[] { mere, savageMana });
+            AssertInTrash(haka, dominion);
+        }
 
         [Test]
         public void TestAssassinsSignature_DestroyEquipment()
@@ -973,7 +1005,30 @@ namespace CauldronTests
             AssertStatusEffectsContains(messageText);
         }
 
+        [Test]
+        public void TestHostageShieldAnyHeroMayRemove()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
 
+            Card hostageShield = GetCard(HostageShieldCardController.Identifier);
+
+            StartGame();
+
+            DecisionYesNo = true;
+
+            // Act
+            GoToPlayCardPhase(Vector);
+            PlayCard(hostageShield);
+
+            string messageText = $"Prevent damage from Ra.";
+            AssertStatusEffectsContains(messageText);
+            AssertNextToCard(hostageShield, ra.CharacterCard);
+
+            GoToStartOfTurn(legacy);
+            AssertNotNextToCard(hostageShield, ra.CharacterCard);
+            AssertStatusEffectsDoesNotContain(messageText);
+        }
 
         [Test]
         public void TestHotZone()
@@ -1451,6 +1506,30 @@ namespace CauldronTests
             QuickHPStorage(haka);
             QuickHandStorage(haka);
 
+            // Act
+            GoToPlayCardPhase(Vector);
+            AddImmuneToDamageTrigger(legacy, true, false);
+            PlayCard(vendetta);
+
+            // Assert
+            QuickHPCheck(0);
+            QuickHandCheck(-1);
+        }
+        [Test]
+        public void TestVendetta_DiscardEvenIfCannotDealDamage()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+
+            StartGame();
+            Card vendetta = GetCard(VendettaCardController.Identifier);
+
+            DecisionYesNo = true;
+            PlayCard("GroundPound");
+
+            QuickHPStorage(haka);
+            QuickHandStorage(haka);
             // Act
             GoToPlayCardPhase(Vector);
             AddImmuneToDamageTrigger(legacy, true, false);

@@ -28,7 +28,7 @@ namespace Cauldron.SuperstormAkela
         private IEnumerator DealDamageResponse(PhaseChangeAction pca)
         {
             //this card deals the { H} targets with the highest HP X projectile damage each, where X is the number of environment cards to the left of this one.
-            Func<Card, int?> X = (Card c) => GetNumberOfCardsToTheLeftOfThisOne(base.Card);
+            Func<Card, int?> X = (Card c) => GetNumberOfCardsToTheLeftOfThisOne(base.Card) ?? 0;
             IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsTarget, X, DamageType.Projectile, numberOfTargets: () => Game.H);
             if (base.UseUnityCoroutines)
             {

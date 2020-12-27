@@ -307,6 +307,19 @@ namespace CauldronTests
             AssertIsInPlay(bonds);
         }
         [Test]
+        public void TestEscapeVelocityBottomOfDeckOneTarget()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            var viableTargets = new Card[] { mdp };
+            SetHitPoints(viableTargets, 1);
+
+            PlayCard("EscapeVelocity");
+            AssertOnBottomOfDeck(mdp);
+        }
+        [Test]
         public void TestEscapeVelocityDestroyOngoing()
         {
             SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");

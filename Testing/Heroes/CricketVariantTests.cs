@@ -238,9 +238,13 @@ namespace CauldronTests
             //{Cricket} may deal 1 target 1 sonic damage.
             //Increase damage dealt by {Cricket} during your next turn by 1.
             GoToStartOfTurn(cricket);
-            QuickHPStorage(choke);
+            QuickHPStorage(choke, cricket);
             DealDamage(cricket, choke, 1, DamageType.Sonic);
-            QuickHPCheck(-2);
+            QuickHPCheck(-2, 0);
+
+            //only cricket
+            DealDamage(choke, cricket, 1, DamageType.Sonic);
+            QuickHPCheck(0, -1);
 
             //only the next turn
             GoToStartOfTurn(cricket);

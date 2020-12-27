@@ -366,7 +366,7 @@ namespace CauldronTests
         [Test()]
         public void TestDistortionNet()
         {
-            SetupGameController("Cauldron.PhaseVillain", "Haka", "Parse", "TheScholar", "Megalopolis");
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Legacy", "TheScholar", "Megalopolis");
             StartGame();
 
             PutOnDeck("AroundTheCorner");
@@ -375,10 +375,14 @@ namespace CauldronTests
             Card net = PlayCard("DistortionNet");
             AssertNextToCard(net, haka.CharacterCard);
 
+
             //Reduce damage dealt by that hero by 2.
             QuickHPStorage(scholar);
             DealDamage(haka, scholar, 3, DamageType.Melee);
             QuickHPCheck(-1);
+
+            //prevent Phase's EOT play from messing up test
+            PlayCard("TakeDown");
 
             //At the start of that hero's turn, this card deals them {H} toxic damage.
             QuickHPStorage(haka);
@@ -536,7 +540,7 @@ namespace CauldronTests
         [Test()]
         public void TestResidualDesynchronization()
         {
-            SetupGameController("Cauldron.PhaseVillain", "Haka", "Parse", "TheScholar", "Megalopolis");
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Legacy", "TheScholar", "Megalopolis");
             StartGame();
 
             Card wall = GetCardInPlay("ReinforcedWall");
@@ -558,6 +562,10 @@ namespace CauldronTests
             DealDamage(haka, door, 4, DamageType.Melee);
             QuickHPCheck(0, -3);
             PlayCard(wall);
+
+            //prevent Phase's EOT play from messing up test
+            PlayCard("TakeDown");
+
             //New turn
             GoToStartOfTurn(haka);
             QuickHPStorage(haka.CharacterCard, wall);
