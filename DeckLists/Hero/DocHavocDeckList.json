@@ -78,7 +78,7 @@
                 "GainHP"
             ],
             "body": "Whenever {DocHavoc} would deal damage to a target, that target may instead regain that much HP.",
-            "flavorText": "\"Let's fix you up\", he said,{BR}as Vanish backed slowly away from the glowing knife.",
+            "flavorText": "''Let's fix you up'', he said,{BR}as Vanish backed slowly away from the{BR}glowing knife.",
             "flavorReference": "War Journal #94"
         },
         {
