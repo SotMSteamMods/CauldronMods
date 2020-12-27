@@ -33,7 +33,9 @@ namespace Cauldron.Impact
         public override void AddTriggers()
         {
             //"The first time {Impact} would be dealt damage each environment turn, prevent that damage."
-            AddTrigger((DealDamageAction dd) => dd.Target == this.CharacterCard && dd.Amount > 0 && Game.ActiveTurnPhase.IsEnvironment && !HasBeenSetToTrueThisTurn(microKey), PreventDamageResponse, TriggerType.WouldBeDealtDamage, TriggerTiming.Before, isActionOptional: false);
+            AddTrigger((DealDamageAction dd) => dd.Target == this.CharacterCard && dd.Amount > 0 && Game.ActiveTurnPhase.IsEnvironment && !HasBeenSetToTrueThisTurn(microKey), PreventDamageResponse, TriggerType.WouldBeDealtDamage, TriggerTiming.Before,
+                isActionOptional: false,
+                orderMatters: true);
 
             AddAfterLeavesPlayAction((GameAction _) => ResetFlagAfterLeavesPlay(microKey), TriggerType.Hidden);
         }

@@ -508,6 +508,7 @@ namespace CauldronTests
             QuickHPCheck(-3);
             AssertInTrash(micro);
         }
+
         [Test]
         public void TestLocalMicrogravityPrevention()
         {
@@ -530,6 +531,34 @@ namespace CauldronTests
             DealDamage(haka, impact, 5, DTM);
             QuickHPCheck(-5);
         }
+
+
+        [Test]
+        public void TestLocalMicrogravityCricketInteraction()
+        {
+            //from issue #617
+
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Cauldron.Cricket", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+
+            GoToStartOfTurn(visionary);
+            var micro = PlayCard("LocalMicrogravity");
+            var distort = PlayCard("AcousticDistortion");
+
+            GoToStartOfTurn(FindEnvironment());
+
+            DecisionAmbiguousCard = micro;
+            DecisionRedirectTarget = bunker.CharacterCard;
+
+            QuickHPStorage(impact, bunker);
+            DealDamage(bunker, impact, 5, DTM);
+            QuickHPCheck(0, 0);
+            PrintSeparator("Check only once");
+            //only once
+            DealDamage(bunker, impact, 5, DTM);
+            QuickHPCheck(0, -5);
+        }
+
         [Test]
         public void TestMassDriverDamage()
         {
