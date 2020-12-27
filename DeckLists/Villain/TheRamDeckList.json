@@ -453,7 +453,7 @@
                 "WastelandRoninTheStrangerCharacter": "Wasteland Ronin: The Stranger placeholder",
                 "NecroCharacter": "Necro placeholder",
                 "WardenOfChaosNecroCharacter": "Warden of Chaos Necro placeholder",
-                "1929NecroCharacter": "Necro 1929 placeholder",
+                "PastNecroCharacter": "Necro 1929 placeholder",
                 "TangoOneCharacter": "Tango One placeholder",
                 "GhostOpsTangoOneCharacter": "Ghost Ops Tango One placeholder",
                 "PastTangoOneCharacter": "1929 Tango One placeholder",
@@ -468,10 +468,10 @@
                 "WastelandRoninTheKnightCharacter": "The Wasteland Ronin Knights placeholder",
                 "MagnificentMaraCharacter": "Magnificent Mara placeholder",
                 "MinistryOfStrategicScienceMagnificentMaraCharacter": "Ministry Of Strategic Science Magnificent Mara placeholder",
-                "1929MagnificentMaraCharacter": "1929 Magnificent Mara placeholder",
+                "PastMagnificentMaraCharacter": "1929 Magnificent Mara placeholder",
                 "VanishCharacter": "Vanish placeholder",
                 "FirstResponseVanishCharacter": "First Response Vanish  placeholder",
-                "1929VanishCharacter": "Vanish 1929 placeholder"
+                "PastVanishCharacter": "Vanish 1929 placeholder"
             }
         }
     ]
