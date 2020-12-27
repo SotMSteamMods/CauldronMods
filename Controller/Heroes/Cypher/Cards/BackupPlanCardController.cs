@@ -98,7 +98,7 @@ namespace Cauldron.Cypher
 
             // If you do, select any number of Augments in play and move each one next to a new hero. 
 
-            var augmentsToMove = new SelectCardsDecision(GameController, DecisionMaker, (Card c) => c.IsInPlayAndHasGameText && IsAugment(c), SelectionType.MoveCard,  null, false, 0, eliminateOptions: true, cardSource: GetCardSource());
+            var augmentsToMove = new SelectCardsDecision(GameController, DecisionMaker, (Card c) => IsInPlayAugment(c), SelectionType.MoveCard,  null, false, 0, eliminateOptions: true, cardSource: GetCardSource());
             routine = GameController.SelectCardsAndDoAction(augmentsToMove, MoveAugment, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {

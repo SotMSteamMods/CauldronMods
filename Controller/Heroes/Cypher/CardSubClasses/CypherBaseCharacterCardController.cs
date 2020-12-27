@@ -7,7 +7,7 @@ namespace Cauldron.Cypher
 {
     public abstract class CypherBaseCharacterCardController : HeroCharacterCardController
     {
-        public CypherBaseCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected CypherBaseCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
 
@@ -20,6 +20,11 @@ namespace Cauldron.Cypher
         {
             return hero.IsHeroCharacterCard && hero.IsInPlayAndHasGameText && !hero.IsIncapacitatedOrOutOfGame
                 && hero.NextToLocation.HasCards && hero.GetAllNextToCards(false).Any(IsAugment);
+        }
+
+        protected List<Card> GetAugmentsInPlay()
+        {
+            return FindCardsWhere(c => c.IsInPlayAndHasGameText && IsAugment(c)).ToList();
         }
 
         protected bool IsAugment(Card card)

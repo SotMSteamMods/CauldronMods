@@ -9,6 +9,8 @@ namespace Cauldron.Cypher
 {
     public abstract class CypherBaseCardController : CardController
     {
+        public static readonly string NanocloudKey = "Nanocloud";
+
         protected CypherBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
@@ -59,8 +61,30 @@ namespace Cauldron.Cypher
 
         protected bool IsAugment(Card card)
         {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "augment");
+            if (card != null)
+            {
+                if (card.HasGameText && base.GameController.DoesCardContainKeyword(card, "augment"))
+                    return true;
+
+                if (card.IsInPlay && card.IsFaceDownNonCharacter && GameController.GetCardPropertyJournalEntryBoolean(card, NanocloudKey) == true)
+                    return true;
+            }
+            return false;
         }
+
+        protected bool IsInPlayAugment(Card card)
+        {
+            if (card != null)
+            {
+                if (card.IsInPlayAndHasGameText && base.GameController.DoesCardContainKeyword(card, "augment"))
+                    return true;
+
+                if (card.IsInPlay && card.IsFaceDownNonCharacter && GameController.GetCardPropertyJournalEntryBoolean(card, NanocloudKey) == true)
+                    return true;
+            }
+            return false;
+        }
+
 
         protected bool IsAugmentedHeroCharacterCard(Card hero)
         {
@@ -70,7 +94,7 @@ namespace Cauldron.Cypher
 
         protected List<Card> GetAugmentsInPlay()
         {
-            return FindCardsWhere(c => c.IsInPlayAndHasGameText && IsAugment(c)).ToList();
+            return FindCardsWhere(c => IsInPlayAugment(c)).ToList();
         }
 
         protected List<TurnTaker> GetAugmentedHeroTurnTakers()

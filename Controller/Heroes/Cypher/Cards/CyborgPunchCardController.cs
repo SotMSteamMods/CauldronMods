@@ -42,7 +42,7 @@ namespace Cauldron.Cypher
 
             // One augmented hero deals 1 target 1 melee damage and draws a card now.
             List<SelectCardDecision> storedHeroCard = new List<SelectCardDecision> { };
-            routine = this.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.HeroToDealDamage, base.AugmentedHeroCharacterCardCriteria(c => c.IsInPlayAndHasGameText), storedHeroCard, false, cardSource: GetCardSource());
+            routine = this.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.HeroToDealDamage, base.AugmentedHeroCharacterCardCriteria(), storedHeroCard, false, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
             {

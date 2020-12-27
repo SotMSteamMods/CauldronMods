@@ -10,7 +10,6 @@ namespace Cauldron.Cypher
     {
         private readonly Phase _phaseToIncrease;
 
-
         protected PhaseIncreasesAugCardController(Card card, TurnTakerController turnTakerController, Phase phase) : base(card, turnTakerController)
         {
             _phaseToIncrease = phase;

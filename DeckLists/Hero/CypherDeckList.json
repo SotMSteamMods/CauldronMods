@@ -488,7 +488,7 @@
             "flavorReference": "Necro, Experimental One-shot"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "CypherCharacter",
             "promoIdentifier": "FirstResponseCypherCharacter",
@@ -547,7 +547,7 @@
             ],
             "icons": [
                 "HasPower",
-                "DealDamageEnergy"
+                "DrawCardNow"
             ],
             "hitpoints": 22,
             "nemesisIdentifiers": [
