@@ -22,8 +22,11 @@ namespace Cauldron.Cricket
         private IEnumerator MoveCardResponse(DealDamageAction action)
         {
             //...you may put the top card of your deck beneath this one.
-            List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.MoveCardToUnderCard, TurnTaker.Deck.TopCard, storedResults: storedResults, cardSource: GetCardSource());
+            List<YesNoDecision> storedResults = new List<YesNoDecision>();
+            var yesNo = new YesNoDecision(GameController, DecisionMaker, SelectionType.MoveUnderThisCard,
+                            gameAction: action,
+                            cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.MakeDecisionAction(yesNo);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -32,9 +35,13 @@ namespace Cauldron.Cricket
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            if (DidPlayerAnswerYes(storedResults))
+            if (DidPlayerAnswerYes(yesNo))
             {
-                coroutine = GameController.MoveCard(DecisionMaker, TurnTaker.Deck.TopCard, Card.UnderLocation, cardSource: GetCardSource());
+                coroutine = GameController.MoveCard(DecisionMaker, TurnTaker.Deck.TopCard, Card.UnderLocation,
+                            isPutIntoPlay: false,
+                            playCardIfMovingToPlayArea: false,
+                            doesNotEnterPlay: true,
+                            cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
