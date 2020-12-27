@@ -86,16 +86,22 @@ namespace Cauldron.SwarmEater
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            //Put the discarded target beneath the villain target that just entered play.
-            coroutine = base.GameController.MoveCard(base.TurnTakerController, storedResult.FirstOrDefault().RevealedCards.LastOrDefault(), action.CardToPlay.UnderLocation);
-            if (base.UseUnityCoroutines)
+            var absorbedCard = storedResult.FirstOrDefault()?.RevealedCards.LastOrDefault();
+            if (absorbedCard != null && IsNanomutant(absorbedCard))
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                //Put the discarded target beneath the villain target that just entered play.
+                coroutine = base.GameController.MoveCard(base.TurnTakerController, absorbedCard, action.CardToPlay.UnderLocation);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                ActivateAbsorbTriggers(absorbedCard);
             }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
+
             coroutine = base.CleanupRevealedCards(base.TurnTaker.Revealed, base.TurnTaker.Trash);
             if (base.UseUnityCoroutines)
             {
@@ -105,7 +111,6 @@ namespace Cauldron.SwarmEater
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
             //Then flip {SwarmEater}'s character cards.
             coroutine = base.GameController.FlipCard(this, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
@@ -136,6 +141,14 @@ namespace Cauldron.SwarmEater
 
             }
             yield break;
+        }
+
+        private void ActivateAbsorbTriggers(Card absorbedCard)
+        {
+            CardController absorbedCC = base.FindCardController(absorbedCard);
+            absorbedCC?.RemoveAllTriggers();
+            base.GameController.RemoveInhibitor(absorbedCC);
+            absorbedCC?.AddAllTriggers();
         }
     }
 }

@@ -10,6 +10,15 @@ namespace Cauldron.SwarmEater
 
         }
 
+        public override void AddStartOfGameTriggers()
+        {
+            if(CanAbsorbEffectTrigger())
+            {
+                RemoveAllTriggers();
+                GameController.RemoveInhibitor(this);
+                AddAllTriggers();
+            }
+        }
         public Card CardThatAbsorbedThis()
         {
             Card nextTo = this.Card.Location.OwnerCard;
