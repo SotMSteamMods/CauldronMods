@@ -13,6 +13,7 @@ namespace Cauldron.Cypher
 
         protected CypherBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            
         }
 
         protected LinqCardCriteria AugmentCardCriteria(Func<Card, bool> additionalCriteria = null)

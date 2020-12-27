@@ -14,10 +14,6 @@ namespace Cauldron.Cypher
 
         public SwarmingProtocolCypherCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            //special string to display on nanocloud augments
-            var nanoCloudCriteria = new LinqCardCriteria(c => c.IsInPlay && c.IsFaceDownNonCharacter && IsNanocloud(c));
-            SpecialStringMaker.ShowSpecialString(() => "[b]Nanocloud[/b]{BR}Augment{BR}This hero is augmented.",
-                relatedCards: () => FindCardsWhere(nanoCloudCriteria));
         }
 
         public override IEnumerator UsePower(int index = 0)
@@ -64,17 +60,17 @@ namespace Cauldron.Cypher
             }
         }
 
-        private bool IsNanocloud(Card c)
-        {
-            return GameController.GetCardPropertyJournalEntryBoolean(c, CypherBaseCardController.NanocloudKey) == true;
-        }
-
         public override void AddTriggers()
         {
             base.AddTriggers();
 
             AddTrigger<MoveCardAction>(mca => mca.Origin.IsInPlay && !mca.Destination.IsInPlay && mca.CardToMove.Owner == TurnTaker && IsNanocloud(mca.CardToMove), mca => ResetNanocloudFlag(mca.CardToMove), TriggerType.HiddenLast, TriggerTiming.After);
             AddTrigger<BulkMoveCardsAction>(bma => bma.Origins.Any(kvp => kvp.Value.IsInPlay) && !bma.Destination.IsInPlay && bma.CardsToMove.Any(c => c.Owner == TurnTaker), bma => BulkResetNanocloudFlags(bma.CardsToMove), TriggerType.HiddenLast, TriggerTiming.After);
+        }
+
+        protected bool IsNanocloud(Card c)
+        {
+            return GameController.GetCardPropertyJournalEntryBoolean(c, CypherBaseCardController.NanocloudKey) == true;
         }
 
         private IEnumerator BulkResetNanocloudFlags(IEnumerable<Card> cards)
