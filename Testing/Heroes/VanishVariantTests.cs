@@ -215,6 +215,27 @@ namespace CauldronTests
             GoToUseIncapacitatedAbilityPhase(vanish);
             UseIncapacitatedAbility(vanish, 1);
             AssertNumberOfStatusEffectsInPlay(1);
+
+            var minion = PlayCard("BladeBattalion");
+            AssertHitPoints(minion, 4);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+        }
+
+        [Test]
+        public void PastVanishIncap2Stacks()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/PastVanishCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            SetupIncap(baron);
+            AssertIncapacitated(vanish);
+
+            GoToUseIncapacitatedAbilityPhase(vanish);
+            UseIncapacitatedAbility(vanish, 1);
+            AssertNumberOfStatusEffectsInPlay(1);
+            //test stacks
             UseIncapacitatedAbility(vanish, 1);
             AssertNumberOfStatusEffectsInPlay(2);
 
