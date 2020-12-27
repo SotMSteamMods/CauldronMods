@@ -51,15 +51,7 @@
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
             ],
-            "difficulty": 3,
-            "openingLines": {
-                "default": "Screeee! Raoooargh! Khhhaaazzt!",
-                "TheKnightCharacter": "The Knight placeholder",
-                "BerserkerTheKnightCharacter": "The Berserker Knight placeholder",
-                "FairTheKnightCharacter": "The Fair Knight placeholder",
-                "WastelandRoninTheKnightCharacter": "Wasteland Ronin The Knight placeholder",
-                "1929TheKnightCharacter": "The Knight 1929 placeholder"
-            }
+            "difficulty": 1
         },
         {
             "identifier": "StormTiamatCharacter",
@@ -155,17 +147,18 @@
             "difficulty": 1,
             "openingLines": {
                 "default": "Screeee! Raoooargh! Khhhaaazzt!",
-                "TheKnightCharacter": "The Knight placeholder",
-                "BerserkerTheKnightCharacter": "The Berserker Knight placeholder",
-                "FairTheKnightCharacter": "The Fair Knight placeholder",
-                "WastelandRoninTheKnightCharacter": "Wasteland Ronin The Knight placeholder",
-                "1929TheKnightCharacter": "The Knight 1929 placeholder",
-                "NecroCharacter": "Necro placeholder",
-                "WardenOfChaosNecroCharacter": "Warden of Chaos Necro placeholder",
-                "1929NecroCharacter": "Necro 1929 placeholder",
-                "EchelonCharacter": "Echelon placeholder",
-                "FirstResponseEchelonCharacter": "First Response Echelon placeholder",
-                "2199EchelonCharacter": "Echelon 2199 placeholder"
+                "TheKnightCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "BerserkerTheKnightCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "FairTheKnightCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "PastTheKnightCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "WastelandRoninTheKnightCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "NecroCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "WardenOfChaosNecroCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "PastNecroCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "LastOfTheForgottenOrderNecroCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "EchelonCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "FirstResponseEchelonCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "FutureEchelonCharacter": "Screeee! Raoooargh! Khhhaaazzt!"
             }
         },
         {
@@ -748,28 +741,30 @@
             "difficulty": 1,
             "openingLines": {
                 "default": "DrooooooHhhhhreaaaAAAAGHH!",
-                "NecroCharacter": "Necro placeholder",
-                "WardenOfChaosNecroCharacter": "Warden of Chaos Necro placeholder",
-                "1929NecroCharacter": "Necro 1929 placeholder",
-                "TheKnightCharacter": "The Knight placeholder",
-                "BerserkerTheKnightCharacter": "The Berserker Knight placeholder",
-                "FairTheKnightCharacter": "The Fair Knight placeholder",
-                "WastelandRoninTheKnightCharacter": "Wasteland Ronin The Knight placeholder",
-                "1929TheKnightCharacter": "The Knight 1929 placeholder",
-                "LadyOfTheWoodCharacter": "Lady Of The Wood placeholder",
-                "SeasonsOfChangeLadyOfTheWoodCharacter": "Lady Of The Wood: Seasons of Change placeholder",
-                "MinistryOfStrategicSciencesLadyOfTheWoodCharacter": "Ministry Of Strategic Sciences: Lady Of The Wood placeholder",
-                "2199LadyOfTheWoodCharacter": "Lady Of The Wood 2199 placeholder",
-                "MailchaeCharacter": "Mailchae placeholder",
-                "ShardmasterMailchaeCharacter": "Shardmaster Mailchae placeholder",
-                "MinistryOfStrategicScienceMailchaeCharacter": "Ministry Of Strategic Science Mailchae placeholder",
-                "TheStrangerCharacter": "The Stranger placeholder",
-                "RitualCarvedTheStrangerCharacter": "The Stranger: Ritual Carved placeholder",
-                "1929TheStrangerCharacter": "The Stranger 1929 placeholder",
-                "WastelandRoninTheStrangerCharacter": "Wasteland Ronin: The Stranger placeholder",
-                "EchelonCharacter": "Echelon placeholder",
-                "FirstResponseEchelonCharacter": "First Response Echelon placeholder",
-                "2199EchelonCharacter": "Echelon 2199 placeholder"
+                "TheKnightCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "BerserkerTheKnightCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "FairTheKnightCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "PastTheKnightCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "WastelandRoninTheKnightCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "NecroCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "WardenOfChaosNecroCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "PastNecroCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "LastOfTheForgottenOrderNecroCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "EchelonCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "FirstResponseEchelonCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "FutureEchelonCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "MailchaeCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "ShardmasterMailchaeCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "MinistryOfStrategicScienceMailchaeCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "TheStrangerCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "RunecarvedTheStrangerCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "PastTheStrangerCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "WastelandRoninTheStrangerCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "TheStrangerInTheCornCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "LadyOfTheWoodCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "SeasonsOfChangeLadyOfTheWoodCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "MinistryOfStrategicSciencesLadyOfTheWoodCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "FutureLadyOfTheWoodCharacter": "DrooooooHhhhhreaaaAAAAGHH!"
             }
         }
     ]
