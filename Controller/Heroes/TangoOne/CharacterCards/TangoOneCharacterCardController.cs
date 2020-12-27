@@ -125,7 +125,6 @@ namespace Cauldron.TangoOne
                                   GameController.CanPlayCard(FindCardController(c)) == CanPlayCardResult.CanPlay;
                     });
                     IEnumerator coroutine = GameController.SelectCardsAndStoreResults(DecisionMaker, SelectionType.PlayCard, playableOngoingInHand, 2, storedResults, false, 0, cardSource: GetCardSource());
-                        //GameController.SelectAndPlayCard(DecisionMaker, playableOngoingInHand, true, cardSource: GetCardSource(), noValidCardsMessage: "There were no playable ongoing cards", storedResults: storedPlay);
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
