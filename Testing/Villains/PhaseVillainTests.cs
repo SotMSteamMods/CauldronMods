@@ -358,13 +358,18 @@ namespace CauldronTests
             DealDamage(haka, phase, 3, DamageType.Melee);
             QuickHPCheck(-2);
 
+            SetHitPoints(legacy, 20);
+            SetHitPoints(scholar, 20);
+
             //prevent Phase's EOT play from messing up test
             PlayCard("TakeDown");
 
             //deal all hero targets but the lowest 2 damage
             QuickHPStorage(haka, legacy, scholar);
+            DecisionLowestHP = legacy.CharacterCard;
+            DecisionAutoDecide = SelectionType.SelectTarget;
             GoToEndOfTurn(phase);
-            QuickHPCheck(-2, -2, 0);
+            QuickHPCheck(-2, 0, -2);
         }
 
         [Test()]
