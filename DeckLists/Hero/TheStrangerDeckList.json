@@ -40,9 +40,9 @@
             "openingLines": {
                 "default": "Rain and shadow will unmake you.",
                 "DendronCharacter": "Dendron placeholder",
-                "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
+                "WindcolorDendronCharacter": "Dendron Outside the Lines placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 2
         },
@@ -486,9 +486,9 @@
             "openingLines": {
                 "default": "I have come a long way, to witness your defeat.",
                 "DendronCharacter": "Dendron placeholder",
-                "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
+                "WindcolorDendronCharacter": "Dendron Outside the Lines placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 2
         },
@@ -528,9 +528,9 @@
             "openingLines": {
                 "default": "Your essence will only fuel my runes!",
                 "DendronCharacter": "Dendron placeholder",
-                "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
+                "WindcolorDendronCharacter": "Dendron Outside the Lines placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 2
         },
@@ -572,9 +572,9 @@
             "openingLines": {
                 "default": "Your nightmare is just beginning.",
                 "DendronCharacter": "Dendron placeholder",
-                "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
+                "WindcolorDendronCharacter": "Dendron Outside the Lines placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 2
         },
@@ -614,9 +614,9 @@
             "openingLines": {
                 "default": "Flee in terror at my visage!",
                 "DendronCharacter": "Dendron placeholder",
-                "DendronOutsideTheLinesCharacter": "Dendron Outside the Lines placeholder",
+                "WindcolorDendronCharacter": "Dendron Outside the Lines placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 2
         }

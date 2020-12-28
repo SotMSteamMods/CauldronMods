@@ -57,8 +57,8 @@
             "openingLines": {
                 "default": "You're surprised there are ghosts in organized crime? Let us show why it's called the “criminal underworld“...",
                 "TerminusCharacter": "Terminus placeholder",
-                "MinistryOfStrategicSciencesCharacter": "Ministry Of Strategic Sciences Terminus placeholder",
-                "2199TerminusCharacter": "Terminus 2199 placeholder"
+                "MinistryOfStrategicScienceTerminusCharacter": "Ministry Of Strategic Sciences Terminus placeholder",
+                "FutureTerminusCharacter": "Terminus 2199 placeholder"
             }
         },
         {

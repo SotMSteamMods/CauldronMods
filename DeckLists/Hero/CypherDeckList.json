@@ -40,7 +40,7 @@
             "openingLines": {
                 "default": "default placeholder",
                 "SwarmEaterCharacter": "Swarm Eater placeholder",
-                "SwarmEaterDistributedHivemindCharacter": "Swarm Eater Distributed Hivemind placeholder"
+                "DistributedHivemindSwarmEaterCharacter": "Swarm Eater Distributed Hivemind placeholder"
             },
             "complexity": 3
         },
@@ -526,7 +526,7 @@
             "openingLines": {
                 "default": "default placeholder",
                 "SwarmEaterCharacter": "Swarm Eater placeholder",
-                "SwarmEaterDistributedHivemindCharacter": "Swarm Eater Distributed Hivemind placeholder"
+                "DistributedHivemindSwarmEaterCharacter": "Swarm Eater Distributed Hivemind placeholder"
             },
             "complexity": 3
         },
@@ -566,7 +566,7 @@
             "openingLines": {
                 "default": "default placeholder",
                 "SwarmEaterCharacter": "Swarm Eater placeholder",
-                "SwarmEaterDistributedHivemindCharacter": "Swarm Eater Distributed Hivemind placeholder"
+                "DistributedHivemindSwarmEaterCharacter": "Swarm Eater Distributed Hivemind placeholder"
             },
             "complexity": 3
         }

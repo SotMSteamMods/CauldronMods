@@ -35,7 +35,7 @@
             "openingLines": {
                 "default": "Will you frolic with us?",
                 "CeladrochCharacter": "I haven't felt this presence in many years. Beware, my friends. This wind carries the scent of death.",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
         },
@@ -477,7 +477,7 @@
             "openingLines": {
                 "default": "The turn of the seasons will wipe this land clean of evil.",
                 "CeladrochCharacter": "Hurry, everyone! His bonds are weakening - but ours can strengthen!",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
         },
@@ -519,7 +519,7 @@
             "openingLines": {
                 "default": "We have formed a most excellent team to deal with your misdeeds.",
                 "CeladrochCharacter": "Adventure, discovery, life - all will exist after this. All but you, Celadroch.",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3,
              "tokenPools":[
@@ -568,7 +568,7 @@
             "openingLines": {
                 "default": "I have seen millenia slip away; as will your chance at victory.",
                 "CeladrochCharacter": "It seems like not all things have changed, after all - is your evil timeless, Celadroch, or were you waiting for me?",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
         }

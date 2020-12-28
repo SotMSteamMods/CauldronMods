@@ -38,7 +38,7 @@
             "openingLines": {
                 "default": "You can't hide from my sniper rifle.",
                 "AnathemaCharacter": "You are a monster, and that place was run by monsters. I'm doing what I should have in the first place.",
-                "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
+                "AcceleratedEvolutionAnathemaCharacter": "Anathema Accelerated Evolution placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 2
@@ -408,7 +408,7 @@
             "openingLines": {
                 "default": "Going dark. Let's do this.",
                 "AnathemaCharacter": "Anathema placeholder",
-                "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
+                "AcceleratedEvolutionAnathemaCharacter": "Anathema Accelerated Evolution placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 2
@@ -450,7 +450,7 @@
             "openingLines": {
                 "default": "I've got a bullet with your name on it. And backups, just in case.",
                 "AnathemaCharacter": "Anathema placeholder",
-                "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
+                "AcceleratedEvolutionAnathemaCharacter": "Anathema Accelerated Evolution placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 2

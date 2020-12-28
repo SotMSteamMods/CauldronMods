@@ -39,8 +39,8 @@
             ],
             "openingLines": {
                 "default": "default placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "WinterTiamatCharacter": "Tiamat placeholder",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
         },
@@ -516,8 +516,8 @@
             ],
             "openingLines": {
                 "default": "default placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "WinterTiamatCharacter": "Tiamat placeholder",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
         },
@@ -554,8 +554,8 @@
             ],
             "openingLines": {
                 "default": "default placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "WinterTiamatCharacter": "Tiamat placeholder",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
         }

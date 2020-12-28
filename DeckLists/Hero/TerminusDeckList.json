@@ -34,7 +34,7 @@
             "flippedIcons": [],
             "openingLines": {
                 "default": "default placeholder",
-                "InfernalChoirCharacter": "Infernal Choir placeholder"
+                "TheInfernalChoirCharacter": "Infernal Choir placeholder"
             },
             "complexity": 2
         },
@@ -557,7 +557,7 @@
             ],
             "openingLines": {
                 "default": "default placeholder",
-                "InfernalChoirCharacter": "Infernal Choir placeholder"
+                "TheInfernalChoirCharacter": "Infernal Choir placeholder"
             },
             "complexity": 2
         },
@@ -597,7 +597,7 @@
             ],
             "openingLines": {
                 "default": "default placeholder",
-                "InfernalChoirCharacter": "Infernal Choir placeholder"
+                "TheInfernalChoirCharacter": "Infernal Choir placeholder"
             },
             "complexity": 2
         }

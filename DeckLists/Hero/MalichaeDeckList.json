@@ -39,7 +39,7 @@
 			"openingLines": {
 				"default": "I have some friends from beyond the Veil who'd like a word with you.",
 				"OriphelCharacter": "Oriphel placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 3
 		},
@@ -537,7 +537,7 @@
 			"openingLines": {
 				"default": "The power of the Djinn will be your undoing.",
 				"OriphelCharacter": "Oriphel placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 3
 		},
@@ -579,7 +579,7 @@
 			"openingLines": {
 				"default": "My friends taught me some new tricks to use on the likes of you.",
 				"OriphelCharacter": "Oriphel placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 3
 		}

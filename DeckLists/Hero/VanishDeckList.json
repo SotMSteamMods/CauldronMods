@@ -416,7 +416,7 @@
                 "default": "I'll scout ahead. There must be some advantage we can exploit.",
                 "GrayCharacter": "Hey, the best part of 1929 was that you weren't trying to kill me.",
                 "PastTheRamCharacter": "1929 Ram placeholder",
-                "MistressOfFate": "Uh, you're welcome. But I'm afraid that we're here to stop you, not help you."
+                "TheMistressOfFateCharacter": "Uh, you're welcome. But I'm afraid that we're here to stop you, not help you."
             },
             "complexity": 2
         },

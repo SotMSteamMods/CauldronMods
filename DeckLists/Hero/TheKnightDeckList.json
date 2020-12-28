@@ -44,8 +44,8 @@
 				"default": "Halt, villain! Leave, or cross my steel!",
 				"OutlanderCharacter": "Outlander placeholder",
 				"PastTheRamCharacter": "1929 Ram placeholder",
-				"TiamatCharacter": "Tiamat placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+				"WinterTiamatCharacter": "Tiamat placeholder",
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 1
 		},
@@ -390,8 +390,8 @@
 				"default": "default placeholder",
 				"OutlanderCharacter": "Outlander placeholder",
 				"PastTheRamCharacter": "1929 Ram placeholder",
-				"TiamatCharacter": "Tiamat placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+				"WinterTiamatCharacter": "Tiamat placeholder",
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 1
 		},
@@ -427,8 +427,8 @@
 				"default": "default placeholder",
 				"OutlanderCharacter": "Outlander placeholder",
 				"PastTheRamCharacter": "1929 Ram placeholder",
-				"TiamatCharacter": "Tiamat placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+				"WinterTiamatCharacter": "Tiamat placeholder",
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 1
 		}
@@ -470,8 +470,8 @@
 				"default": "Have at thee! I've always wanted to say that.",
 				"OutlanderCharacter": "Outlander placeholder",
 				"PastTheRamCharacter": "1929 Ram placeholder",
-				"TiamatCharacter": "Tiamat placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+				"WinterTiamatCharacter": "Tiamat placeholder",
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 1
 		},
@@ -513,8 +513,8 @@
 				"default": "Whether 'tis by my blood and bone alone, today shall be your undoing!",
 				"OutlanderCharacter": "Outlander placeholder",
 				"PastTheRamCharacter": "1929 Ram placeholder",
-				"TiamatCharacter": "Tiamat placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+				"WinterTiamatCharacter": "Tiamat placeholder",
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 1
 		},
@@ -556,8 +556,8 @@
 				"default": "You will not shed innocent blood while we stand.",
 				"OutlanderCharacter": "Outlander placeholder",
 				"PastTheRamCharacter": "1929 Ram placeholder",
-				"TiamatCharacter": "Tiamat placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+				"WinterTiamatCharacter": "Tiamat placeholder",
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 1
 		},
@@ -604,8 +604,8 @@
 				"default": "We survived the Wastelands; this should be easy!",
 				"OutlanderCharacter": "Outlander placeholder",
 				"PastTheRamCharacter": "1929 Ram placeholder",
-				"TiamatCharacter": "Tiamat placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+				"WinterTiamatCharacter": "Tiamat placeholder",
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 1
 		}

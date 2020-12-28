@@ -618,8 +618,8 @@
                 "default": "default placeholder",
                 "OutlanderCharacter": "Outlander placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "WinterTiamatCharacter": "Tiamat placeholder",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
             },
             "isReal": false,
             "openingLines": {

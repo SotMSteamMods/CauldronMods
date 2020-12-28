@@ -39,8 +39,8 @@
             "openingLines": {
                 "default": "What comes next may be unpleasant.",
                 "PastTheRamCharacter": "1929 Ram placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder",
+                "WinterTiamatCharacter": "Tiamat placeholder",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder",
                 "MythosCharacter": "You seem happy to make it one for others. I will not allow it!"
             },
             "complexity": 2
@@ -418,8 +418,8 @@
             "openingLines": {
                 "default": "There is no defense against the horrors I shall unleash.",
                 "PastTheRamCharacter": "1929 Ram placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder",
+                "WinterTiamatCharacter": "Tiamat placeholder",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder",
                 "MythosCharacter": "It is exactly because I have seen greater fears that death holds no terror for me."
             },
             "complexity": 2
@@ -460,8 +460,8 @@
             "openingLines": {
                 "default": "I will bring my most powerful rituals to bear against this foe.",
                 "PastTheRamCharacter": "1929 Ram placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder",
+                "WinterTiamatCharacter": "Tiamat placeholder",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder",
                 "MythosCharacter": "Those papers you hold... But how did [i]you[/i] obtain the missing pages of my tome?"
             },
             "complexity": 2
@@ -501,8 +501,8 @@
             "openingLines": {
                 "default": "We must all... repent... before it is... too late.",
                 "PastTheRamCharacter": "1929 Ram placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder",
+                "WinterTiamatCharacter": "Tiamat placeholder",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder",
                 "MythosCharacter": "Is this to be my atonement? Thwarting the designs I spent so long advancing? Very well."
             },
             "complexity": 2

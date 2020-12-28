@@ -39,7 +39,7 @@
             ],
             "openingLines": {
                 "default": "default placeholder",
-                "ScreaMachineCharacter": "ScreaMachine placeholder"
+                "TheSetList": "ScreaMachine placeholder"
             },
             "complexity": 1
         },
@@ -472,7 +472,7 @@
             ],
             "openingLines": {
                 "default": "default placeholder",
-                "ScreaMachineCharacter": "ScreaMachine placeholder"
+                "TheSetList": "ScreaMachine placeholder"
             },
             "complexity": 1
         },
@@ -513,7 +513,7 @@
             ],
             "openingLines": {
                 "default": "default placeholder",
-                "ScreaMachineCharacter": "ScreaMachine placeholder"
+                "TheSetList": "ScreaMachine placeholder"
             },
             "complexity": 1
         }
