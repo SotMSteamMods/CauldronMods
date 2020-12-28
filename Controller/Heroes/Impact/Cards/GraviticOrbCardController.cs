@@ -66,16 +66,18 @@ namespace Cauldron.Impact
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
-            coroutine = DestroyThisCardResponse(dd);
-            if (UseUnityCoroutines)
+            if (IsRealAction())
             {
-                yield return GameController.StartCoroutine(coroutine);
+                coroutine = DestroyThisCardResponse(dd);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
             }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
         }
     }
 }
