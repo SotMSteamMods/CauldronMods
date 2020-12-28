@@ -452,7 +452,7 @@
             ],
             "openingLines": {
                 "default": "Wouldn't you know it, I'm sensing a threatening presence. Right over there.",
-                "MythosCharacter": "I don't think so. That "little crystal" points out trouble, which is what you're in!",
+                "MythosCharacter": "I don't think so. That 'little crystal' points out trouble, which is what you're in!",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 3

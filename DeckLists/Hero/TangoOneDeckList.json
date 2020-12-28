@@ -407,7 +407,7 @@
             ],
             "openingLines": {
                 "default": "Going dark. Let's do this.",
-                "AnathemaCharacter": "Anathema placeholder",
+                "AnathemaCharacter": "Heads down, folks - stay out of sight, and we might get through this.",
                 "AcceleratedEvolutionAnathemaCharacter": "Anathema Accelerated Evolution placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
@@ -449,9 +449,10 @@
             ],
             "openingLines": {
                 "default": "I've got a bullet with your name on it. And backups, just in case.",
-                "AnathemaCharacter": "Anathema placeholder",
+                "AnathemaCharacter": "Then maybe I'll get some kind of reward for taking you down.",
                 "AcceleratedEvolutionAnathemaCharacter": "Anathema Accelerated Evolution placeholder",
-                "PastTheRamCharacter": "1929 Ram placeholder"
+                "PastTheRamCharacter": "1929 Ram placeholder",
+                "TheMistressOfFateCharacter": "I've had enough of these time loops. Let's take her down and get home."
             },
             "complexity": 2
         }

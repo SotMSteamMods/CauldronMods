@@ -60,6 +60,7 @@
 
 			"difficulty": 4,
 			"openingLines": {
+				"default": "This prison will not hold me much longer. Your doom approaches.",
 				"LadyOfTheWoodCharacter": "--You.",
 				"SeasonsOfChangeLadyOfTheWoodCharacter": "--You.",
 				"MinistryOfStrategicScienceLadyOfTheWoodCharacter": "--You.",

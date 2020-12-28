@@ -42,9 +42,9 @@
 			],
 			"openingLines": {
 				"default": "Halt, villain! Leave, or cross my steel!",
-				"OutlanderCharacter": "Outlander placeholder",
+				"OutlanderCharacter": "There is no honor in one who prospers from the death of others. Whatever you once were, I see nothing of myself left in you now.",
 				"PastTheRamCharacter": "1929 Ram placeholder",
-				"WinterTiamatCharacter": "Tiamat placeholder",
+				"WinterTiamatCharacter": "Foul Beast! I have slain thee once, I will do so again.",
 				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 1
@@ -468,9 +468,9 @@
 			],
 			"openingLines": {
 				"default": "Have at thee! I've always wanted to say that.",
-				"OutlanderCharacter": "Outlander placeholder",
+				"OutlanderCharacter": "And you are nothing but a broken reflection of my ancestor.",
 				"PastTheRamCharacter": "1929 Ram placeholder",
-				"WinterTiamatCharacter": "Tiamat placeholder",
+				"WinterTiamatCharacter": "For my ancestors!",
 				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 1
@@ -511,9 +511,9 @@
 			],
 			"openingLines": {
 				"default": "Whether 'tis by my blood and bone alone, today shall be your undoing!",
-				"OutlanderCharacter": "Outlander placeholder",
+				"OutlanderCharacter": "I will not stand down while I yet draw breath.",
 				"PastTheRamCharacter": "1929 Ram placeholder",
-				"WinterTiamatCharacter": "Tiamat placeholder",
+				"WinterTiamatCharacter": "Yeaaarghh! To battle!",
 				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 1
@@ -554,10 +554,11 @@
 			],
 			"openingLines": {
 				"default": "You will not shed innocent blood while we stand.",
-				"OutlanderCharacter": "Outlander placeholder",
+				"OutlanderCharacter": "The tale is long, but the ending is simple: your defeat, at my blade.",
 				"PastTheRamCharacter": "1929 Ram placeholder",
-				"WinterTiamatCharacter": "Tiamat placeholder",
-				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+				"WinterTiamatCharacter": "Hold fast! We will smite this serpent where it stands.",
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder",
+				"TheMistressOfFateCharacter": "Whatever sorcery this is, I have faced worse."
 			},
 			"complexity": 1
 		},
@@ -602,9 +603,9 @@
 			],
 			"openingLines": {
 				"default": "We survived the Wastelands; this should be easy!",
-				"OutlanderCharacter": "Outlander placeholder",
+				"OutlanderCharacter": "Well, you'll have to keep wondering!",
 				"PastTheRamCharacter": "1929 Ram placeholder",
-				"WinterTiamatCharacter": "Tiamat placeholder",
+				"WinterTiamatCharacter": "I have seen worse horrors than you!",
 				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 1

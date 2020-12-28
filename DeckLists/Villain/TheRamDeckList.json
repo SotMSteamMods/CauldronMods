@@ -444,6 +444,7 @@
             "difficulty": 1,
             "openingLines": {
                 "default": "ADMIRAL WINTERS: I'll blast you all back to whatever time you came from, even if I have to destroy this whole place!",
+                "PyreCharacter": "Pyre placeholder",
                 "QuicksilverCharacter": "I see I am not the only one with a metal shell to fight in.",
                 "UncannyQuicksilverCharacter": "Uncanny Quicksilver placeholder",
                 "RenegadeQuicksilverCharacter": "Renegade Quicksilver placeholder",
@@ -454,6 +455,7 @@
                 "NecroCharacter": "Necro placeholder",
                 "WardenOfChaosNecroCharacter": "Warden of Chaos Necro placeholder",
                 "PastNecroCharacter": "Necro 1929 placeholder",
+                "LastOfTheForgottenOrderNecroCharacter": "LastOfTheForgottenOrderNecroCharacter placeholder",
                 "TangoOneCharacter": "Tango One placeholder",
                 "GhostOpsTangoOneCharacter": "Ghost Ops Tango One placeholder",
                 "PastTangoOneCharacter": "1929 Tango One placeholder",

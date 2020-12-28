@@ -39,7 +39,7 @@
             ],
             "openingLines": {
                 "default": "Rain and shadow will unmake you.",
-                "DendronCharacter": "Dendron placeholder",
+                "DendronCharacter": "You know nothing of destruction. I will show you.",
                 "WindcolorDendronCharacter": "Dendron Outside the Lines placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
@@ -485,7 +485,7 @@
             ],
             "openingLines": {
                 "default": "I have come a long way, to witness your defeat.",
-                "DendronCharacter": "Dendron placeholder",
+                "DendronCharacter": "I still have time enough to do what is necessary.",
                 "WindcolorDendronCharacter": "Dendron Outside the Lines placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
@@ -527,10 +527,11 @@
             ],
             "openingLines": {
                 "default": "Your essence will only fuel my runes!",
-                "DendronCharacter": "Dendron placeholder",
+                "DendronCharacter": "You know who I am?",
                 "WindcolorDendronCharacter": "Dendron Outside the Lines placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
-                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder",
+                "TheMistressOfFateCharacter": "I do not care for her insinuations, but I care less for the idea of staying trapped here. Let us prevail!"
             },
             "complexity": 2
         },
@@ -571,7 +572,7 @@
             ],
             "openingLines": {
                 "default": "Your nightmare is just beginning.",
-                "DendronCharacter": "Dendron placeholder",
+                "DendronCharacter": "The Wasteland is an insidious teacher.",
                 "WindcolorDendronCharacter": "Dendron Outside the Lines placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder",
                 "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
@@ -613,9 +614,8 @@
             ],
             "openingLines": {
                 "default": "Flee in terror at my visage!",
-                "DendronCharacter": "Dendron placeholder",
+                "DendronCharacter": "Wooo...spoooky. Do you like my new face?",
                 "WindcolorDendronCharacter": "Dendron Outside the Lines placeholder",
-                "PastTheRamCharacter": "1929 Ram placeholder",
                 "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 2

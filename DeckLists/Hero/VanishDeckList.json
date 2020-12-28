@@ -456,8 +456,7 @@
             ],
             "openingLines": {
                 "default": "This isn't my usual scene, but I'll manage.",
-                "GrayCharacter": "I'm just keeping things safe from the real thieves!",
-                "PastTheRamCharacter": "1929 Ram placeholder"
+                "GrayCharacter": "I'm just keeping things safe from the real thieves!"
             },
             "complexity": 2
         }
