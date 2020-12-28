@@ -56,9 +56,9 @@
             "difficulty": 4,
             "openingLines": {
                 "default": "You're surprised there are ghosts in organized crime? Let us show why it's called the “criminal underworld“...",
-                "TerminusCharacter": "Terminus placeholder",
-                "MinistryOfStrategicScienceTerminusCharacter": "Ministry Of Strategic Sciences Terminus placeholder",
-                "FutureTerminusCharacter": "Terminus 2199 placeholder"
+                "TerminusCharacter": "Your talent is wasted, working for the Conductor. Join me, Daiyu.",
+                "MinistryOfStrategicScienceTerminusCharacter": "So you found a gang to work for, after all. It's certainly bringing out your better side.",
+                "FutureTerminusCharacter": "Interesting choice of weapons, but such toys will not save you."
             }
         },
         {

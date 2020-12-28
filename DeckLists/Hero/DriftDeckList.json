@@ -547,7 +547,7 @@
             "complexity": 3
         },
         {
-            "identifier": "DriftCharacter",
+            "identifier": "FutureDriftCharacter",
             "promoIdentifier": "SplitDriftCharacter",
             "count": 1,
             "title": "Drift",
