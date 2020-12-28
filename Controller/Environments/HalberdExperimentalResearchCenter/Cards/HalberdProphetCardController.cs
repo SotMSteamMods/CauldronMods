@@ -34,7 +34,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
                 //each player may look at the top card of their deck, and put it back on either the top or bottom of their deck
                 IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker, new LinqTurnTakerCriteria(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && tt.Deck.NumberOfCards > 1),
                                             SelectionType.RevealTopCardOfDeck,
-                                            tt => RevealCardsResponse(FindTurnTakerController(tt)),
+                                            tt => RevealCardsResponse(tt),
                                             requiredDecisions: 0,
                                             allowAutoDecide: true,
                                             cardSource: GetCardSource());
@@ -68,14 +68,14 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             yield break;
         }
 
-        private IEnumerator RevealCardsResponse(TurnTakerController ttc)
+        private IEnumerator RevealCardsResponse(TurnTaker tt)
         {
             //get this turntaker's deck
-            Location deck = ttc.TurnTaker.Deck;
-            HeroTurnTakerController httc = base.FindHeroTurnTakerController(ttc.TurnTaker.ToHero());
+            Location deck = tt.Deck;
+            HeroTurnTakerController httc = base.FindHeroTurnTakerController(tt.ToHero());
             List<Card> storedResultsCard = new List<Card>();
             //reveal the top card of the deck
-            IEnumerator coroutine = base.GameController.RevealCards(ttc, deck, 1, storedResultsCard, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.RevealCards(httc, deck, 1, storedResultsCard, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
