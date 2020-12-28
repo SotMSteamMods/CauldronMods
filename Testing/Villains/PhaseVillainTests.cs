@@ -341,6 +341,32 @@ namespace CauldronTests
             QuickHPCheck(-3, 0, -3);
         }
 
+
+        [Test()]
+        public void TestDensityRegulator()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Legacy", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyWall();
+
+            //When this card enters play, place it next to the hero with the highest HP.
+            Card reg = PlayCard("DensityRegulator");
+            AssertInPlayArea(phase, reg);
+            
+            //Reduce damage dealt to phase by 1.
+            QuickHPStorage(phase);
+            DealDamage(haka, phase, 3, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //prevent Phase's EOT play from messing up test
+            PlayCard("TakeDown");
+
+            //deal all hero targets but the lowest 2 damage
+            QuickHPStorage(haka, legacy, scholar);
+            GoToEndOfTurn(phase);
+            QuickHPCheck(-2, -2, 0);
+        }
+
         [Test()]
         public void TestDistortionGrenade()
         {
