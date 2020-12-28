@@ -286,18 +286,37 @@ namespace CauldronTests
                     //find the initial card as that's where the opening lines should be
                     var initialCard = jsonObject.GetArray("cards").First(jc => jc.Obj.GetString("identifier") == initialId);
 
-                    string identifier = initialCard.Obj.GetString("identifier");
+                    string baseIdentifier = initialCard.Obj.GetString("identifier");
                     var lineArray = initialCard.Obj.GetValue("openingLines");
-                    mapHelper(map, identifier, lineArray);
+                    mapHelper(map, baseIdentifier, lineArray);
 
                     if (jsonObject.ContainsKey("promoCards"))
                     {
                         var promos = jsonObject.GetArray("promoCards");
                         foreach (var promo in promos)
                         {
-                            identifier = promo.Obj.GetString("promoIdentifier");
-                            lineArray = promo.Obj.GetValue("openingLines");
-                            mapHelper(map, identifier, lineArray);
+                            var identifier = promo.Obj.GetString("identifier");
+                            if (identifier == baseIdentifier)
+                            {
+                                var promoIdentifier = promo.Obj.GetString("promoIdentifier");
+                                lineArray = promo.Obj.GetValue("openingLines");
+                                mapHelper(map, promoIdentifier, lineArray);
+                            }
+                        }
+                    }
+
+                    if (jsonObject.ContainsKey("notPromoCards"))
+                    {
+                        var promos = jsonObject.GetArray("notPromoCards");
+                        foreach (var promo in promos)
+                        {
+                            var identifier = promo.Obj.GetString("identifier");
+                            if (identifier == baseIdentifier)
+                            {
+                                var promoIdentifier = promo.Obj.GetString("promoIdentifier");
+                                lineArray = promo.Obj.GetValue("openingLines");
+                                mapHelper(map, promoIdentifier, lineArray);
+                            }
                         }
                     }
                 }
@@ -318,6 +337,9 @@ namespace CauldronTests
                     }
                 }
             }
+            Console.WriteLine();
+            Console.WriteLine("All Identifiers");
+            keys.OrderBy(s => s).ForEach(s => Console.WriteLine(s));
         }
 
         private void mapHelper(Dictionary<string, HashSet<string>> map, string identifier, JSONValue lineArray)
