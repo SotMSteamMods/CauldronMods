@@ -323,7 +323,7 @@ namespace CauldronTests
             }
 
             //with our map, we check each opening line is default or a key of the map
-            var keys = new HashSet<string>(map.Keys, StringComparer.OrdinalIgnoreCase);
+            //var keys = new HashSet<string>(map.Keys, StringComparer.OrdinalIgnoreCase);
             foreach(var kvp in map)
             {
                 foreach(var target in kvp.Value)
@@ -331,15 +331,19 @@ namespace CauldronTests
                     if (target == "default")
                         continue;
 
-                    if (!keys.Contains(target))
+                    if (!map.TryGetValue(target, out var response))
                     {
                         Assert.Warn($"'{kvp.Key}' has an opening line for '{target}' which is not a reconized identifier");
+                    }
+                    else if (!response.Contains(kvp.Key))
+                    {
+                        Assert.Warn($"'{kvp.Key}' has an opening line for '{target}', but '{target}' doesn't have a response!");
                     }
                 }
             }
             Console.WriteLine();
             Console.WriteLine("All Identifiers");
-            keys.OrderBy(s => s).ForEach(s => Console.WriteLine(s));
+            map.Keys.OrderBy((string s) => s).ForEach(s => Console.WriteLine(s));
         }
 
         private void mapHelper(Dictionary<string, HashSet<string>> map, string identifier, JSONValue lineArray)
