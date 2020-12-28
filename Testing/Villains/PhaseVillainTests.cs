@@ -573,6 +573,23 @@ namespace CauldronTests
             QuickHPCheck(-2, -1);
         }
 
+
+        [Test()]
+        public void TestResidualDesynchronization_NoDamageIfTargetDestroyed()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Legacy", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card wall = GetCardInPlay("ReinforcedWall");
+            PlayCard("ResidualDesynchronization");
+
+            //The first time a villain target is dealt damage each turn, it deals the source of that damage 2 energy damage.
+            //Damage fizzles since wall is destroyed and can't deal damage
+            QuickHPStorage(haka.CharacterCard);
+            DealDamage(haka, wall, 99, DamageType.Melee);
+            QuickHPCheck(0);
+        }
+
         [Test()]
         public void TestUnimpededProgress()
         {

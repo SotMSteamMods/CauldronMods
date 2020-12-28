@@ -22,8 +22,13 @@ namespace Cauldron.PhaseVillain
             //Reduce damage dealt to Obstacles by 1.
             base.AddReduceDamageTrigger((Card c) => base.IsObstacle(c), 1);
             //The first time a villain target is dealt damage each turn, it deals the source of that damage 2 energy damage.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DidDealDamage && !base.HasBeenSetToTrueThisTurn("FirstTimeDamageDealt") && base.IsVillainTarget(action.Target), this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
-
+            //per @Tosx, this is once per turn, NOT once per turn per target.
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DidDealDamage && !base.HasBeenSetToTrueThisTurn("FirstTimeDamageDealt") && base.IsVillainTarget(action.Target),
+                    this.DealDamageResponse,
+                    TriggerType.DealDamage,
+                    TriggerTiming.After,
+                    actionType: ActionDescription.DamageTaken);
+            
             base.AddAfterLeavesPlayAction(() => ResetFlagAfterLeavesPlay(FirstTimeDamageDealt));
         }
 
@@ -32,7 +37,7 @@ namespace Cauldron.PhaseVillain
             ////The first time a villain target is dealt damage each turn...
             base.SetCardPropertyToTrueIfRealAction(FirstTimeDamageDealt);
             //...it deals the source of that damage 2 energy damage.
-            IEnumerator coroutine = base.DealDamage(action.Target, action.DamageSource.Card, 2, DamageType.Energy, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.DealDamage(action.Target, action.DamageSource.Card, 2, DamageType.Energy, cardSource: base.GetCardSource(), isCounterDamage: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
