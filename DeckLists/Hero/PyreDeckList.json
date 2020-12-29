@@ -39,8 +39,9 @@
                 "DealDamageEnergy"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "GrayCharacter": "Gray placeholder"
+                "default": "This suit isn't for my protection... It's for all of yours.",
+                "GrayCharacter": "Okay, is this some weird time travel stuff again? Where I have to help my past self solve his problems?",
+                "PastTheRamCharacter": "I don't think Alistair will begrudge me a little violence against his upstart of an ancestor."
             },
             "complexity": 3
         },
@@ -414,8 +415,8 @@
                 "DrawCardNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "GrayCharacter": "Gray placeholder"
+                "default": "Just like old times. Let's turn up the heat!",
+                "GrayCharacter": "I wish I knew. Let's just pretend I'm your conscience, here to make myself heard through all that radiation."
             },
             "complexity": 3
         },
@@ -456,8 +457,8 @@
                 "PlayCardNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "GrayCharacter": "Gray placeholder"
+                "default": "Radiation output levels are safe. But you're not.",
+                "GrayCharacter": "Something like that. You make it sound worse than it is."
             },
             "complexity": 3
         }

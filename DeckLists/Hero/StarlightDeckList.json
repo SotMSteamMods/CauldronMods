@@ -49,7 +49,7 @@
             "complexity": 3,
             "openingLines": {
                 "default": "Your defeat is written in the stars!",
-                "MenagerieCharacter":"Menagerie placeholder"
+                "MenagerieCharacter":"Mog Chordal, you are wanted for poaching and kidnapping on at least 38 planets. Please surrender peacefully."
             }
         },
         {
@@ -572,7 +572,7 @@
             ],
             "openingLines": {
                 "default": "This sector is under Nightlore protection.",
-                "MenagerieCharacter": "Menagerie placeholder"
+                "MenagerieCharacter": "That mercenary has his own crimes to answer for. But let's start with yours."
             },
             "complexity": 3
         },
@@ -614,13 +614,6 @@
                 "PlayCardNow",
                 "UsePowerNow"
             ],
-            "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder",
-                "PastTheRamCharacter": "1929 Ram placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
-            },
             "isReal": false,
             "openingLines": {
                 "default": "To survey the darkness and guard the light; this we pledge!",

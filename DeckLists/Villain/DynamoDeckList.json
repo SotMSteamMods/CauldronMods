@@ -42,10 +42,10 @@
             "flippedAdvancedIcons": ["IncreaseDamageDealt"],
             "difficulty": 1,
             "openingLines": {
-                "default": "default placeholder",
+                "default": "You interrupted the wrong heist, do-gooders! Prepare for pain!",
                 "CricketCharacter": "Hey pipsqueak, aren't you a little young to be playing caped crusader?",
-                "RenegadeCricketCharacter": "Whoa, what is this? You fixing to join the gang? Or is this another one of your tricks?",
                 "FirstResponseCricketCharacter": "Nice digs, kid. But fancy gear ain't nothing without the brains behind it.",
+                "RenegadeCricketCharacter": "Whoa, what is this? You fixing to join the gang? Or is this another one of your tricks?",
                 "WastelandRoninCricketCharacter": "Looks like you got a new edge. Wonder how it'll look broken."
             }
         },

@@ -38,9 +38,9 @@
                 "GainHP"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "SwarmEaterCharacter": "Swarm Eater placeholder",
-                "SwarmEaterDistributedHivemindCharacter": "Swarm Eater Distributed Hivemind placeholder"
+                "default": "Nanite defensive routines activated.",
+                "SwarmEaterCharacter": "It can augment itself with whatever it consumes. Be careful, team.",
+                "DistributedHivemindSwarmEaterCharacter": "Swarm Eater Distributed Hivemind placeholder"
             },
             "complexity": 3
         },
@@ -524,9 +524,9 @@
                 "IncreaseDamageDealt"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "SwarmEaterCharacter": "Swarm Eater placeholder",
-                "SwarmEaterDistributedHivemindCharacter": "Swarm Eater Distributed Hivemind placeholder"
+                "default": "Nanite offensive routines activated.",
+                "SwarmEaterCharacter": "If we don't stop it, we'll all be on the menu.",
+                "DistributedHivemindSwarmEaterCharacter": "Swarm Eater Distributed Hivemind placeholder"
             },
             "complexity": 3
         },
@@ -564,9 +564,9 @@
                 "DestroyEnvironment"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "SwarmEaterCharacter": "Swarm Eater placeholder",
-                "SwarmEaterDistributedHivemindCharacter": "Swarm Eater Distributed Hivemind placeholder"
+                "default": "We are the swarm.",
+                "SwarmEaterCharacter": "Except I'm a friendly cloud of nanites, instead of a ravenous, all-consuming one.",
+                "DistributedHivemindSwarmEaterCharacter": "Swarm Eater Distributed Hivemind placeholder"
             },
             "complexity": 3
         }

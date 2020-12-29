@@ -54,15 +54,15 @@
             ],
             "difficulty": 3,
             "openingLines": {
-                "default": "The blight of your “powers“ will be wiped clean from this earth - and every other.",
-                "TheKnightCharacter": "The Knight placeholder",
-                "BerserkerTheKnightCharacter": "The Berserker Knight placeholder",
-                "FairTheKnightCharacter": "The Fair Knight placeholder",
-                "PastTheKnightCharacter": "The Knight 1929 placeholder",
-                "WastelandRoninTheKnightCharacter": "The Wasteland Ronin Knights placeholder",
-                "DriftCharacter": "Drift placeholder",
-                "SplitDriftCharacter": "1929/2199 Drift placeholder",
-                "ThroughTheBreachDriftCharacter": "Through The Breach Drift placeholder"
+                "default": "The blight of your “powers“ will be wiped clean from this Earth - and every other.",
+                "TheKnightCharacter": "You and I are but two traces of the same life. When yours ends, mine will grow stronger!",
+                "BerserkerTheKnightCharacter": "Your desperation is but a sliver of my own - stand down or fall.",
+                "FairTheKnightCharacter": "...A child, playacting at valor. Cease thy mockery and leave me to my work.",
+                "PastTheKnightCharacter": "It appears your enchanted sleep was disturbed in an earlier age than my own. How did this come about?",
+                "WastelandRoninTheKnightCharacter": "I have never encountered a trace of myself from such a distant time. I wonder what power I will gain with your passing?",
+                "DriftCharacter": "So, there exists some reality where my lineage survived. Let us see if any trace of me remains in your blood, that I may absorb it.",
+                "SplitDriftCharacter": "Let us do battle! All the versions of me from across the numerous worlds, against the versions of you from across the ages.",
+                "ThroughTheBreachDriftCharacter": "My own kin would betray me? All who interfere with my quest will be cut down!"
             }
         },
         {

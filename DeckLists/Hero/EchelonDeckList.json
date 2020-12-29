@@ -38,9 +38,9 @@
                 "Manipulate"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "default": "Before we go charging in, let's figure out what we're dealing with.",
+                "WinterTiamatCharacter": "Such a noisy lizard. I've got the antidote for that.",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
         },
@@ -515,9 +515,9 @@
                 "DestroyEnvironment"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "default": "Get ready to move out.",
+                "WinterTiamatCharacter": "What are you jokers waiting for? We've got a dragon that needs to be taught some manners.",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
         },
@@ -553,9 +553,9 @@
                 "PlayCardNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
+                "default": "Deploying surveillance drones to identify strategic weaknesses.",
+                "WinterTiamatCharacter": "What a quaint beast.",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
             },
             "complexity": 3
         }
