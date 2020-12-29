@@ -15,7 +15,7 @@ namespace Cauldron.Cypher
 
         public FirstResponseCypherCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => IsAugment(c), "augment"));
         }
 
         public override IEnumerator UsePower(int index = 0)
