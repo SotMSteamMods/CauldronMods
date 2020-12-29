@@ -50,6 +50,7 @@ namespace Cauldron.Celadroch
 
         public override void AddTriggers()
         {
+            // NB: Confirmed by Tosx that this is normal counter damage that occurs after the damage
             AddTrigger<DealDamageAction>(CounterDamageCriteria, DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
 
             AddWhenDestroyedTrigger(dca => WhenDestroyedResponse(), TriggerType.DestroyCard);
