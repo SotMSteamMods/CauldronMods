@@ -66,7 +66,7 @@ namespace Cauldron.Impact
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
-            if (IsRealAction())
+            if (IsRealAction(dd))
             {
                 coroutine = DestroyThisCardResponse(dd);
                 if (UseUnityCoroutines)
