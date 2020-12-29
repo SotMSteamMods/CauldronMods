@@ -10,7 +10,6 @@ namespace Cauldron.Cypher
     {
         protected AugBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowCardThisCardIsNextTo(Card);
         }
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources,

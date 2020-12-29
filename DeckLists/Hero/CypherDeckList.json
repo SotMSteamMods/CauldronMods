@@ -488,7 +488,7 @@
             "flavorReference": "Necro, Experimental One-shot"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "CypherCharacter",
             "promoIdentifier": "FirstResponseCypherCharacter",
@@ -543,11 +543,11 @@
             "hitpointColor": "F27991",
             "character": true,
             "powers": [
-                "Play a card face down next to a hero. Until leaving play it gains keyword \"Augment\" and text \"This hero is augmented\", draw a card."
+                "Play a card face down next to a hero. Until leaving play it gains keyword 'Augment' and text 'This hero is augmented', draw a card."
             ],
             "icons": [
                 "HasPower",
-                "DealDamageEnergy"
+                "DrawCardNow"
             ],
             "hitpoints": 22,
             "nemesisIdentifiers": [
