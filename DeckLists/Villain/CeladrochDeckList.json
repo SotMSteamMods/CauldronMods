@@ -312,10 +312,10 @@
 				"CounterDamage",
 				"DealDamageMelee",
 				"DestroyOngoing",
-				"DestroyEnvironment"
+				"DestroyEquipment"
 			],
 			"body": [
-				"The first time another villain target would be dealt damage each turn, this card deals the source of that damage {H} melee damage.",
+				"The first time another villain target is dealt damage each turn, this card deals the source of that damage {H} melee damage.",
 				"When this card is destroyed, destroy 1 hero ongoing or equipment card for each other non-character villain target in play."
 			],
 			"flavorQuotes": [{

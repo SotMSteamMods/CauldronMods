@@ -45,7 +45,7 @@ namespace Cauldron.Celadroch
 
         private bool CounterDamageCriteria(DealDamageAction dda)
         {
-            return dda.Target != Card && IsVillainTarget(dda.Target) && IsCounterDamageAvailable();
+            return dda.Amount > 0 && dda.Target != Card && IsVillainTarget(dda.Target) && IsCounterDamageAvailable();
         }
 
         public override void AddTriggers()
