@@ -48,8 +48,7 @@ namespace Cauldron.Cypher
             }
 
             // ... draw a card.
-            int drawNumeral = base.GetPowerNumeral(0, PowerCardsToDraw);
-            coroutine = base.GameController.DrawCards(this.HeroTurnTakerController, drawNumeral, cardSource: GetCardSource());
+            coroutine = base.GameController.DrawCards(this.HeroTurnTakerController, PowerCardsToDraw, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
