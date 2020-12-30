@@ -219,6 +219,46 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestMenagerieFrontAdvanced()
+        {
+            SetupGameController(new string[] { "Cauldron.Menagerie", "TheSentinels", "Bunker", "TheScholar", "Megalopolis" }, true);
+            StartGame();
+
+            //When an enclosure enters play, put the top card of the villain deck beneath it.
+            Card sphere = PlayCard("AquaticSphere");
+            //1 for when its normally played and 1 for advanced
+            AssertNumberOfCardsUnderCard(sphere, 2);
+        }
+
+        [Test()]
+        public void TestMenagerieFlip()
+        {
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Bunker", "TheScholar", "Megalopolis" });
+            StartGame();
+
+            //At the end of the villain turn...if {H} enclosures are beneath this card, flip {Menagerie}'s character cards.
+            MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere" }, menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            //2 under
+            AssertNotFlipped(menagerie);
+
+            MoveCard(menagerie, "ExoticSphere", menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            //3 under
+            AssertNotFlipped(menagerie);
+
+            MoveCard(menagerie, "ReinforcedSphere", menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            //4 under
+            AssertNotFlipped(menagerie);
+
+            MoveCard(menagerie, "SecuritySphere", menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            //5 under
+            AssertFlipped(menagerie);
+        }
+
+        [Test()]
         public void TestAngryLethovore()
         {
             SetupGameController("Cauldron.Menagerie", "Haka", "Bunker", "TheScholar", "Megalopolis");

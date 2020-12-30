@@ -102,7 +102,7 @@ namespace Cauldron.Menagerie
             }
 
             //Then if {H} enclosures are beneath this card, flip {Menagerie}'s character cards.
-            if (base.FindCardsWhere((new LinqCardCriteria((Card c) => c.Location == base.Card.UnderLocation))).Count() >= Game.H)
+            if (base.FindCardsWhere((new LinqCardCriteria((Card c) => this.IsEnclosure(c) && c.Location == base.Card.UnderLocation))).Count() >= Game.H)
             {
                 coroutine = base.FlipThisCharacterCardResponse(action);
                 if (base.UseUnityCoroutines)
