@@ -18,9 +18,27 @@ namespace Cauldron.Cricket
         {
             //Each player may draw a card. When a player draws a card this way, 1 other player must discard a card.
             int otherPlayers = GetPowerNumeral(0, 1);
-            List<DrawCardAction> storedResults = new List<DrawCardAction>();
-            //Each player may draw a card.
-            IEnumerator coroutine = base.EachPlayerDrawsACard(optional: true, allowAutoDraw: false, storedResults: storedResults);
+
+            var criteria = new LinqTurnTakerCriteria(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()));
+
+            var selectTurnTakersDecision = new SelectTurnTakersDecision(GameController, DecisionMaker, criteria, SelectionType.DrawCard,
+                                            cardSource: GetCardSource());
+
+            var coroutine = GameController.SelectTurnTakersAndDoAction(selectTurnTakersDecision, (TurnTaker hero) => OptionalDrawAndDiscard(hero.ToHero(), otherPlayers), cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+
+        private IEnumerator OptionalDrawAndDiscard(HeroTurnTaker hero, int numberOfDiscards)
+        {
+            List<DrawCardAction> result = new List<DrawCardAction>();
+            var coroutine = DrawCard(hero, optional: numberOfDiscards > 0, cardsDrawn: result, allowAutoDraw: numberOfDiscards > 0);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -30,30 +48,24 @@ namespace Cauldron.Cricket
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            //When a player draws a card this way...
-            if (storedResults.Any())
+            if (DidDrawCards(result, 1))
             {
-                foreach (DrawCardAction action in storedResults)
+                for (int i = 0; i < numberOfDiscards; i++)
                 {
-                    //If Guise makes more/fewer players discard cards
-                    for (int i = 0; i < otherPlayers; i++)
+                    //...1 other player must discard a card.
+                    IEnumerable<TurnTaker> choices = GameController.FindTurnTakersWhere(tt => !tt.IsIncapacitatedOrOutOfGame && tt.IsHero && tt != hero);
+                    SelectTurnTakerDecision decision = new SelectTurnTakerDecision(GameController, HeroTurnTakerController, choices, SelectionType.DiscardCard, cardSource: GetCardSource());
+                    coroutine = base.GameController.SelectTurnTakerAndDoAction(decision, (TurnTaker tt) => GameController.SelectAndDiscardCard(FindHeroTurnTakerController(tt.ToHero())));
+                    if (base.UseUnityCoroutines)
                     {
-                        //...1 other player must discard a card.
-                        IEnumerable<TurnTaker> choices = base.Game.TurnTakers.Where((TurnTaker tt) => tt.IsHero && tt.ToHero() != action.HeroTurnTaker);
-                        SelectTurnTakerDecision decision = new SelectTurnTakerDecision(base.GameController, base.HeroTurnTakerController, choices, SelectionType.DiscardCard, cardSource: base.GetCardSource());
-                        coroutine = base.GameController.SelectTurnTakerAndDoAction(decision, (TurnTaker tt) => base.GameController.SelectAndDiscardCard(base.FindHeroTurnTakerController(tt.ToHero())));
-                        if (base.UseUnityCoroutines)
-                        {
-                            yield return base.GameController.StartCoroutine(coroutine);
-                        }
-                        else
-                        {
-                            base.GameController.ExhaustCoroutine(coroutine);
-                        }
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
                     }
                 }
             }
-            yield break;
         }
     }
 }
