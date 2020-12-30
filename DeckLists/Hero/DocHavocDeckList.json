@@ -39,7 +39,7 @@
             ],
             "openingLines": {
                 "default": "Alright, folks, let's keep a level head here. This may get rough.",
-                "VectorCharacter": "Vector placeholder"
+                "VectorCharacter": "I'm not giving up on you yet."
             },
             "complexity": 2
         },
@@ -78,7 +78,7 @@
                 "GainHP"
             ],
             "body": "Whenever {DocHavoc} would deal damage to a target, that target may instead regain that much HP.",
-            "flavorText": "\"Let's fix you up\", he said,{BR}as Vanish backed slowly away from the glowing knife.",
+            "flavorText": "''Let's fix you up'', he said,{BR}as Vanish backed slowly away from the{BR}glowing knife.",
             "flavorReference": "War Journal #94"
         },
         {
@@ -440,7 +440,7 @@
             ],
             "openingLines": {
                 "default": "First priority, people, evacuate the wounded - then we knock the kook out cold.",
-                "VectorCharacter": "Vector placeholder"
+                "VectorCharacter": "Quarantine the area! We can't let his plague spread."
             },
             "complexity": 2
         }],
@@ -481,7 +481,7 @@
             ],
             "openingLines": {
                 "default": "Haven't seen your like before; let's see how you respond to punching.",
-                "VectorCharacter": "Vector placeholder"
+                "VectorCharacter": "I won't let those events take place in this reality, too."
             },
             "complexity": 2
         }

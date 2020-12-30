@@ -390,6 +390,7 @@ namespace CauldronTests
             AssertInTrash(dermal);
             AssertIsInPlay(retinal);
         }
+
         [Test]
         public void TestCyberintegration()
         {
@@ -413,6 +414,7 @@ namespace CauldronTests
             PlayCard("Cyberintegration");
             QuickHPCheck(0, 6, 0);
         }
+
         [Test]
         public void TestCyborgBlaster()
         {

@@ -43,7 +43,7 @@ namespace Cauldron.MagnificentMara
                 {
                     GameController.ExhaustCoroutine(coroutine);
                 }
-                if (IsRealAction())
+                if (IsRealAction(dd))
                 {
                     coroutine = GameController.DestroyCard(DecisionMaker, this.Card, cardSource: GetCardSource());
                     if (UseUnityCoroutines)

@@ -39,8 +39,8 @@
                 "MakeDamageIrreducible"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "PhaseCharacter": "Phase placeholder"
+                "default": "What a lovely mess this is turning into.",
+                "PhaseVillainCharacter": "We are going to have a talk about the mess you caused in Akelabad."
             },
             "complexity": 1
         },
@@ -428,8 +428,8 @@
                 "DealDamageProjectile"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "PhaseCharacter": "Phase placeholder"
+                "default": "You caught me on a bad day.",
+                "PhaseVillainCharacter": "Walls won't stop me from bringing you to justice."
             },
             "complexity": 1
         },
@@ -468,8 +468,8 @@
                 "MakeDamageIrreducible"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "PhaseCharacter": "Phase placeholder"
+                "default": "I don't think you understand the gravity of this situation.",
+                "PhaseVillainCharacter": "Keep wasting your time with taunts - it'll make it easier to finally catch you."
             },
             "complexity": 1
         }
