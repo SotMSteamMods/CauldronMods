@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cauldron.Menagerie
 {
@@ -17,6 +18,8 @@ namespace Cauldron.Menagerie
             //Front: Cards beneath villain cards are not considered in play. When an enclosure leaves play, put it under [Menagerie], discarding all cards beneath it. Put any discarded targets into play.
             //Back: Cards beneath enclosures are not considered in play. When an enclosure leaves play, discard all cards beneath it.
             base.AddBeforeLeavesPlayAction(this.HandleEnclosureCardsResponse, TriggerType.MoveCard);
+            //Back: Heroes with enclosures in their play area may not damage cards in other play areas.
+            base.AddImmuneToDamageTrigger((DealDamageAction action) => base.CharacterCard.IsFlipped && action.DamageSource.Owner == this.GetEnclosedHero() && action.Target.Location.OwnerTurnTaker != action.DamageSource.Card.Location.OwnerTurnTaker);
         }
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
@@ -25,17 +28,24 @@ namespace Cauldron.Menagerie
             {
                 //Back: When an enclosure enters play, move it next to the active hero with the fewest enclosures in their play area. Heroes with enclosures in their play area may not damage cards in other play areas.
                 List<TurnTaker> heroes = new List<TurnTaker>();
-                IEnumerator coroutine = base.FindHeroWithFewestCardsInPlay(heroes, cardCriteria: new LinqCardCriteria((Card c) => base.IsEnclosure(c)));
-                if (base.UseUnityCoroutines)
+                int maxEnclosures = 5;
+                foreach (TurnTaker hero in base.Game.HeroTurnTakers)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
+                    int numEnclosures = base.FindCardsWhere(new LinqCardCriteria((Card c) => this.IsEnclosure(c) && c.Location.OwnerTurnTaker == hero && c.IsInPlayAndHasGameText)).Count();
+                    if (numEnclosures < maxEnclosures)
+                    {
+                        maxEnclosures = numEnclosures;
+                    }
                 }
-                else
+                foreach (TurnTaker hero in base.Game.HeroTurnTakers)
                 {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    int numEnclosures = base.FindCardsWhere(new LinqCardCriteria((Card c) => this.IsEnclosure(c) && c.Location.OwnerTurnTaker == hero && c.IsInPlayAndHasGameText)).Count();
+                    if (numEnclosures == maxEnclosures)
+                    {
+                        heroes.Add(hero);
+                    }
                 }
-
-                coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && heroes.Contains(c.Owner)), storedResults, isPutIntoPlay, decisionSources);
+                IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && heroes.Contains(c.Owner)), storedResults, isPutIntoPlay, decisionSources);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -45,9 +55,12 @@ namespace Cauldron.Menagerie
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            if (storedResults != null && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(this.TurnTaker)))
+            else
             {
-                storedResults.Add(new MoveCardDestination(this.TurnTaker.PlayArea));
+                if (storedResults != null && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(this.TurnTaker)))
+                {
+                    storedResults.Add(new MoveCardDestination(this.TurnTaker.PlayArea));
+                }
             }
             yield break;
         }
@@ -105,6 +118,15 @@ namespace Cauldron.Menagerie
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
+        }
+
+        private TurnTaker GetEnclosedHero()
+        {
+            if (base.Card.Location.OwnerCard != null && base.Card.Location.OwnerCard.IsHero)
+            {
+                return base.Card.Location.OwnerCard.Owner;
+            }
+            return null;
         }
     }
 }

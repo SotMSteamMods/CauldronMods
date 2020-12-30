@@ -35,23 +35,26 @@ namespace Cauldron.Menagerie
             }
 
             //Then, place the top card of the villain deck face down beneath the Enclosure with the fewest cards beneath it.
-            IEnumerable<Card> enclosures = base.FindCardsWhere(new LinqCardCriteria((Card c) => base.IsEnclosure(c)));
-            Card fewestEnclosed = enclosures.FirstOrDefault();
-            foreach (Card enclosure in enclosures)
+            IEnumerable<Card> enclosures = base.FindCardsWhere(new LinqCardCriteria((Card c) => base.IsEnclosure(c) && c.IsInPlayAndHasGameText));
+            if (enclosures.Any())
             {
-                if (fewestEnclosed.UnderLocation.NumberOfCards > enclosure.UnderLocation.NumberOfCards)
+                Card fewestEnclosed = enclosures.FirstOrDefault();
+                foreach (Card enclosure in enclosures)
                 {
-                    fewestEnclosed = enclosure;
+                    if (fewestEnclosed.UnderLocation.NumberOfCards > enclosure.UnderLocation.NumberOfCards)
+                    {
+                        fewestEnclosed = enclosure;
+                    }
                 }
-            }
-            coroutine = base.GameController.MoveCard(base.TurnTakerController, base.TurnTaker.Deck.TopCard, fewestEnclosed.UnderLocation, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                coroutine = base.GameController.MoveCard(base.TurnTakerController, base.TurnTaker.Deck.TopCard, fewestEnclosed.UnderLocation, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }

@@ -256,6 +256,67 @@ namespace CauldronTests
             GoToEndOfTurn(menagerie);
             //5 under
             AssertFlipped(menagerie);
+            AssertHitPoints(menagerie.CharacterCard, 50);
+        }
+
+        [Test()]
+        public void TestMenagerieFlip3H()
+        {
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" });
+            StartGame();
+
+            //At the end of the villain turn...if {H} enclosures are beneath this card, flip {Menagerie}'s character cards.
+            MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere" }, menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            //2 under
+            AssertNotFlipped(menagerie);
+
+            MoveCard(menagerie, "ExoticSphere", menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            //3 under
+            AssertFlipped(menagerie);
+            AssertHitPoints(menagerie.CharacterCard, 50);
+        }
+
+        [Test()]
+        public void TestMenagerieInitialFlip()
+        {
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" });
+            StartGame();
+            Card prize = FindCardInPlay("PrizedCatch");
+
+            //When Menagerie flips to this side, shuffle the villain trash and all enclosurese beneath this card into the villain deck. Remove Prized Catch from the game.
+            DiscardTopCards(menagerie.TurnTaker.Deck, 6);
+            MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            AssertFlipped(menagerie);
+
+            AssertNumberOfCardsInTrash(menagerie, 0);
+            AssertNumberOfCardsUnderCard(menagerie.CharacterCard, 0);
+            AssertOutOfGame(prize);
+        }
+
+        [Test()]
+        public void TestMenagerieBackEnclosureLocation()
+        {
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" });
+            StartGame();
+            MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            AssertFlipped(menagerie);
+            DestroyNonCharacterVillainCards();
+
+            //When an enclosure enters play, move it next to the active hero with the fewest enclosures in their play area. 
+            Card aqua = PlayCard("AquaticSphere");
+            AssertNextToCard(aqua, legacy.CharacterCard);
+            Card arb = PlayCard("ArborealSphere");
+            AssertNextToCard(arb, ra.CharacterCard);
+
+            //Heroes with enclosures in their play area may not damage cards in other play areas.
+            QuickHPStorage(menagerie.CharacterCard, arb);
+            DealDamage(ra, menagerie, 2, DamageType.Melee);
+            DealDamage(ra, arb, 2, DamageType.Melee);
+            QuickHPCheck(0, -2);
         }
 
         [Test()]
