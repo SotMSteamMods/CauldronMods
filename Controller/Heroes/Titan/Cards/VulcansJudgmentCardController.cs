@@ -24,7 +24,10 @@ namespace Cauldron.Titan
         {
             List<SelectCardDecision> targetDecision = new List<SelectCardDecision>();
             //{Titan} deals 1 villain target 5 infernal damage.
-            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), 5, DamageType.Infernal, 1, false, 1, storedResultsDecisions: targetDecision, cardSource: base.GetCardSource());
+            IEnumerator coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 5, DamageType.Infernal, 1, false, 1,
+                                        additionalCriteria: c => IsVillainTarget(c),
+                                        storedResultsDecisions: targetDecision,
+                                        cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -35,10 +38,11 @@ namespace Cauldron.Titan
             }
 
             // If Titanform is in play...
-            if (base.GetTitanform().Location.IsInPlayAndNotUnderCard)
+            if (base.GetTitanform().Location.IsInPlayAndNotUnderCard && DidSelectCard(targetDecision))
             {
+                var target = GetSelectedCard(targetDecision);
                 //...{Titan} also deals that target 2 fire damage.
-                coroutine = base.DealDamage(base.CharacterCard, targetDecision.FirstOrDefault().SelectedCard, 2, DamageType.Fire, cardSource: base.GetCardSource());
+                coroutine = DealDamage(CharacterCard, target, 2, DamageType.Fire, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -48,13 +52,12 @@ namespace Cauldron.Titan
                     GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            yield break;
         }
 
         public override IEnumerator UsePower(int index = 0)
         {
             //Destroy this card.
-            IEnumerator coroutine = base.GameController.DestroyCard(base.HeroTurnTakerController, base.Card, cardSource: base.GetCardSource());
+            IEnumerator coroutine = GameController.DestroyCard(HeroTurnTakerController, Card, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
