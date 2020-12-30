@@ -18,7 +18,7 @@ namespace Cauldron.Titan
         public override void AddTriggers()
         {
             //Whenever {Titan} is dealt damage by another target, reduce damage dealt to {Titan} by 1 until the start of your next turn.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Target == base.CharacterCard && !action.DamageSource.IsSameCard(this.CharacterCard) && action.DidDealDamage, this.DealtDamageResponse, TriggerType.CreateStatusEffect, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.IsTarget && action.Target == base.CharacterCard && !action.DamageSource.IsSameCard(this.CharacterCard) && action.DidDealDamage, this.DealtDamageResponse, TriggerType.CreateStatusEffect, TriggerTiming.After);
 
             //When {Titan} would deal damage, you may destroy this card to increase that damage by 2.
             base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard, this.DestroyThisCardToIncreaseDamageResponse, new TriggerType[] { TriggerType.DestroySelf, TriggerType.IncreaseDamage }, TriggerTiming.Before, isActionOptional: true);
@@ -33,7 +33,7 @@ namespace Cauldron.Titan
 
             IEnumerator coroutine;
             var maybeExistingEffect = GetExistingEffect(reduceDamageEffect);
-            if(maybeExistingEffect != null)
+            if (maybeExistingEffect != null)
             {
                 maybeExistingEffect.CombineWithStatusEffect(reduceDamageEffect);
                 coroutine = GameController.SendMessageAction($"{this.CharacterCard.Title}'s damage resistance from {this.Card.Title} increases to {maybeExistingEffect.Amount}.", Priority.Medium, GetCardSource());
@@ -55,16 +55,19 @@ namespace Cauldron.Titan
 
         private ReduceDamageStatusEffect GetExistingEffect(ReduceDamageStatusEffect newEffect)
         {
-            var foundEffect = Game.StatusEffects.Where((StatusEffect se) => se is ReduceDamageStatusEffect && (se as ReduceDamageStatusEffect).IsSameAs(newEffect)).FirstOrDefault();
+            var foundEffect = Game.StatusEffects.OfType<ReduceDamageStatusEffect>().FirstOrDefault(rdse => rdse.IsSameAs(newEffect));
             Log.Debug($"Found Status Effect: {foundEffect}");
-            return foundEffect != null ? foundEffect as ReduceDamageStatusEffect : null;
+            return foundEffect;
         }
 
         private IEnumerator DestroyThisCardToIncreaseDamageResponse(DealDamageAction action)
         {
             List<DestroyCardAction> destroyList = new List<DestroyCardAction>();
             //...you may destroy this card...
-            IEnumerator coroutine = base.GameController.DestroyCard(base.HeroTurnTakerController, base.Card, true, storedResults: destroyList, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.DestroyCard(base.HeroTurnTakerController, base.Card, true,
+                actionSource: action,
+                storedResults: destroyList,
+                cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
