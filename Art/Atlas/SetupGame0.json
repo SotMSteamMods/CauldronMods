@@ -450,7 +450,7 @@
 },
 "NightloreCouncilStarlightCharacter.png":
 {
-	"frame": {"x":2112,"y":1024,"w":178,"h":256},
+	"frame": {"x":2288,"y":1024,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
@@ -480,7 +480,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PastBaccaratCharacter.png":
+"WindcolorDendronCharacter.jpg":
 {
 	"frame": {"x":2288,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -488,7 +488,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PastMagnificentMaraCharacter.png":
+"PastBaccaratCharacter.png":
 {
 	"frame": {"x":2464,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -496,7 +496,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PastNecroCharacter.png":
+"PastMagnificentMaraCharacter.png":
 {
 	"frame": {"x":2640,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -504,7 +504,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PastTangoOneCharacter.png":
+"PastNecroCharacter.png":
 {
 	"frame": {"x":2816,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -512,7 +512,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PastTheKnightCharacterCard.png":
+"PastTangoOneCharacter.png":
 {
 	"frame": {"x":2992,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -520,7 +520,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PastTheRamCharacter.png":
+"PastTheKnightCharacter.png":
 {
 	"frame": {"x":3168,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -528,7 +528,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PastTheStrangerCharacter.png":
+"PastTheRamCharacter.png":
 {
 	"frame": {"x":3344,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -536,7 +536,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PastVanishCharacter.png":
+"PastTheStrangerCharacter.png":
 {
 	"frame": {"x":3520,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -544,7 +544,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PhaseVillainCharacter.png":
+"PastVanishCharacter.png":
 {
 	"frame": {"x":3696,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -552,7 +552,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"QuicksilverCharacter.jpg":
+"PhaseVillainCharacter.png":
 {
 	"frame": {"x":3872,"y":512,"w":176,"h":256},
 	"rotated": false,
@@ -560,7 +560,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"RenegadeCricketCharacter.png":
+"QuicksilverCharacter.jpg":
 {
 	"frame": {"x":0,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -568,7 +568,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"RenegadeGyrosaurCharacter.png":
+"RenegadeCricketCharacter.png":
 {
 	"frame": {"x":176,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -576,7 +576,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"RenegadeImpactCharacter.png":
+"RenegadeGyrosaurCharacter.png":
 {
 	"frame": {"x":352,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -584,7 +584,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"RenegadeQuicksilverCharacter.png":
+"RenegadeImpactCharacter.png":
 {
 	"frame": {"x":528,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -592,7 +592,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"RunecarvedTheStrangerCharacter.jpg":
+"RenegadeQuicksilverCharacter.png":
 {
 	"frame": {"x":704,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -600,7 +600,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"SeasonsOfChangeLadyOfTheWoodCharacter.jpg":
+"RunecarvedTheStrangerCharacter.jpg":
 {
 	"frame": {"x":880,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -608,7 +608,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"ShardmasterMalichaeCharacter.jpg":
+"SeasonsOfChangeLadyOfTheWoodCharacter.jpg":
 {
 	"frame": {"x":1056,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -616,7 +616,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"SpeedDemonGyrosaurCharacter.png":
+"ShardmasterMalichaeCharacter.jpg":
 {
 	"frame": {"x":1232,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -624,15 +624,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"StarlightCharacter.jpg":
-{
-	"frame": {"x":1584,"y":768,"w":176,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
-},
-"StSimeonsCatacombsDeckBack.jpg":
+"SpeedDemonGyrosaurCharacter.png":
 {
 	"frame": {"x":1408,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -640,7 +632,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"SuperstormAkelaDeckBack.png":
+"StarlightCharacter.jpg":
 {
 	"frame": {"x":1760,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -648,7 +640,15 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"SwarmEaterCharacter.png":
+"StSimeonsCatacombsDeckBack.jpg":
+{
+	"frame": {"x":1584,"y":768,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"SuperstormAkelaDeckBack.png":
 {
 	"frame": {"x":1936,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -656,7 +656,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"SwarmingProtocolCypherCharacter.png":
+"SwarmEaterCharacter.png":
 {
 	"frame": {"x":2112,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -664,7 +664,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TangoOneCharacter.jpg":
+"SwarmingProtocolCypherCharacter.png":
 {
 	"frame": {"x":2288,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -672,7 +672,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TerminusCharacter.png":
+"TangoOneCharacter.jpg":
 {
 	"frame": {"x":2464,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -680,7 +680,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TheChasmOfAThousandNightsDeckBack.png":
+"TerminusCharacter.png":
 {
 	"frame": {"x":2640,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -688,7 +688,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TheCybersphereDeckBack.png":
+"TheChasmOfAThousandNightsDeckBack.png":
 {
 	"frame": {"x":2816,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -696,7 +696,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TheInfernalChoirCharacter.png":
+"TheCybersphereDeckBack.png":
 {
 	"frame": {"x":2992,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -704,7 +704,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TheKnightCharacter.jpg":
+"TheInfernalChoirCharacter.png":
 {
 	"frame": {"x":3168,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -712,7 +712,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TheMistressOfFateCharacter.png":
+"TheKnightCharacter.jpg":
 {
 	"frame": {"x":3344,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -720,7 +720,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TheRamCharacter.jpg":
+"TheMistressOfFateCharacter.png":
 {
 	"frame": {"x":3520,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -728,7 +728,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TheStrangerCharacter.jpg":
+"TheRamCharacter.jpg":
 {
 	"frame": {"x":3696,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -736,7 +736,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TheWanderingIsleDeckBack.jpg":
+"TheStrangerCharacter.jpg":
 {
 	"frame": {"x":3872,"y":768,"w":176,"h":256},
 	"rotated": false,
@@ -744,7 +744,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"ThroughTheBreachDriftCharacter.png":
+"TheWanderingIsleDeckBack.jpg":
 {
 	"frame": {"x":0,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -752,7 +752,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TitanCharacter.png":
+"ThroughTheBreachDriftCharacter.png":
 {
 	"frame": {"x":176,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -760,7 +760,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"UncannyQuicksilverCharacter.jpg":
+"TitanCharacter.png":
 {
 	"frame": {"x":352,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -768,7 +768,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"VanishCharacter.png":
+"UncannyQuicksilverCharacter.jpg":
 {
 	"frame": {"x":528,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -776,7 +776,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"VaultFiveDeckBack.png":
+"VanishCharacter.png":
 {
 	"frame": {"x":704,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -784,7 +784,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"VectorCharacter.jpg":
+"VaultFiveDeckBack.png":
 {
 	"frame": {"x":880,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -792,7 +792,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WardenOfChaosNecroCharacter.jpg":
+"VectorCharacter.jpg":
 {
 	"frame": {"x":1056,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -800,7 +800,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WastelandRoninCricketCharacter.png":
+"WardenOfChaosNecroCharacter.jpg":
 {
 	"frame": {"x":1232,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -808,7 +808,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WastelandRoninGargoyleCharacter.png":
+"WastelandRoninCricketCharacter.png":
 {
 	"frame": {"x":1408,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -816,7 +816,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WastelandRoninImpactCharacter.png":
+"WastelandRoninGargoyleCharacter.png":
 {
 	"frame": {"x":1584,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -824,15 +824,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WastelandRoninTheKnightCharacter.png":
-{
-	"frame": {"x":2290,"y":1024,"w":178,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
-},
-"WastelandRoninTheStrangerCharacter.png":
+"WastelandRoninImpactCharacter.png":
 {
 	"frame": {"x":1760,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -840,7 +832,15 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WindmillCityDeckBack.png":
+"WastelandRoninTheKnightCharacter.png":
+{
+	"frame": {"x":2466,"y":1024,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
+"WastelandRoninTheStrangerCharacter.png":
 {
 	"frame": {"x":1936,"y":1024,"w":176,"h":256},
 	"rotated": false,
@@ -848,9 +848,17 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
+"WindmillCityDeckBack.png":
+{
+	"frame": {"x":2112,"y":1024,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
 "WinterTiamatCharacter.png":
 {
-	"frame": {"x":2468,"y":1024,"w":178,"h":256},
+	"frame": {"x":2644,"y":1024,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
@@ -863,6 +871,6 @@
 	"format": "RGBA8888",
 	"size": {"w":4096,"h":4096},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:8f37f63d1b4b5da91b26e8c4483a62df:e99b948dcf7d3af72ded0981c0efb98f:4ee285c32a91b7652e02ac049f918b2a$"
+	"smartupdate": "$TexturePacker:SmartUpdate:a1b169d43db44f44b8cce823ee297a8b:d6050ef6e6af0003eeb53cf7814fe260:4ee285c32a91b7652e02ac049f918b2a$"
 }
 }
