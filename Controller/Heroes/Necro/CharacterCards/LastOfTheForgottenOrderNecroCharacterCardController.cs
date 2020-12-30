@@ -13,6 +13,7 @@ namespace Cauldron.Necro
         public LastOfTheForgottenOrderNecroCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
         public override IEnumerator UsePower(int index = 0)
         {
             //PowerNumerals Required on powers
@@ -25,9 +26,14 @@ namespace Cauldron.Necro
 
             //The next time an undead target is destroyed, 1 hero deals a target 1 fire damage and draws a card.
             WhenCardIsDestroyedStatusEffect effect = new WhenCardIsDestroyedStatusEffect(base.Card, "DealDamageAndDrawResponse", "The next time an undead target is destroyed, 1 hero deals a target 1 fire damage and draws a card", new TriggerType[] { TriggerType.DealDamage, TriggerType.DrawCard }, DecisionMaker.HeroTurnTaker, base.Card, powerNumerals);
-            effect.NumberOfUses = 1;
+            effect.CanEffectStack = true;
             effect.CardDestroyedCriteria.IsTarget = true;
             effect.CardDestroyedCriteria.HasAnyOfTheseKeywords = new List<string>() { "undead" };
+            effect.CanEffectStack = true;
+            effect.DoesDealDamage = true;
+            //numberOfUses = 1 means the status effect expires before power modifiers get to see the damage
+            //instead we'll expire it in the response
+
             IEnumerator coroutine3 = AddStatusEffect(effect);
             if (base.UseUnityCoroutines)
             {
@@ -127,8 +133,10 @@ namespace Cauldron.Necro
             int target = powerNumerals?[0] ?? 1;
             int amount = powerNumerals?[1] ?? 1;
 
-            if (dca.WasCardDestroyed)
+            if (dca.WasCardDestroyed && effect.NumberOfUses == null)
             {
+                effect.NumberOfUses = 1;
+
                 //1 hero deals a target 1 fire damage and draws a card.
                 List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
                 IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.CardToDealDamage,
@@ -147,7 +155,7 @@ namespace Cauldron.Necro
                 if (DidSelectCard(storedResults))
                 {
                     Card selectedCard = GetSelectedCard(storedResults);
-                    coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, selectedCard), amount, DamageType.Fire, target, optional: false, target, cardSource: GetCardSource());
+                    coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, selectedCard), amount, DamageType.Fire, target, optional: false, target, cardSource: GetCardSource(effect));
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -168,6 +176,18 @@ namespace Cauldron.Necro
                         base.GameController.ExhaustCoroutine(coroutine);
 
                     }
+
+
+                }
+
+                coroutine = GameController.ExpireStatusEffect(effect, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
                 }
 
             }

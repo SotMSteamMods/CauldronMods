@@ -7,7 +7,7 @@ namespace Cauldron.Tiamat
     {
         public HydraInfernoTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowSpecialString(() => base.Card.Title + " is immune to Fire damage.").Condition = () => !base.Card.IsFlipped;
         }
 
         protected override ITrigger[] AddFrontTriggers()

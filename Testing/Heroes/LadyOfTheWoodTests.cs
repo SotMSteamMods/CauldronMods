@@ -1139,6 +1139,36 @@ namespace CauldronTests
             AssertInTrash(fall, summer);
         }
 
+
+
+        [Test()]
+        public void TestRebirthPutCardsUnder_LimitedInPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //stack trash
+            Card spring = PutInTrash("Spring");
+            Card fall = PutInTrash("Fall");
+            Card summer = PutInTrash("Summer");
+            Card trashGown = PutInTrash("SnowshadeGown", 0);
+            Card playGown = PlayCard("SnowshadeGown", 1);
+
+            AssertIsInPlay(playGown);
+            Assert.IsFalse(trashGown == playGown);
+
+            //When this card enters play, put up to 3 cards from your trash beneath it.
+
+            DecisionSelectCards = new Card[] { trashGown, null };
+            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
+
+            //check that there is 1 card under and that it is correct
+            AssertNumberOfCardsUnderCard(rebirth, 1);
+            AssertUnderCard(rebirth, trashGown);
+            AssertInTrash(spring, fall, summer);
+        }
+
+
         [Test()]
         public void TestRebirthPutCardsUnder_Choose0()
         {
@@ -1330,26 +1360,6 @@ namespace CauldronTests
             QuickHPCheck(2);
             QuickHandCheck(1);
             
-        }
-
-        [Test()]
-        public void TestSerenityOfDawnEndOfTurnHasNotDealtDamage_DrawOptional()
-        {
-            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
-            StartGame();
-
-            //set hp to have room to gain later
-            SetHitPoints(ladyOfTheWood.CharacterCard, 15);
-            //At the end of your turn, if {LadyOfTheWood} dealt no damage this turn, she regains 2 HP and you may draw a card.
-            PlayCard("SerenityOfDawn");
-            DecisionYesNo = false;
-            QuickHPStorage(ladyOfTheWood);
-            QuickHandStorage(ladyOfTheWood);
-            GoToEndOfTurn(ladyOfTheWood);
-            //since no damage dealt, gain 2 HP, draw card was declined, so no new cards in hand
-            QuickHPCheck(2);
-            QuickHandCheck(0);
-
         }
 
         [Test()]

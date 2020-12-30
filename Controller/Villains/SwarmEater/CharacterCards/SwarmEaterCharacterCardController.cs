@@ -13,8 +13,8 @@ namespace Cauldron.SwarmEater
 
         public SwarmEaterCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => !base.Card.IsFlipped, () => this.PursuedCard().AlternateTitleOrTitle + " is the pursued target.", () => "No one is being pursued");
-            base.SpecialStringMaker.ShowLowestHP(cardCriteria: new LinqCardCriteria((Card c) => c != base.Card));
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => !base.Card.IsFlipped, () => this.PursuedCard().AlternateTitleOrTitle + " is the pursued target.", () => "No one is being pursued").Condition = ()=> Game.HasGameStarted;
+            base.SpecialStringMaker.ShowLowestHP(cardCriteria: new LinqCardCriteria((Card c) => c != base.Card)).Condition = () => base.Card.IsFlipped;
         }
 
         public override void AddSideTriggers()
@@ -22,18 +22,19 @@ namespace Cauldron.SwarmEater
             if (!base.Card.IsFlipped)
             {
                 //If Single-Minded Pursuit leaves play, flip {SwarmEater}'s villain character cards.
-                base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => action.CardToDestroy.Card.Identifier == SingleMindedPursuitIdent && action.WasCardDestroyed, base.FlipThisCharacterCardResponse, TriggerType.FlipCard, TriggerTiming.After));
+                base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction dca) => dca.CardToDestroy.Card.Identifier == SingleMindedPursuitIdent && dca.WasCardDestroyed, base.FlipThisCharacterCardResponse, TriggerType.FlipCard, TriggerTiming.After));
 
                 //At the start of the villain turn, {SwarmEater} deals the pursued target 3 psychic damage.
                 base.AddSideTrigger(base.AddDealDamageAtStartOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => this.IsPursued(c), TargetType.All, 3, DamageType.Psychic));
 
                 //Whenever a pursued hero deals damage to a target other than {SwarmEater}, you may move Single-Minded Pursuit next to that target.
-                base.AddSideTrigger(base.AddTrigger<DealDamageAction>((DealDamageAction action) => this.IsPursued(action.DamageSource.Card) && action.DamageSource.Card.IsHeroCharacterCard && action.Target != base.Card && action.Target != action.DamageSource.Card, this.ChangePursuedResponse, TriggerType.MoveCard, TriggerTiming.After));
+                base.AddSideTrigger(base.AddTrigger<DealDamageAction>((DealDamageAction dda) => this.IsPursued(dda.DamageSource.Card) && dda.DamageSource.Card.IsHeroCharacterCard && dda.Target != base.Card && dda.Target != dda.DamageSource.Card && dda.Target.IsInPlay && !dda.Target.IsBeingDestroyed,
+                            this.ChangePursuedResponse, TriggerType.MoveCard, TriggerTiming.After));
 
                 if (base.Game.IsAdvanced)
                 {
                     //Increase damage dealt by {SwarmEater} to environment targets by 1.
-                    base.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.Card == base.Card && action.Target.IsEnvironment, 1));
+                    base.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction dda) => dda.DamageSource.Card == base.Card && dda.Target.IsEnvironment, 1));
                 }
             }
             else
@@ -45,11 +46,11 @@ namespace Cauldron.SwarmEater
                 /**************Trigger added to Single-Minded Pursuit****************/
 
                 //Whenever a villain card is played {SwarmEater} deals the non-hero target other than itself with the lowest HP 3 melee damage.
-                base.AddSideTrigger(base.AddTrigger<PlayCardAction>((PlayCardAction action) => IsVillain(action.CardToPlay) && action.WasCardPlayed && !action.IsPutIntoPlay, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After));
+                base.AddSideTrigger(base.AddTrigger<PlayCardAction>((PlayCardAction pca) => IsVillain(pca.CardToPlay) && pca.WasCardPlayed && !pca.IsPutIntoPlay, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After));
                 if (base.Game.IsAdvanced)
                 {
                     //Whenever {SwarmEater} destroys a villain target, play the top card of the villain deck.
-                    base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => action.ResponsibleCard == base.Card && action.WasCardDestroyed && IsVillain(action.CardToDestroy.Card), base.PlayTheTopCardOfTheVillainDeckResponse, TriggerType.PlayCard, TriggerTiming.After));
+                    base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction dca) => dca.ResponsibleCard == base.Card && dca.WasCardDestroyed && IsVillain(dca.CardToDestroy.Card), base.PlayTheTopCardOfTheVillainDeckResponse, TriggerType.PlayCard, TriggerTiming.After));
                 }
             }
             base.AddDefeatedIfDestroyedTriggers();

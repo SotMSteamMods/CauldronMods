@@ -11,7 +11,7 @@ namespace Cauldron.SuperstormAkela
 
         public FlyingBusCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.PlayArea, new LinqCardCriteria((Card c) => IsLeftOfThisCard(c, base.Card), "card(s) left of this"));
+            base.SpecialStringMaker.ShowSpecialString(() => BuildCardsLeftOfThisSpecialString()).Condition = () => Card.IsInPlayAndHasGameText;
 
         }
 
@@ -25,7 +25,7 @@ namespace Cauldron.SuperstormAkela
         {
             // this card deals the X+1 hero targets with the highest HP {H} projectile damage each, where X is the number of environment cards to the left of this one
 
-            Func<int> numTargets = () => GetNumberOfCardsToTheLeftOfThisOne(base.Card).Value + 1;
+            Func<int> numTargets = () => (GetNumberOfCardsToTheLeftOfThisOne(base.Card) ?? 0) + 1;
             IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => new int?(Game.H), DamageType.Projectile, numberOfTargets: numTargets);
             if (base.UseUnityCoroutines)
             {

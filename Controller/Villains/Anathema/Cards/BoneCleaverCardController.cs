@@ -11,6 +11,7 @@ namespace Cauldron.Anathema
     {
 		public BoneCleaverCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
+			SpecialStringMaker.ShowHeroTargetWithLowestHP();
 		}
 
 		public override void AddTriggers()

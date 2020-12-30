@@ -64,7 +64,7 @@ namespace CauldronTests
         {
             var nightloreDict = new Dictionary<string, string> { };
             nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
-            nightloreDict["Legacy"] = "GreatestLegacyCharacter";
+            nightloreDict["Legacy"] = "AmericasGreatestLegacyCharacter";
             SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Legacy", "Megalopolis" }, false, nightloreDict);
 
             Assert.AreEqual(4, this.GameController.TurnTakerControllers.Count());

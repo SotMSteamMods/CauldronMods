@@ -302,7 +302,21 @@ namespace CauldronTests
             PlayCard("HaplessShield");
             QuickHPCheck(-1);
         }
+        [Test]
+        public void TestHaplessShieldOnlyPicksTargets()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
 
+            Card train = PlayCard("PlummetingMonorail");
+            Card epe = PlayCard("ElectroPulseExplosive");
+            Card police = PlayCard("PoliceBackup");
+            Card beam = PlayCard("InterpolationBeam");
+
+            AssertNextDecisionChoices(included: new Card[] { train, epe, omnitron.CharacterCard }, notIncluded: new Card[] { police, beam });
+            PlayCard("HaplessShield");
+
+        }
         [Test()]
         public void TestImmolate()
         {
@@ -330,7 +344,7 @@ namespace CauldronTests
             GoToStartOfTurn(titan);
             DealDamage(omnitron, haka, 2, DamageType.Melee);
             QuickHPCheck(-1);
-            
+
             //If that target leaves play, destroy this card.
             DestroyCard(omnitron.CharacterCard);
             AssertInTrash(imm);
@@ -422,7 +436,7 @@ namespace CauldronTests
 
             Card tform = PlayCard("Titanform");
             DecisionYesNo = false;
-            
+
             //Whenever {Titan} is dealt damage by another target, reduce damage dealt to {Titan} by 1 until the start of your next turn.
             QuickHPStorage(titan);
             DealDamage(omnitron, titan, 2, DamageType.Melee);
@@ -434,7 +448,7 @@ namespace CauldronTests
             //Third time - having been hit twice, he should have accumulated 2 DR
             DealDamage(omnitron, titan, 2, DamageType.Melee);
             QuickHPCheck(0);
-            
+
             //Should wear off on his turn
             GoToStartOfTurn(titan);
             DealDamage(titan, titan, 2, DamageType.Melee);
@@ -757,6 +771,25 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestObsidianGraspDestroysTarget()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard("Titanform");
+            Card veins = PutInHand("MoltenVeins");
+            Card imm = PutOnDeck("Immolate");
+            Card s84 = PlayCard("S84AutomatonDrone");
+            DecisionsYesNo = new bool[] { false, true };
+            DecisionSelectCards = new Card[] { s84, veins, imm };
+            DecisionSelectFunction = 0;
+
+            PlayCard("ObsidianGrasp");
+            AssertInTrash(s84);
+            AssertOnTopOfDeck(imm);
+        }
+
+        [Test()]
         public void TestPaybackTime()
         {
             SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
@@ -896,7 +929,7 @@ namespace CauldronTests
         }
         [Test]
         public void TestStubbornGoliathFewerTargetsThanAllowed()
-        { 
+        {
             SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 

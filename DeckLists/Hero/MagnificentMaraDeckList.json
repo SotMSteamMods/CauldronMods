@@ -38,7 +38,7 @@
                 "ImmuneToDamage"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "We have an audience! Let's make some magic.",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 3
@@ -415,7 +415,7 @@
             "flavorText": "Frost noticed that she{BR}carefully avoided touching the eye{BR}itself. Behind the laughter and stagecraft{BR}he caught a sense of unease."
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "MagnificentMaraCharacter",
             "promoIdentifier": "MinistryOfStrategicScienceMagnificentMaraCharacter",
@@ -451,7 +451,8 @@
                 "Manipulate"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Wouldn't you know it, I'm sensing a threatening presence. Right over there.",
+                "MythosCharacter": "I don't think so. That 'little crystal' points out trouble, which is what you're in!",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 3
@@ -491,7 +492,8 @@
                 "Manipulate"
             ],
             "openingLines": {
-                "default": "default placeholder",
+                "default": "Excuse me, let's keep it classy!",
+                "TheMistressOfFateCharacter": "I've escaped from plenty of traps. This should be easy!",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 3

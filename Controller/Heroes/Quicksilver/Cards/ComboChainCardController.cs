@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace Cauldron.Quicksilver
 {
-    public class ComboChainCardController : CardController
+    public class ComboChainCardController : QuicksilverBaseCardController
     {
         public ComboChainCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -16,7 +16,9 @@ namespace Cauldron.Quicksilver
         public override void AddTriggers()
         {
             //The first time each turn that {Quicksilver} would deal herself damage to play a Combo card, prevent that damage.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt) && base.CharacterCardController.IsPropertyTrue("ComboSelfDamage"), (DealDamageAction action) => this.PreventDamageResponse(action), TriggerType.CancelAction, TriggerTiming.Before, isActionOptional: false);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt) && base.IsCharacterTakingComboDamage(), (DealDamageAction action) => this.PreventDamageResponse(action), TriggerType.CancelAction, TriggerTiming.Before, isActionOptional: false);
+
+            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeDamageDealt), TriggerType.Hidden);
         }
 
         private IEnumerator PreventDamageResponse(DealDamageAction action)

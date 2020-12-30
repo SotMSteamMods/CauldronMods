@@ -8,7 +8,7 @@ using Handelabra;
 
 namespace Cauldron.Quicksilver
 {
-    public class LiquidMetalCardController : CardController
+    public class LiquidMetalCardController : QuicksilverBaseCardController
     {
         public LiquidMetalCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -17,7 +17,7 @@ namespace Cauldron.Quicksilver
         public override IEnumerator Play()
         {
             //Reveal cards from the top of your deck until you reveal a [Combo or a Finisher]...
-            IEnumerator coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, true, new LinqCardCriteria((Card c) => c.DoKeywordsContain(new string[] { "combo", "finisher" })), 1, shuffleSourceAfterwards: false);
+            IEnumerator coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, true, new LinqCardCriteria((Card c) => c.DoKeywordsContain(new string[] { ComboKeyword, FinisherKeyword })), 1, shuffleSourceAfterwards: false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -35,13 +35,13 @@ namespace Cauldron.Quicksilver
             }
 
             List<string> missingKeywords = new List<string> { };
-            if (foundCard == null || !foundCard.DoKeywordsContain("finisher"))
+            if (foundCard == null || !foundCard.DoKeywordsContain(FinisherKeyword))
             {
-                missingKeywords.Add("finisher");
+                missingKeywords.Add(FinisherKeyword);
             }
-            if (foundCard == null || !foundCard.DoKeywordsContain("combo"))
+            if (foundCard == null || !foundCard.DoKeywordsContain(ComboKeyword))
             {
-                missingKeywords.Add("combo");
+                missingKeywords.Add(ComboKeyword);
             }
 
             //...and [the kind you didn't find first] and put them into your hand. Shuffle the other revealed cards back into your deck.
@@ -55,7 +55,7 @@ namespace Cauldron.Quicksilver
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
-            coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.PlayCard, base.Card, storedResults: storedResults);
+            coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.DealDamageSelf, base.Card, storedResults: storedResults);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -66,20 +66,7 @@ namespace Cauldron.Quicksilver
             }
             if (base.DidPlayerAnswerYes(storedResults))
             {
-                base.CharacterCardController.SetCardPropertyToTrueIfRealAction("ComboSelfDamage");
-                //...{Quicksilver} may deal herself 2 melee damage...
-                coroutine = base.DealDamage(base.CharacterCard, base.CharacterCard, 2, DamageType.Melee, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-                base.CharacterCardController.SetCardProperty("ComboSelfDamage", false);
-                //...play a Combo.
-                coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("combo")), cardSource: base.GetCardSource());
+                coroutine = base.ContinueWithComboResponse();
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

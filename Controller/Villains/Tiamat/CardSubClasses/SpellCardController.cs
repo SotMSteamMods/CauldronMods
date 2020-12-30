@@ -7,7 +7,7 @@ namespace Cauldron.Tiamat
 {
     public abstract class SpellCardController : CardController
     {
-        public SpellCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected SpellCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }

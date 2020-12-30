@@ -1,423 +1,394 @@
 {
-    "name": "Dendron",
-    "kind": "Villain",
-    "expansionIdentifier": "Cauldron",
-    "initialCardIdentifiers": [
-        "DendronCharacter"
-    ],
-    "cards": [
-        {
-            "identifier": "DendronCharacter",
-            "count": 1,
-            "title": "Dendron",
-            "keywords": [
-                "villain"
-            ],
-            "body": "Mural of the Forest",
-            "backgroundColor": "8fbda0",
-            "foilBackgroundColor": "CD96C0",
-            "character": true,
-            "hitpoints": 50,
-            "nemesisIdentifiers": [
-                "TheStranger"
-            ],
-            "setup": [
-                "At the start of the game, put {Dendron}'s villain character cards into play, 'Mural of the Forest' side up.",
+	"name": "Dendron",
+	"kind": "Villain",
+	"expansionIdentifier": "Cauldron",
+	"initialCardIdentifiers": [
+		"DendronCharacter"
+	],
+	"cards": [{
+			"identifier": "DendronCharacter",
+			"count": 1,
+			"title": "Dendron",
+			"keywords": [
+				"villain"
+			],
+			"body": "Mural of the Forest",
+			"backgroundColor": "8fbda0",
+			"foilBackgroundColor": "CD96C0",
+			"character": true,
+			"hitpoints": 50,
+			"nemesisIdentifiers": [
+				"TheStranger"
+			],
+			"setup": [
+				"At the start of the game, put {Dendron}'s villain character cards into play, 'Mural of the Forest' side up.",
 				"Search the deck for 1 copy of Stained Wolf and 1 copy of Painted Viper and put them into play."
-            ],
-            "gameplay": [
-                "At the start and end of the villain turn, if there are fewer than {H - 2} tattos in play, play the top card of the villain deck.",
-                "When Dendron would be destroyed, flip her villain character cards instead."
-            ],
-            "advanced": "Increase damage dealt by tattoos by 1.",
-            "icons": [
-                "StartOfTurnAction",
-                "EndOfTurnAction",
-                "PlayCardNow"
-            ],
-            "advancedIcons": [
-                "IncreaseDamageDealt"
-            ],
-            "flippedBody": "Unmarked Dryad",
-            "flippedGameplay": [
-                "When {Dendron} is flipped to this side, restore her to 50 HP and shuffle the villain trash into the deck.",
-                "At the start and end of the villain turn, play the top card of the villain deck."
-            ],
-            "flippedAdvanced": "At the start of the villain turn, {Dendron} regains 5 HP.",
-            "flippedIcons": [
-                "StartOfTurnAction",
-                "EndOfTurnAction",
-                "PlayCardNow"
-            ],
-            "flippedAdvancedIcons": [
-                "GainHP"
-            ],
-            "difficulty": 2,
-            "openingLines": {
-                "default": "The world will know the mark of Dendron.",
-                "TheStrangerCharacter": "The Stranger placeholder",
-                "RitualCarvedTheStrangerCharacter": "The Stranger: Ritual Carved placeholder",
-                "1929TheStrangerCharacter": "The Stranger 1929 placeholder",
-                "WastelandRoninTheStrangerCharacter": "Wasteland Ronin: The Stranger placeholder"
-            }
-        },
-        {
-            "identifier": "AdornedOak",
-            "count": 2,
-            "title": "Adorned Oak",
-            "keywords": [
-                "tattoo"
-            ],
-            "icons": [
-                "ReduceDamageTaken"
-            ],
-            "body": "Reduce damage dealt to Tattoos by 1.",
-            "flavorQuotes": [
-                {
-                    "identifier": "Dendron",
-                    "text": "With a little prompting, the{BR}forest always looks out for its own."
-                }
-            ],
-            "flavorReference": "Dendron, Strange Roads #302",
-            "hitpoints": 5
-        },
-        {
-            "identifier": "BloodThornAura",
-            "count": 1,
-            "title": "Blood Thorn Aura",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "CounterDamage",
-                "DealDamageRadiant"
-            ],
-            "body": "Whenever a Tattoo would be dealt damage by a non-villain target, it first deals that target {H  - 2} radiant damage.",
-            "flavorQuotes": [
-                {
-                    "identifier": "TheArgentAdept",
-                    "text": "She kept her{BR}form but lost herself to this power.{BR}I'd say you got the better deal."
-                }
-            ],
-            "flavorReference": "The Argent Adept, Dark Design #8"
-        },
-        {
-            "identifier": "ChokingInscription",
-            "count": 1,
-            "title": "Choking Inscription",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "CannotDrawCards",
-                "CannotPlayCards",
-                "Manipulate"
-            ],
-            "body": "The hero with the most cards in hand cannot draw cards during their next turn. The hero with the most cards in play cannot play cards during their next turn. All other heroes shuffle their trash into their decks.",
-            "flavorQuotes": [
-                {
-                    "identifier": "Chrono-Ranger",
-                    "text": "Get this thing off of me!"
-                }
-            ],
-            "flavorReference": "Roots of the World #49"
-        },
-        {
-            "identifier": "DarkDesign",
-            "count": 1,
-            "title": "Dark Design",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Discard"
-            ],
-            "body": "The last hero that dealt damage to a villain target must discard {H} cards from their hand.",
-            "flavorQuotes": [
-                {
-                    "identifier": "TheStranger",
-                    "text": "She gave me this{BR}cursed mark, long ago."
-                },
-                {
-                    "identifier": "Baccarat",
-                    "text": "Seems we're all of us{BR}older than we look."
-                }
-            ],
-            "flavorReference": "Dark Design #8"
-        },
-        {
-            "identifier": "InkScar",
-            "count": 2,
-            "title": "Ink Scar",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Manipulate",
-                "PlayCardNow"
-            ],
-            "body": "Shuffle all Tattoos from the villain trash into the villain deck. Play the top 2 cards of the villain deck.",
-            "flavorQuotes": [
-                {
-                    "identifier": "Dendron",
-                    "text": "My works shall not fade so easily."
-                }
-            ],
-            "flavorReference": "Dendron, Mark of the Forest #7"
-        },
-        {
-            "identifier": "LivingInk",
-            "count": 2,
-            "title": "Living Ink",
-            "keywords": [
-                "tattoo"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "GainHP"
-            ],
-            "body": "At the end of the villain turn, each villain target regains 3 HP.",
-            "flavorQuotes": [
-                {
-                    "identifier": "The Stranger",
-                    "text": "There are many forms of written magic."
-                }
-            ],
-            "flavorReference": "TheStranger, Dark Design #1",
-            "hitpoints": 10
-        },
-        {
-            "identifier": "MarkOfTheWrithingNight",
-            "count": 2,
-            "title": "Mark of the Writhing Night",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "DealDamageProjectile",
-                "DealDamageInfernal",
-                "DestroyOngoing",
-                "DestroyEquipment"
-            ],
-            "body": [
-                "{Dendron} deals the hero with the highest HP 5 projectile damage and the hero with the lowest HP 2 irreducible infernal damage.",
-                "Destroy 1 equipment and 1 ongoing from the hero with the fewest cards in play, and 2 equipment and 2 ongoing cards from the hero with the most cards in play."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TheStranger",
-                    "text": "Did you think I was the only one?"
-                }
-            ],
-            "flavorReference": "The Stranger, Dark Design #1"
-        },
-        {
-            "identifier": "ObsidianSkin",
-            "count": 2,
-            "title": "Obsidian Skin",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "ReduceDamageTaken"
-            ],
-            "body": "Reduce damage dealt to {Dendron} by 1.",
-            "flavorText": "Do your tattoos do that?",
-            "flavorReference": "Absolute Zero to Haka, Freedom Five #1306"
-        },
-        {
-            "identifier": "PaintedViper",
-            "count": 3,
-            "title": "Painted Viper",
-            "keywords": [
-                "tattoo"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "DealDamageToxic"
-            ],
-            "body": "At the end of the villain turn, this card deals the hero target with the lowest HP {H - 2} toxic damage.",
-            "flavorQuotes": [
-                {
-                    "identifier": "Dendron",
-                    "text": "It was a painful{BR}process. Let me show you!"
-                }
-            ],
-            "flavorReference": "Dendron, Mark of the Beast One-Shot",
-            "hitpoints": 8
-        },
-        {
-            "identifier": "Restoration",
-            "count": 1,
-            "title": "Restoration",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "GainHP"
-            ],
-            "body": "{Dendron} regains 10 HP. Restore all Tattoos to their max HP.",
-            "flavorQuotes": [
-                {
-                    "identifier": "Dendron",
-                    "text": "Time for a little touchup."
-                }
-            ],
-            "flavorReference": "Dendron, Mark of the Forest #14"
-        },
-        {
-            "identifier": "ShadedOwl",
-            "count": 2,
-            "title": "Shaded Owl",
-            "keywords": [
-                "tattoo"
-            ],
-            "icons": [
-                "IncreaseDamageDealt",
-                "EndOfTurnAction",
-                "DealDamageSonic"
-            ],
-            "body": [
-                "Increase damage dealt by villain targets by 1.",
-                "At the end of the villain turn, this card deals each hero target 1 sonic damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Tachyon",
-                    "text": "I've had it with birds!"
-                }
-            ],
-            "flavorReference": "Tachyon, Rook City #603",
-            "hitpoints": 15
-        },
-        {
-            "identifier": "StainedWolf",
-            "count": 3,
-            "title": "Stained Wolf",
-            "keywords": [
-                "tattoo"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "DealDamageMelee"
-            ],
-            "body": "At the end of the villain turn, this card deals the hero target with the highest HP {H - 1} melee damage.",
-            "flavorQuotes": [
-                {
-                    "identifier": "Dendron",
-                    "text": "What was that about{BR}being outnumbered?"
-                }
-            ],
-            "flavorReference": "Dendron, Rook City # 603",
-            "hitpoints": 8
-        },
-        {
-            "identifier": "TintedStag",
-            "count": 1,
-            "title": "Tinted Stag",
-            "keywords": [
-                "tattoo"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "PlayCardNow"
-            ],
-            "body": "At the end of the villain turn, shuffle the villain trash and reveal cards until you reveal a Tattoo. Put that card into play. Put the rest of the cards back into the villain trash.",
-            "flavorQuotes": [
-                {
-                    "identifier": "Necro",
-                    "text": "As long as she bears{BR}those marks, they will not{BR}allow her or her creations to die."
-                }
-            ],
-            "flavorReference": "Necro, Mark of the Forest #25",
-            "hitpoints": 6
-        },
-        {
-            "identifier": "UrsaMajor",
-            "count": 2,
-            "title": "Ursa Major",
-            "keywords": [
-                "tattoo"
-            ],
-            "icons": [
-                "ReduceDamageTaken",
-                "EndOfTurnAction",
-                "DealDamageMelee"
-            ],
-            "body": [
-                "Reduce damage dealt to this card by 1.",
-                "At the end of the villain turn, this card deals the hero target with the highest HP 2 melee damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "LadyOfTheWood",
-                    "text": "She has corrupted some{BR}of the most ancient forest{BR}spirits and bound them to her."
-                }
-            ],
-            "flavorReference": "Lady of the Wood,{BR}Roots of the World #53",
-            "hitpoints": 6
-        }
-    ],
-    "notPromoCards": [
-        {
-            "identifier": "DendronCharacter",
-            "promoIdentifier": "OutsideTheLinesDendronCharacter",
-            "count": 1,
-            "title": "Dendron",
-            "promoTitle": "Dendron: Outside The Lines",
-            "keywords": [
-                "villain"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "PlayCardNow"
-            ],
-            "advancedIcons": [
-                "GainHP"
-            ],
-            "body": "Outside The Lines",
-            "backgroundColor": "D99FC5",
-            "foilBackgroundColor": "CD96C0",
-            "character": true,
-            "hitpoints": 40,
-            "nemesisIdentifiers": [
-                "TheStranger"
-            ],
-            "setup": [
-                "At the start of the game, put {Dendron}'s villain character cards into play, 'Outside The Lines' side up. Search the deck for all copies of Stained Wolf Painted Viper. Place them beneath this card and shuiffle the villain deck."
-            ],
-            "gameplay": [
-                "Cards beneath this one have no game text and are not in play.",
-                "At the end of the villain turn, if there are no cards beneath this one, flip {Dendron}'s villain character cards. Otherwise, put 2 random cards from beneath this one into play"
-            ],
-            "advanced": "When {Dendron} flips to this side, she regains 10 HP.",
-            "flippedBody": "Colors Of The Wind",
-            "flippedGameplay": [
-                "At the start of the villain turn, destroy a villain ongoing card. If you do, {Dendron} deals each hero target 2 radiant damage.",
-                "Whenever a tattoo would be destroyed, place it beneath this card.",
-                "At the start of the villain turn, if there are at least 6 tattoos beneath this card, {Dendron} deals herself 10 toxic damage. Then, flip {Dendron}'s villain character cards.",
-                "At the end of the villain turn, play the top card of the villain deck."
-            ],
-            "flippedAdvanced": "Increase damage dealt by {Dendron} to hero targets by {H - 2}.",
-            "flippedIcons": [
-                "DealDamageRadiant",
-                "DealDamageToxic",
-                "PlayCardNow"
-            ],
-            "flippedAdvancedIcons": [
-                "IncreaseDamageDealt"
-            ],
-            "difficulty": 3,
-            "challengeTitle": "",
-            "challengeText": [],
-            "challengeIcons": [],
-            "openingLines": {
-                "default": "Do you feel it coming in the air? My art now knows no boundaries.",
-                "TheStrangerCharacter": "The Stranger placeholder",
-                "RitualCarvedTheStrangerCharacter": "The Stranger: Ritual Carved placeholder",
-                "1929TheStrangerCharacter": "The Stranger 1929 placeholder",
-                "WastelandRoninTheStrangerCharacter": "Wasteland Ronin: The Stranger placeholder"
-            }
-        }
-    ]
+			],
+			"gameplay": [
+				"At the start and end of the villain turn, if there are fewer than {H - 2} tattos in play, play the top card of the villain deck.",
+				"When Dendron would be destroyed, flip her villain character cards instead."
+			],
+			"advanced": "Increase damage dealt by tattoos by 1.",
+			"icons": [
+				"StartOfTurnAction",
+				"EndOfTurnAction",
+				"PlayCardNow"
+			],
+			"advancedIcons": [
+				"IncreaseDamageDealt"
+			],
+			"flippedBody": "Unmarked Dryad",
+			"flippedGameplay": [
+				"When {Dendron} is flipped to this side, restore her to 50 HP and shuffle the villain trash into the deck.",
+				"At the start and end of the villain turn, play the top card of the villain deck."
+			],
+			"flippedAdvanced": "At the start of the villain turn, {Dendron} regains 5 HP.",
+			"flippedIcons": [
+				"StartOfTurnAction",
+				"EndOfTurnAction",
+				"PlayCardNow"
+			],
+			"flippedAdvancedIcons": [
+				"GainHP"
+			],
+			"difficulty": 2,
+			"openingLines": {
+				"default": "The world will know the mark of Dendron.",
+				"TheStrangerCharacter": "Those markings...I sense my own hand in your creation. Fitting that I will also be your destruction.",
+				"RunecarvedTheStrangerCharacter": "Pathetic. You're paying for your magic with your own soul, and soon nothing will remain.",
+				"WastelandRoninTheStrangerCharacter": "What sort of sorcery is this? Your runes...they have new power!",
+				"PastTheStrangerCharacter": "You bear my mark, and yet don't obey my will? Impossible.",
+				"CornTheStrangerCharacter": "What mockery is this?"
+			}
+		},
+		{
+			"identifier": "AdornedOak",
+			"count": 2,
+			"title": "Adorned Oak",
+			"keywords": [
+				"tattoo"
+			],
+			"icons": [
+				"ReduceDamageTaken"
+			],
+			"body": "Reduce damage dealt to Tattoos by 1.",
+			"flavorQuotes": [{
+				"identifier": "Dendron",
+				"text": "With a little prompting, the{BR}forest always looks out for its own."
+			}],
+			"flavorReference": "Dendron, Strange Roads #302",
+			"hitpoints": 5
+		},
+		{
+			"identifier": "BloodThornAura",
+			"count": 1,
+			"title": "Blood Thorn Aura",
+			"keywords": [
+				"ongoing"
+			],
+			"icons": [
+				"CounterDamage",
+				"DealDamageRadiant"
+			],
+			"body": "Whenever a Tattoo would be dealt damage by a non-villain target, it first deals that target {H  - 2} radiant damage.",
+			"flavorQuotes": [{
+				"identifier": "TheArgentAdept",
+				"text": "She kept her{BR}form but lost herself to this power.{BR}I'd say you got the better deal."
+			}],
+			"flavorReference": "The Argent Adept, Dark Design #8"
+		},
+		{
+			"identifier": "ChokingInscription",
+			"count": 1,
+			"title": "Choking Inscription",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"CannotDrawCards",
+				"CannotPlayCards",
+				"Manipulate"
+			],
+			"body": "The hero with the most cards in hand cannot draw cards during their next turn. The hero with the most cards in play cannot play cards during their next turn. All other heroes shuffle their trash into their decks.",
+			"flavorQuotes": [{
+				"identifier": "Chrono-Ranger",
+				"text": "Get this thing off of me!"
+			}],
+			"flavorReference": "Roots of the World #49"
+		},
+		{
+			"identifier": "DarkDesign",
+			"count": 1,
+			"title": "Dark Design",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"Discard"
+			],
+			"body": "The last hero that dealt damage to a villain target must discard {H} cards from their hand.",
+			"flavorQuotes": [{
+					"identifier": "TheStranger",
+					"text": "She gave me this{BR}cursed mark, long ago."
+				},
+				{
+					"identifier": "Baccarat",
+					"text": "Seems we're all of us{BR}older than we look."
+				}
+			],
+			"flavorReference": "Dark Design #8"
+		},
+		{
+			"identifier": "InkScar",
+			"count": 2,
+			"title": "Ink Scar",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"Manipulate",
+				"PlayCardNow"
+			],
+			"body": "Shuffle all Tattoos from the villain trash into the villain deck. Play the top 2 cards of the villain deck.",
+			"flavorQuotes": [{
+				"identifier": "Dendron",
+				"text": "My works shall not fade so easily."
+			}],
+			"flavorReference": "Dendron, Mark of the Forest #7"
+		},
+		{
+			"identifier": "LivingInk",
+			"count": 2,
+			"title": "Living Ink",
+			"keywords": [
+				"tattoo"
+			],
+			"icons": [
+				"EndOfTurnAction",
+				"GainHP"
+			],
+			"body": "At the end of the villain turn, each villain target regains 3 HP.",
+			"flavorQuotes": [{
+				"identifier": "The Stranger",
+				"text": "There are many forms of written magic."
+			}],
+			"flavorReference": "TheStranger, Dark Design #1",
+			"hitpoints": 10
+		},
+		{
+			"identifier": "MarkOfTheWrithingNight",
+			"count": 2,
+			"title": "Mark of the Writhing Night",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"DealDamageProjectile",
+				"DealDamageInfernal",
+				"DestroyOngoing",
+				"DestroyEquipment"
+			],
+			"body": [
+				"{Dendron} deals the hero with the highest HP 5 projectile damage and the hero with the lowest HP 2 irreducible infernal damage.",
+				"Destroy 1 equipment and 1 ongoing from the hero with the fewest cards in play, and 2 equipment and 2 ongoing cards from the hero with the most cards in play."
+			],
+			"flavorQuotes": [{
+				"identifier": "TheStranger",
+				"text": "Did you think I was the only one?"
+			}],
+			"flavorReference": "The Stranger, Dark Design #1"
+		},
+		{
+			"identifier": "ObsidianSkin",
+			"count": 2,
+			"title": "Obsidian Skin",
+			"keywords": [
+				"ongoing"
+			],
+			"icons": [
+				"ReduceDamageTaken"
+			],
+			"body": "Reduce damage dealt to {Dendron} by 1.",
+			"flavorText": "Do your tattoos do that?",
+			"flavorReference": "Absolute Zero to Haka, Freedom Five #1306"
+		},
+		{
+			"identifier": "PaintedViper",
+			"count": 3,
+			"title": "Painted Viper",
+			"keywords": [
+				"tattoo"
+			],
+			"icons": [
+				"EndOfTurnAction",
+				"DealDamageToxic"
+			],
+			"body": "At the end of the villain turn, this card deals the hero target with the lowest HP {H - 2} toxic damage.",
+			"flavorQuotes": [{
+				"identifier": "Dendron",
+				"text": "It was a painful{BR}process. Let me show you!"
+			}],
+			"flavorReference": "Dendron, Mark of the Beast One-Shot",
+			"hitpoints": 8
+		},
+		{
+			"identifier": "Restoration",
+			"count": 1,
+			"title": "Restoration",
+			"keywords": [
+				"one-shot"
+			],
+			"icons": [
+				"GainHP"
+			],
+			"body": "{Dendron} regains 10 HP. Restore all Tattoos to their max HP.",
+			"flavorQuotes": [{
+				"identifier": "Dendron",
+				"text": "Time for a little touchup."
+			}],
+			"flavorReference": "Dendron, Mark of the Forest #14"
+		},
+		{
+			"identifier": "ShadedOwl",
+			"count": 2,
+			"title": "Shaded Owl",
+			"keywords": [
+				"tattoo"
+			],
+			"icons": [
+				"IncreaseDamageDealt",
+				"EndOfTurnAction",
+				"DealDamageSonic"
+			],
+			"body": [
+				"Increase damage dealt by villain targets by 1.",
+				"At the end of the villain turn, this card deals each hero target 1 sonic damage."
+			],
+			"flavorQuotes": [{
+				"identifier": "Tachyon",
+				"text": "I've had it with birds!"
+			}],
+			"flavorReference": "Tachyon, Rook City #603",
+			"hitpoints": 15
+		},
+		{
+			"identifier": "StainedWolf",
+			"count": 3,
+			"title": "Stained Wolf",
+			"keywords": [
+				"tattoo"
+			],
+			"icons": [
+				"EndOfTurnAction",
+				"DealDamageMelee"
+			],
+			"body": "At the end of the villain turn, this card deals the hero target with the highest HP {H - 1} melee damage.",
+			"flavorQuotes": [{
+				"identifier": "Dendron",
+				"text": "What was that about{BR}being outnumbered?"
+			}],
+			"flavorReference": "Dendron, Rook City # 603",
+			"hitpoints": 8
+		},
+		{
+			"identifier": "TintedStag",
+			"count": 1,
+			"title": "Tinted Stag",
+			"keywords": [
+				"tattoo"
+			],
+			"icons": [
+				"EndOfTurnAction",
+				"PlayCardNow"
+			],
+			"body": "At the end of the villain turn, shuffle the villain trash and reveal cards until you reveal a Tattoo. Put that card into play. Put the rest of the cards back into the villain trash.",
+			"flavorQuotes": [{
+				"identifier": "Necro",
+				"text": "As long as she bears{BR}those marks, they will not{BR}allow her or her creations to die."
+			}],
+			"flavorReference": "Necro, Mark of the Forest #25",
+			"hitpoints": 6
+		},
+		{
+			"identifier": "UrsaMajor",
+			"count": 2,
+			"title": "Ursa Major",
+			"keywords": [
+				"tattoo"
+			],
+			"icons": [
+				"ReduceDamageTaken",
+				"EndOfTurnAction",
+				"DealDamageMelee"
+			],
+			"body": [
+				"Reduce damage dealt to this card by 1.",
+				"At the end of the villain turn, this card deals the hero target with the highest HP 2 melee damage."
+			],
+			"flavorQuotes": [{
+				"identifier": "LadyOfTheWood",
+				"text": "She has corrupted some{BR}of the most ancient forest{BR}spirits and bound them to her."
+			}],
+			"flavorReference": "Lady of the Wood,{BR}Roots of the World #53",
+			"hitpoints": 6
+		}
+	],
+	"promoCards": [{
+		"identifier": "DendronCharacter",
+		"promoIdentifier": "WindcolorDendronCharacter",
+		"count": 1,
+		"title": "Dendron",
+		"promoTitle": "Windcolor Dendron",
+		"keywords": [
+			"villain"
+		],
+		"icons": [
+			"EndOfTurnAction",
+			"PlayCardNow"
+		],
+		"advancedIcons": [
+			"GainHP"
+		],
+		"body": "Outside The Lines",
+		"backgroundColor": "D99FC5",
+		"foilBackgroundColor": "CD96C0",
+		"character": true,
+		"hitpoints": 40,
+		"nemesisIdentifiers": [
+			"TheStranger"
+		],
+		"setup": [
+			"At the start of the game, put {Dendron}'s villain character cards into play, 'Outside The Lines' side up. Search the deck for all copies of Painted Viper and Stained Wolf. Place them beneath this card and shuffle the villain deck."
+		],
+		"gameplay": [
+			"Cards beneath this one have no game text and are not in play.",
+			"At the end of the villain turn, if there are no cards beneath this one, flip {Dendron}'s villain character cards. Otherwise, put 2 random cards from beneath this one into play"
+		],
+		"advanced": "When {Dendron} flips to this side, she regains 10 HP.",
+		"flippedBody": "Colors Of The Wind",
+		"flippedGameplay": [
+			"At the start of the villain turn, destroy a villain ongoing card. If you do, {Dendron} deals each hero target 2 radiant damage.",
+			"Whenever a tattoo would be destroyed, place it beneath this card.",
+			"At the start of the villain turn, if there are at least 6 tattoos beneath this card, {Dendron} deals herself 10 toxic damage. Then, flip {Dendron}'s villain character cards.",
+			"At the end of the villain turn, play the top card of the villain deck."
+		],
+		"flippedAdvanced": "Increase damage dealt by {Dendron} to hero targets by {H - 2}.",
+		"flippedIcons": [
+			"DealDamageRadiant",
+			"DealDamageToxic",
+			"PlayCardNow"
+		],
+		"flippedAdvancedIcons": [
+			"IncreaseDamageDealt"
+		],
+		"difficulty": 3,
+		"openingLines": {
+			"default": "Do you feel it coming in the air? My art now knows no boundaries.",
+			"TheStrangerCharacter": "The Stranger placeholder",
+			"WastelandRoninTheStrangerCharacter": "Wasteland Ronin: The Stranger placeholder",
+			"RunecarvedTheStrangerCharacter": "Your fate is becoming inevitable, fool. Why not save yourself?",
+			"PastTheStrangerCharacter": "The Stranger 1929 placeholder",
+			"CornTheStrangerCharacter": "The Stranger in the Corn placeholder",
+		}
+	}]
 }

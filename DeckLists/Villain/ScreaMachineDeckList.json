@@ -14,6 +14,8 @@
         {
             "identifier": "TheSetList",
             "count": 1,
+            "isReal": false,
+            "character": true,
             "title": "The Set List",
             "body": "Warming Up",
             "backgroundColor": "e4d8c2",
@@ -51,10 +53,44 @@
             "difficulty": 3,
             "openingLines": {
                 "default": "We are Screamachine! And you lot are out of your league!",
-                "GyrosaurCharacter": "Gyrosaur placeholder",
-                "RenegadeGyrosaurCharacter": "Renegade Gyrosaur placeholder",
-                "SpeedDemonGyrosaurCharacter": "Gyrosaur Speed Demon placeholder"
+                "GyrosaurCharacter": "VALENTINE: You wrecked our show! Well, now we'll wreck you! [b]And[/b] rock you!",
+                "RenegadeGyrosaurCharacter": "BLOODLACE: I see you came to our newest show! Prepare to be blown away! Literally!",
+                "SpeedDemonGyrosaurCharacter": "SLICE: Whoa, the space turtle's got a radical new look.",
+                "CaptainGyrosaurCharacter": "RICKY G: Did we miss something? Why is there a zombie pirate turtle?"
             }
+        },
+        {
+            "identifier": "RickyGCharacter",
+            "count": 1,
+            "title": "Ricky G",
+            "keywords": [
+                "villain"
+            ],
+            "body": "Warming Up",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 35,
+            "nemesisIdentifiers": [
+                "Gyrosaur"
+            ],
+            "gameplay": [
+                "If there are ever 3 Drummer cards in play, flip this card.",
+                "{ScreaMachineDrum} Select the villain target with the lowest HP. Reduce damage dealt to that target by 1 until the start of the next villain turn."
+            ],
+            "icons": [
+                "ReduceDamageDealt"
+            ],
+            "flippedBody": "Ultimate Drummer",
+            "flippedGameplay": [
+                "All other villain targets are indestructible and immune damage.",
+                "At the end of the villain turn, discard the top card of the villain deck. If it shows {ScreaMachineDrum} on it, {RickyG} deals each hero target 3 melee damage."
+            ],
+            "flippedIcons": [
+                "EndOfTurnAction",
+                "Discard",
+                "DealDamageSonic"
+            ]
         },
         {
             "identifier": "SliceCharacter",
@@ -86,39 +122,6 @@
                 "EndOfTurnAction",
                 "DealDamageSonic",
                 "CannotDealDamage"
-            ]
-        },
-        {
-            "identifier": "ValentineCharacter",
-            "count": 1,
-            "title": "Valentine",
-            "keywords": [
-                "villain"
-            ],
-            "body": "Warming Up",
-            "backgroundColor": "D99FC5",
-            "foilBackgroundColor": "CD96C0",
-            "character": true,
-            "hitpoints": 31,
-            "nemesisIdentifiers": [
-                "Gyrosaur"
-            ],
-            "gameplay": [
-                "If there are ever 3 Vocalist cards in play, flip this card.",
-                "{ScreaMachineVocal} {Valentine} deals the 2 hero targets with the highest HP {H - 2} psychic damage."
-            ],
-            "icons": [
-                "DealDamagePsychic"
-            ],
-            "flippedBody": "Ultimate Vocalist",
-            "flippedGameplay": [
-                "Increase damage dealt by villain targets by 1.",
-                "At the end of the villain turn, {Valentine} deals the hero with the highest HP {H - 1} sonic damage and {H - 2} psychic damage."
-            ],
-            "flippedIcons": [
-                "IncreaseDamageDealt",
-                "EndOfTurnAction",
-                "DealDamageSonic"
             ]
         },
         {
@@ -154,9 +157,9 @@
             ]
         },
         {
-            "identifier": "RickyGCharacter",
+            "identifier": "ValentineCharacter",
             "count": 1,
-            "title": "Ricky G",
+            "title": "Valentine",
             "keywords": [
                 "villain"
             ],
@@ -164,25 +167,25 @@
             "backgroundColor": "D99FC5",
             "foilBackgroundColor": "CD96C0",
             "character": true,
-            "hitpoints": 35,
+            "hitpoints": 31,
             "nemesisIdentifiers": [
                 "Gyrosaur"
             ],
             "gameplay": [
-                "If there are ever 3 Drummer cards in play, flip this card.",
-                "{ScreaMachineDrum} Select the villain target with the lowest HP. Reduce damage dealt to that target by 1 until the start of the next villain turn."
+                "If there are ever 3 Vocalist cards in play, flip this card.",
+                "{ScreaMachineVocal} {Valentine} deals the 2 hero targets with the highest HP {H - 2} psychic damage."
             ],
             "icons": [
-                "ReduceDamageDealt"
+                "DealDamagePsychic"
             ],
-            "flippedBody": "Ultimate Drummer",
+            "flippedBody": "Ultimate Vocalist",
             "flippedGameplay": [
-                "All other villain targets are indestructible and immune damage.",
-                "At the end of the villain turn, discard the top card of the villain deck. If it shows {ScreaMachineDrum} on it, {RickyG} deals each hero target 3 melee damage."
+                "Increase damage dealt by villain targets by 1.",
+                "At the end of the villain turn, {Valentine} deals the hero with the highest HP {H - 1} sonic damage and {H - 2} psychic damage."
             ],
             "flippedIcons": [
+                "IncreaseDamageDealt",
                 "EndOfTurnAction",
-                "Discard",
                 "DealDamageSonic"
             ]
         },

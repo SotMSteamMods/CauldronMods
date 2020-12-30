@@ -55,7 +55,7 @@
             ],
             "difficulty": 2,
             "openingLines": {
-                "default": "Oh, hello, heroes! Care to see my latest catch?",
+                "default": "Oh, hello, guests! Care to see my latest catch?",
                 "StarlightCharacter": "Why, you are simply exquisite, my dear. I'll have to make your accomodations especially fortified.",
                 "GenesisStarlightCharacter": "I've heard so much about you, darling - too much to simply ignore!",
                 "NightloreCouncilStarlightCharacter": "What is this, the B-team from Nightlore? How insulting. I deserve the best!",

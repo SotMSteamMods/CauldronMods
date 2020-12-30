@@ -40,8 +40,8 @@
                 "DrawCardNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder"
+                "default": "It's about time we took care of you!",
+                "OutlanderCharacter": "Bad news; I can already see the future where we defeat you!"
             },
             "complexity": 3
         },
@@ -50,6 +50,8 @@
             "backgroundColor": "fbf767",
             "count": 1,
             "title": "Shift Track",
+            "isReal": false,
+            "body": "Shift Track",
             "setup": [
                 "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
             ],
@@ -57,7 +59,10 @@
                 "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
                 "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
                 "While the token is on a {DriftFuture} space, activate {DriftFuture} effects."
-            ]
+            ],
+            "icons": [],
+            "flippedTitle": "Shift Track Back",
+            "flippedIcons": []
         },
         {
             "identifier": "AttenuationField",
@@ -475,8 +480,8 @@
                 "Manipulate"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder"
+                "default": "Don't worry people, I'll make sure we have plenty of time for this mission!",
+                "OutlanderCharacter": "To think, there's a version of Sir George that could turn out like you."
             },
             "complexity": 3
         },
@@ -536,13 +541,14 @@
                 "DestroyEnvironment"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder"
+                "default": "What year is this again?",
+                "TheMistressOfFateCharacter": "This doesn't look good. Better work together!",
+                "OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger."
             },
             "complexity": 3
         },
         {
-            "identifier": "DriftCharacter",
+            "identifier": "FutureDriftCharacter",
             "promoIdentifier": "SplitDriftCharacter",
             "count": 1,
             "title": "Drift",

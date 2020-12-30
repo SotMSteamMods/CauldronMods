@@ -32,35 +32,10 @@ namespace Cauldron.Tiamat
             Card hydraDecayInstructions = base.TurnTaker.GetCardByIdentifier("HydraNoxiousFireTiamatInstructions");
             Card hydraWindInstructions = base.TurnTaker.GetCardByIdentifier("HydraThunderousGaleTiamatInstructions");
 
-            if (base.CharacterCard.PromoIdentifierOrIdentifier == "WinterTiamatCharacter")
-            {//Regular Tiamat
-                this.inPlay = new Card[] { inferno, storm };
-                this.inBox = new Card[] { hydraInferno, hydraStorm, hydraEarth, hydraDecay, hydraWind, hydraEarthInstructions, hydraDecayInstructions, hydraWindInstructions };
-                IEnumerator coroutine = this.ManageCharacters();
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-            else if (base.CharacterCard.PromoIdentifierOrIdentifier == "HydraWinterTiamatCharacter")
+            if (base.FindCardController(base.CharacterCard) is HydraWinterTiamatCharacterCardController)
             {//Elemental Hydra
-                this.inBox = new Card[] { inferno, storm };
-                this.inPlay = new Card[] { hydraInferno, hydraStorm, hydraEarthInstructions, hydraDecayInstructions, hydraWindInstructions };
-                IEnumerator coroutine = this.ManageCharacters();
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
                 //Secondary Heads start underneath other heads
-                coroutine = base.GameController.MoveCard(this, hydraEarth, winter.UnderLocation, flipFaceDown: true);
+                IEnumerator coroutine = base.GameController.MoveCard(this, hydraEarth, winter.UnderLocation, flipFaceDown: true);
                 IEnumerator coroutine2 = base.GameController.MoveCard(this, hydraDecay, hydraInferno.UnderLocation, flipFaceDown: true);
                 IEnumerator coroutine3 = base.GameController.MoveCard(this, hydraWind, hydraStorm.UnderLocation, flipFaceDown: true);
                 if (base.UseUnityCoroutines)
@@ -79,36 +54,44 @@ namespace Cauldron.Tiamat
             yield break;
         }
 
-        private IEnumerator ManageCharacters()
+        public void MoveStartingCards()
         {
-            IEnumerator coroutine;
-            //Start in play
+            //Winter is in both, just has promoIdentifier differentiating
+            Card winter = base.TurnTaker.GetCardByIdentifier("WinterTiamatCharacter");
+            //Regular
+            Card inferno = base.TurnTaker.GetCardByIdentifier("InfernoTiamatCharacter");
+            Card storm = base.TurnTaker.GetCardByIdentifier("StormTiamatCharacter");
+            //Hydra
+            Card hydraStorm = base.TurnTaker.GetCardByIdentifier("HydraStormTiamatCharacter");
+            Card hydraInferno = base.TurnTaker.GetCardByIdentifier("HydraInfernoTiamatCharacter");
+            Card hydraEarth = base.TurnTaker.GetCardByIdentifier("HydraEarthTiamatCharacter");
+            Card hydraDecay = base.TurnTaker.GetCardByIdentifier("HydraDecayTiamatCharacter");
+            Card hydraWind = base.TurnTaker.GetCardByIdentifier("HydraWindTiamatCharacter");
+            Card hydraEarthInstructions = base.TurnTaker.GetCardByIdentifier("HydraFrigidEarthTiamatInstructions");
+            Card hydraDecayInstructions = base.TurnTaker.GetCardByIdentifier("HydraNoxiousFireTiamatInstructions");
+            Card hydraWindInstructions = base.TurnTaker.GetCardByIdentifier("HydraThunderousGaleTiamatInstructions");
+            if (base.FindCardController(base.CharacterCard) is WinterTiamatCharacterCardController)
+            {//Regular Tiamat
+                this.inPlay = new Card[] { inferno, storm };
+                this.inBox = new Card[] { hydraInferno, hydraStorm, hydraEarth, hydraDecay, hydraWind, hydraEarthInstructions, hydraDecayInstructions, hydraWindInstructions };
+            }
+            if (base.FindCardController(base.CharacterCard) is HydraWinterTiamatCharacterCardController)
+            {//Elemental Hydra
+                this.inBox = new Card[] { inferno, storm };
+                this.inPlay = new Card[] { hydraInferno, hydraStorm, hydraEarthInstructions, hydraDecayInstructions, hydraWindInstructions };
+            }
+            SneakManageCharacters();
+        }
+        private void SneakManageCharacters()
+        {
             foreach (Card c in this.inPlay)
             {
-                coroutine = base.GameController.PlayCard(this, c);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+                TurnTaker.MoveCard(c, TurnTaker.PlayArea);
             }
-            //Banish to Box
             foreach (Card c in this.inBox)
             {
-                coroutine = base.GameController.MoveCard(this, c, base.TurnTaker.InTheBox);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+                TurnTaker.MoveCard(c, TurnTaker.InTheBox);
             }
-            yield break;
         }
     }
 }

@@ -12,8 +12,10 @@ namespace Cauldron.SuperstormAkela
 
         public PressureDropCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.PlayArea, new LinqCardCriteria((Card c) => IsLeftOfThisCard(c, base.Card), "card(s) left of this"));
-            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.PlayArea, new LinqCardCriteria((Card c) => IsRightOfThisCard(c, base.Card), "card(s) right of this"));
+            base.SpecialStringMaker.ShowHeroCharacterCardWithLowestHP();
+            base.SpecialStringMaker.ShowSpecialString(() => BuildCardsLeftOfThisSpecialString()).Condition = () => Card.IsInPlayAndHasGameText;
+            base.SpecialStringMaker.ShowSpecialString(() => BuildCardsRightOfThisSpecialString()).Condition = () => Card.IsInPlayAndHasGameText;
+
         }
 
         public override IEnumerator Play()
@@ -34,7 +36,7 @@ namespace Cauldron.SuperstormAkela
             {
                 Card heroCard = storedResults.First();
                 HeroTurnTakerController hero = FindHeroTurnTakerController(heroCard.Owner.ToHero());
-                int? X = GetNumberOfCardsToTheLeftOfThisOne(base.Card);
+                int X = (GetNumberOfCardsToTheLeftOfThisOne(base.Card) ?? 0);
                 coroutine = base.GameController.SelectAndDiscardCards(hero, X, false, X, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {

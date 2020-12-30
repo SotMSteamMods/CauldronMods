@@ -20,6 +20,7 @@ namespace Cauldron.Vector
 
         public AssassinsSignatureCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
         public override IEnumerator Play()
@@ -28,8 +29,8 @@ namespace Cauldron.Vector
 
             List<DealDamageAction> ddas = new List<DealDamageAction>();
             IEnumerator damageRoutine 
-                = base.DealDamageToHighestHP(base.CharacterCard, 1, card => card.IsHero && card.IsTarget && card.IsInPlay, 
-                    card => damageAmount, DamageType.Projectile, storedResults: ddas);
+                = base.DealDamageToHighestHP(base.CharacterCard, 1, card => card.IsHero && card.IsTarget && card.IsInPlay,
+                    card => damageAmount, DamageType.Projectile, storedResults: ddas, selectTargetEvenIfCannotDealDamage: true);
 
             if (base.UseUnityCoroutines)
             {

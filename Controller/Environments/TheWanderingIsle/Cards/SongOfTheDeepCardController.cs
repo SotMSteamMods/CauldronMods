@@ -10,6 +10,8 @@ namespace Cauldron.TheWanderingIsle
     {
         public SongOfTheDeepCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowIfSpecificCardIsInPlay("Teryx");
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => IsCreature(c), "creature"));
         }
 
         public override void AddTriggers()

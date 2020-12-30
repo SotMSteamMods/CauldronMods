@@ -12,6 +12,8 @@ namespace Cauldron.Necro
         protected UndeadCardController(Card card, TurnTakerController turnTakerController, int baseHP) : base(card, turnTakerController)
         {
             this.BaseHP = baseHP;
+
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => IsRitual(c) && c.IsInPlayAndHasGameText, "ritual"), null, new[] { TurnTaker });
         }
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)

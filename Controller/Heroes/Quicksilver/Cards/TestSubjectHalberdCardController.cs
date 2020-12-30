@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace Cauldron.Quicksilver
 {
-    public class TestSubjectHalberdCardController : CardController
+    public class TestSubjectHalberdCardController : QuicksilverBaseCardController
     {
         public TestSubjectHalberdCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -14,7 +14,7 @@ namespace Cauldron.Quicksilver
         public override IEnumerator Play()
         {
             //{Quicksilver} regains 6HP.
-            IEnumerator coroutine = base.GameController.GainHP(base.CharacterCard, 6);
+            IEnumerator coroutine = base.GameController.GainHP(base.CharacterCard, 6, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

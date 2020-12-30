@@ -27,5 +27,8 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
+**Logs**
+If your game froze or you had a soft lock, please attach the output_log found C:\Users\<YourUsernameHere>\AppData\LocalLow\Handelabra Games Inc_\Sentinels
+
 **Additional context**
 Add any other context about the problem here.

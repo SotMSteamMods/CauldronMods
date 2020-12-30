@@ -14,7 +14,7 @@ namespace Cauldron.StSimeonsCatacombs
 
         public PanicCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHeroCharacterCardWithHighestHP().Condition = () => !Card.IsInPlayAndHasGameText;
         }
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)

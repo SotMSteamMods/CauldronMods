@@ -20,6 +20,7 @@ namespace Cauldron.Vector
 
         public VendettaCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
         public override IEnumerator Play()
@@ -27,7 +28,7 @@ namespace Cauldron.Vector
             int damageToDeal = Game.H - 1;
 
             List<DealDamageAction> storedResults = new List<DealDamageAction>();
-            IEnumerator routine = this.DealDamageToHighestHP(base.CharacterCard, 1, c => c.IsHero && c.IsTarget && !c.IsIncapacitatedOrOutOfGame, c => damageToDeal, DamageType.Psychic, storedResults: storedResults);
+            IEnumerator routine = this.DealDamageToHighestHP(base.CharacterCard, 1, c => c.IsHero && c.IsTarget && !c.IsIncapacitatedOrOutOfGame, c => damageToDeal, DamageType.Psychic, storedResults: storedResults, selectTargetEvenIfCannotDealDamage: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
@@ -37,7 +38,7 @@ namespace Cauldron.Vector
                 base.GameController.ExhaustCoroutine(routine);
             }
 
-            if(storedResults != null)
+            if (storedResults.FirstOrDefault() != null)
             {
                 Card target = storedResults.First().OriginalTarget;
                 

@@ -16,7 +16,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"BerzerkerTheKnightCharacterCard.jpg":
+"BerserkerTheKnightCharacter.jpg":
 {
 	"frame": {"x":0,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -24,7 +24,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"BerzerkerTheKnightCharacterCardBack.jpg":
+"BerserkerTheKnightCharacterBack.jpg":
 {
 	"frame": {"x":179,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -56,7 +56,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"FairTheKnightCharacterCard.jpg":
+"FairTheKnightCharacter.jpg":
 {
 	"frame": {"x":358,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -64,7 +64,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"FairTheKnightCharacterCardBack.jpg":
+"FairTheKnightCharacterBack.jpg":
 {
 	"frame": {"x":537,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -96,7 +96,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"PastTheKnightCharacterCard.png":
+"PastTheKnightCharacter.png":
 {
 	"frame": {"x":716,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -239,6 +239,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:468346ae7fcf7c09826abc5523ec23ae:592bf93df1851f436bd7c9fa502bf425:462b0f338c72732491e78774ceba35d6$"
+	"smartupdate": "$TexturePacker:SmartUpdate:6c3fdee7ef1dde3616c4891cffa04d0d:592bf93df1851f436bd7c9fa502bf425:462b0f338c72732491e78774ceba35d6$"
 }
 }

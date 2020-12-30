@@ -60,10 +60,12 @@
 
 			"difficulty": 4,
 			"openingLines": {
+				"default": "This prison will not hold me much longer. Your doom approaches.",
 				"LadyOfTheWoodCharacter": "--You.",
 				"SeasonsOfChangeLadyOfTheWoodCharacter": "--You.",
 				"MinistryOfStrategicScienceLadyOfTheWoodCharacter": "--You.",
-				"FutureLadyOfTheWoodCharacter": "--You."
+				"FutureLadyOfTheWoodCharacter": "--You.",
+				"LastOfTheForgottenOrderNecroCharacter": "--You. You.. You began my awakening."
 			}
 		},
 		{

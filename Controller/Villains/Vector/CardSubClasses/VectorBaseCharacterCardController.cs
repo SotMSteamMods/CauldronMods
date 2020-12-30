@@ -36,5 +36,11 @@ namespace Cauldron.Vector
             return FindCardsWhere(card => card.Identifier == SupervirusCardController.Identifier
                                           && card.IsInPlayAndHasGameText).FirstOrDefault();
         }
+
+        protected Card GetSuperVirusCardNotInPlay()
+        {
+            return FindCardsWhere(card => card.Identifier == SupervirusCardController.Identifier
+                                          && !card.IsInPlayAndHasGameText).FirstOrDefault();
+        }
     }
 }

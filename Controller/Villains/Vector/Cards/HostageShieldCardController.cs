@@ -21,6 +21,7 @@ namespace Cauldron.Vector
 
         public HostageShieldCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroCharacterCardWithLowestHP();
         }
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
@@ -84,7 +85,7 @@ namespace Cauldron.Vector
 
         public override void AddTriggers()
         {
-            base.AddStartOfTurnTrigger(tt => tt == base.GetCardThisCardIsNextTo().Owner, base.SkipTheirTurnToDestroyThisCardResponse, new[]
+            base.AddStartOfTurnTrigger(tt => tt.IsHero, base.SkipTheirTurnToDestroyThisCardResponse, new[]
             {
                 TriggerType.SkipTurn,
                 TriggerType.DestroySelf

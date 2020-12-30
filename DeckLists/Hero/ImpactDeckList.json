@@ -39,8 +39,8 @@
                 "MakeDamageIrreducible"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "PhaseCharacter": "Phase placeholder"
+                "default": "What a lovely mess this is turning into.",
+                "PhaseVillainCharacter": "We are going to have a talk about the mess you caused in Akelabad."
             },
             "complexity": 1
         },
@@ -90,7 +90,7 @@
         {
             "identifier": "DecayingOrbit",
             "count": 3,
-            "title": "Decaying orbit",
+            "title": "Decaying Orbit",
             "keywords": [
                 "ongoing"
             ],
@@ -133,12 +133,12 @@
                     "text": "You're taking this{BR}all rather personally."
                 }
             ],
-            "flavorReference": "Phase, Pieces of the Sky Limited Series"
+            "flavorReference": "Phase, Pieces of the Sky{BR}Limited Series"
         },
         {
             "identifier": "GravitationalLensing",
             "count": 3,
-            "title": "Gravitational lensing",
+            "title": "Gravitational Lensing",
             "keywords": [
                 "ongoing",
                 "limited"
@@ -320,7 +320,7 @@
         {
             "identifier": "RepulsionField",
             "count": 3,
-            "title": "Repulsion field",
+            "title": "Repulsion Field",
             "keywords": [
                 "ongoing",
                 "limited"
@@ -344,7 +344,7 @@
         {
             "identifier": "SlingshotTrajectory",
             "count": 3,
-            "title": "Slingshot trajectory",
+            "title": "Slingshot Trajectory",
             "keywords": [
                 "ongoing"
             ],
@@ -391,7 +391,7 @@
             "flavorReference": "Echelon, Impact #2"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "ImpactCharacter",
             "promoIdentifier": "RenegadeImpactCharacter",
@@ -428,8 +428,8 @@
                 "DealDamageProjectile"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "PhaseCharacter": "Phase placeholder"
+                "default": "You caught me on a bad day.",
+                "PhaseVillainCharacter": "Walls won't stop me from bringing you to justice."
             },
             "complexity": 1
         },
@@ -440,7 +440,7 @@
             "title": "Impact",
             "promoTitle": "Wasteland Ronin Impact",
             "shortPromoTitle": "Wasteland Impact",
-            "body": "Force Blast",
+            "body": "Impulse",
             "backgroundColor": "D4E6B5",
             "foilBackgroundColor": "FEFEFE",
             "hitpointColor": "D4E6B5",
@@ -460,7 +460,7 @@
             "incapacitatedAbilities": [
                 "One hero may use a power now.",
                 "Environment cards cannot be played during the next environment turn.",
-                "Select a target, the next damage it deals is irreducible."
+                "Select a target. The next damage it deals is irreducible."
             ],
             "flippedIcons": [
                 "UsePowerNow",
@@ -468,8 +468,8 @@
                 "MakeDamageIrreducible"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "PhaseCharacter": "Phase placeholder"
+                "default": "I don't think you understand the gravity of this situation.",
+                "PhaseVillainCharacter": "Keep wasting your time with taunts - it'll make it easier to finally catch you."
             },
             "complexity": 1
         }

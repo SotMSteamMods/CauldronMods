@@ -11,13 +11,14 @@ namespace Cauldron.SuperstormAkela
 
         public GeogravLocusCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.PlayArea, new LinqCardCriteria((Card c) => IsLeftOfThisCard(c, base.Card), "card(s) left of this"));
+            base.SpecialStringMaker.ShowSpecialString(() => BuildCardsLeftOfThisSpecialString()).Condition = () => Card.IsInPlayAndHasGameText;
+
         }
 
         public override void AddTriggers()
         {
             //Reduce damage dealt to this card by X, where X is the number of environment cards to the left of this one.
-            Func<DealDamageAction, int> X = (DealDamageAction dd) => GetNumberOfCardsToTheLeftOfThisOne(base.Card).Value;
+            Func<DealDamageAction, int> X = (DealDamageAction dd) => (GetNumberOfCardsToTheLeftOfThisOne(base.Card) ?? 0);
             AddReduceDamageTrigger((DealDamageAction dd) => dd.Target == base.Card, X);
 
             //At the end of the environment turn, play the top card of the environment deck.

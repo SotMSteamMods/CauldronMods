@@ -6,14 +6,12 @@ using System.Collections.Generic;
 
 namespace Cauldron.Quicksilver
 {
-    public class RenegadeQuicksilverCharacterCardController : QuicksilverSubCharacterCardController
+    public class RenegadeQuicksilverCharacterCardController : HeroCharacterCardController
     {
         public RenegadeQuicksilverCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
-
-        int Incap2Count = 0;
 
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
@@ -36,9 +34,15 @@ namespace Cauldron.Quicksilver
                 case 1:
                     {
                         //The next time a hero is dealt damage, they may play a card.
-                        OnDealDamageStatusEffect statusEffect = new OnDealDamageStatusEffect(base.Card, "PlayCardResponse", "The next time a hero is dealt damage, they may play a card.", new TriggerType[] { TriggerType.PlayCard }, base.TurnTaker, base.Card);
+                        OnDealDamageStatusEffect statusEffect = new OnDealDamageStatusEffect(CardWithoutReplacements, nameof(PlayCardResponse), "The next time a hero is dealt damage, they may play a card.", new TriggerType[] { TriggerType.PlayCard }, base.TurnTaker, base.Card);
                         statusEffect.NumberOfUses = 1;
-                        Incap2Count++;
+                        statusEffect.CanEffectStack = true;
+
+                        if (IsRealAction())
+                        {
+                            this.IncrementCardProperty("Incap2Effect");
+                        }
+                                                
                         IEnumerator coroutine2 = base.AddStatusEffect(statusEffect, true);
                         if (base.UseUnityCoroutines)
                         {
@@ -83,7 +87,7 @@ namespace Cauldron.Quicksilver
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             //Search your deck or trash for Iron Retort and put it into your hand. 
-            coroutine = base.SearchForCards(base.HeroTurnTakerController, true, true, 1, 1, new LinqCardCriteria((Card c) => c.Identifier == "IronRetort"), false, true, false, autoDecideCard: true, shuffleAfterwards:false);
+            coroutine = base.SearchForCards(base.HeroTurnTakerController, true, true, 1, 1, new LinqCardCriteria((Card c) => c.Identifier == "IronRetort"), false, true, false, autoDecideCard: true, shuffleAfterwards: false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -107,8 +111,14 @@ namespace Cauldron.Quicksilver
 
         public IEnumerator PlayCardResponse(DealDamageAction action, TurnTaker hero, StatusEffect effect, int[] powerNumerals = null)
         {
+            var uses = GetCardPropertyJournalEntryInteger("Incap2Effect") ?? 0;
+            if (IsRealAction())
+            {
+                Journal.RecordCardProperties(CharacterCard, "Incap2Effect", 0);
+            }
+
             //...they may play a card
-            IEnumerator coroutine = base.GameController.SelectAndPlayCardsFromHand(base.GameController.FindHeroTurnTakerController(action.Target.Owner.ToHero()), Incap2Count, true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndPlayCardsFromHand(base.GameController.FindHeroTurnTakerController(action.Target.Owner.ToHero()), uses, true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

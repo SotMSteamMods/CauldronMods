@@ -13,7 +13,6 @@ namespace Cauldron.SuperstormAkela
 
         public FracturedSkyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SetCardProperty("PlayToTheLeft", false);
         }
 
         public override IEnumerator Play()
@@ -63,7 +62,6 @@ namespace Cauldron.SuperstormAkela
 
           yield break;
         }
-
 
         private IEnumerator PlayCardOnRight(Card card)
         {

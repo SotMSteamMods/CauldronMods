@@ -9,10 +9,11 @@ namespace Cauldron.Titan
 {
     public class StubbornGoliathCardController : CardController
     {
-        public override bool AllowFastCoroutinesDuringPretend {
+        public override bool AllowFastCoroutinesDuringPretend
+        {
             get
             {
-                if(Game.StatusEffects.Any((StatusEffect se) => se.CardSource == this.Card))
+                if (Game.StatusEffects.Any((StatusEffect se) => se.CardSource == this.Card))
                 {
                     return false;
                 }
@@ -50,8 +51,8 @@ namespace Cauldron.Titan
                 {
                     if (decision.SelectedCard != null && decision.SelectedCard.IsInPlayAndHasGameText)
                     {
-                        OnDealDamageStatusEffect onDealDamageStatusEffect = new OnDealDamageStatusEffect(this.CardWithoutReplacements,
-                                                                                                "MaybeRedirectDamageResponse",
+                        OnDealDamageStatusEffect onDealDamageStatusEffect = new OnDealDamageStatusEffect(CardWithoutReplacements,
+                                                                                                nameof(MaybeRedirectDamageResponse),
                                                                                                 $"When {decision.SelectedCard.Title} would deal damage, {DecisionMaker.Name} may redirect it to themselves.",
                                                                                                 new TriggerType[] { TriggerType.RedirectDamage, TriggerType.WouldBeDealtDamage },
                                                                                                 this.TurnTaker,
@@ -68,6 +69,7 @@ namespace Cauldron.Titan
 
                         onDealDamageStatusEffect.UntilTargetLeavesPlay(decision.SelectedCard);
                         onDealDamageStatusEffect.BeforeOrAfter = BeforeOrAfter.Before;
+                        onDealDamageStatusEffect.CanEffectStack = true;
 
                         redirects.Add(onDealDamageStatusEffect);
                     }
@@ -93,7 +95,7 @@ namespace Cauldron.Titan
         {
             //...you may redirect that damage to Titan.
             var storedYesNo = new List<YesNoCardDecision> { };
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(FindHeroTurnTakerController(hero.ToHero()), SelectionType.RedirectDamage, this.Card, storedResults: storedYesNo, cardSource:GetCardSource());
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(FindHeroTurnTakerController(hero.ToHero()), SelectionType.RedirectDamage, this.Card, storedResults: storedYesNo, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

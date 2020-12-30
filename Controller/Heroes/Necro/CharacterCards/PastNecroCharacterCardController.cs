@@ -10,16 +10,17 @@ namespace Cauldron.Necro
 {
     public class PastNecroCharacterCardController : HeroCharacterCardController
     {
+        public static readonly string PastNecroPowerKey = "HeroVillainFlipped";
+
         public PastNecroCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SetCardProperty("HeroVillainFlipped", false);
             SpecialString ss = base.SpecialStringMaker.ShowIfElseSpecialString(() => true, () => "Replacing the word “Hero” on " + base.Card.Title + "'s cards with “Villain”, and vice versa", () => "", showInEffectsList: () => true);
-            ss.Condition = () => GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, "HeroVillainFlipped") != null && GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, "HeroVillainFlipped").Value;
+            ss.Condition = () => GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, PastNecroPowerKey) == true;
         }
         public override IEnumerator UsePower(int index = 0)
         {
             //Until the start of your next turn, replace the word “hero” on your cards with “villain”, and vice versa.
-            SetCardProperty("HeroVillainFlipped", true);
+            SetCardProperty(PastNecroPowerKey, true);
             IEnumerator coroutine = GameController.SendMessageAction("Applying ongoing effect: Replace the word “Hero” on " + base.Card.Title + "'s cards with “Villain” and vice versa.", Priority.High, GetCardSource(), showCardSource: true);
             if (base.UseUnityCoroutines)
             {
@@ -34,12 +35,12 @@ namespace Cauldron.Necro
 
         public override void AddTriggers()
         {
-            AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, TurnOffPowerResponse, TriggerType.Hidden, additionalCriteria: (PhaseChangeAction pca) => GameController.GetCardPropertyJournalEntryBoolean(this.CharacterCard, "HeroVillainFlipped") == true);
+            AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, TurnOffPowerResponse, TriggerType.Hidden, additionalCriteria: (PhaseChangeAction pca) => GameController.GetCardPropertyJournalEntryBoolean(this.CharacterCard, PastNecroPowerKey) == true);
         }
 
         private IEnumerator TurnOffPowerResponse(PhaseChangeAction arg)
         {
-            SetCardProperty("HeroVillainFlipped", false);
+            SetCardProperty(PastNecroPowerKey, false);
             IEnumerator coroutine = GameController.SendMessageAction("Expiring: Replace the word “Hero” on " + base.Card.Title + "'s cards with “Villain” and vice versa.", Priority.High, GetCardSource(), showCardSource: true);
             if (base.UseUnityCoroutines)
             {

@@ -12,7 +12,8 @@ namespace Cauldron.Northspar
 
         public WhatsLeftOfThemCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowListOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria(c => IsWaypoint(c), "waypoint"));
+            SpecialStringMaker.ShowListOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(c => IsWaypoint(c), "waypoint"));
         }
 
         public override void AddTriggers()
@@ -72,17 +73,10 @@ namespace Cauldron.Northspar
         {
             if (base.TurnTaker.Deck.Cards.Any((Card c) => base.IsWaypoint(c)) || base.TurnTaker.Trash.Cards.Any((Card c) => base.IsWaypoint(c)))
             {
-
                 // Search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play...
-                List<MoveCardDestination> moveDestinations = new List<MoveCardDestination>();
-                moveDestinations.Add(new MoveCardDestination(base.TurnTaker.PlayArea));
-
-                List<SelectLocationDecision> storedLocation = new List<SelectLocationDecision>();
-                IEnumerator coroutine = GameController.SelectLocation(this.DecisionMaker, new LocationChoice[2]
-                {
-                    new LocationChoice(base.TurnTaker.Deck),
-                    new LocationChoice(base.TurnTaker.Trash)
-                }, SelectionType.SearchLocation, storedLocation, optional: false, GetCardSource());
+                IEnumerable<Card> choices = TurnTaker.Deck.Cards.Concat(TurnTaker.Trash.Cards);
+                LinqCardCriteria criteria = new LinqCardCriteria((Card c) => base.IsWaypoint(c), "waypoint");
+                IEnumerator coroutine = GameController.SelectAndPlayCard(base.DecisionMaker, choices.Where((Card c) => base.IsWaypoint(c)), isPutIntoPlay: true, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -91,26 +85,11 @@ namespace Cauldron.Northspar
                 {
                     GameController.ExhaustCoroutine(coroutine);
                 }
-                if (storedLocation.FirstOrDefault() != null)
-                {
-                    Location origin = storedLocation.FirstOrDefault().SelectedLocation.Location;
-
-                    LinqCardCriteria criteria = new LinqCardCriteria((Card c) => base.IsWaypoint(c), "waypoint");
-                    IEnumerator coroutine2 = GameController.SelectCardsFromLocationAndMoveThem(base.DecisionMaker, origin, 1, 1, criteria, moveDestinations, isPutIntoPlay: true, cardSource: base.GetCardSource());
-                    if (UseUnityCoroutines)
-                    {
-                        yield return GameController.StartCoroutine(coroutine2);
-                    }
-                    else
-                    {
-                        GameController.ExhaustCoroutine(coroutine2);
-                    }
-                }
 
             }
             else
             {
-                IEnumerator coroutine2 = base.GameController.SendMessageAction(base.Card.Title + " has no deck or trash to search.", Priority.Medium, GetCardSource(), null, showCardSource: true);
+                IEnumerator coroutine2 = base.GameController.SendMessageAction("There are no Waypoints in the deck or trash!", Priority.Medium, GetCardSource(), null, showCardSource: true);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine2);

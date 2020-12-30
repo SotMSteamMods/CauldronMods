@@ -49,7 +49,7 @@ namespace Cauldron.Vanish
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            coroutine = base.CleanupRevealedCards(loc.OwnerTurnTaker.Revealed, loc);
+            coroutine = base.CleanupCardsAtLocations(new List<Location> { loc.OwnerTurnTaker.Revealed }, loc, cardsInList: result);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

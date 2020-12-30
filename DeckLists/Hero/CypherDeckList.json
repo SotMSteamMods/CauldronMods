@@ -38,9 +38,9 @@
                 "GainHP"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "SwarmEaterCharacter": "Swarm Eater placeholder",
-                "SwarmEaterDistributedHivemindCharacter": "Swarm Eater Distributed Hivemind placeholder"
+                "default": "Nanite defensive routines activated.",
+                "SwarmEaterCharacter": "It can augment itself with whatever it consumes. Be careful, team.",
+                "DistributedHivemindSwarmEaterCharacter": "Swarm Eater Distributed Hivemind placeholder"
             },
             "complexity": 3
         },
@@ -183,7 +183,7 @@
             "flavorReference": "Tachyon, Halcyon Crash Limited Series #1"
         },
         {
-            "identifier": "Electro-OpticalCloak",
+            "identifier": "ElectroOpticalCloak",
             "count": 2,
             "title": "Electro-Optical Cloak",
             "keywords": [
@@ -488,7 +488,7 @@
             "flavorReference": "Necro, Experimental One-shot"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "CypherCharacter",
             "promoIdentifier": "FirstResponseCypherCharacter",
@@ -524,9 +524,9 @@
                 "IncreaseDamageDealt"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "SwarmEaterCharacter": "Swarm Eater placeholder",
-                "SwarmEaterDistributedHivemindCharacter": "Swarm Eater Distributed Hivemind placeholder"
+                "default": "Nanite offensive routines activated.",
+                "SwarmEaterCharacter": "If we don't stop it, we'll all be on the menu.",
+                "DistributedHivemindSwarmEaterCharacter": "Swarm Eater Distributed Hivemind placeholder"
             },
             "complexity": 3
         },
@@ -543,11 +543,11 @@
             "hitpointColor": "F27991",
             "character": true,
             "powers": [
-                "Play a card face down next to a hero. Until leaving play it gains keyword \"Augment\" and text \"This hero is augmented\", draw a card."
+                "Play a card face down next to a hero. Until leaving play it gains keyword 'Augment' and text 'This hero is augmented', draw a card."
             ],
             "icons": [
                 "HasPower",
-                "DealDamageEnergy"
+                "DrawCardNow"
             ],
             "hitpoints": 22,
             "nemesisIdentifiers": [
@@ -556,7 +556,7 @@
             "incapacitatedAbilities": [
                 "One player may play a card now.",
                 "Discard the top 3 cards of 1 deck.",
-                "Destroy an environment card.."
+                "Destroy an environment card."
             ],
             "flippedIcons": [
                 "PlayCardNow",
@@ -564,9 +564,9 @@
                 "DestroyEnvironment"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "SwarmEaterCharacter": "Swarm Eater placeholder",
-                "SwarmEaterDistributedHivemindCharacter": "Swarm Eater Distributed Hivemind placeholder"
+                "default": "We are the swarm.",
+                "SwarmEaterCharacter": "Except I'm a friendly cloud of nanites, instead of a ravenous, all-consuming one.",
+                "DistributedHivemindSwarmEaterCharacter": "Swarm Eater Distributed Hivemind placeholder"
             },
             "complexity": 3
         }

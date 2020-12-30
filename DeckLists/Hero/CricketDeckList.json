@@ -19,7 +19,8 @@
                 "Select a target. Reduce damage dealt by that target by 1 until the start of your next turn."
             ],
             "icons": [
-                "HasPower"
+                "HasPower",
+                "ReduceDamageDealt"
             ],
             "hitpoints": 27,
             "nemesisIdentifiers": [
@@ -36,8 +37,8 @@
                 "DealDamageSonic"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "DynamoCharacter": "Dynamo placeholder"
+                "default": "I heard you coming ages ago; we've already planned exactly how you're going down.",
+                "DynamoCharacter": "Too late for that. This is for all the pain you've caused to the people of Windmill City."
             },
             "complexity": 2
         },
@@ -141,7 +142,7 @@
             ],
             "icons": [
                 "Manipulate",
-                "IncreaseDamageTaken",
+                "IncreaseDamageTakenSonic",
                 "HasPower",
                 "DestroySelf"
             ],
@@ -290,6 +291,7 @@
             ],
             "icons": [
                 "ImmuneToDamage",
+                "StartOfTurnAction",
                 "DestroySelf"
             ],
             "body": [
@@ -332,6 +334,7 @@
             ],
             "icons": [
                 "RedirectDamage",
+                "StartOfTurnAction",
                 "DestroySelf"
             ],
             "body": [
@@ -417,7 +420,7 @@
             "flavorReference": "Adventurers #8"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "CricketCharacter",
             "promoIdentifier": "FirstResponseCricketCharacter",
@@ -453,8 +456,8 @@
                 "GainHP"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "DynamoCharacter": "Dynamo placeholder"
+                "default": "I'll coordinate communications, team!",
+                "DynamoCharacter": "Don't be so sure; even an idiot can be dangerous. Fortunately we're here to stop him."
             },
             "complexity": 2
         },
@@ -471,7 +474,7 @@
             "hitpointColor": "EF4945",
             "character": true,
             "powers": [
-                "Reveral the top card of a hero deck. You may discard a card to put into play, otherwise put it into that player's hand."
+                "Reveal the top card of a hero deck. You may discard a card to put it into play, otherwise put it into that player's hand."
             ],
             "icons": [
                 "HasPower",
@@ -494,8 +497,8 @@
                 "Manipulate"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "DynamoCharacter": "Dynamo placeholder"
+                "default": "I've heard all this before.",
+                "DynamoCharacter": "Call those other rogues out to play and you'll all find out."
             },
             "complexity": 2
         },
@@ -525,7 +528,7 @@
             ],
             "incapacitatedAbilities": [
                 "One hero may use a power now.",
-                "Select a power on a card in play. The next time a hero uses it. They may immediately use it again..",
+                "Select a power on a card in play. The next time a hero uses it. They may immediately use it again.",
                 "Move the bottom card of a deck to the top."
             ],
             "flippedIcons": [
@@ -534,8 +537,8 @@
                 "Manipulate"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "DynamoCharacter": "Dynamo placeholder"
+                "default": "This should be a nice break from the monsters of the Wasteland.",
+                "DynamoCharacter": "And I wonder how much you'll blubber when we send you back to prison!"
             },
             "complexity": 2
         }

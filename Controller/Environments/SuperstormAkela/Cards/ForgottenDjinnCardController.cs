@@ -11,7 +11,8 @@ namespace Cauldron.SuperstormAkela
 
         public ForgottenDjinnCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.PlayArea, new LinqCardCriteria((Card c) => IsLeftOfThisCard(c, base.Card), "card(s) left of this"));
+            base.SpecialStringMaker.ShowNonEnvironmentTargetWithHighestHP(ranking: 2);
+            base.SpecialStringMaker.ShowSpecialString(() => BuildCardsLeftOfThisSpecialString()).Condition = () => Card.IsInPlayAndHasGameText;
 
         }
 
@@ -25,7 +26,7 @@ namespace Cauldron.SuperstormAkela
         {
             // this card deals the non-environment target with the second highest HP X+2 melee damage, where X is the number of environment cards to the left of this one.
 
-            Func<Card, int?> amount = (Card c) => GetNumberOfCardsToTheLeftOfThisOne(base.Card) + 2;
+            Func<Card, int?> amount = (Card c) => (GetNumberOfCardsToTheLeftOfThisOne(base.Card) ?? 0) + 2;
             IEnumerator coroutine = DealDamageToHighestHP(base.Card, 2, (Card c) => c.IsNonEnvironmentTarget, amount, DamageType.Melee);
             if (base.UseUnityCoroutines)
             {

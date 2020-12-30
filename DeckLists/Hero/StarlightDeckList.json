@@ -49,7 +49,7 @@
             "complexity": 3,
             "openingLines": {
                 "default": "Your defeat is written in the stars!",
-                "MenagerieCharacter":"Menagerie placeholder"
+                "MenagerieCharacter":"Mog Chordal, you are wanted for poaching and kidnapping on at least 38 planets. Please surrender peacefully."
             }
         },
         {
@@ -455,31 +455,31 @@
             "flavorReference": "Chrono-Ranger, The Dark Millenia #11"
         },
         {
-            "identifier": "StarlightOfTerraCharacter",
-            "promoIdentifier": "StarlightOfTerraCharacter",
-            "count": 1,
-            "title": "Starlight",
-            "promoTitle": "Starlight of Terra",
-            "shortPromoTitle": "Terra",
-            "body": "Radiance",
-            "backgroundColor": "FBF8F9",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "C94742",
-            "character": true,
-            "powers": [
-                "Discard a card. Search your deck for a copy of Exodus and put it in your hand. Shuffle your deck."
-            ],
-            "icons": [
-                "HasPower",
-                "Discard",
-                "Search"
-            ],
-            "hitpoints": 13,
-            "nemesisIdentifiers": [
-                "Starlight"
-            ],
-            "flippedTitle": "Incapacitated",
-            "complexity": 1
+             "identifier": "StarlightOfCryosFourCharacter",
+             "promoIdentifier": "StarlightOfCryosFourCharacter",
+             "count": 1,
+             "title": "Starlight",
+             "promoTitle": "Starlight of Cryos-4",
+             "shortPromoTitle": "Cryos-4",
+             "body": "Voidgaze",
+             "backgroundColor": "FBF8F9",
+             "foilBackgroundColor": "FEFEFE",
+             "hitpointColor": "C94742",
+             "character": true,
+             "powers": [
+                 "This Starlight deals herself 2 irreducible cold damage. If she takes damage this way, play 2 constellations from your trash."
+             ],
+             "icons": [
+                 "HasPower",
+                 "DealDamageCold",
+                 "PlayCardNow"
+             ],
+             "hitpoints": 15,
+             "nemesisIdentifiers": [
+                 "Starlight"
+             ],
+             "flippedTitle": "Incapacitated",
+             "complexity": 1
          },
          {
              "identifier": "StarlightOfAsheronCharacter",
@@ -509,31 +509,31 @@
              "complexity": 1
          },
          {
-             "identifier": "StarlightOfCryosFourCharacter",
-             "promoIdentifier": "StarlightOfCryosFourCharacter",
-             "count": 1,
-             "title": "Starlight",
-             "promoTitle": "Starlight of Cryos-4",
-             "shortPromoTitle": "Cryos-4",
-             "body": "Voidgaze",
-             "backgroundColor": "FBF8F9",
-             "foilBackgroundColor": "FEFEFE",
-             "hitpointColor": "C94742",
-             "character": true,
-             "powers": [
-                 "This Starlight deals herself 2 irreducible cold damage. If she takes damage this way, play 2 constellations from your trash."
-             ],
-             "icons": [
-                 "HasPower",
-                 "DealDamageCold",
-                 "PlayCardNow"
-             ],
-             "hitpoints": 15,
-             "nemesisIdentifiers": [
-                 "Starlight"
-             ],
-             "flippedTitle": "Incapacitated",
-             "complexity": 1
+            "identifier": "StarlightOfTerraCharacter",
+            "promoIdentifier": "StarlightOfTerraCharacter",
+            "count": 1,
+            "title": "Starlight",
+            "promoTitle": "Starlight of Terra",
+            "shortPromoTitle": "Terra",
+            "body": "Radiance",
+            "backgroundColor": "FBF8F9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C94742",
+            "character": true,
+            "powers": [
+                "Discard a card. Search your deck for a copy of Exodus and put it in your hand. Shuffle your deck."
+            ],
+            "icons": [
+                "HasPower",
+                "Discard",
+                "Search"
+            ],
+            "hitpoints": 13,
+            "nemesisIdentifiers": [
+                "Starlight"
+            ],
+            "flippedTitle": "Incapacitated",
+            "complexity": 1
          }
     ],
     "promoCards": [
@@ -572,7 +572,7 @@
             ],
             "openingLines": {
                 "default": "This sector is under Nightlore protection.",
-                "MenagerieCharacter": "Menagerie placeholder"
+                "MenagerieCharacter": "That mercenary has his own crimes to answer for. But let's start with yours."
             },
             "complexity": 3
         },
@@ -614,13 +614,6 @@
                 "PlayCardNow",
                 "UsePowerNow"
             ],
-            "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder",
-                "1929RamCharacter": "1929 Ram placeholder",
-                "TiamatCharacter": "Tiamat placeholder",
-                "TiamatElementalCharacter": "Tiamat Elemental placeholder"
-            },
             "isReal": false,
             "openingLines": {
                 "default": "To survey the darkness and guard the light; this we pledge!",

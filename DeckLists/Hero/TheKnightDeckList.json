@@ -6,6 +6,10 @@
 	"initialCardIdentifiers": [
 		"TheKnightCharacter"
 	],
+	"initialOffToTheSideCardIdentifiers": [
+		"TheYoungKnightCharacter",
+		"TheOldKnightCharacter"
+	],
 	"cards": [{
 			"identifier": "TheKnightCharacter",
 			"count": 1,
@@ -38,10 +42,10 @@
 			],
 			"openingLines": {
 				"default": "Halt, villain! Leave, or cross my steel!",
-				"OutlanderCharacter": "Outlander placeholder",
+				"OutlanderCharacter": "There is no honor in one who prospers from the death of others. Whatever you once were, I see nothing of myself left in you now.",
 				"PastTheRamCharacter": "1929 Ram placeholder",
-				"TiamatCharacter": "Tiamat placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+				"WinterTiamatCharacter": "Foul Beast! I have slain thee once, I will do so again.",
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 1
 		},
@@ -352,9 +356,84 @@
 				"text": "A warrior is only as good as his{BR}equipment."
 			}],
 			"flavorReference": "The Knight, The Wanderer's Ballad #3"
+		},
+		{
+			"identifier": "TheOldKnightCharacter",
+			"promoIdentifier": "TheOldKnightCharacter",
+			"count": 1,
+			"title": "The Old Knight",
+			"promoTitle": "The Old Knight: Wasteland Ronin",
+			"shortPromoTitle": "The Old Knight",
+			"body": "Destroyer",
+			"backgroundColor": "D4E6B5",
+			"foilBackgroundColor": "FEFEFE",
+			"hitpointColor": "D4E6B5",
+			"character": true,
+			"powers": [
+				"{TheOldKnightCharacter} deals 1 target 2 irreducible lightning damage. Return 1 of your equipment cards in play to your hand."
+			],
+			"icons": [
+				"HasPower",
+				"DealDamageLightning",
+				"Manipulate"
+			],
+			"hitpoints": 18,
+			"nemesisIdentifiers": [
+				"TheKnight"
+			],
+			"flippedTitle": "Incapacitated",
+			"flippedBody": "When {TheOldKnightCharacter} flips to this side, destroy all equipment cards next to him.",
+			"flippedIcons": [
+				"DestroyEquipment"
+			],
+			"openingLines": {
+				"default": "default placeholder",
+				"OutlanderCharacter": "Outlander placeholder",
+				"PastTheRamCharacter": "1929 Ram placeholder",
+				"WinterTiamatCharacter": "Tiamat placeholder",
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+			},
+			"complexity": 1
+		},
+		{
+			"identifier": "TheYoungKnightCharacter",
+			"promoIdentifier": "TheYoungKnightCharacter",
+			"count": 1,
+			"title": "The Young Knight",
+			"promoTitle": "The Young Knight: Wasteland Ronin",
+			"shortPromoTitle": "The Young Knight",
+			"body": "Dragon's Dance",
+			"backgroundColor": "D4E6B5",
+			"foilBackgroundColor": "FEFEFE",
+			"hitpointColor": "D4E6B5",
+			"character": true,
+			"powers": [
+				"{TheYoungKnightCharacter} deals herself and 2 other targets 2 toxic damage each"
+			],
+			"icons": [
+				"HasPower",
+				"DealDamageToxic"
+			],
+			"hitpoints": 15,
+			"nemesisIdentifiers": [
+				"TheKnight"
+			],
+			"flippedTitle": "Incapacitated",
+			"flippedBody": "When {TheYoungKnightCharacter} flips to this side, destroy all equipment cards next to her.",
+			"flippedIcons": [
+				"DestroyEquipment"
+			],
+			"openingLines": {
+				"default": "default placeholder",
+				"OutlanderCharacter": "Outlander placeholder",
+				"PastTheRamCharacter": "1929 Ram placeholder",
+				"WinterTiamatCharacter": "Tiamat placeholder",
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+			},
+			"complexity": 1
 		}
 	],
-	"notPromoCards": [{
+	"promoCards": [{
 			"identifier": "TheKnightCharacter",
 			"promoIdentifier": "FairTheKnightCharacter",
 			"count": 1,
@@ -380,7 +459,7 @@
 			"incapacitatedAbilities": [
 				"One player may play a card now.",
 				"One player may draw a card now.",
-				"Until the start of your next turn, reduce damage dealt to hero targets by 2."
+				"Until the start of your next turn, reduce damage dealt by environment cards to hero targets by 2."
 			],
 			"flippedIcons": [
 				"PlayCardNow",
@@ -389,20 +468,20 @@
 			],
 			"openingLines": {
 				"default": "Have at thee! I've always wanted to say that.",
-				"OutlanderCharacter": "Outlander placeholder",
+				"OutlanderCharacter": "And you are nothing but a broken reflection of my ancestor.",
 				"PastTheRamCharacter": "1929 Ram placeholder",
-				"TiamatCharacter": "Tiamat placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+				"WinterTiamatCharacter": "For my ancestors!",
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 1
 		},
 		{
 			"identifier": "TheKnightCharacter",
-			"promoIdentifier": "BerzerkerTheKnightCharacter",
+			"promoIdentifier": "BerserkerTheKnightCharacter",
 			"count": 1,
 			"title": "The Knight",
-			"promoTitle": "The Berzerker Knight",
-			"shortPromoTitle": "Berzerk Knight",
+			"promoTitle": "The Berserker Knight",
+			"shortPromoTitle": "Berserker Knight",
 			"body": "Rage",
 			"backgroundColor": "CF5240",
 			"foilBackgroundColor": "FEFEFE",
@@ -432,10 +511,10 @@
 			],
 			"openingLines": {
 				"default": "Whether 'tis by my blood and bone alone, today shall be your undoing!",
-				"OutlanderCharacter": "Outlander placeholder",
+				"OutlanderCharacter": "I will not stand down while I yet draw breath.",
 				"PastTheRamCharacter": "1929 Ram placeholder",
-				"TiamatCharacter": "Tiamat placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+				"WinterTiamatCharacter": "Yeaaarghh! To battle!",
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 1
 		},
@@ -475,10 +554,11 @@
 			],
 			"openingLines": {
 				"default": "You will not shed innocent blood while we stand.",
-				"OutlanderCharacter": "Outlander placeholder",
+				"OutlanderCharacter": "The tale is long, but the ending is simple: your defeat, at my blade.",
 				"PastTheRamCharacter": "1929 Ram placeholder",
-				"TiamatCharacter": "Tiamat placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+				"WinterTiamatCharacter": "Hold fast! We will smite this serpent where it stands.",
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder",
+				"TheMistressOfFateCharacter": "Whatever sorcery this is, I have faced worse."
 			},
 			"complexity": 1
 		},
@@ -486,6 +566,8 @@
 			"identifier": "TheKnightCharacter",
 			"promoIdentifier": "WastelandRoninTheKnightCharacter",
 			"count": 1,
+			"isReal": false,
+			"character": true,
 			"title": "The Knight",
 			"promoTitle": "The Knights: Wasteland Ronin",
 			"shortPromoTitle": "The Wasteland Knights",
@@ -493,7 +575,7 @@
 			"foilBackgroundColor": "FEFEFE",
 			"hitpointColor": "C94742",
 			"setup": [
-				"At the start of the game, put the caharacter cards for the Young and Old Knights into play, active side up.",
+				"At the start of the game, put the character cards for the Young and Old Knights into play, active side up.",
 				"Shuffle the hero deck and draw 4 cards."
 			],
 			"gameplay": [
@@ -521,85 +603,10 @@
 			],
 			"openingLines": {
 				"default": "We survived the Wastelands; this should be easy!",
-				"OutlanderCharacter": "Outlander placeholder",
+				"OutlanderCharacter": "Well, you'll have to keep wondering!",
 				"PastTheRamCharacter": "1929 Ram placeholder",
-				"TiamatCharacter": "Tiamat placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
-			},
-			"complexity": 1
-		},
-		{
-			"identifier": "TheKnightCharacter",
-			"promoIdentifier": "WastelandRoninTheKnightCharacter",
-			"count": 1,
-			"title": "The Knight",
-			"promoTitle": "The Old Knight: Wasteland Ronin",
-			"shortPromoTitle": "The Old Knight",
-			"body": "Destroyer",
-			"backgroundColor": "D4E6B5",
-			"foilBackgroundColor": "FEFEFE",
-			"hitpointColor": "D4E6B5",
-			"character": true,
-			"powers": [
-				"{TheKnight} deals 1 target 2 irreducible lightning damage. Return 1 of your equipment cards in play to your hand."
-			],
-			"icons": [
-				"HasPower",
-				"DealDamageLightning",
-				"Manipulate"
-			],
-			"hitpoints": 18,
-			"nemesisIdentifiers": [
-				"TheKnight"
-			],
-			"flippedTitle": "Incapacitated",
-			"flippedBody": "When {TheKnight} flips to this side, destroy all equipment cards next to him.",
-			"flippedIcons": [
-				"DestroyEquipment"
-			],
-			"openingLines": {
-				"default": "default placeholder",
-				"OutlanderCharacter": "Outlander placeholder",
-				"PastTheRamCharacter": "1929 Ram placeholder",
-				"TiamatCharacter": "Tiamat placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
-			},
-			"complexity": 1
-		},
-		{
-			"identifier": "TheKnightCharacter",
-			"promoIdentifier": "WastelandRoninTheKnightCharacter",
-			"count": 1,
-			"title": "The Knight",
-			"promoTitle": "The Young Knight: Wasteland Ronin",
-			"shortPromoTitle": "The Young Knight",
-			"body": "Dragon's Dance",
-			"backgroundColor": "D4E6B5",
-			"foilBackgroundColor": "FEFEFE",
-			"hitpointColor": "D4E6B5",
-			"character": true,
-			"powers": [
-				"{TheKnight} deals herself and 2 other targets 2 toxic damage each"
-			],
-			"icons": [
-				"HasPower",
-				"DealDamageToxic"
-			],
-			"hitpoints": 15,
-			"nemesisIdentifiers": [
-				"TheKnight"
-			],
-			"flippedTitle": "Incapacitated",
-			"flippedBody": "When {TheKnight} flips to this side, destroy all equipment cards next to her.",
-			"flippedIcons": [
-				"DestroyEquipment"
-			],
-			"openingLines": {
-				"default": "default placeholder",
-				"OutlanderCharacter": "Outlander placeholder",
-				"PastTheRamCharacter": "1929 Ram placeholder",
-				"TiamatCharacter": "Tiamat placeholder",
-				"TiamatElementalCharacter": "Tiamat Elemental placeholder"
+				"WinterTiamatCharacter": "I have seen worse horrors than you!",
+				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
 			},
 			"complexity": 1
 		}

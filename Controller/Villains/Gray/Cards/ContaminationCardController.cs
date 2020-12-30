@@ -12,6 +12,7 @@ namespace Cauldron.Gray
 
         public ContaminationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowIfElseSpecialString(() => GetHeroCardsDestroyedThisRound().Where(e => (e.Card.IsOngoing || IsEquipment(e.Card)) && e.CardSource == this.Card).Count() > 0, () => GetHeroCardsDestroyedThisRound().Where(e => (e.Card.IsOngoing || IsEquipment(e.Card)) && e.CardSource == this.Card).Count() + " hero card(s) have been destroyed by this card this round.", () => "No hero cards have been destroyed by this card this round.");
         }
 
         private bool SelfDestructionCriteria(DestroyCardAction action)

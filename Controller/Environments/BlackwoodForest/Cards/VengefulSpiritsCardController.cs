@@ -27,7 +27,7 @@ namespace Cauldron.BlackwoodForest
 
         public VengefulSpiritsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowListOfCardsAtLocation(FindLocationsWhere(location => location.IsRealTrash && location.IsVillain && GameController.IsLocationVisibleToSource(location, GetCardSource())).First(), new LinqCardCriteria(c => c.IsTarget, "target", useCardsSuffix: false, singular: "target", plural: "targets"));       
         }
 
         public override void AddTriggers()
@@ -46,16 +46,14 @@ namespace Cauldron.BlackwoodForest
 
         private IEnumerator StartOfTurnShuffleVillianTrashResponse(PhaseChangeAction pca)
         {
-            Location villainTrash = base.FindLocationsWhere(location => location.IsTrash && location.IsVillain).First();
+            Location villainTrash = FindLocationsWhere(location => location.IsRealTrash && location.IsVillain && GameController.IsLocationVisibleToSource(location, GetCardSource())).First();
 
             // Shuffle villain trash
-            IEnumerator shuffleTrashRoutine = base.GameController.ShuffleLocation(villainTrash);
+            IEnumerator shuffleTrashRoutine = GameController.ShuffleLocation(villainTrash);
 
             // Reveal cards until target is revealed (if any)
             List<RevealCardsAction> revealedCards = new List<RevealCardsAction>();
-            IEnumerator revealCardsRoutine = base.GameController.RevealCards(this.TurnTakerController,
-                villainTrash, card => card.IsTarget, NumberOfCardMatches, revealedCards);
-
+            IEnumerator revealCardsRoutine = GameController.RevealCards(TurnTakerController, villainTrash, card => card.IsTarget, NumberOfCardMatches, revealedCards);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(shuffleTrashRoutine);
@@ -69,12 +67,10 @@ namespace Cauldron.BlackwoodForest
 
             Card matchedCard = GetRevealedCards(revealedCards).FirstOrDefault(c => c.IsTarget);
             List<Card> otherCards = GetRevealedCards(revealedCards).Where(c => !c.IsTarget).ToList();
-
             if (otherCards.Any())
             {
                 // Put non matching revealed cards back in the trash
-                IEnumerator returnCardsRoutine = base.GameController.MoveCards(this.DecisionMaker, otherCards, villainTrash,
-                    cardSource: base.GetCardSource());
+                IEnumerator returnCardsRoutine = GameController.MoveCards(DecisionMaker, otherCards, villainTrash, cardSource: GetCardSource());
 
                 if (this.UseUnityCoroutines)
                 {
@@ -86,35 +82,39 @@ namespace Cauldron.BlackwoodForest
                 }
             }
 
-            if (matchedCard == null)
+            if (matchedCard != null)
             {
-                yield break;
-            }
+                // Eligible card found, put it into play and deal it 2 infernal damage
+                List<bool> wasCardPlayed = new List<bool>();
+                IEnumerator coroutine = GameController.PlayCard(TurnTakerController, matchedCard, isPutIntoPlay: true, wasCardPlayed: wasCardPlayed, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
 
-            // Eligible card found, put it into play and deal it 2 infernal damage
-            IEnumerator playCardRoutine = this.GameController.PlayCard(this.TurnTakerController, matchedCard, true);
-            IEnumerator dealDamageRoutine = this.DealDamage(this.Card, matchedCard, DamageToDeal, DamageType.Infernal);
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(playCardRoutine);
-                yield return base.GameController.StartCoroutine(dealDamageRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(playCardRoutine);
-                base.GameController.ExhaustCoroutine(dealDamageRoutine);
+                if (wasCardPlayed.FirstOrDefault() == true)
+                {
+                    coroutine = DealDamage(Card, matchedCard, DamageToDeal, DamageType.Infernal);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
             }
         }
 
         private IEnumerator EndOfTurnOptionalDestruction(PhaseChangeAction pca)
         {
             List<DiscardCardAction> discardedCards = new List<DiscardCardAction>();
-            IEnumerator discardCardsRoutine 
-                = this.GameController.EachPlayerDiscardsCards(0, NumberOfCardsToDiscard,
-                discardedCards);
-
-
+            IEnumerator discardCardsRoutine = this.GameController.EachPlayerDiscardsCards(0, NumberOfCardsToDiscard, discardedCards, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(discardCardsRoutine);
@@ -130,7 +130,7 @@ namespace Cauldron.BlackwoodForest
             }
 
             // Required cards discarded, destroy this card
-            IEnumerator destroyRoutine = base.GameController.DestroyCard(this.HeroTurnTakerController, this.Card);
+            IEnumerator destroyRoutine = base.GameController.DestroyCard(HeroTurnTakerController, Card, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(destroyRoutine);

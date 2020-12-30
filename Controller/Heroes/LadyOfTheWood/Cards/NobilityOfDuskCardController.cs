@@ -21,7 +21,9 @@ namespace Cauldron.LadyOfTheWood
         {
             //Once per turn when LadyOfTheWood would deal damage you may increase that damage by 2
             Func<DealDamageAction, bool> criteria = (DealDamageAction dd) => IsBuffAvailable() && dd.DamageSource != null && dd.DamageSource.IsSameCard(base.CharacterCard);
-            base.AddTrigger<DealDamageAction>(criteria, this.IncreaseDamageDecision, TriggerType.ModifyDamageAmount, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>(criteria, this.IncreaseDamageDecision, TriggerType.ModifyDamageAmount, TriggerTiming.Before, isActionOptional: true);
+
+            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay("BuffUsed"), TriggerType.Hidden);
         }
 
         private bool IsBuffAvailable()

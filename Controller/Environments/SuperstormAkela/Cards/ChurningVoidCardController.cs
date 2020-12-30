@@ -12,7 +12,7 @@ namespace Cauldron.SuperstormAkela
         public ChurningVoidCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
-            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.PlayArea, new LinqCardCriteria((Card c) => IsLeftOfThisCard(c, base.Card), "card(s) left of this"));
+            base.SpecialStringMaker.ShowSpecialString(() => BuildCardsLeftOfThisSpecialString()).Condition = () => Card.IsInPlayAndHasGameText;
         }
 
         public override void AddTriggers()
@@ -28,7 +28,7 @@ namespace Cauldron.SuperstormAkela
         private IEnumerator DealDamageResponse(PhaseChangeAction pca)
         {
             //this card deals the { H} targets with the highest HP X projectile damage each, where X is the number of environment cards to the left of this one.
-            Func<Card, int?> X = (Card c) => GetNumberOfCardsToTheLeftOfThisOne(base.Card);
+            Func<Card, int?> X = (Card c) => GetNumberOfCardsToTheLeftOfThisOne(base.Card) ?? 0;
             IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsTarget, X, DamageType.Projectile, numberOfTargets: () => Game.H);
             if (base.UseUnityCoroutines)
             {
