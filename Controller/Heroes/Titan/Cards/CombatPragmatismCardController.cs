@@ -15,14 +15,17 @@ namespace Cauldron.Titan
         public override void AddTriggers()
         {
             //When a non-hero card enters play, you may destroy this card...
-            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => !action.CardEnteringPlay.IsHero, this.DestroySelfResponse, TriggerType.DestroySelf, TriggerTiming.After, isActionOptional: true);
-            //...If you do, you may use a power now.
-            base.AddWhenDestroyedTrigger(this.OnDestroyResponse, TriggerType.UsePower);
+            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => action.IsSuccessful && !action.CardEnteringPlay.IsHero, DestroySelfResponse, TriggerType.DestroySelf, TriggerTiming.After, isActionOptional: true);
         }
 
         private IEnumerator DestroySelfResponse(CardEntersPlayAction action)
         {
-            IEnumerator coroutine = base.GameController.DestroyCard(base.HeroTurnTakerController, base.Card, true, cardSource: base.GetCardSource());
+            //...If you do, you may use a power now.
+            IEnumerator coroutine = base.GameController.DestroyCard(DecisionMaker, Card,
+                            optional: true,
+                            actionSource: action,
+                            postDestroyAction: () => OnDestroyResponse(),
+                            cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -31,13 +34,12 @@ namespace Cauldron.Titan
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
         }
 
-        private IEnumerator OnDestroyResponse(DestroyCardAction action)
+        private IEnumerator OnDestroyResponse()
         {
             //you may use a power now.
-            IEnumerator coroutine = base.GameController.SelectAndUsePower(base.HeroTurnTakerController, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndUsePower(DecisionMaker, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -46,7 +48,6 @@ namespace Cauldron.Titan
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
         }
 
         public override IEnumerator UsePower(int index = 0)
@@ -62,7 +63,6 @@ namespace Cauldron.Titan
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
         }
     }
 }
