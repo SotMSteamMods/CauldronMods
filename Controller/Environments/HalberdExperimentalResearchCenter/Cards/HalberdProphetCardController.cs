@@ -32,7 +32,15 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             if (!base.IsChemicalTriggerInPlay())
             {
                 //each player may look at the top card of their deck, and put it back on either the top or bottom of their deck
-                IEnumerator coroutine = base.DoActionToEachTurnTakerInTurnOrder((TurnTakerController ttc) => ttc.IsHero && !ttc.IsIncapacitatedOrOutOfGame && ttc.TurnTaker.Deck.HasCards, (TurnTakerController ttc) => this.RevealCardsResponse(ttc));
+                IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker, new LinqTurnTakerCriteria(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && tt.Deck.NumberOfCards > 1),
+                                            SelectionType.RevealTopCardOfDeck,
+                                            tt => RevealCardsResponse(tt),
+                                            requiredDecisions: 0,
+                                            allowAutoDecide: true,
+                                            cardSource: GetCardSource());
+
+
+                //IEnumerator coroutine = base.DoActionToEachTurnTakerInTurnOrder((TurnTakerController ttc) => ttc.IsHero && !ttc.IsIncapacitatedOrOutOfGame && ttc.TurnTaker.Deck.HasCards, (TurnTakerController ttc) => this.RevealCardsResponse(ttc));
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -60,14 +68,14 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             yield break;
         }
 
-        private IEnumerator RevealCardsResponse(TurnTakerController ttc)
+        private IEnumerator RevealCardsResponse(TurnTaker tt)
         {
             //get this turntaker's deck
-            Location deck = ttc.TurnTaker.Deck;
-            HeroTurnTakerController httc = base.FindHeroTurnTakerController(ttc.TurnTaker.ToHero());
+            Location deck = tt.Deck;
+            HeroTurnTakerController httc = base.FindHeroTurnTakerController(tt.ToHero());
             List<Card> storedResultsCard = new List<Card>();
             //reveal the top card of the deck
-            IEnumerator coroutine = base.GameController.RevealCards(ttc, deck, 1, storedResultsCard, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.RevealCards(httc, deck, 1, storedResultsCard, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -80,11 +88,13 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             if (card != null)
             {
                 //turntakercontroller decides whether to put on top or bottom of deck
-                List<MoveCardDestination> list = new List<MoveCardDestination>();
-                //top of deck
-                list.Add(new MoveCardDestination(deck));
-                //bottom of deck
-                list.Add(new MoveCardDestination(deck, true));
+                List<MoveCardDestination> list = new List<MoveCardDestination>()
+                { 
+                    //top of deck
+                    new MoveCardDestination(deck),
+                    //bottom of deck
+                    new MoveCardDestination(deck, true),
+                };
                 coroutine = base.GameController.SelectLocationAndMoveCard(httc, card, list, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
@@ -96,10 +106,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
                 }
             }
             //clean up any revealed cards that should not be in play any more
-            coroutine = base.CleanupCardsAtLocations(new List<Location>
-                {
-                    deck.OwnerTurnTaker.Revealed
-                }, deck, cardsInList: storedResultsCard);
+            coroutine = base.CleanupCardsAtLocations(new List<Location> { deck.OwnerTurnTaker.Revealed }, deck, cardsInList: storedResultsCard);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

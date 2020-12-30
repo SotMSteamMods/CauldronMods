@@ -46,7 +46,6 @@ namespace Cauldron.Cypher
             IEnumerator routine;
             List<SelectTurnTakerDecision> storedHero;
             List<DestroyCardAction> storedDestroy;
-            LinqCardCriteria cardCriteria;
             LinqTurnTakerCriteria heroCriteria;
 
             switch (index)
@@ -57,10 +56,13 @@ namespace Cauldron.Cypher
 
                     storedDestroy = new List<DestroyCardAction> { };
                     storedHero = new List<SelectTurnTakerDecision> { };
-                    cardCriteria = new LinqCardCriteria(c => c.IsOngoing, "ongoing");
                     heroCriteria = new LinqTurnTakerCriteria(tt => tt.GetCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsOngoing).Any());
 
-                    routine = GameController.SelectHeroToDestroyTheirCard(DecisionMaker, (httc) => cardCriteria, additionalCriteria: heroCriteria, storedResultsTurnTaker: storedHero, storedResultsAction: storedDestroy, cardSource: GetCardSource());
+                    routine = GameController.SelectHeroToDestroyTheirCard(DecisionMaker, (httc) => new LinqCardCriteria(c => c.Owner == httc.TurnTaker && c.IsInPlayAndHasGameText && c.IsOngoing, "ongoing"),
+                                    additionalCriteria: heroCriteria,
+                                    storedResultsTurnTaker: storedHero,
+                                    storedResultsAction: storedDestroy,
+                                    cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(routine);
@@ -93,10 +95,13 @@ namespace Cauldron.Cypher
                     // One player may destroy 1 of their equipment cards to play 3 cards.
                     storedDestroy = new List<DestroyCardAction> { };
                     storedHero = new List<SelectTurnTakerDecision> { };
-                    cardCriteria = new LinqCardCriteria(c => IsEquipment(c), "equipment");
                     heroCriteria = new LinqTurnTakerCriteria(tt => tt.GetCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsEquipment(c)).Any());
 
-                    routine = GameController.SelectHeroToDestroyTheirCard(DecisionMaker, (httc) => cardCriteria, additionalCriteria: heroCriteria, storedResultsTurnTaker: storedHero, storedResultsAction: storedDestroy, cardSource: GetCardSource());
+                    routine = GameController.SelectHeroToDestroyTheirCard(DecisionMaker, (httc) => new LinqCardCriteria(c => c.Owner == httc.TurnTaker && c.IsInPlayAndHasGameText && IsEquipment(c), "equipment"),
+                                additionalCriteria: heroCriteria,
+                                storedResultsTurnTaker: storedHero,
+                                storedResultsAction: storedDestroy,
+                                cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(routine);
