@@ -53,14 +53,6 @@ namespace Cauldron.Vanish
             return GameController.GetCardPropertyJournalEntryInteger(CharacterCard, Incap2Key);
         }
 
-        private void AddIncap2Use()
-        {
-            int? uses = Incap2Uses();
-            uses = (uses ?? 0) + 1;
-
-            Game.Journal.RecordCardProperties(CharacterCard, Incap2Key, uses);
-        }
-
         private void ResetIncap2Uses()
         {
             Game.Journal.RecordCardProperties(CharacterCard, Incap2Key, (int?)null);
@@ -92,8 +84,6 @@ namespace Cauldron.Vanish
                     }
                 case 1:
                     {
-                        AddIncap2Use();
-
                         var messageEffect = new OnPhaseChangeStatusEffect(this.CardWithoutReplacements, "PastVanishIncap2Message", "The next time a target enters play, it deals itself 1 energy damage.", new TriggerType[] { TriggerType.DealDamage }, this.Card);
                         messageEffect.TurnTakerCriteria.IsHero = false;
                         messageEffect.TurnPhaseCriteria.TurnTaker = this.TurnTaker;
@@ -109,6 +99,11 @@ namespace Cauldron.Vanish
                         else
                         {
                             base.GameController.ExhaustCoroutine(coroutine);
+                        }
+
+                        if (IsRealAction())
+                        {
+                            this.IncrementCardProperty(Incap2Key);
                         }
 
                         break;

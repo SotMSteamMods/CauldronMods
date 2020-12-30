@@ -8,9 +8,12 @@ namespace Cauldron.Vanish
 {
     public class TombOfThievesVanishCharacterCardController : HeroCharacterCardController
     {
+        private static readonly string InnatePowerUses = "InnatePower";
+
         public TombOfThievesVanishCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
         public override IEnumerator UsePower(int index = 0)
         {
             //"The next time {Vanish} is dealt damage, draw or play a card."
@@ -31,18 +34,34 @@ namespace Cauldron.Vanish
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+
+            if (IsRealAction())
+            {
+                this.IncrementCardProperty(InnatePowerUses);
+            }
+        }
+
+        public override void AddTriggers()
+        {
+            AddTrigger<TargetLeavesPlayAction>(tlpa => !tlpa.IsPretend && tlpa.TargetLeavingPlay == CharacterCard, tlpa => ResetFlagAfterLeavesPlay(InnatePowerUses), TriggerType.HiddenLast, TriggerTiming.Before);
         }
 
         public IEnumerator DrawOrPlayResponse(DealDamageAction _1, TurnTaker _2, StatusEffect _3, int[] _4 = null)
         {
-            var coroutine = DrawACardOrPlayACard(DecisionMaker, false);
-            if (base.UseUnityCoroutines)
+            var uses = GetCardPropertyJournalEntryInteger(InnatePowerUses) ?? 0;
+            SetCardProperty(InnatePowerUses, 0);
+            System.Console.WriteLine("trigger - " + uses.ToString());
+            while (--uses >= 0)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                var coroutine = DrawACardOrPlayACard(DecisionMaker, false);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
         }
 

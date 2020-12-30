@@ -159,6 +159,7 @@ namespace CauldronTests
             UsePower(impact);
             QuickHPCheck(1);
         }
+
         [Test]
         public void TestWastelandRoninReplayCard()
         {
@@ -182,6 +183,36 @@ namespace CauldronTests
             DestroyCard(pull);
             AssertInTrash(pull);
         }
+
+
+        [Test]
+        public void TestWastelandRoninReplayCardStacking()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact/WastelandRoninImpactCharacter", "Haka", "Bunker", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            Card pull = PlayCard("InescapablePull");
+            Card field = PlayCard("RepulsionField");
+
+            DecisionSelectFunction = 1;
+
+            UsePower(impact);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            UsePower(impact);
+            AssertNumberOfStatusEffectsInPlay(2);
+
+            DestroyCard(pull);
+            AssertIsInPlay(pull);
+
+            //make sure it's only the next time
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            DestroyCard(pull);
+            AssertInTrash(pull);
+        }
+
         [Test]
         public void TestWastelandRoninIncap1()
         {

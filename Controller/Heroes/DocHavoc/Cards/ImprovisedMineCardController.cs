@@ -26,29 +26,14 @@ namespace Cauldron.DocHavoc
 
         public override void AddTriggers()
         {
+            var types = new[] { TriggerType.DestroySelf, TriggerType.CancelAction, TriggerType.DealDamage };
 
-            base.AddTrigger<PlayCardAction>((PlayCardAction pc) => base.IsVillain(pc.CardToPlay) && !pc.IsPutIntoPlay, this.DiscardAndDestroyCardResponse, new TriggerType[]
-            {
-                TriggerType.DestroySelf
-            }, TriggerTiming.Before);
-
-            base.AddWhenDestroyedTrigger(new Func<DestroyCardAction, IEnumerator>(this.WhenDestroyedResponse), new TriggerType[]
-                {
-                    TriggerType.CancelAction,
-                    TriggerType.DealDamage
-                });
+            base.AddTrigger<PlayCardAction>((PlayCardAction pc) => base.IsVillain(pc.CardToPlay) && !pc.IsPutIntoPlay, this.DiscardAndDestroyCardResponse, types, TriggerTiming.Before, isActionOptional: true);
         }
 
-        private IEnumerator WhenDestroyedResponse(DestroyCardAction dca)
+        private IEnumerator WhenDestroyedResponse(PlayCardAction action)
         {
-            PlayCardAction action = this._playCardToCancel;
-            this._playCardToCancel = null;
-            if (action == null)
-            {
-                yield break;
-            }
-            Card card = action.CardToPlay;
-            IEnumerator coroutine = base.CancelAction(action, isPreventEffect: true);
+            IEnumerator coroutine = CancelAction(action, isPreventEffect: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -58,12 +43,10 @@ namespace Cauldron.DocHavoc
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            // Deal 1 target 2 Fire damage
-            coroutine = this.GameController.SelectTargetsAndDealDamage(this.DecisionMaker,
-                new DamageSource(this.GameController, this.CharacterCard), DamageAmount, DamageType.Fire,
-                new int?(1), false,
-                new int?(1), cardSource: this.GetCardSource());
-
+            // Doc Havoc Deal 1 target 2 Fire damage, note CardSource must DH as this card is already out of play
+            coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), DamageAmount, DamageType.Fire,
+                        1, false, 1,
+                        cardSource: CharacterCardController.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -72,8 +55,6 @@ namespace Cauldron.DocHavoc
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
-            yield break;
         }
 
         private IEnumerator DiscardAndDestroyCardResponse(PlayCardAction pca)
@@ -81,8 +62,9 @@ namespace Cauldron.DocHavoc
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
 
             //ask player if they want to destroy this card
-            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                SelectionType.DestroySelf, base.Card, storedResults: storedResults, cardSource: base.GetCardSource());
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.DestroySelf, Card,
+                                    storedResults: storedResults,
+                                    cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -93,49 +75,46 @@ namespace Cauldron.DocHavoc
             }
 
             // Return if they chose to not cancel the destruction
-            if (!base.DidPlayerAnswerYes(storedResults))
+            if (DidPlayerAnswerYes(storedResults))
             {
-                yield break;
+                // Destroy this card
+                coroutine = GameController.DestroyCard(DecisionMaker, Card,
+                            actionSource: pca,
+                            postDestroyAction: () => WhenDestroyedResponse(pca),
+                            cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
-
-            //set the playCardToCancel
-            this._playCardToCancel = pca;
-
-            // Destroy this card
-            coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card, cardSource: GetCardSource(null));
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            yield break;
         }
-
 
         public override IEnumerator Play()
         {
             //equipment must be discarded upon entering play
             List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
-            IEnumerator discardCardRoutine = base.GameController.SelectAndDiscardCard(this.DecisionMaker, additionalCriteria: card => IsEquipment(card),
-                storedResults: storedResults, cardSource: this.GetCardSource());
+            IEnumerator discardCardRoutine = GameController.SelectAndDiscardCard(DecisionMaker,
+                additionalCriteria: card => IsEquipment(card),
+                storedResults: storedResults,
+                cardSource: GetCardSource());
 
             if (this.UseUnityCoroutines)
             {
-                yield return this.GameController.StartCoroutine(discardCardRoutine);
+                yield return base.GameController.StartCoroutine(discardCardRoutine);
             }
             else
             {
-                this.GameController.ExhaustCoroutine(discardCardRoutine);
+                base.GameController.ExhaustCoroutine(discardCardRoutine);
             }
 
             // If an equipment card wasn't discarded, destroy this card
             if (!DidDiscardCards(storedResults, 1))
             {
-                IEnumerator destroyCardRoutine = base.GameController.DestroyCard(this.DecisionMaker, this.Card, cardSource: GetCardSource());
+                IEnumerator destroyCardRoutine = GameController.DestroyCard(DecisionMaker, Card, cardSource: GetCardSource());
 
                 if (base.UseUnityCoroutines)
                 {
@@ -147,9 +126,5 @@ namespace Cauldron.DocHavoc
                 }
             }
         }
-
-        //local variable to store the PlayCardAction in
-        private PlayCardAction _playCardToCancel = null;
-
     }
 }

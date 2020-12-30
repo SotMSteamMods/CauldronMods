@@ -779,6 +779,50 @@ namespace CauldronTests
             AssertInTrash(pursuit);
         }
 
+
+        [Test()]
+        public void TestSingleMindedPursuit_HeroesCanMove()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Ra", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { pursuit, stalker, fire });
+            StartGame();
+
+            DestroyNonCharacterVillainCards();
+
+            PlayCard(pursuit);
+            AssertNextToCard(pursuit, ra.CharacterCard);
+
+            PlayCard(stalker);
+            DecisionYesNo = true;
+            DealDamage(ra.CharacterCard, stalker, 1, DamageType.Cold);
+            AssertNextToCard(pursuit, stalker);
+        }
+
+
+        [Test()]
+        public void TestSingleMindedPursuit_HeroesCantMoveToDestroyedTarget()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Ra", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { pursuit, stalker, fire });
+            StartGame();
+
+            DestroyNonCharacterVillainCards();
+
+            PlayCard(pursuit);
+            AssertNextToCard(pursuit, ra.CharacterCard);
+
+            PlayCard(stalker);
+            DecisionYesNo = true;
+            DealDamage(ra.CharacterCard, stalker, 99, DamageType.Cold);
+            AssertNextToCard(pursuit, ra.CharacterCard);
+        }
+
         [Test()]
         public void TestSpeedAug()
         {
