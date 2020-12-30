@@ -73,7 +73,7 @@ namespace Cauldron.SwarmEater
             IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.MoveCard, pursuit,
                         action: action,
                         storedResults: storedResults,
-                        associatedCards: new [] { action.Target, pursuit },
+                        associatedCards: new [] { action.Target },
                         cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {

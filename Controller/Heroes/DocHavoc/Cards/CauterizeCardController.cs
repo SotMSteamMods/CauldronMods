@@ -81,12 +81,14 @@ namespace Cauldron.DocHavoc
             return result;
         }
 
-        private IEnumerator AskAndMaybeCancelAction(GameAction ga, bool showOutput = true, bool cancelFutureRelatedDecisions = true, List<CancelAction> storedResults = null, bool isPreventEffect= false)
+        private IEnumerator AskAndMaybeCancelAction(DealDamageAction ga, bool showOutput = true, bool cancelFutureRelatedDecisions = true, List<CancelAction> storedResults = null, bool isPreventEffect= false)
         {
             List<YesNoCardDecision> storedYesNo = new List<YesNoCardDecision>();
 
             IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(this.DecisionMaker,
-                SelectionType.GainHP, this.Card, storedResults: storedYesNo, cardSource: base.GetCardSource());
+                SelectionType.GainHP, ga.Target, action: ga, storedResults: storedYesNo,
+                associatedCards: new[] { ga.Target, ga.Target },
+                cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
