@@ -10,7 +10,7 @@ namespace Cauldron.Cricket
     {
         public SonicAmplifierCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowNumberOfCardsUnderCard(base.Card);
+            base.SpecialStringMaker.ShowNumberOfCardsUnderCard(Card);
         }
 
         public override void AddTriggers()
@@ -22,8 +22,11 @@ namespace Cauldron.Cricket
         private IEnumerator MoveCardResponse(DealDamageAction action)
         {
             //...you may put the top card of your deck beneath this one.
-            List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
-            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.MoveCardToUnderCard, base.Card, storedResults: storedResults, cardSource: GetCardSource());
+            List<YesNoDecision> storedResults = new List<YesNoDecision>();
+            var yesNo = new YesNoDecision(GameController, DecisionMaker, SelectionType.MoveUnderThisCard,
+                            gameAction: action,
+                            cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.MakeDecisionAction(yesNo);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -32,9 +35,13 @@ namespace Cauldron.Cricket
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            if(DidPlayerAnswerYes(storedResults))
+            if (DidPlayerAnswerYes(yesNo))
             {
-                coroutine = base.GameController.MoveCard(base.TurnTakerController, base.TurnTaker.Deck.TopCard, base.Card.UnderLocation, cardSource: base.GetCardSource());
+                coroutine = GameController.MoveCard(DecisionMaker, TurnTaker.Deck.TopCard, Card.UnderLocation,
+                            isPutIntoPlay: false,
+                            playCardIfMovingToPlayArea: false,
+                            doesNotEnterPlay: true,
+                            cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -50,8 +57,8 @@ namespace Cauldron.Cricket
         public override IEnumerator UsePower(int index = 0)
         {
             //Discard all cards beneath this one. {Cricket} deals 1 target X sonic damage, where X is the number of cards discarded this way.
-            int numberOfTargets = base.GetPowerNumeral(0, 1);
-            IEnumerator coroutine = base.DestroyCardsAndDoActionBasedOnNumberOfCardsDestroyed(this.DecisionMaker, new LinqCardCriteria((Card c) => c.Location == this.Card.UnderLocation || c.Location == this.Card.BelowLocation, "cards below " + base.Card.Title), (int X) => this.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(this.GameController, this.CharacterCard), X, DamageType.Sonic, new int?(numberOfTargets), false, new int?(numberOfTargets), cardSource: this.GetCardSource()));
+            int numberOfTargets = GetPowerNumeral(0, 1);
+            IEnumerator coroutine = DestroyCardsAndDoActionBasedOnNumberOfCardsDestroyed(DecisionMaker, new LinqCardCriteria((Card c) => c.Location == Card.UnderLocation, "cards below " + base.Card.Title), (int X) => this.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), X, DamageType.Sonic, numberOfTargets, false, numberOfTargets, cardSource: GetCardSource()));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

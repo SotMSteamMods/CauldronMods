@@ -40,7 +40,6 @@ namespace Cauldron.Impact
             statusEffect.NumberOfUses = 1;
             statusEffect.CardDestroyedCriteria.OwnedBy = this.TurnTaker;
             statusEffect.CardDestroyedCriteria.HasAnyOfTheseKeywords = new List<string> { "ongoing" };
-            statusEffect.PostDestroyDestinationMustBeChangeable = true;
             statusEffect.CanEffectStack = true;
             statusEffect.CardSource = CharacterCard;
 
