@@ -83,6 +83,7 @@ namespace CauldronTests
 
             AssertIncapLetsHeroDrawCard(mara, 0, legacy, 1);
         }
+
         [Test]
         public void TestMOSSMaraIncap2()
         {
@@ -104,6 +105,7 @@ namespace CauldronTests
             DealDamage(baron, bunker, 3, DTM);
             QuickHPCheck(-3, 0);
         }
+
         [Test]
         public void TestMOSSMaraIncap3()
         {
@@ -113,7 +115,10 @@ namespace CauldronTests
 
             Card fort = PlayCard("Fortitude");
             Card lash = PlayCard("BacklashField");
+            
+            AssertNumberOfStatusEffectsInPlay(0);
             UseIncapacitatedAbility(mara, 2);
+            AssertNumberOfStatusEffectsInPlay(1);
 
             //does not affect villain cards
             DestroyCard(lash);
@@ -121,6 +126,36 @@ namespace CauldronTests
 
             DestroyCard(fort);
             AssertInHand(fort);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            //only happens once
+            PlayCard(fort);
+            DestroyCard(fort);
+            AssertInTrash(fort);
+        }
+
+
+        [Test]
+        public void TestMOSSMaraIncap3Stacking()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara/MinistryOfStrategicScienceMagnificentMaraCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+
+            Card fort = PlayCard("Fortitude");
+            Card lash = PlayCard("BacklashField");
+
+            AssertNumberOfStatusEffectsInPlay(0);
+            UseIncapacitatedAbility(mara, 2);
+            AssertNumberOfStatusEffectsInPlay(1);
+            UseIncapacitatedAbility(mara, 2);
+            AssertNumberOfStatusEffectsInPlay(1);
+            
+            DestroyCard(fort);
+            AssertInHand(fort);
+
+            AssertNumberOfStatusEffectsInPlay(0);
 
             //only happens once
             PlayCard(fort);

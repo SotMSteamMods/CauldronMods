@@ -37,7 +37,11 @@ namespace Cauldron.LadyOfTheWood
 			//When this card enters play, put up to 3 cards from your trash beneath it.
 			List<MoveCardDestination> list = new List<MoveCardDestination>();
 			list.Add(new MoveCardDestination(base.Card.UnderLocation));
-			IEnumerator coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.DecisionMaker, base.TurnTaker.Trash, new int?(0), 3, new LinqCardCriteria((Card c) => true), list, cardSource: base.GetCardSource());
+			IEnumerator coroutine = GameController.SelectCardsFromLocationAndMoveThem(DecisionMaker, TurnTaker.Trash, 0, 3, new LinqCardCriteria((Card c) => true), list,
+									playIfMovingToPlayArea: false,
+									allowAutoDecide: true,
+									selectionType: SelectionType.MoveCardToUnderCard,
+									cardSource: GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
