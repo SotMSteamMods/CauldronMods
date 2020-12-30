@@ -37,8 +37,7 @@
                 "UsePowerNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "VectorCharacter": "Vector placeholder"
+                "default": "Your power will be mine."
             },
             "complexity": 2
         },
@@ -441,8 +440,7 @@
                 "GainHP"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "VectorCharacter": "Vector placeholder"
+                "default": "It's just us monsters, now."
             },
             "complexity": 2
         },
@@ -482,8 +480,7 @@
                 "Manipulate"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "VectorCharacter": "Vector placeholder"
+                "default": "So full of energy... But not for long."
             },
             "complexity": 2
         }

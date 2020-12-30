@@ -40,8 +40,7 @@ namespace Cauldron.Quicksilver
 
                         if (IsRealAction())
                         {
-                            var uses = GetCardPropertyJournalEntryInteger("Incap2Effect") ?? 0;
-                            Journal.RecordCardProperties(CharacterCard, "Incap2Effect", uses + 1);
+                            this.IncrementCardProperty("Incap2Effect");
                         }
                                                 
                         IEnumerator coroutine2 = base.AddStatusEffect(statusEffect, true);

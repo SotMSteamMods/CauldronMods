@@ -58,7 +58,7 @@
 				"RunecarvedTheStrangerCharacter": "Pathetic. You're paying for your magic with your own soul, and soon nothing will remain.",
 				"WastelandRoninTheStrangerCharacter": "What sort of sorcery is this? Your runes...they have new power!",
 				"PastTheStrangerCharacter": "You bear my mark, and yet don't obey my will? Impossible.",
-				"TheStrangerInCornCharacter": "What mockery is this?"
+				"CornTheStrangerCharacter": "What mockery is this?"
 			}
 		},
 		{
@@ -388,7 +388,7 @@
 			"WastelandRoninTheStrangerCharacter": "Wasteland Ronin: The Stranger placeholder",
 			"RunecarvedTheStrangerCharacter": "Your fate is becoming inevitable, fool. Why not save yourself?",
 			"PastTheStrangerCharacter": "The Stranger 1929 placeholder",
-			"TheStrangerInTheCornCharacter": "The Stranger in the Corn placeholder",
+			"CornTheStrangerCharacter": "The Stranger in the Corn placeholder",
 		}
 	}]
 }

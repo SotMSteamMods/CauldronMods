@@ -40,8 +40,8 @@
                 "DrawCardNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder"
+                "default": "It's about time we took care of you!",
+                "OutlanderCharacter": "Bad news; I can already see the future where we defeat you!"
             },
             "complexity": 3
         },
@@ -480,8 +480,8 @@
                 "Manipulate"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder"
+                "default": "Don't worry people, I'll make sure we have plenty of time for this mission!",
+                "OutlanderCharacter": "To think, there's a version of Sir George that could turn out like you."
             },
             "complexity": 3
         },
@@ -541,13 +541,14 @@
                 "DestroyEnvironment"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder"
+                "default": "What year is this again?",
+                "TheMistressOfFateCharacter": "This doesn't look good. Better work together!",
+                "OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger."
             },
             "complexity": 3
         },
         {
-            "identifier": "DriftCharacter",
+            "identifier": "FutureDriftCharacter",
             "promoIdentifier": "SplitDriftCharacter",
             "count": 1,
             "title": "Drift",

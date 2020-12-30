@@ -40,7 +40,7 @@
             ],
             "openingLines": {
                 "default": "Some players don't know when to fold.",
-                "MistressOfFateCharacter": "Cheating is such an ugly word. True, but ugly.",
+                "TheMistressOfFateCharacter": "Cheating is such an ugly word. True, but ugly.",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 3
@@ -353,7 +353,7 @@
             ],
             "openingLines": {
                 "default": "Let me show you a card trick.",
-                "MistressOfFateCharacter": "Fate! It's been too long - and yet somehow not long enough. Another time?",
+                "TheMistressOfFateCharacter": "Alright, heads up, kiddies - this one is between me and the cuckoo in the clock.",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 3
@@ -395,7 +395,7 @@
             ],
             "openingLines": {
                 "default": "Fate is not going to be kind to you today.",
-                "MistressOfFateCharacter": "Alright, heads up, kiddies - this one is between me and the cuckoo in the clock.",
+                "TheMistressOfFateCharacter": "Fate! It's been too long - and yet somehow not long enough.",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 3
@@ -436,7 +436,7 @@
             ],
             "openingLines": {
                 "default": "You shouldn't show your hand before the game even starts.",
-                "MistressOfFateCharacter": "Well. Guess I can't shuffle my way off this time, can I?",
+                "TheMistressOfFateCharacter": "Oh, you again? I won these cards fair and square in our first meeting!",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 3

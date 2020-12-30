@@ -38,8 +38,8 @@
                 "IncreaseDamageDealt"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "ScreaMachineCharacter": "ScreaMachine placeholder"
+                "default": "We're here to stop you! Although, I usually find stopping to be the hard part.",
+                "TheSetList": "Um, sorry about that. I'll try to be gentler when I run you all over this time."
             },
             "complexity": 1
         },
@@ -471,8 +471,8 @@
                 "ReduceDamageTaken"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "ScreaMachineCharacter": "ScreaMachine placeholder"
+                "default": "On your mark, get set...",
+                "TheSetList": "Is that bad?"
             },
             "complexity": 1
         },
@@ -512,8 +512,8 @@
                 "CannotGainHP"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "ScreaMachineCharacter": "ScreaMachine placeholder"
+                "default": "This situation calls for being sneaky!",
+                "TheSetList": "Wait, you can see me? I was being sneaky."
             },
             "complexity": 1
         }

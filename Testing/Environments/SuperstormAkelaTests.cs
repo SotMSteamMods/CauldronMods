@@ -479,7 +479,7 @@ namespace CauldronTests
             Card toppled = PlayCard("ToppledSkyscraper");
             QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, tachyon.CharacterCard, toppled);
             DealDamage(ra, (Card c) => c.IsTarget, 1, DamageType.Toxic);
-            QuickHPCheck(0, 0, -1, -1, -1, -1, -3);
+            QuickHPCheck(0, -1, -1, -1, -1, -1, -2);
 
             //only first damage
             QuickHPUpdate();
@@ -490,8 +490,7 @@ namespace CauldronTests
             GoToNextTurn();
             QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, tachyon.CharacterCard, toppled);
             DealDamage(ra, (Card c) => c.IsTarget, 1, DamageType.Toxic);
-            QuickHPCheck(0, 0, -1, -1, -1, -1, -3);
-
+            QuickHPCheck(0, -1, -1, -1, -1, -1, -2);
         }
 
         [Test()]

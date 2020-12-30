@@ -37,8 +37,8 @@
                 "IncreaseDamageDealt"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "MythosCharacter": "Send an invoice, I'm coming up on doubling the agency's old record for damages caused and you might push me over."
+                "default": "Wait until you see my other face.",
+                "MythosCharacter": "Hey, don't play with portals of hellfire if you don't wanna turn into…whatever you are, exactly."
             },
             "complexity": 2
         },
@@ -462,8 +462,8 @@
                 "CancelledDamageGreen"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "MythosCharacter": "Mythos placeholder"
+                "default": "The Ministry will be a lot happier when you're locked up in the Vault.",
+                "MythosCharacter": "Well, it almost worked before. This time, I'll make sure you don't come back."
             },
             "complexity": 2
         },
@@ -502,8 +502,8 @@
                 "DestroyOngoing"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "MythosCharacter": "Mythos placeholder"
+                "default": "Stop! This is Neo-Windmill City Law Enforcement!",
+                "MythosCharacter": "Do I know you, pal?"
             },
             "complexity": 2
         },
@@ -542,8 +542,8 @@
                 "ReduceDamageTaken"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "MythosCharacter": "Mythos placeholder"
+                "default": "How do you like my costume?",
+                "MythosCharacter": "I wish you'd find your old demeanor and put it back on. You're not much to look at, mate."
             },
             "complexity": 2
         }
