@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -39,6 +40,16 @@ namespace Cauldron.TangoOne
                 var card = storedResults.First().DrawnCard;
                 if (GameController.DoesCardContainKeyword(card, "critical"))
                 {
+                    coroutine = GameController.SendMessageAction($"{card.Title} is a critical card, so it is discarded!", Priority.Medium, GetCardSource(), associatedCards: card.ToEnumerable());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+
                     coroutine = GameController.DiscardCard(DecisionMaker, card, null, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
