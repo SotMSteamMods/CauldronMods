@@ -11,7 +11,7 @@ namespace Cauldron.Starlight
     {
         public Area51StarlightCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowLocationOfCards(new LinqCardCriteria(c => c.Identifier == "PillarOfCreation" && !c.IsInPlayAndHasGameText, "pillar of creation"));
+            SpecialStringMaker.ShowLocationOfCards(new LinqCardCriteria(c => c.Identifier == "PillarsOfCreation" && !c.IsInPlayAndHasGameText, "pillars of creation")).Condition = () => FindCardsWhere(c => c.Identifier == "PillarsOfCreation" && !c.IsInPlayAndHasGameText).Any();
         }
 
         public override IEnumerator UsePower(int index = 0)
@@ -27,7 +27,7 @@ namespace Cauldron.Starlight
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            var choices = FindCardsWhere(new LinqCardCriteria(c => c.Identifier == "PillarsOfCreation" && (TurnTaker.Deck.HasCard(c) || TurnTaker.Trash.HasCard(c)), "pillar of creation"));
+            var choices = FindCardsWhere(new LinqCardCriteria(c => c.Identifier == "PillarsOfCreation" && (TurnTaker.Deck.HasCard(c) || TurnTaker.Trash.HasCard(c)), "pillars of creation"));
             coroutine = GameController.SelectAndPlayCard(DecisionMaker, choices, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
@@ -89,7 +89,7 @@ namespace Cauldron.Starlight
                 case 2:
                     {
                         //* "Destroy any number of hero ongoing cards. Then destroy 1 ongoing card."
-                        IEnumerator coroutine3 = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria(c => c.IsHero && c.IsOngoing, "hero ongoing"), null,
+                        IEnumerator coroutine3 = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria(c => c.IsHero && c.IsOngoing && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "hero ongoing"), null,
                                                     requiredDecisions: 0,
                                                     cardSource: GetCardSource());
                         if (UseUnityCoroutines)
@@ -100,7 +100,7 @@ namespace Cauldron.Starlight
                         {
                             GameController.ExhaustCoroutine(coroutine3);
                         }
-                        coroutine3 = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria(c => c.IsOngoing, "ongoing"), false,
+                        coroutine3 = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria(c => c.IsOngoing && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "ongoing"), false,
                                                     cardSource: GetCardSource());
                         if (UseUnityCoroutines)
                         {
