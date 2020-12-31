@@ -54,6 +54,27 @@ namespace CauldronTests
             Assert.AreEqual(28, echelon.CharacterCard.HitPoints);
         }
         [Test]
+        public void TestFirstResponsePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Echelon/FirstResponseEchelonCharacter", "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card kestrel = PutInHand("TheKestrelMarkII");
+            DecisionSelectCards = new Card[] { null, kestrel };
+
+            QuickHandStorage(echelon);
+
+            //draw a card, Kestral play is optional
+            UsePower(echelon);
+            AssertInHand(kestrel);
+            QuickHandCheck(1);
+
+            //may play kestrel
+            UsePower(echelon);
+            AssertIsInPlay(kestrel);
+            QuickHandCheck(0);
+        }
+        [Test]
         public void TestFutureEchelonLoads()
         {
             // Arrange & Act
