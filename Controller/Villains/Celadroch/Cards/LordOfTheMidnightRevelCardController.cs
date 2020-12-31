@@ -45,11 +45,12 @@ namespace Cauldron.Celadroch
 
         private bool CounterDamageCriteria(DealDamageAction dda)
         {
-            return dda.Target != Card && IsVillainTarget(dda.Target) && IsCounterDamageAvailable();
+            return dda.Amount > 0 && dda.Target != Card && IsVillainTarget(dda.Target) && IsCounterDamageAvailable();
         }
 
         public override void AddTriggers()
         {
+            // NB: Confirmed by Tosx that this is normal counter damage that occurs after the damage
             AddTrigger<DealDamageAction>(CounterDamageCriteria, DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
 
             AddWhenDestroyedTrigger(dca => WhenDestroyedResponse(), TriggerType.DestroyCard);

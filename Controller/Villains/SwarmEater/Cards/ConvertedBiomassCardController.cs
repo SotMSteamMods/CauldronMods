@@ -32,7 +32,7 @@ namespace Cauldron.SwarmEater
         private IEnumerator DestroyEnvironmentResponse(DestroyCardAction action)
         {
             //...put it beneath this card.
-            action.SetPostDestroyDestination(base.Card.UnderLocation, cardSource: base.GetCardSource());
+            action.SetPostDestroyDestination(base.Card.UnderLocation, flipFaceDown: true, cardSource: base.GetCardSource());
             yield break;
         }
 
