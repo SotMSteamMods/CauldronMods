@@ -184,7 +184,10 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Echelon/FutureEchelonCharacter", "Ra", "Tachyon", "TheWraith", "Megalopolis");
             StartGame();
             DestroyCard(MDP);
-            DealDamage(baron, echelon, 50, DTM);
+            DealDamage(baron, echelon, 50, DamageType.Melee);
+
+            Card staff = PutInHand("TheStaffOfRa");
+            AssertIncapLetsHeroPlayCard(echelon, 0, ra, "TheStaffOfRa");
         }
         [Test]
         public void TestFutureIncap2()
@@ -193,6 +196,10 @@ namespace CauldronTests
             StartGame();
             DestroyCard(MDP);
             DealDamage(baron, echelon, 50, DTM);
+
+            Card traffic = PutOnDeck("TrafficPileup");
+            UseIncapacitatedAbility(echelon, 1);
+            AssertIsInPlay(traffic);
         }
         [Test]
         public void TestFutureIncap3()
@@ -201,6 +208,36 @@ namespace CauldronTests
             StartGame();
             DestroyCard(MDP);
             DealDamage(baron, echelon, 50, DTM);
+
+            Card staff = PutOnDeck("TheStaffOfRa");
+            Card goggles = PutOnDeck("HUDGoggles");
+
+
+            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(ra.TurnTaker.Deck), new LocationChoice(tachyon.TurnTaker.Deck), };
+            DecisionSelectCard = staff;
+
+            UseIncapacitatedAbility(echelon, 2);
+            AssertIsInPlay(staff);
+            AssertOnTopOfDeck(goggles);
+        }
+        [Test]
+        public void TestFutureIncap3PlaysNotAllowed()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Echelon/FutureEchelonCharacter", "Ra", "Tachyon", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+            DealDamage(baron, echelon, 50, DTM);
+
+            Card staff = PutOnDeck("TheStaffOfRa");
+            Card goggles = PutOnDeck("HUDGoggles");
+            
+            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(ra.TurnTaker.Deck), new LocationChoice(tachyon.TurnTaker.Deck), };
+            DecisionSelectCard = staff;
+
+            PlayCard("HostageSituation");
+            UseIncapacitatedAbility(echelon, 2);
+            AssertOnTopOfDeck(goggles);
+            AssertOnTopOfDeck(staff);
         }
     }
 }
