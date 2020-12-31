@@ -461,6 +461,46 @@
                 "GrayCharacter": "Something like that. You make it sound worse than it is."
             },
             "complexity": 3
+        },
+        {
+            "identifier": "PyreCharacter",
+            "promoIdentifier": "ExpeditionOblaskPyreCharacter",
+            "count": 1,
+            "title": "Pyre",
+            "promoTitle": "Pyre: Expedition Oblask",
+            "shortPromoTitle": "Oblask Pyre",
+            "body": "Overload",
+            "backgroundColor": "E7C4A2",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "E7C4A2",
+            "character": true,
+            "powers": [
+                "Select 3 Non-{PyreIrradiate} cards among all players' hands and {PyreIrradiate} them until they leave those players' hands."
+            ],
+            "icons": [
+                "HasPower",
+                "Manipulate"
+            ],
+            "hitpoints": 30,
+            "nemesisIdentifiers": [
+                "Pyre"
+            ],
+            "incapacitatedAbilities": [
+                "One player may discard a {PyreIrradiate} card. If they do, each player may play a card now.",
+                "Destroy 2 environment cards.",
+                "One player may draw a card now."
+            ],
+            "flippedIcons": [
+                "Discard",
+                "PlayCardNow",
+                "DestroyEnvironment",
+                "DrawCardNow"
+            ],
+            "openingLines": {
+                "default": "Let's see how this makeshift containment suit holds up.",
+                "GrayCharacter": "Well, I'm you from the future, so trust me when I say, that's not going to happen today."
+            },
+            "complexity": 3
         }
     ]
 }
