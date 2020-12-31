@@ -21,7 +21,7 @@ namespace Cauldron.PhaseVillain
             SpecialStringMaker.ShowNumberOfCards(new LinqCardCriteria(c => IsObstacle(c) && c.IsOutOfGame,
                         singular: "obstacle card removed from the game",
                         plural: "obstacle cards removed from the game"));
-            SpecialStringMaker.ShowListOfCardsOutOfGame(new LinqCardCriteria((Card c) => c.Owner == TurnTaker, "Phase")).Condition = () => FindCardsWhere(c => c.IsOutOfGame && c.Owner == TurnTaker).Any();
+            SpecialStringMaker.ShowListOfCardsOutOfGame(new LinqCardCriteria((Card c) => c.Owner == TurnTaker, "Phase"), () => true).Condition = () => FindCardsWhere(c => c.IsOutOfGame && c.Owner == TurnTaker).Any();
             SpecialStringMaker.ShowSpecialString(() => $"Damage dealt by {CharacterCard.Title} increased by {ObstaclesRemovedFromGame()}.", () => true)
                 .Condition = () => !base.CharacterCard.IsFlipped && ObstaclesRemovedFromGame() > 0;
         }
