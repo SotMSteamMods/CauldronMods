@@ -75,6 +75,74 @@ namespace CauldronTests
             QuickHandCheck(0);
         }
         [Test]
+        public void TestFirstResponseIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Echelon/FirstResponseEchelonCharacter", "Ra", "Tachyon", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+            DealDamage(baron, echelon, 50, DTM);
+
+            Card staff = PutInHand("TheStaffOfRa");
+            Card hud = PutInHand("HUDGoggles");
+            Card belt = PutInHand("UtilityBelt");
+            Card stun = PutInHand("StunBolt");
+            DecisionSelectCards = new Card[] { staff, hud, belt, null, null };
+
+            //play 2 equipment
+            UseIncapacitatedAbility(echelon, 0);
+            AssertIsInPlay(staff, hud);
+            AssertInHand(belt, stun);
+
+            //play only 1
+            UseIncapacitatedAbility(echelon, 0);
+            AssertIsInPlay(belt);
+            AssertInHand(stun);
+
+            //play 0
+            UseIncapacitatedAbility(echelon, 0);
+            AssertInHand(stun);
+        }
+        [Test]
+        public void TestFirstResponseIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Echelon/FirstResponseEchelonCharacter", "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+            DealDamage(baron, echelon, 50, DTM);
+
+            Card flesh = PutOnDeck("FleshOfTheSunGod");
+            Card blast = PutOnDeck("FireBlast");
+            Card barrier = PutOnDeck("FlameBarrier");
+
+            DecisionSelectCards = new Card[] { flesh, blast };
+
+            //starts, from top down, barrier-blast-flesh
+            //should end up flesh-blast-barrier
+            AssertNextDecisionChoices(included: new TurnTaker[] { ra.TurnTaker, tachyon.TurnTaker }, notIncluded: new TurnTaker[] { echelon.TurnTaker, baron.TurnTaker, FindEnvironment().TurnTaker });
+            UseIncapacitatedAbility(echelon, 1);
+
+            AssertOnTopOfDeck(flesh);
+            DrawCard(ra, 2);
+
+            AssertInHand(blast);
+            AssertOnTopOfDeck(barrier);
+        }
+        [Test]
+        public void TestFirstResponseIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Echelon/FirstResponseEchelonCharacter", "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+            DealDamage(baron, echelon, 50, DTM);
+
+            Card police = PutIntoPlay("PoliceBackup");
+            Card traffic = PutIntoPlay("TrafficPileup");
+            Card lash = PutIntoPlay("BacklashField");
+
+            AssertNextDecisionChoices(new Card[] { traffic, police }, new Card[] { lash, MDP });
+            UseIncapacitatedAbility(echelon, 2);
+            AssertInTrash(police);
+        }
+        [Test]
         public void TestFutureEchelonLoads()
         {
             // Arrange & Act
