@@ -620,6 +620,45 @@
                 "MenagerieCharacter": "By the order of the Nightlore Council, you are under arrest! ...Was that right?"
             },
             "complexity": 3
+        },
+        {
+            "identifier": "StarlightCharacter",
+            "promoIdentifier": "Area51StarlightCharacter",
+            "count": 1,
+            "title": "Starlight",
+            "promoTitle": "Starlight: Area-51",
+            "shortPromoTitle": "Area-51 Starlight",
+            "body": "Forgotten Stars",
+            "backgroundColor": "A6ABB9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "A6ABB9",
+            "character": true,
+            "powers": [
+                "Discard a card. Search your deck and trash for {PillarsOfCreation}. Play it. Shuffle your deck."
+            ],
+            "icons": [
+                "Discard",
+                "Search"
+            ],
+            "hitpoints": 29,
+            "nemesisIdentifiers": [
+                "Starlight"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "One hero may use a power now.",
+                "Destroy any number of hero ongoing cards. Then destroy 1 ongoing card."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "UsePowerNow",
+                "DestroyOngoing"
+            ],
+            "openingLines": {
+                "default": "Just look right here, if you please.",
+                "MenagerieCharacter": "The truth of your crimes is out there, Menagerie. Don't make this harder than it needs to be."
+            },
+            "complexity": 3
         }
     ]
 }
