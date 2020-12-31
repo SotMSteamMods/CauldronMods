@@ -155,5 +155,52 @@ namespace CauldronTests
 
             Assert.AreEqual(26, echelon.CharacterCard.HitPoints);
         }
+        [Test]
+        public void TestFuturePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Echelon/FutureEchelonCharacter", "Ra", "Tachyon", "TheWraith", "Megalopolis");
+            StartGame();
+            DealDamage(baron, wraith, 50, DamageType.Melee);
+
+            //must be another hero, cannot be incapped
+            AssertNextDecisionChoices(new TurnTaker[] { ra.TurnTaker, tachyon.TurnTaker }, new TurnTaker[] { echelon.TurnTaker, wraith.TurnTaker });
+            QuickHandStorage(echelon, ra, tachyon);
+            UsePower(echelon);
+            QuickHandCheck(0, 1, 0);
+
+            //varies with number of tactics destroyed
+            Card advance = PlayCard("AdvanceAndRegroup");
+            DestroyCard(advance);
+            UsePower(echelon);
+            QuickHandCheck(0, 2, 0);
+
+            GoToStartOfTurn(echelon);
+            UsePower(echelon);
+            QuickHandCheck(0, 1, 0);
+        }
+        [Test]
+        public void TestFutureIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Echelon/FutureEchelonCharacter", "Ra", "Tachyon", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+            DealDamage(baron, echelon, 50, DTM);
+        }
+        [Test]
+        public void TestFutureIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Echelon/FutureEchelonCharacter", "Ra", "Tachyon", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+            DealDamage(baron, echelon, 50, DTM);
+        }
+        [Test]
+        public void TestFutureIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Echelon/FutureEchelonCharacter", "Ra", "Tachyon", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyCard(MDP);
+            DealDamage(baron, echelon, 50, DTM);
+        }
     }
 }
