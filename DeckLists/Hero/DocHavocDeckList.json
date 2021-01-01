@@ -443,15 +443,14 @@
                 "VectorCharacter": "Quarantine the area! We can't let his plague spread."
             },
             "complexity": 2
-        }],
-        "notPromoCards": [
+        },
         {
             "identifier": "DocHavocCharacter",
             "promoIdentifier": "FutureDocHavocCharacter",
             "count": 1,
             "title": "Doc Havoc",
-            "promoTitle": "2199 Doc Havoc",
-            "shortPromoTitle": "2199 Doc Havoc",
+            "promoTitle": "Doc Havoc 2199",
+            "shortPromoTitle": "Doc Havoc 2199",
             "body": "Motivate",
             "backgroundColor": "A7B8C1",
             "foilBackgroundColor": "FEFEFE",
@@ -472,7 +471,7 @@
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
                 "Destroy 1 ongoing card.",
-                "The next turn a hero target regains HP, increase the amount by 2."
+                "The next time a hero target regains HP, increase the amount by 2."
             ],
             "flippedIcons": [
                 "DrawCardNow",
