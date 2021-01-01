@@ -227,5 +227,37 @@ namespace CauldronTests
 
             Assert.AreEqual(26, quicksilver.CharacterCard.HitPoints);
         }
+        [Test]
+        public void TestHarbingerPowerAutoDiscard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver/HarbingerQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            AssertMaxNumberOfDecisions(0);
+            Card spear = PutOnDeck("CoalescingSpear");
+            Card storm = PutOnDeck("AlloyStorm");
+            Card iron = PutOnDeck("IronRetort");
+
+            UsePower(quicksilver);
+            AssertInTrash(iron, storm);
+            AssertOnTopOfDeck(spear);
+        }
+        [Test]
+        public void TestHarbingerPowerReturn()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver/HarbingerQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            Card spear = PutInTrash("CoalescingSpear");
+            Card retort = PutInTrash("IronRetort");
+            Card storm = PutOnDeck("AlloyStorm");
+            DecisionSelectFunction = 1;
+            DecisionSelectCard = spear;
+
+            UsePower(quicksilver);
+            AssertInHand(spear);
+            AssertInTrash(retort);
+            AssertOnTopOfDeck(storm);
+        }
     }
 }
