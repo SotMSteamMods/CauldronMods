@@ -516,6 +516,47 @@
                 "TheSetList": "Wait, you can see me? I was being sneaky."
             },
             "complexity": 1
+        },
+        {
+            "identifier": "GyrosaurCharacter",
+            "promoIdentifier": "CaptainGyrosaurCharacter",
+            "count": 1,
+            "title": "Gyrosaur",
+            "promoTitle": "Captain Gyrosaur",
+            "shortPromoTitle": "Captain Gyrosaur",
+            "body": "Cursed Treasure",
+            "backgroundColor": "CD8A58",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "CD8A58",
+            "character": true,
+            "powers": [
+                "Put the top card of your deck beneath {Gyrosaur}, face up. When she deals damage, play or draw it."
+            ],
+            "icons": [
+                "HasPower",
+                "Manipulate",
+                "PlayCardNow",
+                "DrawCardNow"
+            ],
+            "hitpoints": 29,
+            "nemesisIdentifiers": [
+                "Gyrosaur"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "One hero may use a power now.",
+                "Select a target. In crease the next damage dealt to it by 2."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "UsePowerNow",
+                "IncreaseDamageTaken"
+            ],
+            "openingLines": {
+                "default": "Arr! Avast!... What else do cursed pirates say?",
+                "TheSetList": "Prepare to board them, me hearties!"
+            },
+            "complexity": 1
         }
     ]
 }

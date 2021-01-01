@@ -813,6 +813,41 @@ namespace CauldronTests
             UsePower(tempest);
         }
         [Test]
+        public void TestSurpriseAttackStacksWithSelfNicely()
+        {
+            SetupGameController("GrandWarlordVoss", "Cauldron.Echelon", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            PlayCard("SurpriseAttack");
+            PlayCard("SurpriseAttack");
+            DecisionSelectDamageType = DamageType.Projectile;
+            Card weaver = PlayCard("GeneBoundPsiWeaver");
+
+            UsePower(tempest);
+            AssertInTrash(weaver);
+        }
+        [Test]
+        public void TestSurpriseAttackInterruptedByOtherPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Echelon", "Tempest", "ChronoRanger", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card turret = PlayCard("PoweredRemoteTurret");
+            Card traffic = PlayCard("TrafficPileup");
+            PlayCard("BacklashField");
+            PlayCard("TheUltimateTarget");
+            PlayCard("SurpriseAttack");
+            QuickHPStorage(baron.CharacterCard, turret, traffic);
+
+            //Tempest hits Blade for 1 + 1; Backlash Field hits Tempest; 
+            //Ultimate Target lets Chrono shoot Blade for 1 + 1 (Surprise) + 1 (Target)
+            //Tempest continues to Turret and Traffic for 1 + 1 each
+            UsePower(tempest);
+            QuickHPCheck(-5, -2, -2);
+        }
+        [Test]
         public void TestTeslaKnucklesPower()
         {
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "TheVisionary", "Megalopolis");

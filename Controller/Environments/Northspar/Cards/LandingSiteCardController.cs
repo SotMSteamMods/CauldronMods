@@ -51,7 +51,7 @@ namespace Cauldron.Northspar
                 }
 
                 // ...if you do, place the top card of any deck beneath Tak Ahab
-                if (storedResults != null && base.DidDestroyCard(storedResults.First()))
+                if (storedResults != null && storedResults.Count() > 0 &&  DidDestroyCard(storedResults.First()))
                 {
                     List<SelectLocationDecision> selectDeckResults = new List<SelectLocationDecision>();
                     coroutine = base.GameController.SelectADeck(base.DecisionMaker, SelectionType.MoveCardToUnderCard, (Location l) => true, selectDeckResults, cardSource: base.GetCardSource());

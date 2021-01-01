@@ -1490,5 +1490,24 @@ namespace CauldronTests
             AssertIsInPlay(whats);
             AssertIsInPlay(shelter);
         }
+
+        [Test()]
+        public void TestBitterCold_Issue677_MultipleInstances()
+        {
+            //replicating: https://github.com/SotMSteamMods/CauldronMods/issues/287
+
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Northspar");
+            StartGame();
+
+            DestroyNonCharacterVillainCards();
+
+            GoToPlayCardPhase(northspar);
+            PlayCard("BitterCold");
+            DealDamage(legacy, haka, 3, DamageType.Cold);
+            DealDamage(ra, haka, 3, DamageType.Cold);
+            QuickHPStorage(haka);
+            GoToEndOfTurn(northspar);
+            QuickHPCheck(-1);
+        }
     }
 }
