@@ -35,7 +35,7 @@ namespace Cauldron.Quicksilver
                 case 1:
                     {
                         //"Destroy a target with exactly 3HP.",
-                        coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsTarget && c.HitPoints == 3), false, cardSource: GetCardSource());
+                        coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsTarget && c.HitPoints == 3 && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "target with 3hp"), false, cardSource: GetCardSource());
                         if (UseUnityCoroutines)
                         {
                             yield return GameController.StartCoroutine(coroutine);
@@ -50,7 +50,11 @@ namespace Cauldron.Quicksilver
                     {
                         //"One player may discard a one-shot. If they do, 2 players may each draw a card now."
                         var storedDiscard = new List<DiscardCardAction>();
-                        coroutine = GameController.SelectHeroToDiscardCard(DecisionMaker, additionalCardCriteria: (Card c) => c.IsOneShot, storedResultsDiscard: storedDiscard, cardSource: GetCardSource());
+                        coroutine = GameController.SelectHeroToDiscardCard(DecisionMaker,
+                                        additionalHeroCriteria: new LinqTurnTakerCriteria(tt => GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())),
+                                        additionalCardCriteria: (Card c) => c.IsOneShot,
+                                        storedResultsDiscard: storedDiscard,
+                                        cardSource: GetCardSource());
                         if (UseUnityCoroutines)
                         {
                             yield return GameController.StartCoroutine(coroutine);
@@ -63,7 +67,7 @@ namespace Cauldron.Quicksilver
                         if (DidDiscardCards(storedDiscard))
                         {
                             coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker,
-                                                new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame),
+                                                new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())),
                                                 SelectionType.DrawCard,
                                                 (TurnTaker tt) => GameController.DrawCard(tt.ToHero(), true, cardSource: GetCardSource()),
                                                 2, false, 2,
@@ -85,7 +89,7 @@ namespace Cauldron.Quicksilver
 
         public override IEnumerator UsePower(int index = 0)
         {
-            //"Discard the top 2 cards of your deck, or put 1 card fomr your trash into your hand."
+            //"Discard the top 2 cards of your deck, or put 1 card from your trash into your hand."
             int numDiscard = GetPowerNumeral(0, 2);
             int numReturn = GetPowerNumeral(0, 1);
 
@@ -112,6 +116,7 @@ namespace Cauldron.Quicksilver
             IEnumerator coroutine = GameController.SelectCardsFromLocationAndMoveThem(DecisionMaker, DecisionMaker.TurnTaker.Trash, numCards, numCards, new LinqCardCriteria(),
                                             new MoveCardDestination[] { new MoveCardDestination(DecisionMaker.HeroTurnTaker.Hand) },
                                             selectionType: SelectionType.MoveCardToHandFromTrash,
+                                            allowAutoDecide: true,
                                             cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
