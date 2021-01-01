@@ -90,7 +90,7 @@ namespace Cauldron.Echelon
                     {
                         //"Reveal the top card of 2 decks, play 1 and replace the other."
                         List<SelectLocationDecision> storedResults = new List<SelectLocationDecision>();
-                        coroutine = SelectDecks(DecisionMaker, 2, SelectionType.RevealTopCardOfDeck, (Location l) => true, storedResults);
+                        coroutine = SelectDecks(DecisionMaker, 2, SelectionType.RevealTopCardOfDeck, (Location l) => GameController.IsLocationVisibleToSource(l, GetCardSource()), storedResults);
                         if (UseUnityCoroutines)
                         {
                             yield return GameController.StartCoroutine(coroutine);
@@ -154,7 +154,7 @@ namespace Cauldron.Echelon
         {
             get
             {
-                return Journal.DestroyCardEntriesThisTurn().Where(dcje => dcje.DidCardHaveKeyword("tactic")).Count();
+                return Journal.DestroyCardEntriesThisTurn().Count(dcje => dcje.DidCardHaveKeyword("tactic"));
             }
         }
 
