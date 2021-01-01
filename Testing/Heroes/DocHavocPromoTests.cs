@@ -349,5 +349,45 @@ namespace CauldronTests
             AssertIncapacitated(DocHavoc);
             AssertNumberOfCardsInTrash(env, 0);
         }
+        [Test]
+        public void TestFutureDocHavocLoads()
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc/FutureDocHavocCharacter", "Megalopolis");
+            Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
+            Assert.IsNotNull(DocHavoc);
+            Assert.IsInstanceOf(typeof(FutureDocHavocCharacterCardController), DocHavoc.CharacterCardController);
+
+            Assert.AreEqual(29, DocHavoc.CharacterCard.HitPoints);
+        }
+        [Test]
+        public void TestFuturePowerNoHPGainers()
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc/FutureDocHavocCharacter", "Ra", "Legacy", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            QuickHPStorage(baron);
+            AssertMaxNumberOfDecisions(1);
+            UsePower(DocHavoc);
+            QuickHPCheck(-2);
+        }
+        [Test]
+        public void TestFuturePowerOneHPGainer()
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc/FutureDocHavocCharacter", "Ra", "Legacy", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            SetHitPoints(ra, 20);
+            PlayCard("TheStaffOfRa");
+            DecisionSelectFunction = 1;
+
+            //damage or grant power, innate or staff, who to hit
+            AssertMaxNumberOfDecisions(3);
+
+            QuickHPStorage(baron);
+            UsePower(DocHavoc);
+            QuickHPCheck(-3);
+        }
     }
 }

@@ -443,8 +443,7 @@
                 "VectorCharacter": "Quarantine the area! We can't let his plague spread."
             },
             "complexity": 2
-        }],
-        "notPromoCards": [
+        },
         {
             "identifier": "DocHavocCharacter",
             "promoIdentifier": "FutureDocHavocCharacter",
