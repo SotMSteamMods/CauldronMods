@@ -15,7 +15,7 @@ CypherCharacter
 DendronCharacter
 DistributedHivemindSwarmEaterCharacter
 DocHavocCharacter
-DragonRangerGargoyle
+DragonRangerGargoyleCharacter
 DriftCharacter
 DriftingShadowDriftCharacter
 DynamoCharacter
@@ -29,7 +29,7 @@ FirstResponseEchelonCharacter
 FirstResponseVanishCharacter
 FutureDocHavocCharacter
 FutureEchelonCharacter
-FutureGargoyle
+FutureGargoyleCharacter
 FutureLadyOfTheWoodCharacter
 FutureTerminusCharacter
 FutureTitanCharacter
@@ -41,7 +41,7 @@ GyrosaurCharacter
 HarbingerQuicksilverCharacter
 HydraWinterTiamatCharacter
 ImpactCharacter
-InflitratorGargoyle
+InflitratorGargoyleCharacter
 LadyOfTheWoodCharacter
 LastOfTheForgottenOrderNecroCharacter
 MagnificentMaraCharacter
@@ -99,7 +99,7 @@ VanishCharacter
 VectorCharacter
 WardenOfChaosNecroCharacter
 WastelandRoninCricketCharacter
-WastelandRoninGargoyle
+WastelandRoninGargoyleCharacter
 WastelandRoninImpactCharacter
 WastelandRoninPyreCharacter
 WastelandRoninTheKnightCharacter
