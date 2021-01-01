@@ -39,7 +39,8 @@
             ],
             "openingLines": {
                 "default": "Let's dance!",
-                "TheRamCharacter": "Ram placeholder"
+                "TheRamCharacter": "Halberd wants me back that badly, huh?",
+                "PastTheRamCharacter": "What is this? Halberd didn't even exist in your time, and I don't need another giant robot in my life."
             },
             "complexity": 1
         },
@@ -431,7 +432,8 @@
             ],
             "openingLines": {
                 "default": "We'll see how much you yap after I turn you into a pincushion.",
-                "TheRamCharacter": "Ram placeholder"
+                "TheRamCharacter": "I've got some new tricks, too.",
+                "PastTheRamCharacter": "I've got some new tricks, too."
             },
             "complexity": 1
         },
@@ -471,9 +473,51 @@
             ],
             "openingLines": {
                 "default": "Seems like the whole world wants a piece of me today.",
-                "TheRamCharacter": "Ram placeholder"
+                "TheRamCharacter": "Let's see you try it after we tear you apart.",
+                "PastTheRamCharacter": "Let's see you try it after we tear you apart."
             },
             "complexity": 1
+        },
+        {
+            "identifier": "QuicksilverCharacter",
+            "promoIdentifier": "HarbingerQuicksilverCharacter",
+            "count": 1,
+            "title": "Quicksilver",
+            "promoTitle": "Test Subject Harbinger-1 Quicksilver",
+            "shortPromoTitle": "Harbinger-1 Quicksilver",
+            "body": "Returning Spear",
+            "backgroundColor": "915e5b",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "915e5b",
+            "character": true,
+            "powers": [
+                "Discard the top 2 cards of your deck, or put 1 card from your trash into your hand."
+            ],
+            "icons": [
+                "HasPower",
+                "Discard",
+                "Search"
+            ],
+            "hitpoints": 26,
+            "nemesisIdentifiers": [
+                "Quicksilver"
+            ],
+            "incapacitatedAbilities": [
+                "One player may play a card now.",
+                "Destroy a target with exactly 3HP.",
+                "One player may discard a one-shot. If they do, 2 players may each draw a card now."
+            ],
+            "flippedIcons": [
+                "PlayCardNow",
+                "DestroyTarget",
+                "DrawCardNow"
+            ],
+            "openingLines": {
+                "default": "You're testing my patience.",
+                "TheRamCharacter": "What, Harbinger couldn't afford a new walking trash can?",
+                "PastTheRamCharacter": "What is this? Halberd didn't even exist in your time, and I don't need another giant robot in my life."
+            },
+            "complexity": 2
         }
     ]
 }

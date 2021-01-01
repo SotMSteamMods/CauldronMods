@@ -27,7 +27,7 @@ namespace Cauldron.Cypher
         public override IEnumerator Play()
         {
             // Destroy any number of Augments.
-            IEnumerator routine = GameController.SelectCardsAndDoAction(DecisionMaker, base.AugmentCardCriteria(c => c.IsInPlayAndHasGameText), SelectionType.DestroyCard, DestroyAugAndHeal,
+            IEnumerator routine = GameController.SelectCardsAndDoAction(DecisionMaker, base.AugmentCardCriteria(c => c.IsInPlay), SelectionType.DestroyCard, DestroyAugAndHeal,
                 requiredDecisions: 0,
                 cardSource: GetCardSource());
             if (base.UseUnityCoroutines)

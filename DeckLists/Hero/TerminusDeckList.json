@@ -33,8 +33,8 @@
             ],
             "flippedIcons": [],
             "openingLines": {
-                "default": "default placeholder",
-                "InfernalChoirCharacter": "Infernal Choir placeholder"
+                "default": "Judgment time.",
+                "TheInfernalChoirCharacter": "I've been on the wrong side of the tracks long enough. And my punishment is to deal with the likes of you."
             },
             "complexity": 2
         },
@@ -556,8 +556,9 @@
                 "Manipulate"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "InfernalChoirCharacter": "Infernal Choir placeholder"
+                "default": "It's time to make things right.",
+                "TheInfernalChoirCharacter": "Well, you made it look like so much fun.",
+                "MythosCharacter": "Let me look you in the eye, and we'll see what kinds of sins your past holds."
             },
             "complexity": 2
         },
@@ -566,8 +567,8 @@
             "promoIdentifier": "FutureTerminusCharacter",
             "count": 1,
             "title": "Terminus",
-            "promoTitle": "2199 Terminus",
-            "shortPromoTitle": "2199 Terminus",
+            "promoTitle": "Terminus 2199",
+            "shortPromoTitle": "Terminus 2199",
             "body": "Corporealize",
             "backgroundColor": "F05354",
             "foilBackgroundColor": "FEFEFE",
@@ -596,8 +597,8 @@
                 "Manipulate"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "InfernalChoirCharacter": "Infernal Choir placeholder"
+                "default": "Get out of our way, or we'll punch your ticket.",
+                "TheInfernalChoirCharacter": "Oh, I'm just getting started."
             },
             "complexity": 2
         }

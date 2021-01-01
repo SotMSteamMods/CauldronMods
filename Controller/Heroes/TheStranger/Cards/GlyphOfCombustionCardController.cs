@@ -7,28 +7,23 @@ namespace Cauldron.TheStranger
 {
     public class GlyphOfCombustionCardController : GlyphCardController
     {
-        #region Constructors
-
         public GlyphOfCombustionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
 
-        #endregion Constructors
-
-        #region Methods
         public override void AddTriggers()
         {
             //Once during your turn when {TheStranger} would deal himself damage, prevent that damage.
             base.AddTriggers();
             //Whenever a Rune or Glyph is destroyed, {TheStranger} may deal 1 target 1 fire damage.
-            base.AddTrigger<DestroyCardAction>((DestroyCardAction destroyCard) => (base.IsRune(destroyCard.CardToDestroy.Card) || base.IsGlyph(destroyCard.CardToDestroy.Card)) && destroyCard.WasCardDestroyed, new Func<DestroyCardAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, TriggerTiming.After, ActionDescription.Unspecified, false, true,  null, false, null, null, false, false);
+            base.AddTrigger<DestroyCardAction>((DestroyCardAction destroyCard) => (IsRune(destroyCard.CardToDestroy.Card) || IsGlyph(destroyCard.CardToDestroy.Card)) && destroyCard.WasCardDestroyed, DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
         }
 
         private IEnumerator DealDamageResponse(DestroyCardAction destroyCard)
         {
             //{TheStranger} may deal 1 target 1 fire damage.
-            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Fire, new int?(1), true, new int?(1), false, false, false, null, null, null, null, null, false, null, null, false, null, base.GetCardSource(null));
+            IEnumerator coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 1, DamageType.Fire, 1, false, 0,
+                                        cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -39,8 +34,5 @@ namespace Cauldron.TheStranger
             }
             yield break;
         }
-
-
-        #endregion Methods
     }
 }

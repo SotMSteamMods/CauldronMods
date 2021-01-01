@@ -17,6 +17,18 @@ namespace Cauldron.PhaseVillain
             {
                 base.SpecialStringMaker.ShowIfElseSpecialString(() => base.Game.Journal.DealDamageEntriesThisTurn().Where((DealDamageJournalEntry entry) => entry.TargetCard == base.CharacterCard).Any(), () => "Phase has been dealt damage this turn.", () => "Phase has not been dealt damage this turn.");
             }
+
+            SpecialStringMaker.ShowNumberOfCards(new LinqCardCriteria(c => IsObstacle(c) && c.IsOutOfGame,
+                        singular: "obstacle card removed from the game",
+                        plural: "obstacle cards removed from the game"));
+            SpecialStringMaker.ShowListOfCardsOutOfGame(new LinqCardCriteria((Card c) => c.Owner == TurnTaker, "Phase"), () => true).Condition = () => FindCardsWhere(c => c.IsOutOfGame && c.Owner == TurnTaker).Any();
+            SpecialStringMaker.ShowSpecialString(() => $"Damage dealt by {CharacterCard.Title} increased by {ObstaclesRemovedFromGame()}.", () => true)
+                .Condition = () => !base.CharacterCard.IsFlipped && ObstaclesRemovedFromGame() > 0;
+        }
+
+        private int ObstaclesRemovedFromGame()
+        {
+            return base.FindCardsWhere(new LinqCardCriteria((Card c) => this.IsObstacle(c) && c.IsOutOfGame)).Count();
         }
 
         public override void AddSideTriggers()
@@ -28,7 +40,7 @@ namespace Cauldron.PhaseVillain
                 base.AddSideTrigger(base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker && base.FindCardsWhere(new LinqCardCriteria((Card c) => this.IsObstacle(c) && c.IsInPlayAndHasGameText)).Count() >= 3, base.FlipThisCharacterCardResponse, TriggerType.FlipCard));
 
                 //Increase damage dealt by {Phase} by 1 for each obstacle that has been removed from the game.
-                base.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard, (DealDamageAction action) => base.FindCardsWhere(new LinqCardCriteria((Card c) => this.IsObstacle(c) && c.IsOutOfGame)).Count()));
+                base.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard, (DealDamageAction action) => ObstaclesRemovedFromGame()));
 
                 //Phase is immune to damage dealt by environment cards.
                 base.AddSideTrigger(base.AddImmuneToDamageTrigger((DealDamageAction action) => action.Target == base.CharacterCard && action.DamageSource.Card.IsEnvironment));
@@ -70,18 +82,13 @@ namespace Cauldron.PhaseVillain
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                //When {Phase} flips to this side, destroy the obstacle with the lowest HP 
-                coroutine = base.GameController.DestroyCard(this.DecisionMaker, list.FirstOrDefault());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-                //...and remove it from the game.
-                coroutine = base.GameController.MoveCard(base.TurnTakerController, list.FirstOrDefault(), base.TurnTaker.OutOfGame, cardSource: base.GetCardSource());
+                var lowest = list.FirstOrDefault();
+                //When {Phase} flips to this side, destroy and remove from the game the obstacle with the lowest HP 
+                coroutine = base.GameController.DestroyCard(this.DecisionMaker, lowest,
+                                overrideOutput: $"{CharacterCard.Title} removes {lowest.Title} from the game.",
+                                showOutput: true,
+                                overrideDestroyLocation: TurnTaker.OutOfGame,
+                                cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

@@ -32,17 +32,28 @@ namespace Cauldron.Echelon
                                             1),
                 TriggerType.IncreaseDamage,
                 TriggerTiming.Before);
+
+            AddEndOfTurnTrigger((TurnTaker tt) => true, ClearTempTriggers, TriggerType.Hidden);
+        }
+
+        private IEnumerator ClearTempTriggers(GameAction ga)
+        {
+            RemoveTemporaryTriggers();
+            yield return null;
+            yield break;
         }
 
         private IEnumerator ModifyDamageTypeAndAmountFromPowerResponse(UsePowerAction power, Func<Func<DealDamageAction, bool>, ITrigger> addDealDamageTrigger, int? increaseDamageAmount = null, bool makeDamageIrreducible = false)
         {
-            RemoveTemporaryTriggers();
             CardController powerCardController = power.Power.IsContributionFromCardSource ? power.Power.CardSource.CardController : power.Power.CardController;
-            Func<DealDamageAction, bool> argChangeType = (DealDamageAction dd) => dd.CardSource.PowerSource != null && dd.CardSource.PowerSource == power.Power && (dd.CardSource.CardController == powerCardController || dd.CardSource.AssociatedCardSources.Any((CardSource cs) => cs.CardController == powerCardController)) && !dd.DamageModifiers.Where((ModifyDealDamageAction md) => md is ChangeDamageTypeAction).Select((ModifyDealDamageAction md) => md.CardSource.CardController).Contains(this) && !powerCardController.Card.IsBeingDestroyed;
             Func<DealDamageAction, bool> argIncreaseDamage = (DealDamageAction dd) => dd.CardSource.PowerSource != null && dd.CardSource.PowerSource == power.Power && (dd.CardSource.CardController == powerCardController || dd.CardSource.AssociatedCardSources.Any((CardSource cs) => cs.CardController == powerCardController)) && !dd.DamageModifiers.Where((ModifyDealDamageAction md) => md is IncreaseDamageAction).Select((ModifyDealDamageAction md) => md.CardSource.CardController).Contains(this) && !powerCardController.Card.IsBeingDestroyed;
             AddToTemporaryTriggerList(addDealDamageTrigger(argIncreaseDamage));
-            AddToTemporaryTriggerList(AddChangeTypeTrigger(argChangeType));
-            AddToTemporaryTriggerList(AddTrigger((AddStatusEffectAction se) => se.StatusEffect.DoesDealDamage && se.CardSource.PowerSource != null && se.CardSource.PowerSource == power.Power, (AddStatusEffectAction se) => ModifyDamageFromEffectResponse(se, increaseDamageAmount.Value, power.Power), TriggerType.Hidden, TriggerTiming.Before));
+            if (IsFirstOrOnlyCopyOfThisCardInPlay())
+            {
+                Func<DealDamageAction, bool> argChangeType = (DealDamageAction dd) => dd.CardSource.PowerSource != null && dd.CardSource.PowerSource == power.Power && (dd.CardSource.CardController == powerCardController || dd.CardSource.AssociatedCardSources.Any((CardSource cs) => cs.CardController == powerCardController)) && !dd.DamageModifiers.Where((ModifyDealDamageAction md) => md is ChangeDamageTypeAction).Select((ModifyDealDamageAction md) => md.CardSource.CardController).Contains(this) && !powerCardController.Card.IsBeingDestroyed;
+                AddToTemporaryTriggerList(AddChangeTypeTrigger(argChangeType));
+                AddToTemporaryTriggerList(AddTrigger((AddStatusEffectAction se) => se.StatusEffect.DoesDealDamage && se.CardSource.PowerSource != null && se.CardSource.PowerSource == power.Power, (AddStatusEffectAction se) => ModifyDamageFromEffectResponse(se, increaseDamageAmount.Value, power.Power), TriggerType.Hidden, TriggerTiming.Before));
+            }
             yield return null;
             yield break;
         }

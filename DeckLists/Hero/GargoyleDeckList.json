@@ -37,8 +37,7 @@
                 "UsePowerNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "VectorCharacter": "Vector placeholder"
+                "default": "Your power will be mine."
             },
             "complexity": 2
         },
@@ -408,7 +407,7 @@
     "notPromoCards": [
         {
             "identifier": "GargoyleCharacter",
-            "promoIdentifier": "WastelandRoninGargoyle",
+            "promoIdentifier": "WastelandRoninGargoyleCharacter",
             "count": 1,
             "title": "Gargoyle",
             "promoTitle": "Wateland Ronin Gargoyle",
@@ -441,18 +440,17 @@
                 "GainHP"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "VectorCharacter": "Vector placeholder"
+                "default": "It's just us monsters, now."
             },
             "complexity": 2
         },
         {
             "identifier": "GargoyleCharacter",
-            "promoIdentifier": "FutureGargoyle",
+            "promoIdentifier": "FutureGargoyleCharacter",
             "count": 1,
             "title": "Gargoyle",
-            "promoTitle": "2199 Gargoyle",
-            "shortPromoTitle": "2199 Gargoyle",
+            "promoTitle": "Gargoyle 2199",
+            "shortPromoTitle": "Gargoyle 2199",
             "body": "Sustain",
             "backgroundColor": "D4E6B5",
             "foilBackgroundColor": "FEFEFE",
@@ -482,8 +480,87 @@
                 "Manipulate"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "VectorCharacter": "Vector placeholder"
+                "default": "So full of energy... But not for long."
+            },
+            "complexity": 2
+        },
+        {
+            "identifier": "GargoyleCharacter",
+            "promoIdentifier": "DragonRangerGargoyleCharacter",
+            "count": 1,
+            "title": "Gargoyle",
+            "promoTitle": "Dragon Ranger Gargoyle",
+            "shortPromoTitle": "Ranger Gargoyle",
+            "body": "Amorphous Power",
+            "backgroundColor": "C7C7C9",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C7C7C9",
+            "character": true,
+            "powers": [
+                "{Gargoyle} deals 3 targets 1 toxic damage each. Increase the next damage he deals by the number of heroes damaged this way."
+            ],
+            "icons": [
+                "HasPower",
+                "DealDamageToxic",
+                "IncreaseDamageDealt"
+            ],
+            "hitpoints": 29,
+            "nemesisIdentifiers": [
+                "Gargoyle"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "One hero may use a power now.",
+                "Select a target. Prevent the next damage it would deal."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "UsePowerNow",
+                "CancelledDamageGreen"
+            ],
+            "openingLines": {
+                "default": "Go, Rangers!"
+            },
+            "complexity": 2
+        },
+        {
+            "identifier": "GargoyleCharacter",
+            "promoIdentifier": "InflitratorGargoyleCharacter",
+            "count": 1,
+            "title": "Gargoyle",
+            "promoTitle": "Inflitrator Gargoyle",
+            "shortPromoTitle": "Inflitrator Gargoyle",
+            "body": "Ruthless Technique",
+            "backgroundColor": "bdd98f",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "bdd98f",
+            "character": true,
+            "powers": [
+                "{Gargoyle} deals 2 targets 1 toxic damage each. For each hero damaged this way, draw or play a card."
+            ],
+            "icons": [
+                "HasPower",
+                "DealDamageToxic",
+                "DrawCardNow",
+                "PlayCardNow"
+            ],
+            "hitpoints": 27,
+            "nemesisIdentifiers": [
+                "Gargoyle"
+            ],
+            "incapacitatedAbilities": [
+                "One player may play a card now.",
+                "Discard the top card of 1 deck.",
+                "1 target deals itself 1 toxic damage. Another regains 1 HP."
+            ],
+            "flippedIcons": [
+                "PlayCardNow",
+                "Discard",
+                "DealDamageToxic",
+                "GainHP"
+            ],
+            "openingLines": {
+                "default": "You all create the distraction, and I'll go in stealthy."
             },
             "complexity": 2
         }

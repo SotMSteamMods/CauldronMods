@@ -30,7 +30,9 @@ namespace Cauldron.PhaseVillain
 
             //{Phase} deals the hero target with the highest HP {H} irreducible radiant damage and...
             List<DealDamageAction> targetedHero = new List<DealDamageAction>();
-            coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => c.IsHero, (Card c) => Game.H, DamageType.Radiant, true, storedResults: targetedHero);
+            coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => c.IsHero, (Card c) => Game.H, DamageType.Radiant, true,
+                            selectTargetEvenIfCannotDealDamage: true,
+                            storedResults: targetedHero);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -40,29 +42,32 @@ namespace Cauldron.PhaseVillain
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            TurnTaker targetTurnTaker = targetedHero.FirstOrDefault().Target.Owner;
-            //...destroys 1 ongoing...
-            coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && c.Owner == targetTurnTaker, "ongoing"), false, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
+            var result = targetedHero.FirstOrDefault();
+            if (result != null)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
+                TurnTaker targetTurnTaker = result.Target.Owner;
+                //...destroys 1 ongoing...
+                coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && c.Owner == targetTurnTaker, "ongoing"), false, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
 
-            //...and 1 equipment card belonging to that hero.
-            coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c) && c.Owner == targetTurnTaker, "equipment"), false, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
+                //...and 1 equipment card belonging to that hero.
+                coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c) && c.Owner == targetTurnTaker, "equipment"), false, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
         }
     }
 }

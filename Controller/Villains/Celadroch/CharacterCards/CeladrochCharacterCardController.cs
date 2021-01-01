@@ -92,7 +92,7 @@ namespace Cauldron.Celadroch
                 //At the start of the villain turn, add 1 token to the storm pool.
                 AddSideTrigger(AddStartOfTurnTrigger(tt => tt == TurnTaker, pca => GameController.AddTokensToPool(StormPool, 1, GetCardSource()), TriggerType.AddTokensToPool));
 
-                //You may play the top card of the villain deck to remove 2 cards from the storm pool.
+                //You may play the top card of the villain deck to remove 2 tokens from the storm pool.
                 AddSideTrigger(AddStartOfTurnTrigger(tt => tt == TurnTaker, StartOfTurnOptionalCardPlayResponse, new[] { TriggerType.ModifyTokens, TriggerType.PlayCard }));
 
                 // Whenever an elemental, zombie, demon, or chosen is played from the top of the villain deck...
@@ -265,6 +265,7 @@ namespace Cauldron.Celadroch
 
             coroutine = GameController.PlayCards(DecisionMaker,
                 c => (c.Location == TurnTaker.Deck || c.Location == TurnTaker.Trash) && c.DoKeywordsContain(keyword), false, true,
+                allowAutoDecide: true,
                 cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {

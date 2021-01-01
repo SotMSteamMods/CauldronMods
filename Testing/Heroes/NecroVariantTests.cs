@@ -493,6 +493,38 @@ namespace CauldronTests
 
         }
 
+
+        [Test()]
+        public void TestWardenOfChaosNecroIncap3Stacking()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/WardenOfChaosNecroCharacter", "Legacy", "Unity", "Megalopolis");
+            StartGame();
+            SetupIncap(baron);
+            AssertIncapacitated(necro);
+
+            Card raptor = PlayCard("RaptorBot");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+
+            //The next time a target is destroyed, 1 player may draw 2 cards.
+            GoToUseIncapacitatedAbilityPhase(necro);
+            UseIncapacitatedAbility(necro, 2);
+            AssertNumberOfStatusEffectsInPlay(1);
+            UseIncapacitatedAbility(necro, 2);
+            AssertNumberOfStatusEffectsInPlay(2);
+
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            QuickHandStorage(legacy);
+            DealDamage(baron, raptor, 50, DamageType.Melee);
+            QuickHandCheck(4);
+
+            //only 1 use
+            PlayCard(raptor);
+            QuickHandStorage(legacy);
+            DealDamage(baron, raptor, 50, DamageType.Melee);
+            QuickHandCheck(0);
+        }
+
         [Test()]
         public void TestLastOfTheForgottenOrderNecroLoads()
         {
@@ -604,7 +636,7 @@ namespace CauldronTests
             GoToUsePowerPhase(necro);
             UsePower(necro);
 
-            DecisionSelectCards = new Card[] { ra.CharacterCard, z2, ra.CharacterCard, z3, ra.CharacterCard, mdp};
+            DecisionSelectCards = new Card[] { ra.CharacterCard, z2, ra.CharacterCard, z3, ra.CharacterCard, mdp };
 
             DealDamage(baron, z1, 50, DamageType.Melee);
 

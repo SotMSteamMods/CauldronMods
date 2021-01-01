@@ -40,8 +40,8 @@
                 "DrawCardNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder"
+                "default": "It's about time we took care of you!",
+                "OutlanderCharacter": "Bad news; I can already see the future where we defeat you!"
             },
             "complexity": 3
         },
@@ -480,8 +480,8 @@
                 "Manipulate"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder"
+                "default": "Don't worry people, I'll make sure we have plenty of time for this mission!",
+                "OutlanderCharacter": "To think, there's a version of Sir George that could turn out like you."
             },
             "complexity": 3
         },
@@ -491,6 +491,7 @@
             "backgroundColor": "FCB040",
             "count": 1,
             "title": "Shift Track",
+            "isReal": false,
             "setup": [
                 "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
             ],
@@ -541,13 +542,14 @@
                 "DestroyEnvironment"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder"
+                "default": "What year is this again?",
+                "TheMistressOfFateCharacter": "This doesn't look good. Better work together!",
+                "OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger."
             },
             "complexity": 3
         },
         {
-            "identifier": "DriftCharacter",
+            "identifier": "FutureDriftCharacter",
             "promoIdentifier": "SplitDriftCharacter",
             "count": 1,
             "title": "Drift",
@@ -595,6 +597,7 @@
             "backgroundColor": "D1D2D4",
             "count": 1,
             "title": "Shift Track",
+            "isReal": false,
             "setup": [
                 "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
                 "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
@@ -611,6 +614,188 @@
                 "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
                 "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
             ]
+        },
+        {
+            "identifier": "DriftCharacter",
+            "promoIdentifier": "DriftingShadowDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "promoTitle": "Drift: 1609",
+            "shortPromoTitle": "1609 Drift",
+            "body": "Drifting Shadow",
+            "backgroundColor": "B1B1B1",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "B1B1B1",
+            "character": true,
+            "powers": [
+                "At the start of your next turn, shift {DriftL} or {DriftR}, then draw a card or use a power."
+            ],
+            "icons": [
+                "HasPower",
+                "Manipulate",
+                "DrawCardNow",
+                "UsePowerNow"
+            ],
+            "hitpoints": 26,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One hero may play a card now.",
+                "One hero may use a power now.",
+                "Move up to 3 non-character hero cards from play to their owner' hands."
+            ],
+            "flippedIcons": [
+                "PlayCardNow",
+                "UsePowerNow",
+                "Manipulate"
+            ],
+            "openingLines": {
+                "default": "Your time is up.",
+                "OutlanderCharacter": "Well, I figured that was appropriate, given the audience."
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "ShiftTrack",
+            "promoIdentifier": "DriftingShadowDriftCharacter",
+            "backgroundColor": "fbf767",
+            "count": 1,
+            "title": "Shift Track",
+            "isReal": false,
+            "body": "Shift Track",
+            "setup": [
+                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+            ],
+            "gameplay": [
+                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
+                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
+                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects."
+            ],
+            "icons": [],
+            "flippedTitle": "Shift Track Back",
+            "flippedIcons": []
+        },
+        {
+            "identifier": "DriftCharacter",
+            "promoIdentifier": "AllInGoodTimeDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "promoTitle": "Drift: 1789",
+            "shortPromoTitle": "1789 Drift",
+            "body": "All in Good Time",
+            "backgroundColor": "B1B1B1",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "B1B1B1",
+            "character": true,
+            "powers": [
+                "Discard cards from the top of your deck until you discard an ongoing. Play or draw it."
+            ],
+            "icons": [
+                "HasPower",
+                "Manipulate",
+                "DrawCardNow",
+                "PlayCardNow"
+            ],
+            "hitpoints": 28,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One hero may play a card now.",
+                "Destroy 1 ongoing card.",
+                "Select a target. Increase the next damage it deals by 2."
+            ],
+            "flippedIcons": [
+                "PlayCardNow",
+                "DestroyOngoing",
+                "IncreaseDamageDealt"
+            ],
+            "openingLines": {
+                "default": "The problem with all this time travel is you start losing track of what's going on.",
+                "OutlanderCharacter": "Just one, but you can't blame me for a little sightseeing!"
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "ShiftTrack",
+            "promoIdentifier": "AllInGoodTimeDriftCharacter",
+            "backgroundColor": "fbf767",
+            "count": 1,
+            "title": "Shift Track",
+            "isReal": false,
+            "body": "Shift Track",
+            "setup": [
+                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+            ],
+            "gameplay": [
+                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
+                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
+                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects."
+            ],
+            "icons": [],
+            "flippedTitle": "Shift Track Back",
+            "flippedIcons": []
+        },
+        {
+            "identifier": "DriftCharacter",
+            "promoIdentifier": "TestSubjectHalberdDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "promoTitle": "Drift: Test Subject Halberd-26",
+            "shortPromoTitle": "Test Subject Drift",
+            "body": "Temporal Aperture",
+            "backgroundColor": "B1B1B1",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "B1B1B1",
+            "character": true,
+            "powers": [
+                "Discard 1, 2, or 3 cards. For each card discarded this way, shift {DriftL} or {DriftR}. Draw 2 cards."
+            ],
+            "icons": [
+                "HasPower",
+                "Discard",
+                "DrawCardNow"
+            ],
+            "hitpoints": 26,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "One hero may use a power now.",
+                "Select a target. Prevent the next damage dealt to it."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "UsePowerNow",
+                "CancelledDamageGreen"
+            ],
+            "openingLines": {
+                "default": "Someone's not thinking with temporal anomalies!",
+                "OutlanderCharacter": "Well, it's heavy and it hurts when it hits you in the head!"
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "ShiftTrack",
+            "promoIdentifier": "TestSubjectHalberdDriftCharacter",
+            "backgroundColor": "fbf767",
+            "count": 1,
+            "title": "Shift Track",
+            "isReal": false,
+            "body": "Shift Track",
+            "setup": [
+                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+            ],
+            "gameplay": [
+                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
+                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
+                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects."
+            ],
+            "icons": [],
+            "flippedTitle": "Shift Track Back",
+            "flippedIcons": []
         }
     ]
 }

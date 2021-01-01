@@ -38,7 +38,7 @@
             "openingLines": {
                 "default": "You can't hide from my sniper rifle.",
                 "AnathemaCharacter": "You are a monster, and that place was run by monsters. I'm doing what I should have in the first place.",
-                "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
+                "AcceleratedEvolutionAnathemaCharacter": "Anathema Accelerated Evolution placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 2
@@ -407,8 +407,8 @@
             ],
             "openingLines": {
                 "default": "Going dark. Let's do this.",
-                "AnathemaCharacter": "Anathema placeholder",
-                "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
+                "AnathemaCharacter": "Heads down, folks - stay out of sight, and we might get through this.",
+                "AcceleratedEvolutionAnathemaCharacter": "Anathema Accelerated Evolution placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 2
@@ -449,8 +449,51 @@
             ],
             "openingLines": {
                 "default": "I've got a bullet with your name on it. And backups, just in case.",
-                "AnathemaCharacter": "Anathema placeholder",
-                "AnathemaAcceleratedEvolutionCharacter": "Anathema Accelerated Evolution placeholder",
+                "AnathemaCharacter": "Then maybe I'll get some kind of reward for taking you down.",
+                "AcceleratedEvolutionAnathemaCharacter": "Anathema Accelerated Evolution placeholder",
+                "PastTheRamCharacter": "1929 Ram placeholder",
+                "TheMistressOfFateCharacter": "I've had enough of these time loops. Let's take her down and get home."
+            },
+            "complexity": 2
+        },
+        {
+            "identifier": "TangoOneCharacter",
+            "promoIdentifier": "CreedOfTheSniperTangoOneCharacter",
+            "count": 1,
+            "title": "Tango One",
+            "promoTitle": "Tango One: Creed of the Sniper",
+            "shortPromoTitle": "Creed Tango One",
+            "body": "Critical Moment",
+            "backgroundColor": "C2B59B",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C2B59B",
+            "character": true,
+            "powers": [
+                "Draw a card. If it is a critical card, discard it and 1 player plays a card."
+            ],
+            "icons": [
+                "HasPower",
+                "DrawCardNow",
+                "PlayCardNow"
+            ],
+            "hitpoints": 25,
+            "nemesisIdentifiers": [
+                "TangoOne"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "One player may use a power now.",
+                "Discard the top 2 cards of a deck. If they share a keyword, put them into play in any order."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "UsePowerNow",
+                "PlayCardNow"
+            ],
+            "openingLines": {
+                "default": "This reality is just an elaborate simulation, that ends with your defeat.",
+                "AnathemaCharacter": "This simulation we're in doesn't seem very historically accurate.",
+                "AcceleratedEvolutionAnathemaCharacter": "Anathema Accelerated Evolution placeholder",
                 "PastTheRamCharacter": "1929 Ram placeholder"
             },
             "complexity": 2

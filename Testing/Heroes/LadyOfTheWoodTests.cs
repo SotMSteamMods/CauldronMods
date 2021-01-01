@@ -1139,6 +1139,36 @@ namespace CauldronTests
             AssertInTrash(fall, summer);
         }
 
+
+
+        [Test()]
+        public void TestRebirthPutCardsUnder_LimitedInPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //stack trash
+            Card spring = PutInTrash("Spring");
+            Card fall = PutInTrash("Fall");
+            Card summer = PutInTrash("Summer");
+            Card trashGown = PutInTrash("SnowshadeGown", 0);
+            Card playGown = PlayCard("SnowshadeGown", 1);
+
+            AssertIsInPlay(playGown);
+            Assert.IsFalse(trashGown == playGown);
+
+            //When this card enters play, put up to 3 cards from your trash beneath it.
+
+            DecisionSelectCards = new Card[] { trashGown, null };
+            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
+
+            //check that there is 1 card under and that it is correct
+            AssertNumberOfCardsUnderCard(rebirth, 1);
+            AssertUnderCard(rebirth, trashGown);
+            AssertInTrash(spring, fall, summer);
+        }
+
+
         [Test()]
         public void TestRebirthPutCardsUnder_Choose0()
         {
@@ -1153,7 +1183,7 @@ namespace CauldronTests
 
             //When this card enters play, put up to 3 cards from your trash beneath it.
 
-            DecisionDoNotSelectCard = SelectionType.MoveCard;
+            DecisionDoNotSelectCard = SelectionType.MoveCardToUnderCard;
             Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
 
             //since there are 0 cards moved under this card, it should immediately destroy itself

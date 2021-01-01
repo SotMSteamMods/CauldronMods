@@ -70,7 +70,7 @@ namespace Cauldron.Northspar
             return base.GameController.Game.Journal.DealDamageEntriesThisTurn()
                         .Where(e => e.TargetCard.IsTarget && e.DamageType == DamageType.Cold && e.TargetCard.IsInPlayAndHasGameText)
                         .Select(e => e.TargetCard)
-                        .ToList();
+                        .Distinct().ToList();
         }
 
         private string BuildTargetsWhoWereDealtColdDamageThisTurnSpecialString()

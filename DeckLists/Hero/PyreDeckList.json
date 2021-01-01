@@ -39,8 +39,9 @@
                 "DealDamageEnergy"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "GrayCharacter": "Gray placeholder"
+                "default": "This suit isn't for my protection... It's for all of yours.",
+                "GrayCharacter": "Okay, is this some weird time travel stuff again? Where I have to help my past self solve his problems?",
+                "PastTheRamCharacter": "I don't think Alistair will begrudge me a little violence against his upstart of an ancestor."
             },
             "complexity": 3
         },
@@ -414,8 +415,8 @@
                 "DrawCardNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "GrayCharacter": "Gray placeholder"
+                "default": "Just like old times. Let's turn up the heat!",
+                "GrayCharacter": "I wish I knew. Let's just pretend I'm your conscience, here to make myself heard through all that radiation."
             },
             "complexity": 3
         },
@@ -456,8 +457,48 @@
                 "PlayCardNow"
             ],
             "openingLines": {
-                "default": "default placeholder",
-                "GrayCharacter": "Gray placeholder"
+                "default": "Radiation output levels are safe. But you're not.",
+                "GrayCharacter": "Something like that. You make it sound worse than it is."
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "PyreCharacter",
+            "promoIdentifier": "ExpeditionOblaskPyreCharacter",
+            "count": 1,
+            "title": "Pyre",
+            "promoTitle": "Pyre: Expedition Oblask",
+            "shortPromoTitle": "Oblask Pyre",
+            "body": "Overload",
+            "backgroundColor": "E7C4A2",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "E7C4A2",
+            "character": true,
+            "powers": [
+                "Select 3 Non-{PyreIrradiate} cards among all players' hands and {PyreIrradiate} them until they leave those players' hands."
+            ],
+            "icons": [
+                "HasPower",
+                "Manipulate"
+            ],
+            "hitpoints": 30,
+            "nemesisIdentifiers": [
+                "Pyre"
+            ],
+            "incapacitatedAbilities": [
+                "One player may discard a {PyreIrradiate} card. If they do, each player may play a card now.",
+                "Destroy 2 environment cards.",
+                "One player may draw a card now."
+            ],
+            "flippedIcons": [
+                "Discard",
+                "PlayCardNow",
+                "DestroyEnvironment",
+                "DrawCardNow"
+            ],
+            "openingLines": {
+                "default": "Let's see how this makeshift containment suit holds up.",
+                "GrayCharacter": "Well, I'm you from the future, so trust me when I say, that's not going to happen today."
             },
             "complexity": 3
         }

@@ -10,6 +10,12 @@ namespace Cauldron
 {
     public static class ExtensionMethods
     {
+        public static void IncrementCardProperty(this CardController card, string key, int adjust = 1)
+        {
+            int num = card.GetCardPropertyJournalEntryInteger(key) ?? 0;
+            card.SetCardProperty(key, num + adjust);
+        }
+
         public static Card GetCardDestroyer(this DestroyCardAction action)
         {
             if (action.ResponsibleCard != null)

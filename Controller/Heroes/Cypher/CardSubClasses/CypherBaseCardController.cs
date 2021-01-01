@@ -4,13 +4,17 @@ using Handelabra.Sentinels.Engine.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Handelabra;
 
 namespace Cauldron.Cypher
 {
     public abstract class CypherBaseCardController : CardController
     {
+        public static readonly string NanocloudKey = "Nanocloud";
+
         protected CypherBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
         }
 
         protected LinqCardCriteria AugmentCardCriteria(Func<Card, bool> additionalCriteria = null)
@@ -49,7 +53,22 @@ namespace Cauldron.Cypher
 
         protected SpecialString ShowSpecialStringAugmentsInPlay()
         {
-            return SpecialStringMaker.ShowListOfCardsInPlay(AugmentCardCriteria());
+            return SpecialStringMaker.ShowSpecialString(() => GetAugListSpecial());
+        }
+
+        private string GetAugListSpecial()
+        {
+            var augList = GetAugmentsInPlay();
+            string augListSpecial = "Augments in play: ";
+            if (augList.Any())
+            {
+                augListSpecial += string.Join(", ", augList.Select(c => c.Title + (c.IsFlipped ? " (flipped)" : "")).ToArray());
+            }
+            else
+            {
+                augListSpecial += "None";
+            }
+            return augListSpecial;
         }
 
         protected SpecialString ShowSpecialStringAugmentedHeroes()
@@ -59,7 +78,28 @@ namespace Cauldron.Cypher
 
         protected bool IsAugment(Card card)
         {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "augment");
+            if (card != null)
+            {
+                if (card.HasGameText && base.GameController.DoesCardContainKeyword(card, "augment"))
+                    return true;
+
+                if (card.IsInPlay && card.IsFaceDownNonCharacter && GameController.GetCardPropertyJournalEntryBoolean(card, NanocloudKey) == true)
+                    return true;
+            }
+            return false;
+        }
+
+        protected bool IsInPlayAugment(Card card)
+        {
+            if (card != null)
+            {
+                if (card.IsInPlayAndHasGameText && base.GameController.DoesCardContainKeyword(card, "augment"))
+                    return true;
+
+                if (card.IsInPlay && card.IsFaceDownNonCharacter && GameController.GetCardPropertyJournalEntryBoolean(card, NanocloudKey) == true)
+                    return true;
+            }
+            return false;
         }
 
         protected bool IsAugmentedHeroCharacterCard(Card hero)
@@ -70,7 +110,7 @@ namespace Cauldron.Cypher
 
         protected List<Card> GetAugmentsInPlay()
         {
-            return FindCardsWhere(c => c.IsInPlayAndHasGameText && IsAugment(c)).ToList();
+            return FindCardsWhere(c => IsInPlayAugment(c)).ToList();
         }
 
         protected List<TurnTaker> GetAugmentedHeroTurnTakers()
@@ -84,7 +124,7 @@ namespace Cauldron.Cypher
             return !IsAugmentedHeroCharacterCard(hero) ? new List<Card>() : hero.GetAllNextToCards(false).Where(IsAugment).ToList();
         }
 
-        protected IEnumerator MoveAugment(SelectCardDecision scd)
+        protected IEnumerator MoveInPlayAugment(SelectCardDecision scd)
         {
             if (scd.SelectedCard == null)
             {
@@ -95,8 +135,10 @@ namespace Cauldron.Cypher
                                                          c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame)
                                     .Select(h => new MoveCardDestination(h.NextToLocation, showMessage: true)).ToList();
 
-            IEnumerator routine = GameController.SelectLocationAndMoveCard(this.DecisionMaker, scd.SelectedCard,
-                otherHeroLocations, cardSource: GetCardSource());
+            IEnumerator routine = GameController.SelectLocationAndMoveCard(this.DecisionMaker, scd.SelectedCard, otherHeroLocations,
+                                    isPutIntoPlay: false,
+                                    playIfMovingToPlayArea: false,
+                                    cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
             {

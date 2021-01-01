@@ -215,6 +215,27 @@ namespace CauldronTests
             GoToUseIncapacitatedAbilityPhase(vanish);
             UseIncapacitatedAbility(vanish, 1);
             AssertNumberOfStatusEffectsInPlay(1);
+
+            var minion = PlayCard("BladeBattalion");
+            AssertHitPoints(minion, 4);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+        }
+
+        [Test]
+        public void PastVanishIncap2Stacks()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/PastVanishCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            SetupIncap(baron);
+            AssertIncapacitated(vanish);
+
+            GoToUseIncapacitatedAbilityPhase(vanish);
+            UseIncapacitatedAbility(vanish, 1);
+            AssertNumberOfStatusEffectsInPlay(1);
+            //test stacks
             UseIncapacitatedAbility(vanish, 1);
             AssertNumberOfStatusEffectsInPlay(2);
 
@@ -274,6 +295,32 @@ namespace CauldronTests
 
 
         [Test]
+        public void TombOfThievesVanishInnatePowerStacks()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/TombOfThievesVanishCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            var minion = PlayCard("BladeBattalion");
+
+            GoToUsePowerPhase(vanish);
+
+            QuickHandStorage(vanish, haka, bunker);
+            AssertNumberOfStatusEffectsInPlay(0);
+            UsePower(vanish);
+            AssertNumberOfStatusEffectsInPlay(1);
+            UsePower(vanish);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            DecisionSelectFunction = 1;
+                        
+            DealDamage(minion, vanish, 1, DamageType.Cold);
+            AssertNumberOfStatusEffectsInPlay(0);
+            QuickHandCheck(2, 0, 0);
+        }
+
+
+        [Test]
         public void TombOfThievesVanishInnatePowerDraw()
         {
             SetupGameController("BaronBlade", "Cauldron.Vanish/TombOfThievesVanishCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
@@ -290,8 +337,9 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(1);
 
             DecisionSelectFunction = 1;
-                        
+
             DealDamage(minion, vanish, 1, DamageType.Cold);
+            AssertNumberOfStatusEffectsInPlay(0);
             QuickHandCheck(1, 0, 0);
         }
 

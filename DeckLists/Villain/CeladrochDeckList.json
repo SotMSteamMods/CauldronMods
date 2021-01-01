@@ -39,7 +39,7 @@
 			"flippedHitpoints": 100,
 			"flippedBody": "The Dark Mountain",
 			"flippedGameplay": [
-				"At the start of the villain turn, add 1 token to the storm pool. You may play the top card of the villain deck to remove 2 cards from the storm pool.",
+				"At the start of the villain turn, add 1 token to the storm pool. You may play the top card of the villain deck to remove 2 tokens from the storm pool.",
 				"Whenever an elemental, zombie, demon, or chosen is played from the top of the villain deck, search the villain deck and trash for all other cards with the same keyword and put them into play. Shuffle the villain deck.",
 				"At the end of the villain turn, {Celadroch} deals the {H - 1} hero targets with the highest HP X projectile damage each, where X is the number of tokens in the storm pool minus 2. Tf Forsaken Crusader is in the villain trash, put it into play. If a villain card was not played this turn, destroy {H} hero ongoing and/or equipment cards."
 			],
@@ -60,10 +60,12 @@
 
 			"difficulty": 4,
 			"openingLines": {
+				"default": "This prison will not hold me much longer. Your doom approaches.",
 				"LadyOfTheWoodCharacter": "--You.",
 				"SeasonsOfChangeLadyOfTheWoodCharacter": "--You.",
 				"MinistryOfStrategicScienceLadyOfTheWoodCharacter": "--You.",
-				"FutureLadyOfTheWoodCharacter": "--You."
+				"FutureLadyOfTheWoodCharacter": "--You.",
+				"LastOfTheForgottenOrderNecroCharacter": "--You. You.. You began my awakening."
 			}
 		},
 		{
@@ -310,10 +312,10 @@
 				"CounterDamage",
 				"DealDamageMelee",
 				"DestroyOngoing",
-				"DestroyEnvironment"
+				"DestroyEquipment"
 			],
 			"body": [
-				"The first time another villain target would be dealt damage each turn, this card deals the source of that damage {H} melee damage.",
+				"The first time another villain target is dealt damage each turn, this card deals the source of that damage {H} melee damage.",
 				"When this card is destroyed, destroy 1 hero ongoing or equipment card for each other non-character villain target in play."
 			],
 			"flavorQuotes": [{

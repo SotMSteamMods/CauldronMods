@@ -253,6 +253,43 @@ namespace CauldronTests
             QuickHPCheck(-1);
         }
 
+
+        [Test()]
+        public void TestWastelandRoninCricketInnatePowerStacks()
+        {
+            SetupGameController("Chokepoint", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //Increase damage dealt by {Cricket} during your next turn by 1. {Cricket} may deal 1 target 1 sonic damage.
+
+            //{Cricket} may deal 1 target 1 sonic damage.
+            QuickHPStorage(choke);
+            UsePower(cricket);
+            QuickHPCheck(-1);
+
+            QuickHPStorage(choke);
+            UsePower(cricket);
+            QuickHPCheck(-1);
+
+            //{Cricket} may deal 1 target 1 sonic damage.
+            //Increase damage dealt by {Cricket} during your next turn by 1 x 2.
+            GoToStartOfTurn(cricket);
+            QuickHPStorage(choke, cricket);
+            DealDamage(cricket, choke, 1, DamageType.Sonic);
+            QuickHPCheck(-3, 0);
+
+            //only cricket
+            DealDamage(choke, cricket, 1, DamageType.Sonic);
+            QuickHPCheck(0, -1);
+
+            //only the next turn
+            GoToStartOfTurn(cricket);
+            QuickHPStorage(choke);
+            DealDamage(cricket, choke, 1, DamageType.Sonic);
+            QuickHPCheck(-1);
+        }
+
+
         [Test()]
         public void TestWastelandRoninCricketInnatePower_BreakingTheRules()
         {
@@ -318,6 +355,26 @@ namespace CauldronTests
             QuickHandStorage(bunker);
             UsePower(bunker);
             QuickHandCheck(2);
+        }
+
+        [Test()]
+        public void TestWastelandRoninCricketIncap2CosmicWeapon()
+        {
+            SetupGameController("Apostate", "Cauldron.Cricket/WastelandRoninCricketCharacter", "CaptainCosmic", "Legacy", "MrFixer", "Megalopolis");
+            StartGame();
+            SetupIncap(apostate);
+
+            DecisionNextToCard = cosmic.CharacterCard;
+            var weapon = PlayCard("CosmicWeapon");
+
+            DecisionSelectCard = cosmic.CharacterCard;
+            DecisionSelectPower = cosmic.CharacterCard;
+            DecisionSelectPowerIndex = 1;
+            UseIncapacitatedAbility(cricket, 1);
+            //Select a power on a card in play. The next time a hero uses it. They may immediately use it again.
+            QuickHPStorage(apostate);
+            UsePower(cosmic, 1);
+            QuickHPCheck(-6);
         }
 
         [Test()]
