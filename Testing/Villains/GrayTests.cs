@@ -486,6 +486,23 @@ namespace CauldronTests
             DealDamage(ra, gray, 4, DamageType.Melee);
             QuickHPCheck(-1);
         }
+        [Test()]
+        public void TestHeavyRadiationDynamic()
+        {
+            SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
+            StartGame();
+
+            DestroyCard("ChainReaction");
+            PlayCard("HeavyRadiation");
+
+            QuickHPStorage(gray);
+            DealDamage(legacy, gray, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            PlayCard("BlightTheLand");
+            DealDamage(legacy, gray, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+        }
 
         [Test()]
         public void TestIrradiatedTouch()

@@ -15,7 +15,7 @@ namespace Cauldron.Gray
         public override void AddTriggers()
         {
             //Reduce damage dealt to {Gray} by 1 for each Radiation card in play.
-            base.AddReduceDamageTrigger((Card c) => c == base.CharacterCard, FindNumberOfRadiationCardsInPlay() ?? default);
+            base.AddReduceDamageTrigger((DealDamageAction dd) => true,  (DealDamageAction dd) => FindNumberOfRadiationCardsInPlay() ?? 0, (Card c) => c == base.CharacterCard);
             //At the end of the villain turn, if there are no Radiation cards in play, play the top card of the villain deck.
             base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, base.PlayTheTopCardOfTheVillainDeckResponse, TriggerType.PlayCard, (PhaseChangeAction action) => FindNumberOfRadiationCardsInPlay() == 0);
         }
