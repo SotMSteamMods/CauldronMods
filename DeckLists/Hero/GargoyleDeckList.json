@@ -407,7 +407,7 @@
     "notPromoCards": [
         {
             "identifier": "GargoyleCharacter",
-            "promoIdentifier": "WastelandRoninGargoyle",
+            "promoIdentifier": "WastelandRoninGargoyleCharacter",
             "count": 1,
             "title": "Gargoyle",
             "promoTitle": "Wateland Ronin Gargoyle",
@@ -446,11 +446,11 @@
         },
         {
             "identifier": "GargoyleCharacter",
-            "promoIdentifier": "FutureGargoyle",
+            "promoIdentifier": "FutureGargoyleCharacter",
             "count": 1,
             "title": "Gargoyle",
-            "promoTitle": "2199 Gargoyle",
-            "shortPromoTitle": "2199 Gargoyle",
+            "promoTitle": "Gargoyle 2199",
+            "shortPromoTitle": "Gargoyle 2199",
             "body": "Sustain",
             "backgroundColor": "D4E6B5",
             "foilBackgroundColor": "FEFEFE",
@@ -486,7 +486,7 @@
         },
         {
             "identifier": "GargoyleCharacter",
-            "promoIdentifier": "DragonRangerGargoyle",
+            "promoIdentifier": "DragonRangerGargoyleCharacter",
             "count": 1,
             "title": "Gargoyle",
             "promoTitle": "Dragon Ranger Gargoyle",
@@ -525,7 +525,7 @@
         },
         {
             "identifier": "GargoyleCharacter",
-            "promoIdentifier": "InflitratorGargoyle",
+            "promoIdentifier": "InflitratorGargoyleCharacter",
             "count": 1,
             "title": "Gargoyle",
             "promoTitle": "Inflitrator Gargoyle",

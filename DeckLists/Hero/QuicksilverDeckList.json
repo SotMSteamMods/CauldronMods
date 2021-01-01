@@ -477,7 +477,8 @@
                 "PastTheRamCharacter": "Let's see you try it after we tear you apart."
             },
             "complexity": 1
-        },
+        }],
+    "notPromoCards": [
         {
             "identifier": "QuicksilverCharacter",
             "promoIdentifier": "HarbingerQuicksilverCharacter",

@@ -228,7 +228,8 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
-
+            //prevent exlosive transform from failing the test
+            MoveCards(anathema, (Card c) => c.Identifier == "ExplosiveTransformation", anathema.TurnTaker.Trash);
             Card armOnDeck = PutOnDeck("WhipTendril");
             AssertInDeck(armOnDeck);
             //At the end of the villain turn, reveal the top card of the villain deck. If an arm or head card is revealed, put it under {Anathema}'s character card, otherwise discard it. 
@@ -244,6 +245,8 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
+            //prevent exlosive transform from failing the test
+            MoveCards(anathema, (Card c) => c.Identifier == "ExplosiveTransformation", anathema.TurnTaker.Trash);
             IEnumerable<Card> cardsUnder = GetCards("Biofeedback", "TheStuffOfNightmares", "HeavyCarapace", "RazorScales");
             MoveCards(anathema, cardsUnder, anathema.CharacterCard.UnderLocation);
             Card armOnDeck = PutOnDeck("WhipTendril");
@@ -261,7 +264,8 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
-
+            //prevent exlosive transform from failing the test
+            MoveCards(anathema, (Card c) => c.Identifier == "ExplosiveTransformation", anathema.TurnTaker.Trash);
             Card headOnDeck = PutOnDeck("CarapaceHelmet");
             AssertInDeck(headOnDeck);
             //At the end of the villain turn, reveal the top card of the villain deck. If an arm or head card is revealed, put it under {Anathema}'s character card, otherwise discard it. 
@@ -277,6 +281,8 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
+            //prevent exlosive transform from failing the test
+            MoveCards(anathema, (Card c) => c.Identifier == "ExplosiveTransformation", anathema.TurnTaker.Trash);
             IEnumerable<Card> cardsUnder = GetCards("Biofeedback", "TheStuffOfNightmares", "HeavyCarapace", "RazorScales");
             MoveCards(anathema, cardsUnder, anathema.CharacterCard.UnderLocation);
             Card headOnDeck = PutOnDeck("CarapaceHelmet");
@@ -294,7 +300,8 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
-
+            //prevent exlosive transform from failing the test
+            MoveCards(anathema, (Card c) => c.Identifier == "ExplosiveTransformation", anathema.TurnTaker.Trash);
             Card headOnDeck = PutOnDeck("Biofeedback");
             AssertInDeck(headOnDeck);
             //At the end of the villain turn, reveal the top card of the villain deck. If an arm or head card is revealed, put it under {Anathema}'s character card, otherwise discard it. 
