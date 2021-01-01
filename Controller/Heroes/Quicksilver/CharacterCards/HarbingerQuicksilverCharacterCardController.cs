@@ -21,16 +21,62 @@ namespace Cauldron.Quicksilver
                 case 0:
                     {
                         //"One player may play a card now.",
+                        coroutine = GameController.SelectHeroToPlayCard(DecisionMaker, cardSource: GetCardSource());
+                        if (UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case 1:
                     {
                         //"Destroy a target with exactly 3HP.",
+                        coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsTarget && c.HitPoints == 3), false, cardSource: GetCardSource());
+                        if (UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case 2:
                     {
                         //"One player may discard a one-shot. If they do, 2 players may each draw a card now."
+                        var storedDiscard = new List<DiscardCardAction>();
+                        coroutine = GameController.SelectHeroToDiscardCard(DecisionMaker, additionalCardCriteria: (Card c) => c.IsOneShot, storedResultsDiscard: storedDiscard, cardSource: GetCardSource());
+                        if (UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(coroutine);
+                        }
+
+                        if (DidDiscardCards(storedDiscard))
+                        {
+                            coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker,
+                                                new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame),
+                                                SelectionType.DrawCard,
+                                                (TurnTaker tt) => GameController.DrawCard(tt.ToHero(), true, cardSource: GetCardSource()),
+                                                2, false, 2,
+                                                cardSource: GetCardSource());
+                            if (UseUnityCoroutines)
+                            {
+                                yield return GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                GameController.ExhaustCoroutine(coroutine);
+                            }
+                        }
                         break;
                     }
             }
@@ -50,13 +96,13 @@ namespace Cauldron.Quicksilver
             };
             var functionDecision = new SelectFunctionDecision(GameController, DecisionMaker, functions, false, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectAndPerformFunction(functionDecision);
-            if (base.UseUnityCoroutines)
+            if (UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                yield return GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine);
+                GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
         }
@@ -67,13 +113,13 @@ namespace Cauldron.Quicksilver
                                             new MoveCardDestination[] { new MoveCardDestination(DecisionMaker.HeroTurnTaker.Hand) },
                                             selectionType: SelectionType.MoveCardToHandFromTrash,
                                             cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
+            if (UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                yield return GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine);
+                GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
         }
