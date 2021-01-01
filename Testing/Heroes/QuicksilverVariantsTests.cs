@@ -215,5 +215,17 @@ namespace CauldronTests
             DealDamage(wraith, apostate, 2, DamageType.Melee);
             QuickHPCheck(-2);
         }
+        [Test]
+        public void TestHarbingerQuicksilverLoad()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver/HarbingerQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
+
+            Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(quicksilver);
+            Assert.IsInstanceOf(typeof(HarbingerQuicksilverCharacterCardController), quicksilver.CharacterCardController);
+
+            Assert.AreEqual(26, quicksilver.CharacterCard.HitPoints);
+        }
     }
 }
