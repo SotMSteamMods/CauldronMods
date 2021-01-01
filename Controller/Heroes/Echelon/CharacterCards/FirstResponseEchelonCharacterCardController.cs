@@ -13,6 +13,7 @@ namespace Cauldron.Echelon
         public FirstResponseEchelonCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
         public override IEnumerator UsePower(int index = 0)
         {
             //"Draw a card. 
@@ -83,7 +84,7 @@ namespace Cauldron.Echelon
                     {
                         //"Look at the top 3 cards of a hero deck and replace them in any order."
                         List<SelectTurnTakerDecision> storedResults = new List<SelectTurnTakerDecision>();
-                        coroutine = GameController.SelectTurnTaker(DecisionMaker, SelectionType.RevealCardsFromDeck, storedResults, optional: false, allowAutoDecide: false, (TurnTaker tt) => tt.IsHero && !tt.ToHero().IsIncapacitatedOrOutOfGame, 3, cardSource: GetCardSource());
+                        coroutine = GameController.SelectTurnTaker(DecisionMaker, SelectionType.RevealCardsFromDeck, storedResults, optional: false, allowAutoDecide: false, (TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame, 3, cardSource: GetCardSource());
                         if (UseUnityCoroutines)
                         {
                             yield return GameController.StartCoroutine(coroutine);
