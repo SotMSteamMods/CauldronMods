@@ -486,7 +486,7 @@
         },
         {
             "identifier": "GargoyleCharacter",
-            "promoIdentifier": "DragonRangerGargoyle",
+            "promoIdentifier": "DragonRangerGargoyleCharacter",
             "count": 1,
             "title": "Gargoyle",
             "promoTitle": "Dragon Ranger Gargoyle",
@@ -525,7 +525,7 @@
         },
         {
             "identifier": "GargoyleCharacter",
-            "promoIdentifier": "InflitratorGargoyle",
+            "promoIdentifier": "InflitratorGargoyleCharacter",
             "count": 1,
             "title": "Gargoyle",
             "promoTitle": "Inflitrator Gargoyle",
