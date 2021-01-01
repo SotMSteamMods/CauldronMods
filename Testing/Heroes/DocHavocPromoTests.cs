@@ -389,5 +389,49 @@ namespace CauldronTests
             UsePower(DocHavoc);
             QuickHPCheck(-3);
         }
+        [Test]
+        public void TestFutureIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc/FutureDocHavocCharacter", "Ra", "Legacy", "Megalopolis");
+            StartGame();
+            DealDamage(baron, DocHavoc, 50, DamageType.Melee);
+
+            AssertIncapLetsHeroDrawCard(DocHavoc, 0, ra, 1);
+        }
+        [Test]
+        public void TestFutureIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc/FutureDocHavocCharacter", "Ra", "Legacy", "Megalopolis");
+            StartGame();
+            DealDamage(baron, DocHavoc, 50, DamageType.Melee);
+
+            Card flesh = PlayCard("FleshOfTheSunGod");
+            Card fort = PlayCard("Fortitude");
+            Card ring = PlayCard("TheLegacyRing");
+            Card lash = PlayCard("BacklashField");
+            AssertNextDecisionChoices(new Card[] { flesh, fort, lash }, new Card[] { ring });
+
+            DecisionSelectCard = lash;
+            UseIncapacitatedAbility(DocHavoc, 1);
+            AssertInTrash(lash);
+        }
+        [Test]
+        public void TestFutureIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc/FutureDocHavocCharacter", "Ra", "Legacy", "Megalopolis");
+            StartGame();
+            DealDamage(baron, DocHavoc, 50, DamageType.Melee);
+
+            SetHitPoints(ra, 20);
+            QuickHPStorage(ra);
+            UseIncapacitatedAbility(DocHavoc, 2);
+            Card staff = PlayCard("TheStaffOfRa");
+            QuickHPCheck(5);
+
+            //only once
+            DestroyCard(staff);
+            PlayCard(staff);
+            QuickHPCheck(3);
+        }
     }
 }

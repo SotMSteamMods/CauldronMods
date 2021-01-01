@@ -103,18 +103,50 @@ namespace Cauldron.DocHavoc
                 case 0:
                     {
                         //"One player may draw a card now.",
+                        coroutine = GameController.SelectHeroToDrawCard(DecisionMaker, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
 
                 case 1:
                     {
                         //"Destroy 1 ongoing card.",
+                        coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing, "ongoing"), false, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
 
                 case 2:
                     {
                         //"The next turn a hero target regains HP, increase the amount by 2."
+                        var effect = new IncreaseGainHPStatusEffect(2);
+                        effect.TargetCriteria.IsHero = true;
+                        effect.CardSource = this.Card;
+                        effect.NumberOfUses = 1;
+
+                        coroutine = AddStatusEffect(effect);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
             }
