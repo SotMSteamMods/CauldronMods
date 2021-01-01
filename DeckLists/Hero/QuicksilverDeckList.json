@@ -477,8 +477,7 @@
                 "PastTheRamCharacter": "Let's see you try it after we tear you apart."
             },
             "complexity": 1
-        }],
-    "notPromoCards": [
+        },
         {
             "identifier": "QuicksilverCharacter",
             "promoIdentifier": "HarbingerQuicksilverCharacter",
@@ -492,7 +491,7 @@
             "hitpointColor": "915e5b",
             "character": true,
             "powers": [
-                "Discard the top 2 cards of your deck, or put 1 card fomr your trash into your hand."
+                "Discard the top 2 cards of your deck, or put 1 card from your trash into your hand."
             ],
             "icons": [
                 "HasPower",
