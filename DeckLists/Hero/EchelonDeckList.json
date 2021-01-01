@@ -479,7 +479,7 @@
             "flavorReference": "Cypher: First Response #5"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "EchelonCharacter",
             "promoIdentifier": "FirstResponseEchelonCharacter",
@@ -534,7 +534,7 @@
             "hitpointColor": "A7B8C1",
             "character": true,
             "powers": [
-                "1 other play draws X+1 cards where X is the number of tactic cards destroyed this turn."
+                "1 other player draws X+1 cards, where X is the number of tactic cards destroyed this turn."
             ],
             "icons": [
                 "HasPower",
