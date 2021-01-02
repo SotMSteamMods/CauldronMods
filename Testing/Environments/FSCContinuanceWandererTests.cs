@@ -647,6 +647,32 @@ namespace CauldronTests
             GoToStartOfTurn(env);
             AssertInTrash(env, freeze);
         }
+        [Test()]
+        public void TestTimeFreezeWithTurnOrderReversed()
+        {
+            SetupGameController("WagerMaster", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+
+            var conditions = FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsCondition);
+            foreach (Card startingCondition in conditions)
+            {
+                FlipCard(startingCondition);
+            }
+
+            Card dice = GetCard("PlayingDiceWithTheCosmos");
+            if(dice.IsInPlay)
+            {
+                FlipCard(dice);
+                MoveCard(wager, dice, wager.TurnTaker.Deck, overrideIndestructible: true);
+            }
+            PlayCard("TimeFreeze");
+            PlayCard(dice);
+
+            GoToEndOfTurn(ra);
+            RunCoroutine(GameController.EnterNextTurnPhase());
+
+            Assert.Warn($"Current turn taker: {GameController.ActiveTurnTaker.Name}");
+        }
 
         [Test()]
         public void TestVortexGlitch() //This Test is known to fail

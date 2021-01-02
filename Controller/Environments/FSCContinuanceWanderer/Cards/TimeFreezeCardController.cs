@@ -13,15 +13,52 @@ namespace Cauldron.FSCContinuanceWanderer
         //This card is very fragile, test changes carefully.
         public TimeFreezeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            AddThisCardControllerToList(CardControllerListType.ChangesTurnTakerOrder);
         }
-
-
-        //TODO - These variables need to be removed and logic in Play needs to be moved to callbacks.
-        private TurnPhase triggerPhase;
-        private TurnPhase skipToTurnPhase;
+        private TurnTaker FrozenTurnTaker
+        {
+            get
+            {
+                if (this.Card.IsInPlayAndHasGameText)
+                {
+                    var frozenTurnTaker = GetCardThisCardIsNextTo()?.Location.HighestRecursiveLocation.OwnerTurnTaker;
+                    if (frozenTurnTaker != null && frozenTurnTaker.IsHero)
+                    {
+                        return frozenTurnTaker;
+                    }
+                }
+                return null;
+            }
+        }
+        private bool AreTurnsReversed
+        {
+            get 
+            {
+                return GameController.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "PlayingDiceWithTheCosmos").Any();
+            }
+        }
+        public override TurnTaker AskIfTurnTakerOrderShouldBeChanged(TurnTaker fromTurnTaker, TurnTaker toTurnTaker)
+        {
+            var frozen = FrozenTurnTaker;
+            if (frozen != null && !AreTurnsReversed)
+            {
+                //probably need some safety code to interact well with Playing Dice With The Cosmos
+                if (toTurnTaker == frozen)
+                {
+                    var turnTakersInOrder = GameController.AllTurnTakers.ToList();
+                    int? frozenIndex = turnTakersInOrder.IndexOf(frozen);
+                    if(frozenIndex.HasValue)
+                    {
+                        return turnTakersInOrder[frozenIndex.Value + 1];
+                    }
+                }
+            }
+            return null;
+        }
 
         public override IEnumerator Play()
         {
+            /*
             //The turn taker of the card this is next to
             var frozenTurnTaker = base.GetCardThisCardIsNextTo().Owner;
             //The index of the turn taker this card is next to
@@ -68,27 +105,66 @@ namespace Cauldron.FSCContinuanceWanderer
 
                 base.GameController.Game.OverrideNextTurnPhase = skipToTurnPhase;
             }
+            */
             yield break;
         }
 
         public override void AddTriggers()
         {//base.GameController.Game.OverrideNextTurnPhase = lastTurnPhase;
             //That hero skips their turns...
-            base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == triggerPhase.TurnTaker, this.SkipTurnResponse, new TriggerType[] { TriggerType.SkipTurn });
+            //base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == triggerPhase.TurnTaker, this.SkipTurnResponse, new TriggerType[] { TriggerType.SkipTurn });
+            AddPhaseChangeTrigger(tt => true, p => true, IsEnteringTurnReversedFrozenPhase, SkipToTurnReversedFollower, new TriggerType[] { TriggerType.SkipTurn, TriggerType.HiddenLast }, TriggerTiming.Before);
+
             //...and targets in their play are are immune to damage.
-            base.AddImmuneToDamageTrigger((DealDamageAction action) => action.Target.Location == GetCardThisCardIsNextTo().Location);
+            base.AddImmuneToDamageTrigger((DealDamageAction action) => action.Target.Location.HighestRecursiveLocation == GetCardThisCardIsNextTo().Location.HighestRecursiveLocation);
             //At the start of the environment turn, destroy this card.
             base.AddStartOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, base.DestroyThisCardResponse, TriggerType.DestroySelf);
         }
 
-        private IEnumerator SkipTurnResponse(PhaseChangeAction action)
+        private bool IsEnteringTurnReversedFrozenPhase(PhaseChangeAction pca)
         {
-            Log.Debug($"## TimeFreeze.SkipTurnResponse triggered");
-
-            base.GameController.Game.OverrideNextTurnPhase = skipToTurnPhase;
-            yield break;
+            var frozen = FrozenTurnTaker;
+            if (pca.ToPhase.TurnTaker == frozen && pca.FromPhase.TurnTaker != frozen && AreTurnsReversed)
+            {
+                return true;
+            }
+            return false;
         }
 
+        private IEnumerator SkipToTurnReversedFollower(PhaseChangeAction pca)
+        {
+            var frozen = FrozenTurnTaker;
+            if (frozen == null)
+            {
+                yield break;
+            }
+            var frozenIndex = GameController.AllTurnTakers.IndexOf(frozen);
+            var allHeroTurnTakers = GameController.AllTurnTakers.Where((TurnTaker tt) => tt.IsHero);
+            var nextTurnTakerIndex = (frozenIndex ?? 0) - 1;
+            if (frozen == allHeroTurnTakers.FirstOrDefault())
+            {
+                nextTurnTakerIndex = (GameController.AllTurnTakers.IndexOf(FindEnvironment().TurnTaker) ?? -1);
+            }
+
+            if (nextTurnTakerIndex == -1)
+            {
+                Log.Warning("Failed to find next turn taker for Time Freeze");
+                yield break;
+            }
+            var nextTurnTaker = GameController.AllTurnTakers.ToList()[nextTurnTakerIndex];
+            Log.Debug($"Should skip to TurnTaker at index {nextTurnTakerIndex}, which is {nextTurnTaker.Name}");
+            var nextTTStart = nextTurnTaker.TurnPhases.First();
+            IEnumerator coroutine = GameController.SkipToTurnPhase(nextTTStart, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             //Play this card next to a hero.
