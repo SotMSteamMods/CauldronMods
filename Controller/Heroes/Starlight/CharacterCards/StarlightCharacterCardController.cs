@@ -155,7 +155,7 @@ namespace Cauldron.Starlight
 
         private IEnumerator SelectAndPlayConstellationFromTrash(HeroTurnTakerController hero)
         {
-            IEnumerator coroutine = GameController.SelectAndPlayCard(hero, GetPlayableConstellationsInTrash(), cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectAndPlayCard(hero, GetPlayableConstellationsInTrash(), isPutIntoPlay: true, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
