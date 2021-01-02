@@ -48,7 +48,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"AreaStarlightCharacter.png":
+"Area51StarlightCharacter.png":
 {
 	"frame": {"x":1036,"y":382,"w":176,"h":256},
 	"rotated": false,
@@ -56,7 +56,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"AreaStarlightCharacterBack.png":
+"Area51StarlightCharacterBack.png":
 {
 	"frame": {"x":1215,"y":382,"w":176,"h":256},
 	"rotated": false,

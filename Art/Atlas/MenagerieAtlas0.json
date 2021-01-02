@@ -1,6 +1,6 @@
 {"frames": {
 
-"AborealSphere.png":
+"ArborealSphere.png":
 {
 	"frame": {"x":0,"y":0,"w":256,"h":188},
 	"rotated": false,
@@ -144,7 +144,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"SpecimentCollector.png":
+"SpecimenCollector.png":
 {
 	"frame": {"x":777,"y":450,"w":256,"h":188},
 	"rotated": false,

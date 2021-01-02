@@ -176,7 +176,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WastelandRoninOldTheKnight.png":
+"TheOldKnightCharacter.png":
 {
 	"frame": {"x":1432,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -184,7 +184,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WastelandRoninOldTheKnightBack.png":
+"TheOldKnightCharacterBack.png":
 {
 	"frame": {"x":1611,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -192,7 +192,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WastelandRoninTheKnightInstructions.png":
+"WastelandRoninTheKnightCharacter.png":
 {
 	"frame": {"x":1790,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -200,7 +200,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WastelandRoninTheKnightInstructionsBack.png":
+"WastelandRoninTheKnightCharacterBack.png":
 {
 	"frame": {"x":0,"y":259,"w":176,"h":256},
 	"rotated": false,
@@ -208,7 +208,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WastelandRoninYoungTheKnight.png":
+"TheYoungKnightCharacter.png":
 {
 	"frame": {"x":179,"y":259,"w":176,"h":256},
 	"rotated": false,
@@ -216,7 +216,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"WastelandRoninYoungTheKnightBack.png":
+"TheYoungKnightCharacterBack.png":
 {
 	"frame": {"x":358,"y":259,"w":176,"h":256},
 	"rotated": false,
