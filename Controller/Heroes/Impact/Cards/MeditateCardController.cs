@@ -37,7 +37,7 @@ namespace Cauldron.Impact
         private IEnumerator MaybeRepeatDamageResponse(DealDamageAction dd)
         {
             var storedYesNo = new List<YesNoCardDecision> { };
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.DestroySelf, this.Card, storedResults: storedYesNo, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.DestroyCard, this.Card, action: dd, storedResults: storedYesNo, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
