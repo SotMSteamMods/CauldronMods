@@ -241,7 +241,7 @@ namespace CauldronTests.Art.Villain
             var suffixes = new string[] { "HeroTurn", "HeroTurnFlipped", "VillainTurn", "VillainTurnFlipped" };
             var optional = new string[] { "HeroTurnDamaged", "HeroTurnDamagedFlipped", "VillainTurnDamaged", "VillainTurnDamagedFlipped" };
 
-            foreach (var character in _startEndIdentifiers)
+            foreach (var character in _characterIdentifiers)
             {
                 foreach (var suffix in suffixes)
                 {
