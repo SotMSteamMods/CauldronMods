@@ -47,7 +47,7 @@ namespace Cauldron.Echelon
             var player = FindHeroTurnTakerController(hero?.ToHero());
             if (player != null)
             {
-                IEnumerator coroutine = SelectAndDiscardCards(player, 1, false, 1);
+                IEnumerator coroutine = SelectAndDiscardCards(player, 1, false, 1, responsibleTurnTaker: TurnTaker);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

@@ -479,7 +479,7 @@
             "flavorReference": "Cypher: First Response #5"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "EchelonCharacter",
             "promoIdentifier": "FirstResponseEchelonCharacter",
@@ -526,15 +526,15 @@
             "promoIdentifier": "FutureEchelonCharacter",
             "count": 1,
             "title": "Echelon",
-            "promoTitle": "2199 Echelon",
-            "shortPromoTitle": "2199 Echelon",
+            "promoTitle": "Echelon 2199",
+            "shortPromoTitle": "Echelon 2199",
             "body": "Red Alert",
             "backgroundColor": "A7B8C1",
             "foilBackgroundColor": "FEFEFE",
             "hitpointColor": "A7B8C1",
             "character": true,
             "powers": [
-                "1 other play draws X+1 cards where X is the number of tactic cards destroyed this turn."
+                "1 other player draws X+1 cards, where X is the number of tactic cards destroyed this turn."
             ],
             "icons": [
                 "HasPower",

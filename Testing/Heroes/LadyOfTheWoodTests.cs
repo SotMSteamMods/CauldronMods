@@ -1183,7 +1183,7 @@ namespace CauldronTests
 
             //When this card enters play, put up to 3 cards from your trash beneath it.
 
-            DecisionDoNotSelectCard = SelectionType.MoveCard;
+            DecisionDoNotSelectCard = SelectionType.MoveCardToUnderCard;
             Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
 
             //since there are 0 cards moved under this card, it should immediately destroy itself

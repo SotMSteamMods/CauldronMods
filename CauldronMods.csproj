@@ -52,4 +52,8 @@
     <Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\mods\CauldronMods\$(TargetName).dll&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)manifest.json&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\mods\CauldronMods\manifest.json&quot;" />
   </Target>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="echo namespace CauldronTests { static public class ProjectPath { public static readonly string Path = @&quot;$(ProjectDir)&quot;;} } &gt; $(ProjectDir)Testing\path.cs" />
+  </Target>
+
 </Project>

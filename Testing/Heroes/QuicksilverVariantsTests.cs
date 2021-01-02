@@ -215,5 +215,115 @@ namespace CauldronTests
             DealDamage(wraith, apostate, 2, DamageType.Melee);
             QuickHPCheck(-2);
         }
+        [Test]
+        public void TestHarbingerQuicksilverLoad()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver/HarbingerQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
+
+            Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(quicksilver);
+            Assert.IsInstanceOf(typeof(HarbingerQuicksilverCharacterCardController), quicksilver.CharacterCardController);
+
+            Assert.AreEqual(26, quicksilver.CharacterCard.HitPoints);
+        }
+        [Test]
+        public void TestHarbingerPowerAutoDiscard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver/HarbingerQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            AssertMaxNumberOfDecisions(0);
+            Card spear = PutOnDeck("CoalescingSpear");
+            Card storm = PutOnDeck("AlloyStorm");
+            Card iron = PutOnDeck("IronRetort");
+
+            UsePower(quicksilver);
+            AssertInTrash(iron, storm);
+            AssertOnTopOfDeck(spear);
+        }
+        [Test]
+        public void TestHarbingerPowerReturn()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver/HarbingerQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            Card spear = PutInTrash("CoalescingSpear");
+            Card retort = PutInTrash("IronRetort");
+            Card storm = PutOnDeck("AlloyStorm");
+            DecisionSelectFunction = 1;
+            DecisionSelectCard = spear;
+
+            UsePower(quicksilver);
+            AssertInHand(spear);
+            AssertInTrash(retort);
+            AssertOnTopOfDeck(storm);
+        }
+        [Test]
+        public void TestHarbingerIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver/HarbingerQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DealDamage(baron, quicksilver, 50, DamageType.Melee);
+
+            PutInHand("TheStaffOfRa");
+            AssertIncapLetsHeroPlayCard(quicksilver, 0, ra, "TheStaffOfRa");
+        }
+        [Test]
+        public void TestHarbingerIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver/HarbingerQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DealDamage(baron, quicksilver, 50, DamageType.Melee);
+
+            Card traffic = PutIntoPlay("TrafficPileup");
+            Card battalion = PutIntoPlay("BladeBattalion");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card redist = PutIntoPlay("ElementalRedistributor");
+
+            SetHitPoints(battalion, 1);
+            SetHitPoints(mdp, 3);
+            SetHitPoints(traffic, 3);
+            DecisionSelectCard = mdp;
+            AssertNextDecisionChoices(new Card[] { mdp, traffic }, new Card[] { battalion, redist });
+
+            UseIncapacitatedAbility(quicksilver, 1);
+            AssertInTrash(mdp);
+            AssertIsInPlay(traffic);
+        }
+        [Test]
+        public void TestHarbingerIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver/HarbingerQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DealDamage(baron, quicksilver, 50, DamageType.Melee);
+
+            Card blast = PutInHand("FireBlast");
+            Card summon = PutInHand("SummonStaff");
+
+            DecisionSelectCard = blast;
+            QuickHandStorage(ra, wraith);
+
+            UseIncapacitatedAbility(quicksilver, 2);
+            QuickHandCheck(0, 1);
+            AssertInTrash(blast);
+        }
+        [Test]
+        public void TestHarbingerIncap3NoDiscard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver/HarbingerQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DealDamage(baron, quicksilver, 50, DamageType.Melee);
+
+            Card blast = PutInHand("FireBlast");
+            Card summon = PutInHand("SummonStaff");
+
+            DecisionSelectCards = new Card[] { null, blast };
+            QuickHandStorage(ra, wraith);
+
+            UseIncapacitatedAbility(quicksilver, 2);
+            QuickHandCheck(0, 0);
+            AssertInHand(blast);
+        }
     }
 }
