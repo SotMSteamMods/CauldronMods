@@ -22,7 +22,7 @@ namespace Cauldron.Cricket
             var criteria = new LinqTurnTakerCriteria(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()));
 
             var selectTurnTakersDecision = new SelectTurnTakersDecision(GameController, DecisionMaker, criteria, SelectionType.DrawCard,
-                                            cardSource: GetCardSource());
+                                            allowAutoDecide: true, cardSource: GetCardSource());
 
             var coroutine = GameController.SelectTurnTakersAndDoAction(selectTurnTakersDecision, (TurnTaker hero) => OptionalDrawAndDiscard(hero.ToHero(), otherPlayers), cardSource: GetCardSource());
             if (UseUnityCoroutines)
@@ -38,7 +38,7 @@ namespace Cauldron.Cricket
         private IEnumerator OptionalDrawAndDiscard(HeroTurnTaker hero, int numberOfDiscards)
         {
             List<DrawCardAction> result = new List<DrawCardAction>();
-            var coroutine = DrawCard(hero, optional: numberOfDiscards > 0, cardsDrawn: result, allowAutoDraw: numberOfDiscards > 0);
+            var coroutine = DrawCard(hero, optional: true, cardsDrawn: result, allowAutoDraw: numberOfDiscards == 0);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
