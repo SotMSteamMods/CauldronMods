@@ -22,9 +22,17 @@ namespace Cauldron.Impact
             int numToDestroy = GetPowerNumeral(2, 1);
             int numBoost = GetPowerNumeral(3, 2);
 
+            bool enoughOngoingsInPlay = GameController.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsOngoing && c.IsHero && !c.IsBeingDestroyed && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Count() >= numToDestroy
+
             if (numTargets < 1)
             {
                 yield break;
+            }
+
+            ITrigger previewBoost = null;
+            if(enoughOngoingsInPlay)
+            {
+                previewBoost = AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource.Card == this.Card && dd.CardSource.Card == this.Card, numBoost);
             }
 
             //select the targets
@@ -50,6 +58,8 @@ namespace Cauldron.Impact
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
+            RemoveTrigger(previewBoost);
+
             var selectedTargets = targetDecision.SelectCardDecisions.Select(scd => scd.SelectedCard).Where((Card c) => c != null);
             if (selectedTargets.Count() == 0)
             {
@@ -59,10 +69,11 @@ namespace Cauldron.Impact
             //potentially destroy ongoings to boost the upcoming damage
             ITrigger boostTrigger = null;
             bool didDestroyCards = false;
-            if (GameController.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsOngoing && c.IsHero && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Count() >= numToDestroy)
+            if (enoughOngoingsInPlay)
             {
+                var previewAction = new DealDamageAction(GetCardSource(), new DamageSource(GameController, this.Card), selectedTargets.FirstOrDefault(), numDamage, DamageType.Infernal);
                 var storedYesNo = new List<YesNoCardDecision> { };
-                coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.IncreaseDamage, this.Card, storedResults: storedYesNo, cardSource: GetCardSource());
+                coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.IncreaseDamage, this.Card, action: previewAction, storedResults: storedYesNo, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -74,7 +85,7 @@ namespace Cauldron.Impact
 
                 if (DidPlayerAnswerYes(storedYesNo))
                 {
-                    coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria(c => c.IsInPlayAndHasGameText && c.IsOngoing && c.IsHero && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "hero ongoing"), numToDestroy, false, numToDestroy, cardSource: GetCardSource());
+                    coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria(c => c.IsInPlayAndHasGameText && c.IsOngoing && c.IsHero && !c.IsBeingDestroyed && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "hero ongoing"), numToDestroy, false, numToDestroy, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
