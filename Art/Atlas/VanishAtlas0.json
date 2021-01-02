@@ -2,159 +2,175 @@
 
 "AbductAndAbandon.jpg":
 {
-	"frame": {"x":1255,"y":0,"w":256,"h":188},
+	"frame": {"x":1,"y":1,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "BlindsideJump.jpg":
 {
-	"frame": {"x":1514,"y":0,"w":256,"h":188},
+	"frame": {"x":262,"y":1,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "Blink.jpg":
 {
-	"frame": {"x":1773,"y":0,"w":256,"h":188},
+	"frame": {"x":523,"y":1,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "ConcussiveBurst.jpg":
 {
-	"frame": {"x":0,"y":259,"w":256,"h":188},
+	"frame": {"x":784,"y":1,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "Elusive.jpg":
 {
-	"frame": {"x":259,"y":259,"w":256,"h":188},
+	"frame": {"x":1045,"y":1,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "FirstResponseVanishCharacter.jpg":
 {
-	"frame": {"x":0,"y":0,"w":176,"h":256},
+	"frame": {"x":1828,"y":1,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "FirstResponseVanishCharacterBack.jpg":
 {
-	"frame": {"x":179,"y":0,"w":176,"h":256},
+	"frame": {"x":1567,"y":204,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "FlashRecon.jpg":
 {
-	"frame": {"x":518,"y":259,"w":256,"h":188},
+	"frame": {"x":1306,"y":1,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "FlickeringStrike.jpg":
 {
-	"frame": {"x":777,"y":259,"w":256,"h":188},
+	"frame": {"x":1567,"y":1,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"FocusingGauntlet.png":
+"FocusingGauntlet.jpg":
 {
-	"frame": {"x":1036,"y":259,"w":256,"h":188},
+	"frame": {"x":1,"y":204,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "Forewarned.jpg":
 {
-	"frame": {"x":1295,"y":259,"w":256,"h":188},
+	"frame": {"x":262,"y":204,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "JauntingReflex.jpg":
 {
-	"frame": {"x":1554,"y":259,"w":256,"h":188},
+	"frame": {"x":523,"y":204,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"PastVanishCharacter.png":
+"PastVanishCharacter.jpg":
 {
-	"frame": {"x":358,"y":0,"w":176,"h":256},
+	"frame": {"x":1750,"y":262,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"PastVanishCharacterBack.png":
+"PastVanishCharacterBack.jpg":
 {
-	"frame": {"x":537,"y":0,"w":176,"h":256},
+	"frame": {"x":1,"y":407,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "TacticalRelocation.jpg":
 {
-	"frame": {"x":0,"y":450,"w":256,"h":188},
+	"frame": {"x":784,"y":204,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "TeleportBarrage.jpg":
 {
-	"frame": {"x":259,"y":450,"w":256,"h":188},
+	"frame": {"x":1045,"y":204,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"TranslocationAccelerator.png":
+"TombOfThievesVanishCharacter.jpg":
 {
-	"frame": {"x":518,"y":450,"w":256,"h":188},
+	"frame": {"x":184,"y":407,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"VanishCharacter.png":
+"TombOfThievesVanishCharacterBack.jpg":
 {
-	"frame": {"x":716,"y":0,"w":176,"h":256},
+	"frame": {"x":367,"y":407,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"VanishCharacterBack.png":
+"TranslocationAccelerator.jpg":
 {
-	"frame": {"x":895,"y":0,"w":176,"h":256},
+	"frame": {"x":1306,"y":204,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"VanishCharacter.jpg":
+{
+	"frame": {"x":550,"y":407,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
+"VanishCharacterBack.jpg":
+{
+	"frame": {"x":733,"y":407,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "VanishDeckBack.jpg":
 {
-	"frame": {"x":1074,"y":0,"w":178,"h":256},
+	"frame": {"x":916,"y":407,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
@@ -167,6 +183,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:d3dbac9c03d33010e6c93ea77418c2bc:568b2ab16f93018cf60c8beebfe91d66:0cbeba678157540646b387a2c7dacc6d$"
+	"smartupdate": "$TexturePacker:SmartUpdate:36b12f4b97d44676a3f70e426eefb3c9:da7c12df7bb217250bd45a23e4fec4c3:0cbeba678157540646b387a2c7dacc6d$"
 }
 }
