@@ -22,7 +22,7 @@ namespace Cauldron.Impact
             int numToDestroy = GetPowerNumeral(2, 1);
             int numBoost = GetPowerNumeral(3, 2);
 
-            bool enoughOngoingsInPlay = GameController.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsOngoing && c.IsHero && !c.IsBeingDestroyed && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Count() >= numToDestroy
+            bool enoughOngoingsInPlay = GameController.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsOngoing && c.IsHero && !c.IsBeingDestroyed && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Count() >= numToDestroy;
 
             if (numTargets < 1)
             {
