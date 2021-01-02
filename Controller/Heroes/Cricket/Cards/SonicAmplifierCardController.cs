@@ -24,7 +24,6 @@ namespace Cauldron.Cricket
             //...you may put the top card of your deck beneath this one.
             List<YesNoDecision> storedResults = new List<YesNoDecision>();
             var yesNo = new YesNoDecision(GameController, DecisionMaker, SelectionType.MoveUnderThisCard,
-                            gameAction: action,
                             cardSource: GetCardSource());
             IEnumerator coroutine = GameController.MakeDecisionAction(yesNo);
             if (base.UseUnityCoroutines)
