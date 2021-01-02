@@ -63,7 +63,7 @@ namespace CauldronTests.Art.Hero
 
             foreach (var leftovers in files)
             {
-                Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
+                Assert.Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
             }
             AssertNoWarnings();
         }
@@ -119,7 +119,7 @@ namespace CauldronTests.Art.Hero
 
             foreach (var leftovers in atlas)
             {
-                Warn($"{_name}: Atlas entry '{leftovers}' was not used by any cards in the deck.");
+                Assert.Warn($"{_name}: Atlas entry '{leftovers}' was not used by any cards in the deck.");
             }
 
             AssertNoWarnings();
@@ -231,7 +231,7 @@ namespace CauldronTests.Art.Hero
         }
 
         [Test]
-        public void YesNoDialong()
+        public void YesNoDialog()
         {
             string expectedDirectory = Path.Combine(ArtPath, @"Cutouts\YesNoDialog\");
 
@@ -266,7 +266,7 @@ namespace CauldronTests.Art.Hero
             var suffixes = new string[] { "HeroTurn", "HeroTurnDamaged", "HeroTurnFlipped", "VillainTurn", "VillainTurnDamaged", "VillainTurnFlipped" };
             var optional = new string[] { "HeroTurnFlipped", "VillainTurnFlipped" };
 
-            foreach (var character in _startEndIdentifiers)
+            foreach (var character in _characterIdentifiers)
             {
                 foreach (var suffix in suffixes)
                 {

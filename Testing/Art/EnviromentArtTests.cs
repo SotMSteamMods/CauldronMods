@@ -60,7 +60,7 @@ namespace CauldronTests.Art.Environment
 
             foreach (var leftovers in files)
             {
-                Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
+                Assert.Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
             }
 
             AssertNoWarnings();
@@ -117,7 +117,7 @@ namespace CauldronTests.Art.Environment
 
             foreach (var leftovers in atlas)
             {
-                Warn($"{_name}: Atlas entry '{leftovers}' was not used by any cards in the deck.");
+                Assert.Warn($"{_name}: Atlas entry '{leftovers}' was not used by any cards in the deck.");
             }
 
             AssertNoWarnings();
@@ -164,7 +164,7 @@ namespace CauldronTests.Art.Environment
 
             foreach (var leftovers in files)
             {
-                Warn($"{_name}: file '{leftovers}' is not a reconized Environment scene name.");
+                Assert.Warn($"{_name}: file '{leftovers}' is not a reconized Environment scene name.");
             }
 
             AssertNoWarnings();
@@ -190,7 +190,7 @@ namespace CauldronTests.Art.Environment
 
             foreach (var leftovers in files)
             {
-                Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
+                Assert.Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
             }
 
             AssertNoWarnings();

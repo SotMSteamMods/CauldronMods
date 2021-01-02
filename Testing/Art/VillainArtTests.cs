@@ -60,7 +60,7 @@ namespace CauldronTests.Art.Villain
 
             foreach (var leftovers in files)
             {
-                Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
+                Assert.Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
             }
 
             AssertNoWarnings();
@@ -193,7 +193,7 @@ namespace CauldronTests.Art.Villain
 
             foreach (var leftovers in files)
             {
-                Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
+                Assert.Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
             }
 
             AssertNoWarnings();
@@ -241,7 +241,7 @@ namespace CauldronTests.Art.Villain
             var suffixes = new string[] { "HeroTurn", "HeroTurnFlipped", "VillainTurn", "VillainTurnFlipped" };
             var optional = new string[] { "HeroTurnDamaged", "HeroTurnDamagedFlipped", "VillainTurnDamaged", "VillainTurnDamagedFlipped" };
 
-            foreach (var character in _startEndIdentifiers)
+            foreach (var character in _characterIdentifiers)
             {
                 foreach (var suffix in suffixes)
                 {
@@ -272,7 +272,7 @@ namespace CauldronTests.Art.Villain
 
             foreach (var leftovers in files)
             {
-                Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
+                Assert.Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
             }
 
             AssertNoWarnings();
