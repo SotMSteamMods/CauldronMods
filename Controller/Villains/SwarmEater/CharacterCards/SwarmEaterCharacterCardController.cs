@@ -70,7 +70,11 @@ namespace Cauldron.SwarmEater
         {
             Card pursuit = base.FindCard(SingleMindedPursuitIdent);
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
-            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(this.DecisionMaker, SelectionType.MoveCardNextToCard, pursuit, storedResults: storedResults, associatedCards: action.Target.ToEnumerable<Card>());
+            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.MoveCard, pursuit,
+                        action: action,
+                        storedResults: storedResults,
+                        associatedCards: new [] { action.Target },
+                        cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

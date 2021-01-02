@@ -23,34 +23,31 @@ namespace Cauldron.Vector
 
         public BioterrorSquadCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowListOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => IsVirus(c), "Virus"));
+            SpecialStringMaker.ShowListOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(c => IsVirus(c), "virus"));
             SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
         public override void AddTriggers()
         {
-            base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker, 
-                StartOfTurnResponse, TriggerType.ShuffleCardIntoDeck);
+            AddStartOfTurnTrigger(tt => tt == TurnTaker, StartOfTurnResponse, TriggerType.ShuffleCardIntoDeck);
 
-            base.AddEndOfTurnTrigger(tt => tt == base.TurnTaker,
-                EndOfTurnResponse, TriggerType.DealDamage);
+            AddEndOfTurnTrigger(tt => tt == TurnTaker, EndOfTurnResponse, TriggerType.DealDamage);
 
             base.AddTriggers();
         }
 
         private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
         {
-            if (FindCardsWhere((Card c) => base.TurnTaker.Trash.HasCard(c) && IsVirus(c)).Any())
+            if (FindCardsWhere((Card c) => TurnTaker.Trash.HasCard(c) && IsVirus(c)).Any())
             {
-
-                MoveCardDestination turnTakerDeck = new MoveCardDestination(base.TurnTaker.Deck);
-
-                IEnumerator routine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker,
-                    base.TurnTaker.Trash, new LinqCardCriteria(c => base.TurnTaker.Trash.HasCard(c) && IsVirus(c)),
-                    turnTakerDeck.ToEnumerable(),
-                    showOutput: true, cardSource: base.GetCardSource());
-
-                IEnumerator routine2 = base.ShuffleDeck(this.DecisionMaker, base.TurnTaker.Deck);
+                var destination = new[] { new MoveCardDestination(TurnTaker.Deck) };
+                IEnumerator routine = GameController.SelectCardsFromLocationAndMoveThem(DecisionMaker, TurnTaker.Trash, null, 1,
+                                    new LinqCardCriteria(c => IsVirus(c), "virus"),
+                                    destination,
+                                    showOutput: true,
+                                    selectionType: SelectionType.ShuffleCardFromTrashIntoDeck,
+                                    cardSource: GetCardSource());
+                IEnumerator routine2 = ShuffleDeck(DecisionMaker, TurnTaker.Deck);
 
                 if (base.UseUnityCoroutines)
                 {
@@ -62,9 +59,10 @@ namespace Cauldron.Vector
                     base.GameController.ExhaustCoroutine(routine);
                     base.GameController.ExhaustCoroutine(routine2);
                 }
-            } else
+            }
+            else
             {
-                IEnumerator routine = base.GameController.SendMessageAction("There are no Virus cards in " + base.CharacterCard.Title + "'s Trash", Priority.Medium, cardSource: GetCardSource());
+                IEnumerator routine = base.GameController.SendMessageAction($"There are no Virus cards in {CharacterCard.Title} 's Trash", Priority.Medium, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(routine);
@@ -80,13 +78,11 @@ namespace Cauldron.Vector
 
         private IEnumerator EndOfTurnResponse(PhaseChangeAction pca)
         {
-            int damageAmount = base.Game.H;
-            
-            IEnumerator damageRoutine = this.DealDamageToHighestHP(this.Card, 1, c => c.IsHero && c.IsInPlay, 
-                c => damageAmount, DamageType.Projectile);
+            int damageAmount = Game.H;
 
-            IEnumerator damageRoutine2 = this.DealDamage(this.CharacterCard, this.Card, DamageToDealSelf, 
-                DamageType.Toxic, cardSource: base.GetCardSource());
+            IEnumerator damageRoutine = DealDamageToHighestHP(Card, 1, c => c.IsHero && c.IsInPlay, c => damageAmount, DamageType.Projectile);
+
+            IEnumerator damageRoutine2 = DealDamage(CharacterCard, Card, DamageToDealSelf, DamageType.Toxic, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
