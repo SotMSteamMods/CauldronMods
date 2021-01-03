@@ -175,6 +175,24 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestCombatPragmatismNotWhenDestroyed()
+        {
+            SetupGameController("Apostate", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card prag = PlayCard("CombatPragmatism");
+            DecisionYesNo = true;
+            DecisionSelectPower = titan.CharacterCard;
+            DecisionSelectTarget = apostate.CharacterCard;
+            //When a non-hero card enters play, you may destroy this card. If you do, you may use a power now.
+            QuickHPStorage(apostate);
+            DestroyCard(prag);
+            //nothing should happen
+            QuickHPCheck(0);
+            AssertInTrash(prag);
+        }
+
+        [Test()]
         public void TestCombatPragmatismNo()
         {
             SetupGameController("Apostate", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");

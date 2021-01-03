@@ -625,6 +625,24 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestSubharmonicReceiverSuperimposedRealities()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+
+            DecisionSelectCard = cricket.CharacterCard;
+            PlayCard("SuperimposedRealities");
+            ResetDecisions();
+            Card sub = PlayCard("SubharmonicReceiver");
+            DecisionYesNo = true;
+            //Each player may draw a card. When a player draws a card this way, 1 other player must discard a card.
+            QuickHandStorage(cricket, legacy, bunker, scholar);
+            UsePower(sub);
+            //Add draws bounce to Cricket, cricket's own draw forces legacy to discard
+            QuickHandCheck(4, -1, 0, 0);
+        }
+
+        [Test()]
         public void TestSwarmingFrequency()
         {
             SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Magmaria");

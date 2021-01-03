@@ -1,0 +1,563 @@
+{
+    "name": "Echelon",
+    "kind": "Hero",
+    "expansionIdentifier": "CauldronStormfall",
+    "initialCardIdentifiers": [
+        "EchelonCharacter"
+    ],
+    "cards": [
+        {
+            "identifier": "EchelonCharacter",
+            "count": 1,
+            "title": "Echelon",
+            "body": "Seen It All",
+            "backgroundColor": "f27366",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "f27366",
+            "character": true,
+            "powers": [
+                "{Echelon} deals 1 target 1 irreducible melee damage."
+            ],
+            "icons": [
+                "HasPower",
+                "DealDamageMelee"
+            ],
+            "hitpoints": 27,
+            "nemesisIdentifiers": [
+                "Echelon"
+            ],
+            "incapacitatedAbilities": [
+                "Destroy 1 ongoing card.",
+                "One player may draw 2 cards, then discard 2 cards.",
+                "Move the top card of the villain deck to the bottom of the villain deck."
+            ],
+            "flippedIcons": [
+                "DestroyOngoing",
+                "DrawCardNow",
+                "Discard",
+                "Manipulate"
+            ],
+            "openingLines": {
+                "default": "Before we go charging in, let's figure out what we're dealing with.",
+                "WinterTiamatCharacter": "Such a noisy lizard. I've got the antidote for that.",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "AdvanceAndRegroup",
+            "count": 2,
+            "title": "Advance And Regroup",
+            "keywords": [
+                "ongoing",
+                "tactic"
+            ],
+            "icons": [
+                "DestroySelf",
+                "GainHP"
+            ],
+            "body": [
+                "At the start of your turn, destroy this card.",
+                "Whenever a non-hero target is destroyed, 1 hero target regains 2HP."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "MagnificentMara",
+                    "text": "...And for my next trick-"
+                },
+                {
+                    "identifier": "DocHavoc",
+                    "text": "Let's just take a minute."
+                }
+            ],
+            "flavorReference": "The Crossover Magnificent"
+        },
+        {
+            "identifier": "BreakThrough",
+            "count": 2,
+            "title": "Break Through",
+            "keywords": [
+                "ongoing",
+                "tactic"
+            ],
+            "icons": [
+                "DestroySelf",
+                "IncreaseDamageDealt"
+            ],
+            "body": [
+                "At the start of your turn, destroy this card.",
+                "Once during their turn, when 1 of a player's targets would deal damage, they may increase that damage by 2."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Echelon",
+                    "text": "Now!"
+                }
+            ],
+            "flavorReference": "Echelon, The Cricket #20"
+        },
+        {
+            "identifier": "CommandAndConquer",
+            "count": 4,
+            "title": "Command And Conquer",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Manipulate",
+                "DealDamageLightning",
+                "DealDamageMelee"
+            ],
+            "body": [
+                "Reveal cards from the top of your deck until 2 Tactics are revealed.  Shuffle the other revealed cards into your deck. Put 1 revealed Tactic into play and the other on the top or bottom of your deck.",
+                "{Echelon} deals 1 target 2 lightning or 2 melee damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Zevach",
+                    "text": "She's got a whole team with{BR}her, and they know every move before{BR}we make it!"
+                }
+            ],
+            "flavorReference": "Zevach, The Consultant #3"
+        },
+        {
+            "identifier": "DatabaseUplink",
+            "count": 3,
+            "title": "Database Uplink",
+            "keywords": [
+                "equipment"
+            ],
+            "icons": [
+                "Discard",
+                "DrawCardNow",
+                "HasPower",
+                "PlayCardNow"
+            ],
+            "body": "At the end of your turn, you may discard a Tactic. If you do, draw a card.",
+            "powers": [
+                "Put a Tactic from your hand into play."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Echelon",
+                    "text": "I've got access to every surveillance{BR}system on the planet.{BR}So no, I wasn't listening to you."
+                }
+            ],
+            "flavorReference": "Echelon, Quicksilver #1"
+        },
+        {
+            "identifier": "FindAWayIn",
+            "count": 2,
+            "title": "Find A Way In",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "StartOfTurnAction",
+                "MakeDecision",
+                "PlayCardExtra"
+            ],
+            "body": [
+                "At the start of a player's turn, that player may choose to skip their power Phase. If they do, they may play 1 additional card during their play Phase.",
+                "At the start of your turn, destroy this card and each hero target regains 1HP."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Echelon",
+                    "text": "I've disabled the{BR}motion sensors. Your target is{BR}three floors above you."
+                }
+            ],
+            "flavorReference": "Echelon, The Consultant #3"
+        },
+        {
+            "identifier": "FirstResponder",
+            "count": 3,
+            "title": "First Responder",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Discard",
+                "PlayCardNow",
+                "DrawCardNow"
+            ],
+            "body": [
+                "You may discard a card. If you do, put up to 2 Tactics from your trash into play.",
+                "If you did not discard a card, you may discard your hand and draw 4 cards."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "DocHavoc",
+                    "text": "Don't tell me you{BR}haven't missed this."
+                }
+            ],
+            "flavorReference": "Doc Havoc, Stormfront One-shot"
+        },
+        {
+            "identifier": "KnowYourEnemy",
+            "count": 2,
+            "title": "Know Your Enemy",
+            "keywords": [
+                "ongoing",
+                "tactic"
+            ],
+            "icons": [
+                "Discard",
+                "DrawCardNow",
+                "DestroySelf"
+            ],
+            "body": [
+                "At the start of your turn, you may discard a card. If you do not, draw a card and destroy this card.",
+                "The first time a hero destroys a non-hero target each turn, you may draw a card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Echelon",
+                    "text": "If you didn't learn something,{BR}kid, you didn't really win."
+                }
+            ],
+            "flavorReference": "Echelon, The Consultant #1"
+        },
+        {
+            "identifier": "NeedAWayOut",
+            "count": 2,
+            "title": "Need A Way Out",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "StartOfTurnAction",
+                "MakeDecision",
+                "UsePowerExtra"
+            ],
+            "body": [
+                "At the start of a player's turn, that player may choose to skip their play Phase. If they do, they may use 1 additional power during their power Phase.",
+                "At the start of your turn, destroy this card and each hero target regains 1HP."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "AbsoluteZero",
+                    "text": "Lady, get us out of here!"
+                },
+                {
+                    "identifier": "Echelon",
+                    "text": "What's the magical word?"
+                }
+            ],
+            "flavorReference": "Adventurers #10"
+        },
+        {
+            "identifier": "Overwatch",
+            "count": 2,
+            "title": "Overwatch",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "HasPower",
+                "CounterDamage",
+                "DealDamageMelee"
+            ],
+            "powers": [
+                "Once before your next turn, when a hero target is dealt damage, {Echelon} may deal the source of that damage 3 melee damage"
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Echelon",
+                    "text": "They look left,{BR}and then I go right."
+                }
+            ],
+            "flavorReference": "Echelon, Akela City Shuffle"
+        },
+        {
+            "identifier": "PracticedTeamwork",
+            "count": 2,
+            "title": "Practiced Teamwork",
+            "keywords": [
+                "ongoing",
+                "tactic"
+            ],
+            "icons": [
+                "DrawCardNow",
+                "Discard",
+                "DestroySelf",
+                "ReduceDamageTaken"
+            ],
+            "body": [
+                "When this card enters play, each player may draw a card.",
+                "At the start of your turn, you may discard a card. If you do not, destroy this card.",
+                "Reduce damage dealt to hero targets by hero targets by 1."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Haka",
+                    "text": "You've gotten{BR}much better at this!"
+                }
+            ],
+            "flavorReference": "Haka, Door in the World #4"
+        },
+        {
+            "identifier": "RemoteObservation",
+            "count": 2,
+            "title": "Remote Observation",
+            "keywords": [
+                "ongoing",
+                "tactic"
+            ],
+            "icons": [
+                "Discard",
+                "DrawCardNow",
+                "DestroySelf",
+                "DrawCardExtra"
+            ],
+            "body": [
+                "At the start of your turn, you may discard a card. If you do not, draw a card and destroy this card.",
+                "During their draw Phase, heroes draw 1 additional card, then discard 1 card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Echelon",
+                    "text": "Before you jokers go{BR}charging in, maybe you'd like to{BR}know what we're dealing with."
+                }
+            ],
+            "flavorReference": "Echelon, Information Warfare #17"
+        },
+        {
+            "identifier": "RuthlessIntimidation",
+            "count": 2,
+            "title": "Ruthless Intimidation",
+            "keywords": [
+                "ongoing",
+                "tactic"
+            ],
+            "icons": [
+                "Discard",
+                "DrawCardNow",
+                "DestroySelf",
+                "IncreaseDamageDealt"
+            ],
+            "body": [
+                "At the start of your turn, you may discard a card. If you do not, draw a card and destroy this card.",
+                "Increase damage dealt to the non-hero target with the lowest HP by 1."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Echelon",
+                    "text": "All gone a bit wobbly, has it?"
+                }
+            ],
+            "flavorReference": "Echelon, The Cricket #20"
+        },
+        {
+            "identifier": "StaggeredAssault",
+            "count": 2,
+            "title": "Staggered Assault",
+            "keywords": [
+                "ongoing",
+                "tactic"
+            ],
+            "icons": [
+                "Discard",
+                "DrawCardNow",
+                "DestroySelf",
+                "DealDamageMelee"
+            ],
+            "body": [
+                "At the start of your turn, you may discard a card. If you do not, draw a card and destroy this card.",
+                "Once per turn when a hero target deals an instance of 2 or more damage, {Echelon} may deal 1 target 1 melee damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Echelon",
+                    "text": "Set 'em up..."
+                },
+                {
+                    "identifier": "MisterFixer",
+                    "text": "..knock 'em down."
+                }
+            ],
+            "flavorReference": "The Consultant #4"
+        },
+        {
+            "identifier": "StrategicDeployment",
+            "count": 4,
+            "title": "Strategic Deployment",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Search"
+            ],
+            "body": "Search your deck for a Tactic and put it into play. Shuffle your deck.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Echelon",
+                    "text": "I didn't ask for your opinion, I told{BR}you to start kissing sky. Now!"
+                }
+            ],
+            "flavorReference": "Echelon, First Response #2"
+        },
+        {
+            "identifier": "SurpriseAttack",
+            "count": 2,
+            "title": "Surprise Attack",
+            "keywords": [
+                "ongoing",
+                "tactic"
+            ],
+            "icons": [
+                "Discard",
+                "DrawCardNow",
+                "DestroySelf",
+                "IncreaseDamageDealt"
+            ],
+            "body": [
+                "At the start of your turn, you may discard a card. If you do not, draw a card and destroy this card.",
+                "Whenever a hero uses a power that deals damage, increase that damage by 1. You may change the type of that damage to psychic."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Phase",
+                    "text": "Who's there?"
+                }
+            ],
+            "flavorReference": "Phase, Door in the World #4"
+        },
+        {
+            "identifier": "TeslaKnuckles",
+            "count": 2,
+            "title": "Tesla Knuckles",
+            "keywords": [
+                "equipment",
+                "limited"
+            ],
+            "icons": [
+                "DealDamageLightning",
+                "HasPower"
+            ],
+            "body": "At the end of your turn, {Echelon} may deal 1 target X lightning damage, where X is the number of Tactics destroyed during your turn.",
+            "powers": [
+                "{Echelon} deals each non-hero target 1 lightning damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Echelon",
+                    "text": "Chew on this, mate!{BR}Careful, it's tangy!"
+                }
+            ],
+            "flavorReference": "Echelon, Halcyon Days #62"
+        },
+        {
+            "identifier": "TheKestrelMarkII",
+            "count": 2,
+            "title": "The Kestrel Mark II",
+            "keywords": [
+                "equipment",
+                "limited"
+            ],
+            "icons": [
+                "HasPower",
+                "DealDamageProjectile",
+                "GainHP"
+            ],
+            "powers": [
+                "{Echelon} deals 1 target 1 projectile damage and regains 2HP.",
+                "Destroy this card. One player draws 2 cards."
+            ],
+            "extraConfirmationIndices": [
+                1
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Cypher",
+                    "text": "I'd like to see that oversized lizard shoot this one down."
+                }
+            ],
+            "flavorReference": "Cypher: First Response #5"
+        }
+    ],
+    "promoCards": [
+        {
+            "identifier": "EchelonCharacter",
+            "promoIdentifier": "FirstResponseEchelonCharacter",
+            "count": 1,
+            "title": "Echelon",
+            "promoTitle": "First Response Echelon",
+            "shortPromoTitle": "Responder Echelon",
+            "body": "Aerial Scan",
+            "backgroundColor": "83CFC7",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "83CFC7",
+            "character": true,
+            "powers": [
+                "Draw a card. You may play The Kestrel Mark II from your hand."
+            ],
+            "icons": [
+                "HasPower",
+                "DrawCardNow",
+                "PlayCardNow"
+            ],
+            "hitpoints": 28,
+            "nemesisIdentifiers": [
+                "Echelon"
+            ],
+            "incapacitatedAbilities": [
+                "Up to 2 equipment cards may be played now.",
+                "Look at the top 3 cards of a hero deck and replace them in any order.",
+                "Destroy an environment card."
+            ],
+            "flippedIcons": [
+                "PlayCardNow",
+                "Manipulate",
+                "DestroyEnvironment"
+            ],
+            "openingLines": {
+                "default": "Get ready to move out.",
+                "WinterTiamatCharacter": "What are you jokers waiting for? We've got a dragon that needs to be taught some manners.",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "EchelonCharacter",
+            "promoIdentifier": "FutureEchelonCharacter",
+            "count": 1,
+            "title": "Echelon",
+            "promoTitle": "Echelon 2199",
+            "shortPromoTitle": "Echelon 2199",
+            "body": "Red Alert",
+            "backgroundColor": "A7B8C1",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "A7B8C1",
+            "character": true,
+            "powers": [
+                "1 other player draws X+1 cards, where X is the number of tactic cards destroyed this turn."
+            ],
+            "icons": [
+                "HasPower",
+                "DrawCardNow"
+            ],
+            "hitpoints": 26,
+            "nemesisIdentifiers": [
+                "Echelon"
+            ],
+            "incapacitatedAbilities": [
+                "One player may play a card now.",
+                "Play the top card of the environment deck.",
+                "Reveal the top card of 2 decks, play 1 and replace the other."
+            ],
+            "flippedIcons": [
+                "PlayCardNow"
+            ],
+            "openingLines": {
+                "default": "Deploying surveillance drones to identify strategic weaknesses.",
+                "WinterTiamatCharacter": "What a quaint beast.",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+            },
+            "complexity": 3
+        }
+    ]
+}

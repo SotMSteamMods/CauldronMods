@@ -341,6 +341,37 @@ namespace CauldronTests
             QuickHPCheck(-3, 0, -3);
         }
 
+
+        [Test()]
+        public void TestDensityRegulator()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Legacy", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyWall();
+
+            //When this card enters play, place it next to the hero with the highest HP.
+            Card reg = PlayCard("DensityRegulator");
+            AssertInPlayArea(phase, reg);
+            
+            //Reduce damage dealt to phase by 1.
+            QuickHPStorage(phase);
+            DealDamage(haka, phase, 3, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            SetHitPoints(legacy, 20);
+            SetHitPoints(scholar, 20);
+
+            //prevent Phase's EOT play from messing up test
+            PlayCard("TakeDown");
+
+            //deal all hero targets but the lowest 2 damage
+            QuickHPStorage(haka, legacy, scholar);
+            DecisionLowestHP = legacy.CharacterCard;
+            DecisionAutoDecide = SelectionType.SelectTarget;
+            GoToEndOfTurn(phase);
+            QuickHPCheck(-2, 0, -2);
+        }
+
         [Test()]
         public void TestDistortionGrenade()
         {
@@ -571,6 +602,23 @@ namespace CauldronTests
             QuickHPStorage(haka.CharacterCard, wall);
             DealDamage(haka, wall, 2, DamageType.Melee);
             QuickHPCheck(-2, -1);
+        }
+
+
+        [Test()]
+        public void TestResidualDesynchronization_NoDamageIfTargetDestroyed()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Legacy", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card wall = GetCardInPlay("ReinforcedWall");
+            PlayCard("ResidualDesynchronization");
+
+            //The first time a villain target is dealt damage each turn, it deals the source of that damage 2 energy damage.
+            //Damage fizzles since wall is destroyed and can't deal damage
+            QuickHPStorage(haka.CharacterCard);
+            DealDamage(haka, wall, 99, DamageType.Melee);
+            QuickHPCheck(0);
         }
 
         [Test()]

@@ -358,6 +358,26 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestWastelandRoninCricketIncap2CosmicWeapon()
+        {
+            SetupGameController("Apostate", "Cauldron.Cricket/WastelandRoninCricketCharacter", "CaptainCosmic", "Legacy", "MrFixer", "Megalopolis");
+            StartGame();
+            SetupIncap(apostate);
+
+            DecisionNextToCard = cosmic.CharacterCard;
+            var weapon = PlayCard("CosmicWeapon");
+
+            DecisionSelectCard = cosmic.CharacterCard;
+            DecisionSelectPower = cosmic.CharacterCard;
+            DecisionSelectPowerIndex = 1;
+            UseIncapacitatedAbility(cricket, 1);
+            //Select a power on a card in play. The next time a hero uses it. They may immediately use it again.
+            QuickHPStorage(apostate);
+            UsePower(cosmic, 1);
+            QuickHPCheck(-6);
+        }
+
+        [Test()]
         public void TestWastelandRoninCricketIncap3()
         {
             SetupGameController("AkashBhuta", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Bunker", "TheScholar", "Magmaria");

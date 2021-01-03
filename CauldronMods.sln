@@ -3,11 +3,36 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CauldronMods", "CauldronMods.csproj", "{95D86258-7A68-4DF0-B8F5-1E7C7F285F42}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DF743039-B2BE-445C-A7B5-FBD3468D7CF2}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CauldronMods", "CauldronMods\CauldronMods.csproj", "{0151D988-875B-4223-8127-04EAF1C3BED6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing", "Testing\Testing.csproj", "{7A61876B-1E55-4E65-B5C2-FC0DCBE08454}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{4ABCE34D-7530-4CD2-8801-8AC692E1A4DA}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\ADHOC_MOD_LOADING.md = Docs\ADHOC_MOD_LOADING.md
+		Docs\ART.md = Docs\ART.md
+		Docs\CODE_OF_CONDUCT.md = Docs\CODE_OF_CONDUCT.md
+		Docs\CODE_WISDOM.md = Docs\CODE_WISDOM.md
+		Docs\CONTRIBUTING.md = Docs\CONTRIBUTING.md
+		Docs\MUSIC_CREDITS.md = Docs\MUSIC_CREDITS.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utility", "Utility", "{618837AD-5FF1-43F1-87F5-0DCB8F2E723D}"
+	ProjectSection(SolutionItems) = preProject
+		Utility\Card Controller Template Info.txt = Utility\Card Controller Template Info.txt
+		Utility\CodingBugs = Utility\CodingBugs
+		Utility\DeckAndPromoIdentifiers.txt = Utility\DeckAndPromoIdentifiers.txt
+		Utility\DecklistIcons.txt = Utility\DecklistIcons.txt
+		Utility\InitialNotes = Utility\InitialNotes
+		Utility\NemesisList.txt = Utility\NemesisList.txt
 	EndProjectSection
 EndProject
 Global
@@ -16,13 +41,21 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{95D86258-7A68-4DF0-B8F5-1E7C7F285F42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{95D86258-7A68-4DF0-B8F5-1E7C7F285F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{95D86258-7A68-4DF0-B8F5-1E7C7F285F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{95D86258-7A68-4DF0-B8F5-1E7C7F285F42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0151D988-875B-4223-8127-04EAF1C3BED6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0151D988-875B-4223-8127-04EAF1C3BED6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0151D988-875B-4223-8127-04EAF1C3BED6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0151D988-875B-4223-8127-04EAF1C3BED6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A61876B-1E55-4E65-B5C2-FC0DCBE08454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A61876B-1E55-4E65-B5C2-FC0DCBE08454}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A61876B-1E55-4E65-B5C2-FC0DCBE08454}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A61876B-1E55-4E65-B5C2-FC0DCBE08454}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4ABCE34D-7530-4CD2-8801-8AC692E1A4DA} = {DF743039-B2BE-445C-A7B5-FBD3468D7CF2}
+		{618837AD-5FF1-43F1-87F5-0DCB8F2E723D} = {DF743039-B2BE-445C-A7B5-FBD3468D7CF2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1D07C7BE-B593-45BD-914B-6D22B52577BF}

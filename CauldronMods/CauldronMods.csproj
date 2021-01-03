@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net35</TargetFramework>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+	<Deterministic>true</Deterministic>
+	<DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="DeckLists\**\*.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="DeckLists\**\*.json">
+      <LogicalName>Cauldron.DeckLists.%(EmbeddedResource.FileName).json</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="manifest.json">
+	  <Link>manifest.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="EngineCommon">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\Sentinels_Data\Managed\EngineCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="SentinelsEngine">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\Sentinels_Data\Managed\SentinelsEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\mods\CauldronMods\$(TargetName).dll&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)manifest.json&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\mods\CauldronMods\manifest.json&quot;" />
+  </Target>
+
+</Project>
