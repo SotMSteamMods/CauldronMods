@@ -402,8 +402,20 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Menagerie", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
-            //At the end of the villain turn, play the top card of the villain deck.",
+
+            Card ant = GetCard("MutatedAnt");
+            StackDeckAfterShuffle(menagerie, new string[] { "MutatedAnt" });
+
+            Card letho = PlayCard("AngryLethovore");
+
+            DealDamage(haka, letho, 3, DamageType.Melee);
+            //At the end of the villain turn, play the top card of the villain deck.
+            GoToEndOfTurn(menagerie);
+            AssertIsInPlay(ant);
             //Whenever a target enters play, this card deals that target 2 melee damage and regains 6HP.
+            AssertHitPoints(ant, (ant.MaximumHitPoints ?? default) - 1);
+            //Lethovore's max HP is 6 so it will go to max no matter what
+            AssertHitPoints(letho, 6);
         }
 
         [Test()]
@@ -429,6 +441,197 @@ namespace CauldronTests
             QuickHandStorage(scholar);
             UsePower(scholar);
             QuickHandCheck(-1);
+        }
+
+        [Test()]
+        public void TestArborealSphere()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Bunker", "Parse", "Megalopolis");
+            StartGame();
+
+            Card lumo = PutOnDeck("LumobatFlock");
+
+            //When this card enters play, place the top card of the villain deck beneath it face down.
+            QuickHPStorage(parse, haka, bunker);
+            Card sphere = PlayCard("ArborealSphere");
+            AssertNumberOfCardsAtLocation(sphere.UnderLocation, 1);
+
+            //Then, play the top card of the villain deck.
+            AssertIsInPlay(lumo);
+
+            //Whenever a Specimen enters play, it deals the non-villain target with the lowest HP {H - 2} melee damage.
+            QuickHPCheck(-1, 0, 0);
+        }
+
+        [Test()]
+        public void TestArborealSphereTargetEnvironment()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Bunker", "Parse", "Megalopolis");
+            StartGame();
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card lumo = PutOnDeck("LumobatFlock");
+
+            //When this card enters play, place the top card of the villain deck beneath it face down.
+            QuickHPStorage(traffic);
+            Card sphere = PlayCard("ArborealSphere");
+            AssertNumberOfCardsAtLocation(sphere.UnderLocation, 1);
+
+            //Then, play the top card of the villain deck.
+            AssertIsInPlay(lumo);
+
+            //Whenever a Specimen enters play, it deals the non-villain target with the lowest HP {H - 2} melee damage.
+            QuickHPCheck(-1);
+        }
+
+        [Test()]
+        public void TestExoticSphere()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Bunker", "Benchmark", "Megalopolis");
+            StartGame();
+
+            PutOnDeck("AquaticSphere");
+            PutOnDeck("LumobatFlock");
+
+            //When this card enters play, place the top 2 cards of the villain deck beneath it face down.
+            Card sphere = PlayCard("ExoticSphere");
+            AssertNumberOfCardsAtLocation(sphere.UnderLocation, 2);
+
+            //At the start of each hero's turn, this card deals the non-villain target with the highest HP {H - 1} toxic damage.
+            QuickHPStorage(haka);
+            GoToStartOfTurn(haka);
+            QuickHPCheck(-2);
+
+            QuickHPStorage(haka);
+            GoToStartOfTurn(bunker);
+            QuickHPCheck(-2);
+
+            QuickHPStorage(bench);
+            GoToStartOfTurn(bench);
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestFeedingTime()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Bunker", "Benchmark", "Megalopolis");
+            DiscardAllCards(bench);
+            StartGame();
+
+            Card tak = PutInTrash("TakIshmael");
+            Card keeper = PutInTrash("HiredKeeper");
+            Card hive = PutInTrash("HalberdHive");
+
+            PlayCard("FeedingTime");
+
+            //When this card enters play, put all Mercenary cards from the villain trash into play.
+            AssertIsInPlay(new Card[] { tak, keeper });
+            AssertInTrash(hive);
+
+            //Reduce damage dealt to Mercenaries by X, where X is the number of Specimens in play.
+            //0 in play
+            QuickHPStorage(tak);
+            DealDamage(bench, tak, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //1 in play
+            PlayCard(hive);
+            QuickHPStorage(tak);
+            DealDamage(bench, tak, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            //2 in play
+            PlayCard("FeethsmarAlpha");
+            QuickHPStorage(tak);
+            DealDamage(bench, tak, 3, DamageType.Melee);
+            QuickHPCheck(-1);
+        }
+
+        [Test()]
+        public void TestFeethsmarAlpha()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "TheSentinels", "Benchmark", "Megalopolis");
+            DiscardAllCards(bench);
+            StartGame();
+
+            Card hive = PlayCard("HalberdHive");
+            Card aqua = PlayCard("AquaticSphere");
+            Card traffic = PlayCard("TrafficPileup");
+            PutOnDeck("ExoticSphere");
+
+            PlayCard("FeethsmarAlpha");
+            //Increase damage dealt to Enclosures by 1.
+            //At the end of the villain turn, this card deals each non-Specimen target 2 cold damage.
+            QuickHPStorage(hive, haka.CharacterCard, bench.CharacterCard, aqua, traffic);
+            GoToEndOfTurn(menagerie);
+            QuickHPCheck(0, -2, -2, -3, -2);
+        }
+
+        [Test()]
+        public void TestHalberdHive()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
+            DiscardAllCards(bench);
+            StartGame();
+
+            PutOnDeck("AquaticSphere");
+            Card ant = PutInTrash("MutatedAnt");
+
+            PlayCard("HalberdHive");
+            //At the end of the villain turn, this card deals the hero target with the lowest HP 2 toxic damage. Then, put all Insects in the villain trash into play.
+            QuickHPStorage(parse);
+            GoToEndOfTurn(menagerie);
+            QuickHPCheck(-2);
+            AssertIsInPlay(ant);
+
+            //Increase damage dealt by insects by 1.
+            QuickHPStorage(haka);
+            DealDamage(ant, haka, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+        }
+
+        [Test()]
+        public void TestHiredKeeperEquipment()
+        {
+            SetupGameController("Cauldron.Menagerie", "Parse", "Haka", "Benchmark", "Megalopolis");
+            DiscardAllCards(haka, bench);
+            StartGame();
+
+            PutOnDeck("AquaticSphere");
+            Card mere = PlayCard("Mere");
+
+            PlayCard("HiredKeeper");
+            //At the end of the villain turn, this card deals the 2 non-Captured hero targets with the highest HP 2 sonic damage each.
+            QuickHPStorage(haka, parse, bench);
+            GoToEndOfTurn(menagerie);
+            QuickHPCheck(-2, 0, -2);
+
+            //Whenever a Specimen is destroyed, destroy 1 hero ongoing or equipment card.
+            Card hive = PlayCard("HalberdHive");
+            DestroyCard(hive);
+            AssertInTrash(mere);
+        }
+
+        [Test()]
+        public void TestHiredKeeperOngoing()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
+            DiscardAllCards(bench, parse);
+            StartGame();
+
+            Card moko = PlayCard("TaMoko");
+
+            PutOnDeck("AquaticSphere");
+            PlayCard("HiredKeeper");
+            //At the end of the villain turn, this card deals the 2 non-Captured hero targets with the highest HP 2 sonic damage each.
+            QuickHPStorage(haka, parse, bench);
+            GoToEndOfTurn(menagerie);
+            QuickHPCheck(0, -2, -2);
+
+            //Whenever a Specimen is destroyed, destroy 1 hero ongoing or equipment card.
+            Card hive = PlayCard("HalberdHive");
+            DestroyCard(hive);
+            AssertInTrash(moko);
         }
     }
 }
