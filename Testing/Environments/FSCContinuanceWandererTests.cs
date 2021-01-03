@@ -711,6 +711,30 @@ namespace CauldronTests
             AssertIsInPlay(takedown);
             Assert.IsTrue(GameController.ActiveTurnTaker == legacy.TurnTaker);
         }
+        [Test()]
+        public void TestTimeFreezeWithPhaseOrderReversed()
+        {
+            SetupGameController("WagerMaster", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+
+            var conditions = FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsCondition);
+            foreach (Card startingCondition in conditions)
+            {
+                FlipCard(startingCondition);
+            }
+
+            GoToEndOfTurn(wager);
+            PlayCard("TimeFreeze");
+            PlayCard("BreakingTheRules");
+            Card flare = PlayCard("SolarFlare");
+
+            DecisionYesNo = false;
+
+            RunCoroutine(GameController.EnterNextTurnPhase());
+            RunCoroutine(GameController.EnterNextTurnPhase());
+            AssertInTrash(flare);
+            Assert.IsTrue(GameController.ActiveTurnTaker == ra.TurnTaker);
+        }
 
         [Test()]
         public void TestVortexGlitch() //This Test is known to fail
