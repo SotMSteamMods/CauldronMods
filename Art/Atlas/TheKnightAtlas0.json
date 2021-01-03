@@ -2,235 +2,243 @@
 
 "ArmYourself.jpg":
 {
-	"frame": {"x":537,"y":259,"w":256,"h":188},
+	"frame": {"x":1,"y":1,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "BattlefieldScavenger.jpg":
 {
-	"frame": {"x":796,"y":259,"w":256,"h":188},
+	"frame": {"x":262,"y":1,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "BerserkerTheKnightCharacter.jpg":
 {
-	"frame": {"x":0,"y":0,"w":176,"h":256},
+	"frame": {"x":1828,"y":1,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "BerserkerTheKnightCharacterBack.jpg":
 {
-	"frame": {"x":179,"y":0,"w":176,"h":256},
+	"frame": {"x":1828,"y":262,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "CatchYourBreath.jpg":
 {
-	"frame": {"x":1055,"y":259,"w":256,"h":188},
+	"frame": {"x":523,"y":1,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "ChampionOfTheRealm.jpg":
 {
-	"frame": {"x":1314,"y":259,"w":256,"h":188},
+	"frame": {"x":784,"y":1,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "DefenderOfTheRealm.jpg":
 {
-	"frame": {"x":1573,"y":259,"w":256,"h":188},
+	"frame": {"x":1045,"y":1,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "FairTheKnightCharacter.jpg":
 {
-	"frame": {"x":358,"y":0,"w":176,"h":256},
+	"frame": {"x":262,"y":407,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "FairTheKnightCharacterBack.jpg":
 {
-	"frame": {"x":537,"y":0,"w":176,"h":256},
+	"frame": {"x":445,"y":407,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "HeavySwing.jpg":
 {
-	"frame": {"x":0,"y":518,"w":256,"h":188},
+	"frame": {"x":1306,"y":1,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "KnightsHonor.jpg":
 {
-	"frame": {"x":259,"y":518,"w":256,"h":188},
+	"frame": {"x":1567,"y":1,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "MaidensBlessing.jpg":
 {
-	"frame": {"x":518,"y":518,"w":256,"h":188},
+	"frame": {"x":1,"y":204,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"PastTheKnightCharacter.png":
+"PastTheKnightCharacter.jpg":
 {
-	"frame": {"x":716,"y":0,"w":176,"h":256},
+	"frame": {"x":628,"y":407,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
+"PastTheKnightCharacterBack.jpg":
+{
+	"frame": {"x":811,"y":407,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "PlateHelm.jpg":
 {
-	"frame": {"x":777,"y":518,"w":256,"h":188},
+	"frame": {"x":262,"y":204,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "PlateMail.jpg":
 {
-	"frame": {"x":1036,"y":518,"w":256,"h":188},
+	"frame": {"x":523,"y":204,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "ShortSword.jpg":
 {
-	"frame": {"x":1295,"y":518,"w":256,"h":188},
+	"frame": {"x":784,"y":204,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "StalwartShield.jpg":
 {
-	"frame": {"x":1554,"y":518,"w":256,"h":188},
+	"frame": {"x":1045,"y":204,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "SureFooting.jpg":
 {
-	"frame": {"x":0,"y":709,"w":256,"h":188},
+	"frame": {"x":1306,"y":204,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "SwiftStrikes.jpg":
 {
-	"frame": {"x":259,"y":709,"w":256,"h":188},
+	"frame": {"x":1567,"y":204,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
 "TheKnightCharacter.jpg":
 {
-	"frame": {"x":895,"y":0,"w":176,"h":256},
+	"frame": {"x":994,"y":407,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "TheKnightCharacterBack.jpg":
 {
-	"frame": {"x":1074,"y":0,"w":176,"h":256},
+	"frame": {"x":1177,"y":407,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "TheKnightDeckBack.jpg":
 {
-	"frame": {"x":1253,"y":0,"w":176,"h":256},
+	"frame": {"x":1360,"y":407,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"WastelandRoninOldTheKnight.png":
+"TheOldKnightCharacter.jpg":
 {
-	"frame": {"x":1432,"y":0,"w":176,"h":256},
+	"frame": {"x":1543,"y":407,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"WastelandRoninOldTheKnightBack.png":
+"TheOldKnightCharacterBack.jpg":
 {
-	"frame": {"x":1611,"y":0,"w":176,"h":256},
+	"frame": {"x":1726,"y":523,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"WastelandRoninTheKnightInstructions.png":
+"TheYoungKnightCharacter.jpg":
 {
-	"frame": {"x":1790,"y":0,"w":176,"h":256},
+	"frame": {"x":1,"y":610,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"WastelandRoninTheKnightInstructionsBack.png":
+"TheYoungKnightCharacterBack.jpg":
 {
-	"frame": {"x":0,"y":259,"w":176,"h":256},
+	"frame": {"x":184,"y":668,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"WastelandRoninYoungTheKnight.png":
+"WastelandRoninTheKnightCharacter.jpg":
 {
-	"frame": {"x":179,"y":259,"w":176,"h":256},
+	"frame": {"x":367,"y":668,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"WastelandRoninYoungTheKnightBack.png":
+"WastelandRoninTheKnightCharacterBack.jpg":
 {
-	"frame": {"x":358,"y":259,"w":176,"h":256},
+	"frame": {"x":550,"y":668,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "Whetstone.jpg":
 {
-	"frame": {"x":518,"y":709,"w":256,"h":188},
+	"frame": {"x":1,"y":407,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
@@ -239,6 +247,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:6c3fdee7ef1dde3616c4891cffa04d0d:592bf93df1851f436bd7c9fa502bf425:462b0f338c72732491e78774ceba35d6$"
+	"smartupdate": "$TexturePacker:SmartUpdate:63f94581c49094295686bcf6a743e284:80e4563eb709f89ac461cc72f219004b:462b0f338c72732491e78774ceba35d6$"
 }
 }

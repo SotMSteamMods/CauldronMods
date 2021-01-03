@@ -183,7 +183,7 @@ namespace CauldronTests
             QuickHandCheck(0);
             PlayCard("AncientConstellationD");
             QuickHandCheck(1);
-            
+
         }
         [Test()]
         public void TestNightloreCouncilCelestialAuraTriggersOnAnyStarlightDamage()
@@ -216,7 +216,7 @@ namespace CauldronTests
                     DealDamage(source, target, 1, m);
                 }
                 QuickHPCheck(1, source == terra ? 1 : 2, -1, -1);
-            } 
+            }
         }
         [Test()]
         public void TestNightloreCouncilCelestialAuraPowerUsableWithAny()
@@ -232,10 +232,10 @@ namespace CauldronTests
             QuickHPStorage(mdp);
             QuickHandStorage(starlight);
 
-            foreach(Card character in EachStarlight)
+            foreach (Card character in EachStarlight)
             {
                 DecisionSelectCards = new List<Card> { character, mdp };
-                foreach(Card otherchar in EachStarlight)
+                foreach (Card otherchar in EachStarlight)
                 {
                     if (otherchar != character)
                     {
@@ -484,11 +484,11 @@ namespace CauldronTests
             //at all times we should have an auto-decided outcome
             AssertMaxNumberOfDecisions(0);
 
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 UsePower(terra);
                 //first use should not discard, as there are no cards in hand at that time
-                AssertNumberOfCardsInTrash(starlight, startingTrashSize + i); 
+                AssertNumberOfCardsInTrash(starlight, startingTrashSize + i);
                 AssertNumberOfCardsInHand(starlight, 1);
                 QuickShuffleCheck(1);
             }
@@ -581,7 +581,7 @@ namespace CauldronTests
             SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "TheScholar", "TheSentinels", "Megalopolis" }, false, nightloreDict);
 
             StartGame();
-            foreach(Card character in EachStarlight)
+            foreach (Card character in EachStarlight)
             {
                 DealDamage(baron, character, 20, DamageType.Melee);
             }
@@ -779,7 +779,7 @@ namespace CauldronTests
             StartGame();
             SetupIncap(baron);
 
-            AssertNextDecisionChoices(new List<Location> { legacy.TurnTaker.Deck, harpy.TurnTaker.Deck, baron.TurnTaker.Deck, FindEnvironment().TurnTaker.Deck}.Select((Location deck) => new LocationChoice(deck)));
+            AssertNextDecisionChoices(new List<Location> { legacy.TurnTaker.Deck, harpy.TurnTaker.Deck, baron.TurnTaker.Deck, FindEnvironment().TurnTaker.Deck }.Select((Location deck) => new LocationChoice(deck)));
         }
         [Test]
         public void TestGenesisIncap3Replace()
@@ -820,5 +820,108 @@ namespace CauldronTests
             AssertNotOnTopOfDeck(legacy, takedown);
             AssertInTrash(takedown);
         }
+
+
+
+
+        [Test()]
+        [Order(0)]
+        public void Area51StarlightLoad()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight/Area51StarlightCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+
+            Assert.AreEqual(6, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(starlight);
+            Assert.IsInstanceOf(typeof(Area51StarlightCharacterCardController), starlight.CharacterCardController);
+
+            foreach (var card in starlight.HeroTurnTaker.GetAllCards())
+            {
+                var cc = GetCardController(card);
+                Assert.IsTrue(cc.GetType() != typeof(CardController), $"{card.Identifier} is does not have a CardController");
+            }
+
+            Assert.AreEqual(29, starlight.CharacterCard.HitPoints);
+        }
+
+
+        [Test]
+        public void Area51StarlightInnatePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight/Area51StarlightCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+
+            DiscardAllCards(starlight);
+            //load the hand with some stuff
+            var c = PutInHand("EventHorizon");
+            PutInHand("NightloreArmor");
+            PutInHand("Redshift");
+            PutInHand("StellarWind");
+            var pillar = GetCard("PillarsOfCreation");
+
+            DecisionSelectCards = new[] { c, pillar };
+
+            GoToUsePowerPhase(starlight);
+
+            QuickHandStorage(starlight);
+            UsePower(starlight);
+            AssertInPlayArea(starlight, pillar);
+            AssertInTrash(c);
+            QuickHandCheck(-1);
+        }
+
+        [Test]
+        public void Area51StarlightIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight/Area51StarlightCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            SetupIncap(baron);
+            AssertIncapacitated(starlight);
+
+            GoToUseIncapacitatedAbilityPhase(starlight);
+            AssertIncapLetsHeroDrawCard(starlight, 0, haka, 1);
+        }
+
+        [Test]
+        public void Area51StarlightIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight/Area51StarlightCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            SetupIncap(baron);
+            AssertIncapacitated(starlight);
+
+            GoToUseIncapacitatedAbilityPhase(starlight);
+            AssertIncapLetsHeroUsePower(starlight, 1, haka);
+        }
+
+        [Test]
+        public void Area51StarlightIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight/Area51StarlightCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+
+            SetupIncap(baron);
+            AssertIncapacitated(starlight);
+
+            var c1 = PlayCard("ImbuedFire");
+            var c2 = PlayCard("FleshOfTheSunGod");
+            var c3 = PlayCard("LivingForceField");
+
+            DecisionSelectCards = new[] { c1, null, c3 };
+            UseIncapacitatedAbility(starlight, 2);
+            AssertInTrash(c1);
+            AssertInPlayArea(ra, c2);
+            AssertInTrash(c3);
+        }
+
+
     }
 }

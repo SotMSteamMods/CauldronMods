@@ -56,7 +56,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"IrresistibleVoice.png":
+"IrresistableVoice.png":
 {
 	"frame": {"x":1036,"y":259,"w":256,"h":188},
 	"rotated": false,
@@ -96,7 +96,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"PoundingRythm.png":
+"PoundingRhythm.png":
 {
 	"frame": {"x":518,"y":450,"w":256,"h":188},
 	"rotated": false,

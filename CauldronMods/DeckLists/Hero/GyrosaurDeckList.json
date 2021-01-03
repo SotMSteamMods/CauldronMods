@@ -1,0 +1,562 @@
+{
+    "name": "Gyrosaur",
+    "kind": "Hero",
+    "expansionIdentifier":"CauldronAdrift",
+    "initialCardIdentifiers": [
+        "GyrosaurCharacter"
+    ],
+    "cards": [
+        {
+            "identifier": "GyrosaurCharacter",
+            "count": 1,
+            "title": "Gyrosaur",
+            "body": "Roll Out",
+            "backgroundColor": "feef00",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "feef00",
+            "character": true,
+            "powers": [
+                "If you have at least 2 crash cards in your had, {Gyrosaur} deals up to 3 targets 1 melee damage each. If not, draw a card."
+            ],
+            "icons": [
+                "HasPower",
+                "DealDamageMelee",
+                "DrawCardNow"
+            ],
+            "hitpoints": 30,
+            "nemesisIdentifiers": [
+                "Gyrosaur"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "One target with more than 10 HP deals itself 3 melee damage.",
+                "Select a non-character target. Increase damage dealt to that target by 1 until the start of your turn."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "DealDamageMelee",
+                "IncreaseDamageDealt"
+            ],
+            "openingLines": {
+                "default": "We're here to stop you! Although, I usually find stopping to be the hard part.",
+                "TheSetList": "Um, sorry about that. I'll try to be gentler when I run you all over this time."
+            },
+            "complexity": 1
+        },
+        {
+            "identifier": "AMerryChase",
+            "count": 2,
+            "title": "A Merry Chase",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "ImmuneToDamage",
+                "DestroySelf"
+            ],
+            "body": [
+                "Whenever a target deals damage to {Gyrosaur}, all other hero targets become immune to damage dealt by that target until this card leaves play.",
+                "At the start of your turn, destroy this card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TakIshmael",
+                    "text": "Get after it! The{BR}boss wants that troublesome{BR}pinball for her collection."
+                }
+            ],
+            "flavorReference": "Tak Ishmael, Burnout #12"
+        },
+        {
+            "identifier": "GyroStabilizer",
+            "count": 3,
+            "title": "Gyro Stabilizer",
+            "keywords": [
+                "equipment",
+                "limited"
+            ],
+            "icons": [
+                "Discard",
+                "DrawCardNow"
+            ],
+            "body": [
+                "When this card enters play, discard up to 3 cards. Draw as many cards as you discarded this way.",
+                "Whenever you evaluate the number of Crash cards in your hand, you may treat it as being 1 higher or 1 lower than it is."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Gyrosaur",
+                    "text": "I do machines. I'm{BR}pretty good at them."
+                }
+            ],
+            "flavorReference": "Gyrosaur, Terror From Beneath #1"
+        },
+        {
+            "identifier": "HiddenDetour",
+            "count": 2,
+            "title": "Hidden Detour",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "GainHP",
+                "Manipulate"
+            ],
+            "body": [
+                "When this card enters play, {Gyrosaur} regains 2HP. Then, reveal the top card of the environment deck and place it beneath this card.",
+                "Cards beneath this one are not considered in play. When an environment card would enter play, you may first switch it with the card beneath this one."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Gyrosaur",
+                    "text": "There's a faster way that{BR}is also much less scary."
+                }
+            ],
+            "flavorReference": "Gyrosaur, Windmill City #90"
+        },
+        {
+            "identifier": "Hyperspin",
+            "count": 4,
+            "title": "Hyperspin",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "IncreaseDamageDealt",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, you may play a card.",
+                "Increase damage dealt by {Gyrosaur} to non-hero targets by 1.",
+                "If you would draw a Crash card, play it instead. Then, destroy all copies of Hyperspin."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TalinBrosk",
+                    "text": "We need{BR}someone on the inside.{BR}Someone even faster than me."
+                }
+            ],
+            "flavorReference": "Talin Brosk, Space Race: Start Your Engine"
+        },
+        {
+            "identifier": "IndiscriminatePass",
+            "count": 2,
+            "title": "Indiscriminate Pass",
+            "keywords": [
+                "one-shot",
+                "crash"
+            ],
+            "icons": [
+                "DealDamageMelee"
+            ],
+            "body": [
+                "If you have at least 1 Crash card in your hand, {Gyrosaur} deals another hero target 2 melee damage.",
+                "{Gyrosaur} deals 1 non-hero target 4 melee damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Gargoyle",
+                    "text": "Gargoyle, This. This is why I work alone."
+                }
+            ],
+            "flavorReference": "Shellshocked",
+            "hitpoints": 2
+        },
+        {
+            "identifier": "Omnivore",
+            "count": 3,
+            "title": "Omnivore",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DestroyTarget",
+                "GainHP",
+                "Manipulate"
+            ],
+            "body": [
+                "Destroy a target with 3 or fewer HP.",
+                "{Gyrosaur} regains X HP, where X is the HP of that target before it was destroyed.",
+                "You may shuffle your trash into your deck."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Unity",
+                    "text": "Last time you{BR}ran away from it."
+                },
+                {
+                    "identifier": "Gyrosaur",
+                    "text": "Well, I realized they're{BR}edible."
+                }
+            ],
+            "flavorReference": "Crash #22"
+        },
+        {
+            "identifier": "OnARoll",
+            "count": 2,
+            "title": "On a Roll",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DrawCardNow",
+                "DealDamageMelee",
+                "DestroySelf"
+            ],
+            "body": [
+                "At the end of your turn, draw a card. Then if you have at least 2 Crash cards in your hand, {Gyrosaur} deals each non-hero target 1 melee damage and this card is destroyed."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Echelon",
+                    "text": "Guess you won't need me to{BR}arrange ground transport."
+                }
+            ],
+            "flavorReference": "Echelon, Crash #11"
+        },
+        {
+            "identifier": "ProtectiveEscort",
+            "count": 2,
+            "title": "Protective Escort",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DrawCardNow",
+                "ImmuneToDamage"
+            ],
+            "body": [
+                "Draw 2 cards.",
+                "Select a target and a damage type. That target is immune to that damage type until the start of your next turn."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Quicksilver",
+                    "text": "Good bowling ball."
+                }
+            ],
+            "flavorReference": "Quicksilver, Crash #5"
+        },
+        {
+            "identifier": "RapturianShell",
+            "count": 2,
+            "title": "Rapturian Shell",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "HasPower",
+                "PlayCardNow",
+                "Manipulate"
+            ],
+            "body": "At the end of your turn, if you have 0 Crash cards in your hand, {Gyrosaur} deals 1 other hero 2 psychic damage.",
+            "powers": [
+                "Play a Crash card, or discard cards from the top of your deck until you discard a Crash card and put it into your hand."
+            ],
+            "flavorText": "The turtle blinked. “I didn't{BR}come from these sewers. I'm from{BR}space.” Quicksilver just stared."
+        },
+        {
+            "identifier": "ReadTheTerrain",
+            "count": 2,
+            "title": "Read the Terrain",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "IncreaseDamageDealt"
+            ],
+            "body": "At the start of your turn, reveal the top card of your deck and replace or discard it.",
+            "powers": [
+                "If {Gyrosaur} deals no damage this turn, increase damage dealt by {Gyrosaur} during your next turn to non-hero targets by 1."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Gyrosaur",
+                    "text": "It's best to plan ahead. I{BR}don't want to get lost. Again."
+                }
+            ],
+            "flavorReference": "Gyrosaur, Burnout #13"
+        },
+        {
+            "identifier": "RecklessAlienRacingTortoise",
+            "count": 3,
+            "title": "Reckless Alien Racing Tortoise",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "HasPower",
+                "UsePowerNow",
+                "DealDamageMelee"
+            ],
+            "body": "During your turn, the first time you have more than 3 Crash cards in your hand, immediately use this card's power and then destroy it.",
+            "powers": [
+                "{Gyrosaur} deals 1 target X+1 melee damage, where X is the number of Crash cards in your hand."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Gyrosaur",
+                    "text": "Today is my impulsive day. I{BR}know because it's Wednesday."
+                }
+            ],
+            "flavorReference": "Gyrosaur, Crash #3"
+        },
+        {
+            "identifier": "Ricochet",
+            "count": 3,
+            "title": "Ricochet",
+            "keywords": [
+                "one-shot",
+                "crash"
+            ],
+            "icons": [
+                "DealDamageMelee",
+                "ReduceDamageDealt"
+            ],
+            "body": [
+                "{Gyrosaur} deals 1 target 2 melee damage. {Gyrosaur} deals a second target X melee damage, where X is the amount of damage she dealt to the first target.",
+                "Reduce the next damage dealt by non-hero targets damaged this way to 0."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Gyrosaur",
+                    "text": "It's that guy's fault{BR}for being so bouncy."
+                }
+            ],
+            "flavorReference": "Gyrosaur, Space Race: Final Lap"
+        },
+        {
+            "identifier": "SphereOfDevastation",
+            "count": 2,
+            "title": "Sphere of Devastation",
+            "keywords": [
+                "one-shot",
+                "crash"
+            ],
+            "icons": [
+                "Discard",
+                "DealDamageMelee",
+                "DestroyEnvironment"
+            ],
+            "body": [
+                "Discard all Crash cards in your hand. {Gyrosaur} deals 1 target X+4 melee damage, where X is 4 times the number of cards discarded this way.",
+                "If {Gyrosaur} dealt more than 10 damage this way, destroy all environment cards and each other player discards a card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Cricket",
+                    "text": "What are you going to do?"
+                },
+                {
+                    "identifier": "Gyrosaur",
+                    "text": "Some damage!"
+                }
+            ],
+            "flavorReference": "Adrift One-Shot",
+            "hitpoints": 2
+        },
+        {
+            "identifier": "TerrifyingMomentum",
+            "count": 2,
+            "title": "Terrifying Momentum",
+            "keywords": [
+                "one-shot",
+                "crash"
+            ],
+            "icons": [
+                "DealDamageMelee",
+                "RedirectDamage",
+                "DrawCardNow"
+            ],
+            "body": [
+                "{Gyrosaur} deals 1 target X+2 melee damage, where X is the number of Crash cards in your hand.",
+                "If X is more than 4, redirect this damage to the non-hero target with the lowest HP.",
+                "Draw a card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Gyrosaur",
+                    "text": "Wherever I end up, pretend{BR}that's where I was aiming."
+                }
+            ],
+            "flavorReference": "Gyrosaur, Crash #14",
+            "hitpoints": 2
+        },
+        {
+            "identifier": "Wipeout",
+            "count": 4,
+            "title": "Wipeout",
+            "keywords": [
+                "one-shot",
+                "crash"
+            ],
+            "icons": [
+                "DealDamageMelee"
+            ],
+            "body": [
+                "{Gyrosaur} deals up to X+1 targets 4 melee damage each, then deals herself X+1 melee damage, where X is the number of Crash cards in your hand."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Gyrosaur",
+                    "text": "Stopping was{BR}supposed to be the easy part.{BR}Can someone help me up?"
+                }
+            ],
+            "flavorReference": "Gyrosaur, Eclipse #6",
+            "hitpoints": 4
+        },
+        {
+            "identifier": "WreckingBall",
+            "count": 2,
+            "title": "Wrecking Ball",
+            "keywords": [
+                "ongoing",
+                "crash"
+            ],
+            "icons": [
+                "DealDamageMelee",
+                "IncreaseDamageDealt"
+            ],
+            "body": [
+                "When this card enters play, {Gyrosaur} deals each target 1 melee damage.",
+                "Increase damage dealt to environment targets by 1."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Gyrosaur",
+                    "text": "Sorry about your wall.{BR}And ceiling. And your floor."
+                }
+            ],
+            "flavorReference": "Gyrosaur, Starlight #21",
+            "hitpoints": 2
+        }
+    ],
+    "notPromoCards": [
+        {
+            "identifier": "GyrosaurCharacter",
+            "promoIdentifier": "SpeedDemonGyrosaurCharacter",
+            "count": 1,
+            "title": "Gyrosaur",
+            "promoTitle": "Gyrosaur: Speed Demon",
+            "shortPromoTitle": "Speedy Gyrosaur",
+            "body": "Object in Motion",
+            "backgroundColor": "AD97AD",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "AD97AD",
+            "character": true,
+            "powers": [
+                "If at least half of the cards in your hand are carsh cards. Draw a card. If not, play a card."
+            ],
+            "icons": [
+                "HasPower",
+                "DrawCardNow",
+                "PlayCardNow"
+            ],
+            "hitpoints": 28,
+            "nemesisIdentifiers": [
+                "Gyrosaur"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "One player with fewer than 4 cards in their hand may play 2 cards now.",
+                "Reduce the next damage dealt to a hero target by 2."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "PlayCardNow",
+                "ReduceDamageTaken"
+            ],
+            "openingLines": {
+                "default": "On your mark, get set...",
+                "TheSetList": "Is that bad?"
+            },
+            "complexity": 1
+        },
+        {
+            "identifier": "GyrosaurCharacter",
+            "promoIdentifier": "RenegadeGyrosaurCharacter",
+            "count": 1,
+            "title": "Gyrosaur",
+            "promoTitle": "Renegade Gyrosaur",
+            "shortPromoTitle": "Renegade Gyrosaur",
+            "body": "Being Sneaky",
+            "backgroundColor": "EC99C1",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "EC99C1",
+            "character": true,
+            "powers": [
+                "Discard a card, if it was a crash card, {Gyrosaur} regains 2 HP. Otherwise, she deals 1 target 2 melee damage. Draw a card."
+            ],
+            "icons": [
+                "HasPower",
+                "Discard",
+                "DealDamageMelee",
+                "DrawCardNow"
+            ],
+            "hitpoints": 29,
+            "nemesisIdentifiers": [
+                "Gyrosaur"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "Each hero with fewer than 2 non-character cards in play may use a power now.",
+                "Targets cannot regain HP until the start of your next turn."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "UsePowerNow",
+                "CannotGainHP"
+            ],
+            "openingLines": {
+                "default": "This situation calls for being sneaky!",
+                "TheSetList": "Wait, you can see me? I was being sneaky."
+            },
+            "complexity": 1
+        },
+        {
+            "identifier": "GyrosaurCharacter",
+            "promoIdentifier": "CaptainGyrosaurCharacter",
+            "count": 1,
+            "title": "Gyrosaur",
+            "promoTitle": "Captain Gyrosaur",
+            "shortPromoTitle": "Captain Gyrosaur",
+            "body": "Cursed Treasure",
+            "backgroundColor": "CD8A58",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "CD8A58",
+            "character": true,
+            "powers": [
+                "Put the top card of your deck beneath {Gyrosaur}, face up. When she deals damage, play or draw it."
+            ],
+            "icons": [
+                "HasPower",
+                "Manipulate",
+                "PlayCardNow",
+                "DrawCardNow"
+            ],
+            "hitpoints": 29,
+            "nemesisIdentifiers": [
+                "Gyrosaur"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "One hero may use a power now.",
+                "Select a target. In crease the next damage dealt to it by 2."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "UsePowerNow",
+                "IncreaseDamageTaken"
+            ],
+            "openingLines": {
+                "default": "Arr! Avast!... What else do cursed pirates say?",
+                "TheSetList": "Prepare to board them, me hearties!"
+            },
+            "complexity": 1
+        }
+    ]
+}

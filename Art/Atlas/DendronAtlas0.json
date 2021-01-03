@@ -88,7 +88,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"OutsideTheLinesDendronCharacter.jpg":
+"WindcolorDendronCharacter.jpg":
 {
 	"frame": {"x":537,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -96,7 +96,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"OutsideTheLinesDendronCharacterBack.jpg":
+"WindcolorDendronCharacterBack.jpg":
 {
 	"frame": {"x":716,"y":0,"w":176,"h":256},
 	"rotated": false,
