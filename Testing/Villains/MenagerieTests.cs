@@ -633,5 +633,29 @@ namespace CauldronTests
             DestroyCard(hive);
             AssertInTrash(moko);
         }
+
+        [Test()]
+        public void TestHyrianSnipe()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
+            DiscardAllCards(bench, parse);
+            StartGame();
+
+            MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            DestroyNonCharacterVillainCards();
+            DestroyNonCharacterVillainCards();
+
+            Card moko = PlayCard("TaMoko");
+            Card mere = PlayCard("Mere");
+
+            PutOnDeck("HyrianSnipe");
+            //At the end of the villain turn, this card deals the 2 targets other than itself with the highest HP {H - 1} psychic damage each. Then, destroy 1 equipment card.
+            QuickHPStorage(menagerie, haka, parse, bench);
+            GoToEndOfTurn(menagerie);
+            QuickHPCheck(-2, -1, 0, 0);
+            AssertInTrash(mere);
+            AssertIsInPlay(moko);
+        }
     }
 }
