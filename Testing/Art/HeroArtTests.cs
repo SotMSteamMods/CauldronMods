@@ -22,7 +22,7 @@ namespace CauldronTests.Art.Hero
     [TestFixtureSource(typeof(HeroArtSource))]
     public class HeroArtTests : ArtTestBase
     {
-        public static bool IsHeroLogosError = false;
+        public static bool IsHeroLogosError = true;
         public static bool IsEndGameHeroesError = false;
 
         public HeroArtTests(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> startEndIdentifiers)

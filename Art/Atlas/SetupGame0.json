@@ -32,7 +32,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"AreaStarlightCharacter.png":
+"Area51StarlightCharacter.png":
 {
 	"frame": {"x":704,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -96,7 +96,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"CreedOfTheSniperTangoOne.png":
+"CreedOfTheSniperTangoOneCharacter.png":
 {
 	"frame": {"x":2112,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -320,7 +320,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"HalberdDriftCharacter.png":
+"TestSubjectHalberdDriftCharacter.png":
 {
 	"frame": {"x":2992,"y":256,"w":176,"h":256},
 	"rotated": false,
@@ -440,7 +440,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"NightloreCouncilDeckBack.png":
+"NightloreCitadelDeckBack.png":
 {
 	"frame": {"x":1584,"y":512,"w":176,"h":256},
 	"rotated": false,
