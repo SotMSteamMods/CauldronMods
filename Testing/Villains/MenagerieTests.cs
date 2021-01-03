@@ -203,8 +203,8 @@ namespace CauldronTests
         public void TestMeagerieFrontAlternateLose_TheSentinels()
         {
             SetupGameController("Cauldron.Menagerie", "TheSentinels", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
             DiscardAllCards(new HeroTurnTakerController[] { bunker, scholar });
+            StartGame();
 
             //The heroes lose if the captured hero is incapacitated.
             Card prize = FindCardInPlay("PrizedCatch");
@@ -256,7 +256,7 @@ namespace CauldronTests
             GoToEndOfTurn(menagerie);
             //5 under
             AssertFlipped(menagerie);
-            AssertHitPoints(menagerie.CharacterCard, 50);
+            AssertMaximumHitPoints(menagerie.CharacterCard, 50);
         }
 
         [Test()]
@@ -275,7 +275,7 @@ namespace CauldronTests
             GoToEndOfTurn(menagerie);
             //3 under
             AssertFlipped(menagerie);
-            AssertHitPoints(menagerie.CharacterCard, 50);
+            AssertMaximumHitPoints(menagerie.CharacterCard, 50);
         }
 
         [Test()]
@@ -286,12 +286,17 @@ namespace CauldronTests
             Card prize = FindCardInPlay("PrizedCatch");
 
             //When Menagerie flips to this side, shuffle the villain trash and all enclosurese beneath this card into the villain deck. Remove Prized Catch from the game.
-            DiscardTopCards(menagerie.TurnTaker.Deck, 6);
-            MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
+            IEnumerable<Card> trash = DiscardTopCards(menagerie, 6);
+            string[] spheres = new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" };
+            MoveCards(menagerie, spheres, menagerie.CharacterCard.UnderLocation);
             GoToEndOfTurn(menagerie);
             AssertFlipped(menagerie);
 
-            AssertNumberOfCardsInTrash(menagerie, 0);
+            AssertNotInTrash(trash.ToArray());
+            foreach (string sphere in spheres)
+            {
+                AssertNotInTrash(menagerie, sphere);
+            }
             AssertNumberOfCardsUnderCard(menagerie.CharacterCard, 0);
             AssertOutOfGame(prize);
         }
@@ -317,6 +322,82 @@ namespace CauldronTests
             DealDamage(ra, menagerie, 2, DamageType.Melee);
             DealDamage(ra, arb, 2, DamageType.Melee);
             QuickHPCheck(0, -2);
+        }
+
+        [Test()]
+        public void TestMenagerieBackEnclosureLeavesPlayDestroy()
+        {
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" });
+            StartGame();
+            MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            AssertFlipped(menagerie);
+            DestroyNonCharacterVillainCards();
+
+            Card letho = PutOnDeck("AngryLethovore");
+            //Cards beneath enclosures are not considered in play. When an enclosure leaves play, discard all cards beneath it.
+            Card aqua = PlayCard("AquaticSphere");
+            AssertUnderCard(aqua, letho);
+
+            DestroyCard(aqua);
+            AssertInTrash(letho);
+        }
+
+        [Test()]
+        public void TestMenagerieBackEnclosureLeavesPlayMove()
+        {
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Tempest", "Haka", "Megalopolis" });
+            StartGame();
+            MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            AssertFlipped(menagerie);
+            DestroyNonCharacterVillainCards();
+
+            Card letho = PutOnDeck("AngryLethovore");
+            //Cards beneath enclosures are not considered in play. When an enclosure leaves play, discard all cards beneath it.
+            Card aqua = PlayCard("AquaticSphere");
+            AssertUnderCard(aqua, letho);
+
+            DecisionSelectCard = aqua;
+
+            PlayCard("IntoTheStratosphere");
+            AssertInTrash(letho);
+        }
+
+        [Test()]
+        public void TestMenagerieBackEndTurnEffect()
+        {
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" });
+            StartGame();
+            MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            AssertFlipped(menagerie);
+            DestroyNonCharacterVillainCards();
+
+            PlayCard("ExoticSphere");
+            //At the end of the villain turn, play the top card of the villain deck. Then, for each enclosure in play, Menagerie deals the hero next to it X projectile damage, where X is the number of cards beneath that enclosure.
+            Card aqua = PutOnDeck("AquaticSphere");
+            GoToEndOfTurn(env);
+            QuickHPStorage(legacy, ra);
+            GoToEndOfTurn(menagerie);
+            QuickHPCheck(-2, -1);
+        }
+
+        [Test()]
+        public void TestMenagerieBackAlternateLoss()
+        {
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" });
+            StartGame();
+            MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            AssertFlipped(menagerie);
+            DestroyNonCharacterVillainCards();
+
+            PlayCard("ExoticSphere");
+            PlayCard("AquaticSphere");
+            PlayCard("SecuritySphere");
+            GoToStartOfTurn(menagerie);
+            AssertGameOver(EndingResult.AlternateDefeat);
         }
 
         [Test()]
