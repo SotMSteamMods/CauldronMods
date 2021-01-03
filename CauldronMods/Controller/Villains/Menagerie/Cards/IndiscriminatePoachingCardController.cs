@@ -27,29 +27,20 @@ namespace Cauldron.Menagerie
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            List<Card> highestEnclosures = new List<Card>();
-            base.GameController.FindTargetWithHighestHitPoints(1, (Card c) => base.IsEnclosure(c) && c.IsInPlayAndHasGameText, highestEnclosures, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
+            IEnumerable<Card> enclosures = base.FindCardsWhere(new LinqCardCriteria((Card c) => base.IsEnclosure(c) && c.IsInPlayAndHasGameText));
 
             //...the Enclosure with the highest HP...
             Card highestEnclosure;
-            if (highestEnclosures.Any())
+            if (enclosures.Any())
             {
-                if (highestEnclosures.Count() == 1)
+                if (enclosures.Count() == 1)
                 {
-                    highestEnclosure = highestEnclosures.FirstOrDefault();
+                    highestEnclosure = enclosures.FirstOrDefault();
                 }
                 else
                 {
                     List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                    coroutine = base.GameController.SelectCardAndStoreResults(base.DecisionMaker, SelectionType.HighestHP, new LinqCardCriteria((Card c) => highestEnclosures.Contains(c), "enclosure"), storedResults, false, cardSource: base.GetCardSource());
+                    coroutine = base.GameController.SelectCardAndStoreResults(base.DecisionMaker, SelectionType.HighestHP, new LinqCardCriteria((Card c) => enclosures.Contains(c), "enclosure"), storedResults, false, cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -62,7 +53,7 @@ namespace Cauldron.Menagerie
                 }
 
                 //Put the top card of the environment deck beneath the Enclosure with the highest HP 
-                coroutine = base.GameController.MoveCard(base.TurnTakerController, base.FindEnvironment().TurnTaker.Deck.TopCard, base.Card.UnderLocation, flipFaceDown: true, cardSource: base.GetCardSource());
+                coroutine = base.GameController.MoveCard(base.TurnTakerController, base.FindEnvironment().TurnTaker.Deck.TopCard, highestEnclosure.UnderLocation, flipFaceDown: true, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -74,7 +65,7 @@ namespace Cauldron.Menagerie
             }
 
             //...and destroy {H - 2} hero ongoing and/or equipment cards.
-            coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), 2, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), Game.H - 2, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

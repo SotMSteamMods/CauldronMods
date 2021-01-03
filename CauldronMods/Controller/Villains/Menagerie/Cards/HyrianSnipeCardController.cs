@@ -2,6 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Linq;
 
 namespace Cauldron.Menagerie
 {
@@ -32,14 +33,17 @@ namespace Cauldron.Menagerie
             }
 
             //Then, destroy 1 equipment card.
-            coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c), "equipment"), false);
-            if (base.UseUnityCoroutines)
+            if (base.FindCardsWhere(new LinqCardCriteria((Card c) => base.IsEquipment(c) && c.IsInPlayAndHasGameText)).Any())
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c), "equipment"), false);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }

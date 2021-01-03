@@ -657,5 +657,161 @@ namespace CauldronTests
             AssertInTrash(mere);
             AssertIsInPlay(moko);
         }
+
+        [Test()]
+        public void TestIndiscriminatePoaching()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
+            DiscardAllCards(bench, parse);
+            StartGame();
+
+            Card aqua = PutOnDeck("AquaticSphere");
+            Card snipe = PutOnDeck("HyrianSnipe");
+            Card moko = PlayCard("TaMoko");
+            Card mere = PlayCard("Mere");
+            Card envTopCard = GetTopCardOfDeck(env);
+
+            PlayCard("IndiscriminatePoaching");
+            //Reveal cards from the top of the villain deck until an Enclosure is revealed. Put it into play. Shuffle the other revealed cards back into the villain deck.
+            AssertIsInPlay(aqua);
+            AssertInDeck(snipe);
+            //Put the top card of the environment deck beneath the Enclosure with the highest HP and destroy {H - 2} hero ongoing and/or equipment cards.
+            AssertUnderCard(aqua, envTopCard);
+            AssertInTrash(mere);
+            AssertIsInPlay(moko);
+        }
+
+        [Test()]
+        public void TestLumobatFlock()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
+            DiscardAllCards(bench, parse);
+            StartGame();
+
+            PutOnDeck("FeedingTime");
+            Card aqua = PutOnDeck("AquaticSphere");
+
+            PlayCard("LumobatFlock");
+            //The first time a Specimen enters play each turn, play the top card of the villain deck.
+            AssertIsInPlay(aqua);
+
+            PutOnDeck("ExoticSphere");
+            //At the end of the villain turn this card deals the hero target with the highest HP 2 projectile and 2 radiant damage.
+            QuickHPStorage(haka, parse, bench);
+            GoToEndOfTurn(menagerie);
+            QuickHPCheck(-4, 0, 0);
+        }
+
+        [Test()]
+        public void TestMutatedAnt()
+        {
+            SetupGameController("Cauldron.Menagerie", "Parse", "Benchmark", "Haka", "Megalopolis");
+            DiscardAllCards(haka, parse);
+            StartGame();
+
+            PlayCard("TaMoko");
+
+            Card ant = PlayCard("MutatedAnt");
+            //Reduce damage dealt to this card by 1.
+            //The first time a non-villain target deals damage each turn, this card deals that target 1 irreducible toxic damage.
+            QuickHPStorage(haka.CharacterCard, ant);
+            DealDamage(haka, ant, 2, DamageType.Melee);
+            QuickHPCheck(-1, -1);
+
+            QuickHPStorage(haka.CharacterCard, ant);
+            DealDamage(haka, ant, 2, DamageType.Melee);
+            QuickHPCheck(0, -1);
+        }
+
+        [Test()]
+        public void TestPrizedCatch()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
+            DiscardAllCards(bench, parse);
+            StartGame();
+
+            Card aqua = PlayCard("AquaticSphere");
+            //Increase damage dealt by Captured targets to Enclosures by 1. Reduce damage dealt by Captured targets to non-Enclosure targets by 1.
+            QuickHPStorage(parse.CharacterCard, aqua);
+            DealDamage(haka, aqua, 2, DamageType.Melee);
+            DealDamage(haka, parse, 2, DamageType.Melee);
+            QuickHPCheck(-1, -3);
+        }
+
+        [Test()]
+        public void TestReinforcedSphere()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
+            DiscardAllCards(bench, parse);
+            StartGame();
+
+            //When this card enters play, place the top card of the villain deck beneath it face down.
+            Card sphere = PlayCard("ReinforcedSphere");
+            AssertNumberOfCardsAtLocation(sphere.UnderLocation, 1);
+
+            //Reduce damage dealt by hero targets by 1.
+            QuickHPStorage(sphere, parse.CharacterCard, bench.CharacterCard);
+            DealDamage(parse, sphere, 2, DamageType.Melee);
+            DealDamage(parse, bench, 2, DamageType.Melee);
+            DealDamage(bench, parse, 2, DamageType.Melee);
+            DealDamage(sphere, parse, 2, DamageType.Melee);
+            QuickHPCheck(-1, -3, -1);
+        }
+
+        [Test()]
+        public void TestSecuritySphere()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Tempest", "Benchmark", "Megalopolis");
+            DiscardAllCards(bench, parse);
+            StartGame();
+
+            //When this card enters play, place the top card of the villain deck beneath it face down.
+            Card sphere = PlayCard("SecuritySphere");
+            AssertNumberOfCardsAtLocation(sphere.UnderLocation, 1);
+
+            //When this card enters play, place the top card of the villain deck beneath it face down and destroy {H - 2} hero ongoing cards.
+            //The Captured hero and their cards cannot affect or be affected by cards or effects from other hero decks.
+            Assert.IsTrue(false);
+        }
+
+        [Test()]
+        public void TestSpecimenCollector()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
+            DiscardAllCards(bench, parse);
+            StartGame();
+
+            Card aqua = PutOnDeck("AquaticSphere");
+
+            PlayCard("SpecimenCollector");
+            //At the end of the villain turn, this card deals the non-villain target with the second lowest HP {H} projectile damage. 
+            QuickHPStorage(haka, parse, bench);
+            GoToEndOfTurn(menagerie);
+            QuickHPCheck(0, 0, -3);
+            //Then, place the top card of the villain deck face down beneath the Enclosure with the fewest cards beneath it.
+            AssertNumberOfCardsAtLocation(aqua.UnderLocation, 2);
+        }
+
+        [Test()]
+        public void TestTakIshmael()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Guise", "Megalopolis");
+            DiscardAllCards(guise, parse);
+            StartGame();
+
+            PutOnDeck("AquaticSphere");
+            StackDeckAfterShuffle(menagerie, new string[] { "HyrianSnipe" });
+            Card tak = PlayCard("TakIshmael");
+
+            //This card is immune to damage dealt by non-hero cards.
+            QuickHPStorage(tak);
+            DealDamage(menagerie, tak, 2, DamageType.Melee);
+            QuickHPCheck(0);
+
+            //At the end of the villain turn, play the top card of the villain deck. Then, this card deals the hero target with the highest HP X projectile damage, where X is the number of Specimens in play.
+            QuickHPStorage(haka, guise, parse);
+            GoToEndOfTurn(menagerie);
+            QuickHPCheck(-3, -2, 0);
+        }
     }
 }
