@@ -184,7 +184,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
 	"sourceSize": {"w":178,"h":256}
 },
-"TheOldKnightCharacterBack.jpg":
+"TheOldKnightCharacter.jpg":
 {
 	"frame": {"x":1543,"y":407,"w":178,"h":256},
 	"rotated": false,
@@ -192,7 +192,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
 	"sourceSize": {"w":178,"h":256}
 },
-"TheOldKnightCharacter.jpg":
+"TheOldKnightCharacterBack.jpg":
 {
 	"frame": {"x":1726,"y":523,"w":178,"h":256},
 	"rotated": false,
@@ -247,6 +247,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:6ce0d764262b979e589c7da163655db8:cad4cef67c32aed03401112fde4b00b9:462b0f338c72732491e78774ceba35d6$"
+	"smartupdate": "$TexturePacker:SmartUpdate:63f94581c49094295686bcf6a743e284:80e4563eb709f89ac461cc72f219004b:462b0f338c72732491e78774ceba35d6$"
 }
 }
