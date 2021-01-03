@@ -42,7 +42,6 @@ namespace Cauldron.FSCContinuanceWanderer
             var frozen = FrozenTurnTaker;
             if (frozen != null && !AreTurnsReversed)
             {
-                //probably need some safety code to interact well with Playing Dice With The Cosmos
                 if (toTurnTaker == frozen)
                 {
                     var turnTakersInOrder = GameController.AllTurnTakers.ToList();
@@ -56,67 +55,15 @@ namespace Cauldron.FSCContinuanceWanderer
             return null;
         }
 
-        public override IEnumerator Play()
-        {
-            /*
-            //The turn taker of the card this is next to
-            var frozenTurnTaker = base.GetCardThisCardIsNextTo().Owner;
-            //The index of the turn taker this card is next to
-            int indexFrozenTurnTaker = Game.TurnTakers.IndexOf(frozenTurnTaker) ?? default;
-            //The index of the turn taker after the frozen turn taker
-            int indexNextTurnTaker = indexFrozenTurnTaker + 1;
-            if (indexNextTurnTaker >= Game.TurnTakers.Count())
-            {
-                //If the new index is outside of the list then take the first one
-                indexNextTurnTaker -= Game.TurnTakers.Count() + 1;
-            }
-            //The index of the turn taker before the frozen turn taker
-            int indexPrevTurnTaker = indexFrozenTurnTaker - 1;
-            if (indexNextTurnTaker < 0)
-            {
-                //If the new index is outside of the list then take the last one
-                indexNextTurnTaker += Game.TurnTakers.Count() + 1;
-            }
-            //If we're playing OblivAeon then we need to grab the actual phasess of the game
-            Phase startPhase = Game.IsOblivAeonMode ? Phase.BeforeStart : Phase.Start;
-            Phase endPhase = Game.IsOblivAeonMode ? Phase.AfterEnd : Phase.End;
-
-            //Turn taker after the frozen turn taker
-            TurnTaker nextTurnTaker = Game.TurnTakers.ElementAt(indexNextTurnTaker);
-
-            //Turn taker before the frozen turn taker
-            TurnTaker prevTurnTaker = Game.TurnTakers.ElementAt(indexPrevTurnTaker);
-
-            //The phase where the Skip is applied
-            triggerPhase = base.Game.FindTurnPhases((TurnPhase turnPhase) => turnPhase.Phase == endPhase && turnPhase.TurnTaker == prevTurnTaker).FirstOrDefault();
-
-            Log.Debug($"## TimeFreeze.Play: triggerPhase = {triggerPhase.TurnTaker.Name}-{triggerPhase.FriendlyPhaseName}");
-
-            //The phase we will skip to
-            skipToTurnPhase = base.Game.FindTurnPhases((TurnPhase turnPhase) => turnPhase.Phase == startPhase && turnPhase.TurnTaker == nextTurnTaker).FirstOrDefault();
-
-            //Console.WriteLine($"## alt trigger = {frozenLast}");
-            Log.Debug($"## TimeFreeze.Play: skipToTurnPhase = {skipToTurnPhase.TurnTaker.Name}-{skipToTurnPhase.FriendlyPhaseName}");
-
-            //If we are already in the phase that would cause the trigger to fire then manually fire the override
-            if (Game.ActiveTurnPhase == triggerPhase)
-            {
-                Log.Debug($"## TimeFreeze.Play: ActiveGamePhase is trigger phase, skipping to skipTo phase.");
-
-                base.GameController.Game.OverrideNextTurnPhase = skipToTurnPhase;
-            }
-            */
-            yield break;
-        }
-
         public override void AddTriggers()
         {//base.GameController.Game.OverrideNextTurnPhase = lastTurnPhase;
             //That hero skips their turns...
-            //base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == triggerPhase.TurnTaker, this.SkipTurnResponse, new TriggerType[] { TriggerType.SkipTurn });
+            //mostly accomplished with AskIfTurnTakerOrderShouldBeChanged,
+            //this is here to handle conflicts with Wager Master's 'Playing Dice With The Cosmos'
             AddPhaseChangeTrigger(tt => true, p => true, IsEnteringTurnReversedFrozenPhase, SkipToTurnReversedFollower, new TriggerType[] { TriggerType.SkipTurn, TriggerType.HiddenLast }, TriggerTiming.Before);
 
             //...and targets in their play are are immune to damage.
-            base.AddImmuneToDamageTrigger((DealDamageAction action) => action.Target.Location.HighestRecursiveLocation == GetCardThisCardIsNextTo().Location.HighestRecursiveLocation);
+            base.AddImmuneToDamageTrigger((DealDamageAction action) => action.Target.Location.HighestRecursiveLocation == GetCardThisCardIsNextTo()?.Location.HighestRecursiveLocation);
             //At the start of the environment turn, destroy this card.
             base.AddStartOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, base.DestroyThisCardResponse, TriggerType.DestroySelf);
         }
@@ -140,6 +87,8 @@ namespace Cauldron.FSCContinuanceWanderer
             }
             var frozenIndex = GameController.AllTurnTakers.IndexOf(frozen);
             var allHeroTurnTakers = GameController.AllTurnTakers.Where((TurnTaker tt) => tt.IsHero);
+
+            //previous hero in normal turn order, or environment if it is the first
             var nextTurnTakerIndex = (frozenIndex ?? 0) - 1;
             if (frozen == allHeroTurnTakers.FirstOrDefault())
             {
@@ -153,7 +102,8 @@ namespace Cauldron.FSCContinuanceWanderer
             }
             var nextTurnTaker = GameController.AllTurnTakers.ToList()[nextTurnTakerIndex];
             //Log.Debug($"Should skip to TurnTaker at index {nextTurnTakerIndex}, which is {nextTurnTaker.Name}");
-            
+
+            //make sure we skip to the right phase if the imp also has Breaking The Rules
             var nextTTStart = nextTurnTaker.TurnPhases.First();
             if(nextTurnTaker.IsHero && GameController.GetAllCards().Where((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "BreakingTheRules").Any())
             {
