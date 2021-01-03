@@ -15,6 +15,20 @@ namespace Cauldron.Titan
             AllowFastCoroutinesDuringPretend = false;
         }
 
+        public override IEnumerator Play()
+        {
+            var titanCharacter = FindCard("TitanFormCharacter");
+            var coroutine = GameController.SwitchCards(CharacterCardWithoutReplacements, titanCharacter, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+
         public override void AddTriggers()
         {
             //Whenever {Titan} is dealt damage by another target, reduce damage dealt to {Titan} by 1 until the start of your next turn.
@@ -22,6 +36,8 @@ namespace Cauldron.Titan
 
             //When {Titan} would deal damage, you may destroy this card to increase that damage by 2.
             base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard, this.DestroyThisCardToIncreaseDamageResponse, new TriggerType[] { TriggerType.DestroySelf, TriggerType.IncreaseDamage }, TriggerTiming.Before, isActionOptional: true);
+
+            base.AddAfterLeavesPlayAction(RestoreCharacterCard);
         }
 
         private IEnumerator DealtDamageResponse(DealDamageAction action)
@@ -92,6 +108,20 @@ namespace Cauldron.Titan
                 RemoveInhibitorException();
             }
             yield break;
+        }
+
+        private IEnumerator RestoreCharacterCard()
+        {
+            var baseCharacter = FindCard("TitanCharacter");
+            var coroutine = GameController.SwitchCards(CharacterCardWithoutReplacements, baseCharacter, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
         }
     }
 }
