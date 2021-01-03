@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System;
-using NUnit.Framework;
 
 namespace Cauldron.Malichae
 {

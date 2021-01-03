@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace Cauldron.HalberdExperimentalResearchCenter
 {
