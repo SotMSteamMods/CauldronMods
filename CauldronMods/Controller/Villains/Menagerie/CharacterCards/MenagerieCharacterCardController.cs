@@ -75,6 +75,7 @@ namespace Cauldron.Menagerie
                 if (base.Game.IsAdvanced)
                 { //Back - Advanced
                     //At the start of the villain turn, if each active hero has an enclosure in their play area, the heroes lose the game.
+                    base.AddSideTrigger(base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.MaybeGameOverResponse, TriggerType.GameOver));
                 }
             }
             base.AddDefeatedIfDestroyedTriggers();
@@ -203,6 +204,37 @@ namespace Cauldron.Menagerie
             foreach (Card enclosure in enclosures)
             {
                 coroutine = base.DealDamage(base.Card, (Card c) => c == enclosure.Location.OwnerCard, (Card c) => enclosure.UnderLocation.NumberOfCards, DamageType.Projectile);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
+        }
+
+        private IEnumerator MaybeGameOverResponse(PhaseChangeAction action)
+        {
+            //...if each active hero has an enclosure in their play area, the heroes lose the game.
+            int capturedHeroes = 0;
+            IEnumerable<Card> enclosures = base.FindCardsWhere(new LinqCardCriteria((Card c) => this.IsEnclosure(c)));
+            foreach (TurnTaker hero in base.Game.HeroTurnTakers)
+            {
+                foreach (Card enclosure in enclosures)
+                {
+                    if (enclosure.Location.OwnerTurnTaker == hero)
+                    {
+                        capturedHeroes++;
+                        break;
+                    }
+                }
+            }
+            if (capturedHeroes == Game.H)
+            {
+                IEnumerator coroutine = base.GameController.GameOver(EndingResult.AlternateDefeat, "Menagerie has captured all of the heroes!", cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

@@ -383,7 +383,7 @@ namespace CauldronTests
         [Test()]
         public void TestMenagerieBackAlternateLoss()
         {
-            SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" });
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" }, true);
             StartGame();
             MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
             GoToEndOfTurn(menagerie);
