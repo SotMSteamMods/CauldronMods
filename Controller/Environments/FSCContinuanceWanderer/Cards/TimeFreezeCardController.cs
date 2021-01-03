@@ -152,9 +152,15 @@ namespace Cauldron.FSCContinuanceWanderer
                 yield break;
             }
             var nextTurnTaker = GameController.AllTurnTakers.ToList()[nextTurnTakerIndex];
-            Log.Debug($"Should skip to TurnTaker at index {nextTurnTakerIndex}, which is {nextTurnTaker.Name}");
+            //Log.Debug($"Should skip to TurnTaker at index {nextTurnTakerIndex}, which is {nextTurnTaker.Name}");
+            
             var nextTTStart = nextTurnTaker.TurnPhases.First();
-            IEnumerator coroutine = GameController.SkipToTurnPhase(nextTTStart, cardSource: GetCardSource());
+            if(nextTurnTaker.IsHero && GameController.GetAllCards().Where((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "BreakingTheRules").Any())
+            {
+                nextTTStart = nextTurnTaker.TurnPhases.Last();
+            }
+
+            IEnumerator coroutine = GameController.SkipToTurnPhase(nextTTStart, interruptActions: true, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
