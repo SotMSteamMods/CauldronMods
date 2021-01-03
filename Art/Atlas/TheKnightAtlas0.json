@@ -184,7 +184,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
 	"sourceSize": {"w":178,"h":256}
 },
-"TheOldKnightCharacter.jpg":
+"TheOldKnightCharacterBack.jpg":
 {
 	"frame": {"x":1543,"y":407,"w":178,"h":256},
 	"rotated": false,
@@ -192,7 +192,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
 	"sourceSize": {"w":178,"h":256}
 },
-"TheOldKnightCharacterBack.jpg":
+"TheOldKnightCharacter.jpg":
 {
 	"frame": {"x":1726,"y":523,"w":178,"h":256},
 	"rotated": false,
