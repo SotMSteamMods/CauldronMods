@@ -1,13 +1,10 @@
-﻿using Handelabra;
+﻿using Cauldron.Menagerie;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Cauldron.Menagerie;
 
 namespace CauldronTests
 {
