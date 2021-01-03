@@ -168,7 +168,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"SupriseAttack.png":
+"SurpriseAttack.png":
 {
 	"frame": {"x":1036,"y":450,"w":256,"h":188},
 	"rotated": false,
