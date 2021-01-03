@@ -27,7 +27,7 @@ namespace CauldronTests.Art
         private class Item
         {
             public string Name;
-            public string Kind;
+            public Handelabra.Sentinels.Engine.Model.DeckDefinition.DeckKind Kind;
             public List<string> CardIdentifiers;
             public List<string> CharacterIdentifiers;
             public List<string> StartEndIdentifiers;
@@ -35,7 +35,7 @@ namespace CauldronTests.Art
             public Item(object[] obj)
             {
                 Name = (string)obj[0];
-                Kind = (string)obj[1];
+                Kind = (DeckDefinition.DeckKind)Enum.Parse(typeof(DeckDefinition.DeckKind), (string)obj[1]);
                 CardIdentifiers = (List<string>)obj[2];
                 CharacterIdentifiers = (List<string>)obj[3];
                 StartEndIdentifiers = (List<string>)obj[4];
@@ -84,12 +84,86 @@ namespace CauldronTests.Art
         }
 
         [Test]
+        public void InSetupGameAtlas()
+        {
+            List<string> names = new List<string>();
+            foreach (var item in Items())
+            {
+                switch(item.Kind)
+                {
+                    case DeckDefinition.DeckKind.Environment:
+                        names.Add(item.Name + "DeckBack");
+                        break;
+                    default:
+                        names.AddRange(item.StartEndIdentifiers);
+                        break;
+                }
+            }
+
+            string expectedDirectory = Path.Combine(ArtPath, @"Atlas\");
+
+            if (!Directory.Exists(expectedDirectory))
+                Assert.Inconclusive();
+
+            var atlas = ArtTestBase.ReadAtlasJson(expectedDirectory, "SetupGame");
+            if (atlas is null)
+                Assert.Inconclusive();
+
+            foreach (var character in names)
+            {
+                if (!atlas.Remove(character))
+                {
+                    Assert.Warn($"{character} - Game Setup Atlas art is missing");
+                }
+            }
+
+            foreach (var character in atlas)
+            {
+                Assert.Warn($"Sprite {character} isn't used by any decks.");
+            }
+        }
+
+        [Test]
+        public void InHeroLogoAtlas()
+        {
+            List<string> names = new List<string>();
+            foreach (var item in Items())
+            {
+                if (item.Kind == DeckDefinition.DeckKind.Hero)
+                    names.AddRange(item.StartEndIdentifiers);
+            }
+
+            string expectedDirectory = Path.Combine(ArtPath, @"Atlas\");
+
+            if (!Directory.Exists(expectedDirectory))
+                Assert.Inconclusive();
+
+            var atlas = ArtTestBase.ReadAtlasJson(expectedDirectory, "HeroLogos");
+            if (atlas is null)
+                Assert.Inconclusive();
+
+            foreach (var character in names)
+            {
+                if (!atlas.Remove(character))
+                {
+                    Assert.Warn($"{character} - Hero Logo Atlas art is missing");
+                }
+            }
+
+            foreach (var character in atlas)
+            {
+                Assert.Warn($"Sprite {character} isn't used by any decks.");
+            }
+        }
+
+
+        [Test]
         public void StartOfGameHeroes()
         {
             List<string> identifiers = new List<string>();
             foreach (var item in Items())
             {
-                if (item.Kind == "Hero")
+                if (item.Kind == DeckDefinition.DeckKind.Hero)
                     identifiers.AddRange(item.StartEndIdentifiers);
             }
 
@@ -119,7 +193,7 @@ namespace CauldronTests.Art
             List<string> identifiers = new List<string>();
             foreach (var item in Items())
             {
-                if (item.Kind == "Villain")
+                if (item.Kind == DeckDefinition.DeckKind.Villain)
                     identifiers.AddRange(item.StartEndIdentifiers);
             }
 
@@ -149,7 +223,7 @@ namespace CauldronTests.Art
             List<string> identifiers = new List<string>();
             foreach (var item in Items())
             {
-                if (item.Kind == "Hero")
+                if (item.Kind == DeckDefinition.DeckKind.Hero)
                     identifiers.AddRange(item.StartEndIdentifiers);
             }
 
