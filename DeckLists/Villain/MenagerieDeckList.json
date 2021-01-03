@@ -31,8 +31,8 @@
             ],
             "advanced": "When an enclosure enters play, put the top card of the villain deck beneath it.",
             "icons": [
+                "EndOfTurnAction",
                 "PlayCardNow",
-                "Indestructible",
                 "LoseTheGame"
             ],
             "advancedIcons": [
@@ -46,7 +46,7 @@
                 "Cards beneath enclosures are not considered in play. When an enclosure leaves play, discard all cards beneath it.",
                 "At the end of the villain turn, play the top card of the villain deck. Then, for each enclosure in play, Menagerie deals the hero next to it X projectile damage, where X is the number of cards beneath that enclosure."
             ],
-            "flippedAdvanced": "When an enclosure enters play, put the top card of the villain deck beneath it.",
+            "flippedAdvanced": "At the start of the villain turn, if each active hero has an enclosure in their play area, the heroes lose the game.",
             "flippedIcons": [
                 "Manipulate",
                 "RemoveFromGame",
@@ -69,7 +69,12 @@
             "keywords": [
                 "specimen"
             ],
-            "icons": [],
+            "icons": [
+                "EndOfTurnAction",
+                "PlayCardNow",
+                "DealDamageMelee",
+                "GainHP"
+            ],
             "body": [
                 "At the end of the villain turn, play the top card of the villain deck.",
                 "Whenever a target enters play, this card deals that target 2 melee damage and regains 6HP."
@@ -90,7 +95,10 @@
             "keywords": [
                 "enclosure"
             ],
-            "icons": [],
+            "icons": [
+                "Manipulate",
+                "Discard"
+            ],
             "body": [
                 "When this card enters play, place the top card of the villain deck beneath it face down.",
                 "Whenever a hero uses a power, they must discard a card."
@@ -111,7 +119,11 @@
             "keywords": [
                 "enclosure"
             ],
-            "icons": [],
+            "icons": [
+                "Manipulate",
+                "PlayCardNow",
+                "DealDamageMelee"
+            ],
             "body": [
                 "When this card enters play, place the top card of the villain deck beneath it face down. Then, play the top card of the villain deck.",
                 "Whenever a Specimen enters play, it deals the non-villain target with the lowest HP {H - 2} melee damage."
@@ -132,7 +144,11 @@
             "keywords": [
                 "enclosure"
             ],
-            "icons": [],
+            "icons": [
+                "Manipulate",
+                "StartOfTurnAction",
+                "DealDamageToxic"
+            ],
             "body": [
                 "When this card enters play, place the top 2 cards of the villain deck beneath it face down.",
                 "At the start of each hero's turn, this card deals the non-villain target with the highest HP {H - 1} toxic damage."
@@ -153,7 +169,10 @@
             "keywords": [
                 "ongoing"
             ],
-            "icons": [],
+            "icons": [
+                "Search",
+                "ReduceDamageTaken"
+            ],
             "body": [
                 "When this card enters play, put all Mercenary cards from the villain trash into play.",
                 "Reduce damage dealt to Mercenaries by X, where X is the number of Specimens in play."
@@ -173,7 +192,11 @@
             "keywords": [
                 "specimen"
             ],
-            "icons": [],
+            "icons": [
+                "IncreaseDamageTaken",
+                "EndOfTurnAction",
+                "DealDamageCold"
+            ],
             "body": [
                 "Increase damage dealt to Enclosures by 1.",
                 "At the end of the villain turn, this card deals each non-Specimen target 2 cold damage."
@@ -195,7 +218,12 @@
                 "specimen",
                 "test subject"
             ],
-            "icons": [],
+            "icons": [
+                "IncreaseDamageDealt",
+                "EndOfTurnAction",
+                "DealDamageToxic",
+                "Search"
+            ],
             "body": [
                 "Increase damage dealt by insects by 1.",
                 "At the end of the villain turn, this card deals the hero target with the lowest HP 2 toxic damage. Then, put all Insects in the villain trash into play."
@@ -216,7 +244,12 @@
             "keywords": [
                 "mercenary"
             ],
-            "icons": [],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageSonic",
+                "DestroyOngoing",
+                "DestroyEquipment"
+            ],
             "body": [
                 "At the end of the villain turn, this card deals the 2 non-Captured hero targets with the highest HP 2 sonic damage each.",
                 "Whenever a Specimen is destroyed, destroy 1 hero ongoing or equipment card."
@@ -237,7 +270,11 @@
             "keywords": [
                 "specimen"
             ],
-            "icons": [],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamagePsychic",
+                "DestroyEquipment"
+            ],
             "body": "At the end of the villain turn, this card deals the 2 targets other than itself with the highest HP {H - 1} psychic damage each. Then, destroy 1 equipment card.",
             "flavorQuotes": [
                 {
@@ -255,7 +292,11 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": [],
+            "icons": [
+                "Search",
+                "DestroyOngoing",
+                "DestroyEquipment"
+            ],
             "body": [
                 "Reveal cards from the top of the villain deck until an Enclosure is revealed. Put it into play. Shuffle the other revealed cards back into the villain deck.",
                 "Put the top card of the environment deck beneath the Enclosure with the highest HP and destroy {H - 2} hero ongoing and/or equipment cards."
@@ -275,7 +316,12 @@
             "keywords": [
                 "specimen"
             ],
-            "icons": [],
+            "icons": [
+                "PlayCardNow",
+                "EndOfTurnAction",
+                "DealDamageProjectile",
+                "DealDamageRadiant"
+            ],
             "body": [
                 "The first time a Specimen enters play each turn, play the top card of the villain deck.",
                 "At the end of the villain turn this card deals the hero target with the highest HP 2 projectile and 2 radiant damage."
@@ -290,7 +336,10 @@
             "keywords": [
                 "insect"
             ],
-            "icons": [],
+            "icons": [
+                "ReduceDamageTaken",
+                "DealDamageToxic"
+            ],
             "body": [
                 "Reduce damage dealt to this card by 1.",
                 "The first time a non-villain target deals damage each turn, this card deals that target 1 irreducible toxic damage."
@@ -311,7 +360,10 @@
             "keywords": [
                 "ongoing"
             ],
-            "icons": [],
+            "icons": [
+                "IncreaseDamageDealt",
+                "ReduceDamageDealt"
+            ],
             "body": [
                 "Play this card next to the hero with the most one-shots in hand. That hero and all their cards are Captured.",
                 "Increase damage dealt by Captured targets to Enclosures by 1. Reduce damage dealt by Captured targets to non-Enclosure targets by 1."
@@ -331,7 +383,10 @@
             "keywords": [
                 "enclosure"
             ],
-            "icons": [],
+            "icons": [
+                "Manipulate",
+                "ReduceDamageDealt"
+            ],
             "body": [
                 "When this card enters play, place the top card of the environment deck beneath it face down.",
                 "Reduce damage dealt by hero targets by 1."
@@ -352,7 +407,10 @@
             "keywords": [
                 "enclosure"
             ],
-            "icons": [],
+            "icons": [
+                "Manipulate",
+                "DestroyOngoing"
+            ],
             "body": [
                 "When this card enters play, place the top card of the villain deck beneath it face down and destroy {H - 2} hero ongoing cards.",
                 "The Captured hero and their cards cannot affect or be affected by cards or effects from other hero decks."
@@ -374,7 +432,11 @@
                 "device",
                 "drone"
             ],
-            "icons": [],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageProjectile",
+                "Manipulate"
+            ],
             "body": "At the end of the villain turn, this card deals the non-villain target with the second lowest HP {H} projectile damage. Then, place the top card of the villain deck face down beneath the Enclosure with the fewest cards beneath it.",
             "flavorQuotes": [
                 {
@@ -392,7 +454,12 @@
             "keywords": [
                 "mercenary"
             ],
-            "icons": [],
+            "icons": [
+                "ImmuneToDamage",
+                "EndOfTurnAction",
+                "PlayCardNow",
+                "DealDamageProjectile"
+            ],
             "body": [
                 "This card is immune to damage dealt by non-hero cards.",
                 "At the end of the villain turn, play the top card of the villain deck. Then, this card deals the hero target with the highest HP X projectile damage, where X is the number of Specimens in play."
@@ -413,7 +480,10 @@
             "keywords": [
                 "specimen"
             ],
-            "icons": [],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageMelee"
+            ],
             "body": "At the end of the villain turn, this card deals the Enclosure with the highest HP 4 melee damage and the hero target with the highest HP 2 melee damage.",
             "flavorQuotes": [
                 {
@@ -431,7 +501,11 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": [],
+            "icons": [
+                "PlayCardNow",
+                "Manipulate",
+                "DealDamagePsychic"
+            ],
             "body": [
                 "Play the top card of the villain deck.",
                 "Select 1 face down card beneath each Enclosure. Flip those cards face up.",
