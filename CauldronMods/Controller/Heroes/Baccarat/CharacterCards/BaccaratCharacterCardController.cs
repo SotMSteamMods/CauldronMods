@@ -5,8 +5,6 @@ using System.Linq;
 using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
 namespace Cauldron.Baccarat
 {
