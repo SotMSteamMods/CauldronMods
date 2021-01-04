@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cauldron.VaultFive
 {
@@ -74,6 +75,27 @@ namespace Cauldron.VaultFive
 
             yield break;
 
+        }
+
+        protected IEnumerator SelectActiveHeroCharacterCardToDoAction(List<Card> storedResults, SelectionType selectionType)
+        {
+            List<SelectCardDecision> storedDecision = new List<SelectCardDecision>();
+            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(DecisionMaker, selectionType, new LinqCardCriteria((Card c) => c.Owner == Card.Owner && c.IsCharacter && !c.IsIncapacitatedOrOutOfGame, "active hero"), storedDecision, false, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            SelectCardDecision selectCardDecision = storedDecision.FirstOrDefault();
+            if (selectCardDecision != null)
+            {
+                storedResults.Add(selectCardDecision.SelectedCard);
+            }
+
+            yield break;
         }
 
 
