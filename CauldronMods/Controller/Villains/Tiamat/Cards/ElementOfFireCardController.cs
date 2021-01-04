@@ -12,21 +12,32 @@ namespace Cauldron.Tiamat
         public ElementOfFireCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowHeroWithMostCards(false);
-            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "ElementOfFire", "element of fire"));
+            if (base.CharacterCardController is FutureTiamatCharacterCardController)
+            {
+                base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => base.IsSpell(c), "spell"));
+            }
+            else
+            {
+                base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "ElementOfFire", "element of fire"));
+            }
         }
 
         public override IEnumerator Play()
         {
             IEnumerator coroutine;
             Card characterCard = null;
-            if (base.CharacterCard.PromoIdentifierOrIdentifier == "WinterTiamatCharacter")
+            if (base.CharacterCardController is WinterTiamatCharacterCardController)
             {
                 characterCard = base.TurnTaker.FindCard("InfernoTiamatCharacter");
             }
-            else if (base.CharacterCard.PromoIdentifierOrIdentifier == "HydraWinterTiamatCharacter")
+            if (base.CharacterCardController is HydraWinterTiamatCharacterCardController)
             {
                 characterCard = base.TurnTaker.FindCard("HydraInfernoTiamatCharacter");
-            };
+            }
+            if (base.CharacterCardController is FutureTiamatCharacterCardController)
+            {
+                characterCard = base.CharacterCard;
+            }
             //If {Tiamat}, The Mouth of the Inferno is active, she deals each hero target 2+X fire damage, where X is the number of Element of Fire cards in the villain trash.
             if (characterCard.IsInPlayAndHasGameText && !characterCard.IsFlipped)
             {
