@@ -16,6 +16,42 @@ namespace Cauldron.VaultFive
 
         public override IEnumerator UniqueOnPlayEffect()
         {
+            //a hero from its deck...
+            List<Card> storedResults = new List<Card>();
+            IEnumerator coroutine = SelectActiveHeroCharacterCardToDoAction(storedResults, SelectionType.GainHP);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            Card hero = storedResults.FirstOrDefault();
+            if (hero == null)
+            {
+                yield break;
+            }
+            //...regains 4HP...
+            coroutine = GameController.GainHP(hero, 4, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            //.. and deals each other hero target 1 infernal damage
+            coroutine = DealDamage(hero, (Card c) => c.IsHero && c.IsTarget && c != hero, 1, DamageType.Infernal);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
     }
