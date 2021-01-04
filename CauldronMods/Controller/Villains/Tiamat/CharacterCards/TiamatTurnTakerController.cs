@@ -107,12 +107,12 @@ namespace Cauldron.Tiamat
             }
             if (base.FindCardController(base.CharacterCard) is HydraWinterTiamatCharacterCardController)
             {//Elemental Hydra
-                this.inBox = hydra;
+                this.inPlay = hydra;
                 this.inBox = regular.Concat(future).ToArray();
             }
             if (base.FindCardController(base.CharacterCard) is FutureTiamatCharacterCardController)
             {//2199
-                this.inBox = future;
+                this.inPlay = future;
                 this.inBox = regular.Concat(hydra).ToArray();
             }
             SneakManageCharacters();
