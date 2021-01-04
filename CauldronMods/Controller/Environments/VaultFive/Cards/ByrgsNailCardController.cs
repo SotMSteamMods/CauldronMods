@@ -8,10 +8,15 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.VaultFive
 {
-    public class ByrgsNailCardController : VaultFiveUtilityCardController
+    public class ByrgsNailCardController : ArtifactCardController
     {
         public ByrgsNailCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
+
+        public override IEnumerator UniqueOnPlayEffect()
+        {
+            yield break;
         }
     }
 }
