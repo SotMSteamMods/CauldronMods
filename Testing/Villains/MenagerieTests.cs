@@ -371,9 +371,10 @@ namespace CauldronTests
             AssertFlipped(menagerie);
             DestroyNonCharacterVillainCards();
 
+            Card aqua = PutInTrash("AquaticSphere");
             PlayCard("ExoticSphere");
+            PutOnDeck("AquaticSphere");
             //At the end of the villain turn, play the top card of the villain deck. Then, for each enclosure in play, Menagerie deals the hero next to it X projectile damage, where X is the number of cards beneath that enclosure.
-            Card aqua = PutOnDeck("AquaticSphere");
             GoToEndOfTurn(env);
             QuickHPStorage(legacy, ra);
             GoToEndOfTurn(menagerie);
@@ -449,6 +450,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.Menagerie", "Haka", "Bunker", "Parse", "Megalopolis");
             StartGame();
 
+            Card hydric = PutOnDeck("TheMonBeskmaHydric");
             Card lumo = PutOnDeck("LumobatFlock");
 
             //When this card enters play, place the top card of the villain deck beneath it face down.
@@ -457,7 +459,7 @@ namespace CauldronTests
             AssertNumberOfCardsAtLocation(sphere.UnderLocation, 1);
 
             //Then, play the top card of the villain deck.
-            AssertIsInPlay(lumo);
+            AssertIsInPlay(hydric);
 
             //Whenever a Specimen enters play, it deals the non-villain target with the lowest HP {H - 2} melee damage.
             QuickHPCheck(-1, 0, 0);
@@ -496,6 +498,7 @@ namespace CauldronTests
             //When this card enters play, place the top 2 cards of the villain deck beneath it face down.
             Card sphere = PlayCard("ExoticSphere");
             AssertNumberOfCardsAtLocation(sphere.UnderLocation, 2);
+            GoToEndOfTurn(menagerie);
 
             //At the start of each hero's turn, this card deals the non-villain target with the highest HP {H - 1} toxic damage.
             QuickHPStorage(haka);
@@ -761,17 +764,28 @@ namespace CauldronTests
         [Test()]
         public void TestSecuritySphere()
         {
-            SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
-            DiscardAllCards(bench, parse);
+            SetupGameController("Cauldron.Menagerie", "Bunker", "Legacy/AmericasGreatestLegacyCharacter", "TheSentinels", "Megalopolis");
+            DiscardAllCards(legacy, sentinels);
             StartGame();
 
-            //When this card enters play, place the top card of the villain deck beneath it face down.
-            Card sphere = PlayCard("SecuritySphere");
-            AssertNumberOfCardsAtLocation(sphere.UnderLocation, 1);
+            Card flak = PlayCard("FlakCannon");
+            Card mode = PlayCard("RechargeMode");
 
             //When this card enters play, place the top card of the villain deck beneath it face down and destroy {H - 2} hero ongoing cards.
+            Card sphere = PlayCard("SecuritySphere");
+            AssertNumberOfCardsAtLocation(sphere.UnderLocation, 1);
+            AssertInTrash(flak);
+            AssertIsInPlay(mode);
+
             //The Captured hero and their cards cannot affect or be affected by cards or effects from other hero decks.
-            Assert.IsTrue(false);
+            SetHitPoints(bunker, 17);
+            SetHitPoints(legacy, 17);
+            QuickHandStorage(bunker);
+            QuickHPStorage(bunker, legacy);
+            UsePower(medico);
+            UsePower(legacy);
+            QuickHandCheck(0);
+            QuickHPCheck(0);
         }
 
         [Test()]
