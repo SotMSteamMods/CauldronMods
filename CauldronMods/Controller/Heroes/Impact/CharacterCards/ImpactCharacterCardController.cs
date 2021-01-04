@@ -58,7 +58,10 @@ namespace Cauldron.Impact
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            RemoveTrigger(previewBoost);
+            if (enoughOngoingsInPlay)
+            {
+                RemoveTrigger(previewBoost);
+            }
 
             var selectedTargets = targetDecision.SelectCardDecisions.Select(scd => scd.SelectedCard).Where((Card c) => c != null);
             if (selectedTargets.Count() == 0)
