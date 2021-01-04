@@ -781,7 +781,7 @@ namespace CauldronTests
             SetHitPoints(bunker, 17);
             SetHitPoints(legacy, 17);
             QuickHandStorage(bunker);
-            QuickHPStorage(bunker, legacy);
+            QuickHPStorage(bunker);
             UsePower(medico);
             UsePower(legacy);
             QuickHandCheck(0);
