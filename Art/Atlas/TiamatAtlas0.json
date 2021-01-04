@@ -2,7 +2,7 @@
 
 "AcidBreath.jpg":
 {
-	"frame": {"x":0,"y":0,"w":256,"h":188},
+	"frame": {"x":1790,"y":518,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -10,7 +10,7 @@
 },
 "Alteration.jpg":
 {
-	"frame": {"x":259,"y":0,"w":256,"h":188},
+	"frame": {"x":0,"y":777,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -18,7 +18,7 @@
 },
 "AncientWard.jpg":
 {
-	"frame": {"x":518,"y":0,"w":256,"h":188},
+	"frame": {"x":259,"y":777,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -26,7 +26,7 @@
 },
 "DragonsWrath.jpg":
 {
-	"frame": {"x":777,"y":0,"w":256,"h":188},
+	"frame": {"x":518,"y":777,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -34,7 +34,7 @@
 },
 "ElementalForm.jpg":
 {
-	"frame": {"x":1036,"y":0,"w":256,"h":188},
+	"frame": {"x":1554,"y":777,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -42,7 +42,7 @@
 },
 "ElementalFrenzy.jpg":
 {
-	"frame": {"x":1295,"y":0,"w":256,"h":188},
+	"frame": {"x":0,"y":968,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -50,7 +50,7 @@
 },
 "ElementalHydraTiamat.jpg":
 {
-	"frame": {"x":1554,"y":0,"w":176,"h":256},
+	"frame": {"x":0,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -58,7 +58,7 @@
 },
 "ElementOfFire.jpg":
 {
-	"frame": {"x":1733,"y":0,"w":256,"h":188},
+	"frame": {"x":777,"y":777,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -66,7 +66,7 @@
 },
 "ElementOfIce.jpg":
 {
-	"frame": {"x":0,"y":259,"w":256,"h":188},
+	"frame": {"x":1036,"y":777,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -74,15 +74,47 @@
 },
 "ElementOfLightning.jpg":
 {
-	"frame": {"x":259,"y":259,"w":256,"h":188},
+	"frame": {"x":1295,"y":777,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
+"ExoscaleCharacter.png":
+{
+	"frame": {"x":179,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"ExoscaleCharacterBack.png":
+{
+	"frame": {"x":358,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"FutureTiamatCharacter.png":
+{
+	"frame": {"x":537,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"FutureTiamatCharacterBack.png":
+{
+	"frame": {"x":716,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
 "HealingMagic.jpg":
 {
-	"frame": {"x":518,"y":259,"w":256,"h":188},
+	"frame": {"x":259,"y":968,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -90,7 +122,7 @@
 },
 "HydraDecayTiamatCharacter.jpg":
 {
-	"frame": {"x":777,"y":259,"w":176,"h":256},
+	"frame": {"x":895,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -98,7 +130,7 @@
 },
 "HydraDecayTiamatCharacterBack.jpg":
 {
-	"frame": {"x":956,"y":259,"w":176,"h":256},
+	"frame": {"x":1074,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -106,7 +138,7 @@
 },
 "HydraEarthTiamatCharacter.jpg":
 {
-	"frame": {"x":1135,"y":259,"w":176,"h":256},
+	"frame": {"x":1253,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -114,7 +146,7 @@
 },
 "HydraEarthTiamatCharacterBack.jpg":
 {
-	"frame": {"x":1314,"y":259,"w":176,"h":256},
+	"frame": {"x":1432,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -122,7 +154,7 @@
 },
 "HydraFrigidEarthTiamatInstructions.jpg":
 {
-	"frame": {"x":1493,"y":259,"w":176,"h":256},
+	"frame": {"x":1611,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -130,7 +162,7 @@
 },
 "HydraFrigidEarthTiamatInstructionsBack.jpg":
 {
-	"frame": {"x":1672,"y":259,"w":176,"h":256},
+	"frame": {"x":1790,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -138,7 +170,7 @@
 },
 "HydraInfernoTiamatCharacter.jpg":
 {
-	"frame": {"x":1851,"y":259,"w":176,"h":256},
+	"frame": {"x":0,"y":259,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -146,7 +178,7 @@
 },
 "HydraInfernoTiamatCharacterBack.jpg":
 {
-	"frame": {"x":0,"y":518,"w":176,"h":256},
+	"frame": {"x":179,"y":259,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -154,7 +186,7 @@
 },
 "HydraNoxiousFireTiamatInstructions.jpg":
 {
-	"frame": {"x":179,"y":518,"w":176,"h":256},
+	"frame": {"x":358,"y":259,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -162,7 +194,7 @@
 },
 "HydraNoxiousFireTiamatInstructionsBack.jpg":
 {
-	"frame": {"x":358,"y":518,"w":176,"h":256},
+	"frame": {"x":537,"y":259,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -170,7 +202,7 @@
 },
 "HydraStormTiamatCharacter.jpg":
 {
-	"frame": {"x":537,"y":518,"w":176,"h":256},
+	"frame": {"x":716,"y":259,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -178,7 +210,7 @@
 },
 "HydraStormTiamatCharacterBack.jpg":
 {
-	"frame": {"x":716,"y":518,"w":176,"h":256},
+	"frame": {"x":895,"y":259,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -186,7 +218,7 @@
 },
 "HydraThunderousGaleTiamatInstructions.jpg":
 {
-	"frame": {"x":895,"y":518,"w":176,"h":256},
+	"frame": {"x":1074,"y":259,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -194,7 +226,7 @@
 },
 "HydraThunderousGaleTiamatInstructionsBack.jpg":
 {
-	"frame": {"x":1074,"y":518,"w":176,"h":256},
+	"frame": {"x":1253,"y":259,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -202,7 +234,7 @@
 },
 "HydraWindTiamatCharacter.jpg":
 {
-	"frame": {"x":1253,"y":518,"w":176,"h":256},
+	"frame": {"x":1432,"y":259,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -210,7 +242,7 @@
 },
 "HydraWindTiamatCharacterBack.jpg":
 {
-	"frame": {"x":1432,"y":518,"w":176,"h":256},
+	"frame": {"x":1611,"y":259,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -218,7 +250,7 @@
 },
 "HydraWinterTiamatCharacter.jpg":
 {
-	"frame": {"x":1611,"y":518,"w":176,"h":256},
+	"frame": {"x":1790,"y":259,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -226,7 +258,7 @@
 },
 "HydraWinterTiamatCharacterBack.jpg":
 {
-	"frame": {"x":1790,"y":518,"w":176,"h":256},
+	"frame": {"x":0,"y":518,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -234,7 +266,7 @@
 },
 "InfernoTiamatCharacter.jpg":
 {
-	"frame": {"x":0,"y":777,"w":176,"h":256},
+	"frame": {"x":179,"y":518,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -242,7 +274,7 @@
 },
 "InfernoTiamatCharacterBack.jpg":
 {
-	"frame": {"x":179,"y":777,"w":176,"h":256},
+	"frame": {"x":358,"y":518,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -250,15 +282,31 @@
 },
 "ManaCharge.jpg":
 {
-	"frame": {"x":358,"y":777,"w":256,"h":188},
+	"frame": {"x":518,"y":968,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
+"NeoscaleCharacter.png":
+{
+	"frame": {"x":537,"y":518,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"NeoscaleCharacterBack.png":
+{
+	"frame": {"x":716,"y":518,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
 "ReptilianAspect.jpg":
 {
-	"frame": {"x":617,"y":777,"w":256,"h":188},
+	"frame": {"x":777,"y":968,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -266,7 +314,7 @@
 },
 "SkyBreaker.jpg":
 {
-	"frame": {"x":876,"y":777,"w":256,"h":188},
+	"frame": {"x":1036,"y":968,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -274,7 +322,7 @@
 },
 "StormTiamatCharacter.jpg":
 {
-	"frame": {"x":1135,"y":777,"w":176,"h":256},
+	"frame": {"x":895,"y":518,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -282,7 +330,7 @@
 },
 "StormTiamatCharacterBack.jpg":
 {
-	"frame": {"x":1314,"y":777,"w":176,"h":256},
+	"frame": {"x":1074,"y":518,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -290,7 +338,7 @@
 },
 "TiamatDeckBack.jpg":
 {
-	"frame": {"x":1493,"y":777,"w":176,"h":256},
+	"frame": {"x":1253,"y":518,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -298,7 +346,7 @@
 },
 "WinterTiamatCharacter.jpg":
 {
-	"frame": {"x":1672,"y":777,"w":176,"h":256},
+	"frame": {"x":1432,"y":518,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -306,7 +354,7 @@
 },
 "WinterTiamatCharacterBack.jpg":
 {
-	"frame": {"x":1851,"y":777,"w":176,"h":256},
+	"frame": {"x":1611,"y":518,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -319,6 +367,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:041f6ed252ac4b9eb8be7dcd035c700d:daaeec9de7e998d9b8837d6f027a29a1:38df6e9218114b1ffa66a5ee8552bcf7$"
+	"smartupdate": "$TexturePacker:SmartUpdate:5eed59ff4c9b5ed912fac55c662fc566:1d307cbe757d5d831f55dd4335eebcf6:38df6e9218114b1ffa66a5ee8552bcf7$"
 }
 }

@@ -6,7 +6,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "AceOfSorrowsBaccaratCharacter.jpg":
 {
@@ -14,7 +15,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "AceOfSwordsBaccaratCharacter.jpg":
 {
@@ -22,7 +24,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "AnathemaCharacter.jpg":
 {
@@ -30,15 +33,17 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"Area51StarlightCharacter.png":
+"AreaStarlightCharacter.png":
 {
 	"frame": {"x":704,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "BaccaratCharacter.jpg":
 {
@@ -46,7 +51,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "BerserkerTheKnightCharacter.jpg":
 {
@@ -54,7 +60,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "BlackwoodForestDeckBack.jpg":
 {
@@ -62,7 +69,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "CaptainGyrosaurCharacter.png":
 {
@@ -70,7 +78,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "CatchwaterHarborDeckBack.png":
 {
@@ -78,7 +87,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "CeladrochCharacter.png":
 {
@@ -86,7 +96,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "CornTheStrangerCharacter.png":
 {
@@ -94,15 +105,17 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"CreedOfTheSniperTangoOneCharacter.png":
+"CreedOfTheSniperTangoOne.png":
 {
 	"frame": {"x":2112,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "CricketCharacter.png":
 {
@@ -110,7 +123,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "CypherCharacter.png":
 {
@@ -118,7 +132,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "DendronCharacter.jpg":
 {
@@ -126,7 +141,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "DistributedHivemindSwarmEaterCharacter.png":
 {
@@ -134,7 +150,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "DocHavocCharacter.jpg":
 {
@@ -142,7 +159,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "DragonRangerGargoyleCharacter.png":
 {
@@ -150,7 +168,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "DriftCharacter.png":
 {
@@ -158,7 +177,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "DynamoCharacter.png":
 {
@@ -166,7 +186,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "EchelonCharacter.png":
 {
@@ -174,7 +195,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "FairTheKnightCharacter.jpg":
 {
@@ -182,7 +204,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "FirstResponseCricketCharacter.png":
 {
@@ -190,7 +213,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "FirstResponseCypherCharacter.png":
 {
@@ -198,7 +222,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "FirstResponseDocHavocCharacter.png":
 {
@@ -206,7 +231,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "FirstResponseEchelonCharacter.png":
 {
@@ -214,7 +240,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "FirstResponseVanishCharacter.jpg":
 {
@@ -222,7 +249,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "FSCContinuanceWandererDeckBack.jpg":
 {
@@ -230,7 +258,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "FutureDocHavocCharacter.png":
 {
@@ -238,7 +267,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "FutureEchelonCharacter.png":
 {
@@ -246,7 +276,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "FutureGargoyleCharacter.png":
 {
@@ -254,7 +285,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "FutureLadyOfTheWoodCharacter.png":
 {
@@ -262,7 +294,8 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "FutureTerminusCharacter.png":
 {
@@ -270,599 +303,683 @@
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"FutureTitanCharacter.png":
+"FutureTiamatCharacter.png":
 {
 	"frame": {"x":1936,"y":256,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"GargoyleCharacter.png":
+"FutureTitanCharacter.png":
 {
 	"frame": {"x":2112,"y":256,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"GenesisStarlightCharacter.jpg":
+"GargoyleCharacter.png":
 {
 	"frame": {"x":2288,"y":256,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"GhostOpsTangoOneCharacter.jpg":
+"GenesisStarlightCharacter.jpg":
 {
 	"frame": {"x":2464,"y":256,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"GrayCharacter.jpg":
+"GhostOpsTangoOneCharacter.jpg":
 {
 	"frame": {"x":2640,"y":256,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"GyrosaurCharacter.png":
+"GrayCharacter.jpg":
 {
 	"frame": {"x":2816,"y":256,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"TestSubjectHalberdDriftCharacter.png":
+"GyrosaurCharacter.png":
 {
 	"frame": {"x":2992,"y":256,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"HalberdExperimentalResearchCenterDeckBack.jpg":
+"HalberdDriftCharacter.png":
 {
 	"frame": {"x":3168,"y":256,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"HydraWinterTiamatCharacter.jpg":
+"HalberdExperimentalResearchCenterDeckBack.jpg":
 {
 	"frame": {"x":3344,"y":256,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"ImpactCharacter.png":
+"HydraWinterTiamatCharacter.jpg":
 {
 	"frame": {"x":3520,"y":256,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"LadyOfTheWoodCharacter.jpg":
+"ImpactCharacter.png":
 {
 	"frame": {"x":3696,"y":256,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"MagnificentMaraCharacter.png":
+"LadyOfTheWoodCharacter.jpg":
 {
 	"frame": {"x":3872,"y":256,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"MalichaeCharacter.jpg":
+"MagnificentMaraCharacter.png":
 {
 	"frame": {"x":0,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"MenagerieCharacter.png":
+"MalichaeCharacter.jpg":
 {
 	"frame": {"x":176,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"MinistryOfStrategicScienceLadyOfTheWoodCharacter.png":
+"MenagerieCharacter.png":
 {
 	"frame": {"x":352,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"MinistryOfStrategicScienceMagnificentMaraCharacter.png":
+"MinistryOfStrategicScienceLadyOfTheWoodCharacter.png":
 {
 	"frame": {"x":528,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"MinistryOfStrategicScienceMalichaeCharacter.png":
+"MinistryOfStrategicScienceMagnificentMaraCharacter.png":
 {
 	"frame": {"x":704,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"MinistryOfStrategicScienceTerminusCharacter.png":
+"MinistryOfStrategicScienceMalichaeCharacter.png":
 {
 	"frame": {"x":880,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"MinistryOfStrategicScienceTitanCharacter.png":
+"MinistryOfStrategicScienceTerminusCharacter.png":
 {
 	"frame": {"x":1056,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"MythosCharacter.png":
+"MinistryOfStrategicScienceTitanCharacter.png":
 {
 	"frame": {"x":1232,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"NecroCharacter.jpg":
+"MythosCharacter.png":
 {
 	"frame": {"x":1408,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"NightloreCitadelDeckBack.png":
+"NecroCharacter.jpg":
 {
 	"frame": {"x":1584,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"NightloreCouncilStarlightCharacter.png":
-{
-	"frame": {"x":2288,"y":1024,"w":178,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
-},
-"NorthsparDeckBack.jpg":
+"NightloreCouncilDeckBack.png":
 {
 	"frame": {"x":1760,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"OniTitanCharacter.png":
+"NightloreCouncilStarlightCharacter.png":
+{
+	"frame": {"x":2464,"y":1024,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"NorthsparDeckBack.jpg":
 {
 	"frame": {"x":1936,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"OriphelCharacter.png":
+"OniTitanCharacter.png":
 {
 	"frame": {"x":2112,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"WindcolorDendronCharacter.jpg":
+"OriphelCharacter.png":
 {
 	"frame": {"x":2288,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"PastBaccaratCharacter.png":
+"OutsideTheLinesDendronCharacter.jpg":
 {
 	"frame": {"x":2464,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"PastMagnificentMaraCharacter.png":
+"PastBaccaratCharacter.png":
 {
 	"frame": {"x":2640,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"PastNecroCharacter.png":
+"PastMagnificentMaraCharacter.png":
 {
 	"frame": {"x":2816,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"PastTangoOneCharacter.png":
+"PastNecroCharacter.png":
 {
 	"frame": {"x":2992,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"PastTheKnightCharacter.png":
+"PastTangoOneCharacter.png":
 {
 	"frame": {"x":3168,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"PastTheRamCharacter.png":
+"PastTheKnightCharacter.png":
 {
 	"frame": {"x":3344,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"PastTheStrangerCharacter.png":
+"PastTheRamCharacter.png":
 {
 	"frame": {"x":3520,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"PastVanishCharacter.png":
+"PastTheStrangerCharacter.png":
 {
 	"frame": {"x":3696,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"PhaseVillainCharacter.png":
+"PastVanishCharacter.png":
 {
 	"frame": {"x":3872,"y":512,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"QuicksilverCharacter.jpg":
+"PhaseVillainCharacter.png":
 {
 	"frame": {"x":0,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"RenegadeCricketCharacter.png":
+"QuicksilverCharacter.jpg":
 {
 	"frame": {"x":176,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"RenegadeGyrosaurCharacter.png":
+"RenegadeCricketCharacter.png":
 {
 	"frame": {"x":352,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"RenegadeImpactCharacter.png":
+"RenegadeGyrosaurCharacter.png":
 {
 	"frame": {"x":528,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"RenegadeQuicksilverCharacter.png":
+"RenegadeImpactCharacter.png":
 {
 	"frame": {"x":704,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"RunecarvedTheStrangerCharacter.jpg":
+"RenegadeQuicksilverCharacter.png":
 {
 	"frame": {"x":880,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"SeasonsOfChangeLadyOfTheWoodCharacter.jpg":
+"RunecarvedTheStrangerCharacter.jpg":
 {
 	"frame": {"x":1056,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"ShardmasterMalichaeCharacter.jpg":
+"SeasonsOfChangeLadyOfTheWoodCharacter.jpg":
 {
 	"frame": {"x":1232,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"SpeedDemonGyrosaurCharacter.png":
+"ShardmasterMalichaeCharacter.jpg":
 {
 	"frame": {"x":1408,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"StarlightCharacter.jpg":
-{
-	"frame": {"x":1760,"y":768,"w":176,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
-},
-"StSimeonsCatacombsDeckBack.jpg":
+"SpeedDemonGyrosaurCharacter.png":
 {
 	"frame": {"x":1584,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"SuperstormAkelaDeckBack.png":
+"StarlightCharacter.jpg":
 {
 	"frame": {"x":1936,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"SwarmEaterCharacter.png":
+"StSimeonsCatacombsDeckBack.jpg":
+{
+	"frame": {"x":1760,"y":768,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"SuperstormAkelaDeckBack.png":
 {
 	"frame": {"x":2112,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"SwarmingProtocolCypherCharacter.png":
+"SwarmEaterCharacter.png":
 {
 	"frame": {"x":2288,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"TangoOneCharacter.jpg":
+"SwarmingProtocolCypherCharacter.png":
 {
 	"frame": {"x":2464,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"TerminusCharacter.png":
+"TangoOneCharacter.jpg":
 {
 	"frame": {"x":2640,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"TheChasmOfAThousandNightsDeckBack.png":
+"TerminusCharacter.png":
 {
 	"frame": {"x":2816,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"TheCybersphereDeckBack.png":
+"TheChasmOfAThousandNightsDeckBack.png":
 {
 	"frame": {"x":2992,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"TheInfernalChoirCharacter.png":
+"TheCybersphereDeckBack.png":
 {
 	"frame": {"x":3168,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"TheKnightCharacter.jpg":
+"TheInfernalChoirCharacter.png":
 {
 	"frame": {"x":3344,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"TheMistressOfFateCharacter.png":
+"TheKnightCharacter.jpg":
 {
 	"frame": {"x":3520,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"TheRamCharacter.jpg":
+"TheMistressOfFateCharacter.png":
 {
 	"frame": {"x":3696,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"TheStrangerCharacter.jpg":
+"TheRamCharacter.jpg":
 {
 	"frame": {"x":3872,"y":768,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"TheWanderingIsleDeckBack.jpg":
+"TheStrangerCharacter.jpg":
 {
 	"frame": {"x":0,"y":1024,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"ThroughTheBreachDriftCharacter.png":
+"TheWanderingIsleDeckBack.jpg":
 {
 	"frame": {"x":176,"y":1024,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"TitanCharacter.png":
+"ThroughTheBreachDriftCharacter.png":
 {
 	"frame": {"x":352,"y":1024,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"UncannyQuicksilverCharacter.jpg":
+"TitanCharacter.png":
 {
 	"frame": {"x":528,"y":1024,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"VanishCharacter.png":
+"UncannyQuicksilverCharacter.jpg":
 {
 	"frame": {"x":704,"y":1024,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"VaultFiveDeckBack.png":
+"VanishCharacter.png":
 {
 	"frame": {"x":880,"y":1024,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"VectorCharacter.jpg":
+"VaultFiveDeckBack.png":
 {
 	"frame": {"x":1056,"y":1024,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"WardenOfChaosNecroCharacter.jpg":
+"VectorCharacter.jpg":
 {
 	"frame": {"x":1232,"y":1024,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"WastelandRoninCricketCharacter.png":
+"WardenOfChaosNecroCharacter.jpg":
 {
 	"frame": {"x":1408,"y":1024,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"WastelandRoninGargoyleCharacter.png":
+"WastelandRoninCricketCharacter.png":
 {
 	"frame": {"x":1584,"y":1024,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"WastelandRoninImpactCharacter.png":
+"WastelandRoninGargoyleCharacter.png":
 {
 	"frame": {"x":1760,"y":1024,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"WastelandRoninTheKnightCharacter.png":
-{
-	"frame": {"x":2466,"y":1024,"w":178,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
-},
-"WastelandRoninTheStrangerCharacter.png":
+"WastelandRoninImpactCharacter.png":
 {
 	"frame": {"x":1936,"y":1024,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
-"WindmillCityDeckBack.png":
+"WastelandRoninTheKnightCharacter.png":
+{
+	"frame": {"x":2642,"y":1024,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"WastelandRoninTheStrangerCharacter.png":
 {
 	"frame": {"x":2112,"y":1024,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"WindmillCityDeckBack.png":
+{
+	"frame": {"x":2288,"y":1024,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 },
 "WinterTiamatCharacter.png":
 {
-	"frame": {"x":2644,"y":1024,"w":178,"h":256},
+	"frame": {"x":2820,"y":1024,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"sourceSize": {"w":178,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
@@ -871,6 +988,6 @@
 	"format": "RGBA8888",
 	"size": {"w":4096,"h":4096},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:a1b169d43db44f44b8cce823ee297a8b:d6050ef6e6af0003eeb53cf7814fe260:4ee285c32a91b7652e02ac049f918b2a$"
+	"smartupdate": "$TexturePacker:SmartUpdate:299bca943461984aebc4ad3c5044e610:71fe4e059eba293fee4c7f49e3f4bf8e:4ee285c32a91b7652e02ac049f918b2a$"
 }
 }
