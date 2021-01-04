@@ -761,7 +761,7 @@ namespace CauldronTests
         [Test()]
         public void TestSecuritySphere()
         {
-            SetupGameController("Cauldron.Menagerie", "Haka", "Tempest", "Benchmark", "Megalopolis");
+            SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
             DiscardAllCards(bench, parse);
             StartGame();
 
@@ -812,6 +812,57 @@ namespace CauldronTests
             QuickHPStorage(haka, guise, parse);
             GoToEndOfTurn(menagerie);
             QuickHPCheck(-3, -2, 0);
+        }
+
+        [Test()]
+        public void TestTheMonBeskmaHydric()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
+            DiscardAllCards(bench, parse);
+            StartGame();
+
+            Card aqua = PutOnDeck("AquaticSphere");
+            PlayCard("TheMonBeskmaHydric");
+
+            //At the end of the villain turn, this card deals the Enclosure with the highest HP 4 melee damage and the hero target with the highest HP 2 melee damage.
+            QuickHPStorage(haka.CharacterCard, aqua);
+            GoToEndOfTurn(menagerie);
+            QuickHPCheck(-2, -4);
+        }
+
+        [Test()]
+        [Ignore("Flipping face down cards under another doesn't update the model.")]
+        public void TestViewingApertures()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
+            DiscardAllCards(bench, parse);
+            StartGame();
+
+            Card lumo = PutOnDeck("LumobatFlock");
+            PlayCard("AquaticSphere");
+
+            Card exo = PlayCard("ExoticSphere");
+            Card exo1 = exo.UnderLocation.TopCard;
+            Card exo2 = exo.UnderLocation.BottomCard;
+
+            Card feed = PutOnDeck("FeedingTime");
+
+            Card hydric = PlayCard("TheMonBeskmaHydric");
+            Card traffic = PlayCard("TrafficPileup");
+
+            QuickHPStorage(haka.CharacterCard, parse.CharacterCard, bench.CharacterCard, hydric, traffic);
+            PlayCard("ViewingApertures");
+            //Play the top card of the villain deck.
+            AssertIsInPlay(feed);
+
+            //Select 1 face down card beneath each Enclosure. Flip those cards face up.
+
+            AssertFaceUp(lumo);
+            AssertFaceUp(exo2);
+            Assert.IsTrue(!exo1.IsFaceUp);
+
+            //{Menagerie} deals each hero, environment, and Specimen target 1 psychic damage.
+            QuickHPCheck(-1, -1, -1, -1, -1);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Cauldron.Menagerie
         public override IEnumerator Play()
         {
             //Play the top card of the villain deck.
-            IEnumerator coroutine = base.PlayCardFromLocation(base.TurnTaker.Deck, "villain deck");
+            IEnumerator coroutine = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, cardSource: base.GetCardSource(null));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -30,10 +30,11 @@ namespace Cauldron.Menagerie
             }
 
             //Select 1 face down card beneath each Enclosure. Flip those cards face up.
-            IEnumerable<Card> enclosures = base.FindCardsWhere(new LinqCardCriteria((Card c) => base.IsEnclosure(c) && c.UnderLocation.HasCards));
+            IEnumerable<Card> enclosures = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && base.IsEnclosure(c) && c.UnderLocation.HasCards && this.HasFaceDownCards(c)));
+            actedEnclosures = new List<Card>();
             foreach (Card enclosure in enclosures)
             {
-                Card[] choices = base.FindCardsWhere((new LinqCardCriteria((Card c) => enclosures.Contains(c) && !actedEnclosures.Contains(c)))).ToArray();
+                IEnumerable<Card> choices = base.FindCardsWhere((new LinqCardCriteria((Card c) => enclosures.Contains(c) && !actedEnclosures.Contains(c) && this.HasFaceDownCards(c))));
                 if (choices.Any())
                 {
                     SelectCardDecision cardDecision = new SelectCardDecision(base.GameController, this.DecisionMaker, SelectionType.FlipCardFaceUp, choices, cardSource: base.GetCardSource());
@@ -46,7 +47,7 @@ namespace Cauldron.Menagerie
                     {
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
-                    actedEnclosures.Add(enclosure);
+                    actedEnclosures.Add(cardDecision.SelectedCard);
                 }
             }
 
@@ -65,7 +66,20 @@ namespace Cauldron.Menagerie
 
         private IEnumerator FlipEnclosedCardResponse(SelectCardDecision decision)
         {
-            IEnumerator coroutine = base.GameController.SelectAndFlipCards(this.DecisionMaker, new LinqCardCriteria((Card c) => decision.SelectedCard.UnderLocation.Cards.Contains(c)), toFaceDown: false, cardSource: base.GetCardSource());
+            var a = decision.SelectedCard.UnderLocation.Cards;
+            var b = base.FindCardsWhere(new LinqCardCriteria((Card c) => a.Contains(c)));
+
+            List<SelectCardDecision> cardDecision = new List<SelectCardDecision>();
+            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.FlipCardFaceUp, new LinqCardCriteria((Card c) => decision.SelectedCard.UnderLocation.Cards.Contains(c)), cardDecision, false, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            coroutine = base.GameController.FlipCard(base.FindCardController(cardDecision.FirstOrDefault().SelectedCard), cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -75,6 +89,18 @@ namespace Cauldron.Menagerie
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
+        }
+
+        private bool HasFaceDownCards(Card c)
+        {
+            foreach (Card underCard in c.UnderLocation.Cards)
+            {
+                if (!underCard.IsFaceUp)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
