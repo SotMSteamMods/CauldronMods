@@ -705,6 +705,58 @@
             ],
             "isReal": false,
             "difficulty": 1
+        },
+        {
+            "identifier": "ExoscaleCharacter",
+            "count": 1,
+            "title": "Exoscale",
+            "backgroundColor": "A3ACCC",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 4,
+            "hitpointsText": "X",
+            "keywords": [
+                "dragonscale"
+            ],
+            "body": [
+                "When this card is destroyed, 1 hero may draw a card or use a power. Then, flip this card."
+            ],
+            "icons": [
+                "DrawCardNow",
+                "UsePowerNow"
+            ],
+            "flippedShowHitpoints": false,
+            "flippedKeywords": [
+                "ruined scale"
+            ],
+            "flippedBody": "This card is indestructible and cannot leave the villain play area.",
+            "difficulty": 1
+        },
+        {
+            "identifier": "NeoscaleCharacter",
+            "count": 1,
+            "title": "Neoscale",
+            "backgroundColor": "A3ACCC",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 4,
+            "hitpointsText": "X",
+            "keywords": [
+                "dragonscale"
+            ],
+            "body": [
+                "When this card is destroyed, 1 hero may draw a card or play a card. Then, flip this card."
+            ],
+            "icons": [
+                "DrawCardNow",
+                "PlayCardNow"
+            ],
+            "flippedShowHitpoints": false,
+            "flippedKeywords": [
+                "ruined scale"
+            ],
+            "flippedBody": "This card is indestructible and cannot leave the villain play area.",
+            "difficulty": 1
         }
     ],
     "promoCards": [
@@ -765,6 +817,60 @@
                 "SeasonsOfChangeLadyOfTheWoodCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
                 "MinistryOfStrategicScienceLadyOfTheWoodCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
                 "FutureLadyOfTheWoodCharacter": "DrooooooHhhhhreaaaAAAAGHH!"
+            }
+        },
+        {
+            "identifier": "WinterTiamatCharacter", 
+            "promoIdentifier": "FutureTiamatCharacter",
+            "count": 1,
+            "title": "Tiamat",
+            "promoTitle": "Tiamat 2199",
+            "keywords": [
+                "villain"
+            ],
+            "body": "The Arrival",
+            "backgroundColor": "A3ACCC",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 120,
+            "nemesisIdentifiers": [
+                "Drift",
+                "Terminus",
+                "Gargoyle"
+            ],
+            "setup": [
+                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Arrival“ side up. Put both Dragonscale character cards into play. Shuffle the villain deck."
+            ],
+            "gameplay": [
+                "Dragonscales have X HP, where X = {H - 1}.",
+                "At the start of the villain turn, flip {Tiamat}'s villain character cards."
+            ],
+            "advanced": [ 
+                "X = {H + 1} instead.",
+                "At the start of the game, reveal cards from the top of the villain deck until 2 spells are revealed. Discard those spells. Shuffle the other revealed cards back into the villain deck."
+            ],
+            "flippedBody": "Cybernetic Wyrms",
+            "flippedKeywords": [
+                "villain",
+                "head"
+            ],
+            "flippedGameplay": [
+                "Dragonscales have X HP where X = {H - 1}. When {Tiamat} is destroyed, the heroes win.",
+                "{Tiamat} counts as The Jaws of Winter, The Mouth of the Inferno, and The Eye of the Storm. Each spell card in the villain trash counts as Element of Ice, Element of Fire, and Element of Lightining.",
+                "At the end of the villain turn, {Tiamat} deals the hero target with the highest HP {H} energy damage. Then, if {Tiamat} deals no damage this turn, each hero target deals itself 3 projectile damage. Then flip all ruined scales and restore them to their max HP."
+            ],
+            "flippedAdvanced": "X = {H + 1} instead.",
+            "flippedIcons": [
+                "EndOfTurnAction",
+                "DealDamageEnergy",
+                "DealDamageProjectile"
+            ],
+            "flippedAdvancedIcons": [
+                "ReduceDamageTaken"
+            ],
+            "difficulty": 1,
+            "openingLines": {
+                "default": "2199DefaultOpeningLine"
             }
         }
     ]

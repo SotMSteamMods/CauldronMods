@@ -1,0 +1,149 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Handelabra;
+using Handelabra.Sentinels.Engine.Controller;
+using Handelabra.Sentinels.Engine.Model;
+
+namespace Cauldron.Tiamat
+{
+    public class FutureTiamatCharacterCardController : VillainCharacterCardController
+    {
+        public FutureTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        {
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => !base.Card.IsFlipped;
+            base.SpecialStringMaker.ShowDamageDealt(new LinqCardCriteria((Card c) => c == base.Card, base.Card.Title, useCardsSuffix: false), thisTurn: true).Condition = () => Game.ActiveTurnTaker == base.TurnTaker && !base.Card.IsFlipped;
+        }
+
+        public override void AddStartOfGameTriggers()
+        {
+            base.AddStartOfGameTriggers();
+            (TurnTakerController as TiamatTurnTakerController).MoveStartingCards();
+            //Advanced: At the start of the game, reveal cards from the top of the villain deck until 2 spells are revealed. Discard those spells. Shuffle the other revealed cards back into the villain deck.
+            base.AddStartOfTurnTrigger((TurnTaker tt) => base.Game.IsAdvanced && tt == base.TurnTaker, this.Discard2Spells, TriggerType.DiscardCard);
+        }
+
+        private IEnumerator Discard2Spells(PhaseChangeAction action)
+        {
+            IEnumerator coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, false, new LinqCardCriteria((Card c) => this.IsSpell(c)), 2, moveMatchingCardsToTrash: true);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        public override void AddSideTriggers()
+        {
+            if (!this.Card.IsFlipped)
+            {
+                //At the start of the villain turn, flip {Tiamat}'s villain character cards.
+                base.AddSideTrigger(base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, base.FlipThisCharacterCardResponse, TriggerType.FlipCard));
+            }
+            else
+            {
+                //{Tiamat} counts as The Jaws of Winter, The Mouth of the Inferno, and The Eye of the Storm. Each spell card in the villain trash counts as Element of Ice, Element of Fire, and Element of Lightining.
+                /**Addressed on all cards**/
+
+                //At the end of the villain turn, {Tiamat} deals the hero target with the highest HP {H} energy damage. Then, if {Tiamat} deals no damage this turn, each hero target deals itself 3 projectile damage. Then flip all ruined scales and restore them to their max HP.
+                base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.EndOfTurnResponse, new TriggerType[] { TriggerType.DealDamage, TriggerType.FlipCard }));
+            }
+            //When {Tiamat} is destroyed, the heroes win.
+            base.AddDefeatedIfDestroyedTriggers();
+        }
+
+        private IEnumerator EndOfTurnResponse(PhaseChangeAction action)
+        {
+            //...{Tiamat} deals the hero target with the highest HP {H} energy damage. 
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero, (Card c) => Game.H, DamageType.Energy);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //...Then, if {Tiamat} deals no damage this turn, each hero target deals itself 3 projectile damage.
+            if (this.DidDealDamageThisTurn())
+            {
+                coroutine = base.GameController.DealDamageToSelf(this.DecisionMaker, (Card c) => c.IsHero, (Card c) => 3, DamageType.Projectile, base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            //...Then flip all ruined scales and restore them to their max HP.
+            IEnumerable<Card> ruinedScales = base.FindCardsWhere(new LinqCardCriteria((Card c) => this.IsRuinedScale(c)));
+            foreach (Card scale in ruinedScales)
+            {
+                coroutine = base.GameController.FlipCard(base.FindCardController(scale));
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                //Dragonscales have X HP, where X = {H - 1}.
+                int hp = Game.H - 1;
+                if (base.Game.IsAdvanced)
+                {
+                    //Advanced: X = {H + 1} instead.
+                    hp = Game.H + 1;
+                }
+                coroutine = base.GameController.MakeTargettable(card: scale, scale.MaximumHitPoints ?? hp, scale.MaximumHitPoints ?? hp, base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
+        }
+
+        private bool DidDealDamageThisTurn()
+        {
+            //Did Tiamat Deal Damage This Turn
+            int result = 0;
+            try
+            {
+                result = (from e in base.GameController.Game.Journal.DealDamageEntriesThisTurn()
+                          where e.SourceCard == base.Card
+                          select e.Amount).Sum();
+            }
+            catch (OverflowException ex)
+            {
+                Log.Warning("DamageDealtThisTurn overflowed: " + ex.Message);
+                result = int.MaxValue;
+            }
+            return result == 0;
+        }
+
+        private bool IsSpell(Card c)
+        {
+            return c.DoKeywordsContain("spell");
+        }
+
+        private bool IsRuinedScale(Card c)
+        {
+            return c.DoKeywordsContain("ruined scale");
+        }
+    }
+}

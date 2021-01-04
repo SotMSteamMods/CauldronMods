@@ -2,6 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Linq;
 
 namespace Cauldron.Tiamat
 {
@@ -17,23 +18,19 @@ namespace Cauldron.Tiamat
 
         public override IEnumerator StartGame()
         {
-            //Winter is in both, just has promoIdentifier differentiating
-            Card winter = base.TurnTaker.GetCardByIdentifier("WinterTiamatCharacter");
-            //Regular
-            Card inferno = base.TurnTaker.GetCardByIdentifier("InfernoTiamatCharacter");
-            Card storm = base.TurnTaker.GetCardByIdentifier("StormTiamatCharacter");
-            //Hydra
-            Card hydraStorm = base.TurnTaker.GetCardByIdentifier("HydraStormTiamatCharacter");
-            Card hydraInferno = base.TurnTaker.GetCardByIdentifier("HydraInfernoTiamatCharacter");
-            Card hydraEarth = base.TurnTaker.GetCardByIdentifier("HydraEarthTiamatCharacter");
-            Card hydraDecay = base.TurnTaker.GetCardByIdentifier("HydraDecayTiamatCharacter");
-            Card hydraWind = base.TurnTaker.GetCardByIdentifier("HydraWindTiamatCharacter");
-            Card hydraEarthInstructions = base.TurnTaker.GetCardByIdentifier("HydraFrigidEarthTiamatInstructions");
-            Card hydraDecayInstructions = base.TurnTaker.GetCardByIdentifier("HydraNoxiousFireTiamatInstructions");
-            Card hydraWindInstructions = base.TurnTaker.GetCardByIdentifier("HydraThunderousGaleTiamatInstructions");
-
+            //Elemental Hydra
             if (base.FindCardController(base.CharacterCard) is HydraWinterTiamatCharacterCardController)
-            {//Elemental Hydra
+            {
+                Card winter = base.TurnTaker.GetCardByIdentifier("WinterTiamatCharacter");
+                Card hydraStorm = base.TurnTaker.GetCardByIdentifier("HydraStormTiamatCharacter");
+                Card hydraInferno = base.TurnTaker.GetCardByIdentifier("HydraInfernoTiamatCharacter");
+                Card hydraEarth = base.TurnTaker.GetCardByIdentifier("HydraEarthTiamatCharacter");
+                Card hydraDecay = base.TurnTaker.GetCardByIdentifier("HydraDecayTiamatCharacter");
+                Card hydraWind = base.TurnTaker.GetCardByIdentifier("HydraWindTiamatCharacter");
+                Card hydraEarthInstructions = base.TurnTaker.GetCardByIdentifier("HydraFrigidEarthTiamatInstructions");
+                Card hydraDecayInstructions = base.TurnTaker.GetCardByIdentifier("HydraNoxiousFireTiamatInstructions");
+                Card hydraWindInstructions = base.TurnTaker.GetCardByIdentifier("HydraThunderousGaleTiamatInstructions");
+
                 //Secondary Heads start underneath other heads
                 IEnumerator coroutine = base.GameController.MoveCard(this, hydraEarth, winter.UnderLocation, flipFaceDown: true);
                 IEnumerator coroutine2 = base.GameController.MoveCard(this, hydraDecay, hydraInferno.UnderLocation, flipFaceDown: true);
@@ -51,37 +48,76 @@ namespace Cauldron.Tiamat
                     base.GameController.ExhaustCoroutine(coroutine3);
                 }
             }
+
+            if (base.FindCardController(base.CharacterCard) is FutureTiamatCharacterCardController)
+            {
+                Card[] future = new Card[]
+                {
+                    base.TurnTaker.GetCardByIdentifier("ExoscaleCharacter"),
+                    base.TurnTaker.GetCardByIdentifier("NeoscaleCharacter")
+                };
+
+                //Dragonscales have X HP where X = {H - 1}.
+                int maxHP = base.GameController.Game.H - 1;
+                if (base.GameController.Game.IsAdvanced)
+                {
+                    //Advanced: X = {H + 1} instead.
+                    maxHP = base.GameController.Game.H + 1;
+                }
+
+                foreach (Card scale in future)
+                {
+                    scale.SetMaximumHP(maxHP, scale.MaximumHitPoints != null);
+                }
+            }
             yield break;
         }
 
         public void MoveStartingCards()
         {
-            //Winter is in both, just has promoIdentifier differentiating
+            //Winter is in all, just has promoIdentifier differentiating
             Card winter = base.TurnTaker.GetCardByIdentifier("WinterTiamatCharacter");
             //Regular
-            Card inferno = base.TurnTaker.GetCardByIdentifier("InfernoTiamatCharacter");
-            Card storm = base.TurnTaker.GetCardByIdentifier("StormTiamatCharacter");
+            Card[] regular = new Card[] {
+                base.TurnTaker.GetCardByIdentifier("InfernoTiamatCharacter"),
+                base.TurnTaker.GetCardByIdentifier("StormTiamatCharacter")
+            };
             //Hydra
-            Card hydraStorm = base.TurnTaker.GetCardByIdentifier("HydraStormTiamatCharacter");
-            Card hydraInferno = base.TurnTaker.GetCardByIdentifier("HydraInfernoTiamatCharacter");
-            Card hydraEarth = base.TurnTaker.GetCardByIdentifier("HydraEarthTiamatCharacter");
-            Card hydraDecay = base.TurnTaker.GetCardByIdentifier("HydraDecayTiamatCharacter");
-            Card hydraWind = base.TurnTaker.GetCardByIdentifier("HydraWindTiamatCharacter");
-            Card hydraEarthInstructions = base.TurnTaker.GetCardByIdentifier("HydraFrigidEarthTiamatInstructions");
-            Card hydraDecayInstructions = base.TurnTaker.GetCardByIdentifier("HydraNoxiousFireTiamatInstructions");
-            Card hydraWindInstructions = base.TurnTaker.GetCardByIdentifier("HydraThunderousGaleTiamatInstructions");
+            Card[] hydra = new Card[] {
+                base.TurnTaker.GetCardByIdentifier("HydraStormTiamatCharacter"),
+                base.TurnTaker.GetCardByIdentifier("HydraInfernoTiamatCharacter"),
+                base.TurnTaker.GetCardByIdentifier("HydraEarthTiamatCharacter"),
+                base.TurnTaker.GetCardByIdentifier("HydraDecayTiamatCharacter"),
+                base.TurnTaker.GetCardByIdentifier("HydraWindTiamatCharacter"),
+                base.TurnTaker.GetCardByIdentifier("HydraFrigidEarthTiamatInstructions"),
+                base.TurnTaker.GetCardByIdentifier("HydraNoxiousFireTiamatInstructions"),
+                base.TurnTaker.GetCardByIdentifier("HydraThunderousGaleTiamatInstructions")
+            };
+            //2199
+            Card[] future = new Card[]
+            {
+                base.TurnTaker.GetCardByIdentifier("ExoscaleCharacter"),
+                base.TurnTaker.GetCardByIdentifier("NeoscaleCharacter")
+            };
+
             if (base.FindCardController(base.CharacterCard) is WinterTiamatCharacterCardController)
             {//Regular Tiamat
-                this.inPlay = new Card[] { inferno, storm };
-                this.inBox = new Card[] { hydraInferno, hydraStorm, hydraEarth, hydraDecay, hydraWind, hydraEarthInstructions, hydraDecayInstructions, hydraWindInstructions };
+                this.inPlay = regular;
+                this.inBox = hydra.Concat(future).ToArray();
             }
             if (base.FindCardController(base.CharacterCard) is HydraWinterTiamatCharacterCardController)
             {//Elemental Hydra
-                this.inBox = new Card[] { inferno, storm };
-                this.inPlay = new Card[] { hydraInferno, hydraStorm, hydraEarthInstructions, hydraDecayInstructions, hydraWindInstructions };
+                this.inBox = hydra;
+                this.inBox = regular.Concat(future).ToArray();
+            }
+            if (base.FindCardController(base.CharacterCard) is FutureTiamatCharacterCardController)
+            {//2199
+                this.inBox = future;
+                this.inBox = regular.Concat(hydra).ToArray();
             }
             SneakManageCharacters();
         }
+
         private void SneakManageCharacters()
         {
             foreach (Card c in this.inPlay)
