@@ -66,11 +66,8 @@ namespace Cauldron.Menagerie
 
         private IEnumerator FlipEnclosedCardResponse(SelectCardDecision decision)
         {
-            var a = decision.SelectedCard.UnderLocation.Cards;
-            var b = base.FindCardsWhere(new LinqCardCriteria((Card c) => a.Contains(c)));
-
             List<SelectCardDecision> cardDecision = new List<SelectCardDecision>();
-            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.FlipCardFaceUp, new LinqCardCriteria((Card c) => decision.SelectedCard.UnderLocation.Cards.Contains(c)), cardDecision, false, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.FlipCardFaceUp, new LinqCardCriteria((Card c) => !c.IsFaceUp && decision.SelectedCard.UnderLocation.Cards.Contains(c)), cardDecision, false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
