@@ -29,13 +29,6 @@ namespace CauldronTests
             this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
         }
 
-        private void AddShuffleTrashCounterAttackTrigger(TurnTakerController ttc, TurnTaker turnTakerToReshuffleTrash)
-        {
-            Func<DealDamageAction, bool> criteria = (DealDamageAction dd) => dd.Target == ttc.CharacterCard;
-            Func<DealDamageAction, IEnumerator> response = (DealDamageAction dd) => this.GameController.ShuffleTrashIntoDeck(this.GameController.FindTurnTakerController(turnTakerToReshuffleTrash));
-            this.GameController.AddTrigger<DealDamageAction>(new Trigger<DealDamageAction>(this.GameController, criteria, response, new TriggerType[] { TriggerType.ShuffleTrashIntoDeck }, TriggerTiming.After, this.GameController.FindCardController(turnTakerToReshuffleTrash.CharacterCard).GetCardSource()));
-        }
-
         private bool IsSpell(Card card)
         {
             return card != null && base.GameController.DoesCardContainKeyword(card, "spell");
@@ -195,12 +188,31 @@ namespace CauldronTests
         [Test()]
         public void TestTiamatFutureBackEffects()
         {
-            SetupGameController("Cauldron.Tiamat/FutureTiamatCharacter", "Legacy", "Bunker", "Haka", "Unity", "Megalopolis");
+            SetupGameController("Cauldron.Tiamat/FutureTiamatCharacter", "Legacy", "Bunker", "Haka", "Ra", "Megalopolis");
             StartGame();
 
             //{Tiamat} counts as The Jaws of Winter, The Mouth of the Inferno, and The Eye of the Storm.
+            AddCannotDealNextDamageTrigger(tiamat, tiamat.CharacterCard);
+            QuickHPStorage(legacy, bunker, haka, ra);
             PlayCard("ElementOfIce");
+            //Preventing damage by Tiamat once shows the damage is coming from her
+            QuickHPCheck(0, -2, -2, -2);
+
             //Each spell card in the villain trash counts as Element of Ice, Element of Fire, and Element of Lightining.
+            AddCannotDealNextDamageTrigger(tiamat, tiamat.CharacterCard);
+            QuickHPStorage(legacy, bunker, haka, ra);
+            PlayCard("ElementOfFire");
+            //Preventing damage by Tiamat once shows the damage is coming from her
+            //Only card in trash is Element of Ice which means Ice increased Fire
+            QuickHPCheck(0, -3, -3, -3);
+
+
+            AddCannotDealNextDamageTrigger(tiamat, tiamat.CharacterCard);
+            QuickHPStorage(legacy, bunker, haka, ra);
+            PlayCard("ElementOfLightning");
+            //Preventing damage by Tiamat once shows the damage is coming from her
+            //Only card in trash is Element of Ice which means Ice increased Fire
+            QuickHPCheck(0, -4, -4, -4);
         }
     }
 }

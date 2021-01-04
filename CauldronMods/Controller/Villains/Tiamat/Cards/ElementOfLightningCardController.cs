@@ -41,7 +41,7 @@ namespace Cauldron.Tiamat
                 characterCard = base.CharacterCard;
             }
             //If {Tiamat}, The Eye of the Storm is active, she deals each hero target 2+X lightning damage, where X is the number of Element of Lightning cards in the villain trash.
-            if (characterCard.IsInPlayAndHasGameText && !characterCard.IsFlipped)
+            if (characterCard.IsInPlayAndHasGameText && (!characterCard.IsFlipped || base.FindCardController(characterCard) is FutureTiamatCharacterCardController))
             {
                 coroutine = base.DealDamage(characterCard, (Card c) => c.IsHero, (Card c) => PlusNumberOfThisCardInTrash(2), DamageType.Lightning);
 

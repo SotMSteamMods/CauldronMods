@@ -28,7 +28,7 @@ namespace Cauldron.Tiamat
             IEnumerator coroutine;
             Card characterCard = base.TurnTaker.FindCard("WinterTiamatCharacter");
             //If {Tiamat}, The Jaws of Winter is active, she deals each hero target 2+X cold damage, where X is the number of Element of Ice cards in the villain trash.
-            if (characterCard.IsInPlayAndHasGameText && !characterCard.IsFlipped)
+            if (characterCard.IsInPlayAndHasGameText && (!characterCard.IsFlipped || base.FindCardController(characterCard) is FutureTiamatCharacterCardController))
             {
                 Func<Card, int?> X = (Card c) => new int?(PlusNumberOfThisCardInTrash(2));
                 coroutine = base.DealDamage(characterCard, (Card c) => c.IsHero, X, DamageType.Cold);
