@@ -8,10 +8,22 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.ScreaMachine
 {
-    public class BloodlaceCharacterCardController : ScreaMachineUtilityCharacterCardController
+    public class BloodlaceCharacterCardController : ScreaMachineBandCharacterCardController
     {
-        public BloodlaceCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public BloodlaceCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "Bass")
         {
+        }
+
+        protected override string AbilityDescription => throw new NotImplementedException();
+
+        protected override IEnumerator ActivateBandAbility()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AddFlippedSideTriggers()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -8,10 +8,22 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.ScreaMachine
 {
-    public class RickyGCharacterCardController : ScreaMachineUtilityCharacterCardController
+    public class RickyGCharacterCardController : ScreaMachineBandCharacterCardController
     {
-        public RickyGCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public RickyGCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "Drum")
         {
+        }
+
+        protected override string AbilityDescription => throw new NotImplementedException();
+
+        protected override IEnumerator ActivateBandAbility()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AddFlippedSideTriggers()
+        {
+            throw new NotImplementedException();
         }
     }
 }
