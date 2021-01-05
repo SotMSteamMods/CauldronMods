@@ -12,6 +12,8 @@ namespace Cauldron.VaultFive
     {
         public DirectorWellsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroCharacterCardWithLowestHP().Condition = () => !Card.IsInPlayAndHasGameText;
+            SpecialStringMaker.ShowSpecialString(() => BuildPlayersWithArtifactInHandSpecialString());
         }
 
         public override void AddTriggers()

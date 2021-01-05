@@ -12,6 +12,7 @@ namespace Cauldron.VaultFive
     {
         public PhoebeNelsonCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => BuildPlayersWithArtifactInHandSpecialString());
         }
 
         public override void AddTriggers()

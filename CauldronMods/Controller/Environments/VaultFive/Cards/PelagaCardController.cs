@@ -12,6 +12,7 @@ namespace Cauldron.VaultFive
     {
         public PelagaCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => BuildPlayersWithMostArtifactsSpecialString(this));
         }
 
         public override void AddTriggers()

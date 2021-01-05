@@ -12,6 +12,7 @@ namespace Cauldron.VaultFive
     {
         public DeeperIntoTheVaultCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria(c => IsArtifact(c), "artifact"));
         }
 
         public override void AddTriggers()

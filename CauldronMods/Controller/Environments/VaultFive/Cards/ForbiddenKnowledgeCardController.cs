@@ -12,9 +12,10 @@ namespace Cauldron.VaultFive
     {
         public ForbiddenKnowledgeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-        }
+			SpecialStringMaker.ShowSpecialString(() => BuildPlayersWithArtifactInHandSpecialString());
+		}
 
-        public override void AddTriggers()
+		public override void AddTriggers()
         {
 			//At the end of the environment turn, this card deals 1 hero 2 infernal damage.
 			AddEndOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DealDamageEnvironmentTurnResponse, new TriggerType[]
