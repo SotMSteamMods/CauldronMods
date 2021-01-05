@@ -8,10 +8,15 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.ScreaMachine
 {
-    public class PoundingRhythmCardController : ScreaMachineUtilityCardController
+    public class PoundingRhythmCardController : ScreaMachineBandCardController
     {
-        public PoundingRhythmCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public PoundingRhythmCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "RickyGCharacter", "Drum")
         {
+        }
+
+        protected override IEnumerator ActivateBandAbility()
+        {
+            throw new NotImplementedException();
         }
     }
 }
