@@ -12,7 +12,62 @@ namespace Cauldron.VaultFive
 
         public ArtifactCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => BuildArtifactSpecialString(), relatedCards: () => Card.Owner.CharacterCards).Condition = () => Card.Owner != TurnTaker && Card.IsInDeck;
+        }
 
+        private string BuildArtifactSpecialString()
+        {
+            if(Card.Owner == TurnTaker || !Card.IsInDeck)
+            {
+                return "";
+            }
+
+            IEnumerable<Card> artifactsInDeck = FindCardsWhere(c => c.Location == Card.Location && c.ParentDeck == Card.ParentDeck);
+            List<int> positionList = new List<int>();
+            int position;
+            foreach(Card artifact in artifactsInDeck)
+            {
+                positionList.Add(Card.Location.Cards.Reverse().ToList().IndexOf(artifact) + 1);
+            }
+            positionList.Sort();
+            string positionString = "An artifact is the ";
+            for(int i=0; i < positionList.Count; i++)
+            {
+                position = positionList.ElementAt(i);
+                positionString += position;
+                if (position == 1)
+                {
+                    positionString += "st";
+                }
+                else if (position == 2)
+                {
+                    positionString += "nd";
+                }
+                else if (position == 3)
+                {
+                    positionString += "rd";
+                }
+                else
+                {
+                    positionString += "th";
+                }
+
+                if(i < positionList.Count - 1 && positionList.Count > 2)
+                {
+                    positionString += ", ";
+                } else if(i < positionList.Count - 1 && positionList.Count == 2)
+                {
+                    positionString += " ";
+                }
+                if(i == positionList.Count - 2)
+                {
+                    positionString += "and ";
+                }
+            }
+            
+            positionString += " card in " + Card.Owner.Name + "'s deck.";
+
+            return positionString;
         }
 
         private const string  FirstTimeEnteredPlay = "FirstTimeEnteredPlay";
