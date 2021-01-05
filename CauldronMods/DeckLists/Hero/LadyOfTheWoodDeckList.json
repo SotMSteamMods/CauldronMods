@@ -1,0 +1,577 @@
+{
+    "name": "Lady Of The Wood",
+    "kind": "Hero",
+    "expansionIdentifier": "Cauldron",
+    "initialCardIdentifiers": [
+        "LadyOfTheWoodCharacter"
+    ],
+    "cards": [
+        {
+            "identifier": "LadyOfTheWoodCharacter",
+            "count": 1,
+            "title": "Lady Of The Wood",
+            "body": "Season's Edge",
+            "backgroundColor": "b0da8c",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "b0da8c",
+            "character": true,
+            "powers": [
+                "Select a damage type. {LadyOfTheWood} deals 1 target 1 damage of the chosen type."
+            ],
+            "icons": [
+                "HasPower",
+                "DealDamage"
+            ],
+            "hitpoints": 22,
+            "nemesisIdentifiers": [
+                "LadyOfTheWood"
+            ],
+            "incapacitatedAbilities": [
+                "Select a damage type. Until the start of your next turn, increase damage dealt of the chosen type by 1.",
+                "1 hero may discard a card to regain 3 HP.",
+                "Destroy an environment card."
+            ],
+            "flippedIcons": [],
+            "openingLines": {
+                "default": "Will you frolic with us?",
+                "CeladrochCharacter": "I haven't felt this presence in many years. Beware, my friends. This wind carries the scent of death.",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "CalmBeforeTheStorm",
+            "count": 3,
+            "title": "Calm Before the Storm",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Discard",
+                "IncreaseDamageDealt"
+            ],
+            "body": [
+                "Discard any number of cards.",
+                "Increase the next damage dealt by {LadyOfTheWood} by X, where X is 2 plus the number of cards discarded this way."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "AbsoluteZero",
+                    "text": "The Lady's holding back.{BR}I need her to not."
+                }
+            ],
+            "flavorReference": "Absolute Zero, Days Under Fire #4"
+        },
+        {
+            "identifier": "EnchantedClearing",
+            "count": 2,
+            "title": "Enchanted Clearing",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "ReduceDamageTaken"
+            ],
+            "body": "Reduce damage dealt to {LadyOfTheWood} by 1.",
+            "flavorQuotes": [
+                {
+                    "identifier": "TangoOne",
+                    "text": "On her turf, on her terms."
+                }
+            ],
+            "flavorReference": "Tango One, The Cauldron One-Shot"
+        },
+        {
+            "identifier": "FireInTheClouds",
+            "count": 3,
+            "title": "Fire in the Clouds",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DealDamageFire",
+                "DealDamageLightning"
+            ],
+            "body": "{LadyOfTheWood} deals 1 target 3 fire damage or up to 3 targets 1 lightning damage each.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Fanatic",
+                    "text": "The world rarely ends quietly."
+                }
+            ],
+            "flavorReference": "Fanatic, Vault of Night #16"
+        },
+        {
+            "identifier": "MeadowRush",
+            "count": 4,
+            "title": "Meadow Rush",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DrawCardNow",
+                "Search",
+                "PlayCardNow"
+            ],
+            "body": [
+                "Draw a card.",
+                "Search your deck for a season card, put it into your hand, then shuffle your deck.",
+                "You may play a card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheDreamer",
+                    "text": "Let's frolic. Can we frolic?"
+                }
+            ],
+            "flavorReference": "The Dreamer, Perchance to Dream One Shot"
+        },
+        {
+            "identifier": "NobilityOfDusk",
+            "count": 3,
+            "title": "Nobility of Dusk",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "IncreaseDamageDealt"
+            ],
+            "body": "Once per turn when {LadyOfTheWood} would deal damage you may increase that damage by 2.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Necro",
+                    "text": "This is an ill omen."
+                },
+                {
+                    "identifier": "LadyOfTheWood",
+                    "text": "For them."
+                }
+            ],
+            "flavorReference": "Roots of the Underworld #27"
+        },
+        {
+            "identifier": "LadyOfTheWoodsRebirth",
+            "count": 2,
+            "title": "Rebirth",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "Manipulate",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, put up to 3 cards from your trash beneath it.",
+                "Whenever {LadyOfTheWood} destroys a target, put a card from beneath this one into your hand.",
+                "When there are no cards beneath this one, destroy this card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheStranger",
+                    "text": "Wielding the old magic has left me{BR}hollow. But she [b]IS[/b] the old magic."
+                }
+            ],
+            "flavorReference": "The Stranger, Starcrossed #103"
+        },
+        {
+            "identifier": "SerenityOfDawn",
+            "count": 2,
+            "title": "Serenity of Dawn",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "GainHP",
+                "DrawCardNow",
+                "DestroySelf"
+            ],
+            "body": [
+                "At the end of your turn, if {LadyOfTheWood} dealt no damage this turn, she regains 2 HP and you may draw a card.",
+                "If {LadyOfTheWood} deals 3 or more damage to a target, destroy this card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheKnight",
+                    "text": "This is how I will{BR}always remember her."
+                }
+            ],
+            "flavorReference": "The Knight, Old Beginnings One-shot"
+        },
+        {
+            "identifier": "CrownOfTheFourWinds",
+            "count": 2,
+            "title": "Crown of the Four Winds",
+            "keywords": [
+                "equipment",
+                "limited",
+                "relic"
+            ],
+            "icons": [
+                "DealDamageToxic",
+                "DealDamageFire",
+                "DealDamageLightning",
+                "DealDamageCold"
+            ],
+            "powers": [
+                "{LadyOfTheWood} deals one target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Tempest",
+                    "text": "Whatever direction you run, your{BR}destination will be the same."
+                }
+            ],
+            "flavorReference": "Tempest, Temple of the Four Winds #2"
+        },
+        {
+            "identifier": "Fall",
+            "count": 2,
+            "title": "Fall",
+            "keywords": [
+                "ongoing",
+                "limited",
+                "season"
+            ],
+            "icons": [
+                "ReduceDamageDealt"
+            ],
+            "body": "Whenever {LadyOfTheWood} deals lightning damage to a target, reduce damage dealt by that target by 1 until the start of your next turn.",
+            "flavorText": "Lightning is the exclamation mark{BR}to every sentence autumn speaks."
+        },
+        {
+            "identifier": "FrostOnThePetals",
+            "count": 3,
+            "title": "Frost on the Petals",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DealDamageToxic",
+                "DealDamageCold"
+            ],
+            "body": "{LadyOfTheWood} deals 1 target 3 toxic damage or up to 3 targets 1 cold damage each.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Starlight",
+                    "text": "On what planet does{BR}winter follow spring?"
+                }
+            ],
+            "flavorReference": "Starlight, Vault of Night #17"
+        },
+        {
+            "identifier": "RainpetalCloak",
+            "count": 2,
+            "title": "Rainpetal Cloak",
+            "keywords": [
+                "equipment",
+                "limited"
+            ],
+            "icons": [
+                "CancelledDamageGreen",
+                "GainHP",
+                "HasPower",
+                "DrawCardNow"
+            ],
+            "body": [
+                   "The first time {LadyOfTheWood} would be dealt 1 damage each turn, she regains 1 HP instead."      
+			],
+            "powers": [
+                "Draw a card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "LadyOfTheWood",
+                    "text": "It is raining! Dance with me!"
+                }
+            ],
+            "flavorReference": "Lady Of The Wood, The Wanderer's Requiem{BR}#146"
+        },
+        {
+            "identifier": "SnowshadeGown",
+            "count": 2,
+            "title": "Snowshade Gown",
+            "keywords": [
+                "equipment",
+                "limited"
+            ],
+            "icons": [
+                "DealDamageCold",
+                "HasPower",
+                "GainHP"
+            ],
+            "body": [
+                "Whenever {LadyOfTheWood} regains HP, you may select a target that hasn't been dealt damage this turn. {LadyOfTheWood} deals that target 1 cold damage."
+            ],
+            "powers": [
+                "{LadyOfTheWood} regains 3HP."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Vanish",
+                    "text": "I didn't think you{BR}made it."
+                },
+                {
+                    "identifier": "Lady of the Wood",
+                    "text": "One of us did not."
+                }
+            ],
+            "flavorReference": "The Coming of Winter #8"
+        },
+        {
+            "identifier": "Spring",
+            "count": 2,
+            "title": "Spring",
+            "keywords": [
+                "ongoing",
+                "limited",
+                "season"
+            ],
+            "icons": [
+                "GainHP"
+            ],
+            "body": "Whenever {LadyOfTheWood} deals toxic damage to a target, she regains that much HP.",
+            "flavorQuotes": [
+                {
+                    "identifier": "TheScholar",
+                    "text": "Nature doesn't believe in second{BR}chances. After all, why stop at two?"
+                }
+            ],
+            "flavorReference": "The Scholar, A King Among Fools #10"
+        },
+        {
+            "identifier": "Summer",
+            "count": 2,
+            "title": "Summer",
+            "keywords": [
+                "ongoing",
+                "limited",
+                "season"
+            ],
+            "icons": [
+                "IncreaseDamageDealtFire"
+            ],
+            "body": "Increase fire damage dealt by {LadyOfTheWood} by 2.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Ra",
+                    "text": "You should all cover your eyes."
+                }
+            ],
+            "flavorReference": "Ra, Arcane Fables #160"
+        },
+        {
+            "identifier": "SuncastMantle",
+            "count": 2,
+            "title": "Suncast Mantle",
+            "keywords": [
+                "equipment",
+                "limited"
+            ],
+            "icons": [
+                "IncreaseDamageDealt",
+                "HasPower",
+                "DealDamageFire"
+            ],
+            "body": [
+                "Increase damage dealt by {LadyOfTheWood} by 3 as long as her HP is 5 or less."
+			],
+            "powers": [
+                "{LadyOfTheWood} deals herself 1 fire damage and 1 target 4 fire damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Baccarat",
+                    "text": "She's keepin' this whole place alive,{BR}and it's killin' her. She's spread herself{BR}too thin."
+                }
+            ],
+            "flavorReference": "Baccarat, Gardener of Eden #1"
+        },
+        {
+            "identifier": "ThundergreyShawl",
+            "count": 2,
+            "title": "Thundergrey Shawl",
+            "keywords": [
+                "equipment",
+                "limited"
+            ],
+            "icons": [
+                "MakeDamageIrreducible",
+                "HasPower",
+                "DealDamageLightning"
+            ],
+            "body": [
+                "Whenever {LadyOfTheWood} deals 2 or less damage to a target, that damage is irreducible."
+			],
+            "powers": [
+                "{LadyOfTheWood} deals up to 2 targets 1 lightning damage each."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Gray",
+                    "text": "Lady! This{BR}weather becomes you."
+                },
+                {
+                    "identifier": "Lady of the Wood",
+                    "text": "Quite the other way{BR}around."
+                }
+            ],
+            "flavorReference": "Rebirth #1"
+        },
+        {
+            "identifier": "Winter",
+            "count": 2,
+            "title": "Winter",
+            "keywords": [
+                "ongoing",
+                "limited",
+                "season"
+            ],
+            "icons": [
+                "DrawCardNow"
+            ],
+            "body": "Whenever {LadyOfTheWood} deals cold damage to a target, draw a card.",
+            "flavorText": "“It's awful quiet.”{BR}“'It is the silence of an indrawn breath. Just wait.”",
+            "flavorReference": "Starlight And Lady Of The Wood, Starcrossed #72"
+        }
+    ],
+    "promoCards": [
+        {
+            "identifier": "LadyOfTheWoodCharacter",
+            "promoIdentifier": "SeasonsOfChangeLadyOfTheWoodCharacter",
+            "count": 1,
+            "title": "Lady Of The Wood",
+            "promoTitle": "Lady of the Wood: Season of Change",
+            "shortPromoTitle": "Seasons Lady of the Wood",
+            "body": "Equinox",
+            "backgroundColor": "F4A77C",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "653590",
+            "character": true,
+            "powers": [
+                "Discard a card. You may play a card."
+            ],
+            "icons": [
+                "HasPower",
+                "Discard",
+                "PlayCardNow"
+            ],
+            "hitpoints": 25,
+            "nemesisIdentifiers": [
+                "LadyOfTheWood"
+            ],
+            "incapacitatedAbilities": [
+                "One target regains 1 HP.",
+                "One player may discard their hand and draw the same number of cards.",
+                "All damage dealt is irreducible until the start of your turn."
+            ],
+            "flippedIcons": [
+                "GainHP",
+                "Discard",
+                "DrawCardNow",
+                "MakeDamageIrreducible"
+            ],
+            "openingLines": {
+                "default": "The turn of the seasons will wipe this land clean of evil.",
+                "CeladrochCharacter": "Hurry, everyone! His bonds are weakening - but ours can strengthen!",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "LadyOfTheWoodCharacter",
+            "promoIdentifier": "MinistryOfStrategicScienceLadyOfTheWoodCharacter",
+            "count": 1,
+            "title": "Lady Of The Wood",
+            "promoTitle": "Ministry Of Strategic Science Lady of the Wood",
+            "shortPromoTitle": "MOSS Lady of the Wood",
+            "body": "Solstice",
+            "backgroundColor": "C1BCDD",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "C1BCDD",
+            "character": true,
+            "powers": [
+                "Add 2 tokens to your element pool. When {LadyOfTheWood} would deal damage, you may change its type by spending a token."
+            ],
+            "icons": [
+                "HasPower",
+                "AddTokens",
+                "RemoveTokens"
+            ],
+            "hitpoints": 19,
+            "nemesisIdentifiers": [
+                "LadyOfTheWood"
+            ],
+            "incapacitatedAbilities": [
+                "One player may play a card.",
+                "Add 1 token to your element pool.",
+                "Spend 1 token from your element pool. If you do, 1 hero deals 1 target 3 damage of any type."
+            ],
+            "flippedIcons": [
+                "PlayCardNow",
+                "AddTokens",
+                "RemoveTokens",
+                "DealDamage"
+            ],
+            "openingLines": {
+                "default": "We have formed a most excellent team to deal with your misdeeds.",
+                "CeladrochCharacter": "Adventure, discovery, life - all will exist after this. All but you, Celadroch.",
+                "MythosCharacter": "Your voice is almost familiar to me, but…its owner was lost, long ago.",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+            },
+            "complexity": 3,
+             "tokenPools":[
+		 	{
+		 		"identifier":"LadyOfTheWoodElementPool",
+		 		"name":"Lady of the Wood's Element Pool",
+		 		"initialValue":0,
+		 		"minimumValue":0,
+		 		"color":"D1426D"
+		 	}]
+        },
+        {
+            "identifier": "LadyOfTheWoodCharacter",
+            "promoIdentifier": "FutureLadyOfTheWoodCharacter",
+            "count": 1,
+            "title": "Lady Of The Wood",
+            "promoTitle": "Lady of the Wood 2199",
+            "shortPromoTitle": "Lady of the Wood 2199",
+            "body": "Turn, Turn",
+            "backgroundColor": "A7B8C1",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "A7B8C1",
+            "character": true,
+            "powers": [
+                "Destroy a season. Play a season and change the next damage dealt by {LadyOfTheWood} to a type listed on it. You may use a power."
+            ],
+            "icons": [
+                "HasPower",
+                "Destroy",
+                "PlayCardNow",
+                "UsePowerNow"
+            ],
+            "hitpoints": 20,
+            "nemesisIdentifiers": [
+                "LadyOfTheWood"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card.",
+                "One target deals itself 1 cold damage.",
+                "Select 1 of your season cards, its text affects all heroes until your next turn."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "DealDamageCold"
+            ],
+            "openingLines": {
+                "default": "I have seen millenia slip away; as will your chance at victory.",
+                "CeladrochCharacter": "It seems like not all things have changed, after all - is your evil timeless, Celadroch, or were you waiting for me?",
+                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+            },
+            "complexity": 3
+        }
+    ]
+}

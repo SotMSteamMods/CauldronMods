@@ -543,7 +543,7 @@ namespace CauldronTests
             Card retort = PutOnDeck("IronRetort");
             Card storm = PutOnDeck("AlloyStorm");
             Card spear = PutOnDeck("CoalescingSpear");
-            DecisionDoNotSelectCard = SelectionType.PlayCard;
+            DecisionYesNo = false;
 
             PlayCard("LiquidMetal");
             AssertInHand(forest, spear);
@@ -561,6 +561,7 @@ namespace CauldronTests
             Card retort = PutOnDeck("IronRetort");
             Card storm = PutOnDeck("AlloyStorm");
             Card spear = PutOnDeck("CoalescingSpear");
+            DecisionYesNo = true;
             DecisionSelectCard = spear;
             DecisionDoNotSelectFunction = true;
 
@@ -568,7 +569,6 @@ namespace CauldronTests
             PlayCard("LiquidMetal");
             QuickHPCheck(-3, -2);
         }
-
         [Test()]
         public void TestMalleableArmor()
         {
@@ -606,6 +606,22 @@ namespace CauldronTests
 
             DealDamage(apostate, quicksilver, 30, DamageType.Infernal);
             AssertHitPoints(quicksilver.CharacterCard, 1);
+        }
+        [Test]
+        public void TestMalleableArmorWithRedirect()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "TheScholar", "RookCity");
+            StartGame();
+
+            //If {Quicksilver} would be reduced from greater than 1 HP to 0 or fewer HP, restore her to 1HP.
+            PlayCard("MalleableArmor");
+
+            PlayCard("AlchemicalRedirection");
+
+            SetHitPoints(quicksilver, 5);
+
+            DealDamage(apostate, quicksilver, 10, DamageType.Infernal);
+            AssertHitPoints(quicksilver.CharacterCard, 5);
         }
 
         [Test]
@@ -738,6 +754,41 @@ namespace CauldronTests
             //should be redirected to Quicksilver, given +1 for 3 damage
             //the punch to Apostate should be 4 infernal increased to 5
             QuickHPCheck(-3, -5);
+        }
+        [Test]
+        public void TestMirrorShardOnlyRespondsIfFinalTarget()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "TheScholar", "TheCourtOfBlood");
+            StartGame();
+
+            PlayCard("MirrorShard");
+            PlayCard("AlchemicalRedirection");
+
+            DecisionYesNo = true;
+            DecisionSelectTarget = apostate.CharacterCard;
+
+            QuickHPStorage(apostate, scholar);
+            DealDamage(legacy, scholar, 2, DamageType.Melee);
+            QuickHPCheck(0, -2);
+        }
+        [Test()]
+        public void TestMirrorShardNoSameTargetRedirect()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "TheScholar", "TheCourtOfBlood");
+            StartGame();
+
+            PlayCard("MirrorShard");
+
+            DecisionYesNo = true;
+            DecisionSelectTarget = apostate.CharacterCard;
+
+            QuickHPStorage(apostate, quicksilver);
+            DealDamage(legacy, quicksilver, 2, DamageType.Melee);
+            QuickHPCheck(0, -2);
+
+            PlayCard("AlchemicalRedirection");
+            DealDamage(legacy, quicksilver, 2, DamageType.Melee);
+            QuickHPCheck(-3, -2);
         }
 
         [Test()]

@@ -60,6 +60,7 @@ namespace CauldronTests
             RunCoroutine(cc.SelectOwnCharacterCard(results, SelectionType.None));
 
             Assert.IsTrue(results.Count == 1 && results[0].SelectedCard == HeroController.CharacterCard, "Own CharacterCard was not selected");
+            AssertNumberOfCardsInPlay(HeroController, 1);
         }
 
         [Test]
@@ -366,7 +367,43 @@ namespace CauldronTests
         }
 
         [Test]
-        [Description("TheKnight - Arm Yourself - Choose 1 Play")]
+        [Description("TheKnight - Arm Yourself - Single Card")]
+        public void ArmYourself_SingleCard()
+        {
+            SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            PrintSeparator("Setup");
+            //nuke all baron blades cards so his ongoings don't break tests
+            DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
+
+            PutInHand(HeroController, "ArmYourself");
+
+            PrintSeparator("Put some random cards in the trash");
+            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(5));
+            //exclude PlateHelm since it draws a card
+            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) && c.Identifier != "PlateHelm").Take(1));
+            GoToPlayCardPhase(HeroController);
+
+            PrintSeparator("Test");
+            AssertNumberOfCardsInPlay(HeroController, 1);
+            QuickHandStorage(HeroController);
+
+            //get 1 equipment from the trash, then append null at the end to force only 1 equipment taken
+            List<Card> selectedCards = (HeroController.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c)).Take(1)).ToList();
+            selectedCards.Add(null);
+            DecisionSelectCards = selectedCards;
+
+            DecisionMoveCardDestination = new MoveCardDestination(HeroController.HeroTurnTaker.PlayArea); //Select the non-default decision just because
+            PlayCardFromHand(HeroController, "ArmYourself");
+            //no cards should have returned to hand for net -1
+            //1 card should have been played, so 2 cards now in play
+            QuickHandCheck(-1);
+            AssertNumberOfCardsInPlay(HeroController, 2);
+        }
+
+        [Test]
+        [Description("TheKnight - Arm Yourself - Choose 1 Hand")]
         public void ArmYourself_Choose1Hand()
         {
             SetupGameController("BaronBlade", HeroNamespace, "Ra", "TheWraith", "Megalopolis");
@@ -793,6 +830,40 @@ namespace CauldronTests
             QuickHandCheck(1);
             AssertNumberOfCardsInPlay(HeroController, 3);
         }
+
+
+        [Test]
+        public void Armor_ImbuedVitality([Values("PlateHelm", "PlateMail")] string armor)
+        {
+            SetupGameController("GrandWarlordVoss", HeroNamespace, "RealmOfDiscord");
+            StartGame();
+                        
+            //nuke all baron blades cards so his ongoings don't break tests
+            DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
+            DiscardAllCards(HeroController);
+
+            var target = PutInHand(HeroController, armor);
+            int targetHP = armor == "PlateHelm" ? 3 : 5;
+            var equip = PutInHand("Whetstone");
+            GoToPlayCardPhase(HeroController);
+
+            PrintSeparator("Test");
+
+            PlayCard(target);
+            AssertIsTarget(target, targetHP);
+            AssertInPlayArea(HeroController, target);
+            PlayCard(equip);
+            AssertInPlayArea(HeroController, equip);
+
+            var imbue = PlayCard("ImbuedVitality");
+            AssertIsTarget(target, 6);
+            AssertIsTarget(equip, 6);
+
+            DestroyCard(imbue);
+            AssertIsTarget(target, targetHP);
+            AssertNotTarget(equip);
+        }
+
 
         [Test]
         [Description("TheKnight - PlateHelm")]

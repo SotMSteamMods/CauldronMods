@@ -1,0 +1,204 @@
+{"frames": {
+
+"AdvanceAndRegroup.png":
+{
+	"frame": {"x":1255,"y":0,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"BreakThrough.png":
+{
+	"frame": {"x":1514,"y":0,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"CommandAndConquer.png":
+{
+	"frame": {"x":1773,"y":0,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"DatabaseUplink.png":
+{
+	"frame": {"x":0,"y":259,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"EchelonCharacter.png":
+{
+	"frame": {"x":0,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"EchelonCharacterBack.png":
+{
+	"frame": {"x":179,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"EchelonDeckBack.jpg":
+{
+	"frame": {"x":1074,"y":0,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
+"FindAWayIn.png":
+{
+	"frame": {"x":259,"y":259,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"FirstResponder.png":
+{
+	"frame": {"x":518,"y":259,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"FirstResponseEchelonCharacter.png":
+{
+	"frame": {"x":358,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"FirstResponseEchelonCharacterBack.png":
+{
+	"frame": {"x":537,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"FutureEchelonCharacter.png":
+{
+	"frame": {"x":716,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"FutureEchelonCharacterBack.png":
+{
+	"frame": {"x":895,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"KnowYourEnemy.png":
+{
+	"frame": {"x":777,"y":259,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"NeedAWayOut.png":
+{
+	"frame": {"x":1036,"y":259,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"Overwatch.png":
+{
+	"frame": {"x":1295,"y":259,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"PracticedTeamwork.png":
+{
+	"frame": {"x":1554,"y":259,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"RemoteObservation.png":
+{
+	"frame": {"x":0,"y":450,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"RuthlessIntimidation.png":
+{
+	"frame": {"x":259,"y":450,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"StaggeredAssault.png":
+{
+	"frame": {"x":518,"y":450,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"StrategicDeployment.png":
+{
+	"frame": {"x":777,"y":450,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"SurpriseAttack.png":
+{
+	"frame": {"x":1036,"y":450,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"TeslaKnuckles.png":
+{
+	"frame": {"x":1295,"y":450,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"TheKestrelMarkII.png":
+{
+	"frame": {"x":1554,"y":450,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "EchelonAtlas0.png",
+	"format": "RGBA8888",
+	"size": {"w":2048,"h":2048},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:4b14add4947e87a5d8eb3e0706c16d26:9206b589bd5b759231c4d629ebb96436:a8f546a1f79afa9a08f864c22904df54$"
+}
+}

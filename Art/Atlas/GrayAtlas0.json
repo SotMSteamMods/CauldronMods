@@ -1,0 +1,140 @@
+{"frames": {
+
+"AlistairWinters.jpg":
+{
+	"frame": {"x":537,"y":0,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"BlightTheLand.jpg":
+{
+	"frame": {"x":0,"y":259,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"ChainReaction.jpg":
+{
+	"frame": {"x":259,"y":259,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"Contamination.jpg":
+{
+	"frame": {"x":518,"y":259,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"CriticalMass.jpg":
+{
+	"frame": {"x":0,"y":450,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"GrayCharacter.jpg":
+{
+	"frame": {"x":0,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"GrayCharacterBack.jpg":
+{
+	"frame": {"x":179,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"GrayDeckBack.jpg":
+{
+	"frame": {"x":358,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"HeavyRadiation.jpg":
+{
+	"frame": {"x":259,"y":450,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"IrradiatedTouch.jpg":
+{
+	"frame": {"x":518,"y":450,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"LivingReactor.jpg":
+{
+	"frame": {"x":0,"y":641,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"MutatedWildlife.jpg":
+{
+	"frame": {"x":259,"y":641,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"NuclearFire.jpg":
+{
+	"frame": {"x":518,"y":641,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"RadioactiveCascade.jpg":
+{
+	"frame": {"x":0,"y":832,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"UnstableIsotope.jpg":
+{
+	"frame": {"x":259,"y":832,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"UnwittingHenchmen.jpg":
+{
+	"frame": {"x":518,"y":832,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "GrayAtlas0.png",
+	"format": "RGBA8888",
+	"size": {"w":1024,"h":1024},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:40a16034f642be519e7a1c5396db2de0:d4c161925ed3d127ab3d36b1a1cd00f7:1c8cf02702bc24b7fcbfbdf448aa0b73$"
+}
+}

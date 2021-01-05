@@ -13,7 +13,7 @@ using Handelabra.Sentinels.Engine.Controller.ChronoRanger;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class TheStranger : BaseTest
+    public class TheStrangerTests : BaseTest
     {
         #region TheStrangerHelperFunctions
         protected HeroTurnTakerController stranger { get { return FindHero("TheStranger"); } }
@@ -933,6 +933,24 @@ namespace CauldronTests
             GoToPlayCardPhase(haka);
             //check that haka can play 2 cards
             AssertPhaseActionCount(new int?(2));
+        }
+
+        [Test()]
+        public void TestMarkOfQuickeningModifiesCurrentPhase()
+        {
+            SetupGameController("BaronBlade", "Cauldron.TheStranger", "Haka", "Ra", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            GoToPlayCardPhase(stranger);
+
+            //Play this next to a hero. They may play an additional card during their play phase.
+            DecisionSelectCard = stranger.CharacterCard;
+            Card mark = PlayCard("MarkOfQuickening");
+
+            AssertPhaseActionCount(new int?(1));
+
+            DestroyCard(mark);
+            AssertPhaseActionCount(0);
         }
 
         [Test()]

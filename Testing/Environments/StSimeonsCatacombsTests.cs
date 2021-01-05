@@ -21,6 +21,15 @@ namespace CauldronTests
             return card != null && card.Definition.Keywords.Contains("room");
         }
 
+        protected void AddImmuneToDamageTrigger(TurnTakerController ttc, bool heroesImmune, bool villainsImmune)
+        {
+            ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect();
+            immuneToDamageStatusEffect.TargetCriteria.IsHero = new bool?(heroesImmune);
+            immuneToDamageStatusEffect.TargetCriteria.IsVillain = new bool?(villainsImmune);
+            immuneToDamageStatusEffect.UntilStartOfNextTurn(ttc.TurnTaker);
+            this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
+        }
+
         #endregion
 
         [Test()]
@@ -1417,6 +1426,113 @@ namespace CauldronTests
             }
 
         }
+
+        [Test()]
+        public void TestPanic_HeroStartOfTurn_HeroDestroyedMidTurn()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Set Hitpoints to start
+            SetHitPoints(ra.CharacterCard, 2);
+            SetHitPoints(legacy.CharacterCard, 1);
+            SetHitPoints(haka.CharacterCard, 1);
+
+            GoToPlayCardPhase(catacombs);
+            AddImmuneToDamageTrigger(env, true, false);
+
+            GoToEndOfTurn(catacombs);
+            Card playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is Torture Chamber in play to avoid shenanigans
+            if (playedRoom.Identifier != "TortureChamber")
+            {
+                DecisionSelectCards = new Card[] { GetCard("TortureChamber"), null, null,  ra.CharacterCard, ra.CharacterCard };
+                DestroyCard(playedRoom, ra.CharacterCard);
+            } else
+            {
+                DecisionSelectCards = new Card[] {  null, null,  ra.CharacterCard, ra.CharacterCard };
+            }
+
+            GoToPlayCardPhase(catacombs);
+
+            //panic attaches itself to legacy
+            Card panic = PlayCard("Panic");
+
+            //At the start of that hero's next turn, that hero uses their innate power twice, then immediately end their turn, draw a card, and destroy this card.
+            GoToStartOfTurn(ra);
+            EnterNextTurnPhase();
+            AssertCurrentTurnPhase(ra, Phase.End);
+
+        }
+
+        [Test()]
+            public void TestPanic_HeroStartOfTurn_DestroyInMiddle()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "SkyScraper/ExtremistSkyScraperNormal", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Set Hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(sky.CharacterCard, 25);
+            SetHitPoints(haka.CharacterCard, 15);
+
+            //switch to huge
+            PlayCard("ThorathianMonolith");
+            GoToEndOfTurn(catacombs);
+
+            GoToPlayCardPhase(catacombs);
+
+            //panic attaches itself to skyscraper
+            Card panic = PlayCard("Panic");
+
+            //At the start of that hero's next turn, that hero uses their innate power twice, then immediately end their turn, draw a card, and destroy this card.
+            GoToEndOfTurn(ra);
+            QuickHandStorage(sky);
+            DecisionSelectCard = panic;
+            GoToStartOfTurn(sky);
+            EnterNextTurnPhase();
+            AssertCurrentTurnPhase(sky, Phase.PlayCard);
+
+
+        }
+        [Test()]
+        public void TestPanic_HeroStartOfTurn_OnCharacterWithMultiplePowers()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Guise/SantaGuise", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //Set Hitpoints to start
+            SetHitPoints(ra.CharacterCard, 20);
+            SetHitPoints(legacy.CharacterCard, 10);
+            SetHitPoints(guise.CharacterCard, 24);
+
+            GoToEndOfTurn(catacombs);
+
+            GoToPlayCardPhase(catacombs);
+
+            //panic attaches itself to guise
+            Card panic = PlayCard("Panic");
+
+            //At the start of that hero's next turn, that hero uses their innate power twice, then immediately end their turn, draw a card, and destroy this card.
+            QuickHandStorage(guise);
+            DecisionSelectPowerIndex = 1;
+            DecisionSelectPower = guise.CharacterCard;
+            GoToStartOfTurn(guise);
+            //this start of phase should not have any actions allowed
+            AssertPhaseActionCount(new int?(0));
+            EnterNextTurnPhase();
+            AssertCurrentTurnPhase(guise, Phase.End);
+            QuickHandCheck(1);
+
+            AssertNotGameOver();
+
+        }
+
+
 
         [Test()]
         public void TestPoltergeist_SacrificialShrineInPlay_Affected()

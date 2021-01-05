@@ -1,0 +1,574 @@
+{
+    "name": "Cypher",
+    "kind": "Hero",
+    "expansionIdentifier":"CauldronExperimental",
+    "initialCardIdentifiers": [
+        "CypherCharacter"
+    ],
+    "cards": [
+        {
+            "identifier": "CypherCharacter",
+            "count": 1,
+            "title": "Cypher",
+            "body": "Encode",
+            "backgroundColor": "888888",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "888888",
+            "character": true,
+            "powers": [
+                "One augmented hero may draw a card now."
+            ],
+            "icons": [
+                "HasPower",
+                "DrawCardNow"
+            ],
+            "hitpoints": 26,
+            "nemesisIdentifiers": [
+                "Cypher"
+            ],
+            "incapacitatedAbilities": [
+                "One player may destroy 1 of their ongoing cards to draw 3 cards.",
+                "One player may destroy 1 of their equipment cards to play 3 cards.",
+                "One target regains 1 HP."
+            ],
+            "flippedIcons": [
+                "Destroy",
+                "DrawCardNow",
+                "PlayCardNow",
+                "GainHP"
+            ],
+            "openingLines": {
+                "default": "Nanite defensive routines activated.",
+                "SwarmEaterCharacter": "It can augment itself with whatever it consumes. Be careful, team.",
+                "DistributedHivemindSwarmEaterCharacter": "Swarm Eater Distributed Hivemind placeholder"
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "BackupPlan",
+            "count": 2,
+            "title": "Backup Plan",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "DestroySelf",
+                "Manipulate",
+                "GainHP"
+            ],
+            "body": "When a non-hero card enters play, you may destroy this card. If you do, select any number of Augments in play and move each one next to a new hero. Then, each augmented hero regains 2HP.",
+            "flavorQuotes": [
+                {
+                    "identifier": "ChronoRanger",
+                    "text": "'Course, that ain't exactly plan A."
+                }
+            ],
+            "flavorReference": "Chrono-Ranger, Cypher: Terminated #15"
+        },
+        {
+            "identifier": "Cyberdefense",
+            "count": 2,
+            "title": "Cyberdefense",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Destroy",
+                "DealDamageLightning"
+            ],
+            "body": [
+                "Destroy any number of Augments.",
+                "{Cypher} deals each non-hero target X lightning damage, where X equals the number of cards destroyed this way."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Cypher",
+                    "text": "...or a devastating surge{BR}of power directed externally."
+                }
+            ],
+            "flavorReference": "Cypher, The Coming of the Swarm #8"
+        },
+        {
+            "identifier": "Cyberintegration",
+            "count": 3,
+            "title": "Cyberintegration",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Destroy",
+                "GainHP"
+            ],
+            "body": [
+                "Destroy any number of Augments.",
+                "When an Augment is destroyed this way, the hero it was next to regains 3HP."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Cypher",
+                    "text": "The nanites can burn{BR}themselves out to provide{BR}unparalleled metabolic energy..."
+                }
+            ],
+            "flavorReference": "Cypher, The Coming of the Swarm #8"
+        },
+        {
+            "identifier": "CyborgBlaster",
+            "count": 2,
+            "title": "Cyborg Blaster",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Manipulate",
+                "DealDamageLightning"
+            ],
+            "body": [
+                "You may move 1 Augment in play next to a new hero.",
+                "One augmented hero deals 1 target 2 lightning damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Cypher",
+                    "text": "I'll improvise."
+                }
+            ],
+            "flavorReference": "Cypher, Adventurers #8"
+        },
+        {
+            "identifier": "CyborgPunch",
+            "count": 2,
+            "title": "Cyborg Punch",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Manipulate",
+                "DealDamageMelee",
+                "DrawCardNow"
+            ],
+            "body": [
+                "You may move 1 Augment in play next to a new hero.",
+                "One augmented hero deals 1 target 1 melee damage and draws a card now."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Starlight",
+                    "text": "I didn't do that. Who's{BR}controlling this thing?"
+                }
+            ],
+            "flavorReference": "Starlight, Vault of Night #40"
+        },
+        {
+            "identifier": "DermalAug",
+            "count": 1,
+            "title": "Dermal Aug",
+            "keywords": [
+                "equipment",
+                "augment"
+            ],
+            "icons": [
+                "ReduceDamageTaken"
+            ],
+            "body": [
+                "Play this card next to a hero. The hero next to this card is augmented.",
+                "Reduce damage dealt to that hero by 1."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Tachyon",
+                    "text": "They're forming a{BR}reinforced subcutaneous{BR}nanostructure for defense."
+                }
+            ],
+            "flavorReference": "Tachyon, Halcyon Crash Limited Series #1"
+        },
+        {
+            "identifier": "ElectroOpticalCloak",
+            "count": 2,
+            "title": "Electro-Optical Cloak",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "ImmuneToDamage",
+                "DestroySelf"
+            ],
+            "body": [
+                "Augmented heroes are immune to damage.",
+                "At the start of your turn, destroy this card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Vanish",
+                    "text": "Ha! Who's blending in now?"
+                }
+            ],
+            "flavorReference": "Vanish, Vanish #101"
+        },
+        {
+            "identifier": "FusionAug",
+            "count": 1,
+            "title": "Fusion Aug",
+            "keywords": [
+                "equipment",
+                "augment"
+            ],
+            "icons": [
+                "UsePowerExtra"
+            ],
+            "body": [
+                "Play this card next to a hero. The hero next to this card is augmented.",
+                "That hero may use an additional power during their power phase."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Cypher",
+                    "text": "Goin' in to overdrive!"
+                }
+            ],
+            "flavorReference": "Cypher, Cypher: Terminated #2"
+        },
+        {
+            "identifier": "HackingProgram",
+            "count": 2,
+            "title": "Hacking Program",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "HasPower",
+                "DealDamageEnergy",
+                "DestroyOngoing",
+                "DestroyEnvironment"
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "MssSecurityLog",
+                    "text": "OVERRIDE ACCEPTED"
+                }
+            ],
+            "flavorReference": "M.S.S. Security Log, Department of Secrets #117",
+            "powers": [
+                "{Cypher} deals himself 2 irreducible energy damage. If he takes damage this way, destroy 1 ongoing or environment card."
+            ]
+        },
+        {
+            "identifier": "HeuristicAlgorithm",
+            "count": 3,
+            "title": "Heuristic Algorithm",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Manipulate",
+                "DrawCardNow"
+            ],
+            "body": [
+                "Reveal cards from the top of your deck until you reveal an Augment. Put it into play or into your trash. Shuffle the rest of the revealed cards into your deck.",
+                "If you did not put an Augment into play this way, draw 2 cards."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Cypher",
+                    "text": "I just need a solution.{BR}It doesn't have to be exact."
+                }
+            ],
+            "flavorReference": "Cypher, The Adjustments #1"
+        },
+        {
+            "identifier": "InitiatedUpgrade",
+            "count": 4,
+            "title": "Initiated Upgrade",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Search",
+                "DrawCardNow"
+            ],
+            "body": [
+                "Search your deck or trash for an Augment card and put it into play. If you searched your deck, shuffle it.",
+                "You may draw a card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Cypher",
+                    "text": "Let's get to work."
+                }
+            ],
+            "flavorReference": "Cypher, Cypher: Terminated #23"
+        },
+        {
+            "identifier": "MuscleAug",
+            "count": 1,
+            "title": "Muscle Aug",
+            "keywords": [
+                "equipment",
+                "augment"
+            ],
+            "icons": [
+                "IncreaseDamageDealt"
+            ],
+            "body": [
+                "Play this card next to a hero. The hero next to this card is augmented.",
+                "Increase damage dealt by that hero by 1."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheKnight",
+                    "text": "You're certain this{BR}is temporary?"
+                },
+                {
+                    "identifier": "Cypher",
+                    "text": "Why, you don't like it?"
+                }
+            ],
+            "flavorReference": "The Coming of the Swarm #3"
+        },
+        {
+            "identifier": "NaniteSurge",
+            "count": 2,
+            "title": "Nanite Surge",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DrawCardNow",
+                "PlayCardNow",
+                "GainHP"
+            ],
+            "body": [
+                "You may draw a card.",
+                "You may play a card.",
+                "Each augmented hero regains X HP, where X is the number of Augments next to them."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Cypher",
+                    "text": "I can make you faster. Better.{BR}Probably stronger, too."
+                }
+            ],
+            "flavorReference": "Cypher, The Tourist #4"
+        },
+        {
+            "identifier": "NetworkedAttack",
+            "count": 2,
+            "title": "Networked Attack",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "UsePowerNow"
+            ],
+            "body": "Each augmented hero may use a power now.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Cypher",
+                    "text": "With our powers combined..."
+                }
+            ],
+            "flavorReference": "Cypher, Experimental One-Shot"
+        },
+        {
+            "identifier": "NeuralInterface",
+            "count": 3,
+            "title": "Neural Interface",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "HasPower",
+                "DrawCardNow",
+                "Discard"
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Cypher",
+                    "text": "Uplink established."
+                }
+            ],
+            "flavorReference": "Cypher, Cypher: Terminated #23",
+            "powers": [
+                "You may move 1 Augment in play next to a new hero. Draw 2 cards. Discard a card"
+            ]
+        },
+        {
+            "identifier": "RapidPrototyping",
+            "count": 3,
+            "title": "Rapid Prototyping",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DrawCardNow",
+                "PlayCardNow"
+            ],
+            "body": [
+                "Draw 2 cards.",
+                "Play any number of Augments from your hand."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Unity",
+                    "text": "I like the way he thinks."
+                }
+            ],
+            "flavorReference": "Unity, Cypher: Terminated #6"
+        },
+        {
+            "identifier": "RebuiltToSucceed",
+            "count": 3,
+            "title": "Rebuilt to Succeed",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Manipulate",
+                "PlayCardNow"
+            ],
+            "body": [
+                "Select two Augments in your trash. Put one into your hand and one into play.",
+                "The hero you augment this way may play a card now."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "HalcyonR42SystemLog",
+                    "text": "Nanite containment breach//{BR}Evacuate personnel."
+                }
+            ],
+            "flavorReference": "Halcyon-R42 System Log, Quicksilver Day One"
+        },
+        {
+            "identifier": "RetinalAug",
+            "count": 1,
+            "title": "Retinal Aug",
+            "keywords": [
+                "equipment",
+                "augment"
+            ],
+            "icons": [
+                "PlayCardExtra"
+            ],
+            "body": [
+                "Play this card next to a hero. The hero next to this card is augmented.",
+                "During their play phase, that hero may play an additional card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Unity",
+                    "text": "This feels familiar."
+                }
+            ],
+            "flavorReference": "Unity, Eye of the Golem #1"
+        },
+        {
+            "identifier": "VascularAug",
+            "count": 1,
+            "title": "Vascular Aug",
+            "keywords": [
+                "equipment",
+                "augment"
+            ],
+            "icons": [
+                "GainHP"
+            ],
+            "body": [
+                "Play this card next to a hero. The hero next to this card is augmented.",
+                "That hero regains 1HP at the end of their turn."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Necro",
+                    "text": "I will be fine. Perhaps better."
+                }
+            ],
+            "flavorReference": "Necro, Experimental One-shot"
+        }
+    ],
+    "promoCards": [
+        {
+            "identifier": "CypherCharacter",
+            "promoIdentifier": "FirstResponseCypherCharacter",
+            "count": 1,
+            "title": "Cypher",
+            "promoTitle": "First Response Cypher",
+            "shortPromoTitle": "Responder Cypher",
+            "body": "Fusion Cannon",
+            "backgroundColor": "8FD7EF",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "8FD7EF",
+            "character": true,
+            "powers": [
+                "{Cypher} deals 1 target X energy damage, where X is the number of augments in play."
+            ],
+            "icons": [
+                "HasPower",
+                "DealDamageEnergy"
+            ],
+            "hitpoints": 23,
+            "nemesisIdentifiers": [
+                "Cypher"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "Look at the bottom card of each deck and replace or discard each one.",
+                "Increase the next damage dealt by a hero target by 1."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "Manipulate",
+                "Discard",
+                "IncreaseDamageDealt"
+            ],
+            "openingLines": {
+                "default": "Nanite offensive routines activated.",
+                "SwarmEaterCharacter": "If we don't stop it, we'll all be on the menu.",
+                "DistributedHivemindSwarmEaterCharacter": "Swarm Eater Distributed Hivemind placeholder"
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "CypherCharacter",
+            "promoIdentifier": "SwarmingProtocolCypherCharacter",
+            "count": 1,
+            "title": "Cypher",
+            "promoTitle": "Cypher: Swarming Protocol",
+            "shortPromoTitle": "Swarming Cypher",
+            "body": "Nanocloud",
+            "backgroundColor": "F27991",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "F27991",
+            "character": true,
+            "powers": [
+                "Play a card face down next to a hero. Until leaving play it gains keyword 'Augment' and text 'This hero is augmented', draw a card."
+            ],
+            "icons": [
+                "HasPower",
+                "DrawCardNow"
+            ],
+            "hitpoints": 22,
+            "nemesisIdentifiers": [
+                "Cypher"
+            ],
+            "incapacitatedAbilities": [
+                "One player may play a card now.",
+                "Discard the top 3 cards of 1 deck.",
+                "Destroy an environment card."
+            ],
+            "flippedIcons": [
+                "PlayCardNow",
+                "Discard",
+                "DestroyEnvironment"
+            ],
+            "openingLines": {
+                "default": "We are the swarm.",
+                "SwarmEaterCharacter": "Except I'm a friendly cloud of nanites, instead of a ravenous, all-consuming one.",
+                "DistributedHivemindSwarmEaterCharacter": "Swarm Eater Distributed Hivemind placeholder"
+            },
+            "complexity": 3
+        }
+    ]
+}

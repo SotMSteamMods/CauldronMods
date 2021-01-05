@@ -225,7 +225,7 @@
 	"sourceSize": {"w":330,"h":260},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"FutureGargoyle.png":
+"FutureGargoyleCharacter.png":
 {
 	"frame": {"x":333,"y":526,"w":330,"h":260},
 	"rotated": false,
@@ -765,7 +765,7 @@
 	"sourceSize": {"w":330,"h":260},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"WastelandRoninGargoyle.png":
+"WastelandRoninGargoyleCharacter.png":
 {
 	"frame": {"x":333,"y":1841,"w":330,"h":260},
 	"rotated": false,

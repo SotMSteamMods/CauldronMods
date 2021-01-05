@@ -1139,6 +1139,36 @@ namespace CauldronTests
             AssertInTrash(fall, summer);
         }
 
+
+
+        [Test()]
+        public void TestRebirthPutCardsUnder_LimitedInPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //stack trash
+            Card spring = PutInTrash("Spring");
+            Card fall = PutInTrash("Fall");
+            Card summer = PutInTrash("Summer");
+            Card trashGown = PutInTrash("SnowshadeGown", 0);
+            Card playGown = PlayCard("SnowshadeGown", 1);
+
+            AssertIsInPlay(playGown);
+            Assert.IsFalse(trashGown == playGown);
+
+            //When this card enters play, put up to 3 cards from your trash beneath it.
+
+            DecisionSelectCards = new Card[] { trashGown, null };
+            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
+
+            //check that there is 1 card under and that it is correct
+            AssertNumberOfCardsUnderCard(rebirth, 1);
+            AssertUnderCard(rebirth, trashGown);
+            AssertInTrash(spring, fall, summer);
+        }
+
+
         [Test()]
         public void TestRebirthPutCardsUnder_Choose0()
         {
@@ -1153,7 +1183,7 @@ namespace CauldronTests
 
             //When this card enters play, put up to 3 cards from your trash beneath it.
 
-            DecisionDoNotSelectCard = SelectionType.MoveCard;
+            DecisionDoNotSelectCard = SelectionType.MoveCardToUnderCard;
             Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
 
             //since there are 0 cards moved under this card, it should immediately destroy itself
@@ -1174,7 +1204,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestRebirthMoveCardToHand()
+        public void TestRebirthMoveCardToHandByDestroy()
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
@@ -1205,6 +1235,45 @@ namespace CauldronTests
             QuickHandStorage(ladyOfTheWood);
             //have lady of the wood destroy mdp
             DestroyCard(battalion, haka.CharacterCard);
+            //nothing should have been moved to hand
+            QuickHandCheck(0);
+            AssertNumberOfCardsUnderCard(rebirth, 2);
+            AssertUnderCard(rebirth, spring);
+            AssertUnderCard(rebirth, fall);
+        }
+
+
+        [Test()]
+        public void TestRebirthMoveCardToHandByDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card battalion = PlayCard("BladeBattalion");
+
+            //stack trash
+            Card spring = PutInTrash("Spring");
+            Card fall = PutInTrash("Fall");
+            Card summer = PutInTrash("Summer");
+
+            //Whenever LadyOfTheWood destroys a target, put a card from beneath this one into your hand.
+            DecisionSelectCards = new Card[] { spring, fall, summer, summer };
+            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
+
+            QuickHandStorage(ladyOfTheWood);
+            //have lady of the wood destroy mdp
+            DealDamage(ladyOfTheWood.CharacterCard, mdp, 99, DamageType.Psychic);
+            //summer should have been moved to hand
+            QuickHandCheck(1);
+            AssertNumberOfCardsUnderCard(rebirth, 2);
+            AssertUnderCard(rebirth, spring);
+            AssertUnderCard(rebirth, fall);
+            AssertInHand(summer);
+
+            //check doesn't move when another hero destroys a target
+            QuickHandStorage(ladyOfTheWood);
+            DealDamage(haka.CharacterCard, battalion, 99, DamageType.Infernal);
             //nothing should have been moved to hand
             QuickHandCheck(0);
             AssertNumberOfCardsUnderCard(rebirth, 2);
@@ -1294,26 +1363,6 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestSerenityOfDawnEndOfTurnHasNotDealtDamage_DrawOptional()
-        {
-            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
-            StartGame();
-
-            //set hp to have room to gain later
-            SetHitPoints(ladyOfTheWood.CharacterCard, 15);
-            //At the end of your turn, if {LadyOfTheWood} dealt no damage this turn, she regains 2 HP and you may draw a card.
-            PlayCard("SerenityOfDawn");
-            DecisionYesNo = false;
-            QuickHPStorage(ladyOfTheWood);
-            QuickHandStorage(ladyOfTheWood);
-            GoToEndOfTurn(ladyOfTheWood);
-            //since no damage dealt, gain 2 HP, draw card was declined, so no new cards in hand
-            QuickHPCheck(2);
-            QuickHandCheck(0);
-
-        }
-
-        [Test()]
         public void TestSnowshadeGownPower()
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
@@ -1390,6 +1439,33 @@ namespace CauldronTests
             QuickHPCheck(0);
         }
 
+        [Test()]
+        public void TestSnowshadeGownCantDealDamageIfPartialHPGain()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            //give room to gain 2 HP, but not the full 3HP from the power.
+            SetHitPoints(ladyOfTheWood, 20);
+
+            //destroy mdp so baron is vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card gown = PlayCard("SnowshadeGown");
+
+            // Whenever LadyOfTheWood regains HP, you may select a target that hasn't been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
+            GoToUsePowerPhase(ladyOfTheWood);
+
+            //deal damage to ra with the trigger
+            DecisionYesNo = true;
+            DecisionSelectTarget = ra.CharacterCard;
+
+            QuickHPStorage(ladyOfTheWood, ra);
+            //try to gain 3HP and trigger the reaction
+            UsePower(gown);
+            QuickHPCheck(2, -1);
+        }
 
         [Test()]
         public void TestSnowshadeGownDealDamage_NoTargets()
@@ -1725,10 +1801,65 @@ namespace CauldronTests
             QuickHPStorage(baron);
             DealDamage(ladyOfTheWood, baron, 2, DamageType.Lightning);
             //because of suncast mantle, +3 damage, now 5
-            //it is still irreducible, so -5
-            QuickHPCheck(-5);
+            //it is not irreducible, so -4 total
+            QuickHPCheck(-4);
         }
+        [Test()]
+        public void TestThundergreyShawlIrreducibleOrdering()
+        {
+            //TGS should trigger if the damage totals to 2 or less, with boosts and reductions included
+            SetupGameController("Apostate", "Cauldron.LadyOfTheWood", "Legacy", "Haka", "Megalopolis");
+            StartGame();
 
+            Card sword = GetCardInPlay("Condemnation");
+            Card periapt = PlayCard("PeriaptOfWoe");
+
+            PlayCard("ThundergreyShawl");
+            PlayCard("Summer");
+            UsePower(legacy);
+
+            //total of +3 to fire damage
+
+            QuickHPStorage(sword);
+
+            DealDamage(ladyOfTheWood, sword, 1, DamageType.Fire);
+            DealDamage(ladyOfTheWood, periapt, 1, DamageType.Fire);
+
+            //1 damage +3 boost -2 DR = 2, so Shawl applies and Periapt takes the full 4
+            AssertInTrash(periapt);
+
+            //1 damage +3 boost -1 DR = 1, Shawl does not trigger and Condemnation takes 3
+            QuickHPCheck(-3);
+
+        }
+        [Test()]
+        public void TestThundergreyShawlWithUnincreasableDamage()
+        {
+            SetupGameController("BaronBladeTeam", "MissInformationTeam", "BugbearTeam", "Cauldron.LadyOfTheWood", "TheWraith", "TheSentinels", "Megalopolis");
+
+            StartGame();
+
+            //avoid having any of the starting card shenanigans mess things up
+            var villains = new List<TurnTakerController> { baronTeam, missinfoTeam, bugbearTeam };
+            foreach(TurnTakerController villain in villains)
+            {
+                PutOnDeck(villain, villain.TurnTaker.GetPlayAreaCards().Where((Card c) => !c.IsCharacter));
+            }
+
+            PlayCard("ThundergreyShawl");
+            PlayCard("StunBolt"); 
+            PlayCard("JudgeMental");
+
+            DecisionSelectTarget = ladyOfTheWood.CharacterCard;
+
+            //to give LOTW a putative "damage increase" from a hero card
+            UsePower("StunBolt");
+
+            QuickHPStorage(baronTeam);
+            DealDamage(ladyOfTheWood, baronTeam, 3, DamageType.Melee);
+
+            QuickHPCheck(-3);
+        }
         [Test()]
         public void TestWinter()
         {

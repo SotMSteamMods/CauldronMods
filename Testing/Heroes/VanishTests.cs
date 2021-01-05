@@ -516,6 +516,48 @@ namespace CauldronTests
             AssertNumberOfCardsInRevealed(env, 0);
         }
 
+        [Test]
+        public void FlashRecon_OnlyCleanUpOwnRevealed()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "TheArgentAdept/DarkConductorArgentAdept", "Megalopolis");
+            StartGame();
+
+            //stack decks with harmless cards
+            var played = StackDeck(baron, "MobileDefensePlatform");
+            StackDeck(vanish, "FocusingGauntlet");
+            StackDeck(ra, "FleshOfTheSunGod");
+            StackDeck(wraith, "StunBolt");
+            StackDeck(env, "PoliceBackup");
+
+            Card adeptDiscard = PutOnDeck("TheStaffOfRa");
+            Card adeptPlay = PutOnDeck("FlashRecon");
+
+            DecisionSelectLocations = new[]
+            {
+                new LocationChoice(vanish.TurnTaker.Deck),
+                new LocationChoice(ra.TurnTaker.Deck),
+                new LocationChoice(baron.TurnTaker.Deck),
+                new LocationChoice(vanish.TurnTaker.Deck),
+                new LocationChoice(ra.TurnTaker.Deck),
+                new LocationChoice(wraith.TurnTaker.Deck),
+                new LocationChoice(adept.TurnTaker.Deck),
+                //new LocationChoice(env.TurnTaker.Deck), env deck is selected automatically since it's the last selection, yuck
+                new LocationChoice(baron.TurnTaker.Deck)
+            };
+            DecisionSelectCard = adeptPlay;
+
+            UsePower(adept);
+            AssertInTrash(vanish, adeptPlay);
+            AssertInTrash(ra, adeptDiscard);
+
+            AssertInPlayArea(baron, played);
+            AssertNumberOfCardsInRevealed(baron, 0);
+            AssertNumberOfCardsInRevealed(vanish, 0);
+            AssertNumberOfCardsInRevealed(ra, 0);
+            AssertNumberOfCardsInRevealed(wraith, 0);
+            AssertNumberOfCardsInRevealed(env, 0);
+        }
+
         public void TacticalRelocation_()
         {
             SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
@@ -1028,6 +1070,9 @@ namespace CauldronTests
             SetupGameController("KaargraWarfang", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
+            //Playing Tarnis when he's already in play messes up his redirection, so let's avoid that
+            PutOnDeck("ProvocatorTarnis");
+
             var target1 = PlayCard("IdesaTheAdroit");
             var target2 = PlayCard("ProvocatorTarnis");
             DestroyCards(FindCardsWhere(c => c.IsTitle && c.IsInPlay));
@@ -1050,6 +1095,7 @@ namespace CauldronTests
         public void TacticalRelocation()
         {
             SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis" }, randomSeed: -1689251121);
             StartGame();
 
             RemoveMobileDefensePlatform();
@@ -1063,10 +1109,11 @@ namespace CauldronTests
             //vanish takes no damage, so draws and discards, set those up
             var t2 = GetCardFromHand(vanish);
             var card = PutInHand("TacticalRelocation");
-            var t3 = GetTopCardOfDeck(vanish);
 
             var f1 = GetCard("FocusingGauntlet");
             PutInTrash(vanish, f1); //should not be played
+
+            var t3 = GetTopCardOfDeck(vanish);
 
             //ra takes damage, but has no valid cards, nothing should happen
             var hand2 = ra.HeroTurnTaker.Hand.Cards.ToList();
@@ -1099,6 +1146,31 @@ namespace CauldronTests
 
             AssertInHand(hand1);
             AssertInHand(hand2);
+        }
+        [Test]
+        public void TacticalRelocation_RecoveryRequiresDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "TheScholar", "TheWraith", "Megalopolis");
+            StartGame();
+
+            RemoveMobileDefensePlatform();
+
+            PutOnDeck(scholar, scholar.HeroTurnTaker.Hand.Cards);
+
+            Card liveIron = PlayCard("FleshToIron");
+            Card deadIron = PutInTrash("FleshToIron");
+            Card liquid = PutInTrash("SolidToLiquid");
+
+            AssertIsInPlay(liveIron);
+            AssertInTrash(deadIron);
+
+            DecisionYesNo = true;
+
+            PlayCard("TacticalRelocation");
+            AssertIsInPlay(deadIron);
+
+            PlayCard("TacticalRelocation");
+            AssertNotInPlay(liquid);
         }
 
     }

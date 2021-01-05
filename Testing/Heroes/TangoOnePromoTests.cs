@@ -17,6 +17,7 @@ namespace CauldronTests
 
         private const string DeckNamespaceGhostOps = "Cauldron.TangoOne/GhostOpsTangoOneCharacter";
         private const string DeckNamespace1929 = "Cauldron.TangoOne/PastTangoOneCharacter";
+        private const string DeckNamespaceCreed = "Cauldron.TangoOne/CreedOfTheSniperTangoOneCharacter";
 
         [Test]
         public void TestTangoOneGhostOpsLoads()
@@ -253,8 +254,18 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(0); //status effect should have expired.
             QuickHPCheck(0); // Damage should not have been attempted
         }
+        [Test]
+        public void TestInnatePower1929_PowerModifiersTrack()
+        {
+            SetupGameController("BaronBlade", DeckNamespace1929, "Unity", "Legacy", "Megalopolis");
+            StartGame();
 
-
+            QuickHPStorage(legacy);
+            DecisionSelectTarget = legacy.CharacterCard;
+            PlayCard("HastyAugmentation");
+            GoToStartOfTurn(TangoOne);
+            QuickHPCheck(-5);
+        }
         [Test]
         public void Test1929IncapacitateOption1()
         {
@@ -431,6 +442,123 @@ namespace CauldronTests
             // Assert
             AssertIncapacitated(TangoOne);
             AssertInTrash(enragedTRex);
+        }
+
+
+        [Test]
+        public void TestCreedTangoOneLoads()
+        {
+            // Arrange & Act
+            SetupGameController("BaronBlade", DeckNamespaceCreed, "Megalopolis");
+
+            // Assert
+            Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
+            Assert.IsNotNull(TangoOne);
+            Assert.IsInstanceOf(typeof(CreedOfTheSniperTangoOneCharacterCardController), TangoOne.CharacterCardController);
+
+            Assert.AreEqual(25, TangoOne.CharacterCard.HitPoints);
+        }
+
+        [Test]
+        public void TestCreedTangoOneInnatePower_Draw()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespaceCreed, "Ra", "Legacy", "Megalopolis");
+            StartGame();
+
+            var card = PutOnDeck("SniperRifle");
+
+            QuickHandStorage(TangoOne);
+
+            GoToStartOfTurn(TangoOne);
+            UsePower(TangoOne);
+            AssertInHand(card);
+            QuickHandCheck(1);
+        }
+
+        [Test]
+        public void TestCreedTangoOneInnatePower_DrawCritical()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespaceCreed, "Ra", "Legacy", "Megalopolis");
+            StartGame();
+
+            var card = PutOnDeck("GhostReactor");
+            var play = PutInHand(ra, "ImbuedFire");
+
+            QuickHandStorage(TangoOne);
+            DecisionSelectTurnTaker = ra.TurnTaker;
+            DecisionSelectCard = play;
+            UsePower(TangoOne);
+            AssertInTrash(card);
+            AssertIsInPlay(play);
+            QuickHandCheck(0);
+        }
+
+        [Test]
+        public void TestCreedTangoOneIncapacitateOption1()
+        {
+            SetupGameController("BaronBlade", DeckNamespaceCreed, "Ra", "Legacy", "Megalopolis");
+            StartGame();
+
+            DealDamage(baron, TangoOne, 99, DamageType.Melee);
+
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            AssertIncapLetsHeroDrawCard(TangoOne, 0, ra, 1);
+        }
+
+        [Test]
+        public void TestCreedTangoOneIncapacitateOption2()
+        {
+            SetupGameController("BaronBlade", DeckNamespaceCreed, "Ra", "Legacy", "Megalopolis");
+            StartGame();
+
+            DealDamage(baron, TangoOne, 99, DamageType.Melee);
+
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            AssertIncapLetsHeroUsePower(TangoOne, 1, ra);
+        }
+
+        [Test]
+        public void TestCreedTangoOneIncapacitateOption3_NoMatch()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespaceCreed, "Ra", "Legacy", "Megalopolis");
+            StartGame();
+
+            DealDamage(baron, TangoOne, 99, DamageType.Melee);
+
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+
+            var c1 = PutOnDeck("BackFistStrike");
+            var c2 = PutOnDeck("DangerSense");
+                        
+            DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
+            DecisionSelectCards = new[] { c1, c2 };
+            UseIncapacitatedAbility(TangoOne, 2);
+            AssertInTrash(c1);
+            AssertInTrash(c2);
+        }
+
+        [Test]
+        public void TestCreedTangoOneIncapacitateOption3_Match()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespaceCreed, "Ra", "Legacy", "Megalopolis");
+            StartGame();
+
+            DealDamage(baron, TangoOne, 99, DamageType.Melee);
+
+            GoToUseIncapacitatedAbilityPhase(TangoOne);
+
+            var c1 = PutOnDeck("NextEvolution");
+            var c2 = PutOnDeck("DangerSense");
+
+            DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
+            DecisionSelectCards = new[] { c1, c2 };
+            UseIncapacitatedAbility(TangoOne, 2);
+            AssertIsInPlay(c1);
+            AssertIsInPlay(c2);
         }
     }
 }

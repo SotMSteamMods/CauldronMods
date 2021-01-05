@@ -59,7 +59,7 @@ namespace CauldronTests
 
             AssertCardHasKeyword(gray.CharacterCard, "villain", false);
 
-            AssertCard("AlistarWinters", new string[] { "minion" }, 5);
+            AssertCard("AlistairWinters", new string[] { "minion" }, 5);
             AssertCard("BlightTheLand", new string[] { "radiation" }, 8);
             AssertCard("ChainReaction", new string[] { "radiation" }, 3);
             AssertCard("Contamination", new string[] { "ongoing" });
@@ -226,7 +226,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.Gray", "Legacy", "Haka", "Ra", "Megalopolis");
             StartGame();
-            Card ali = GetCard("AlistarWinters");
+            Card ali = GetCard("AlistairWinters");
             PutOnDeck(gray, ali);
             PlayCards(GetCard("BlightTheLand", 0), GetCard("BlightTheLand", 1));
             GoToEndOfTurn(env);
@@ -279,13 +279,21 @@ namespace CauldronTests
         {
             SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Unity", "Ra", "TimeCataclysm" });
             StartGame();
+            var reaction = GetCardInPlay("ChainReaction");
             FlipCard(gray);
             Card bot = GetCard("RaptorBot");
             PlayCard(bot);
             //Whenever a radiation card is destroyed by a hero card, {Gray} deals that hero {H - 1} energy damage.
             QuickHPStorage(legacy, ra, unity);
-            DealDamage(bot, GetCardInPlay("ChainReaction"), 3, DamageType.Melee);
-            AssertInTrash("ChainReaction");
+            DealDamage(bot, reaction, 3, DamageType.Melee);
+            AssertInTrash(reaction);
+            QuickHPCheck(0, 0, -2);
+
+            //reset and test a destroy effect
+            PlayCard(reaction);
+            QuickHPStorage(legacy, ra, unity);
+            DestroyCard(reaction, bot);
+            AssertInTrash(reaction);
             QuickHPCheck(0, 0, -2);
         }
 
@@ -313,7 +321,7 @@ namespace CauldronTests
             SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "Megalopolis" }, true);
             StartGame();
             FlipCard(gray);
-            Card ali = GetCard("AlistarWinters");
+            Card ali = GetCard("AlistairWinters");
             PlayCard(ali);
             //Advanced - Reduce damage dealt to villain targets by 1.
             QuickHPStorage(gray.CharacterCard, ali, haka.CharacterCard);
@@ -325,12 +333,12 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestAlistarWintersHeroTargetEffects()
+        public void TestAlistairWintersHeroTargetEffects()
         {
             SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
             StartGame();
             Card roach = GetCard("GiantMutatedSpecimen");
-            Card ali = GetCard("AlistarWinters");
+            Card ali = GetCard("AlistairWinters");
             PlayCards(ali, roach);
             QuickHPStorage(legacy, haka, ra);
             //Increase damage dealt to hero targets by 1.
@@ -343,12 +351,12 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestAlistarWintersNonHeroTargetEffects()
+        public void TestAlistairWintersNonHeroTargetEffects()
         {
             SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
             StartGame();
             Card roach = GetCard("GiantMutatedSpecimen");
-            Card ali = GetCard("AlistarWinters");
+            Card ali = GetCard("AlistairWinters");
             Card chain = GetCardInPlay("ChainReaction");
             PlayCards(ali, roach);
             QuickHPStorage(gray.CharacterCard, chain, roach);
@@ -478,6 +486,23 @@ namespace CauldronTests
             DealDamage(ra, gray, 4, DamageType.Melee);
             QuickHPCheck(-1);
         }
+        [Test()]
+        public void TestHeavyRadiationDynamic()
+        {
+            SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
+            StartGame();
+
+            DestroyCard("ChainReaction");
+            PlayCard("HeavyRadiation");
+
+            QuickHPStorage(gray);
+            DealDamage(legacy, gray, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            PlayCard("BlightTheLand");
+            DealDamage(legacy, gray, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+        }
 
         [Test()]
         public void TestIrradiatedTouch()
@@ -495,7 +520,7 @@ namespace CauldronTests
             QuickHPUpdate();
             DestroyCard("IrradiatedTouch");
             //Gray deals everyone 2 energy damage when a radiation card is destroyed
-            QuickHPCheck(-2,0,-4,-2);
+            QuickHPCheck(-2, 0, -4, -2);
         }
 
         [Test()]
@@ -543,6 +568,24 @@ namespace CauldronTests
             DealDamage(gray, ra, 2, DamageType.Melee);
             PrintJournal();
             QuickHPCheck(-3);
+            QuickHandCheck(0);
+        }
+
+        [Test()]
+        public void TestLivingReactorImmuneToDamage()
+        {
+            //Whenever {Gray} deals damage to a hero target, either increase that damage by 1 or that player must discard a card.
+            SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
+            StartGame();
+            PlayCard("LivingReactor");
+            Card evo = PlayCard("NextEvolution");
+            UsePower(evo);
+
+            //Since Legacy is immune to the damage he should not have to discard a card or increase the damage
+            QuickHandStorage(legacy);
+            QuickHPStorage(legacy);
+            DealDamage(gray, legacy, 2, DamageType.Cold);
+            QuickHPCheck(0);
             QuickHandCheck(0);
         }
 

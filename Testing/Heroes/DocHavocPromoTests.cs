@@ -53,7 +53,49 @@ namespace CauldronTests
             QuickHPCheck(-1);
             QuickHandCheck(1);
         }
+        [Test]
+        public void TestInnatePowerFirstResponseIsFromHavocCard()
+        {
+            SetupGameController("BaronBlade", DeckNamespaceFirstResponse, "Ra", "Legacy", "Megalopolis");
 
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            QuickHPStorage(mdp);
+            QuickHandStorage(DocHavoc);
+            DecisionYesNo = true;
+            DecisionSelectTarget = mdp;
+            UsePower(legacy);
+            // Act
+            GoToUsePowerPhase(DocHavoc);
+            UsePower(DocHavoc);
+
+            // Assert
+            QuickHPCheck(-2);
+            QuickHandCheck(1);
+        }
+        [Test]
+        public void TestInnatePowerFirstResponseIsStandardMayDamage()
+        {
+            SetupGameController("BaronBlade", DeckNamespaceFirstResponse, "Ra", "Legacy", "Megalopolis");
+
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            QuickHPStorage(mdp);
+            QuickHandStorage(DocHavoc);
+            DecisionYesNo = false;
+            DecisionSelectTargets = new Card[] { mdp, mdp, null };
+            // Act
+            GoToUsePowerPhase(DocHavoc);
+            UsePower(DocHavoc);
+            UsePower(DocHavoc);
+            UsePower(DocHavoc);
+
+            // Assert
+            QuickHPCheck(-2);
+            QuickHandCheck(3);
+        }
         [Test]
         public void TestInnatePowerFirstResponseNoDamage()
         {
@@ -306,6 +348,90 @@ namespace CauldronTests
             // Assert
             AssertIncapacitated(DocHavoc);
             AssertNumberOfCardsInTrash(env, 0);
+        }
+        [Test]
+        public void TestFutureDocHavocLoads()
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc/FutureDocHavocCharacter", "Megalopolis");
+            Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
+            Assert.IsNotNull(DocHavoc);
+            Assert.IsInstanceOf(typeof(FutureDocHavocCharacterCardController), DocHavoc.CharacterCardController);
+
+            Assert.AreEqual(29, DocHavoc.CharacterCard.HitPoints);
+        }
+        [Test]
+        public void TestFuturePowerNoHPGainers()
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc/FutureDocHavocCharacter", "Ra", "Legacy", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            QuickHPStorage(baron);
+            AssertMaxNumberOfDecisions(1);
+            UsePower(DocHavoc);
+            QuickHPCheck(-2);
+        }
+        [Test]
+        public void TestFuturePowerOneHPGainer()
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc/FutureDocHavocCharacter", "Ra", "Legacy", "Megalopolis");
+            StartGame();
+            DestroyCard("MobileDefensePlatform");
+
+            SetHitPoints(ra, 20);
+            PlayCard("TheStaffOfRa");
+            DecisionSelectFunction = 1;
+
+            //damage or grant power, innate or staff, who to hit
+            AssertMaxNumberOfDecisions(3);
+
+            QuickHPStorage(baron);
+            UsePower(DocHavoc);
+            QuickHPCheck(-3);
+        }
+        [Test]
+        public void TestFutureIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc/FutureDocHavocCharacter", "Ra", "Legacy", "Megalopolis");
+            StartGame();
+            DealDamage(baron, DocHavoc, 50, DamageType.Melee);
+
+            AssertIncapLetsHeroDrawCard(DocHavoc, 0, ra, 1);
+        }
+        [Test]
+        public void TestFutureIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc/FutureDocHavocCharacter", "Ra", "Legacy", "Megalopolis");
+            StartGame();
+            DealDamage(baron, DocHavoc, 50, DamageType.Melee);
+
+            Card flesh = PlayCard("FleshOfTheSunGod");
+            Card fort = PlayCard("Fortitude");
+            Card ring = PlayCard("TheLegacyRing");
+            Card lash = PlayCard("BacklashField");
+            AssertNextDecisionChoices(new Card[] { flesh, fort, lash }, new Card[] { ring });
+
+            DecisionSelectCard = lash;
+            UseIncapacitatedAbility(DocHavoc, 1);
+            AssertInTrash(lash);
+        }
+        [Test]
+        public void TestFutureIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc/FutureDocHavocCharacter", "Ra", "Legacy", "Megalopolis");
+            StartGame();
+            DealDamage(baron, DocHavoc, 50, DamageType.Melee);
+
+            SetHitPoints(ra, 20);
+            QuickHPStorage(ra);
+            UseIncapacitatedAbility(DocHavoc, 2);
+            Card staff = PlayCard("TheStaffOfRa");
+            QuickHPCheck(5);
+
+            //only once
+            DestroyCard(staff);
+            PlayCard(staff);
+            QuickHPCheck(3);
         }
     }
 }

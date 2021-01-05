@@ -1,0 +1,771 @@
+{
+    "name": "Tiamat",
+    "kind": "Villain",
+    "expansionIdentifier": "Cauldron",
+    "initialCardIdentifiers": [
+        "WinterTiamatCharacter"
+    ],
+    "cards": [
+        {
+            "identifier": "InfernoTiamatCharacter",
+            "count": 1,
+            "title": "Tiamat, The Mouth of the Inferno",
+            "keywords": [
+                "villain",
+                "head"
+            ],
+            "body": "The Mouth of the Inferno",
+            "backgroundColor": "d89e60",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 40,
+            "nemesisIdentifiers": [
+                "TheKnight"
+            ],
+            "setup": [
+                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Mouth of the Inferno“ side up."
+            ],
+            "gameplay": [
+                "{InfernoTiamatCharacter} is immune to fire damage.",
+                "At the end of the villain turn, if {InfernoTiamatCharacter} dealt no damage this turn, she deals the hero target with the highest HP {H - 2} fire damage.",
+                "When {InfernoTiamatCharacter} is destroyed, flip her."
+            ],
+            "advanced": "Increase damage dealt by {InfernoTiamatCharacter} by 1.",
+            "icons": [
+                "ImmuneToDamageFire",
+                "EndOfTurnAction",
+                "DealDamageFire"
+            ],
+            "advancedIcons": [
+                "IncreaseDamageDealt"
+            ],
+            "flippedShowHitpoints": false,
+            "flippedBody": "Decapitated",
+            "flippedGameplay": [
+                "When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Fire“ card in the villain trash"
+            ],
+            "flippedAdvanced": "Reduce damage dealt by heads by 1.",
+            "flippedIcons": [
+                "IncreaseDamageDealt"
+            ],
+            "flippedAdvancedIcons": [
+                "ReduceDamageTaken"
+            ],
+            "difficulty": 1
+        },
+        {
+            "identifier": "StormTiamatCharacter",
+            "count": 1,
+            "title": "Tiamat, The Eye of the Storm",
+            "keywords": [
+                "villain",
+                "head"
+            ],
+            "body": "The Eye of the Storm",
+            "backgroundColor": "e1dfa7",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 40,
+            "nemesisIdentifiers": [
+                "Echelon"
+            ],
+            "setup": [
+                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Eye of the Storm“ side up."
+            ],
+            "gameplay": [
+                "{StormTiamatCharacter} is immune to lightnining damage.",
+                "At the end of the villain turn, if {StormTiamatCharacter} dealt no damage this turn, she deals the hero target with the highest HP {H - 2} lightning damage.",
+                "When {StormTiamatCharacter} is destroyed, flip her."
+            ],
+            "advanced": "Increase damage dealt by {StormTiamatCharacter} by 1.",
+            "icons": [
+                "ImmuneToDamageLightning",
+                "EndOfTurnAction",
+                "DealDamageLightning"
+            ],
+            "advancedIcons": [
+                "IncreaseDamageDealt"
+            ],
+            "flippedShowHitpoints": false,
+            "flippedBody": "Decapitated",
+            "flippedGameplay": [
+                "When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Lightning“ card in the villain trash"
+            ],
+            "flippedAdvanced": "Reduce damage taken by heads by 1.",
+            "flippedIcons": [
+                "IncreaseDamageDealt"
+            ],
+            "flippedAdvancedIcons": [
+                "ReduceDamageTaken"
+            ]
+        },
+        {
+            "identifier": "WinterTiamatCharacter",
+            "count": 1,
+            "title": "Tiamat, The Jaws of Winter",
+            "keywords": [
+                "villain",
+                "head"
+            ],
+            "body": "The Jaws of Winter",
+            "backgroundColor": "82b2e0",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 40,
+            "nemesisIdentifiers": [
+                "Necro"
+            ],
+            "setup": [
+                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Jaws of Winter“ side up."
+            ],
+            "gameplay": [
+                "{WinterTiamatCharacter} is immune to cold damage.",
+                "At the end of the villain turn, if {WinterTiamatCharacter} dealt no damage this turn, she deals the hero target with the highest HP {H - 2} cold damage.",
+                "When {WinterTiamatCharacter} is destroyed, flip her."
+            ],
+            "advanced": "Increase damage dealt by {WinterTiamatCharacter} by 1.",
+            "icons": [
+                "ImmuneToDamageCold",
+                "EndOfTurnAction",
+                "DealDamageCold"
+            ],
+            "advancedIcons": [
+                "IncreaseDamageDealt"
+            ],
+            "flippedShowHitpoints": false,
+            "flippedBody": "Decapitated",
+            "flippedGameplay": [
+                "When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Ice“ card in the villain trash"
+            ],
+            "flippedAdvanced": "Reduce damage taken by heads by 1.",
+            "flippedIcons": [
+                "IncreaseDamageDealt"
+            ],
+            "flippedAdvancedIcons": [
+                "ReduceDamageTaken"
+            ],
+            "difficulty": 1,
+            "openingLines": {
+                "default": "Screeee! Raoooargh! Khhhaaazzt!",
+                "TheKnightCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "BerserkerTheKnightCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "FairTheKnightCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "PastTheKnightCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "WastelandRoninTheKnightCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "NecroCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "WardenOfChaosNecroCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "PastNecroCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "LastOfTheForgottenOrderNecroCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "EchelonCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "FirstResponseEchelonCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
+                "FutureEchelonCharacter": "Screeee! Raoooargh! Khhhaaazzt!"
+            }
+        },
+        {
+            "identifier": "AcidBreath",
+            "count": 2,
+            "title": "Acid Breath",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DestroyOngoing",
+                "DestroyEquipment",
+                "DealDamageToxic"
+            ],
+            "body": [
+                "Destroy 2 hero ongoing cards and 2 hero equipment cards.",
+                "The Head with the highest HP deals {H} toxic damage to each hero who did not destroy a card this way."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheKnight",
+                    "text": "It cannot be. I saw the serpent{BR}buried in the sands of my time."
+                }
+            ],
+            "flavorReference": "The Knight, Dragonfire #12"
+        },
+        {
+            "identifier": "Alteration",
+            "count": 2,
+            "title": "Alteration",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "PlayCardNow"
+            ],
+            "body": "Play the top card of the environment deck. Play the top card of the villain deck.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Necro",
+                    "text": "Destruction and creation, the{BR}offspring of chaos."
+                }
+            ],
+            "flavorReference": "Necro, Tower of Night #37"
+        },
+        {
+            "identifier": "AncientWard",
+            "count": 1,
+            "title": "Ancient Ward",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "ReduceDamageTaken"
+            ],
+            "body": "Reduce damage dealt to Heads by 1.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Necro",
+                    "text": "My misguided vision brought it{BR}back from the underworld, and it is{BR}now stronger than ever."
+                }
+            ],
+            "flavorReference": "Necro, Book of the Dead #350"
+        },
+        {
+            "identifier": "DragonsWrath",
+            "count": 1,
+            "title": "Dragon's Wrath",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "IncreaseDamageDealt"
+            ],
+            "body": "Increase damage dealt by Heads by 1.",
+            "flavorQuotes": [
+                {
+                    "identifier": "LadyOfTheWood",
+                    "text": "Summer and winter's{BR}war is spreading over all."
+                }
+            ],
+            "flavorReference": "The Lady of the Wood, Tiamat #95"
+        },
+        {
+            "identifier": "ElementalForm",
+            "count": 1,
+            "title": "Elemental Form",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "ImmuneToDamage"
+            ],
+            "body": "Whenever a Head takes damage, it becomes immune to damage of that type until the start of the next villain turn.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Omnitron",
+                    "text": "Elemental alignment{BR}protofunction suggests possible{BR}future upgrade paths."
+                }
+            ],
+            "flavorReference": "Omnitron, Singularity #8"
+        },
+        {
+            "identifier": "ElementalFrenzy",
+            "count": 2,
+            "title": "Elemental Frenzy",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "Manipulate",
+                "EndOfTurnAction",
+                "PlayCardNow",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, shuffle all Spell cards from the villain trash and place them beneath this card face down.",
+                "At the end of the villain turn play the top card from this pile. When this pile is depleted, destroy this card. When this card is destroyed, play the top card of the villain deck."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Necro",
+                    "text": "Tiamat is the wrath of the ancient{BR}world, the chaos of the elements{BR}given terrible form."
+                }
+            ],
+            "flavorReference": "Necro, Tiamat #1"
+        },
+        {
+            "identifier": "ElementOfFire",
+            "count": 3,
+            "title": "Element of Fire",
+            "keywords": [
+                "one-shot",
+                "spell"
+            ],
+            "icons": [
+                "DealDamageFire",
+                "CannotPlayCards"
+            ],
+            "body": [
+                "If {InfernoTiamatCharacter} is active, she deals each hero target 2+X fire damage, where X is the number of Element of Fire cards in the villain trash.",
+                "The hero with the most cards in play may not play cards until the start of the next villain turn."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Bunker",
+                    "text": "Get out of there! Now!"
+                }
+            ],
+            "flavorReference": "Bunker, Elemental Wrath #12"
+        },
+        {
+            "identifier": "ElementOfIce",
+            "count": 3,
+            "title": "Element of Ice",
+            "keywords": [
+                "one-shot",
+                "spell"
+            ],
+            "icons": [
+                "DealDamageCold",
+                "CannotUsePowers"
+            ],
+            "body": [
+                "If {WinterTiamatCharacter} is active, she deals each hero target 2+X cold damage, where X is the number of Element of Ice cards in the villain trash.",
+                "The hero with the highest HP may not use powers until the start of the next villain turn."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Necro",
+                    "text": "Cold and death have long been{BR}bedfellows."
+                }
+            ],
+            "flavorReference": "Necro, Book of the Dead #350"
+        },
+        {
+            "identifier": "ElementOfLightning",
+            "count": 3,
+            "title": "Element of Lightning",
+            "keywords": [
+                "one-shot",
+                "spell"
+            ],
+            "icons": [
+                "DealDamageLightning",
+                "CannotDrawCards"
+            ],
+            "body": [
+                "If {StormTiamatCharacter} is active, she deals each hero target 2+X lightning damage, where X is the number of Element of Lightning cards in the villain trash.",
+                "The hero with the most cards in hand may not draw cards until the start of the next villain turn."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Tempest",
+                    "text": "This storm was bred by an{BR}evil wind, and its master has no{BR}good intentions."
+                }
+            ],
+            "flavorReference": "Tempest, Elemental Wrath #6"
+        },
+        {
+            "identifier": "HealingMagic",
+            "count": 3,
+            "title": "Healing Magic",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "GainHP",
+                "PlayCardNow"
+            ],
+            "body": [
+                "The Head with the lowest HP regains {H} + X HP, where X is the number of Healing Magic cards in the villain trash.",
+                "Play the top card of the villain deck."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Baccarat",
+                    "text": "Quit changin' the cards and{BR}play the hand you were dealt!"
+                }
+            ],
+            "flavorReference": "Baccarat, Book of the Dead #834"
+        },
+        {
+            "identifier": "ManaCharge",
+            "count": 1,
+            "title": "Mana Charge",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Manipulate"
+            ],
+            "body": [
+                "Reveal cards from the top of the villain deck until 3 Spell cards are revealed. Discard those cards. Shuffle the rest of the revealed cards back into the villain deck.",
+                "Shuffle all copies of Elemental Frenzy from the villain trash into the villain deck."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheStranger",
+                    "text": "When things start glowing nothing{BR}good ever comes of it."
+                }
+            ],
+            "flavorReference": "The Stranger, Book of the Dead #835"
+        },
+        {
+            "identifier": "ReptilianAspect",
+            "count": 1,
+            "title": "Reptilian Aspect",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "GainHP"
+            ],
+            "body": "At the end of the villain turn each Head regains {H - 2} HP.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Quicksilver",
+                    "text": "I practically severed one of its{BR}heads, and it grew back together!"
+                }
+            ],
+            "flavorReference": "Quicksilver, Song of the Forbidden One-Shot"
+        },
+        {
+            "identifier": "SkyBreaker",
+            "count": 2,
+            "title": "Sky Breaker",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DealDamageInfernal"
+            ],
+            "body": "The Head with the highest HP deals each hero target {H + 2} infernal damage.",
+            "flavorText": "This world's end brought{BR}on by pieces of another."
+        },
+        {
+            "identifier": "HydraInfernoTiamatCharacter",
+            "count": 1,
+            "title": "Tiamat, The Mouth of the Inferno",
+            "keywords": [
+                "villain",
+                "head"
+            ],
+            "icons": [
+                "ImmuneToDamageFire"
+            ],
+            "body": "The Mouth of the Inferno",
+            "backgroundColor": "d89e60",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 15,
+            "nemesisIdentifiers": [
+                "TheKnight"
+            ],
+            "gameplay": [
+                "{InfernoTiamatCharacter} is immune to fire damage."
+            ],
+            "flippedShowHitpoints": false,
+            "flippedBody": "Inferno, Decapitated",
+            "flippedKeywords": [
+                "villain",
+                "head"
+            ]
+        },
+        {
+            "identifier": "HydraStormTiamatCharacter",
+            "count": 1,
+            "title": "Tiamat, The Eye of the Storm",
+            "keywords": [
+                "villain",
+                "head"
+            ],
+            "icons": [
+                "ImmuneToDamageLightning"
+            ],
+            "advancedIcons": [],
+            "body": "The Eye of the Storm",
+            "backgroundColor": "e1dfa7",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 15,
+            "nemesisIdentifiers": [
+                "Echelon"
+            ],
+            "gameplay": [
+                "{StormTiamatCharacter} is immune to lightning damage."
+            ],
+            "flippedShowHitpoints": false,
+            "flippedBody": "Storm, Decapitated",
+            "flippedKeywords": [
+                "villain",
+                "head"
+            ]
+        },
+        {
+            "identifier": "HydraEarthTiamatCharacter",
+            "count": 1,
+            "title": "Tiamat, The Maw of the Earth",
+            "keywords": [
+                "villain",
+                "head"
+            ],
+            "icons": [
+                "ImmuneToDamageMelee",
+                "ReduceDamageTaken"
+            ],
+            "body": "The Maw of the Earth",
+            "backgroundColor": "90877e",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 15,
+            "nemesisIdentifiers": [
+                "Malichae"
+            ],
+            "gameplay": [
+                "{Tiamat}, The Maw of the Earth is immune to melee damage.",
+                "Reduce damage dealt to other villain targets by 1."
+            ],
+            "flippedShowHitpoints": false,
+            "flippedBody": "Earth, Decapitated",
+            "flippedKeywords": [
+                "villain",
+                "head"
+            ]
+        },
+        {
+            "identifier": "HydraDecayTiamatCharacter",
+            "count": 1,
+            "title": "Tiamat, The Breath of Decay",
+            "keywords": [
+                "villain",
+                "head"
+            ],
+            "icons": [
+                "ImmuneToDamageToxic",
+                "IncreaseDamageDealt"
+            ],
+            "body": "The Breath of Decay",
+            "backgroundColor": "b1c779",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 15,
+            "nemesisIdentifiers": [
+                "TheStranger"
+            ],
+            "gameplay": [
+                "{HydraDecayTiamatCharacter} is immune to toxic damage.",
+                "Increase damage dealt to hero targets by 1."
+            ],
+            "flippedShowHitpoints": false,
+            "flippedBody": "Decay, Decapitated",
+            "flippedKeywords": [
+                "villain",
+                "head"
+            ],
+            "difficulty": 1
+        },
+        {
+            "identifier": "HydraWindTiamatCharacter",
+            "count": 1,
+            "title": "Tiamat, The Voice of the Wind",
+            "keywords": [
+                "villain",
+                "head"
+            ],
+            "icons": [
+                "ImmuneToDamageProjectile",
+                "GainHP"
+            ],
+            "body": "The Voice of the Wind",
+            "backgroundColor": "d6cde5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 15,
+            "nemesisIdentifiers": [
+                "LadyOfTheWood"
+            ],
+            "gameplay": [
+                "{HydraWindTiamatCharacter} is immune to projectile damage.",
+                "At the end of the villain turn, each head regains 2 HP."
+            ],
+            "flippedShowHitpoints": false,
+            "flippedBody": "Wind, Decapitated",
+            "flippedKeywords": [
+                "villain",
+                "head"
+            ]
+        },
+        {
+            "identifier": "HydraThunderousGaleTiamatInstructions",
+            "count": 1,
+            "title": "Tiamat: Thunderous Gale Instructions",
+            "body": "The Eye of the Storm",
+            "backgroundColor": "FFFFFF",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "setup": [
+                "At the start of the game, put {Tiamat}'s villain character card into play, “The Eye of the Storm” side up (after putting all other villain character cards into play). Put “{HydraWindTiamatCharacter}”, face down beneath this card."
+            ],
+            "gameplay": [
+                "At the start of the villain turn, if {StormTiamatCharacter} is decapitated, flip this card and put {HydraWindTiamatCharacter} into play with 15 HP.",
+                "At the start of the villain turn, flip 1 decapitated head to its active side and restore it to {H * 2} HP.",
+                "At the end of the villain turn, {StormTiamatCharacter} deals each hero target 1 lightning damage."
+            ],
+            "advanced": "The first time {StormTiamatCharacter} deals damage each turn, increase that damage by 2.",
+            "icons": [
+                "StartAndEndOfTurnAction",
+                "DealDamageLightning"
+            ],
+            "advancedIcons": [
+                "IncreaseDamageDealt"
+            ],
+            "flippedBody": "The Thunderous Gale",
+            "flippedGameplay": [
+                "At the start of the villain turn, flip 1 decapitated head to its active side and restore it to {H * 2} HP.",
+                "Whenever Element of Lightning enters play and {StormTiamatCharacter} is decapitated, if {HydraWindTiamatCharacter} is active she deals the X hero targets with the Highest HP {H - 1} projectile damage each, where X = 1 plus the number of ongoing cards in the villain trash.",
+                "At the end of the villain turn, if {StormTiamatCharacter} is active, she deals the hero target with the highest HP 1 lightning damage."
+            ],
+            "flippedAdvanced": "Decapitated heads are restored to {H * 3} HP when they become active.",
+            "flippedIcons": [
+                "StartAndEndOfTurnAction",
+                "DealDamageProjectile",
+                "DealDamageLightning"
+            ],
+            "isReal": false,
+            "difficulty": 1
+        },
+        {
+            "identifier": "HydraNoxiousFireTiamatInstructions",
+            "count": 1,
+            "title": "Tiamat: Noxious Fire Instructions",
+            "body": "The Mouth of the Inferno",
+            "backgroundColor": "FFFFFF",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "setup": [
+                "At the start of the game, put {Tiamat}'s villain character card into play, “Mouth of the Inferno” side up. Put “{HydraDecayTiamatCharacter}”, face down beneath this card."
+            ],
+            "gameplay": [
+                "The heroes may not win the game.",
+                "At the start of the villain turn, if {InfernoTiamatCharacter} is decapitated, flip this card and put {HydraDecayTiamatCharacter} into play with 15 HP.",
+                "At the end of the villain turn, {InfernoTiamatCharacter} deals the hero target with the highest HP 1 fire damage."
+            ],
+            "advanced": "The first time {InfernoTiamatCharacter} deals damage each turn, increase that damage by 2.",
+            "icons": [
+                "CannotWinTheGame",
+                "StartAndEndOfTurnAction",
+                "DealDamageFire"
+            ],
+            "advancedIcons": [
+                "IncreaseDamageDealt"
+            ],
+            "flippedBody": "The Noxious Fire",
+            "flippedGameplay": [
+                "The heroes win the game when 6 heads are decapitated.",
+                "Whenever Element of Fire enters play and {InfernoTiamatCharacter} is decapitated, if {HydraDecayTiamatCharacter} is active she deals each hero target X toxic damage, where X = 2 plus the number of Acid Breaths in the villain trash.",
+                "At the end of the villain turn, if {InfernoTiamatCharacter} is active, she deals the hero target with the second highest HP 1 fire damage."
+            ],
+            "flippedAdvanced": "Decapitated heads are restored to {H * 3} HP when they become active.",
+            "flippedIcons": [
+                "StartAndEndOfTurnAction",
+                "DealDamageToxic",
+                "DealDamageFire"
+            ],
+            "isReal": false,
+            "difficulty": 1
+        },
+        {
+            "identifier": "HydraFrigidEarthTiamatInstructions",
+            "count": 1,
+            "title": "Tiamat: Frigid Earth Instructions",
+            "body": "The Jaws of Winter",
+            "backgroundColor": "FFFFFF",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "setup": [
+                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Jaws of Winter” side up. Put “{HydraEarthTiamatCharacter}”, face down beneath this card."
+            ],
+            "gameplay": [
+                "Face down heads are indestructible and have no game text.",
+                "If a head would be destroyed, flip it instead.",
+                "At the start of the villain turn, if {WinterTiamatCharacter} is decapitated, flip this card and put {HydraEarthTiamatCharacter} into play with 15 HP.",
+                "At the end of the villain turn, 1 player must discard 1 card."
+            ],
+            "advanced": "At the end of the villain turn, 1 player must discard 1 card.",
+            "icons": [
+                "StartAndEndOfTurnAction",
+                "Discard"
+            ],
+            "flippedBody": "The Noxious Fire",
+            "flippedGameplay": [
+                "Face down heads are indestructible and have no game text.",
+                "If a head would be destroyed, flip it instead.",
+                "Whenever Element of Ice enters play and {WinterTiamatCharacter} is decapitated, if {HydraEarthTiamatCharacter} is active she deals the hero target with the highest HP X melee damage, where X = {H} plus the number of Sky Breaker cards in the villain trash.",
+                "At the end of the villain turn, if {WinterTiamatCharacter} is active, she deals the hero target with the lowest HP 1 cold damage."
+            ],
+            "flippedAdvanced": "Decapitated heads are restored to {H * 3} HP when they become active.",
+            "flippedIcons": [
+                "DealDamageMelee",
+                "EndOfTurnAction",
+                "DealDamageCold"
+            ],
+            "isReal": false,
+            "difficulty": 1
+        }
+    ],
+    "promoCards": [
+        {
+            "identifier": "WinterTiamatCharacter", 
+            "promoIdentifier": "HydraWinterTiamatCharacter",
+            "count": 1,
+            "title": "Tiamat, The Jaws of Winter",
+            "promoTitle": "Tiamat, The Jaws of Winter",
+            "keywords": [
+                "villain",
+                "head"
+            ],
+            "icons": [
+                "ImmuneToDamageCold"
+            ],
+            "body": "The Jaws of Winter",
+            "backgroundColor": "D99FC5",
+            "foilBackgroundColor": "CD96C0",
+            "character": true,
+            "hitpoints": 15,
+            "nemesisIdentifiers": [
+                "Necro"
+            ],
+            "gameplay": [
+                "{WinterTiamatCharacter} is immune to cold damage."
+            ],
+            "flippedShowHitpoints": false,
+            "flippedBody": "Winter, Decapitated",
+            "flippedKeywords": [
+                "villain",
+                "head"
+            ],
+            "difficulty": 1,
+            "openingLines": {
+                "default": "DrooooooHhhhhreaaaAAAAGHH!",
+                "TheKnightCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "BerserkerTheKnightCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "FairTheKnightCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "PastTheKnightCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "WastelandRoninTheKnightCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "NecroCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "WardenOfChaosNecroCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "PastNecroCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "LastOfTheForgottenOrderNecroCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "EchelonCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "FirstResponseEchelonCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "FutureEchelonCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "MalichaeCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "ShardmasterMalichaeCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "MinistryOfStrategicScienceMalichaeCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "TheStrangerCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "RunecarvedTheStrangerCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "PastTheStrangerCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "WastelandRoninTheStrangerCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "CornTheStrangerCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "LadyOfTheWoodCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "SeasonsOfChangeLadyOfTheWoodCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "MinistryOfStrategicScienceLadyOfTheWoodCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
+                "FutureLadyOfTheWoodCharacter": "DrooooooHhhhhreaaaAAAAGHH!"
+            }
+        }
+    ]
+}

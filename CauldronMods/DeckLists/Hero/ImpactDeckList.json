@@ -1,0 +1,477 @@
+{
+    "name": "Impact",
+    "kind": "Hero",
+    "expansionIdentifier":"CauldronStormfall",
+    "initialCardIdentifiers": [
+        "ImpactCharacter"
+    ],
+    "cards": [
+        {
+            "identifier": "ImpactCharacter",
+            "count": 1,
+            "title": "Impact",
+            "body": "Force Blast",
+            "backgroundColor": "dfb653",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "dfb653",
+            "character": true,
+            "powers": [
+                "{Impact} deals 1 target 1 infernal damage. You may destroy 1 hero ongoing card to increase this damage by 2."
+            ],
+            "icons": [
+                "HasPower",
+                "DealDamageInfernal",
+                "DestroyOngoing",
+                "IncreaseDamageDealt"
+            ],
+            "hitpoints": 29,
+            "nemesisIdentifiers": [
+                "Impact"
+            ],
+            "incapacitatedAbilities": [
+                "One hero may use a power now.",
+                "Select a hero target. That target deals 1 other target 1 projectile damage.",
+                "Damage dealt to environment cards is irreducible until the start of your turn."
+            ],
+            "flippedIcons": [
+                "UsePowerNow",
+                "DealDamageProjectile",
+                "MakeDamageIrreducible"
+            ],
+            "openingLines": {
+                "default": "What a lovely mess this is turning into.",
+                "PhaseVillainCharacter": "We are going to have a talk about the mess you caused in Akelabad."
+            },
+            "complexity": 1
+        },
+        {
+            "identifier": "AcceleratedCollision",
+            "count": 4,
+            "title": "Accelerated Collision",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DealDamageInfernal",
+                "PlayCardNow"
+            ],
+            "body": [
+                "{Impact} deals 1 target 2 infernal damage.",
+                "You may play a card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Unity",
+                    "text": "Did he just fall three{BR}stories straight sideways?"
+                }
+            ],
+            "flavorReference": "Unity, Unmasked #1"
+        },
+        {
+            "identifier": "CrushingRift",
+            "count": 2,
+            "title": "Crushing Rift",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [],
+            "body": [
+                "Select a non-character target in play with current HP less than its maximum HP.",
+                "Reduce that target to half of its current HP, rounded up."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Quicksilver",
+                    "text": "Someone's piloting it.{BR}Make me a way in!"
+                }
+            ],
+            "flavorReference": "Quicksilver, Stormfall One-shot"
+        },
+        {
+            "identifier": "DecayingOrbit",
+            "count": 3,
+            "title": "Decaying Orbit",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "DealDamageInfernal",
+                "StartOfTurnAction",
+                "DealDamageProjectile",
+                "DestroyOngoing"
+            ],
+            "body": [
+                "When this card enters play, {Impact} deals 1 target 2 infernal damage.",
+                "At the start of your turn, {Impact} may deal 1 target 2 projectile damage. If he does, destroy 1 of your ongoing cards."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Impact",
+                    "text": "Your world's about to{BR}come crashing down around you!"
+                }
+            ],
+            "flavorReference": "Impact, Full Moon Masquerade #48"
+        },
+        {
+            "identifier": "EscapeVelocity",
+            "count": 2,
+            "title": "Escape Velocity",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DestroyOngoing",
+                "Manipulate"
+            ],
+            "body": [
+                "You may destroy 1 ongoing card.",
+                "Select up to 3 non-character targets in play with 2 or fewer HP. Place those targets on the bottom of their associated decks in any order."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Phase",
+                    "text": "You're taking this{BR}all rather personally."
+                }
+            ],
+            "flavorReference": "Phase, Pieces of the Sky{BR}Limited Series"
+        },
+        {
+            "identifier": "GravitationalLensing",
+            "count": 3,
+            "title": "Gravitational Lensing",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "Manipulate",
+                "IncreaseDamageDealt"
+            ],
+            "body": [
+                "When this card enters play, reveal the top 2 cards of your deck. Replace 1 and discard the other.",
+                "Increase damage dealt by {Impact} by 1."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Quicksilver",
+                    "text": "Seems a bit heavy-handed."
+                }
+            ],
+            "flavorReference": "Quicksilver, Abstract Tales Annual #3"
+        },
+        {
+            "identifier": "GraviticOrb",
+            "count": 3,
+            "title": "Gravitic Orb",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "DealDamageInfernal",
+                "DestroySelf",
+                "CancelledDamageRed"
+            ],
+            "body": [
+                "Play this card next to a target. {Impact} deals that target 2 infernal damage.",
+                "When the target next to this card would deal damage, destroy this card and prevent that damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Impact",
+                    "text": "We are going to have a talk{BR}about the mess you've caused."
+                },
+                {
+                    "identifier": "Phase",
+                    "text": "Like that ever fixed anything."
+                }
+            ],
+            "flavorReference": "Pieces of the Sky Limited Series"
+        },
+        {
+            "identifier": "HurledObstruction",
+            "count": 3,
+            "title": "Hurled Obstruction",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "DealDamageProjectile",
+                "ReduceDamageDealt",
+                "StartOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, {Impact} deals up to 3 targets 1 projectile damage each.",
+                "Reduce damage dealt by villain targets by 1.",
+                "At the start of your turn, destroy this card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "StarlightOfTerra",
+                    "text": "That won't stop it for long!"
+                }
+            ],
+            "flavorReference": "Starlight Of Terra, Starcrossed #115"
+        },
+        {
+            "identifier": "InescapablePull",
+            "count": 3,
+            "title": "Inescapable Pull",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "DrawCardNow",
+                "HasPower",
+                "DealDamageInfernal"
+            ],
+            "body": "When this card enters play, draw a card.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Impact",
+                    "text": "We can't outrun our mistakes."
+                }
+            ],
+            "flavorReference": "Impact, Impact #19",
+            "powers": [
+                "Select a target that {Impact} damaged this turn. {Impact} deals that target 4 infernal damage."
+            ]
+        },
+        {
+            "identifier": "LocalMicrogravity",
+            "count": 3,
+            "title": "Local Microgravity",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "GainHP",
+                "CancelledDamageGreen",
+                "HasPower",
+                "DealDamageSonic"
+            ],
+            "body": [
+                "When this card enters play, {Impact} regains 1HP.",
+                "The first time {Impact} would be dealt damage each environment turn, prevent that damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Impact",
+                    "text": "I needed to get a new perspective."
+                }
+            ],
+            "flavorReference": "Impact, Rook City #380",
+            "powers": [
+                "{Impact} deals 1 target 3 sonic damage. Destroy this card."
+            ]
+        },
+        {
+            "identifier": "MassDriver",
+            "count": 3,
+            "title": "Mass Driver",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "DestroyEnvironment",
+                "DealDamageProjectile"
+            ],
+            "body": [
+                "Destroy 1 environment card.",
+                "{Impact} deals 1 target X projectile damage, where X is the number of your Ongoing cards in play."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Impact",
+                    "text": "You can put your hands in the air or I{BR}can put them in the ground."
+                }
+            ],
+            "flavorReference": "Impact, Abstract Tales #32"
+        },
+        {
+            "identifier": "Meditate",
+            "count": 2,
+            "title": "Meditate",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "DrawCardNow",
+                "DestroySelf",
+                "DealDamageInfernal"
+            ],
+            "body": [
+                "When this card enters play, draw a card.",
+                "When {Impact} damages a target, you may destroy this card. If you do, {Impact} deals that target X infernal damage, where X is the amount of damage he just dealt."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheScholar",
+                    "text": "It's difficult,{BR}moving onward. Upward."
+                },
+                {
+                    "identifier": "Impact",
+                    "text": "But it's getting easier."
+                }
+            ],
+            "flavorReference": "The Inevitable Impact #2"
+        },
+        {
+            "identifier": "RepulsionField",
+            "count": 3,
+            "title": "Repulsion Field",
+            "keywords": [
+                "ongoing",
+                "limited"
+            ],
+            "icons": [
+                "DealDamageEnergy",
+                "ReduceDamageTaken"
+            ],
+            "body": [
+                "When this card enters play, {Impact} deals each non-hero target 1 energy damage.",
+                "Reduce damage dealt to {Impact} by 1."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Impact",
+                    "text": "You're messing with{BR}my zen thing, guys."
+                }
+            ],
+            "flavorReference": "Impact, Shatterpoint #84"
+        },
+        {
+            "identifier": "SlingshotTrajectory",
+            "count": 3,
+            "title": "Slingshot Trajectory",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "DealDamageInfernal",
+                "HasPower",
+                "DestroyOngoing",
+                "DealDamageProjectile"
+            ],
+            "body": "When this card enters play, {Impact} deals 1 target 2 infernal damage.",
+            "flavorQuotes": [
+                {
+                    "identifier": "Impact",
+                    "text": "There is no need for violence{BR}here. But old habits die hard."
+                }
+            ],
+            "flavorReference": "Impact, Gravity's Prophet #1",
+            "powers": [
+                "Destroy any number of your ongoing cards. {Impact} deals X targets 2 projectile damage each, where X is 1 plus the number of ongoing cards destroyed this way."
+            ]
+        },
+        {
+            "identifier": "SpatialFinesse",
+            "count": 3,
+            "title": "Spatial Finesse",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "DrawCardNow",
+                "Destroy",
+                "Manipulate"
+            ],
+            "body": [
+                "When this card enters play, draw 2 cards and destroy all other copies of Spatial Finesse.",
+                "Whenever one of your Ongoing cards other than Spatial Finesse is destroyed, you may destroy this card to put it back into play."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Echelon",
+                    "text": "Technique usually{BR}beats brute force."
+                }
+            ],
+            "flavorReference": "Echelon, Impact #2"
+        }
+    ],
+    "promoCards": [
+        {
+            "identifier": "ImpactCharacter",
+            "promoIdentifier": "RenegadeImpactCharacter",
+            "count": 1,
+            "title": "Impact",
+            "promoTitle": "Renegade Impact",
+            "shortPromoTitle": "Renegade Impact",
+            "body": "Balance",
+            "backgroundColor": "5F9FD6",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "5F9FD6",
+            "character": true,
+            "powers": [
+                "Destroy 1 of your ongoing cards. If you do, play a card and draw a card."
+            ],
+            "icons": [
+                "HasPower",
+                "DestroyOngoing",
+                "PlayCardNow",
+                "DrawCardNow"
+            ],
+            "hitpoints": 27,
+            "nemesisIdentifiers": [
+                "Impact"
+            ],
+            "incapacitatedAbilities": [
+                "Select a target. Damage dealt by that target is irreducible during its next turn.",
+                "One hero may use a power now.",
+                "The environment deals 1 target 2 projectile damage."
+            ],
+            "flippedIcons": [
+                "MakeDamageIrreducible",
+                "UsePowerNow",
+                "DealDamageProjectile"
+            ],
+            "openingLines": {
+                "default": "You caught me on a bad day.",
+                "PhaseVillainCharacter": "Walls won't stop me from bringing you to justice."
+            },
+            "complexity": 1
+        },
+        {
+            "identifier": "ImpactCharacter",
+            "promoIdentifier": "WastelandRoninImpactCharacter",
+            "count": 1,
+            "title": "Impact",
+            "promoTitle": "Wasteland Ronin Impact",
+            "shortPromoTitle": "Wasteland Impact",
+            "body": "Impulse",
+            "backgroundColor": "D4E6B5",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "D4E6B5",
+            "character": true,
+            "powers": [
+                "{Impact} regains 1 HP, or the next time one of your ongoing cards is destroyed, play it."
+            ],
+            "icons": [
+                "HasPower",
+                "GainHP",
+                "PlayCardNow"
+            ],
+            "hitpoints": 26,
+            "nemesisIdentifiers": [
+                "Impact"
+            ],
+            "incapacitatedAbilities": [
+                "One hero may use a power now.",
+                "Environment cards cannot be played during the next environment turn.",
+                "Select a target. The next damage it deals is irreducible."
+            ],
+            "flippedIcons": [
+                "UsePowerNow",
+                "CannotPlayCards",
+                "MakeDamageIrreducible"
+            ],
+            "openingLines": {
+                "default": "I don't think you understand the gravity of this situation.",
+                "PhaseVillainCharacter": "Keep wasting your time with taunts - it'll make it easier to finally catch you."
+            },
+            "complexity": 1
+        }
+    ]
+}
