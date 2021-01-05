@@ -14,6 +14,7 @@ namespace Cauldron.Mythos
 
         public override IEnumerator StartGame()
         {
+            var a = TurnTaker;
             yield break;
         }
     }
