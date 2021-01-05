@@ -25,6 +25,25 @@ namespace Cauldron.VaultFive
             return FindTurnTakersWhere((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && DoesPlayerHaveArtifactInHand(tt.ToHero()));
         }
 
+        public IEnumerable<TurnTaker> FindHeroWithMostArtifacts(CardSource cardSource)
+        {
+            IEnumerable<Card> displacedArtifacts = FindCardsWhere(c => IsArtifact(c) && c.Owner.Identifier != c.ParentDeck.Identifier && GameController.IsCardVisibleToCardSource(c, cardSource));
+            Dictionary<TurnTaker, int> heroArtifactCounts = new Dictionary<TurnTaker, int>();
+            foreach(Card artifact in displacedArtifacts)
+            {
+                if(heroArtifactCounts.ContainsKey(artifact.Owner))
+                {
+                    heroArtifactCounts[artifact.Owner]++;
+                } else
+                {
+                    heroArtifactCounts.Add(artifact.Owner, 1);
+                }
+            }
+
+            int maxCount = heroArtifactCounts.Values.Max();
+            return heroArtifactCounts.Where(kvp => kvp.Value == maxCount).Select(kvp => kvp.Key);
+        }
+
         protected bool DoesPlayerHaveArtifactInHand(HeroTurnTaker htt)
         {
             return htt.Hand.Cards.Any((Card c) => IsArtifact(c));
