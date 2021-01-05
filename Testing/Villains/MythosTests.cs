@@ -26,7 +26,6 @@ namespace CauldronTests
         public void TestMythosLoad()
         {
             SetupGameController("Cauldron.Mythos", "Haka", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
 
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
 
@@ -62,6 +61,16 @@ namespace CauldronTests
             AssertMaximumHitPoints(GetCard("PrecariousRubble"), 3);
             AssertMaximumHitPoints(GetCard("ReinforcedWall"), 10);
             AssertMaximumHitPoints(GetCard("VaultDoor"), 6);
+        }
+
+        [Test()]
+        public void Test()
+        {
+            SetupGameController("Cauldron.Mythos", "Haka", "Bunker", "TheVisionary/DarkVisionaryCharacter", "Megalopolis");
+            StartGame();
+
+            UsePower(visionary);
+            var a = visionary;
         }
     }
 }

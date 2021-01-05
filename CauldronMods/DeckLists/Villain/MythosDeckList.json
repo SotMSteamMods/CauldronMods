@@ -79,6 +79,7 @@
             "name": "Clue Deck",
             "expansionIdentifier": "CauldronAdrift",
             "kind":"Villain",
+            "isReal": "false",
             "cards":[
                 {
                     "identifier": "DangerousInvestigation",
@@ -239,34 +240,9 @@
             "identifier": "MythosDangerDeck",
             "name": "Danger Deck",
             "expansionIdentifier": "CauldronAdrift",
-            "kind":"Villain",
+            "kind": "Villain",
+            "isReal": "false",
             "cards":[
-                {
-                    "identifier": "ClockworkRevenant",
-                    "count": 2,
-                    "title": "Clockwork Revenant",
-                    "keywords": [
-                        "minion",
-                        "{MythosMadness}"
-                    ],
-                    "icons": [
-                        "IncreaseDamageDealt",
-                        "EndOfTurnAction",
-                        "DealDamageMelee"
-                    ],
-                    "body": [
-                        "{MythosDanger} Increase damage dealt by this card by X, where X is 10 minus its current HP.",
-                        "At the end of the villain turn, this card deals the hero target with the highest HP 2 melee damage."
-                    ],
-                    "flavorQuotes": [
-                        {
-                            "identifier": "Titan",
-                            "text": "Hey, grabby! You don't know when to stop, do you?"
-                        }
-                    ],
-                    "flavorReference": "Titan, The Archive #5",
-                    "hitpoints": 10
-                },
                 {
                     "identifier": "FaithfulProselyte",
                     "count": 3,
@@ -350,8 +326,64 @@
             "identifier": "MythosMadnessDeck",
             "name": "Madness Deck",
             "expansionIdentifier": "CauldronAdrift",
-            "kind":"Villain",
+            "kind": "Villain",
+            "isReal": "false",
             "cards":[
+                {
+                    "identifier": "AclastyphWhoPeers",
+                    "count": 1,
+                    "title": "Aclastyph, Who Peers",
+                    "keywords": [
+                        "ancient spawn",
+                        "{MythosDanger}"
+                    ],
+                    "icons": [
+                        "DealDamageMelee",
+                        "Discard",
+                        "GainHP",
+                        "DealDamagePsychic"
+                    ],
+                    "body": [
+                        "At the end of the villain turn:",
+                        "{MythosDanger} This card deals the hero target with the highest HP 2 melee damage. Discard the top card of the villain deck.",
+                        "{MythosClue} This card regains 2HP. Discard the top card of the villain deck.",
+                        "{MythosMadness} This card deals each other target 1 psychic damage."
+                    ],
+                    "flavorQuotes": [
+                        {
+                            "identifier": "DirectorWells",
+                            "text": "Try not to make eye contact."
+                        }
+                    ],
+                    "flavorReference": "Director Wells, Paranormal Squad #10",
+                    "hitpoints": 6
+                },
+                {
+                    "identifier": "ClockworkRevenant",
+                    "count": 2,
+                    "title": "Clockwork Revenant",
+                    "keywords": [
+                        "minion",
+                        "{MythosMadness}"
+                    ],
+                    "icons": [
+                        "IncreaseDamageDealt",
+                        "EndOfTurnAction",
+                        "DealDamageMelee"
+                    ],
+                    "body": [
+                        "{MythosDanger} Increase damage dealt by this card by X, where X is 10 minus its current HP.",
+                        "At the end of the villain turn, this card deals the hero target with the highest HP 2 melee damage."
+                    ],
+                    "flavorQuotes": [
+                        {
+                            "identifier": "Titan",
+                            "text": "Hey, grabby! You don't know when to stop, do you?"
+                        }
+                    ],
+                    "flavorReference": "Titan, The Archive #5",
+                    "hitpoints": 10
+                },
                 {
                     "identifier": "DoktorVonFaust",
                     "count": 1,
