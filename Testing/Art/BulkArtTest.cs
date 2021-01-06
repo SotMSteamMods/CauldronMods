@@ -21,7 +21,7 @@ namespace CauldronTests.Art
 
         public BulkArtTest() : base(null)
         {
-            ArtPath = Path.Combine(ProjectPath.Path, @"Art\");
+            ArtPath = ArtTestBase.GetArtPath();
         }
 
         private class Item

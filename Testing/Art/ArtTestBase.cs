@@ -124,7 +124,7 @@ namespace CauldronTests.Art
 
         protected ArtTestBase(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> startEndIdentifiers)
         {
-            ArtPath = Path.Combine(ProjectPath.Path, @"Art\");
+            ArtPath = GetArtPath();
 
             _name = name;
             _kind = kind;
@@ -134,6 +134,17 @@ namespace CauldronTests.Art
         }
 
         #endregion Data
+
+        public static string GetArtPath()
+        {
+            var di = new DirectoryInfo(ProjectPath.Path);
+            DirectoryAssert.Exists(di);
+
+            string path = Path.Combine(di.Parent.FullName, @"Art\");
+            DirectoryAssert.Exists(path);
+
+            return path;
+        }
 
 
         public static HashSet<string> ReadAtlasJson(string directoryPath, string atlasName)
