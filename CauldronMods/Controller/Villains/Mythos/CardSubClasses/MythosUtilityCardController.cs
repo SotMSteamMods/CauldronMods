@@ -15,9 +15,9 @@ namespace Cauldron.Mythos
 
         }
 
-        protected string MythosClueDeckIdentifier = "MythosClue";
-        protected string MythosDangerDeckIdentifier = "MythosDanger";
-        protected string MythosMadnessDeckIdentifier = "MythosMadness";
+        protected const string MythosClueDeckIdentifier = "MythosClue";
+        protected const string MythosDangerDeckIdentifier = "MythosDanger";
+        protected const string MythosMadnessDeckIdentifier = "MythosMadness";
 
         public bool IsTopCardMatching(string type)
         {

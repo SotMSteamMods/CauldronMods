@@ -26,7 +26,7 @@ namespace Cauldron.Mythos
         public override void AddTriggers()
         {
             //{MythosClue} At the end of the villain turn, the players may play the top card of the villain deck to add a token to this card.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.ClueResponse, TriggerType.PlayCard, (PhaseChangeAction action) => base.IsTopCardMatching(base.MythosClueDeckIdentifier));
+            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.ClueResponse, TriggerType.PlayCard, (PhaseChangeAction action) => base.IsTopCardMatching(MythosClueDeckIdentifier));
             //At the end of the villain turn, {Mythos} deals the X hero targets with the highest HP 3 infernal damage each, where X is {H} minus the number of villain cards the players chose to play this turn.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
         }
