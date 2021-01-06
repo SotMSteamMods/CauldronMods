@@ -12,9 +12,12 @@ namespace Cauldron.ScreaMachine
     {
         public string AbilityKey { get; }
 
-        protected ScreaMachineBandCharacterCardController(Card card, TurnTakerController turnTakerController, string abilityKey) : base(card, turnTakerController)
+        public string CardKeyword { get; }
+
+        protected ScreaMachineBandCharacterCardController(Card card, TurnTakerController turnTakerController, string abilityKey, string cardKeyword) : base(card, turnTakerController)
         {
             AbilityKey = abilityKey;
+            CardKeyword = cardKeyword;
         }
 
         protected abstract string AbilityDescription { get; }
@@ -41,12 +44,19 @@ namespace Cauldron.ScreaMachine
         {
             if (!Card.IsFlipped)
             {
-                AddSideTrigger(AddTrigger<CardEntersPlayAction>(ca => true, ca => base.FlipThisCharacterCardResponse(ca), TriggerType.FlipCard, TriggerTiming.After));
+                AddSideTrigger(AddTrigger<CardEntersPlayAction>(FlipCriteria, ca => base.FlipThisCharacterCardResponse(ca), TriggerType.FlipCard, TriggerTiming.After));
             }
             else
             {
                 AddFlippedSideTriggers();
             }
+        }
+
+        private bool FlipCriteria(CardEntersPlayAction ga)
+        {
+            int count = base.FindCardsWhere(new LinqCardCriteria(c => c.IsInPlayAndNotUnderCard && GameController.DoesCardContainKeyword(c, CardKeyword)), GetCardSource()).Count();
+
+            return count >= 3;
         }
 
         protected abstract void AddFlippedSideTriggers();

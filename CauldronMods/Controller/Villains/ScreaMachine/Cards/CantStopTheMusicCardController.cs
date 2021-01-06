@@ -10,7 +10,7 @@ namespace Cauldron.ScreaMachine
 {
     public class CantStopTheMusicCardController : ScreaMachineBandCardController
     {
-        public CantStopTheMusicCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "BloodlaceCharacter", "Bass")
+        public CantStopTheMusicCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "BloodlaceCharacter", "{Bass}")
         {
         }
 

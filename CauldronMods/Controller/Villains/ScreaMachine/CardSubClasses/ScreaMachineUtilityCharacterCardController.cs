@@ -24,7 +24,6 @@ namespace Cauldron.ScreaMachine
 
         protected bool IsBandCard(Card c, bool evenIfUnderCard = false, bool evenIfFacedown = false)
         {
-
             return GameController.GetAllKeywords(c, evenIfUnderCard, evenIfFacedown).Any(str => _bandKeywords.Contains(str));
         }
 

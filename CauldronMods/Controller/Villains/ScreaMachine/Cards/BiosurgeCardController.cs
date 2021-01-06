@@ -10,7 +10,7 @@ namespace Cauldron.ScreaMachine
 {
     public class BiosurgeCardController : ScreaMachineBandCardController
     {
-        public BiosurgeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "BloodlaceCharacter", "Bass")
+        public BiosurgeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "BloodlaceCharacter", "{Bass}")
         {
         }
 
