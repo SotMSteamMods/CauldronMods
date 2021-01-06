@@ -15,13 +15,20 @@ namespace Cauldron.Mythos
 
         }
 
-        protected string MythosClueDeckIdentifier = "MythosClueDeck";
-        protected string MythosDangerDeckIdentifier = "MythosDangerDeck";
-        protected string MythosMadnessDeckIdentifier = "MythosMadnessDeck";
+        protected string MythosClueDeckIdentifier = "MythosClue";
+        protected string MythosDangerDeckIdentifier = "MythosDanger";
+        protected string MythosMadnessDeckIdentifier = "MythosMadness";
 
         public bool IsTopCardMatching(string type)
         {
             return base.TurnTaker.Deck.TopCard.ParentDeck.Identifier == type;
+        }
+
+        public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
+        {
+            storedResults.Add(new MoveCardDestination(base.TurnTaker.PlayArea));
+            yield return null;
+            yield break;
         }
 
         public override MoveCardDestination GetTrashDestination()

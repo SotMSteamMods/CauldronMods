@@ -26,7 +26,7 @@
                 "Search the villain deck for Dangerous Investigations and put it into play. Shuffle the villain deck."
             ],
             "gameplay": [
-                "{Mythos} and Dangerous Investigation are indestructible. Activate any {MythosDanger}, {MythosGreen}, {MythosClue} effects that match the icon on top of the villain deck.",
+                "{Mythos} and Dangerous Investigation are indestructible. Activate any {MythosDanger}, {MythosMadness}, {MythosClue} effects that match the icon on top of the villain deck.",
                 "{MythosDanger} {Mythos} is immune to damage.",
                 "At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. Then if there are {H} tokens on Dangerous Investigation, flip {Mythos}' villain character cards."
             ],
@@ -42,7 +42,7 @@
             "flippedBody": "Leader of the Forgotten ORder",
             "flippedGameplay": [
                 "When {Mythos} flips to this side, remove Dangerous Investigation from the game.",
-                "Activate any {MythosDanger}, {MythosGreen}, {MythosClue} effects that match the icon on top of the villain deck.",
+                "Activate any {MythosDanger}, {MythosMadness}, {MythosClue} effects that match the icon on top of the villain deck.",
                 "{MythosDanger} Reduce damage dealt to villain targets by 1.",
                 "At the end of the villain turn, the players may play the top card of the villain deck. Then:",
                 "{MythosClue} Play the top card of the villain deck.",
@@ -75,10 +75,10 @@
     ],
     "subdecks": [
         {
-            "identifier": "MythosClueDeck",
+            "identifier": "MythosClue",
             "name": "Clue Deck",
             "expansionIdentifier": "CauldronAdrift",
-            "kind":"Villain",
+            "kind": "Villain",
             "isReal": "false",
             "cards":[
                 {
@@ -105,7 +105,16 @@
                             "text": "The Ministry agents are{BR}right behind me, as planned."
                         }
                     ],
-                    "flavorReference": "Zevach, The Consultant #3"
+                    "flavorReference": "Zevach, The Consultant #3",
+		            "tokenPools":[
+		 	            {
+		 		            "identifier": "DangerousInvestigationPool",
+		 		            "name": "Dangerous Investigation Pool",
+		 		            "initialValue": 0,
+		 		            "minimumValue": 0,
+		 		            "color": "50CCE5"
+		 	            }
+		            ]
                 },
                 {
                     "identifier": "PallidAcademic",
@@ -237,7 +246,7 @@
             ]
         },
         {
-            "identifier": "MythosDangerDeck",
+            "identifier": "MythosDanger",
             "name": "Danger Deck",
             "expansionIdentifier": "CauldronAdrift",
             "kind": "Villain",
@@ -323,7 +332,7 @@
             ]
         },
         {
-            "identifier": "MythosMadnessDeck",
+            "identifier": "MythosMadness",
             "name": "Madness Deck",
             "expansionIdentifier": "CauldronAdrift",
             "kind": "Villain",
