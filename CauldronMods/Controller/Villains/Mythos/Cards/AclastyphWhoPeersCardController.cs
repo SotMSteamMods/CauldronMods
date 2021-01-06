@@ -27,7 +27,7 @@ namespace Cauldron.Mythos
             if (base.IsTopCardMatching(MythosDangerDeckIdentifier))
             {
                 //{MythosDanger} This card deals the hero target with the highest HP 2 melee damage. 
-                coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => c.IsHero, (Card c) => base.Game.H, DamageType.Infernal);
+                coroutine = base.DealDamageToHighestHP(this.Card, 1, (Card c) => c.IsHero, (Card c) => 2, DamageType.Melee);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -36,12 +36,34 @@ namespace Cauldron.Mythos
                 {
                     GameController.ExhaustCoroutine(coroutine);
                 }
+
                 //Discard the top card of the villain deck.
+                coroutine = base.DiscardCardsFromTopOfDeck(base.TurnTakerController, 1);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
             }
+
             if (base.IsTopCardMatching(MythosClueDeckIdentifier))
             {
-                //{MythosClue} This card regains 2HP. Discard the top card of the villain deck.
-                coroutine = base.DealDamageToLowestHP(base.CharacterCard, 1, (Card c) => c.IsHero, (Card c) => base.Game.H, DamageType.Psychic);
+                //{MythosClue} This card regains 2HP.
+                coroutine = base.GameController.GainHP(this.Card, 2, cardSource: base.GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
+                //Discard the top card of the villain deck.
+                coroutine = base.DiscardCardsFromTopOfDeck(base.TurnTakerController, 1);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -51,10 +73,11 @@ namespace Cauldron.Mythos
                     GameController.ExhaustCoroutine(coroutine);
                 }
             }
+
             if (base.IsTopCardMatching(MythosMadnessDeckIdentifier))
             {
                 //{MythosMadness} This card deals each other target 1 psychic damage.
-                coroutine = base.DealDamage(base.CharacterCard, (Card c) => !base.IsVillain(c), 1, DamageType.Infernal);
+                coroutine = base.DealDamage(this.Card, (Card c) => c != this.Card, 1, DamageType.Psychic);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
