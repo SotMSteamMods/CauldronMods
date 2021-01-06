@@ -93,7 +93,7 @@ namespace Cauldron.VaultFive
                 if(DidSelectTurnTaker(storedResults))
                 {
                     TurnTaker hero = GetSelectedTurnTaker(storedResults);
-                    this.Card.SetNewOwner(hero);
+                    GameController.ChangeCardOwnership(Card, hero);
                     coroutine = GameController.SendMessageAction($"{Card.Title} is now a part of { hero.ShortName}'s deck!", Priority.High, GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
