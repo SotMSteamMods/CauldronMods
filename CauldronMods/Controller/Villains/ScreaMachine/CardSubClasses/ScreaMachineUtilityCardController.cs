@@ -14,6 +14,9 @@ namespace Cauldron.ScreaMachine
         {
         }
 
+        public abstract IEnumerable<ScreaMachineBandmate.Value> AbilityIcons { get; }
+
+
         protected Card SliceCharacter => base.FindCard("SliceCharacter");
 
         protected Card ValentineCharacter => base.FindCard("ValentineCharacter");
@@ -22,7 +25,7 @@ namespace Cauldron.ScreaMachine
 
         protected Card RickyGCharacter => base.FindCard("RickyGCharacter");
 
-        protected Card TheSetList => base.FindCard("TheSetList");
+        protected Card TheSetList => base.FindCard("TheSetList", false);
 
         protected TheSetListCardController TheSetListCardController => base.FindCardController(TheSetList) as TheSetListCardController;
 

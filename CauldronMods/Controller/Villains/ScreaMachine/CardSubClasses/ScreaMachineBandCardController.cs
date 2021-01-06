@@ -10,18 +10,22 @@ namespace Cauldron.ScreaMachine
 {
     public abstract class ScreaMachineBandCardController : ScreaMachineUtilityCardController
     {
-        public string BandmateIdentifier { get; }
-        public string AbilityKey { get; }
+        public ScreaMachineBandmate.Value Member { get; }
+        private readonly string _memberIdentifier;
+        private readonly string _memberAbilityKey;
 
-        protected ScreaMachineBandCardController(Card card, TurnTakerController turnTakerController, string bandmate, string abilityKey) : base(card, turnTakerController)
+        protected ScreaMachineBandCardController(Card card, TurnTakerController turnTakerController, ScreaMachineBandmate.Value member) : base(card, turnTakerController)
         {
-            BandmateIdentifier = bandmate;
-            AbilityKey = abilityKey;
+            Member = member;
+            _memberIdentifier = member.GetIdentifier();
+            _memberAbilityKey = member.GetAbilityKey();
         }
+
+        public override IEnumerable<ScreaMachineBandmate.Value> AbilityIcons => Enumerable.Empty<ScreaMachineBandmate.Value>();
 
         public Card GetBandmate()
         {
-            return FindCard(BandmateIdentifier);
+            return FindCard(_memberIdentifier);
         }
 
         public bool IsBandmateInPlay
@@ -39,7 +43,7 @@ namespace Cauldron.ScreaMachine
 
         public override IEnumerator ActivateAbility(string abilityKey)
         {
-            if (abilityKey == AbilityKey)
+            if (abilityKey == _memberAbilityKey)
                 return ActivateBandAbility();
 
             return base.ActivateAbility(abilityKey);
@@ -57,7 +61,7 @@ namespace Cauldron.ScreaMachine
 
         public override bool AskIfActionCanBePerformed(GameAction gameAction)
         {
-            if (gameAction is ActivateAbilityAction aaa && aaa.ActivatableAbility.AbilityKey == AbilityKey && aaa.ActivatableAbility.CardController == this && !IsBandmateInPlay)
+            if (gameAction is ActivateAbilityAction aaa && aaa.ActivatableAbility.AbilityKey == _memberAbilityKey && aaa.ActivatableAbility.CardController == this && !IsBandmateInPlay)
             {
                 return false;
             }

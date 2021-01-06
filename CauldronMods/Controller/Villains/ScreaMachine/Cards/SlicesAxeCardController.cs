@@ -10,7 +10,7 @@ namespace Cauldron.ScreaMachine
 {
     public class SlicesAxeCardController : ScreaMachineBandCardController
     {
-        public SlicesAxeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "SliceCharacter", "{Guitar}")
+        public SlicesAxeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, ScreaMachineBandmate.Value.Slice)
         {
         }
 

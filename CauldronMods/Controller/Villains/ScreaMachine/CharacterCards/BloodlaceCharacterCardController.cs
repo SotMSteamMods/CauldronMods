@@ -10,7 +10,7 @@ namespace Cauldron.ScreaMachine
 {
     public class BloodlaceCharacterCardController : ScreaMachineBandCharacterCardController
     {
-        public BloodlaceCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "{Bass}", "bassist")
+        public BloodlaceCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, ScreaMachineBandmate.Value.Bloodlace)
         {
         }
 

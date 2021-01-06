@@ -34,25 +34,12 @@ namespace Cauldron.ScreaMachine
             foreach (var card in rca.RevealedCards)
             {
                 var keywords = new HashSet<string>(GameController.GetAllKeywords(card), StringComparer.OrdinalIgnoreCase);
-                var sharesAKeyword = FindCardsWhere(new LinqCardCriteria(c => GameController.GetAllKeywords(c).Any(k => keywords.Contains(k))), GetCardSource()).Any();
-                var bandCC = FindCardController(card) as ScreaMachineBandCardController;
+                var sharesAKeyword = FindCardsWhere(new LinqCardCriteria(c => c.IsInPlayAndNotUnderCard && GameController.GetAllKeywords(c).Any(k => keywords.Contains(k))), GetCardSource()).Any();
+                var firstCC = FindCardController(card) as ScreaMachineBandCardController;
                 Card cardToPlay = card;
                 IEnumerator coroutine;
                 if (!sharesAKeyword)
                 {
-                    if (bandCC != null && bandCC.IsBandmateInPlay)
-                    {
-                        coroutine = GameController.SendMessageAction($"{bandCC.GetBandmate().Title} is keeping it mellow...", Priority.Medium, base.GetCardSource());
-                        if (base.UseUnityCoroutines)
-                        {
-                            yield return base.GameController.StartCoroutine(coroutine);
-                        }
-                        else
-                        {
-                            base.GameController.ExhaustCoroutine(coroutine);
-                        }
-                    }
-
                     coroutine = GameController.MoveCard(TurnTakerController, card, Card.UnderLocation, toBottom: true, playCardIfMovingToPlayArea: false, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
@@ -65,18 +52,15 @@ namespace Cauldron.ScreaMachine
                     cardToPlay = this.Card.UnderLocation.TopCard;
                 }
 
-                bandCC = FindCardController(cardToPlay) as ScreaMachineBandCardController;
-                if (bandCC != null && bandCC.IsBandmateInPlay)
+                var secondCC = FindCardController(cardToPlay) as ScreaMachineBandCardController;
+                coroutine = TheSetListFlavorMessage(firstCC, secondCC);
+                if (base.UseUnityCoroutines)
                 {
-                    coroutine = GameController.SendMessageAction($"{bandCC.GetBandmate().Title} is ramping up!", Priority.Medium, base.GetCardSource());
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
-                    }
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
                 }
 
                 coroutine = GameController.PlayCard(TurnTakerController, cardToPlay, reassignPlayIndex: true, cardSource: GetCardSource());
@@ -91,6 +75,45 @@ namespace Cauldron.ScreaMachine
             }
         }
 
+        private IEnumerator TheSetListFlavorMessage(ScreaMachineBandCardController firstCard, ScreaMachineBandCardController secondCard)
+        {
+            if (firstCard != null && secondCard != null)
+            {
+                Card card;
+                string message;
+                if (firstCard.Member == secondCard.Member)
+                {
+                    var bandMate = firstCard.GetBandmate();
+                    if (firstCard.Card == secondCard.Card)
+                    {
+                        card = firstCard.Card;
+                        message = $"{bandMate.Title} is ramping it up!";
+                    }
+                    else
+                    {
+                        card = secondCard.Card;
+                        message = $"{bandMate.Title} is taking the solo!";
+                    }
+                }
+                else
+                {
+                    card = secondCard.Card;
+                    message = $"{firstCard.GetBandmate().Title} is keeping it mellow, while {secondCard.GetBandmate().Title} has the lime-light!";
+                }
+
+                var coroutine = GameController.SendMessageAction(message, Priority.Medium, GetCardSource(), new[] { card });
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
+        }
+
         public override void AddSideTriggers()
         {
             base.AddSideTriggers();
@@ -102,6 +125,7 @@ namespace Cauldron.ScreaMachine
             else
             {
                 AddSideTrigger(AddTrigger<RevealCardsAction>(rca => rca.SearchLocation == this.Card.UnderLocation, TheSetListRevealProcess, TriggerType.PlayCard, TriggerTiming.After));
+                AddSideTrigger(AddStartOfTurnTrigger(tt => tt == TurnTaker, pca => RevealTopCardOfTheSetList(), TriggerType.RevealCard));
 
                 if (Game.IsAdvanced)
                 {

@@ -13,5 +13,7 @@ namespace Cauldron.ScreaMachine
         public PercussiveWaveCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override IEnumerable<ScreaMachineBandmate.Value> AbilityIcons => new[] { ScreaMachineBandmate.Value.RickyG, ScreaMachineBandmate.Value.Slice };
     }
 }

@@ -13,5 +13,7 @@ namespace Cauldron.ScreaMachine
         public NothingButHitsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override IEnumerable<ScreaMachineBandmate.Value> AbilityIcons => new[] { ScreaMachineBandmate.Value.Valentine, ScreaMachineBandmate.Value.RickyG };
     }
 }

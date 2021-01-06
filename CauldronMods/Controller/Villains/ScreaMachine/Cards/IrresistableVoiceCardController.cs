@@ -10,7 +10,7 @@ namespace Cauldron.ScreaMachine
 {
     public class IrresistibleVoiceCardController : ScreaMachineBandCardController
     {
-        public IrresistibleVoiceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "ValentineCharacter", "{Vocal}")
+        public IrresistibleVoiceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, ScreaMachineBandmate.Value.Valentine)
         {
         }
 

@@ -10,14 +10,14 @@ namespace Cauldron.ScreaMachine
 {
     public abstract class ScreaMachineBandCharacterCardController : ScreaMachineUtilityCharacterCardController
     {
-        public string AbilityKey { get; }
+        public ScreaMachineBandmate.Value Member { get; }
+        private readonly string _memberKeyword;
+        private readonly string _memberAbilityKey;
 
-        public string CardKeyword { get; }
-
-        protected ScreaMachineBandCharacterCardController(Card card, TurnTakerController turnTakerController, string abilityKey, string cardKeyword) : base(card, turnTakerController)
+        protected ScreaMachineBandCharacterCardController(Card card, TurnTakerController turnTakerController, ScreaMachineBandmate.Value member) : base(card, turnTakerController)
         {
-            AbilityKey = abilityKey;
-            CardKeyword = cardKeyword;
+            _memberAbilityKey = member.GetAbilityKey();
+            _memberKeyword = member.GetKeyword();
         }
 
         protected abstract string AbilityDescription { get; }
@@ -26,7 +26,7 @@ namespace Cauldron.ScreaMachine
 
         public override IEnumerator ActivateAbility(string abilityKey)
         {
-            if (abilityKey == AbilityKey)
+            if (abilityKey == _memberAbilityKey)
                 return ActivateBandAbility();
 
             return base.ActivateAbility(abilityKey);
@@ -34,9 +34,9 @@ namespace Cauldron.ScreaMachine
 
         public override IEnumerable<ActivatableAbility> GetActivatableAbilities(string key = null, TurnTakerController activatingTurnTaker = null)
         {
-            if (key is null || key == AbilityKey)
+            if (key is null || key == _memberAbilityKey)
             {
-                yield return new ActivatableAbility(TurnTakerController, this, AbilityKey, AbilityDescription, ActivateAbility(AbilityKey), 0, null, activatingTurnTaker, GetCardSource());
+                yield return new ActivatableAbility(TurnTakerController, this, _memberAbilityKey, AbilityDescription, ActivateAbility(_memberAbilityKey), 0, null, activatingTurnTaker, GetCardSource());
             }
         }
 
@@ -54,7 +54,7 @@ namespace Cauldron.ScreaMachine
 
         private bool FlipCriteria(CardEntersPlayAction ga)
         {
-            int count = base.FindCardsWhere(new LinqCardCriteria(c => c.IsInPlayAndNotUnderCard && GameController.DoesCardContainKeyword(c, CardKeyword)), GetCardSource()).Count();
+            int count = base.FindCardsWhere(new LinqCardCriteria(c => c.IsInPlayAndNotUnderCard && GameController.DoesCardContainKeyword(c, _memberKeyword)), GetCardSource()).Count();
 
             return count >= 3;
         }

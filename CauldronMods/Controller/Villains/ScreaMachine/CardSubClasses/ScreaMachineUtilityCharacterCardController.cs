@@ -14,37 +14,29 @@ namespace Cauldron.ScreaMachine
         {
         }
 
-        private HashSet<string> _bandKeywords = new HashSet<string>(StringComparer.Ordinal)
-        {
-            "vocalist",
-            "guitarist",
-            "bassist",
-            "drummer"
-        };
-
         protected bool IsBandCard(Card c, bool evenIfUnderCard = false, bool evenIfFacedown = false)
         {
-            return GameController.GetAllKeywords(c, evenIfUnderCard, evenIfFacedown).Any(str => _bandKeywords.Contains(str));
+            return GameController.GetAllKeywords(c, evenIfUnderCard, evenIfFacedown).Any(str => ScreaMachineBandmate.Keywords.Contains(str));
         }
 
         protected bool IsVocalist(Card c, bool evenIfUnderCard = false, bool evenIfFacedown = false)
         {
-            return GameController.DoesCardContainKeyword(c, "vocalist", evenIfUnderCard, evenIfFacedown);
+            return GameController.DoesCardContainKeyword(c, ScreaMachineBandmate.Value.Valentine.GetKeyword(), evenIfUnderCard, evenIfFacedown);
         }
 
         protected bool IsGuitarist(Card c, bool evenIfUnderCard = false, bool evenIfFacedown = false)
         {
-            return GameController.DoesCardContainKeyword(c, "guitarist", evenIfUnderCard, evenIfFacedown);
+            return GameController.DoesCardContainKeyword(c, ScreaMachineBandmate.Value.Slice.GetKeyword(), evenIfUnderCard, evenIfFacedown);
         }
 
         protected bool IsBassist(Card c, bool evenIfUnderCard = false, bool evenIfFacedown = false)
         {
-            return GameController.DoesCardContainKeyword(c, "bassist", evenIfUnderCard, evenIfFacedown);
+            return GameController.DoesCardContainKeyword(c, ScreaMachineBandmate.Value.Bloodlace.GetKeyword(), evenIfUnderCard, evenIfFacedown);
         }
 
         protected bool IsDrummer(Card c, bool evenIfUnderCard = false, bool evenIfFacedown = false)
         {
-            return GameController.DoesCardContainKeyword(c, "drummer", evenIfUnderCard, evenIfFacedown);
+            return GameController.DoesCardContainKeyword(c, ScreaMachineBandmate.Value.RickyG.GetKeyword(), evenIfUnderCard, evenIfFacedown);
         }
     }
 }

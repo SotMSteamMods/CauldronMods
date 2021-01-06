@@ -13,5 +13,7 @@ namespace Cauldron.ScreaMachine
         public HarshNoteCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override IEnumerable<ScreaMachineBandmate.Value> AbilityIcons => new[] { ScreaMachineBandmate.Value.Slice, ScreaMachineBandmate.Value.Valentine };
     }
 }

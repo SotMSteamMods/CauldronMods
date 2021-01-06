@@ -10,7 +10,7 @@ namespace Cauldron.ScreaMachine
 {
     public class MentalLinkCardController : ScreaMachineBandCardController
     {
-        public MentalLinkCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "ValentineCharacter", "{Vocal}")
+        public MentalLinkCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, ScreaMachineBandmate.Value.Valentine)
         {
         }
 

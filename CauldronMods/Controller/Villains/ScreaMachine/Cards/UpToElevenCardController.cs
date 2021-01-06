@@ -13,5 +13,7 @@ namespace Cauldron.ScreaMachine
         public UpToElevenCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override IEnumerable<ScreaMachineBandmate.Value> AbilityIcons => new[] { ScreaMachineBandmate.Value.Bloodlace, ScreaMachineBandmate.Value.RickyG };
     }
 }

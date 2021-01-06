@@ -137,5 +137,91 @@ namespace CauldronTests
             });
 
         }
+
+
+        [Test()]
+        public void TestScreaMachineGameStart()
+        {
+            SetupGameController("Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis");
+            AssertInPlayArea(scream, setlist);
+            AssertNotFlipped(setlist);
+            QuickShuffleStorage(scream);
+            StartGame();
+
+            QuickShuffleCheck(1);
+            AssertInPlayArea(scream, slice);
+            AssertNotFlipped(slice);
+            AssertInPlayArea(scream, bloodlace);
+            AssertNotFlipped(bloodlace);
+            AssertInPlayArea(scream, valentine);
+            AssertNotFlipped(valentine);
+            AssertInPlayArea(scream, rickyg);
+            AssertNotFlipped(rickyg);
+            AssertInPlayArea(scream, setlist);
+            AssertFlipped(setlist);
+
+            HashSet<string> _bandKeywords = new HashSet<string>(StringComparer.Ordinal)
+            {
+                "vocalist",
+                "guitarist",
+                "bassist",
+                "drummer"
+            };
+
+            int inPlay = 0;
+            foreach (var card in FindCardsWhere(c => GameController.GetAllKeywords(c, true, true).Any(str => _bandKeywords.Contains(str))))
+            {
+                if (card.Location != setlist.UnderLocation)
+                {
+                    AssertAtLocation(card, scream.TurnTaker.PlayArea);
+                    inPlay++;
+                }
+            }
+
+            Assert.AreEqual(1, inPlay, $"Should have 1 band cards in play");
+        }
+
+        [Test()]
+        public void TestScreaMachineAdvancedGameStart()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis" }, advanced: true);
+            AssertInPlayArea(scream, setlist);
+            AssertNotFlipped(setlist);
+
+            QuickShuffleStorage(scream.TurnTaker.Deck, setlist.UnderLocation);
+            StartGame();
+            QuickShuffleCheck(1, 1);
+
+            AssertInPlayArea(scream, slice);
+            AssertNotFlipped(slice);
+            AssertInPlayArea(scream, bloodlace);
+            AssertNotFlipped(bloodlace);
+            AssertInPlayArea(scream, valentine);
+            AssertNotFlipped(valentine);
+            AssertInPlayArea(scream, rickyg);
+            AssertNotFlipped(rickyg);
+            AssertInPlayArea(scream, setlist);
+            AssertFlipped(setlist);
+
+            HashSet<string> _bandKeywords = new HashSet<string>(StringComparer.Ordinal)
+            {
+                "vocalist",
+                "guitarist",
+                "bassist",
+                "drummer"
+            };
+
+            int inPlay = 0;
+            foreach (var card in FindCardsWhere(c => GameController.GetAllKeywords(c, true, true).Any(str => _bandKeywords.Contains(str))))
+            {
+                if (card.Location != setlist.UnderLocation)
+                {
+                    AssertAtLocation(card, scream.TurnTaker.PlayArea);
+                    inPlay++;
+                }
+            }
+
+            Assert.AreEqual(this.GameController.Game.H - 2 + 1, inPlay, $"Should have {GameController.Game.H - 2 + 1} band cards in play");
+        }
     }
 }
