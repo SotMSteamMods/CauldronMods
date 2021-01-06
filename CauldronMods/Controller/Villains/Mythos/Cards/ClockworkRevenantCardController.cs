@@ -12,6 +12,31 @@ namespace Cauldron.Mythos
     {
         public ClockworkRevenantCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
+        }
+
+        public override void AddTriggers()
+        {
+            //{MythosDanger} Increase damage dealt by this card by X, where X is 10 minus its current HP.
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => base.IsTopCardMatching(MythosDangerDeckIdentifier) && action.DamageSource.Card == this.Card, (DealDamageAction action) => 10 - this.Card.HitPoints ?? default);
+
+            //At the end of the villain turn, this card deals the hero target with the highest HP 2 melee damage.
+            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
+        }
+
+        private IEnumerator DealDamageResponse(PhaseChangeAction action)
+        {
+            //...this card deals the hero target with the highest HP 2 melee damage.
+            IEnumerator coroutine = base.DealDamageToHighestHP(this.Card, 1, (Card c) => c.IsHero, (Card c) => 2, DamageType.Melee);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
     }
 }
