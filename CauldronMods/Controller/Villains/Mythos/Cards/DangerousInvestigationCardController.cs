@@ -63,7 +63,7 @@ namespace Cauldron.Mythos
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...{Mythos} deals the X hero targets with the highest HP 3 infernal damage each, where X is {H} minus the number of villain cards the players chose to play this turn.
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => c.IsHero, (Card c) => 3, DamageType.Infernal, numberOfTargets: () => base.Game.H - (base.Game.Journal.CardEntersPlayEntriesThisTurn().Count() - 1));
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => c.IsHero, (Card c) => 3, DamageType.Infernal, numberOfTargets: () => base.Game.H - (base.Game.Journal.CardEntersPlayEntriesThisTurn().Where((CardEntersPlayJournalEntry entry) => base.IsVillain(entry.Card)).Count() - 1));
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
