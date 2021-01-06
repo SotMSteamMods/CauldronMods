@@ -21,6 +21,11 @@ namespace Cauldron.Mythos
 
         public bool IsTopCardMatching(string type)
         {
+            //Advanced: Activate all {MythosDanger} effects.
+            if (base.Game.IsAdvanced && type == MythosDangerDeckIdentifier)
+            {
+                return true;
+            }
             return base.TurnTaker.Deck.TopCard.ParentDeck.Identifier == type;
         }
 
