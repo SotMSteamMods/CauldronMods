@@ -12,6 +12,59 @@ namespace Cauldron.Mythos
     {
         public AclastyphWhoPeersCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
+        }
+
+        public override void AddTriggers()
+        {
+            //At the end of the villain turn:
+            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.EndOfTurnResponse, TriggerType.DealDamage);
+        }
+
+        private IEnumerator EndOfTurnResponse(PhaseChangeAction action)
+        {
+            IEnumerator coroutine;
+            if (base.IsTopCardMatching(MythosDangerDeckIdentifier))
+            {
+                //{MythosDanger} This card deals the hero target with the highest HP 2 melee damage. 
+                coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => c.IsHero, (Card c) => base.Game.H, DamageType.Infernal);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+                //Discard the top card of the villain deck.
+            }
+            if (base.IsTopCardMatching(MythosClueDeckIdentifier))
+            {
+                //{MythosClue} This card regains 2HP. Discard the top card of the villain deck.
+                coroutine = base.DealDamageToLowestHP(base.CharacterCard, 1, (Card c) => c.IsHero, (Card c) => base.Game.H, DamageType.Psychic);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            if (base.IsTopCardMatching(MythosMadnessDeckIdentifier))
+            {
+                //{MythosMadness} This card deals each other target 1 psychic damage.
+                coroutine = base.DealDamage(base.CharacterCard, (Card c) => !base.IsVillain(c), 1, DamageType.Infernal);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
         }
     }
 }
