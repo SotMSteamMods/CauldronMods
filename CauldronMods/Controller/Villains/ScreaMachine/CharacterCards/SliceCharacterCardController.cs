@@ -16,6 +16,8 @@ namespace Cauldron.ScreaMachine
 
         protected override string AbilityDescription => throw new NotImplementedException();
 
+        protected override string UltimateFormMessage => throw new NotImplementedException();
+
         protected override IEnumerator ActivateBandAbility()
         {
             throw new NotImplementedException();

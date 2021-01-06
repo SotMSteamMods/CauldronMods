@@ -59,6 +59,31 @@ namespace Cauldron.ScreaMachine
             return count >= 3;
         }
 
+        protected abstract string UltimateFormMessage { get; }
+
+        protected IEnumerator FlipBandmateResponse(GameAction action)
+        {
+            var coroutine = GameController.FlipCard(CharacterCardController, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            
+            coroutine = GameController.SendMessageAction(UltimateFormMessage, Priority.High, GetCardSource(), showCardSource: true);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+
         protected abstract void AddFlippedSideTriggers();
 
         public override MoveCardDestination GetTrashDestination()
