@@ -86,15 +86,27 @@ namespace Cauldron.Mythos
 
         private IEnumerator FrontEndOfTurnResponse(PhaseChangeAction action)
         {
+            IEnumerator coroutine;
+            int cardCount = 0;
             //...the players may play up to 5 cards from the top of the villain deck. 
-            IEnumerator coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck, true, 5, 0);
-            if (UseUnityCoroutines)
+            while (cardCount < 5)
             {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
+                List<Card> playedCards = new List<Card>();
+                coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck, true, 1, playedCards: playedCards, cardSource: base.GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
+                cardCount++;
+                if (!playedCards.Any())
+                {
+                    break;
+                }
             }
 
             //Then if there are {H} tokens on Dangerous Investigation, flip {Mythos}' villain character cards.
@@ -131,7 +143,7 @@ namespace Cauldron.Mythos
         private IEnumerator BackEndOfTurnResponse(PhaseChangeAction action)
         {
             //...the players may play the top card of the villain deck. Then:
-            IEnumerator coroutine = base.GameController.PlayTopCard(base.DecisionMaker, base.TurnTakerController, true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck, true, 1, cardSource: base.GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -144,7 +156,7 @@ namespace Cauldron.Mythos
             if (this.IsTopCardMatching((MythosClueDeckIdentifier)))
             {
                 //{MythosClue} Play the top card of the villain deck.
-                coroutine = base.GameController.PlayTopCard(base.DecisionMaker, base.TurnTakerController, cardSource: base.GetCardSource());
+                coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck, true, 1, cardSource: base.GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

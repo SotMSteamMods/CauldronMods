@@ -66,11 +66,15 @@ namespace CauldronTests
         [Test()]
         public void Test()
         {
-            SetupGameController("Cauldron.Mythos", "Haka", "Bunker", "TheVisionary/DarkVisionaryCharacter", "Megalopolis");
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "TheVisionary/DarkVisionaryCharacter", "Megalopolis");
             StartGame();
 
-            UsePower(visionary);
-            var a = visionary;
+            PlayCard("TakeDown");
+            DecisionYesNo = true;
+
+            GoToEndOfTurn(mythos);
+            var a = GameController.Game.Journal;
+            var b = 1;
         }
     }
 }
