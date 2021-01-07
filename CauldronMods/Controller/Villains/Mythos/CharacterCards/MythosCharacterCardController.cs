@@ -63,12 +63,15 @@ namespace Cauldron.Mythos
         public override bool AskIfCardIsIndestructible(Card card)
         {
             //Front: {Mythos} and Dangerous Investigation are indestructible. 
-            return (this.Card == card || this.FindDangerousInvestigationCard() == card) && !this.Card.IsFlipped;
+            return (this.Card == card || this.DangerousInvestigationCard == card) && !this.Card.IsFlipped;
         }
 
-        private Card FindDangerousInvestigationCard()
+        private Card DangerousInvestigationCard
         {
-            return base.FindCard("DangerousInvestigation");
+            get
+            {
+                return base.FindCard("DangerousInvestigation");
+            }
         }
 
         private bool IsTopCardMatching(string type)
@@ -95,7 +98,7 @@ namespace Cauldron.Mythos
             }
 
             //Then if there are {H} tokens on Dangerous Investigation, flip {Mythos}' villain character cards.
-            if (this.FindDangerousInvestigationCard().FindTokenPool("DangerousInvestigationPool").CurrentValue == 5)
+            if (this.DangerousInvestigationCard.FindTokenPool("DangerousInvestigationPool").CurrentValue == 5)
             {
                 coroutine = base.FlipThisCharacterCardResponse(action);
                 if (UseUnityCoroutines)
@@ -113,7 +116,7 @@ namespace Cauldron.Mythos
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
             //When {Mythos} flips to [the back], remove Dangerous Investigation from the game.
-            IEnumerator coroutine = base.GameController.MoveCard(this.TurnTakerController, this.FindDangerousInvestigationCard(), base.TurnTaker.OutOfGame);
+            IEnumerator coroutine = base.GameController.MoveCard(this.TurnTakerController, this.DangerousInvestigationCard, base.TurnTaker.OutOfGame);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
