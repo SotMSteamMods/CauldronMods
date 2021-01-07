@@ -14,9 +14,9 @@ namespace Cauldron.ScreaMachine
         {
         }
 
-        protected override string AbilityDescription => $"{Card.Title} deals the 2 hero targets with the highest HP {H - 2} psychic damage.";
+        protected override string AbilityDescription => $"{Card.Title} deals the 2 hero targets with the highest HP *{H - 2}* psychic damage.";
 
-        protected override string UltimateFormMessage => "The world's a stage, and I want the brightest spot.";
+        protected override string UltimateFormMessage => "The world's a stage, and I want the brightest spot."; //David Lee Roth
 
         protected override IEnumerator ActivateBandAbility()
         {
