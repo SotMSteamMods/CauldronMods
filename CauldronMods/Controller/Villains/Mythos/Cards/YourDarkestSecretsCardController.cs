@@ -33,9 +33,9 @@ namespace Cauldron.Mythos
             {
                 //{Mythos} deals each hero 1 infernal damage for each card in their hand that shares a keyword with the card discarded from their deck.
                 Card card = cardAction.CardToMove;
-                foreach (Card c in card.Owner.ToHero().Hand.Cards)
+                foreach (Card handCard in card.Owner.ToHero().Hand.Cards)
                 {
-                    if (base.GameController.GetAllKeywords(c).Intersect(base.GameController.GetAllKeywords(card)).Any())
+                    if (base.GameController.GetAllKeywords(handCard).Intersect(base.GameController.GetAllKeywords(card)).Any())
                     {
                         Card target = card.Owner.CharacterCard;
                         if (!target.IsRealCard)
