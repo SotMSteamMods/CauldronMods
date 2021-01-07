@@ -366,7 +366,7 @@ namespace CauldronTests
             PlayCard("TakeDown");
 
             string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Slice);
-            
+
             FlipCard(slice);
             AssertNumberOfActivatableAbility(slice, key, 0);
 
@@ -377,6 +377,46 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(1);
             DealDamage(ra.CharacterCard, haka.CharacterCard, 2, DamageType.Cold); //cannot deal damage
             QuickHPCheck(0, -3, 0, 0, 0, 0, 0, 0);
+        }
+
+
+        [Test()]
+        public void TestValentineAbility()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Valentine);
+            AssertNumberOfActivatableAbility(valentine, key, 1);
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            ActivateAbility(key, valentine);
+            QuickHPCheck(-2, 0, -2, 0, 0, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestValentineUltimate()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            PlayCard("TakeDown");
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Valentine);
+
+            FlipCard(valentine);
+            AssertNumberOfActivatableAbility(valentine, key, 0);
+            //villain damage increased by 1
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            DealDamage(bloodlace, ra, 1, DamageType.Energy);
+            QuickHPCheck(0, -2, 0, 0, 0, 0, 0, 0);
+
+            QuickHPUpdate();
+            GoToEndOfTurn(scream);
+            //H -1 sonic + 1 & H - 2 + 1
+            //3 + 1 & 2 + 1 = 7
+            QuickHPCheck(0, 0, -7, 0, 0, 0, 0, 0);
         }
     }
 }
