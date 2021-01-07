@@ -53,6 +53,14 @@ namespace CauldronTests
             }
         }
 
+        private void AssertNumberOfActivatableAbility(Card card, string key, int number)
+        {
+            var cc = FindCardController(card);
+            var abilities = cc.GetActivatableAbilities(key).Count();
+            Assert.AreEqual(number, abilities, $"{card.Title} does not have the correct number of {(key is null ? "" : key)} abilities");
+        }
+
+
         #endregion
 
         [Test()]
@@ -142,6 +150,7 @@ namespace CauldronTests
         [Test()]
         public void TestScreaMachineGameStart()
         {
+
             SetupGameController("Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis");
             AssertInPlayArea(scream, setlist);
             AssertNotFlipped(setlist);
@@ -222,6 +231,152 @@ namespace CauldronTests
             }
 
             Assert.AreEqual(this.GameController.Game.H - 2 + 1, inPlay, $"Should have {GameController.Game.H - 2 + 1} band cards in play");
+        }
+
+        [Test()]
+        public void TestScreaMachineCharacterFlip([Values(ScreaMachineBandmate.Value.Slice, ScreaMachineBandmate.Value.Bloodlace, ScreaMachineBandmate.Value.Valentine, ScreaMachineBandmate.Value.RickyG)] ScreaMachineBandmate.Value member)
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var memberCard = GetCard(member.GetIdentifier());
+            AssertNotFlipped(memberCard);
+
+            var cards = FindCardsWhere(c => c.DoKeywordsContain(member.GetKeyword(), true, true));
+            foreach (var card in cards)
+            {
+                if (card.Location == setlist.UnderLocation)
+                {
+                    FlipCard(card);
+                    PlayCard(card);
+                }
+
+                AssertNotFlipped(card);
+                AssertInPlayArea(scream, card);
+            }
+
+            AssertFlipped(memberCard);
+        }
+
+        [Test()]
+        public void TestSetListCharacterRemovedFromGameDestroy([Values(ScreaMachineBandmate.Value.Slice, ScreaMachineBandmate.Value.Bloodlace, ScreaMachineBandmate.Value.Valentine, ScreaMachineBandmate.Value.RickyG)] ScreaMachineBandmate.Value member)
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var memberCard = GetCard(member.GetIdentifier());
+
+            DestroyCard(memberCard);
+
+            AssertAtLocation(memberCard, scream.TurnTaker.OutOfGame);
+        }
+
+        [Test()]
+        public void TestSetListCharacterRemovedFromGameDamage([Values(ScreaMachineBandmate.Value.Slice, ScreaMachineBandmate.Value.Bloodlace, ScreaMachineBandmate.Value.Valentine, ScreaMachineBandmate.Value.RickyG)] ScreaMachineBandmate.Value member)
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var memberCard = GetCard(member.GetIdentifier());
+
+            DealDamage(legacy, memberCard, 99, DamageType.Cold);
+
+            AssertAtLocation(memberCard, scream.TurnTaker.OutOfGame);
+        }
+
+        [Test()]
+        public void TestSetListRevealCard()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis" }, advanced: false);
+            StartGame();
+            GoToPlayCardPhase(scream);
+
+            PrintSeparator("StartTest");
+
+            List<Card> revealed = new List<Card>();
+            //I use legacy as the revealer to confirm it's ANY reveal
+            var cards = setlist.UnderLocation.GetTopCards(2).ToList();
+            var c1 = cards[0];
+            var c2 = cards[1];
+            Console.WriteLine("Card to Reveal: " + c1.Title);
+
+            RunCoroutine(GameController.RevealCards(legacy, setlist.UnderLocation, 1, revealed, cardSource: legacy.CharacterCardController.GetCardSource()));
+
+            AssertNumberOfCardsInRevealed(scream, 0);
+
+            if (c1.Location == setlist.UnderLocation)
+            {
+                Console.WriteLine($"{c1.Title} is under the setList");
+                AssertOnBottomOfLocation(c1, setlist.UnderLocation);
+                AssertInPlayArea(scream, c2);
+            }
+            else
+            {
+                Console.WriteLine($"{c1.Title} not under the setList");
+                AssertInPlayArea(scream, c1);
+                AssertOnTopOfLocation(c2, setlist.UnderLocation);
+            }
+        }
+
+        [Test()]
+        public void TestSetListEndOfTurn()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            //prevent card plays
+            PlayCard("TakeDown");
+
+            GoToPlayCardPhase(scream);
+            DestroyCard(slice);
+            DestroyCard(valentine);
+
+            AssertInPlayArea(scream, rickyg);
+            AssertInPlayArea(scream, bloodlace);
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, rickyg, bloodlace);
+
+            AssertNextMessage("Take Down prevented ScreaMachine from playing cards.");
+            GoToEndOfTurn(scream);
+            QuickHPCheck(-2, -2, -2, -2, 0, 0);
+
+            //There's an end of turn card play here
+        }
+
+        [Test()]
+        public void TestSliceAbility()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Slice);
+            AssertNumberOfActivatableAbility(slice, key, 1);
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            ActivateAbility(key, slice);
+            QuickHPCheck(0, -3, 0, 0, 0, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestSliceUltimate()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            PlayCard("TakeDown");
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Slice);
+            
+            FlipCard(slice);
+            AssertNumberOfActivatableAbility(slice, key, 0);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            GoToEndOfTurn(scream);
+
+            AssertNumberOfStatusEffectsInPlay(1);
+            DealDamage(ra.CharacterCard, haka.CharacterCard, 2, DamageType.Cold); //cannot deal damage
+            QuickHPCheck(0, -3, 0, 0, 0, 0, 0, 0);
         }
     }
 }

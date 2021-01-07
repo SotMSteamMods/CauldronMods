@@ -16,7 +16,7 @@ namespace Cauldron.ScreaMachine
 
         protected override string AbilityDescription => throw new NotImplementedException();
 
-        protected override string UltimateFormMessage => throw new NotImplementedException();
+        protected override string UltimateFormMessage => "TODO";
 
         protected override IEnumerator ActivateBandAbility()
         {
@@ -25,7 +25,7 @@ namespace Cauldron.ScreaMachine
 
         protected override void AddFlippedSideTriggers()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

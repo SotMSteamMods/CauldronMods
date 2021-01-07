@@ -48,7 +48,7 @@ namespace Cauldron.ScreaMachine
 
         private static readonly Dictionary<Value, string> _Identifiers = new Dictionary<Value, string>()
         {
-            [Value.Slice] = "SilceCharacter",
+            [Value.Slice] = "SliceCharacter",
             [Value.Bloodlace] = "BloodlaceCharacter",
             [Value.Valentine] = "ValentineCharacter",
             [Value.RickyG] = "RickyGCharacter",

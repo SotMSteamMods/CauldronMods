@@ -108,7 +108,7 @@
 			],
 			"gameplay": [
 				"If there are ever 3 Guitarist cards in play, flip this card.",
-				"{Guitar} {SliceCharacter} deals the hero with the second lowest HP {H - 1} sonic damage."
+				"{Guitar} {SliceCharacter} deals the hero with the second{BR}        lowest HP {H - 1} sonic damage."
 			],
 			"icons": [
 				"DealDamageSonic"
@@ -172,7 +172,7 @@
 			],
 			"gameplay": [
 				"If there are ever 3 Vocalist cards in play, flip this card.",
-				"{Vocal} {ValentineCharacter} deals the 2 hero targets with the highest HP {H - 2} psychic damage."
+				"{Vocal} {ValentineCharacter} deals the 2 hero targets with{BR}         the highest HP {H - 2} psychic damage."
 			],
 			"icons": [
 				"DealDamagePsychic"

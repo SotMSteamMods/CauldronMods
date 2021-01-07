@@ -20,22 +20,19 @@ namespace Cauldron.ScreaMachine
             var setList = GameController.FindCardsWhere(c => c.Identifier == "TheSetList", false).First();
             var setCC = FindCardController(setList);
             var bandCards = GameController.FindCardsWhere(new LinqCardCriteria(c => IsBandCard(c))).ToList().Shuffle(base.GameController.Game.RNG);
-            IEnumerator coroutine;
 
-            foreach (var card in bandCards)
+
+            IEnumerator coroutine = GameController.BulkMoveCards(this, bandCards, setList.UnderLocation, performBeforeDestroyActions: false, cardSource: setCC.GetCardSource());
+            if (base.UseUnityCoroutines)
             {
-                coroutine = GameController.MoveCard(this, card, setList.UnderLocation, playCardIfMovingToPlayArea: false, flipFaceDown: true, cardSource: setCC.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = GameController.ShuffleLocation(TurnTaker.Deck, cardSource: setCC.GetCardSource());
+            coroutine = GameController.FlipCards(bandCards.Select(c => FindCardController(c)), setCC.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -69,6 +66,16 @@ namespace Cauldron.ScreaMachine
                 // ...Play those cards. 
                 foreach (var card in played)
                 {
+                    coroutine = GameController.FlipCard(FindCardController(card), cardSource: setCC.GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+
                     coroutine = GameController.PlayCard(this, card, evenIfAlreadyInPlay: true, reassignPlayIndex: true, cardSource: setCC.GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
@@ -91,6 +98,17 @@ namespace Cauldron.ScreaMachine
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
+
+            coroutine = GameController.ShuffleLocation(TurnTaker.Deck);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
         }
 
         protected bool IsBandCard(Card c, bool evenIfUnderCard = false, bool evenIfFacedown = false)

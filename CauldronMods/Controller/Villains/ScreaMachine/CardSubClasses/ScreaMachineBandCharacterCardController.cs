@@ -16,6 +16,7 @@ namespace Cauldron.ScreaMachine
 
         protected ScreaMachineBandCharacterCardController(Card card, TurnTakerController turnTakerController, ScreaMachineBandmate.Value member) : base(card, turnTakerController)
         {
+            Member = member;
             _memberAbilityKey = member.GetAbilityKey();
             _memberKeyword = member.GetKeyword();
         }
@@ -26,7 +27,7 @@ namespace Cauldron.ScreaMachine
 
         public override IEnumerator ActivateAbility(string abilityKey)
         {
-            if (abilityKey == _memberAbilityKey)
+            if (!Card.IsFlipped && abilityKey == _memberAbilityKey)
                 return ActivateBandAbility();
 
             return base.ActivateAbility(abilityKey);
@@ -34,7 +35,7 @@ namespace Cauldron.ScreaMachine
 
         public override IEnumerable<ActivatableAbility> GetActivatableAbilities(string key = null, TurnTakerController activatingTurnTaker = null)
         {
-            if (key is null || key == _memberAbilityKey)
+            if (!Card.IsFlipped && (key is null || key == _memberAbilityKey))
             {
                 yield return new ActivatableAbility(TurnTakerController, this, _memberAbilityKey, AbilityDescription, ActivateAbility(_memberAbilityKey), 0, null, activatingTurnTaker, GetCardSource());
             }
@@ -44,7 +45,8 @@ namespace Cauldron.ScreaMachine
         {
             if (!Card.IsFlipped)
             {
-                AddSideTrigger(AddTrigger<CardEntersPlayAction>(FlipCriteria, ca => base.FlipThisCharacterCardResponse(ca), TriggerType.FlipCard, TriggerTiming.After));
+                AddSideTrigger(AddTrigger<MoveCardAction>(mca => mca.Destination.IsInPlayAndNotUnderCard && mca.WasCardMoved && FlipCriteria(mca.CardToMove), ca => base.FlipThisCharacterCardResponse(ca), TriggerType.FlipCard, TriggerTiming.After));
+                AddSideTrigger(AddTrigger<PlayCardAction>(pca => pca.WasCardPlayed && FlipCriteria(pca.CardToPlay), ca => FlipBandmateResponse(ca), TriggerType.FlipCard, TriggerTiming.After));
             }
             else
             {
@@ -52,18 +54,27 @@ namespace Cauldron.ScreaMachine
             }
         }
 
-        private bool FlipCriteria(CardEntersPlayAction ga)
+        private bool FlipCriteria(Card card)
         {
-            int count = base.FindCardsWhere(new LinqCardCriteria(c => c.IsInPlayAndNotUnderCard && GameController.DoesCardContainKeyword(c, _memberKeyword)), GetCardSource()).Count();
+            if (!card.IsVillain)
+                return false;
 
-            return count >= 3;
+            var cc = FindCardController(card);
+            if (cc is ScreaMachineBandCardController bandCC && bandCC.Member == this.Member)
+            {
+                var cards = GameController.FindCardsWhere(c => c.IsInPlayAndNotUnderCard && c.DoKeywordsContain(_memberKeyword, true, true), true, GetCardSource()).ToList(); ;
+                Console.WriteLine($"DEBUG - {Card.Title} has {cards.Count} {_memberKeyword} cards in play.");
+                return cards.Count >= 3;
+            }
+
+            return false;
         }
 
         protected abstract string UltimateFormMessage { get; }
 
         protected IEnumerator FlipBandmateResponse(GameAction action)
         {
-            var coroutine = GameController.FlipCard(CharacterCardController, cardSource: GetCardSource());
+            var coroutine = GameController.FlipCard(this, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -72,7 +83,20 @@ namespace Cauldron.ScreaMachine
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
-            
+        }
+
+        public override IEnumerator AfterFlipCardImmediateResponse()
+        {
+            var coroutine = base.AfterFlipCardImmediateResponse();
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
             coroutine = GameController.SendMessageAction(UltimateFormMessage, Priority.High, GetCardSource(), showCardSource: true);
             if (UseUnityCoroutines)
             {

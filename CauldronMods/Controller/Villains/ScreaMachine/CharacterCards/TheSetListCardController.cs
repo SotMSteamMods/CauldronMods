@@ -29,9 +29,9 @@ namespace Cauldron.ScreaMachine
             }
         }
 
-        private IEnumerator TheSetListRevealProcess(RevealCardsAction rca)
+        private IEnumerator TheSetListRevealProcess(IEnumerable<Card> cards)
         {
-            foreach (var card in rca.RevealedCards)
+            foreach (var card in cards)
             {
                 var keywords = new HashSet<string>(GameController.GetAllKeywords(card), StringComparer.OrdinalIgnoreCase);
                 var sharesAKeyword = FindCardsWhere(new LinqCardCriteria(c => c.IsInPlayAndNotUnderCard && GameController.GetAllKeywords(c).Any(k => keywords.Contains(k))), GetCardSource()).Any();
@@ -40,7 +40,7 @@ namespace Cauldron.ScreaMachine
                 IEnumerator coroutine;
                 if (!sharesAKeyword)
                 {
-                    coroutine = GameController.MoveCard(TurnTakerController, card, Card.UnderLocation, toBottom: true, playCardIfMovingToPlayArea: false, cardSource: GetCardSource());
+                    coroutine = GameController.MoveCard(TurnTakerController, card, Card.UnderLocation, toBottom: true, playCardIfMovingToPlayArea: false, flipFaceDown: true, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -63,7 +63,22 @@ namespace Cauldron.ScreaMachine
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                coroutine = GameController.PlayCard(TurnTakerController, cardToPlay, reassignPlayIndex: true, cardSource: GetCardSource());
+                //precheck play, so we can flip first
+                var cc = FindCardController(cardToPlay);
+                if (cardToPlay.IsFlipped && GameController.CanPlayCard(cc) == CanPlayCardResult.CanPlay)
+                {
+                    coroutine = GameController.FlipCard(cc, cardSource: GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+
+                coroutine = GameController.PlayCard(TurnTakerController, cardToPlay, reassignPlayIndex: true, evenIfAlreadyInPlay: true, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -124,8 +139,9 @@ namespace Cauldron.ScreaMachine
             }
             else
             {
-                AddSideTrigger(AddTrigger<RevealCardsAction>(rca => rca.SearchLocation == this.Card.UnderLocation, TheSetListRevealProcess, TriggerType.PlayCard, TriggerTiming.After));
+                AddSideTrigger(AddTrigger<RevealCardsAction>(rca => rca.SearchLocation == this.Card.UnderLocation, rca => TheSetListRevealProcess(rca.RevealedCards), TriggerType.PlayCard, TriggerTiming.After));
                 AddSideTrigger(AddStartOfTurnTrigger(tt => tt == TurnTaker, pca => RevealTopCardOfTheSetList(), TriggerType.RevealCard));
+                AddSideTrigger(AddEndOfTurnTrigger(tt => tt == TurnTaker && FindCardsWhere(c => IsVillainTarget(c) && c.IsCharacter && c.IsInPlay).Count() <= (Game.H - 2), pca => EndOfTurnDamageAndPlay(), TriggerType.DealDamage));
 
                 if (Game.IsAdvanced)
                 {
@@ -147,7 +163,42 @@ namespace Cauldron.ScreaMachine
             }
         }
 
+        private IEnumerator EndOfTurnDamageAndPlay()
+        {
+            List<Card> highest = new List<Card>();
+            var fake = new DealDamageAction(GetCardSource(), new DamageSource(GameController, TurnTaker), null, 2, DamageType.Sonic);
+            var coroutine = GameController.FindTargetsWithHighestHitPoints(1, 1, c => IsVillainTarget(c) && c.IsCharacter && c.IsInPlay, highest,
+                            dealDamageInfo: new[] { fake },
+                            evenIfCannotDealDamage: true,
+                            cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
 
+            coroutine = GameController.DealDamage(DecisionMaker, highest.First(), c => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, 2, DamageType.Sonic, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
 
+            coroutine = GameController.PlayTopCardOfLocation(TurnTakerController, TurnTaker.Deck, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
     }
 }
