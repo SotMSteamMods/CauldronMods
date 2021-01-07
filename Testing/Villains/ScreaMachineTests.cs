@@ -418,5 +418,48 @@ namespace CauldronTests
             //3 + 1 & 2 + 1 = 7
             QuickHPCheck(0, 0, -7, 0, 0, 0, 0, 0);
         }
+
+
+        [Test()]
+        public void TestBloodlaceAbility()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Bloodlace);
+            AssertNumberOfActivatableAbility(bloodlace, key, 1);
+
+            SetHitPoints(slice, 10);
+            SetHitPoints(bloodlace, 10);
+            SetHitPoints(valentine, 10);
+            SetHitPoints(rickyg, 10);
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            ActivateAbility(key, bloodlace);
+            QuickHPCheck(0, 0, 0, 0, 2, 0, 2, 2);
+        }
+
+        [Test()]
+        public void TestBloodlaceUltimate()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            PlayCard("TakeDown");
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Bloodlace);
+
+            FlipCard(bloodlace);
+            AssertNumberOfActivatableAbility(bloodlace, key, 0);
+
+            //ensure ricky is the lowest
+            SetHitPoints(rickyg, 10);
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            GoToEndOfTurn(scream);
+
+            //H damage, H healing
+            QuickHPCheck(0, 0, -4, 0, 0, 0, 0, 4);
+        }
     }
 }
