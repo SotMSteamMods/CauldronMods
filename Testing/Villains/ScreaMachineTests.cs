@@ -662,7 +662,33 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(0);
         }
 
+
+
+        [Test()]
+        public void TestPoundingRhythm()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var card = SetupBandCard("PoundingRhythm");
+            PlayCard("TaMoko"); //to check damage is irreducible
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.RickyG);
+            AssertNumberOfActivatableAbility(card, key, 1);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            ActivateAbility(key, card);
+            
+            //1 irreducible melee damage and reduce the next damage dealt by 2.
+            QuickHPCheck(0, 0, -1, 0, 0, 0, 0, 0);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            QuickHPUpdate();
+            DealDamage(haka, slice, 3, DamageType.Lightning);
+            QuickHPCheck(0, 0, 0, 0, -1, 0, 0, 0);
+            //only next damage
+            AssertNumberOfStatusEffectsInPlay(0);
+        }
     }
-
-
 }
