@@ -175,5 +175,71 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestAllAboard_Indestructible()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //this card is indestructible
+            Card allAboard = PlayCard("AllAboard");
+            DestroyCard(allAboard, baron.CharacterCard);
+            AssertIsInPlay(allAboard);
+
+        }
+
+        [Test()]
+        public void TestAllAboard_EndOfTurn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //At the end of the environment turn, the players may activate the Travel text of a Transport card. If they do, destroy that card at the start of the next environment turn.
+            GoToPlayCardPhase(catchwater);
+            Card allAboard = PlayCard("AllAboard");
+            Card transport1 = PlayCard("UnmooredZeppelin");
+            Card transport2 = PlayCard("SSEscape");
+            DecisionSelectCard = transport1;
+            GoToEndOfTurn(catchwater);
+            QuickHPStorage(baron, haka);
+            DealDamage(baron, haka, 1, DamageType.Melee);
+            DealDamage(ra, baron, 1, DamageType.Melee);
+            DealDamage(bunker, baron, 1, DamageType.Melee);
+            DealDamage(haka, baron, 1, DamageType.Melee);
+            QuickHPCheck(-6, -2);
+            GoToStartOfTurn(catchwater);
+            AssertInTrash(transport1);
+            AssertIsInPlay(transport2);
+
+        }
+
+        [Test()]
+        public void TestAllAboard_EndOfTurnOptional()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //At the end of the environment turn, the players may activate the Travel text of a Transport card. If they do, destroy that card at the start of the next environment turn.
+            GoToPlayCardPhase(catchwater);
+            Card allAboard = PlayCard("AllAboard");
+            Card transport1 = PlayCard("UnmooredZeppelin");
+            Card transport2 = PlayCard("SSEscape");
+            DecisionDoNotSelectCard = SelectionType.ActivateAbility;
+            GoToEndOfTurn(catchwater);
+            QuickHPStorage(baron, haka);
+            DealDamage(baron, haka, 1, DamageType.Melee);
+            DealDamage(ra, baron, 1, DamageType.Melee);
+            DealDamage(bunker, baron, 1, DamageType.Melee);
+            DealDamage(haka, baron, 1, DamageType.Melee);
+            QuickHPCheck(-3, -1);
+            GoToStartOfTurn(catchwater);
+            AssertIsInPlay(transport1);
+            AssertIsInPlay(transport2);
+
+        }
+
     }
 }

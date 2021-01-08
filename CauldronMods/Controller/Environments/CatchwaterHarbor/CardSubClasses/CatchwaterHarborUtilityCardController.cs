@@ -13,5 +13,13 @@ namespace Cauldron.CatchwaterHarbor
         protected CatchwaterHarborUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public static readonly string TransportKeyword = "transport";
+        protected static readonly string DestroyNextTurnKey = "DestroyNextTurn";
+
+        protected bool IsTransport(Card card)
+        {
+            return card.DoKeywordsContain(TransportKeyword);
+        }
     }
 }

@@ -11,10 +11,18 @@ namespace Cauldron.CatchwaterHarbor
 
         public TransportCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowSpecialString(() => $"{Card.Title} will be destroyed at the start of the next environment turn.").Condition = () => Card.IsInPlayAndHasGameText && AllAboardDestructionCondition;
         }
 
         public static readonly string AllAboardIdentifier = "AllAboard";
+
+        public bool AllAboardDestructionCondition 
+        {
+            get
+            {
+                return GetCardPropertyJournalEntryBoolean(DestroyNextTurnKey) ?? false;
+            }
+        }
 
         public override IEnumerator Play()
         {
@@ -81,7 +89,29 @@ namespace Cauldron.CatchwaterHarbor
 			}
 		}
 
-		public virtual IEnumerator ActivateTravel()
+        public override void AddTriggers()
+        {
+            AddStartOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, StartOfTurnResponse, TriggerType.DestroySelf, additionalCriteria: (PhaseChangeAction pca) => AllAboardDestructionCondition);
+            AddAfterLeavesPlayAction(() => ResetFlagAfterLeavesPlay(DestroyNextTurnKey));
+
+        }
+
+        private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)
+        {
+            SetCardProperty(DestroyNextTurnKey, false);
+            IEnumerator coroutine = DestroyThisCardResponse(pca);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        public virtual IEnumerator ActivateTravel()
 		{
 			yield return null;
 		}
