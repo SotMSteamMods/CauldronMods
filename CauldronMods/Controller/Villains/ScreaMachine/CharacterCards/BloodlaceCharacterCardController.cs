@@ -12,6 +12,8 @@ namespace Cauldron.ScreaMachine
     {
         public BloodlaceCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, ScreaMachineBandmate.Value.Bloodlace)
         {
+            SpecialStringMaker.ShowVillainTargetWithLowestHP().Condition = () => Card.IsFlipped;
+            SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => Card.IsFlipped;
         }
 
         protected override string AbilityDescription => $"Each other villain target regains *{H - 2}* HP.";

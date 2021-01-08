@@ -12,6 +12,7 @@ namespace Cauldron.ScreaMachine
     {
         public SliceCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, ScreaMachineBandmate.Value.Slice)
         {
+            SpecialStringMaker.ShowHeroCharacterCardWithLowestHP(2);
         }
 
         protected override string AbilityDescription => $"{Card.Title} deals the hero with the second lowest HP *{H - 1}* sonic damage.";

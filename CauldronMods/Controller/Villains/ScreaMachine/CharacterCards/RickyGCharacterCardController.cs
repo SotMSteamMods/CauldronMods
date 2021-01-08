@@ -12,6 +12,9 @@ namespace Cauldron.ScreaMachine
     {
         public RickyGCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, ScreaMachineBandmate.Value.RickyG)
         {
+            SpecialStringMaker.ShowVillainTargetWithLowestHP().Condition = () => !Card.IsFlipped;
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria(c => FindCardController(c) is ScreaMachineUtilityCardController sc && sc.AbilityIcons.Contains(ScreaMachineBandmate.Value.RickyG), "drum ability"))
+                .Condition = () => Card.IsFlipped;
         }
 
         protected override string AbilityDescription => $"Select the villain target with the lowest HP. Reduce damage dealt to that target by 1 until the start of the next villain turn.";

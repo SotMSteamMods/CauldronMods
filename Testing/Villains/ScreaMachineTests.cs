@@ -354,6 +354,14 @@ namespace CauldronTests
             //There's an end of turn card play here
         }
 
+        [Test]
+        [Ignore("Not Implemented")]
+        public void TestSetListAdvancedDestroyCard([Values(ScreaMachineBandmate.Value.Slice, ScreaMachineBandmate.Value.Bloodlace, ScreaMachineBandmate.Value.Valentine, ScreaMachineBandmate.Value.RickyG)] ScreaMachineBandmate.Value member)
+        {
+
+        }
+
+
         [Test()]
         public void TestSliceAbility()
         {

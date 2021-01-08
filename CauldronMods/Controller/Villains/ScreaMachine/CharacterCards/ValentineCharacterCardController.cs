@@ -12,6 +12,8 @@ namespace Cauldron.ScreaMachine
     {
         public ValentineCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, ScreaMachineBandmate.Value.Valentine)
         {
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(1, 2).Condition = () => !Card.IsFlipped;
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(1, 1).Condition = () => Card.IsFlipped;
         }
 
         protected override string AbilityDescription => $"{Card.Title} deals the 2 hero targets with the highest HP *{H - 2}* psychic damage.";
