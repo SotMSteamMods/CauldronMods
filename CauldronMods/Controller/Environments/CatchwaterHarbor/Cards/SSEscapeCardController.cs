@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.CatchwaterHarbor
 {
-    public class SSEscapeCardController : CatchwaterHarborUtilityCardController
+    public class SSEscapeCardController : TransportCardController
     {
         public SSEscapeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
