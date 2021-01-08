@@ -461,5 +461,100 @@ namespace CauldronTests
             //H damage, H healing
             QuickHPCheck(0, 0, -4, 0, 0, 0, 0, 4);
         }
+
+
+        [Test()]
+        public void TestRickyGAbility()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.RickyG);
+            AssertNumberOfActivatableAbility(rickyg, key, 1);
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            AssertNumberOfStatusEffectsInPlay(0);
+            ActivateAbility(key, rickyg);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            DealDamage(ra, bloodlace, 2, DamageType.Radiant);
+            QuickHPCheck(0, 0, 0, 0, 0, -1, 0, 0);
+        }
+
+        [Test()]
+        public void TestRickyGUltimateImmunity()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            PlayCard("TakeDown");
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.RickyG);
+
+            FlipCard(rickyg);
+            AssertNumberOfActivatableAbility(rickyg, key, 0);
+
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            DealDamage(legacy, slice, 2, DamageType.Radiant, true);
+            DealDamage(legacy, rickyg, 2, DamageType.Radiant);
+            //slice immune to damage, rickyg is not
+            QuickHPCheck(0, 0, 0, 0, 0, 0, 0, -2);
+
+            //indestructible
+            DestroyCard(slice);
+            AssertInPlayArea(scream, slice);
+
+            DestroyCard(rickyg);
+
+            //immunity ends once ricky leaves play
+            var s = slice; //FindCard fails once slice is destoryed, so buffer locally
+            DestroyCard(s);
+            AssertOutOfGame(s);
+
+            QuickHPStorage(bloodlace);
+            DealDamage(legacy, bloodlace, 5, DamageType.Cold);
+            QuickHPCheck(-5);
+        }
+
+        [Test()]
+        public void TestRickyGUltimateDrumDiscard()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            PlayCard("TakeDown");
+
+            FlipCard(rickyg);
+            var card = PutOnDeck("UpToEleven");
+            AssertInDeck(card);
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            GoToEndOfTurn(scream);
+
+            AssertInTrash(card);
+
+            QuickHPCheck(-3, -3, -3, -3, 0, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestRickyGUltimateNotDrumDiscard()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            PlayCard("TakeDown");
+
+            FlipCard(rickyg);
+            var card = PutOnDeck("DeathMetal");
+            AssertInDeck(card);
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            GoToEndOfTurn(scream);
+
+            AssertInTrash(card);
+
+            QuickHPCheck(0, 0, 0, 0, 0, 0, 0, 0);
+        }
     }
 }
