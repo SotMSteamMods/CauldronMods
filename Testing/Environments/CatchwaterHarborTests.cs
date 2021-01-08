@@ -400,5 +400,27 @@ namespace CauldronTests
 
         }
 
+
+        [Test()]
+        public void TestAlteringHistory()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card factory = PlayCard("AbandonedFactory");
+            Card altering = PlayCard("AlteringHistory");
+
+            //Whenever this card or any other environment card is destroyed, this card deals the 2 non-environment targets with the lowest HP 2 psychic damage each.
+            QuickHPStorage(baron, ra, bunker, haka);
+            DestroyCard(factory, baron.CharacterCard);
+            QuickHPCheck(0, -2, -2, 0);
+
+            QuickHPUpdate();
+            DestroyCard(altering, baron.CharacterCard);
+            QuickHPCheck(0, -2, -2, 0);
+
+
+        }
+
     }
 }
