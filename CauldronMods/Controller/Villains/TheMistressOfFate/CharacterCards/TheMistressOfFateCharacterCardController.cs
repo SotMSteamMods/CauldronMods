@@ -22,9 +22,34 @@ namespace Cauldron.TheMistressOfFate
             AddSideTrigger(AddTrigger((UnincapacitateHeroAction uha) => true, uha => SetRevivingHero(uha), TriggerType.Hidden, TriggerTiming.Before));
             AddSideTrigger(AddTrigger((ShuffleCardsAction sc) => sc.Location.OwnerTurnTaker == HeroBeingRevived, sc => CancelAction(sc), TriggerType.CancelAction, TriggerTiming.Before));
             AddSideTrigger(AddTrigger<BulkMoveCardsAction>(IsDefaultCardRestoration, RestoreHeroCards, TriggerType.Hidden, TriggerTiming.Before));
-            AddSideTrigger(AddTrigger((UnincapacitateHeroAction uha) => true, uha => SetRevivingHero(uha, clear: true), TriggerType.Hidden, TriggerTiming.After));
+            AddSideTrigger(AddTrigger((UnincapacitateHeroAction uha) => true, uha => SetRevivingHero(uha, clear: true), TriggerType.Hidden, TriggerTiming.After, requireActionSuccess: false));
+
+            AddSideTrigger(AddTrigger((GameOverAction go) => go.EndingResult == EndingResult.HeroesDestroyedDefeat, ContinueGameWithMessage, TriggerType.CancelAction, TriggerTiming.Before, priority: TriggerPriority.High));
         }
 
+        private IEnumerator ContinueGameWithMessage(GameOverAction go)
+        {
+            IEnumerator coroutine = GameController.SendMessageAction("The Timeline continues to turn...", Priority.High, GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            coroutine = CancelAction(go);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+
+        }
         private IEnumerator SetRevivingHero(UnincapacitateHeroAction uha, bool clear = false)
         {
             if (clear)
@@ -143,7 +168,7 @@ namespace Cauldron.TheMistressOfFate
             yield break;
         }
 
-        public bool IsDefaultCardRestoration(BulkMoveCardsAction bmc)
+        private bool IsDefaultCardRestoration(BulkMoveCardsAction bmc)
         {
             if (bmc.Destination.IsDeck && bmc.Destination.OwnerTurnTaker == HeroBeingRevived && bmc.CardSource == null)
             {

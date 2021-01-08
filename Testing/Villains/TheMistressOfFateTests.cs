@@ -127,5 +127,19 @@ namespace CauldronTests
             AssertInTrash(surge, presence);
             AssertOnTopOfDeck(ring);
         }
+
+        [Test]
+        public void TestMistressOfFateContinuesWithAllHeroesIncapped()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            DealDamage(fate, legacy, 50, DamageType.Melee);
+            DealDamage(fate, ra, 50, DamageType.Melee);
+            DealDamage(fate, haka, 50, DamageType.Melee);
+
+            AssertNotGameOver();
+            GoToStartOfTurn(fate);
+        }
     }
 }
