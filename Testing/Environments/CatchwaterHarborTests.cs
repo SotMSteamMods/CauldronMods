@@ -419,6 +419,64 @@ namespace CauldronTests
             DestroyCard(altering, baron.CharacterCard);
             QuickHPCheck(0, -2, -2, 0);
 
+        }
+
+        [Test()]
+        public void TestFrightenedOnlookers_StartOfTurn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //At the start of the environment turn, 1 player may play a card.
+            PlayCard("FrightenedOnlookers");
+            Card mere = PutInHand("Mere");
+            DecisionSelectTurnTaker = haka.TurnTaker;
+            DecisionSelectCard = mere;
+            GoToStartOfTurn(catchwater);
+            AssertInPlayArea(haka, mere);
+
+        }
+
+        [Test()]
+        public void TestFrightenedOnlookers_StartOfTurn_Optional()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //At the start of the environment turn, 1 player may play a card.
+            PlayCard("FrightenedOnlookers");
+            Card mere = PutInHand("Mere");
+            DecisionSelectTurnTaker = haka.TurnTaker;
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+            GoToStartOfTurn(catchwater);
+            AssertInHand(haka, mere);
+
+        }
+
+        [Test()]
+        public void TestFrightenedOnlookers_DamageSelf()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //Whenever a target is dealt 4 or more damage from a single source, this card deals itself 1 projectile damage.
+            Card onlooker = PlayCard("FrightenedOnlookers");
+            QuickHPStorage(onlooker);
+            DealDamage(baron, ra, 4, DamageType.Fire);
+            QuickHPCheck(-1);
+
+            //only when exceeds 4
+            QuickHPUpdate();
+            DealDamage(baron, ra, 3, DamageType.Fire);
+            QuickHPCheck(0);
+
+            //when any target damaged for > 4
+            QuickHPUpdate();
+            DealDamage(ra, baron, 8, DamageType.Fire);
+            QuickHPCheck(-1);
 
         }
 
