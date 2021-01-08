@@ -16,6 +16,29 @@ namespace Cauldron.ScreaMachine
 
         public abstract IEnumerable<ScreaMachineBandmate.Value> AbilityIcons { get; }
 
+        protected IEnumerator AcivateBandAbilities(IEnumerable<ScreaMachineBandmate.Value> members)
+        {
+            var keys = members.Select(m => m.GetAbilityKey()).ToArray();
+            if (!keys.Any())
+                yield break;
+
+            foreach (var card in FindCardsWhere(c => c.IsVillain && c.IsInPlayAndNotUnderCard && !c.IsOneShot))
+            {
+                var cc = FindCardController(card);
+                foreach (var ability in cc.GetActivatableAbilities().Where(aa => keys.Contains(aa.AbilityKey)))
+                {
+                    var coroutine = GameController.ActivateAbility(ability, GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+            }
+        }
 
         protected Card SliceCharacter => base.FindCard("SliceCharacter");
 
@@ -25,9 +48,7 @@ namespace Cauldron.ScreaMachine
 
         protected Card RickyGCharacter => base.FindCard("RickyGCharacter");
 
-        protected Card TheSetList => base.FindCard("TheSetList", false);
-
-        protected TheSetListCardController TheSetListCardController => base.FindCardController(TheSetList) as TheSetListCardController;
+        protected TheSetListCardController TheSetListCardController => base.FindCardController(base.FindCard("TheSetList", false)) as TheSetListCardController;
 
 
 
