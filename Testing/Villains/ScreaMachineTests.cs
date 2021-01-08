@@ -53,6 +53,17 @@ namespace CauldronTests
             }
         }
 
+        private Card SetupBandCard(string identifier)
+        {
+            var card = FindCard(c => c.Identifier == identifier);
+            if (card.Location == setlist.UnderLocation)
+            {
+                FlipCard(card);
+                PlayCard(card);
+            }
+            return card;
+        }
+
         private void AssertNumberOfActivatableAbility(Card card, string key, int number)
         {
             var cc = FindCardController(card);
@@ -555,6 +566,48 @@ namespace CauldronTests
             AssertInTrash(card);
 
             QuickHPCheck(0, 0, 0, 0, 0, 0, 0, 0);
+        }
+
+        [Test]
+        [Ignore("Not implemented")]
+        public void TestBandCardRevealsIfBandMateMissing([Values(ScreaMachineBandmate.Value.Slice, ScreaMachineBandmate.Value.Bloodlace, ScreaMachineBandmate.Value.Valentine, ScreaMachineBandmate.Value.RickyG)] ScreaMachineBandmate.Value member)
+        {
+            
+        }
+
+
+        [Test()]
+        public void TestShredZone()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var card = SetupBandCard("ShredZone");
+            
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Slice);
+            AssertNumberOfActivatableAbility(card, key, 1);
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            ActivateAbility(key, card);
+            QuickHPCheck(0, -1, 0, -1, 0, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestSlicesAxe()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var card = SetupBandCard("SlicesAxe");
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Slice);
+            AssertNumberOfActivatableAbility(card, key, 1);
+
+            DrawCard(legacy); //make legacy the one with the most cards in hand
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            ActivateAbility(key, card);
+            QuickHPCheck(-3, 0, 0, 0, 0, 0, 0, 0);
         }
     }
 }
