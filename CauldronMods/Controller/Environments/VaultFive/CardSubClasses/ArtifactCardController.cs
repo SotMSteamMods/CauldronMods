@@ -152,7 +152,5 @@ namespace Cauldron.VaultFive
 
             yield break;
         }
-
-
     }
 }
