@@ -19,7 +19,7 @@ namespace Cauldron.VaultFive
             //1 player discards a card...
             List<TurnTaker> usedTurnTakers = new List<TurnTaker>();
             List<SelectTurnTakerDecision> storedResults = new List<SelectTurnTakerDecision>();
-            IEnumerator coroutine = base.GameController.SelectHeroToDiscardCard(DecisionMaker, storedResultsTurnTaker: storedResults, cardSource: GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectHeroToDiscardCard(DecisionMaker, optionalDiscardCard: false, storedResultsTurnTaker: storedResults, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
