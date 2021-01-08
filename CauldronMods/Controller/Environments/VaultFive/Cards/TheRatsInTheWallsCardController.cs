@@ -18,7 +18,7 @@ namespace Cauldron.VaultFive
         public override void AddTriggers()
         {
             //Whenever a player draws an Artifact card, they may draw a card.
-            AddTrigger<DrawCardAction>((DrawCardAction dca) => dca.IsSuccessful && dca.CardToDraw != null && IsArtifact(dca.CardToDraw), DrawCardResponse, TriggerType.DrawCard, TriggerTiming.After);
+            AddTrigger<DrawCardAction>((DrawCardAction dca) => dca.DidDrawCard && dca.DrawnCard != null && IsArtifact(dca.DrawnCard), DrawCardResponse, TriggerType.DrawCard, TriggerTiming.After);
             //Increase damage dealt to heroes with Artifact cards in their hands by 1
             AddIncreaseDamageTrigger((DealDamageAction dd) => dd.Target != null && dd.Target.IsHeroCharacterCard && GetPlayersWithArtifactsInHand().Contains(dd.Target.Owner), 1);
         }
