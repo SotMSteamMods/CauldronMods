@@ -480,5 +480,56 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestHarborCrane_MoveNextTo()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //Whenever this card is dealt damage by a target, move it next to that target.
+            Card crane = PlayCard("HarborCrane");
+            DealDamage(ra, crane, 1, DamageType.Melee);
+            AssertNextToCard(crane, ra.CharacterCard);
+
+            DealDamage(baron, crane, 1, DamageType.Melee);
+            AssertNextToCard(crane, baron.CharacterCard);
+        }
+
+        [Test()]
+        public void TestHarborCrane_Increase()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //Increase damage dealt by the target next to this card by 1.
+            Card crane = PlayCard("HarborCrane");
+            DealDamage(ra, crane, 1, DamageType.Melee);
+            AssertNextToCard(crane, ra.CharacterCard);
+
+            QuickHPStorage(baron);
+            DealDamage(ra, baron, 3, DamageType.Fire);
+            QuickHPCheck(-4);
+        }
+
+        [Test()]
+        public void TestHarborCrane_WhenDestroyed()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //When this card is destroyed, it deals the target next to it 5 melee damage
+            Card crane = PlayCard("HarborCrane");
+            DealDamage(ra, crane, 1, DamageType.Melee);
+            AssertNextToCard(crane, ra.CharacterCard);
+
+            QuickHPStorage(baron, ra, bunker, haka);
+            DestroyCard(crane, baron.CharacterCard);
+            QuickHPCheck(0, -5, 0, 0);
+
+        }
+
     }
 }
