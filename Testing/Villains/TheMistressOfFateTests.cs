@@ -24,6 +24,11 @@ namespace CauldronTests
                 AssertCardHasKeyword(card, keyword, false);
             }
         }
+        private Card heroStorage(HeroTurnTakerController hero, string variety)
+        {
+            var cards = hero.TurnTaker.OffToTheSide.Cards;
+            return cards.Where((Card c) => c.Identifier == variety + "Storage").FirstOrDefault();
+        }
         #endregion
         [Test]
         public void TestMistressOfFateLoads()
@@ -36,6 +41,91 @@ namespace CauldronTests
             Assert.IsInstanceOf(typeof(TheMistressOfFateCharacterCardController), fate.CharacterCardController);
 
             Assert.AreEqual(88, fate.CharacterCard.HitPoints);
+        }
+        [Test]
+        public void TestMistressOfFateDecklist()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Megalopolis");
+
+            AssertHasKeyword("day", new string[]
+            {
+                "DayOfSaints",
+                "DayOfSinners",
+                "DayOfSorrows",
+                "DayOfSwords"
+            });
+
+            AssertHasKeyword("one-shot", new string[] {
+                "CantFightFate",
+                "FadingRealities",
+                "TangledWeft",
+                "ToDust"
+            });
+            AssertHasKeyword("ongoing", new string[] {
+                "IllusionOfFreeWill",
+                "MemoryOfTomorrow",
+                "NecessaryCorrection",
+                "SameTimeAndPlace",
+                "SeeThePattern",
+                "StolenFuture"
+            });
+            AssertHasKeyword("anomaly", new string[] {
+                "HourDevourer",
+                "ResidualMalus",
+                "WarpedMalus"
+            });
+            AssertHasKeyword("creature", new string[] {
+                "ChaosButterfly"
+            });
+        }
+
+        [Test]
+        public void TestMistressOfFateSetsUp()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            AssertNumberOfCardsAtLocation(legacy.TurnTaker.OffToTheSide, 3);
+        }
+
+        [Test]
+        public void TestMistressOfFatePreservesIncappedHero()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card fortitude = PutInHand("Fortitude");
+            Card surge = PutInTrash("SurgeOfStrength");
+            Card ring = PutOnDeck("TheLegacyRing");
+            Card presence = PutIntoPlay("InspiringPresence");
+
+            DealDamage(fate, legacy, 50, DamageType.Melee);
+            AssertUnderCard(heroStorage(legacy, "Hand"), fortitude);
+            AssertUnderCard(heroStorage(legacy, "Deck"), ring);
+            AssertUnderCard(heroStorage(legacy, "Trash"), surge);
+            AssertUnderCard(heroStorage(legacy, "Trash"), presence);
+        }
+
+        [Test]
+        public void TestMistressOfFateRestoresIncappedHero()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card fortitude = PutInHand("Fortitude");
+            Card surge = PutIntoPlay("SurgeOfStrength");
+            Card ring = PutOnDeck("TheLegacyRing");
+            Card presence = PutInTrash("InspiringPresence");
+
+            DealDamage(fate, legacy, 50, DamageType.Melee);
+
+            var list = new List<UnincapacitateHeroAction>();
+            var coroutine = GameController.UnincapacitateHero(legacy.CharacterCardController, legacy.CharacterCard.Definition.HitPoints ?? 10, null, list, cardSource: fate.CharacterCardController.GetCardSource());
+            GameController.ExhaustCoroutine(coroutine);
+
+            AssertInHand(fortitude);
+            AssertInTrash(surge, presence);
+            AssertOnTopOfDeck(ring);
         }
     }
 }

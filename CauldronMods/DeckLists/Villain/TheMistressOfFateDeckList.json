@@ -78,110 +78,6 @@
             }
         },
         {
-            "identifier": "TheTimeline",
-            "count": 1,
-            "title": "The Timeline",
-            "icons": [
-                "Indestructible"
-            ],
-            "body": [
-                "This card is indestructible.",
-                "Day cards cannot be affected by non-villain cards. Cards beneath villain cards are not considered in play.",
-                "Immediately after the environment turn, flip {TheMistressOfFate}'s villain character cards if one of these things occurs:",
-                "{Bulletpoint} The players choose to flip her.",
-                "{Bulletpoint} All heroes are incapacitated.",
-                "{Bulletpoint} All Day cards are face up.",
-                "{MistressOfFateDayCards}"
-            ]
-        },
-        {
-            "identifier": "DayOfSaints",
-            "count": 1,
-            "title": "Day of Saints",
-            "keywords": [
-                "day"
-            ],
-            "icons": [
-                "IncreaseDamageDealt",
-                "DealDamagePsychic"
-            ],
-            "body": [
-                "When this card flips face up, increase damage dealt by villain targets by 2 until the start of the next villain turn.",
-                "Then {TheMistressOfFate} deals the hero with the lowest HP {H} times 3 psychic damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Baccarat",
-                    "text": "Wait, I've been{BR}stuck in a time loop{BR}before? When?"
-                },
-                {
-                    "identifier": "TangoOne",
-                    "text": "1929."
-                }
-            ],
-            "flavorReference": "Once More With Feeling"
-        },
-        {
-            "identifier": "DayOfSinners",
-            "count": 1,
-            "title": "Day of Sinners",
-            "keywords": [
-                "day"
-            ],
-            "icons": [
-                "PlayCardNow"
-            ],
-            "body": [
-                "When this card flips face up, put any cards beneath it into play. If there are none, reveal cards from the top of the villain deck until a One-shot is revealed, put it into play, and shuffle the other revealed cards into the villain deck.",
-                "When that one-shot leaves play, put it beneath this card."
-            ],
-            "flavorText": "As the 4-day loop repeated,{BR}over and over, time itself began to{BR}splinter and crack."
-        },
-        {
-            "identifier": "DayOfSorrows",
-            "count": 1,
-            "title": "Day of Sorrows",
-            "keywords": [
-                "day"
-            ],
-            "icons": [
-                "PlayCardNow"
-            ],
-            "body": [
-                "When this card flips face up, put any cards beneath it into play. If there are none, reveal cards from the top of the villain deck until an Anomaly is revealed, put it into play, and shuffle the other revealed cards into the villain deck.",
-                "When {TheMistressOfFate} flips or that card leaves play, put it beneath this card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Vanish",
-                    "text": "This is that same rain. They always{BR}show up right after it starts."
-                }
-            ],
-            "flavorReference": "Vanish, The Debt #5"
-        },
-        {
-            "identifier": "DayOfSwords",
-            "count": 1,
-            "title": "Day of Swords",
-            "keywords": [
-                "day"
-            ],
-            "icons": [
-                "PlayCardNow"
-            ],
-            "body": [
-                "When this card flips face up, put any cards beneath it into play. If there are none, reveal cards from the top of the villain deck until an Anomaly or One-shot is revealed, put it into play, and shuffle the other revealed cards into the villain deck.",
-                "When {TheMistressOfFate} flips or that card leaves play, put it beneath this card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Unity",
-                    "text": "I don't think I want to{BR}wish on this one."
-                }
-            ],
-            "flavorReference": "Unity, Abstract Tales Annual #4"
-        },
-        {
             "identifier": "CantFightFate",
             "count": 2,
             "title": "Can't Fight Fate",
@@ -512,6 +408,156 @@
             ],
             "flavorReference": "Chrono-Ranger, Abstract Tales Annual #4",
             "hitpoints": 6
+        }
+    ],
+    "subdecks": [
+        {
+            "identifier": "DayDeck",
+            "title": "The Day Deck",
+            "kind": "Other",
+            "isReal": false,
+            "cards":[
+                {
+                   "identifier": "TheTimeline",
+                   "count": 1,
+                   "title": "The Timeline",
+                   "icons": [
+                       "Indestructible"
+                   ],
+                   "body": [
+                       "This card is indestructible.",
+                       "Day cards cannot be affected by non-villain cards. Cards beneath villain cards are not considered in play.",
+                       "Immediately after the environment turn, flip {TheMistressOfFate}'s villain character cards if one of these things occurs:",
+                       "{Bulletpoint} The players choose to flip her.",
+                       "{Bulletpoint} All heroes are incapacitated.",
+                       "{Bulletpoint} All Day cards are face up.",
+                       "{MistressOfFateDayCards}"
+                   ]
+               },
+               {
+                   "identifier": "DayOfSaints",
+                   "count": 1,
+                   "title": "Day of Saints",
+                   "keywords": [
+                       "day"
+                   ],
+                   "icons": [
+                       "IncreaseDamageDealt",
+                       "DealDamagePsychic"
+                   ],
+                   "body": [
+                       "When this card flips face up, increase damage dealt by villain targets by 2 until the start of the next villain turn.",
+                       "Then {TheMistressOfFate} deals the hero with the lowest HP {H} times 3 psychic damage."
+                   ],
+                   "flavorQuotes": [
+                       {
+                           "identifier": "Baccarat",
+                           "text": "Wait, I've been{BR}stuck in a time loop{BR}before? When?"
+                       },
+                       {
+                           "identifier": "TangoOne",
+                           "text": "1929."
+                       }
+                   ],
+                   "flavorReference": "Once More With Feeling"
+                },
+                {
+                    "identifier": "DayOfSinners",
+                    "count": 1,
+                    "title": "Day of Sinners",
+                    "keywords": [
+                        "day"
+                    ],
+                    "icons": [
+                        "PlayCardNow"
+                    ],
+                    "body": [
+                        "When this card flips face up, put any cards beneath it into play. If there are none, reveal cards from the top of the villain deck until a One-shot is revealed, put it into play, and shuffle the other revealed cards into the villain deck.",
+                        "When that one-shot leaves play, put it beneath this card."
+                    ],
+                    "flavorText": "As the 4-day loop repeated,{BR}over and over, time itself began to{BR}splinter and crack."
+                },
+                {
+                    "identifier": "DayOfSorrows",
+                    "count": 1,
+                    "title": "Day of Sorrows",
+                    "keywords": [
+                        "day"
+                    ],
+                    "icons": [
+                        "PlayCardNow"
+                    ],
+                    "body": [
+                        "When this card flips face up, put any cards beneath it into play. If there are none, reveal cards from the top of the villain deck until an Anomaly is revealed, put it into play, and shuffle the other revealed cards into the villain deck.",
+                        "When {TheMistressOfFate} flips or that card leaves play, put it beneath this card."
+                    ],
+                    "flavorQuotes": [
+                        {
+                            "identifier": "Vanish",
+                            "text": "This is that same rain. They always{BR}show up right after it starts."
+                        }
+                    ],
+                    "flavorReference": "Vanish, The Debt #5"
+                },
+                {
+                    "identifier": "DayOfSwords",
+                    "count": 1,
+                    "title": "Day of Swords",
+                    "keywords": [
+                        "day"
+                    ],
+                    "icons": [
+                        "PlayCardNow"
+                    ],
+                    "body": [
+                        "When this card flips face up, put any cards beneath it into play. If there are none, reveal cards from the top of the villain deck until an Anomaly or One-shot is revealed, put it into play, and shuffle the other revealed cards into the villain deck.",
+                        "When {TheMistressOfFate} flips or that card leaves play, put it beneath this card."
+                    ],
+                    "flavorQuotes": [
+                        {
+                            "identifier": "Unity",
+                            "text": "I don't think I want to{BR}wish on this one."
+                        }
+                    ],
+                    "flavorReference": "Unity, Abstract Tales Annual #4"
+                },
+                {
+                    "identifier": "DeckStorage",
+                    "count": 5,
+                    "title": "Deck Storage",
+                    "keywords": [],
+                    "icons": [],
+                    "isReal": false,
+                    "body": [
+                        "This exists as a way to help the Mistress of Fate organize the cards of incapacitated heroes.",
+                        "If you see this card in gameplay, something has gone wrong. Please file a bug report at https://github.com/SotMSteamMods/CauldronMods"
+                    ]
+                },
+                {
+                    "identifier": "HandStorage",
+                    "count": 5,
+                    "title": "Hand Storage",
+                    "keywords": [],
+                    "icons": [],
+                    "isReal": false,
+                    "body": [
+                        "This exists as a way to help the Mistress of Fate organize the cards of incapacitated heroes.",
+                        "If you see this card in gameplay, something has gone wrong. Please file a bug report at https://github.com/SotMSteamMods/CauldronMods"
+                    ]
+                },
+                {
+                    "identifier": "TrashStorage",
+                    "count": 5,
+                    "title": "Trash Storage",
+                    "keywords": [],
+                    "icons": [],
+                    "isReal": false,
+                    "body": [
+                        "This exists as a way to help the Mistress of Fate organize the cards of incapacitated heroes.",
+                        "If you see this card in gameplay, something has gone wrong. Please file a bug report at https://github.com/SotMSteamMods/CauldronMods"
+                    ]
+                }
+            ]
         }
     ]
 }
