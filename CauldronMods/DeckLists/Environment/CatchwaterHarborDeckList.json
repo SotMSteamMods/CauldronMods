@@ -193,6 +193,9 @@
             "identifier": "TheCervantesClub",
             "count": 1,
             "title": "The Cervantes Club",
+            "keywords": [
+                "speakeasy"
+            ],
             "icons": [
                 "EndOfTurnAction",
                 "GainHP",

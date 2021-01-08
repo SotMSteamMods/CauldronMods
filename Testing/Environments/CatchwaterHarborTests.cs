@@ -31,6 +31,105 @@ namespace CauldronTests
 
         [Test()]
         [Sequential]
+        public void DecklistTest_Transport_IsTransport([Values("SSEscape", "ToOverbrook", "UnmooredZeppelin")] string transport)
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+
+            GoToPlayCardPhase(catchwater);
+
+            Card card = PlayCard(transport);
+            AssertIsInPlay(card);
+            AssertCardHasKeyword(card, "transport", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Gangster_IsGangster([Values("HarkinParishJr", "SmoothCriminal")] string gangster)
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+
+            GoToPlayCardPhase(catchwater);
+
+            Card card = PlayCard(gangster);
+            AssertIsInPlay(card);
+            AssertCardHasKeyword(card, "gangster", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Anomaly_IsAnomaly([Values("OminousLoop")] string anomaly)
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+
+            GoToPlayCardPhase(catchwater);
+
+            Card card = PlayCard(anomaly);
+            AssertIsInPlay(card);
+            AssertCardHasKeyword(card, "anomaly", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Civilian_IsCivilian([Values("FrightenedOnlookers")] string anomaly)
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+
+            GoToPlayCardPhase(catchwater);
+
+            Card card = PlayCard(anomaly);
+            AssertIsInPlay(card);
+            AssertCardHasKeyword(card, "civilian", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Speakeasy_IsSpeakeasy([Values("TheCervantesClub")] string speakeasy)
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+
+            GoToPlayCardPhase(catchwater);
+
+            Card card = PlayCard(speakeasy);
+            AssertIsInPlay(card);
+            AssertCardHasKeyword(card, "speakeasy", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_Structure_IsStructure([Values("HarborCrane")] string structure)
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+
+            GoToPlayCardPhase(catchwater);
+
+            Card card = PlayCard(structure);
+            AssertIsInPlay(card);
+            AssertCardHasKeyword(card, "structure", false);
+        }
+
+        [Test()]
+        [Sequential]
+        public void DecklistTest_NoKeyword_HasNoKeyword([Values("AllAboard", "LeftBehind", "AbandonedFactory",
+            "AlteringHistory", "RadioPlaza", "ThisJustIn")] string keywordLess)
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+
+            GoToPlayCardPhase(catchwater);
+
+            Card card = PlayCard(keywordLess);
+            AssertIsInPlay(card);
+            Assert.IsFalse(card.Definition.Keywords.Any(), $"{card.Title} has keywords when it shouldn't.");
+        }
+
+        [Test()]
+        [Sequential]
         public void TestTransportPlay_AllAboardInDeck([Values("SSEscape", "ToOverbrook", "UnmooredZeppelin")] string transport)
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.CatchwaterHarbor");
