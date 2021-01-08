@@ -27,8 +27,56 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.CatchwaterHarbor");
             StartGame();
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
+        }
+
+        [Test()]
+        [Sequential]
+        public void TestTransportPlay_AllAboardInDeck([Values("SSEscape", "ToOverbrook", "UnmooredZeppelin")] string transport)
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            Card allAboard = GetCard("AllAboard");
+            //stack deck for 3:10 To Overbrook to not mess things up
+            StackAfterShuffle(catchwater.TurnTaker.Deck, new string[] { "AlteringHistory" });
+            //When this card enters play, search the environment deck and trash for All Aboard and put it into play, then shuffle the deck.
+            QuickShuffleStorage(catchwater.TurnTaker.Deck);
+            PlayCard(transport);
+            QuickShuffleCheck(1);
+            AssertIsInPlay(allAboard);
+        }
+
+        [Test()]
+        [Sequential]
+        public void TestTransportPlay_AllAboardInTrash([Values("SSEscape", "ToOverbrook", "UnmooredZeppelin")] string transport)
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            Card allAboard = PutInTrash("AllAboard");
+            //stack deck for 3:10 To Overbrook to not mess things up
+            StackAfterShuffle(catchwater.TurnTaker.Deck, new string[] { "AlteringHistory" });
+            //When this card enters play, search the environment deck and trash for All Aboard and put it into play, then shuffle the deck.
+            QuickShuffleStorage(catchwater.TurnTaker.Deck);
+            PlayCard(transport);
+            QuickShuffleCheck(1);
+            AssertIsInPlay(allAboard);
+        }
+
+        [Test()]
+        public void TestSSEscapePlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card battalion = PlayCard("BladeBattalion");
+            SetHitPoints(new Card[] { baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard }, 2);
+            //each target regains 2HP.
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            Card transport = PlayCard("SSEscape");
+            QuickHPCheck(2, 2, 2, 2, 2);
 
         }
+
 
         [Test()]
         public void TestSSEscapeTravel()
@@ -37,8 +85,8 @@ namespace CauldronTests
             StartGame();
             DestroyNonCharacterVillainCards();
             Card battalion = PlayCard("BladeBattalion");
-            SetHitPoints(new Card[] { baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard }, 2);
             Card transport = PlayCard("SSEscape");
+            SetHitPoints(new Card[] { baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard }, 2);
             //Each player draws a card.Each villain target regains 3HP.
             QuickHandStorage(ra, legacy, haka);
             QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
@@ -46,6 +94,21 @@ namespace CauldronTests
             QuickHandCheck(1, 1, 1);
             QuickHPCheck(3, 3, 0, 0, 0);
 
+        }
+
+        [Test()]
+        public void TestToOverbrookPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //play its top card.
+            Card altering = GetCard("AlteringHistory");
+            StackAfterShuffle(catchwater.TurnTaker.Deck, new string[] { "AlteringHistory" });
+            Card transport = PlayCard("ToOverbrook");
+            AssertIsInPlay(altering);
+           
         }
 
         [Test()]
@@ -72,6 +135,20 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestUnmooredZeppelinPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //this card deals each target 2 projectile damage.
+            QuickHPStorage(baron, ra, bunker, haka);
+            Card transport = PlayCard("UnmooredZeppelin");
+            QuickHPCheck(-2, -2, -2, -2);
+            
+        }
+
+        [Test()]
         public void TestUnmooredZeppelinTravel()
         {
             SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
@@ -95,7 +172,6 @@ namespace CauldronTests
             DealDamage(bunker, baron, 1, DamageType.Melee);
             DealDamage(haka, baron, 1, DamageType.Melee);
             QuickHPCheck(-3, -1);
-
 
         }
 

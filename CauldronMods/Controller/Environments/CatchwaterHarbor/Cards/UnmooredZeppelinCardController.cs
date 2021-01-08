@@ -14,6 +14,21 @@ namespace Cauldron.CatchwaterHarbor
         {
         }
 
+        public override IEnumerator UniqueOnPlayEffect()
+        {
+            //this card deals each target 2 projectile damage.
+            IEnumerator coroutine = DealDamage(Card, (Card c) => c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 2, DamageType.Projectile);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
         public override IEnumerator ActivateTravel()
         {
             //Increase all damage dealt by 1 until the start of the next environment turn.

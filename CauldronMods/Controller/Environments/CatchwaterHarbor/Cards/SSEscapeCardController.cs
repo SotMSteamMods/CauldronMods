@@ -14,6 +14,21 @@ namespace Cauldron.CatchwaterHarbor
         {
         }
 
+        public override IEnumerator UniqueOnPlayEffect()
+        {
+            //each target regains 2HP.
+            IEnumerator coroutine = GameController.GainHP(DecisionMaker, (Card c) => c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 2, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
         public override IEnumerator ActivateTravel()
         {
             //Each player draws a card.

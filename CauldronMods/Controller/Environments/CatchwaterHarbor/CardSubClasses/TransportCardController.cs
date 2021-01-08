@@ -14,7 +14,53 @@ namespace Cauldron.CatchwaterHarbor
 
         }
 
-		public override IEnumerator ActivateAbility(string abilityKey)
+        public static readonly string AllAboardIdentifier = "AllAboard";
+
+        public override IEnumerator Play()
+        {
+            var locations = new Location[]
+            {
+                        base.TurnTaker.Deck,
+                        base.TurnTaker.Trash
+            };
+
+            //When this card enters play, search the environment deck and trash for All Aboard and put it into play, then shuffle the deck.
+            IEnumerator coroutine = base.PlayCardFromLocations(locations, AllAboardIdentifier, isPutIntoPlay: true, showMessageIfFailed: false, shuffleAfterwardsIfDeck: false);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = base.GameController.ShuffleLocation(base.TurnTaker.Deck, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            IEnumerator coroutine2 = UniqueOnPlayEffect();
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine2);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine2);
+            }
+
+            yield break;
+        }
+
+        public virtual IEnumerator UniqueOnPlayEffect() { return null; }
+
+        public override IEnumerator ActivateAbility(string abilityKey)
 		{
 			IEnumerator enumerator = null;
 			if (abilityKey == "travel")
