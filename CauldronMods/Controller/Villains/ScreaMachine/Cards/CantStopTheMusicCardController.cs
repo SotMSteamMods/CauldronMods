@@ -16,7 +16,29 @@ namespace Cauldron.ScreaMachine
 
         protected override IEnumerator ActivateBandAbility()
         {
-            throw new NotImplementedException();
+            List<Card> lowest = new List<Card>();
+            var coroutine = GameController.FindTargetWithLowestHitPoints(1, c => IsVillainTarget(c) && c.IsInPlayAndNotUnderCard, lowest, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if (lowest.Any() && lowest.First() != null)
+            {
+                coroutine = GameController.GainHP(lowest.First(), 2, cardSource: GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
         }
     }
 }

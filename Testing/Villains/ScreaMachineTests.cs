@@ -617,5 +617,26 @@ namespace CauldronTests
             ActivateAbility(key, card);
             QuickHPCheck(-3, 0, 0, 0, 0, 0, 0, 0);
         }
+
+        [Test()]
+        public void TestCantStopTheMusic()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var card = SetupBandCard("CantStopTheMusic");
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Bloodlace);
+            AssertNumberOfActivatableAbility(card, key, 1);
+
+            SetHitPoints(rickyg, 10);
+            
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            ActivateAbility(key, card);
+            QuickHPCheck(0, 0, 0, 0, 0, 0, 0, 2);
+        }
+
     }
+
+
 }
