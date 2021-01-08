@@ -12,6 +12,7 @@ namespace Cauldron.ScreaMachine
     {
         public CantStopTheMusicCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, ScreaMachineBandmate.Value.Bloodlace)
         {
+            SpecialStringMaker.ShowVillainTargetWithLowestHP();
         }
 
         protected override IEnumerator ActivateBandAbility()

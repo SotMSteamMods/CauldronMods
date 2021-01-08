@@ -580,7 +580,7 @@ namespace CauldronTests
         [Ignore("Not implemented")]
         public void TestBandCardRevealsIfBandMateMissing([Values(ScreaMachineBandmate.Value.Slice, ScreaMachineBandmate.Value.Bloodlace, ScreaMachineBandmate.Value.Valentine, ScreaMachineBandmate.Value.RickyG)] ScreaMachineBandmate.Value member)
         {
-            
+
         }
 
 
@@ -591,7 +591,7 @@ namespace CauldronTests
             StartGame();
 
             var card = SetupBandCard("ShredZone");
-            
+
             string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Slice);
             AssertNumberOfActivatableAbility(card, key, 1);
 
@@ -630,10 +630,36 @@ namespace CauldronTests
             AssertNumberOfActivatableAbility(card, key, 1);
 
             SetHitPoints(rickyg, 10);
-            
+
             QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
             ActivateAbility(key, card);
             QuickHPCheck(0, 0, 0, 0, 0, 0, 0, 2);
+        }
+
+
+        [Test()]
+        public void TestBiosurge()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var card = SetupBandCard("Biosurge");
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Bloodlace);
+            AssertNumberOfActivatableAbility(card, key, 1);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            ActivateAbility(key, card);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            //next bloodlace damage is increased, so not slice
+            DealDamage(slice, ra, 1, DamageType.Lightning);
+            DealDamage(bloodlace, legacy, 1, DamageType.Lightning);
+            QuickHPCheck(-3, -1, 0, 0, 0, 0, 0, 0);
+
+            //only next damage
+            AssertNumberOfStatusEffectsInPlay(0);
         }
 
     }
