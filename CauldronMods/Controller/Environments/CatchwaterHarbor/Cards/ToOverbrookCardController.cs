@@ -13,5 +13,11 @@ namespace Cauldron.CatchwaterHarbor
         public ToOverbrookCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override IEnumerator ActivateTravel()
+        {
+           
+            yield break;
+        }
     }
 }

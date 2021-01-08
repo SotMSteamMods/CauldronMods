@@ -14,6 +14,30 @@ namespace Cauldron.CatchwaterHarbor
 
         }
 
+		public override IEnumerator ActivateAbility(string abilityKey)
+		{
+			IEnumerator enumerator = null;
+			if (abilityKey == "travel")
+			{
+				enumerator = ActivateTravel();
+			}
+			
+			if (enumerator != null)
+			{
+				if (base.UseUnityCoroutines)
+				{
+					yield return base.GameController.StartCoroutine(enumerator);
+				}
+				else
+				{
+					base.GameController.ExhaustCoroutine(enumerator);
+				}
+			}
+		}
 
-    }
+		public virtual IEnumerator ActivateTravel()
+		{
+			yield return null;
+		}
+	}
 }
