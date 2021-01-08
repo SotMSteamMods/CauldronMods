@@ -241,5 +241,65 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestAbandonedFactory_EnterTrash()
+        {
+            SetupGameController("TheEnnead", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            Card lowestVillain = FindCardsWhere(c => ennead.CharacterCards.Contains(c) && c.IsInPlayAndHasGameText).First();
+            SetHitPoints(lowestVillain, 5);
+            //Whenever an ongoing or equipment card enters a hero trash pile, the villain character target with the lowest HP regains 2HP.
+            PlayCard("AbandonedFactory");
+
+            //ongoing
+            QuickHPStorage(lowestVillain);
+            MoveCard(ra, "FlameBarrier", ra.TurnTaker.Trash);
+            QuickHPCheck(2);
+
+            //equipment
+            QuickHPUpdate();
+            MoveCard(ra, "TheStaffOfRa", ra.TurnTaker.Trash);
+            QuickHPCheck(2);
+
+            //only hero trashes
+            QuickHPUpdate();
+            MoveCard(haka, "Mere", ennead.TurnTaker.Trash);
+            QuickHPCheckZero();
+        }
+
+        [Test()]
+        public void TestAbandonedFactory_DestroyInstead()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+        
+            Card factory = PlayCard("AbandonedFactory");
+            Card transport = PlayCard("SSEscape");
+
+            //When a Transport card would be destroyed, you may destroy this card instead.
+            DecisionYesNo = true;
+            DestroyCard(transport, ra.CharacterCard);
+            AssertInTrash(factory);
+            AssertIsInPlay(transport);
+
+        }
+
+        [Test()]
+        public void TestAbandonedFactory_DestroyInsteadOptional()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+
+            Card factory = PlayCard("AbandonedFactory");
+            Card transport = PlayCard("SSEscape");
+
+            //When a Transport card would be destroyed, you may destroy this card instead.
+            DecisionYesNo = false;
+            DestroyCard(transport, ra.CharacterCard);
+            AssertInTrash(transport);
+            AssertIsInPlay(factory);
+
+        }
+
     }
 }
