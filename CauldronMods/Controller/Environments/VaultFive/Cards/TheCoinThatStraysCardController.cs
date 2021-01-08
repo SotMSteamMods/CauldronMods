@@ -52,7 +52,7 @@ namespace Cauldron.VaultFive
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             //...and plays a card
-            coroutine = SelectAndPlayCardFromHand(FindHeroTurnTakerController(hero.Owner.ToHero()));
+            coroutine = SelectAndPlayCardFromHand(FindHeroTurnTakerController(hero.Owner.ToHero()), optional: false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
