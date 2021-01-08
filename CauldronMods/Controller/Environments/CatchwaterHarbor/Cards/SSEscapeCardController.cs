@@ -16,7 +16,26 @@ namespace Cauldron.CatchwaterHarbor
 
         public override IEnumerator ActivateTravel()
         {
-            
+            //Each player draws a card.
+            IEnumerator coroutine = EachPlayerDrawsACard((HeroTurnTaker tt) => GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()));
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            //Each villain target regains 3HP.
+            coroutine = GameController.GainHP(DecisionMaker, (Card c) => c.IsVillainTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 3, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
     }

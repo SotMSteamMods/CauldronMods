@@ -16,7 +16,18 @@ namespace Cauldron.CatchwaterHarbor
 
         public override IEnumerator ActivateTravel()
         {
-            
+            //Increase all damage dealt by 1 until the start of the next environment turn.
+            IncreaseDamageStatusEffect effect = new IncreaseDamageStatusEffect(1);
+            effect.UntilStartOfNextTurn(TurnTaker);
+            IEnumerator coroutine = AddStatusEffect(effect);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
     }
