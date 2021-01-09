@@ -728,6 +728,37 @@ namespace CauldronTests
             AssertGameOver(EndingResult.EnvironmentDefeat);
 
         }
+
+        [Test()]
+        public void TestOminousLoop()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //The first time a One-shot card enters the trash each turn, move it beneath this card. Cards beneath this one are not considered in play
+            Card loop = PlayCard("OminousLoop");
+            Card os1 = PlayCard("SlashAndBurn");
+            AssertUnderCard(loop, os1);
+            Card os2 = PlayCard("DeviousDisruption");
+            AssertInTrash(os2);
+            GoToNextTurn();
+            Card ongoing = PutOnDeck("FlameBarrier");
+            DiscardTopCards(ra.TurnTaker.Deck, 1);
+            AssertInTrash(ongoing);
+            Card os3 = PutOnDeck("FireBlast");
+            DiscardTopCards(ra.TurnTaker.Deck, 1);
+            AssertUnderCard(loop, os3);
+            //At the start of the environment turn, destroy this card and put all cards beneath it into play in the order they were placed there
+            QuickHPStorage(baron, ra, bunker, haka);
+            GoToStartOfTurn(catchwater);
+            AssertInTrash(loop);
+            AssertInTrash(os1);
+            AssertInTrash(os2);
+            AssertInTrash(os3);
+            QuickHPCheck(-5, -5, -3, 0);
+            AssertNumberOfCardsInRevealed(catchwater, 0);
+
+        }
     }
 
 }
