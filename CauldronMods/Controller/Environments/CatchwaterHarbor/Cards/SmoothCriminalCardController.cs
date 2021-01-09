@@ -12,6 +12,7 @@ namespace Cauldron.CatchwaterHarbor
     {
         public SmoothCriminalCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => IsTransport(c), "transport"));
         }
 
         public override void AddTriggers()
