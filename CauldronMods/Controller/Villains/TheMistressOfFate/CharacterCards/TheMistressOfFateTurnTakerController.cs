@@ -45,6 +45,8 @@ namespace Cauldron.TheMistressOfFate
             
             //Shuffle the day cards face down, and place them in a row to the right of the Timeline."
             var days = TurnTaker.GetCardsAtLocation(dayDeck).Where((Card c) => c.IsRealCard).ToList();
+            days = days.Shuffle(GameController.Game.RNG).ToList();
+
             foreach (Card day in days)
             {
                 coroutine = GameController.FlipCard(FindCardController(day));

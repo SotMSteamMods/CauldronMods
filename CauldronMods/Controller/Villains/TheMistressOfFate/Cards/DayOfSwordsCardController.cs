@@ -21,8 +21,7 @@ namespace Cauldron.TheMistressOfFate
          */
         protected override IEnumerator DayFlipFaceUpEffect()
         {
-            yield return GetAndPlayStoredCard(soughtKeywords);
-            yield break;
+            return GetAndPlayStoredCard(soughtKeywords);
         }
     }
 }

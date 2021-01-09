@@ -5,6 +5,7 @@ using System.Linq;
 
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+using Handelabra;
 
 namespace Cauldron.TheMistressOfFate
 {
@@ -32,6 +33,8 @@ namespace Cauldron.TheMistressOfFate
         protected DayCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             _isStoredCard = false;
+            var storedCardString = SpecialStringMaker.ShowSpecialString(() => $"On this day, {storedCard.Title} recurs.", relatedCards: () => new Card[] { storedCard });
+            storedCardString.Condition = () => storedCard != null;
         }
 
         public override void AddTriggers()
@@ -46,10 +49,27 @@ namespace Cauldron.TheMistressOfFate
         }
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
-            yield return base.AfterFlipCardImmediateResponse();
+            IEnumerator coroutine = base.AfterFlipCardImmediateResponse();
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
             if (Card.IsInPlayAndHasGameText)
             {
-                yield return DayFlipFaceUpEffect();
+                coroutine = DayFlipFaceUpEffect();
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }

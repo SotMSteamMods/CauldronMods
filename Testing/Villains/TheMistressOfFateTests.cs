@@ -168,7 +168,7 @@ namespace CauldronTests
             DealDamage(fate, ra, 50, DamageType.Melee);
             DealDamage(fate, haka, 50, DamageType.Melee);
 
-            AssertNoDecision();
+            DecisionYesNo = false;
             GoToStartOfTurn(fate);
             AssertFlipped(fate);
         }
@@ -184,7 +184,7 @@ namespace CauldronTests
             {
                 FlipCard(day);
             }
-            AssertNoDecision();
+            DecisionYesNo = false;
             GoToStartOfTurn(fate);
             AssertFlipped(fate);
         }
