@@ -592,8 +592,142 @@ namespace CauldronTests
             PrintSeparator("Checking End Of Turn Effect");
             GoToEndOfTurn(catchwater);
             QuickHPCheck(0, 0, 0, -3);
+        }
 
+        [Test()]
+        public void TestLeftBehind_Next()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(bunker, 10);
+            //Play this card next to the hero with the second lowest HP.
+            Card left = PlayCard("LeftBehind");
+            AssertNextToCard(left, ra.CharacterCard);
+
+        }
+
+        [Test()]
+        public void TestLeftBehind_GameOverChange_OtherTargetKillsVillain()
+        {
+            SetupGameController("CitizenDawn", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(bunker, 10);
+            //Play this card next to the hero with the second lowest HP.
+            Card left = PlayCard("LeftBehind");
+            AssertNextToCard(left, ra.CharacterCard);
+            DealDamage(bunker, dawn, 10000, DamageType.Projectile);
+            AssertGameOver(EndingResult.EnvironmentDefeat);
+
+        }
+
+        [Test()]
+        public void TestLeftBehind_GameOverChange_OtherTargetKillsOmnitron()
+        {
+            SetupGameController("Omnitron", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(bunker, 10);
+            //Play this card next to the hero with the second lowest HP.
+            Card left = PlayCard("LeftBehind");
+            AssertNextToCard(left, ra.CharacterCard);
+            DealDamage(bunker, omnitron, 10000, DamageType.Projectile);
+            AssertGameOver(EndingResult.EnvironmentDefeat);
+
+        }
+
+        [Test()]
+        public void TestLeftBehind_GameOverChange_OtherTargetKillsKaargra()
+        {
+            SetupGameController("KaargraWarfang", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            FlipCard(warfang.CharacterCard);
+            SetHitPoints(bunker, 10);
+            //Play this card next to the hero with the second lowest HP.
+            Card left = PlayCard("LeftBehind");
+            AssertNextToCard(left, ra.CharacterCard);
+            DealDamage(bunker, warfang, 10000, DamageType.Projectile);
+            AssertGameOver(EndingResult.EnvironmentDefeat);
+
+        }
+
+        [Test()]
+        public void TestLeftBehind_GameOverChange_OtherTargetKillsDreamer()
+        {
+            SetupGameController("TheDreamer", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(bunker, 10);
+            //Play this card next to the hero with the second lowest HP.
+            Card left = PlayCard("LeftBehind");
+            AssertNextToCard(left, ra.CharacterCard);
+            DealDamage(bunker, dreamer, 10000, DamageType.Projectile);
+            AssertGameOver(EndingResult.EnvironmentDefeat);
+
+        }
+
+        [Test()]
+        public void TestLeftBehind_GameOverChange_TargetKillsDreamer()
+        {
+            SetupGameController("TheDreamer", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(bunker, 10);
+            //Play this card next to the hero with the second lowest HP.
+            Card left = PlayCard("LeftBehind");
+            AssertNextToCard(left, ra.CharacterCard);
+            DealDamage(ra, dreamer, 10000, DamageType.Projectile);
+            AssertGameOver(EndingResult.AlternateDefeat);
+
+        }
+
+        [Test()]
+        public void TestLeftBehind_GameOverChange_TargetKillsKaargra()
+        {
+            SetupGameController("KaargraWarfang", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            FlipCard(warfang.CharacterCard);
+            SetHitPoints(bunker, 10);
+            //Play this card next to the hero with the second lowest HP.
+            Card left = PlayCard("LeftBehind");
+            AssertNextToCard(left, ra.CharacterCard);
+            DealDamage(ra, warfang, 10000, DamageType.Projectile);
+            AssertNotGameOver();
+
+        }
+
+        [Test()]
+        public void TestLeftBehind_GameOverChange_TargetKillsVillain()
+        {
+            SetupGameController("CitizenDawn", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(bunker, 10);
+            //Play this card next to the hero with the second lowest HP.
+            Card left = PlayCard("LeftBehind");
+            AssertNextToCard(left, ra.CharacterCard);
+            DealDamage(ra, dawn, 10000, DamageType.Projectile);
+            AssertGameOver(EndingResult.VillainDestroyedVictory);
+
+        }
+
+        [Test()]
+        public void TestLeftBehind_GameOverChange_NextToIncapped()
+        {
+            SetupGameController("CitizenDawn", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(bunker, 10);
+            //Play this card next to the hero with the second lowest HP.
+            Card left = PlayCard("LeftBehind");
+            AssertNextToCard(left, ra.CharacterCard);
+            DealDamage(dawn, ra, 10000, DamageType.Radiant);
+            AssertGameOver(EndingResult.EnvironmentDefeat);
 
         }
     }
+
 }
