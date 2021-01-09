@@ -29,6 +29,8 @@ namespace CauldronTests
             var cards = hero.TurnTaker.OffToTheSide.Cards;
             return cards.Where((Card c) => c.Identifier == variety + "Storage").FirstOrDefault();
         }
+
+        private DamageType DTM = DamageType.Melee;
         #endregion
         [Test]
         public void TestMistressOfFateLoads()
@@ -207,6 +209,148 @@ namespace CauldronTests
             DecisionYesNo = false;
             GoToStartOfTurn(fate);
             AssertNotFlipped(fate);
+        }
+        [Test]
+        public void TestDayOfSaintsFlipFaceUp()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+
+            QuickHPStorage(fate, legacy, ra, tempest);
+            FlipCard(GetCard("DayOfSaints"));
+            //3 * 3 for the raw damage, +2 for the boost, total 11 damage
+            QuickHPCheck(0, 0, 0, -11);
+
+            DealDamage(fate, legacy, 1, DamageType.Melee);
+            QuickHPCheck(0, -3, 0, 0);
+
+            DealDamage(legacy, fate, 1, DamageType.Melee);
+            QuickHPCheck(-1, 0, 0, 0);
+        }
+        [Test]
+        public void TestDayOfSinnersFlipFaceUp()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+
+            Card day = GetCard("DayOfSinners");
+            Card oneshot = PutOnDeck("ToDust");
+            Card anomaly = PutOnDeck("WarpedMalus");
+            Card ongoing = PutOnDeck("SameTimeAndPlace");
+            Card creature = PutOnDeck("ChaosButterfly");
+
+            FlipCard(day);
+            AssertUnderCard(day, oneshot);
+            AssertInDeck(anomaly);
+            AssertInDeck(ongoing);
+            AssertInDeck(creature);
+
+        }
+        [Test]
+        public void TestDayOfSinnersSpecialStrings()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+
+            Card day = GetCard("DayOfSinners");
+            Card oneshot = PutOnDeck("ToDust");
+
+            FlipCard(day);
+            AssertCardSpecialString(day, 0, "On this day, To Dust recurs.");
+            AssertCardSpecialString(oneshot, 1, "This card recurs on the Day of Sinners.");
+        }
+        [Test]
+        public void TestDayOfSorrowsFlipFaceUp()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+
+            Card day = GetCard("DayOfSorrows");
+            Card anomaly = PutOnDeck("WarpedMalus");
+            Card oneshot = PutOnDeck("ToDust");
+            Card ongoing = PutOnDeck("SameTimeAndPlace");
+            Card creature = PutOnDeck("ChaosButterfly");
+
+            FlipCard(day);
+            AssertIsInPlay(anomaly);
+            AssertInDeck(oneshot);
+            AssertInDeck(ongoing);
+            AssertInDeck(creature);
+
+            DestroyCard("WarpedMalus");
+            AssertUnderCard(day, anomaly);
+        }
+        [Test]
+        public void TestDayOfSorrowsSpecialStrings()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+
+            Card day = GetCard("DayOfSorrows");
+            Card anomaly = PutOnDeck("WarpedMalus");
+
+            FlipCard(day);
+            AssertCardSpecialString(anomaly, 0, "This card recurs on the Day of Sorrows.");
+            AssertCardSpecialString(day, 0, "On this day, Warped Malus recurs.");
+
+            DestroyCard(anomaly);
+            AssertCardSpecialString(anomaly, 1, "This card recurs on the Day of Sorrows.");
+        }
+        [Test]
+        public void TestDayOfSwordsFlipFaceUpGrabOneShot()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+
+            Card day = GetCard("DayOfSwords");
+            Card anomaly = PutOnDeck("WarpedMalus");
+            Card oneshot = PutOnDeck("ToDust");
+            Card ongoing = PutOnDeck("SameTimeAndPlace");
+            Card creature = PutOnDeck("ChaosButterfly");
+
+            FlipCard(day);
+            AssertInDeck(anomaly);
+            AssertInDeck(ongoing);
+            AssertInDeck(creature);
+
+            AssertUnderCard(day, oneshot);
+        }
+        [Test]
+        public void TestDayOfSwordsFlipFaceUpGrabAnomaly()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+
+            Card day = GetCard("DayOfSwords");
+            Card oneshot = PutOnDeck("ToDust");
+            Card anomaly = PutOnDeck("WarpedMalus");
+            Card ongoing = PutOnDeck("SameTimeAndPlace");
+            Card creature = PutOnDeck("ChaosButterfly");
+
+            FlipCard(day);
+            AssertIsInPlay(anomaly);
+            AssertInDeck(oneshot);
+            AssertInDeck(ongoing);
+            AssertInDeck(creature);
+
+            DestroyCard(anomaly);
+            AssertUnderCard(day, anomaly);
+        }
+        [Test]
+        public void TestDayOfSwordsSpecialStrings()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+
+            Card day = GetCard("DayOfSwords");
+            Card anomaly = PutOnDeck("WarpedMalus");
+
+            FlipCard(day);
+            AssertCardSpecialString(anomaly, 0, "This card recurs on the Day of Swords.");
+            AssertCardSpecialString(day, 0, "On this day, Warped Malus recurs.");
+
+            DestroyCard(anomaly);
+            AssertCardSpecialString(anomaly, 1, "This card recurs on the Day of Swords.");
         }
     }
 }

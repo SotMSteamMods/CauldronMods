@@ -33,7 +33,7 @@ namespace Cauldron.TheMistressOfFate
         protected DayCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             _isStoredCard = false;
-            var storedCardString = SpecialStringMaker.ShowSpecialString(() => $"On this day, {storedCard.Title} recurs.", relatedCards: () => new Card[] { storedCard });
+            var storedCardString = SpecialStringMaker.ShowSpecialString(() => $"On this day, {storedCard.Title} recurs.");
             storedCardString.Condition = () => storedCard != null;
         }
 
