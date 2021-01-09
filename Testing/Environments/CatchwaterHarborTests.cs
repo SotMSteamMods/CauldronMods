@@ -18,7 +18,23 @@ namespace CauldronTests
         {
             return card.DoKeywordsContain("transport");
         }
+        private void AddReduceDamageTrigger(TurnTakerController ttc,bool hero, bool villain, int amount)
+        {
+            ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(amount);
+            reduceDamageStatusEffect.TargetCriteria.IsHero = hero;
+            reduceDamageStatusEffect.TargetCriteria.IsVillain = villain;
+            reduceDamageStatusEffect.UntilStartOfNextTurn(ttc.TurnTaker);
+            this.RunCoroutine(this.GameController.AddStatusEffect(reduceDamageStatusEffect, true, new CardSource(FindCardController(ttc.TurnTaker.Deck.TopCard))));
+        }
 
+        private void AddCantGainHPDamageTrigger(TurnTakerController ttc, bool hero, bool villain)
+        {
+            CannotGainHPStatusEffect effect = new CannotGainHPStatusEffect();
+            effect.TargetCriteria.IsHero = hero;
+            effect.TargetCriteria.IsVillain = villain;
+            effect.UntilStartOfNextTurn(ttc.TurnTaker);
+            this.RunCoroutine(this.GameController.AddStatusEffect(effect, true, new CardSource(FindCardController(ttc.TurnTaker.Deck.TopCard))));
+        }
         #endregion
 
         [Test()]
@@ -757,6 +773,53 @@ namespace CauldronTests
             AssertInTrash(os3);
             QuickHPCheck(-5, -5, -3, 0);
             AssertNumberOfCardsInRevealed(catchwater, 0);
+
+        }
+
+        [Test()]
+        public void TestRadioPlaza()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //Damage dealt to hero targets is irreducible.
+            Card radio = PlayCard("RadioPlaza");
+            QuickHPStorage(baron, ra, bunker, haka);
+            AddReduceDamageTrigger(bunker, true, false, 1);
+            AddReduceDamageTrigger(bunker, false, true, 1);
+
+            DealDamage(baron, c => c.IsTarget, 2, DamageType.Fire);
+
+            QuickHPCheck(-1, -2, -2, -2);
+
+            GoToStartOfTurn(catchwater);
+            AssertInTrash(radio);
+
+        }
+
+        [Test()]
+        public void TestSmoothCriminal()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            PlayCard("SSEscape");
+            PlayCard("ToOverbrook");
+            //Reduce damage dealt to Gangsters by 1.
+            Card smooth = PlayCard("SmoothCriminal");
+            Card harkin = PlayCard("HarkinParishJr");
+            StackAfterShuffle(catchwater.TurnTaker.Deck, new string[] { "RadioPlaza", "OminousLoop" });
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, bunker.CharacterCard, haka.CharacterCard, smooth, harkin);
+            DealDamage(baron, c => c.IsTarget, 2, DamageType.Fire);
+            QuickHPCheck(-2, -2, -2, -2, -1, -1);
+
+            //At the end of the environment turn, this card deals each hero target X projectile damage, where X is 1 plus the number of Transports in play.
+            GoToPlayCardPhase(catchwater);
+            QuickHPUpdate();
+            AddCantGainHPDamageTrigger(catchwater, true, false);
+            AddCantGainHPDamageTrigger(catchwater, false, true);
+            GoToEndOfTurn(catchwater);
+            QuickHPCheck(0, -3, -3, -6, 0, 0);
 
         }
     }
