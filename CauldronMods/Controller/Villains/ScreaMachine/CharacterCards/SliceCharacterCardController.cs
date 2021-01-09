@@ -21,11 +21,7 @@ namespace Cauldron.ScreaMachine
 
         protected override IEnumerator ActivateBandAbility()
         {
-            List<Card> lowest = new List<Card>();
-            var fake = new DealDamageAction(GetCardSource(), new DamageSource(GameController, Card), null, H - 1, DamageType.Sonic);
-            var coroutine = GameController.FindTargetsWithLowestHitPoints(2, 1, c => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, lowest,
-                            dealDamageInfo: new[] { fake },
-                            cardSource: GetCardSource());
+            var coroutine = DealDamageToLowestHP(Card, 2, c => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, c => H - 1, DamageType.Sonic);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -33,19 +29,6 @@ namespace Cauldron.ScreaMachine
             else
             {
                 GameController.ExhaustCoroutine(coroutine);
-            }
-
-            if (lowest.Any() && lowest.First() != null)
-            {
-                coroutine = DealDamage(Card, lowest.First(), H - 1, DamageType.Sonic, cardSource: GetCardSource());
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
             }
         }
 
@@ -56,12 +39,10 @@ namespace Cauldron.ScreaMachine
 
         private IEnumerator UltimateEndOfTurn()
         {
-            List<Card> lowest = new List<Card>();
-            var fake = new DealDamageAction(GetCardSource(), new DamageSource(GameController, Card), null, H - 1, DamageType.Sonic);
-            var coroutine = GameController.FindTargetsWithLowestHitPoints(2, 1, c => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, lowest,
-                            evenIfCannotDealDamage: true,
-                            dealDamageInfo: new[] { fake },
-                            cardSource: GetCardSource());
+            List<DealDamageAction> results = new List<DealDamageAction>();
+            var coroutine = DealDamageToLowestHP(Card, 2, c => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, c => H - 1, DamageType.Sonic,
+                                storedResults: results,
+                                evenIfCannotDealDamage: true);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -71,33 +52,21 @@ namespace Cauldron.ScreaMachine
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (lowest.Any() && lowest.First() != null)
+            var effect = new CannotDealDamageStatusEffect();
+            effect.SourceCriteria.IsAtLocation = results.First().Target.Owner.PlayArea;
+            effect.UntilStartOfNextTurn(TurnTaker);
+            effect.CardSource = Card;
+
+            coroutine = AddStatusEffect(effect);
+            if (UseUnityCoroutines)
             {
-                coroutine = DealDamage(Card, lowest.First(), H - 1, DamageType.Sonic, cardSource: GetCardSource());
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
-
-                var effect = new CannotDealDamageStatusEffect();
-                effect.SourceCriteria.IsAtLocation = lowest.First().Owner.PlayArea;
-                effect.UntilStartOfNextTurn(TurnTaker);
-                effect.CardSource = Card;
-
-                coroutine = AddStatusEffect(effect);
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
+                yield return GameController.StartCoroutine(coroutine);
             }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
         }
     }
 }
