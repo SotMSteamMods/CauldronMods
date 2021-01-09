@@ -407,16 +407,8 @@
             ],
             "flavorReference": "Chrono-Ranger, Abstract Tales Annual #4",
             "hitpoints": 6
-        }
-    ],
-    "subdecks": [
+        },
         {
-            "identifier": "DayDeck",
-            "title": "The Day Deck",
-            "kind": "Other",
-            "isReal": false,
-            "cards":[
-                {
                    "identifier": "TheTimeline",
                    "count": 1,
                    "title": "The Timeline",
@@ -556,6 +548,15 @@
                         "If you see this card in gameplay, something has gone wrong. Please file a bug report at https://github.com/SotMSteamMods/CauldronMods"
                     ]
                 }
+    ],
+    "subdecks": [
+        {
+            "identifier": "DayDeck",
+            "title": "The Day Deck",
+            "kind": "Other",
+            "isReal": false,
+            "cards":[
+                
             ]
         }
     ]

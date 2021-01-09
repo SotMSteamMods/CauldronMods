@@ -43,6 +43,7 @@ namespace Cauldron.TheMistressOfFate
             {
                 //"When {TheMistressOfFate} flips or [the card tied to this one] leaves play, put it beneath this card."
                 AddTrigger((MoveCardAction m) => m.Origin.IsInPlay && !m.Destination.IsInPlay && m.Destination != this.Card.UnderLocation && m.CardToMove == storedCard, ReclaimStoredCard, TriggerType.MoveCard, TriggerTiming.Before);
+                AddTrigger((CompletedCardPlayAction ccp) => ccp.CardPlayed == storedCard && ccp.CardPlayed.IsOneShot, ReclaimStoredCard, TriggerType.MoveCard, TriggerTiming.After);
 
                 //flip is handled on Mistress of Fate due to timing on AfterFlipCardImmediateResponse
             }
@@ -82,7 +83,8 @@ namespace Cauldron.TheMistressOfFate
             //"When this card flips face up, put any cards beneath it into play. 
             if(this.Card.UnderLocation.HasCards)
             {
-                coroutine = PlayCardsFromLocation(this.Card.UnderLocation, new LinqCardCriteria(), showMessage: false);
+                var cardsToPlay = this.Card.UnderLocation.Cards.ToList();
+                coroutine = GameController.PlayCards(DecisionMaker, (Card c) => cardsToPlay.Contains(c), false, true, allowAutoDecide: true, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -186,7 +188,7 @@ namespace Cauldron.TheMistressOfFate
                 }
                 yield return null;
             }
-            else if ((ga is FlipCardAction || ga is PhaseChangeAction) && storedCard != null && storedCard.IsInPlayAndHasGameText)
+            else if ((ga is FlipCardAction || ga is PhaseChangeAction || ga is CompletedCardPlayAction) && storedCard != null && storedCard.IsInPlayAndHasGameText)
             {
                 IEnumerator coroutine = GameController.MoveCard(DecisionMaker, storedCard, this.Card.UnderLocation, cardSource: GetCardSource());
                 if (UseUnityCoroutines)

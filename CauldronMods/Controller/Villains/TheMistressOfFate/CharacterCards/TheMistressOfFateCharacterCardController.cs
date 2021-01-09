@@ -26,10 +26,9 @@ namespace Cauldron.TheMistressOfFate
         public TheMistressOfFateCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             //might be needed to keep people from looking through the deck for process-of-elimination
-            //AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
+            AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
         }
 
-        /* might be needed to keep people from looking through the deck for process-of-elimination
         public override bool? AskIfCardIsVisibleToCardSource(Card card, CardSource cardSource)
         {
             if(cardSource?.Card != null && !cardSource.Card.IsVillain && card.IsVillain && card.Location == TurnTaker.OutOfGame && card.IsFaceDownNonCharacter)
@@ -38,7 +37,7 @@ namespace Cauldron.TheMistressOfFate
             }
             return true;
         }
-        */
+        
 
         public override void AddSideTriggers()
         {
@@ -63,7 +62,7 @@ namespace Cauldron.TheMistressOfFate
                 AddSideTrigger(AddImmuneToDamageTrigger((DealDamageAction dd) => dd.Target == this.Card && dd.DamageSource.IsVillain));
 
                 //If there are no cards in the villain deck, the heroes lose.",
-                AddTrigger((MoveCardAction mc) => mc.CardToMove.IsVillain && mc.Destination != TurnTaker.Revealed && TurnTaker.Revealed.IsEmpty && TurnTaker.Deck.IsEmpty,
+                AddTrigger((GameAction ga) => IsDeckEmptier(ga) && TurnTaker.Deck.IsEmpty,
                                 SpecialDefeatResponse,
                                 TriggerType.GameOver,
                                 TriggerTiming.After);
@@ -76,6 +75,23 @@ namespace Cauldron.TheMistressOfFate
             }
             //flip side is all handled in AfterFlipCardImmediateResponse
             AddDefeatedIfDestroyedTriggers();
+        }
+
+        private bool IsDeckEmptier(GameAction ga)
+        {
+            if(ga is MoveCardAction mc)
+            {
+                return mc.CardToMove.IsVillain && mc.Destination != TurnTaker.Revealed && TurnTaker.Revealed.IsEmpty;
+            }
+            if(ga is PlayCardAction pc)
+            {
+                return pc.CardToPlay.IsVillain;
+            }
+            if(ga is DiscardCardAction dc)
+            {
+                return dc.Origin == TurnTaker.Deck;
+            }
+            return false;
         }
 
         public override IEnumerator AfterFlipCardImmediateResponse()
@@ -124,7 +140,7 @@ namespace Cauldron.TheMistressOfFate
 
                 //"{Bulletpoint} Restore all other targets to their maximum HP.",
                 coroutine = GameController.SelectCardsAndDoAction(DecisionMaker, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsTarget && c != Card && c.HitPoints < c.MaximumHitPoints), SelectionType.SetHP,
-                                (Card c) => GameController.SetHP(c, c.MaximumHitPoints ?? 0, GetCardSource()));
+                                (Card c) => GameController.SetHP(c, c.MaximumHitPoints ?? 0, GetCardSource()), allowAutoDecide: true, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -439,7 +455,7 @@ namespace Cauldron.TheMistressOfFate
         }
         protected bool IsDay(Card c)
         {
-            if (c != null && c.IsRealCard && c.NativeDeck == dayDeck && c.Identifier != "TheTimeline")
+            if (c != null && c.Definition.Keywords.Contains("day"))
             {
                 return true;
             }

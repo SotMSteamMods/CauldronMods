@@ -58,11 +58,13 @@ namespace Cauldron.TheMistressOfFate
         {
             var storingDayString = SpecialStringMaker.ShowSpecialString(() => $"This card recurs on the {StoringDay.Title}.", relatedCards: () => new Card[] { StoringDay });
             storingDayString.Condition = () => IsStoredCard;
+
+            this.Card.UnderLocation.OverrideIsInPlay = false;
         }
 
         protected bool IsDay(Card c)
         {
-            if(c != null && c.IsRealCard && c.NativeDeck == dayDeck && c.Identifier != "TheTimeline")
+            if(c != null && c.Definition.Keywords.Contains("day"))
             {
                 return true;
             }
