@@ -31,7 +31,7 @@ namespace Cauldron.Mythos
                     GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            if (base.IsTopCardMatching(MythosEyeDeckIdentifier))
+            if (base.IsTopCardMatching(MythosClueDeckIdentifier))
             {
                 //{MythosClue} Reduce damage dealt by hero targets by 1 until the start of the villain turn.
                 ReduceDamageStatusEffect reduceDamageStatus = new ReduceDamageStatusEffect(1);
@@ -49,7 +49,7 @@ namespace Cauldron.Mythos
                     GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            if (base.IsTopCardMatching(MythosMindDeckIdentifier))
+            if (base.IsTopCardMatching(MythosMadnessDeckIdentifier))
             {
                 //{MythosMadness} Each Minion regains {H} HP.
                 coroutine = base.GameController.GainHP(this.DecisionMaker, (Card c) => base.IsMinion(c), base.Game.H);

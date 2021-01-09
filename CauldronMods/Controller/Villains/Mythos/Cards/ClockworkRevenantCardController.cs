@@ -18,7 +18,7 @@ namespace Cauldron.Mythos
         public override void AddTriggers()
         {
             //{MythosDanger} Increase damage dealt by this card by X, where X is 10 minus its current HP.
-            base.AddIncreaseDamageTrigger((DealDamageAction action) => base.IsTopCardMatching(MythosFearDeckIdentifier) && action.DamageSource.Card == this.Card, (DealDamageAction action) => 10 - this.Card.HitPoints ?? default);
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => base.IsTopCardMatching(MythosDangerDeckIdentifier) && action.DamageSource.Card == this.Card, (DealDamageAction action) => 10 - this.Card.HitPoints ?? default);
 
             //At the end of the villain turn, this card deals the hero target with the highest HP 2 melee damage.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);

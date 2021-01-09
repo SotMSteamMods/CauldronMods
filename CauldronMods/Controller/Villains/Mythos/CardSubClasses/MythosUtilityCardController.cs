@@ -16,9 +16,9 @@ namespace Cauldron.Mythos
             base.SpecialStringMaker.ShowSpecialString(() => this.ThisCardsIcon());
         }
 
-        protected const string MythosEyeDeckIdentifier = "MythosEye";
-        protected const string MythosFearDeckIdentifier = "MythosFear";
-        protected const string MythosMindDeckIdentifier = "MythosMind";
+        protected const string MythosClueDeckIdentifier = "MythosClue";
+        protected const string MythosDangerDeckIdentifier = "MythosDanger";
+        protected const string MythosMadnessDeckIdentifier = "MythosMadness";
 
         private string GetIconIdentifier(Card c)
         {
@@ -29,15 +29,15 @@ namespace Cauldron.Mythos
             string identifier = null;
             if (eyeIdentifiers.Contains(c.Identifier))
             {
-                identifier = MythosEyeDeckIdentifier;
+                identifier = MythosClueDeckIdentifier;
             }
             if (fearIdentifiers.Contains(c.Identifier))
             {
-                identifier = MythosFearDeckIdentifier;
+                identifier = MythosDangerDeckIdentifier;
             }
             if (mindIdentifiers.Contains(c.Identifier))
             {
-                identifier = MythosMindDeckIdentifier;
+                identifier = MythosMadnessDeckIdentifier;
             }
             return identifier;
             /**Remove above when Subdecks are implemented**/
@@ -47,7 +47,7 @@ namespace Cauldron.Mythos
         public bool IsTopCardMatching(string type)
         {
             //Advanced: Activate all {MythosDanger} effects.
-            if (base.Game.IsAdvanced && type == MythosFearDeckIdentifier)
+            if (base.Game.IsAdvanced && type == MythosDangerDeckIdentifier)
             {
                 return true;
             }
@@ -82,15 +82,15 @@ namespace Cauldron.Mythos
                 }
                 switch (this.GetIconIdentifier(c))
                 {
-                    case MythosEyeDeckIdentifier:
+                    case MythosClueDeckIdentifier:
                         output += place + " is a Blue Clue Icon, ";
                         break;
 
-                    case MythosFearDeckIdentifier:
+                    case MythosDangerDeckIdentifier:
                         output += place + " is a Red Danger Icon, ";
                         break;
 
-                    case MythosMindDeckIdentifier:
+                    case MythosMadnessDeckIdentifier:
                         output += place + " is a Green Madness Icon, ";
                         break;
                 }
@@ -114,15 +114,15 @@ namespace Cauldron.Mythos
             string output = null;
             switch (this.GetIconIdentifier(this.Card))
             {
-                case MythosEyeDeckIdentifier:
+                case MythosClueDeckIdentifier:
                     output = "This card has a Blue Clue Icon.";
                     break;
 
-                case MythosFearDeckIdentifier:
+                case MythosDangerDeckIdentifier:
                     output = "This card has a Red Danger Icon.";
                     break;
 
-                case MythosMindDeckIdentifier:
+                case MythosMadnessDeckIdentifier:
                     output = "This card has a Green Madness Icon.";
                     break;
             }

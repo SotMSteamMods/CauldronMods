@@ -21,7 +21,7 @@ namespace Cauldron.Mythos
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.EndOfTurnResponse, new TriggerType[] { TriggerType.PutIntoPlay, TriggerType.DealDamage });
 
             //{MythosClue} Reduce damage dealt to this card by 2.
-            base.AddReduceDamageTrigger((Card c) => c == this.Card && base.IsTopCardMatching(MythosEyeDeckIdentifier), 2);
+            base.AddReduceDamageTrigger((Card c) => c == this.Card && base.IsTopCardMatching(MythosClueDeckIdentifier), 2);
         }
 
         private IEnumerator EndOfTurnResponse(PhaseChangeAction action)

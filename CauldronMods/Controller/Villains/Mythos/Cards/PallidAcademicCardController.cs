@@ -41,7 +41,7 @@ namespace Cauldron.Mythos
         private IEnumerator DangerMadnessResponse(DealDamageAction action)
         {
             IEnumerator coroutine;
-            if (base.IsTopCardMatching(MythosFearDeckIdentifier))
+            if (base.IsTopCardMatching(MythosDangerDeckIdentifier))
             {
                 //--{MythosDanger} Play the top card of the villain deck.
                 coroutine = base.PlayTheTopCardOfTheVillainDeckResponse(action);
@@ -54,7 +54,7 @@ namespace Cauldron.Mythos
                     GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            if (base.IsTopCardMatching(MythosMindDeckIdentifier))
+            if (base.IsTopCardMatching(MythosMadnessDeckIdentifier))
             {
                 //--{MythosMadness} Move the bottom card of a deck to the top of that deck.
                 List<SelectLocationDecision> storedResults = new List<SelectLocationDecision>();

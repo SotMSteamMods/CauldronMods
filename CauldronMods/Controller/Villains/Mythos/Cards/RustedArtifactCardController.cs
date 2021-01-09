@@ -20,13 +20,13 @@ namespace Cauldron.Mythos
             //Increase damage dealt to hero targets by 1.
             base.AddIncreaseDamageTrigger((DealDamageAction action) => action.Target.IsHero, 1);
             //{MythosMadness}{MythosDanger} This card is indestructible and immune to damage.
-            base.AddImmuneToDamageTrigger((DealDamageAction action) => (base.IsTopCardMatching(MythosMindDeckIdentifier) || base.IsTopCardMatching(MythosFearDeckIdentifier)) && action.Target == this.Card);
+            base.AddImmuneToDamageTrigger((DealDamageAction action) => (base.IsTopCardMatching(MythosMadnessDeckIdentifier) || base.IsTopCardMatching(MythosDangerDeckIdentifier)) && action.Target == this.Card);
         }
 
         public override bool AskIfCardIsIndestructible(Card card)
         {
             //{MythosMadness}{MythosDanger} This card is indestructible...
-            return (base.IsTopCardMatching(MythosMindDeckIdentifier) || base.IsTopCardMatching(MythosFearDeckIdentifier)) && card == this.Card;
+            return (base.IsTopCardMatching(MythosMadnessDeckIdentifier) || base.IsTopCardMatching(MythosDangerDeckIdentifier)) && card == this.Card;
         }
     }
 }

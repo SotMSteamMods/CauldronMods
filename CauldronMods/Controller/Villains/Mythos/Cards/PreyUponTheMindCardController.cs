@@ -28,7 +28,7 @@ namespace Cauldron.Mythos
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (base.IsTopCardMatching(MythosMindDeckIdentifier))
+            if (base.IsTopCardMatching(MythosMadnessDeckIdentifier))
             {
                 //{MythosMadness} Each player discards 1 card.
                 coroutine = base.GameController.EachPlayerDiscardsCards(1, 1, cardSource: base.GetCardSource());
@@ -42,7 +42,7 @@ namespace Cauldron.Mythos
                 }
             }
 
-            if (base.IsTopCardMatching(MythosMindDeckIdentifier))
+            if (base.IsTopCardMatching(MythosMadnessDeckIdentifier))
             {
                 //{MythosDanger} {Mythos} deals each hero target 1 psychic damage.
                 coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsOngoing, 1, DamageType.Psychic);
