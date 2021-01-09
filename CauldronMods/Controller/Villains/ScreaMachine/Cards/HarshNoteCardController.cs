@@ -15,5 +15,36 @@ namespace Cauldron.ScreaMachine
         }
 
         public override IEnumerable<ScreaMachineBandmate.Value> AbilityIcons => new[] { ScreaMachineBandmate.Value.Slice, ScreaMachineBandmate.Value.Valentine };
+
+        public override IEnumerator Play()
+        {
+            var effect = new IncreaseDamageStatusEffect(H);
+            effect.NumberOfUses = 1;
+            effect.SourceCriteria.IsVillain = true;
+            effect.SourceCriteria.IsTarget = true;
+            effect.CardSource = Card;
+
+            var coroutine = AddStatusEffect(effect);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = AcivateBandAbilities(AbilityIcons);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+
+
     }
 }

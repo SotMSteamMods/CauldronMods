@@ -71,6 +71,15 @@ namespace CauldronTests
             Assert.AreEqual(number, abilities, $"{card.Title} does not have the correct number of {(key is null ? "" : key)} abilities");
         }
 
+        private void RemoveAllBandMateCards()
+        {
+            foreach(var card in FindCardsWhere(c => c.DoKeywordsContain(ScreaMachineBandmate.Keywords, true, true)))
+            {
+                MoveCard(scream, card, scream.TurnTaker.OutOfGame, false, false, true);
+                AssertOutOfGame(card);
+            }
+        }
+
 
         #endregion
 
@@ -790,6 +799,29 @@ namespace CauldronTests
             QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
             DealDamage(e1, valentine, 5, DamageType.Cold);
             QuickHPCheck(0, 0, 0, 0, 0, 0, 0, 0);
+        }
+
+        //green - second lowest H -1
+        //blue - 2 highest, H - 2
+        //pink - each other regains
+        //orange - status effect
+
+        [Test()]
+        public void TestHarshNote()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+            RemoveAllBandMateCards();
+            PrintSeparator("TEST");
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            var card = PlayCard("HarshNote");
+            
+            //green, blue
+            //green - second lowest H -1
+            //blue - 2 highest, H - 2
+                        
+            QuickHPCheck(-2, -7, -2, 0, 0, 0, 0, 0);
         }
     }
 }
