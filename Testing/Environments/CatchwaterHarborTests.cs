@@ -822,6 +822,171 @@ namespace CauldronTests
             QuickHPCheck(0, -3, -3, -6, 0, 0);
 
         }
+
+        [Test()]
+        public void TestTheCervantesClub_Xis1_NoOneShot()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(ra, 10);
+            GoToPlayCardPhase(catchwater);
+            //At the end of the environment turn, 1 hero character regains X HP and discards the top X cards of their deck, where X is 1, 2, or 3.
+            //If any One-shots were discarded this way, that player discards 2 cards, then draws a card.
+            PlayCard("TheCervantesClub");
+
+
+            Card raTop = PutOnDeck("FlameBarrier");
+            DecisionSelectCard = ra.CharacterCard;
+            DecisionSelectFunction = 0;
+            QuickHandStorage(ra);
+            QuickHPStorage(ra);
+            GoToEndOfTurn(catchwater);
+            QuickHPCheck(1);
+            AssertInTrash(raTop);
+            QuickHandCheckZero();
+
+        }
+
+        [Test()]
+        public void TestTheCervantesClub_Xis1_OneShot()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(ra, 10);
+            GoToPlayCardPhase(catchwater);
+            //At the end of the environment turn, 1 hero character regains X HP and discards the top X cards of their deck, where X is 1, 2, or 3.
+            //If any One-shots were discarded this way, that player discards 2 cards, then draws a card.
+            PlayCard("TheCervantesClub");
+
+
+            Card raTop = PutOnDeck("FireBlast");
+            DecisionSelectCards = new Card[] { ra.CharacterCard, ra.HeroTurnTaker.Hand.TopCard, ra.HeroTurnTaker.Hand.GetTopCards(2).ElementAt(1) };
+            DecisionSelectFunction = 0;
+            QuickHandStorage(ra);
+            QuickHPStorage(ra);
+            GoToEndOfTurn(catchwater);
+            QuickHPCheck(1);
+            AssertInTrash(raTop);
+            QuickHandCheck(-1);
+
+        }
+
+        [Test()]
+        public void TestTheCervantesClub_Xis2_OneShot()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(ra, 10);
+            GoToPlayCardPhase(catchwater);
+            //At the end of the environment turn, 1 hero character regains X HP and discards the top X cards of their deck, where X is 1, 2, or 3.
+            //If any One-shots were discarded this way, that player discards 2 cards, then draws a card.
+            PlayCard("TheCervantesClub");
+
+
+            Card raTop = PutOnDeck("FireBlast");
+            Card raTop2 = ra.TurnTaker.Deck.GetTopCards(2).ElementAt(1);
+            DecisionSelectCards = new Card[] { ra.CharacterCard, ra.HeroTurnTaker.Hand.TopCard, ra.HeroTurnTaker.Hand.GetTopCards(2).ElementAt(1) };
+            DecisionSelectFunction = 1;
+            QuickHandStorage(ra);
+            QuickHPStorage(ra);
+            GoToEndOfTurn(catchwater);
+            QuickHPCheck(2);
+            AssertInTrash(raTop);
+            AssertInTrash(raTop2);
+            QuickHandCheck(-1);
+
+        }
+
+        [Test()]
+        public void TestTheCervantesClub_Xis2_NoOneShot()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(ra, 10);
+            GoToPlayCardPhase(catchwater);
+            //At the end of the environment turn, 1 hero character regains X HP and discards the top X cards of their deck, where X is 1, 2, or 3.
+            //If any One-shots were discarded this way, that player discards 2 cards, then draws a card.
+            PlayCard("TheCervantesClub");
+
+
+            Card raTop = PutOnDeck("FlameBarrier");
+            Card raTop2 = PutOnDeck("TheStaffOfRa");
+            DecisionSelectCard = ra.CharacterCard;
+            DecisionSelectFunction = 1;
+            QuickHandStorage(ra);
+            QuickHPStorage(ra);
+            GoToEndOfTurn(catchwater);
+            QuickHPCheck(2);
+            AssertInTrash(raTop);
+            AssertInTrash(raTop2);
+            QuickHandCheckZero();
+
+        }
+
+        [Test()]
+        public void TestTheCervantesClub_Xis3_OneShot()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(ra, 10);
+            GoToPlayCardPhase(catchwater);
+            //At the end of the environment turn, 1 hero character regains X HP and discards the top X cards of their deck, where X is 1, 2, or 3.
+            //If any One-shots were discarded this way, that player discards 2 cards, then draws a card.
+            PlayCard("TheCervantesClub");
+
+
+            Card raTop = PutOnDeck("FireBlast");
+            Card raTop2 = ra.TurnTaker.Deck.GetTopCards(2).ElementAt(1);
+            Card raTop3 = ra.TurnTaker.Deck.GetTopCards(3).ElementAt(2);
+
+            DecisionSelectCards = new Card[] { ra.CharacterCard, ra.HeroTurnTaker.Hand.TopCard, ra.HeroTurnTaker.Hand.GetTopCards(2).ElementAt(1) };
+            DecisionSelectFunction = 2;
+            QuickHandStorage(ra);
+            QuickHPStorage(ra);
+            GoToEndOfTurn(catchwater);
+            QuickHPCheck(3);
+            AssertInTrash(raTop);
+            AssertInTrash(raTop2);
+            AssertInTrash(raTop3);
+
+            QuickHandCheck(-1);
+
+        }
+
+        [Test()]
+        public void TestTheCervantesClub_Xis3_NoOneShot()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(ra, 10);
+            GoToPlayCardPhase(catchwater);
+            //At the end of the environment turn, 1 hero character regains X HP and discards the top X cards of their deck, where X is 1, 2, or 3.
+            //If any One-shots were discarded this way, that player discards 2 cards, then draws a card.
+            PlayCard("TheCervantesClub");
+
+
+            Card raTop = PutOnDeck("FlameBarrier");
+            Card raTop2 = PutOnDeck("TheStaffOfRa");
+            Card raTop3 = PutOnDeck("BlazingTornado");
+
+            DecisionSelectCard = ra.CharacterCard;
+            DecisionSelectFunction = 2;
+            QuickHandStorage(ra);
+            QuickHPStorage(ra);
+            GoToEndOfTurn(catchwater);
+            QuickHPCheck(3);
+            AssertInTrash(raTop);
+            AssertInTrash(raTop2);
+            AssertInTrash(raTop3);
+            QuickHandCheckZero();
+
+        }
     }
 
 }
