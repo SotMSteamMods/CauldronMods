@@ -900,5 +900,39 @@ namespace CauldronTests
             AssertInTrash(card);
 
         }
+
+
+        [Test()]
+        public void TestDeathMetal()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+            RemoveAllBandMateCards();
+            PrintSeparator("TEST");
+
+            SetHitPoints(slice, 15);
+            SetHitPoints(bloodlace, 15);
+            SetHitPoints(valentine, 15);
+            SetHitPoints(rickyg, 15);
+
+            var c1 = PlayCard("DangerSense");
+            var c2 = PlayCard("TheStaffOfRa");
+            var c3 = PlayCard("Dominion");
+
+            DecisionSelectCards = new[] {  c1, c2, null, slice, haka.CharacterCard, /*bunker,*/ legacy.CharacterCard, /* haka, */ };
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+
+            var card = PlayCard("DeathMetal");
+            AssertInTrash(card);
+
+            //blue, pink
+            //blue - 2 highest, H - 2
+            //pink - each other regains 2
+            //bunker and haka take 3
+            QuickHPCheck(-2, 0, -5, -3, 2, 0, 2, 2);
+            AssertInTrash(c1);
+            AssertInTrash(c2);
+            AssertInPlayArea(haka, c3);
+        }
     }
 }
