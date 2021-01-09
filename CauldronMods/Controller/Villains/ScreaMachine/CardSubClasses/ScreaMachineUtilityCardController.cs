@@ -49,9 +49,5 @@ namespace Cauldron.ScreaMachine
         protected Card RickyGCharacter => base.FindCard("RickyGCharacter");
 
         protected TheSetListCardController TheSetListCardController => base.FindCardController(base.FindCard("TheSetList", false)) as TheSetListCardController;
-
-
-
-
     }
 }
