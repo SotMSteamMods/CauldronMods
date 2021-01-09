@@ -77,8 +77,7 @@
             "count": 1,
             "title": "Aclastyph, Who Peers",
             "keywords": [
-                "ancient spawn",
-                "{MythosDanger}"
+                "ancient spawn"
             ],
             "icons": [
                 "DealDamageMelee",
@@ -106,8 +105,7 @@
             "count": 2,
             "title": "Clockwork Revenant",
             "keywords": [
-                "minion",
-                "{MythosMadness}"
+                "minion"
             ],
             "icons": [
                 "IncreaseDamageDealt",
@@ -132,8 +130,7 @@
             "count": 1,
             "title": "Dangerous Investigation",
             "keywords": [
-                "ongoing",
-                "{MythosClue}"
+                "ongoing"
             ],
             "icons": [
                 "EndOfTurnAction",
@@ -167,8 +164,7 @@
             "count": 1,
             "title": "Doktor Von Faust",
             "keywords": [
-                "mad scientist",
-                "{MythosMadness}"
+                "mad scientist"
             ],
             "icons": [
                 "EndOfTurnAction",
@@ -194,8 +190,7 @@
             "count": 3,
             "title": "Faithful Proselyte",
             "keywords": [
-                "minion",
-                "{MythosDanger}"
+                "minion"
             ],
             "icons": [
                 "DestroyEquipment",
@@ -220,8 +215,7 @@
             "count": 2,
             "title": "Hallucinated Horror",
             "keywords": [
-                "distortion",
-                "{MythosMadness}"
+                "distortion"
             ],
             "icons": [
                 "PlayCardNow",
@@ -248,8 +242,7 @@
             "count": 2,
             "title": "Otherworldly Alignment",
             "keywords": [
-                "ongoing",
-                "{MythosDanger}"
+                "ongoing"
             ],
             "icons": [
                 "EndOfTurnAction",
@@ -275,8 +268,7 @@
             "count": 2,
             "title": "Pallid Academic",
             "keywords": [
-                "minion",
-                "{MythosClue}"
+                "minion"
             ],
             "icons": [
                 "PlayCardNow",
@@ -303,8 +295,7 @@
             "count": 2,
             "title": "Prey Upon the Mind",
             "keywords": [
-                "one-shot",
-                "{MythosDanger}"
+                "one-shot"
             ],
             "icons": [
                 "DestroyOngoing"
@@ -327,8 +318,7 @@
             "count": 2,
             "title": "Revelations",
             "keywords": [
-                "one-shot",
-                "{MythosClue}"
+                "one-shot"
             ],
             "icons": [
                 "GainHP",
@@ -346,8 +336,7 @@
             "count": 1,
             "title": "Ritual Site",
             "keywords": [
-                "structure",
-                "{MythosClue}"
+                "structure"
             ],
             "icons": [
                 "IncreaseDamageDealt",
@@ -372,8 +361,7 @@
             "count": 1,
             "title": "Rusted Artifact",
             "keywords": [
-                "relic",
-                "{MythosClue}"
+                "relic"
             ],
             "icons": [
                 "IncreaseDamageTaken",
@@ -398,8 +386,7 @@
             "count": 2,
             "title": "Torn Page",
             "keywords": [
-                "relic",
-                "{MythosClue}"
+                "relic"
             ],
             "icons": [
                 "DealDamagePsychic",
@@ -426,8 +413,7 @@
             "count": 2,
             "title": "Whispers and Lies",
             "keywords": [
-                "ongoing",
-                "{MythosMadness}"
+                "ongoing"
             ],
             "icons": [
                 "EndOfTurnAction",
@@ -456,8 +442,7 @@
             "count": 1,
             "title": "“Your Darkest Secrets”",
             "keywords": [
-                "one-shot",
-                "{MythosMadness}"
+                "one-shot"
             ],
             "icons": [
                 "Discard",
@@ -493,8 +478,7 @@
                     "count": 1,
                     "title": "Dangerous Investigation",
                     "keywords": [
-                        "ongoing",
-                        "{MythosClue}"
+                        "ongoing"
                     ],
                     "icons": [
                         "EndOfTurnAction",
@@ -528,8 +512,7 @@
                     "count": 2,
                     "title": "Pallid Academic",
                     "keywords": [
-                        "minion",
-                        "{MythosClue}"
+                        "minion"
                     ],
                     "icons": [
                         "PlayCardNow",
@@ -556,8 +539,7 @@
                     "count": 2,
                     "title": "Revelations",
                     "keywords": [
-                        "one-shot",
-                        "{MythosClue}"
+                        "one-shot"
                     ],
                     "icons": [
                         "GainHP",
@@ -575,8 +557,7 @@
                     "count": 1,
                     "title": "Ritual Site",
                     "keywords": [
-                        "structure",
-                        "{MythosClue}"
+                        "structure"
                     ],
                     "icons": [
                         "IncreaseDamageDealt",
@@ -601,8 +582,7 @@
                     "count": 1,
                     "title": "Rusted Artifact",
                     "keywords": [
-                        "relic",
-                        "{MythosClue}"
+                        "relic"
                     ],
                     "icons": [
                         "IncreaseDamageTaken",
@@ -627,8 +607,7 @@
                     "count": 2,
                     "title": "Torn Page",
                     "keywords": [
-                        "relic",
-                        "{MythosClue}"
+                        "relic"
                     ],
                     "icons": [
                         "DealDamagePsychic",
@@ -664,8 +643,7 @@
                     "count": 3,
                     "title": "Faithful Proselyte",
                     "keywords": [
-                        "minion",
-                        "{MythosDanger}"
+                        "minion"
                     ],
                     "icons": [
                         "DestroyEquipment",
@@ -690,8 +668,7 @@
                     "count": 2,
                     "title": "Otherworldly Alignment",
                     "keywords": [
-                        "ongoing",
-                        "{MythosDanger}"
+                        "ongoing"
                     ],
                     "icons": [
                         "EndOfTurnAction",
@@ -717,8 +694,7 @@
                     "count": 2,
                     "title": "Prey Upon the Mind",
                     "keywords": [
-                        "one-shot",
-                        "{MythosDanger}"
+                        "one-shot"
                     ],
                     "icons": [
                         "DestroyOngoing"
@@ -750,8 +726,7 @@
                     "count": 1,
                     "title": "Aclastyph, Who Peers",
                     "keywords": [
-                        "ancient spawn",
-                        "{MythosDanger}"
+                        "ancient spawn"
                     ],
                     "icons": [
                         "DealDamageMelee",
@@ -779,8 +754,7 @@
                     "count": 2,
                     "title": "Clockwork Revenant",
                     "keywords": [
-                        "minion",
-                        "{MythosMadness}"
+                        "minion"
                     ],
                     "icons": [
                         "IncreaseDamageDealt",
@@ -805,8 +779,7 @@
                     "count": 1,
                     "title": "Doktor Von Faust",
                     "keywords": [
-                        "mad scientist",
-                        "{MythosMadness}"
+                        "mad scientist"
                     ],
                     "icons": [
                         "EndOfTurnAction",
@@ -832,8 +805,7 @@
                     "count": 2,
                     "title": "Hallucinated Horror",
                     "keywords": [
-                        "distortion",
-                        "{MythosMadness}"
+                        "distortion"
                     ],
                     "icons": [
                         "PlayCardNow",
@@ -860,8 +832,7 @@
                     "count": 2,
                     "title": "Whispers and Lies",
                     "keywords": [
-                        "ongoing",
-                        "{MythosMadness}"
+                        "ongoing"
                     ],
                     "icons": [
                         "EndOfTurnAction",
@@ -890,8 +861,7 @@
                     "count": 1,
                     "title": "“Your Darkest Secrets”",
                     "keywords": [
-                        "one-shot",
-                        "{MythosMadness}"
+                        "one-shot"
                     ],
                     "icons": [
                         "Discard",
