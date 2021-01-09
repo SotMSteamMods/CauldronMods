@@ -30,7 +30,7 @@ namespace Cauldron.TheMistressOfFate
         public override void AddTriggers()
         {
             //"Immediately after the environment turn...",
-            AddPhaseChangeTrigger(tt => true, p => true, (PhaseChangeAction pca) => pca.FromPhase != null && pca.FromPhase.IsEnvironment && !pca.ToPhase.IsEnvironment, CheckTimelineResetResponse, new TriggerType[] { TriggerType.FlipCard }, TriggerTiming.After);
+            AddPhaseChangeTrigger(tt => true, p => true, (PhaseChangeAction pca) => pca.FromPhase != null && pca.FromPhase.IsEnvironment && !pca.ToPhase.IsEnvironment, CheckTimelineResetResponse, new TriggerType[] { TriggerType.FlipCard }, TriggerTiming.Before);
 
             AddTrigger((MakeDecisionsAction md) => md.CardSource != null && !md.CardSource.Card.IsVillain, RemoveDecisionsFromMakeDecisionResponse, TriggerType.RemoveDecision, TriggerTiming.Before);
         }
@@ -40,7 +40,7 @@ namespace Cauldron.TheMistressOfFate
             bool shouldFlipMistress = false;
             IEnumerator coroutine;
             //...Flip {TheMistressOfFate}'s villain character cards if one of these things occurs:
-            if (!GameController.AllHeroes.Any(htt => !htt.IsIncapacitatedOrOutOfGame))
+            if (GameController.AllHeroes.All(htt => htt.IsIncapacitatedOrOutOfGame))
             {
                 //"{Bulletpoint} All heroes are incapacitated.",
                 shouldFlipMistress = true;

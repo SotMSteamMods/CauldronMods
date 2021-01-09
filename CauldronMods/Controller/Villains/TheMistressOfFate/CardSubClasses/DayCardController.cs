@@ -15,7 +15,7 @@ namespace Cauldron.TheMistressOfFate
         protected string[] soughtKeywords = null;
         private Card _storedCard;
         private bool? hasStoredCard = null;
-        private Card storedCard
+        public Card storedCard
         {
             get 
             {
@@ -44,7 +44,7 @@ namespace Cauldron.TheMistressOfFate
                 //"When {TheMistressOfFate} flips or [the card tied to this one] leaves play, put it beneath this card."
                 AddTrigger((MoveCardAction m) => m.Origin.IsInPlay && !m.Destination.IsInPlay && m.Destination != this.Card.UnderLocation && m.CardToMove == storedCard, ReclaimStoredCard, TriggerType.MoveCard, TriggerTiming.Before);
 
-                AddTrigger((FlipCardAction fca) => fca.CardToFlip == CharacterCardController, ReclaimStoredCard, TriggerType.MoveCard, TriggerTiming.After);
+                //flip is handled on Mistress of Fate due to timing on AfterFlipCardImmediateResponse
             }
         }
         public override IEnumerator AfterFlipCardImmediateResponse()
@@ -164,7 +164,7 @@ namespace Cauldron.TheMistressOfFate
             hasStoredCard = true;
         }
 
-        protected void ClearStoredCard()
+        public void ClearStoredCard()
         {
             var card = storedCard;
             if(card != null && FindCardController(card) is TheMistressOfFateUtilityCardController cardCC)
@@ -175,7 +175,7 @@ namespace Cauldron.TheMistressOfFate
             hasStoredCard = false;
         }
 
-        private IEnumerator ReclaimStoredCard(GameAction ga)
+        public IEnumerator ReclaimStoredCard(GameAction ga)
         {
             if (ga is MoveCardAction mc)
             {
@@ -186,7 +186,7 @@ namespace Cauldron.TheMistressOfFate
                 }
                 yield return null;
             }
-            else if (ga is FlipCardAction fc && storedCard != null && storedCard.IsInPlayAndHasGameText)
+            else if ((ga is FlipCardAction || ga is PhaseChangeAction) && storedCard != null && storedCard.IsInPlayAndHasGameText)
             {
                 IEnumerator coroutine = GameController.MoveCard(DecisionMaker, storedCard, this.Card.UnderLocation, cardSource: GetCardSource());
                 if (UseUnityCoroutines)

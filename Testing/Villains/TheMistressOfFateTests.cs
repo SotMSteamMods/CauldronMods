@@ -24,6 +24,28 @@ namespace CauldronTests
                 AssertCardHasKeyword(card, keyword, false);
             }
         }
+        private void ResetDays()
+        {
+            var days = FindCardsWhere((Card c) => c.IsInPlay && c.Definition.Keywords.Contains("day"));
+            foreach (Card day in days)
+            {
+                if(day.IsInPlayAndHasGameText)
+                {
+                    var dayCC = FindCardController(day) as DayCardController;
+                    FlipCard(day);
+                    if(dayCC.storedCard != null)
+                    {
+                        MoveCard(fate, dayCC.storedCard, fate.TurnTaker.Deck);
+                    }
+                    dayCC.ClearStoredCard();
+                }
+            }
+            var statusEffects = GameController.Game.StatusEffects.ToList();
+            foreach(StatusEffect effect in statusEffects)
+            {
+                GameController.ExhaustCoroutine(GameController.ExpireStatusEffect(effect, fate.CharacterCardController.GetCardSource()));
+            }
+        }
         private Card heroStorage(HeroTurnTakerController hero, string variety)
         {
             var cards = hero.TurnTaker.OffToTheSide.Cards;
@@ -86,6 +108,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
+            ResetDays();
 
             AssertNumberOfCardsAtLocation(legacy.TurnTaker.OffToTheSide, 3);
             AssertIsInPlay("TheTimeline");
@@ -154,6 +177,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
             StartGame();
+            ResetDays();
 
             PlayCard("IntoTheStratosphere");
             AssertNumberOfCardsInPlay(fate, 6);
@@ -163,6 +187,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
+            ResetDays();
 
             GoToStartOfTurn(FindEnvironment());
 
@@ -172,13 +197,14 @@ namespace CauldronTests
 
             DecisionYesNo = false;
             GoToStartOfTurn(fate);
-            AssertFlipped(fate);
+            AssertNumberOfCardsAtLocation(fate.TurnTaker.OutOfGame, 2);
         }
         [Test]
         public void TestTheTimelineEndOfEnvironmentFlipAllDaysFaceUp()
         {
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
             StartGame();
+            ResetDays();
 
             GoToStartOfTurn(FindEnvironment());
             var days = FindCardsWhere((Card c) => c.IsInPlay && c.IsFaceDownNonCharacter);
@@ -188,33 +214,39 @@ namespace CauldronTests
             }
             DecisionYesNo = false;
             GoToStartOfTurn(fate);
-            AssertFlipped(fate);
+
+            AssertNumberOfCardsAtLocation(fate.TurnTaker.OutOfGame, 2);
         }
         [Test]
         public void TestTheTimelineEndOfEnvironmentFlipMakeDecision()
         {
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
             StartGame();
+            ResetDays();
 
             DecisionYesNo = true;
             GoToStartOfTurn(fate);
-            AssertFlipped(fate);
+
+            AssertNumberOfCardsAtLocation(fate.TurnTaker.OutOfGame, 2);
         }
         [Test]
         public void TestTheTimelineEndOfEnvironmentFlipMakeDecisionDecline()
         {
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
             StartGame();
+            ResetDays();
 
             DecisionYesNo = false;
             GoToStartOfTurn(fate);
-            AssertNotFlipped(fate);
+
+            AssertNumberOfCardsAtLocation(fate.TurnTaker.OutOfGame, 0);
         }
         [Test]
         public void TestDayOfSaintsFlipFaceUp()
         {
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
             StartGame();
+            ResetDays();
 
             QuickHPStorage(fate, legacy, ra, tempest);
             FlipCard(GetCard("DayOfSaints"));
@@ -232,6 +264,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
             StartGame();
+            ResetDays();
 
             Card day = GetCard("DayOfSinners");
             Card oneshot = PutOnDeck("ToDust");
@@ -251,6 +284,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
             StartGame();
+            ResetDays();
 
             Card day = GetCard("DayOfSinners");
             Card oneshot = PutOnDeck("ToDust");
@@ -264,6 +298,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
             StartGame();
+            ResetDays();
 
             Card day = GetCard("DayOfSorrows");
             Card anomaly = PutOnDeck("WarpedMalus");
@@ -285,6 +320,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
             StartGame();
+            ResetDays();
 
             Card day = GetCard("DayOfSorrows");
             Card anomaly = PutOnDeck("WarpedMalus");
@@ -301,6 +337,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
             StartGame();
+            ResetDays();
 
             Card day = GetCard("DayOfSwords");
             Card anomaly = PutOnDeck("WarpedMalus");
@@ -320,6 +357,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
             StartGame();
+            ResetDays();
 
             Card day = GetCard("DayOfSwords");
             Card oneshot = PutOnDeck("ToDust");
@@ -341,6 +379,7 @@ namespace CauldronTests
         {
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
             StartGame();
+            ResetDays();
 
             Card day = GetCard("DayOfSwords");
             Card anomaly = PutOnDeck("WarpedMalus");
