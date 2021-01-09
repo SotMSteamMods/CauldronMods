@@ -553,18 +553,22 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
             StartGame();
             DestroyNonCharacterVillainCards();
-            Card hakaOngoing = PutInHand("Dominion");
-            Card raOngoing = PutInHand("FlameBarrier");
+            Card hakaOngoing1 = PutInHand("Dominion");
+            Card hakaOngoing2 = PutInHand("SavageHaka");
+
+            Card raOngoing1 = PutInHand("FlameBarrier");
+            Card raOngoing2 = PutInHand("BlazingTornado");
+
             Card bunkerOngoing1 = PutInHand("AmmoDrop");
             Card bunkerOngoing2 = PutInHand("TurretMode");
 
-            DecisionSelectCards = new Card[] { hakaOngoing, raOngoing, bunkerOngoing1 };
+            DecisionSelectCards = new Card[] { hakaOngoing1, raOngoing1, bunkerOngoing1 };
             QuickHandStorage(ra, bunker, haka);
             //When this card enters play, the hero with the highest HP must discard a card. Each other player must discard a card that shares a keyword with that card.
             PlayCard("HarkinParishJr");
             QuickHandCheck(-1, -1, -1);
-            AssertInTrash(hakaOngoing);
-            AssertInTrash(raOngoing);
+            AssertInTrash(hakaOngoing1);
+            AssertInTrash(raOngoing1);
             AssertInTrash(bunkerOngoing1);
             AssertInHand(bunkerOngoing2);
 
@@ -985,6 +989,54 @@ namespace CauldronTests
             AssertInTrash(raTop2);
             AssertInTrash(raTop3);
             QuickHandCheckZero();
+
+        }
+
+
+        [Test()]
+        public void TestThisJustIn_Discard()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            // When this card enters play, 1 player may discard 3 cards.
+            //If no cards are discarded this way, play the top card of the villain deck.
+            GoToPlayCardPhase(catchwater);
+            DecisionSelectTurnTaker = bunker.TurnTaker;
+            Card[] discardCards = bunker.HeroTurnTaker.Hand.GetTopCards(3).ToArray();
+            DecisionSelectCards = discardCards;
+            DecisionYesNo = true;
+            Card mdp = PutOnDeck("MobileDefensePlatform");
+            Card thisJustIn = PlayCard("ThisJustIn");
+            AssertInTrash(discardCards);
+            AssertOnTopOfDeck(mdp);
+
+            // At the end of the environment turn, destroy this card.
+            GoToEndOfTurn(catchwater);
+            AssertInTrash(thisJustIn);
+
+        }
+
+        [Test()]
+        public void TestThisJustIn_NoDiscard()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            // When this card enters play, 1 player may discard 3 cards.
+            //If no cards are discarded this way, play the top card of the villain deck.
+            GoToPlayCardPhase(catchwater);
+            DecisionSelectTurnTaker = bunker.TurnTaker;
+            Card[] discardCards = bunker.HeroTurnTaker.Hand.GetTopCards(3).ToArray();
+            DecisionYesNo = false;
+            Card mdp = PutOnDeck("MobileDefensePlatform");
+            Card thisJustIn = PlayCard("ThisJustIn");
+            AssertInHand(discardCards);
+            AssertIsInPlay(mdp);
+
+            // At the end of the environment turn, destroy this card.
+            GoToEndOfTurn(catchwater);
+            AssertInTrash(thisJustIn);
 
         }
     }
