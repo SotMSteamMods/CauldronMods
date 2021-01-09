@@ -146,7 +146,67 @@ namespace CauldronTests
             DealDamage(fate, haka, 50, DamageType.Melee);
 
             AssertNotGameOver();
+        }
+        [Test]
+        public void TestTheTimelineDayCardsNotAffectedByHeroCards()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+
+            PlayCard("IntoTheStratosphere");
+            AssertNumberOfCardsInPlay(fate, 6);
+        }
+        [Test]
+        public void TestTheTimelineEndOfEnvironmentFlipAllHeroesIncapped()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            GoToStartOfTurn(FindEnvironment());
+
+            DealDamage(fate, legacy, 50, DamageType.Melee);
+            DealDamage(fate, ra, 50, DamageType.Melee);
+            DealDamage(fate, haka, 50, DamageType.Melee);
+
+            AssertNoDecision();
             GoToStartOfTurn(fate);
+            AssertFlipped(fate);
+        }
+        [Test]
+        public void TestTheTimelineEndOfEnvironmentFlipAllDaysFaceUp()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+
+            GoToStartOfTurn(FindEnvironment());
+            var days = FindCardsWhere((Card c) => c.IsInPlay && c.IsFaceDownNonCharacter);
+            foreach (Card day in days)
+            {
+                FlipCard(day);
+            }
+            AssertNoDecision();
+            GoToStartOfTurn(fate);
+            AssertFlipped(fate);
+        }
+        [Test]
+        public void TestTheTimelineEndOfEnvironmentFlipMakeDecision()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+
+            DecisionYesNo = true;
+            GoToStartOfTurn(fate);
+            AssertFlipped(fate);
+        }
+        [Test]
+        public void TestTheTimelineEndOfEnvironmentFlipMakeDecisionDecline()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+
+            DecisionYesNo = false;
+            GoToStartOfTurn(fate);
+            AssertNotFlipped(fate);
         }
     }
 }
