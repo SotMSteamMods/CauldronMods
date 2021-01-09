@@ -727,5 +727,21 @@ namespace CauldronTests
             ActivateAbility(key, card);
             AssertNumberOfCardsInDeck(scream, deck - 1);
         }
+
+        [Test()]
+        public void TestIrresistibleVoice()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var card = SetupBandCard("IrresistibleVoice");
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Valentine);
+            AssertNumberOfActivatableAbility(card, key, 1);
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            ActivateAbility(key, card);
+            QuickHPCheck(0, 0, -2, 0, 0, 0, 0, 0);
+        }
     }
 }
