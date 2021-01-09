@@ -19,7 +19,7 @@ namespace Cauldron.ScreaMachine
         {
             base.AddTriggers();
 
-            AddImmuneToDamageTrigger(dda => dda.DamageSource.IsEnvironmentSource  && dda.Target == Card);
+            AddImmuneToDamageTrigger(dda => dda.DamageSource.IsEnvironmentSource  && dda.Target == GetBandmate());
         }
 
         protected override IEnumerator ActivateBandAbility()
