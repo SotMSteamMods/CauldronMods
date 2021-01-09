@@ -919,7 +919,7 @@ namespace CauldronTests
             var c2 = PlayCard("TheStaffOfRa");
             var c3 = PlayCard("Dominion");
 
-            DecisionSelectCards = new[] {  c1, c2, null, slice, haka.CharacterCard, /*bunker,*/ legacy.CharacterCard, /* haka, */ };
+            DecisionSelectCards = new[] { c1, c2, null, slice, haka.CharacterCard, /*bunker,*/ legacy.CharacterCard, /* haka, */ };
             QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
 
             var card = PlayCard("DeathMetal");
@@ -933,6 +933,26 @@ namespace CauldronTests
             AssertInTrash(c1);
             AssertInTrash(c2);
             AssertInPlayArea(haka, c3);
+        }
+
+        [Test()]
+        public void TestNothingButHits()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+            RemoveAllBandMateCards();
+            PrintSeparator("TEST");
+
+            DecisionAutoDecideIfAble = true;
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            var card = PlayCard("NothingButHits");
+
+            //blue, orange
+            //blue - 2 highest, H - 2
+            //orange - status effect
+
+            QuickHPCheck(-4, -2, -6, 0, 0, 0, 0, 0);
+            AssertNumberOfStatusEffectsInPlay(1);
         }
     }
 }

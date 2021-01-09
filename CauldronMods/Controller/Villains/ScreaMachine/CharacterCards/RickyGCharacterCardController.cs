@@ -25,7 +25,7 @@ namespace Cauldron.ScreaMachine
         {
 
             List<Card> lowest = new List<Card>();
-            var coroutine = GameController.FindTargetWithLowestHitPoints(1, c => IsVillainTarget(c), lowest, cardSource: GetCardSource());
+            var coroutine = GameController.FindTargetWithLowestHitPoints(1, c => IsVillainTarget(c), lowest, cardSource: GetCardSource(), evenIfCannotDealDamage: true);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
