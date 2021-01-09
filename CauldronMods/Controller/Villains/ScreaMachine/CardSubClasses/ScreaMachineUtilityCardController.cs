@@ -16,7 +16,7 @@ namespace Cauldron.ScreaMachine
 
         public abstract IEnumerable<ScreaMachineBandmate.Value> AbilityIcons { get; }
 
-        protected IEnumerator AcivateBandAbilities(IEnumerable<ScreaMachineBandmate.Value> members)
+        protected IEnumerator ActivateBandAbilities(IEnumerable<ScreaMachineBandmate.Value> members)
         {
             var keys = members.Select(m => m.GetAbilityKey()).ToArray();
             if (!keys.Any())

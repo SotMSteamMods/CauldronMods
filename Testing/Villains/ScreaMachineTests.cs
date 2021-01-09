@@ -73,7 +73,7 @@ namespace CauldronTests
 
         private void RemoveAllBandMateCards()
         {
-            foreach(var card in FindCardsWhere(c => c.DoKeywordsContain(ScreaMachineBandmate.Keywords, true, true)))
+            foreach (var card in FindCardsWhere(c => c.DoKeywordsContain(ScreaMachineBandmate.Keywords, true, true)))
             {
                 MoveCard(scream, card, scream.TurnTaker.OutOfGame, false, false, true);
                 AssertOutOfGame(card);
@@ -816,11 +816,11 @@ namespace CauldronTests
 
             QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
             var card = PlayCard("HarshNote");
-            
+
             //green, blue
             //green - second lowest H -1
             //blue - 2 highest, H - 2
-                        
+
             QuickHPCheck(-2, -7, -2, 0, 0, 0, 0, 0);
         }
 
@@ -850,6 +850,55 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(1);
 
             AssertInPlayArea(scream, band);
+        }
+
+
+        [Test()]
+        public void TestPercussiveWave()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+            RemoveAllBandMateCards();
+            PrintSeparator("TEST");
+            PlayCard("TakeDown");
+
+            SetHitPoints(slice, 22);
+            SetHitPoints(bloodlace, 22);
+            SetHitPoints(valentine, 22);
+            SetHitPoints(rickyg, 20);
+
+            DecisionAutoDecideIfAble = true;
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            var card = PlayCard("PercussiveWave", 0, true);
+            AssertInPlayArea(scream, card);
+
+            //orange, green
+            //orange - status effect
+            //green - second lowest H -1
+            //card - lowest regains 3
+            QuickHPCheck(0, -3, 0, 0, 0, 0, 0, 0);
+            AssertNumberOfStatusEffectsInPlay(1);
+            //RickyG gets the status effect
+
+            QuickHPUpdate();
+            DealDamage(legacy, slice, 5, DamageType.Cold); //5 reduced to 3
+            DealDamage(legacy, bloodlace, 4, DamageType.Cold); //4 reduced to 2
+            DealDamage(legacy, valentine, 3, DamageType.Cold); //3 reduced to 2
+            QuickHPCheck(0, 0, 0, 0, -3, -2, -2, 0);
+
+            QuickHPUpdate();
+            DealDamage(legacy, slice, 2, DamageType.Cold); //2 not reduced to 2
+            DealDamage(legacy, bloodlace, 1, DamageType.Cold); //1 not reduced to 1
+            QuickHPCheck(0, 0, 0, 0, -2, -1, 0, 0);
+
+            GoToEndOfTurn(env);
+            PlayCard("TakeDown");
+
+            //destroyed at the start of turn
+            AssertInPlayArea(scream, card);
+            GoToStartOfTurn(scream);
+            AssertInTrash(card);
+
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Cauldron.ScreaMachine
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = AcivateBandAbilities(AbilityIcons);
+            coroutine = ActivateBandAbilities(AbilityIcons);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
