@@ -60,95 +60,6 @@ namespace Cauldron.Mythos
             base.AddDefeatedIfDestroyedTriggers();
         }
 
-        public override bool AskIfCardIsIndestructible(Card card)
-        {
-            //Front: {Mythos} and Dangerous Investigation are indestructible. 
-            return (this.Card == card || this.DangerousInvestigationCard == card) && !this.Card.IsFlipped;
-        }
-
-        private Card DangerousInvestigationCard
-        {
-            get
-            {
-                return base.FindCard("DangerousInvestigation");
-            }
-        }
-
-        private string GetIconIdentifier(Card c)
-        {
-            //Temporary method to get the icon of a card until Subdecks are implemented
-            string[] eyeIdentifiers = { "DangerousInvestigation", "PallidAcademic", "Revelations", "RitualSite", "RustedArtifact", "TornPage" };
-            string[] fearIdentifiers = { "AclastyphWhoPeers", "FaithfulProselyte", "OtherworldlyAlignment", "PreyUponTheMind" };
-            string[] mindIdentifiers = { "ClockworkRevenant", "DoktorVonFaust", "HallucinatedHorror", "WhispersAndLies", "YourDarkestSecrets" };
-            string identifier = null;
-            if (eyeIdentifiers.Contains(c.Identifier))
-            {
-                identifier = MythosEyeDeckIdentifier;
-            }
-            if (fearIdentifiers.Contains(c.Identifier))
-            {
-                identifier = MythosFearDeckIdentifier;
-            }
-            if (mindIdentifiers.Contains(c.Identifier))
-            {
-                identifier = MythosMindDeckIdentifier;
-            }
-            return identifier;
-            /**Remove above when Subdecks are implemented**/
-            return c.ParentDeck.Identifier;
-        }
-
-        private bool IsTopCardMatching(string type)
-        {
-            //Advanced - Back: Activate all {MythosDanger} effects.
-            if (base.Game.IsAdvanced && base.CharacterCard.IsFlipped && type == MythosFearDeckIdentifier)
-            {
-                return true;
-            }
-            return this.GetIconIdentifier(base.TurnTaker.Deck.TopCard) == type;
-        }
-
-        private IEnumerator FrontEndOfTurnResponse(PhaseChangeAction action)
-        {
-            IEnumerator coroutine;
-            int cardCount = 0;
-            //...the players may play up to 5 cards from the top of the villain deck. 
-            while (cardCount < 5)
-            {
-                List<Card> playedCards = new List<Card>();
-                coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck, true, 1, playedCards: playedCards, cardSource: base.GetCardSource());
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
-
-                cardCount++;
-                if (!playedCards.Any())
-                {
-                    break;
-                }
-            }
-
-            //Then if there are {H} tokens on Dangerous Investigation, flip {Mythos}' villain character cards.
-            if (this.DangerousInvestigationCard.FindTokenPool("DangerousInvestigationPool").CurrentValue == 5)
-            {
-                coroutine = base.FlipThisCharacterCardResponse(action);
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-            yield break;
-        }
-
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
             //When {Mythos} flips to [the back], remove Dangerous Investigation from the game.
@@ -162,6 +73,20 @@ namespace Cauldron.Mythos
                 GameController.ExhaustCoroutine(coroutine);
             }
             yield return base.AfterFlipCardImmediateResponse();
+        }
+
+        public override bool AskIfCardIsIndestructible(Card card)
+        {
+            //Front: {Mythos} and Dangerous Investigation are indestructible. 
+            return (this.Card == card || this.DangerousInvestigationCard == card) && !this.Card.IsFlipped;
+        }
+
+        private Card DangerousInvestigationCard
+        {
+            get
+            {
+                return base.FindCard("DangerousInvestigation");
+            }
         }
 
         private IEnumerator BackEndOfTurnResponse(PhaseChangeAction action)
@@ -244,6 +169,81 @@ namespace Cauldron.Mythos
                 output += ".";
             }
             return output;
+        }
+
+        private IEnumerator FrontEndOfTurnResponse(PhaseChangeAction action)
+        {
+            IEnumerator coroutine;
+            int cardCount = 0;
+            //...the players may play up to 5 cards from the top of the villain deck. 
+            while (cardCount < 5)
+            {
+                List<Card> playedCards = new List<Card>();
+                coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck, true, 1, playedCards: playedCards, cardSource: base.GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
+                cardCount++;
+                if (!playedCards.Any())
+                {
+                    break;
+                }
+            }
+
+            //Then if there are {H} tokens on Dangerous Investigation, flip {Mythos}' villain character cards.
+            if (this.DangerousInvestigationCard.FindTokenPool("DangerousInvestigationPool").CurrentValue == 5)
+            {
+                coroutine = base.FlipThisCharacterCardResponse(action);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
+        }
+
+        private string GetIconIdentifier(Card c)
+        {
+            //Temporary method to get the icon of a card until Subdecks are implemented
+            string[] eyeIdentifiers = { "DangerousInvestigation", "PallidAcademic", "Revelations", "RitualSite", "RustedArtifact", "TornPage" };
+            string[] fearIdentifiers = { "AclastyphWhoPeers", "FaithfulProselyte", "OtherworldlyAlignment", "PreyUponTheMind" };
+            string[] mindIdentifiers = { "ClockworkRevenant", "DoktorVonFaust", "HallucinatedHorror", "WhispersAndLies", "YourDarkestSecrets" };
+            string identifier = null;
+            if (eyeIdentifiers.Contains(c.Identifier))
+            {
+                identifier = MythosEyeDeckIdentifier;
+            }
+            if (fearIdentifiers.Contains(c.Identifier))
+            {
+                identifier = MythosFearDeckIdentifier;
+            }
+            if (mindIdentifiers.Contains(c.Identifier))
+            {
+                identifier = MythosMindDeckIdentifier;
+            }
+            return identifier;
+            /**Remove above when Subdecks are implemented**/
+            return c.ParentDeck.Identifier;
+        }
+
+        private bool IsTopCardMatching(string type)
+        {
+            //Advanced - Back: Activate all {MythosDanger} effects.
+            if (base.Game.IsAdvanced && base.CharacterCard.IsFlipped && type == MythosFearDeckIdentifier)
+            {
+                return true;
+            }
+            return this.GetIconIdentifier(base.TurnTaker.Deck.TopCard) == type;
         }
     }
 }
