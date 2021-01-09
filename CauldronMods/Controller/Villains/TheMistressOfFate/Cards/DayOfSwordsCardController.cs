@@ -13,5 +13,10 @@ namespace Cauldron.TheMistressOfFate
         public DayOfSwordsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        /*
+         * "When this card flips face up, put any cards beneath it into play. If there are none, reveal cards from the top of the villain deck until an  Anomaly or One-shot is revealed, put it into play, and shuffle the other revealed cards into the villain deck.",
+         * "When {TheMistressOfFate} flips or that card leaves play, put it beneath this card."
+         */
     }
 }

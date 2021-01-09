@@ -13,5 +13,12 @@ namespace Cauldron.TheMistressOfFate
         public CantFightFateCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override IEnumerator Play()
+        {
+            //"The hero with the highest HP may discard 3 cards that share a keyword.",
+            //"If they do not, {TheMistressOfFate} deals each target in that hero's play area 20 psychic damage."
+            yield break;
+        }
     }
 }

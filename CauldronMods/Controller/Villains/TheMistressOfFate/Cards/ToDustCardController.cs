@@ -13,5 +13,12 @@ namespace Cauldron.TheMistressOfFate
         public ToDustCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override IEnumerator Play()
+        {
+            //"{TheMistressOfFate} deals the hero target with the second highest HP 15 projectile damage.",
+            //"That hero may shuffle 10 cards from their trash into their deck. If they do, they may redirect that damage to another target."
+            yield break;
+        }
     }
 }

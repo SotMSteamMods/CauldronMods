@@ -30,6 +30,9 @@ namespace Cauldron.TheMistressOfFate
 
         public override IEnumerator StartGame()
         {
+            //"At the start of the game, put {TheMistressOfFate}'s villain character cards into play, “Endless Cycle“ side up.",
+            //"Put the Timeline card in the center of the play area. Shuffle the day cards face down, and place them in a row to the right of the Timeline."
+
             IEnumerator coroutine;
             foreach(HeroTurnTaker hero in GameController.AllHeroes)
             {

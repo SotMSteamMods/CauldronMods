@@ -13,5 +13,11 @@ namespace Cauldron.TheMistressOfFate
         public ChaosButterflyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override void AddTriggers()
+        {
+            //"At the end of the villain turn, this card deals each hero target 3 projectile damage and 3 cold damage.",
+            //"When this card is destroyed, the players may swap the position of 2 face up Day cards. Cards under them move as well."
+        }
     }
 }

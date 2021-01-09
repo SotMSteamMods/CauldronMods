@@ -25,6 +25,31 @@ namespace Cauldron.TheMistressOfFate
             AddSideTrigger(AddTrigger((UnincapacitateHeroAction uha) => true, uha => SetRevivingHero(uha, clear: true), TriggerType.Hidden, TriggerTiming.After, requireActionSuccess: false));
 
             AddSideTrigger(AddTrigger((GameOverAction go) => go.EndingResult == EndingResult.HeroesDestroyedDefeat, ContinueGameWithMessage, TriggerType.CancelAction, TriggerTiming.Before, priority: TriggerPriority.High));
+            if (!Card.IsFlipped)
+            {
+                //"At the start of the villain turn, flip the left-most face down day card.",
+                //"{TheMistressOfFate} is immune to villain damage. If there are no cards in the villain deck, the heroes lose.",
+                //"Continue playing if all heroes are incapacitated. Incapacitated heroes keep the cards from their hand, deck, and trash separarte from each other when removing them from the game. Cards that were in play go to their trash."
+                if(Game.IsAdvanced)
+                {
+                    //"advanced": "At the end of the villain turn, {TheMistressOfFate} deals the hero with the lowest HP {H} psychic damage.",
+                }
+            }
+            else
+            {
+                //"Continue playing if all heroes are incapacitated.",
+                //"When {TheMistressOfFate} to this side:",
+                //"{Bulletpoint} Resore all other targets to their maximum HP.",
+                //"{Bulletpoint} Destroy all environment cards.",
+                //"{Bulletpoint} Flip all day cards face down.",
+                //"{Bulletpoint} Remove all cards in the villain trash and the top {H - 1} cards of the villain deck from the game without looking at them.",
+                //"{Bulletpoint} Flip all incapacitated heroes and restore them to their maximum HP. Cards that were in a hero's deck, hand, or trash when they were incapacitated are returned to those respective locations.",
+                //"Then, flip {TheMistressOfFate}'s villain character cards."
+                if(Game.IsAdvanced)
+                {
+                    //"flippedAdvanced": "When {TheMistressOfFate} flips to this side, she regains 10 HP.",
+                }
+            }
         }
 
         private IEnumerator ContinueGameWithMessage(GameOverAction go)
