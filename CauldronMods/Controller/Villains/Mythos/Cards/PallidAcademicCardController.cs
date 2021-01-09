@@ -15,14 +15,6 @@ namespace Cauldron.Mythos
 
         }
 
-        public override string DeckIdentifier
-        {
-            get
-            {
-                return MythosEyeDeckIdentifier;
-            }
-        }
-
         public override IEnumerator Play()
         {
             //When this card enters play, put all ongoing cards in the villain trash into play.

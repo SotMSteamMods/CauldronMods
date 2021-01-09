@@ -15,14 +15,6 @@ namespace Cauldron.Mythos
 
         }
 
-        public override string DeckIdentifier
-        {
-            get
-            {
-                return MythosFearDeckIdentifier;
-            }
-        }
-
         public override void AddTriggers()
         {
             //At the end of the villain turn:

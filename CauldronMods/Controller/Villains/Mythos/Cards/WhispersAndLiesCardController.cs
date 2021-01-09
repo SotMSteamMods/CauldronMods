@@ -15,14 +15,6 @@ namespace Cauldron.Mythos
             base.AddAsPowerContributor();
         }
 
-        public override string DeckIdentifier
-        {
-            get
-            {
-                return MythosMindDeckIdentifier;
-            }
-        }
-
         public override void AddTriggers()
         {
             //At the end of the villain turn, the villain target with the lowest HP deals the hero target with the highest HP 2 sonic damage.

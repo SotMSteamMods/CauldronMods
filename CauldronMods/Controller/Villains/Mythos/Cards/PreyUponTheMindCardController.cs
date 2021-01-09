@@ -15,14 +15,6 @@ namespace Cauldron.Mythos
 
         }
 
-        public override string DeckIdentifier
-        {
-            get
-            {
-                return MythosFearDeckIdentifier;
-            }
-        }
-
         public override IEnumerator Play()
         {
             //Destroy {H - 2} hero ongoing cards.

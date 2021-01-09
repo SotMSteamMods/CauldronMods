@@ -15,14 +15,6 @@ namespace Cauldron.Mythos
 
         }
 
-        public override string DeckIdentifier
-        {
-            get
-            {
-                return MythosEyeDeckIdentifier;
-            }
-        }
-
         private TokenPool DangerousInvestigationPool
         {
             get

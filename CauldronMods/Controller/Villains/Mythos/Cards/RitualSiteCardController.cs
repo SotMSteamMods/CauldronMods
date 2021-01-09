@@ -15,14 +15,6 @@ namespace Cauldron.Mythos
 
         }
 
-        public override string DeckIdentifier
-        {
-            get
-            {
-                return MythosEyeDeckIdentifier;
-            }
-        }
-
         public override void AddTriggers()
         {
             //{MythosDanger} Increase damage dealt by environment cards to hero targets by 1.

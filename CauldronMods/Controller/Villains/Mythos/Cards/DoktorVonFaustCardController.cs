@@ -15,14 +15,6 @@ namespace Cauldron.Mythos
 
         }
 
-        public override string DeckIdentifier
-        {
-            get
-            {
-                return MythosMindDeckIdentifier;
-            }
-        }
-
         public override void AddTriggers()
         {
             //At the end of the villain turn, search the villain deck for a Clockwork Revenant and put it into play. Shuffle the villain deck. If no card was put into play this way, this card deals each non-villain target 3 lightning damage.

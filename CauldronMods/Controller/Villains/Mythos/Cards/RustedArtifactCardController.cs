@@ -15,14 +15,6 @@ namespace Cauldron.Mythos
 
         }
 
-        public override string DeckIdentifier
-        {
-            get
-            {
-                return MythosEyeDeckIdentifier;
-            }
-        }
-
         public override void AddTriggers()
         {
             //Increase damage dealt to hero targets by 1.

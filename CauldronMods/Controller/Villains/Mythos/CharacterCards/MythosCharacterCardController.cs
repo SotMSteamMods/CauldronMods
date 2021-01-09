@@ -12,7 +12,7 @@ namespace Cauldron.Mythos
     {
         public MythosCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowSpecialString(() => this.DeckIconList());
         }
 
         protected const string MythosEyeDeckIdentifier = "MythosEye";
@@ -74,6 +74,30 @@ namespace Cauldron.Mythos
             }
         }
 
+        private string GetIconIdentifier(Card c)
+        {
+            //Temporary method to get the icon of a card until Subdecks are implemented
+            string[] eyeIdentifiers = { "DangerousInvestigation", "PallidAcademic", "Revelations", "RitualSite", "RustedArtifact", "TornPage" };
+            string[] fearIdentifiers = { "AclastyphWhoPeers", "FaithfulProselyte", "OtherworldlyAlignment", "PreyUponTheMind" };
+            string[] mindIdentifiers = { "ClockworkRevenant", "DoktorVonFaust", "HallucinatedHorror", "WhispersAndLies", "YourDarkestSecrets" };
+            string identifier = null;
+            if (eyeIdentifiers.Contains(c.Identifier))
+            {
+                identifier = MythosEyeDeckIdentifier;
+            }
+            if (fearIdentifiers.Contains(c.Identifier))
+            {
+                identifier = MythosFearDeckIdentifier;
+            }
+            if (mindIdentifiers.Contains(c.Identifier))
+            {
+                identifier = MythosMindDeckIdentifier;
+            }
+            return identifier;
+            /**Remove above when Subdecks are implemented**/
+            return c.ParentDeck.Identifier;
+        }
+
         private bool IsTopCardMatching(string type)
         {
             //Advanced - Back: Activate all {MythosDanger} effects.
@@ -81,26 +105,7 @@ namespace Cauldron.Mythos
             {
                 return true;
             }
-
-            string[] eyeIdentifiers = { "DangerousInvestigation", "PallidAcademic", "Revelations", "RitualSite", "RustedArtifact", "TornPage" };
-            string[] fearIdentifiers = { "AclastyphWhoPeers", "FaithfulProselyte", "OtherworldlyAlignment", "PreyUponTheMind" };
-            string[] mindIdentifiers = { "ClockworkRevenant", "DoktorVonFaust", "HallucinatedHorror", "WhispersAndLies", "YourDarkestSecrets" };
-            string topIdentifier = null;
-            if (eyeIdentifiers.Contains(base.TurnTaker.Deck.TopCard.Identifier))
-            {
-                topIdentifier = MythosEyeDeckIdentifier;
-            }
-            if (fearIdentifiers.Contains(base.TurnTaker.Deck.TopCard.Identifier))
-            {
-                topIdentifier = MythosFearDeckIdentifier;
-            }
-            if (mindIdentifiers.Contains(base.TurnTaker.Deck.TopCard.Identifier))
-            {
-                topIdentifier = MythosMindDeckIdentifier;
-            }
-            return topIdentifier == type;
-            //Once the UI allows for this, remove above.
-            return base.TurnTaker.Deck.TopCard.ParentDeck.Identifier == type;
+            return this.GetIconIdentifier(base.TurnTaker.Deck.TopCard) == type;
         }
 
         private IEnumerator FrontEndOfTurnResponse(PhaseChangeAction action)
@@ -200,6 +205,45 @@ namespace Cauldron.Mythos
                 }
             }
             yield break;
+        }
+
+        private string DeckIconList()
+        {
+            string output = null;
+            int place = 0;
+            foreach (Card c in base.TurnTaker.Deck.Cards)
+            {
+                place++;
+                if (output == null)
+                {
+                    output = "The order of the deck icons is: ";
+                }
+                switch (this.GetIconIdentifier(c))
+                {
+                    case MythosEyeDeckIdentifier:
+                        output += place + " is a Blue Clue Icon, ";
+                        break;
+
+                    case MythosFearDeckIdentifier:
+                        output += place + " is a Red Danger Icon, ";
+                        break;
+
+                    case MythosMindDeckIdentifier:
+                        output += place + " is a Green Madness Icon, ";
+                        break;
+                }
+            }
+
+            if (output == null)
+            {
+                output = "There are no cards in the deck.";
+            }
+            else
+            {
+                output.Trim(new char[] { ',', ' ' });
+                output += ".";
+            }
+            return output;
         }
     }
 }

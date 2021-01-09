@@ -15,14 +15,6 @@ namespace Cauldron.Mythos
 
         }
 
-        public override string DeckIdentifier
-        {
-            get
-            {
-                return MythosFearDeckIdentifier;
-            }
-        }
-
         public override IEnumerator Play()
         {
             //{MythosMadness} When this card enters play, destroy {H - 2} equipment cards.

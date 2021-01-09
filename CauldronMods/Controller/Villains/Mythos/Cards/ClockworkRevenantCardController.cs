@@ -15,14 +15,6 @@ namespace Cauldron.Mythos
 
         }
 
-        public override string DeckIdentifier
-        {
-            get
-            {
-                return MythosMindDeckIdentifier;
-            }
-        }
-
         public override void AddTriggers()
         {
             //{MythosDanger} Increase damage dealt by this card by X, where X is 10 minus its current HP.
