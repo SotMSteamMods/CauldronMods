@@ -31,9 +31,43 @@ namespace Cauldron.TheMistressOfFate
         public override IEnumerator StartGame()
         {
             //"At the start of the game, put {TheMistressOfFate}'s villain character cards into play, “Endless Cycle“ side up.",
-            //"Put the Timeline card in the center of the play area. Shuffle the day cards face down, and place them in a row to the right of the Timeline."
-
+            //"Put the Timeline card in the center of the play area. 
             IEnumerator coroutine;
+            coroutine = GameController.MoveCard(this, TurnTaker.GetCardByIdentifier("TheTimeline"), TurnTaker.PlayArea);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            
+            //Shuffle the day cards face down, and place them in a row to the right of the Timeline."
+            var days = TurnTaker.GetCardsAtLocation(dayDeck).Where((Card c) => c.IsRealCard).ToList();
+            foreach (Card day in days)
+            {
+                coroutine = GameController.FlipCard(FindCardController(day));
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+                coroutine = GameController.MoveCard(this, day, TurnTaker.PlayArea, playCardIfMovingToPlayArea: false);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            //set up incapacitated hero storage
             foreach(HeroTurnTaker hero in GameController.AllHeroes)
             {
                 var hand = TurnTaker.GetCardsAtLocation(dayDeck).Where((Card c) => c.Identifier == "HandStorage").FirstOrDefault();

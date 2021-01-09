@@ -86,6 +86,13 @@ namespace CauldronTests
             StartGame();
 
             AssertNumberOfCardsAtLocation(legacy.TurnTaker.OffToTheSide, 3);
+            AssertIsInPlay("TheTimeline");
+            var days = new Card[] { GetCard("DayOfSaints"), GetCard("DayOfSinners"), GetCard("DayOfSorrows"), GetCard("DayOfSwords") };
+            AssertIsInPlay(days);
+            foreach (Card day in days)
+            {
+                AssertDoesNotHaveGameText(day);
+            }
         }
 
         [Test]

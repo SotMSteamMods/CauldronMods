@@ -4,8 +4,7 @@
     "kind": "Villain",
     "expansionIdentifier": "CauldronAdrift",
     "initialCardIdentifiers": [
-        "TheMistressOfFateCharacter",
-        "Timeline"
+        "TheMistressOfFateCharacter"
     ],
     "cards": [
         {
