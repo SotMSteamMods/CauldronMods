@@ -732,6 +732,7 @@ namespace CauldronTests
             string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Valentine);
             AssertNumberOfActivatableAbility(card, key, 1);
 
+            DecisionAutoDecideIfAble = true;
             int deck = GetNumberOfCardsInDeck(scream);
             ActivateAbility(key, card);
             AssertNumberOfCardsInDeck(scream, deck - 1);
@@ -977,6 +978,41 @@ namespace CauldronTests
             //pink - each other regains 2
 
             QuickHPCheck(-4, 0, -4, 0, 2, 0, 2, 2);
+        }
+
+        [Test()]
+        public void TestLiveInConcert()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+            RemoveAllBandMateCards();
+            PrintSeparator("TEST");
+
+            SetHitPoints(slice, 17);
+            SetHitPoints(bloodlace, 15);
+            SetHitPoints(valentine, 14);
+            SetHitPoints(rickyg, 16);
+
+            var d1 = GetRandomCardFromHand(legacy);
+            var d2 = GetRandomCardFromHand(ra);
+            var d3 = GetRandomCardFromHand(haka);
+            var d4 = GetRandomCardFromHand(bunker);
+
+            DecisionAutoDecideIfAble = true;
+            DecisionSelectTurnTakers = new[] { legacy.TurnTaker, ra.TurnTaker, haka.TurnTaker, bunker.TurnTaker };
+            DecisionSelectCards = new[] { d1, d2, d3, d4 };
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            var card = PlayCard("LiveInConcert");
+
+            //green, blue, pink, orange
+            //green - second lowest H -1
+            //blue - 2 highest, H - 2
+            //pink - each other regains
+            //orange - status effect
+
+            QuickHPCheck(-2, -3, -2, 0, 2, 0, 2, 2);
+            AssertNumberOfStatusEffectsInPlay(1);
+            AssertInTrash(d1, d2, d3, d4);
         }
     }
 }
