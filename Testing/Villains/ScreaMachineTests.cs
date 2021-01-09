@@ -743,5 +743,53 @@ namespace CauldronTests
             ActivateAbility(key, card);
             QuickHPCheck(0, 0, -2, 0, 0, 0, 0, 0);
         }
+
+        [Test()]
+        public void TestHypnotizeTheCrowd_NoEnvironment()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var card = SetupBandCard("HypnotizeTheCrowd");
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Valentine);
+            AssertNumberOfActivatableAbility(card, key, 1);
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            ActivateAbility(key, card);
+            QuickHPCheck(0, 0, 0, 0, 0, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestHypnotizeTheCrowd_SelectEnvironment()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var card = SetupBandCard("HypnotizeTheCrowd");
+            var e1 = PlayCard("PlummetingMonorail");
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Valentine);
+            AssertNumberOfActivatableAbility(card, key, 1);
+
+            DecisionSelectCard = e1;
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            ActivateAbility(key, card);
+            QuickHPCheck(0, 0, -3, 0, 0, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestHypnotizeTheCrowd_ImmuneToEnviroment()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var card = SetupBandCard("HypnotizeTheCrowd");
+            var e1 = PlayCard("ImpendingCasualty");
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            DealDamage(e1, valentine, 5, DamageType.Cold);
+            QuickHPCheck(0, 0, 0, 0, 0, 0, 0, 0);
+        }
     }
 }

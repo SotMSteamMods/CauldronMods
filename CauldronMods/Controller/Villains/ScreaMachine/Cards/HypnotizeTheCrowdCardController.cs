@@ -12,11 +12,51 @@ namespace Cauldron.ScreaMachine
     {
         public HypnotizeTheCrowdCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, ScreaMachineBandmate.Value.Valentine)
         {
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
+        }
+
+        public override void AddTriggers()
+        {
+            base.AddTriggers();
+
+            AddImmuneToDamageTrigger(dda => dda.DamageSource.IsEnvironmentSource  && dda.Target == Card);
         }
 
         protected override IEnumerator ActivateBandAbility()
         {
-            throw new NotImplementedException();
+            List<SelectTargetDecision> result = new List<SelectTargetDecision>();
+            var env = GameController.FindCardsWhere(new LinqCardCriteria(c => c.IsEnvironmentTarget && c.IsInPlayAndNotUnderCard, "environment target", false), visibleToCard: GetCardSource());
+            var coroutine = GameController.SelectTargetAndStoreResults(DecisionMaker, env, result,
+                                allowAutoDecide: true,
+                                additionalCriteria: c => c.IsEnvironmentTarget,
+                                damageAmount: c => 3,
+                                damageType: DamageType.Melee,
+                                selectionType: SelectionType.CardToDealDamage,
+                                cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if (result.Any() && result.First() != null && result.First().SelectedCard != null)
+            {
+                var card = result.First().SelectedCard;
+
+                coroutine = DealDamageToHighestHP(card, 1, c => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, c => 3, DamageType.Melee,
+                                numberOfTargets: () => 1);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
         }
     }
 }
