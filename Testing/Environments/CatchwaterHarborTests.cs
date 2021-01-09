@@ -207,7 +207,7 @@ namespace CauldronTests
             StackAfterShuffle(catchwater.TurnTaker.Deck, new string[] { "AlteringHistory" });
             Card transport = PlayCard("ToOverbrook");
             AssertIsInPlay(altering);
-           
+
         }
 
         [Test()]
@@ -216,7 +216,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.CatchwaterHarbor");
             StartGame();
             DestroyNonCharacterVillainCards();
-        
+
             Card transport = PlayCard("ToOverbrook");
             //Play the top card of each other deck in turn order, starting with the villain deck.
             Card baronTop = PutOnDeck("BladeBattalion");
@@ -244,7 +244,7 @@ namespace CauldronTests
             QuickHPStorage(baron, ra, bunker, haka);
             Card transport = PlayCard("UnmooredZeppelin");
             QuickHPCheck(-2, -2, -2, -2);
-            
+
         }
 
         [Test()]
@@ -371,7 +371,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
             StartGame();
-        
+
             Card factory = PlayCard("AbandonedFactory");
             Card transport = PlayCard("SSEscape");
 
@@ -531,5 +531,69 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestHarkinParishJr_EntersPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card hakaOngoing = PutInHand("Dominion");
+            Card raOngoing = PutInHand("FlameBarrier");
+            Card bunkerOngoing1 = PutInHand("AmmoDrop");
+            Card bunkerOngoing2 = PutInHand("TurretMode");
+
+            DecisionSelectCards = new Card[] { hakaOngoing, raOngoing, bunkerOngoing1 };
+            QuickHandStorage(ra, bunker, haka);
+            //When this card enters play, the hero with the highest HP must discard a card. Each other player must discard a card that shares a keyword with that card.
+            PlayCard("HarkinParishJr");
+            QuickHandCheck(-1, -1, -1);
+            AssertInTrash(hakaOngoing);
+            AssertInTrash(raOngoing);
+            AssertInTrash(bunkerOngoing1);
+            AssertInHand(bunkerOngoing2);
+
+        }
+
+        [Test()]
+        public void TestHarkinParishJr_EntersPlay_TiedForHighest()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(haka, ra.CharacterCard.HitPoints.Value);
+            SetHitPoints(bunker, 10);
+            Card hakaOngoing = PutInHand("Dominion");
+            Card raOngoing = PutInHand("FlameBarrier");
+            Card bunkerOngoing1 = PutInHand("AmmoDrop");
+            Card bunkerOngoing2 = PutInHand("TurretMode");
+
+            DecisionSelectCards = new Card[] { haka.CharacterCard, hakaOngoing, raOngoing, bunkerOngoing1 };
+            QuickHandStorage(ra, bunker, haka);
+            //When this card enters play, the hero with the highest HP must discard a card. Each other player must discard a card that shares a keyword with that card.
+            PlayCard("HarkinParishJr");
+            QuickHandCheck(-1, -1, -1);
+            AssertInTrash(hakaOngoing);
+            AssertInTrash(raOngoing);
+            AssertInTrash(bunkerOngoing1);
+            AssertInHand(bunkerOngoing2);
+
+        }
+
+        [Test()]
+        public void TestHarkinParishJr_EndOfTurn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //At the end of the environment turn, this card deals the hero target with the highest HP {H} melee damage.
+            GoToPlayCardPhase(catchwater);
+            PlayCard("HarkinParishJr");
+            QuickHPStorage(baron, ra, bunker, haka);
+            PrintSeparator("Checking End Of Turn Effect");
+            GoToEndOfTurn(catchwater);
+            QuickHPCheck(0, 0, 0, -3);
+
+
+        }
     }
 }
