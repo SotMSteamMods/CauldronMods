@@ -11,6 +11,38 @@ namespace Cauldron.TheMistressOfFate
     public abstract class TheMistressOfFateUtilityCardController : CardController
     {
         private Location _dayDeck;
+        private string StoredByDayKey = "MistressOfFateCardStoredByDayKey";
+
+        private Card _storingDay;
+        protected Card StoringDay
+        {
+            get
+            {
+                if(IsStoredCard)
+                {
+                    if(_storingDay == null)
+                    {
+                        _storingDay = GetCardPropertyJournalEntryCard(StoredByDayKey);
+                    }
+                    return _storingDay;
+                }
+                return null;
+            }
+        }
+
+        protected bool? _isStoredCard;
+        protected bool IsStoredCard
+        {
+            get
+            {
+                if(_isStoredCard == null)
+                {
+                    bool hasDayProperty = GetCardPropertyJournalEntryCard(StoredByDayKey) != null;
+                    _isStoredCard = hasDayProperty;
+                }
+                return _isStoredCard ?? false;
+            }
+        }
         private Location dayDeck
         {
             get
@@ -33,6 +65,20 @@ namespace Cauldron.TheMistressOfFate
                 return true;
             }
             return false;
+        }
+
+        public void SetStoringDay(Card day)
+        {
+            _storingDay = day;
+            _isStoredCard = true;
+            AddCardPropertyJournalEntry(StoredByDayKey, day);
+        }
+
+        public void ClearStoringDay()
+        {
+            _storingDay = null;
+            _isStoredCard = false;
+            AddCardPropertyJournalEntry(StoredByDayKey, (Card)null);
         }
     }
 }

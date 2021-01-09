@@ -12,6 +12,7 @@ namespace Cauldron.TheMistressOfFate
     {
         public IllusionOfFreeWillCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            _isStoredCard = false;
         }
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)

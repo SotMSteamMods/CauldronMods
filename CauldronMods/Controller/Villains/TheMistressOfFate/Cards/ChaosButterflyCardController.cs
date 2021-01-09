@@ -12,6 +12,7 @@ namespace Cauldron.TheMistressOfFate
     {
         public ChaosButterflyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            _isStoredCard = false;
         }
 
         public override void AddTriggers()

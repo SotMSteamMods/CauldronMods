@@ -12,6 +12,7 @@ namespace Cauldron.TheMistressOfFate
     {
         public SeeThePatternCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            _isStoredCard = false;
         }
 
         public override IEnumerator Play()

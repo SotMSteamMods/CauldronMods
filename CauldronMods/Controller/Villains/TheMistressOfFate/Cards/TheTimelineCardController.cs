@@ -22,6 +22,7 @@ namespace Cauldron.TheMistressOfFate
          */
         public TheTimelineCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            _isStoredCard = false;
             AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
             AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
         }

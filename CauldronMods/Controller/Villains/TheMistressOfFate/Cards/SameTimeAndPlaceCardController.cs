@@ -12,6 +12,7 @@ namespace Cauldron.TheMistressOfFate
     {
         public SameTimeAndPlaceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            _isStoredCard = false;
         }
 
         public override IEnumerator Play()
