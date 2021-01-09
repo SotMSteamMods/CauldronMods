@@ -823,5 +823,33 @@ namespace CauldronTests
                         
             QuickHPCheck(-2, -7, -2, 0, 0, 0, 0, 0);
         }
+
+        [Test()]
+        public void TestUpToEleven()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+            RemoveAllBandMateCards();
+            var band = MoveCard(scream, "SlicesAxe", setlist.UnderLocation);
+            PrintSeparator("TEST");
+
+            SetHitPoints(slice, 15);
+            SetHitPoints(bloodlace, 15);
+            SetHitPoints(valentine, 15);
+            SetHitPoints(rickyg, 10);
+
+            DecisionAutoDecideIfAble = true;
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            var card = PlayCard("UpToEleven");
+
+            //pink, orange
+            //pink - each other regains 2
+            //orange - status effect
+            //card - lowest regains 3
+            QuickHPCheck(-1, -1, -1, -1, 2, 0, 2, 5);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            AssertInPlayArea(scream, band);
+        }
     }
 }
