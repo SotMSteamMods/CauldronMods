@@ -554,7 +554,7 @@ namespace CauldronTests
             StartGame();
             DestroyNonCharacterVillainCards();
             Card hakaOngoing1 = PutInHand("Dominion");
-            Card hakaOngoing2 = PutInHand("SavageHaka");
+            Card hakaOngoing2 = PutInHand("SavageMana");
 
             Card raOngoing1 = PutInHand("FlameBarrier");
             Card raOngoing2 = PutInHand("BlazingTornado");
