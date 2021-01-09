@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TheChasmOfAThousandNights
 {
-    public class RatherFriendlyCardController : TheChasmOfAThousandNightsUtilityCardController
+    public class RatherFriendlyCardController : NatureCardController
     {
         public RatherFriendlyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
