@@ -23,19 +23,20 @@ namespace Cauldron.Mythos
         private string GetIconIdentifier(Card c)
         {
             //Temporary method to get the icon of a card until Subdecks are implemented
-            string[] eyeIdentifiers = { "DangerousInvestigation", "PallidAcademic", "Revelations", "RitualSite", "RustedArtifact", "TornPage" };
-            string[] fearIdentifiers = { "AclastyphWhoPeers", "FaithfulProselyte", "OtherworldlyAlignment", "PreyUponTheMind" };
-            string[] mindIdentifiers = { "ClockworkRevenant", "DoktorVonFaust", "HallucinatedHorror", "WhispersAndLies", "YourDarkestSecrets" };
+            string[] clueIdentifiers = { "DangerousInvestigation", "PallidAcademic", "Revelations", "RitualSite", "RustedArtifact", "TornPage" };
+            string[] dangerIdentifiers = { "AclastyphWhoPeers", "FaithfulProselyte", "OtherworldlyAlignment", "PreyUponTheMind" };
+            string[] madnessIdentifiers = { "ClockworkRevenant", "DoktorVonFaust", "HallucinatedHorror", "WhispersAndLies", "YourDarkestSecrets" };
+
             string identifier = null;
-            if (eyeIdentifiers.Contains(c.Identifier))
+            if (clueIdentifiers.Contains(c.Identifier))
             {
                 identifier = MythosClueDeckIdentifier;
             }
-            if (fearIdentifiers.Contains(c.Identifier))
+            if (dangerIdentifiers.Contains(c.Identifier))
             {
                 identifier = MythosDangerDeckIdentifier;
             }
-            if (mindIdentifiers.Contains(c.Identifier))
+            if (madnessIdentifiers.Contains(c.Identifier))
             {
                 identifier = MythosMadnessDeckIdentifier;
             }

@@ -66,13 +66,22 @@ namespace CauldronTests
                 Assert.IsTrue(cc.GetType() != typeof(CardController), $"{card.Identifier} is does not have a CardController");
             }
 
-            Assert.AreEqual(30, mythos.CharacterCard.HitPoints);
+            Assert.AreEqual(48, mythos.CharacterCard.HitPoints);
         }
 
         [Test()]
         public void TestMythosDecklist()
         {
             SetupGameController("Cauldron.Mythos", "Haka", "Bunker", "TheScholar", "Megalopolis");
+
+            string[] clueIdentifiers = { "DangerousInvestigation", "PallidAcademic", "Revelations", "RitualSite", "RustedArtifact", "TornPage" };
+            string[] dangerIdentifiers = { "AclastyphWhoPeers", "FaithfulProselyte", "OtherworldlyAlignment", "PreyUponTheMind" };
+            string[] madnessIdentifiers = { "ClockworkRevenant", "DoktorVonFaust", "HallucinatedHorror", "WhispersAndLies", "YourDarkestSecrets" };
+
+            foreach (string id in clueIdentifiers)
+            {
+                Assert.IsTrue(GetIconIdentifier(GetCard(id)) == MythosClueDeckIdentifier);
+            }
 
             AssertHasKeyword("device", new string[] { "DensityRegulator", "DistortionGrenade", "DistortionNet" });
 
@@ -103,14 +112,6 @@ namespace CauldronTests
             GoToEndOfTurn(mythos);
             var a = GameController.Game.Journal;
             var b = 1;
-        }
-
-        [Test()]
-        public void Test2()
-        {
-            SetupGameController("OblivAeon", "Legacy", "Bunker", "TheVisionary/DarkVisionaryCharacter", "Megalopolis", "Magmaria");
-            StartGame();
-            var a = oblivaeon;
         }
     }
 }
