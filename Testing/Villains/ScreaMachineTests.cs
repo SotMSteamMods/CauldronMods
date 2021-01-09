@@ -679,7 +679,7 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(0);
             QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
             ActivateAbility(key, card);
-            
+
             //1 irreducible melee damage and reduce the next damage dealt by 2.
             QuickHPCheck(0, 0, -1, 0, 0, 0, 0, 0);
             AssertNumberOfStatusEffectsInPlay(1);
@@ -689,6 +689,43 @@ namespace CauldronTests
             QuickHPCheck(0, 0, 0, 0, -1, 0, 0, 0);
             //only next damage
             AssertNumberOfStatusEffectsInPlay(0);
+        }
+
+        [Test()]
+        public void TestTectonicBeat()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var card = SetupBandCard("TectonicBeat");
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.RickyG);
+            AssertNumberOfActivatableAbility(card, key, 1);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            ActivateAbility(key, card);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            DealDamage(ra, rickyg, 2, DamageType.Cold);
+            QuickHPCheck(0, 0, 0, 0, 0, 0, 0, -1);
+        }
+
+        [Test()]
+        public void TestMentalLink()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var card = SetupBandCard("MentalLink");
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Valentine);
+            AssertNumberOfActivatableAbility(card, key, 1);
+
+            int deck = GetNumberOfCardsInDeck(scream);
+            ActivateAbility(key, card);
+            AssertNumberOfCardsInDeck(scream, deck - 1);
         }
     }
 }

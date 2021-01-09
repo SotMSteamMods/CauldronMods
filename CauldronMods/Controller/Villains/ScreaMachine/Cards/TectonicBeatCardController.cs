@@ -16,7 +16,21 @@ namespace Cauldron.ScreaMachine
 
         protected override IEnumerator ActivateBandAbility()
         {
-            throw new NotImplementedException();
+            var effect = new ReduceDamageStatusEffect(1);
+            effect.TargetCriteria.IsSpecificCard = GetBandmate();
+            effect.CardSource = Card;
+            effect.UntilStartOfNextTurn(TurnTaker);
+            effect.UntilTargetLeavesPlay(GetBandmate());
+
+            var coroutine = AddStatusEffect(effect);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
         }
     }
 }
