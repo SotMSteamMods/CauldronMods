@@ -16,7 +16,25 @@ namespace Cauldron.ScreaMachine
 
         protected override IEnumerator ActivateBandAbility()
         {
-            throw new NotImplementedException();
+
+            var topCard = TurnTaker.Deck.TopCard;
+            var cc = FindCardController(topCard);
+
+            GameController.AddInhibitor(cc);
+            GameController.AddInhibitorException(cc, ga => !(ga is ActivateAbilityAction));
+
+            var coroutine = GameController.PlayTopCard(DecisionMaker, TurnTakerController, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            GameController.RemoveInhibitorException(cc);
+            GameController.RemoveInhibitor(cc);
         }
     }
 }
