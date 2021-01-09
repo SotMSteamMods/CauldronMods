@@ -15,9 +15,9 @@ namespace Cauldron.Mythos
 
         }
 
-        protected const string MythosClueDeckIdentifier = "MythosClue";
-        protected const string MythosDangerDeckIdentifier = "MythosDanger";
-        protected const string MythosMadnessDeckIdentifier = "MythosMadness";
+        protected const string MythosEyeDeckIdentifier = "MythosEye";
+        protected const string MythosFearDeckIdentifier = "MythosFear";
+        protected const string MythosMindDeckIdentifier = "MythosMind";
 
         public override void AddTriggers()
         {
@@ -27,7 +27,7 @@ namespace Cauldron.Mythos
                 /**Added to MythosUtilityCardController**/
 
                 //{MythosDanger} {Mythos} is immune to damage.
-                base.AddSideTrigger(base.AddImmuneToDamageTrigger((DealDamageAction action) => action.Target == this.Card && this.IsTopCardMatching(MythosDangerDeckIdentifier)));
+                base.AddSideTrigger(base.AddImmuneToDamageTrigger((DealDamageAction action) => action.Target == this.Card && this.IsTopCardMatching(MythosFearDeckIdentifier)));
 
                 //At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. Then if there are {H} tokens on Dangerous Investigation, flip {Mythos}' villain character cards.
                 base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.FrontEndOfTurnResponse, new TriggerType[] { TriggerType.PlayCard, TriggerType.FlipCard }));
@@ -77,10 +77,29 @@ namespace Cauldron.Mythos
         private bool IsTopCardMatching(string type)
         {
             //Advanced - Back: Activate all {MythosDanger} effects.
-            if (base.Game.IsAdvanced && base.CharacterCard.IsFlipped && type == MythosDangerDeckIdentifier)
+            if (base.Game.IsAdvanced && base.CharacterCard.IsFlipped && type == MythosFearDeckIdentifier)
             {
                 return true;
             }
+
+            string[] eyeIdentifiers = { "DangerousInvestigation", "PallidAcademic", "Revelations", "RitualSite", "RustedArtifact", "TornPage" };
+            string[] fearIdentifiers = { "AclastyphWhoPeers", "FaithfulProselyte", "OtherworldlyAlignment", "PreyUponTheMind" };
+            string[] mindIdentifiers = { "ClockworkRevenant", "DoktorVonFaust", "HallucinatedHorror", "WhispersAndLies", "YourDarkestSecrets" };
+            string topIdentifier = null;
+            if (eyeIdentifiers.Contains(base.TurnTaker.Deck.TopCard.Identifier))
+            {
+                topIdentifier = MythosEyeDeckIdentifier;
+            }
+            if (fearIdentifiers.Contains(base.TurnTaker.Deck.TopCard.Identifier))
+            {
+                topIdentifier = MythosFearDeckIdentifier;
+            }
+            if (mindIdentifiers.Contains(base.TurnTaker.Deck.TopCard.Identifier))
+            {
+                topIdentifier = MythosMindDeckIdentifier;
+            }
+            return topIdentifier == type;
+            //Once the UI allows for this, remove above.
             return base.TurnTaker.Deck.TopCard.ParentDeck.Identifier == type;
         }
 
@@ -153,7 +172,7 @@ namespace Cauldron.Mythos
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (this.IsTopCardMatching((MythosClueDeckIdentifier)))
+            if (this.IsTopCardMatching((MythosEyeDeckIdentifier)))
             {
                 //{MythosClue} Play the top card of the villain deck.
                 coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck, true, 1, cardSource: base.GetCardSource());
@@ -167,7 +186,7 @@ namespace Cauldron.Mythos
                 }
             }
 
-            if (this.IsTopCardMatching((MythosDangerDeckIdentifier)))
+            if (this.IsTopCardMatching((MythosFearDeckIdentifier)))
             {
                 //{MythosDanger} {Mythos} deals each hero target {H} infernal damage.
                 coroutine = base.DealDamage(this.Card, (Card c) => c.IsHero, base.Game.H, DamageType.Infernal);

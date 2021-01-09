@@ -15,6 +15,14 @@ namespace Cauldron.Mythos
 
         }
 
+        public override string DeckIdentifier
+        {
+            get
+            {
+                return MythosEyeDeckIdentifier;
+            }
+        }
+
         public override IEnumerator Play()
         {
             //When this card enters play, put all ongoing cards in the villain trash into play.
@@ -41,7 +49,7 @@ namespace Cauldron.Mythos
         private IEnumerator DangerMadnessResponse(DealDamageAction action)
         {
             IEnumerator coroutine;
-            if (base.IsTopCardMatching(MythosDangerDeckIdentifier))
+            if (base.IsTopCardMatching(MythosFearDeckIdentifier))
             {
                 //--{MythosDanger} Play the top card of the villain deck.
                 coroutine = base.PlayTheTopCardOfTheVillainDeckResponse(action);
@@ -54,7 +62,7 @@ namespace Cauldron.Mythos
                     GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            if (base.IsTopCardMatching(MythosMadnessDeckIdentifier))
+            if (base.IsTopCardMatching(MythosMindDeckIdentifier))
             {
                 //--{MythosMadness} Move the bottom card of a deck to the top of that deck.
                 List<SelectLocationDecision> storedResults = new List<SelectLocationDecision>();

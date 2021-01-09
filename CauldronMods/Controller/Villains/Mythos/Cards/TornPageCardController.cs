@@ -15,6 +15,14 @@ namespace Cauldron.Mythos
 
         }
 
+        public override string DeckIdentifier
+        {
+            get
+            {
+                return MythosEyeDeckIdentifier;
+            }
+        }
+
         private const string FirstTimeActivated = "FirstTimeActivated";
 
 
@@ -22,7 +30,7 @@ namespace Cauldron.Mythos
         {
             //The first time each turn that:
             //{MythosDanger} a hero card is drawn...
-            base.AddTrigger<DrawCardAction>((DrawCardAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeActivated) && base.IsTopCardMatching(MythosDangerDeckIdentifier) && action.DidDrawCard, this.DealDamageResponse, new TriggerType[] { TriggerType.DealDamage }, TriggerTiming.After);
+            base.AddTrigger<DrawCardAction>((DrawCardAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeActivated) && base.IsTopCardMatching(MythosFearDeckIdentifier) && action.DidDrawCard, this.DealDamageResponse, new TriggerType[] { TriggerType.DealDamage }, TriggerTiming.After);
             //{MythosMadness} a hero card enters play...
             base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeActivated) && action.CardEnteringPlay.IsHero && action.IsSuccessful, this.DealDamageResponse, new TriggerType[] { TriggerType.DealDamage }, TriggerTiming.After);
             //{MythosClue} a power is used...

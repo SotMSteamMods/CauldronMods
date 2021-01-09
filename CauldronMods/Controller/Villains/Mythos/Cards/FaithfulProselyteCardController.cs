@@ -15,10 +15,18 @@ namespace Cauldron.Mythos
 
         }
 
+        public override string DeckIdentifier
+        {
+            get
+            {
+                return MythosFearDeckIdentifier;
+            }
+        }
+
         public override IEnumerator Play()
         {
             //{MythosMadness} When this card enters play, destroy {H - 2} equipment cards.
-            if (base.IsTopCardMatching(MythosMadnessDeckIdentifier))
+            if (base.IsTopCardMatching(MythosMindDeckIdentifier))
             {
                 IEnumerator coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c)), base.Game.H - 2, cardSource: base.GetCardSource());
                 if (UseUnityCoroutines)

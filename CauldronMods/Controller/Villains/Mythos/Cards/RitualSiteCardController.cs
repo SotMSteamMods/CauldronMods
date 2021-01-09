@@ -15,13 +15,21 @@ namespace Cauldron.Mythos
 
         }
 
+        public override string DeckIdentifier
+        {
+            get
+            {
+                return MythosEyeDeckIdentifier;
+            }
+        }
+
         public override void AddTriggers()
         {
             //{MythosDanger} Increase damage dealt by environment cards to hero targets by 1.
-            base.AddIncreaseDamageTrigger((DealDamageAction action) => base.IsTopCardMatching(MythosDangerDeckIdentifier) && action.DamageSource.IsEnvironmentCard && action.Target.IsHero, 1);
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => base.IsTopCardMatching(MythosFearDeckIdentifier) && action.DamageSource.IsEnvironmentCard && action.Target.IsHero, 1);
 
             //{MythosMadness} At the end of the villain turn, this card deals each hero target 1 psychic damage.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.MadnessDealDamageResponse, TriggerType.DealDamage, (PhaseChangeAction action) => base.IsTopCardMatching(MythosMadnessDeckIdentifier));
+            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.MadnessDealDamageResponse, TriggerType.DealDamage, (PhaseChangeAction action) => base.IsTopCardMatching(MythosMindDeckIdentifier));
         }
 
         private IEnumerator MadnessDealDamageResponse(PhaseChangeAction action)

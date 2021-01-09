@@ -15,6 +15,14 @@ namespace Cauldron.Mythos
 
         }
 
+        public override string DeckIdentifier
+        {
+            get
+            {
+                return MythosFearDeckIdentifier;
+            }
+        }
+
         public override void AddTriggers()
         {
             //At the end of the villain turn:
@@ -24,7 +32,7 @@ namespace Cauldron.Mythos
         private IEnumerator EndOfTurnResponse(PhaseChangeAction action)
         {
             IEnumerator coroutine = null;
-            if (base.IsTopCardMatching(MythosDangerDeckIdentifier))
+            if (base.IsTopCardMatching(MythosFearDeckIdentifier))
             {
                 //{MythosDanger} {Mythos} deals the hero target with the highest HP {H} infernal damage.
                 coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => c.IsHero, (Card c) => base.Game.H, DamageType.Infernal);
@@ -37,7 +45,7 @@ namespace Cauldron.Mythos
                     GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            if (base.IsTopCardMatching(MythosMadnessDeckIdentifier))
+            if (base.IsTopCardMatching(MythosMindDeckIdentifier))
             {
                 //{MythosMadness} {Mythos} deals each non-villain target 1 infernal damage.
                 coroutine = base.DealDamage(base.CharacterCard, (Card c) => !base.IsVillain(c), 1, DamageType.Infernal);
@@ -50,7 +58,7 @@ namespace Cauldron.Mythos
                     GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            if (base.IsTopCardMatching(MythosClueDeckIdentifier))
+            if (base.IsTopCardMatching(MythosEyeDeckIdentifier))
             {
                 //{MythosClue} {Mythos} deals the hero target with the lowest HP {H} psychic damage
                 coroutine = base.DealDamageToLowestHP(base.CharacterCard, 1, (Card c) => c.IsHero, (Card c) => base.Game.H, DamageType.Psychic);

@@ -15,6 +15,14 @@ namespace Cauldron.Mythos
 
         }
 
+        public override string DeckIdentifier
+        {
+            get
+            {
+                return MythosMindDeckIdentifier;
+            }
+        }
+
         public override IEnumerator Play()
         {
             //Discard the top card of each hero deck.

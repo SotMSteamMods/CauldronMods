@@ -69,12 +69,20 @@ namespace CauldronTests
             SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "TheVisionary/DarkVisionaryCharacter", "Megalopolis");
             StartGame();
 
-            PlayCard("TakeDown");
+            Card peer = PlayCard("AclastyphWhoPeers");
             DecisionYesNo = true;
 
             GoToEndOfTurn(mythos);
             var a = GameController.Game.Journal;
             var b = 1;
+        }
+
+        [Test()]
+        public void Test2()
+        {
+            SetupGameController("OblivAeon", "Legacy", "Bunker", "TheVisionary/DarkVisionaryCharacter", "Megalopolis", "Magmaria");
+            StartGame();
+            var a = oblivaeon;
         }
     }
 }

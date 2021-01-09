@@ -15,13 +15,21 @@ namespace Cauldron.Mythos
 
         }
 
+        public override string DeckIdentifier
+        {
+            get
+            {
+                return MythosMindDeckIdentifier;
+            }
+        }
+
         public override void AddTriggers()
         {
             //At the end of the villain turn, search the villain deck for a Clockwork Revenant and put it into play. Shuffle the villain deck. If no card was put into play this way, this card deals each non-villain target 3 lightning damage.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.EndOfTurnResponse, new TriggerType[] { TriggerType.PutIntoPlay, TriggerType.DealDamage });
 
             //{MythosClue} Reduce damage dealt to this card by 2.
-            base.AddReduceDamageTrigger((Card c) => c == this.Card && base.IsTopCardMatching(MythosClueDeckIdentifier), 2);
+            base.AddReduceDamageTrigger((Card c) => c == this.Card && base.IsTopCardMatching(MythosEyeDeckIdentifier), 2);
         }
 
         private IEnumerator EndOfTurnResponse(PhaseChangeAction action)

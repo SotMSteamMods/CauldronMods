@@ -15,6 +15,14 @@ namespace Cauldron.Mythos
 
         }
 
+        public override string DeckIdentifier
+        {
+            get
+            {
+                return MythosFearDeckIdentifier;
+            }
+        }
+
         public override void AddTriggers()
         {
             //At the end of the villain turn:
@@ -24,7 +32,7 @@ namespace Cauldron.Mythos
         private IEnumerator EndOfTurnResponse(PhaseChangeAction action)
         {
             IEnumerator coroutine;
-            if (base.IsTopCardMatching(MythosDangerDeckIdentifier))
+            if (base.IsTopCardMatching(MythosFearDeckIdentifier))
             {
                 //{MythosDanger} This card deals the hero target with the highest HP 2 melee damage. 
                 coroutine = base.DealDamageToHighestHP(this.Card, 1, (Card c) => c.IsHero, (Card c) => 2, DamageType.Melee);
@@ -49,7 +57,7 @@ namespace Cauldron.Mythos
                 }
             }
 
-            if (base.IsTopCardMatching(MythosClueDeckIdentifier))
+            if (base.IsTopCardMatching(MythosEyeDeckIdentifier))
             {
                 //{MythosClue} This card regains 2HP.
                 coroutine = base.GameController.GainHP(this.Card, 2, cardSource: base.GetCardSource());
@@ -74,7 +82,7 @@ namespace Cauldron.Mythos
                 }
             }
 
-            if (base.IsTopCardMatching(MythosMadnessDeckIdentifier))
+            if (base.IsTopCardMatching(MythosMindDeckIdentifier))
             {
                 //{MythosMadness} This card deals each other target 1 psychic damage.
                 coroutine = base.DealDamage(this.Card, (Card c) => c != this.Card, 1, DamageType.Psychic);

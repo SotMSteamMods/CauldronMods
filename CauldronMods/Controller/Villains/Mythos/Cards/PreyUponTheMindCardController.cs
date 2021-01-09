@@ -15,6 +15,14 @@ namespace Cauldron.Mythos
 
         }
 
+        public override string DeckIdentifier
+        {
+            get
+            {
+                return MythosFearDeckIdentifier;
+            }
+        }
+
         public override IEnumerator Play()
         {
             //Destroy {H - 2} hero ongoing cards.
@@ -28,7 +36,7 @@ namespace Cauldron.Mythos
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (base.IsTopCardMatching(MythosMadnessDeckIdentifier))
+            if (base.IsTopCardMatching(MythosMindDeckIdentifier))
             {
                 //{MythosMadness} Each player discards 1 card.
                 coroutine = base.GameController.EachPlayerDiscardsCards(1, 1, cardSource: base.GetCardSource());
@@ -42,7 +50,7 @@ namespace Cauldron.Mythos
                 }
             }
 
-            if (base.IsTopCardMatching(MythosMadnessDeckIdentifier))
+            if (base.IsTopCardMatching(MythosMindDeckIdentifier))
             {
                 //{MythosDanger} {Mythos} deals each hero target 1 psychic damage.
                 coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsOngoing, 1, DamageType.Psychic);

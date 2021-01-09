@@ -15,10 +15,18 @@ namespace Cauldron.Mythos
 
         }
 
+        public override string DeckIdentifier
+        {
+            get
+            {
+                return MythosMindDeckIdentifier;
+            }
+        }
+
         public override IEnumerator Play()
         {
             //{MythosMadness}{MythosDanger} When this card enters play, play the top card of the villain deck.
-            if (base.IsTopCardMatching(MythosMadnessDeckIdentifier) || base.IsTopCardMatching(MythosDangerDeckIdentifier))
+            if (base.IsTopCardMatching(MythosMindDeckIdentifier) || base.IsTopCardMatching(MythosFearDeckIdentifier))
             {
                 IEnumerator coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck);
                 if (UseUnityCoroutines)

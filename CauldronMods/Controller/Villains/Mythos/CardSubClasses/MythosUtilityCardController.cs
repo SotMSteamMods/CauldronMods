@@ -15,17 +15,37 @@ namespace Cauldron.Mythos
 
         }
 
-        protected const string MythosClueDeckIdentifier = "MythosClue";
-        protected const string MythosDangerDeckIdentifier = "MythosDanger";
-        protected const string MythosMadnessDeckIdentifier = "MythosMadness";
+        protected const string MythosEyeDeckIdentifier = "MythosEye";
+        protected const string MythosFearDeckIdentifier = "MythosFear";
+        protected const string MythosMindDeckIdentifier = "MythosMind";
+
+        public abstract string DeckIdentifier { get; }
 
         public bool IsTopCardMatching(string type)
         {
             //Advanced: Activate all {MythosDanger} effects.
-            if (base.Game.IsAdvanced && type == MythosDangerDeckIdentifier)
+            if (base.Game.IsAdvanced && type == MythosFearDeckIdentifier)
             {
                 return true;
             }
+            string[] eyeIdentifiers = { "DangerousInvestigation", "PallidAcademic", "Revelations", "RitualSite", "RustedArtifact", "TornPage" };
+            string[] fearIdentifiers = { "AclastyphWhoPeers", "FaithfulProselyte", "OtherworldlyAlignment", "PreyUponTheMind" };
+            string[] mindIdentifiers = { "ClockworkRevenant", "DoktorVonFaust", "HallucinatedHorror", "WhispersAndLies", "YourDarkestSecrets" };
+            string topIdentifier = null;
+            if (eyeIdentifiers.Contains(base.TurnTaker.Deck.TopCard.Identifier))
+            {
+                topIdentifier = MythosEyeDeckIdentifier;
+            }
+            if (fearIdentifiers.Contains(base.TurnTaker.Deck.TopCard.Identifier))
+            {
+                topIdentifier = MythosFearDeckIdentifier;
+            }
+            if (mindIdentifiers.Contains(base.TurnTaker.Deck.TopCard.Identifier))
+            {
+                topIdentifier = MythosMindDeckIdentifier;
+            }
+            return topIdentifier == type;
+            //Once the UI allows for this, remove above.
             return base.TurnTaker.Deck.TopCard.ParentDeck.Identifier == type;
         }
 

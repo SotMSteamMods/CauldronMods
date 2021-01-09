@@ -15,6 +15,14 @@ namespace Cauldron.Mythos
             base.AddAsPowerContributor();
         }
 
+        public override string DeckIdentifier
+        {
+            get
+            {
+                return MythosMindDeckIdentifier;
+            }
+        }
+
         public override void AddTriggers()
         {
             //At the end of the villain turn, the villain target with the lowest HP deals the hero target with the highest HP 2 sonic damage.
@@ -61,7 +69,7 @@ namespace Cauldron.Mythos
         public override IEnumerable<Power> AskIfContributesPowersToCardController(CardController cardController)
         {
             //{MythosMadness} Heroes gain the following power:
-            if (base.IsTopCardMatching(MythosMadnessDeckIdentifier) && cardController.HeroTurnTakerController != null && cardController.Card.IsHeroCharacterCard && cardController.Card.Owner.IsHero && !cardController.Card.Owner.ToHero().IsIncapacitatedOrOutOfGame && !cardController.Card.IsFlipped)
+            if (base.IsTopCardMatching(MythosMindDeckIdentifier) && cardController.HeroTurnTakerController != null && cardController.Card.IsHeroCharacterCard && cardController.Card.Owner.IsHero && !cardController.Card.Owner.ToHero().IsIncapacitatedOrOutOfGame && !cardController.Card.IsFlipped)
             {
                 //Power: Shuffle 2 cards from the villain trash into the villain deck.
                 Power power = new Power(cardController.HeroTurnTakerController, cardController, "Shuffle 2 cards from the villain trash into the villain deck.", this.ShuffleVillainCardsResponse(cardController), 0, null, base.GetCardSource(null));
