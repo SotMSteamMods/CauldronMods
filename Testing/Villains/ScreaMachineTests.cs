@@ -954,5 +954,29 @@ namespace CauldronTests
             QuickHPCheck(-4, -2, -6, 0, 0, 0, 0, 0);
             AssertNumberOfStatusEffectsInPlay(1);
         }
+
+        [Test()]
+        public void TestScreamAndShout()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+            RemoveAllBandMateCards();
+            PrintSeparator("TEST");
+
+            SetHitPoints(slice, 15);
+            SetHitPoints(bloodlace, 15);
+            SetHitPoints(valentine, 15);
+            SetHitPoints(rickyg, 15);
+
+            DecisionAutoDecideIfAble = true;
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            var card = PlayCard("ScreamAndShout");
+
+            //green, pink
+            //green - second lowest H -1
+            //pink - each other regains 2
+
+            QuickHPCheck(-4, 0, -4, 0, 2, 0, 2, 2);
+        }
     }
 }
