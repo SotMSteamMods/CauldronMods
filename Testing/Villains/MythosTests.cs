@@ -873,5 +873,39 @@ namespace CauldronTests
             //{MythosMadness} Move the bottom card of a deck to the top of that deck.
             AssertOnTopOfDeck(bottomCard);
         }
+
+        [Test()]
+        public void TestYourDarkestSecrets()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Unity", "Ra", "Megalopolis");
+            StartGame();
+
+            DiscardAllCards(legacy, bunker, haka, unity, ra);
+
+            PutInHand(legacy, new string[] { "SurgeOfStrength", "NextEvolution" });
+            Card legacyTop = PutOnDeck("Fortitude");
+
+            PutInHand(bunker, new string[] { "FlakCannon", "GatlingGun", "HeavyPlating" });
+            Card bunkerTop = PutOnDeck("FlakCannon");
+
+            PlayCard("TaMoko");
+            PutInHand(haka, new string[] { "HakaOfBattle", "HakaOfShielding", "VitalitySurge" });
+            Card hakaTop = PutOnDeck("ElbowSmash");
+
+            PutInHand(unity, new string[] { "ChampionBot", "BeeBot", "TurretBot", "StealthBot" });
+            Card unityTop = PutOnDeck("SwiftBot");
+
+            PutInHand(ra, new string[] { "TheStaffOfRa", "FlameBarrier" });
+            Card raTop = PutOnDeck("FireBlast");
+
+            QuickHPStorage(legacy, bunker, haka, unity, ra);
+            PlayCard(YourDarkestSecrets);
+            //Discard the top card of each hero deck.
+            AssertInTrash(raTop, unityTop, hakaTop, bunkerTop, legacyTop);
+
+            //{Mythos} deals each hero 1 infernal damage for each card in their hand that shares a keyword with the card discarded from their deck.
+            //Since it is 3 instances of 1 for Haka and he has DR 1, he takes 0
+            QuickHPCheck(-2, -3, 0, -4, 0);
+        }
     }
 }
