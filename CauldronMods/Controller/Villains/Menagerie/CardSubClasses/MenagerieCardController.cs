@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace Cauldron.Menagerie
 {
-    public class MenagerieCardController : CardController
+    public abstract class MenagerieCardController : CardController
     {
-        public MenagerieCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected MenagerieCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
