@@ -25,6 +25,13 @@ namespace CauldronTests
 
         protected Card chasmCard { get { return FindCardsWhere(c => c.Identifier == "TheChasmOfAThousandNights", realCardsOnly: false).First(); } }
 
+        protected void AddCannotDealDamageTrigger(TurnTakerController ttc, Card specificCard)
+        {
+            CannotDealDamageStatusEffect cannotDealDamageEffect = new CannotDealDamageStatusEffect();
+            cannotDealDamageEffect.SourceCriteria.IsSpecificCard = specificCard;
+            cannotDealDamageEffect.UntilStartOfNextTurn(ttc.TurnTaker);
+            this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageEffect, true, new CardSource(ttc.CharacterCardController)));
+        }
         #endregion
 
         [Test()]
@@ -567,6 +574,54 @@ namespace CauldronTests
             QuickHPUpdate();
             DiscardCard(haka);
             QuickHPCheck(0, 0, 0, -1, 0);
+        }
+
+        [Test()]
+        public void TestCrumblingRuins_2TargetsInPlay()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheChasmOfAThousandNights" });
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            GoToPlayCardPhase(chasm);
+
+            PlayCard("CrumblingRuins");
+
+            Card axion = PlayCard("Axion");
+            Card gul = PlayCard("Gul");
+            AddCannotDealDamageTrigger(tachyon, axion);
+            AddCannotDealDamageTrigger(tachyon, gul);
+
+            //At the end of the environment turn, this card deals each non-environment target X melee damage, where X is the number of environment targets in play.
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, tachyon.CharacterCard, axion, gul);
+            GoToEndOfTurn(chasm);
+            QuickHPCheck(-2, -2, -2, -2, -2, 0, 0);
+
+        }
+
+        [Test()]
+        public void TestCrumblingRuins_4TargetsInPlay()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheChasmOfAThousandNights" });
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            GoToPlayCardPhase(chasm);
+
+            PlayCard("CrumblingRuins");
+
+            Card axion = PlayCard("Axion");
+            Card gul = PlayCard("Gul");
+            Card amaraqiel = PlayCard("GrandAmaraqiel");
+            Card mhegas = PlayCard("HighMhegas");
+            AddCannotDealDamageTrigger(tachyon, axion);
+            AddCannotDealDamageTrigger(tachyon, gul);
+            AddCannotDealDamageTrigger(tachyon, amaraqiel);
+            AddCannotDealDamageTrigger(tachyon, mhegas);
+
+            //At the end of the environment turn, this card deals each non-environment target X melee damage, where X is the number of environment targets in play.
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, tachyon.CharacterCard, axion, gul);
+            GoToEndOfTurn(chasm);
+            QuickHPCheck(-4, -4, -4, -4, -4, 0, 0);
+
         }
     }
 
