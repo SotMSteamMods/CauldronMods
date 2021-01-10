@@ -261,6 +261,8 @@ namespace CauldronTests
 
             var memberCard = GetCard(member.GetIdentifier());
             AssertNotFlipped(memberCard);
+            AssertHitPoints(memberCard, memberCard.Definition.HitPoints.Value);
+            AssertMaximumHitPoints(memberCard, memberCard.Definition.HitPoints.Value);
 
             var cards = FindCardsWhere(c => c.DoKeywordsContain(member.GetKeyword(), true, true));
             foreach (var card in cards)
@@ -276,6 +278,8 @@ namespace CauldronTests
             }
 
             AssertFlipped(memberCard);
+            AssertHitPoints(memberCard, memberCard.Definition.HitPoints.Value);
+            AssertMaximumHitPoints(memberCard, memberCard.Definition.HitPoints.Value);
         }
 
         [Test()]
@@ -631,7 +635,7 @@ namespace CauldronTests
             }
 
             int count = GetNumberOfCardsInPlay(c => c.Location == scream.TurnTaker.PlayArea && c.IsInPlayAndNotUnderCard);
-            
+
             //we are not going to reveal cards undersetlist, just flip and play specific cards.
             //first we hard play the cards for the active member leaving only the deadies cards under.
             //Then we play the top card of the under, and reset of the under playitself out
@@ -1075,6 +1079,34 @@ namespace CauldronTests
             QuickHPCheck(-2, -3, -2, 0, 2, 0, 2, 2);
             AssertNumberOfStatusEffectsInPlay(1);
             AssertInTrash(d1, d2, d3, d4);
+        }
+
+        [Test()]
+        public void TestScreaMachineDefeatDamage()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            DealDamage(legacy, slice, 99, DamageType.Cold);
+            DealDamage(legacy, bloodlace, 99, DamageType.Cold);
+            DealDamage(legacy, valentine, 99, DamageType.Cold);
+            DealDamage(legacy, rickyg, 99, DamageType.Cold);
+
+            AssertGameOver(EndingResult.VillainDestroyedVictory);
+        }
+
+        [Test()]
+        public void TestScreaMachineDefeatDestroy()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            DestroyCard(slice, legacy.CharacterCard);
+            DestroyCard(bloodlace, legacy.CharacterCard);
+            DestroyCard(valentine, legacy.CharacterCard);
+            DestroyCard(rickyg, legacy.CharacterCard);
+
+            AssertGameOver(EndingResult.VillainDestroyedVictory);
         }
     }
 }

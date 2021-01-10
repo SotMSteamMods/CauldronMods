@@ -56,7 +56,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"IrresistableVoice.png":
+"IrresistibleVoice.png":
 {
 	"frame": {"x":1036,"y":259,"w":256,"h":188},
 	"rotated": false,
@@ -121,6 +121,22 @@
 	"sourceSize": {"w":176,"h":256}
 },
 "ScreaMachineDeckBack.png":
+{
+	"frame": {"x":716,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"TheSetList.png":
+{
+	"frame": {"x":716,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"TheSetListBack.png":
 {
 	"frame": {"x":716,"y":0,"w":176,"h":256},
 	"rotated": false,

@@ -96,7 +96,7 @@ namespace Cauldron.ScreaMachine
             {
                 if (wasDrumCard)
                 {
-                    msg = $"{Card.Title} discards {card.Title} and unleashes a [b]furious[/b] beatdown!";
+                    msg = $"[b]{Card.Title}[/b] discards {card.Title} and unleashes a [b]furious[/b] beatdown!";
                 }
                 else
                 {

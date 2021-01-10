@@ -17,7 +17,7 @@ namespace Cauldron.ScreaMachine
 
         protected override string AbilityDescription => $"{Card.Title} deals the hero with the second lowest HP *{H - 1}* sonic damage.";
 
-        protected override string UltimateFormMessage => "I don't believe in having regrets. Let's take this to the limit."; //adapted from Slash
+        protected override string UltimateFormMessage => "Rock stars come and go. Musicians play until they die."; //Eddie Van Halen
 
         protected override IEnumerator ActivateBandAbility()
         {

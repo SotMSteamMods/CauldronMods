@@ -96,34 +96,84 @@ namespace Cauldron.ScreaMachine
             {
                 Card card;
                 string message;
+                bool sendMessage = false;
                 if (firstCard.Member == secondCard.Member)
                 {
+                    if (firstCard.IsBandmateInPlay)
+                        sendMessage = true;
+
                     var bandMate = firstCard.GetBandmate();
-                    if (firstCard.Card == secondCard.Card)
+                    if (firstCard.Card != secondCard.Card)
                     {
-                        card = firstCard.Card;
-                        message = $"{bandMate.Title} is ramping it up!";
+                        //revealed card bandmate doesn't have cards already in play, but the played card will start things off
+                        card = secondCard.Card;
+                        message = $"[b]{bandMate.Title}[/b] is starting to feel it!";
                     }
                     else
                     {
-                        card = secondCard.Card;
-                        message = $"{bandMate.Title} is taking the solo!";
+                        //revealed card bandmate has cards already in play   
+                        int count = FindCardsWhere(c => c.IsInPlayAndHasGameText && c.DoKeywordsContain(firstCard.Member.GetKeyword())).Count();
+                        card = firstCard.Card;
+                        switch (count)
+                        {
+                            case 1: //1 already, revealed card is the second
+                                message = $"[b]{bandMate.Title}[/b] is ramping it up!";
+                                break;
+                            case 2: //2 already, revealed card is the third, will flip
+                                message = $"The music [b]surges[/b], this is [b]{bandMate.Title}[/b] moment!";
+                                break;
+                            default:
+                                message = $"[b]{bandMate.Title}[/b] is ramping it up!";
+                                break;
+                        }
                     }
                 }
                 else
                 {
+                    //first card doesn't have any cards already in play, playing second card.
+                    if (secondCard.IsBandmateInPlay)
+                        sendMessage = true;
+
                     card = secondCard.Card;
-                    message = $"{firstCard.GetBandmate().Title} is keeping it mellow, while {secondCard.GetBandmate().Title} has the lime-light!";
+                    var bandMate = secondCard.GetBandmate();
+                    int count = FindCardsWhere(c => c.IsInPlayAndHasGameText && c.DoKeywordsContain(secondCard.Member.GetKeyword())).Count();
+
+                    if (firstCard.IsBandmateInPlay)
+                    {
+                        message = $"{firstCard.GetBandmate().Title} is keeping it mellow, while ";
+                    }
+                    else
+                    {
+                        message = "";
+                    }
+                    switch (count)
+                    {
+                        case 0: //0 already, play card is the first
+                            message += $"[b]{secondCard.GetBandmate().Title}[/b] steps into the lime-light!";
+                            break;
+                        case 1: //1 already, revealed card is the second
+                            message += $"[b]{bandMate.Title}[/b] is ramping it up!";
+                            break;
+                        case 2: //2 already, revealed card is the third, will flip
+                            message = $"The music [b]surges[/b], this is [b]{bandMate.Title}[/b] moment!";
+                            break;
+                        default:
+                            message = $"[b]{bandMate.Title}[/b] is ramping it up!";
+                            break;
+                    }
                 }
 
-                var coroutine = GameController.SendMessageAction(message, Priority.Medium, GetCardSource(), new[] { card });
-                if (base.UseUnityCoroutines)
+                if (sendMessage)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    var coroutine = GameController.SendMessageAction(message, Priority.High, GetCardSource(), new[] { card });
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
             yield break;

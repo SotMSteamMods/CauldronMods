@@ -52,6 +52,31 @@ namespace Cauldron.ScreaMachine
             {
                 AddFlippedSideTriggers();
             }
+
+            AddAfterLeavesPlayAction(ga => CheckForDefeat(ga), TriggerType.GameOver);
+        }
+
+        private IEnumerator CheckForDefeat(GameAction ga)
+        {
+            IEnumerator coroutine;
+
+
+            if (TurnTakerController.CharacterCards.All(c => c.IsOutOfGame))
+            {
+                coroutine =  DefeatedResponse(ga);
+            }
+            else
+            {
+                coroutine = GameController.SendMessageAction($"[i]{Card.Title}[/i] has to leave the stage, but.....\n[b]THE SHOW MUST GO ON![b]", Priority.Medium, GetCardSource());
+            }
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
         }
 
         private bool FlipCriteria(Card card)
@@ -87,7 +112,9 @@ namespace Cauldron.ScreaMachine
 
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
-            var coroutine = base.AfterFlipCardImmediateResponse();
+            IEnumerator coroutine;
+
+            coroutine = base.AfterFlipCardImmediateResponse();
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -97,7 +124,9 @@ namespace Cauldron.ScreaMachine
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = GameController.SendMessageAction(UltimateFormMessage, Priority.High, GetCardSource(), showCardSource: true);
+            string message = "[b]" + Card.Title + " - " + TurnTaker.NameRespectingVariant + "[/b]".PadRight(UltimateFormMessage.Length) + "\n[i]\u201C" + UltimateFormMessage + "\u201D[/i]";
+
+            coroutine = GameController.SendMessageAction(message, Priority.High, GetCardSource(), showCardSource: true);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
