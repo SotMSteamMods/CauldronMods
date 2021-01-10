@@ -18,7 +18,7 @@ namespace Cauldron.Menagerie
         public override void AddTriggers()
         {
             //The first time a Specimen enters play each turn, play the top card of the villain deck.
-            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => !base.HasBeenSetToTrueThisTurn(FirstSpecimen) && action.IsSuccessful && base.IsSpecimen(action.CardEnteringPlay), this.PlayVillainCardResponse, new TriggerType[] { TriggerType.PlayCard }, TriggerTiming.After);
+            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => action.CardEnteringPlay != Card && !base.HasBeenSetToTrueThisTurn(FirstSpecimen) && action.IsSuccessful && base.IsSpecimen(action.CardEnteringPlay), this.PlayVillainCardResponse, new TriggerType[] { TriggerType.PlayCard }, TriggerTiming.After);
 
             //At the end of the villain turn this card deals the hero target with the highest HP 2 projectile and 2 radiant damage.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);

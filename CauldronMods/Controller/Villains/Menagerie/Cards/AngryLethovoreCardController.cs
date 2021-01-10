@@ -17,7 +17,7 @@ namespace Cauldron.Menagerie
             //At the end of the villain turn, play the top card of the villain deck.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, base.PlayTheTopCardOfTheVillainDeckResponse, TriggerType.PlayCard);
             //Whenever a target enters play, this card deals that target 2 melee damage and regains 6HP.
-            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => action.CardEnteringPlay.IsTarget && action.IsSuccessful, this.DealDamageAndHealResponse, new TriggerType[] { TriggerType.DealDamage, TriggerType.GainHP }, TriggerTiming.After);
+            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => action.CardEnteringPlay != Card && action.CardEnteringPlay.IsTarget && action.IsSuccessful, this.DealDamageAndHealResponse, new TriggerType[] { TriggerType.DealDamage, TriggerType.GainHP }, TriggerTiming.After);
         }
 
         private IEnumerator DealDamageAndHealResponse(CardEntersPlayAction action)
