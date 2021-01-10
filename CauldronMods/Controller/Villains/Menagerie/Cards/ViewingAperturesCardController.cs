@@ -14,12 +14,10 @@ namespace Cauldron.Menagerie
 
         }
 
-        private List<Card> actedEnclosures;
-
         public override IEnumerator Play()
         {
             //Play the top card of the villain deck.
-            IEnumerator coroutine = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, cardSource: base.GetCardSource(null));
+            IEnumerator coroutine = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -31,7 +29,7 @@ namespace Cauldron.Menagerie
 
             //Select 1 face down card beneath each Enclosure. Flip those cards face up.
             IEnumerable<Card> enclosures = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && base.IsEnclosure(c) && c.UnderLocation.HasCards && this.HasFaceDownCards(c)));
-            actedEnclosures = new List<Card>();
+            var actedEnclosures = new List<Card>();
             foreach (Card enclosure in enclosures)
             {
                 IEnumerable<Card> choices = base.FindCardsWhere((new LinqCardCriteria((Card c) => enclosures.Contains(c) && !actedEnclosures.Contains(c) && this.HasFaceDownCards(c))));
@@ -52,7 +50,7 @@ namespace Cauldron.Menagerie
             }
 
             //{Menagerie} deals each hero, environment, and Specimen target 1 psychic damage.
-            coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsHero || c.IsEnvironment || base.IsSpecimen(c), 1, DamageType.Psychic);
+            coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsHero || c.IsEnvironmentTarget || base.IsSpecimen(c), 1, DamageType.Psychic);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
