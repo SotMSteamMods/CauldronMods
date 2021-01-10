@@ -24,24 +24,22 @@ namespace Cauldron.Gray
             List<DestroyCardAction> storedResults = new List<DestroyCardAction>();
             //At the end of the villain turn, destroy 1 equipment card.
             IEnumerator coroutine;
-            if (this.FindNumberOfHeroEquipmentInPlay() > 0)
+
+            coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c)), false, storedResults, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
             {
-                coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c)), false, storedResults, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-                //If a card is destroyed this way 
-                DestroyCardAction destroyAction = storedResults.FirstOrDefault<DestroyCardAction>();
-                if (destroyAction.WasCardDestroyed)
-                {
-                    //...{Gray} regains 3 HP...
-                    coroutine = base.GameController.GainHP(base.CharacterCard, new int?(3), cardSource: base.GetCardSource());
-                }
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            //If a card is destroyed this way 
+            DestroyCardAction destroyAction = storedResults.FirstOrDefault<DestroyCardAction>();
+            if(destroyAction != null && destroyAction.WasCardDestroyed)
+            {
+                //...{Gray} regains 3 HP...
+                coroutine = base.GameController.GainHP(base.CharacterCard, new int?(3), cardSource: base.GetCardSource());  
             }
             else
             {
