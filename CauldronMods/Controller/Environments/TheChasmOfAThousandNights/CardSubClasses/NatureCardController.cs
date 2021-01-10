@@ -18,7 +18,7 @@ namespace Cauldron.TheChasmOfAThousandNights
         public override void AddTriggers()
         {
             //If a nature ever has no target next to it, put that nature face down beneath this card.
-            AddIfTheTargetThatThisCardIsNextToLeavesPlayMoveBackUnderTrigger();
+            AddIfTheTargetThatThisCardIsBelowLeavesPlayMoveBackUnderTrigger();
         }
 
         public override bool AskIfCardIsIndestructible(Card card)
@@ -27,22 +27,22 @@ namespace Cauldron.TheChasmOfAThousandNights
             return card == Card;
         }
 
-        protected void AddIfTheTargetThatThisCardIsNextToLeavesPlayMoveBackUnderTrigger(IEnumerator doThisFirst = null)
+        protected void AddIfTheTargetThatThisCardIsBelowLeavesPlayMoveBackUnderTrigger(IEnumerator doThisFirst = null)
         {
-            if (Card.Location.OwnerCard == null)
+            if (Card.Location.OwnerCard == null || GetCardThisCardIsBelow() == null)
             {
                 return;
             }
-            AddTrigger((MoveCardAction moveCard) => IsThisCardNextToCard(moveCard.CardToMove) && !moveCard.Destination.IsInPlayAndNotUnderCard, (MoveCardAction d) => MoveAfterNextToCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
-            AddTrigger((BulkMoveCardsAction bulkMove) => bulkMove.CardsToMove.Where((Card c) => IsThisCardNextToCard(c)).Count() > 0, (BulkMoveCardsAction d) => MoveAfterNextToCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
-            AddTrigger((FlipCardAction flip) => IsThisCardNextToCard(flip.CardToFlip.Card) && flip.CardToFlip.Card.IsFaceDownNonCharacter, (FlipCardAction d) => MoveAfterNextToCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
-            AddTrigger((RemoveTargetAction remove) => IsThisCardNextToCard(remove.CardToRemoveTarget), (RemoveTargetAction d) => MoveAfterNextToCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
-            AddTrigger((BulkRemoveTargetsAction remove) => GetCardThisCardIsNextTo() != null && remove.CardsToRemoveTargets.Contains(GetCardThisCardIsNextTo()), (BulkRemoveTargetsAction d) => MoveAfterNextToCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
-            AddTrigger((TargetLeavesPlayAction a) => IsThisCardNextToCard(a.TargetLeavingPlay), (TargetLeavesPlayAction d) => MoveAfterNextToCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
+            AddTrigger((MoveCardAction moveCard) => GetCardThisCardIsBelow() == moveCard.CardToMove && !moveCard.Destination.IsInPlayAndNotUnderCard, (MoveCardAction d) => MoveAfterBelowCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
+            AddTrigger((BulkMoveCardsAction bulkMove) => bulkMove.CardsToMove.Where((Card c) => GetCardThisCardIsBelow() == c).Count() > 0, (BulkMoveCardsAction d) => MoveAfterBelowCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
+            AddTrigger((FlipCardAction flip) => GetCardThisCardIsBelow() == flip.CardToFlip.Card && flip.CardToFlip.Card.IsFaceDownNonCharacter, (FlipCardAction d) => MoveAfterBelowCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
+            AddTrigger((RemoveTargetAction remove) => GetCardThisCardIsBelow() == remove.CardToRemoveTarget, (RemoveTargetAction d) => MoveAfterBelowCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
+            AddTrigger((BulkRemoveTargetsAction remove) => remove.CardsToRemoveTargets.Contains(GetCardThisCardIsBelow()), (BulkRemoveTargetsAction d) => MoveAfterBelowCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
+            AddTrigger((TargetLeavesPlayAction a) => GetCardThisCardIsBelow() == a.TargetLeavingPlay, (TargetLeavesPlayAction d) => MoveAfterBelowCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
            
         }
 
-        private IEnumerator MoveAfterNextToCardLeavesPlay(IEnumerator doThisFirst)
+        private IEnumerator MoveAfterBelowCardLeavesPlay(IEnumerator doThisFirst)
         {
             IEnumerator enumerator = doThisFirst;
             if (enumerator != null)

@@ -155,7 +155,11 @@
                 "RedirectDamage"
             ],
             "body": "Redirect all damage dealt by the target next to this card to the hero target with the highest HP.",
-            "flavorText": "Mhegas briefly surveyed the conflict{BR}around the Tear. Then he turned{BR}towards the heroes and dove at them,{BR}blade singing. Dawn's forces cheered."
+            "flavorText": "Mhegas briefly surveyed the conflict{BR}around the Tear. Then he turned{BR}towards the heroes and dove at them,{BR}blade singing. Dawn's forces cheered.",
+            "footerTitle": "Malevolent",
+            "footerBody":[
+                "Redirect all damage dealt by this target to the hero target with the highest HP."
+            ]
         },
         {
             "identifier": "Noxious",
@@ -169,7 +173,11 @@
                 "DealDamageToxic"
             ],
             "body": "At the end of the environment turn, the target next to this card deals each hero target 1 toxic damage.",
-            "flavorText": "“I'm not afraid of shadows,” said Jade,{BR}as the billowing creature drifted{BR}forward, its very presence poisoning{BR}the air around her."
+            "flavorText": "“I'm not afraid of shadows,” said Jade,{BR}as the billowing creature drifted{BR}forward, its very presence poisoning{BR}the air around her.",
+            "footerTitle": "Noxious",
+            "footerBody":[
+                "At the end of the environment turn, this target deals each hero target 1 toxic damage."
+            ]
         },
         {
             "identifier": "RatherFriendly",
@@ -182,7 +190,11 @@
                 "RedirectDamage"
             ],
             "body": "Redirect all damage dealt by the target next to this card to the villain target with the highest HP.",
-            "flavorText": "Nature spirit and djinn regarded each{BR}other amicably. “You are much quieter{BR}than your fellows,” said the Lady.{BR}“Especially the little bird.”"
+            "flavorText": "Nature spirit and djinn regarded each{BR}other amicably. “You are much quieter{BR}than your fellows,” said the Lady.{BR}“Especially the little bird.”",
+            "footerTitle": "Rather Friendly",
+            "footerBody":[
+                "Redirect all damage dealt by this target to the villain target with the highest HP."
+            ]
         },
         {
             "identifier": "SurprisinglyAgile",
@@ -195,7 +207,11 @@
                 "ReduceDamageTaken"
             ],
             "body": "Reduce damage dealt to the target next to this card by 1.",
-            "flavorText": "Drift aimed a throwing shard at the{BR}angry djinn, but despite its size it was a{BR}blur of motion, dodging ever closer{BR}while flinging icicles at her in turn."
+            "flavorText": "Drift aimed a throwing shard at the{BR}angry djinn, but despite its size it was a{BR}blur of motion, dodging ever closer{BR}while flinging icicles at her in turn.",
+            "footerTitle": "Surprisingly Agile",
+            "footerBody":[
+                "Reduce damage dealt to this target by 1."
+            ]
         },
         {
             "identifier": "Tevael",
@@ -225,7 +241,11 @@
             ],
             "icons": [],
             "body": "Whenever the target next to this card deals damage to a hero, that hero must discard a card.",
-            "flavorText": "“Such pretty trinkets,” Tevael rumbled{BR}to himself in a voice of scraping stone.{BR}Clutching his prize, he sunk out of sight{BR}into the earth."
+            "flavorText": "“Such pretty trinkets,” Tevael rumbled{BR}to himself in a voice of scraping stone.{BR}Clutching his prize, he sunk out of sight{BR}into the earth.",
+            "footerTitle": "Thieving",
+            "footerBody":[
+                "Whenever this target deals damage to a hero, that hero must discard a card."
+            ]
         },
         {
             "identifier": "Vicious",
@@ -238,7 +258,11 @@
                 "IncreaseDamageDealt"
             ],
             "body": "Increase damage dealt by the target next to this card by 1.",
-            "flavorText": "Fright Train held his ground as Temoq{BR}took another burning swipe at him. The{BR}djinn's fury was unrelenting: metal{BR}bubbled and sparked at its touch."
+            "flavorText": "Fright Train held his ground as Temoq{BR}took another burning swipe at him. The{BR}djinn's fury was unrelenting: metal{BR}bubbled and sparked at its touch.",
+            "footerTitle": "Vicious",
+            "footerBody":[
+                "Increase damage dealt by this target by 1."
+            ]
         }
     ]
 }

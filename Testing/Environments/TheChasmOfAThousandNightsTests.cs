@@ -50,7 +50,7 @@ namespace CauldronTests
             if (!card.IsInPlayAndHasGameText)
             {
                 FlipCard(card);
-                MoveCard(chasm, card, djinn.NextToLocation);
+                MoveCard(chasm, card, djinn.BelowLocation);
             }
             AssertIsInPlay(card);
             AssertCardHasKeyword(card, "nature", false);
@@ -87,14 +87,13 @@ namespace CauldronTests
         [Test()]
         public void TestNaturesReturnWhenAbandoned_NextToDestroyed()
         {
-            //NOTE: This test fails, but the effect happens as expected in UI
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheChasmOfAThousandNights");
             StartGame();
 
             Card djinn = PlayCard("HighTemoq");
-            Card nature = djinn.NextToLocation.TopCard;
+            Card nature = djinn.BelowLocation.TopCard;
             AssertNotFlipped(nature);
-            AssertNextToCard(nature, djinn);
+            AssertBelowCard(nature, djinn);
             DestroyCard(djinn, baron.CharacterCard);
             AssertUnderCard(chasmCard, nature);
             AssertFlipped(nature);
@@ -108,14 +107,49 @@ namespace CauldronTests
             StartGame();
 
             Card djinn = PlayCard("HighTemoq");
-            Card nature = djinn.NextToLocation.TopCard;
+            Card nature = djinn.BelowLocation.TopCard;
             AssertNotFlipped(nature);
-            AssertNextToCard(nature, djinn);
+            AssertBelowCard(nature, djinn);
             DecisionSelectFunction = 0;
             DecisionSelectCard = djinn;
             UsePower(legacy);
             AssertUnderCard(chasmCard, nature);
             AssertFlipped(nature);
+
+        }
+
+        [Test()]
+        public void TestAxion()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheChasmOfAThousandNights" }, randomSeed: new int?(-1885072287));
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            GoToPlayCardPhase(chasm);
+            Card djinn = PlayCard("Axion");
+            Card nature = djinn.BelowLocation.TopCard;
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            //At the end of the environment turn, this card deals each villain target 1 melee damage.
+            PrintTriggers();
+            GoToEndOfTurn(chasm);
+            switch(nature.Identifier)
+            {
+                case "Noxious":
+                    QuickHPCheck(-1, -1, -1, -1, -1);
+                    break;
+                case "Vicious":
+                    QuickHPCheck(-2, -2, 0, 0, 0);
+                    break;
+                case "RatherFriendly":
+                    QuickHPCheck(-2, 0, 0, 0, 0);
+                    break;
+                case "Malevolent":
+                    QuickHPCheck(0, 0, 0, 0, -2);
+                    break;
+                default:
+                    QuickHPCheck(-1, -1, 0, 0, 0);
+                    break;
+            }
 
         }
     }

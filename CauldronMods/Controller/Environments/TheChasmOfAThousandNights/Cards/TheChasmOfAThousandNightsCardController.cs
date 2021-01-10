@@ -29,20 +29,9 @@ namespace Cauldron.TheChasmOfAThousandNights
 
         private IEnumerator MoveNatureUnderResponse(CardEntersPlayAction cpa)
         {
-            string message = Card.Title + " puts a random nature card from beneath this one next to " + cpa.CardEnteringPlay.Title;
-
-            IEnumerator coroutine = base.GameController.SendMessageAction(message, Priority.Medium, base.GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
+           
             //puts a random nature card from beneath this one into play
-            IEnumerator coroutine2 = MoveRandomNatureUnderTarget(TurnTakerController, Card.UnderLocation, cpa.CardEnteringPlay.NextToLocation, new LinqCardCriteria((Card c) => IsNature(c), "nature"), new int?(1), shuffleBeforehand: true);
+            IEnumerator coroutine2 = MoveRandomNatureUnderTarget(TurnTakerController, Card.UnderLocation, cpa.CardEnteringPlay.BelowLocation, new LinqCardCriteria((Card c) => IsNature(c), "nature"), new int?(1), shuffleBeforehand: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine2);
@@ -97,7 +86,7 @@ namespace Cauldron.TheChasmOfAThousandNights
 					{
 						storedMoveResults?.Add(item);
 						IEnumerator coroutine2 = GameController.MoveCard(TurnTakerController, item, destination, isPutIntoPlay: true, cardSource: GetCardSource());
-
+						
 						if (UseUnityCoroutines)
 						{
 							yield return GameController.StartCoroutine(coroutine2);
@@ -107,6 +96,10 @@ namespace Cauldron.TheChasmOfAThousandNights
 						{
 							GameController.ExhaustCoroutine(coroutine2);
 						}
+						FindCardController(item).RemoveAllTriggers();
+						GameController.RemoveInhibitor(FindCardController(item));
+						FindCardController(item).AddAllTriggers();
+
 					}
 				} else
 				{
