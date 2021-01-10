@@ -235,7 +235,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestMythosFront_EndOfTurn_0Play()
+        public void TestMythosFront_EndOfTurn_0Play_TestDangerousInvestigation()
         {
             SetupGameController("Cauldron.Mythos", "AkashThriya", "Haka", "Legacy", "Bunker", "Unity", "Megalopolis");
             StartGame();
@@ -243,12 +243,12 @@ namespace CauldronTests
             //At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. 
             QuickHPStorage(thriya, haka, legacy, bunker, unity);
             GoToEndOfTurn(mythos);
+            //Dangerous Investigation: At the end of the villain turn, {Mythos} deals the X hero targets with the highest HP 3 infernal damage each, where X is {H} minus the number of villain cards the players chose to play this turn.
             QuickHPCheck(-3, -3, -3, -3, -3);
-
         }
 
         [Test()]
-        public void TestMythosFront_EndOfTurn_1Play()
+        public void TestMythosFront_EndOfTurn_1Play_TestDangerousInvestigation()
         {
             SetupGameController("Cauldron.Mythos", "AkashThriya", "Haka", "Legacy", "Bunker", "Unity", "Megalopolis");
             StartGame();
@@ -259,12 +259,13 @@ namespace CauldronTests
             //At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. 
             QuickHPStorage(thriya, haka, legacy, bunker, unity);
             GoToEndOfTurn(mythos);
+            //Dangerous Investigation: At the end of the villain turn, {Mythos} deals the X hero targets with the highest HP 3 infernal damage each, where X is {H} minus the number of villain cards the players chose to play this turn.
             QuickHPCheck(-3, -3, -3, -3, 0);
             AssertNotInDeck(acad0);
         }
 
         [Test()]
-        public void TestMythosFront_EndOfTurn_2Play()
+        public void TestMythosFront_EndOfTurn_2Play_TestDangerousInvestigation()
         {
             SetupGameController("Cauldron.Mythos", "AkashThriya", "Haka", "Legacy", "Bunker", "Unity", "Megalopolis");
             StartGame();
@@ -276,6 +277,7 @@ namespace CauldronTests
             //At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. 
             QuickHPStorage(thriya, haka, legacy, bunker, unity);
             GoToEndOfTurn(mythos);
+            //Dangerous Investigation: At the end of the villain turn, {Mythos} deals the X hero targets with the highest HP 3 infernal damage each, where X is {H} minus the number of villain cards the players chose to play this turn.
             QuickHPCheck(-3, -3, -3, 0, 0);
             foreach (Card c in new Card[] { acad0, acad1 })
             {
@@ -284,7 +286,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestMythosFront_EndOfTurn_3Play()
+        public void TestMythosFront_EndOfTurn_3Play_TestDangerousInvestigation()
         {
             SetupGameController("Cauldron.Mythos", "AkashThriya", "Haka", "Legacy", "Bunker", "Unity", "Megalopolis");
             StartGame();
@@ -300,6 +302,7 @@ namespace CauldronTests
             //At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. 
             QuickHPStorage(thriya, haka, legacy, bunker, unity);
             GoToEndOfTurn(mythos);
+            //Dangerous Investigation: At the end of the villain turn, {Mythos} deals the X hero targets with the highest HP 3 infernal damage each, where X is {H} minus the number of villain cards the players chose to play this turn.
             QuickHPCheck(-3, -3, 0, 0, 0);
             foreach (Card c in new Card[] { acad0, acad1, site })
             {
@@ -308,7 +311,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestMythosFront_EndOfTurn_4Play()
+        public void TestMythosFront_EndOfTurn_4Play_TestDangerousInvestigation()
         {
             SetupGameController("Cauldron.Mythos", "AkashThriya", "Haka", "Legacy", "Bunker", "Unity", "Megalopolis");
             StartGame();
@@ -325,6 +328,7 @@ namespace CauldronTests
             //At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. 
             QuickHPStorage(thriya, haka, legacy, bunker, unity);
             GoToEndOfTurn(mythos);
+            //Dangerous Investigation: At the end of the villain turn, {Mythos} deals the X hero targets with the highest HP 3 infernal damage each, where X is {H} minus the number of villain cards the players chose to play this turn.
             QuickHPCheck(-3, 0, 0, 0, 0);
             foreach (Card c in new Card[] { acad0, acad1, site, prey0 })
             {
@@ -333,7 +337,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestMythosFront_EndOfTurn_5Play()
+        public void TestMythosFront_EndOfTurn_5Play_TestDangerousInvestigation()
         {
             SetupGameController("Cauldron.Mythos", "AkashThriya", "Haka", "Legacy", "Bunker", "Unity", "Megalopolis");
             StartGame();
@@ -351,6 +355,7 @@ namespace CauldronTests
             //At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. 
             QuickHPStorage(thriya, haka, legacy, bunker, unity);
             GoToEndOfTurn(mythos);
+            //Dangerous Investigation: At the end of the villain turn, {Mythos} deals the X hero targets with the highest HP 3 infernal damage each, where X is {H} minus the number of villain cards the players chose to play this turn.
             QuickHPCheck(0, 0, 0, 0, 0);
             foreach (Card c in new Card[] { acad0, acad1, site, prey0, prey1 })
             {
@@ -453,11 +458,14 @@ namespace CauldronTests
             //At the end of the villain turn:
             //{MythosDanger} This card deals the hero target with the highest HP 2 melee damage. Discard the top card of the villain deck.
             Card peer = PlayCard(AclastyphWhoPeers);
-            Card pros = PutOnDeck(FaithfulProselyte);
+
+            //Danger
+            Card pros1 = PutOnDeck(mythos, GetCard(FaithfulProselyte, 1));
+            Card pros = PutOnDeck(mythos, GetCard(FaithfulProselyte, 0));
 
             QuickHPStorage(haka, bunker, legacy);
             GoToEndOfTurn(mythos);
-            //Mythos hits all for 3
+            //Dangerous Investigation hits all for 3
             QuickHPCheck(-5, -3, -3);
             AssertInTrash(pros);
             AssertNumberOfCardsInTrash(mythos, 1);
@@ -472,15 +480,235 @@ namespace CauldronTests
             //At the end of the villain turn:
             //{MythosClue} This card regains 2HP. Discard the top card of the villain deck.
             Card peer = PlayCard(AclastyphWhoPeers);
+            SetHitPoints(peer, 1);
 
-            Card pros = PutOnDeck(FaithfulProselyte);
+            //Clue
+            Card aca1 = PutOnDeck(mythos, GetCard(PallidAcademic, 1));
+            Card aca = PutOnDeck(mythos, GetCard(PallidAcademic, 0));
+
+            QuickHPStorage(peer);
+            GoToEndOfTurn(mythos);
+            //Dangerous Investigation hits all for 3
+            QuickHPCheck(2);
+            AssertInTrash(aca);
+            AssertNumberOfCardsInTrash(mythos, 1);
+        }
+
+        [Test()]
+        public void TestAclastyphWhoPeers_Madness()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //Madness
+            PutOnDeck(ClockworkRevenant);
+
+            //At the end of the villain turn:
+            //{MythosMadness} This card deals each other target 1 psychic damage.
+            Card peer = PlayCard(AclastyphWhoPeers);
 
             QuickHPStorage(haka, bunker, legacy);
             GoToEndOfTurn(mythos);
-            //Mythos hits all for 3
+            //Dangerous Investigation hits all for 3
+            QuickHPCheck(-4, -4, -4);
+        }
+
+        [Test()]
+        public void TestClockworkRevenant()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //Clue
+            PutOnDeck(PallidAcademic);
+
+            PlayCard(ClockworkRevenant);
+            //At the end of the villain turn, this card deals the hero target with the highest HP 2 melee damage.
+            QuickHPStorage(haka, bunker, legacy);
+            GoToEndOfTurn(mythos);
+            //Dangerous Investigation hits all for 3
             QuickHPCheck(-5, -3, -3);
-            AssertInTrash(pros);
-            AssertNumberOfCardsInTrash(mythos, 1);
+        }
+
+        [Test()]
+        public void TestClockworkRevenant_Danger_0Damage()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //Danger
+            PutOnDeck(AclastyphWhoPeers);
+
+            PlayCard(ClockworkRevenant);
+            //At the end of the villain turn, this card deals the hero target with the highest HP 2 melee damage.
+            QuickHPStorage(haka, bunker, legacy);
+            GoToEndOfTurn(mythos);
+            //Dangerous Investigation hits all for 3
+            QuickHPCheck(-5, -3, -3);
+        }
+
+        [Test()]
+        public void TestClockworkRevenant_Danger()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //Danger
+            PutOnDeck(AclastyphWhoPeers);
+
+            Card clock = PlayCard(ClockworkRevenant);
+            //{MythosDanger} Increase damage dealt by this card by X, where X is 10 minus its current HP.
+
+            //+1
+            SetHitPoints(clock, 9);
+            QuickHPStorage(haka);
+            DealDamage(clock, haka, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            //+3
+            SetHitPoints(clock, 7);
+            QuickHPStorage(haka);
+            DealDamage(clock, haka, 2, DamageType.Melee);
+            QuickHPCheck(-5);
+
+            //+7
+            SetHitPoints(clock, 3);
+            QuickHPStorage(haka);
+            DealDamage(clock, haka, 2, DamageType.Melee);
+            QuickHPCheck(-9);
+        }
+
+        [Test()]
+        public void TestDangerousInvestigation_NotClue()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //Danger
+            PutOnDeck(AclastyphWhoPeers);
+
+            //{MythosClue} At the end of the villain turn, the players may play the top card of the villain deck to add a token to this card.
+            GoToEndOfTurn(mythos);
+            Assert.IsTrue(FindCardInPlay(DangerousInvestigation).FindTokenPool(DangerousInvestigation + "Pool").CurrentValue == 0);
+        }
+
+        [Test()]
+        public void TestDangerousInvestigation_Clue()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //Clue
+            Card aca = PutOnDeck(PallidAcademic);
+
+            DecisionsYesNo = new bool[] { false, true };
+
+            //{MythosClue} At the end of the villain turn, the players may play the top card of the villain deck to add a token to this card.
+            GoToEndOfTurn(mythos);
+            Assert.IsTrue(FindCardInPlay(DangerousInvestigation).FindTokenPool(DangerousInvestigation + "Pool").CurrentValue == 1);
+            AssertIsInPlay(aca);
+        }
+
+        [Test()]
+        public void TestDoktorVonFaust_Revenant_NotClue()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //Danger
+            PutOnDeck(AclastyphWhoPeers);
+
+            Card dok = PlayCard(DoktorVonFaust);
+
+            //At the end of the villain turn, search the villain deck for a Clockwork Revenant and put it into play. Shuffle the villain deck. If no card was put into play this way, this card deals each non-villain target 3 lightning damage.
+            FindCardInPlay(ClockworkRevenant);
+
+            //{MythosClue} Reduce damage dealt to this card by 2.
+            QuickHPStorage(dok);
+            DealDamage(haka, dok, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+        }
+
+        [Test()]
+        public void TestDoktorVonFaust_NoRevenant_Clue()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //Clue
+            PutOnDeck(PallidAcademic);
+            StackDeckAfterShuffle(mythos, new string[] { PallidAcademic });
+
+            Card dok = PlayCard(DoktorVonFaust);
+            PutInTrash(mythos, (Card c) => c.Identifier == ClockworkRevenant);
+
+            //At the end of the villain turn, search the villain deck for a Clockwork Revenant and put it into play. Shuffle the villain deck. If no card was put into play this way, this card deals each non-villain target 3 lightning damage.
+            QuickHPStorage(haka, bunker, legacy);
+            GoToEndOfTurn(mythos);
+            //Dangerous Investigation hits all for 3
+            QuickHPCheck(-6, -6, -6);
+
+            //{MythosClue} Reduce damage dealt to this card by 2.
+            QuickHPStorage(dok);
+            DealDamage(haka, dok, 3, DamageType.Melee);
+            QuickHPCheck(-1);
+        }
+
+        [Test()]
+        public void TestFaithfulProselyte_NotMadness()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            Card mere = PlayCard("Mere");
+            Card flak = PlayCard("FlakCannon");
+
+            //Clue
+            PutOnDeck(PallidAcademic);
+
+            PlayCard(FaithfulProselyte);
+            //{MythosMadness} When this card enters play, destroy {H - 2} equipment cards.
+            AssertIsInPlay(new Card[] { mere, flak });
+
+            //At the end of the villain turn, this card deals the hero target with the second highest HP {H - 1} lightning damage.
+            QuickHPStorage(haka, bunker, legacy);
+            GoToEndOfTurn(mythos);
+            //Dangerous Investigation hits all for 3
+            QuickHPCheck(-3, -3, -5);
+        }
+
+        [Test()]
+        public void TestFaithfulProselyte_Madness()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            Card mere = PlayCard("Mere");
+            Card flak = PlayCard("FlakCannon");
+
+            //Madness
+            PutOnDeck(ClockworkRevenant);
+
+            PlayCard(FaithfulProselyte);
+            //{MythosMadness} When this card enters play, destroy {H - 2} equipment cards.
+            AssertIsInPlay(mere);
+            AssertInTrash(flak);
+        }
+
+        [Test()]
+        public void TestFaithfulProselyte_Madness_OnlyEquipment()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            Card moko = PlayCard("TaMoko");
+
+            //Madness
+            PutOnDeck(ClockworkRevenant);
+
+            PlayCard(FaithfulProselyte);
+            //{MythosMadness} When this card enters play, destroy {H - 2} equipment cards.
+            AssertIsInPlay(moko);
         }
     }
 }
