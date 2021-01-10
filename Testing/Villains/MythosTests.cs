@@ -33,6 +33,11 @@ namespace CauldronTests
         protected const string WhispersAndLies = "WhispersAndLies";
         protected const string YourDarkestSecrets = "YourDarkestSecrets";
 
+        private void AddTokensToDangerousInvestigationPool(int number)
+        {
+            AddTokensToPool(FindCardInPlay(DangerousInvestigation).FindTokenPool(DangerousInvestigation + "Pool"), number);
+        }
+
         private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
         {
             foreach (var id in identifiers)
@@ -171,15 +176,73 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestMythosFlip_3H()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            PutOnDeck(AclastyphWhoPeers);
+
+            //Then if there are {H} tokens on Dangerous Investigation, flip {Mythos}' villain character cards.
+            AddTokensToDangerousInvestigationPool(3);
+            AssertNotFlipped(mythos);
+            GoToEndOfTurn(mythos);
+            AssertFlipped(mythos);
+        }
+
+        [Test()]
+        public void TestMythosFlip_4H()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Unity", "Megalopolis");
+            StartGame();
+
+            PutOnDeck(AclastyphWhoPeers);
+
+            //Then if there are {H} tokens on Dangerous Investigation, flip {Mythos}' villain character cards.
+            AddTokensToDangerousInvestigationPool(3);
+            AssertNotFlipped(mythos);
+            GoToEndOfTurn(mythos);
+            AssertNotFlipped(mythos);
+
+            AddTokensToDangerousInvestigationPool(1);
+            GoToEndOfTurn(mythos);
+            AssertFlipped(mythos);
+        }
+
+        [Test()]
+        public void TestMythosFlip_5H()
+        {
+            SetupGameController("Cauldron.Mythos", "AkashThriya", "Haka", "Legacy", "Bunker", "Unity", "Megalopolis");
+            StartGame();
+
+            PutOnDeck(AclastyphWhoPeers);
+
+            //Then if there are {H} tokens on Dangerous Investigation, flip {Mythos}' villain character cards.
+            AddTokensToDangerousInvestigationPool(3);
+            AssertNotFlipped(mythos);
+            GoToEndOfTurn(mythos);
+            AssertNotFlipped(mythos);
+
+            AddTokensToDangerousInvestigationPool(1);
+            GoToEndOfTurn(mythos);
+            AssertNotFlipped(mythos);
+
+            AddTokensToDangerousInvestigationPool(1);
+            GoToEndOfTurn(mythos);
+            AssertFlipped(mythos);
+        }
+
+        [Test()]
         public void TestMythosFront_EndOfTurn_0Play()
         {
             SetupGameController("Cauldron.Mythos", "AkashThriya", "Haka", "Legacy", "Bunker", "Unity", "Megalopolis");
             StartGame();
 
-            //At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. Then if there are {H} tokens on Dangerous Investigation, flip {Mythos}' villain character cards.
+            //At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. 
             QuickHPStorage(thriya, haka, legacy, bunker, unity);
             GoToEndOfTurn(mythos);
             QuickHPCheck(-3, -3, -3, -3, -3);
+
         }
 
         [Test()]

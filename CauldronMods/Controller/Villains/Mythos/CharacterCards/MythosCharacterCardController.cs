@@ -199,7 +199,7 @@ namespace Cauldron.Mythos
             }
 
             //Then if there are {H} tokens on Dangerous Investigation, flip {Mythos}' villain character cards.
-            if (this.DangerousInvestigationCard.FindTokenPool("DangerousInvestigationPool").CurrentValue == 5)
+            if (this.DangerousInvestigationCard.FindTokenPool("DangerousInvestigationPool").CurrentValue == base.Game.H)
             {
                 coroutine = base.FlipThisCharacterCardResponse(action);
                 if (UseUnityCoroutines)
