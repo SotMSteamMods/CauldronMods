@@ -12,7 +12,7 @@ namespace Cauldron.TheChasmOfAThousandNights
     {
         public CrumblingRuinsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => c.IsEnvironmentTarget, "environment target"));
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => c.IsEnvironmentTarget, "", useCardsSuffix: false, singular: "environment target", plural: "environment targets"));
         }
 
         public override void AddTriggers()
