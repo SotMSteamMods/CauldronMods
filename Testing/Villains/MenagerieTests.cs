@@ -766,11 +766,13 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestHyrianSnipe()
+        public void TestHyrianSnipe_1029071514()
         {
             SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
             DiscardAllCards(bench, parse);
             StartGame();
+
+            Card snipe = MoveCard(menagerie, "HyrianSnipe", menagerie.TurnTaker.OffToTheSide);
 
             MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
             GoToEndOfTurn(menagerie);
@@ -779,7 +781,32 @@ namespace CauldronTests
             Card moko = PlayCard("TaMoko");
             Card mere = PlayCard("Mere");
 
-            PutOnDeck("HyrianSnipe");
+            PutOnDeck(menagerie, snipe);
+            //At the end of the villain turn, this card deals the 2 targets other than itself with the highest HP {H - 1} psychic damage each. Then, destroy 1 equipment card.
+            QuickHPStorage(menagerie, haka, parse, bench);
+            GoToEndOfTurn(menagerie);
+            QuickHPCheck(-2, -1, 0, 0);
+            AssertInTrash(mere);
+            AssertIsInPlay(moko);
+        }
+
+        [Test()]
+        public void TestHyrianSnipe()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
+            DiscardAllCards(bench, parse);
+            StartGame();
+
+            Card snipe = MoveCard(menagerie, "HyrianSnipe", menagerie.TurnTaker.OffToTheSide);
+
+            MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            DestroyNonCharacterVillainCards();
+
+            Card moko = PlayCard("TaMoko");
+            Card mere = PlayCard("Mere");
+
+            PutOnDeck(menagerie, snipe);
             //At the end of the villain turn, this card deals the 2 targets other than itself with the highest HP {H - 1} psychic damage each. Then, destroy 1 equipment card.
             QuickHPStorage(menagerie, haka, parse, bench);
             GoToEndOfTurn(menagerie);
