@@ -432,6 +432,18 @@ namespace CauldronTests
             PlayCard(GetCard("AcidBreath"));
             QuickHPCheck(-3, -3, 0);
         }
+        [Test()]
+        public void TestAcidBreathWithMultiCharPromo()
+        {
+            SetupGameController("Cauldron.Tiamat", "TheSentinels", "Ra", "Haka", "TheBlock");
+            StartGame();
+
+            QuickHPStorage(mainstay, writhe, idealist, medico);
+            PlayCard("DurasteelChains");
+
+            PlayCard("AcidBreath");
+            QuickHPCheckZero();
+        }
 
         [Test()]
         public void TestAlteration()
