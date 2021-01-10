@@ -283,8 +283,36 @@ namespace CauldronTests
             StartGame();
             Card prize = FindCardInPlay("PrizedCatch");
 
+            StackDeck(new string[] { "HalberdHive", "AngryLethovore", "TheMonBeskmaHydric", "LumobatFlock" });
+
             //When Menagerie flips to this side, shuffle the villain trash and all enclosurese beneath this card into the villain deck. Remove Prized Catch from the game.
             IEnumerable<Card> trash = DiscardTopCards(menagerie, 6);
+            string[] spheres = new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" };
+            MoveCards(menagerie, spheres, menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            AssertFlipped(menagerie);
+
+            AssertNotInTrash(trash.ToArray());
+            foreach (string sphere in spheres)
+            {
+                AssertNotInTrash(menagerie, sphere);
+            }
+            AssertNumberOfCardsUnderCard(menagerie.CharacterCard, 0);
+            AssertOutOfGame(prize);
+        }
+
+        [Test()]
+        public void TestMenagerieInitialFlip_601932491()
+        {
+            //bad seeds: -860580707
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" }, randomSeed: 601932491);
+            StartGame();
+            Card prize = FindCardInPlay("PrizedCatch");
+
+            StackDeck(new string[] { "HalberdHive", "AngryLethovore", "TheMonBeskmaHydric", "LumobatFlock" });
+
+            //When Menagerie flips to this side, shuffle the villain trash and all enclosurese beneath this card into the villain deck. Remove Prized Catch from the game.
+            IEnumerable<Card> trash = DiscardTopCards(menagerie, 4);
             string[] spheres = new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" };
             MoveCards(menagerie, spheres, menagerie.CharacterCard.UnderLocation);
             GoToEndOfTurn(menagerie);
