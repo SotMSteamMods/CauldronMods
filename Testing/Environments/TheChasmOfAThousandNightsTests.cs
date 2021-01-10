@@ -528,6 +528,46 @@ namespace CauldronTests
             //Whenever the target next to this card deals damage to a hero, that hero must discard a card.
             QuickHandCheck(0, -1, 0);
         }
+
+        [Test()]
+        public void TestBeyondTheVeil_EntersPlay()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheChasmOfAThousandNights" });
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //When this card enters play, shuffle all targets from the environment trash into the environment deck.
+            DiscardTopCards(chasm.TurnTaker.Deck, chasm.TurnTaker.Deck.NumberOfCards);
+            PlayCard("BeyondTheVeil");
+            AssertNumberOfCardsInTrash(chasm, 2);
+            AssertNumberOfCardsInDeck(chasm, 6);
+        }
+
+        [Test()]
+        public void TestBeyondTheVeil_FirstTimeDiscard()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheChasmOfAThousandNights" });
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            PlayCard("BeyondTheVeil");
+
+            //The first time a hero card is discarded each turn, that hero deals themselves 1 psychic damage.
+            QuickHPStorage(baron, ra, legacy, haka, tachyon);
+            DiscardCard(ra);
+            QuickHPCheck(0, -1, 0, 0, 0);
+
+            //first time only
+            QuickHPUpdate();
+            DiscardCard(haka);
+            QuickHPCheck(0, 0, 0, 0, 0);
+
+            //resets each turn
+            GoToNextTurn();
+            QuickHPUpdate();
+            DiscardCard(haka);
+            QuickHPCheck(0, 0, 0, -1, 0);
+        }
     }
 
 }
