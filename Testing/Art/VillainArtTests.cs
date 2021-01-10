@@ -152,7 +152,7 @@ namespace CauldronTests.Art.Villain
         [Test]
         public void Endings()
         {
-            string expectedDirectory = Path.Combine(ArtPath, @"Cutouts\Endings\Villains\" + _name);
+            string expectedDirectory = Path.Combine(ArtPath, @"Endings\Villains\" + _name);
 
             if (!Directory.Exists(expectedDirectory))
                 Assert.Inconclusive();
