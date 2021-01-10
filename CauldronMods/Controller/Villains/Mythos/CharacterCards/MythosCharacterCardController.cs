@@ -143,20 +143,20 @@ namespace Cauldron.Mythos
                 place++;
                 if (output == null)
                 {
-                    output = "The order of the deck icons is: ";
+                    output = "Starting at the top, the order of the deck icons is: ";
                 }
                 switch (this.GetIconIdentifier(c))
                 {
                     case MythosClueDeckIdentifier:
-                        output += place + " is a Blue Clue Icon, ";
+                        output += place + ": {MythosClue}, ";
                         break;
 
                     case MythosDangerDeckIdentifier:
-                        output += place + " is a Red Danger Icon, ";
+                        output += place + ": {MythosDanger}, ";
                         break;
 
                     case MythosMadnessDeckIdentifier:
-                        output += place + " is a Green Madness Icon, ";
+                        output += place + ": {MythosMadness}, ";
                         break;
                 }
             }
