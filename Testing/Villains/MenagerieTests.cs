@@ -621,6 +621,8 @@ namespace CauldronTests
             //When this card enters play, place the top 2 cards of the villain deck beneath it face down.
             Card sphere = PlayCard("ExoticSphere");
             AssertNumberOfCardsAtLocation(sphere.UnderLocation, 2);
+
+            MoveCards(menagerie, FindCardsWhere((Card c) => c.DoKeywordsContain("enclosure") && c.Location.IsDeck), menagerie.TurnTaker.OffToTheSide);
             GoToEndOfTurn(menagerie);
 
             //At the start of each hero's turn, this card deals the non-villain target with the highest HP {H - 1} toxic damage.
@@ -649,6 +651,8 @@ namespace CauldronTests
             //When this card enters play, place the top 2 cards of the villain deck beneath it face down.
             Card sphere = PlayCard("ExoticSphere");
             AssertNumberOfCardsAtLocation(sphere.UnderLocation, 2);
+
+            MoveCards(menagerie, FindCardsWhere((Card c) => c.DoKeywordsContain("enclosure") && c.Location.IsDeck), menagerie.TurnTaker.OffToTheSide);
             GoToEndOfTurn(menagerie);
 
             //At the start of each hero's turn, this card deals the non-villain target with the highest HP {H - 1} toxic damage.
