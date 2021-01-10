@@ -12,7 +12,8 @@ namespace Cauldron.Mythos
     {
         public RitualSiteCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowSpecialString(() => base.DeckIconList());
+            base.SpecialStringMaker.ShowSpecialString(() => base.ThisCardsIcon());
         }
 
         public override void AddTriggers()

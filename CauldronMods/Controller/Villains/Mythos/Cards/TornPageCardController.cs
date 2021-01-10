@@ -12,7 +12,8 @@ namespace Cauldron.Mythos
     {
         public TornPageCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowSpecialString(() => base.DeckIconList());
+            base.SpecialStringMaker.ShowSpecialString(() => base.ThisCardsIcon());
         }
 
         private const string FirstTimeActivated = "FirstTimeActivated";

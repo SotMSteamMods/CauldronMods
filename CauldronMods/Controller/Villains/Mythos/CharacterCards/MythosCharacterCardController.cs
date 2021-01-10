@@ -136,6 +136,7 @@ namespace Cauldron.Mythos
 
         private string DeckIconList()
         {
+            //For special string describing the order of icons in the deck top(1) to bottom
             string output = null;
             int place = 0;
             foreach (Card c in base.TurnTaker.Deck.Cards)
@@ -143,21 +144,25 @@ namespace Cauldron.Mythos
                 place++;
                 if (output == null)
                 {
-                    output = "Starting at the top, the order of the deck icons is: ";
+                    output = "Starting at the top, the order of the deck icons is:{BR}";
                 }
                 switch (this.GetIconIdentifier(c))
                 {
                     case MythosClueDeckIdentifier:
-                        output += place + ": {MythosClue}, ";
+                        output += place + ": {MythosClue}";
                         break;
 
                     case MythosDangerDeckIdentifier:
-                        output += place + ": {MythosDanger}, ";
+                        output += place + ": {MythosDanger}";
                         break;
 
                     case MythosMadnessDeckIdentifier:
-                        output += place + ": {MythosMadness}, ";
+                        output += place + ": {MythosMadness}";
                         break;
+                }
+                if (base.TurnTaker.Deck.Cards.Count() != place)
+                {
+                    output += ",{BR}";
                 }
             }
 
@@ -167,7 +172,6 @@ namespace Cauldron.Mythos
             }
             else
             {
-                output.Trim(new char[] { ',', ' ' });
                 output += ".";
             }
             return output;
