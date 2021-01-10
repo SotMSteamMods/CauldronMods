@@ -276,6 +276,32 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestMenagerieInitialFlip_741161923()
+        {
+            //bad seeds: -860580707
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" });
+            StartGame();
+            Card prize = FindCardInPlay("PrizedCatch");
+
+            StackDeck(new string[] { "HalberdHive", "AngryLethovore", "TheMonBeskmaHydric", "LumobatFlock" });
+
+            //When Menagerie flips to this side, shuffle the villain trash and all enclosurese beneath this card into the villain deck. Remove Prized Catch from the game.
+            IEnumerable<Card> trash = DiscardTopCards(menagerie, 6);
+            string[] spheres = new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" };
+            MoveCards(menagerie, spheres, menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            AssertFlipped(menagerie);
+
+            AssertNotInTrash(trash.ToArray());
+            foreach (string sphere in spheres)
+            {
+                AssertNotInTrash(menagerie, sphere);
+            }
+            AssertNumberOfCardsUnderCard(menagerie.CharacterCard, 0);
+            AssertOutOfGame(prize);
+        }
+
+        [Test()]
         public void TestMenagerieInitialFlip()
         {
             //bad seeds: -860580707
@@ -476,8 +502,29 @@ namespace CauldronTests
             SetupGameController("Cauldron.Menagerie", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
-            Card ant = GetCard("MutatedAnt");
-            StackDeckAfterShuffle(menagerie, new string[] { "MutatedAnt" });
+            MoveCards(menagerie, FindCardsWhere((Card c) => c.DoKeywordsContain("enclosure")), menagerie.TurnTaker.OffToTheSide);
+            Card ant = PutOnDeck("MutatedAnt");
+
+            Card letho = PlayCard("AngryLethovore");
+
+            DealDamage(haka, letho, 3, DamageType.Melee);
+            //At the end of the villain turn, play the top card of the villain deck.
+            GoToEndOfTurn(menagerie);
+            AssertIsInPlay(ant);
+            //Whenever a target enters play, this card deals that target 2 melee damage and regains 6HP.
+            AssertHitPoints(ant, (ant.MaximumHitPoints ?? default) - 1);
+            //Lethovore's max HP is 6 so it will go to max no matter what
+            AssertHitPoints(letho, 6);
+        }
+
+        [Test()]
+        public void TestAngryLethovore_118349059()
+        {
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Haka", "Bunker", "TheScholar", "Megalopolis" }, randomSeed: 118349059);
+            StartGame();
+
+            MoveCards(menagerie, FindCardsWhere((Card c) => c.DoKeywordsContain("enclosure")), menagerie.TurnTaker.OffToTheSide);
+            Card ant = PutOnDeck("MutatedAnt");
 
             Card letho = PlayCard("AngryLethovore");
 
@@ -593,7 +640,7 @@ namespace CauldronTests
         [Test()]
         public void TestExoticSphere_1893948577()
         {
-            SetupGameController("Cauldron.Menagerie", "Haka", "Bunker", "Benchmark", "Megalopolis");
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Haka", "Bunker", "Benchmark", "Megalopolis" }, randomSeed: 1893948577);
             StartGame();
 
             PutOnDeck("AquaticSphere");
@@ -766,9 +813,31 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestHiredKeeperOngoing_379596204()
+        {
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis" }, randomSeed: 379596204);
+            DiscardAllCards(bench, parse);
+            StartGame();
+
+            Card moko = PlayCard("TaMoko");
+
+            PutOnDeck("AquaticSphere");
+            PlayCard("HiredKeeper");
+            //At the end of the villain turn, this card deals the 2 non-Captured hero targets with the highest HP 2 sonic damage each.
+            QuickHPStorage(haka, parse, bench);
+            GoToEndOfTurn(menagerie);
+            QuickHPCheck(0, -2, -2);
+
+            //Whenever a Specimen is destroyed, destroy 1 hero ongoing or equipment card.
+            Card hive = PlayCard("HalberdHive");
+            DestroyCard(hive);
+            AssertInTrash(moko);
+        }
+
+        [Test()]
         public void TestHyrianSnipe_1029071514()
         {
-            SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis" }, randomSeed: 1029071514);
             DiscardAllCards(bench, parse);
             StartGame();
 
