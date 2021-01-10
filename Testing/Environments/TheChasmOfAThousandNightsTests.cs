@@ -23,6 +23,8 @@ namespace CauldronTests
             return card.DoKeywordsContain("nature");
         }
 
+        protected Card chasmCard { get { return FindCardsWhere(c => c.Identifier == "TheChasmOfAThousandNights", realCardsOnly: false).First(); } }
+
         #endregion
 
         [Test()]
@@ -44,9 +46,12 @@ namespace CauldronTests
             GoToPlayCardPhase(chasm);
             //play a djinn so we have something to go to
             Card djinn = PlayCard("HighTemoq");
-
             Card card = GetCard(nature);
-            MoveCard(chasm, card, djinn.NextToLocation);
+            if (!card.IsInPlayAndHasGameText)
+            {
+                FlipCard(card);
+                MoveCard(chasm, card, djinn.NextToLocation);
+            }
             AssertIsInPlay(card);
             AssertCardHasKeyword(card, "nature", false);
         }
@@ -79,6 +84,39 @@ namespace CauldronTests
             AssertIsInPlay(card);
             Assert.IsFalse(card.Definition.Keywords.Any(), $"{card.Title} has keywords when it shouldn't.");
         }
+        [Test()]
+        public void TestNaturesReturnWhenAbandoned_NextToDestroyed()
+        {
+            //NOTE: This test fails, but the effect happens as expected in UI
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheChasmOfAThousandNights");
+            StartGame();
 
+            Card djinn = PlayCard("HighTemoq");
+            Card nature = djinn.NextToLocation.TopCard;
+            AssertNotFlipped(nature);
+            AssertNextToCard(nature, djinn);
+            DestroyCard(djinn, baron.CharacterCard);
+            AssertUnderCard(chasmCard, nature);
+            AssertFlipped(nature);
+
+        }
+
+        [Test()]
+        public void TestNaturesReturnWhenAbandoned_NextToReturn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy/FreedomFiveLegacyCharacter", "Haka", "Cauldron.TheChasmOfAThousandNights");
+            StartGame();
+
+            Card djinn = PlayCard("HighTemoq");
+            Card nature = djinn.NextToLocation.TopCard;
+            AssertNotFlipped(nature);
+            AssertNextToCard(nature, djinn);
+            DecisionSelectFunction = 0;
+            DecisionSelectCard = djinn;
+            UsePower(legacy);
+            AssertUnderCard(chasmCard, nature);
+            AssertFlipped(nature);
+
+        }
     }
 }

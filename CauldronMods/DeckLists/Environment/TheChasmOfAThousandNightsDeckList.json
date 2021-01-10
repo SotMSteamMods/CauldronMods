@@ -11,12 +11,16 @@
             "backgroundColor": "E2D6C1",
             "count": 1,
             "title": "The Chasm Of A Thousand Nights",
-            "setup": "At the start of the game search the environment deck for all nature cards and put them face up beneath this card. Shuffle the environment deck and flip this card.",
-            "flippedGameplay": [
-                "Cards beneath this one are not considered in play. Nature cards are indestructible.",
+            "body": [
+               "At the start of the game, search the environment deck for all nature cards and put them face down beneath this card. Shuffle the environment deck.",
+                "Nature cards are indestructible.",
                 "Whenever an environment target enters play, put a random card beneath this one into play next to that target.",
                 "If a nature ever has no target next to it, put that nature face down beneath this card."
-            ]
+            ],
+            "icons": [
+                "Indestructible"
+            ],
+            "isReal": false,
         },
         {
             "identifier": "Axion",

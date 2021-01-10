@@ -13,5 +13,10 @@ namespace Cauldron.TheChasmOfAThousandNights
         public MalevolentCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override void AddTriggers()
+        {
+            base.AddTriggers();
+        }
     }
 }
