@@ -461,6 +461,8 @@ namespace CauldronTests
             AssertFlipped(menagerie);
             DestroyNonCharacterVillainCards();
 
+            MoveCards(menagerie, new string[] { "ExoticSphere", "AquaticSphere", "SecuritySphere" }, menagerie.TurnTaker.OffToTheSide);
+
             PlayCard("ExoticSphere");
             PlayCard("AquaticSphere");
             PlayCard("SecuritySphere");
@@ -562,6 +564,34 @@ namespace CauldronTests
 
         [Test()]
         public void TestExoticSphere()
+        {
+            SetupGameController("Cauldron.Menagerie", "Haka", "Bunker", "Benchmark", "Megalopolis");
+            StartGame();
+
+            PutOnDeck("AquaticSphere");
+            PutOnDeck("LumobatFlock");
+
+            //When this card enters play, place the top 2 cards of the villain deck beneath it face down.
+            Card sphere = PlayCard("ExoticSphere");
+            AssertNumberOfCardsAtLocation(sphere.UnderLocation, 2);
+            GoToEndOfTurn(menagerie);
+
+            //At the start of each hero's turn, this card deals the non-villain target with the highest HP {H - 1} toxic damage.
+            QuickHPStorage(haka);
+            GoToStartOfTurn(haka);
+            QuickHPCheck(-2);
+
+            QuickHPStorage(haka);
+            GoToStartOfTurn(bunker);
+            QuickHPCheck(-2);
+
+            QuickHPStorage(bench);
+            GoToStartOfTurn(bench);
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestExoticSphere_1893948577()
         {
             SetupGameController("Cauldron.Menagerie", "Haka", "Bunker", "Benchmark", "Megalopolis");
             StartGame();
