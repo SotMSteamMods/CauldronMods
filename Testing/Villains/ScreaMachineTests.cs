@@ -364,10 +364,35 @@ namespace CauldronTests
         }
 
         [Test]
-        [Ignore("Not Implemented")]
-        public void TestSetListAdvancedDestroyCard([Values(ScreaMachineBandmate.Value.Slice, ScreaMachineBandmate.Value.Bloodlace, ScreaMachineBandmate.Value.Valentine, ScreaMachineBandmate.Value.RickyG)] ScreaMachineBandmate.Value member)
+        public void TestSetListAdvancedDestroyOngoing([Values(ScreaMachineBandmate.Value.Slice, ScreaMachineBandmate.Value.Bloodlace, ScreaMachineBandmate.Value.Valentine, ScreaMachineBandmate.Value.RickyG)] ScreaMachineBandmate.Value member)
         {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis" }, advanced: true);
+            StartGame();
 
+            var bandmate = GetCard(member.GetIdentifier());
+
+            var card = PlayCard("Dominion");
+            AssertInPlayArea(haka, card);
+
+            FlipCard(bandmate);
+
+            AssertInTrash(card);
+        }
+
+        [Test]
+        public void TestSetListAdvancedDestroyEquipment([Values(ScreaMachineBandmate.Value.Slice, ScreaMachineBandmate.Value.Bloodlace, ScreaMachineBandmate.Value.Valentine, ScreaMachineBandmate.Value.RickyG)] ScreaMachineBandmate.Value member)
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis" }, advanced: true);
+            StartGame();
+
+            var bandmate = GetCard(member.GetIdentifier());
+
+            var card = PlayCard("TheStaffOfRa");
+            AssertInPlayArea(ra, card);
+
+            FlipCard(bandmate);
+
+            AssertInTrash(card);
         }
 
 
@@ -586,10 +611,47 @@ namespace CauldronTests
         }
 
         [Test]
-        [Ignore("Not implemented")]
         public void TestBandCardRevealsIfBandMateMissing([Values(ScreaMachineBandmate.Value.Slice, ScreaMachineBandmate.Value.Bloodlace, ScreaMachineBandmate.Value.Valentine, ScreaMachineBandmate.Value.RickyG)] ScreaMachineBandmate.Value member)
         {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false, randomSeed: -1112568770);
+            StartGame();
 
+            //reset the band cards
+            foreach (var card in FindCardsWhere(c => c.IsInPlayAndNotUnderCard && c.DoKeywordsContain(ScreaMachineBandmate.Keywords, true, true)))
+            {
+                if (!card.IsFlipped)
+                    FlipCard(card);
+                MoveCard(scream, card, setlist.UnderLocation);
+            }
+
+            //destroy all other characters
+            foreach (var id in ScreaMachineBandmate.Identifiers.Where(s => s != member.GetIdentifier()))
+            {
+                DestroyCard(GetCard(id));
+            }
+
+            int count = GetNumberOfCardsInPlay(c => c.Location == scream.TurnTaker.PlayArea && c.IsInPlayAndNotUnderCard);
+            
+            //we are not going to reveal cards undersetlist, just flip and play specific cards.
+            //first we hard play the cards for the active member leaving only the deadies cards under.
+            //Then we play the top card of the under, and reset of the under playitself out
+            foreach (var card in FindCardsWhere(c => c.Location == setlist.UnderLocation && c.DoKeywordsContain(member.GetKeyword(), true, true)))
+            {
+                if (card.IsFlipped)
+                    FlipCard(card);
+                PlayCard(card, true);
+            }
+
+            PrintCardsInPlayWithGameText(c => c.Location == scream.TurnTaker.PlayArea && c.IsInPlayAndNotUnderCard);
+            AssertNumberOfCardsInPlay(c => c.Location == scream.TurnTaker.PlayArea && c.IsInPlayAndNotUnderCard, count + 3);
+
+            var c1 = setlist.UnderLocation.TopCard;
+            if (c1.IsFlipped)
+                FlipCard(c1);
+            PlayCard(c1, true);
+
+            //The rest of the under cards should be chain played out
+            AssertNumberOfCardsInPlay(c => c.Location == scream.TurnTaker.PlayArea && c.IsInPlayAndNotUnderCard, count + 12);
         }
 
 
