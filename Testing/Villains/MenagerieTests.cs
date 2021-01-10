@@ -278,6 +278,7 @@ namespace CauldronTests
         [Test()]
         public void TestMenagerieInitialFlip()
         {
+            //bad seeds: -860580707
             SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" });
             StartGame();
             Card prize = FindCardInPlay("PrizedCatch");
@@ -301,6 +302,7 @@ namespace CauldronTests
         [Test()]
         public void TestMenagerieBackEnclosureLocation()
         {
+            //bad seeds: -1265292002
             SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" });
             StartGame();
             MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
@@ -364,6 +366,7 @@ namespace CauldronTests
         [Test()]
         public void TestMenagerieBackEndTurnEffect()
         {
+            //bad seeds: 624804975
             SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" });
             StartGame();
             MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
@@ -468,19 +471,23 @@ namespace CauldronTests
         [Test()]
         public void TestArborealSphereTargetEnvironment()
         {
-            SetupGameController("Cauldron.Menagerie", "Haka", "Bunker", "Parse", "Megalopolis");
+            SetupGameController(new[] { "Cauldron.Menagerie", "Haka", "Bunker", "Parse", "Megalopolis" });
             StartGame();
 
             Card traffic = PlayCard("TrafficPileup");
-            Card lumo = PutOnDeck("LumobatFlock");
+            var spec1 = GetCard("LumobatFlock");
+            var spec2 = GetCard("HyrianSnipe");
+            PutOnDeck(menagerie, spec1);
+            PutOnDeck(menagerie, spec2);
 
             //When this card enters play, place the top card of the villain deck beneath it face down.
             QuickHPStorage(traffic);
             Card sphere = PlayCard("ArborealSphere");
+            AssertAtLocation(spec2, sphere.UnderLocation);
             AssertNumberOfCardsAtLocation(sphere.UnderLocation, 1);
 
             //Then, play the top card of the villain deck.
-            AssertIsInPlay(lumo);
+            AssertIsInPlay(spec1);
 
             //Whenever a Specimen enters play, it deals the non-villain target with the lowest HP {H - 2} melee damage.
             QuickHPCheck(-1);
@@ -647,7 +654,6 @@ namespace CauldronTests
             MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
             GoToEndOfTurn(menagerie);
             DestroyNonCharacterVillainCards();
-            DestroyNonCharacterVillainCards();
 
             Card moko = PlayCard("TaMoko");
             Card mere = PlayCard("Mere");
@@ -687,16 +693,20 @@ namespace CauldronTests
         [Test()]
         public void TestLumobatFlock()
         {
-            SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
+            SetupGameController(new[] { "Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis" });
             DiscardAllCards(bench, parse);
             StartGame();
 
             PutOnDeck("FeedingTime");
             Card aqua = PutOnDeck("AquaticSphere");
 
-            PlayCard("LumobatFlock");
+            var flock = PlayCard("LumobatFlock");
+            AssertIsInPlay(flock);
+
+            var snipe = PlayCard("HyrianSnipe");
             //The first time a Specimen enters play each turn, play the top card of the villain deck.
             AssertIsInPlay(aqua);
+            DestroyCard(snipe);
 
             PutOnDeck("ExoticSphere");
             //At the end of the villain turn this card deals the hero target with the highest HP 2 projectile and 2 radiant damage.
@@ -845,35 +855,35 @@ namespace CauldronTests
         }
 
         [Test()]
-        [Ignore("Flipping face down cards under another doesn't update the model.")]
         public void TestViewingApertures()
         {
             SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
             DiscardAllCards(bench, parse);
             StartGame();
 
-            Card lumo = PutOnDeck("LumobatFlock");
-            PlayCard("AquaticSphere");
+            Card aqua1 = PutOnDeck("TakIshmael");
+            var aqua = PlayCard("AquaticSphere");
+            AssertAtLocation(aqua1, aqua.UnderLocation);
 
+            Card exo2 = PutOnDeck("HyrianSnipe");
+            Card exo1 = PutOnDeck("LumobatFlock");
             Card exo = PlayCard("ExoticSphere");
-            Card exo1 = exo.UnderLocation.TopCard;
-            Card exo2 = exo.UnderLocation.BottomCard;
-
-            Card feed = PutOnDeck("FeedingTime");
+            AssertAtLocation(exo1, exo.UnderLocation);
+            AssertAtLocation(exo2, exo.UnderLocation);
 
             Card hydric = PlayCard("TheMonBeskmaHydric");
             Card traffic = PlayCard("TrafficPileup");
 
+            Card feed = PutOnDeck("FeedingTime");
             QuickHPStorage(haka.CharacterCard, parse.CharacterCard, bench.CharacterCard, hydric, traffic);
             PlayCard("ViewingApertures");
             //Play the top card of the villain deck.
             AssertIsInPlay(feed);
 
             //Select 1 face down card beneath each Enclosure. Flip those cards face up.
-
-            AssertFaceUp(lumo);
-            AssertFaceUp(exo2);
-            Assert.IsTrue(!exo1.IsFaceUp);
+            AssertNotFlipped(aqua1);
+            AssertNotFlipped(exo2);
+            AssertFlipped(exo1);
 
             //{Menagerie} deals each hero, environment, and Specimen target 1 psychic damage.
             QuickHPCheck(-1, -1, -1, -1, -1);
