@@ -647,6 +647,94 @@ namespace CauldronTests
             GoToStartOfTurn(env);
             AssertInTrash(env, freeze);
         }
+        [Test()]
+        public void TestTimeFreezeWithTurnOrderReversed()
+        {
+            SetupGameController("WagerMaster", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+
+            var conditions = FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsCondition);
+            foreach (Card startingCondition in conditions)
+            {
+                FlipCard(startingCondition);
+            }
+
+            Card dice = GetCard("PlayingDiceWithTheCosmos");
+            if(dice.IsInPlay)
+            {
+                FlipCard(dice);
+                MoveCard(wager, dice, wager.TurnTaker.Deck, overrideIndestructible: true);
+            }
+            PlayCard(dice);
+
+
+            GoToEndOfTurn(ra);
+            Card takedown = PlayCard("TakeDown");
+            PlayCard("TimeFreeze");
+            RunCoroutine(GameController.EnterNextTurnPhase());
+            RunCoroutine(GameController.EnterNextTurnPhase());
+
+            AssertIsInPlay(takedown);
+            Assert.IsTrue(GameController.ActiveTurnTaker.IsEnvironment);
+        }
+        [Test()]
+        public void TestTimeFreezeWithTurnAndPhaseOrderReversed()
+        {
+            SetupGameController("WagerMaster", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+
+            var conditions = FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsCondition);
+            foreach (Card startingCondition in conditions)
+            {
+                FlipCard(startingCondition);
+            }
+
+            Card dice = GetCard("PlayingDiceWithTheCosmos");
+            if (dice.IsInPlay)
+            {
+                FlipCard(dice);
+                MoveCard(wager, dice, wager.TurnTaker.Deck, overrideIndestructible: true);
+            }
+            DecisionSelectCard = ra.CharacterCard;
+            PlayCard("TimeFreeze");
+            DecisionSelectCard = null;
+
+            PlayCard(dice);
+            PlayCard("BreakingTheRules");
+
+
+            GoToStartOfTurn(haka);
+            Card takedown = PlayCard("TakeDown");
+            RunCoroutine(GameController.EnterNextTurnPhase());
+            RunCoroutine(GameController.EnterNextTurnPhase());
+
+            AssertIsInPlay(takedown);
+            Assert.IsTrue(GameController.ActiveTurnTaker == legacy.TurnTaker);
+        }
+        [Test()]
+        public void TestTimeFreezeWithPhaseOrderReversed()
+        {
+            SetupGameController("WagerMaster", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+
+            var conditions = FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsCondition);
+            foreach (Card startingCondition in conditions)
+            {
+                FlipCard(startingCondition);
+            }
+
+            GoToEndOfTurn(wager);
+            PlayCard("TimeFreeze");
+            PlayCard("BreakingTheRules");
+            Card flare = PlayCard("SolarFlare");
+
+            DecisionYesNo = false;
+
+            RunCoroutine(GameController.EnterNextTurnPhase());
+            RunCoroutine(GameController.EnterNextTurnPhase());
+            AssertInTrash(flare);
+            Assert.IsTrue(GameController.ActiveTurnTaker == ra.TurnTaker);
+        }
 
         [Test()]
         public void TestVortexGlitch() //This Test is known to fail

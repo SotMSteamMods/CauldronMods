@@ -34,7 +34,7 @@ namespace Cauldron.Tiamat
             }
 
             //The Head with the highest HP deals {H} toxic damage to each hero who did not destroy a card this way.
-            List<Card> characterCardsWithDestroyed = new List<Card>();
+            List<TurnTaker> heroesWithDestroyed = new List<TurnTaker>();
             if (storedResultsAction.Count<DestroyCardAction>() > 0)
             {
                 using (List<DestroyCardAction>.Enumerator enumerator = storedResultsAction.GetEnumerator())
@@ -42,11 +42,11 @@ namespace Cauldron.Tiamat
                     while (enumerator.MoveNext())
                     {
                         DestroyCardAction destroy = enumerator.Current;
-                        characterCardsWithDestroyed.Add(destroy.CardToDestroy.CharacterCard);
+                        heroesWithDestroyed.Add(destroy.CardToDestroy.TurnTaker);
                     }
                 }
             }
-            coroutine = base.DealDamage(null, (Card c) => !characterCardsWithDestroyed.Contains(c) && c.IsHeroCharacterCard, base.H, DamageType.Toxic, damageSourceInfo: new TargetInfo(HighestLowestHP.HighestHP, 1, 1, new LinqCardCriteria((Card c) => c.DoKeywordsContain("head"), "the head with the highest HP")));
+            coroutine = base.DealDamage(null, (Card c) => c.IsHeroCharacterCard && !heroesWithDestroyed.Any(tt => c.Owner == tt), base.H, DamageType.Toxic, damageSourceInfo: new TargetInfo(HighestLowestHP.HighestHP, 1, 1, new LinqCardCriteria((Card c) => c.DoKeywordsContain("head"), "the head with the highest HP")));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

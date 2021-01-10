@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="echo namespace CauldronTests { static public class ProjectPath { public static readonly string Path = @&quot;$(ProjectDir)&quot;;} } &gt; $(ProjectDir)Testing\path.cs" />
+    <Exec Command="echo namespace CauldronTests { static public class ProjectPath { public static readonly string Path = @&quot;$(ProjectDir)&quot;;} } &gt; $(ProjectDir)path.cs" />
   </Target>
 
 </Project>
