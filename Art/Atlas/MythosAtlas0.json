@@ -64,7 +64,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"MythosDeckBack.png":
+"MythosClueDeckBack.png":
 {
 	"frame": {"x":617,"y":382,"w":176,"h":256},
 	"rotated": false,
@@ -72,7 +72,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"MythosEyeDeckBack.png":
+"MythosDangerDeckBack.png":
 {
 	"frame": {"x":796,"y":382,"w":176,"h":256},
 	"rotated": false,
@@ -80,7 +80,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"MythosFearDeckBack.png":
+"MythosDeckBack.png":
 {
 	"frame": {"x":975,"y":382,"w":176,"h":256},
 	"rotated": false,
@@ -88,7 +88,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"MythosMindDeckBack.png":
+"MythosMadnessDeckBack.png":
 {
 	"frame": {"x":1154,"y":382,"w":176,"h":256},
 	"rotated": false,
@@ -175,6 +175,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:86adef79a47602282421681637f48fb8:a5151ec1bdd2de9ec06f1b8095235978:aa4b40754777d861fb3ba8d47267ba43$"
+	"smartupdate": "$TexturePacker:SmartUpdate:3fe426b7be948b49cadd03edf9bdd4d9:ae5bf4ffa599b753a7c3c00bbdd595e9:aa4b40754777d861fb3ba8d47267ba43$"
 }
 }

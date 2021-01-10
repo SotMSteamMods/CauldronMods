@@ -12,6 +12,7 @@ namespace Cauldron.Mythos
     {
         public MythosCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
             base.SpecialStringMaker.ShowSpecialString(() => this.DeckIconList());
         }
 
