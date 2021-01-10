@@ -313,13 +313,37 @@ namespace CauldronTests
             //When an enclosure enters play, move it next to the active hero with the fewest enclosures in their play area. 
             Card aqua = PlayCard("AquaticSphere");
             AssertNextToCard(aqua, legacy.CharacterCard);
-            Card arb = PlayCard("ArborealSphere");
-            AssertNextToCard(arb, ra.CharacterCard);
+            Card exo = PlayCard("ExoticSphere");
+            AssertNextToCard(exo, ra.CharacterCard);
 
             //Heroes with enclosures in their play area may not damage cards in other play areas.
-            QuickHPStorage(menagerie.CharacterCard, arb);
+            QuickHPStorage(menagerie.CharacterCard, exo);
             DealDamage(ra, menagerie, 2, DamageType.Melee);
-            DealDamage(ra, arb, 2, DamageType.Melee);
+            DealDamage(ra, exo, 2, DamageType.Melee);
+            QuickHPCheck(0, -2);
+        }
+
+        [Test()]
+        public void TestMenagerieBackEnclosureLocation_Seed1265292002()
+        {
+            //bad seeds: -1265292002
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" }, randomSeed: 1265292002);
+            StartGame();
+            MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            AssertFlipped(menagerie);
+            DestroyNonCharacterVillainCards();
+
+            //When an enclosure enters play, move it next to the active hero with the fewest enclosures in their play area. 
+            Card aqua = PlayCard("AquaticSphere");
+            AssertNextToCard(aqua, legacy.CharacterCard);
+            Card exo = PlayCard("ExoticSphere");
+            AssertNextToCard(exo, ra.CharacterCard);
+
+            //Heroes with enclosures in their play area may not damage cards in other play areas.
+            QuickHPStorage(menagerie.CharacterCard, exo);
+            DealDamage(ra, menagerie, 2, DamageType.Melee);
+            DealDamage(ra, exo, 2, DamageType.Melee);
             QuickHPCheck(0, -2);
         }
 
@@ -364,45 +388,39 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestMenagerieBackEndTurnEffect()
+        public void TestMenagerieBackEndTurnEffect_2Under()
         {
-            //bad seeds: 624804975
             SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" });
             StartGame();
             MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
             GoToEndOfTurn(menagerie);
             AssertFlipped(menagerie);
+            GoToEndOfTurn(env);
             DestroyNonCharacterVillainCards();
 
-            Card aqua = PutInTrash("AquaticSphere");
-            PlayCard("ExoticSphere");
-            PutOnDeck(menagerie, aqua);
+            PutOnDeck("ExoticSphere");
             //At the end of the villain turn, play the top card of the villain deck. Then, for each enclosure in play, Menagerie deals the hero next to it X projectile damage, where X is the number of cards beneath that enclosure.
-            GoToEndOfTurn(env);
-            QuickHPStorage(legacy, ra);
+            QuickHPStorage(legacy);
             GoToEndOfTurn(menagerie);
-            QuickHPCheck(-2, -1);
+            QuickHPCheck(-2);
         }
 
         [Test()]
-        public void TestMenagerieBackEndTurnEffect_599933554()
+        public void TestMenagerieBackEndTurnEffect_1Under()
         {
-            //bad seeds: 624804975
-            SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" }, randomSeed: 599933554);
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" });
             StartGame();
             MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
             GoToEndOfTurn(menagerie);
             AssertFlipped(menagerie);
+            GoToEndOfTurn(env);
             DestroyNonCharacterVillainCards();
 
-            Card aqua = PutInTrash("AquaticSphere");
-            PlayCard("ExoticSphere");
-            PutOnDeck(menagerie, aqua);
+            PutOnDeck("AquaticSphere");
             //At the end of the villain turn, play the top card of the villain deck. Then, for each enclosure in play, Menagerie deals the hero next to it X projectile damage, where X is the number of cards beneath that enclosure.
-            GoToEndOfTurn(env);
-            QuickHPStorage(legacy, ra);
+            QuickHPStorage(legacy);
             GoToEndOfTurn(menagerie);
-            QuickHPCheck(-2, -1);
+            QuickHPCheck(-1);
         }
 
         [Test()]
