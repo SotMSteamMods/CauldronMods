@@ -25,7 +25,7 @@ namespace Cauldron.Gray
             //At the end of the villain turn, destroy 1 equipment card.
             IEnumerator coroutine;
 
-            coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c)), false, storedResults, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c), "equipment"), false, storedResults, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
