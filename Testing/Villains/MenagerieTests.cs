@@ -801,6 +801,8 @@ namespace CauldronTests
             DiscardAllCards(bench, parse);
             StartGame();
 
+            MoveCards(menagerie, FindCardsWhere((Card c) => c.DoKeywordsContain("enclosure") && c.Location.IsDeck), menagerie.TurnTaker.OffToTheSide);
+
             Card moko = PlayCard("TaMoko");
 
             PutOnDeck("AquaticSphere");
@@ -823,9 +825,10 @@ namespace CauldronTests
             DiscardAllCards(bench, parse);
             StartGame();
 
+            MoveCards(menagerie, FindCardsWhere((Card c) => c.DoKeywordsContain("enclosure") && c.Location.IsDeck), menagerie.TurnTaker.OffToTheSide);
+
             Card moko = PlayCard("TaMoko");
 
-            PutOnDeck("AquaticSphere");
             PlayCard("HiredKeeper");
             //At the end of the villain turn, this card deals the 2 non-Captured hero targets with the highest HP 2 sonic damage each.
             QuickHPStorage(haka, parse, bench);
