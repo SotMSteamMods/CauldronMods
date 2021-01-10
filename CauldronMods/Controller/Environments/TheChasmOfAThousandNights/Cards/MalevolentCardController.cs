@@ -19,7 +19,7 @@ namespace Cauldron.TheChasmOfAThousandNights
         public override void AddTriggers()
         {
             //Redirect all damage dealt by the target next to this card to the hero target with the highest HP.
-            AddTrigger((DealDamageAction dd) => GetCardThisCardIsBelow() != null && dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card == GetCardThisCardIsBelow(), RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
+            AddTrigger((DealDamageAction dd) => !IsIreOfTheDjinnInPlay() && GetCardThisCardIsBelow() != null && dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card == GetCardThisCardIsBelow(), RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
 
             base.AddTriggers();
         }

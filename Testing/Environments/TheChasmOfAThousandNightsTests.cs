@@ -623,6 +623,71 @@ namespace CauldronTests
             QuickHPCheck(-4, -4, -4, -4, -4, 0, 0);
 
         }
+
+        [Test()]
+        public void TestIreOfTheDjinn_Redirect()
+        {
+            //NOTE: This test uses a random seed to guarantee that the nature that goes below Axion is Rather Friendly
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheChasmOfAThousandNights" }, randomSeed: new int?(1983606371));
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            GoToPlayCardPhase(chasm);
+            Card djinn = PlayCard("Axion");
+            Card nature = djinn.BelowLocation.TopCard;
+            PlayCard("IreOfTheDjinn");
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            //At the end of the environment turn, this card deals each villain target 1 melee damage.
+            // Redirect all damage dealt by environment targets to the hero target with the highest HP. Nature cards cannot redirect this damage.
+            PrintSeparator("Checking Triggers In Play");
+            PrintTriggers();
+            PrintSeparator("Finished Checking Triggers");
+            GoToEndOfTurn(chasm);
+            QuickHPCheck(0, 0, 0, -2, 0);
+
+        }
+
+        [Test()]
+        public void TestIreOfTheDjinn_EntersPlay()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheChasmOfAThousandNights" });
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            GoToPlayCardPhase(chasm);
+
+            //When this card enters play, 3 players each draw 1 card.
+            DecisionSelectTurnTakers = new TurnTaker[] { legacy.TurnTaker, tachyon.TurnTaker, ra.TurnTaker };
+            QuickHandStorage(ra, legacy, haka, tachyon);
+            Card ire = PlayCard("IreOfTheDjinn");
+            QuickHandCheck(1, 1, 0, 1);
+
+            // At the start of the environment turn, destroy this card.
+            GoToStartOfTurn(chasm);
+            AssertInTrash(ire);
+
+        }
+
+        [Test()]
+        public void TestIreOfTheDjinn_EntersPlay_Only2Active()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheChasmOfAThousandNights" });
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            DealDamage(baron, legacy, 100, DamageType.Melee);
+            DealDamage(baron, haka, 100, DamageType.Melee);
+            GoToPlayCardPhase(chasm);
+
+            //When this card enters play, 3 players each draw 1 card.
+            DecisionSelectTurnTakers = new TurnTaker[] { tachyon.TurnTaker, ra.TurnTaker };
+            QuickHandStorage(ra, tachyon);
+            Card ire = PlayCard("IreOfTheDjinn");
+            QuickHandCheck(1, 1);
+
+            // At the start of the environment turn, destroy this card.
+            GoToStartOfTurn(chasm);
+            AssertInTrash(ire);
+
+        }
     }
 
 }

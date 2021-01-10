@@ -13,5 +13,17 @@ namespace Cauldron.TheChasmOfAThousandNights
         protected TheChasmOfAThousandNightsUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public static readonly string IreOfTheDjinnIdentifier = "IreOfTheDjinn";
+
+        private IEnumerable<Card> FindIreOfTheDjinn()
+        {
+            return base.FindCardsWhere(c => c.Identifier == IreOfTheDjinnIdentifier);
+        }
+
+        protected bool IsIreOfTheDjinnInPlay()
+        {
+            return FindIreOfTheDjinn().Where(c => c.IsInPlayAndHasGameText).Any();
+        }
     }
 }
