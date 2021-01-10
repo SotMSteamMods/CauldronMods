@@ -21,7 +21,7 @@ namespace Cauldron.Mythos
         protected const string MythosDangerDeckIdentifier = "MythosDanger";
         protected const string MythosMadnessDeckIdentifier = "MythosMadness";
 
-        public override void AddTriggers()
+        public override void AddSideTriggers()
         {
             if (!this.Card.IsFlipped)
             {
@@ -46,11 +46,11 @@ namespace Cauldron.Mythos
                 /**Added to MythosUtilityCardController**/
 
                 //{MythosDanger} Reduce damage dealt to villain targets by 1.
-                base.AddSideTrigger(base.AddReduceDamageTrigger((Card c) => base.IsVillain(c), 1));
+                base.AddSideTrigger(base.AddReduceDamageTrigger((Card c) => base.IsVillain(c) && this.IsTopCardMatching(MythosDangerDeckIdentifier), 1));
 
                 //At the end of the villain turn, the players may play the top card of the villain deck. Then:
                 //--{MythosClue} Play the top card of the villain deck.
-                //--{MythosDanger} {Mythos} deals each hero target {H} infernal damage.
+                //--{MythosMadness} {Mythos} deals each hero target {H} infernal damage.
                 base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.BackEndOfTurnResponse, new TriggerType[] { TriggerType.PlayCard, TriggerType.DealDamage }));
 
                 if (base.Game.IsAdvanced)
@@ -74,7 +74,10 @@ namespace Cauldron.Mythos
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
-            yield return base.AfterFlipCardImmediateResponse();
+            base.RemoveSideTriggers();
+            this.AddSideTriggers();
+            yield return null;
+            yield break;
         }
 
         public override bool AskIfCardIsIndestructible(Card card)
@@ -118,9 +121,9 @@ namespace Cauldron.Mythos
                 }
             }
 
-            if (this.IsTopCardMatching((MythosDangerDeckIdentifier)))
+            if (this.IsTopCardMatching((MythosMadnessDeckIdentifier)))
             {
-                //{MythosDanger} {Mythos} deals each hero target {H} infernal damage.
+                //{MythosMadness} {Mythos} deals each hero target {H} infernal damage.
                 coroutine = base.DealDamage(this.Card, (Card c) => c.IsHero, base.Game.H, DamageType.Infernal);
                 if (UseUnityCoroutines)
                 {

@@ -46,7 +46,7 @@
                 "{MythosDanger} Reduce damage dealt to villain targets by 1.",
                 "At the end of the villain turn, the players may play the top card of the villain deck. Then:",
                 "{MythosClue} Play the top card of the villain deck.",
-                "{MythosDanger} {Mythos} deals each hero target {H} infernal damage."
+                "{MythosMadness} {Mythos} deals each hero target {H} infernal damage."
             ],
             "flippedAdvanced": "Activate all {MythosDanger} effects.",
             "flippedIcons": [

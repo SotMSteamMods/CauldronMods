@@ -188,6 +188,8 @@ namespace CauldronTests
             AssertNotFlipped(mythos);
             GoToEndOfTurn(mythos);
             AssertFlipped(mythos);
+            //When {Mythos} flips to this side, remove Dangerous Investigation from the game.
+            AssertOutOfGame(GetCard(DangerousInvestigation));
         }
 
         [Test()]
@@ -246,6 +248,203 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestMythosFront_EndOfTurn_1Play()
+        {
+            SetupGameController("Cauldron.Mythos", "AkashThriya", "Haka", "Legacy", "Bunker", "Unity", "Megalopolis");
+            StartGame();
+
+            Card acad0 = PutOnDeck(mythos, GetCard(PallidAcademic, 0));
+            DecisionsYesNo = new bool[] { true, false, false, false, false };
+
+            //At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. 
+            QuickHPStorage(thriya, haka, legacy, bunker, unity);
+            GoToEndOfTurn(mythos);
+            QuickHPCheck(-3, -3, -3, -3, 0);
+            AssertNotInDeck(acad0);
+        }
+
+        [Test()]
+        public void TestMythosFront_EndOfTurn_2Play()
+        {
+            SetupGameController("Cauldron.Mythos", "AkashThriya", "Haka", "Legacy", "Bunker", "Unity", "Megalopolis");
+            StartGame();
+
+            Card acad0 = PutOnDeck(mythos, GetCard(PallidAcademic, 0));
+            Card acad1 = PutOnDeck(mythos, GetCard(PallidAcademic, 1));
+            DecisionsYesNo = new bool[] { true, true, false, false, false };
+
+            //At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. 
+            QuickHPStorage(thriya, haka, legacy, bunker, unity);
+            GoToEndOfTurn(mythos);
+            QuickHPCheck(-3, -3, -3, 0, 0);
+            foreach (Card c in new Card[] { acad0, acad1 })
+            {
+                AssertNotInDeck(c);
+            }
+        }
+
+        [Test()]
+        public void TestMythosFront_EndOfTurn_3Play()
+        {
+            SetupGameController("Cauldron.Mythos", "AkashThriya", "Haka", "Legacy", "Bunker", "Unity", "Megalopolis");
+            StartGame();
+
+            //Ensures later cards don't deal end of turn damage
+            PutOnDeck(Revelations);
+
+            Card acad0 = PutOnDeck(mythos, GetCard(PallidAcademic, 0));
+            Card acad1 = PutOnDeck(mythos, GetCard(PallidAcademic, 1));
+            Card site = PutOnDeck(RitualSite);
+            DecisionsYesNo = new bool[] { true, true, true, false, false };
+
+            //At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. 
+            QuickHPStorage(thriya, haka, legacy, bunker, unity);
+            GoToEndOfTurn(mythos);
+            QuickHPCheck(-3, -3, 0, 0, 0);
+            foreach (Card c in new Card[] { acad0, acad1, site })
+            {
+                AssertNotInDeck(c);
+            }
+        }
+
+        [Test()]
+        public void TestMythosFront_EndOfTurn_4Play()
+        {
+            SetupGameController("Cauldron.Mythos", "AkashThriya", "Haka", "Legacy", "Bunker", "Unity", "Megalopolis");
+            StartGame();
+
+            //Ensures later cards don't deal end of turn damage
+            PutOnDeck(Revelations);
+
+            Card acad0 = PutOnDeck(mythos, GetCard(PallidAcademic, 0));
+            Card acad1 = PutOnDeck(mythos, GetCard(PallidAcademic, 1));
+            Card site = PutOnDeck(RitualSite);
+            Card prey0 = PutOnDeck(mythos, GetCard(PreyUponTheMind, 0));
+            DecisionsYesNo = new bool[] { true, true, true, true, false, false };
+
+            //At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. 
+            QuickHPStorage(thriya, haka, legacy, bunker, unity);
+            GoToEndOfTurn(mythos);
+            QuickHPCheck(-3, 0, 0, 0, 0);
+            foreach (Card c in new Card[] { acad0, acad1, site, prey0 })
+            {
+                AssertNotInDeck(c);
+            }
+        }
+
+        [Test()]
+        public void TestMythosFront_EndOfTurn_5Play()
+        {
+            SetupGameController("Cauldron.Mythos", "AkashThriya", "Haka", "Legacy", "Bunker", "Unity", "Megalopolis");
+            StartGame();
+
+            //Ensures later cards don't deal end of turn damage
+            PutOnDeck(Revelations);
+
+            Card acad0 = PutOnDeck(mythos, GetCard(PallidAcademic, 0));
+            Card acad1 = PutOnDeck(mythos, GetCard(PallidAcademic, 1));
+            Card site = PutOnDeck(RitualSite);
+            Card prey0 = PutOnDeck(mythos, GetCard(PreyUponTheMind, 0));
+            Card prey1 = PutOnDeck(mythos, GetCard(PreyUponTheMind, 1));
+            DecisionsYesNo = new bool[] { true, true, true, true, true, false, false };
+
+            //At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. 
+            QuickHPStorage(thriya, haka, legacy, bunker, unity);
+            GoToEndOfTurn(mythos);
+            QuickHPCheck(0, 0, 0, 0, 0);
+            foreach (Card c in new Card[] { acad0, acad1, site, prey0, prey1 })
+            {
+                AssertNotInDeck(c);
+            }
+        }
+
+        [Test()]
+        public void TestMythosFront_Advanced()
+        {
+            SetupGameController(new string[] { "Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis" }, true);
+            StartGame();
+
+            PutOnDeck(Revelations);
+
+            //Advanced: Reduce damage dealt to {Mythos} by 2.
+            QuickHPStorage(mythos);
+            DealDamage(haka, mythos, 3, DamageType.Melee);
+            QuickHPCheck(-1);
+        }
+
+        [Test()]
+        public void TestMythosBack_Danger_SkipPlay()
+        {
+            SetupGameController(new string[] { "Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis" });
+            StartGame();
+
+            PutOnDeck(ClockworkRevenant);
+            Card peer = PutOnDeck(AclastyphWhoPeers);
+            AddTokensToDangerousInvestigationPool(3);
+            GoToEndOfTurn(mythos);
+
+            //{MythosDanger} Reduce damage dealt to villain targets by 1.
+            Card aca = PlayCard(PallidAcademic);
+            QuickHPStorage(mythos.CharacterCard, aca, peer);
+            DealDamage(haka, mythos, 2, DamageType.Melee);
+            DealDamage(haka, aca, 2, DamageType.Melee);
+            PlayCard(peer);
+            DealDamage(haka, peer, 2, DamageType.Melee);
+            //At the end of the villain turn, the players may play the top card of the villain deck.
+            //This is proved because the card under Aclastyph is a Danger card, and thus doesn't trigger the damage reduction
+            QuickHPCheck(-1, -1, -2);
+        }
+
+        [Test()]
+        public void TestMythosBack_DontSkip_Clue()
+        {
+            SetupGameController(new string[] { "Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis" });
+            StartGame();
+
+            PutOnDeck(RitualSite);
+            Card aca = PutOnDeck(PallidAcademic);
+            Card peer = PutOnDeck(AclastyphWhoPeers);
+            DecisionsYesNo = new bool[] { false, true, false };
+            AddTokensToDangerousInvestigationPool(3);
+
+            //At the end of the villain turn, the players may play the top card of the villain deck. Then:
+            GoToEndOfTurn(mythos);
+            AssertNotInDeck(peer);
+            //{MythosClue} Play the top card of the villain deck.
+            AssertNotInDeck(aca);
+        }
+
+        [Test()]
+        public void TestMythosBack_Madness_SkipPlay()
+        {
+            SetupGameController(new string[] { "Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis" });
+            StartGame();
+
+            PutOnDeck(ClockworkRevenant);
+            AddTokensToDangerousInvestigationPool(3);
+            QuickHPStorage(legacy, bunker, haka);
+            GoToEndOfTurn(mythos);
+            //{MythosMadness} {Mythos} deals each hero target {H} infernal damage.
+            QuickHPCheck(-3, -3, -3);
+        }
+
+        [Test()]
+        public void TestMythosBack_Advanced()
+        {
+            SetupGameController(new string[] { "Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis" }, true);
+            StartGame();
+
+            PutOnDeck(AclastyphWhoPeers);
+            AddTokensToDangerousInvestigationPool(3);
+            GoToEndOfTurn(mythos);
+
+            //Advanced: Activate all {MythosDanger} effects.
+            QuickHPStorage(mythos);
+            DealDamage(haka, mythos, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+        }
+
+        [Test()]
         public void TestAclastyphWhoPeers_Danger()
         {
             SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
@@ -258,7 +457,28 @@ namespace CauldronTests
 
             QuickHPStorage(haka, bunker, legacy);
             GoToEndOfTurn(mythos);
-            QuickHPCheck(-2, 0, 0);
+            //Mythos hits all for 3
+            QuickHPCheck(-5, -3, -3);
+            AssertInTrash(pros);
+            AssertNumberOfCardsInTrash(mythos, 1);
+        }
+
+        [Test()]
+        public void TestAclastyphWhoPeers_Clue()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //At the end of the villain turn:
+            //{MythosClue} This card regains 2HP. Discard the top card of the villain deck.
+            Card peer = PlayCard(AclastyphWhoPeers);
+
+            Card pros = PutOnDeck(FaithfulProselyte);
+
+            QuickHPStorage(haka, bunker, legacy);
+            GoToEndOfTurn(mythos);
+            //Mythos hits all for 3
+            QuickHPCheck(-5, -3, -3);
             AssertInTrash(pros);
             AssertNumberOfCardsInTrash(mythos, 1);
         }
