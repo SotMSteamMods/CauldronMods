@@ -376,7 +376,28 @@ namespace CauldronTests
 
             Card aqua = PutInTrash("AquaticSphere");
             PlayCard("ExoticSphere");
-            PutOnDeck("AquaticSphere");
+            PutOnDeck(menagerie, aqua);
+            //At the end of the villain turn, play the top card of the villain deck. Then, for each enclosure in play, Menagerie deals the hero next to it X projectile damage, where X is the number of cards beneath that enclosure.
+            GoToEndOfTurn(env);
+            QuickHPStorage(legacy, ra);
+            GoToEndOfTurn(menagerie);
+            QuickHPCheck(-2, -1);
+        }
+
+        [Test()]
+        public void TestMenagerieBackEndTurnEffect_599933554()
+        {
+            //bad seeds: 624804975
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Megalopolis" }, randomSeed: 599933554);
+            StartGame();
+            MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            AssertFlipped(menagerie);
+            DestroyNonCharacterVillainCards();
+
+            Card aqua = PutInTrash("AquaticSphere");
+            PlayCard("ExoticSphere");
+            PutOnDeck(menagerie, aqua);
             //At the end of the villain turn, play the top card of the villain deck. Then, for each enclosure in play, Menagerie deals the hero next to it X projectile damage, where X is the number of cards beneath that enclosure.
             GoToEndOfTurn(env);
             QuickHPStorage(legacy, ra);
@@ -564,12 +585,36 @@ namespace CauldronTests
             DiscardAllCards(bench);
             StartGame();
 
+            PlayCard("FeethsmarAlpha");
+
             Card hive = PlayCard("HalberdHive");
             Card aqua = PlayCard("AquaticSphere");
             Card traffic = PlayCard("TrafficPileup");
             PutOnDeck("ExoticSphere");
 
+            //Increase damage dealt to Enclosures by 1.
+            //At the end of the villain turn, this card deals each non-Specimen target 2 cold damage.
+            QuickHPStorage(hive, haka.CharacterCard, bench.CharacterCard, aqua, traffic);
+            GoToEndOfTurn(menagerie);
+            QuickHPCheck(0, -2, -2, -3, -2);
+        }
+
+        [Test()]
+        public void TestFeethsmarAlpha_596196033()
+        {
+            SetupGameController(new string[] { "Cauldron.Menagerie", "Haka", "TheSentinels", "Benchmark", "Megalopolis" }, randomSeed: 596196033);
+            DiscardAllCards(bench);
+            StartGame();
+
             PlayCard("FeethsmarAlpha");
+
+            Card hive = PlayCard("HalberdHive");
+            Card aqua = PlayCard("AquaticSphere");
+            Card traffic = PlayCard("TrafficPileup");
+            PutOnDeck("ExoticSphere");
+
+            DecisionSelectCards = new Card[] { haka.CharacterCard, medico, mainstay, idealist, writhe, bench.CharacterCard, aqua, traffic };
+
             //Increase damage dealt to Enclosures by 1.
             //At the end of the villain turn, this card deals each non-Specimen target 2 cold damage.
             QuickHPStorage(hive, haka.CharacterCard, bench.CharacterCard, aqua, traffic);
