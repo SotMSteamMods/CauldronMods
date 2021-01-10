@@ -696,7 +696,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestFaithfulProselyte_Madness_OnlyEquipment()
+        public void TestFaithfulProselyte_Madness_OnlyOngoing()
         {
             SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
@@ -709,6 +709,169 @@ namespace CauldronTests
             PlayCard(FaithfulProselyte);
             //{MythosMadness} When this card enters play, destroy {H - 2} equipment cards.
             AssertIsInPlay(moko);
+        }
+
+        [Test()]
+        public void TestHallucinatedHorror_Clue()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //Clue
+            Card topCard = PutOnDeck(PallidAcademic);
+
+
+            //{MythosMadness}{MythosDanger} When this card enters play, play the top card of the villain deck.
+            Card horror = PlayCard(HallucinatedHorror);
+            AssertOnTopOfDeck(topCard);
+
+            //At the end of the villain turn, this card deals each hero target 2 sonic damage.
+            QuickHPStorage(haka, bunker, legacy);
+            GoToEndOfTurn(mythos);
+            //Dangerous Investigation hits all for 3
+            QuickHPCheck(-5, -5, -5);
+
+            //Destroy this card when a hero is dealt damage by another hero target.
+            AssertIsInPlay(horror);
+            DealDamage(haka, legacy, 2, DamageType.Melee);
+            AssertInTrash(horror);
+        }
+
+        [Test()]
+        public void TestHallucinatedHorror_Danger()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //Danger
+            Card topCard = PutOnDeck(AclastyphWhoPeers);
+
+            //{MythosMadness}{MythosDanger} When this card enters play, play the top card of the villain deck.
+            Card horror = PlayCard(HallucinatedHorror);
+            AssertIsInPlay(topCard);
+        }
+
+        [Test()]
+        public void TestHallucinatedHorror_Madness()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //Madness
+            Card topCard = PutOnDeck(ClockworkRevenant);
+
+            //{MythosMadness}{MythosDanger} When this card enters play, play the top card of the villain deck.
+            Card horror = PlayCard(HallucinatedHorror);
+            AssertIsInPlay(topCard);
+        }
+
+        [Test()]
+        public void TestOtherworldlyAlignment_Danger()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //Danger
+            PutOnDeck(AclastyphWhoPeers);
+
+            PlayCard(OtherworldlyAlignment);
+
+            //At the end of the villain turn:
+            //{MythosDanger} {Mythos} deals the hero target with the highest HP {H} infernal damage.
+            QuickHPStorage(haka, bunker, legacy);
+            GoToEndOfTurn(mythos);
+            //Dangerous Investigation hits all for 3
+            QuickHPCheck(-6, -3, -3);
+        }
+
+        [Test()]
+        public void TestOtherworldlyAlignment_Madness()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //Madness
+            PutOnDeck(ClockworkRevenant);
+
+            PlayCard(OtherworldlyAlignment);
+
+
+            //At the end of the villain turn:
+            //{MythosMadness} {Mythos} deals each non-villain target 1 infernal damage.
+            Card traffic = PlayCard("TrafficPileup");
+            QuickHPStorage(haka.CharacterCard, bunker.CharacterCard, legacy.CharacterCard, traffic);
+            GoToEndOfTurn(mythos);
+            //Dangerous Investigation hits all for 3
+            QuickHPCheck(-4, -4, -4, -1);
+        }
+
+        [Test()]
+        public void TestOtherworldlyAlignment_Clue()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //Clue
+            PutOnDeck(PallidAcademic);
+
+            PlayCard(OtherworldlyAlignment);
+
+            //At the end of the villain turn:
+            //{MythosClue} {Mythos} deals the hero target with the lowest HP {H} psychic damage.
+            QuickHPStorage(haka, bunker, legacy);
+            GoToEndOfTurn(mythos);
+            //Dangerous Investigation hits all for 3
+            QuickHPCheck(-3, -6, -3);
+        }
+
+        [Test()]
+        public void TestPallidAcademic_Clue()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //Clue
+            Card topCard = PutOnDeck(TornPage);
+            Card bottomCard = mythos.TurnTaker.Deck.BottomCard;
+
+            IEnumerable<Card> trashOngoings = PutInTrash(new string[] { OtherworldlyAlignment, WhispersAndLies });
+            IEnumerable<Card> trashOther = PutInTrash(new string[] { AclastyphWhoPeers, ClockworkRevenant });
+
+            //When this card enters play, put all ongoing cards in the villain trash into play.
+            PlayCard(PallidAcademic);
+            AssertIsInPlay(trashOngoings);
+            AssertInTrash(trashOther);
+
+            //When a hero target is dealt damage by another hero target:
+            DealDamage(haka, legacy, 2, DamageType.Melee);
+            //{MythosDanger} Play the top card of the villain deck.
+            AssertOnTopOfDeck(topCard);
+            //{MythosMadness} Move the bottom card of a deck to the top of that deck.
+            AssertOnBottomOfDeck(bottomCard);
+        }
+
+        [Test()]
+        public void TestPallidAcademic_DangerMadness()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //Madness
+            PutOnDeck(ClockworkRevenant);
+            //Danger
+            Card topCard = PutOnDeck(AclastyphWhoPeers);
+            Card bottomCard = mythos.TurnTaker.Deck.BottomCard;
+
+            PlayCard(PallidAcademic);
+
+            //When a hero target is dealt damage by another hero target:
+            DealDamage(haka, legacy, 2, DamageType.Melee);
+            //{MythosDanger} Play the top card of the villain deck.
+            AssertIsInPlay(topCard);
+
+            //Playing the top card reveals a Madness card
+            //{MythosMadness} Move the bottom card of a deck to the top of that deck.
+            AssertOnTopOfDeck(bottomCard);
         }
     }
 }
