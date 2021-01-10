@@ -56,7 +56,7 @@ namespace Cauldron.TheMistressOfFate
         }
         protected TheMistressOfFateUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            var storingDayString = SpecialStringMaker.ShowSpecialString(() => $"This card recurs on the {StoringDay.Title}.", relatedCards: () => new Card[] { StoringDay });
+            var storingDayString = SpecialStringMaker.ShowSpecialString(() => $"This card recurs on the {StoringDay.Title}.");
             storingDayString.Condition = () => IsStoredCard;
 
             this.Card.UnderLocation.OverrideIsInPlay = false;

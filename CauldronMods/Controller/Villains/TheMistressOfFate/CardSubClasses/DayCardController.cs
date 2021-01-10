@@ -164,6 +164,7 @@ namespace Cauldron.TheMistressOfFate
             }
             _storedCard = c;
             hasStoredCard = true;
+            AddCardPropertyJournalEntry(dayStoredKey, c);
         }
 
         public void ClearStoredCard()
@@ -175,6 +176,7 @@ namespace Cauldron.TheMistressOfFate
             }
             _storedCard = null;
             hasStoredCard = false;
+            AddCardPropertyJournalEntry(dayStoredKey, (Card)null);
         }
 
         public IEnumerator ReclaimStoredCard(GameAction ga)
