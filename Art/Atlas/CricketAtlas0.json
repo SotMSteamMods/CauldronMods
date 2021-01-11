@@ -1,204 +1,204 @@
 {"frames": {
 
-"AcousticDistortion.jpg":
+"AcousticDistortion.png":
 {
-	"frame": {"x":1,"y":1,"w":256,"h":198},
+	"frame": {"x":1612,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"BeforeTheThunder.jpg":
+"BeforeTheThunder.png":
 {
-	"frame": {"x":262,"y":1,"w":256,"h":198},
+	"frame": {"x":0,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"Chirp.jpg":
+"Chirp.png":
 {
-	"frame": {"x":523,"y":1,"w":256,"h":198},
+	"frame": {"x":259,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"CricketCharacter.jpg":
+"CricketCharacter.png":
 {
-	"frame": {"x":1828,"y":1,"w":178,"h":256},
+	"frame": {"x":0,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
-"CricketCharacterBack.jpg":
+"CricketCharacterBack.png":
 {
-	"frame": {"x":1828,"y":262,"w":178,"h":256},
+	"frame": {"x":179,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "CricketDeckBack.jpg":
 {
-	"frame": {"x":523,"y":407,"w":178,"h":256},
+	"frame": {"x":1432,"y":0,"w":177,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":177,"h":256},
+	"sourceSize": {"w":177,"h":256}
 },
-"Echonavigation.jpg":
+"Echonavigation.png":
 {
-	"frame": {"x":784,"y":1,"w":256,"h":198},
+	"frame": {"x":518,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"EnhancedHearing.jpg":
+"EnhancedHearing.png":
 {
-	"frame": {"x":1045,"y":1,"w":256,"h":198},
+	"frame": {"x":777,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"FirstResponseCricketCharacter.jpg":
+"FirstResponseCricketCharacter.png":
 {
-	"frame": {"x":706,"y":407,"w":178,"h":256},
+	"frame": {"x":358,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
-"FirstResponseCricketCharacterBack.jpg":
+"FirstResponseCricketCharacterBack.png":
 {
-	"frame": {"x":889,"y":407,"w":178,"h":256},
+	"frame": {"x":537,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
-"GrasshopperKick.jpg":
+"GrasshopperKick.png":
 {
-	"frame": {"x":1306,"y":1,"w":256,"h":198},
+	"frame": {"x":1036,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"InfrasonicCollapse.jpg":
+"InfrasonicCollapse.png":
 {
-	"frame": {"x":1567,"y":1,"w":256,"h":198},
+	"frame": {"x":1295,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"RenegadeCricketCharacter.jpg":
+"RenegadeCricketCharacter.png":
 {
-	"frame": {"x":1072,"y":407,"w":178,"h":256},
+	"frame": {"x":716,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
-"RenegadeCricketCharacterBack.jpg":
+"RenegadeCricketCharacterBack.png":
 {
-	"frame": {"x":1255,"y":407,"w":178,"h":256},
+	"frame": {"x":895,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
-"ReturnPulse.jpg":
+"ReturnPulse.png":
 {
-	"frame": {"x":1,"y":204,"w":256,"h":198},
+	"frame": {"x":1554,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"SilentStalker.jpg":
+"SilentStalker.png":
 {
-	"frame": {"x":262,"y":204,"w":256,"h":198},
+	"frame": {"x":0,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"SonicAmplifier.jpg":
+"SonicAmplifier.png":
 {
-	"frame": {"x":523,"y":204,"w":256,"h":198},
+	"frame": {"x":259,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"SoundMasking.jpg":
+"SoundMasking.png":
 {
-	"frame": {"x":784,"y":204,"w":256,"h":198},
+	"frame": {"x":518,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"SubharmonicReceiver.jpg":
+"SubharmonicReceiver.png":
 {
-	"frame": {"x":1045,"y":204,"w":256,"h":198},
+	"frame": {"x":777,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"SwarmingFrequency.jpg":
+"SwarmingFrequency.png":
 {
-	"frame": {"x":1306,"y":204,"w":256,"h":198},
+	"frame": {"x":1036,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"TelescopingStaff.jpg":
+"TelescopingStaff.png":
 {
-	"frame": {"x":1567,"y":204,"w":256,"h":198},
+	"frame": {"x":1295,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"VantagePoint.jpg":
+"VantagePoint.png":
 {
-	"frame": {"x":1,"y":407,"w":256,"h":198},
+	"frame": {"x":1554,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"VoiceMimicry.jpg":
+"VoiceMimicry.png":
 {
-	"frame": {"x":262,"y":407,"w":256,"h":198},
+	"frame": {"x":0,"y":641,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"WastelandRoninCricketCharacter.jpg":
+"WastelandRoninCricketCharacter.png":
 {
-	"frame": {"x":1438,"y":407,"w":178,"h":256},
+	"frame": {"x":1074,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
-"WastelandRoninCricketCharacterBack.jpg":
+"WastelandRoninCricketCharacterBack.png":
 {
-	"frame": {"x":1621,"y":407,"w":178,"h":256},
+	"frame": {"x":1253,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
@@ -207,6 +207,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:0e96638d7a517fbaf670575e807b1d0d:527ee7aab1779dbc9f1d1445ada0bbcc:0165dcf957fb02ef9cc4eff0a6390faa$"
+	"smartupdate": "$TexturePacker:SmartUpdate:b8fe796bcaaa4cdde4b833bde6a51950:abf6fdc8e6fc762400475b4fb3b4a4c6:0165dcf957fb02ef9cc4eff0a6390faa$"
 }
 }

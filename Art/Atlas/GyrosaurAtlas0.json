@@ -120,7 +120,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"RecklessAlienRacingTortoise.png":
+"RecklessAlienTacingTortoise.png":
 {
 	"frame": {"x":1554,"y":259,"w":256,"h":188},
 	"rotated": false,
