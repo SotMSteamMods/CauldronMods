@@ -88,22 +88,6 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"OutsideTheLinesDendronCharacter.jpg":
-{
-	"frame": {"x":537,"y":0,"w":176,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
-},
-"OutsideTheLinesDendronCharacterBack.jpg":
-{
-	"frame": {"x":716,"y":0,"w":176,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
-},
 "PaintedViper.jpg":
 {
 	"frame": {"x":1036,"y":259,"w":256,"h":188},
@@ -151,6 +135,22 @@
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
+},
+"WindcolorDendronCharacter.jpg":
+{
+	"frame": {"x":537,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"WindcolorDendronCharacterBack.jpg":
+{
+	"frame": {"x":716,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
@@ -159,6 +159,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:ef356a62d71c50183e4b5a3f99db7a02:d3b994ccdd50614e06c9bc61553f8d34:a6338be946c6e6ba87fe7021a3e6ef37$"
+	"smartupdate": "$TexturePacker:SmartUpdate:90fd5601fc86699b5cecf370264fad08:14795cce10f1f5dd7964aaacae8beea4:a6338be946c6e6ba87fe7021a3e6ef37$"
 }
 }
