@@ -120,22 +120,6 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"HalberdDriftCharacter.png":
-{
-	"frame": {"x":1432,"y":0,"w":176,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
-},
-"HalberdDriftCharacterBack.png":
-{
-	"frame": {"x":1611,"y":0,"w":176,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
-},
 "ImposedSynchronization.png":
 {
 	"frame": {"x":259,"y":518,"w":256,"h":188},
@@ -170,7 +154,7 @@
 },
 "PastDriftCharacter.png":
 {
-	"frame": {"x":1790,"y":0,"w":176,"h":256},
+	"frame": {"x":1432,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -178,7 +162,7 @@
 },
 "PastDriftCharacterBack.png":
 {
-	"frame": {"x":0,"y":259,"w":176,"h":256},
+	"frame": {"x":1611,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -207,6 +191,22 @@
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
+},
+"TestSubjectHalberdCharacter.png":
+{
+	"frame": {"x":1790,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"TestSubjectHalberdCharacterBack.png":
+{
+	"frame": {"x":0,"y":259,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "ThroughTheBreachDriftCharacter.png":
 {
@@ -247,6 +247,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:2a3c4c14f1799d6025cd4f7c5530445b:7953bc5b1742a18ed7d16d05e814e1a8:fa5de8c0f8bc6d138da9987d1682d33b$"
+	"smartupdate": "$TexturePacker:SmartUpdate:1c71be76a35e324144d05e3e9af80ed2:bdadc9a569bc4ab49717b57a289cf53a:fa5de8c0f8bc6d138da9987d1682d33b$"
 }
 }

@@ -88,7 +88,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"MaraDeckBack.jpg":
+"MagnificentMaraDeckBack.jpg":
 {
 	"frame": {"x":876,"y":382,"w":178,"h":256},
 	"rotated": false,
@@ -191,6 +191,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:94813a7367c3c516b5a48474de3cb4da:739c8e866828bd74e7c6a6ff9652bb0b:3d4632eb7a72ff3d8ac4e3dd330f9e17$"
+	"smartupdate": "$TexturePacker:SmartUpdate:52c9267e7695b5c93519e21c9e74142c:739c8e866828bd74e7c6a6ff9652bb0b:3d4632eb7a72ff3d8ac4e3dd330f9e17$"
 }
 }

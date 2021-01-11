@@ -72,7 +72,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"HelemtedCharge.png":
+"HelmetedCharge.png":
 {
 	"frame": {"x":1554,"y":0,"w":256,"h":188},
 	"rotated": false,
@@ -151,6 +151,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:3745d94e5ea5fe3e9ec8e278e55d561a:8f9b666217ca7345aff445edf7359bc6:a2789ecf38b345423a0ea711d5167eb4$"
+	"smartupdate": "$TexturePacker:SmartUpdate:5662dce2509af82ca100cafcda5e7d38:8f9b666217ca7345aff445edf7359bc6:a2789ecf38b345423a0ea711d5167eb4$"
 }
 }
