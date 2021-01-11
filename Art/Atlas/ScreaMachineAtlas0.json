@@ -56,7 +56,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"IrresistibleVoice.png":
+"IrresistableVoice.png":
 {
 	"frame": {"x":1295,"y":259,"w":256,"h":188},
 	"rotated": false,
@@ -96,7 +96,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"PoundingRythm.png":
+"PoundingRhythm.png":
 {
 	"frame": {"x":777,"y":450,"w":256,"h":188},
 	"rotated": false,
@@ -223,6 +223,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:57d0062d7c096c190ffb4b9fbf5ac5ee:0a4cae6ebb5821236a193970be3120bf:af82c87cc6826b7dd7daa6a054836022$"
+	"smartupdate": "$TexturePacker:SmartUpdate:1f4fe87abbdbda94b29fcb3df8949182:0a4cae6ebb5821236a193970be3120bf:af82c87cc6826b7dd7daa6a054836022$"
 }
 }

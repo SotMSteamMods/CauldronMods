@@ -56,7 +56,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"NightloreCouncilDeckBack.png":
+"NightloreCitadelDeckBack.png":
 {
 	"frame": {"x":259,"y":382,"w":176,"h":256},
 	"rotated": false,
@@ -131,10 +131,10 @@
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "NightloreCouncilAtlas0.png",
+	"image": "NightloreCitadelAtlas0.png",
 	"format": "RGBA8888",
 	"size": {"w":1024,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:1a991f5cee406923132dd7705c99061c:3b3936fb95e6fb3668b14613bdf61058:7797de740645d556326cbee8dda9ec9f$"
+	"smartupdate": "$TexturePacker:SmartUpdate:1f30f4a2dd7ff9955a8afdbba68a9acd:3b3936fb95e6fb3668b14613bdf61058:3de0273580cc26f9e9769d80917b3912$"
 }
 }
