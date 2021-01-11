@@ -1866,9 +1866,9 @@ namespace CauldronTests
             SetupGameController("Apostate", "Cauldron.LadyOfTheWood", "Legacy", "Haka", "Megalopolis");
             StartGame();
 
+            PlayCard("ThundergreyShawl");
             Card runes = PlayCard("RunesOfMalediction");
             Card orb = PlayCard("OrbOfDelirium");
-            PlayCard("ThundergreyShawl");
 
             QuickHPStorage(runes, orb);
             DealDamage(ladyOfTheWood, runes, 1, DamageType.Melee);

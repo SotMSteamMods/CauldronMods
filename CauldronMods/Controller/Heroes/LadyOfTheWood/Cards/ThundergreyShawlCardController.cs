@@ -14,6 +14,7 @@ namespace Cauldron.LadyOfTheWood
 		public override void AddTriggers()
 		{
 			//Whenever LadyOfTheWood deals 2 or less damage to a target, that damage is irreducible.
+			/*
 			ITrigger lateIrreducibleTrigger = new Trigger<DealDamageAction>(GameController,
 																(DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.Amount <= 2,
 																RetroactiveIrreducibilityResponse,
@@ -22,6 +23,13 @@ namespace Cauldron.LadyOfTheWood
 																GetCardSource(),
 																orderMatters: true);
 			AddTrigger(lateIrreducibleTrigger);
+			*/
+			AddTrigger((DealDamageAction dd) => GameController.PretendMode && dd.DamageSource.IsSameCard(base.CharacterCard) && dd.Amount <= 2, AddPreviewIrreducible, TriggerType.WouldBeDealtDamage, TriggerTiming.Before);
+			AddTrigger((ReduceDamageAction rd) => rd.DealDamageAction.DamageSource.IsCard && rd.DealDamageAction.DamageSource.Card == CharacterCard && rd.DealDamageAction.Amount <= 2, 
+							RetroactiveIrreducibilityResponse,
+							new TriggerType[] { TriggerType.MakeDamageIrreducible },
+							TriggerTiming.After);
+			
 			//base.AddMakeDamageIrreducibleTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.Amount <= 2);
 		}
 
@@ -42,8 +50,26 @@ namespace Cauldron.LadyOfTheWood
 			yield break;
 		}
 
-		private IEnumerator RetroactiveIrreducibilityResponse(DealDamageAction dd)
+		private IEnumerator AddPreviewIrreducible(DealDamageAction dd)
         {
+			if(dd.Amount <= 2)
+            {
+				IEnumerator coroutine = GameController.MakeDamageIrreducible(dd, GetCardSource());
+				if (base.UseUnityCoroutines)
+				{
+					yield return base.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					base.GameController.ExhaustCoroutine(coroutine);
+				}
+			}
+			yield break;
+        }
+
+		private IEnumerator RetroactiveIrreducibilityResponse(ReduceDamageAction rd)
+        {
+			DealDamageAction dd = rd.DealDamageAction;
 			IEnumerator coroutine = GameController.MakeDamageIrreducible(dd, GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
@@ -82,10 +108,6 @@ namespace Cauldron.LadyOfTheWood
             }
 			yield break;
         }
-
-		public override bool CanOrderAffectOutcome(GameAction action)
-		{
-			return action is DealDamageAction &&  (action as DealDamageAction).DamageSource.Card == base.CharacterCard;
-		}
+		
 	}
 }
