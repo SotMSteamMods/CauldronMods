@@ -12,6 +12,7 @@ namespace Cauldron.Mythos
     {
         public AclastyphWhoPeersCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
             base.SpecialStringMaker.ShowSpecialString(() => base.DeckIconList());
             base.SpecialStringMaker.ShowSpecialString(() => base.ThisCardsIcon());
         }

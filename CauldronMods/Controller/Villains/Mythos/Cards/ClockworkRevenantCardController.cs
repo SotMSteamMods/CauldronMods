@@ -12,6 +12,8 @@ namespace Cauldron.Mythos
     {
         public ClockworkRevenantCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
+            base.SpecialStringMaker.ShowSpecialString(() => "This card's damage is increased by " + (10 - this.Card.HitPoints));
             base.SpecialStringMaker.ShowSpecialString(() => base.DeckIconList());
             base.SpecialStringMaker.ShowSpecialString(() => base.ThisCardsIcon());
         }

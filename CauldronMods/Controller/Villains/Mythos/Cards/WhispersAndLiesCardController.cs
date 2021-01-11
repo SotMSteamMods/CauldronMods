@@ -13,6 +13,8 @@ namespace Cauldron.Mythos
         public WhispersAndLiesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.AddAsPowerContributor();
+            base.SpecialStringMaker.ShowVillainTargetWithLowestHP();
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
             base.SpecialStringMaker.ShowSpecialString(() => base.DeckIconList());
             base.SpecialStringMaker.ShowSpecialString(() => base.ThisCardsIcon());
         }
