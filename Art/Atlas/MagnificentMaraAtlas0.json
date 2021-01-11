@@ -88,7 +88,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"MagnificentMaraDeckBack.jpg":
+"MaraDeckBack.jpg":
 {
 	"frame": {"x":876,"y":382,"w":178,"h":256},
 	"rotated": false,

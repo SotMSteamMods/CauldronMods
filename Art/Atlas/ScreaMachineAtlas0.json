@@ -2,7 +2,7 @@
 
 "Biosurge.png":
 {
-	"frame": {"x":1611,"y":0,"w":256,"h":188},
+	"frame": {"x":0,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -26,7 +26,7 @@
 },
 "CantStopTheMusic.png":
 {
-	"frame": {"x":0,"y":259,"w":256,"h":188},
+	"frame": {"x":259,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -34,7 +34,7 @@
 },
 "DeathMetal.png":
 {
-	"frame": {"x":259,"y":259,"w":256,"h":188},
+	"frame": {"x":518,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -42,7 +42,7 @@
 },
 "HarshNote.png":
 {
-	"frame": {"x":518,"y":259,"w":256,"h":188},
+	"frame": {"x":777,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -50,21 +50,13 @@
 },
 "HypnotizeTheCrowd.png":
 {
-	"frame": {"x":777,"y":259,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"IrresistableVoice.png":
-{
 	"frame": {"x":1036,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"LiveInConcert.png":
+"IrresistibleVoice.png":
 {
 	"frame": {"x":1295,"y":259,"w":256,"h":188},
 	"rotated": false,
@@ -72,7 +64,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"MentalLink.png":
+"LiveInConcert.png":
 {
 	"frame": {"x":1554,"y":259,"w":256,"h":188},
 	"rotated": false,
@@ -80,7 +72,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"NothingButHits.png":
+"MentalLink.png":
 {
 	"frame": {"x":0,"y":450,"w":256,"h":188},
 	"rotated": false,
@@ -88,7 +80,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"PercussiveWave.png":
+"NothingButHits.png":
 {
 	"frame": {"x":259,"y":450,"w":256,"h":188},
 	"rotated": false,
@@ -96,9 +88,17 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"PoundingRhythm.png":
+"PercussiveWave.png":
 {
 	"frame": {"x":518,"y":450,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"PoundingRythm.png":
+{
+	"frame": {"x":777,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -130,7 +130,7 @@
 },
 "ScreamAndShout.png":
 {
-	"frame": {"x":777,"y":450,"w":256,"h":188},
+	"frame": {"x":1036,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -138,7 +138,7 @@
 },
 "ShredZone.png":
 {
-	"frame": {"x":1036,"y":450,"w":256,"h":188},
+	"frame": {"x":1295,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -162,7 +162,7 @@
 },
 "SlicesAxe.png":
 {
-	"frame": {"x":1295,"y":450,"w":256,"h":188},
+	"frame": {"x":1554,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -170,21 +170,13 @@
 },
 "TectonicBeat.png":
 {
-	"frame": {"x":1554,"y":450,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"UpToEleven.png":
-{
 	"frame": {"x":0,"y":641,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"ValentineCharacter.png":
+"TheSetList.png":
 {
 	"frame": {"x":1253,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -192,9 +184,33 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"ValentineCharacterBack.png":
+"TheSetListBack.png":
 {
 	"frame": {"x":1432,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"UpToEleven.png":
+{
+	"frame": {"x":259,"y":641,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"ValentineCharacter.png":
+{
+	"frame": {"x":1611,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"ValentineCharacterBack.png":
+{
+	"frame": {"x":1790,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -207,6 +223,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:8a467455ccb0b2e8764c66f1442fe1e3:429542cac9c6b2e3f80ac3ffafedf6b3:af82c87cc6826b7dd7daa6a054836022$"
+	"smartupdate": "$TexturePacker:SmartUpdate:57d0062d7c096c190ffb4b9fbf5ac5ee:0a4cae6ebb5821236a193970be3120bf:af82c87cc6826b7dd7daa6a054836022$"
 }
 }

@@ -88,7 +88,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"SuprisinglyAgile.png":
+"SurprisinglyAgile.png":
 {
 	"frame": {"x":518,"y":573,"w":256,"h":188},
 	"rotated": false,
@@ -135,6 +135,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1024,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:cfc1117abdf8e6d6f0b6273bea56ad94:41a0a85f2d8008ae3360b60a32c9e709:ddce38a753c31b3892fc63d7b1aeab4a$"
+	"smartupdate": "$TexturePacker:SmartUpdate:caca02d9c3f78a73f59d5a9cc2b6f84c:41a0a85f2d8008ae3360b60a32c9e709:ddce38a753c31b3892fc63d7b1aeab4a$"
 }
 }
