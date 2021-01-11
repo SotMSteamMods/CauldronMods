@@ -432,7 +432,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"LadyOfTheWoodCharacter.jpg":
+"InflitratorGargoyleCharacter.png":
 {
 	"frame": {"x":716,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -441,7 +441,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"LastOfTheForgottenOrderNecroCharacter.png":
+"LadyOfTheWoodCharacter.jpg":
 {
 	"frame": {"x":895,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -450,7 +450,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"MagnificentMaraCharacter.png":
+"LastOfTheForgottenOrderNecroCharacter.png":
 {
 	"frame": {"x":1074,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -459,7 +459,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"MalichaeCharacter.jpg":
+"MagnificentMaraCharacter.png":
 {
 	"frame": {"x":1253,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -468,7 +468,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"MenagerieCharacter.png":
+"MalichaeCharacter.jpg":
 {
 	"frame": {"x":1432,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -477,7 +477,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"MinistryOfStrategicScienceLadyOfTheWoodCharacter.png":
+"MenagerieCharacter.png":
 {
 	"frame": {"x":1611,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -486,7 +486,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"MinistryOfStrategicScienceMagnificentMaraCharacter.png":
+"MinistryOfStrategicScienceLadyOfTheWoodCharacter.png":
 {
 	"frame": {"x":1790,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -495,7 +495,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"MinistryOfStrategicScienceMalichaeCharacter.png":
+"MinistryOfStrategicScienceMagnificentMaraCharacter.png":
 {
 	"frame": {"x":1969,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -504,7 +504,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"MinistryOfStrategicScienceTerminusCharacter.png":
+"MinistryOfStrategicScienceMalichaeCharacter.png":
 {
 	"frame": {"x":2148,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -513,7 +513,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"MinistryOfStrategicScienceTitanCharacter.png":
+"MinistryOfStrategicScienceTerminusCharacter.png":
 {
 	"frame": {"x":2327,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -522,7 +522,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"MythosCharacter.png":
+"MinistryOfStrategicScienceTitanCharacter.png":
 {
 	"frame": {"x":2506,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -531,7 +531,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"NecroCharacter.jpg":
+"MythosCharacter.png":
 {
 	"frame": {"x":2685,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -540,7 +540,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"NightloreCitadelDeckBack.png":
+"NecroCharacter.jpg":
 {
 	"frame": {"x":2864,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -549,16 +549,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"NightloreCouncilStarlightCharacter.png":
-{
-	"frame": {"x":1432,"y":1295,"w":178,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256},
-	"pivot": {"x":0.5,"y":0.5}
-},
-"NorthsparDeckBack.jpg":
+"NightloreCitadelDeckBack.png":
 {
 	"frame": {"x":3043,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -567,7 +558,16 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"OniTitanCharacter.png":
+"NightloreCouncilStarlightCharacter.png":
+{
+	"frame": {"x":1611,"y":1295,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"NorthsparDeckBack.jpg":
 {
 	"frame": {"x":3222,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -576,7 +576,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"OriphelCharacter.png":
+"OniTitanCharacter.png":
 {
 	"frame": {"x":3401,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -585,7 +585,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"OutlanderCharacter.png":
+"OriphelCharacter.png":
 {
 	"frame": {"x":3580,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -594,7 +594,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"OutsideTheLinesDendronCharacter.jpg":
+"OutlanderCharacter.png":
 {
 	"frame": {"x":3759,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -776,7 +776,7 @@
 },
 "SplitDriftCharacter.png":
 {
-	"frame": {"x":1613,"y":1295,"w":178,"h":256},
+	"frame": {"x":1792,"y":1295,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
@@ -846,7 +846,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"TestSubjectHalberdCharacter.png":
+"TestSubjectHalberdDriftCharacter.png":
 {
 	"frame": {"x":716,"y":1036,"w":176,"h":256},
 	"rotated": false,
@@ -1071,7 +1071,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"WindmillCityDeckBack.png":
+"WindcolorDendronCharacter.jpg":
 {
 	"frame": {"x":1253,"y":1295,"w":176,"h":256},
 	"rotated": false,
@@ -1080,9 +1080,18 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"WindmillCityDeckBack.png":
+{
+	"frame": {"x":1432,"y":1295,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "WinterTiamatCharacter.png":
 {
-	"frame": {"x":1794,"y":1295,"w":178,"h":256},
+	"frame": {"x":1973,"y":1295,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
@@ -1096,6 +1105,6 @@
 	"format": "RGBA8888",
 	"size": {"w":4096,"h":4096},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:8a060b25076480bd8c4abc680514bbdf:a6332ce684aaba141afedcb7f14dd76d:4ee285c32a91b7652e02ac049f918b2a$"
+	"smartupdate": "$TexturePacker:SmartUpdate:8c46ae25e5563723a3f3218c6d40a8fd:7ca821c9a831a057512dd24631d30a9f:4ee285c32a91b7652e02ac049f918b2a$"
 }
 }
