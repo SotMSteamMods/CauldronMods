@@ -1,204 +1,268 @@
 {"frames": {
 
-"CombatPragmatism.png":
+"CombatPragmatism.jpg":
 {
-	"frame": {"x":1611,"y":0,"w":256,"h":188},
+	"frame": {"x":4,"y":4,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"ForbiddenArchives.png":
+"ForbiddenArchives.jpg":
 {
-	"frame": {"x":0,"y":259,"w":256,"h":188},
+	"frame": {"x":265,"y":4,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"FutureTitanCharacter.png":
+"FutureTitanCharacter.jpg":
 {
-	"frame": {"x":0,"y":0,"w":176,"h":256},
+	"frame": {"x":1831,"y":4,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"FutureTitanCharacterBack.png":
+"FutureTitanCharacterBack.jpg":
 {
-	"frame": {"x":179,"y":0,"w":176,"h":256},
+	"frame": {"x":4,"y":265,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"HaplessShield.png":
+"FutureTitanFormCharacter.jpg":
 {
-	"frame": {"x":259,"y":259,"w":256,"h":188},
+	"frame": {"x":1831,"y":4,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"Immolate.png":
+"FutureTitanFormCharacterBack.jpg":
 {
-	"frame": {"x":518,"y":259,"w":256,"h":188},
+	"frame": {"x":4,"y":265,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"JuggernautStrike.png":
+"HaplessShield.jpg":
 {
-	"frame": {"x":777,"y":259,"w":256,"h":188},
+	"frame": {"x":526,"y":4,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"MinistryOfStrategicScienceTitanCharacter.png":
+"Immolate.jpg":
 {
-	"frame": {"x":358,"y":0,"w":176,"h":256},
+	"frame": {"x":787,"y":4,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"MinistryOfStrategicScienceTitanCharacterBack.png":
+"JuggernautStrike.jpg":
 {
-	"frame": {"x":537,"y":0,"w":176,"h":256},
+	"frame": {"x":1048,"y":4,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"Misbehavior.png":
+"MinistryOfStrategicScienceTitanCharacter.jpg":
 {
-	"frame": {"x":1036,"y":259,"w":256,"h":188},
+	"frame": {"x":4,"y":526,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"MoltenVeins.png":
+"MinistryOfStrategicScienceTitanCharacterBack.jpg":
 {
-	"frame": {"x":1295,"y":259,"w":256,"h":188},
+	"frame": {"x":4,"y":787,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"Ms5DemolitionCharge.png":
+"MinistryOfStrategicScienceTitanFormCharacter.jpg":
 {
-	"frame": {"x":1554,"y":259,"w":256,"h":188},
+	"frame": {"x":4,"y":526,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"ObsidianGrasp.png":
+"MinistryOfStrategicScienceTitanFormCharacterBack.jpg":
 {
-	"frame": {"x":0,"y":450,"w":256,"h":188},
+	"frame": {"x":4,"y":787,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"OniTitanCharacter.png":
+"Misbehavior.jpg":
 {
-	"frame": {"x":716,"y":0,"w":176,"h":256},
+	"frame": {"x":1309,"y":4,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"OniTitanCharacterBack.png":
+"MoltenVeins.jpg":
 {
-	"frame": {"x":895,"y":0,"w":176,"h":256},
+	"frame": {"x":1570,"y":4,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"PaybackTime.png":
+"Ms5DemolitionCharge.jpg":
 {
-	"frame": {"x":259,"y":450,"w":256,"h":188},
+	"frame": {"x":4,"y":1831,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"Reversal.png":
+"ObsidianGrasp.jpg":
 {
-	"frame": {"x":518,"y":450,"w":256,"h":188},
+	"frame": {"x":265,"y":207,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"StubbornGoliath.png":
+"OniTitanCharacter.jpg":
 {
-	"frame": {"x":777,"y":450,"w":256,"h":188},
+	"frame": {"x":4,"y":1048,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"TheChaplain.png":
+"OniTitanCharacterBack.jpg":
 {
-	"frame": {"x":1036,"y":450,"w":256,"h":188},
+	"frame": {"x":4,"y":1309,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"TitanCharacter.png":
+"OniTitanFormCharacter.jpg":
 {
-	"frame": {"x":1074,"y":0,"w":176,"h":256},
+	"frame": {"x":4,"y":1048,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"TitanCharacterBack.png":
+"OniTitanFormCharacterBack.jpg":
 {
-	"frame": {"x":1253,"y":0,"w":176,"h":256},
+	"frame": {"x":4,"y":1309,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
+"PaybackTime.jpg":
+{
+	"frame": {"x":526,"y":207,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"Reversal.jpg":
+{
+	"frame": {"x":787,"y":207,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"StubbornGoliath.jpg":
+{
+	"frame": {"x":1048,"y":207,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"TheChaplain.jpg":
+{
+	"frame": {"x":1309,"y":207,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"TitanCharacter.jpg":
+{
+	"frame": {"x":4,"y":1570,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
+"TitanCharacterBack.jpg":
+{
+	"frame": {"x":1831,"y":265,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "TitanDeckBack.jpg":
 {
-	"frame": {"x":1432,"y":0,"w":176,"h":256},
+	"frame": {"x":187,"y":526,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"Titanform.png":
+"Titanform.jpg":
 {
-	"frame": {"x":1295,"y":450,"w":256,"h":188},
+	"frame": {"x":1570,"y":207,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"Unbreakable.png":
+"TitanFormCharacter.jpg":
 {
-	"frame": {"x":1554,"y":450,"w":256,"h":188},
+	"frame": {"x":4,"y":1570,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"VulcansJudgment.png":
+"TitanFormCharacterBack.jpg":
 {
-	"frame": {"x":0,"y":641,"w":256,"h":188},
+	"frame": {"x":1831,"y":265,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
+"Unbreakable.jpg":
+{
+	"frame": {"x":187,"y":787,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"VulcansJudgment.jpg":
+{
+	"frame": {"x":370,"y":526,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
@@ -207,6 +271,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:e260960f21ba54c4d8eee695da615af2:f25d3e9c48fb3c95812e82152df1eaf2:d9ba5bbba33e3efcac760d33b91e84f7$"
+	"smartupdate": "$TexturePacker:SmartUpdate:5f8e2ce30308514a6ad7f5fcb0802ae8:ef4d083cc7c19917068f79d5ce47245c:d9ba5bbba33e3efcac760d33b91e84f7$"
 }
 }
