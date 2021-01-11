@@ -13,24 +13,11 @@ namespace Cauldron.LadyOfTheWood
 		}
 		public override void AddTriggers()
 		{
-			//Whenever LadyOfTheWood deals 2 or less damage to a target, that damage is irreducible.
-			/*
-			ITrigger lateIrreducibleTrigger = new Trigger<DealDamageAction>(GameController,
-																(DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.Amount <= 2,
-																RetroactiveIrreducibilityResponse,
-																new TriggerType[] { TriggerType.WouldBeDealtDamage, TriggerType.MakeDamageIrreducible },
-																TriggerTiming.Before,
-																GetCardSource(),
-																orderMatters: true);
-			AddTrigger(lateIrreducibleTrigger);
-			*/
-			AddTrigger((DealDamageAction dd) => GameController.PretendMode && dd.DamageSource.IsSameCard(base.CharacterCard) && dd.Amount <= 2, AddPreviewIrreducible, TriggerType.WouldBeDealtDamage, TriggerTiming.Before);
-			AddTrigger((ReduceDamageAction rd) => rd.DealDamageAction.DamageSource.IsCard && rd.DealDamageAction.DamageSource.Card == CharacterCard && rd.DealDamageAction.Amount <= 2, 
+			AddTrigger((DealDamageAction dd) => GameController.PretendMode && dd.DamageSource.IsSameCard(base.CharacterCard) && dd.Amount <= 2, AddPreviewIrreducible, TriggerType.Other, TriggerTiming.Before);
+			AddTrigger((ReduceDamageAction rd) => rd.DealDamageAction.DamageSource.IsCard && rd.DealDamageAction.DamageSource.IsSameCard(CharacterCard) && rd.DealDamageAction.Amount <= 2,
 							RetroactiveIrreducibilityResponse,
 							new TriggerType[] { TriggerType.MakeDamageIrreducible },
 							TriggerTiming.After);
-			
-			//base.AddMakeDamageIrreducibleTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(base.CharacterCard) && dd.Amount <= 2);
 		}
 
 		public override IEnumerator UsePower(int index = 0)
@@ -52,6 +39,8 @@ namespace Cauldron.LadyOfTheWood
 
 		private IEnumerator AddPreviewIrreducible(DealDamageAction dd)
         {
+			//doesn't actually cancel out the damage reduction in the preview,
+			//but does indicate that the Shawl will do something
 			if(dd.Amount <= 2)
             {
 				IEnumerator coroutine = GameController.MakeDamageIrreducible(dd, GetCardSource());
