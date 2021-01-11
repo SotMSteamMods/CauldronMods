@@ -8,7 +8,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"CreedOfTheSniperTangoOne.png":
+"CreedOfTheSniperTangoOneCharacter.png":
 {
 	"frame": {"x":0,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -16,7 +16,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"CreedOfTheSniperTangoOneBack.png":
+"CreedOfTheSniperTangoOneCharacterBack.png":
 {
 	"frame": {"x":179,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -191,6 +191,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:2ac6909210437eb2fa02cad5954196ec:9375b9df913f860ae2670fdb375b7031:da2592f3ad57ae4f0c9fd14880ed964c$"
+	"smartupdate": "$TexturePacker:SmartUpdate:d77fc6589e98f8bc8bcc5d27d0393772:9375b9df913f860ae2670fdb375b7031:da2592f3ad57ae4f0c9fd14880ed964c$"
 }
 }

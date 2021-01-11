@@ -48,7 +48,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"AreaStarlightCharacter.png":
+"Area51StarlightCharacter.png":
 {
 	"frame": {"x":1036,"y":382,"w":176,"h":256},
 	"rotated": false,
@@ -56,7 +56,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"AreaStarlightCharacterBack.png":
+"Area51StarlightCharacterBack.png":
 {
 	"frame": {"x":1215,"y":382,"w":176,"h":256},
 	"rotated": false,
@@ -88,6 +88,22 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
+"GenesisStarlightCharacter.jpg":
+{
+	"frame": {"x":1394,"y":382,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"GenesisStarlightCharacterBack.jpg":
+{
+	"frame": {"x":1573,"y":382,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
 "GoldenAstrolabe.jpg":
 {
 	"frame": {"x":518,"y":191,"w":256,"h":188},
@@ -106,7 +122,15 @@
 },
 "NightloreCouncilStarlightCharacter.png":
 {
-	"frame": {"x":1394,"y":382,"w":176,"h":256},
+	"frame": {"x":1752,"y":382,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"NightloreCouncilStarlightCharacterBack.png":
+{
+	"frame": {"x":0,"y":641,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -146,7 +170,7 @@
 },
 "StarlightCharacter.jpg":
 {
-	"frame": {"x":1573,"y":382,"w":176,"h":256},
+	"frame": {"x":179,"y":641,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -154,7 +178,7 @@
 },
 "StarlightCharacterBack.jpg":
 {
-	"frame": {"x":1752,"y":382,"w":176,"h":256},
+	"frame": {"x":358,"y":641,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -162,7 +186,7 @@
 },
 "StarlightDeckBack.jpg":
 {
-	"frame": {"x":0,"y":641,"w":178,"h":256},
+	"frame": {"x":537,"y":641,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
@@ -170,7 +194,7 @@
 },
 "StarlightOfAsheronCharacter.jpg":
 {
-	"frame": {"x":181,"y":641,"w":176,"h":256},
+	"frame": {"x":718,"y":641,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -178,7 +202,7 @@
 },
 "StarlightOfAsheronCharacterBack.jpg":
 {
-	"frame": {"x":360,"y":641,"w":176,"h":256},
+	"frame": {"x":897,"y":641,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -186,7 +210,7 @@
 },
 "StarlightOfCryosFourCharacter.jpg":
 {
-	"frame": {"x":539,"y":641,"w":176,"h":256},
+	"frame": {"x":1076,"y":641,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -194,7 +218,7 @@
 },
 "StarlightOfCryosFourCharacterBack.jpg":
 {
-	"frame": {"x":718,"y":641,"w":176,"h":256},
+	"frame": {"x":1255,"y":641,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -202,7 +226,7 @@
 },
 "StarlightOfTerraCharacter.jpg":
 {
-	"frame": {"x":897,"y":641,"w":176,"h":256},
+	"frame": {"x":1434,"y":641,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -210,7 +234,7 @@
 },
 "StarlightOfTerraCharacterBack.jpg":
 {
-	"frame": {"x":1076,"y":641,"w":176,"h":256},
+	"frame": {"x":1613,"y":641,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -247,6 +271,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:578b8d7b4d3b16985aa4523bdac93595:780b35aca5c82be52f79f21e93dbd721:01c82dc3cbccbf7999ca8c6a37809c98$"
+	"smartupdate": "$TexturePacker:SmartUpdate:0cb60ac08a4f21e4f2848af03af3bc9c:678f698f3968e5afe9fe247b48a0b2ef:01c82dc3cbccbf7999ca8c6a37809c98$"
 }
 }
