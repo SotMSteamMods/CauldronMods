@@ -13,6 +13,7 @@ namespace Cauldron.ScreaMachine
         public TheSetListCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowNumberOfCardsUnderCard(this.Card);
+            SpecialStringMaker.ShowVillainTargetWithHighestHP().Condition = () => Card.IsFlipped && FindCardsWhere(c => IsVillainTarget(c) && c.IsCharacter && c.IsInPlay).Count() <= (Game.H - 2);
             base.AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
         }
 
