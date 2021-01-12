@@ -10,7 +10,7 @@ namespace Cauldron.Menagerie
     {
         public LumobatFlockCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
         private const string FirstSpecimen = "FirstSpecimen";
@@ -46,8 +46,8 @@ namespace Cauldron.Menagerie
             //...this card deals the hero target with the highest HP 2 projectile and 2 radiant damage.
             IEnumerator coroutine = base.DealMultipleInstancesOfDamageToHighestLowestHP(new List<DealDamageAction>()
             {
-                new DealDamageAction(base.GetCardSource(), new DamageSource(base.GameController, base.CharacterCard), null, 2, DamageType.Projectile),
-                new DealDamageAction(base.GetCardSource(), new DamageSource(base.GameController, base.CharacterCard), null, 2, DamageType.Radiant)
+                new DealDamageAction(base.GetCardSource(), new DamageSource(base.GameController, base.Card), null, 2, DamageType.Projectile),
+                new DealDamageAction(base.GetCardSource(), new DamageSource(base.GameController, base.Card), null, 2, DamageType.Radiant)
             }, (Card c) => c.IsHero, HighestLowestHP.HighestHP);
             if (base.UseUnityCoroutines)
             {
