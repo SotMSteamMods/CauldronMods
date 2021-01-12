@@ -15,6 +15,19 @@ namespace Cauldron.Drift
         }
         public override IEnumerator UsePower(int index = 0)
         {
+            //Shift {DriftLL}, {DriftL}, {DriftR}, {DriftRR}. 
+            IEnumerator coroutine;
+
+            //Drift regains 1 HP.
+            coroutine = base.GameController.GainHP(this.Card, 1);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
 
@@ -25,14 +38,80 @@ namespace Cauldron.Drift
             {
                 case 0:
                     {
+                        //One hero may use a power now.
+                        coroutine = base.GameController.SelectHeroToUsePower(base.HeroTurnTakerController, cardSource: base.GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case 1:
                     {
+                        //One target regains 1 HP and deals another target 1 radiant damage.
+                        List<SelectTargetDecision> targetDecision = new List<SelectTargetDecision>();
+                        coroutine = base.GameController.SelectTargetAndStoreResults(base.HeroTurnTakerController, base.FindCardsWhere((Card c) => c.IsTarget && c.IsInPlayAndHasGameText), storedResults: targetDecision, selectionType: SelectionType.GainHP, cardSource: base.GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                        //One target regains 1 HP
+                        Card hpGainer = targetDecision.FirstOrDefault().SelectedCard;
+                        coroutine = base.GameController.GainHP(hpGainer, 1);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                        //deals another target 1 radiant damage
+                        coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, hpGainer), 1, DamageType.Radiant, 1, false, 1, cardSource: base.GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case 2:
                     {
+                        //One player may discard a one-shot. If they do, they may draw 2 cards.
+                        List<DiscardCardAction> discardCard = new List<DiscardCardAction>();
+                        coroutine = base.GameController.SelectAndDiscardCard(base.HeroTurnTakerController, true, (Card c) => c.IsOneShot, discardCard, cardSource: base.GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                        if (discardCard.Any())
+                        {
+                            //If they do, they may draw 2 cards.
+                            coroutine = base.DrawCards(discardCard.FirstOrDefault().HeroTurnTakerController, 2, true);
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine);
+                            }
+                        }
                         break;
                     }
             }
