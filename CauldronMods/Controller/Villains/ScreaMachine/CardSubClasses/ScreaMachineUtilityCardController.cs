@@ -27,6 +27,10 @@ namespace Cauldron.ScreaMachine
                 var cc = FindCardController(card);
                 foreach (var ability in cc.GetActivatableAbilities().Where(aa => keys.Contains(aa.AbilityKey)))
                 {
+                    if(!card.IsInPlayAndHasGameText)
+                    {
+                        break;
+                    }
                     var coroutine = GameController.ActivateAbility(ability, GetCardSource());
                     if (UseUnityCoroutines)
                     {
