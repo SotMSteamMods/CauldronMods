@@ -194,7 +194,7 @@ namespace Cauldron.ScreaMachine
                 AddSideTrigger(AddTrigger<RevealCardsAction>(rca => rca.SearchLocation == this.Card.UnderLocation, rca => TheSetListRevealProcess(rca.RevealedCards), TriggerType.PlayCard, TriggerTiming.After));
                 AddSideTrigger(AddStartOfTurnTrigger(tt => tt == TurnTaker, pca => RevealTopCardOfTheSetList(), TriggerType.RevealCard));
                 AddSideTrigger(AddEndOfTurnTrigger(tt => tt == TurnTaker && FindCardsWhere(c => IsVillainTarget(c) && c.IsCharacter && c.IsInPlay).Count() <= (Game.H - 2), pca => EndOfTurnDamageAndPlay(), TriggerType.DealDamage));
-
+                AddSideTrigger(AddTrigger<MakeDecisionsAction>((MakeDecisionsAction md) => md.CardSource != null && !IsVillain(md.CardSource.Card), this.RemoveDecisionsFromMakeDecisionsResponse, TriggerType.RemoveDecision, TriggerTiming.Before));
                 if (Game.IsAdvanced)
                 {
                     AddSideTrigger(AddTrigger<FlipCardAction>(fca => IsVillainTarget(fca.CardToFlip.Card), fca => FlipCardResponse(), TriggerType.DestroyCard, TriggerTiming.After));
