@@ -13,7 +13,9 @@ namespace Cauldron.ScreaMachine
         public TheSetListCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowNumberOfCardsUnderCard(this.Card);
+            base.AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
         }
+
 
         public IEnumerator RevealTopCardOfTheSetList()
         {
@@ -40,7 +42,7 @@ namespace Cauldron.ScreaMachine
                 IEnumerator coroutine;
                 if (!sharesAKeyword)
                 {
-                    coroutine = GameController.MoveCard(TurnTakerController, card, Card.UnderLocation, toBottom: true, playCardIfMovingToPlayArea: false, flipFaceDown: true, cardSource: GetCardSource());
+                    coroutine = GameController.MoveCard(TurnTakerController, card, Card.UnderLocation, toBottom: true, playCardIfMovingToPlayArea: false, flipFaceDown: true, evenIfIndestructible: true, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -249,6 +251,37 @@ namespace Cauldron.ScreaMachine
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+        }
+
+        private IEnumerator RemoveDecisionsFromMakeDecisionsResponse(MakeDecisionsAction md)
+        {
+            //remove this card as an option to make decisions
+            md.RemoveDecisions((IDecision d) => Card.UnderLocation.HasCard(d.SelectedCard));
+            return base.DoNothing();
+        }
+
+        public override bool? AskIfCardIsVisibleToCardSource(Card card, CardSource cardSource)
+        {
+            //cards under this card cannot be affected by non villain cards
+            if (Card.UnderLocation.HasCard(card) && !IsVillain(cardSource.Card))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public override bool AskIfActionCanBePerformed(GameAction g)
+        {
+            //actions from non-villain cards cannot affect cards under this card
+
+            bool? flag = g.DoesFirstCardAffectSecondCard((Card c) => !IsVillain(c), (Card c) => Card.UnderLocation.HasCard(c));
+
+            if (flag != null && flag.Value)
+            {
+                return false;
+            }
+            
+            return true;
         }
     }
 }
