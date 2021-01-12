@@ -19,6 +19,7 @@ namespace Cauldron.ScreaMachine
             Member = member;
             _memberIdentifier = member.GetIdentifier();
             _memberAbilityKey = member.GetAbilityKey();
+            base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
         }
 
         public override IEnumerable<ScreaMachineBandmate.Value> AbilityIcons => Enumerable.Empty<ScreaMachineBandmate.Value>();
@@ -67,5 +68,12 @@ namespace Cauldron.ScreaMachine
             }
             return base.AskIfActionCanBePerformed(gameAction);
         }
+
+        public override bool AskIfCardIsIndestructible(Card card)
+        {
+            return card == base.Card;
+        }
+
+
     }
 }

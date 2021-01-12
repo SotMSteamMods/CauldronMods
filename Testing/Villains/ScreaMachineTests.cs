@@ -166,6 +166,35 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        [Sequential]
+        public void TestBandCardIndestructible([Values("ShredZone", "SlicesAxe", "Biosurge", "CantStopTheMusic", "PoundingRhythm", "TectonicBeat", "MentalLink", "IrresistibleVoice", "HypnotizeTheCrowd")] string bandId)
+        {
+            SetupGameController("Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+
+            Card band = GetCard(bandId);
+            if(!band.IsInPlayAndHasGameText)
+            {
+                PlayCard(band);
+            }
+
+            AssertInPlayArea(scream, band);
+            DestroyCard(band, haka.CharacterCard);
+            AssertInPlayArea(scream, band);
+        }
+
+        [Test()]
+        public void TestCardsUnderSetlistAreSafeFromActions()
+        {
+            SetupGameController("Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            foreach(Card c in setlist.UnderLocation.Cards)
+            {
+                DestroyCard(c, haka.CharacterCard);
+                AssertUnderCard(setlist, c);
+            }
+        }
 
         [Test()]
         public void TestScreaMachineGameStart()
