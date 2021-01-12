@@ -25,6 +25,10 @@ namespace Cauldron.NightloreCitadel
         private bool DoesCardShareKeywordWithLastHeroCard(Card c)
         {
             Card lastCard = GetLastHeroCardToEnterPlay();
+            if(lastCard == null)
+            {
+                return false;
+            }
             var keywords = new HashSet<string>(GameController.GetAllKeywords(lastCard), StringComparer.OrdinalIgnoreCase);
             var sharesAKeyword = GameController.GetAllKeywords(c).Any(k => keywords.Contains(k));
             return sharesAKeyword;

@@ -136,5 +136,61 @@ namespace CauldronTests
             AssertIsInPlay(card);
             Assert.IsFalse(card.Definition.Keywords.Any(), $"{card.Title} has keywords when it shouldn't.");
         }
+
+        [Test()]
+        public void TestLonelyCalling_DestroyAtStart_CriteriaMet()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.NightloreCitadel");
+            StartGame();
+
+            Card calling = PlayCard("LonelyCalling");
+            GoToStartOfTurn(nightlore);
+            AssertInTrash(calling);
+
+        }
+        [Test()]
+        public void TestLonelyCalling_DestroyAtStart_CriteriaNotMet()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.NightloreCitadel");
+            StartGame();
+
+            Card calling = PlayCard("LonelyCalling");
+            PlayCard("Mere");
+            GoToStartOfTurn(nightlore);
+            AssertIsInPlay(calling);
+
+        }
+
+        [Test()]
+        public void TestLonelyCalling_KeywordRestricting()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.NightloreCitadel");
+            StartGame();
+            Card solarFlare = PutInHand("SolarFlare");
+            Card flameBarrier = PutInHand("FlameBarrier");
+            Card staff = PutInHand("TheStaffOfRa");
+
+            Card calling = PlayCard("LonelyCalling");
+            PlayCard("Mere");
+            PlayCard(flameBarrier);
+            AssertInHand(flameBarrier);
+            PlayCard(staff);
+            AssertInHand(staff);
+            PlayCard(solarFlare);
+            AssertInPlayArea(ra, solarFlare);
+
+            //keyword should have changed
+
+            Card ring = PutInHand("TheLegacyRing");
+            Card inspiring = PutInHand("InspiringPresence");
+            Card danger = PutInHand("DangerSense");
+            PlayCard(danger);
+            AssertInHand(danger);
+            PlayCard(inspiring);
+            AssertInHand(inspiring);
+            PlayCard(ring);
+            AssertInPlayArea(legacy, ring);
+
+        }
     }
 }
