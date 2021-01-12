@@ -411,8 +411,8 @@
                 "DealDamageRadiant"
             ],
             "powers": [
-                "{DriftPast} 1 target regains 2 HP. {DriftRR}.",
-                "{DriftFuture} Drift deals each non-hero target 1 radiant damage. Shift {DriftLL}."
+                "{DriftPast} 1 target regains 2 HP. Shift {DriftRR}.",
+                "{DriftFuture} {Drift} deals each non-hero target 1 radiant damage. Shift {DriftLL}."
             ],
             "flavorQuotes": [
                 {

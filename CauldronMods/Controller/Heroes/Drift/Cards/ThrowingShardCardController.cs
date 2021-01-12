@@ -12,6 +12,67 @@ namespace Cauldron.Drift
     {
         public ThrowingShardCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
+        }
+
+        public override IEnumerator UsePower(int index = 0)
+        {
+            IEnumerator coroutine;
+            //{DriftPast} 
+            if (base.IsTimeMatching(Past))
+            {
+                int targetNumeral = base.GetPowerNumeral(0, 1);
+                int gainHPNumeral = base.GetPowerNumeral(1, 2);
+                //1 target regains 2 HP.
+                coroutine = base.GameController.SelectAndGainHP(base.HeroTurnTakerController, gainHPNumeral, numberOfTargets: targetNumeral, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                //Shift {DriftRR}.
+                coroutine = base.ShiftRR();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            //{DriftFuture} 
+            if (base.IsTimeMatching(Past))
+            {
+                int damageNumeral = base.GetPowerNumeral(2, 1);
+                //{Drift} deals each non-hero target 1 radiant damage. 
+                coroutine = base.DealDamage(base.GetActiveCharacterCard(), (Card c) => !c.IsHero, damageNumeral, DamageType.Radiant);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                //Shift {DriftLL}.
+                coroutine = base.ShiftLL();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
         }
     }
 }
