@@ -23,6 +23,11 @@ namespace Cauldron.Drift
             return 0;
         }
 
+        public Card GetActiveCharacterCard()
+        {
+            return base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.Location == base.TurnTaker.PlayArea && c.Owner == base.TurnTaker)).FirstOrDefault();
+        }
+
         public bool IsTimeMatching(string time)
         {
             if (this.CurrentShiftPosition() == 1 || this.CurrentShiftPosition() == 2)
