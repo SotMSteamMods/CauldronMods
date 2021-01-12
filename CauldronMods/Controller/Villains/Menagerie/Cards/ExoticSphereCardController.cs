@@ -16,8 +16,8 @@ namespace Cauldron.Menagerie
         public override IEnumerator Play()
         {
             //When this card enters play, place the top 2 cards of the villain deck beneath it face down.
-            IEnumerator coroutine = base.EncloseTopCardResponse();
-            IEnumerator coroutine2 = base.EncloseTopCardResponse();
+            IEnumerator coroutine = base.EncloseTopCardResponse(TurnTaker.Deck);
+            IEnumerator coroutine2 = base.EncloseTopCardResponse(TurnTaker.Deck);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

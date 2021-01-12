@@ -15,7 +15,7 @@ namespace Cauldron.Menagerie
         public override IEnumerator Play()
         {
             //When this card enters play, place the top card of the environment deck beneath it face down.
-            IEnumerator coroutine = base.EncloseTopCardResponse();
+            IEnumerator coroutine = base.EncloseTopCardResponse(FindEnvironment().TurnTaker.Deck);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

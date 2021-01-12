@@ -956,8 +956,10 @@ namespace CauldronTests
             DiscardAllCards(bench, parse);
             StartGame();
 
-            //When this card enters play, place the top card of the villain deck beneath it face down.
+            var cap = GetTopCardOfDeck(env);
+            //When this card enters play, place the top card of the environment deck beneath it face down.
             Card sphere = PlayCard("ReinforcedSphere");
+            AssertAtLocation(cap, sphere.UnderLocation);
             AssertNumberOfCardsAtLocation(sphere.UnderLocation, 1);
 
             //Reduce damage dealt by hero targets by 1.
