@@ -10,7 +10,8 @@ namespace Cauldron.Menagerie
     {
         public TakIshmaelCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => IsEnclosure(c), "enclosure"));
         }
 
         public override void AddTriggers()

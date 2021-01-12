@@ -28,7 +28,7 @@ namespace Cauldron.Menagerie
             //The first time a non-villain target deals damage each turn,
             base.SetCardPropertyToTrueIfRealAction(FirstTimeDamageDealt);
             //...this card deals that target 1 irreducible toxic damage.
-            IEnumerator coroutine = base.DealDamage(base.Card, action.DamageSource.Card, 1, DamageType.Toxic, true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.DealDamage(base.Card, action.DamageSource.Card, 1, DamageType.Toxic, true, isCounterDamage: true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

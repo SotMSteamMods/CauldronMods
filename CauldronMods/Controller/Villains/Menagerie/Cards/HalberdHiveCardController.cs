@@ -9,7 +9,8 @@ namespace Cauldron.Menagerie
     {
         public HalberdHiveCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHeroTargetWithLowestHP();
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(c => IsInsect(c), "insect"));
         }
 
         public override void AddTriggers()

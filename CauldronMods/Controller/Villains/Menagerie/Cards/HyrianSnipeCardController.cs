@@ -10,7 +10,7 @@ namespace Cauldron.Menagerie
     {
         public HyrianSnipeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHighestHP(1, () => 2, new LinqCardCriteria(c => c != Card));
         }
 
         public override void AddTriggers()

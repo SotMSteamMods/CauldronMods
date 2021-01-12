@@ -9,7 +9,7 @@ namespace Cauldron.Menagerie
     {
         public ArborealSphereCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNonVillainTargetWithLowestHP();
         }
 
         public override IEnumerator Play()

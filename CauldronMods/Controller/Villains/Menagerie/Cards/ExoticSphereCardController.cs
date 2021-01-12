@@ -9,7 +9,7 @@ namespace Cauldron.Menagerie
     {
         public ExoticSphereCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNonVillainTargetWithHighestHP();
         }
 
 

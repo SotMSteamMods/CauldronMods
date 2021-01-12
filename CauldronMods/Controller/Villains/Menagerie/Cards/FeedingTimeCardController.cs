@@ -10,7 +10,7 @@ namespace Cauldron.Menagerie
     {
         public FeedingTimeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => IsSpecimen(c), "specimen"));
         }
 
         public override IEnumerator Play()

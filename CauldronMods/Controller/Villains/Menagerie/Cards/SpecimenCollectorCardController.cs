@@ -11,6 +11,7 @@ namespace Cauldron.Menagerie
     {
         public SpecimenCollectorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNonVillainTargetWithLowestHP(2);
             base.SpecialStringMaker.ShowNumberOfCardsAtLocations(() => base.FindLocationsWhere((Location loc) => loc.IsUnderCard && loc.HasCards));
 
         }

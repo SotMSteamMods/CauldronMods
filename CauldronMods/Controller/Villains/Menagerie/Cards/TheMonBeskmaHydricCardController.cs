@@ -9,7 +9,8 @@ namespace Cauldron.Menagerie
     {
         public TheMonBeskmaHydricCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHighestHP(cardCriteria: new LinqCardCriteria(c => IsEnclosure(c), "enclosure"));
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
         public override void AddTriggers()
