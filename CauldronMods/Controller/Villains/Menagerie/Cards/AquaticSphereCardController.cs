@@ -31,7 +31,7 @@ namespace Cauldron.Menagerie
         {
             base.AddTriggers();
             //Whenever a hero uses a power, they must discard a card.
-            base.AddTrigger<UsePowerAction>((UsePowerAction action) => true, this.DiscardCardResponse, TriggerType.DiscardCard, TriggerTiming.After);
+            base.AddTrigger<UsePowerAction>((UsePowerAction action) => action.IsSuccessful, this.DiscardCardResponse, TriggerType.DiscardCard, TriggerTiming.After);
         }
 
         private IEnumerator DiscardCardResponse(UsePowerAction action)
