@@ -18,6 +18,11 @@ namespace Cauldron.Drift
         protected string Past = "Past";
         protected string Future = "Future";
 
+        public int CurrentShiftPosition()
+        {
+            return 0;
+        }
+
         public bool IsTimeMatching(string time)
         {
             if (this.CurrentShiftPosition() == 1 || this.CurrentShiftPosition() == 2)
@@ -31,9 +36,48 @@ namespace Cauldron.Drift
             return false;
         }
 
-        public int CurrentShiftPosition()
+        public IEnumerator ShiftL()
         {
-            return 0;
+            yield break;
+        }
+
+        public IEnumerator ShiftLL()
+        {
+            IEnumerator coroutine = this.ShiftL();
+            IEnumerator coroutine2 = this.ShiftL();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+                yield return base.GameController.StartCoroutine(coroutine2);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+                base.GameController.ExhaustCoroutine(coroutine2);
+            }
+            yield break;
+        }
+
+        public IEnumerator ShiftR()
+        {
+            yield break;
+        }
+
+        public IEnumerator ShiftRR()
+        {
+            IEnumerator coroutine = this.ShiftR();
+            IEnumerator coroutine2 = this.ShiftR();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+                yield return base.GameController.StartCoroutine(coroutine2);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+                base.GameController.ExhaustCoroutine(coroutine2);
+            }
+            yield break;
         }
     }
 }

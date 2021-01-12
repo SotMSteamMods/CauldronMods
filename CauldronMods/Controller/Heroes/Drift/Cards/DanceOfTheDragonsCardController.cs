@@ -22,7 +22,7 @@ namespace Cauldron.Drift
             {
                 //{Drift} deals up to 3 targets 2 radiant damage each.
                 //Increase damage dealt this way by 1 to targets that entered play since the end of your last turn.
-                IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, this.Card), (Card target) => 2 + this.IncreaseDamageIfTargetEnteredPlaySinceLastTurn(target), DamageType.Radiant, () => 3, true, 0, cardSource: base.GetCardSource());
+                IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), (Card target) => 2 + this.IncreaseDamageIfTargetEnteredPlaySinceLastTurn(target), DamageType.Radiant, () => 3, true, 0, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -33,7 +33,15 @@ namespace Cauldron.Drift
                 }
 
                 //Shift {DriftL}.
-
+                coroutine = base.ShiftL();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
 
             //{DriftPast}
@@ -62,7 +70,15 @@ namespace Cauldron.Drift
                 }
 
                 //Shift {DriftRR}
-
+                coroutine = base.ShiftRR();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }
