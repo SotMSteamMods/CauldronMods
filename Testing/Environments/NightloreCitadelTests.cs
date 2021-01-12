@@ -133,7 +133,6 @@ namespace CauldronTests
             GoToPlayCardPhase(nightlore);
 
             Card card = PlayCard(keywordLess);
-            AssertIsInPlay(card);
             Assert.IsFalse(card.Definition.Keywords.Any(), $"{card.Title} has keywords when it shouldn't.");
         }
 
@@ -231,6 +230,26 @@ namespace CauldronTests
             QuickHPCheck(-15, 0, 0, 0);
             AssertInTrash(cardsUnder);
             AssertNumberOfCardsUnderCard(cannon, 1);
+        }
+
+        [Test()]
+        public void TestAethiumRage()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            SetHitPoints(baron, 1);
+            SetHitPoints(battalion, 1);
+            DecisionSelectTarget = battalion;
+            DecisionAutoDecideIfAble = true;
+            AssertNotDamageSource(baron.CharacterCard);
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            //When this card enters play, the villain target with the highest HP regains {H} HP and deals the 2 non-villain targets with the highest HP 3 radiant damage each.",
+            Card rage = PlayCard("AethiumRage");
+            QuickHPCheck(0, 3, 0, -3, -3);
+            //Then, destroy this card.
+            AssertInTrash(rage);
         }
     }
 }
