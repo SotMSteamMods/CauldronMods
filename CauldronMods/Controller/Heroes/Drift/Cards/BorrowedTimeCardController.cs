@@ -85,7 +85,7 @@ namespace Cauldron.Drift
             else
             {
                 //If you shifted {DriftR} this way, {Drift} deals X targets 3 radiant damage each.
-                coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), 3, DamageType.Radiant, selectedNumber, false, selectedNumber, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 3, DamageType.Radiant, selectedNumber, false, selectedNumber, cardSource: base.GetCardSource());
             }
             if (base.UseUnityCoroutines)
             {

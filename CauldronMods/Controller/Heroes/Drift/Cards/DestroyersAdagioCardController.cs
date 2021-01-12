@@ -43,7 +43,7 @@ namespace Cauldron.Drift
             if (base.IsTimeMatching(base.Future))
             {
                 //{Drift} deals 1 target 2 radiant damage.
-                IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, this.CharacterCard), 2, DamageType.Radiant, 1, false, 1, cardSource: base.GetCardSource());
+                IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 2, DamageType.Radiant, 1, false, 1, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
