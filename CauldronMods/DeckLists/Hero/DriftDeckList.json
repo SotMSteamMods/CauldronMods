@@ -216,30 +216,6 @@
             "flavorReference": "Drift, The Return: Part 2"
         },
         {
-            "identifier": "KnightsHeritage",
-            "count": 3,
-            "title": "Knight's Heritage",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "Destroy",
-                "PlayCardNow",
-                "Manipulate"
-            ],
-            "body": [
-                "When this card enters play, destroy all other copies of Knight's Heritage and play up to 2 ongoing cards from your hand.",
-                "The first time {Drift} is dealt damage each turn, you may shift {DriftL} or {DriftR}."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TheKnight",
-                    "text": "This is your birthright."
-                }
-            ],
-            "flavorReference": "The Knight, The Wanderer's Requiem #147"
-        },
-        {
             "identifier": "ImposedSynchronization",
             "count": 2,
             "title": "Imposed Syncronization",
@@ -264,6 +240,30 @@
                 }
             ],
             "flavorReference": "Drift, Echoes of the Past #6"
+        },
+        {
+            "identifier": "KnightsHeritage",
+            "count": 3,
+            "title": "Knight's Heritage",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "Destroy",
+                "PlayCardNow",
+                "Manipulate"
+            ],
+            "body": [
+                "When this card enters play, destroy all other copies of Knight's Heritage and play up to 2 ongoing cards from your hand.",
+                "The first time {Drift} is dealt damage each turn, you may shift {DriftL} or {DriftR}."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheKnight",
+                    "text": "This is your birthright."
+                }
+            ],
+            "flavorReference": "The Knight, The Wanderer's Requiem #147"
         },
         {
             "identifier": "MakeEverySecondCount",
