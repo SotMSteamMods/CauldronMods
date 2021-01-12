@@ -19,7 +19,10 @@ namespace Cauldron.ScreaMachine
             Member = member;
             _memberAbilityKey = member.GetAbilityKey();
             _memberKeyword = member.GetKeyword();
+
+            SpecialStringMaker.ShowSpecialString(() => BuildNumberOfMemberCardsSpecialString());
         }
+
 
         protected abstract string AbilityDescription { get; }
 
@@ -87,7 +90,7 @@ namespace Cauldron.ScreaMachine
             var cc = FindCardController(card);
             if (cc is ScreaMachineBandCardController bandCC && bandCC.Member == this.Member)
             {
-                var cards = GameController.FindCardsWhere(c => c.IsInPlayAndNotUnderCard && c.DoKeywordsContain(_memberKeyword, true, true), true, GetCardSource()).ToList(); ;
+                var cards = GameController.FindCardsWhere(c => c.IsInPlayAndNotUnderCard && c.DoKeywordsContain(_memberKeyword, true, true), true, GetCardSource()).ToList();
                 Console.WriteLine($"DEBUG - {Card.Title} has {cards.Count} {_memberKeyword} cards in play.");
                 return cards.Count >= 3;
             }
@@ -95,6 +98,27 @@ namespace Cauldron.ScreaMachine
             return false;
         }
 
+        protected int GetNumberOfMemberKeywordInPlay()
+        {
+            var cards = GameController.FindCardsWhere(c => c.IsInPlayAndNotUnderCard && c.DoKeywordsContain(_memberKeyword, true, true), true, GetCardSource()).ToList();
+            return cards.Count;
+        }
+
+        private string BuildNumberOfMemberCardsSpecialString()
+        {
+            int num = GetNumberOfMemberKeywordInPlay();
+            string memberSpecial = "There ";
+            if(num == 1)
+            {
+                memberSpecial += $"is 1 {_memberKeyword} card ";
+            } else
+            {
+                memberSpecial += $"are {num} {_memberKeyword} cards ";
+            }
+            memberSpecial += "in play.";
+
+            return memberSpecial;
+        }
         protected abstract string UltimateFormMessage { get; }
 
         protected IEnumerator FlipBandmateResponse(GameAction action)
