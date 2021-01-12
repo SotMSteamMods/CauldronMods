@@ -14,8 +14,8 @@ namespace Cauldron.Menagerie
 
         public bool IsCaptured(TurnTaker tt)
         {
-            Location prize = FindCard("PrizedCatch").Location;
-            return prize.IsNextToCard && prize.OwnerTurnTaker == tt;
+            Location prize = FindCard("PrizedCatch")?.Location;
+            return prize != null && prize.IsNextToCard && prize.OwnerTurnTaker == tt;
         }
 
         public bool IsEnclosure(Card c)
