@@ -13,7 +13,7 @@ using System.Collections.Generic;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class ScreaMachineTestsTests : BaseTest
+    public class ScreaMachineTests : BaseTest
     {
         #region ScreaMachineTestsHelperFunctions
 
