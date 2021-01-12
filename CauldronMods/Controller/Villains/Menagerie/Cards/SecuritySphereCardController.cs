@@ -27,7 +27,7 @@ namespace Cauldron.Menagerie
             }
 
             //...and destroy {H - 2} hero ongoing cards.
-            coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), Game.H - 2, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c)), "hero ongoing or equipment"), Game.H - 2, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -93,13 +93,13 @@ namespace Cauldron.Menagerie
             //The Captured hero and their cards cannot affect or be affected by cards or effects from other hero decks
             if (cardSource == null || !cardSource.Card.IsHero || !tt.IsHero)
             {
-                return new bool?(true);
+                return true;
             }
             if (cardSource.Card.Owner == this.GetCapturedHero())
             {
-                return new bool?(tt == this.GetCapturedHero());
+                return tt == this.GetCapturedHero();
             }
-            return new bool?(tt != this.GetCapturedHero());
+            return tt != this.GetCapturedHero();
         }
     }
 }
