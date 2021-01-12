@@ -34,6 +34,13 @@ namespace CauldronTests
             this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
         }
 
+        protected void AddPlayCardWhenVillainCardPlayed(TurnTakerController ttc, Location deck, CardSource cardSource)
+        {
+            Trigger<CardEntersPlayAction> trigger = new Trigger<CardEntersPlayAction>(GameController, (CardEntersPlayAction pca) =>  GameController.Game.Journal.CardEntersPlayEntriesThisTurn().Count() < 4 && pca.CardEnteringPlay != null && pca.CardEnteringPlay.IsVillain,
+                (CardEntersPlayAction pca) => GameController.PlayTopCardOfLocation(ttc, deck, cardSource: cardSource, showMessage: true), new TriggerType[] { TriggerType.PlayCard }, TriggerTiming.After, cardSource: cardSource);
+            this.GameController.AddTrigger(trigger);
+        }
+
         private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
         {
             foreach (var id in identifiers)
@@ -834,6 +841,24 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestMentalLink_PlayCardWhenVillainCardIsPlayed()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var card = SetupBandCard("MentalLink");
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Valentine);
+            AssertNumberOfActivatableAbility(card, key, 1);
+
+            DecisionAutoDecideIfAble = true;
+            int deck = GetNumberOfCardsInDeck(scream);
+            AddPlayCardWhenVillainCardPlayed(scream, scream.TurnTaker.Deck, FindCardController(valentine).GetCardSource());
+            ActivateAbility(key, card);
+            AssertNumberOfCardsInDeck(scream, deck - 3);
+        }
+
+        [Test()]
         public void TestIrresistibleVoice()
         {
             SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
@@ -1088,6 +1113,10 @@ namespace CauldronTests
             SetHitPoints(valentine, 14);
             SetHitPoints(rickyg, 16);
 
+            SetHitPoints(ra, 20);
+            SetHitPoints(legacy, 25);
+            SetHitPoints(bunker, 15);
+
             var d1 = GetRandomCardFromHand(legacy);
             var d2 = GetRandomCardFromHand(ra);
             var d3 = GetRandomCardFromHand(haka);
@@ -1105,7 +1134,7 @@ namespace CauldronTests
             //pink - each other regains
             //orange - status effect
 
-            QuickHPCheck(-2, -3, -2, 0, 2, 0, 2, 2);
+            QuickHPCheck(-2, -3, -6, 0, 2, 0, 2, 2);
             AssertNumberOfStatusEffectsInPlay(1);
             AssertInTrash(d1, d2, d3, d4);
         }
