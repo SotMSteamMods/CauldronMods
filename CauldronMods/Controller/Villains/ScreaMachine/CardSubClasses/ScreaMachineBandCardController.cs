@@ -71,7 +71,8 @@ namespace Cauldron.ScreaMachine
 
         public override bool AskIfCardIsIndestructible(Card card)
         {
-            return card == base.Card;
+            var setList = GameController.FindCardsWhere(c => c.Identifier == "TheSetList", false).First();
+            return card == base.Card && setList.IsFlipped;
         }
 
 
