@@ -21,7 +21,7 @@ namespace Cauldron.ScreaMachine
         public override IEnumerator Play()
         {
             var coroutine = DealDamageToHighestHP(null, 1, c => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, c => H, DamageType.Melee,
-                                damageSourceInfo: new TargetInfo(HighestLowestHP.HighestHP, 1, 1, new LinqCardCriteria(c => IsVillainTarget(c) && !c.IsInPlayAndNotUnderCard)));
+                                damageSourceInfo: new TargetInfo(HighestLowestHP.HighestHP, 1, 1, new LinqCardCriteria(c => IsVillainTarget(c) && c.IsInPlayAndNotUnderCard)));
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
