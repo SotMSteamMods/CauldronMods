@@ -31,7 +31,28 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            //Draw a card. You may play a card.
+
+            //Draw a card. 
+            coroutine = base.DrawCard();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //You may play a card.
+            base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
 
