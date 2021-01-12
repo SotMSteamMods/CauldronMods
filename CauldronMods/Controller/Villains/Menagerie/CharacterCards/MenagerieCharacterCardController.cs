@@ -23,17 +23,13 @@ namespace Cauldron.Menagerie
 
         private bool IsEnclosure(Card c)
         {
-            if (c.Location.IsUnderCard)
-            {
-                return c.Definition.Keywords.Contains("enclosure");
-            }
-            return c.DoKeywordsContain("enclosure");
+            return c.DoKeywordsContain("enclosure", true, true);
         }
 
         public bool IsCaptured(TurnTaker tt)
         {
             Card prize = FindCard("PrizedCatch");
-            return prize.Location.IsNextToCard && tt.GetAllCards().Contains(base.GetCardThisCardIsNextTo());
+            return prize != null && prize.Location.IsNextToCard && tt.GetAllCards().Contains(base.GetCardThisCardIsNextTo());
         }
 
         public bool HasEnclosure(TurnTaker tt)
@@ -89,7 +85,7 @@ namespace Cauldron.Menagerie
 
         private IEnumerator PutUnderThisCardResponse(MoveCardAction action)
         {
-            action.SetDestination(base.CharacterCard.UnderLocation);
+            action.SetDestination(base.Card.UnderLocation);
             yield break;
         }
 
@@ -99,7 +95,7 @@ namespace Cauldron.Menagerie
             if (base.FindCardsWhere((new LinqCardCriteria((Card c) => this.IsEnclosure(c) && c.IsInDeck))).Any())
             {
                 //...reveal cards from the top of the villain deck until an enclosure is revealed, play it, and shuffle the other revealed cards back into the deck.
-                coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, true, false, false, new LinqCardCriteria((Card c) => this.IsEnclosure(c)), 1, revealedCardDisplay: RevealedCardDisplay.ShowMatchingCards, shuffleReturnedCards: true);
+                coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, true, false, false, new LinqCardCriteria((Card c) => this.IsEnclosure(c), "enclosure"), 1, revealedCardDisplay: RevealedCardDisplay.ShowMatchingCards, shuffleReturnedCards: true);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -110,9 +106,9 @@ namespace Cauldron.Menagerie
                 }
             }
 
-            var a = base.FindCardsWhere((new LinqCardCriteria((Card c) => this.IsEnclosure(c) && c.Location == base.Card.UnderLocation))).Count();
+            var enclosureCount = base.FindCardsWhere((new LinqCardCriteria((Card c) => this.IsEnclosure(c) && c.Location == base.Card.UnderLocation))).Count();
             //Then if {H} enclosures are beneath this card, flip {Menagerie}'s character cards.
-            if (base.FindCardsWhere((new LinqCardCriteria((Card c) => this.IsEnclosure(c) && c.Location == base.CharacterCard.UnderLocation))).Count() >= Game.H)
+            if (enclosureCount >= Game.H)
             {
                 coroutine = base.FlipThisCharacterCardResponse(action);
                 if (base.UseUnityCoroutines)
@@ -162,8 +158,19 @@ namespace Cauldron.Menagerie
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+
             //When Menagerie flips to this side, shuffle the villain trash and all enclosurese beneath this card into the villain deck. 
-            coroutine = base.GameController.MoveCards(base.TurnTakerController, base.FindCardsWhere(new LinqCardCriteria((Card c) => (this.IsEnclosure(c) && c.Location == base.Card.UnderLocation) || c.Location == base.TurnTaker.Trash)), base.TurnTaker.Deck, cardSource: base.GetCardSource());
+            coroutine = GameController.SendMessageAction($"{TurnTaker.Name} shuffles the villain trash and all enclosures beneath her into the villain deck.", Priority.Medium, GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = base.GameController.BulkMoveCards(base.TurnTakerController, base.FindCardsWhere(new LinqCardCriteria((Card c) => (this.IsEnclosure(c) && c.Location == base.Card.UnderLocation) || c.Location == base.TurnTaker.Trash)), base.TurnTaker.Deck, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
