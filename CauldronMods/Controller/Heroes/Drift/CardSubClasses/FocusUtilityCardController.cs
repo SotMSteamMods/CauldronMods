@@ -2,10 +2,11 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Linq;
 
 namespace Cauldron.Drift
 {
-    public class FocusUtilityCardController : DriftUtilityCardController
+    public abstract class FocusUtilityCardController : DriftUtilityCardController
     {
         public FocusUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -26,5 +27,14 @@ namespace Cauldron.Drift
             }
             yield break;
         }
+
+        public override void AddTriggers()
+        {
+            //When {Drift} is dealt damage, if you have not shifted this turn...
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Target == base.GetActiveCharacterCard() && action.Amount > 0 && !base.Journal.CardPropertiesEntriesThisRound((CardPropertiesJournalEntry entry) => entry.Key == HasShifted).Any(), this.ShiftResponse, TriggerType.ModifyTokens, TriggerTiming.After);
+            ;
+        }
+
+        public abstract IEnumerator ShiftResponse(DealDamageAction action);
     }
 }

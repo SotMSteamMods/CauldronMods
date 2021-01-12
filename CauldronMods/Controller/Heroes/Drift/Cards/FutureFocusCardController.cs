@@ -15,14 +15,14 @@ namespace Cauldron.Drift
 
         }
 
-        public override void AddTriggers()
-        {
-            //When {Drift} is dealt damage, if you have not shifted this turn, you may shift {DriftRRR}. If you shifted {DriftRRR} this way, {Drift} deals 1 target 3 radiant damage.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Target == base.GetActiveCharacterCard() && action.Amount > 0 && !base.Journal.CardPropertiesEntriesThisRound((CardPropertiesJournalEntry entry) => entry.Key == HasShifted).Any(), this.ShiftResponse, TriggerType.ModifyTokens, TriggerTiming.After);
-            ;
-        }
+        //When this card enters play, return all other focus cards to your hand.
+        /**Added to FocusUtilityCardController**/
 
-        private IEnumerator ShiftResponse(DealDamageAction action)
+
+        //When {Drift} is dealt damage, if you have not shifted this turn, you may shift {DriftRRR}. If you shifted {DriftRRR} this way, {Drift} deals 1 target 3 radiant damage.
+        /**Trigger added to FocusUtilityCardController**/
+
+        public override IEnumerator ShiftResponse(DealDamageAction action)
         {
             bool canShift = base.CurrentShiftPosition() == 1;
             List<YesNoCardDecision> decision = new List<YesNoCardDecision>();
