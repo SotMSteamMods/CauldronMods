@@ -36,6 +36,16 @@ namespace Cauldron.Drift
             return false;
         }
 
+        public int MaxLeftShifts()
+        {
+            return this.CurrentShiftPosition() - 1;
+        }
+
+        public int MaxRightShifts()
+        {
+            return 4 - this.CurrentShiftPosition();
+        }
+
         public IEnumerator ShiftL()
         {
             yield break;

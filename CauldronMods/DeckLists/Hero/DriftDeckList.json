@@ -156,7 +156,7 @@
             ],
             "body": [
                 "{DriftPast} You may play an onoing card from your trash, or one player may play a card now. Shift {DriftR}",
-                "{DriftFuture} {Drift} deals 1 target 2 radiant damage/ Shift {DriftLL}"
+                "{DriftFuture} {Drift} deals 1 target 2 radiant damage. Shift {DriftLL}"
             ],
             "flavorQuotes": [
                 {
