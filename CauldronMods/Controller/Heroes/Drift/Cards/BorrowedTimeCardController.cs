@@ -22,6 +22,14 @@ namespace Cauldron.Drift
                     new Function(base.HeroTurnTakerController, "Drift Left", SelectionType.PlayCard, () => this.ShiftResponse(0)),
                     new Function(base.HeroTurnTakerController, "Drift Right", SelectionType.PlayCard, () => this.ShiftResponse(1))
             });
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             //If you shifted at least {DriftL} this way, X targets regain 2 HP each. If you shifted {DriftR} this way, {Drift} deals X targets 3 radiant damage each.
             yield break;
         }

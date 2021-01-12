@@ -12,6 +12,7 @@ namespace Cauldron.Drift
     {
         public ShiftTrackCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
         }
     }
 }

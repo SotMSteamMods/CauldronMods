@@ -12,13 +12,30 @@ namespace Cauldron.Drift
     {
         public DriftCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
         }
+
+        protected const string HasShifted = "HasShifted";
+
         public override IEnumerator UsePower(int index = 0)
         {
             int hpNumeral = base.GetPowerNumeral(0, 1);
 
             //Shift {DriftLL}, {DriftL}, {DriftR}, {DriftRR}. 
-            IEnumerator coroutine;
+            IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
+                    new Function(base.HeroTurnTakerController, "Drift Left", SelectionType.PlayCard, () => this.ShiftL()),
+                    new Function(base.HeroTurnTakerController, "Drift Left Twice", SelectionType.PlayCard, () => this.ShiftLL()),
+                    new Function(base.HeroTurnTakerController, "Drift Right", SelectionType.PlayCard, () => this.ShiftR()),
+                    new Function(base.HeroTurnTakerController, "Drift Right Twice", SelectionType.PlayCard, () => this.ShiftRR())
+            });
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
 
             //Drift regains 1 HP.
             coroutine = base.GameController.GainHP(this.Card, hpNumeral);
@@ -116,6 +133,52 @@ namespace Cauldron.Drift
                         }
                         break;
                     }
+            }
+            yield break;
+        }
+
+        public IEnumerator ShiftL()
+        {
+            base.SetCardPropertyToTrueIfRealAction(HasShifted);
+            yield break;
+        }
+
+        public IEnumerator ShiftLL()
+        {
+            IEnumerator coroutine = this.ShiftL();
+            IEnumerator coroutine2 = this.ShiftL();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+                yield return base.GameController.StartCoroutine(coroutine2);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+                base.GameController.ExhaustCoroutine(coroutine2);
+            }
+            yield break;
+        }
+
+        public IEnumerator ShiftR()
+        {
+            base.SetCardPropertyToTrueIfRealAction(HasShifted);
+            yield break;
+        }
+
+        public IEnumerator ShiftRR()
+        {
+            IEnumerator coroutine = this.ShiftR();
+            IEnumerator coroutine2 = this.ShiftR();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+                yield return base.GameController.StartCoroutine(coroutine2);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+                base.GameController.ExhaustCoroutine(coroutine2);
             }
             yield break;
         }
