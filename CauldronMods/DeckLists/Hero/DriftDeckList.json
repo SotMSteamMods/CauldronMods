@@ -387,7 +387,7 @@
             ],
             "powers": [
                 "{DriftPast} Draw a card. Shift {DriftR}.",
-                "{DriftFuture} Drift 1 target 2 radiant damage. Shift {DriftL}."
+                "{DriftFuture} {Drift} 1 target 2 radiant damage. Shift {DriftL}."
             ],
             "flavorQuotes": [
                 {
