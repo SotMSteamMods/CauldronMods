@@ -302,7 +302,7 @@
                 "IncreaseDamageDealt"
             ],
             "body": [
-                "{DriftPast} Reduce damage dealt to drift by 1.",
+                "{DriftPast} Reduce damage dealt to {Drift} by 1.",
                 "{DriftFuture} Increase damage dealt by {Drift} to other targets by 1."
             ],
             "flavorQuotes": [
