@@ -18,7 +18,7 @@ namespace Cauldron.Drift
         public override IEnumerator Play()
         {
             //{DriftPast}
-            if (base.IsTimeMatching(base.Past))
+            if (base.IsTimeMatching(Past))
             {
                 //You may play an onoing card from your trash, or one player may play a card now.
                 IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
@@ -40,7 +40,7 @@ namespace Cauldron.Drift
             }
 
             //{DriftFuture}
-            if (base.IsTimeMatching(base.Future))
+            if (base.IsTimeMatching(Future))
             {
                 //{Drift} deals 1 target 2 radiant damage.
                 IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 2, DamageType.Radiant, 1, false, 1, cardSource: base.GetCardSource());

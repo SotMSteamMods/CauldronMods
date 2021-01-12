@@ -18,7 +18,7 @@ namespace Cauldron.Drift
         public override IEnumerator Play()
         {
             //{DriftFuture}
-            if (base.IsTimeMatching(base.Future))
+            if (base.IsTimeMatching(Future))
             {
                 //{Drift} deals up to 3 targets 2 radiant damage each.
                 //Increase damage dealt this way by 1 to targets that entered play since the end of your last turn.
@@ -45,7 +45,7 @@ namespace Cauldron.Drift
             }
 
             //{DriftPast}
-            if (base.IsTimeMatching(base.Future))
+            if (base.IsTimeMatching(Future))
             {
                 //Draw a card. 
                 IEnumerator coroutine = base.DrawCard();

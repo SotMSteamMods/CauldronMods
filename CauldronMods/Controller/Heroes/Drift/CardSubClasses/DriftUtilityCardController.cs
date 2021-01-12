@@ -15,8 +15,9 @@ namespace Cauldron.Drift
 
         }
 
-        protected string Past = "Past";
-        protected string Future = "Future";
+        protected const string Past = "Past";
+        protected const string Future = "Future";
+        protected const string HasShifted = "HasShifted";
 
         public int CurrentShiftPosition()
         {
@@ -26,6 +27,16 @@ namespace Cauldron.Drift
         public Card GetActiveCharacterCard()
         {
             return base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.Location == base.TurnTaker.PlayArea && c.Owner == base.TurnTaker)).FirstOrDefault();
+        }
+
+        public Card GetShiftTrack()
+        {
+            return base.FindCard("ShiftTrack");
+        }
+
+        public bool IsFocus(Card c)
+        {
+            return c.DoKeywordsContain("focus");
         }
 
         public bool IsTimeMatching(string time)
@@ -53,6 +64,7 @@ namespace Cauldron.Drift
 
         public IEnumerator ShiftL()
         {
+            base.SetCardPropertyToTrueIfRealAction(HasShifted);
             yield break;
         }
 
@@ -73,8 +85,29 @@ namespace Cauldron.Drift
             yield break;
         }
 
+        public IEnumerator ShiftLLL()
+        {
+            IEnumerator coroutine = this.ShiftL();
+            IEnumerator coroutine2 = this.ShiftL();
+            IEnumerator coroutine3 = this.ShiftL();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+                yield return base.GameController.StartCoroutine(coroutine2);
+                yield return base.GameController.StartCoroutine(coroutine3);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+                base.GameController.ExhaustCoroutine(coroutine2);
+                base.GameController.ExhaustCoroutine(coroutine3);
+            }
+            yield break;
+        }
+
         public IEnumerator ShiftR()
         {
+            base.SetCardPropertyToTrueIfRealAction(HasShifted);
             yield break;
         }
 
@@ -91,6 +124,26 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
                 base.GameController.ExhaustCoroutine(coroutine2);
+            }
+            yield break;
+        }
+
+        public IEnumerator ShiftRRR()
+        {
+            IEnumerator coroutine = this.ShiftR();
+            IEnumerator coroutine2 = this.ShiftR();
+            IEnumerator coroutine3 = this.ShiftR();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+                yield return base.GameController.StartCoroutine(coroutine2);
+                yield return base.GameController.StartCoroutine(coroutine3);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+                base.GameController.ExhaustCoroutine(coroutine2);
+                base.GameController.ExhaustCoroutine(coroutine3);
             }
             yield break;
         }
