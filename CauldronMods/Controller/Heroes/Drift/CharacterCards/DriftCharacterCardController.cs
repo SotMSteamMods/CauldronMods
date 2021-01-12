@@ -15,11 +15,13 @@ namespace Cauldron.Drift
         }
         public override IEnumerator UsePower(int index = 0)
         {
+            int hpNumeral = base.GetPowerNumeral(0, 1);
+
             //Shift {DriftLL}, {DriftL}, {DriftR}, {DriftRR}. 
             IEnumerator coroutine;
 
             //Drift regains 1 HP.
-            coroutine = base.GameController.GainHP(this.Card, 1);
+            coroutine = base.GameController.GainHP(this.Card, hpNumeral);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
