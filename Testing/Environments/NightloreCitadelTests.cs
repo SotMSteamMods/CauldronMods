@@ -192,5 +192,45 @@ namespace CauldronTests
             AssertInPlayArea(legacy, ring);
 
         }
+
+        [Test()]
+        public void TestAethiumCannon_EndOfTurn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            GoToPlayCardPhase(nightlore);
+            Card cannon = PlayCard("AethiumCannon");
+            Card ra1 = GetRandomCardFromHand(ra);
+            Card haka1 = GetRandomCardFromHand(haka);
+            DecisionSelectCards = new Card[] { ra1, null, haka1 };
+            // At the end of the environment turn, each player may put 1 card from their hand beneath this one. Cards beneath this one are not considered in play.
+            GoToEndOfTurn(nightlore);
+            AssertUnderCard(cannon, ra1);
+            AssertUnderCard(cannon, haka1);
+            AssertNumberOfCardsUnderCard(cannon, 2);
+
+        }
+
+        [Test()]
+        public void TestAethiumCannon_Fires()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            GoToPlayCardPhase(nightlore);
+            Card cannon = PlayCard("AethiumCannon");
+   
+            IEnumerable<Card> cardsToMove = FindCardsWhere(c => legacy.TurnTaker.Deck.HasCard(c)).Take(7);
+            MoveCards(nightlore, cardsToMove, cannon.UnderLocation);
+            AssertNumberOfCardsUnderCard(cannon, 7);
+            IEnumerable<Card> cardsUnder = FindCardsWhere(c => cannon.UnderLocation.HasCard(c));
+            QuickHPStorage(baron, ra, legacy, haka);
+            DecisionSelectTarget = baron.CharacterCard;
+            GoToEndOfTurn(nightlore);
+            QuickHPCheck(-15, 0, 0, 0);
+            AssertInTrash(cardsUnder);
+            AssertNumberOfCardsUnderCard(cannon, 1);
+        }
     }
 }
