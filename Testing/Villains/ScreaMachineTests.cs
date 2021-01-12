@@ -851,6 +851,20 @@ namespace CauldronTests
             string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Valentine);
             AssertNumberOfActivatableAbility(card, key, 1);
 
+            //make haka the highest to reduce desicion spam
+            SetHitPoints(legacy, 18);
+            SetHitPoints(ra, 13);
+            SetHitPoints(bunker, 10);
+            //some room for healing, but main hp positions
+            SetHitPoints(slice, 23);
+            SetHitPoints(bloodlace, 26);
+            SetHitPoints(valentine, 21);
+            SetHitPoints(rickyg, 30);
+
+            PutOnDeck("NothingButHits");
+            PutOnDeck("PercussiveWave");
+            PrintSeparator("START TEST");
+
             DecisionAutoDecideIfAble = true;
             int deck = GetNumberOfCardsInDeck(scream);
             AddPlayCardWhenVillainCardPlayed(scream, scream.TurnTaker.Deck, FindCardController(valentine).GetCardSource());

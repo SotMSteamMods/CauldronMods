@@ -14,7 +14,7 @@ namespace Cauldron.ScreaMachine
         {
         }
 
-        private bool _alreadyPlayingCard = false;
+        private static readonly string SuppressActivatableAbilites = "MentalLinkNoAbilities";
 
         protected override IEnumerator ActivateBandAbility()
         {
@@ -22,12 +22,28 @@ namespace Cauldron.ScreaMachine
             // so initial investigation focused on usingthe AddInhibitor/AddInhibitorException methods
             // This failed becuse those conditions for those is tied to GameContoller.AllowInhibitors and that prop
             // is never true, it's only set to true during certain trigger resolution.
-            // AskIfActionCanBePerformed is the answer.  Since this prevention only occurs while the card play is in
-            // flight the local variable doesn't have resume/continue concerns.
+            // AskIfActionCanBePerformed is the answer.
 
-            _alreadyPlayingCard = true;
+            IEnumerator coroutine;
+            //stolen message action from PlayTopCard
+            var cardToPlay = TurnTaker.Deck.TopCard;
+            var cc = FindCardController(cardToPlay);
+            if (GameController.CanPlayCard(cc) == CanPlayCardResult.CanPlay)
+            {
+                //..because we actually Get the Top Card, and directly play it
+                coroutine = GameController.SendMessageAction($"{ Card.Title} plays the top card of {TurnTaker.Deck.GetFriendlyName()}.", Priority.Medium, GetCardSource(), null, true);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            } //if we can't play the card for whatever reason, the normal playCard messaging will cover us.
 
-            var coroutine = GameController.PlayTopCard(DecisionMaker, TurnTakerController, cardSource: GetCardSource());
+            cc.SetCardPropertyToTrueIfRealAction(SuppressActivatableAbilites);
+            coroutine = GameController.PlayCard(TurnTakerController, cardToPlay, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -37,14 +53,21 @@ namespace Cauldron.ScreaMachine
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            _alreadyPlayingCard = false;
+            if (IsRealAction())
+            {
+                cc.SetCardProperty(SuppressActivatableAbilites, false);
+            }
         }
 
         public override bool AskIfActionCanBePerformed(GameAction gameAction)
         {
-            if (_alreadyPlayingCard && gameAction is ActivateAbilityAction aa && ScreaMachineBandmate.AbilityKeys.Contains(aa.ActivatableAbility.AbilityKey))
+            //pre-filter to activateAbilityActions on ScreaMachine cards
+            if (gameAction is ActivateAbilityAction aa && ScreaMachineBandmate.AbilityKeys.Contains(aa.ActivatableAbility.AbilityKey))
             {
-                return false;
+                if (Journal.GetCardPropertiesBoolean(aa.CardSource.Card, SuppressActivatableAbilites) == true)
+                {
+                    return false;
+                }
             }
 
             return base.AskIfActionCanBePerformed(gameAction);
