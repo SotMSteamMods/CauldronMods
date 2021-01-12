@@ -43,7 +43,7 @@ namespace Cauldron.ScreaMachine
                 }
             }
 
-            coroutine = DealDamage(ValentineCharacter, new Func<Card, bool>((Card c) => !IsVillain(c) && c.IsTarget && c.IsInPlayAndHasGameText), 1, DamageType.Sonic);
+            coroutine = DealDamage(ValentineCharacter, (Card c) => !IsVillain(c) && c.IsTarget && c.IsInPlayAndHasGameText, 1, DamageType.Sonic);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
