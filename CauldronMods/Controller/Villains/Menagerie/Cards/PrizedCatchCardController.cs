@@ -18,7 +18,7 @@ namespace Cauldron.Menagerie
         {
             //Play this card next to the hero with the most one-shots in hand. That hero and all their cards are Captured.
             List<TurnTaker> storedResults = new List<TurnTaker>();
-            IEnumerator coroutine = base.FindHeroWithMostCardsInHand(storedResults, cardCriteria: new LinqCardCriteria((Card c) => c.IsOneShot));
+            IEnumerator coroutine = base.FindHeroWithMostCardsInHand(storedResults, cardCriteria: new LinqCardCriteria((Card c) => c.IsOneShot, "one-shot"));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

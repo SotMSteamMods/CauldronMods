@@ -32,7 +32,7 @@ namespace Cauldron.Menagerie
             var actedEnclosures = new List<Card>();
             foreach (Card enclosure in enclosures)
             {
-                IEnumerable<Card> choices = base.FindCardsWhere((new LinqCardCriteria((Card c) => enclosures.Contains(c) && !actedEnclosures.Contains(c) && this.HasFaceDownCards(c))));
+                IEnumerable<Card> choices = base.FindCardsWhere(new LinqCardCriteria((Card c) => enclosures.Contains(c) && !actedEnclosures.Contains(c) && this.HasFaceDownCards(c)));
                 if (choices.Any())
                 {
                     SelectCardDecision cardDecision = new SelectCardDecision(base.GameController, this.DecisionMaker, SelectionType.FlipCardFaceUp, choices, cardSource: base.GetCardSource());
