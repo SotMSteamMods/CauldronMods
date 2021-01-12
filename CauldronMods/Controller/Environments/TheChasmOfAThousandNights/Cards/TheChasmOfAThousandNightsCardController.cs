@@ -14,20 +14,49 @@ namespace Cauldron.TheChasmOfAThousandNights
 
         public TheChasmOfAThousandNightsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-			AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
+			base.AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
 		}
 
-		public override bool AskIfCardIsIndestructible(Card card)
-		{
-			return card == base.Card || card.Location == base.Card.UnderLocation;
-		}
+
 		public override void AddTriggers()
         {
             //Whenever an environment target enters play, put a random card beneath this one into play next to that target.
             AddTrigger((CardEntersPlayAction cpa) => cpa.CardEnteringPlay != null && cpa.CardEnteringPlay.IsEnvironmentTarget && GameController.IsCardVisibleToCardSource(cpa.CardEnteringPlay, GetCardSource()), MoveNatureUnderResponse, TriggerType.MoveCard, TriggerTiming.After);
-        }
+			
+			base.AddTrigger<MakeDecisionsAction>((MakeDecisionsAction md) => md.CardSource != null && !md.CardSource.Card.IsEnvironment, this.RemoveDecisionsFromMakeDecisionsResponse, TriggerType.RemoveDecision, TriggerTiming.Before);
 
-        private IEnumerator MoveNatureUnderResponse(CardEntersPlayAction cpa)
+		}
+
+		private IEnumerator RemoveDecisionsFromMakeDecisionsResponse(MakeDecisionsAction md)
+		{
+			//remove this card as an option to make decisions
+			md.RemoveDecisions((IDecision d) => d.SelectedCard == base.Card || Card.UnderLocation.HasCard(d.SelectedCard));
+			return base.DoNothing();
+		}
+
+		public override bool? AskIfCardIsVisibleToCardSource(Card card, CardSource cardSource)
+		{
+			if (card == base.Card || Card.UnderLocation.HasCard(card) && !cardSource.Card.IsEnvironment)
+			{
+				return false;
+			}
+			return true;
+		}
+
+		public override bool AskIfActionCanBePerformed(GameAction g)
+		{
+
+			bool? flag = g.DoesFirstCardAffectSecondCard((Card c) => !c.IsEnvironment, (Card c) => c == base.Card || Card.UnderLocation.HasCard(c));
+
+			if (flag != null && flag.Value)
+			{
+				return false;
+			}
+			
+			return true;
+		}
+
+		private IEnumerator MoveNatureUnderResponse(CardEntersPlayAction cpa)
         {
            
             //puts a random nature card from beneath this one into play
