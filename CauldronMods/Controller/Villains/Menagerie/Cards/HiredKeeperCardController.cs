@@ -9,7 +9,7 @@ namespace Cauldron.Menagerie
     {
         public HiredKeeperCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHighestHP(1, () => 2, new LinqCardCriteria(c => c.IsHero && !IsCaptured(c.Owner), "non-captured hero targets", false));
         }
 
         public override void AddTriggers()
@@ -38,7 +38,7 @@ namespace Cauldron.Menagerie
         private IEnumerator DestroyCardResponse(DestroyCardAction action)
         {
             //...destroy 1 hero ongoing or equipment card.
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), false);
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c)), "hero ongoing or equipment"), false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
