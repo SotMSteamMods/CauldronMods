@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Cauldron.Drift
 {
-    public abstract class FocusUtilityCardController : DriftUtilityCardController
+    public abstract class DriftFocusUtilityCardController : DriftUtilityCardController
     {
-        public FocusUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public DriftFocusUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
@@ -32,7 +32,6 @@ namespace Cauldron.Drift
         {
             //When {Drift} is dealt damage, if you have not shifted this turn...
             base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Target == base.GetActiveCharacterCard() && action.Amount > 0 && !base.Journal.CardPropertiesEntriesThisRound((CardPropertiesJournalEntry entry) => entry.Key == HasShifted).Any(), this.ShiftResponse, TriggerType.ModifyTokens, TriggerTiming.After);
-            ;
         }
 
         public abstract IEnumerator ShiftResponse(DealDamageAction action);
