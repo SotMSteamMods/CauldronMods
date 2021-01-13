@@ -27,33 +27,21 @@ namespace Cauldron.Menagerie
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            IEnumerable<Card> enclosures = base.FindCardsWhere(new LinqCardCriteria((Card c) => base.IsEnclosure(c) && c.IsInPlayAndHasGameText));
-
-            //...the Enclosure with the highest HP...
-            Card highestEnclosure;
-            if (enclosures.Any())
+            List<Card> highest = new List<Card>();
+            coroutine = GameController.FindTargetWithHighestHitPoints(1, c => IsEnclosure(c) && c.IsInPlayAndNotUnderCard, highest, evenIfCannotDealDamage: true, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
             {
-                if (enclosures.Count() == 1)
-                {
-                    highestEnclosure = enclosures.FirstOrDefault();
-                }
-                else
-                {
-                    List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                    coroutine = base.GameController.SelectCardAndStoreResults(base.DecisionMaker, SelectionType.HighestHP, new LinqCardCriteria((Card c) => enclosures.Contains(c), "enclosure"), storedResults, false, cardSource: base.GetCardSource());
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
-                    }
-                    highestEnclosure = storedResults.FirstOrDefault().SelectedCard;
-                }
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
 
+            if (highest.Any() && highest.First() != null)
+            {
                 //Put the top card of the environment deck beneath the Enclosure with the highest HP 
-                coroutine = base.GameController.MoveCard(base.TurnTakerController, base.FindEnvironment().TurnTaker.Deck.TopCard, highestEnclosure.UnderLocation, flipFaceDown: true, cardSource: base.GetCardSource());
+                coroutine = base.GameController.MoveCard(base.TurnTakerController, base.FindEnvironment().TurnTaker.Deck.TopCard, highest.First().UnderLocation, flipFaceDown: true, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

@@ -29,7 +29,7 @@ namespace Cauldron.Menagerie
             ////The first time a Specimen enters play each turn...
             base.SetCardPropertyToTrueIfRealAction(FirstSpecimen);
             //...play the top card of the villain deck.
-            IEnumerator coroutine = base.PlayTheTopCardOfTheVillainDeckResponse(action);
+            IEnumerator coroutine = base.PlayTheTopCardOfTheVillainDeckWithMessageResponse(action);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
