@@ -586,5 +586,79 @@ namespace CauldronTests
             QuickHPCheck(-20);
             AssertNumberOfCardsAtLocation(ra.TurnTaker.OutOfGame, 1);
         }
+        [Test]
+        public void TestHourDevourerDamageOneDay()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card hour = PutOnDeck("HourDevourer");
+            FlipCard(GetCard("DayOfSorrows"));
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, tempest.CharacterCard, traffic, hour);
+            GoToEndOfTurn(fate);
+            QuickHPCheck(-3, -3, -3, -3, 0);
+        }
+        [Test]
+        public void TestHourDevourerDamageTwoDays()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card hour = PutOnDeck("HourDevourer");
+            FlipCard(GetCard("DayOfSorrows"));
+            FlipCard(GetCard("DayOfSaints"));
+
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, tempest.CharacterCard, traffic, hour);
+            GoToEndOfTurn(fate);
+            //6 for 2 days, +2 for Day of Saints buff
+            QuickHPCheck(-8, -8, -8, -8, 0);
+        }
+        [Test]
+        public void TestHourDevourerImmunityReward()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            Card hour = PlayCard("HourDevourer");
+            DealDamage(legacy, hour, 10, DTM);
+            QuickHPStorage(legacy, ra, tempest, fate);
+
+            DealDamage(fate, legacy, 10, DTM);
+            DealDamage(fate, ra, 10, DTM);
+            DealDamage(legacy, fate, 10, DTM);
+            DealDamage(tempest, legacy, 10, DTM);
+
+            QuickHPCheck(0, -10, 0, -10);
+
+            GoToStartOfTurn(legacy);
+            DealDamage(fate, legacy, 10, DTM);
+            QuickHPCheck(-10, 0, 0, 0);
+        }
+        [Test]
+        public void TestHourDevourerImmunityNotIfDirectlyDestroyed()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            Card hour = PlayCard("HourDevourer");
+            SetHitPoints(hour, 2);
+            Card gaze = PlayCard("WrathfulGaze");
+            UsePower(gaze);
+
+            QuickHPStorage(ra);
+            DealDamage(fate, ra, 10, DTM);
+            QuickHPCheck(-10);
+        }
     }
 }
