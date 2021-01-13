@@ -173,6 +173,84 @@ namespace CauldronTests
             AssertNotGameOver();
         }
         [Test]
+        public void TestMistressOfFateVillainDamageImmunity()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            ResetDays();
+
+            Card butterfly = PlayCard("ChaosButterfly");
+            Card traffic = PlayCard("TrafficPileup");
+            QuickHPStorage(fate.CharacterCard, ra.CharacterCard, butterfly, traffic);
+
+            DealDamage(fate, fate, 1, DTM);
+            DealDamage(butterfly, fate, 2, DTM);
+            DealDamage(ra, fate, 4, DTM);
+            DealDamage(traffic, fate, 8, DTM);
+            QuickHPCheck(-12, 0, 0, 0);
+
+            DealDamage(fate, butterfly, 1, DTM);
+            DealDamage(fate, ra, 1, DTM);
+            DealDamage(fate, traffic, 1, DTM);
+            QuickHPCheck(0, -1, -1, -1);
+
+        }
+        [Test]
+        public void TestMistressOfFateSpecialLossCondition()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            ResetDays();
+
+            MoveCards(fate, fate.TurnTaker.Deck.Cards, fate.TurnTaker.Trash);
+            AssertGameOver();
+        }
+        [Test]
+        public void TestMistressOfFateFlipRoutine()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+            ResetDays();
+
+            Card malus = PutOnDeck("WarpedMalus");
+            Card sorrows = GetCard("DayOfSorrows");
+            FlipCard(sorrows);
+
+            Card decoy = PlayCard("DecoyProjection");
+            SetHitPoints(decoy, 1);
+            SetHitPoints(legacy, 15);
+            DealDamage(fate, ra, 50, DTM);
+
+            Card future = PutInTrash("StolenFuture");
+            Card butterfly = PutOnDeck("ChaosButterfly");
+            Card timePlace = PutOnDeck("SameTimeAndPlace");
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card police = PlayCard("PoliceBackup");
+
+            SetHitPoints(fate, 50);
+            FlipCard(fate);
+
+            //days reclaim their cards
+            AssertUnderCard(sorrows, malus);
+            //everything gets set to full HP, except Mistress
+            AssertHitPoints(decoy, 5);
+            AssertHitPoints(legacy, legacy.CharacterCard.MaximumHitPoints ?? 0);
+            AssertHitPoints(fate, 50);
+            //environment is destroyed
+            AssertInTrash(traffic, police);
+            //day cards are flipped face down
+            AssertFlipped(sorrows);
+            //trash and top H-1 cards of deck are RFG, deck cards face-down
+            AssertOutOfGame(future, butterfly, timePlace);
+            AssertFlipped(butterfly, timePlace);
+            AssertNotFlipped(future);
+            //incapped heroes are restored
+            AssertNotIncapacitatedOrOutOfGame(ra);
+            //flips back
+            AssertNotFlipped(fate);
+        }
+        [Test]
         public void TestTheTimelineDayCardsNotAffectedByHeroCards()
         {
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
