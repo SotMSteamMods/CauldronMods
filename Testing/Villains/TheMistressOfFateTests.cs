@@ -660,5 +660,52 @@ namespace CauldronTests
             DealDamage(fate, ra, 10, DTM);
             QuickHPCheck(-10);
         }
+        [Test]
+        public void TestIllusionOfFreeWill()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            SetHitPoints(legacy, 20);
+            Card illusion = PlayCard("IllusionOfFreeWill");
+            AssertNextToCard(illusion, legacy.CharacterCard);
+
+            QuickHPStorage(legacy, ra, tempest, fate);
+            PlayCard("Thokk");
+            QuickHPCheck(0, -3, 0, 0);
+
+            Card ring = PutOnDeck("TheLegacyRing");
+            Card fort = PutOnDeck("Fortitude");
+
+            AssertNoDecision();
+            GoToEndOfTurn(legacy);
+            AssertIsInPlay(ring, fort);
+        }
+        [Test]
+        public void TestIllusionOfFreeWillDecksizeDestruction()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            Card illusion = PlayCard("IllusionOfFreeWill");
+            MoveCards(fate, fate.TurnTaker.Deck.Cards, fate.TurnTaker.Trash, leaveSomeCards: 4);
+            AssertInTrash(illusion);
+        }
+        [Test]
+        public void TestIllusionOfFreeWillFateFlipDestruction()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            Card illusion = PlayCard("IllusionOfFreeWill");
+            FlipCard(fate);
+            AssertNotInPlay(illusion);
+        }
     }
 }

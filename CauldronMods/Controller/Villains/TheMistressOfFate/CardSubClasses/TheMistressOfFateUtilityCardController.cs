@@ -85,5 +85,22 @@ namespace Cauldron.TheMistressOfFate
             _isStoredCard = false;
             AddCardPropertyJournalEntry(StoredByDayKey, (Card)null);
         }
+
+        protected bool IsDeckEmptier(GameAction ga)
+        {
+            if (ga is MoveCardAction mc)
+            {
+                return mc.CardToMove.IsVillain && mc.Destination != TurnTaker.Revealed && TurnTaker.Revealed.IsEmpty;
+            }
+            if (ga is PlayCardAction pc)
+            {
+                return pc.CardToPlay.IsVillain;
+            }
+            if (ga is DiscardCardAction dc)
+            {
+                return dc.Origin == TurnTaker.Deck;
+            }
+            return false;
+        }
     }
 }
