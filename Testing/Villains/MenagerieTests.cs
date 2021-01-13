@@ -538,6 +538,23 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestAquaticSphereKillDamage()
+        {
+            SetupGameController("Cauldron.Menagerie", "TheSentinels", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //When this card enters play, place the top card of the villain deck beneath it face down.
+            Card sphere = PlayCard("AquaticSphere");
+            AssertNumberOfCardsAtLocation(sphere.UnderLocation, 1);
+            SetHitPoints(sphere, 2);
+
+            //Whenever a hero uses a power, they must discard a card, but sphere destroyed, so no discard.
+            QuickHandStorage(sentinels, bunker, scholar);
+            UsePower(idealist);
+            QuickHandCheck(0, 0, 0);
+        }
+
+        [Test()]
         public void TestArborealSphere()
         {
             SetupGameController("Cauldron.Menagerie", "Haka", "Bunker", "Parse", "Megalopolis");
