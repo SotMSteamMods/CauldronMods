@@ -12,7 +12,7 @@ namespace Cauldron.Menagerie
     {
         protected EnclosureCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
         }
         public override void AddTriggers()
         {
@@ -21,6 +21,8 @@ namespace Cauldron.Menagerie
             base.AddBeforeLeavesPlayAction(this.HandleEnclosureCardsResponse, TriggerType.MoveCard);
             //Back: Heroes with enclosures in their play area may not damage cards in other play areas.
             base.AddImmuneToDamageTrigger((DealDamageAction action) => base.CharacterCard.IsFlipped && action.DamageSource.Owner == this.GetEnclosedHero() && action.Target.Location.OwnerTurnTaker != action.DamageSource.Card.Location.OwnerTurnTaker);
+            AddTrigger<MakeDecisionsAction>((MakeDecisionsAction md) => md.CardSource != null && !IsVillain(md.CardSource.Card), this.RemoveDecisionsFromMakeDecisionsResponse, TriggerType.RemoveDecision, TriggerTiming.Before);
+
         }
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
@@ -146,6 +148,37 @@ namespace Cauldron.Menagerie
                 return base.Card.Location.OwnerCard.Owner;
             }
             return null;
+        }
+
+        private IEnumerator RemoveDecisionsFromMakeDecisionsResponse(MakeDecisionsAction md)
+        {
+            //remove card under this card as an option to make decisions
+            md.RemoveDecisions((IDecision d) => Card.UnderLocation.HasCard(d.SelectedCard));
+            return base.DoNothing();
+        }
+
+        public override bool? AskIfCardIsVisibleToCardSource(Card card, CardSource cardSource)
+        {
+            //cards under this card cannot be affected by non villain cards
+            if (Card.UnderLocation.HasCard(card) && !IsVillain(cardSource.Card))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public override bool AskIfActionCanBePerformed(GameAction g)
+        {
+            //actions from non-villain cards cannot affect cards under this card
+
+            bool? flag = g.DoesFirstCardAffectSecondCard((Card c) => !IsVillain(c), (Card c) => Card.UnderLocation.HasCard(c));
+
+            if (flag != null && flag.Value)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
