@@ -39,6 +39,7 @@ namespace Cauldron.ScreaMachine
                 var keywords = new HashSet<string>(GameController.GetAllKeywords(card), StringComparer.OrdinalIgnoreCase);
                 var sharesAKeyword = FindCardsWhere(new LinqCardCriteria(c => c.IsInPlayAndNotUnderCard && GameController.GetAllKeywords(c).Any(k => keywords.Contains(k))), GetCardSource()).Any();
                 var firstCC = FindCardController(card) as ScreaMachineBandCardController;
+               
                 Card cardToPlay = card;
                 IEnumerator coroutine;
                 if (!sharesAKeyword)
@@ -100,6 +101,7 @@ namespace Cauldron.ScreaMachine
                 Card card;
                 string message;
                 bool sendMessage = false;
+                
                 if (firstCard.Member == secondCard.Member)
                 {
                     if (firstCard.IsBandmateInPlay)
@@ -110,7 +112,7 @@ namespace Cauldron.ScreaMachine
                     {
                         //revealed card bandmate doesn't have cards already in play, but the played card will start things off
                         card = secondCard.Card;
-                        message = $"[b]{bandMate.Title}[/b] is starting to feel it!";
+                        message = $"[b]{bandMate.Title}[/b] is starting to feel it and plays a {secondCard.Member.GetKeyword()} card!";
                     }
                     else
                     {
@@ -120,13 +122,13 @@ namespace Cauldron.ScreaMachine
                         switch (count)
                         {
                             case 1: //1 already, revealed card is the second
-                                message = $"[b]{bandMate.Title}[/b] is ramping it up!";
+                                message = $"[b]{bandMate.Title}[/b] is ramping it up and plays a {firstCard.Member.GetKeyword()} card!";
                                 break;
                             case 2: //2 already, revealed card is the third, will flip
-                                message = $"The music [b]surges[/b], this is [b]{bandMate.Title}[/b] moment!";
+                                message = $"The music [b]surges[/b] and a {firstCard.Member.GetKeyword()} card is played! This is [b]{bandMate.Title}[/b] moment!";
                                 break;
                             default:
-                                message = $"[b]{bandMate.Title}[/b] is ramping it up!";
+                                message = $"[b]{bandMate.Title}[/b] is ramping it up and plays a {firstCard.Member.GetKeyword()} card!";
                                 break;
                         }
                     }
@@ -143,31 +145,71 @@ namespace Cauldron.ScreaMachine
 
                     if (firstCard.IsBandmateInPlay)
                     {
-                        message = $"{firstCard.GetBandmate().Title} is keeping it mellow, while ";
+                        var coroutineFlip = GameController.FlipCard(firstCard, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutineFlip);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutineFlip);
+                        }
+
+                        message = $"{firstCard.GetBandmate().Title} is keeping it mellow since there aren't any {firstCard.Member.GetKeyword()} cards in play!";
+                        var coroutine = GameController.SendMessageAction(message, Priority.High, GetCardSource(), new[] { firstCard.Card });
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+
+                        coroutineFlip = GameController.FlipCard(firstCard, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutineFlip);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutineFlip);
+                        }
+
                     }
-                    else
-                    {
-                        message = "";
-                    }
+                    
+                    message = "";
+                    
                     switch (count)
                     {
                         case 0: //0 already, play card is the first
-                            message += $"[b]{secondCard.GetBandmate().Title}[/b] steps into the lime-light!";
+                            message += $"[b]{secondCard.GetBandmate().Title}[/b] steps into the limelight and plays a {secondCard.Member.GetKeyword()} card!";
                             break;
                         case 1: //1 already, revealed card is the second
-                            message += $"[b]{bandMate.Title}[/b] is ramping it up!";
+                            message += $"[b]{bandMate.Title}[/b] is ramping it up and plays a {secondCard.Member.GetKeyword()} card!";
                             break;
                         case 2: //2 already, revealed card is the third, will flip
-                            message = $"The music [b]surges[/b], this is [b]{bandMate.Title}[/b] moment!";
+                            message = $"The music [b]surges[/b] and a {secondCard.Member.GetKeyword()} card is played! This is [b]{bandMate.Title}[/b] moment!";
                             break;
                         default:
-                            message = $"[b]{bandMate.Title}[/b] is ramping it up!";
+                            message = $"[b]{bandMate.Title}[/b] is ramping it up and plays a {secondCard.Member.GetKeyword()} card!";
                             break;
                     }
                 }
 
+                
                 if (sendMessage)
                 {
+                    CardController cc = FindCardController(card);
+                    var coroutineFlip = GameController.FlipCard(cc, cardSource: GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutineFlip);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutineFlip);
+                    }
                     var coroutine = GameController.SendMessageAction(message, Priority.High, GetCardSource(), new[] { card });
                     if (base.UseUnityCoroutines)
                     {
@@ -177,7 +219,20 @@ namespace Cauldron.ScreaMachine
                     {
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
+                    coroutineFlip = GameController.FlipCard(secondCard, cardSource: GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutineFlip);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutineFlip);
+                    }
                 }
+
+               
+
+                
             }
             yield break;
         }
