@@ -1,5 +1,6 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+using Handelabra;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -45,7 +46,7 @@ namespace Cauldron.Menagerie
                         heroes.Add(hero);
                     }
                 }
-                IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && heroes.Contains(c.Owner)), storedResults, isPutIntoPlay, decisionSources);
+                IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && heroes.Contains(c.Owner) && !c.IsIncapacitatedOrOutOfGame), storedResults, isPutIntoPlay, decisionSources);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -67,10 +68,28 @@ namespace Cauldron.Menagerie
 
         private IEnumerator HandleEnclosureCardsResponse(GameAction gameAction)
         {
+            //make message
+            string message = $"{CharacterCard.Title} discards {base.Card.UnderLocation.NumberOfCards.ToString_NumberOrNo()} cards from under {Card.Title}";
+            if (!base.CharacterCard.IsFlipped)
+            {
+                int targets = Card.UnderLocation.Cards.Where(c => c.MaximumHitPoints.HasValue).Count();
+                message += $" and puts {targets.ToString_NumberOrNo()} {targets.ToString_SingularOrPlural("target", "targets")} into play";
+            }
+            message += ".";
+
+            IEnumerator coroutine = GameController.SendMessageAction(message, Priority.High, GetCardSource(), new[] { CharacterCard });
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
             //...discarding all cards beneath it. 
             while (base.Card.UnderLocation.HasCards)
             {
-                IEnumerator coroutine;
                 Card topCard = base.Card.UnderLocation.TopCard;
                 if (topCard.IsFlipped)
                 {
@@ -92,7 +111,7 @@ namespace Cauldron.Menagerie
                     destination = topCard.Owner.PlayArea;
                     isPutIntoPlay = true;
                 }
-                coroutine = base.GameController.MoveCard(base.TurnTakerController, topCard, destination, isPutIntoPlay: isPutIntoPlay, cardSource: base.GetCardSource());
+                coroutine = base.GameController.MoveCard(base.TurnTakerController, topCard, destination, isPutIntoPlay: isPutIntoPlay, isDiscard: !isPutIntoPlay, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
