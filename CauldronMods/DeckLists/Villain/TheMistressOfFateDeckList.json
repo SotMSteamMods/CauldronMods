@@ -44,11 +44,11 @@
             "flippedGameplay": [
                 "Continue playing if all heroes are incapacitated.",
                 "When {TheMistressOfFate} to this side:",
-                "{Bulletpoint} Resore all other targets to their maximum HP.",
-                "{Bulletpoint} Destroy all environment cards.",
-                "{Bulletpoint} Flip all day cards face down.",
-                "{Bulletpoint} Remove all cards in the villain trash and the top {H - 1} cards of the villain deck from the game without looking at them.",
-                "{Bulletpoint} Flip all incapacitated heroes and restore them to their maximum HP. Cards that were in a hero's deck, hand, or trash when they were incapacitated are returned to those respective locations.",
+                "{ Restore all other targets to their maximum HP.",
+                "{ Destroy all environment cards.",
+                "{ Flip all day cards face down.",
+                "{ Remove all cards in the villain trash and the top {H-1} cards of the villain deck from the game without looking at them.",
+                "{ Flip all incapacitated heroes and restore them to their maximum HP. Cards that were in a hero's deck, hand, or trash when they were incapacitated are returned to those respective locations.",
                 "Then, flip {TheMistressOfFate}'s villain character cards."
             ],
             "flippedAdvanced": "When {TheMistressOfFate} flips to this side, she regains 10 HP.",
@@ -266,7 +266,7 @@
                     "text": "No one lasts beyond{BR}their time without consequence."
                 }
             ],
-            "flavorReference": "The Mistress of Fate, Abstract Tales Annual #4",
+            "flavorReference": "The Mistress of Fate,{BR}Abstract Tales Annual #4",
             "hitpoints": 10
         },
         {
@@ -309,7 +309,7 @@
                 "When this card enters play, {TheMistressOfFate} deals each hero {H} psychic damage and {H} melee damage.",
                 "When {TheMistressOfFate} flips, each player may move 1 card from their trash to their hand. If any cards were moved this way, destroy this card."
             ],
-            "flavorText": "vHuh. Déjà vu,” mused Vanish.{BR}She turned to find Baccarat staring at{BR}the cat. “That means she changed{BR}something,” he said."
+            "flavorText": "“Huh. Déjà vu,” mused Vanish.{BR}She turned to find Baccarat staring at{BR}the cat. “That means she changed{BR}something,” he said."
         },
         {
             "identifier": "StolenFuture",
@@ -333,7 +333,7 @@
                     "text": "What was stolen from me{BR}will be exacted from all."
                 }
             ],
-            "flavorReference": "The Mistress Of Fate, Virtuoso of the Void #60"
+            "flavorReference": "The Mistress Of Fate,{BR}Virtuoso of the Void #60"
         },
         {
             "identifier": "TangledWeft",
@@ -419,9 +419,9 @@
                        "This card is indestructible.",
                        "Day cards cannot be affected by non-villain cards. Cards beneath villain cards are not considered in play.",
                        "Immediately after the environment turn, flip {TheMistressOfFate}'s villain character cards if one of these things occurs:",
-                       "{Bulletpoint} The players choose to flip her.",
-                       "{Bulletpoint} All heroes are incapacitated.",
-                       "{Bulletpoint} All Day cards are face up.",
+                       "{ The players choose to flip her.",
+                       "{ All heroes are incapacitated.",
+                       "{ All Day cards are face up.",
                        "{MistressOfFateDayCards}"
                    ]
                },
@@ -438,7 +438,7 @@
                    ],
                    "body": [
                        "When this card flips face up, increase damage dealt by villain targets by 2 until the start of the next villain turn.",
-                       "Then {TheMistressOfFate} deals the hero with the lowest HP {H} times 3 psychic damage."
+                       "Then {TheMistressOfFate} deals the hero with the lowest HP {H * 3} psychic damage."
                    ],
                    "flavorQuotes": [
                        {
