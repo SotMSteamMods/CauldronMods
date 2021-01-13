@@ -533,5 +533,58 @@ namespace CauldronTests
             QuickHPCheck(-20);
             AssertInHand(ring, fort, surge, thokk);
         }
+        [Test]
+        public void TestFadingRealitiesNoRemovalPossible()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            FlipCard(fate);
+            ResetDays();
+
+            PutOnDeck(ra, ra.HeroTurnTaker.Hand.Cards);
+            QuickHPStorage(ra);
+
+            AssertNextMessages("Ra has no cards in their hand or in play to select!", MessageTerminator);
+            AssertNoDecision();
+
+            PlayCard("FadingRealities");
+            QuickHPCheck(-20);
+            CheckFinalMessage();
+        }
+        [Test]
+        public void TestFadingRealitiesRemoveCards()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            FlipCard(fate);
+            ResetDays();
+
+            PutOnDeck(ra, ra.HeroTurnTaker.Hand.Cards);
+            QuickHPStorage(ra);
+
+            Card staff = PutInHand("TheStaffOfRa");
+            Card flesh = PlayCard("FleshOfTheSunGod");
+
+            PlayCard("FadingRealities");
+            QuickHPCheck(0);
+            AssertOutOfGame(flesh, staff);
+        }
+        [Test]
+        public void TestFadingRealitiesRemoveNotEnough()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            FlipCard(fate);
+            ResetDays();
+
+            QuickHPStorage(ra);
+            PlayCard("TheStaffOfRa");
+            PutOnDeck(ra, ra.HeroTurnTaker.Hand.Cards);
+            DecisionYesNo = true;
+
+            PlayCard("FadingRealities");
+            QuickHPCheck(-20);
+            AssertNumberOfCardsAtLocation(ra.TurnTaker.OutOfGame, 1);
+        }
     }
 }
