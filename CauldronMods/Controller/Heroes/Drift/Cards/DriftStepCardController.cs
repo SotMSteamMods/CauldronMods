@@ -20,8 +20,8 @@ namespace Cauldron.Drift
             //Shift {DriftL} or {DriftR}.
             //If you shifted {DriftL} this way, {Drift} regains 1 HP. If you shifted {DriftR} this way, {Drift} deals 1 target 1 radiant damage.
             IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
-                    new Function(base.HeroTurnTakerController, "Drift Left", SelectionType.PlayCard, () => this.ShiftResponse(0)),
-                    new Function(base.HeroTurnTakerController, "Drift Right", SelectionType.PlayCard, () => this.ShiftResponse(1))
+                    new Function(base.HeroTurnTakerController, "Drift Left", SelectionType.RemoveTokens, () => this.ShiftResponse(0)),
+                    new Function(base.HeroTurnTakerController, "Drift Right", SelectionType.AddTokens, () => this.ShiftResponse(1))
             });
             if (base.UseUnityCoroutines)
             {

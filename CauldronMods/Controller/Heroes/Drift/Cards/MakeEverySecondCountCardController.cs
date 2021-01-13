@@ -18,12 +18,14 @@ namespace Cauldron.Drift
         public override void AddTriggers()
         {
             //{DriftPast} Whenever you shift {DriftL}, select a hero target. Reduce the next damage dealt to that target by 2.
-            base.AddTrigger<CardPropertiesJournalEntry>((CardPropertiesJournalEntry entry) => base.IsTimeMatching(Past) && entry.Key == HasShifted && entry.BoolValue == true, this.ShiftLResponse, TriggerType.ReduceDamageOneUse, TriggerTiming.After);
+            base.AddTrigger<RemoveTokensFromPoolAction>((RemoveTokensFromPoolAction action) => base.IsTimeMatching(Past) && action.IsSuccessful, this.ShiftLResponse, TriggerType.ReduceDamageOneUse, TriggerTiming.After);
 
             //{DriftFuture} Whenever you shift {DriftR}, select a hero target. Increase the next damage dealt by that target by 2.
+            base.AddTrigger<RemoveTokensFromPoolAction>((RemoveTokensFromPoolAction action) => base.IsTimeMatching(Future) && action.IsSuccessful, this.ShiftRResponse, TriggerType.ReduceDamageOneUse, TriggerTiming.After);
+            base.AddTriggers();
         }
 
-        private IEnumerator ShiftLResponse(CardPropertiesJournalEntry entry)
+        private IEnumerator ShiftLResponse(RemoveTokensFromPoolAction action)
         {
             //...select a hero target. 
             List<SelectTargetDecision> targetDecision = new List<SelectTargetDecision>();
@@ -57,7 +59,7 @@ namespace Cauldron.Drift
             yield break;
         }
 
-        private IEnumerator ShiftRResponse(CardPropertiesJournalEntry entry)
+        private IEnumerator ShiftRResponse(RemoveTokensFromPoolAction action)
         {
             //...select a hero target. 
             List<SelectTargetDecision> targetDecision = new List<SelectTargetDecision>();

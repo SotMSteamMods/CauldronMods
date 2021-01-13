@@ -5,6 +5,12 @@
     "initialCardIdentifiers": [
         "DriftCharacter"
     ],
+    "initialOffToTheSideCardIdentifiers":[
+        "ShiftTrack1",
+        "ShiftTrack2",
+        "ShiftTrack3",
+        "ShiftTrack4"
+    ],
     "cards": [
         {
             "identifier": "DriftCharacter",
@@ -50,7 +56,7 @@
             "count": 1,
             "title": "Shift Track",
             "body": "Shift Track",
-            "backgroundColor": "fbf767",
+            "backgroundColor": "fcf8b7",
             "character": true,
             "setup": [
                 "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
@@ -63,10 +69,10 @@
             "tokenPools": [
 		 	    {
 		 		    "identifier":"ShiftPool",
-		 		    "name":"shift Track Location",
+		 		    "name":"Shift Track Location",
 		 		    "initialValue":0,
 		 		    "minimumValue":0,
-		 		    "color":"fbf767"
+		 		    "color":"fcf8b7"
 		 	    }
             ],
             "flippedBody": "Shift Track",
@@ -78,7 +84,7 @@
             "count": 1,
             "title": "Shift Track",
             "body": "Shift Track",
-            "backgroundColor": "fbf767",
+            "backgroundColor": "fcf8b7",
             "character": true,
             "setup": [
                 "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
@@ -91,10 +97,66 @@
             "tokenPools": [
 		 	    {
 		 		    "identifier":"ShiftPool",
-		 		    "name":"shift Track Location",
+		 		    "name":"Shift Track Location",
 		 		    "initialValue":0,
 		 		    "minimumValue":0,
-		 		    "color":"fbf767"
+		 		    "color":"fcf8b7"
+		 	    }
+            ],
+            "flippedBody": "Shift Track",
+            "isReal": true
+        },
+        {
+            "identifier": "ShiftTrack3",
+            "sharedIdentifier": "ShiftTrack",
+            "count": 1,
+            "title": "Shift Track",
+            "body": "Shift Track",
+            "backgroundColor": "fcf8b7",
+            "character": true,
+            "setup": [
+                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+            ],
+            "gameplay": [
+                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
+                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
+                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects."
+            ],
+            "tokenPools": [
+		 	    {
+		 		    "identifier":"ShiftPool",
+		 		    "name":"Shift Track Location",
+		 		    "initialValue":0,
+		 		    "minimumValue":0,
+		 		    "color":"fcf8b7"
+		 	    }
+            ],
+            "flippedBody": "Shift Track",
+            "isReal": true
+        },
+        {
+            "identifier": "ShiftTrack4",
+            "sharedIdentifier": "ShiftTrack",
+            "count": 1,
+            "title": "Shift Track",
+            "body": "Shift Track",
+            "backgroundColor": "fcf8b7",
+            "character": true,
+            "setup": [
+                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+            ],
+            "gameplay": [
+                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
+                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
+                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects."
+            ],
+            "tokenPools": [
+		 	    {
+		 		    "identifier":"ShiftPool",
+		 		    "name":"Shift Track Location",
+		 		    "initialValue":0,
+		 		    "minimumValue":0,
+		 		    "color":"fcf8b7"
 		 	    }
             ],
             "flippedBody": "Shift Track",

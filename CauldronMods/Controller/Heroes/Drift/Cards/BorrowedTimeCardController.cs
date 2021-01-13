@@ -19,8 +19,8 @@ namespace Cauldron.Drift
         {
             //Select {DriftL} or {DriftR}. Shift that direction up to 3 times. X is the number of times you shifted this way.
             IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
-                    new Function(base.HeroTurnTakerController, "Drift Left", SelectionType.PlayCard, () => this.ShiftResponse(0)),
-                    new Function(base.HeroTurnTakerController, "Drift Right", SelectionType.PlayCard, () => this.ShiftResponse(1))
+                    new Function(base.HeroTurnTakerController, "Drift Left", SelectionType.RemoveTokens, () => this.ShiftResponse(0)),
+                    new Function(base.HeroTurnTakerController, "Drift Right", SelectionType.AddTokens, () => this.ShiftResponse(1))
             });
             if (base.UseUnityCoroutines)
             {

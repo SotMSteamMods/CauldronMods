@@ -18,10 +18,11 @@ namespace Cauldron.Drift
         protected const string Past = "Past";
         protected const string Future = "Future";
         protected const string HasShifted = "HasShifted";
+        protected const string ShiftTrack = "ShiftTrack";
 
         public int CurrentShiftPosition()
         {
-            return 0;
+            return this.GetShiftPool().CurrentValue;
         }
 
         public Card GetActiveCharacterCard()
@@ -29,9 +30,14 @@ namespace Cauldron.Drift
             return base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.Location == base.TurnTaker.PlayArea && c.Owner == base.TurnTaker)).FirstOrDefault();
         }
 
+        public TokenPool GetShiftPool()
+        {
+            return this.GetShiftTrack().FindTokenPool("ShiftPool");
+        }
+
         public Card GetShiftTrack()
         {
-            return base.FindCard("ShiftTrack");
+            return base.FindCardsWhere(new LinqCardCriteria((Card c) => c.SharedIdentifier == ShiftTrack && c.IsInPlayAndHasGameText)).FirstOrDefault();
         }
 
         public bool IsFocus(Card c)
@@ -62,9 +68,48 @@ namespace Cauldron.Drift
             return 4 - this.CurrentShiftPosition();
         }
 
+        public IEnumerator Shift(int direction)
+        {
+            //Ensures not shifting off track
+            if (4 > this.CurrentShiftPosition() + direction && this.CurrentShiftPosition() + direction > 1)
+            {
+                base.SetCardPropertyToTrueIfRealAction(HasShifted);
+                //Add(Right) or Subtract(Left) a token
+                IEnumerator coroutine = base.AddOrRemoveTokens(this.GetShiftPool(), direction);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                //Switch to the new card
+                coroutine = base.GameController.SwitchCards(this.GetShiftTrack(), base.FindCard(ShiftTrack + this.CurrentShiftPosition(), false));
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
+        }
+
         public IEnumerator ShiftL()
         {
-            base.SetCardPropertyToTrueIfRealAction(HasShifted);
+            IEnumerator coroutine = this.Shift(-1);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
 
@@ -107,7 +152,15 @@ namespace Cauldron.Drift
 
         public IEnumerator ShiftR()
         {
-            base.SetCardPropertyToTrueIfRealAction(HasShifted);
+            IEnumerator coroutine = this.Shift(1);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
 

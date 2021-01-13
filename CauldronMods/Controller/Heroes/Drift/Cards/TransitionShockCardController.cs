@@ -17,11 +17,14 @@ namespace Cauldron.Drift
 
         public override void AddTriggers()
         {
-            //Whenever you shift from {DriftPast} to {DriftFuture} or from {DriftFuture} to {DriftPast}, {Drift} may deal 1 other target and herself 1 psychic damage.
-            base.AddTrigger<CardPropertiesJournalEntry>((CardPropertiesJournalEntry entry) => base.IsTimeMatching(Past) && entry.Key == HasShifted && entry.BoolValue == true, this.ShiftLResponse, TriggerType.ReduceDamageOneUse, TriggerTiming.After);
+            //Whenever you shift from {DriftPast} to {DriftFuture}... 
+            base.AddTrigger<AddTokensToPoolAction>((AddTokensToPoolAction action) => base.IsTimeMatching(Past) && action.IsSuccessful && action.TokenPool.CurrentValue > 2, this.DealDamageResponse, TriggerType.ReduceDamageOneUse, TriggerTiming.After);
+            //...or from {DriftFuture} to {DriftPast}...
+            base.AddTrigger<RemoveTokensFromPoolAction>((RemoveTokensFromPoolAction action) => base.IsTimeMatching(Future) && action.IsSuccessful && action.TokenPool.CurrentValue < 2, this.DealDamageResponse, TriggerType.ReduceDamageOneUse, TriggerTiming.After);
+            //...{Drift} may deal 1 other target and herself 1 psychic damage.
         }
 
-        private IEnumerator DealDamageResponse(CardPropertiesJournalEntry entry)
+        private IEnumerator DealDamageResponse(ModifyTokensAction action)
         {
             //...{Drift} may deal 1 other target...
             List<SelectCardDecision> targetDecision = new List<SelectCardDecision>();
