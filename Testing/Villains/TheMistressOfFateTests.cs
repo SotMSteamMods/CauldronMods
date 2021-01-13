@@ -53,6 +53,11 @@ namespace CauldronTests
         }
 
         private DamageType DTM = DamageType.Melee;
+        private string MessageTerminator = "There should have been no other messages.";
+        protected void CheckFinalMessage()
+        {
+            GameController.ExhaustCoroutine(GameController.SendMessageAction(MessageTerminator, Priority.High, null));
+        }
         #endregion
         [Test]
         public void TestMistressOfFateLoads()
@@ -468,6 +473,65 @@ namespace CauldronTests
 
             DestroyCard(anomaly);
             AssertCardSpecialString(anomaly, 1, "This card recurs on the Day of Swords.");
+        }
+
+        [Test]
+        public void TestCantFightFateNoViableDiscard()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            FlipCard(fate);
+            ResetDays();
+
+            PutOnDeck(legacy, legacy.HeroTurnTaker.Hand.Cards);
+            QuickHPStorage(legacy);
+            AssertNextMessages("Legacy does not have 3 cards that share a keyword in their hand!", MessageTerminator);
+
+            PlayCard("CantFightFate");
+            QuickHPCheck(-20);
+            CheckFinalMessage();
+        }
+        [Test]
+        public void TestCantFightFateDiscardThree()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            FlipCard(fate);
+            ResetDays();
+
+            PutOnDeck(legacy, legacy.HeroTurnTaker.Hand.Cards);
+            QuickHPStorage(legacy);
+
+            Card ring = PutInHand("TheLegacyRing");
+            Card fort = PutInHand("Fortitude");
+            Card surge = PutInHand("SurgeOfStrength");
+            Card thokk = PutInHand("Thokk");
+
+            PlayCard("CantFightFate");
+            QuickHPCheck(0);
+            AssertInTrash(ring, fort, surge);
+            AssertInHand(thokk);
+        }
+        [Test]
+        public void TestCantFightFateSkipDiscard()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            FlipCard(fate);
+            ResetDays();
+
+            PutOnDeck(legacy, legacy.HeroTurnTaker.Hand.Cards);
+            QuickHPStorage(legacy);
+
+            Card ring = PutInHand("TheLegacyRing");
+            Card fort = PutInHand("Fortitude");
+            Card surge = PutInHand("SurgeOfStrength");
+            Card thokk = PutInHand("Thokk");
+
+            DecisionSelectWordSkip = true;
+            PlayCard("CantFightFate");
+            QuickHPCheck(-20);
+            AssertInHand(ring, fort, surge, thokk);
         }
     }
 }
