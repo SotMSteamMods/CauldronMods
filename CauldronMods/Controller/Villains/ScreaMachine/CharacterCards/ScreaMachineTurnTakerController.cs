@@ -49,32 +49,48 @@ namespace Cauldron.ScreaMachine
                  * with different keywords are revealed...
                  */
                 List<Card> played = new List<Card>();
+                List<Card> notPlayed = new List<Card>();
                 HashSet<string> foundKeywords = new HashSet<string>();
-                foreach (var card in setList.UnderLocation.Cards)
+                foreach (var card in setList.UnderLocation.Cards.Reverse())
                 {
+                    
                     var keywords = GameController.GetAllKeywords(card, true, true);
                     if (!keywords.Any(k => foundKeywords.Contains(k)))
                     {
                         keywords.ForEach(k => foundKeywords.Add(k));
                         played.Add(card);
                     }
+                    else
+                    {
+                        notPlayed.Add(card);
+                    }
 
                     if (played.Count >= (H - 2))
                         break;
                 }
 
+                List<Card> dummy = new List<Card>();
+                coroutine = GameController.RevealCards(this, setList.UnderLocation, played.Count() + notPlayed.Count(), dummy, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: setCC.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
                 // ...Play those cards. 
                 foreach (var card in played)
                 {
-                    coroutine = GameController.FlipCard(FindCardController(card), cardSource: setCC.GetCardSource());
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
-                    }
+                    //coroutine = GameController.FlipCard(FindCardController(card), cardSource: setCC.GetCardSource());
+                    //if (base.UseUnityCoroutines)
+                    //{
+                    //    yield return base.GameController.StartCoroutine(coroutine);
+                    //}
+                    //else
+                    //{
+                    //    base.GameController.ExhaustCoroutine(coroutine);
+                    //}
 
                     coroutine = GameController.PlayCard(this, card, evenIfAlreadyInPlay: true, reassignPlayIndex: true, cardSource: setCC.GetCardSource());
                     if (base.UseUnityCoroutines)
@@ -87,8 +103,32 @@ namespace Cauldron.ScreaMachine
                     }
                 }
 
+
+
                 // ...Shuffle the rest and replace them face down beneath this card.
-                coroutine = GameController.ShuffleLocation(setList.UnderLocation, cardSource: setCC.GetCardSource());
+                foreach (var card in TurnTaker.Revealed.Cards)
+                {
+                    coroutine = GameController.FlipCard(FindCardController(card), cardSource: setCC.GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+                coroutine = GameController.ShuffleLocation(TurnTaker.Revealed, cardSource: setCC.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                coroutine = GameController.MoveCards(this, notPlayed, setList.UnderLocation, toBottom: true, cardSource: setCC.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

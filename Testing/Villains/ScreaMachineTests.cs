@@ -249,11 +249,11 @@ namespace CauldronTests
         [Test()]
         public void TestScreaMachineAdvancedGameStart()
         {
-            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis" }, advanced: true);
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Tachyon", "Bunker", "Megalopolis" }, advanced: true);
             AssertInPlayArea(scream, setlist);
             AssertNotFlipped(setlist);
 
-            QuickShuffleStorage(scream.TurnTaker.Deck, setlist.UnderLocation);
+            QuickShuffleStorage(scream.TurnTaker.Deck, scream.TurnTaker.Revealed);
             StartGame();
             QuickShuffleCheck(1, 1);
 
@@ -286,7 +286,10 @@ namespace CauldronTests
                 }
             }
 
+            
             Assert.AreEqual(this.GameController.Game.H - 2 + 1, inPlay, $"Should have {GameController.Game.H - 2 + 1} band cards in play");
+            AssertNumberOfCardsInRevealed(scream, 0);
+            AssertFlipped(setlist.UnderLocation.Cards.ToArray());
         }
 
         [Test()]
