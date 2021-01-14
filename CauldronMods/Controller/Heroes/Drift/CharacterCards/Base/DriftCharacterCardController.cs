@@ -21,39 +21,6 @@ namespace Cauldron.Drift
         private int totalShifts = 0;
         public int TotalShifts { get => totalShifts; set => totalShifts = value; }
 
-        public override IEnumerator UsePower(int index = 0)
-        {
-            int hpNumeral = base.GetPowerNumeral(0, 1);
-
-            //Shift {DriftLL}, {DriftL}, {DriftR}, {DriftRR}. 
-            IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
-                    new Function(base.HeroTurnTakerController, "Drift Left Twice", SelectionType.RemoveTokens, () => this.ShiftLL()),
-                    new Function(base.HeroTurnTakerController, "Drift Left", SelectionType.RemoveTokens, () => this.ShiftL()),
-                    new Function(base.HeroTurnTakerController, "Drift Right", SelectionType.AddTokens, () => this.ShiftR()),
-                    new Function(base.HeroTurnTakerController, "Drift Right Twice", SelectionType.AddTokens, () => this.ShiftRR())
-            });
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            //Drift regains 1 HP.
-            coroutine = base.GameController.GainHP(this.Card, hpNumeral);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
-        }
-
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
             IEnumerator coroutine;
@@ -137,6 +104,39 @@ namespace Cauldron.Drift
                         }
                         break;
                     }
+            }
+            yield break;
+        }
+
+        public override IEnumerator UsePower(int index = 0)
+        {
+            int hpNumeral = base.GetPowerNumeral(0, 1);
+
+            //Shift {DriftLL}, {DriftL}, {DriftR}, {DriftRR}. 
+            IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
+                    new Function(base.HeroTurnTakerController, "Drift Left Twice", SelectionType.RemoveTokens, () => this.ShiftLL()),
+                    new Function(base.HeroTurnTakerController, "Drift Left", SelectionType.RemoveTokens, () => this.ShiftL()),
+                    new Function(base.HeroTurnTakerController, "Drift Right", SelectionType.AddTokens, () => this.ShiftR()),
+                    new Function(base.HeroTurnTakerController, "Drift Right Twice", SelectionType.AddTokens, () => this.ShiftRR())
+            });
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //Drift regains 1 HP.
+            coroutine = base.GameController.GainHP(this.Card, hpNumeral);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
         }
