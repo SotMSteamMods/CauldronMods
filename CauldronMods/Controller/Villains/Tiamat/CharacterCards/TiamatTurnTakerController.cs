@@ -13,9 +13,6 @@ namespace Cauldron.Tiamat
 
         }
 
-        private Card[] inPlay;
-        private Card[] inBox;
-
         public override IEnumerator StartGame()
         {
             //Elemental Hydra
@@ -104,31 +101,34 @@ namespace Cauldron.Tiamat
                 base.TurnTaker.GetCardByIdentifier("NeoscaleCharacter")
             };
 
+            Card[] inPlay;
+            Card[] inBox;
+
             if (base.FindCardController(base.CharacterCard) is WinterTiamatCharacterCardController)
             {//Regular Tiamat
-                this.inPlay = regular;
-                this.inBox = hydra.Concat(secondaryHydra).Concat(future).ToArray();
+                inPlay = regular;
+                inBox = hydra.Concat(secondaryHydra).Concat(future).ToArray();
             }
-            if (base.FindCardController(base.CharacterCard) is HydraWinterTiamatCharacterCardController)
+            else if (base.FindCardController(base.CharacterCard) is HydraWinterTiamatCharacterCardController)
             {//Elemental Hydra
-                this.inPlay = hydra;
-                this.inBox = regular.Concat(future).ToArray();
+                inPlay = hydra;
+                inBox = regular.Concat(future).ToArray();
             }
-            if (base.FindCardController(base.CharacterCard) is FutureTiamatCharacterCardController)
+            else if (base.FindCardController(base.CharacterCard) is FutureTiamatCharacterCardController)
             {//2199
-                this.inPlay = future;
-                this.inBox = regular.Concat(hydra).Concat(secondaryHydra).ToArray();
+                inPlay = future;
+                inBox = regular.Concat(hydra).Concat(secondaryHydra).ToArray();
             }
-            SneakManageCharacters();
-        }
+            else
+            {
+                throw new InvalidOperationException("Character Controller is not a Tiamat Character Card Controller");
+            }
 
-        private void SneakManageCharacters()
-        {
-            foreach (Card c in this.inPlay)
+            foreach (Card c in inPlay)
             {
                 TurnTaker.MoveCard(c, TurnTaker.PlayArea);
             }
-            foreach (Card c in this.inBox)
+            foreach (Card c in inBox)
             {
                 TurnTaker.MoveCard(c, TurnTaker.InTheBox);
             }

@@ -24,7 +24,7 @@ namespace Cauldron.Tiamat
 				//{Tiamat}, The Mouth of the Storm is immune to Lightning damage.
 				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Lightning, false),
 				//At the end of the villain turn, if {Tiamat}, The Mouth of the Storm dealt no damage this turn, she deals the hero target with the highest HP {H - 2} Lightning damage.
-				base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, (PhaseChangeAction p) => this.DidDealDamageThisTurn())
+				base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, (PhaseChangeAction p) => !this.DidDealDamageThisTurn())
                 //ElementOfLightning: The hero with the most cards in hand may not draw cards until the start of the next villain turn.
         };
         }
@@ -75,9 +75,7 @@ namespace Cauldron.Tiamat
         //Get number of "Element of Lightning" cards in trash
         private int GetNumberOfElementOfLightningInTrash()
         {
-            return (from card in base.TurnTaker.Trash.Cards
-                    where card.Identifier == "ElementOfLightning"
-                    select card).Count<Card>();
+            return GetNumberOfSpecificCardInTrash("ElementOfLightning");
         }
     }
 }

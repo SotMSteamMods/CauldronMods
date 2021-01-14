@@ -120,17 +120,6 @@ namespace Cauldron.Tiamat
             yield break;
         }
 
-        private bool DidDealDamageThisTurn()
-        {
-            //Did Tiamat Deal Damage This Turn
-            return GameController.Game.Journal.DealDamageEntriesThisTurn().Any(e => e.SourceCard == Card && e.Amount > 0);
-        }
-
-        private bool IsSpell(Card c)
-        {
-            return c.DoKeywordsContain("spell");
-        }
-
         private bool IsRuinedScale(Card c)
         {
             return c.DoKeywordsContain("ruined scale");

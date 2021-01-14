@@ -10,7 +10,6 @@ namespace Cauldron.Tiamat
         public HydraWindTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowSpecialString(() => base.Card.Title + " is immune to Projectile damage.").Condition = () => !base.Card.IsFlipped;
-
         }
 
         protected override ITrigger[] AddFrontTriggers()
@@ -26,7 +25,7 @@ namespace Cauldron.Tiamat
 
         private IEnumerator GainHPResponse(PhaseChangeAction action)
         {
-            IEnumerator coroutine = base.GameController.GainHP(this.DecisionMaker, (Card c) => c.DoKeywordsContain("head"), 2, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.GainHP(this.DecisionMaker, (Card c) => IsHead(c), 2, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
