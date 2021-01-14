@@ -24,7 +24,7 @@ namespace Cauldron.Tiamat
 				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Fire),
 
 				//At the end of the villain turn, if {Tiamat}, The Mouth of the Inferno dealt no damage this turn, she deals the hero target with the highest HP {H - 2} fire damage.
-				base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, (PhaseChangeAction p) => this.DidDealDamageThisTurn())
+				base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, (PhaseChangeAction p) => !this.DidDealDamageThisTurn())
             };
         }
 
@@ -73,9 +73,7 @@ namespace Cauldron.Tiamat
         //Get number of "Element of Fire" cards in trash
         private int GetNumberOfElementOfFireInTrash()
         {
-            return (from card in base.TurnTaker.Trash.Cards
-                    where card.Identifier == "ElementOfFire"
-                    select card).Count<Card>();
+            return GetNumberOfSpecificCardInTrash("ElementOfFire");
         }
     }
 }
