@@ -61,7 +61,6 @@ namespace Cauldron.Drift
             //Shift {DriftL} or {DriftR}.
             if (response == 0)
             {
-                bool canShift = base.CurrentShiftPosition() > 1;
                 //Shift {DriftL}
                 IEnumerator coroutine = base.ShiftL();
                 if (base.UseUnityCoroutines)
@@ -74,7 +73,7 @@ namespace Cauldron.Drift
                 }
 
                 //If you shifted {DriftL} this way, {Drift} regains 1 HP.
-                if (canShift)
+                if (TotalShifts > 1)
                 {
                     coroutine = base.GameController.GainHP(base.GetActiveCharacterCard(), 1);
                     if (base.UseUnityCoroutines)
@@ -89,8 +88,6 @@ namespace Cauldron.Drift
             }
             else
             {
-
-                bool canShift = base.CurrentShiftPosition() < 4;
                 //Shift {DriftR}
                 IEnumerator coroutine = base.ShiftR();
                 if (base.UseUnityCoroutines)
@@ -103,7 +100,7 @@ namespace Cauldron.Drift
                 }
 
                 //If you shifted {DriftR} this way, {Drift} deals 1 target 1 radiant damage.
-                if (canShift)
+                if (TotalShifts > 1)
                 {
                     coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 1, DamageType.Radiant, 1, false, 1, cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)
