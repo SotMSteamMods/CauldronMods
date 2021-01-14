@@ -58,6 +58,9 @@ namespace CauldronTests
         {
             GameController.ExhaustCoroutine(GameController.SendMessageAction(MessageTerminator, Priority.High, null));
         }
+
+        protected List<Card> DayCardsInOrder => GetCards("DayOfSaints", "DayOfSinners", "DayOfSorrows", "DayOfSwords")
+                                                    .OrderBy(c => c.PlayIndex).ToList();
         #endregion
         [Test]
         public void TestMistressOfFateLoads()
@@ -706,6 +709,63 @@ namespace CauldronTests
             Card illusion = PlayCard("IllusionOfFreeWill");
             FlipCard(fate);
             AssertNotInPlay(illusion);
+        }
+        [Test]
+        public void TestMemoryOfTomorrowEntersPlayDamage()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            QuickHPStorage(legacy, ra, tempest, fate);
+            PlayCard("Fortitude");
+            PlayCard("MemoryOfTomorrow");
+            //5 and 5, so Fortitude is good for a total of 2 damage reduction
+            QuickHPCheck(-8, -10, -10, 0);
+        }
+        [Test]
+        public void TestMemoryOfTomorrowFlipFaceUp()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            Card malus = PutOnDeck("WarpedMalus");
+            Card day = GetCard("DayOfSorrows");
+            FlipCard(day);
+            DestroyCard(malus);
+
+            Card memory = PlayCard("MemoryOfTomorrow");
+            AssertNextToCard(memory, day);
+
+            Card ring = PutOnDeck("TheLegacyRing");
+            Card fort = PutInHand("Fortitude");
+            DecisionSelectCard = fort;
+
+            FlipCard(day);
+            FlipCard(day);
+            AssertIsInPlay(malus);
+            AssertIsInPlay(fort);
+            AssertInHand(ring);
+        }
+        [Test]
+        public void TestMemoryOfTomorrowLastFaceUpDay()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            var days = DayCardsInOrder;
+            Card firstDay = days[0];
+            Card secondDay = days[1];
+
+            FlipCard(firstDay);
+            FlipCard(secondDay);
+            Card memory = PlayCard("MemoryOfTomorrow");
+            AssertNextToCard(memory, secondDay);
         }
     }
 }

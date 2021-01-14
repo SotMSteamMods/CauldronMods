@@ -102,5 +102,10 @@ namespace Cauldron.TheMistressOfFate
             }
             return false;
         }
+
+        protected List<Card> DayCardsInOrder()
+        {
+            return GameController.FindCardsWhere((Card c) => IsDay(c) && c.IsInPlay).OrderBy((Card c) => c.PlayIndex).ToList();
+        }
     }
 }
