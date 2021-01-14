@@ -86,12 +86,16 @@ namespace Cauldron.Tiamat
             Card[] hydra = new Card[] {
                 base.TurnTaker.GetCardByIdentifier("HydraStormTiamatCharacter"),
                 base.TurnTaker.GetCardByIdentifier("HydraInfernoTiamatCharacter"),
-                base.TurnTaker.GetCardByIdentifier("HydraEarthTiamatCharacter"),
-                base.TurnTaker.GetCardByIdentifier("HydraDecayTiamatCharacter"),
-                base.TurnTaker.GetCardByIdentifier("HydraWindTiamatCharacter"),
                 base.TurnTaker.GetCardByIdentifier("HydraFrigidEarthTiamatInstructions"),
                 base.TurnTaker.GetCardByIdentifier("HydraNoxiousFireTiamatInstructions"),
                 base.TurnTaker.GetCardByIdentifier("HydraThunderousGaleTiamatInstructions")
+            };
+            //Hydra secondary heads that do not need to be moved into play if Hydra is the variant
+            Card[] secondaryHydra = new Card[]
+            {
+                base.TurnTaker.GetCardByIdentifier("HydraEarthTiamatCharacter"),
+                base.TurnTaker.GetCardByIdentifier("HydraDecayTiamatCharacter"),
+                base.TurnTaker.GetCardByIdentifier("HydraWindTiamatCharacter")
             };
             //2199
             Card[] future = new Card[]
@@ -103,7 +107,7 @@ namespace Cauldron.Tiamat
             if (base.FindCardController(base.CharacterCard) is WinterTiamatCharacterCardController)
             {//Regular Tiamat
                 this.inPlay = regular;
-                this.inBox = hydra.Concat(future).ToArray();
+                this.inBox = hydra.Concat(secondaryHydra).Concat(future).ToArray();
             }
             if (base.FindCardController(base.CharacterCard) is HydraWinterTiamatCharacterCardController)
             {//Elemental Hydra
@@ -113,7 +117,7 @@ namespace Cauldron.Tiamat
             if (base.FindCardController(base.CharacterCard) is FutureTiamatCharacterCardController)
             {//2199
                 this.inPlay = future;
-                this.inBox = regular.Concat(hydra).ToArray();
+                this.inBox = regular.Concat(hydra).Concat(secondaryHydra).ToArray();
             }
             SneakManageCharacters();
         }
