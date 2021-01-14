@@ -68,8 +68,8 @@ namespace CauldronTests
                 identifier = MythosMadnessDeckIdentifier;
             }
             return identifier;
-            /**Remove above when Subdecks are implemented**/
-            return c.ParentDeck.Identifier;
+            /**TODO: Remove above when Subdecks are implemented**/
+            //return c.ParentDeck.Identifier;
         }
 
         [Test()]

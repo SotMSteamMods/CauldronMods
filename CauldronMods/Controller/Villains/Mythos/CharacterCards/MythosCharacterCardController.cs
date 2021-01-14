@@ -13,7 +13,7 @@ namespace Cauldron.Mythos
         public MythosCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
-            base.SpecialStringMaker.ShowTokenPool(DangerousInvestigationCard.FindTokenPool("DangerousInvestigationPool"));
+            base.SpecialStringMaker.ShowTokenPool("DangerousInvestigation", "DangerousInvestigationPool");
             base.SpecialStringMaker.ShowSpecialString(() => this.DeckIconList());
         }
 
@@ -243,8 +243,8 @@ namespace Cauldron.Mythos
                 identifier = MythosMadnessDeckIdentifier;
             }
             return identifier;
-            /**Remove above when Subdecks are implemented**/
-            return c.ParentDeck.Identifier;
+            /**TODO: Remove above when Subdecks are implemented**/
+            //return c.ParentDeck.Identifier;
         }
 
         private bool IsTopCardMatching(string type)
