@@ -98,7 +98,8 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
-            var a = drift.TurnTaker.CharacterCards;
+            DecisionSelectFunctions = new int?[] { 0 };
+
             UsePower(drift);
         }
     }

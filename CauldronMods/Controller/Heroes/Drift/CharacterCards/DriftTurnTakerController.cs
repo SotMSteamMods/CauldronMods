@@ -2,6 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Cauldron.Drift
@@ -12,12 +13,12 @@ namespace Cauldron.Drift
         {
 
         }
+        protected const string ShiftTrack = "ShiftTrack";
 
         public override IEnumerator StartGame()
         {
-            //Put Shift Track into play
-            Card shiftTrack1 = TurnTaker.FindCard("ShiftTrack1", realCardsOnly: false);
-            IEnumerator coroutine = base.GameController.PlayCard(this, shiftTrack1);
+            List<SelectCardDecision> cardDecisions = new List<SelectCardDecision>();
+            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this, SelectionType.AddTokens, new LinqCardCriteria((Card c) => c.SharedIdentifier == ShiftTrack, "Shift Track Position"), cardDecisions, false, includeRealCardsOnly: false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -27,9 +28,51 @@ namespace Cauldron.Drift
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            //Put a token in the pool to begin tracking active card
-            TokenPool pool1 = shiftTrack1.FindTokenPool("ShiftPool");
-            coroutine = base.GameController.AddTokensToPool(pool1, 1, new CardSource(base.CharacterCardController));
+            coroutine = this.SetupShiftTrack(cardDecisions.FirstOrDefault());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        private IEnumerator SetupShiftTrack(SelectCardDecision decision)
+        {
+            Card selectedTrack = decision.SelectedCard;
+            IEnumerator coroutine = base.GameController.PlayCard(this, selectedTrack);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            CardController selectTrackController = base.FindCardController(selectedTrack);
+            int tokensToAdd = 0;
+            if (selectTrackController is ShiftTrack1CardController)
+            {
+                tokensToAdd = 1;
+            }
+            else if (selectTrackController is ShiftTrack2CardController)
+            {
+                tokensToAdd = 2;
+            }
+            else if (selectTrackController is ShiftTrack3CardController)
+            {
+                tokensToAdd = 3;
+            }
+            else if (selectTrackController is ShiftTrack4CardController)
+            {
+                tokensToAdd = 4;
+            }
+
+            coroutine = base.GameController.AddTokensToPool(selectedTrack.FindTokenPool("ShiftPool"), tokensToAdd, new CardSource(base.CharacterCardController));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
