@@ -13,6 +13,28 @@ namespace Cauldron.Tiamat
 
         }
 
+        public bool IsSpell(Card card)
+        {
+            return card != null && base.GameController.DoesCardContainKeyword(card, "spell");
+        }
+
+        public bool IsHead(Card card)
+        {
+            return card != null && base.GameController.DoesCardContainKeyword(card, "head");
+        }
+
+        protected bool DidDealDamageThisTurn(Card overrideCard = null)
+        {
+            //Did Tiamat Deal Damage This Turn
+            return GameController.Game.Journal.DealDamageEntriesThisTurn().Any(e => e.SourceCard == (overrideCard ?? Card) && e.Amount > 0);
+        }
+
+        protected int GetNumberOfSpecificCardInTrash(string identifier)
+        {
+            return TurnTaker.Trash.Cards.Count(c => c.Identifier == identifier);
+        }
+
+
         public override void AddTriggers()
         {
             base.AddTriggers();

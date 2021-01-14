@@ -23,7 +23,7 @@ namespace Cauldron.Tiamat
 				//{Tiamat}, The Jaws of Winter is immune to Cold damage.
 				base.AddImmuneToDamageTrigger((DealDamageAction dealDamage) => dealDamage.Target == base.Card && dealDamage.DamageType == DamageType.Cold, false),
 				//At the end of the villain turn, if {Tiamat}, The Jaws of Winter dealt no damage this turn, she deals the hero target with the highest HP {H - 2} Cold damage. 
-				base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, (PhaseChangeAction p) => this.DidDealDamageThisTurn())
+				base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DealDamageResponse), TriggerType.DealDamage, (PhaseChangeAction p) => !this.DidDealDamageThisTurn())
             };
         }
 
@@ -78,9 +78,7 @@ namespace Cauldron.Tiamat
         //Get number of "Element of Ice" cards in trash
         private int GetNumberOfElementOfIceInTrash()
         {
-            return (from card in base.TurnTaker.Trash.Cards
-                    where card.Identifier == "ElementOfIce"
-                    select card).Count<Card>();
+            return GetNumberOfSpecificCardInTrash("ElementOfIce");
         }
     }
 }
