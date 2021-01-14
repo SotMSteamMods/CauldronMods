@@ -1861,6 +1861,20 @@ namespace CauldronTests
             QuickHPCheck(-3);
         }
         [Test()]
+        public void TestThundergreyShawlLetsWouldBeDealtDamageReact()
+        {
+            SetupGameController("Apostate", "Cauldron.LadyOfTheWood", "Legacy", "Haka", "Megalopolis");
+            StartGame();
+
+            PlayCard("ThundergreyShawl");
+            Card runes = PlayCard("RunesOfMalediction");
+            Card orb = PlayCard("OrbOfDelirium");
+
+            QuickHPStorage(runes, orb);
+            DealDamage(ladyOfTheWood, runes, 1, DamageType.Melee);
+            QuickHPCheck(0, -1);
+        }
+        [Test()]
         public void TestWinter()
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");

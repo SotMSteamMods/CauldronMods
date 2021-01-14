@@ -686,5 +686,23 @@ namespace CauldronTests
             GoToEndOfTurn(gray);
             QuickHPCheck(0, -1);
         }
+
+        [Test()]
+        public void TestUnwittingHenchmenFailedDestroyEquipment()
+        {
+            SetupGameController(new string[] { "Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm" });
+            StartGame();
+            PlayCard("UnwittingHenchmen");
+            DealDamage(legacy, gray, 5, DamageType.Cold);
+            AddCannotDealTrigger(gray, gray.CharacterCard);
+
+            PlayCard("FixedPoint");
+            PlayCard("TheLegacyRing");
+            //At the end of the villain turn, destroy 1 equipment card.
+            //If a card is destroyed this way, {Gray} regains 3 HP. Otherwise this card deals the hero target with the highest HP 1 melee damage.
+            QuickHPStorage(gray, haka);
+            GoToEndOfTurn(gray);
+            QuickHPCheck(0, -1);
+        }
     }
 }
