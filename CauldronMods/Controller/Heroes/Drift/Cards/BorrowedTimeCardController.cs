@@ -36,21 +36,9 @@ namespace Cauldron.Drift
 
         private IEnumerator ShiftResponse(int response)
         {
-            int maxShift = 0;
-            //{DriftL}
-            if (response == 0)
-            {
-                maxShift = base.MaxLeftShifts();
-            }
-            //{DriftR}
-            else
-            {
-                maxShift = base.MaxRightShifts();
-            }
-
             //Shift that direction up to 3 times. X is the number of times you shifted this way.
             List<SelectNumberDecision> numberDecision = new List<SelectNumberDecision>();
-            IEnumerator coroutine = base.GameController.SelectNumber(base.HeroTurnTakerController, SelectionType.SelectNumeral, 0, maxShift, storedResults: numberDecision, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectNumber(base.HeroTurnTakerController, SelectionType.SelectNumeral, 0, 3, storedResults: numberDecision, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -87,13 +75,13 @@ namespace Cauldron.Drift
             if (response == 0)
             {
                 //If you shifted at least {DriftL} this way, X targets regain 2 HP each.
-                coroutine = base.GameController.SelectAndGainHP(base.HeroTurnTakerController, 2, numberOfTargets: selectedNumber, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectAndGainHP(base.HeroTurnTakerController, 2, numberOfTargets: base.TotalShifts, cardSource: base.GetCardSource());
             }
             //{DriftR}
             else
             {
                 //If you shifted {DriftR} this way, {Drift} deals X targets 3 radiant damage each.
-                coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 3, DamageType.Radiant, selectedNumber, false, selectedNumber, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 3, DamageType.Radiant, base.TotalShifts, false, selectedNumber, cardSource: base.GetCardSource());
             }
             if (base.UseUnityCoroutines)
             {
