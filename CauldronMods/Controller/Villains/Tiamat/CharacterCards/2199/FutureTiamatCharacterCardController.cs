@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Tiamat
 {
-    public class FutureTiamatCharacterCardController : VillainCharacterCardController
+    public class FutureTiamatCharacterCardController : TiamatSubCharacterCardController
     {
         public FutureTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -26,7 +26,9 @@ namespace Cauldron.Tiamat
 
         private IEnumerator Discard2Spells(PhaseChangeAction action)
         {
-            IEnumerator coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, false, new LinqCardCriteria((Card c) => this.IsSpell(c)), 2, moveMatchingCardsToTrash: true);
+            IEnumerator coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, false, new LinqCardCriteria((Card c) => this.IsSpell(c), "spell"), 2,
+                                    revealedCardDisplay: RevealedCardDisplay.Message,
+                                    moveMatchingCardsToTrash: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -71,7 +73,7 @@ namespace Cauldron.Tiamat
             }
 
             //...Then, if {Tiamat} deals no damage this turn, each hero target deals itself 3 projectile damage.
-            if (this.DidDealDamageThisTurn())
+            if (!this.DidDealDamageThisTurn())
             {
                 coroutine = base.GameController.DealDamageToSelf(this.DecisionMaker, (Card c) => c.IsHero, (Card c) => 3, DamageType.Projectile, base.GetCardSource());
                 if (base.UseUnityCoroutines)
@@ -121,19 +123,7 @@ namespace Cauldron.Tiamat
         private bool DidDealDamageThisTurn()
         {
             //Did Tiamat Deal Damage This Turn
-            int result = 0;
-            try
-            {
-                result = (from e in base.GameController.Game.Journal.DealDamageEntriesThisTurn()
-                          where e.SourceCard == base.Card
-                          select e.Amount).Sum();
-            }
-            catch (OverflowException ex)
-            {
-                Log.Warning("DamageDealtThisTurn overflowed: " + ex.Message);
-                result = int.MaxValue;
-            }
-            return result == 0;
+            return GameController.Game.Journal.DealDamageEntriesThisTurn().Any(e => e.SourceCard == Card && e.Amount > 0);
         }
 
         private bool IsSpell(Card c)

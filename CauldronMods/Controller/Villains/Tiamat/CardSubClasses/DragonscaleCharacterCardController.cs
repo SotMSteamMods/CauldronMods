@@ -44,18 +44,20 @@ namespace Cauldron.Tiamat
 
         public override IEnumerator BeforeFlipCardImmediateResponse(FlipCardAction flip)
         {
-            SelectTurnTakerDecision turnTakerDecision = new SelectTurnTakerDecision(base.GameController, this.DecisionMaker, base.FindTurnTakersWhere((TurnTaker tt) => tt.IsHero), SelectionType.SelectFunction, cardSource: base.GetCardSource());
-            //When this card is destroyed, 1 hero may draw a card or [use a power/play a card]. Then, flip this card.
-            IEnumerator coroutine = base.GameController.SelectTurnTakerAndDoAction(turnTakerDecision, this.SelectActionResponse);
-            if (base.UseUnityCoroutines)
+            if (!base.Card.IsFlipped)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                SelectTurnTakerDecision turnTakerDecision = new SelectTurnTakerDecision(base.GameController, this.DecisionMaker, base.FindTurnTakersWhere((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame), SelectionType.SelectFunction, cardSource: base.GetCardSource());
+                //When this card is destroyed, 1 hero may draw a card or [use a power/play a card]. Then, flip this card.
+                IEnumerator coroutine = base.GameController.SelectTurnTakerAndDoAction(turnTakerDecision, this.SelectActionResponse);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
             yield return base.BeforeFlipCardImmediateResponse(flip);
             yield break;
         }
@@ -80,7 +82,7 @@ namespace Cauldron.Tiamat
                 new Function(base.DecisionMaker, "Draw a card", SelectionType.DrawCard, () => base.DrawCard(tt.ToHero())),
                 alternateFunction
             };
-            IEnumerator coroutine = base.SelectAndPerformFunction(this.DecisionMaker, functions, true);
+            IEnumerator coroutine = base.SelectAndPerformFunction(this.DecisionMaker, functions, true, associatedCards: new[] { Card });
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
