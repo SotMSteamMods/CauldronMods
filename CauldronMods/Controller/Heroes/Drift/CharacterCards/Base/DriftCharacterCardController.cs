@@ -8,18 +8,45 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Drift
 {
-    public class DriftCharacterCardController : HeroCharacterCardController
+    public class DriftCharacterCardController : DriftSubCharacterCardController
     {
         public DriftCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
 
-        protected const string HasShifted = "HasShifted";
-        protected const string ShiftTrack = "ShiftTrack";
+        public override IEnumerator UsePower(int index = 0)
+        {
+            int hpNumeral = base.GetPowerNumeral(0, 1);
 
-        private int totalShifts = 0;
-        public int TotalShifts { get => totalShifts; set => totalShifts = value; }
+            //Shift {DriftLL}, {DriftL}, {DriftR}, {DriftRR}. 
+            IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
+                    new Function(base.HeroTurnTakerController, "Drift Left Twice", SelectionType.RemoveTokens, () => base.ShiftLL()),
+                    new Function(base.HeroTurnTakerController, "Drift Left", SelectionType.RemoveTokens, () => base.ShiftL()),
+                    new Function(base.HeroTurnTakerController, "Drift Right", SelectionType.AddTokens, () => base.ShiftR()),
+                    new Function(base.HeroTurnTakerController, "Drift Right Twice", SelectionType.AddTokens, () => base.ShiftRR())
+            });
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //Drift regains 1 HP.
+            coroutine = base.GameController.GainHP(this.Card, hpNumeral);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
 
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
@@ -104,176 +131,6 @@ namespace Cauldron.Drift
                         }
                         break;
                     }
-            }
-            yield break;
-        }
-
-        public override IEnumerator UsePower(int index = 0)
-        {
-            int hpNumeral = base.GetPowerNumeral(0, 1);
-
-            //Shift {DriftLL}, {DriftL}, {DriftR}, {DriftRR}. 
-            IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
-                    new Function(base.HeroTurnTakerController, "Drift Left Twice", SelectionType.RemoveTokens, () => this.ShiftLL()),
-                    new Function(base.HeroTurnTakerController, "Drift Left", SelectionType.RemoveTokens, () => this.ShiftL()),
-                    new Function(base.HeroTurnTakerController, "Drift Right", SelectionType.AddTokens, () => this.ShiftR()),
-                    new Function(base.HeroTurnTakerController, "Drift Right Twice", SelectionType.AddTokens, () => this.ShiftRR())
-            });
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            //Drift regains 1 HP.
-            coroutine = base.GameController.GainHP(this.Card, hpNumeral);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
-        }
-
-        public int CurrentShiftPosition()
-        {
-            return this.GetShiftPool().CurrentValue;
-        }
-
-        public TokenPool GetShiftPool()
-        {
-            return this.GetShiftTrack().FindTokenPool("ShiftPool");
-        }
-
-        public Card GetShiftTrack()
-        {
-            return base.FindCardsWhere((Card c) => c.SharedIdentifier == ShiftTrack && c.IsInPlayAndHasGameText).FirstOrDefault();
-        }
-
-        public IEnumerator ShiftL()
-        {
-            //Ensures not shifting off track
-            if (this.CurrentShiftPosition() > 1)
-            {
-                base.SetCardPropertyToTrueIfRealAction(HasShifted);
-                IEnumerator coroutine = base.GameController.RemoveTokensFromPool(this.GetShiftPool(), 1, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                //Switch to the new card
-                coroutine = base.GameController.SwitchCards(this.GetShiftTrack(), base.FindCard(ShiftTrack + this.CurrentShiftPosition(), false));
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                totalShifts++;
-            }
-            else
-            {
-                IEnumerator coroutine = base.GameController.SendMessageAction("Drift has reached the end of the Shift Track", Priority.Medium, base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-            yield break;
-        }
-
-        public IEnumerator ShiftLL()
-        {
-            IEnumerator coroutine = this.ShiftL();
-            IEnumerator coroutine2 = this.ShiftL();
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-                yield return base.GameController.StartCoroutine(coroutine2);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-                base.GameController.ExhaustCoroutine(coroutine2);
-            }
-            yield break;
-        }
-
-        public IEnumerator ShiftR()
-        {
-            //Ensures not shifting off track
-            if (this.CurrentShiftPosition() < 4)
-            {
-                base.SetCardPropertyToTrueIfRealAction(HasShifted);
-                IEnumerator coroutine = base.GameController.AddTokensToPool(this.GetShiftPool(), 1, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                //Switch to the new card
-                coroutine = base.GameController.SwitchCards(this.GetShiftTrack(), base.FindCard(ShiftTrack + this.CurrentShiftPosition(), false));
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                totalShifts++;
-            }
-            else
-            {
-                IEnumerator coroutine = base.GameController.SendMessageAction("Drift has reached the end of the Shift Track", Priority.Medium, base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-            yield break;
-        }
-
-        public IEnumerator ShiftRR()
-        {
-            IEnumerator coroutine = this.ShiftR();
-            IEnumerator coroutine2 = this.ShiftR();
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-                yield return base.GameController.StartCoroutine(coroutine2);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-                base.GameController.ExhaustCoroutine(coroutine2);
             }
             yield break;
         }
