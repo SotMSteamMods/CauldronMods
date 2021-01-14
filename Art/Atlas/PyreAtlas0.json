@@ -48,9 +48,25 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
+"ExpeditionOblaskPyreCharacter.png":
+{
+	"frame": {"x":1554,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"ExpeditionOblaskPyreCharacterBack.png":
+{
+	"frame": {"x":1733,"y":0,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
 "FissionRegulator.png":
 {
-	"frame": {"x":1554,"y":0,"w":256,"h":188},
+	"frame": {"x":0,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -58,7 +74,7 @@
 },
 "FracturedControlRod.png":
 {
-	"frame": {"x":0,"y":191,"w":256,"h":188},
+	"frame": {"x":259,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -66,7 +82,7 @@
 },
 "GammaBurst.png":
 {
-	"frame": {"x":259,"y":191,"w":256,"h":188},
+	"frame": {"x":518,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -74,7 +90,7 @@
 },
 "HalfLife.png":
 {
-	"frame": {"x":518,"y":191,"w":256,"h":188},
+	"frame": {"x":777,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -82,7 +98,7 @@
 },
 "HullCladding.png":
 {
-	"frame": {"x":777,"y":191,"w":256,"h":188},
+	"frame": {"x":1036,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -90,7 +106,7 @@
 },
 "IonTrace.png":
 {
-	"frame": {"x":1036,"y":191,"w":256,"h":188},
+	"frame": {"x":1295,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -98,7 +114,7 @@
 },
 "NeutronForcefield.png":
 {
-	"frame": {"x":1295,"y":191,"w":256,"h":188},
+	"frame": {"x":1554,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -106,7 +122,7 @@
 },
 "ParticleCollider.png":
 {
-	"frame": {"x":1554,"y":191,"w":256,"h":188},
+	"frame": {"x":0,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -114,7 +130,7 @@
 },
 "PyreCharacter.png":
 {
-	"frame": {"x":518,"y":382,"w":176,"h":256},
+	"frame": {"x":259,"y":450,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -122,7 +138,7 @@
 },
 "PyreCharacterBack.png":
 {
-	"frame": {"x":697,"y":382,"w":176,"h":256},
+	"frame": {"x":438,"y":450,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -130,7 +146,7 @@
 },
 "PyreDeckBack.jpg":
 {
-	"frame": {"x":876,"y":382,"w":177,"h":256},
+	"frame": {"x":617,"y":450,"w":177,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":177,"h":256},
@@ -138,7 +154,7 @@
 },
 "RogueFissionCascade.png":
 {
-	"frame": {"x":0,"y":382,"w":256,"h":188},
+	"frame": {"x":797,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -146,7 +162,7 @@
 },
 "ThermonuclearCore.png":
 {
-	"frame": {"x":259,"y":382,"w":256,"h":188},
+	"frame": {"x":1056,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -154,7 +170,7 @@
 },
 "UnstablePyreCharacter.png":
 {
-	"frame": {"x":1056,"y":382,"w":176,"h":256},
+	"frame": {"x":1315,"y":450,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -162,7 +178,7 @@
 },
 "UnstablePyreCharacterBack.png":
 {
-	"frame": {"x":1235,"y":382,"w":176,"h":256},
+	"frame": {"x":1494,"y":450,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -170,7 +186,7 @@
 },
 "WastelandRoninPyreCharacter.png":
 {
-	"frame": {"x":1414,"y":382,"w":176,"h":256},
+	"frame": {"x":1673,"y":450,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -178,7 +194,7 @@
 },
 "WastelandRoninPyreCharacterBack.png":
 {
-	"frame": {"x":1593,"y":382,"w":176,"h":256},
+	"frame": {"x":1852,"y":450,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -191,6 +207,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:e03b3d9e6e62d2e3470110e41b8be3db:e67bbb41e6ba8356f61720ec920edd68:e1f4dcba79ebab48f31e4698511f345c$"
+	"smartupdate": "$TexturePacker:SmartUpdate:ee5d3ee5e1b0d065dc507a449da2bc1f:70533cd0cce1e538124b3d74539b93e5:e1f4dcba79ebab48f31e4698511f345c$"
 }
 }

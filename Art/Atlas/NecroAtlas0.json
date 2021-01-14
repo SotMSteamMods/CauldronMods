@@ -2,203 +2,203 @@
 
 "Abomination.jpg":
 {
-	"frame": {"x":1,"y":1,"w":256,"h":198},
+	"frame": {"x":0,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "BackfireHex.jpg":
 {
-	"frame": {"x":262,"y":1,"w":256,"h":198},
+	"frame": {"x":259,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "BloodRite.jpg":
 {
-	"frame": {"x":523,"y":1,"w":256,"h":198},
+	"frame": {"x":518,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "BookOfTheDead.jpg":
 {
-	"frame": {"x":784,"y":1,"w":256,"h":198},
+	"frame": {"x":777,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "ChaoticSummon.jpg":
 {
-	"frame": {"x":1045,"y":1,"w":256,"h":198},
+	"frame": {"x":1036,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "CorpseExplosion.jpg":
 {
-	"frame": {"x":1306,"y":1,"w":256,"h":198},
+	"frame": {"x":1295,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "DarkPact.jpg":
 {
-	"frame": {"x":1567,"y":1,"w":256,"h":198},
+	"frame": {"x":1554,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "DemonicImp.jpg":
 {
-	"frame": {"x":1,"y":204,"w":256,"h":198},
+	"frame": {"x":0,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "FinalRitual.jpg":
 {
-	"frame": {"x":262,"y":204,"w":256,"h":198},
+	"frame": {"x":259,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "Ghoul.jpg":
 {
-	"frame": {"x":523,"y":204,"w":256,"h":198},
+	"frame": {"x":518,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "GrandSummon.jpg":
 {
-	"frame": {"x":784,"y":204,"w":256,"h":198},
+	"frame": {"x":777,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "Hellfire.jpg":
 {
-	"frame": {"x":1045,"y":204,"w":256,"h":198},
+	"frame": {"x":1036,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"LastOfTheForgottenOrderNecroCharacter.jpg":
+"LastOfTheForgottenOrderNecroCharacter.png":
 {
-	"frame": {"x":1828,"y":1,"w":178,"h":256},
+	"frame": {"x":1295,"y":191,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
-"LastOfTheForgottenOrderNecroCharacterBack.jpg":
+"LastOfTheForgottenOrderNecroCharacterBack.png":
 {
-	"frame": {"x":1828,"y":262,"w":178,"h":256},
+	"frame": {"x":1474,"y":191,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "NecroCharacter.jpg":
 {
-	"frame": {"x":523,"y":407,"w":178,"h":256},
+	"frame": {"x":1653,"y":191,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "NecroCharacterBack.jpg":
 {
-	"frame": {"x":706,"y":407,"w":178,"h":256},
+	"frame": {"x":1832,"y":191,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "NecroDeckBack.jpg":
 {
-	"frame": {"x":889,"y":407,"w":178,"h":256},
+	"frame": {"x":0,"y":450,"w":177,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":177,"h":256},
+	"sourceSize": {"w":177,"h":256}
 },
 "NecroZombie.jpg":
 {
-	"frame": {"x":1306,"y":204,"w":256,"h":198},
+	"frame": {"x":180,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"PastNecroCharacter.jpg":
+"PastNecroCharacter.png":
 {
-	"frame": {"x":1072,"y":407,"w":178,"h":256},
+	"frame": {"x":439,"y":450,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
-"PastNecroCharacterBack.jpg":
+"PastNecroCharacterBack.png":
 {
-	"frame": {"x":1255,"y":407,"w":178,"h":256},
+	"frame": {"x":618,"y":450,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "PossessedCorpse.jpg":
 {
-	"frame": {"x":1567,"y":204,"w":256,"h":198},
+	"frame": {"x":797,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "TaintedBlood.jpg":
 {
-	"frame": {"x":1,"y":407,"w":256,"h":198},
+	"frame": {"x":1056,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "Talisman.jpg":
 {
-	"frame": {"x":262,"y":407,"w":256,"h":198},
+	"frame": {"x":1315,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "WardenOfChaosNecroCharacter.jpg":
 {
-	"frame": {"x":1438,"y":407,"w":178,"h":256},
+	"frame": {"x":1574,"y":450,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "WardenOfChaosNecroCharacterBack.jpg":
 {
-	"frame": {"x":1621,"y":407,"w":178,"h":256},
+	"frame": {"x":1753,"y":450,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
@@ -207,6 +207,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:ff599a72d7e34a387d8ce457bf5cd8fb:721a4075db93618e6ede9e969592ce05:b1910fc34599234b106445a14740ff1e$"
+	"smartupdate": "$TexturePacker:SmartUpdate:0f0a272feed1b6e2551f2ca4b871ab98:48f1659b6b03e942409d7272ec234b23:b1910fc34599234b106445a14740ff1e$"
 }
 }

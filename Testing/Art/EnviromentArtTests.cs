@@ -174,7 +174,7 @@ namespace CauldronTests.Art.Environment
         [Test]
         public void Endings()
         {
-            string expectedDirectory = Path.Combine(ArtPath, @"Cutouts\Endings\Environment\" + _name);
+            string expectedDirectory = Path.Combine(ArtPath, @"Endings\Environments\" + _name);
 
             if (!Directory.Exists(expectedDirectory))
                 Assert.Inconclusive();

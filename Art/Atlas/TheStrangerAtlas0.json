@@ -1,228 +1,228 @@
 {"frames": {
 
-"CornTheStrangerCharacter.jpg":
+"CornTheStrangerCharacter.png":
 {
-	"frame": {"x":1828,"y":1,"w":178,"h":256},
+	"frame": {"x":0,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
-"CornTheStrangerCharacterBack.jpg":
+"CornTheStrangerCharacterBack.png":
 {
-	"frame": {"x":1828,"y":262,"w":178,"h":256},
+	"frame": {"x":179,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "Corruption.jpg":
 {
-	"frame": {"x":1,"y":1,"w":256,"h":198},
+	"frame": {"x":0,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "FlickeringWeb.jpg":
 {
-	"frame": {"x":262,"y":1,"w":256,"h":198},
+	"frame": {"x":259,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "GlyphOfCombustion.jpg":
 {
-	"frame": {"x":523,"y":1,"w":256,"h":198},
+	"frame": {"x":518,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "GlyphOfDecay.jpg":
 {
-	"frame": {"x":784,"y":1,"w":256,"h":198},
+	"frame": {"x":777,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "GlyphOfInnervation.jpg":
 {
-	"frame": {"x":1045,"y":1,"w":256,"h":198},
+	"frame": {"x":1036,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "GlyphOfPerception.jpg":
 {
-	"frame": {"x":1306,"y":1,"w":256,"h":198},
+	"frame": {"x":1295,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "MarkOfBinding.jpg":
 {
-	"frame": {"x":1567,"y":1,"w":256,"h":198},
+	"frame": {"x":1554,"y":259,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "MarkOfBreaking.jpg":
 {
-	"frame": {"x":1,"y":204,"w":256,"h":198},
+	"frame": {"x":0,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "MarkOfDestruction.jpg":
 {
-	"frame": {"x":262,"y":204,"w":256,"h":198},
+	"frame": {"x":259,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "MarkOfQuickening.jpg":
 {
-	"frame": {"x":523,"y":204,"w":256,"h":198},
+	"frame": {"x":518,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "MarkOfTheBloodThorn.jpg":
 {
-	"frame": {"x":784,"y":204,"w":256,"h":198},
+	"frame": {"x":777,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "MarkOfTheBoneLeech.jpg":
 {
-	"frame": {"x":1045,"y":204,"w":256,"h":198},
+	"frame": {"x":1036,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "MarkOfTheFaded.jpg":
 {
-	"frame": {"x":1306,"y":204,"w":256,"h":198},
+	"frame": {"x":1295,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "MarkOfTheTwistedShadow.jpg":
 {
-	"frame": {"x":1567,"y":204,"w":256,"h":198},
+	"frame": {"x":1554,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"PastTheStrangerCharacter.jpg":
+"PastTheStrangerCharacter.png":
 {
-	"frame": {"x":784,"y":407,"w":178,"h":256},
+	"frame": {"x":358,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
-"PastTheStrangerCharacterBack.jpg":
+"PastTheStrangerCharacterBack.png":
 {
-	"frame": {"x":967,"y":407,"w":178,"h":256},
+	"frame": {"x":537,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "RunecarvedTheStrangerCharacter.jpg":
 {
-	"frame": {"x":1150,"y":407,"w":178,"h":256},
+	"frame": {"x":716,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "RunecarvedTheStrangerCharacterBack.jpg":
 {
-	"frame": {"x":1333,"y":407,"w":178,"h":256},
+	"frame": {"x":895,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "TheOldRoads.jpg":
 {
-	"frame": {"x":1,"y":407,"w":256,"h":198},
+	"frame": {"x":0,"y":641,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
 "TheStrangerCharacter.jpg":
 {
-	"frame": {"x":1516,"y":407,"w":178,"h":256},
+	"frame": {"x":1074,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "TheStrangerCharacterBack.jpg":
 {
-	"frame": {"x":1699,"y":523,"w":178,"h":256},
+	"frame": {"x":1253,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "TheStrangerDeckBack.jpg":
 {
-	"frame": {"x":1,"y":610,"w":178,"h":256},
+	"frame": {"x":1432,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "Unweave.jpg":
 {
-	"frame": {"x":262,"y":407,"w":256,"h":198},
+	"frame": {"x":259,"y":641,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 },
-"WastelandRoninTheStrangerCharacter.jpg":
+"WastelandRoninTheStrangerCharacter.png":
 {
-	"frame": {"x":184,"y":610,"w":178,"h":256},
+	"frame": {"x":1611,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
-"WastelandRoninTheStrangerCharacterBack.jpg":
+"WastelandRoninTheStrangerCharacterBack.png":
 {
-	"frame": {"x":367,"y":610,"w":178,"h":256},
+	"frame": {"x":1790,"y":0,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
 },
 "WhisperedSigns.jpg":
 {
-	"frame": {"x":523,"y":407,"w":256,"h":198},
+	"frame": {"x":518,"y":641,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
-	"sourceSize": {"w":256,"h":198}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
@@ -231,6 +231,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:4291cfa1c6d39521d3eb8964133a6df7:9b8ffc5140d97d644ad892ee61db307c:410fc25ce867aae57553bd27f0dbc44f$"
+	"smartupdate": "$TexturePacker:SmartUpdate:58540ef1ff87d6675c7c6b381f725fb9:55247384c64c7b94e59e60ddb7b9dca1:410fc25ce867aae57553bd27f0dbc44f$"
 }
 }

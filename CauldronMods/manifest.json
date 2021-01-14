@@ -35,9 +35,11 @@
 			"Celadroch",
 			"Dendron",
 			"Gray",
+			"Menagerie",
 			"Mythos",
 			"Oriphel",
 			"PhaseVillain",
+			"ScreaMachine",
 			"SwarmEater",
 			"TheRam",
 			"Tiamat",
@@ -51,7 +53,8 @@
 			"Northspar",
 			"StSimeonsCatacombs",
 			"SuperstormAkela",
-			"TheWanderingIsle"
+			"TheWanderingIsle",
+			"VaultFive"
 		]
 	}
 }
