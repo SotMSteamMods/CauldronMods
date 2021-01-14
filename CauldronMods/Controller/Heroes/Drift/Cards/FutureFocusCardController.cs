@@ -24,7 +24,6 @@ namespace Cauldron.Drift
 
         public override IEnumerator ShiftResponse(DealDamageAction action)
         {
-            bool canShift = base.CurrentShiftPosition() == 1;
             List<YesNoCardDecision> decision = new List<YesNoCardDecision>();
             //...you may shift {DriftRRR}. 
             IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.MakeDecision, this.Card, action, decision, new Card[] { base.GetShiftTrack() }, base.GetCardSource());
@@ -40,7 +39,7 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
                 //If you shifted {DriftRRR} this way, {Drift} deals 1 target 3 radiant damage.
-                if (canShift)
+                if (base.TotalShifts >= 3)
                 {
                     coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 3, DamageType.Radiant, 1, false, 1, cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)

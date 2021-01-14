@@ -39,7 +39,7 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
                 //If you shifted {DriftLLL} this way, you may play a card.
-                if (canShift)
+                if (base.TotalShifts >= 3)
                 {
                     coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true);
                     if (base.UseUnityCoroutines)
