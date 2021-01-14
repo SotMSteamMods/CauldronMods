@@ -22,7 +22,6 @@ namespace Cauldron.Drift
 
             //{DriftFuture} Whenever you shift {DriftR}, select a hero target. Increase the next damage dealt by that target by 2.
             base.AddTrigger<RemoveTokensFromPoolAction>((RemoveTokensFromPoolAction action) => base.IsTimeMatching(Future) && action.IsSuccessful, this.ShiftRResponse, TriggerType.ReduceDamageOneUse, TriggerTiming.After);
-            base.AddTriggers();
         }
 
         private IEnumerator ShiftLResponse(RemoveTokensFromPoolAction action)
