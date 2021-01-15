@@ -107,6 +107,7 @@ namespace Cauldron.TheMistressOfFate
                     {
                         GameController.ExhaustCoroutine(coroutine);
                     }
+
                     if(DidMoveCard(storedMove))
                     {
                         successStorage.Add(true);

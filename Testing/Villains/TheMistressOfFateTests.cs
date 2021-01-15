@@ -1081,5 +1081,8 @@ namespace CauldronTests
             QuickHPCheckZero();
 
         }
+        //TODO - Warped Malus tests
+        //TODO - Chaos Butterfly tests
+        //TODO - Test the 'preserve cards' effect with Sentinels, Temple of Zhu Long, Requital Cosmic
     }
 }
