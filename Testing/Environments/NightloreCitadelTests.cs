@@ -291,5 +291,49 @@ namespace CauldronTests
             QuickHandCheck(1, 1, 1);
             QuickHPCheck(0, 0, -2, -2, -2, -2);
         }
+
+        [Test()]
+        public void TestAssembleTheCouncil_NonOros()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Cauldron.Necro", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card assemble = PutInTrash("AssembleTheCouncil");
+            Card ghoul = PlayCard("Ghoul");
+            IEnumerable<Card> nonTargets = FindCardsWhere(c => nightlore.TurnTaker.Deck.HasCard(c) && !c.IsTarget).Take(3);
+            Card target = PutOnDeck("ArtemisVector");
+            PutOnDeck(nightlore, nonTargets);
+
+            //When this card enters play, reveal cards from the top of the environment deck until a target is revealed, put it into play, and discard the other revealed cards. 
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, necro.CharacterCard, ghoul, target);
+            PlayCard(assemble);
+            QuickHPCheckZero();
+            AssertInPlayArea(nightlore, target);
+            AssertInTrash(nonTargets);
+            AssertInTrash(assemble);
+        }
+
+        [Test()]
+        public void TestAssembleTheCouncil_Oros()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Cauldron.Necro", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card assemble = PutInTrash("AssembleTheCouncil");
+            Card ghoul = PlayCard("Ghoul");
+            IEnumerable<Card> nonTargets = FindCardsWhere(c => nightlore.TurnTaker.Deck.HasCard(c) && !c.IsTarget).Take(3);
+            Card target = PutOnDeck("StarlightOfOros");
+            PutOnDeck(nightlore, nonTargets);
+
+            //When this card enters play, reveal cards from the top of the environment deck until a target is revealed, put it into play, and discard the other revealed cards. 
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, necro.CharacterCard, ghoul, target);
+            PlayCard(assemble);
+            QuickHPCheck(-1,-1,-1,-1,-1,0);
+            AssertInPlayArea(nightlore, target);
+            AssertInTrash(nonTargets);
+            AssertInTrash(assemble);
+        }
     }
 }
