@@ -11,7 +11,6 @@ namespace Cauldron.Menagerie
     {
         public MenagerieCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
         public override bool AllowFastCoroutinesDuringPretend
         {
@@ -41,7 +40,9 @@ namespace Cauldron.Menagerie
         {
             if (!base.Card.IsFlipped)
             { //Front
-                //Cards beneath villain cards are not considered in play. When an enclosure leaves play, put it under this card... 
+              //Cards beneath villain cards are not considered in play. When an enclosure leaves play, put it under this card... 
+                base.Card.UnderLocation.OverrideIsInPlay = false;
+
                 base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => this.IsEnclosure(action.CardToDestroy.Card) && action.PostDestroyDestinationCanBeChanged && action.CardToDestroy.CanBeDestroyed && action.WasCardDestroyed, this.PutUnderThisCardResponse, TriggerType.MoveCard, TriggerTiming.Before));
                 base.AddSideTrigger(base.AddTrigger<MoveCardAction>((MoveCardAction action) => this.IsEnclosure(action.CardToMove) && action.CanChangeDestination && action.Origin.IsInPlayAndNotUnderCard, this.PutUnderThisCardResponse, TriggerType.MoveCard, TriggerTiming.Before));
                 //...discarding all cards beneath it. Put any discarded targets into play.
@@ -60,11 +61,12 @@ namespace Cauldron.Menagerie
             }
             else
             { //Back
-                //When an enclosure enters play, move it next to the active hero with the fewest enclosures in their play area. Heroes with enclosures in their play area may not damage cards in other play areas.
+              //When an enclosure enters play, move it next to the active hero with the fewest enclosures in their play area. Heroes with enclosures in their play area may not damage cards in other play areas.
                 /**logic added to enclosures**/
 
                 //Cards beneath enclosures are not considered in play. When an enclosure leaves play, discard all cards beneath it.
                 /**logic added to enclosures**/
+                base.Card.UnderLocation.OverrideIsInPlay = null;
 
                 //At the end of the villain turn, play the top card of the villain deck. Then, for each enclosure in play, Menagerie deals the hero next to it X projectile damage, where X is the number of cards beneath that enclosure.
                 base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.PlayCardDealDamageResponse, new TriggerType[] { TriggerType.PlayCard, TriggerType.DealDamage }));
