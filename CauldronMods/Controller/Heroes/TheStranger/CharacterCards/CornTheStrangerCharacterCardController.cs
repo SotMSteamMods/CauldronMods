@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Cauldron.TheStranger
 {
-    public class CornTheStrangerCharacterCardController : HeroCharacterCardController
+    public class CornTheStrangerCharacterCardController : TheStrangerBaseCharacterCardController
     {
         public CornTheStrangerCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -113,14 +113,8 @@ namespace Cauldron.TheStranger
             yield break;
         }
 
-        private bool IsRune(Card card)
-        {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "rune", false, false);
-        }
-
         private IEnumerable<Card> FindTargetsNotTheStrangerNextToRunes()
         {
-           
             return FindCardsWhere((Card c) => c != base.Card && IsRuneNextToTarget(c));
         }
 

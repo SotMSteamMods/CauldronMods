@@ -21,7 +21,7 @@ namespace Cauldron.TheStranger
         {
             base.AddTriggers();
             //The first time that target deals damage each turn, it regains 1HP.
-            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DidDealDamage && dd.DamageSource != null && dd.DamageSource.Card ==  base.GetCardThisCardIsNextTo(true) && !base.IsPropertyTrue(FirstTimeDealingDamage), new Func<DealDamageAction, IEnumerator>(this.GainHpResponse), TriggerType.GainHP, TriggerTiming.After, ActionDescription.DamageTaken, false, true, null, false, null, null, false, false);
+            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DidDealDamage && dd.DamageSource != null && dd.DamageSource.Card == base.GetCardThisCardIsNextTo(true) && !base.IsPropertyTrue(FirstTimeDealingDamage), this.GainHpResponse, TriggerType.GainHP, TriggerTiming.After, ActionDescription.DamageTaken, false, true, null, false, null, null, false, false);
 
             AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeDealingDamage), TriggerType.Hidden);
         }
