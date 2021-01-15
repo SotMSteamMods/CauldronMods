@@ -2,8 +2,9 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Linq;
 
-namespace Cauldron
+namespace Cauldron.Drift
 {
     public class DriftSubCharacterCardController : HeroCharacterCardController
     {
