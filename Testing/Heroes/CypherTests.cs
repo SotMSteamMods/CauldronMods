@@ -368,6 +368,7 @@ namespace CauldronTests
             QuickHPCheck(-2, -2, -2);
             AssertInTrash(dermal, retinal);
         }
+
         [Test]
         public void TestCyberdefenseDestroyLessThanMax()
         {
@@ -388,6 +389,31 @@ namespace CauldronTests
             PlayCard("Cyberdefense");
             QuickHPCheck(-1, -1, -1);
             AssertInTrash(dermal);
+            AssertIsInPlay(retinal);
+        }
+
+
+        [Test]
+        public void TestCyberdefenseDestroyNone()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Legacy", "Tachyon", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card batt = PlayCard("BladeBattalion");
+            Card redist = PlayCard("ElementalRedistributor");
+
+            Card dermal = PlayCard("DermalAug");
+            Card retinal = PlayCard("RetinalAug");
+            PlayCard("InspiringPresence");
+
+            DecisionYesNo = true;
+            DecisionAutoDecideIfAble = true;
+            DecisionSelectCards = new Card[] { null };
+            QuickHPStorage(mdp, batt, redist);
+            PlayCard("Cyberdefense");
+            QuickHPCheck(-1, -1, -1);
+            AssertIsInPlay(dermal);
             AssertIsInPlay(retinal);
         }
 
