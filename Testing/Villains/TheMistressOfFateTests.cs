@@ -993,5 +993,58 @@ namespace CauldronTests
             PlayCard("StolenFuture");
             AssertIncapacitated(sentinels);
         }
+        [Test]
+        public void TestTangledWeftAllowedDiscards()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            //give a face-up day card to count
+            PutOnDeck("WarpedMalus");
+            FlipCard(GetCard("DayOfSorrows"));
+
+            PlayCard("SurgeOfStrength"); //ongoing, limited
+            PlayCard("FleshOfTheSunGod"); //ongoing
+
+            PutOnDeck(legacy, legacy.HeroTurnTaker.Hand.Cards);
+            PutOnDeck(ra, ra.HeroTurnTaker.Hand.Cards);
+            PutOnDeck(tempest, tempest.HeroTurnTaker.Hand.Cards);
+
+            Card ring = PutInHand("TheLegacyRing"); //equip, limited
+            Card evo = PutInHand("NextEvolution"); //ongoing
+            Card thokk = PutInHand("Thokk");
+            Card staff = PutInHand("TheStaffOfRa");
+
+            QuickHPStorage(legacy, ra, tempest);
+            DecisionAutoDecideIfAble = true;
+            AssertNextDecisionChoices(new Card[] { ring, evo }, new Card[] { thokk });
+            PlayCard("TangledWeft");
+
+            QuickHPCheck(0, -5, -5);
+        }
+        [Test]
+        public void TestTangledWeftScalesWithDays()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            PlayCard("Fortitude");
+            PutOnDeck(legacy, legacy.HeroTurnTaker.Hand.Cards);
+
+            //give a face-up day card to count
+            PutOnDeck("WarpedMalus");
+            FlipCard(GetCard("DayOfSorrows"));
+
+            PutOnDeck("ResidualMalus");
+            FlipCard(GetCard("DayOfSwords"));
+
+            QuickHPStorage(legacy, ra, tempest);
+            PlayCard("TangledWeft");
+            QuickHPCheck(-8, -10, -10);
+        }
     }
 }
