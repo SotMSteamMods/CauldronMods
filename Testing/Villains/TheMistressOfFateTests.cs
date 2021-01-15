@@ -1082,7 +1082,75 @@ namespace CauldronTests
 
         }
         //TODO - Warped Malus tests
+
         //TODO - Chaos Butterfly tests
+        [Test]
+        public void TestChaosButterflyDamage()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            PlayCard("Fortitude");
+            PlayCard("ChaosButterfly");
+            QuickHPStorage(legacy, ra, tempest);
+            GoToEndOfTurn();
+            QuickHPCheck(-4, -6, -6);
+        }
+        [Test]
+        public void TestChaosButterflySwapDays()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            Card firstDay = DayCardsInOrder[0];
+            int firstDayStartingIndex = firstDay.PlayIndex ?? -1;
+            Card secondDay = DayCardsInOrder[1];
+            int secondDayStartingIndex = secondDay.PlayIndex ?? -1;
+
+            FlipCard(firstDay);
+            FlipCard(secondDay);
+
+            DestroyCards((Card c) => c.IsVillain && !c.IsCharacter && !c.Definition.Keywords.Contains("day"));
+            Card underFirst = firstDay.UnderLocation.Cards.FirstOrDefault();
+            Card underSecond = secondDay.UnderLocation.Cards.FirstOrDefault();
+            DecisionYesNo = true;
+            PlayCard("ChaosButterfly");
+            DestroyCard("ChaosButterfly");
+
+            Assert.AreEqual(firstDayStartingIndex, secondDay.PlayIndex);
+            Assert.AreEqual(secondDayStartingIndex, firstDay.PlayIndex);
+
+            if (underFirst != null)
+            {
+                AssertUnderCard(firstDay, underFirst);
+            }
+            if(underSecond != null)
+            {
+                AssertUnderCard(secondDay, underSecond);
+            }
+
+            FlipCard(fate);
+            GoToStartOfTurn(fate);
+            AssertNotFlipped(secondDay);
+            AssertFlipped(firstDay);
+
+        }
+        [Test]
+        public void TestChaosButterflyUnableToSwapDays()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            AssertNextMessage("There are not enough face-up day cards to swap their positions.");
+            PlayCard("ChaosButterfly");
+            DestroyCard("ChaosButterfly");
+        }
         //TODO - Test the 'preserve cards' effect with Sentinels, Temple of Zhu Long, Requital Cosmic
     }
 }
