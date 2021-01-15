@@ -39,7 +39,7 @@ namespace Cauldron.Drift
 
         public Card GetShiftTrack()
         {
-            return base.FindCardsWhere((Card c) => c.SharedIdentifier == ShiftTrack && c.IsInPlayAndHasGameText).FirstOrDefault();
+            return base.FindCardsWhere((Card c) => c.SharedIdentifier == ShiftTrack && c.IsInPlayAndHasGameText, false).FirstOrDefault();
         }
 
         public bool IsFocus(Card c)
