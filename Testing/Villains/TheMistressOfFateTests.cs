@@ -811,5 +811,42 @@ namespace CauldronTests
             AssertIsInPlay(correction);
             AssertNumberOfCardsInDeck(fate, 4);
         }
+        [Test]
+        public void TestResidualMalusDamageResponse()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            PlayCard("ResidualMalus");
+
+            QuickHPStorage(legacy, ra, tempest);
+            PlayCard("SurgeOfStrength");
+            QuickHPCheck(-1, 0, 0);
+
+            //only once per turn
+            PlayCard("AquaticCorrespondence");
+            QuickHPCheckZero();
+
+            PutInTrash("TrafficPileup");
+            GoToStartOfTurn(legacy);
+            PlayCard("FleshOfTheSunGod");
+            QuickHPCheck(0, -2, 0);
+        }
+        [Test]
+        public void TestResidualMalusOnDestructionEffect()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            Card residual = PlayCard("ResidualMalus");
+            Card warped = PlayCard("WarpedMalus");
+
+            DestroyCard(residual);
+            AssertInTrash(warped);
+        }
     }
 }
