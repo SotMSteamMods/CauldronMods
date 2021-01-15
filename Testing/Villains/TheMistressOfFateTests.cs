@@ -900,5 +900,54 @@ namespace CauldronTests
             AssertNumberOfCardsAtLocation(stap.UnderLocation, 0);
             AssertOnTopOfDeck(traffic);
         }
+        [Test]
+        public void TestSeeThePatternDamage()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            QuickHPStorage(legacy, ra, tempest);
+            PlayCard("Fortitude");
+            PlayCard("SeeThePattern");
+            //H and H - Fortitude applies twice
+            QuickHPCheck(-4, -6, -6);
+        }
+        [Test]
+        public void TestSeeThePatternReturn()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            Card ring = PutInTrash("TheLegacyRing");
+            Card staff = PutInTrash("TheStaffOfRa");
+            Card shackles = PutInTrash("GeneBoundShackles");
+
+            Card pattern = PlayCard("SeeThePattern");
+            FlipCard(fate);
+            AssertInHand(ring, staff, shackles);
+            AssertInTrash(pattern);
+        }
+        [Test]
+        public void TestSeeThePatternOptional()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            Card ring = PutInTrash("TheLegacyRing");
+            Card staff = PutInTrash("TheStaffOfRa");
+            Card shackles = PutInTrash("GeneBoundShackles");
+            Card pattern = PlayCard("SeeThePattern");
+
+            DecisionSelectTurnTakers = new TurnTaker[] {null, legacy.TurnTaker, ra.TurnTaker, tempest.TurnTaker };
+            FlipCard(fate);
+            AssertIsInPlay(pattern);
+            AssertInTrash(ring, staff, shackles);
+        }
     }
 }
