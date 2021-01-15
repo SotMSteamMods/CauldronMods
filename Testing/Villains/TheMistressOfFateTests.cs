@@ -767,5 +767,49 @@ namespace CauldronTests
             Card memory = PlayCard("MemoryOfTomorrow");
             AssertNextToCard(memory, secondDay);
         }
+        [Test]
+        public void TestNecessaryCorrectionDamage()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            QuickHPStorage(legacy, ra, tempest);
+            PlayCard("NecessaryCorrection");
+            QuickHPCheck(-10, -10, 0);
+        }
+        [Test]
+        public void TestNecessaryCorrectionCauseMistressFlip()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            GoToStartOfTurn(FindEnvironment());
+            Card illusion = PutOnDeck("IllusionOfFreeWill");
+            Card butterfly = PutOnDeck("ChaosButterfly");
+            Card correction = PlayCard("NecessaryCorrection");
+            GoToEndOfTurn();
+            AssertOutOfGame(illusion, butterfly);
+            AssertNotInPlay(correction);
+        }
+        [Test]
+        public void TestNecessaryCorrectionNotTriggerWithSmallDeck()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            GoToStartOfTurn(FindEnvironment());
+            Card correction = PlayCard("NecessaryCorrection");
+            MoveAllCards(fate, fate.TurnTaker.Deck, fate.TurnTaker.Trash, leaveSomeCards: 4);
+
+            GoToEndOfTurn();
+            AssertIsInPlay(correction);
+            AssertNumberOfCardsInDeck(fate, 4);
+        }
     }
 }
