@@ -949,5 +949,49 @@ namespace CauldronTests
             AssertIsInPlay(pattern);
             AssertInTrash(ring, staff, shackles);
         }
+        [Test]
+        public void TestStolenFutureBasic()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            QuickHPStorage(fate);
+            Card stolen = PlayCard("StolenFuture");
+            AssertInTrash(stolen);
+            AssertIncapacitated(legacy);
+            QuickHPCheck(-5);
+        }
+        [Test] 
+        public void TestStolenFutureTiedMaxHP()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            SetHitPoints(legacy, 30);
+            DecisionSelectCards = new Card[] { ra.CharacterCard, fate.CharacterCard };
+            QuickHPStorage(fate);
+            Card stolen = PlayCard("StolenFuture");
+            AssertInTrash(stolen);
+            AssertIncapacitated(ra);
+            QuickHPCheck(-5);
+        }
+        [Test]
+        public void TestStolenFutureMultiCharacterHero()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "TheSentinels", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            SetHitPoints(legacy, 10);
+            SetHitPoints(ra, 10);
+
+            PlayCard("StolenFuture");
+            AssertIncapacitated(sentinels);
+        }
     }
 }
