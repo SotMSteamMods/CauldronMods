@@ -14,6 +14,9 @@ namespace CauldronTests
         #region NightloreCitadelHelperFunctions
 
         protected TurnTakerController nightlore { get { return FindEnvironment(); } }
+        protected HeroTurnTakerController starlight { get { return FindHero("Starlight"); } }
+        protected HeroTurnTakerController necro { get { return FindHero("Necro"); } }
+
         protected bool IsConstellation(Card card)
         {
             return card.DoKeywordsContain("constellation");
@@ -250,6 +253,43 @@ namespace CauldronTests
             QuickHPCheck(0, 3, 0, -3, -3);
             //Then, destroy this card.
             AssertInTrash(rage);
+        }
+
+        [Test()]
+        public void TestArtemisVector_IncreaseDamage()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Cauldron.Starlight", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card artemis = PlayCard("ArtemisVector");
+            Card battalion = PlayCard("BladeBattalion");
+            // Increase damage dealt to villain targets with Constellations next to them by 1.
+            DecisionSelectCards = new Card[] { baron.CharacterCard, ra.CharacterCard };
+            DecisionAutoDecideIfAble = true;
+            PlayCard("AncientConstellationA");
+            PlayCard("AncientConstellationB");
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, starlight.CharacterCard);
+            DealDamage(ra, (Card c) => c.IsTarget, 2, DamageType.Fire);
+            QuickHPCheck(-3, -2, -2, -2, -2);
+        }
+
+        [Test()]
+        public void TestArtemisVector_WhenDestroyed()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Cauldron.Necro", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card artemis = PlayCard("ArtemisVector");
+            Card battalion = PlayCard("BladeBattalion");
+            Card abomination = PlayCard("Abomination");
+            // When this card is destroyed, each hero target deals themselves 2 psychic damage and each player draws a card.
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, necro.CharacterCard, abomination);
+            QuickHandStorage(ra, legacy, necro);
+            DestroyCard(artemis, baron.CharacterCard);
+            QuickHandCheck(1, 1, 1);
+            QuickHPCheck(0, 0, -2, -2, -2, -2);
         }
     }
 }

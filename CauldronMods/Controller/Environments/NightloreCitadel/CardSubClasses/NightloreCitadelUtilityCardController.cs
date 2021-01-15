@@ -13,5 +13,11 @@ namespace Cauldron.NightloreCitadel
         protected NightloreCitadelUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public static readonly string ConstellationKeyword = "constellation";
+        protected bool IsConstellation(Card card)
+        {
+            return card.DoKeywordsContain(ConstellationKeyword);
+        }
     }
 }
