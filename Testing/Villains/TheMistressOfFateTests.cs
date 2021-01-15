@@ -848,5 +848,57 @@ namespace CauldronTests
             DestroyCard(residual);
             AssertInTrash(warped);
         }
+        [Test]
+        public void TestSameTimeAndPlaceDamage()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            QuickHPStorage(legacy, ra, tempest);
+            PlayCard("Fortitude");
+            PlayCard("SameTimeAndPlace");
+            QuickHPCheck(-9, -10, -10);
+        }
+        [Test]
+        public void TestSameTimeAndPlaceStoreCard()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            Card stap = PlayCard("SameTimeAndPlace");
+            Card traffic = PlayCard("TrafficPileup");
+            PutOnDeck(FindEnvironment(), traffic);
+
+            AssertUnderCard(stap, traffic);
+            Card police = PlayCard("PoliceBackup");
+            DestroyCard(police);
+            AssertInTrash(police);
+        }
+        [Test]
+        public void TestSameTimeAndPlacePutCardOnDeck()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            Card stap = PlayCard("SameTimeAndPlace");
+            Card traffic = PlayCard("TrafficPileup");
+            DestroyCard(traffic);
+            AssertUnderCard(stap, traffic);
+
+            //not face-down to face-up
+            Card saints = GetCard("DayOfSaints");
+            FlipCard(saints);
+            AssertUnderCard(stap, traffic);
+
+            FlipCard(saints);
+            AssertNumberOfCardsAtLocation(stap.UnderLocation, 0);
+            AssertOnTopOfDeck(traffic);
+        }
     }
 }
