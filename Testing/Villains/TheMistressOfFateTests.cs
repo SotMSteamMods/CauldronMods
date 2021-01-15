@@ -1046,5 +1046,40 @@ namespace CauldronTests
             PlayCard("TangledWeft");
             QuickHPCheck(-8, -10, -10);
         }
+        [Test]
+        public void TestToDustNotEnoughCards()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            QuickHPStorage(legacy, ra, tempest);
+            AssertNextMessages("Ra's trash does not have 10 cards to shuffle in!", MessageTerminator);
+            PlayCard("ToDust");
+            QuickHPCheck(0, -15, 0);
+            CheckFinalMessage();
+        }
+        [Test]
+        public void TestToDustRedirect()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            Card traffic = PlayCard("TrafficPileup");
+            QuickHPStorage(legacy, ra, tempest);
+            DecisionAutoDecideIfAble = true;
+            DecisionYesNo = true;
+
+            MoveCards(ra, ra.TurnTaker.Deck.Cards, ra.TurnTaker.Trash, leaveSomeCards: 10);
+            DecisionRedirectTarget = traffic;
+            PlayCard("ToDust");
+            AssertInTrash(traffic);
+            AssertNumberOfCardsInDeck(ra, 20);
+            QuickHPCheckZero();
+
+        }
     }
 }
