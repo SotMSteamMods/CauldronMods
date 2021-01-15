@@ -30,7 +30,7 @@ namespace Cauldron.Tiamat
 
             //Shuffle all copies of Elemental Frenzy from the villain trash into the villain deck.
             IEnumerable<Card> frenzies = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Identifier == "ElementalFrenzy" && base.TurnTaker.Trash.Cards.Contains(c)));
-            if (frenzies.Count<Card>() > 0)
+            if (frenzies.Any())
             {
                 coroutine = base.BulkMoveCard(this.TurnTakerController, frenzies, this.TurnTaker.Deck, false, false, this.TurnTakerController, false);
                 IEnumerator coroutine2 = base.GameController.ShuffleLocation(this.TurnTaker.Deck, cardSource: base.GetCardSource());

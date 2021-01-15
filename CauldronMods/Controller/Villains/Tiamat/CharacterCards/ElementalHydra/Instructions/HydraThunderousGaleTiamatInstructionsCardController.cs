@@ -11,12 +11,11 @@ namespace Cauldron.Tiamat
     {
         public HydraThunderousGaleTiamatInstructionsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "HydraStormTiamatCharacter", "HydraWindTiamatCharacter", "ElementOfLightning")
         {
-           
             SpecialStringMaker.ShowSpecialString(() => BuildDecapitatedHeadList());
             SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: 1 + NumberOfOngoingsInTrash()).Condition = () => base.Card.IsFlipped && FirstHeadCardController().Card.IsFlipped && !SecondHeadCardController().Card.IsFlipped && SecondHeadCardController().Card.IsInPlayAndNotUnderCard;
             SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => base.Card.IsFlipped && !FirstHeadCardController().Card.IsFlipped;
         }
-        
+
         //Whenever Element of Lightning enters play and {StormTiamatCharacter} is decapitated, if {WindTiamatCharacter} is active she deals the X hero targets with the Highest HP {H - 1} projectile damage each, where X = 1 plus the number of ongoing cards in the villain trash.
         protected override IEnumerator alternateElementCoroutine => base.DealDamageToHighestHP(base.SecondHeadCardController().Card, 1, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => new int?(Game.H - 1), DamageType.Projectile, numberOfTargets: () => 1 + NumberOfOngoingsInTrash());
 
@@ -53,7 +52,7 @@ namespace Cauldron.Tiamat
 
         private IEnumerator GrowHeadResponse(PhaseChangeAction action)
         {
-            IEnumerable<Card> decapitatedHeads = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsFlipped && c.DoKeywordsContain("head") && c.IsInPlayAndNotUnderCard));
+            IEnumerable<Card> decapitatedHeads = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsFlipped && IsHead(c) && c.IsInPlayAndNotUnderCard));
             SelectCardDecision cardDecision = new SelectCardDecision(this.GameController, this.DecisionMaker, SelectionType.FlipCardFaceUp, decapitatedHeads, cardSource: base.GetCardSource());
             //...flip 1 decapitated head...
             IEnumerator coroutine = base.GameController.SelectCardAndDoAction(cardDecision, (SelectCardDecision decision) => this.GrowHeadAction(decision));
@@ -71,7 +70,7 @@ namespace Cauldron.Tiamat
         private IEnumerator GrowHeadAction(SelectCardDecision decision)
         {
             int HP = Game.H * 2;
-            if (Game.IsAdvanced && base.FindCardsWhere(new LinqCardCriteria((Card c) => c.DoKeywordsContain("head") && c.IsVillainCharacterCard && c.IsInPlayAndNotUnderCard)).Count<Card>() > 3)
+            if (Game.IsAdvanced && base.FindCardsWhere(new LinqCardCriteria((Card c) => IsHead(c) && c.IsVillainCharacterCard && c.IsInPlayAndNotUnderCard)).Count() > 3)
             {
                 //Every Instruction card has this as its Advanced Flipped Game Text, if there are ever more than 3 heads in play then one of the instructions are flipped
                 //Decapitated heads are restored to 3 times {H} HP when they become active.
@@ -122,7 +121,7 @@ namespace Cauldron.Tiamat
         {
             return (from card in base.TurnTaker.Trash.Cards
                     where card.IsOngoing
-                    select card).Count<Card>();
+                    select card).Count();
         }
     }
 }

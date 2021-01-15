@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.ScreaMachine
 {
-    public abstract class ScreaMachineUtilityCharacterCardController : CardController
+    public abstract class ScreaMachineUtilityCharacterCardController : VillainCharacterCardController
     {
         protected ScreaMachineUtilityCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

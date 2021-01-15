@@ -8,10 +8,26 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.ScreaMachine
 {
-    public class IrresistableVoiceCardController : ScreaMachineUtilityCardController
+    public class IrresistibleVoiceCardController : ScreaMachineBandCardController
     {
-        public IrresistableVoiceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public IrresistibleVoiceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, ScreaMachineBandmate.Value.Valentine)
         {
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
+            SpecialStringMaker.ShowHeroTargetWithLowestHP();
+        }
+
+        protected override IEnumerator ActivateBandAbility()
+        {
+            var coroutine = DealDamageToHighestHP(null, 1, c => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, c => 2, DamageType.Melee,
+                                damageSourceInfo: new TargetInfo(HighestLowestHP.LowestHP, 1, 1, new LinqCardCriteria(c => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, "hero target with the lowest")));
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
         }
     }
 }

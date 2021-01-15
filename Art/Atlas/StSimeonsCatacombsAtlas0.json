@@ -122,7 +122,7 @@
 },
 "StSimeonsCatacombsInstructionsBack.jpg":
 {
-	"frame": {"x":617,"y":382,"w":176,"h":256},
+	"frame": {"x":796,"y":382,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -159,6 +159,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:6117dc29b0873e0af9b1e5eb242beaad:68b2f274f61604f9b06aab8df22d1311:d900447de62aad01e8f50729ddfcdc6e$"
+	"smartupdate": "$TexturePacker:SmartUpdate:c9bc93404d0596677d3dc33b427b4067:afa761173368854e59e740e365352916:d900447de62aad01e8f50729ddfcdc6e$"
 }
 }

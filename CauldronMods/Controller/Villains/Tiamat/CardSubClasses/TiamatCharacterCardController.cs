@@ -28,16 +28,6 @@ namespace Cauldron.Tiamat
         protected abstract ITrigger[] AddDecapitatedTriggers();
         protected abstract ITrigger[] AddDecapitatedAdvancedTriggers();
 
-        public bool IsSpell(Card card)
-        {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "spell");
-        }
-        public bool IsHead(Card card)
-        {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "head");
-        }
-
-
         public override void AddSideTriggers()
         {
             //Win Condition
@@ -72,24 +62,6 @@ namespace Cauldron.Tiamat
                     base.AddSideTriggers(this.AddDecapitatedAdvancedTriggers());
                 }
             };
-        }
-
-        //Did Head Deal Damage This Turn
-        public bool DidDealDamageThisTurn()
-        {
-            int result = 0;
-            try
-            {
-                result = (from e in base.GameController.Game.Journal.DealDamageEntriesThisTurn()
-                          where e.SourceCard == base.Card
-                          select e.Amount).Sum();
-            }
-            catch (OverflowException ex)
-            {
-                Log.Warning("DamageDealtThisTurn overflowed: " + ex.Message);
-                result = int.MaxValue;
-            }
-            return result == 0;
         }
 
         //When a {Tiamat} head is destroyed, flip her.
