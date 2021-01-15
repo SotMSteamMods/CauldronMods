@@ -12,6 +12,7 @@ namespace Cauldron.NightloreCitadel
     {
         public ArtemisVectorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria(c => c.IsInPlayAndHasGameText && IsVillainTarget(c) && c.NextToLocation.Cards.Any(c2 => IsConstellation(c2)), "villain targets with constellations next to them", useCardsSuffix: false));
         }
 
         public override void AddTriggers()
