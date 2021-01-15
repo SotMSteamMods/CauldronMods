@@ -335,5 +335,122 @@ namespace CauldronTests
             AssertInTrash(nonTargets);
             AssertInTrash(assemble);
         }
+
+        [Test()]
+        public void TestCitadelGarrison_NoCannonOrOros()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card garrison = PlayCard("CitadelGarrison");
+            //At the start of the environment turn, this card deals the hero target with the second highest HP {H + 1} radiant damage.
+            QuickHPStorage(ra, legacy, haka);
+            GoToStartOfTurn(nightlore);
+            QuickHPCheck(0, -4, 0);
+        }
+
+        [Test()]
+        public void TestCitadelGarrison_CannonNoOros()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card garrison = PlayCard("CitadelGarrison");
+            Card cannon = PlayCard("AethiumCannon");
+            MoveCard(nightlore, GetRandomCardFromHand(ra), cannon.UnderLocation, cardSource: FindCardController(cannon).GetCardSource());
+            MoveCard(nightlore, GetRandomCardFromHand(legacy), cannon.UnderLocation, cardSource: FindCardController(cannon).GetCardSource());
+            MoveCard(nightlore, GetRandomCardFromHand(haka), cannon.UnderLocation, cardSource: FindCardController(cannon).GetCardSource());
+
+            //At the start of the environment turn, this card deals the hero target with the second highest HP {H + 1} radiant damage.
+            QuickHPStorage(ra, legacy, haka);
+            GoToStartOfTurn(nightlore);
+            QuickHPCheck(0, -4, 0);
+
+            //Then, if Starlight of Oros and Aethium Cannon are in play, discard 2 cards from beneath Aethium Cannon.
+            //should not trigger
+            AssertNumberOfCardsUnderCard(cannon, 3);
+        }
+
+        [Test()]
+        public void TestCitadelGarrison_CannonAndOros_MoreThan2Under()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card garrison = PlayCard("CitadelGarrison");
+            Card cannon = PlayCard("AethiumCannon");
+            Card raRandom = GetRandomCardFromHand(ra);
+            Card legacyRandom = GetRandomCardFromHand(legacy);
+            Card hakaRandom = GetRandomCardFromHand(haka);
+
+            MoveCard(nightlore, raRandom, cannon.UnderLocation, cardSource: FindCardController(cannon).GetCardSource());
+            MoveCard(nightlore, legacyRandom, cannon.UnderLocation, cardSource: FindCardController(cannon).GetCardSource());
+            MoveCard(nightlore, hakaRandom, cannon.UnderLocation, cardSource: FindCardController(cannon).GetCardSource());
+            Card oros = PlayCard("StarlightOfOros");
+
+            //At the start of the environment turn, this card deals the hero target with the second highest HP {H + 1} radiant damage.
+            QuickHPStorage(ra, legacy, haka);
+            DecisionSelectCards = new Card[] { raRandom, hakaRandom };
+            GoToStartOfTurn(nightlore);
+            QuickHPCheck(0, -4, 0);
+
+            //Then, if Starlight of Oros and Aethium Cannon are in play, discard 2 cards from beneath Aethium Cannon.
+            AssertNumberOfCardsUnderCard(cannon, 1);
+            AssertInTrash(ra, raRandom);
+            AssertInTrash(haka, hakaRandom);
+            AssertUnderCard(cannon, legacyRandom);
+        }
+
+        [Test()]
+        public void TestCitadelGarrison_CannonAndOros_2Under()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card garrison = PlayCard("CitadelGarrison");
+            Card cannon = PlayCard("AethiumCannon");
+            Card raRandom = GetRandomCardFromHand(ra);
+            Card hakaRandom = GetRandomCardFromHand(haka);
+
+            MoveCard(nightlore, raRandom, cannon.UnderLocation, cardSource: FindCardController(cannon).GetCardSource());
+            MoveCard(nightlore, hakaRandom, cannon.UnderLocation, cardSource: FindCardController(cannon).GetCardSource());
+            Card oros = PlayCard("StarlightOfOros");
+
+            //At the start of the environment turn, this card deals the hero target with the second highest HP {H + 1} radiant damage.
+            QuickHPStorage(ra, legacy, haka);
+            DecisionSelectCards = new Card[] { raRandom, hakaRandom };
+            GoToStartOfTurn(nightlore);
+            QuickHPCheck(0, -4, 0);
+
+            //Then, if Starlight of Oros and Aethium Cannon are in play, discard 2 cards from beneath Aethium Cannon.
+            AssertNumberOfCardsUnderCard(cannon, 0);
+            AssertInTrash(ra, raRandom);
+            AssertInTrash(haka, hakaRandom);
+        }
+
+        [Test()]
+        public void TestCitadelGarrison_CannonAndOros_0Under()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card garrison = PlayCard("CitadelGarrison");
+            Card cannon = PlayCard("AethiumCannon");
+           
+            Card oros = PlayCard("StarlightOfOros");
+
+            //At the start of the environment turn, this card deals the hero target with the second highest HP {H + 1} radiant damage.
+            QuickHPStorage(ra, legacy, haka);
+            GoToStartOfTurn(nightlore);
+            QuickHPCheck(0, -4, 0);
+
+            //Then, if Starlight of Oros and Aethium Cannon are in play, discard 2 cards from beneath Aethium Cannon.
+            AssertNumberOfCardsUnderCard(cannon, 0);
+        }
     }
 }
