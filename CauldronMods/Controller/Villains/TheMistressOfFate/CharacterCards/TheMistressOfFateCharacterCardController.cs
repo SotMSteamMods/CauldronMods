@@ -27,6 +27,11 @@ namespace Cauldron.TheMistressOfFate
         {
             //might be needed to keep people from looking through the deck for process-of-elimination
             AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
+            SpecialStringMaker.ShowSpecialString(BuildRemovedCardsSpecialString);
+            if(Game.IsAdvanced)
+            {
+                SpecialStringMaker.ShowHeroCharacterCardWithLowestHP();
+            }
         }
 
         public override bool? AskIfCardIsVisibleToCardSource(Card card, CardSource cardSource)
@@ -462,6 +467,37 @@ namespace Cauldron.TheMistressOfFate
             return false;
         }
 
+        private string BuildRemovedCardsSpecialString()
+        {
+            var response = "Villain cards removed from the game: ";
+            var removedCards = TurnTaker.GetCardsWhere((Card c) => c.Location.IsOutOfGame);
+            if(removedCards.Any())
+            {
+                var faceUp = removedCards.Where((Card c) => !c.IsFlipped);
+                var faceDown = removedCards.Where((Card c) => c.IsFaceDownNonCharacter);
+                string faceUpString = "";
+                string faceDownString = "";
+                string joiner = "";
+                if(faceUp.Any())
+                {
+                    faceUpString = String.Join(", ", faceUp.Select((Card c) => c.Title).ToArray());
+                }
+                if(faceDown.Any())
+                {
+                    faceDownString = $"{faceDown.Count()} unknown cards";
+                }
+                if(faceUpString != "" && faceDownString != "")
+                {
+                    joiner = " and ";
+                }
+                response += faceUpString + joiner + faceDownString + ".";
+            }
+            else
+            {
+                response += "None.";
+            }
+            return response;
+        }
         private GameAction FakeAction => new PhaseChangeAction(GetCardSource(), GameController.ActiveTurnPhase, GameController.ActiveTurnPhase, true);
     }
 }

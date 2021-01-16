@@ -12,8 +12,13 @@ namespace Cauldron.TheMistressOfFate
     {
         public HourDevourerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowIfElseSpecialString(() => NumFaceUpDays() == 1, () => $"There is 1 face up day card.", () => $"There are {NumFaceUpDays()} face up day cards.");
         }
 
+        private int NumFaceUpDays()
+        {
+            return GameController.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsDay(c)).Count();
+        }
         public override void AddTriggers()
         {
             //"At the end of the villain turn, this card deals each non-villain target X sonic damage, where X is 3 times the number of Day cards face up.",
@@ -26,7 +31,7 @@ namespace Cauldron.TheMistressOfFate
 
         private IEnumerator DealDamageResponse(PhaseChangeAction pc)
         {
-            Func<Card, int?> threeTimesFaceUpDays = (Card target) => 3 * GameController.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsDay(c)).Count();
+            Func<Card, int?> threeTimesFaceUpDays = (Card target) => 3 * NumFaceUpDays();
 
             IEnumerator coroutine = DealDamage(Card, (Card c) => !c.IsVillain, threeTimesFaceUpDays, DamageType.Sonic);
             if (UseUnityCoroutines)

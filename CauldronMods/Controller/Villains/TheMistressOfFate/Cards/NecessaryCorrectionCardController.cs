@@ -13,6 +13,7 @@ namespace Cauldron.TheMistressOfFate
         public NecessaryCorrectionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             _isStoredCard = false;
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck);
         }
 
         public override IEnumerator Play()

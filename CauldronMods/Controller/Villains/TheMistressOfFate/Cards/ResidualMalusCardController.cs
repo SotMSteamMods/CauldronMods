@@ -13,6 +13,8 @@ namespace Cauldron.TheMistressOfFate
         private readonly string CardPlayedKey = "ResidualMalusCardPlayedThisTurnKey";
         public ResidualMalusCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(FindEnvironment().TurnTaker.Trash);
+            SpecialStringMaker.ShowHasBeenUsedThisTurn(CardPlayedKey);
         }
 
         public override void AddTriggers()
