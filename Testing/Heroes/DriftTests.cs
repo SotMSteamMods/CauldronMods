@@ -734,5 +734,95 @@ namespace CauldronTests
             AssertTrackPosition(4);
             QuickHPCheck(0);
         }
+
+        [Test]
+        public void TestImposedSynchronization_Future()
+        {
+            SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            GoToShiftPosition(4);
+            Card imp = PutInHand(ImposedSynchronization);
+            DecisionSelectCard = haka.CharacterCard;
+
+            int trackPosition = CurrentShiftPosition();
+            QuickHandStorage(drift);
+            PlayCard(imp);
+            //Draw a card.
+            //Play 1, Draw 1 = 0
+            QuickHandCheck(0);
+            //{DriftFuture} Select a target. Reduce damage dealt to that target by 1 until the start of your next turn. Shift {DriftL}.
+            AssertTrackPosition(trackPosition - 1);
+
+            QuickHPStorage(haka);
+            DealDamage(apostate, haka, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            //{DriftPast} Select a target. Increase damage dealt by that target by 1 until the start of your next turn. Shift {DriftR}.
+            QuickHPStorage(apostate);
+            DealDamage(haka, apostate, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+        }
+
+        [Test]
+        public void TestImposedSynchronization_Past()
+        {
+            SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card imp = PutInHand(ImposedSynchronization);
+            DecisionSelectCard = haka.CharacterCard;
+
+            int trackPosition = CurrentShiftPosition();
+            QuickHandStorage(drift);
+            PlayCard(imp);
+            //Draw a card.
+            //Play 1, Draw 1 = 0
+            QuickHandCheck(0);
+
+            //Shifted one right
+            AssertTrackPosition(trackPosition + 1);
+
+            //{DriftFuture} Select a target. Reduce damage dealt to that target by 1 until the start of your next turn. Shift {DriftL}.
+            QuickHPStorage(haka);
+            DealDamage(apostate, haka, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //{DriftPast} Select a target. Increase damage dealt by that target by 1 until the start of your next turn. Shift {DriftR}.
+            QuickHPStorage(apostate);
+            DealDamage(haka, apostate, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+        }
+
+        [Test]
+        public void TestImposedSynchronization_Both()
+        {
+            SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            GoToShiftPosition(3);
+            Card imp = PutInHand(ImposedSynchronization);
+            DecisionSelectCards = new Card[] { haka.CharacterCard, bunker.CharacterCard };
+
+            int trackPosition = CurrentShiftPosition();
+            QuickHandStorage(drift);
+            PlayCard(imp);
+            //Draw a card.
+            //Play 1, Draw 1 = 0
+            QuickHandCheck(0);
+
+            //Shifted one left then one right
+            AssertTrackPosition(trackPosition);
+
+            //{DriftFuture} Select a target. Reduce damage dealt to that target by 1 until the start of your next turn. Shift {DriftL}.
+            QuickHPStorage(haka);
+            DealDamage(apostate, haka, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            //{DriftPast} Select a target. Increase damage dealt by that target by 1 until the start of your next turn. Shift {DriftR}.
+            QuickHPStorage(apostate);
+            DealDamage(bunker, apostate, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+        }
     }
 }

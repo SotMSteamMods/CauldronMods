@@ -31,9 +31,9 @@ namespace Cauldron.Drift
             //{DriftFuture}
             if (base.IsTimeMatching(Future))
             {
-                List<SelectTargetDecision> targetDecisions = new List<SelectTargetDecision>();
+                List<SelectCardDecision> targetDecisions = new List<SelectCardDecision>();
                 //Select a target. Reduce damage dealt to that target by 1 until the start of your next turn.
-                coroutine = base.GameController.SelectTargetAndStoreResults(base.HeroTurnTakerController, base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlayAndHasGameText)), targetDecisions, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.ReduceDamageTaken, new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlayAndHasGameText), targetDecisions, false, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -48,6 +48,14 @@ namespace Cauldron.Drift
                 statusEffect.UntilStartOfNextTurn(base.TurnTaker);
                 statusEffect.UntilTargetLeavesPlay(targetDecisions.FirstOrDefault().SelectedCard);
                 coroutine = base.AddStatusEffect(statusEffect);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
 
                 //Shift {DriftL}.
                 coroutine = base.ShiftL();
@@ -63,9 +71,9 @@ namespace Cauldron.Drift
             //{DriftPast} 
             if (base.IsTimeMatching(Past))
             {
-                List<SelectTargetDecision> targetDecisions = new List<SelectTargetDecision>();
+                List<SelectCardDecision> targetDecisions = new List<SelectCardDecision>();
                 //Select a target. Increase damage dealt by that target by 1 until the start of your next turn. 
-                coroutine = base.GameController.SelectTargetAndStoreResults(base.HeroTurnTakerController, base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlayAndHasGameText)), targetDecisions, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.IncreaseDamage, new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlayAndHasGameText), targetDecisions, false, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -80,6 +88,14 @@ namespace Cauldron.Drift
                 statusEffect.UntilStartOfNextTurn(base.TurnTaker);
                 statusEffect.UntilTargetLeavesPlay(targetDecisions.FirstOrDefault().SelectedCard);
                 coroutine = base.AddStatusEffect(statusEffect);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
 
                 //Shift {DriftR}.
                 coroutine = base.ShiftR();
