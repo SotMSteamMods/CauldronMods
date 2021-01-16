@@ -1240,9 +1240,13 @@ namespace CauldronTests
             ResetDays();
             FlipCard(fate);
 
+            Card crest = PlayCard("CosmicCrest");
             DestroyCard(cosmic.CharacterCard);
-            Card crest = GetCard("CosmicCrest");
-            Log.Debug($"Crest location: {crest.Location.Name}");
+            Log.Debug($"Crest location: {crest.Location.GetFriendlyName()}");
+
+            FlipCard(fate);
+            Log.Debug($"Crest location after revival: {crest.Location.GetFriendlyName()}");
+            AssertInTrash(crest);
         }
         [Test]
         public void TestHeroPreservationRevivedByTempleOfZhuLong()
@@ -1257,7 +1261,8 @@ namespace CauldronTests
 
             PlayCard("RitesOfRevival");
             GoToEndOfTurn(FindEnvironment());
-            AssertNumberOfCardsInHand(tempest, 0);
+            AssertNumberOfCardsInHand(tempest, 2);
+            AssertHitPoints(tempest, 8);
         }
     }
 }
