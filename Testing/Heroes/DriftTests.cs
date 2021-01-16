@@ -291,5 +291,63 @@ namespace CauldronTests
             AssertInTrash(field);
             AssertIsInPlay(mono);
         }
+
+        [Test()]
+        [Sequential]
+        public void TestBorrowedTime_ShiftL([Values(0, 1, 2, 3)] int shiftAmount)
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            DecisionSelectFunction = 3;
+            UsePower(drift);
+            UsePower(drift);
+
+            SetHitPoints(baron, 17);
+            SetHitPoints(drift, 17);
+            SetHitPoints(haka, 17);
+
+            DecisionSelectFunction = 0;
+            DecisionSelectNumber = shiftAmount;
+            int?[] hpChange = { 0, 0, 0 };
+            for (int i = 0; i < shiftAmount; i++)
+            {
+                hpChange[i] = 2;
+            }
+
+            //Select {DriftL} or {DriftR}. Shift that direction up to 3 times. X is the number of times you shifted this way.
+            //If you shifted at least {DriftL} this way, X targets regain 2 HP each.
+            QuickHPStorage(baron, drift, haka);
+            PlayCard(BorrowedTime);
+            QuickHPCheck(hpChange);
+        }
+
+        [Test()]
+        [Sequential]
+        public void TestBorrowedTime_ShiftR([Values(0, 1, 2, 3)] int shiftAmount)
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            SetHitPoints(baron, 17);
+            SetHitPoints(drift, 17);
+            SetHitPoints(haka, 17);
+
+            DecisionSelectFunction = 1;
+            DecisionSelectNumber = shiftAmount;
+            int?[] hpChange = { 0, 0, 0 };
+            for (int i = 0; i < shiftAmount; i++)
+            {
+                hpChange[i] = -3;
+            }
+
+            //Select {DriftL} or {DriftR}. Shift that direction up to 3 times. X is the number of times you shifted this way.
+            //If you shifted {DriftR} this way, {Drift} deals X targets 3 radiant damage each.
+            QuickHPStorage(baron, drift, haka);
+            PlayCard(BorrowedTime);
+            QuickHPCheck(hpChange);
+        }
     }
 }
