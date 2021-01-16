@@ -456,7 +456,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void Test_DestroyersAdagio_Past_PlayFromTrash()
+        public void TestDestroyersAdagio_Past_PlayFromTrash()
         {
             SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -473,7 +473,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void Test_DestroyersAdagio_Past_OtherPlays()
+        public void TestDestroyersAdagio_Past_OtherPlays()
         {
             SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -492,7 +492,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void Test_DestroyersAdagio_Future()
+        public void TestDestroyersAdagio_Future()
         {
             SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -510,7 +510,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void Test_DestroyersAdagio_Both()
+        public void TestDestroyersAdagio_Both()
         {
             SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -526,6 +526,12 @@ namespace CauldronTests
             AssertIsInPlay(fFocus);
             QuickHPCheck(-2);
             AssertTrackPosition(trackPosition - 1);
+        }
+
+        [Test]
+        public void TestDriftStep()
+        {
+
         }
     }
 }
