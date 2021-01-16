@@ -58,6 +58,20 @@ namespace CauldronTests
             }
         }
 
+        private void AssertTrackPosition(int expectedPosition)
+        {
+            Assert.AreEqual(expectedPosition, CurrentShiftPosition(), "Expected position: " + expectedPosition + ", was: " + CurrentShiftPosition());
+        }
+
+        private void GoToShiftPosition(int position)
+        {
+            DecisionSelectFunction = 2;
+            for (int i = 1; i < position; i++)
+            {
+                UsePower(drift);
+            }
+        }
+
         [Test()]
         [Order(0)]
         public void TestDriftLoad()
@@ -136,7 +150,7 @@ namespace CauldronTests
             QuickHPStorage(drift);
             UsePower(drift);
             QuickHPCheck(1);
-            Assert.AreEqual(shiftPosition + 2, CurrentShiftPosition());
+            AssertTrackPosition(shiftPosition + 2);
 
             //Shift Right
             DecisionSelectFunction = 2;
@@ -144,7 +158,7 @@ namespace CauldronTests
             QuickHPStorage(drift);
             UsePower(drift);
             QuickHPCheck(1);
-            Assert.AreEqual(shiftPosition + 1, CurrentShiftPosition());
+            AssertTrackPosition(shiftPosition + 1);
 
             //Shift Left
             DecisionSelectFunction = 1;
@@ -152,7 +166,7 @@ namespace CauldronTests
             QuickHPStorage(drift);
             UsePower(drift);
             QuickHPCheck(1);
-            Assert.AreEqual(shiftPosition - 1, CurrentShiftPosition());
+            AssertTrackPosition(shiftPosition - 1);
 
             //Shift Left Twice
             DecisionSelectFunction = 0;
@@ -160,7 +174,7 @@ namespace CauldronTests
             QuickHPStorage(drift);
             UsePower(drift);
             QuickHPCheck(1);
-            Assert.AreEqual(shiftPosition - 2, CurrentShiftPosition());
+            AssertTrackPosition(shiftPosition - 2);
         }
 
         [Test()]
@@ -276,8 +290,7 @@ namespace CauldronTests
             Card atten = PutInHand(AttenuationField);
             Card mono = PlayCard("PlummetingMonorail");
             Card field = PlayCard("BacklashField");
-            DecisionSelectFunction = 3;
-            UsePower(drift);
+            GoToShiftPosition(3);
 
             //Draw a card.
             QuickHandStorage(drift);
@@ -341,9 +354,7 @@ namespace CauldronTests
             SetHitPoints(drift, 17);
 
             //Shift to future
-            DecisionSelectFunction = 3;
-            UsePower(drift);
-            UsePower(drift);
+            GoToShiftPosition(4);
 
             Card dance = PutInHand(DanceOfTheDragons);
 
@@ -363,7 +374,7 @@ namespace CauldronTests
             PlayCard(dance);
 
             //Shifted left one
-            Assert.AreEqual(trackPosition - 1, CurrentShiftPosition(), "Expected position " + (trackPosition - 1) + ", was " + CurrentShiftPosition());
+            AssertTrackPosition(trackPosition - 1);
             //Play 1
             QuickHandCheck(-1);
             //2 damage to Apostate and Sword
@@ -398,7 +409,7 @@ namespace CauldronTests
             PlayCard(dance);
 
             //Shifted right two
-            Assert.AreEqual(trackPosition + 2, CurrentShiftPosition(), "Expected position " + (trackPosition + 2) + ", was " + CurrentShiftPosition());
+            AssertTrackPosition(trackPosition + 2);
             //Play 1, draw 1
             QuickHandCheck(0);
             //Drift heals 1
@@ -415,8 +426,7 @@ namespace CauldronTests
             SetHitPoints(drift, 17);
 
             //Shift to future
-            DecisionSelectFunction = 3;
-            UsePower(drift);
+            GoToShiftPosition(3);
 
             Card dance = PutInHand(DanceOfTheDragons);
 
@@ -436,13 +446,86 @@ namespace CauldronTests
             PlayCard(dance);
 
             //Shifted left one
-            Assert.AreEqual(trackPosition + 1, CurrentShiftPosition(), "Expected position " + (trackPosition + 1) + ", was " + CurrentShiftPosition());
+            AssertTrackPosition(trackPosition + 1);
             //Play 1
             QuickHandCheck(0);
             //2 damage to Apostate and Sword
             //Sword has 1 DR
             //3 to gauntlet
             QuickHPCheck(1, -2, -1, -3);
+        }
+
+        [Test]
+        public void Test_DestroyersAdagio_Past_PlayFromTrash()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card fFocus = PutInTrash(FutureFocus);
+            //{DriftPast} You may play an onoing card from your trash, or one player may play a card now. Shift {DriftR}
+            //{DriftFuture} {Drift} deals 1 target 2 radiant damage. Shift {DriftLL}
+            int trackPosition = CurrentShiftPosition();
+            QuickHPStorage(apostate);
+            PlayCard(DestroyersAdagio);
+            AssertIsInPlay(fFocus);
+            QuickHPCheck(0);
+            AssertTrackPosition(trackPosition + 1);
+        }
+
+        [Test]
+        public void Test_DestroyersAdagio_Past_OtherPlays()
+        {
+            SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DecisionSelectFunction = 1;
+            Card mere = PutInHand("Mere");
+            DecisionSelectCard = mere;
+            //{DriftPast} You may play an onoing card from your trash, or one player may play a card now. Shift {DriftR}
+            //{DriftFuture} {Drift} deals 1 target 2 radiant damage. Shift {DriftLL}
+            int trackPosition = CurrentShiftPosition();
+            QuickHPStorage(apostate);
+            PlayCard(DestroyersAdagio);
+            AssertIsInPlay(mere);
+            QuickHPCheck(0);
+            AssertTrackPosition(trackPosition + 1);
+        }
+
+        [Test]
+        public void Test_DestroyersAdagio_Future()
+        {
+            SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            GoToShiftPosition(4);
+            Card fFocus = PutInTrash(FutureFocus);
+            //{DriftPast} You may play an onoing card from your trash, or one player may play a card now. Shift {DriftR}
+            //{DriftFuture} {Drift} deals 1 target 2 radiant damage. Shift {DriftLL}
+            int trackPosition = CurrentShiftPosition();
+            QuickHPStorage(apostate);
+            PlayCard(DestroyersAdagio);
+            AssertInTrash(fFocus);
+            QuickHPCheck(-2);
+            AssertTrackPosition(trackPosition - 2);
+        }
+
+        [Test]
+        public void Test_DestroyersAdagio_Both()
+        {
+            SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            GoToShiftPosition(2);
+            DecisionSelectFunction = 0;
+            Card fFocus = PutInTrash(FutureFocus);
+            //{DriftPast} You may play an onoing card from your trash, or one player may play a card now. Shift {DriftR}
+            //{DriftFuture} {Drift} deals 1 target 2 radiant damage. Shift {DriftLL}
+            int trackPosition = CurrentShiftPosition();
+            QuickHPStorage(apostate);
+            PlayCard(DestroyersAdagio);
+            AssertIsInPlay(fFocus);
+            QuickHPCheck(-2);
+            AssertTrackPosition(trackPosition - 1);
         }
     }
 }

@@ -25,6 +25,14 @@ namespace Cauldron.Drift
                     new Function(base.HeroTurnTakerController, "You may play an ongoing from your trash", SelectionType.PlayCard, () => this.PlayTrashOngoingResponse()),
                     new Function(base.HeroTurnTakerController, "One player may play a card now", SelectionType.PlayCard, () => this.PlayCardNowResponse())
                 });
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
 
                 //Shift {DriftR}
                 coroutine = base.ShiftR();
