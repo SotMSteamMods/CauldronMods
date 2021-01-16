@@ -412,17 +412,18 @@
                    "identifier": "TheTimeline",
                    "count": 1,
                    "title": "The Timeline",
+                   "character": true,
                    "icons": [
                        "Indestructible"
                    ],
-                   "body": [
+                   "body": "The Timeline",
+                   "gameplay": [
                        "This card is indestructible.",
                        "Day cards cannot be affected by non-villain cards. Cards beneath villain cards are not considered in play.",
                        "Immediately after the environment turn, flip {TheMistressOfFate}'s villain character cards if one of these things occurs:",
-                       "{ The players choose to flip her.",
-                       "{ All heroes are incapacitated.",
-                       "{ All Day cards are face up.",
-                       "{MistressOfFateDayCards}"
+                       "{The players choose to flip her.",
+                       "{All heroes are incapacitated.",
+                       "{All Day cards are face up."
                    ]
                },
                {
