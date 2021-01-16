@@ -105,21 +105,13 @@ namespace Cauldron.Drift
                     }
                 case 2:
                     {
-                        //One player may discard a one-shot. If they do, they may draw 2 cards.
-                        List<DiscardCardAction> discardCard = new List<DiscardCardAction>();
-                        coroutine = base.GameController.SelectAndDiscardCard(base.HeroTurnTakerController, true, (Card c) => c.IsOneShot, discardCard, cardSource: base.GetCardSource());
-                        if (base.UseUnityCoroutines)
+                        IEnumerable<TurnTaker> turnTakersWithOneShots = base.FindTurnTakersWhere((TurnTaker tt) => !tt.IsIncapacitatedOrOutOfGame && !tt.IsIncapacitated && tt.IsHero && base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Location.OwnerTurnTaker == tt && c.Location.IsHand && c.IsOneShot && c.Location.IsHero)).Any());
+                        List<SelectTurnTakerDecision> turnTakerDecisions = new List<SelectTurnTakerDecision>();
+                        if (turnTakersWithOneShots.Any())
                         {
-                            yield return base.GameController.StartCoroutine(coroutine);
-                        }
-                        else
-                        {
-                            base.GameController.ExhaustCoroutine(coroutine);
-                        }
-                        if (discardCard.Any())
-                        {
-                            //If they do, they may draw 2 cards.
-                            coroutine = base.DrawCards(discardCard.FirstOrDefault().HeroTurnTakerController, 2, true);
+                            //One player may discard a one-shot. If they do, they may draw 2 cards.
+                            coroutine = base.GameController.SelectHeroTurnTaker(base.HeroTurnTakerController, SelectionType.DiscardAndDrawCard, false, false, turnTakerDecisions,
+                            new LinqTurnTakerCriteria((TurnTaker tt) => turnTakersWithOneShots.Contains(tt)), cardSource: base.GetCardSource());
                             if (base.UseUnityCoroutines)
                             {
                                 yield return base.GameController.StartCoroutine(coroutine);
@@ -127,6 +119,35 @@ namespace Cauldron.Drift
                             else
                             {
                                 base.GameController.ExhaustCoroutine(coroutine);
+                            }
+                        }
+
+                        if (turnTakerDecisions.Any())
+                        {
+                            //One player may discard a one-shot.
+                            List<DiscardCardAction> discardCard = new List<DiscardCardAction>();
+                            coroutine = base.GameController.SelectAndDiscardCard(base.FindHeroTurnTakerController(turnTakerDecisions.FirstOrDefault().SelectedTurnTaker.ToHero()), true, (Card c) => c.IsOneShot, discardCard, cardSource: base.GetCardSource());
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine);
+                            }
+
+                            if (discardCard.Any())
+                            {
+                                //If they do, they may draw 2 cards.
+                                coroutine = base.DrawCards(discardCard.FirstOrDefault().HeroTurnTakerController, 2, true);
+                                if (base.UseUnityCoroutines)
+                                {
+                                    yield return base.GameController.StartCoroutine(coroutine);
+                                }
+                                else
+                                {
+                                    base.GameController.ExhaustCoroutine(coroutine);
+                                }
                             }
                         }
                         break;

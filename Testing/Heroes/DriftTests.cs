@@ -49,12 +49,6 @@ namespace CauldronTests
             return base.FindCardsWhere((Card c) => c.SharedIdentifier == ShiftTrack && c.IsInPlayAndHasGameText, false).FirstOrDefault();
         }
 
-        private void SetupIncap(TurnTakerController villain)
-        {
-            SetHitPoints(drift.CharacterCard, 1);
-            DealDamage(villain, drift, 2, DamageType.Melee);
-        }
-
         private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
         {
             foreach (var id in identifiers)
@@ -128,6 +122,118 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestDriftCharacter_InnatePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(drift, 17);
+            //Shift {DriftLL}, {DriftL}, {DriftR}, {DriftRR}. Drift regains 1 HP.
+
+            //Shift Right Twice
+            DecisionSelectFunction = 3;
+            int shiftPosition = CurrentShiftPosition();
+            QuickHPStorage(drift);
+            UsePower(drift);
+            QuickHPCheck(1);
+            Assert.AreEqual(shiftPosition + 2, CurrentShiftPosition());
+
+            //Shift Right
+            DecisionSelectFunction = 2;
+            shiftPosition = CurrentShiftPosition();
+            QuickHPStorage(drift);
+            UsePower(drift);
+            QuickHPCheck(1);
+            Assert.AreEqual(shiftPosition + 1, CurrentShiftPosition());
+
+            //Shift Left
+            DecisionSelectFunction = 1;
+            shiftPosition = CurrentShiftPosition();
+            QuickHPStorage(drift);
+            UsePower(drift);
+            QuickHPCheck(1);
+            Assert.AreEqual(shiftPosition - 1, CurrentShiftPosition());
+
+            //Shift Left Twice
+            DecisionSelectFunction = 0;
+            shiftPosition = CurrentShiftPosition();
+            QuickHPStorage(drift);
+            UsePower(drift);
+            QuickHPCheck(1);
+            Assert.AreEqual(shiftPosition - 2, CurrentShiftPosition());
+        }
+
+        [Test()]
+        public void TestDriftCharacter_Incap0()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard(drift);
+            //One hero may use a power now.
+
+            //Haka deals 2 damage
+            DecisionSelectTurnTaker = haka.TurnTaker;
+            QuickHPStorage(apostate);
+            UseIncapacitatedAbility(drift, 0);
+            QuickHPCheck(-2);
+
+            //Bunker draws 1
+            DecisionSelectTurnTaker = bunker.TurnTaker;
+            QuickHandStorage(bunker);
+            UseIncapacitatedAbility(drift, 0);
+            QuickHandCheck(1);
+
+            SetHitPoints(scholar, 17);
+            //Scholar heals 1
+            DecisionSelectTurnTaker = scholar.TurnTaker;
+            QuickHPStorage(scholar);
+            UseIncapacitatedAbility(drift, 0);
+            QuickHPCheck(1);
+        }
+
+        [Test()]
+        public void TestDriftCharacter_Incap1()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard(drift);
+            //One target regains 1 HP and deals another target 1 radiant damage.
+
+            DecisionSelectCards = new Card[] { haka.CharacterCard, apostate.CharacterCard };
+
+            SetHitPoints(haka, 17);
+            QuickHPStorage(haka, apostate);
+            UseIncapacitatedAbility(drift, 1);
+            QuickHPCheck(1, -1);
+        }
+
+        [Test()]
+        public void TestDriftCharacter_Incap2()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard(drift);
+            GoToStartOfTurn(drift);
+            //One player may discard a one-shot. If they do, they may draw 2 cards.
+            var a = base.GameController.FindTurnTakersWhere(tt => !tt.IsIncapacitatedOrOutOfGame);
+
+            Card elbow = PutInHand("ElbowSmash");
+            QuickHandStorage(haka);
+            UseIncapacitatedAbility(drift, 2);
+            //Discard 1, Draw 2
+            QuickHandCheck(1);
+
+            DiscardAllCards(haka, bunker, scholar);
+            QuickHandStorage(haka, bunker, scholar);
+            UseIncapacitatedAbility(drift, 2);
+            //With no discard, no draw
+            QuickHandCheckZero();
+        }
+
+        [Test()]
         [Sequential]
         public void TestShiftTrackSetup([Values(1, 2, 3, 4)] int decision)
         {
@@ -138,6 +244,52 @@ namespace CauldronTests
 
             Assert.AreEqual(decision, CurrentShiftPosition());
             AssertIsInPlay(track);
+        }
+
+        [Test()]
+        public void TestAttenuationField_Past()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card atten = PutInHand(AttenuationField);
+            Card mono = PlayCard("PlummetingMonorail");
+            Card field = PlayCard("BacklashField");
+
+            //Draw a card.
+            QuickHandStorage(drift);
+            PlayCard(atten);
+            //Play -1, Draw +1
+            QuickHandCheck(0);
+
+            //{DriftPast} Destroy 1 environment card.
+            //{DriftFuture} Destroy 1 ongoing card.
+            AssertInTrash(mono);
+            AssertIsInPlay(field);
+        }
+
+        [Test()]
+        public void TestAttenuationField_Future()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card atten = PutInHand(AttenuationField);
+            Card mono = PlayCard("PlummetingMonorail");
+            Card field = PlayCard("BacklashField");
+            DecisionSelectFunction = 3;
+            UsePower(drift);
+
+            //Draw a card.
+            QuickHandStorage(drift);
+            PlayCard(atten);
+            //Play -1, Draw +1
+            QuickHandCheck(0);
+
+            //{DriftPast} Destroy 1 environment card.
+            //{DriftFuture} Destroy 1 ongoing card.
+            AssertInTrash(field);
+            AssertIsInPlay(mono);
         }
     }
 }
