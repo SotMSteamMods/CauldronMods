@@ -9,9 +9,8 @@ using Cauldron.Cypher;
 namespace CauldronTests
 {
     [TestFixture]
-    public class CypherVariantTests : BaseTest
+    public class CypherVariantTests : CauldronBaseTest
     {
-        protected HeroTurnTakerController cypher => FindHero("Cypher");
 
         private const string DeckNamespace = "Cauldron.Cypher";
 

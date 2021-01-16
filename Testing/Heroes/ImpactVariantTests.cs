@@ -11,10 +11,9 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class ImpactVariantTests : BaseTest
+    public class ImpactVariantTests : CauldronBaseTest
     {
         #region ImpactHelperFunctions
-        protected HeroTurnTakerController impact { get { return FindHero("Impact"); } }
         private void SetupIncap(TurnTakerController villain)
         {
             SetHitPoints(impact.CharacterCard, 1);

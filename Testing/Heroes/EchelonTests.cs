@@ -12,10 +12,9 @@ using NUnit.Framework;
 namespace CauldronTests
 {
     [TestFixture]
-    public class EchelonTests : BaseTest
+    public class EchelonTests : CauldronBaseTest
     {
         #region echelonhelperfunctions
-        protected HeroTurnTakerController echelon => FindHero("Echelon");
 
         private const string DeckNamespace = "Cauldron.Echelon";
 

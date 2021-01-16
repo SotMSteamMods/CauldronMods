@@ -10,7 +10,7 @@ using System;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class StSimeonsCatacombsTests : BaseTest
+    public class StSimeonsCatacombsTests : CauldronBaseTest
     {
 
         #region StSimeonsCatacombsHelperFunctions

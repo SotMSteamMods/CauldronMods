@@ -8,7 +8,7 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class TheWanderingIsleTests : BaseTest
+    public class TheWanderingIsleTests : CauldronBaseTest
     {
 
         #region TheWanderingIsleHelperFunctions

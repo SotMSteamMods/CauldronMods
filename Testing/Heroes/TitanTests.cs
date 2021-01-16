@@ -12,9 +12,8 @@ using Cauldron.Titan;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class TitanTests : BaseTest
+    public class TitanTests : CauldronBaseTest
     {
-        protected HeroTurnTakerController titan { get { return FindHero("Titan"); } }
 
         private void SetupIncap(TurnTakerController villain)
         {

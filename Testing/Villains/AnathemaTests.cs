@@ -13,11 +13,9 @@ using System.Collections.Generic;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class AnathemaTests : BaseTest
+    public class AnathemaTests : CauldronBaseTest
     {
         #region AnathemaHelperFunctions
-
-        protected TurnTakerController anathema { get { return FindVillain("Anathema"); } }
 
         protected void AssertNumberOfArmsInPlay(TurnTakerController ttc, int number)
         {

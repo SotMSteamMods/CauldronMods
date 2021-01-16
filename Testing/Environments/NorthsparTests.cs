@@ -8,7 +8,7 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class NorthsparTests : BaseTest
+    public class NorthsparTests : CauldronBaseTest
     {
 
         #region NorthsparHelperFunctions

@@ -9,9 +9,8 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    class PhaseVillainTests : BaseTest
+    class PhaseVillainTests : CauldronBaseTest
     {
-        protected TurnTakerController phase { get { return FindVillain("PhaseVillain"); } }
 
         private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
         {

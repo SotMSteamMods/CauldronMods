@@ -12,9 +12,8 @@ using Cauldron.Cricket;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class CricketTests : BaseTest
+    public class CricketTests : CauldronBaseTest
     {
-        protected HeroTurnTakerController cricket { get { return FindHero("Cricket"); } }
 
         private void SetupIncap(TurnTakerController villain)
         {

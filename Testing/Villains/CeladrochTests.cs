@@ -13,12 +13,11 @@ using System.Collections.Generic;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class CeladrochTests : BaseTest
+    public class CeladrochTests : CauldronBaseTest
     {
         #region HelperFunctions
 
         protected TokenPool stormPool => celadroch.CharacterCard.FindTokenPool(CeladrochCharacterCardController.StormPoolIdentifier);
-        protected TurnTakerController celadroch { get { return FindVillain("Celadroch"); } }
 
         protected void SuppressPillarRewardTriggers(Card pillar)
         {

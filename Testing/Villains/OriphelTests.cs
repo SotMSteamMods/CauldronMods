@@ -14,10 +14,9 @@ using Cauldron.Oriphel;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class OriphelTests : BaseTest
+    public class OriphelTests : CauldronBaseTest
     {
         #region OriphelHelperFunctions
-        protected TurnTakerController oriphel { get { return FindVillain("Oriphel"); } }
         protected DamageType DTM
         {
             get { return DamageType.Melee; }

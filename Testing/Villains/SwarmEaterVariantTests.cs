@@ -9,9 +9,8 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class SwarmEaterVariantTests : BaseTest
+    public class SwarmEaterVariantTests : CauldronBaseTest
     {
-        protected TurnTakerController swarm { get { return FindVillain("SwarmEater"); } }
 
         private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
         {

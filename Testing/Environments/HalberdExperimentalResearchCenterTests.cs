@@ -8,7 +8,7 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class HalberdExperimentalResearchCenterTests : BaseTest
+    public class HalberdExperimentalResearchCenterTests : CauldronBaseTest
     {
 
         #region HalberdExperimentalResearchCenterHelperFunctions

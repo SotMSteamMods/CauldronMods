@@ -9,9 +9,8 @@ using System.Collections.Generic;
 namespace CauldronTests
 {
     [TestFixture()]
-    class GrayTests : BaseTest
+    class GrayTests : CauldronBaseTest
     {
-        protected TurnTakerController gray { get { return FindVillain("Gray"); } }
 
         private void AssertCard(string identifier, string[] keywords = null, int hitpoints = 0)
         {

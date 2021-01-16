@@ -13,9 +13,8 @@ using NUnit.Framework;
 namespace CauldronTests
 {
     [TestFixture]
-    public class VectorTests : BaseTest
+    public class VectorTests : CauldronBaseTest
     {
-        protected TurnTakerController Vector => FindVillain("Vector");
 
         private const string DeckNamespace = "Cauldron.Vector";
 
@@ -112,10 +111,10 @@ namespace CauldronTests
 
             Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
 
-            Assert.IsNotNull(Vector);
-            Assert.IsInstanceOf(typeof(VectorCharacterCardController), Vector.CharacterCardController);
+            Assert.IsNotNull(vector);
+            Assert.IsInstanceOf(typeof(VectorCharacterCardController), vector.CharacterCardController);
 
-            Assert.AreEqual(55, Vector.CharacterCard.HitPoints);
+            Assert.AreEqual(55, vector.CharacterCard.HitPoints);
         }
 
         [Test]
@@ -126,9 +125,9 @@ namespace CauldronTests
 
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
 
-            Assert.IsNotNull(Vector);
-            Assert.IsInstanceOf(typeof(VectorCharacterCardController), Vector.CharacterCardController);
-            Assert.AreEqual(40, Vector.CharacterCard.HitPoints);
+            Assert.IsNotNull(vector);
+            Assert.IsInstanceOf(typeof(VectorCharacterCardController), vector.CharacterCardController);
+            Assert.AreEqual(40, vector.CharacterCard.HitPoints);
         }
 
         [Test]
@@ -137,15 +136,15 @@ namespace CauldronTests
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            int vectorCardsInPlay = GetNumberOfCardsInPlay(Vector);
-            int vectorCardsInTrash = GetNumberOfCardsInTrash(Vector);
+            int vectorCardsInPlay = GetNumberOfCardsInPlay(vector);
+            int vectorCardsInTrash = GetNumberOfCardsInTrash(vector);
 
             // Act
             GoToPlayCardPhase(legacy);
-            DealDamage(legacy, Vector, 2, DamageType.Melee);
+            DealDamage(legacy, vector, 2, DamageType.Melee);
 
             // Assert
-            Assert.True(GetNumberOfCardsInPlay(Vector) > vectorCardsInPlay || GetNumberOfCardsInTrash(Vector) > vectorCardsInTrash, "A card was not played");
+            Assert.True(GetNumberOfCardsInPlay(vector) > vectorCardsInPlay || GetNumberOfCardsInTrash(vector) > vectorCardsInTrash, "A card was not played");
         }
 
         [Test]
@@ -154,17 +153,17 @@ namespace CauldronTests
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            int vectorCardsInPlay = GetNumberOfCardsInPlay(Vector);
-            int vectorCardsInTrash = GetNumberOfCardsInTrash(Vector);
+            int vectorCardsInPlay = GetNumberOfCardsInPlay(vector);
+            int vectorCardsInTrash = GetNumberOfCardsInTrash(vector);
 
-            AddImmuneToDamageTrigger(Vector, false, true);
+            AddImmuneToDamageTrigger(vector, false, true);
 
             // Act
             GoToPlayCardPhase(legacy);
-            DealDamage(legacy, Vector, 2, DamageType.Melee);
+            DealDamage(legacy, vector, 2, DamageType.Melee);
 
             // Assert
-            Assert.True(GetNumberOfCardsInPlay(Vector) == vectorCardsInPlay && GetNumberOfCardsInTrash(Vector) == vectorCardsInTrash, "A card was played when no damage was dealt");
+            Assert.True(GetNumberOfCardsInPlay(vector) == vectorCardsInPlay && GetNumberOfCardsInTrash(vector) == vectorCardsInTrash, "A card was played when no damage was dealt");
         }
 
         [Test]
@@ -176,11 +175,11 @@ namespace CauldronTests
             Card supervirus = PlayCard("Supervirus");
 
             //get H+2 (5) viruses to move on supervirus
-            IEnumerable<Card> virusToMove = FindCardsWhere((Card c) => IsVirus(c) && Vector.TurnTaker.Deck.HasCard(c)).Take(5);
+            IEnumerable<Card> virusToMove = FindCardsWhere((Card c) => IsVirus(c) && vector.TurnTaker.Deck.HasCard(c)).Take(5);
 
-            AssertNotFlipped(Vector.CharacterCard);
-            MoveCards(Vector, virusToMove, supervirus.UnderLocation);
-            AssertFlipped(Vector.CharacterCard);
+            AssertNotFlipped(vector.CharacterCard);
+            MoveCards(vector, virusToMove, supervirus.UnderLocation);
+            AssertFlipped(vector.CharacterCard);
         }
         [Test]
         public void TestVectorFlipRemovesTriggers()
@@ -189,13 +188,13 @@ namespace CauldronTests
             StartGame();
 
             Card sample1 = PutOnDeck("BloodSample");
-            DealDamage(legacy, Vector, 4, DamageType.Melee);
+            DealDamage(legacy, vector, 4, DamageType.Melee);
             AssertIsInPlay(sample1);
 
-            FlipCard(Vector);
+            FlipCard(vector);
 
             Card sample2 = PutOnDeck("BloodSample");
-            DealDamage(legacy, Vector, 4, DamageType.Melee);
+            DealDamage(legacy, vector, 4, DamageType.Melee);
             AssertOnTopOfDeck(sample2);
         }
 
@@ -205,9 +204,9 @@ namespace CauldronTests
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            GainHP(Vector, 15);
+            GainHP(vector, 15);
 
-            AssertNotFlipped(Vector);
+            AssertNotFlipped(vector);
             AssertGameOver(EndingResult.AlternateDefeat);
         }
 
@@ -217,7 +216,7 @@ namespace CauldronTests
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "MaerynianRefuge");
             StartGame();
 
-            QuickHPStorage(Vector);
+            QuickHPStorage(vector);
 
             Card hail = GetCard("SoftballSizedHail");
             PlayCard(hail);
@@ -228,7 +227,7 @@ namespace CauldronTests
             string messageText = "Vector is immune to damage from environment cards.";
             AssertStatusEffectsContains(messageText);
 
-            AssertNotFlipped(Vector);
+            AssertNotFlipped(vector);
         }
 
         [Test]
@@ -238,11 +237,11 @@ namespace CauldronTests
                 advanced: true, advancedIdentifiers: new[] { DeckNamespace });
 
             StartGame();
-            QuickHPStorage(Vector);
+            QuickHPStorage(vector);
 
-            GoToEndOfTurn(Vector);
+            GoToEndOfTurn(vector);
 
-            AssertNotFlipped(Vector);
+            AssertNotFlipped(vector);
             QuickHPCheck(2);
         }
 
@@ -256,9 +255,9 @@ namespace CauldronTests
             StartGame();
             PlayCard(superVirus);
 
-            FlipCard(Vector.CharacterCardController);
+            FlipCard(vector.CharacterCardController);
 
-            AssertFlipped(Vector);
+            AssertFlipped(vector);
             AssertOutOfGame(superVirus);
         }
 
@@ -272,15 +271,15 @@ namespace CauldronTests
 
             Card superVirus = GetCard(SupervirusCardController.Identifier);
 
-            MoveCard(Vector, bloodSample, superVirus.UnderLocation);
-            MoveCard(Vector, delayedSymptoms, superVirus.UnderLocation);
+            MoveCard(vector, bloodSample, superVirus.UnderLocation);
+            MoveCard(vector, delayedSymptoms, superVirus.UnderLocation);
 
             StartGame();
             PlayCard(superVirus);
 
-            FlipCard(Vector.CharacterCardController);
+            FlipCard(vector.CharacterCardController);
 
-            AssertFlipped(Vector);
+            AssertFlipped(vector);
             AssertOutOfGame(superVirus);
             AssertInTrash(bloodSample);
             AssertInTrash(delayedSymptoms);
@@ -297,8 +296,8 @@ namespace CauldronTests
 
             Card superVirus = GetCard(SupervirusCardController.Identifier);
 
-            MoveCard(Vector, bloodSample, superVirus.UnderLocation);
-            MoveCard(Vector, delayedSymptoms, superVirus.UnderLocation);
+            MoveCard(vector, bloodSample, superVirus.UnderLocation);
+            MoveCard(vector, delayedSymptoms, superVirus.UnderLocation);
 
             StartGame();
             PlayCard(superVirus);
@@ -307,7 +306,7 @@ namespace CauldronTests
             Card pipes = PlayCard("DrakesPipes");
             DecisionSelectCard = superVirus;
             UsePower(adept);
-            AssertInPlayArea(Vector, superVirus);
+            AssertInPlayArea(vector, superVirus);
 
             foreach (Card under in superVirus.UnderLocation.Cards)
             {
@@ -324,17 +323,17 @@ namespace CauldronTests
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            FlipCard(Vector.CharacterCardController);
-            AssertFlipped(Vector);
+            FlipCard(vector.CharacterCardController);
+            AssertFlipped(vector);
 
-            int vectorCardsInPlay = GetNumberOfCardsInPlay(Vector);
-            int vectorCardsInTrash = GetNumberOfCardsInTrash(Vector);
+            int vectorCardsInPlay = GetNumberOfCardsInPlay(vector);
+            int vectorCardsInTrash = GetNumberOfCardsInTrash(vector);
 
             // Act
-            GoToEndOfTurn(Vector);
+            GoToEndOfTurn(vector);
 
             // Assert
-            Assert.True(GetNumberOfCardsInPlay(Vector) > vectorCardsInPlay || GetNumberOfCardsInTrash(Vector) > vectorCardsInTrash);
+            Assert.True(GetNumberOfCardsInPlay(vector) > vectorCardsInPlay || GetNumberOfCardsInTrash(vector) > vectorCardsInTrash);
         }
 
         [Test]
@@ -343,26 +342,26 @@ namespace CauldronTests
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            PutOnDeck(Vector, GetCard(HotZoneCardController.Identifier));
-            PutOnDeck(Vector, GetCard(HyperactiveImmuneSystemCardController.Identifier));
+            PutOnDeck(vector, GetCard(HotZoneCardController.Identifier));
+            PutOnDeck(vector, GetCard(HyperactiveImmuneSystemCardController.Identifier));
 
             Card bioTerror = GetCard(BioterrorSquadCardController.Identifier);
             PlayCard(bioTerror);
 
-            FlipCard(Vector.CharacterCardController);
+            FlipCard(vector.CharacterCardController);
 
-            QuickHPStorage(Vector);
+            QuickHPStorage(vector);
 
             GoToStartOfTurn(haka);
-            DealDamage(haka, Vector, 4, DamageType.Melee);
+            DealDamage(haka, vector, 4, DamageType.Melee);
 
 
             QuickHPCheck(-2); // Damage was reduced by 2 (2 villain targets: Vector, Bio Terror Squad)
-            AssertFlipped(Vector);
+            AssertFlipped(vector);
 
             //Check for dynamicism
             PlayCard("QuarantineProtocols");
-            DealDamage(haka, Vector, 4, DamageType.Melee);
+            DealDamage(haka, vector, 4, DamageType.Melee);
             QuickHPCheck(-1); //3 targets: Vector, Squad, Protocols
         }
 
@@ -373,14 +372,14 @@ namespace CauldronTests
                 advanced: true, advancedIdentifiers: new[] { DeckNamespace });
 
             StartGame();
-            FlipCard(Vector.CharacterCardController);
+            FlipCard(vector.CharacterCardController);
 
             QuickHPStorage(legacy);
 
-            DealDamage(Vector, legacy, 2, DamageType.Toxic);
+            DealDamage(vector, legacy, 2, DamageType.Toxic);
 
             QuickHPCheck(-4);
-            AssertFlipped(Vector);
+            AssertFlipped(vector);
 
         }
 
@@ -401,9 +400,9 @@ namespace CauldronTests
             GoToPlayCardPhase(legacy);
             PutOnDeck("BioterrorSquad");
 
-            QuickHPStorage(Vector, legacy, ra, haka);
+            QuickHPStorage(vector, legacy, ra, haka);
             // Act
-            DealDamage(legacy, Vector, 5, DamageType.Melee);
+            DealDamage(legacy, vector, 5, DamageType.Melee);
 
             // Assert
             QuickHPCheck(-6, -6, -6, -6); // Anti Coag increases damage to Vector by 1, response to hit everyone
@@ -417,19 +416,19 @@ namespace CauldronTests
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            QuickHPStorage(Vector);
+            QuickHPStorage(vector);
 
             Card antiC = GetCard(AnticoagulantCardController.Identifier);
 
             PlayCard(antiC);
 
-            AddImmuneToDamageTrigger(Vector, false, true);
+            AddImmuneToDamageTrigger(vector, false, true);
 
             // Act
-            DealDamage(legacy, Vector, 5, DamageType.Melee);
+            DealDamage(legacy, vector, 5, DamageType.Melee);
 
             // Assert
-            AssertInPlayArea(Vector, antiC);
+            AssertInPlayArea(vector, antiC);
         }
 
         [Test]
@@ -448,7 +447,7 @@ namespace CauldronTests
             PutIntoPlay(savageMana.Identifier);
 
             DecisionSelectCard = dominion;
-            QuickHPStorage(Vector, legacy, ra, haka);
+            QuickHPStorage(vector, legacy, ra, haka);
 
             // Act
             Card aSig = PlayCard(AssassinsSignatureCardController.Identifier);
@@ -476,7 +475,7 @@ namespace CauldronTests
             PutIntoPlay(savageMana.Identifier);
 
             DecisionSelectCard = dominion;
-            QuickHPStorage(Vector, legacy, ra, haka);
+            QuickHPStorage(vector, legacy, ra, haka);
 
             AddImmuneToDamageTrigger(ra, true, false);
 
@@ -508,7 +507,7 @@ namespace CauldronTests
             PlayCard(savageMana);
 
             DecisionSelectCard = dominion;
-            QuickHPStorage(Vector, legacy, ra, haka);
+            QuickHPStorage(vector, legacy, ra, haka);
 
             AddImmuneToDamageTrigger(ra, true, false);
 
@@ -538,7 +537,7 @@ namespace CauldronTests
             PutIntoPlay(savageMana.Identifier);
 
             DecisionSelectCard = mere;
-            QuickHPStorage(Vector, legacy, ra, haka);
+            QuickHPStorage(vector, legacy, ra, haka);
 
             // Act
             Card aSig = PlayCard(AssassinsSignatureCardController.Identifier);
@@ -569,14 +568,14 @@ namespace CauldronTests
             StartGame();
             DecisionSelectCard = GetCard(DelayedSymptomsCardController.Identifier);
 
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             QuickHPStorage(bioTerror, haka.CharacterCard);
             PlayCard(bioTerror);
 
-            QuickShuffleStorage(Vector);
+            QuickShuffleStorage(vector);
 
             // Act
-            GoToStartOfTurn(Vector);
+            GoToStartOfTurn(vector);
 
             // Assert
             QuickShuffleCheck(1);
@@ -594,13 +593,13 @@ namespace CauldronTests
 
             StartGame();
 
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(bioTerror);
 
-            QuickShuffleStorage(Vector);
+            QuickShuffleStorage(vector);
 
             // Act
-            GoToStartOfTurn(Vector);
+            GoToStartOfTurn(vector);
 
             // Assert
             QuickShuffleCheck(0);
@@ -621,15 +620,15 @@ namespace CauldronTests
             DecisionYesNo = true;
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(bloodSample);
             QuickHPCheck(-1, -1, -1);
 
             PlayCard(superVirus);
 
-            DealDamage(legacy, Vector, 6, DamageType.Melee);
+            DealDamage(legacy, vector, 6, DamageType.Melee);
 
-            GoToStartOfTurn(Vector);
+            GoToStartOfTurn(vector);
 
             // Assert
              // Enough damage was done to offer to move Blood Sample under Super Virus
@@ -650,23 +649,23 @@ namespace CauldronTests
             DecisionYesNo = true;
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(bloodSample);
             QuickHPCheck(-1, -1, -1);
 
             PlayCard(superVirus);
 
-            DealDamage(legacy, Vector, 6, DamageType.Melee);
+            DealDamage(legacy, vector, 6, DamageType.Melee);
 
             //get H+1 (4) viruses to move on supervirus
-            IEnumerable<Card> virusToMove = FindCardsWhere((Card c) => IsVirus(c) && Vector.TurnTaker.Deck.HasCard(c)).Take(4);
-            MoveCards(Vector, virusToMove, superVirus.UnderLocation);
+            IEnumerable<Card> virusToMove = FindCardsWhere((Card c) => IsVirus(c) && vector.TurnTaker.Deck.HasCard(c)).Take(4);
+            MoveCards(vector, virusToMove, superVirus.UnderLocation);
 
-            GoToStartOfTurn(Vector);
+            GoToStartOfTurn(vector);
 
             // Assert
 
-            AssertFlipped(Vector.CharacterCard);
+            AssertFlipped(vector.CharacterCard);
 
 
         }
@@ -686,15 +685,15 @@ namespace CauldronTests
             DecisionYesNo = false;
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(bloodSample);
             QuickHPCheck(-1, -1, -1);
 
             PlayCard(superVirus);
 
-            DealDamage(legacy, Vector, 6, DamageType.Melee);
+            DealDamage(legacy, vector, 6, DamageType.Melee);
 
-            GoToStartOfTurn(Vector);
+            GoToStartOfTurn(vector);
 
             // Assert
 
@@ -715,14 +714,14 @@ namespace CauldronTests
             DecisionYesNo = true;
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(bloodSample);
             QuickHPCheck(-1, -1, -1);
 
             PutOnDeck("BioterrorSquad");
-            DealDamage(legacy, Vector, 6, DamageType.Melee);
+            DealDamage(legacy, vector, 6, DamageType.Melee);
 
-            GoToStartOfTurn(Vector);
+            GoToStartOfTurn(vector);
 
             // Assert
 
@@ -745,15 +744,15 @@ namespace CauldronTests
             DecisionYesNo = true;
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(bloodSample);
             QuickHPCheck(-1, -1, -1);
 
             PlayCard(superVirus);
 
-            DealDamage(legacy, Vector, 2, DamageType.Melee);
+            DealDamage(legacy, vector, 2, DamageType.Melee);
 
-            GoToStartOfTurn(Vector);
+            GoToStartOfTurn(vector);
 
             // Assert
 
@@ -782,7 +781,7 @@ namespace CauldronTests
             StartGame();
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(delayedSymptoms);
 
             // Assert
@@ -811,7 +810,7 @@ namespace CauldronTests
             StartGame();
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(delayedSymptoms);
 
             // Assert
@@ -843,7 +842,7 @@ namespace CauldronTests
             StartGame();
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
 
             QuickShuffleStorage(legacy);
 
@@ -869,12 +868,12 @@ namespace CauldronTests
             StartGame();
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(eliteTraining);
 
             QuickHPStorage(legacy, ra);
 
-            DealDamage(Vector, legacy, 3, DamageType.Toxic);
+            DealDamage(vector, legacy, 3, DamageType.Toxic);
 
             //doesn't increase hero damage
             DealDamage(legacy, ra, 3, DamageType.Melee);
@@ -894,7 +893,7 @@ namespace CauldronTests
             StartGame();
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(eliteTraining);
             DiscardAllCards(ra);
             QuickHandStorage(new []{legacy, ra, haka});
@@ -919,7 +918,7 @@ namespace CauldronTests
             DecisionYesNo = true;
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             Card shield = PlayCard(hostageShield);
             string messageText = $"Prevent damage from Ra.";
             AssertStatusEffectsContains(messageText);
@@ -939,7 +938,7 @@ namespace CauldronTests
             DecisionYesNo = true;
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(hostageShield);
 
             string messageText = $"Prevent damage from Ra.";
@@ -964,13 +963,13 @@ namespace CauldronTests
             DecisionYesNo = true;
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(hostageShield);
             QuickHPStorage(legacy);
             DealDamage(ra, legacy, 3, DamageType.Fire);
             QuickHPCheck(0);
             string messageText = $"Prevent damage from Ra.";
-            DestroyCard(hostageShield, Vector.CharacterCard);
+            DestroyCard(hostageShield, vector.CharacterCard);
             AssertStatusEffectsDoesNotContain(messageText);
 
             QuickHPStorage(legacy);
@@ -991,7 +990,7 @@ namespace CauldronTests
             DecisionYesNo = false;
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(hostageShield);
 
             string messageText = $"Prevent damage from Ra.";
@@ -1018,7 +1017,7 @@ namespace CauldronTests
             DecisionYesNo = true;
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(hostageShield);
 
             string messageText = $"Prevent damage from Ra.";
@@ -1042,10 +1041,10 @@ namespace CauldronTests
             Card enragedTRex = GetCardInPlay("EnragedTRex");
 
             Card hotZone = GetCard(HotZoneCardController.Identifier);
-            QuickHPStorage(Vector.CharacterCard, legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, enragedTRex);
+            QuickHPStorage(vector.CharacterCard, legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, enragedTRex);
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(hotZone);
 
             // Assert
@@ -1060,8 +1059,8 @@ namespace CauldronTests
 
             StartGame();
 
-            SetHitPoints(Vector, 10);
-            QuickHPStorage(Vector);
+            SetHitPoints(vector, 10);
+            QuickHPStorage(vector);
 
             Card hyperactive = GetCard(HyperactiveImmuneSystemCardController.Identifier);
 
@@ -1071,9 +1070,9 @@ namespace CauldronTests
             PlayCard(legacy, "Mere");
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(hyperactive);
-            GoToEndOfTurn(Vector);
+            GoToEndOfTurn(vector);
 
             // Assert
             QuickHPCheck(3);
@@ -1090,12 +1089,12 @@ namespace CauldronTests
 
             DecisionLowestHP = ra.CharacterCard;
 
-            QuickHPStorage(Vector, legacy, ra, haka);
+            QuickHPStorage(vector, legacy, ra, haka);
 
             Card lethalForce = GetCard(LethalForceCardController.Identifier);
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(lethalForce);
             
             // Assert
@@ -1117,7 +1116,7 @@ namespace CauldronTests
             QuickHPStorage(enragedTRex);
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(quarantine);
 
             GoToStartOfTurn(legacy);
@@ -1140,10 +1139,10 @@ namespace CauldronTests
             QuickHandStorage(legacy, ra, haka);
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(quarantine);
 
-            GoToEndOfTurn(Vector);
+            GoToEndOfTurn(vector);
 
             // Assert
             QuickHandCheck(-1, -1, -1);
@@ -1162,7 +1161,7 @@ namespace CauldronTests
             Card quarantine = GetCard(QuarantineProtocolsCardController.Identifier);
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(quarantine);
 
             DestroyCard(quarantine);
@@ -1191,14 +1190,14 @@ namespace CauldronTests
             DecisionSelectCard = bloodSample;
             StartGame();
             GoToEndOfTurn(env);
-            QuickHPStorage(Vector, legacy, ra, haka);
+            QuickHPStorage(vector, legacy, ra, haka);
             PlayCard(superVirus);
 
             //get H+1 (4) viruses to move on supervirus
-            IEnumerable<Card> virusToMove = FindCardsWhere((Card c) => IsVirus(c) && Vector.TurnTaker.Deck.HasCard(c)).Take(4);
-            MoveCards(Vector, virusToMove, superVirus.UnderLocation);
+            IEnumerable<Card> virusToMove = FindCardsWhere((Card c) => IsVirus(c) && vector.TurnTaker.Deck.HasCard(c)).Take(4);
+            MoveCards(vector, virusToMove, superVirus.UnderLocation);
 
-            GoToStartOfTurn(Vector);
+            GoToStartOfTurn(vector);
 
     
 
@@ -1262,13 +1261,13 @@ namespace CauldronTests
             Card superVirus = GetCard(SupervirusCardController.Identifier);
 
             StartGame();
-            QuickHPStorage(Vector);
+            QuickHPStorage(vector);
             PlayCard(superVirus);
 
             // Act
 
             GoToStartOfTurn(haka);
-            GoToStartOfTurn(Vector);
+            GoToStartOfTurn(vector);
 
             // Assert
             QuickHPCheck(6); // H * 2 HP regained
@@ -1284,12 +1283,12 @@ namespace CauldronTests
 
             StartGame();
             
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(superVirus);
 
             // Act
             GoToStartOfTurn(legacy);
-            DealDamage(legacy, Vector, 100, DamageType.Melee);
+            DealDamage(legacy, vector, 100, DamageType.Melee);
 
             // Assert
             AssertGameOver(EndingResult.AlternateDefeat);
@@ -1304,11 +1303,11 @@ namespace CauldronTests
 
             StartGame();
 
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
 
             // Act
             GoToStartOfTurn(legacy);
-            DealDamage(legacy, Vector, 100, DamageType.Melee);
+            DealDamage(legacy, vector, 100, DamageType.Melee);
 
             // Assert
             AssertGameOver(EndingResult.VillainDestroyedVictory);
@@ -1323,12 +1322,12 @@ namespace CauldronTests
 
             StartGame();
 
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
 
             // Act
             GoToStartOfTurn(legacy);
             PlayCard("FixedPoint");
-            DealDamage(legacy, Vector, 100, DamageType.Melee);
+            DealDamage(legacy, vector, 100, DamageType.Melee);
 
             // Assert
             AssertNotGameOver();
@@ -1340,18 +1339,18 @@ namespace CauldronTests
             // Arrange
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
 
-            PutOnDeck(Vector, GetCard(HotZoneCardController.Identifier));
+            PutOnDeck(vector, GetCard(HotZoneCardController.Identifier));
 
             StartGame();
             Card undiagnosed = GetCard(UndiagnosedSubjectCardController.Identifier);
 
 
             // Act
-            QuickTopCardStorage(Vector);
+            QuickTopCardStorage(vector);
 
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(undiagnosed);
-            GoToEndOfTurn(Vector);
+            GoToEndOfTurn(vector);
             GoToStartOfTurn(legacy);
 
             // Assert
@@ -1364,7 +1363,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
 
-            PutOnDeck(Vector, GetCard(HotZoneCardController.Identifier));
+            PutOnDeck(vector, GetCard(HotZoneCardController.Identifier));
 
             StartGame();
             Card undiagnosed = GetCard(UndiagnosedSubjectCardController.Identifier);
@@ -1372,16 +1371,16 @@ namespace CauldronTests
             DecisionSelectFunction = 0; // Discard
 
             // Act
-            QuickTopCardStorage(Vector);
+            QuickTopCardStorage(vector);
 
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(undiagnosed);
 
             DestroyCard(undiagnosed);
 
             // Assert
             QuickTopCardCheck(ttc => ttc.TurnTaker.Trash);
-            AssertNumberOfCardsInRevealed(Vector, 0);
+            AssertNumberOfCardsInRevealed(vector, 0);
         }
 
         [Test]
@@ -1390,7 +1389,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
 
-            PutOnDeck(Vector, GetCard(HotZoneCardController.Identifier));
+            PutOnDeck(vector, GetCard(HotZoneCardController.Identifier));
 
             StartGame();
             Card undiagnosed = GetCard(UndiagnosedSubjectCardController.Identifier);
@@ -1398,16 +1397,16 @@ namespace CauldronTests
             DecisionSelectFunction = 1; // Replace
 
             // Act
-            QuickTopCardStorage(Vector);
+            QuickTopCardStorage(vector);
 
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(undiagnosed);
 
             DestroyCard(undiagnosed);
 
             // Assert
             QuickTopCardCheck(ttc => ttc.TurnTaker.Deck);
-            AssertNumberOfCardsInRevealed(Vector, 0);
+            AssertNumberOfCardsInRevealed(vector, 0);
 
         }
 
@@ -1418,7 +1417,7 @@ namespace CauldronTests
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
 
             Card bioTerror = GetCard(BioterrorSquadCardController.Identifier);
-            PutOnDeck(Vector, bioTerror);
+            PutOnDeck(vector, bioTerror);
 
             StartGame();
             Card undiagnosed = GetCard(UndiagnosedSubjectCardController.Identifier);
@@ -1428,7 +1427,7 @@ namespace CauldronTests
 
             // Act
 
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(superVirus);
             PlayCard(undiagnosed);
 
@@ -1436,7 +1435,7 @@ namespace CauldronTests
 
             // Assert
             AssertUnderCard(superVirus, bioTerror);
-            AssertNumberOfCardsInRevealed(Vector, 0);
+            AssertNumberOfCardsInRevealed(vector, 0);
 
         }
 
@@ -1447,7 +1446,7 @@ namespace CauldronTests
             SetupGameController(new string[] {DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis"}, randomSeed: new int?(928483507));
 
             Card bioTerror = GetCard(BioterrorSquadCardController.Identifier);
-            PutOnDeck(Vector, bioTerror);
+            PutOnDeck(vector, bioTerror);
 
             StartGame();
             Card undiagnosed = GetCard(UndiagnosedSubjectCardController.Identifier);
@@ -1457,11 +1456,11 @@ namespace CauldronTests
 
             // Act
 
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(superVirus);
             //get H+1 (4) viruses to move on supervirus
-            IEnumerable<Card> virusToMove = FindCardsWhere((Card c) => IsVirus(c) && Vector.TurnTaker.Deck.HasCard(c) && c != bioTerror).Take(4);
-            MoveCards(Vector, virusToMove, superVirus.UnderLocation);
+            IEnumerable<Card> virusToMove = FindCardsWhere((Card c) => IsVirus(c) && vector.TurnTaker.Deck.HasCard(c) && c != bioTerror).Take(4);
+            MoveCards(vector, virusToMove, superVirus.UnderLocation);
 
             PlayCard(undiagnosed);
 
@@ -1469,8 +1468,8 @@ namespace CauldronTests
             DestroyCard(undiagnosed);
 
             // Assert
-            AssertNumberOfCardsInRevealed(Vector, 0);
-            AssertFlipped(Vector.CharacterCard);
+            AssertNumberOfCardsInRevealed(vector, 0);
+            AssertFlipped(vector.CharacterCard);
 
         }
 
@@ -1487,7 +1486,7 @@ namespace CauldronTests
             QuickHandStorage(haka);
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(vendetta);
 
             // Assert
@@ -1507,7 +1506,7 @@ namespace CauldronTests
             QuickHandStorage(haka);
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             AddImmuneToDamageTrigger(legacy, true, false);
             PlayCard(vendetta);
 
@@ -1531,7 +1530,7 @@ namespace CauldronTests
             QuickHPStorage(haka);
             QuickHandStorage(haka);
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             AddImmuneToDamageTrigger(legacy, true, false);
             PlayCard(vendetta);
 
@@ -1555,7 +1554,7 @@ namespace CauldronTests
             QuickHandStorage(tachyon);
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard("SynapticInterruption");
             DecisionSelectCards = new Card[] { ra.CharacterCard, tachyon.HeroTurnTaker.Hand.TopCard };
             PlayCard(vendetta);
@@ -1576,14 +1575,14 @@ namespace CauldronTests
 
             SetHitPoints(new List<TurnTakerController>() { legacy, ra, haka }, 10);
             Card vendetta = GetCard(VendettaCardController.Identifier);
-            QuickHPStorage(tachyon, Vector);
+            QuickHPStorage(tachyon, vector);
             QuickHandStorage(tachyon);
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard("SynapticInterruption");
-            DecisionSelectCards = new Card[] { Vector.CharacterCard, tachyon.HeroTurnTaker.Hand.TopCard };
-            AddCannotPlayTrigger(Vector, false, true);
+            DecisionSelectCards = new Card[] { vector.CharacterCard, tachyon.HeroTurnTaker.Hand.TopCard };
+            AddCannotPlayTrigger(vector, false, true);
 
             PlayCard(vendetta, true);
 
@@ -1602,12 +1601,12 @@ namespace CauldronTests
 
             StartGame();
             Card virulentBlade = GetCard(VirulentBladeCardController.Identifier);
-            QuickHPStorage(Vector, legacy, ra, haka);
+            QuickHPStorage(vector, legacy, ra, haka);
 
             // Act
-            GoToPlayCardPhase(Vector);
-            AddCannotPlayTrigger(Vector, false, true);
-            AddReduceDamageTrigger(Vector, false, true, 2);
+            GoToPlayCardPhase(vector);
+            AddCannotPlayTrigger(vector, false, true);
+            AddReduceDamageTrigger(vector, false, true, 2);
             PlayCard(virulentBlade, true);
 
             // Assert
@@ -1629,11 +1628,11 @@ namespace CauldronTests
             Card virulentBlade = GetCard(VirulentBladeCardController.Identifier);
 
             // Act
-            GoToPlayCardPhase(Vector);
-            AddCannotPlayTrigger(Vector, false, true);
+            GoToPlayCardPhase(vector);
+            AddCannotPlayTrigger(vector, false, true);
             PlayCard(virulentBlade, true);
-            QuickHPStorage(Vector, legacy, ra, haka);
-            GoToEndOfTurn(Vector);
+            QuickHPStorage(vector, legacy, ra, haka);
+            GoToEndOfTurn(vector);
             // Assert
 
             // Heroes: -2 from Virulent Blade
@@ -1652,7 +1651,7 @@ namespace CauldronTests
             Card razortail = GetCard(VrRazortailCardController.Identifier);
 
             // Act
-            GoToPlayCardPhase(Vector);
+            GoToPlayCardPhase(vector);
             PlayCard(razortail);
             QuickHPStorage(razortail);
 
@@ -1662,17 +1661,17 @@ namespace CauldronTests
 
             //check only reduces self
 
-            QuickHPStorage(Vector);
-            AddCannotPlayTrigger(Vector, false, true);
-            DealDamage(haka, Vector, 4, DamageType.Melee);
+            QuickHPStorage(vector);
+            AddCannotPlayTrigger(vector, false, true);
+            DealDamage(haka, vector, 4, DamageType.Melee);
             QuickHPCheck(-4);
 
 
             GoToEndOfTurn(haka);
 
-            QuickHPStorage(Vector);
+            QuickHPStorage(vector);
 
-            GoToStartOfTurn(Vector);
+            GoToStartOfTurn(vector);
             QuickHPCheck(3);
         }
     }

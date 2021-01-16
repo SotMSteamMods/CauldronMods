@@ -13,11 +13,10 @@ using System.Collections.Generic;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class ScreaMachineTests : BaseTest
+    public class ScreaMachineTests : CauldronBaseTest
     {
         #region ScreaMachineTestsHelperFunctions
 
-        protected TurnTakerController scream { get { return FindVillain("ScreaMachine"); } }
 
         protected Card slice { get { return FindCardInPlay("SliceCharacter"); } }
         protected Card valentine { get { return FindCardInPlay("ValentineCharacter"); } }

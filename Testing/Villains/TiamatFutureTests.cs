@@ -11,9 +11,8 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    class TiamatFutureTests : BaseTest
+    class TiamatFutureTests : CauldronBaseTest
     {
-        protected TurnTakerController tiamat { get { return FindVillain("Tiamat"); } }
 
         private void SetupIncap(TurnTakerController source, Card target)
         {

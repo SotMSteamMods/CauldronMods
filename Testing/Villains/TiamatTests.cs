@@ -14,9 +14,8 @@ using System.Management.Instrumentation;
 namespace CauldronTests
 {
     [TestFixture()]
-    class TiamatTests : BaseTest
+    class TiamatTests : CauldronBaseTest
     {
-        protected TurnTakerController tiamat { get { return FindVillain("Tiamat"); } }
         protected Card inferno { get { return GetCardInPlay("InfernoTiamatCharacter"); } }
         protected Card storm { get { return GetCardInPlay("StormTiamatCharacter"); } }
         protected Card winter { get { return GetCardInPlay("WinterTiamatCharacter"); } }

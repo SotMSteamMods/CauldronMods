@@ -12,10 +12,9 @@ using Cauldron.Vanish;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class VanishTests : BaseTest
+    public class VanishTests : CauldronBaseTest
     {
         #region HelperFunctions
-        protected HeroTurnTakerController vanish { get { return FindHero("Vanish"); } }
         private void SetupIncap(TurnTakerController villain)
         {
             SetHitPoints(vanish.CharacterCard, 1);
