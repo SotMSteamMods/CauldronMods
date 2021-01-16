@@ -15,7 +15,7 @@ namespace CauldronTests
         protected HeroTurnTakerController cricket { get { return FindHero("Cricket"); } }
         protected HeroTurnTakerController cypher { get { return FindHero("Cypher"); } }
         protected HeroTurnTakerController doc { get { return FindHero("DocHavoc"); } }
-        protected HeroTurnTakerController drift { get { return FindHero("drift"); } }
+        protected HeroTurnTakerController drift { get { return FindHero("Drift"); } }
         protected HeroTurnTakerController echelon { get { return FindHero("Echelon"); } }
         protected HeroTurnTakerController gargoyle { get { return FindHero("Gargoyle"); } }
         protected HeroTurnTakerController gyrosaur { get { return FindHero("Gyrosaur"); } }
