@@ -22,7 +22,7 @@ namespace Cauldron.Drift
             {
                 //{Drift} deals up to 3 targets 2 radiant damage each.
                 //Increase damage dealt this way by 1 to targets that entered play since the end of your last turn.
-                IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), (Card target) => 2 + this.IncreaseDamageIfTargetEnteredPlaySinceLastTurn(target), DamageType.Radiant, () => 3, true, 0, cardSource: base.GetCardSource());
+                IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), (Card target) => 2 + this.IncreaseDamageIfTargetEnteredPlaySinceLastTurn(target), DamageType.Radiant, () => 3, false, 0, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -45,7 +45,7 @@ namespace Cauldron.Drift
             }
 
             //{DriftPast}
-            if (base.IsTimeMatching(Future))
+            if (base.IsTimeMatching(Past))
             {
                 //Draw a card. 
                 IEnumerator coroutine = base.DrawCard();

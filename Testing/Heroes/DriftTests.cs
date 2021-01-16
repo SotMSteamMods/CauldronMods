@@ -233,8 +233,7 @@ namespace CauldronTests
             QuickHandCheckZero();
         }
 
-        [Test()]
-        [Sequential]
+        [Test, Sequential]
         public void TestShiftTrackSetup([Values(1, 2, 3, 4)] int decision)
         {
             SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
@@ -292,62 +291,158 @@ namespace CauldronTests
             AssertIsInPlay(mono);
         }
 
-        [Test()]
-        [Sequential]
-        public void TestBorrowedTime_ShiftL([Values(0, 1, 2, 3)] int shiftAmount)
+        [Test, Combinatorial]
+        public void TestBorrowedTime([Values(0, 1)] int decision, [Values(0, 1, 2, 3)] int shiftAmount)
         {
             SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
             DestroyNonCharacterVillainCards();
 
-            DecisionSelectFunction = 3;
-            UsePower(drift);
-            UsePower(drift);
+            if (decision == 0)
+            {
+                //Set Shift Track position to far right
+                DecisionSelectFunction = 3;
+                UsePower(drift);
+                UsePower(drift);
+            }
 
             SetHitPoints(baron, 17);
             SetHitPoints(drift, 17);
             SetHitPoints(haka, 17);
 
-            DecisionSelectFunction = 0;
+            DecisionSelectFunction = decision;
             DecisionSelectNumber = shiftAmount;
             int?[] hpChange = { 0, 0, 0 };
             for (int i = 0; i < shiftAmount; i++)
             {
-                hpChange[i] = 2;
+                if (decision == 0)
+                {
+                    hpChange[i] = 2;
+                }
+                else
+                {
+                    hpChange[i] = -3;
+                }
             }
 
             //Select {DriftL} or {DriftR}. Shift that direction up to 3 times. X is the number of times you shifted this way.
-            //If you shifted at least {DriftL} this way, X targets regain 2 HP each.
+            //If you shifted at least {DriftL} this way, X targets regain 2 HP each. If you shifted {DriftR} this way, {Drift} deals X targets 3 radiant damage each.
             QuickHPStorage(baron, drift, haka);
             PlayCard(BorrowedTime);
             QuickHPCheck(hpChange);
         }
 
-        [Test()]
-        [Sequential]
-        public void TestBorrowedTime_ShiftR([Values(0, 1, 2, 3)] int shiftAmount)
+        [Test]
+        public void TestDanceOfTheDragons_Future()
         {
-            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
-            DestroyNonCharacterVillainCards();
 
-            SetHitPoints(baron, 17);
             SetHitPoints(drift, 17);
-            SetHitPoints(haka, 17);
 
-            DecisionSelectFunction = 1;
-            DecisionSelectNumber = shiftAmount;
-            int?[] hpChange = { 0, 0, 0 };
-            for (int i = 0; i < shiftAmount; i++)
-            {
-                hpChange[i] = -3;
-            }
+            //Shift to future
+            DecisionSelectFunction = 3;
+            UsePower(drift);
+            UsePower(drift);
 
-            //Select {DriftL} or {DriftR}. Shift that direction up to 3 times. X is the number of times you shifted this way.
-            //If you shifted {DriftR} this way, {Drift} deals X targets 3 radiant damage each.
-            QuickHPStorage(baron, drift, haka);
-            PlayCard(BorrowedTime);
-            QuickHPCheck(hpChange);
+            Card dance = PutInHand(DanceOfTheDragons);
+
+            //targets to check
+            Card sword = GetCardInPlay("Condemnation");
+            GoToEndOfTurn(env);
+            //anyone who entered play since last end of turn gets extra damage
+            Card gauntlet = PlayCard("GauntletOfPerdition");
+
+            //Values to compare
+            int trackPosition = CurrentShiftPosition();
+            QuickHandStorage(drift);
+            QuickHPStorage(drift.CharacterCard, apostate.CharacterCard, sword, gauntlet);
+
+            //{DriftFuture} {Drift} deals up to 3 targets 2 radiant damage each. Increase damage dealt this way by 1 to targets that entered play since the end of your last turn. Shift {DriftL}.
+            //{DriftPast} Draw a card. {Drift} regains 1 HP. Shift {DriftRR}
+            PlayCard(dance);
+
+            //Shifted left one
+            Assert.AreEqual(trackPosition - 1, CurrentShiftPosition(), "Expected position " + (trackPosition - 1) + ", was " + CurrentShiftPosition());
+            //Play 1
+            QuickHandCheck(-1);
+            //2 damage to Apostate and Sword
+            //Sword has 1 DR
+            //3 to gauntlet
+            QuickHPCheck(0, -2, -1, -3);
+        }
+
+        [Test]
+        public void TestDanceOfTheDragons_Past()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(drift, 17);
+
+            Card dance = PutInHand(DanceOfTheDragons);
+
+            //targets to check
+            Card sword = GetCardInPlay("Condemnation");
+            GoToEndOfTurn(env);
+            //anyone who entered play since last end of turn gets extra damage
+            Card gauntlet = PlayCard("GauntletOfPerdition");
+
+            //Values to compare
+            int trackPosition = CurrentShiftPosition();
+            QuickHandStorage(drift);
+            QuickHPStorage(drift.CharacterCard, apostate.CharacterCard, sword, gauntlet);
+
+            //{DriftFuture} {Drift} deals up to 3 targets 2 radiant damage each. Increase damage dealt this way by 1 to targets that entered play since the end of your last turn. Shift {DriftL}.
+            //{DriftPast} Draw a card. {Drift} regains 1 HP. Shift {DriftRR}
+            PlayCard(dance);
+
+            //Shifted right two
+            Assert.AreEqual(trackPosition + 2, CurrentShiftPosition(), "Expected position " + (trackPosition + 2) + ", was " + CurrentShiftPosition());
+            //Play 1, draw 1
+            QuickHandCheck(0);
+            //Drift heals 1
+            QuickHPCheck(1, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestDanceOfTheDragons_Both()
+        {
+            //By being in position 3, after shifting left once, track ends up in a past position allowing for the second half to trigger
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(drift, 17);
+
+            //Shift to future
+            DecisionSelectFunction = 3;
+            UsePower(drift);
+
+            Card dance = PutInHand(DanceOfTheDragons);
+
+            //targets to check
+            Card sword = GetCardInPlay("Condemnation");
+            GoToEndOfTurn(env);
+            //anyone who entered play since last end of turn gets extra damage
+            Card gauntlet = PlayCard("GauntletOfPerdition");
+
+            //Values to compare
+            int trackPosition = CurrentShiftPosition();
+            QuickHandStorage(drift);
+            QuickHPStorage(drift.CharacterCard, apostate.CharacterCard, sword, gauntlet);
+
+            //{DriftFuture} {Drift} deals up to 3 targets 2 radiant damage each. Increase damage dealt this way by 1 to targets that entered play since the end of your last turn. Shift {DriftL}.
+            //{DriftPast} Draw a card. {Drift} regains 1 HP. Shift {DriftRR}
+            PlayCard(dance);
+
+            //Shifted left one
+            Assert.AreEqual(trackPosition + 1, CurrentShiftPosition(), "Expected position " + (trackPosition + 1) + ", was " + CurrentShiftPosition());
+            //Play 1
+            QuickHandCheck(0);
+            //2 damage to Apostate and Sword
+            //Sword has 1 DR
+            //3 to gauntlet
+            QuickHPCheck(1, -2, -1, -3);
         }
     }
 }
