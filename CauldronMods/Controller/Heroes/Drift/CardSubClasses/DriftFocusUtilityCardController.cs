@@ -31,7 +31,7 @@ namespace Cauldron.Drift
         public override void AddTriggers()
         {
             //When {Drift} is dealt damage, if you have not shifted this turn...
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Target == base.GetActiveCharacterCard() && action.Amount > 0 && !base.Journal.CardPropertiesEntriesThisRound((CardPropertiesJournalEntry entry) => entry.Key == HasShifted).Any(), this.ShiftResponse, TriggerType.ModifyTokens, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Target == base.GetActiveCharacterCard() && action.Amount > 0 && !base.Journal.CardPropertiesEntriesThisTurn((CardPropertiesJournalEntry entry) => entry.Key == HasShifted).Any(), this.ShiftResponse, TriggerType.ModifyTokens, TriggerTiming.After);
         }
 
         public abstract IEnumerator ShiftResponse(DealDamageAction action);

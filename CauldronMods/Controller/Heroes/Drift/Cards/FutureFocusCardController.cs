@@ -26,7 +26,16 @@ namespace Cauldron.Drift
         {
             List<YesNoCardDecision> decision = new List<YesNoCardDecision>();
             //...you may shift {DriftRRR}. 
-            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.MakeDecision, this.Card, action, decision, new Card[] { base.GetShiftTrack() }, base.GetCardSource());
+            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.AddTokens, this.Card, action, decision, new Card[] { base.GetShiftTrack() }, base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
             if (decision.FirstOrDefault().Answer ?? false)
             {
                 coroutine = base.ShiftRRR();

@@ -65,10 +65,21 @@ namespace CauldronTests
 
         private void GoToShiftPosition(int position)
         {
-            DecisionSelectFunction = 2;
-            for (int i = 1; i < position; i++)
+            if (position > CurrentShiftPosition())
             {
-                UsePower(drift);
+                DecisionSelectFunction = 2;
+                for (int i = CurrentShiftPosition(); i < position; i++)
+                {
+                    UsePower(drift);
+                }
+            }
+            else
+            {
+                DecisionSelectFunction = 3;
+                for (int i = CurrentShiftPosition(); i > position; i--)
+                {
+                    UsePower(drift);
+                }
             }
         }
 
@@ -550,6 +561,7 @@ namespace CauldronTests
             PlayCard(step);
             //Play 2, Draw 1
             QuickHandCheck(-1);
+            //Shifted Left, so Drift deals 1
             QuickHPCheck(1, 0);
             AssertTrackPosition(trackPosition - 1);
         }
@@ -574,6 +586,7 @@ namespace CauldronTests
             PlayCard(step);
             //Play 2, Draw 1
             QuickHandCheck(-1);
+            //No movement, no action
             QuickHPCheck(0, 0);
             AssertTrackPosition(trackPosition);
         }
@@ -599,6 +612,7 @@ namespace CauldronTests
             PlayCard(step);
             //Play 2, Draw 1
             QuickHandCheck(-1);
+            //Shifted Right, so Drift heals 1
             QuickHPCheck(0, -1);
             AssertTrackPosition(trackPosition + 1);
         }
@@ -625,8 +639,100 @@ namespace CauldronTests
             PlayCard(step);
             //Play 2, Draw 1
             QuickHandCheck(-1);
+            //No movement, no action
             QuickHPCheck(0, 0);
             AssertTrackPosition(trackPosition);
+        }
+
+        [Test]
+        public void TestFutureFocus_NoShift_Yes()
+        {
+            SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card pFocus = PlayCard(PastFocus);
+
+            //When this card enters play, return all other focus cards to your hand.
+            PlayCard(FutureFocus);
+            AssertInHand(pFocus);
+
+            DecisionYesNo = true;
+
+            //When {Drift} is dealt damage, if you have not shifted this turn, you may shift {DriftRRR}. If you shifted {DriftRRR} this way, {Drift} deals 1 target 3 radiant damage.
+            int trackPosition = CurrentShiftPosition();
+            QuickHPStorage(apostate);
+            DealDamage(apostate, drift, 2, DamageType.Melee);
+            AssertTrackPosition(trackPosition + 3);
+            QuickHPCheck(-3);
+        }
+
+        [Test]
+        public void TestFutureFocus_NoShift_No()
+        {
+            SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card pFocus = PlayCard(PastFocus);
+
+            //When this card enters play, return all other focus cards to your hand.
+            PlayCard(FutureFocus);
+            AssertInHand(pFocus);
+
+            DecisionYesNo = false;
+
+            //When {Drift} is dealt damage, if you have not shifted this turn, you may shift {DriftRRR}. If you shifted {DriftRRR} this way, {Drift} deals 1 target 3 radiant damage.
+            int trackPosition = CurrentShiftPosition();
+            QuickHPStorage(apostate);
+            DealDamage(apostate, drift, 2, DamageType.Melee);
+            AssertTrackPosition(trackPosition);
+            QuickHPCheck(0);
+        }
+
+        [Test]
+        public void TestFutureFocus_YesShift()
+        {
+            SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            GoToShiftPosition(2);
+            GoToShiftPosition(1);
+            Card pFocus = PlayCard(PastFocus);
+
+            //When this card enters play, return all other focus cards to your hand.
+            PlayCard(FutureFocus);
+            AssertInHand(pFocus);
+
+            DecisionYesNo = true;
+
+            //When {Drift} is dealt damage, if you have not shifted this turn, you may shift {DriftRRR}. If you shifted {DriftRRR} this way, {Drift} deals 1 target 3 radiant damage.
+            int trackPosition = CurrentShiftPosition();
+            QuickHPStorage(apostate);
+            DealDamage(apostate, drift, 2, DamageType.Melee);
+            AssertTrackPosition(trackPosition);
+            QuickHPCheck(0);
+        }
+
+        [Test]
+        public void TestFutureFocus_NotEnoughShift()
+        {
+            SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            GoToShiftPosition(2);
+            GoToStartOfTurn(haka);
+            Card pFocus = PlayCard(PastFocus);
+
+            //When this card enters play, return all other focus cards to your hand.
+            PlayCard(FutureFocus);
+            AssertInHand(pFocus);
+
+            DecisionYesNo = true;
+
+            //When {Drift} is dealt damage, if you have not shifted this turn, you may shift {DriftRRR}. If you shifted {DriftRRR} this way, {Drift} deals 1 target 3 radiant damage.
+            QuickHPStorage(apostate);
+            DealDamage(apostate, drift, 2, DamageType.Melee);
+            AssertTrackPosition(4);
+            QuickHPCheck(0);
         }
     }
 }
