@@ -57,7 +57,16 @@ namespace Cauldron.TheMistressOfFate
             var deck = GetCardThisCardIsNextTo()?.Owner.Deck;
             if (deck != null)
             {
-                IEnumerator coroutine = GameController.PlayTopCardOfLocation(DecisionMaker, deck, numberOfCards: 2, requiredNumberOfCards: 2, cardSource: GetCardSource(), showMessage: true);
+                IEnumerator coroutine = GameController.SendMessageAction($"{Card.Title} plays the top 2 cards of {deck.GetFriendlyName()}.", Priority.Medium, GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+                coroutine = GameController.PlayTopCardOfLocation(DecisionMaker, deck, numberOfCards: 2, requiredNumberOfCards: 2, cardSource: GetCardSource(), showMessage: true);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

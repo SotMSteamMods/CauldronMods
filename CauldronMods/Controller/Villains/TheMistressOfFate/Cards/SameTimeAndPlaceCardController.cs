@@ -44,12 +44,32 @@ namespace Cauldron.TheMistressOfFate
             {
                 mc.SetDestination(this.Card.UnderLocation);
             }
-            yield return null;
+            IEnumerator coroutine = GameController.SendMessageAction($"{Card.Title} stores {mc.CardToMove.Title}...", Priority.Medium, GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
 
         private IEnumerator ReturnStoredCardsResponse(FlipCardAction fc)
         {
+            if(this.Card.UnderLocation.HasCards)
+            {
+                IEnumerator message = GameController.SendMessageAction($"{Card.Title} puts the cards underneath it on top of the environment deck.", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(message);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(message);
+                }
+            }
             IEnumerator coroutine = GameController.SelectCardsAndDoAction(DecisionMaker,
                                                     new LinqCardCriteria((Card c) => c.Location == this.Card.UnderLocation),
                                                     SelectionType.MoveCardOnDeck,

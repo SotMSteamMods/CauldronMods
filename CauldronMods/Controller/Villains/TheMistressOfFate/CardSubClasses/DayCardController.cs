@@ -139,6 +139,16 @@ namespace Cauldron.TheMistressOfFate
 
                 if(matchingCard != null)
                 {
+                    coroutine = GameController.SendMessageAction($"The {Card.Title} dawns, and reveals {matchingCard.Title}!", Priority.Medium, GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+
                     coroutine = GameController.PlayCard(DecisionMaker, matchingCard, isPutIntoPlay: true, cardSource: GetCardSource());
                     if (UseUnityCoroutines)
                     {

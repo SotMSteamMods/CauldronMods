@@ -259,6 +259,29 @@ namespace CauldronTests
             AssertNotFlipped(fate);
         }
         [Test]
+        public void TestMistressOfFateAdvancedEndOfTurnDamage()
+        {
+            SetupGameController(new string[] { "Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis" }, advanced: true);
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            QuickHPStorage(legacy, ra, tempest);
+            GoToEndOfTurn();
+            QuickHPCheck(0, 0, -3);
+        }
+        [Test]
+        public void TestMistressOfFateAdvancedFlipGainHP()
+        {
+            SetupGameController(new string[] { "Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis" }, advanced: true);
+            StartGame();
+
+            SetHitPoints(fate, 50);
+            QuickHPStorage(fate);
+            FlipCard(fate);
+            QuickHPCheck(10);
+        }
+        [Test]
         public void TestTheTimelineDayCardsNotAffectedByHeroCards()
         {
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
@@ -333,6 +356,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
             StartGame();
             ResetDays();
+            FlipCard(fate);
 
             QuickHPStorage(fate, legacy, ra, tempest);
             FlipCard(GetCard("DayOfSaints"));
@@ -1082,8 +1106,34 @@ namespace CauldronTests
 
         }
         //TODO - Warped Malus tests
+        [Test]
+        public void TestWarpedMalusDR()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
 
-        //TODO - Chaos Butterfly tests
+            Card malus = PlayCard("WarpedMalus");
+            QuickHPStorage(malus);
+            DealDamage(legacy, malus, 4, DTM);
+            QuickHPCheck(-3);
+        }
+        [Test]
+        public void TestWarpedMalusEndOfTurn()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            Card malus = PlayCard("WarpedMalus");
+            SetHitPoints(malus, 1);
+            QuickHPStorage(malus, legacy.CharacterCard, ra.CharacterCard, tempest.CharacterCard);
+            GoToEndOfTurn();
+            QuickHPCheck(4, -4, -4, -4);
+        }
+
         [Test]
         public void TestChaosButterflyDamage()
         {
@@ -1152,5 +1202,62 @@ namespace CauldronTests
             DestroyCard("ChaosButterfly");
         }
         //TODO - Test the 'preserve cards' effect with Sentinels, Temple of Zhu Long, Requital Cosmic
+
+        [Test]
+        public void TestHeroPreservationMulticharHero()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "TheSentinels", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            Card chains = PlayCard("DurasteelChains");
+            DestroyCard(idealist);
+            AssertIsInPlay(chains);
+            PlayCard("SecondChance");
+            AssertIsInPlay(chains);
+
+            Card oath = PutInHand("HippocraticOath");
+            DestroyCard(idealist);
+            DestroyCard(mainstay);
+            DestroyCard(medico);
+            DestroyCard(writhe);
+
+            Assert.AreEqual(sentinels.TurnTaker.OffToTheSide, chains.Location.HighestRecursiveLocation);
+            Assert.AreEqual(sentinels.TurnTaker.OffToTheSide, oath.Location.HighestRecursiveLocation);
+
+            FlipCard(fate);
+
+            AssertInHand(oath);
+            AssertInTrash(chains);
+            AssertNotFlipped(idealist);
+        }
+        [Test]
+        public void TestHeroPreservationCaptainCosmicRequital()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "CaptainCosmic/CaptainCosmicRequitalCharacter", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            DestroyCard(cosmic.CharacterCard);
+            Card crest = GetCard("CosmicCrest");
+            Log.Debug($"Crest location: {crest.Location.Name}");
+        }
+        [Test]
+        public void TestHeroPreservationRevivedByTempleOfZhuLong()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "TheTempleOfZhuLong");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+
+            MoveAllCardsFromHandToDeck(tempest);
+            DestroyCard(tempest.CharacterCard);
+
+            PlayCard("RitesOfRevival");
+            GoToEndOfTurn(FindEnvironment());
+            AssertNumberOfCardsInHand(tempest, 0);
+        }
     }
 }

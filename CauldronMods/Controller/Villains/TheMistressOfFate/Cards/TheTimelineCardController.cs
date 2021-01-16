@@ -43,11 +43,29 @@ namespace Cauldron.TheMistressOfFate
             if (GameController.AllHeroes.All(htt => htt.IsIncapacitatedOrOutOfGame))
             {
                 //"{Bulletpoint} All heroes are incapacitated.",
+                coroutine = GameController.SendMessageAction("All heroes are incapacitated! The rest of the timeline sees no interference from them - until it begins again...", Priority.Medium, GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
                 shouldFlipMistress = true;
             }
             else if(GameController.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsDay(c)).Count() == 4)
             {
                 //"{Bulletpoint} All Day cards are face up.",
+                coroutine = GameController.SendMessageAction("The Timeline has reached its end! The world is thrown back to its beginning...", Priority.Medium, GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
                 shouldFlipMistress = true;
             }
             else

@@ -39,6 +39,15 @@ namespace Cauldron.TheMistressOfFate
 
         private IEnumerator FlipMistressResponse(PhaseChangeAction pc)
         {
+            IEnumerator message = GameController.SendMessageAction($"{Card.Title} activates!", Priority.Medium, GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(message);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(message);
+            }
             Func<DestroyCardAction, IEnumerator> afterDestroyFlip = (DestroyCardAction dc) => GameController.FlipCard(CharacterCardController, cardSource: GetCardSource(), allowBackToFront: false);
             AddWhenDestroyedTrigger(afterDestroyFlip, new TriggerType[] { TriggerType.FlipCard });
             IEnumerator coroutine = DestroyThisCardResponse(pc);

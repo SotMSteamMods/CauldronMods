@@ -13,10 +13,10 @@ namespace Cauldron.TheMistressOfFate
         private readonly string CardPlayedKey = "ResidualMalusCardPlayedThisTurnKey";
         public ResidualMalusCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowNumberOfCardsAtLocation(FindEnvironment().TurnTaker.Trash);
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(() => environmentTTC.TurnTaker.Trash).Condition = () => Game.HasGameStarted;
             SpecialStringMaker.ShowHasBeenUsedThisTurn(CardPlayedKey);
         }
-
+        private TurnTakerController environmentTTC => FindEnvironment();
         public override void AddTriggers()
         {
             //"The first time a hero card is played each turn, this card deals that hero X melee damage, where X is the number of cards in the environment trash plus 1.",

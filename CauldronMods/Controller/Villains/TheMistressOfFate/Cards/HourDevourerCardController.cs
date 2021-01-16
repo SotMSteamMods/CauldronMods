@@ -22,8 +22,6 @@ namespace Cauldron.TheMistressOfFate
         public override void AddTriggers()
         {
             //"At the end of the villain turn, this card deals each non-villain target X sonic damage, where X is 3 times the number of Day cards face up.",
-            //Func<Card, int?> threeTimesFaceUpDays = (Card target) => 3 * GameController.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsDay(c)).Count();
-            //AddDealDamageAtEndOfTurnTrigger(TurnTaker, this.Card, (Card c) => !c.IsVillain, TargetType.All, null, DamageType.Sonic, dynamicAmount: threeTimesFaceUpDays);
             AddEndOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DealDamageResponse, TriggerType.DealDamage);
             //"When damage dealt by a target destroys this card, that target becomes immune to damage until the start of its next turn."
             AddWhenDestroyedTrigger(MakeDestroyerImmuneResponse, new TriggerType[] { TriggerType.CreateStatusEffect, TriggerType.MakeImmuneToDamage });
