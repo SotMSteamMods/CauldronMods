@@ -529,9 +529,104 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestDriftStep()
+        public void TestDriftStep_ShiftL()
         {
+            SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
 
+            GoToShiftPosition(2);
+            Card step = PutInHand(DriftStep);
+            Card fFocus = PutInHand(FutureFocus);
+            DecisionSelectCard = fFocus;
+            DecisionSelectFunction = 0;
+            SetHitPoints(drift, 17);
+
+            //Shift {DriftL} or {DriftR}.
+            //If you shifted {DriftL} this way, {Drift} regains 1 HP. If you shifted {DriftR} this way, {Drift} deals 1 target 1 radiant damage.
+            //Draw a card. You may play a card.
+            int trackPosition = CurrentShiftPosition();
+            QuickHPStorage(drift, apostate);
+            QuickHandStorage(drift);
+            PlayCard(step);
+            //Play 2, Draw 1
+            QuickHandCheck(-1);
+            QuickHPCheck(1, 0);
+            AssertTrackPosition(trackPosition - 1);
+        }
+
+        [Test]
+        public void TestDriftStep_ShiftL_NoShift()
+        {
+            SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card step = PutInHand(DriftStep);
+            Card fFocus = PutInHand(FutureFocus);
+            DecisionSelectCard = fFocus;
+            SetHitPoints(drift, 17);
+
+            //Shift {DriftL} or {DriftR}.
+            //If you shifted {DriftL} this way, {Drift} regains 1 HP. If you shifted {DriftR} this way, {Drift} deals 1 target 1 radiant damage.
+            //Draw a card. You may play a card.
+            int trackPosition = CurrentShiftPosition();
+            QuickHPStorage(drift, apostate);
+            QuickHandStorage(drift);
+            PlayCard(step);
+            //Play 2, Draw 1
+            QuickHandCheck(-1);
+            QuickHPCheck(0, 0);
+            AssertTrackPosition(trackPosition);
+        }
+
+        [Test]
+        public void TestDriftStep_ShiftR()
+        {
+            SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card step = PutInHand(DriftStep);
+            Card fFocus = PutInHand(FutureFocus);
+            DecisionSelectCard = fFocus;
+            DecisionSelectFunction = 1;
+            SetHitPoints(drift, 17);
+
+            //Shift {DriftL} or {DriftR}.
+            //If you shifted {DriftL} this way, {Drift} regains 1 HP. If you shifted {DriftR} this way, {Drift} deals 1 target 1 radiant damage.
+            //Draw a card. You may play a card.
+            int trackPosition = CurrentShiftPosition();
+            QuickHPStorage(drift, apostate);
+            QuickHandStorage(drift);
+            PlayCard(step);
+            //Play 2, Draw 1
+            QuickHandCheck(-1);
+            QuickHPCheck(0, -1);
+            AssertTrackPosition(trackPosition + 1);
+        }
+
+        [Test]
+        public void TestDriftStep_ShiftR_NoShift()
+        {
+            SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            GoToShiftPosition(4);
+            Card step = PutInHand(DriftStep);
+            Card fFocus = PutInHand(FutureFocus);
+            DecisionSelectCard = fFocus;
+            DecisionSelectFunction = 1;
+            SetHitPoints(drift, 17);
+
+            //Shift {DriftL} or {DriftR}.
+            //If you shifted {DriftL} this way, {Drift} regains 1 HP. If you shifted {DriftR} this way, {Drift} deals 1 target 1 radiant damage.
+            //Draw a card. You may play a card.
+            int trackPosition = CurrentShiftPosition();
+            QuickHPStorage(drift, apostate);
+            QuickHandStorage(drift);
+            PlayCard(step);
+            //Play 2, Draw 1
+            QuickHandCheck(-1);
+            QuickHPCheck(0, 0);
+            AssertTrackPosition(trackPosition);
         }
     }
 }
