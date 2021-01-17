@@ -121,6 +121,22 @@ namespace CauldronTests
             this.RunCoroutine(this.GameController.AddStatusEffect(increaseDamageStatusEffect, true, new CardSource(httc.CharacterCardController)));
         }
 
+        protected void PreventEndOfTurnEffects(TurnTakerController ttc, Card cardToPrevent)
+        {
+            PreventPhaseEffectStatusEffect preventPhaseEffectStatusEffect = new PreventPhaseEffectStatusEffect();
+            preventPhaseEffectStatusEffect.UntilStartOfNextTurn(ttc.TurnTaker);
+            preventPhaseEffectStatusEffect.CardCriteria.IsSpecificCard = cardToPrevent;
+            RunCoroutine(base.GameController.AddStatusEffect(preventPhaseEffectStatusEffect, showMessage: true, ttc.CharacterCardController.GetCardSource()));
+        }
+
+        protected void PreventStartOfTurnEffects(TurnTakerController ttc, Card cardToPrevent)
+        {
+            PreventPhaseEffectStatusEffect preventPhaseEffectStatusEffect = new PreventPhaseEffectStatusEffect(Phase.Start);
+            preventPhaseEffectStatusEffect.UntilEndOfNextTurn(ttc.TurnTaker);
+            preventPhaseEffectStatusEffect.CardCriteria.IsSpecificCard = cardToPrevent;
+            RunCoroutine(base.GameController.AddStatusEffect(preventPhaseEffectStatusEffect, showMessage: true, ttc.CharacterCardController.GetCardSource()));
+        }
+
         protected void AssertCardConfiguration(string identifier, string[] keywords = null, int hitpoints = 0)
         {
             Card card = GetCard(identifier);
@@ -173,12 +189,6 @@ namespace CauldronTests
             }
 
         }
-
-
-
-
-
-
 
     }
 }
