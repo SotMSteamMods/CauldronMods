@@ -20,7 +20,6 @@ namespace Cauldron.Gargoyle
         {
         }
 
-
         /*
          * Power:
          * "Select a target. Reduce the next damage it deals by 1. Increase the next damage Gargoyle deals by 1."
@@ -150,7 +149,7 @@ namespace Cauldron.Gargoyle
             //==============================================================            
             IncreaseDamageStatusEffect increaseDamageStatusEffect = new IncreaseDamageStatusEffect(INCREASE_DAMAGE_INCAP)
             {
-                SourceCriteria = { IsHeroCharacterCard = true },
+                SourceCriteria = { IsHero = true, IsTarget = true },
                 NumberOfUses = NUMBER_USES_ONCE
             };
             return base.AddStatusEffect(increaseDamageStatusEffect);
@@ -163,7 +162,7 @@ namespace Cauldron.Gargoyle
             //==============================================================
             ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(REDUCE_DAMAGE_INCAP)
             {
-                SourceCriteria = { IsHeroCharacterCard = true },
+                TargetCriteria = { IsHero = true, IsTarget = true },
                 NumberOfUses = NUMBER_USES_ONCE
             };
             return base.AddStatusEffect(reduceDamageStatusEffect);
@@ -174,8 +173,7 @@ namespace Cauldron.Gargoyle
             //==============================================================
             // One player may draw a card now.
             //==============================================================
-            return base.GameController.SelectHeroToDrawCard(this.HeroTurnTakerController, optionalDrawCard: true, numberOfCards: new int?(1), cardSource: base.GetCardSource(null));
+            return base.GameController.SelectHeroToDrawCard(this.HeroTurnTakerController, optionalDrawCard: true);
         }
-
     }
 }
