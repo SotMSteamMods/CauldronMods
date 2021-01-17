@@ -138,7 +138,28 @@ namespace CauldronTests
             GoToEndOfTurn(windmill);
             QuickHPCheck(0, 0, -2, -2, 0, 0);
 
-            
+        }
+
+        [Test()]
+        public void TestCitywideCarnage()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card responder1 = PlayCard("DetectiveSedrick");
+            Card responder2 = PlayCard("IntrepidReporter");
+            SetHitPoints(responder1, 4);
+
+            GoToPlayCardPhase(windmill);
+            //When this card enters play, it deals each Responder 2 energy damage.
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, responder1, responder2);
+            Card carnage = PlayCard("CitywideCarnage");
+            QuickHPCheck(0, 0, 0, 0, -2, -2);
+
+            //At the end of the environment turn, this card deals each hero target 1 toxic damage and each villain target 1 energy damage.
+            QuickHPUpdate();
+            GoToEndOfTurn(windmill);
+            QuickHPCheck(-1, -1, -1, -1, 0, 0);
 
         }
 
