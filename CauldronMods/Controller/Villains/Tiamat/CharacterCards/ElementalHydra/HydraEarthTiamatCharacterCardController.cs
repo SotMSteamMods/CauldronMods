@@ -9,7 +9,6 @@ namespace Cauldron.Tiamat
         public HydraEarthTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowSpecialString(() => base.Card.Title + " is immune to Melee damage.").Condition = () => !base.Card.IsFlipped;
-
         }
 
         protected override ITrigger[] AddFrontTriggers()

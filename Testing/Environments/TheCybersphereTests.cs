@@ -8,7 +8,7 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class TheCybersphereTests : BaseTest
+    public class TheCybersphereTests : CauldronBaseTest
     {
 
         #region CybersphereHelperFunctions

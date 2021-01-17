@@ -11,10 +11,9 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class StarlightTests : BaseTest
+    public class StarlightTests : CauldronBaseTest
     {
         #region StarlightHelperFunctions
-        protected HeroTurnTakerController starlight { get { return FindHero("Starlight"); } }
         private void SetupIncap(TurnTakerController villain)
         {
             SetHitPoints(starlight.CharacterCard, 1);
@@ -26,15 +25,6 @@ namespace CauldronTests
             CardController revivalController = base.GameController.FindCardController(ritesOfRevival);
             List<UnincapacitateHeroAction> storedResults = new List<UnincapacitateHeroAction>();
             base.RunCoroutine(base.GameController.UnincapacitateHero(base.GameController.FindCardController(starlight.CharacterCard), revivedHP, 2, storedResults, revivalController.GetCardSource()));
-        }
-
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                var card = GetCard(id);
-                AssertCardHasKeyword(card, keyword, false);
-            }
         }
 
         #endregion

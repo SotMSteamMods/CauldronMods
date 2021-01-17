@@ -11,10 +11,9 @@ using Cauldron.MagnificentMara;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class MagnificentMaraTests : BaseTest
+    public class MagnificentMaraTests : CauldronBaseTest
     {
         #region MaraHelperFunctions
-        protected HeroTurnTakerController mara { get { return FindHero("MagnificentMara"); } }
         private void SetupIncap(TurnTakerController villain)
         {
             SetHitPoints(mara.CharacterCard, 1);

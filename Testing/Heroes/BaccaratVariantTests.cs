@@ -12,11 +12,9 @@ using Cauldron.Baccarat;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class BaccaratVariantTests : BaseTest
+    public class BaccaratVariantTests : CauldronBaseTest
     {
         #region BaccaratHelperFunctions
-
-        protected HeroTurnTakerController baccarat { get { return FindHero("Baccarat"); } }
 
         private void SetupIncap(TurnTakerController source)
         {

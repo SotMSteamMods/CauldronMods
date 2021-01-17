@@ -9,7 +9,7 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class VaultFiveTests : BaseTest
+    public class VaultFiveTests : CauldronBaseTest
     {
 
         #region VaultFiveHelperFunctions
