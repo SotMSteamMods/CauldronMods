@@ -12,28 +12,19 @@ using Cauldron.TheMistressOfFate;
 
 namespace CauldronTests
 {
-    class TheMistressOfFateTests : BaseTest
+    class TheMistressOfFateTests : CauldronBaseTest
     {
         #region FateHelperFunctions
-        protected TurnTakerController fate { get { return FindVillain("TheMistressOfFate"); } }
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                var card = GetCard(id);
-                AssertCardHasKeyword(card, keyword, false);
-            }
-        }
         private void ResetDays()
         {
             var days = FindCardsWhere((Card c) => c.IsInPlay && c.Definition.Keywords.Contains("day"));
             foreach (Card day in days)
             {
-                if(day.IsInPlayAndHasGameText)
+                if (day.IsInPlayAndHasGameText)
                 {
                     var dayCC = FindCardController(day) as DayCardController;
                     FlipCard(day);
-                    if(dayCC.storedCard != null)
+                    if (dayCC.storedCard != null)
                     {
                         MoveCard(fate, dayCC.storedCard, fate.TurnTaker.Deck);
                     }
@@ -41,7 +32,7 @@ namespace CauldronTests
                 }
             }
             var statusEffects = GameController.Game.StatusEffects.ToList();
-            foreach(StatusEffect effect in statusEffects)
+            foreach (StatusEffect effect in statusEffects)
             {
                 GameController.ExhaustCoroutine(GameController.ExpireStatusEffect(effect, fate.CharacterCardController.GetCardSource()));
             }
@@ -61,6 +52,15 @@ namespace CauldronTests
 
         protected List<Card> DayCardsInOrder => GetCards("DayOfSaints", "DayOfSinners", "DayOfSorrows", "DayOfSwords")
                                                     .OrderBy(c => c.PlayIndex).ToList();
+
+        protected void ResetRFGCards()
+        {
+            var facedownCards = fate.TurnTaker.GetCardsWhere((Card c) => c.IsFaceDownNonCharacter && c.IsOutOfGame);
+            foreach(Card rfg in facedownCards)
+            {
+                GameController.ExhaustCoroutine(GameController.FlipCard(FindCardController(rfg)));
+            }
+        }
         #endregion
         [Test]
         public void TestMistressOfFateLoads()
@@ -509,6 +509,7 @@ namespace CauldronTests
             StartGame();
             FlipCard(fate);
             ResetDays();
+            ResetRFGCards();
 
             PutOnDeck(legacy, legacy.HeroTurnTaker.Hand.Cards);
             QuickHPStorage(legacy);
@@ -525,6 +526,7 @@ namespace CauldronTests
             StartGame();
             FlipCard(fate);
             ResetDays();
+            ResetRFGCards();
 
             PutOnDeck(legacy, legacy.HeroTurnTaker.Hand.Cards);
             QuickHPStorage(legacy);
@@ -545,6 +547,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
             StartGame();
             FlipCard(fate);
+            ResetRFGCards();
             ResetDays();
 
             PutOnDeck(legacy, legacy.HeroTurnTaker.Hand.Cards);
@@ -566,6 +569,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
             StartGame();
             FlipCard(fate);
+            ResetRFGCards();
             ResetDays();
 
             PutOnDeck(ra, ra.HeroTurnTaker.Hand.Cards);
@@ -584,6 +588,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
             StartGame();
             FlipCard(fate);
+            ResetRFGCards();
             ResetDays();
 
             PutOnDeck(ra, ra.HeroTurnTaker.Hand.Cards);
@@ -602,6 +607,7 @@ namespace CauldronTests
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
             StartGame();
             FlipCard(fate);
+            ResetRFGCards();
             ResetDays();
 
             QuickHPStorage(ra);
@@ -620,6 +626,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card traffic = PlayCard("TrafficPileup");
             Card hour = PutOnDeck("HourDevourer");
@@ -636,6 +643,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card traffic = PlayCard("TrafficPileup");
             Card hour = PutOnDeck("HourDevourer");
@@ -654,6 +662,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card hour = PlayCard("HourDevourer");
             DealDamage(legacy, hour, 10, DTM);
@@ -677,6 +686,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card hour = PlayCard("HourDevourer");
             SetHitPoints(hour, 2);
@@ -694,6 +704,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             SetHitPoints(legacy, 20);
             Card illusion = PlayCard("IllusionOfFreeWill");
@@ -717,6 +728,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card illusion = PlayCard("IllusionOfFreeWill");
             MoveCards(fate, fate.TurnTaker.Deck.Cards, fate.TurnTaker.Trash, leaveSomeCards: 4);
@@ -729,6 +741,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card illusion = PlayCard("IllusionOfFreeWill");
             FlipCard(fate);
@@ -741,6 +754,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             QuickHPStorage(legacy, ra, tempest, fate);
             PlayCard("Fortitude");
@@ -755,6 +769,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card malus = PutOnDeck("WarpedMalus");
             Card day = GetCard("DayOfSorrows");
@@ -781,6 +796,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             var days = DayCardsInOrder;
             Card firstDay = days[0];
@@ -798,6 +814,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             QuickHPStorage(legacy, ra, tempest);
             PlayCard("NecessaryCorrection");
@@ -810,6 +827,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             GoToStartOfTurn(FindEnvironment());
             Card illusion = PutOnDeck("IllusionOfFreeWill");
@@ -826,6 +844,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             GoToStartOfTurn(FindEnvironment());
             Card correction = PlayCard("NecessaryCorrection");
@@ -842,6 +861,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             PlayCard("ResidualMalus");
 
@@ -865,6 +885,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card residual = PlayCard("ResidualMalus");
             Card warped = PlayCard("WarpedMalus");
@@ -879,6 +900,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             QuickHPStorage(legacy, ra, tempest);
             PlayCard("Fortitude");
@@ -892,6 +914,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card stap = PlayCard("SameTimeAndPlace");
             Card traffic = PlayCard("TrafficPileup");
@@ -909,6 +932,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card stap = PlayCard("SameTimeAndPlace");
             Card traffic = PlayCard("TrafficPileup");
@@ -931,6 +955,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             QuickHPStorage(legacy, ra, tempest);
             PlayCard("Fortitude");
@@ -945,6 +970,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card ring = PutInTrash("TheLegacyRing");
             Card staff = PutInTrash("TheStaffOfRa");
@@ -962,6 +988,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card ring = PutInTrash("TheLegacyRing");
             Card staff = PutInTrash("TheStaffOfRa");
@@ -980,6 +1007,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             QuickHPStorage(fate);
             Card stolen = PlayCard("StolenFuture");
@@ -994,6 +1022,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             SetHitPoints(legacy, 30);
             DecisionSelectCards = new Card[] { ra.CharacterCard, fate.CharacterCard };
@@ -1010,6 +1039,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             SetHitPoints(legacy, 10);
             SetHitPoints(ra, 10);
@@ -1024,6 +1054,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             //give a face-up day card to count
             PutOnDeck("WarpedMalus");
@@ -1055,6 +1086,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             PlayCard("Fortitude");
             PutOnDeck(legacy, legacy.HeroTurnTaker.Hand.Cards);
@@ -1077,6 +1109,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             QuickHPStorage(legacy, ra, tempest);
             AssertNextMessages("Ra's trash does not have 10 cards to shuffle in!", MessageTerminator);
@@ -1091,6 +1124,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card traffic = PlayCard("TrafficPileup");
             QuickHPStorage(legacy, ra, tempest);
@@ -1113,6 +1147,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card malus = PlayCard("WarpedMalus");
             QuickHPStorage(malus);
@@ -1126,6 +1161,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card malus = PlayCard("WarpedMalus");
             SetHitPoints(malus, 1);
@@ -1141,6 +1177,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             PlayCard("Fortitude");
             PlayCard("ChaosButterfly");
@@ -1155,6 +1192,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card firstDay = DayCardsInOrder[0];
             int firstDayStartingIndex = firstDay.PlayIndex ?? -1;
@@ -1196,6 +1234,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             AssertNextMessage("There are not enough face-up day cards to swap their positions.");
             PlayCard("ChaosButterfly");
@@ -1210,6 +1249,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card chains = PlayCard("DurasteelChains");
             DestroyCard(idealist);
@@ -1239,6 +1279,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             Card crest = PlayCard("CosmicCrest");
             DestroyCard(cosmic.CharacterCard);
@@ -1255,6 +1296,7 @@ namespace CauldronTests
             StartGame();
             ResetDays();
             FlipCard(fate);
+            ResetRFGCards();
 
             MoveAllCardsFromHandToDeck(tempest);
             DestroyCard(tempest.CharacterCard);
