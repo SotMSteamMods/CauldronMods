@@ -44,45 +44,29 @@ namespace Cauldron.NightloreCitadel
         {
             // When this card enters play, it deals each hero with more than 3 cards in their hand 2 irreducible melee damage. 
             IEnumerable<HeroTurnTakerController> heroList = FindActiveHeroTurnTakerControllers().Where(httc => httc.HeroTurnTaker.NumberOfCardsInHand > 3);
-            IEnumerator coroutine;
-            Card card;
-            List<Card> damagedHeroes = new List<Card>();
-            foreach (HeroTurnTakerController httc in heroList)
+            IEnumerable<Card> characters = FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsTarget && c.IsHeroCharacterCard && heroList.Select(httc => httc.TurnTaker).Contains(c.Owner));
+            List<DealDamageAction> storedResults = new List<DealDamageAction>();
+            IEnumerator coroutine = DealDamage(base.Card, (Card c) => characters.Contains(c), 2, DamageType.Melee, isIrreducible: true, storedResults: storedResults);
+            if (base.UseUnityCoroutines)
             {
-                if (!Card.IsInPlayAndHasGameText)
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            List<Card> damagedHeroes = new List<Card>();
+            if(storedResults.Any())
+            {
+                foreach(DealDamageAction dd in storedResults)
                 {
-                    yield break;
-                }
-                List<Card> storedCharacter = new List<Card>();
-                coroutine = FindCharacterCardToTakeDamage(httc.HeroTurnTaker, storedCharacter, base.CharacterCard, 2, DamageType.Melee, isIrreducible: true);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-                card = storedCharacter.FirstOrDefault();
-                if (card != null)
-                {
-                    List<DealDamageAction> storedDamage = new List<DealDamageAction>();
-                    coroutine = DealDamage(Card, card, 2, DamageType.Melee, isIrreducible: true, storedResults: storedDamage, cardSource: GetCardSource());
-                    if (base.UseUnityCoroutines)
+                    if(dd.DidDealDamage)
                     {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
-                    }
-                    if (storedDamage != null && storedDamage.Any() && storedDamage.FirstOrDefault().DidDealDamage)
-                    {
-                        damagedHeroes.Add(storedDamage.FirstOrDefault().Target);
+                        damagedHeroes.Add(dd.Target);
+
                     }
                 }
             }
-
             //One hero that was dealt no damage this way may deal 1 target 3 melee damage.
 
             List<SelectCardDecision> storedDecision = new List<SelectCardDecision>();

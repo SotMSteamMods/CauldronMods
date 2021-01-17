@@ -461,13 +461,15 @@ namespace CauldronTests
             DestroyNonCharacterVillainCards();
 
             DiscardAllCards(haka);
+            DiscardAllCards(ra);
             // When this card enters play, it deals each hero with more than 3 cards in their hand 2 irreducible melee damage. 
             //One hero that was dealt no damage this way may deal 1 target 3 melee damage.
             QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, mainstay, medico, idealist, writhe);
-            DecisionSelectCards = new Card[] { mainstay, haka.CharacterCard, baron.CharacterCard };
+            DecisionSelectCards = new Card[] { haka.CharacterCard, baron.CharacterCard };
+            DecisionAutoDecideIfAble = true;
             PlayCard("GravityFluctuation");
             //gravity fluctuation reduces damage dealt by 1
-            QuickHPCheck(-2, -2, -2, 0, -2, 0, 0, 0);
+            QuickHPCheck(-2, 0, -2, 0, -2, -2, -2, -2);
         }
 
         [Test()]
