@@ -766,10 +766,14 @@ namespace CauldronTests
         [Test()]
         public void TestHiredKeeperEquipment()
         {
-            SetupGameController("Cauldron.Menagerie", "Parse", "Haka", "Benchmark", "Megalopolis");
+            SetupGameController(new[] { "Cauldron.Menagerie", "Parse", "Haka", "Benchmark", "Megalopolis" });
+            //ensure parse is captured
             DiscardAllCards(haka, bench);
+            PutInHand("Recompile");
             StartGame();
 
+            PutOnDeck("HalberdHive");
+            PutOnDeck("AngryLethovore"); //put under aquaic sphere
             PutOnDeck("AquaticSphere");
             Card mere = PlayCard("Mere");
 
@@ -788,38 +792,19 @@ namespace CauldronTests
         [Test()]
         public void TestHiredKeeperOngoing()
         {
-            SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
+            SetupGameController(new[] { "Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis" });
+            //ensure haka is captured
             DiscardAllCards(bench, parse);
+            PutInHand("ElbowSmash");
             StartGame();
 
             MoveCards(menagerie, FindCardsWhere((Card c) => c.DoKeywordsContain("enclosure") && c.Location.IsDeck), menagerie.TurnTaker.OffToTheSide);
 
             Card moko = PlayCard("TaMoko");
-
+            //stack deck
+            PutOnDeck("HalberdHive");
+            PutOnDeck("AngryLethovore"); //put under aquaic sphere
             PutOnDeck("AquaticSphere");
-            PlayCard("HiredKeeper");
-            //At the end of the villain turn, this card deals the 2 non-Captured hero targets with the highest HP 2 sonic damage each.
-            QuickHPStorage(haka, parse, bench);
-            GoToEndOfTurn(menagerie);
-            QuickHPCheck(0, -2, -2);
-
-            //Whenever a Specimen is destroyed, destroy 1 hero ongoing or equipment card.
-            Card hive = PlayCard("HalberdHive");
-            DestroyCard(hive);
-            AssertInTrash(moko);
-        }
-
-        [Test()]
-        public void TestHiredKeeperOngoing_379596204()
-        {
-            SetupGameController(new string[] { "Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis" }, randomSeed: 379596204);
-            DiscardAllCards(bench, parse);
-            StartGame();
-
-            MoveCards(menagerie, FindCardsWhere((Card c) => c.DoKeywordsContain("enclosure") && c.Location.IsDeck), menagerie.TurnTaker.OffToTheSide);
-
-            Card moko = PlayCard("TaMoko");
-
             PlayCard("HiredKeeper");
             //At the end of the villain turn, this card deals the 2 non-Captured hero targets with the highest HP 2 sonic damage each.
             QuickHPStorage(haka, parse, bench);
