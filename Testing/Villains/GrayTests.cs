@@ -11,30 +11,6 @@ namespace CauldronTests
     [TestFixture()]
     class GrayTests : CauldronBaseTest
     {
-
-        private void AssertCard(string identifier, string[] keywords = null, int hitpoints = 0)
-        {
-            Card card = GetCard(identifier);
-            if (keywords != null)
-            {
-                foreach (string keyword in keywords)
-                {
-                    AssertCardHasKeyword(card, keyword, false);
-                }
-            }
-            if (hitpoints > 0)
-            {
-                AssertMaximumHitPoints(card, hitpoints);
-            }
-        }
-
-        protected void AddCannotDealTrigger(TurnTakerController ttc, Card card)
-        {
-            CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new CannotDealDamageStatusEffect();
-            cannotDealDamageStatusEffect.SourceCriteria.IsSpecificCard = card;
-            this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
-        }
-
         [Test()]
         public void TestGrayLoads()
         {
@@ -58,19 +34,19 @@ namespace CauldronTests
 
             AssertCardHasKeyword(gray.CharacterCard, "villain", false);
 
-            AssertCard("AlistairWinters", new string[] { "minion" }, 5);
-            AssertCard("BlightTheLand", new string[] { "radiation" }, 8);
-            AssertCard("ChainReaction", new string[] { "radiation" }, 3);
-            AssertCard("Contamination", new string[] { "ongoing" });
-            AssertCard("CriticalMass", new string[] { "one-shot" });
-            AssertCard("HeavyRadiation", new string[] { "ongoing" });
-            AssertCard("IrradiatedTouch", new string[] { "radiation" }, 6);
-            AssertCard("LivingReactor", new string[] { "ongoing" });
-            AssertCard("MutatedWildlife", new string[] { "radiation" }, 6);
-            AssertCard("NuclearFire", new string[] { "one-shot" });
-            AssertCard("RadioactiveCascade", new string[] { "radiation" });
-            AssertCard("UnstableIsotope", new string[] { "one-shot" });
-            AssertCard("UnwittingHenchmen", new string[] { "minion" }, 5);
+            AssertCardConfiguration("AlistairWinters", new string[] { "minion" }, 5);
+            AssertCardConfiguration("BlightTheLand", new string[] { "radiation" }, 8);
+            AssertCardConfiguration("ChainReaction", new string[] { "radiation" }, 3);
+            AssertCardConfiguration("Contamination", new string[] { "ongoing" });
+            AssertCardConfiguration("CriticalMass", new string[] { "one-shot" });
+            AssertCardConfiguration("HeavyRadiation", new string[] { "ongoing" });
+            AssertCardConfiguration("IrradiatedTouch", new string[] { "radiation" }, 6);
+            AssertCardConfiguration("LivingReactor", new string[] { "ongoing" });
+            AssertCardConfiguration("MutatedWildlife", new string[] { "radiation" }, 6);
+            AssertCardConfiguration("NuclearFire", new string[] { "one-shot" });
+            AssertCardConfiguration("RadioactiveCascade", new string[] { "radiation" });
+            AssertCardConfiguration("UnstableIsotope", new string[] { "one-shot" });
+            AssertCardConfiguration("UnwittingHenchmen", new string[] { "minion" }, 5);
         }
 
         [Test()]
@@ -379,8 +355,8 @@ namespace CauldronTests
             StartGame();
             Card blight = GetCard("BlightTheLand");
             Card chain = GetCardInPlay("ChainReaction");
-            AddCannotDealTrigger(gray, chain);
-            AddCannotDealTrigger(gray, gray.CharacterCard);
+            AddCannotDealDamageTrigger(gray, chain);
+            AddCannotDealDamageTrigger(gray, gray.CharacterCard);
             PlayCard(blight);
             DealDamage(legacy, blight, 2, DamageType.Melee);
             DealDamage(haka, chain, 2, DamageType.Melee);
@@ -661,7 +637,7 @@ namespace CauldronTests
             StartGame();
             PlayCards("Mere", "TheLegacyRing", "UnwittingHenchmen");
             DealDamage(legacy, gray, 5, DamageType.Cold);
-            AddCannotDealTrigger(gray, gray.CharacterCard);
+            AddCannotDealDamageTrigger(gray, gray.CharacterCard);
             //At the end of the villain turn, destroy 1 equipment card.
             //If a card is destroyed this way, {Gray} regains 3 HP. Otherwise this card deals the hero target with the highest HP 1 melee damage.
             QuickHPStorage(gray, haka);
@@ -678,7 +654,7 @@ namespace CauldronTests
             StartGame();
             PlayCard("UnwittingHenchmen");
             DealDamage(legacy, gray, 5, DamageType.Cold);
-            AddCannotDealTrigger(gray, gray.CharacterCard);
+            AddCannotDealDamageTrigger(gray, gray.CharacterCard);
             //At the end of the villain turn, destroy 1 equipment card.
             //If a card is destroyed this way, {Gray} regains 3 HP. Otherwise this card deals the hero target with the highest HP 1 melee damage.
             QuickHPStorage(gray, haka);
@@ -693,7 +669,7 @@ namespace CauldronTests
             StartGame();
             PlayCard("UnwittingHenchmen");
             DealDamage(legacy, gray, 5, DamageType.Cold);
-            AddCannotDealTrigger(gray, gray.CharacterCard);
+            AddCannotDealDamageTrigger(gray, gray.CharacterCard);
 
             PlayCard("FixedPoint");
             PlayCard("TheLegacyRing");

@@ -12,15 +12,6 @@ namespace CauldronTests
     class PhaseVillainTests : CauldronBaseTest
     {
 
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                var card = GetCard(id);
-                AssertCardHasKeyword(card, keyword, false);
-            }
-        }
-
         private void DestroyWall()
         {
             Card wall = GetCardInPlay("ReinforcedWall");

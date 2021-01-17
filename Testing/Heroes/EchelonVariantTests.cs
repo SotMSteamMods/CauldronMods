@@ -21,22 +21,6 @@ namespace CauldronTests
         private readonly DamageType DTM = DamageType.Melee;
         private Card MDP => GetCardInPlay("MobileDefensePlatform");
 
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                AssertCardHasKeyword(GetCard(id), keyword, false);
-            }
-        }
-        private void AddImmuneToNextDamageEffect(TurnTakerController ttc, bool villains, bool heroes)
-        {
-            ImmuneToDamageStatusEffect effect = new ImmuneToDamageStatusEffect();
-            effect.TargetCriteria.IsVillain = villains;
-            effect.TargetCriteria.IsHero = heroes;
-            effect.NumberOfUses = 1;
-            RunCoroutine(GameController.AddStatusEffect(effect, true, ttc.CharacterCardController.GetCardSource()));
-        }
-
         #endregion
 
         [Test]

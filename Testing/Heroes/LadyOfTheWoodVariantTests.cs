@@ -22,22 +22,6 @@ namespace CauldronTests
             DealDamage(villain, ladyWood, 2, DamageType.Melee);
         }
 
-        private void AddReduceDamageOfDamageTypeTrigger(HeroTurnTakerController httc, DamageType damageType, int amount)
-        {
-            ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(amount);
-            reduceDamageStatusEffect.DamageTypeCriteria.AddType(damageType);
-            reduceDamageStatusEffect.NumberOfUses = 1;
-            this.RunCoroutine(this.GameController.AddStatusEffect(reduceDamageStatusEffect, true, new CardSource(httc.CharacterCardController)));
-        }
-
-        private void AddIncreaseDamageOfDamageTypeTrigger(HeroTurnTakerController httc, DamageType damageType, int amount)
-        {
-            IncreaseDamageStatusEffect increaseDamageStatusEffect = new IncreaseDamageStatusEffect(amount);
-            increaseDamageStatusEffect.DamageTypeCriteria.AddType(damageType);
-            increaseDamageStatusEffect.NumberOfUses = 1;
-            this.RunCoroutine(this.GameController.AddStatusEffect(increaseDamageStatusEffect, true, new CardSource(httc.CharacterCardController)));
-        }
-
         private TokenPool ElementTokenPool
         {
             get

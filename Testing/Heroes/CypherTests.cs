@@ -1411,14 +1411,6 @@ namespace CauldronTests
             QuickHPCheck(1);
         }
 
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                AssertCardHasKeyword(GetCard(id), keyword, false);
-            }
-        }
-
         #region Augment Helpers
 
         private bool IsAugment(Card card)

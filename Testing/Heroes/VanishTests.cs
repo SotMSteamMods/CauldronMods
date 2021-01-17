@@ -21,15 +21,6 @@ namespace CauldronTests
             DealDamage(villain, vanish, 2, DamageType.Melee);
         }
 
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                var card = GetCard(id);
-                AssertCardHasKeyword(card, keyword, false);
-            }
-        }
-
         #endregion HelperFunctions
 
         [Test()]

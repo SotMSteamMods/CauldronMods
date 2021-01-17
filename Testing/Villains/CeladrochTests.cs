@@ -45,56 +45,6 @@ namespace CauldronTests
             MoveCard(celadroch, p3, celadroch.TurnTaker.OutOfGame);
         }
 
-
-        private void AssertCard(string identifier, string[] keywords = null, int hitpoints = 0)
-        {
-            Card card = GetCard(identifier);
-            if (keywords != null)
-            {
-                foreach (string keyword in keywords)
-                {
-                    AssertCardHasKeyword(card, keyword, false);
-                }
-            }
-            if (hitpoints > 0)
-            {
-                AssertMaximumHitPoints(card, hitpoints);
-            }
-        }
-
-        protected void AddImmuneToDamageTrigger(TurnTakerController ttc, bool heroesImmune, bool villainsImmune)
-        {
-            ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect();
-            immuneToDamageStatusEffect.TargetCriteria.IsHero = new bool?(heroesImmune);
-            immuneToDamageStatusEffect.TargetCriteria.IsVillain = new bool?(villainsImmune);
-            immuneToDamageStatusEffect.UntilStartOfNextTurn(ttc.TurnTaker);
-            this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
-        }
-
-        protected void AddCannotDealDamageTrigger(TurnTakerController ttc, Card specificCard)
-        {
-            CannotDealDamageStatusEffect cannotDealDamageEffect = new CannotDealDamageStatusEffect();
-            cannotDealDamageEffect.SourceCriteria.IsSpecificCard = specificCard;
-            cannotDealDamageEffect.UntilStartOfNextTurn(ttc.TurnTaker);
-            this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageEffect, true, new CardSource(ttc.CharacterCardController)));
-        }
-
-        protected void AssertDamageTypeChanged(HeroTurnTakerController httc, Card source, Card target, int amount, DamageType initialDamageType, DamageType expectedDamageType)
-        {
-            List<DealDamageAction> storedResults = new List<DealDamageAction>();
-            this.RunCoroutine(this.GameController.DealDamage(httc, source, (Card c) => c == target, amount, initialDamageType, false, false, storedResults, null, null, false, null, null, false, false, new CardSource(GetCardController(source))));
-
-            if (storedResults != null)
-            {
-                DealDamageAction dd = storedResults.FirstOrDefault<DealDamageAction>();
-                DamageType actualDamageType = dd.DamageType;
-                Assert.AreEqual(expectedDamageType, actualDamageType, $"Expected damage type: {expectedDamageType}. Actual damage type: {actualDamageType}");
-            }
-            else
-            {
-                Assert.Fail("storedResults was null");
-            }
-        }
         #endregion
 
         [Test()]
@@ -141,36 +91,36 @@ namespace CauldronTests
 
             AssertCardHasKeyword(celadroch.CharacterCard, "villain", false);
 
-            AssertCard("PillarOfNight", new string[] { "relic" }, 25);
-            AssertCard("PillarOfSky", new string[] { "relic" }, 25);
-            AssertCard("PillarOfStorms", new string[] { "relic" }, 25);
+            AssertCardConfiguration("PillarOfNight", new string[] { "relic" }, 25);
+            AssertCardConfiguration("PillarOfSky", new string[] { "relic" }, 25);
+            AssertCardConfiguration("PillarOfStorms", new string[] { "relic" }, 25);
 
-            AssertCard("AvatarOfDeath", new string[] { "avatar" }, 20);
+            AssertCardConfiguration("AvatarOfDeath", new string[] { "avatar" }, 20);
 
-            AssertCard("SummersWrath", new string[] { "elemental" }, 5);
-            AssertCard("WintersBane", new string[] { "elemental" }, 5);
-            AssertCard("SpringsAtrophy", new string[] { "elemental" }, 5);
-            AssertCard("AutumnsTorment", new string[] { "elemental" }, 5);
+            AssertCardConfiguration("SummersWrath", new string[] { "elemental" }, 5);
+            AssertCardConfiguration("WintersBane", new string[] { "elemental" }, 5);
+            AssertCardConfiguration("SpringsAtrophy", new string[] { "elemental" }, 5);
+            AssertCardConfiguration("AutumnsTorment", new string[] { "elemental" }, 5);
 
-            AssertCard("TatteredDevil", new string[] { "demon" }, 10);
-            AssertCard("HollowAngel", new string[] { "demon" }, 10);
+            AssertCardConfiguration("TatteredDevil", new string[] { "demon" }, 10);
+            AssertCardConfiguration("HollowAngel", new string[] { "demon" }, 10);
 
-            AssertCard("WhisperingBreath", new string[] { "zombie" }, 6);
-            AssertCard("GraspingBreath", new string[] { "zombie" }, 6);
-            AssertCard("LeechingBreath", new string[] { "zombie" }, 6);
+            AssertCardConfiguration("WhisperingBreath", new string[] { "zombie" }, 6);
+            AssertCardConfiguration("GraspingBreath", new string[] { "zombie" }, 6);
+            AssertCardConfiguration("LeechingBreath", new string[] { "zombie" }, 6);
 
-            AssertCard("ForsakenCrusader", new string[] { "chosen" }, 3);
-            AssertCard("LordOfTheMidnightRevel", new string[] { "chosen" }, 12);
-            AssertCard("LaughingHag", new string[] { "chosen" }, 5);
+            AssertCardConfiguration("ForsakenCrusader", new string[] { "chosen" }, 3);
+            AssertCardConfiguration("LordOfTheMidnightRevel", new string[] { "chosen" }, 12);
+            AssertCardConfiguration("LaughingHag", new string[] { "chosen" }, 5);
 
-            AssertCard("ScreamingGale", new string[] { "ongoing" });
-            AssertCard("HoursTilDawn", new string[] { "ongoing" });
-            AssertCard("RattlingWind", new string[] { "ongoing" });
-            AssertCard("NightUnderTheMountain", new string[] { "ongoing" });
-            AssertCard("LingeringExhalation", new string[] { "ongoing" });
+            AssertCardConfiguration("ScreamingGale", new string[] { "ongoing" });
+            AssertCardConfiguration("HoursTilDawn", new string[] { "ongoing" });
+            AssertCardConfiguration("RattlingWind", new string[] { "ongoing" });
+            AssertCardConfiguration("NightUnderTheMountain", new string[] { "ongoing" });
+            AssertCardConfiguration("LingeringExhalation", new string[] { "ongoing" });
 
-            AssertCard("GallowsBlast", new string[] { "one-shot" });
-            AssertCard("TheMountainsMadness", new string[] { "one-shot" });
+            AssertCardConfiguration("GallowsBlast", new string[] { "one-shot" });
+            AssertCardConfiguration("TheMountainsMadness", new string[] { "one-shot" });
         }
 
         [Test()]

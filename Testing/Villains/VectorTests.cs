@@ -18,33 +18,6 @@ namespace CauldronTests
 
         private const string DeckNamespace = "Cauldron.Vector";
 
-        protected void AddImmuneToDamageTrigger(TurnTakerController ttc, bool heroesImmune, bool villainsImmune)
-        {
-            ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect();
-            immuneToDamageStatusEffect.TargetCriteria.IsHero = new bool?(heroesImmune);
-            immuneToDamageStatusEffect.TargetCriteria.IsVillain = new bool?(villainsImmune);
-            immuneToDamageStatusEffect.UntilStartOfNextTurn(ttc.TurnTaker);
-            this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
-        }
-
-        protected void AddReduceDamageTrigger(TurnTakerController ttc, bool heroesReduce, bool villainsReduce, int amount)
-        {
-            ReduceDamageStatusEffect effect = new ReduceDamageStatusEffect(amount);
-            effect.TargetCriteria.IsHero = new bool?(heroesReduce);
-            effect.TargetCriteria.IsVillain = new bool?(villainsReduce);
-            effect.UntilStartOfNextTurn(ttc.TurnTaker);
-            this.RunCoroutine(this.GameController.AddStatusEffect(effect, true, new CardSource(ttc.CharacterCardController)));
-        }
-
-        protected void AddCannotPlayTrigger(TurnTakerController ttc, bool heroesCannotPlay, bool villainsCannotPlay)
-        {
-            CannotPlayCardsStatusEffect effect = new CannotPlayCardsStatusEffect();
-            effect.CardCriteria.IsHero = new bool?(heroesCannotPlay);
-            effect.CardCriteria.IsVillain = new bool?(villainsCannotPlay);
-            effect.UntilStartOfNextTurn(ttc.TurnTaker);
-            this.RunCoroutine(this.GameController.AddStatusEffect(effect, true, new CardSource(ttc.CharacterCardController)));
-        }
-
         protected bool IsVirus(Card card)
         {
             return card != null && base.GameController.DoesCardContainKeyword(card, "virus");
@@ -1582,7 +1555,7 @@ namespace CauldronTests
             GoToPlayCardPhase(vector);
             PlayCard("SynapticInterruption");
             DecisionSelectCards = new Card[] { vector.CharacterCard, tachyon.HeroTurnTaker.Hand.TopCard };
-            AddCannotPlayTrigger(vector, false, true);
+            AddCannotPlayCardsStatusEffect(vector, false, true);
 
             PlayCard(vendetta, true);
 
@@ -1605,7 +1578,7 @@ namespace CauldronTests
 
             // Act
             GoToPlayCardPhase(vector);
-            AddCannotPlayTrigger(vector, false, true);
+            AddCannotPlayCardsStatusEffect(vector, false, true);
             AddReduceDamageTrigger(vector, false, true, 2);
             PlayCard(virulentBlade, true);
 
@@ -1629,7 +1602,7 @@ namespace CauldronTests
 
             // Act
             GoToPlayCardPhase(vector);
-            AddCannotPlayTrigger(vector, false, true);
+            AddCannotPlayCardsStatusEffect(vector, false, true);
             PlayCard(virulentBlade, true);
             QuickHPStorage(vector, legacy, ra, haka);
             GoToEndOfTurn(vector);
@@ -1662,7 +1635,7 @@ namespace CauldronTests
             //check only reduces self
 
             QuickHPStorage(vector);
-            AddCannotPlayTrigger(vector, false, true);
+            AddCannotPlayCardsStatusEffect(vector, false, true);
             DealDamage(haka, vector, 4, DamageType.Melee);
             QuickHPCheck(-4);
 

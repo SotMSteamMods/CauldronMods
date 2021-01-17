@@ -34,7 +34,6 @@ namespace CauldronTests
             Assert.AreEqual(number, actual, String.Format("{0} should have had {1} cards in play, but actually had {2}: {3}", ttc.Name, number, actual, cardsInPlay.Select(c => c.Title).ToCommaList()));
         }
 
-
         protected int GetNumberOfSeasonsInHand(TurnTakerController ttc)
         {
             var cardsInHand = ttc.TurnTaker.GetAllCards().Where(c => c.IsInHand && this.IsSeason(c));
@@ -44,22 +43,6 @@ namespace CauldronTests
         private bool IsSeason(Card card)
         {
             return card != null && base.GameController.DoesCardContainKeyword(card, "season", false, false);
-        }
-
-        private void AddReduceDamageOfDamageTypeTrigger(HeroTurnTakerController httc, DamageType damageType, int amount)
-        {
-            ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(amount);
-            reduceDamageStatusEffect.DamageTypeCriteria.AddType(damageType);
-            reduceDamageStatusEffect.NumberOfUses = 1;
-            this.RunCoroutine(this.GameController.AddStatusEffect(reduceDamageStatusEffect, true, new CardSource(httc.CharacterCardController)));
-        }
-
-        private void AddIncreaseDamageOfDamageTypeTrigger(HeroTurnTakerController httc, DamageType damageType, int amount)
-        {
-            IncreaseDamageStatusEffect increaseDamageStatusEffect = new IncreaseDamageStatusEffect(amount);
-            increaseDamageStatusEffect.DamageTypeCriteria.AddType(damageType);
-            increaseDamageStatusEffect.NumberOfUses = 1;
-            this.RunCoroutine(this.GameController.AddStatusEffect(increaseDamageStatusEffect, true, new CardSource(httc.CharacterCardController)));
         }
 
         #endregion

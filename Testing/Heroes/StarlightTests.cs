@@ -27,15 +27,6 @@ namespace CauldronTests
             base.RunCoroutine(base.GameController.UnincapacitateHero(base.GameController.FindCardController(starlight.CharacterCard), revivedHP, 2, storedResults, revivalController.GetCardSource()));
         }
 
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                var card = GetCard(id);
-                AssertCardHasKeyword(card, keyword, false);
-            }
-        }
-
         #endregion
 
         [Test()]

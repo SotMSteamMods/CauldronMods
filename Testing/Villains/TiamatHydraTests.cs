@@ -46,14 +46,6 @@ namespace CauldronTests
             GoToStartOfTurn(tiamat);
         }
 
-        protected void AddCannotDealNextDamageTrigger(TurnTakerController ttc, Card card)
-        {
-            CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new CannotDealDamageStatusEffect();
-            cannotDealDamageStatusEffect.NumberOfUses = 1;
-            cannotDealDamageStatusEffect.SourceCriteria.IsSpecificCard = card;
-            this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
-        }
-
         private void AddShuffleTrashCounterAttackTrigger(TurnTakerController ttc, TurnTaker turnTakerToReshuffleTrash)
         {
             Func<DealDamageAction, bool> criteria = (DealDamageAction dd) => dd.Target == ttc.CharacterCard;

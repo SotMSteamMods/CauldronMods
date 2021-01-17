@@ -19,14 +19,7 @@ namespace CauldronTests
             SetHitPoints(impact.CharacterCard, 1);
             DealDamage(villain, impact, 2, DamageType.Melee);
         }
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                var card = GetCard(id);
-                AssertCardHasKeyword(card, keyword, false);
-            }
-        }
+
         private DamageType DTM = DamageType.Melee;
 
         #endregion

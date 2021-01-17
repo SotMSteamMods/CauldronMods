@@ -30,16 +30,6 @@ namespace CauldronTests
             return GetCardInPlay(PaintedViperCardController.Identifier);
         }
 
-        private void AddCannotPlayCardsStatusEffect(TurnTakerController ttc, bool heroes, bool villains)
-        {
-            CannotPlayCardsStatusEffect effect = new CannotPlayCardsStatusEffect();
-            effect.CardCriteria.IsHero = heroes;
-            effect.CardCriteria.IsVillain = villains;
-            effect.UntilStartOfNextTurn(ttc.TurnTaker);
-            RunCoroutine(GameController.AddStatusEffect(effect, true, ttc.CharacterCardController.GetCardSource()));
-        }
-
-
         [Test]
         public void TestWindcolorDendronLoads()
         {

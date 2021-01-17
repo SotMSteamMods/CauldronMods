@@ -99,32 +99,7 @@ namespace CauldronTests
             //Shuffle all arms, heads, and body back into the deck
             ShuffleTrashIntoDeck(anathema);
         }
-        protected void AddImmuneToDamageTrigger(TurnTakerController ttc, bool heroesImmune, bool villainsImmune)
-        {
-            ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect();
-            immuneToDamageStatusEffect.TargetCriteria.IsHero = new bool?(heroesImmune);
-            immuneToDamageStatusEffect.TargetCriteria.IsVillain = new bool?(villainsImmune);
-            immuneToDamageStatusEffect.UntilStartOfNextTurn(ttc.TurnTaker);
-            this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
-        }
 
-        protected void AssertDamageTypeChanged(HeroTurnTakerController httc, Card source, Card target, int amount, DamageType initialDamageType, DamageType expectedDamageType)
-        {
-            List<DealDamageAction> storedResults = new List<DealDamageAction>();
-            this.RunCoroutine(this.GameController.DealDamage(httc, source, (Card c) => c == target, amount, initialDamageType, false, false, storedResults, null, null, false, null, null, false, false, new CardSource(GetCardController(source))));
-            
-            if(storedResults != null)
-            {
-                DealDamageAction dd = storedResults.FirstOrDefault<DealDamageAction>();
-                DamageType actualDamageType = dd.DamageType;
-                Assert.AreEqual(expectedDamageType, actualDamageType, $"Expected damage type: {expectedDamageType}. Actual damage type: {actualDamageType}");
-            }
-            else
-            {
-                Assert.Fail("storedResults was null");
-            }
-
-        }
         #endregion
 
         [Test()]

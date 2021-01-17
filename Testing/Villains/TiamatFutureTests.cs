@@ -13,21 +13,6 @@ namespace CauldronTests
     [TestFixture()]
     class TiamatFutureTests : CauldronBaseTest
     {
-
-        private void SetupIncap(TurnTakerController source, Card target)
-        {
-            SetHitPoints(target, 1);
-            DealDamage(source, target, 2, DamageType.Radiant);
-        }
-
-        protected void AddCannotDealNextDamageTrigger(TurnTakerController ttc, Card card)
-        {
-            CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new CannotDealDamageStatusEffect();
-            cannotDealDamageStatusEffect.NumberOfUses = 1;
-            cannotDealDamageStatusEffect.SourceCriteria.IsSpecificCard = card;
-            this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
-        }
-
         private bool IsSpell(Card card)
         {
             return card != null && base.GameController.DoesCardContainKeyword(card, "spell");

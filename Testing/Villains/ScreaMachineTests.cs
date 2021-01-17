@@ -17,46 +17,17 @@ namespace CauldronTests
     {
         #region ScreaMachineTestsHelperFunctions
 
-
         protected Card slice { get { return FindCardInPlay("SliceCharacter"); } }
         protected Card valentine { get { return FindCardInPlay("ValentineCharacter"); } }
         protected Card bloodlace { get { return FindCardInPlay("BloodlaceCharacter"); } }
         protected Card rickyg { get { return FindCardInPlay("RickyGCharacter"); } }
         protected Card setlist { get { return GetCard("TheSetList"); } }
 
-        protected void AddImmuneToDamageTrigger(TurnTakerController ttc, bool heroesImmune, bool villainsImmune)
-        {
-            ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect();
-            immuneToDamageStatusEffect.TargetCriteria.IsHero = new bool?(heroesImmune);
-            immuneToDamageStatusEffect.TargetCriteria.IsVillain = new bool?(villainsImmune);
-            immuneToDamageStatusEffect.UntilStartOfNextTurn(ttc.TurnTaker);
-            this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
-        }
-
         protected void AddPlayCardWhenVillainCardPlayed(TurnTakerController ttc, Location deck, CardSource cardSource)
         {
             Trigger<CardEntersPlayAction> trigger = new Trigger<CardEntersPlayAction>(GameController, (CardEntersPlayAction pca) =>  GameController.Game.Journal.CardEntersPlayEntriesThisTurn().Count() < 4 && pca.CardEnteringPlay != null && pca.CardEnteringPlay.IsVillain,
                 (CardEntersPlayAction pca) => GameController.PlayTopCardOfLocation(ttc, deck, cardSource: cardSource, showMessage: true), new TriggerType[] { TriggerType.PlayCard }, TriggerTiming.After, cardSource: cardSource);
             this.GameController.AddTrigger(trigger);
-        }
-
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                var card = GetCard(id);
-                AssertCardHasKeyword(card, keyword, false);
-            }
-        }
-
-        private void AssertHasAbility(string abilityKey, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                var card = GetCard(id);
-                int number = card.GetNumberOfActivatableAbilities(abilityKey);
-                Assert.GreaterOrEqual(number, 1);
-            }
         }
 
         private Card SetupBandCard(string identifier)
