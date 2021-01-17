@@ -8,14 +8,12 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class NightloreCitadelTests : BaseTest
+    public class NightloreCitadelTests : CauldronBaseTest
     {
 
         #region NightloreCitadelHelperFunctions
 
         protected TurnTakerController nightlore { get { return FindEnvironment(); } }
-        protected HeroTurnTakerController starlight { get { return FindHero("Starlight"); } }
-        protected HeroTurnTakerController necro { get { return FindHero("Necro"); } }
 
         protected bool IsConstellation(Card card)
         {
@@ -562,6 +560,26 @@ namespace CauldronTests
             QuickHPCheck(0, -3, 0, 0, 0, 0);
         }
 
-        
+        [Test()]
+        public void TestStarlightOfZzeck_WithCannon()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Starlight", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            GoToPlayCardPhase(nightlore);
+            PlayCard("StarlightOfZzeck");
+            Card cannon = PlayCard("AethiumCannon");
+            PreventEndOfTurnEffects(baron, cannon);
+            Card top = haka.TurnTaker.Deck.TopCard;
+            //At the end of the environment turn, this card deals the villain target with the lowest HP 3 toxic damage.
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, starlight.CharacterCard);
+            DecisionSelectLocation = new LocationChoice(haka.TurnTaker.Deck);
+            GoToEndOfTurn(nightlore);
+            QuickHPCheck(0, -3, 0, 0, 0, 0);
+            AssertUnderCard(cannon, top);
+        }
+
+
     }
 }
