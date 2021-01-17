@@ -7,23 +7,26 @@ cooperative card game by Greater Than Games.  These decks were designed by Matth
 The base set was begun around 2013, and the last set was completed in 2019.
 
 This project will bring the fantastic Cauldron Decks to [Sentinels of the Multiverse Digital](https://store.steampowered.com/app/337150/Sentinels_of_the_Multiverse/) as a Steam Workshop Mod.
+The mod team is dedicated to delivering as close to a professional game experience as possible.
 
 ----------------------------------------------------------
 
 Links:
 - Get the Game: [Steam](https://store.steampowered.com/app/337150/Sentinels_of_the_Multiverse/)
 - Cauldron website: https://cauldron4.webnode.com/
+- Join the [Discord](https://discord.gg/nGdQuWdfpY)
 - Trello board: https://trello.com/b/Doyff7gB/cauldron-sotm-mod
 - BGG Forum: https://boardgamegeek.com/thread/2532898/mod-sentinels-digital 
 
-To get started helping out take a look at:
+To get started helping join the Discard and then take a look at:
 - [Code of Conduct](./Docs/CODE_OF_CONDUCT.md)
 - [Contributing](./Docs/CONTRIBUTING.md)
+
 
 **How to I play this mod?**
 
 You can!
-The 3.1.3 version of Sentinels released Nov. 19th supports ad-hoc loading of mods for alpha test.
+The [mods] beta branch of the Sentinels of the Multiverse game supports loading and playing mods.
 Join the Discord above for instructions and downloads.
 
 Handelabra is implementing Mod support now so Workshop integration, art and many more features are still to come.
@@ -32,34 +35,12 @@ channel with [Weekly Dev. Streams](https://www.youtube.com/playlist?list=PLGPBmj
 
 **What are you working on then?**
 
-We are working to implement the core Cauldron decks so that they are ready to play out of the gate
-when mods are available.
+So far the team has completed all decks from the Core Cauldron expansion, Experimental Expansion, and Stormfall Expansion.  This includes all promo/variant cards for those decks.
 
-- HEROES:
-  - Baccarat
-  - Doc Havoc
-  - The Knight
-  - Lady of the Wood
-  - Necro
-  - Malichae
-  - Quicksilver
-  - Starlight
-  - The Stranger
-  - Tango One
-  - Vanish
-
-- VILLAINS:
-  - Anathema
-  - Dendron
-  - Gray
-  - The Ram
-  - Tiamat
-
-- ENVIRONMENTS:
-  - Blackwood Forest
-  - FSC Continuance Wanderer
-  - Halberd Experimental Research Center
-  - St Simeon's Catacombs
-  - The Cybersphere
-  - Superstorm Akela
-  - The Wandering Isle
+The mod includes:
+* 18 hero decks
+* 12 Villain decks
+* 10 environment decks
+* over 50 promo and variants for those decks
+* full card and game art (separate download)
+* music for each environment (separate download)

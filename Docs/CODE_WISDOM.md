@@ -11,6 +11,14 @@ Cards must be explicitly moved back to a real location before the end of the eff
 
 `AssertNumberOfCardsInRevealed(controller, 0)` at the end of the test is required.
 
+## Is a Card in play, who knows!
+The logic around wheather a card is in play when looking at things like cards under other cards, flipped, under and flipped, next to and flipped, etc are obscure.
+This distinction matters as game text (read that as 'code') is not run when the card is out of play.
+This also leads to unclear scenarios when moving cards from between locations (under a card, to the play area) where the card may not cleanly enter play and fire all triggers.
+
+## The Test Engine and the Game Engine do not have completely identical behavior.
+The additiona of the UI does change bahavior.  Certain flags that won't effect the tests will effect the UI.
+
 ## The Sentinels and Multiple Character Cards
 This is a topic we'll learn more about as we go, but first pitfall is that base.CharacterCard is null
 if the Hero has multiple character cards.  TheSentinels have the property HasMultipleCharacterCards set true.
