@@ -31,9 +31,9 @@
 				"Put the card Vagrant Heart: Soul Revealed off to the side. Shuffle the villain deck."
 			],
 			"gameplay": [
-				"The Infernal Choir is indestructible.",
-				"If the Hero with the Vagrant Heart has no cards in it's deck, shuffle all cards under Vagrant Heart: Hidden Heart back into the hero's deck, flip {TheInfernalChoir}'s villain character cards and replace the Vagrant Heart: Hidden Heart with Vagrant Heart: Soul Revealed.",
-				"At the end of the villain turn, play the top card of the villain deck. Then The Infernal Choir deals each non-ghost, non-villain target 1 infernal damage."
+				"(TheInfernalChoir) is indestructible.",
+				"If the Hero with the Vagrant Heart in it's play area has no cards in it's deck, shuffle all cards under Vagrant Heart: Hidden Heart back into the hero's deck, flip {TheInfernalChoir}'s villain character cards and replace the Vagrant Heart: Hidden Heart with Vagrant Heart: Soul Revealed.",
+				"At the end of the villain turn, play the top card of the villain deck. Then {TheInfernalChoir} deals each non-ghost, non-villain target 1 infernal damage."
 			],
 			"advanced": "Increase all damage dealt by 1.",
 			"icons": [
@@ -80,8 +80,8 @@
 			],
 			"body": [
 				"This card is indestructible. Cards underneath this one are not in play and have no game text.",
-				"When the Infernal Choir would be dealt damage, prevent that damage and instead move a card for each damage that would have been dealt from the bottom of this Hero's deck to beneath this card.",
-				"If this Hero is Incapacitated or Vagrant Heart leaves play, the heroes lose. Game over."
+				"When {TheInfernalChoir} would be dealt damage, prevent that damage and instead move a card for each damage that would have been dealt from the bottom of this Hero's deck to beneath this card.",
+				"If this Hero is Incapacitated or Vagrant Heart leaves play, the heroes lose. [b]Game over[/b]."
 			],
 			"flavorQuotes": [{
 				"identifier": "TheInfernalChoir",
@@ -152,7 +152,7 @@
 				"DestroyEquipment"
 			],
 			"body": [
-				"Reduce damage dealt by hero characters whose deck does not contain Vagrant Heart by 1.",
+				"Reduce damage dealt by hero characters whose play area does not contain Vagrant Heart: Hidden Heart by 1.",
 				"When this card is destroyed, destroy {H} hero ongoing and/or equipment cards."
 			],
 			"flavorQuotes": [{
@@ -275,10 +275,7 @@
 			"body": [
 				"Increase damage dealt by hero characters whose play area contains Vagrant Heart: Hidden Heart by 1.",
 				"Replace all powers on hero character cards with the following power:",
-				"Power: Each hero target and each Ghost deals itself 2 cold damage."
-			],
-			"powers": [
-				"Each hero target and each Ghost deals itself 2 cold damage."
+				"[b]Power:[/b] Each hero target and each Ghost{BR}       deals itself 2 cold damage."
 			],
 			"flavorText": "Buried long ago on a{BR}distant island, the ghost called Kata{BR}Michi trekked for years across the{BR}ocean, desperate to escape its{BR}reckoning.",
 			"hitpoints": 9

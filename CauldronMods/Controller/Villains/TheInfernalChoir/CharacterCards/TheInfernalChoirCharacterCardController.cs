@@ -95,7 +95,7 @@ namespace Cauldron.TheInfernalChoir
 
         private IEnumerator FlippedCardRemoval(GameAction action)
         {
-            return GameController.SendMessageAction("Ghost lady takes your cards, wooooooo.", Priority.Medium, GetCardSource())
+            return GameController.SendMessageAction("Ghost lady takes your cards, wooooooo.", Priority.Medium, GetCardSource());
         }
     }
 }
