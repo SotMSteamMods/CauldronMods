@@ -541,7 +541,7 @@
             "flavorReference": "Drift, The Archive #29"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "DriftCharacter",
             "promoIdentifier": "ThroughTheBreachDriftCharacter",
@@ -584,7 +584,8 @@
             "complexity": 3
         },
         {
-            "identifier": "ShiftTrack",
+            "identifier": "ShiftTrack1",
+            "sharedIdentifier": "ShiftTrack",
             "promoIdentifier": "ThroughTheBreachDriftCharacter",
             "backgroundColor": "FCB040",
             "count": 1,
@@ -690,7 +691,8 @@
             "complexity": 3
         },
         {
-            "identifier": "ShiftTrack",
+            "identifier": "ShiftTrack1",
+            "sharedIdentifier": "ShiftTrack",
             "promoIdentifier": "DualDriftCharacter",
             "backgroundColor": "D1D2D4",
             "count": 1,
@@ -755,26 +757,6 @@
             "complexity": 3
         },
         {
-            "identifier": "ShiftTrack",
-            "promoIdentifier": "DriftingShadowDriftCharacter",
-            "backgroundColor": "fbf767",
-            "count": 1,
-            "title": "Shift Track",
-            "isReal": false,
-            "body": "Shift Track",
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
-                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
-                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects."
-            ],
-            "icons": [],
-            "flippedTitle": "Shift Track Back",
-            "flippedIcons": []
-        },
-        {
             "identifier": "DriftCharacter",
             "promoIdentifier": "AllInGoodTimeDriftCharacter",
             "count": 1,
@@ -816,26 +798,6 @@
             "complexity": 3
         },
         {
-            "identifier": "ShiftTrack",
-            "promoIdentifier": "AllInGoodTimeDriftCharacter",
-            "backgroundColor": "fbf767",
-            "count": 1,
-            "title": "Shift Track",
-            "isReal": false,
-            "body": "Shift Track",
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
-                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
-                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects."
-            ],
-            "icons": [],
-            "flippedTitle": "Shift Track Back",
-            "flippedIcons": []
-        },
-        {
             "identifier": "DriftCharacter",
             "promoIdentifier": "TestSubjectHalberdDriftCharacter",
             "count": 1,
@@ -875,26 +837,6 @@
                 "OutlanderCharacter": "Well, it's heavy and it hurts when it hits you in the head!"
             },
             "complexity": 3
-        },
-        {
-            "identifier": "ShiftTrack",
-            "promoIdentifier": "TestSubjectHalberdDriftCharacter",
-            "backgroundColor": "fbf767",
-            "count": 1,
-            "title": "Shift Track",
-            "isReal": false,
-            "body": "Shift Track",
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
-                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
-                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects."
-            ],
-            "icons": [],
-            "flippedTitle": "Shift Track Back",
-            "flippedIcons": []
         }
     ]
 }
