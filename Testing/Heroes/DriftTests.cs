@@ -824,5 +824,46 @@ namespace CauldronTests
             DealDamage(bunker, apostate, 2, DamageType.Melee);
             QuickHPCheck(-3);
         }
+
+        [Test]
+        public void TestKnightsHeritage()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card fFocus = PutInHand(FutureFocus);
+            Card second = PutInHand(MakeEverySecondCount);
+            Card knight0 = PutInHand(GetCard(KnightsHeritage, 0));
+            Card knight1 = PutInHand(GetCard(KnightsHeritage, 1));
+            DecisionSelectCards = new Card[] { fFocus, second };
+
+            PlayCard(knight0);
+            //...and play up to 2 ongoing cards from your hand.
+            AssertIsInPlay(fFocus, second);
+            DestroyCards(fFocus, second);
+
+            //The first time {Drift} is dealt damage each turn, you may shift {DriftL} or {DriftR}.
+            int trackPosition = CurrentShiftPosition();
+            DecisionSelectFunction = 1;
+            DealDamage(apostate, drift, 2, DamageType.Melee);
+            AssertTrackPosition(trackPosition + 1);
+
+            //Only first time
+            trackPosition = CurrentShiftPosition();
+            DealDamage(apostate, drift, 2, DamageType.Melee);
+            AssertTrackPosition(trackPosition);
+
+            GoToStartOfTurn(drift);
+            //Shift left
+            DecisionSelectFunction = 0;
+            trackPosition = CurrentShiftPosition();
+            DealDamage(apostate, drift, 2, DamageType.Melee);
+            AssertTrackPosition(trackPosition - 1);
+
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+            //When this card enters play, destroy all other copies of Knight's Heritage...
+            PlayCard(knight1);
+            AssertInTrash(knight0);
+        }
     }
 }
