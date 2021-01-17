@@ -12,10 +12,8 @@ using Cauldron.Drift;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class DriftTests : BaseTest
+    public class DriftTests : CauldronBaseTest
     {
-        protected HeroTurnTakerController drift { get { return FindHero("Drift"); } }
-
         protected const string AttenuationField = "AttenuationField";
         protected const string BorrowedTime = "BorrowedTime";
         protected const string DanceOfTheDragons = "DanceOfTheDragons";
@@ -46,16 +44,7 @@ namespace CauldronTests
 
         public Card GetShiftTrack()
         {
-            return base.FindCardsWhere((Card c) => c.SharedIdentifier == ShiftTrack && c.IsInPlayAndHasGameText, false).FirstOrDefault();
-        }
-
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                var card = GetCard(id);
-                AssertCardHasKeyword(card, keyword, false);
-            }
+            return base.FindCardsWhere((Card c) => c.SharedIdentifier == "ShiftTrack" && c.IsInPlayAndHasGameText, false).FirstOrDefault();
         }
 
         private void AssertTrackPosition(int expectedPosition)
