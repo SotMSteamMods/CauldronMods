@@ -525,5 +525,26 @@ namespace CauldronTests
             GoToEndOfTurn(nightlore);
             QuickHPCheck(2, 0, -2, 0);
         }
+
+        [Test()]
+        public void TestStarlightOfOros()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Starlight", "Cauldron.NightloreCitadel");
+            StartGame();
+            SetHitPoints(baron, 23);
+            DestroyNonCharacterVillainCards();
+            DecisionSelectCard = baron.CharacterCard;
+            PlayCard("AncientConstellationA");
+            Card artemis = PlayCard("ArtemisVector");
+            Card oros = PlayCard("StarlightOfOros");
+            Card battalion = PlayCard("BladeBattalion");
+            GoToPlayCardPhase(nightlore);
+            //At the end of the environment turn, this card deals each hero target 2 infernal damage and each other environment target 2 psychic damage.
+            //Then, each villain target next to a Constellation regains {H} HP.
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, starlight.CharacterCard, artemis, oros);
+            GoToEndOfTurn(nightlore);
+            //startlight is a nemesis of oros so +1
+            QuickHPCheck(4, 0, -2, -2, -2, -3, -2, 0);
+        }
     }
 }
