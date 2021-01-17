@@ -603,7 +603,7 @@
         },
         {
             "identifier": "DriftCharacter",
-            "promoIdentifier": "SplitDriftCharacter",
+            "promoIdentifier": "DualDriftCharacter",
             "count": 1,
             "title": "Drift",
             "keywords": [
@@ -648,7 +648,7 @@
         },
         {
             "identifier": "FutureDriftCharacter",
-            "promoIdentifier": "SplitDriftCharacter",
+            "promoIdentifier": "DualDriftCharacter",
             "count": 1,
             "title": "Drift",
             "keywords": [
@@ -691,7 +691,7 @@
         },
         {
             "identifier": "ShiftTrack",
-            "promoIdentifier": "SplitDriftCharacter",
+            "promoIdentifier": "DualDriftCharacter",
             "backgroundColor": "D1D2D4",
             "count": 1,
             "title": "Shift Track",
