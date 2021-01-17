@@ -939,8 +939,33 @@ namespace CauldronTests
             QuickHPStorage(drift, apostate);
             DealDamage(apostate, drift, 2, DamageType.Melee);
             DealDamage(drift, apostate, 2, DamageType.Melee);
+            //Only increase to other targets
             DealDamage(drift, drift, 2, DamageType.Melee);
             QuickHPCheck(-4, -3);
+        }
+
+        [Test]
+        public void TestPastFocus()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card fFocus = PlayCard(FutureFocus);
+            Card sync = PutInHand(OutOfSync);
+            DecisionSelectCard = sync;
+            DecisionYesNo = true;
+
+            //When this card enters play, return all other focus cards to your hand.
+            PlayCard(PastFocus);
+            AssertInHand(fFocus);
+
+            GoToShiftPosition(4);
+            GoToStartOfTurn(drift);
+            //When {Drift} is dealt damage, if you have not shifted this turn, you may shift {DriftLLL}. If you shifted {DriftLLL} this way, you may play a card.
+            int trackPosition = CurrentShiftPosition();
+            DealDamage(apostate, drift, 2, DamageType.Melee);
+            AssertTrackPosition(1);
+            AssertIsInPlay(sync);
         }
     }
 }

@@ -23,10 +23,17 @@ namespace Cauldron.Drift
 
         public override IEnumerator ShiftResponse(DealDamageAction action)
         {
-            bool canShift = base.CurrentShiftPosition() == 4;
             List<YesNoCardDecision> decision = new List<YesNoCardDecision>();
             //...you may shift {DriftLLL}. 
             IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.MakeDecision, this.Card, action, decision, new Card[] { base.GetShiftTrack() }, base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             if (decision.FirstOrDefault().Answer ?? false)
             {
                 coroutine = base.ShiftLLL();
