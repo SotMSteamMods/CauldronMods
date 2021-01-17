@@ -11,7 +11,7 @@ namespace Cauldron.TheStranger
         public TheOldRoadsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, IsGlyphCriteria());
-            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, IsRuneCriteria());
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, IsGlyphCriteria());
         }
 
         public override IEnumerator Play()
