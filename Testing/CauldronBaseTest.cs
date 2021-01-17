@@ -190,27 +190,27 @@ namespace CauldronTests
 
         }
 
-        public int CurrentShiftPosition()
+        protected int CurrentShiftPosition()
         {
             return this.GetShiftPool().CurrentValue;
         }
 
-        public TokenPool GetShiftPool()
+        protected TokenPool GetShiftPool()
         {
             return this.GetShiftTrack().FindTokenPool("ShiftPool");
         }
 
-        public Card GetShiftTrack()
+        protected Card GetShiftTrack()
         {
             return base.FindCardsWhere((Card c) => c.SharedIdentifier == "ShiftTrack" && c.IsInPlayAndHasGameText, false).FirstOrDefault();
         }
 
-        private void AssertTrackPosition(int expectedPosition)
+        protected void AssertTrackPosition(int expectedPosition)
         {
             Assert.AreEqual(expectedPosition, CurrentShiftPosition(), "Expected position: " + expectedPosition + ", was: " + CurrentShiftPosition());
         }
 
-        private void GoToShiftPosition(int position)
+        protected void GoToShiftPosition(int position)
         {
             if (position > CurrentShiftPosition())
             {
