@@ -228,10 +228,10 @@ namespace CauldronTests
             GoToPlayCardPhase(windmill);
             //When this card enters play, it deals the Responder wth the lowest HP 2 melee damage. 
             QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, responder1, responder2);
-            Card worker = PlayCard("InjuredWorker");
+            Card rain = PlayCard("InjuredWorker");
             QuickHPCheck(0, 0, 0, 0, -2, 0);
             //Then move this card next to the hero with the highest HP.           
-            AssertNextToCard(worker, haka.CharacterCard);
+            AssertNextToCard(rain, haka.CharacterCard);
 
             //Increase the first damage dealt to that hero each turn by 1.
             QuickHPStorage(haka);
@@ -248,6 +248,33 @@ namespace CauldronTests
             QuickHPUpdate();
             DealDamage(baron, haka, 2, DamageType.Melee);
             QuickHPCheck(-3);
+        }
+
+        [Test()]
+        public void TestRainOfDebris()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card responder1 = PlayCard("DetectiveSedrick");
+            Card responder2 = PlayCard("IntrepidReporter");
+            SetHitPoints(responder1, 4);
+
+            GoToPlayCardPhase(windmill);
+            //When this card enters play, it deals the Responder wth the lowest HP 2 melee damage. 
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, responder1, responder2);
+            Card rain = PlayCard("RainOfDebris");
+            QuickHPCheck(0, 0, 0, 0, -2, 0);
+
+            //At the end of the environment turn, each hero may discard a card. This card deals any hero that did not discard a card this way 2 melee damage.
+            Card raDiscard = GetRandomCardFromHand(ra);
+            Card hakaDiscard = GetRandomCardFromHand(haka);
+            DecisionSelectCards = new Card[] { raDiscard, null, hakaDiscard };
+            QuickHPUpdate();
+            GoToEndOfTurn(windmill);
+            QuickHPCheck(0, 0, -2, 0, 0, 0);
+            AssertInTrash(raDiscard);
+            AssertInTrash(hakaDiscard);
         }
 
     }
