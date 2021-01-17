@@ -504,5 +504,24 @@ namespace CauldronTests
             DestroyCard(battalion, ra.CharacterCard);
             AssertInTrash(rogue);
         }
+
+        [Test()]
+        public void TestStarlightOfNoome()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(baron, 23);
+            SetHitPoints(ra, 23);
+            SetHitPoints(legacy, 20);
+            SetHitPoints(haka, 27);
+            GoToPlayCardPhase(nightlore);
+            PlayCard("StarlightOfNoome");
+            //At the end of the environment turn, select the 2 non - environment targets with the lowest HP.This card deals 1 of those targets 2 melee damage, and the other target regains 2HP.
+            DecisionSelectCards =  new Card[] { baron.CharacterCard, legacy.CharacterCard };
+            QuickHPStorage(baron, ra, legacy, haka);
+            GoToEndOfTurn(nightlore);
+            QuickHPCheck(2, 0, -2, 0);
+        }
     }
 }
