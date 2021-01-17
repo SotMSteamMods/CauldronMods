@@ -26,7 +26,7 @@ namespace Cauldron.Drift
             {
                 promoIdentifier = Dual;
             }
-            else if (base.CharacterCardController is ThroughTheBreachDriftCharacterCardController)
+            if (base.CharacterCardController is ThroughTheBreachDriftCharacterCardController)
             {
                 promoIdentifier = ThroughTheBreach;
             }
@@ -38,6 +38,7 @@ namespace Cauldron.Drift
                 promoIdentifier + ShiftTrack + 4,
             };
 
+            //At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track.
             List<SelectCardDecision> cardDecisions = new List<SelectCardDecision>();
             IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this, SelectionType.AddTokens, new LinqCardCriteria((Card c) => c.SharedIdentifier == ShiftTrack && tracks.Contains(c.Identifier), "Shift Track Position"), cardDecisions, false, includeRealCardsOnly: false);
             if (base.UseUnityCoroutines)
@@ -49,22 +50,9 @@ namespace Cauldron.Drift
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = this.SetupShiftTrack(cardDecisions.FirstOrDefault());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
-        }
 
-        private IEnumerator SetupShiftTrack(SelectCardDecision decision)
-        {
-            Card selectedTrack = decision.SelectedCard;
-            IEnumerator coroutine = base.GameController.PlayCard(this, selectedTrack);
+            Card selectedTrack = cardDecisions.FirstOrDefault().SelectedCard;
+            coroutine = base.GameController.PlayCard(this, selectedTrack);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -101,6 +89,37 @@ namespace Cauldron.Drift
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.
+            if (base.CharacterCardController is DualDriftCharacterCardController)
+            {
+                List<SelectCardDecision> selectDriftDecision = new List<SelectCardDecision>();
+                coroutine = base.GameController.SelectCardAndStoreResults(this, SelectionType.RemoveCardFromGame, new LinqCardCriteria((Card c) => base.FindCardController(c) is DualDriftSubCharacterCardController), selectDriftDecision, false);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                //Place your other character card into play, active.
+                Card selectedDrift = selectDriftDecision.FirstOrDefault().SelectedCard;
+                Card driftToPlay = base.GameController.FindCardsWhere((Card c) => base.FindCardController(c) is DualDriftSubCharacterCardController && selectedDrift != c).FirstOrDefault();
+                coroutine = base.GameController.SwitchCards(base.CharacterCard, driftToPlay);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                //Then place 1 of your 2 character cards (1929 or 2199) next to that same space
+                base.GameController.AddCardPropertyJournalEntry(selectedDrift, "DriftPosition" + tokensToAdd, true);
             }
             yield break;
         }
