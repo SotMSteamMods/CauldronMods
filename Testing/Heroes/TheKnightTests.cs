@@ -11,16 +11,15 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class TheKnightTests : BaseTest
+    public class TheKnightTests : CauldronBaseTest
     {
         #region HelperFunctions
         protected string HeroNamespace = "Cauldron.TheKnight";
 
-        protected HeroTurnTakerController HeroController { get { return FindHero("TheKnight"); } }
         private void SetupIncap(TurnTakerController villain)
         {
-            SetHitPoints(HeroController, 1);
-            DealDamage(villain, HeroController, 2, DamageType.Melee);
+            SetHitPoints(knight, 1);
+            DealDamage(villain, knight, 2, DamageType.Melee);
         }
         
         #endregion
@@ -33,10 +32,10 @@ namespace CauldronTests
 
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
 
-            Assert.IsNotNull(HeroController);
-            Assert.IsInstanceOf(typeof(TheKnightCharacterCardController), HeroController.CharacterCardController);
+            Assert.IsNotNull(knight);
+            Assert.IsInstanceOf(typeof(TheKnightCharacterCardController), knight.CharacterCardController);
 
-            Assert.AreEqual(32, HeroController.CharacterCard.HitPoints);
+            Assert.AreEqual(32, knight.CharacterCard.HitPoints);
         }
 
         [Test]
@@ -47,20 +46,20 @@ namespace CauldronTests
             StartGame();
 
             PrintSeparator("Setup");
-            DiscardAllCards(HeroController);
-            ShuffleTrashIntoDeck(HeroController);
+            DiscardAllCards(knight);
+            ShuffleTrashIntoDeck(knight);
 
             PrintSeparator("Test");
-            Assert.IsTrue(HeroController.GetCardControllersAtLocation(HeroController.TurnTaker.Deck).All(c => c is TheKnightCardController), "Not all cards are derived from " + nameof(Cauldron.TheKnight.TheKnightCardController));
+            Assert.IsTrue(knight.GetCardControllersAtLocation(knight.TurnTaker.Deck).All(c => c is TheKnightCardController), "Not all cards are derived from " + nameof(Cauldron.TheKnight.TheKnightCardController));
 
-            var cc = (TheKnightCardController)HeroController.GetCardControllersAtLocation(HeroController.TurnTaker.Deck).First();
+            var cc = (TheKnightCardController)knight.GetCardControllersAtLocation(knight.TurnTaker.Deck).First();
 
             List<SelectCardDecision> results = new List<SelectCardDecision>();
 
             RunCoroutine(cc.SelectOwnCharacterCard(results, SelectionType.None));
 
-            Assert.IsTrue(results.Count == 1 && results[0].SelectedCard == HeroController.CharacterCard, "Own CharacterCard was not selected");
-            AssertNumberOfCardsInPlay(HeroController, 1);
+            Assert.IsTrue(results.Count == 1 && results[0].SelectedCard == knight.CharacterCard, "Own CharacterCard was not selected");
+            AssertNumberOfCardsInPlay(knight, 1);
         }
 
         [Test]
@@ -71,11 +70,11 @@ namespace CauldronTests
             StartGame();
 
             PrintSeparator("Setup");
-            DiscardAllCards(HeroController);
-            ShuffleTrashIntoDeck(HeroController);
+            DiscardAllCards(knight);
+            ShuffleTrashIntoDeck(knight);
 
             PrintSeparator("Test");
-            var ccs = HeroController.GetCardControllersAtLocation(HeroController.TurnTaker.Deck).Cast<TheKnightCardController>().ToList();
+            var ccs = knight.GetCardControllersAtLocation(knight.TurnTaker.Deck).Cast<TheKnightCardController>().ToList();
 
             Assert.IsTrue(ccs.OfType<SingleHandEquipmentCardController>().All(cc => cc.IsSingleHandCard(cc.Card)), $"not all {nameof(SingleHandEquipmentCardController)} have the single hand keyword");
             Assert.IsTrue(ccs.OfType<SingleHandEquipmentCardController>().All(cc => base.IsEquipment(cc.Card)), $"not all {nameof(SingleHandEquipmentCardController)} have the equipment keyword");
@@ -88,22 +87,22 @@ namespace CauldronTests
             }
 
             PrintSeparator("play them all, first two normal");
-            PlayCardFromHand(HeroController, HeroController.HeroTurnTaker.Hand.Cards.First().Identifier);
-            AssertNumberOfCardsInPlay(HeroController, 2);
-            AssertNumberOfCardsInTrash(HeroController, 0);
+            PlayCardFromHand(knight, knight.HeroTurnTaker.Hand.Cards.First().Identifier);
+            AssertNumberOfCardsInPlay(knight, 2);
+            AssertNumberOfCardsInTrash(knight, 0);
 
-            PlayCardFromHand(HeroController, HeroController.HeroTurnTaker.Hand.Cards.First().Identifier);
-            AssertNumberOfCardsInPlay(HeroController, 3);
-            AssertNumberOfCardsInTrash(HeroController, 0);
+            PlayCardFromHand(knight, knight.HeroTurnTaker.Hand.Cards.First().Identifier);
+            AssertNumberOfCardsInPlay(knight, 3);
+            AssertNumberOfCardsInTrash(knight, 0);
 
             PrintSeparator("subsequent cards should destroy a previous card");
             int cardsInTrash = 0;
-            while (HeroController.HeroTurnTaker.Hand.HasCards)
+            while (knight.HeroTurnTaker.Hand.HasCards)
             {
-                DecisionSelectCard = HeroController.TurnTaker.PlayArea.Cards.First(c => !c.IsHeroCharacterCard);
-                PlayCardFromHand(HeroController, HeroController.HeroTurnTaker.Hand.Cards.First().Identifier);
-                AssertNumberOfCardsInPlay(HeroController, 3);
-                AssertNumberOfCardsInTrash(HeroController, ++cardsInTrash);
+                DecisionSelectCard = knight.TurnTaker.PlayArea.Cards.First(c => !c.IsHeroCharacterCard);
+                PlayCardFromHand(knight, knight.HeroTurnTaker.Hand.Cards.First().Identifier);
+                AssertNumberOfCardsInPlay(knight, 3);
+                AssertNumberOfCardsInTrash(knight, ++cardsInTrash);
             }
         }
 
@@ -120,11 +119,11 @@ namespace CauldronTests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
             PrintSeparator("Test");
-            GoToUsePowerPhase(HeroController);
+            GoToUsePowerPhase(knight);
             DecisionSelectFunction = 0;
             DecisionSelectTarget = base.FindCardInPlay("BaronBladeCharacter");
             QuickHPStorage(DecisionSelectTarget);
-            UsePower(HeroController.CharacterCard);
+            UsePower(knight.CharacterCard);
             QuickHPCheck(-1);
         }
 
@@ -140,7 +139,7 @@ namespace CauldronTests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
             SetupIncap(baron);
-            AssertIncapacitated(HeroController);
+            AssertIncapacitated(knight);
 
             //set up wraith
             var card = wraith.GetCardsAtLocation(wraith.HeroTurnTaker.Deck).First(c => c.IsOngoing || IsEquipment(c));
@@ -148,12 +147,12 @@ namespace CauldronTests
             QuickHandStorage(wraith);
 
             PrintSeparator("Test");
-            GoToUseIncapacitatedAbilityPhase(HeroController);
+            GoToUseIncapacitatedAbilityPhase(knight);
 
             PrintSeparator("use incap");
             DecisionSelectTurnTaker = wraith.TurnTaker;
             DecisionSelectCard = card;
-            UseIncapacitatedAbility(HeroController, 0);
+            UseIncapacitatedAbility(knight, 0);
 
             PrintSeparator("assert card was played");
             QuickHandCheck(-1);
@@ -172,15 +171,15 @@ namespace CauldronTests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
             SetupIncap(baron);
-            AssertIncapacitated(HeroController);
+            AssertIncapacitated(knight);
 
-            GoToUseIncapacitatedAbilityPhase(HeroController);
+            GoToUseIncapacitatedAbilityPhase(knight);
 
             AssertNumberOfStatusEffectsInPlay(0);
 
             PrintSeparator("Test");
             DecisionSelectCard = wraith.CharacterCard;
-            UseIncapacitatedAbility(HeroController, 1);
+            UseIncapacitatedAbility(knight, 1);
 
             string messageText = $"Reduce damage dealt to {wraith.Name} by 1.";
 
@@ -210,7 +209,7 @@ namespace CauldronTests
 
             PrintSeparator("Effect expires");
             AssertNextMessageContains(messageText);
-            GoToStartOfTurn(HeroController);
+            GoToStartOfTurn(knight);
             AssertNumberOfStatusEffectsInPlay(0);
             //Test that the reducing effect has disappeared
             QuickHPStorage(wraith);
@@ -231,15 +230,15 @@ namespace CauldronTests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
             SetupIncap(baron);
-            AssertIncapacitated(HeroController);
+            AssertIncapacitated(knight);
 
-            GoToUseIncapacitatedAbilityPhase(HeroController);
+            GoToUseIncapacitatedAbilityPhase(knight);
 
             AssertNumberOfStatusEffectsInPlay(0);
 
             PrintSeparator("Test");
             DecisionSelectCard = wraith.CharacterCard;
-            UseIncapacitatedAbility(HeroController, 2);
+            UseIncapacitatedAbility(knight, 2);
 
             string messageText = $"Increase damage dealt by {wraith.Name} by 1.";
 
@@ -268,7 +267,7 @@ namespace CauldronTests
 
             PrintSeparator("Effect expires");
             AssertNextMessageContains(messageText);
-            GoToStartOfTurn(HeroController);
+            GoToStartOfTurn(knight);
             AssertNumberOfStatusEffectsInPlay(0);
             //Test that the increasing effect has expired
             QuickHPStorage(baron);
@@ -288,19 +287,19 @@ namespace CauldronTests
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
             
-            PutInHand(HeroController, "ArmYourself");
+            PutInHand(knight, "ArmYourself");
 
             //Put some random cards non-Equipment in the trash
-            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(10));
-            GoToPlayCardPhase(HeroController);
+            PutInTrash(knight.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(10));
+            GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
-            AssertNumberOfCardsInPlay(HeroController, 1);
-            QuickHandStorage(HeroController);
+            AssertNumberOfCardsInPlay(knight, 1);
+            QuickHandStorage(knight);
             AssertNoDecision();
-            PlayCardFromHand(HeroController, "ArmYourself");
+            PlayCardFromHand(knight, "ArmYourself");
             QuickHandCheck(-1);
-            AssertNumberOfCardsInPlay(HeroController, 1);
+            AssertNumberOfCardsInPlay(knight, 1);
         }
 
         [Test]
@@ -314,20 +313,20 @@ namespace CauldronTests
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
-            PutInHand(HeroController, "ArmYourself");
+            PutInHand(knight, "ArmYourself");
 
             PrintSeparator("Put some random cards in the trash");
-            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(5));
-            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c)).Take(5));
-            GoToPlayCardPhase(HeroController);
+            PutInTrash(knight.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(5));
+            PutInTrash(knight.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c)).Take(5));
+            GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
-            AssertNumberOfCardsInPlay(HeroController, 1);
-            QuickHandStorage(HeroController);
+            AssertNumberOfCardsInPlay(knight, 1);
+            QuickHandStorage(knight);
             DecisionSelectCards = new Card[] { null, null };
-            PlayCardFromHand(HeroController, "ArmYourself");
+            PlayCardFromHand(knight, "ArmYourself");
             QuickHandCheck(-1);
-            AssertNumberOfCardsInPlay(HeroController, 1);
+            AssertNumberOfCardsInPlay(knight, 1);
         }
 
         [Test]
@@ -341,29 +340,29 @@ namespace CauldronTests
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
-            PutInHand(HeroController, "ArmYourself");
+            PutInHand(knight, "ArmYourself");
 
             PrintSeparator("Put some random cards in the trash");
-            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(5));
+            PutInTrash(knight.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(5));
             //exclude PlateHelm since it draws a card
-            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) && c.Identifier != "PlateHelm").Take(5));
-            GoToPlayCardPhase(HeroController);
+            PutInTrash(knight.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) && c.Identifier != "PlateHelm").Take(5));
+            GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
-            AssertNumberOfCardsInPlay(HeroController, 1);
-            QuickHandStorage(HeroController);
+            AssertNumberOfCardsInPlay(knight, 1);
+            QuickHandStorage(knight);
 
             //get 1 equipment from the trash, then append null at the end to force only 1 equipment taken
-            List<Card> selectedCards = (HeroController.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c)).Take(1)).ToList();
+            List<Card> selectedCards = (knight.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c)).Take(1)).ToList();
             selectedCards.Add(null);
             DecisionSelectCards = selectedCards;
 
-            DecisionMoveCardDestination = new MoveCardDestination(HeroController.HeroTurnTaker.PlayArea); //Select the non-default decision just because
-            PlayCardFromHand(HeroController, "ArmYourself");
+            DecisionMoveCardDestination = new MoveCardDestination(knight.HeroTurnTaker.PlayArea); //Select the non-default decision just because
+            PlayCardFromHand(knight, "ArmYourself");
             //no cards should have returned to hand for net -1
             //1 card should have been played, so 2 cards now in play
             QuickHandCheck(-1);
-            AssertNumberOfCardsInPlay(HeroController, 2);
+            AssertNumberOfCardsInPlay(knight, 2);
         }
 
         [Test]
@@ -377,29 +376,29 @@ namespace CauldronTests
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
-            PutInHand(HeroController, "ArmYourself");
+            PutInHand(knight, "ArmYourself");
 
             PrintSeparator("Put some random cards in the trash");
-            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(5));
+            PutInTrash(knight.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(5));
             //exclude PlateHelm since it draws a card
-            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) && c.Identifier != "PlateHelm").Take(1));
-            GoToPlayCardPhase(HeroController);
+            PutInTrash(knight.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) && c.Identifier != "PlateHelm").Take(1));
+            GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
-            AssertNumberOfCardsInPlay(HeroController, 1);
-            QuickHandStorage(HeroController);
+            AssertNumberOfCardsInPlay(knight, 1);
+            QuickHandStorage(knight);
 
             //get 1 equipment from the trash, then append null at the end to force only 1 equipment taken
-            List<Card> selectedCards = (HeroController.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c)).Take(1)).ToList();
+            List<Card> selectedCards = (knight.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c)).Take(1)).ToList();
             selectedCards.Add(null);
             DecisionSelectCards = selectedCards;
 
-            DecisionMoveCardDestination = new MoveCardDestination(HeroController.HeroTurnTaker.PlayArea); //Select the non-default decision just because
-            PlayCardFromHand(HeroController, "ArmYourself");
+            DecisionMoveCardDestination = new MoveCardDestination(knight.HeroTurnTaker.PlayArea); //Select the non-default decision just because
+            PlayCardFromHand(knight, "ArmYourself");
             //no cards should have returned to hand for net -1
             //1 card should have been played, so 2 cards now in play
             QuickHandCheck(-1);
-            AssertNumberOfCardsInPlay(HeroController, 2);
+            AssertNumberOfCardsInPlay(knight, 2);
         }
 
         [Test]
@@ -413,29 +412,29 @@ namespace CauldronTests
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
-            PutInHand(HeroController, "ArmYourself");
+            PutInHand(knight, "ArmYourself");
 
             PrintSeparator("Put some random cards in the trash");
-            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(5));
+            PutInTrash(knight.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(5));
             //exclude PlateHelm since it draws a card
-            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) && c.Identifier != "PlateHelm").Take(5));
-            GoToPlayCardPhase(HeroController);
+            PutInTrash(knight.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) && c.Identifier != "PlateHelm").Take(5));
+            GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
-            AssertNumberOfCardsInPlay(HeroController, 1);
-            QuickHandStorage(HeroController);
+            AssertNumberOfCardsInPlay(knight, 1);
+            QuickHandStorage(knight);
 
             //get 1 equipment from the trash, then append null at the end to force only 1 equipment taken
-            List<Card> selectedCards = (HeroController.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c)).Take(1)).ToList();
+            List<Card> selectedCards = (knight.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c)).Take(1)).ToList();
             selectedCards.Add(null);
             DecisionSelectCards = selectedCards;
 
-            DecisionMoveCardDestination = new MoveCardDestination(HeroController.HeroTurnTaker.Hand); //Select the non-default decision just because
-            PlayCardFromHand(HeroController, "ArmYourself");
+            DecisionMoveCardDestination = new MoveCardDestination(knight.HeroTurnTaker.Hand); //Select the non-default decision just because
+            PlayCardFromHand(knight, "ArmYourself");
             //1 card should have returned to hand for net 0
             //no card should have been played, so only the character card is still in play
             QuickHandCheck(0);
-            AssertNumberOfCardsInPlay(HeroController, 1);
+            AssertNumberOfCardsInPlay(knight, 1);
         }
 
         [Test]
@@ -449,22 +448,22 @@ namespace CauldronTests
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
-            PutInHand(HeroController, "ArmYourself");
+            PutInHand(knight, "ArmYourself");
 
             PrintSeparator("Put some random cards in the trash");
-            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(5));
+            PutInTrash(knight.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(5));
             //exclude PlateHelm since it draws a card
-            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) && c.Identifier != "PlateHelm").Take(5));
-            GoToPlayCardPhase(HeroController);
+            PutInTrash(knight.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) && c.Identifier != "PlateHelm").Take(5));
+            GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
-            AssertNumberOfCardsInPlay(HeroController, 1);
-            QuickHandStorage(HeroController);
-            DecisionSelectCards = HeroController.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c)).Take(2);
-            DecisionMoveCardDestination = new MoveCardDestination(HeroController.HeroTurnTaker.PlayArea); //Select the non-default decision just because
-            PlayCardFromHand(HeroController, "ArmYourself");
+            AssertNumberOfCardsInPlay(knight, 1);
+            QuickHandStorage(knight);
+            DecisionSelectCards = knight.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c)).Take(2);
+            DecisionMoveCardDestination = new MoveCardDestination(knight.HeroTurnTaker.PlayArea); //Select the non-default decision just because
+            PlayCardFromHand(knight, "ArmYourself");
             QuickHandCheck(0);
-            AssertNumberOfCardsInPlay(HeroController, 2);
+            AssertNumberOfCardsInPlay(knight, 2);
         }
 
         [Test]
@@ -478,21 +477,21 @@ namespace CauldronTests
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
-            PutInHand(HeroController, "BattlefieldScavenger");
+            PutInHand(knight, "BattlefieldScavenger");
 
             PrintSeparator("Put some random cards in the trash");
-            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || c.IsOngoing).Take(2));
+            PutInTrash(knight.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || c.IsOngoing).Take(2));
             PutInTrash(wraith.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || c.IsOngoing).Take(2));
-            GoToPlayCardPhase(HeroController);
+            GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
-            AssertNumberOfCardsInPlay(HeroController, 1);
-            QuickHandStorage(HeroController, ra, wraith);
+            AssertNumberOfCardsInPlay(knight, 1);
+            QuickHandStorage(knight, ra, wraith);
             DecisionAutoDecideIfAble = true;
             DecisionSelectFunctions = new int?[] { 0, 0, 0 };
-            PlayCardFromHand(HeroController, "BattlefieldScavenger");
+            PlayCardFromHand(knight, "BattlefieldScavenger");
             QuickHandCheck(0, 1, 1);
-            AssertNumberOfCardsInPlay(HeroController, 1);
+            AssertNumberOfCardsInPlay(knight, 1);
         }
 
         [Test]
@@ -506,28 +505,28 @@ namespace CauldronTests
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
-            PutInHand(HeroController, "BattlefieldScavenger");
+            PutInHand(knight, "BattlefieldScavenger");
 
             PrintSeparator("Put some random cards in the trash");
-            PutInTrash(HeroController.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || c.IsOngoing).Take(2));
+            PutInTrash(knight.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || c.IsOngoing).Take(2));
             PutInTrash(wraith.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || c.IsOngoing).Take(2));
-            GoToPlayCardPhase(HeroController);
+            GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
-            AssertNumberOfCardsInPlay(HeroController, 1);
-            QuickHandStorage(HeroController, ra, wraith);
+            AssertNumberOfCardsInPlay(knight, 1);
+            QuickHandStorage(knight, ra, wraith);
             DecisionAutoDecideIfAble = true;
             DecisionSelectFunctions = new int?[] { 1, 0, 1 };
             var cards = new[] {
-                HeroController.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c) || c.IsOngoing).First(),
+                knight.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c) || c.IsOngoing).First(),
                 wraith.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c) || c.IsOngoing).First(),
             };
             DecisionSelectCards = cards;
-            PlayCardFromHand(HeroController, "BattlefieldScavenger");
-            AssertOnTopOfDeck(HeroController, cards[0]);
+            PlayCardFromHand(knight, "BattlefieldScavenger");
+            AssertOnTopOfDeck(knight, cards[0]);
             AssertOnTopOfDeck(wraith, cards[1]);
             QuickHandCheck(-1, 1, 0);
-            AssertNumberOfCardsInPlay(HeroController, 1);
+            AssertNumberOfCardsInPlay(knight, 1);
         }
 
         [Test]
@@ -542,19 +541,19 @@ namespace CauldronTests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
             //set hitpoints to give room for gaining hp
-            SetHitPoints(HeroController.CharacterCard, 20);
+            SetHitPoints(knight.CharacterCard, 20);
 
-            PutInHand(HeroController, "CatchYourBreath");
-            GoToPlayCardPhase(HeroController);
+            PutInHand(knight, "CatchYourBreath");
+            GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
-            AssertNumberOfCardsInPlay(HeroController, 1);
-            QuickHandStorage(HeroController);
-            QuickHPStorage(HeroController);
+            AssertNumberOfCardsInPlay(knight, 1);
+            QuickHandStorage(knight);
+            QuickHPStorage(knight);
 
-            PlayCardFromHand(HeroController, "CatchYourBreath");
+            PlayCardFromHand(knight, "CatchYourBreath");
 
-            AssertNumberOfCardsInPlay(HeroController, 1);
+            AssertNumberOfCardsInPlay(knight, 1);
             QuickHandCheck(0);
             QuickHPCheck(2);
         }
@@ -571,23 +570,23 @@ namespace CauldronTests
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
-            var realm = PutInHand(HeroController, "ChampionOfTheRealm");
+            var realm = PutInHand(knight, "ChampionOfTheRealm");
 
             PrintSeparator("Test");
             AssertNumberOfStatusEffectsInPlay(0);
 
-            var card = HeroController.HeroTurnTaker.Deck.Cards.First(c => c.Identifier == "ShortSword");
+            var card = knight.HeroTurnTaker.Deck.Cards.First(c => c.Identifier == "ShortSword");
             string messageText = $"Increase damage dealt by {wraith.Name} by 1.";
 
             DecisionSelectCards = card.ToEnumerable().Concat(wraith.CharacterCard.ToEnumerable());
 
-            GoToPlayCardPhase(HeroController);
-            QuickShuffleStorage(HeroController.TurnTaker.Deck);
-            PlayCard(HeroController, realm);
-            AssertInTrash(HeroController, realm);
+            GoToPlayCardPhase(knight);
+            QuickShuffleStorage(knight.TurnTaker.Deck);
+            PlayCard(knight, realm);
+            AssertInTrash(knight, realm);
             
             QuickShuffleCheck(1);
-            AssertInPlayArea(HeroController, card);
+            AssertInPlayArea(knight, card);
 
             PrintSeparator("Assert Applied");
             AssertNumberOfStatusEffectsInPlay(1);
@@ -614,7 +613,7 @@ namespace CauldronTests
 
             PrintSeparator("Effect expires");
             AssertNextMessageContains(messageText);
-            GoToStartOfTurn(HeroController);
+            GoToStartOfTurn(knight);
             AssertNumberOfStatusEffectsInPlay(0);
             //Test that the increasing effect expired
             QuickHPStorage(baron);
@@ -634,23 +633,23 @@ namespace CauldronTests
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
-            var realm = PutInHand(HeroController, "DefenderOfTheRealm");
+            var realm = PutInHand(knight, "DefenderOfTheRealm");
 
             PrintSeparator("Test");
             AssertNumberOfStatusEffectsInPlay(0);
 
-            var card = HeroController.HeroTurnTaker.Deck.Cards.First(c => c.Identifier == "PlateMail");
+            var card = knight.HeroTurnTaker.Deck.Cards.First(c => c.Identifier == "PlateMail");
             string messageText = $"Reduce damage dealt to {wraith.Name} by 1.";
 
             DecisionSelectCards = card.ToEnumerable().Concat(wraith.CharacterCard.ToEnumerable());
             
-            GoToPlayCardPhase(HeroController);
-            QuickShuffleStorage(HeroController.TurnTaker.Deck);
-            PlayCard(HeroController, realm);
+            GoToPlayCardPhase(knight);
+            QuickShuffleStorage(knight.TurnTaker.Deck);
+            PlayCard(knight, realm);
             AssertInTrash(realm);
 
             QuickShuffleCheck(1);
-            AssertInPlayArea(HeroController, card);
+            AssertInPlayArea(knight, card);
 
             PrintSeparator("Assert Applied");
             AssertNumberOfStatusEffectsInPlay(1);
@@ -678,7 +677,7 @@ namespace CauldronTests
 
             PrintSeparator("Effect expires");
             AssertNextMessageContains(messageText);
-            GoToStartOfTurn(HeroController);
+            GoToStartOfTurn(knight);
             AssertNumberOfStatusEffectsInPlay(0);
             //Test that the reducing effect has expired
             QuickHPStorage(wraith);
@@ -698,13 +697,13 @@ namespace CauldronTests
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
 
-            Card heavy = PutInHand(HeroController, "HeavySwing");
+            Card heavy = PutInHand(knight, "HeavySwing");
 
             PrintSeparator("Test");
-            GoToPlayCardPhase(HeroController);
+            GoToPlayCardPhase(knight);
             QuickHPStorage(baron);
             DecisionSelectTarget = baron.CharacterCard;
-            PlayCard(HeroController, heavy);
+            PlayCard(knight, heavy);
             QuickHPCheck(-3);
             AssertInTrash(heavy);
         }
@@ -719,30 +718,30 @@ namespace CauldronTests
             PrintSeparator("Setup");
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
-            DiscardAllCards(HeroController);
-            ShuffleTrashIntoDeck(HeroController);
+            DiscardAllCards(knight);
+            ShuffleTrashIntoDeck(knight);
 
-            Card honor = PutInHand(HeroController, "KnightsHonor");
+            Card honor = PutInHand(knight, "KnightsHonor");
 
             PrintSeparator("Test");
-            GoToPlayCardPhase(HeroController);
+            GoToPlayCardPhase(knight);
             DecisionNextSelectionType = SelectionType.MoveCardNextToCard;
             DecisionNextToCard = wraith.CharacterCard;
-            PlayCard(HeroController, honor);
+            PlayCard(knight, honor);
 
             PrintSeparator("check redirect from wraith to knight");
-            QuickHPStorage(HeroController, wraith, ra);
+            QuickHPStorage(knight, wraith, ra);
             DealDamage(baron, wraith, 4, DamageType.Psychic);
             QuickHPCheck(-4, 0, 0);
 
             PrintSeparator("check no redirect from ra to knight");
-            QuickHPStorage(HeroController, wraith, ra);
+            QuickHPStorage(knight, wraith, ra);
             DealDamage(baron, ra, 4, DamageType.Psychic);
             QuickHPCheck(0, 0, -4);
 
             PrintSeparator("check redirect damage is irreducible");
-            PlayCard(HeroController, "StalwartShield");
-            QuickHPStorage(HeroController, wraith, ra);
+            PlayCard(knight, "StalwartShield");
+            QuickHPStorage(knight, wraith, ra);
             DealDamage(baron, wraith, 4, DamageType.Psychic);
             QuickHPCheck(-4, 0, 0);
 
@@ -751,7 +750,7 @@ namespace CauldronTests
             AssertInTrash("KnightsHonor");
 
             PrintSeparator("no redirect redirect after card leaves play");
-            QuickHPStorage(HeroController, wraith, ra);
+            QuickHPStorage(knight, wraith, ra);
             DealDamage(baron, wraith, 4, DamageType.Psychic);
             QuickHPCheck(0, -4, 0);
         }
@@ -766,17 +765,17 @@ namespace CauldronTests
             PrintSeparator("Setup");
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
-            DiscardAllCards(HeroController);
-            ShuffleTrashIntoDeck(HeroController);
+            DiscardAllCards(knight);
+            ShuffleTrashIntoDeck(knight);
             var target = PutIntoPlay("BladeBattalion");
 
-            var card = PutInHand(HeroController, "KnightsHonor");
+            var card = PutInHand(knight, "KnightsHonor");
 
             PrintSeparator("Test");
-            GoToPlayCardPhase(HeroController);
+            GoToPlayCardPhase(knight);
             DecisionNextSelectionType = SelectionType.MoveCardNextToCard;
             DecisionNextToCard = target;
-            PlayCardFromHand(HeroController, "KnightsHonor");
+            PlayCardFromHand(knight, "KnightsHonor");
 
             PrintSeparator("Destroy Target");
             DestroyCard(target, baron.CharacterCard);
@@ -796,39 +795,39 @@ namespace CauldronTests
             PrintSeparator("Setup");
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
-            DiscardAllCards(HeroController);
+            DiscardAllCards(knight);
 
             //prime a hand and top of deck
-            var testCard = PutInHand(HeroController, "MaidensBlessing");
-            var equipCard = HeroController.HeroTurnTaker.Deck.Cards.First(c => c.Identifier == "Whetstone");
+            var testCard = PutInHand(knight, "MaidensBlessing");
+            var equipCard = knight.HeroTurnTaker.Deck.Cards.First(c => c.Identifier == "Whetstone");
             PutInHand(equipCard);
-            PutInHand(HeroController, HeroController.HeroTurnTaker.Deck.Cards.First(c => !IsEquipment(c)));
-            PutOnDeck(HeroController, HeroController.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(3));
+            PutInHand(knight, knight.HeroTurnTaker.Deck.Cards.First(c => !IsEquipment(c)));
+            PutOnDeck(knight, knight.HeroTurnTaker.Deck.Cards.Where(c => !IsEquipment(c)).Take(3));
 
             PrintSeparator("Play the Card");           
-            GoToPlayCardPhase(HeroController);
-            QuickHandStorage(HeroController);
-            AssertNumberOfCardsInPlay(HeroController, 1);
-            PlayCard(HeroController, testCard);
-            AssertNumberOfCardsInPlay(HeroController, 2);
+            GoToPlayCardPhase(knight);
+            QuickHandStorage(knight);
+            AssertNumberOfCardsInPlay(knight, 1);
+            PlayCard(knight, testCard);
+            AssertNumberOfCardsInPlay(knight, 2);
             QuickHandCheck(-1);
-            GoToUsePowerPhase(HeroController);
+            GoToUsePowerPhase(knight);
 
             PrintSeparator("Use power expect equipCard to be played, and a card draw");
             DecisionSelectCard = equipCard;
-            QuickHandStorage(HeroController);
+            QuickHandStorage(knight);
             UsePower(testCard);
             QuickHandCheck(0); //plays a card, draws a card
-            AssertNumberOfCardsInPlay(HeroController, 3);
-            AssertInPlayArea(HeroController, equipCard);
+            AssertNumberOfCardsInPlay(knight, 3);
+            AssertInPlayArea(knight, equipCard);
 
             PrintSeparator("Use power, no card to play, expect card draw");
             DecisionSelectCard = null;
-            QuickHandStorage(HeroController);
+            QuickHandStorage(knight);
             UsePower(testCard);
             AssertNoDecision(SelectionType.PlayCard);
             QuickHandCheck(1);
-            AssertNumberOfCardsInPlay(HeroController, 3);
+            AssertNumberOfCardsInPlay(knight, 3);
         }
 
 
@@ -840,20 +839,20 @@ namespace CauldronTests
                         
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
-            DiscardAllCards(HeroController);
+            DiscardAllCards(knight);
 
-            var target = PutInHand(HeroController, armor);
+            var target = PutInHand(knight, armor);
             int targetHP = armor == "PlateHelm" ? 3 : 5;
             var equip = PutInHand("Whetstone");
-            GoToPlayCardPhase(HeroController);
+            GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
 
             PlayCard(target);
             AssertIsTarget(target, targetHP);
-            AssertInPlayArea(HeroController, target);
+            AssertInPlayArea(knight, target);
             PlayCard(equip);
-            AssertInPlayArea(HeroController, equip);
+            AssertInPlayArea(knight, equip);
 
             var imbue = PlayCard("ImbuedVitality");
             AssertIsTarget(target, 6);
@@ -875,49 +874,49 @@ namespace CauldronTests
             PrintSeparator("Setup");
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
-            DiscardAllCards(HeroController);
+            DiscardAllCards(knight);
 
-            var testCard = PutInHand(HeroController, "PlateHelm");
-            GoToPlayCardPhase(HeroController);
+            var testCard = PutInHand(knight, "PlateHelm");
+            GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
 
-            QuickHandStorage(HeroController);
-            PlayCardFromHand(HeroController, testCard.Identifier);
+            QuickHandStorage(knight);
+            PlayCardFromHand(knight, testCard.Identifier);
             QuickHandCheck(0);
-            AssertInPlayArea(HeroController, testCard);
+            AssertInPlayArea(knight, testCard);
             AssertIsTarget(testCard, 3);
 
             GoToStartOfTurn(baron);
 
             PrintSeparator("check redirect from knight to helm");
-            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
+            QuickHPStorage(knight.CharacterCard, testCard, wraith.CharacterCard);
             DecisionYesNo = true;
-            DealDamage(baron, HeroController.CharacterCard, 1, DamageType.Psychic);
+            DealDamage(baron, knight.CharacterCard, 1, DamageType.Psychic);
             QuickHPCheck(0, -1, 0);
 
             PrintSeparator("check redirect is optional");
-            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
+            QuickHPStorage(knight.CharacterCard, testCard, wraith.CharacterCard);
             DecisionYesNo = false;
-            DealDamage(baron, HeroController.CharacterCard, 1, DamageType.Psychic);
+            DealDamage(baron, knight.CharacterCard, 1, DamageType.Psychic);
             QuickHPCheck(-1, 0, 0);
 
             PrintSeparator("check no redirect from wraith");
             DecisionYesNo = true;
-            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
+            QuickHPStorage(knight.CharacterCard, testCard, wraith.CharacterCard);
             DealDamage(baron, wraith.CharacterCard, 1, DamageType.Psychic);
             QuickHPCheck(0, 0, -1);
 
             PrintSeparator("check no redirect from helm");
-            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
+            QuickHPStorage(knight.CharacterCard, testCard, wraith.CharacterCard);
             DealDamage(baron, testCard, 1, DamageType.Psychic);
             QuickHPCheck(0, -1, 0);
 
             PrintSeparator("check no redirect after helm leaves play");
             DealDamage(baron, testCard, 3, DamageType.Psychic);
-            AssertInTrash(HeroController, testCard);
-            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
-            DealDamage(baron, HeroController.CharacterCard, 1, DamageType.Psychic);
+            AssertInTrash(knight, testCard);
+            QuickHPStorage(knight.CharacterCard, testCard, wraith.CharacterCard);
+            DealDamage(baron, knight.CharacterCard, 1, DamageType.Psychic);
             QuickHPCheck(-1, 0, 0);
         }
 
@@ -931,49 +930,49 @@ namespace CauldronTests
             PrintSeparator("Setup");
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
-            DiscardAllCards(HeroController);
+            DiscardAllCards(knight);
 
-            var testCard = PutInHand(HeroController, "PlateMail");
-            GoToPlayCardPhase(HeroController);
+            var testCard = PutInHand(knight, "PlateMail");
+            GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
 
-            QuickHandStorage(HeroController);
-            PlayCard(HeroController, testCard);
+            QuickHandStorage(knight);
+            PlayCard(knight, testCard);
             QuickHandCheck(-1);
-            AssertInPlayArea(HeroController, testCard);
+            AssertInPlayArea(knight, testCard);
             AssertIsTarget(testCard, 5);
 
             GoToStartOfTurn(baron);
 
             PrintSeparator("check redirect from knight to mail");
-            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
+            QuickHPStorage(knight.CharacterCard, testCard, wraith.CharacterCard);
             DecisionYesNo = true;
-            DealDamage(baron, HeroController.CharacterCard, 1, DamageType.Psychic);
+            DealDamage(baron, knight.CharacterCard, 1, DamageType.Psychic);
             QuickHPCheck(0, -1, 0);
 
             PrintSeparator("check redirect is optional");
-            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
+            QuickHPStorage(knight.CharacterCard, testCard, wraith.CharacterCard);
             DecisionYesNo = false;
-            DealDamage(baron, HeroController.CharacterCard, 1, DamageType.Psychic);
+            DealDamage(baron, knight.CharacterCard, 1, DamageType.Psychic);
             QuickHPCheck(-1, 0, 0);
 
             PrintSeparator("check no redirect from wraith");
             DecisionYesNo = true;
-            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
+            QuickHPStorage(knight.CharacterCard, testCard, wraith.CharacterCard);
             DealDamage(baron, wraith.CharacterCard, 1, DamageType.Psychic);
             QuickHPCheck(0, 0, -1);
 
             PrintSeparator("check no redirect from mail");
-            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
+            QuickHPStorage(knight.CharacterCard, testCard, wraith.CharacterCard);
             DealDamage(baron, testCard, 1, DamageType.Psychic);
             QuickHPCheck(0, -1, 0);
 
             PrintSeparator("check no redirect after mail leaves play");
             DealDamage(baron, testCard, 3, DamageType.Psychic);
-            AssertInTrash(HeroController, testCard);
-            QuickHPStorage(HeroController.CharacterCard, testCard, wraith.CharacterCard);
-            DealDamage(baron, HeroController.CharacterCard, 1, DamageType.Psychic);
+            AssertInTrash(knight, testCard);
+            QuickHPStorage(knight.CharacterCard, testCard, wraith.CharacterCard);
+            DealDamage(baron, knight.CharacterCard, 1, DamageType.Psychic);
             QuickHPCheck(-1, 0, 0);
         }
 
@@ -987,22 +986,22 @@ namespace CauldronTests
             PrintSeparator("Setup");
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
-            DiscardAllCards(HeroController);
+            DiscardAllCards(knight);
 
-            Card sword1 = PutInHand(HeroController, "ShortSword");
-            Card sword2 = PutInHand(HeroController, "ShortSword");
-            GoToPlayCardPhase(HeroController);
+            Card sword1 = PutInHand(knight, "ShortSword");
+            Card sword2 = PutInHand(knight, "ShortSword");
+            GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
-            AssertNumberOfCardsInPlay(HeroController, 1);
-            QuickHandStorage(HeroController);
-            PlayCard(HeroController, sword1);
-            AssertNumberOfCardsInPlay(HeroController, 2);
+            AssertNumberOfCardsInPlay(knight, 1);
+            QuickHandStorage(knight);
+            PlayCard(knight, sword1);
+            AssertNumberOfCardsInPlay(knight, 2);
             QuickHandCheck(-1);
 
             PrintSeparator("Damage increased by 1");
             QuickHPStorage(baron);
-            DealDamage(HeroController, baron, 1, DamageType.Radiant);
+            DealDamage(knight, baron, 1, DamageType.Radiant);
             QuickHPCheck(-2); //increased by 1
 
             PrintSeparator("Other Damage not increased");
@@ -1011,20 +1010,20 @@ namespace CauldronTests
             QuickHPCheck(-1);
 
             PrintSeparator("Other Damage not increased");
-            QuickHPStorage(HeroController);
-            DealDamage(baron, HeroController, 1, DamageType.Radiant);
+            QuickHPStorage(knight);
+            DealDamage(baron, knight, 1, DamageType.Radiant);
             QuickHPCheck(-1);
 
             PrintSeparator("Multiples stack correctly");
-            AssertNumberOfCardsInPlay(HeroController, 2);
-            QuickHandStorage(HeroController);
-            PlayCard(HeroController, sword2);
-            AssertNumberOfCardsInPlay(HeroController, 3);
+            AssertNumberOfCardsInPlay(knight, 2);
+            QuickHandStorage(knight);
+            PlayCard(knight, sword2);
+            AssertNumberOfCardsInPlay(knight, 3);
             QuickHandCheck(-1);
 
             PrintSeparator("Damage increased by 2");
             QuickHPStorage(baron);
-            DealDamage(HeroController, baron, 1, DamageType.Radiant);
+            DealDamage(knight, baron, 1, DamageType.Radiant);
             QuickHPCheck(-3); //increased by 2
 
             PrintSeparator("Effect removed when cards leave play");
@@ -1032,7 +1031,7 @@ namespace CauldronTests
             DestroyCard(sword2);
 
             QuickHPStorage(baron);
-            DealDamage(HeroController, baron, 1, DamageType.Radiant);
+            DealDamage(knight, baron, 1, DamageType.Radiant);
             QuickHPCheck(-1);
         }
 
@@ -1046,16 +1045,16 @@ namespace CauldronTests
             PrintSeparator("Setup");
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
-            DiscardAllCards(HeroController);
+            DiscardAllCards(knight);
 
-            var testCard = PutInHand(HeroController, "ShortSword");
-            GoToPlayCardPhase(HeroController);
+            var testCard = PutInHand(knight, "ShortSword");
+            GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
-            AssertNumberOfCardsInPlay(HeroController, 1);
-            QuickHandStorage(HeroController);
-            PlayCard(HeroController, testCard);
-            AssertNumberOfCardsInPlay(HeroController, 2);
+            AssertNumberOfCardsInPlay(knight, 1);
+            QuickHandStorage(knight);
+            PlayCard(knight, testCard);
+            AssertNumberOfCardsInPlay(knight, 2);
             QuickHandCheck(-1);
 
             QuickHPStorage(baron);
@@ -1075,27 +1074,27 @@ namespace CauldronTests
             PrintSeparator("Setup");
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
-            DiscardAllCards(HeroController);
+            DiscardAllCards(knight);
 
-            Card shield1 = PutInHand(HeroController, "StalwartShield");
-            Card shield2 = PutInHand(HeroController, "StalwartShield");
-            GoToPlayCardPhase(HeroController);
+            Card shield1 = PutInHand(knight, "StalwartShield");
+            Card shield2 = PutInHand(knight, "StalwartShield");
+            GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
-            AssertNumberOfCardsInPlay(HeroController, 1);
-            QuickHandStorage(HeroController);
-            PlayCard(HeroController, shield1);
-            AssertNumberOfCardsInPlay(HeroController, 2);
+            AssertNumberOfCardsInPlay(knight, 1);
+            QuickHandStorage(knight);
+            PlayCard(knight, shield1);
+            AssertNumberOfCardsInPlay(knight, 2);
             QuickHandCheck(-1);
 
             PrintSeparator("Damage reduced by 1");
-            QuickHPStorage(HeroController);
-            DealDamage(baron, HeroController, 2, DamageType.Energy);
+            QuickHPStorage(knight);
+            DealDamage(baron, knight, 2, DamageType.Energy);
             QuickHPCheck(-1); //reduced by 1
 
             PrintSeparator("Irreducible not effected");
-            QuickHPStorage(HeroController);
-            DealDamage(baron, HeroController, 2, DamageType.Energy, true);
+            QuickHPStorage(knight);
+            DealDamage(baron, knight, 2, DamageType.Energy, true);
             QuickHPCheck(-2);
 
             PrintSeparator("Other Damage not reduced");
@@ -1104,23 +1103,23 @@ namespace CauldronTests
             QuickHPCheck(-1);
 
             PrintSeparator("Multiples stack correctly");
-            AssertNumberOfCardsInPlay(HeroController, 2);
-            QuickHandStorage(HeroController);
-            PlayCard(HeroController, shield2);
-            AssertNumberOfCardsInPlay(HeroController, 3);
+            AssertNumberOfCardsInPlay(knight, 2);
+            QuickHandStorage(knight);
+            PlayCard(knight, shield2);
+            AssertNumberOfCardsInPlay(knight, 3);
             QuickHandCheck(-1);
 
             PrintSeparator("Damage reduced by 2");
-            QuickHPStorage(HeroController);
-            DealDamage(baron, HeroController, 3, DamageType.Energy);
+            QuickHPStorage(knight);
+            DealDamage(baron, knight, 3, DamageType.Energy);
             QuickHPCheck(-1); //reduced by 2
 
             PrintSeparator("Effect removed when cards leave play");
             DestroyCard(shield1);
             DestroyCard(shield2);
 
-            QuickHPStorage(HeroController);
-            DealDamage(baron, HeroController, 1, DamageType.Energy);
+            QuickHPStorage(knight);
+            DealDamage(baron, knight, 1, DamageType.Energy);
             QuickHPCheck(-1);
         }
 
@@ -1134,14 +1133,14 @@ namespace CauldronTests
             PrintSeparator("Setup");
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
-            DiscardAllCards(HeroController);
+            DiscardAllCards(knight);
 
-            Card shield1 = PutInHand(HeroController, "StalwartShield");
-            Card shield2 = PutInHand(HeroController, "StalwartShield");
+            Card shield1 = PutInHand(knight, "StalwartShield");
+            Card shield2 = PutInHand(knight, "StalwartShield");
             
             //put an equipment in play to test equipment reduction works
             //put a wraith equipment in play to make sure only applies to the knight's equipment
-            Card equipment = PutInHand(HeroController, "PlateMail");
+            Card equipment = PutInHand(knight, "PlateMail");
             Card wraithEquipment = PutInHand(wraith, "InfraredEyepiece");
             PlayCard(equipment);
             PlayCard(wraithEquipment);
@@ -1149,13 +1148,13 @@ namespace CauldronTests
             //really janky code to make infrared eyepiece have hp
             RunCoroutine(base.GameController.MakeTargettable(wraithEquipment, 6, 6, base.GetCardController(wraith.CharacterCard).GetCardSource()));
 
-            GoToPlayCardPhase(HeroController);
+            GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
-            AssertNumberOfCardsInPlay(HeroController, 2);
-            QuickHandStorage(HeroController);
-            PlayCard(HeroController, shield1);
-            AssertNumberOfCardsInPlay(HeroController, 3);
+            AssertNumberOfCardsInPlay(knight, 2);
+            QuickHandStorage(knight);
+            PlayCard(knight, shield1);
+            AssertNumberOfCardsInPlay(knight, 3);
             QuickHandCheck(-1);
 
             PrintSeparator("Damage reduced by 1");
@@ -1182,10 +1181,10 @@ namespace CauldronTests
             QuickHPCheck(-1);
 
             PrintSeparator("Multiples stack correctly");
-            AssertNumberOfCardsInPlay(HeroController, 3);
-            QuickHandStorage(HeroController);
-            PlayCard(HeroController, shield2);
-            AssertNumberOfCardsInPlay(HeroController, 4);
+            AssertNumberOfCardsInPlay(knight, 3);
+            QuickHandStorage(knight);
+            PlayCard(knight, shield2);
+            AssertNumberOfCardsInPlay(knight, 4);
             QuickHandCheck(-1);
 
             PrintSeparator("Damage reduced by 2");
@@ -1213,39 +1212,39 @@ namespace CauldronTests
             PrintSeparator("Setup");
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
-            DiscardAllCards(HeroController);
+            DiscardAllCards(knight);
 
             //prime a hand and top of deck
-            var testCard = PutInHand(HeroController, "SureFooting");
-            var oneshotCard = HeroController.HeroTurnTaker.Deck.Cards.First(c => c.Identifier == "HeavySwing");
+            var testCard = PutInHand(knight, "SureFooting");
+            var oneshotCard = knight.HeroTurnTaker.Deck.Cards.First(c => c.Identifier == "HeavySwing");
             PutInHand(oneshotCard);
-            PutInHand(HeroController, HeroController.HeroTurnTaker.Deck.Cards.First(c => !c.IsOneShot));
-            PutOnDeck(HeroController, HeroController.HeroTurnTaker.Deck.Cards.Where(c => !c.IsOneShot).Take(3));
+            PutInHand(knight, knight.HeroTurnTaker.Deck.Cards.First(c => !c.IsOneShot));
+            PutOnDeck(knight, knight.HeroTurnTaker.Deck.Cards.Where(c => !c.IsOneShot).Take(3));
 
             PrintSeparator("Play the Card");
-            GoToPlayCardPhase(HeroController);
-            QuickHandStorage(HeroController);
-            AssertNumberOfCardsInPlay(HeroController, 1);
-            PlayCard(HeroController, testCard);
-            AssertNumberOfCardsInPlay(HeroController, 2);
+            GoToPlayCardPhase(knight);
+            QuickHandStorage(knight);
+            AssertNumberOfCardsInPlay(knight, 1);
+            PlayCard(knight, testCard);
+            AssertNumberOfCardsInPlay(knight, 2);
             QuickHandCheck(-1);
-            GoToUsePowerPhase(HeroController);
+            GoToUsePowerPhase(knight);
 
             PrintSeparator("Use power expect oneshotCard to be played, and a card draw");
             DecisionSelectCard = oneshotCard;
-            QuickHandStorage(HeroController);
+            QuickHandStorage(knight);
             UsePower(testCard);
             QuickHandCheck(0); //plays a card, draws a card
-            AssertNumberOfCardsInPlay(HeroController, 2);
+            AssertNumberOfCardsInPlay(knight, 2);
             AssertInTrash(oneshotCard);
 
             PrintSeparator("Use power, no card to play, expect card draw");
             DecisionSelectCard = null;
-            QuickHandStorage(HeroController);
+            QuickHandStorage(knight);
             UsePower(testCard);
             AssertNoDecision(SelectionType.PlayCard);
             QuickHandCheck(1);
-            AssertNumberOfCardsInPlay(HeroController, 2);
+            AssertNumberOfCardsInPlay(knight, 2);
         }
 
         [Test]
@@ -1262,10 +1261,10 @@ namespace CauldronTests
             Card strikes = PutInHand("SwiftStrikes");
 
             PrintSeparator("Test");
-            GoToPlayCardPhase(HeroController);
+            GoToPlayCardPhase(knight);
             QuickHPStorage(baron, wraith);
             DecisionSelectTargets = new Card[] { baron.CharacterCard, wraith.CharacterCard };
-            PlayCard(HeroController, strikes);
+            PlayCard(knight, strikes);
             QuickHPCheck(-1, -1);
         }
 
@@ -1279,26 +1278,26 @@ namespace CauldronTests
             PrintSeparator("Setup");
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
-            DiscardAllCards(HeroController);
+            DiscardAllCards(knight);
 
-            Card whetstone = PutInHand(HeroController, "Whetstone");
-            GoToPlayCardPhase(HeroController);
+            Card whetstone = PutInHand(knight, "Whetstone");
+            GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
-            AssertNumberOfCardsInPlay(HeroController, 1);
-            QuickHandStorage(HeroController);
-            PlayCard(HeroController, whetstone);
-            AssertNumberOfCardsInPlay(HeroController, 2);
+            AssertNumberOfCardsInPlay(knight, 1);
+            QuickHandStorage(knight);
+            PlayCard(knight, whetstone);
+            AssertNumberOfCardsInPlay(knight, 2);
             QuickHandCheck(-1);
 
             PrintSeparator("Melee Damage increased by 1");
             QuickHPStorage(baron);
-            DealDamage(HeroController, baron, 1, DamageType.Melee);
+            DealDamage(knight, baron, 1, DamageType.Melee);
             QuickHPCheck(-2); //increased by 1
 
             PrintSeparator("Non-Melee Damage not increased");
             QuickHPStorage(baron);
-            DealDamage(HeroController, baron, 1, DamageType.Fire);
+            DealDamage(knight, baron, 1, DamageType.Fire);
             QuickHPCheck(-1);
 
             PrintSeparator("Other's Melee Damage not increased");
@@ -1310,7 +1309,7 @@ namespace CauldronTests
             DestroyCard(whetstone);
 
             QuickHPStorage(baron);
-            DealDamage(HeroController, baron, 1, DamageType.Melee);
+            DealDamage(knight, baron, 1, DamageType.Melee);
             QuickHPCheck(-1);
         }
     }

@@ -12,23 +12,13 @@ using Cauldron.Vanish;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class VanishTests : BaseTest
+    public class VanishTests : CauldronBaseTest
     {
         #region HelperFunctions
-        protected HeroTurnTakerController vanish { get { return FindHero("Vanish"); } }
         private void SetupIncap(TurnTakerController villain)
         {
             SetHitPoints(vanish.CharacterCard, 1);
             DealDamage(villain, vanish, 2, DamageType.Melee);
-        }
-
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                var card = GetCard(id);
-                AssertCardHasKeyword(card, keyword, false);
-            }
         }
 
         #endregion HelperFunctions

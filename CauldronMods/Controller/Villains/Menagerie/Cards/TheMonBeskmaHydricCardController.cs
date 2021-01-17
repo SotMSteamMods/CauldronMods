@@ -17,6 +17,8 @@ namespace Cauldron.Menagerie
         {
             //At the end of the villain turn, this card deals the Enclosure with the highest HP 4 melee damage and the hero target with the highest HP 2 melee damage.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, new TriggerType[] { TriggerType.DealDamage });
+            base.AddTriggers();
+
         }
 
         private IEnumerator DealDamageResponse(PhaseChangeAction action)

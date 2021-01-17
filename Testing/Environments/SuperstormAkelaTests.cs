@@ -9,7 +9,7 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class SuperstormAkelaTests : BaseTest
+    public class SuperstormAkelaTests : CauldronBaseTest
     {
 
         #region SuperstormAkelaHelperFunctions

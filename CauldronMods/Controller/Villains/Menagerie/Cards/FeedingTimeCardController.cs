@@ -32,6 +32,7 @@ namespace Cauldron.Menagerie
         {
             //Reduce damage dealt to Mercenaries by X, where X is the number of Specimens in play.
             base.AddReduceDamageTrigger((DealDamageAction action) => base.IsMercenary(action.Target), (DealDamageAction action) => base.FindCardsWhere(new LinqCardCriteria((Card c) => base.IsSpecimen(c) && c.IsInPlayAndHasGameText, "specimen")).Count());
+            base.AddTriggers();
         }
     }
 }

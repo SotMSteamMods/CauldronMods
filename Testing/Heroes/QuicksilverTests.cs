@@ -8,9 +8,8 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    class QuicksilverTests : BaseTest
+    class QuicksilverTests : CauldronBaseTest
     {
-        protected HeroTurnTakerController quicksilver { get { return FindHero("Quicksilver"); } }
 
         private void SetupIncap(TurnTakerController source, Card target)
         {

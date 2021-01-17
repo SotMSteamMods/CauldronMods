@@ -20,6 +20,8 @@ namespace Cauldron.Menagerie
         {
             //At the end of the villain turn, this card deals the non-villain target with the second lowest HP {H} projectile damage. Then, place the top card of the villain deck face down beneath the Enclosure with the fewest cards beneath it.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageAndEncloseResponse, new TriggerType[] { TriggerType.DealDamage, TriggerType.MoveCard });
+            base.AddTriggers();
+
         }
 
         private IEnumerator DealDamageAndEncloseResponse(PhaseChangeAction action)
