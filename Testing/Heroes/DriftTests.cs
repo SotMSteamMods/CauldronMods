@@ -75,7 +75,7 @@ namespace CauldronTests
             }
             else
             {
-                DecisionSelectFunction = 3;
+                DecisionSelectFunction = 1;
                 for (int i = CurrentShiftPosition(); i > position; i--)
                 {
                     UsePower(drift);
@@ -864,6 +864,60 @@ namespace CauldronTests
             //When this card enters play, destroy all other copies of Knight's Heritage...
             PlayCard(knight1);
             AssertInTrash(knight0);
+        }
+
+        [Test]
+        public void TestMakeEverySecondCount()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DecisionSelectCard = haka.CharacterCard;
+
+            PlayCard(MakeEverySecondCount);
+            //{DriftPast} Whenever you shift {DriftL}, select a hero target. Reduce the next damage dealt to that target by 2.
+            //{DriftFuture} Whenever you shift {DriftR}, select a hero target. Increase the next damage dealt by that target by 2.
+
+            //Past: Nothing by default
+            QuickHPStorage(haka);
+            DealDamage(haka, haka, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            //Past + Right = Nothing
+            GoToShiftPosition(2);
+            QuickHPStorage(haka);
+            DealDamage(haka, haka, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            //Past + Left = Reduce Damage
+            GoToShiftPosition(1);
+            QuickHPStorage(haka);
+            DealDamage(haka, haka, 3, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            //Crossing the line should not trigger it
+            GoToShiftPosition(3);
+            QuickHPStorage(haka);
+            DealDamage(haka, haka, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            //Future + Right = Increase Damage
+            GoToShiftPosition(4);
+            QuickHPStorage(haka);
+            DealDamage(haka, haka, 3, DamageType.Melee);
+            QuickHPCheck(-5);
+
+            //Future + Left = Nothing
+            GoToShiftPosition(3);
+            QuickHPStorage(haka);
+            DealDamage(haka, haka, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            //Crossing the line should not trigger it
+            GoToShiftPosition(2);
+            QuickHPStorage(haka);
+            DealDamage(haka, haka, 3, DamageType.Melee);
+            QuickHPCheck(-3);
         }
     }
 }
