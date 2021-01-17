@@ -136,6 +136,22 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
+"VagrantHeartPhase1.png":
+{
+	"frame": {"x":1554,"y":191,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"VagrantHeartPhase2.png":
+{
+	"frame": {"x":1554,"y":191,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
 "WretchedSymphony.png":
 {
 	"frame": {"x":0,"y":382,"w":256,"h":188},

@@ -13,5 +13,10 @@ namespace Cauldron.TheInfernalChoir
         protected TheInfernalChoirUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        protected bool IsGhost(Card c, bool evenIfUnderCard = false, bool evenIfFaceDown = false)
+        {
+            return c != null && (c.DoKeywordsContain("ghost", evenIfUnderCard, evenIfFaceDown) || GameController.DoesCardContainKeyword(c, "ghost", evenIfUnderCard, evenIfFaceDown));
+        }
     }
 }
