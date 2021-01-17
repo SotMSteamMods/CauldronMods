@@ -9,7 +9,9 @@
         "ShiftTrack1",
         "ShiftTrack2",
         "ShiftTrack3",
-        "ShiftTrack4"
+        "ShiftTrack4",
+        "PastDriftCharacter",
+        "FutureDriftCharacter"
     ],
     "cards": [
         {
@@ -539,6 +541,87 @@
                 }
             ],
             "flavorReference": "Drift, The Archive #29"
+        },
+        {
+            "identifier": "PastDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "keywords": [
+                "1929"
+            ],
+            "promoTitle": "1929 Drift",
+            "shortPromoTitle": "1929 Drift",
+            "body": "Omen",
+            "backgroundColor": "ECCD96",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "ECCD96",
+            "character": true,
+            "powers": [
+                "Reveal the top 2 cards of 1 hero deck. Replace or discard each of them in any order. Shift {DriftLL}."
+            ],
+            "icons": [
+                "HasPower",
+                "RemoveTokens",
+                "Discard"
+            ],
+            "hitpoints": 15,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "Select a card in a hero trash with a power on it. That hero uses that power, then shuffles that card into their deck.",
+                "Destroy an environment card."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "UsePowerNow",
+                "Manipulate",
+                "DestroyEnvironment"
+            ],
+            "complexity": 3
+        },
+        {
+            "identifier": "FutureDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "keywords": [
+                "2199"
+            ],
+            "promoTitle": "2199 Drift",
+            "shortPromoTitle": "2199 Drift",
+            "body": "Uncertain Future",
+            "backgroundColor": "A7B8C1",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "A7B8C1",
+            "character": true,
+            "powers": [
+                "Play an ongoing card. At the end of your next turn, return it from play to your hand. Shift {DriftRR}."
+            ],
+            "icons": [
+                "HasPower",
+                "PlayCardNow",
+                "AddTokens"
+            ],
+            "hitpoints": 16,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "Reveal the top card of a hero deck and replace it. If that card has a power on it. Play it and that hero uses that power.",
+                "One target regains 2 HP."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "Manipulate",
+                "GainHP"
+            ],
+            "openingLines": {
+                "default": "default placeholder",
+                "OutlanderCharacter": "Outlander placeholder"
+            },
+            "complexity": 3
         }
     ],
     "promoCards": [
@@ -607,86 +690,18 @@
             "promoIdentifier": "DualDriftCharacter",
             "count": 1,
             "title": "Drift",
-            "keywords": [
-                "1929"
-            ],
-            "promoTitle": "1929 Drift",
-            "shortPromoTitle": "1929 Drift",
-            "body": "Omen",
             "backgroundColor": "ECCD96",
             "foilBackgroundColor": "FEFEFE",
             "hitpointColor": "ECCD96",
             "character": true,
-            "powers": [
-                "Reveal the top 2 cards of 1 hero deck. Replace or discard each of them in any order. Shift {DriftLL}."
-            ],
-            "icons": [
-                "HasPower",
-                "RemoveTokens",
-                "Discard"
-            ],
-            "hitpoints": 15,
+            "hitpoints": 1921,
             "nemesisIdentifiers": [
                 "Drift"
-            ],
-            "incapacitatedAbilities": [
-                "One player may draw a card now.",
-                "Select a card in a hero trash with a power on it. That hero uses that power, then shuffles that card into their deck.",
-                "Destroy an environment card."
-            ],
-            "flippedIcons": [
-                "DrawCardNow",
-                "UsePowerNow",
-                "Manipulate",
-                "DestroyEnvironment"
             ],
             "openingLines": {
                 "default": "What year is this again?",
                 "TheMistressOfFateCharacter": "This doesn't look good. Better work together!",
                 "OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger."
-            },
-            "complexity": 3
-        },
-        {
-            "identifier": "FutureDriftCharacter",
-            "promoIdentifier": "DualDriftCharacter",
-            "count": 1,
-            "title": "Drift",
-            "keywords": [
-                "2199"
-            ],
-            "promoTitle": "2199 Drift",
-            "shortPromoTitle": "2199 Drift",
-            "body": "Uncertain Future",
-            "backgroundColor": "A7B8C1",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "A7B8C1",
-            "character": true,
-            "powers": [
-                "Play an ongoing card. At the end of your next turn, return it from play to your hand. Shift {DriftRR}."
-            ],
-            "icons": [
-                "HasPower",
-                "PlayCardNow",
-                "AddTokens"
-            ],
-            "hitpoints": 16,
-            "nemesisIdentifiers": [
-                "Drift"
-            ],
-            "incapacitatedAbilities": [
-                "One player may draw a card now.",
-                "Reveal the top card of a hero deck and replace it. If that card has a power on it. Play it and that hero uses that power.",
-                "One target regains 2 HP."
-            ],
-            "flippedIcons": [
-                "DrawCardNow",
-                "Manipulate",
-                "GainHP"
-            ],
-            "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder"
             },
             "complexity": 3
         },
