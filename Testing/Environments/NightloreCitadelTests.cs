@@ -546,5 +546,22 @@ namespace CauldronTests
             //startlight is a nemesis of oros so +1
             QuickHPCheck(4, 0, -2, -2, -2, -3, -2, 0);
         }
+
+        [Test()]
+        public void TestStarlightOfZzeck_NoCannon()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Starlight", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            GoToPlayCardPhase(nightlore);
+            PlayCard("StarlightOfZzeck");
+            //At the end of the environment turn, this card deals the villain target with the lowest HP 3 toxic damage.
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, starlight.CharacterCard);
+            GoToEndOfTurn(nightlore);
+            QuickHPCheck(0, -3, 0, 0, 0, 0);
+        }
+
+        
     }
 }
