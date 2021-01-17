@@ -13,12 +13,33 @@ namespace Cauldron.Drift
         {
 
         }
+
         protected const string ShiftTrack = "ShiftTrack";
+        protected const string Base = "Base";
+        protected const string Dual = "Dual";
+        protected const string ThroughTheBreach = "ThroughTheBreach";
 
         public override IEnumerator StartGame()
         {
+            string promoIdentifier = Base;
+            if (base.CharacterCardController is DualDriftCharacterCardController)
+            {
+                promoIdentifier = Dual;
+            }
+            else if (base.CharacterCardController is ThroughTheBreachDriftCharacterCardController)
+            {
+                promoIdentifier = ThroughTheBreach;
+            }
+
+            string[] tracks = new string[] {
+                promoIdentifier + ShiftTrack + 1,
+                promoIdentifier + ShiftTrack + 2,
+                promoIdentifier + ShiftTrack + 3,
+                promoIdentifier + ShiftTrack + 4,
+            };
+
             List<SelectCardDecision> cardDecisions = new List<SelectCardDecision>();
-            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this, SelectionType.AddTokens, new LinqCardCriteria((Card c) => c.SharedIdentifier == ShiftTrack, "Shift Track Position"), cardDecisions, false, includeRealCardsOnly: false);
+            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this, SelectionType.AddTokens, new LinqCardCriteria((Card c) => c.SharedIdentifier == ShiftTrack && tracks.Contains(c.Identifier), "Shift Track Position"), cardDecisions, false, includeRealCardsOnly: false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -55,19 +76,19 @@ namespace Cauldron.Drift
 
             CardController selectTrackController = base.FindCardController(selectedTrack);
             int tokensToAdd = 0;
-            if (selectTrackController is ShiftTrack1CardController)
+            if (selectTrackController is BaseShiftTrack1CardController || selectTrackController is DualShiftTrack1CardController || selectTrackController is ThroughTheBreachShiftTrack1CardController)
             {
                 tokensToAdd = 1;
             }
-            else if (selectTrackController is ShiftTrack2CardController)
+            else if (selectTrackController is BaseShiftTrack2CardController || selectTrackController is DualShiftTrack2CardController || selectTrackController is ThroughTheBreachShiftTrack2CardController)
             {
                 tokensToAdd = 2;
             }
-            else if (selectTrackController is ShiftTrack3CardController)
+            else if (selectTrackController is BaseShiftTrack3CardController || selectTrackController is DualShiftTrack3CardController || selectTrackController is ThroughTheBreachShiftTrack3CardController)
             {
                 tokensToAdd = 3;
             }
-            else if (selectTrackController is ShiftTrack4CardController)
+            else if (selectTrackController is BaseShiftTrack4CardController || selectTrackController is DualShiftTrack4CardController || selectTrackController is ThroughTheBreachShiftTrack4CardController)
             {
                 tokensToAdd = 4;
             }

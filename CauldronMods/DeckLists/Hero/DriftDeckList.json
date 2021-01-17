@@ -61,7 +61,7 @@
             "complexity": 3
         },
         {
-            "identifier": "ShiftTrack1",
+            "identifier": "BaseShiftTrack1",
             "sharedIdentifier": "ShiftTrack",
             "count": 1,
             "title": "Shift Track",
@@ -89,7 +89,7 @@
             "isReal": false
         },
         {
-            "identifier": "ShiftTrack2",
+            "identifier": "BaseShiftTrack2",
             "sharedIdentifier": "ShiftTrack",
             "count": 1,
             "title": "Shift Track",
@@ -117,7 +117,7 @@
             "isReal": false
         },
         {
-            "identifier": "ShiftTrack3",
+            "identifier": "BaseShiftTrack3",
             "sharedIdentifier": "ShiftTrack",
             "count": 1,
             "title": "Shift Track",
@@ -145,7 +145,7 @@
             "isReal": false
         },
         {
-            "identifier": "ShiftTrack4",
+            "identifier": "BaseShiftTrack4",
             "sharedIdentifier": "ShiftTrack",
             "count": 1,
             "title": "Shift Track",
