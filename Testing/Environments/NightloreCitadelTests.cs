@@ -613,5 +613,43 @@ namespace CauldronTests
         }
 
 
+        [Test()]
+        public void TestUrgentMission()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Luminary", "Cauldron.Starlight", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(new Card[] { ra.CharacterCard, legacy.CharacterCard, starlight.CharacterCard }, 10);
+            //Play this card next to the hero with the highest HP.
+            Card mission = PlayCard("UrgentMission");
+            Card envTarget = PlayCard("StarlightOfZzeck");
+            Card turret = PlayCard("RegressionTurret");
+            AssertNextToCard(mission, luminary.CharacterCard);
+            //Targets in this play area cannot deal damage and are immune to damage dealt by environment cards.
+            QuickHPStorage(baron);
+            DealDamage(luminary, baron, 5, DamageType.Melee);
+            QuickHPCheckZero();
+
+            QuickHPUpdate();
+            DealDamage(turret, baron, 5, DamageType.Melee);
+            QuickHPCheckZero();
+
+            QuickHPStorage(luminary.CharacterCard, turret);
+            DealDamage(baron, luminary, 2, DamageType.Melee);
+            DealDamage(baron, turret, 2, DamageType.Melee);
+            QuickHPCheck(-2, -2);
+
+            QuickHPUpdate();
+            DealDamage(envTarget, luminary, 2, DamageType.Melee);
+            DealDamage(envTarget, turret, 2, DamageType.Melee);
+            QuickHPCheckZero();
+
+            QuickHandStorage(luminary);
+            GoToStartOfTurn(nightlore);
+            QuickHandCheck(2);
+            AssertInTrash(mission);
+
+        }
+
     }
 }
