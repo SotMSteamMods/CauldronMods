@@ -12,23 +12,13 @@ using Cauldron.Titan;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class TitanTests : BaseTest
+    public class TitanTests : CauldronBaseTest
     {
-        protected HeroTurnTakerController titan { get { return FindHero("Titan"); } }
 
         private void SetupIncap(TurnTakerController villain)
         {
             SetHitPoints(titan.CharacterCard, 1);
             DealDamage(villain, titan, 2, DamageType.Melee);
-        }
-
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                var card = GetCard(id);
-                AssertCardHasKeyword(card, keyword, false);
-            }
         }
 
         [Test()]

@@ -14,10 +14,8 @@ using NUnit.Framework;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class TangoOneTests : BaseTest
+    public class TangoOneTests : CauldronBaseTest
     {
-        protected HeroTurnTakerController TangoOne => FindHero("TangoOne");
-        protected TurnTakerController Anathema => FindVillain("Anathema");
 
         private const string DeckNamespace = "Cauldron.TangoOne";
 
@@ -29,10 +27,10 @@ namespace CauldronTests
 
             // Assert
             Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
-            Assert.IsNotNull(TangoOne);
-            Assert.IsInstanceOf(typeof(TangoOneCharacterCardController), TangoOne.CharacterCardController);
+            Assert.IsNotNull(tango);
+            Assert.IsInstanceOf(typeof(TangoOneCharacterCardController), tango.CharacterCardController);
 
-            Assert.AreEqual(24, TangoOne.CharacterCard.HitPoints);
+            Assert.AreEqual(24, tango.CharacterCard.HitPoints);
         }
 
         [Test]
@@ -49,8 +47,8 @@ namespace CauldronTests
             DecisionSelectTarget = mdp;
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            UsePower(TangoOne);
+            GoToStartOfTurn(tango);
+            UsePower(tango);
 
             // Assert
             QuickHPCheck(-1);
@@ -68,8 +66,8 @@ namespace CauldronTests
             DecisionSelectTarget = ra.CharacterCard;
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            UsePower(TangoOne);
+            GoToStartOfTurn(tango);
+            UsePower(tango);
 
             // Assert
             QuickHPCheck(-1);
@@ -88,19 +86,19 @@ namespace CauldronTests
             Card staffOfRa = GetCard("TheStaffOfRa");
             PutOnDeck(ra, staffOfRa);
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
 
             DecisionSelectTarget = ra.CharacterCard;
             QuickHandStorage(ra);
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 0);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 0);
 
 
             // Assert
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
             QuickHandCheck(1);
             AssertInHand(staffOfRa);
         }
@@ -116,18 +114,18 @@ namespace CauldronTests
             Card backlashField = GetCard("BacklashField");
             PutOnDeck(baron, backlashField);
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
 
             DecisionSelectLocation = new LocationChoice(baron.TurnTaker.Deck);
             DecisionMoveCardDestination = new MoveCardDestination(baron.TurnTaker.Deck, false);
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 1);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 1);
 
             // Assert
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
             AssertOnTopOfDeck(baron, backlashField);
         }
 
@@ -142,18 +140,18 @@ namespace CauldronTests
             Card backlashField = GetCard("BacklashField");
             PutOnDeck(baron, backlashField);
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
 
             DecisionSelectLocation = new LocationChoice(baron.TurnTaker.Deck);
             DecisionMoveCardDestination = new MoveCardDestination(baron.TurnTaker.Trash, false);
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 1);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 1);
 
             // Assert
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
             AssertOnTopOfTrash(baron, backlashField);
         }
 
@@ -168,18 +166,18 @@ namespace CauldronTests
             Card dangerSense = GetCard("DangerSense");
             PutOnDeck(legacy, dangerSense);
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
 
             DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
             DecisionMoveCardDestination = new MoveCardDestination(legacy.TurnTaker.Deck);
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 1);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 1);
 
             // Assert
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
             AssertOnTopOfDeck(legacy, dangerSense);
         }
 
@@ -194,18 +192,18 @@ namespace CauldronTests
             Card dangerSense = GetCard("DangerSense");
             PutOnDeck(legacy, dangerSense);
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
 
             DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
             DecisionMoveCardDestination = new MoveCardDestination(legacy.TurnTaker.Trash, false);
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 1);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 1);
 
             // Assert
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
             AssertOnTopOfTrash(legacy, dangerSense);
         }
 
@@ -217,8 +215,8 @@ namespace CauldronTests
 
             StartGame();
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
 
             PutInHand("DangerSense");
             Card dangerSense = GetCardFromHand("DangerSense");
@@ -229,11 +227,11 @@ namespace CauldronTests
             DecisionYesNo = true;
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 2);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 2);
 
             // Assert
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
             AssertIsInPlay(dangerSense, nextEvolution);
         }
 
@@ -245,8 +243,8 @@ namespace CauldronTests
 
             StartGame();
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
 
             PutInHand("DangerSense");
             Card dangerSense = GetCardFromHand("DangerSense");
@@ -258,11 +256,11 @@ namespace CauldronTests
             QuickHandStorage(ra, legacy);
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 2);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 2);
 
             // Assert
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
             AssertNotInPlay(dangerSense, nextEvolution);
             QuickHandCheck(0, 0);
         }
@@ -275,8 +273,8 @@ namespace CauldronTests
 
             StartGame();
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
 
             PutInHand("DangerSense");
             Card dangerSense = GetCardFromHand("DangerSense");
@@ -287,11 +285,11 @@ namespace CauldronTests
             DecisionSelectCards = new Card[] { dangerSense, null };
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 2);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 2);
 
             // Assert
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
             AssertNotInPlay(nextEvolution);
             AssertIsInPlay(dangerSense);
         }
@@ -303,8 +301,8 @@ namespace CauldronTests
 
             StartGame();
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
             PutOnDeck(legacy, legacy.HeroTurnTaker.Hand.Cards);
             Card inPlayFortitude = PlayCard("Fortitude");
             Card handFortitude = PutInHand("Fortitude");
@@ -315,11 +313,11 @@ namespace CauldronTests
 
             AssertNextDecisionChoices(included: new Card[] { dangerSense, nextEvolution }, notIncluded: new Card[] { handFortitude, inPlayFortitude });
             // Act
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 2);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 2);
 
             // Assert
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
             AssertNotInPlay(handFortitude);
         }
 
@@ -329,17 +327,17 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
             StartGame();
-            PutOnDeck(TangoOne, GetCard(DamnGoodGroundCardController.Identifier));
+            PutOnDeck(tango, GetCard(DamnGoodGroundCardController.Identifier));
 
             DecisionYesNo = true;
-            QuickHPStorage(TangoOne);
+            QuickHPStorage(tango);
 
             // Act
-            GoToStartOfTurn(TangoOne);
+            GoToStartOfTurn(tango);
             PutInHand(ChameleonArmorCardController.Identifier);
             PlayCard(ChameleonArmorCardController.Identifier);
 
-            DealDamage(baron, TangoOne, 5, DamageType.Cold);
+            DealDamage(baron, tango, 5, DamageType.Cold);
 
             // Assert
             QuickHPCheck(0);
@@ -351,17 +349,17 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
             StartGame();
-            PutOnDeck(TangoOne, GetCard(FarsightCardController.Identifier));
+            PutOnDeck(tango, GetCard(FarsightCardController.Identifier));
 
             DecisionYesNo = true;
-            QuickHPStorage(TangoOne);
+            QuickHPStorage(tango);
 
             // Act
-            GoToStartOfTurn(TangoOne);
+            GoToStartOfTurn(tango);
             PutInHand(ChameleonArmorCardController.Identifier);
             PlayCard(ChameleonArmorCardController.Identifier);
 
-            DealDamage(baron, TangoOne, 5, DamageType.Cold);
+            DealDamage(baron, tango, 5, DamageType.Cold);
 
             // Assert
             QuickHPCheck(-5);
@@ -375,14 +373,14 @@ namespace CauldronTests
             StartGame();
 
             DecisionYesNo = false;
-            QuickHPStorage(TangoOne);
+            QuickHPStorage(tango);
 
             // Act
-            GoToStartOfTurn(TangoOne);
+            GoToStartOfTurn(tango);
             PutInHand(ChameleonArmorCardController.Identifier);
             PlayCard(ChameleonArmorCardController.Identifier);
 
-            DealDamage(baron, TangoOne, 5, DamageType.Cold);
+            DealDamage(baron, tango, 5, DamageType.Cold);
 
             // Assert
             QuickHPCheck(-5);
@@ -397,7 +395,7 @@ namespace CauldronTests
 
             RemoveMobileDefensePlatform();
             PlayCard("LivingForceField");
-            var topDeck = PutOnDeck(TangoOne, GetCard(DamnGoodGroundCardController.Identifier));
+            var topDeck = PutOnDeck(tango, GetCard(DamnGoodGroundCardController.Identifier));
 
             QuickHPStorage(baron);
 
@@ -405,14 +403,14 @@ namespace CauldronTests
             DecisionSelectTarget = baron.CharacterCard;
 
             // Act
-            GoToPlayCardPhase(TangoOne);
+            GoToPlayCardPhase(tango);
             PlayCard(CriticalHitCardController.Identifier);
-            DealDamage(TangoOne.CharacterCard.ResponsibleTarget, baron.CharacterCard, 0, DamageType.Infernal);
+            DealDamage(tango.CharacterCard.ResponsibleTarget, baron.CharacterCard, 0, DamageType.Infernal);
 
             // Assert
             QuickHPCheck(0);
 
-            AssertOnTopOfDeck(TangoOne, topDeck);
+            AssertOnTopOfDeck(tango, topDeck);
         }
 
         [Test]
@@ -422,7 +420,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
             StartGame();
 
-            PutOnDeck(TangoOne, GetCard(DamnGoodGroundCardController.Identifier));
+            PutOnDeck(tango, GetCard(DamnGoodGroundCardController.Identifier));
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             QuickHPStorage(mdp);
@@ -432,9 +430,9 @@ namespace CauldronTests
 
 
             // Act
-            GoToPlayCardPhase(TangoOne);
+            GoToPlayCardPhase(tango);
             PlayCard(CriticalHitCardController.Identifier);
-            UsePower(TangoOne);
+            UsePower(tango);
 
 
             // Assert
@@ -448,7 +446,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
             StartGame();
 
-            PutOnDeck(TangoOne, GetCard(FarsightCardController.Identifier));
+            PutOnDeck(tango, GetCard(FarsightCardController.Identifier));
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             QuickHPStorage(mdp);
@@ -458,9 +456,9 @@ namespace CauldronTests
 
 
             // Act
-            GoToPlayCardPhase(TangoOne);
+            GoToPlayCardPhase(tango);
             PlayCard(CriticalHitCardController.Identifier);
-            UsePower(TangoOne);
+            UsePower(tango);
 
 
             // Assert
@@ -474,7 +472,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
             StartGame();
 
-            PutOnDeck(TangoOne, GetCard(FarsightCardController.Identifier));
+            PutOnDeck(tango, GetCard(FarsightCardController.Identifier));
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             QuickHPStorage(mdp);
@@ -484,9 +482,9 @@ namespace CauldronTests
 
 
             // Act
-            GoToPlayCardPhase(TangoOne);
+            GoToPlayCardPhase(tango);
             PlayCard(CriticalHitCardController.Identifier);
-            UsePower(TangoOne);
+            UsePower(tango);
 
 
             // Assert
@@ -503,8 +501,8 @@ namespace CauldronTests
             // Supress Anathema's ability to play cards to create ideal testing env.
             CannotPlayCardsStatusEffect cannotPlayCardsStatusEffect = new CannotPlayCardsStatusEffect();
             cannotPlayCardsStatusEffect.CardCriteria.IsVillain = true;
-            cannotPlayCardsStatusEffect.UntilTargetLeavesPlay(Anathema.CharacterCard);
-            RunCoroutine(this.GameController.AddStatusEffect(cannotPlayCardsStatusEffect, true, new CardSource(Anathema.CharacterCardController)));
+            cannotPlayCardsStatusEffect.UntilTargetLeavesPlay(anathema.CharacterCard);
+            RunCoroutine(this.GameController.AddStatusEffect(cannotPlayCardsStatusEffect, true, new CardSource(anathema.CharacterCardController)));
 
             StartGame();
 
@@ -514,18 +512,18 @@ namespace CauldronTests
 
             DecisionSelectCard = ra.CharacterCard;
 
-            PutOnDeck(TangoOne, GetCard(DamnGoodGroundCardController.Identifier));
+            PutOnDeck(tango, GetCard(DamnGoodGroundCardController.Identifier));
 
-            QuickHPStorage(Anathema);
+            QuickHPStorage(anathema);
 
             DecisionYesNo = true;
-            DecisionSelectTarget = Anathema.CharacterCard;
+            DecisionSelectTarget = anathema.CharacterCard;
 
 
             // Act
-            GoToPlayCardPhase(TangoOne);
+            GoToPlayCardPhase(tango);
             PlayCard(CriticalHitCardController.Identifier);
-            UsePower(TangoOne);
+            UsePower(tango);
 
             // Assert
             QuickHPCheck(-5); // Snipe +1, Nemesis +1, Critical Hit + 3 = 5
@@ -538,14 +536,14 @@ namespace CauldronTests
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
             StartGame();
 
-            DealDamage(baron, TangoOne, 5, DamageType.Cold);
+            DealDamage(baron, tango, 5, DamageType.Cold);
 
             Card mdp = FindCardInPlay("MobileDefensePlatform");
             DecisionSelectTargets = new[] { baron.CharacterCard, mdp, null };
-            QuickHPStorage(baron.CharacterCard, mdp, TangoOne.CharacterCard);
+            QuickHPStorage(baron.CharacterCard, mdp, tango.CharacterCard);
 
             // Act
-            GoToStartOfTurn(TangoOne);
+            GoToStartOfTurn(tango);
             PutInHand(DamnGoodGroundCardController.Identifier);
             PlayCard(DamnGoodGroundCardController.Identifier);
 
@@ -569,7 +567,7 @@ namespace CauldronTests
             QuickHPStorage(mdp);
 
             // Act
-            GoToStartOfTurn(TangoOne);
+            GoToStartOfTurn(tango);
             PutInHand(DisablingShotCardController.Identifier);
             PlayCard(DisablingShotCardController.Identifier);
 
@@ -592,11 +590,11 @@ namespace CauldronTests
             QuickHPStorage(zombie);
 
             // Act
-            GoToStartOfTurn(TangoOne);
+            GoToStartOfTurn(tango);
             PutInHand(FarsightCardController.Identifier);
             PlayCard(FarsightCardController.Identifier);
 
-            UsePower(TangoOne);
+            UsePower(tango);
 
             // Assert
             QuickHPCheck(-1); // Farsight allows Innate Power to deal 1 damage
@@ -608,7 +606,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 GhostReactorCardController.Identifier
             });
@@ -618,27 +616,27 @@ namespace CauldronTests
             Card mdp = FindCardInPlay("MobileDefensePlatform");
 
             DecisionSelectTarget = mdp;
-            QuickHPStorage(TangoOne.CharacterCard, mdp);
-            QuickHandStorage(TangoOne);
+            QuickHPStorage(tango.CharacterCard, mdp);
+            QuickHandStorage(tango);
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, GhostReactorCardController.Identifier);
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, GhostReactorCardController.Identifier);
 
             UsePower(GhostReactorCardController.Identifier);
 
-            DealDamage(baron, TangoOne, 10, DamageType.Psychic);
-            DealDamage(TangoOne, mdp, 1, DamageType.Projectile); // With +2 increase from Ghost Reactor
-            DealDamage(TangoOne, mdp, 1, DamageType.Projectile); // +1, Ghost Reactor effect expired
+            DealDamage(baron, tango, 10, DamageType.Psychic);
+            DealDamage(tango, mdp, 1, DamageType.Projectile); // With +2 increase from Ghost Reactor
+            DealDamage(tango, mdp, 1, DamageType.Projectile); // +1, Ghost Reactor effect expired
 
             // Assert
             QuickHPCheck(0, -4); // Tango One (0) due to Ghost Reactor immunity, MDP -4 
             QuickHandCheck(0); // Discard Ghost Reactor (-1), Draw a card (+1)
 
             //Act - Ensure not until start of next turn
-            GoToStartOfTurn(TangoOne);
-            QuickHPStorage(TangoOne);
-            DealDamage(baron, TangoOne, 10, DamageType.Psychic);
+            GoToStartOfTurn(tango);
+            QuickHPStorage(tango);
+            DealDamage(baron, tango, 10, DamageType.Psychic);
 
             //Assert
             QuickHPCheckZero();
@@ -650,24 +648,24 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 InfiltrateCardController.Identifier, GhostReactorCardController.Identifier
             });
 
             StartGame();
 
-            PutOnDeck(TangoOne, GetCard(CriticalHitCardController.Identifier));
-            PutOnDeck(TangoOne, GetCard(FarsightCardController.Identifier));
+            PutOnDeck(tango, GetCard(CriticalHitCardController.Identifier));
+            PutOnDeck(tango, GetCard(FarsightCardController.Identifier));
 
 
-            DecisionSelectLocation = new LocationChoice(TangoOne.HeroTurnTaker.Deck);
+            DecisionSelectLocation = new LocationChoice(tango.HeroTurnTaker.Deck);
             DecisionSelectCard = GetCard(CriticalHitCardController.Identifier); // First drawn card to put back on deck
             DecisionSelectCardToPlay = GetCard(CriticalHitCardController.Identifier);
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, InfiltrateCardController.Identifier);
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, InfiltrateCardController.Identifier);
 
             // Assert
             AssertIsInPlay(GetCardInPlay(CriticalHitCardController.Identifier));
@@ -679,7 +677,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 LineEmUpCardController.Identifier
             });
@@ -695,9 +693,9 @@ namespace CauldronTests
 
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, LineEmUpCardController.Identifier);
-            UsePower(TangoOne);
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, LineEmUpCardController.Identifier);
+            UsePower(tango);
 
             // Assert
             QuickHPCheck(-1);
@@ -709,7 +707,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 LineEmUpCardController.Identifier
             });
@@ -724,9 +722,9 @@ namespace CauldronTests
 
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, LineEmUpCardController.Identifier);
-            DestroyCard(bb, TangoOne.CharacterCard);
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, LineEmUpCardController.Identifier);
+            DestroyCard(bb, tango.CharacterCard);
 
 
             // Assert
@@ -739,7 +737,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 LineEmUpCardController.Identifier,
                 SniperRifleCardController.Identifier,
@@ -761,10 +759,10 @@ namespace CauldronTests
             };
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, LineEmUpCardController.Identifier);
-            var card = PlayCardFromHand(TangoOne, SniperRifleCardController.Identifier);
-            GoToUsePowerPhase(TangoOne);
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, LineEmUpCardController.Identifier);
+            var card = PlayCardFromHand(tango, SniperRifleCardController.Identifier);
+            GoToUsePowerPhase(tango);
             UsePower(card, 0);
 
             // Assert
@@ -778,7 +776,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 LineEmUpCardController.Identifier,
                 DisablingShotCardController.Identifier,
@@ -797,9 +795,9 @@ namespace CauldronTests
             };
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, LineEmUpCardController.Identifier);
-            PlayCardFromHand(TangoOne, DisablingShotCardController.Identifier);
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, LineEmUpCardController.Identifier);
+            PlayCardFromHand(tango, DisablingShotCardController.Identifier);
             
 
             // Assert
@@ -814,7 +812,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 OneShotOneKillCardController.Identifier,
                 GhostReactorCardController.Identifier,
@@ -826,21 +824,21 @@ namespace CauldronTests
 
             Card mdp = FindCardInPlay("MobileDefensePlatform");
             SetHitPoints(mdp, 4);
-            QuickHandStorage(TangoOne);
+            QuickHandStorage(tango);
 
             DecisionSelectCards = new[]
             {
-                GetCardFromHand(TangoOne, GhostReactorCardController.Identifier),
-                GetCardFromHand(TangoOne, FarsightCardController.Identifier),
+                GetCardFromHand(tango, GhostReactorCardController.Identifier),
+                GetCardFromHand(tango, FarsightCardController.Identifier),
                 null,
                 mdp
             };
 
             // Act
 
-            AssertCardSpecialString(GetCardFromHand(OneShotOneKillCardController.Identifier), 0, $"Tango One's hand has {GetNumberOfCardsInHand(TangoOne)} cards.");
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, OneShotOneKillCardController.Identifier);
+            AssertCardSpecialString(GetCardFromHand(OneShotOneKillCardController.Identifier), 0, $"Tango One's hand has {GetNumberOfCardsInHand(tango)} cards.");
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, OneShotOneKillCardController.Identifier);
 
             // Assert
             AssertNotInPlay(mdp); // 2 cards were discarded: 2 cards * 2 = 4 which MDP's HP qualifies for destruction
@@ -853,7 +851,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 OneShotOneKillCardController.Identifier,
                 GhostReactorCardController.Identifier,
@@ -870,19 +868,19 @@ namespace CauldronTests
             Card mdp = FindCardInPlay("MobileDefensePlatform");
             SetHitPoints(mdp, 4);
 
-            QuickHandStorage(TangoOne);
+            QuickHandStorage(tango);
 
             DecisionSelectCards = new[]
             {
-                GetCardFromHand(TangoOne, GhostReactorCardController.Identifier),
-                GetCardFromHand(TangoOne, FarsightCardController.Identifier),
+                GetCardFromHand(tango, GhostReactorCardController.Identifier),
+                GetCardFromHand(tango, FarsightCardController.Identifier),
                 null,
                 mdp
             };
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, OneShotOneKillCardController.Identifier);
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, OneShotOneKillCardController.Identifier);
 
             // Assert
             AssertNotInPlay(mdp); // 2 cards were discarded: 2 cards * 2 = 4 which MDP's HP qualifies for destruction
@@ -896,7 +894,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 OneShotOneKillCardController.Identifier,
                 GhostReactorCardController.Identifier,
@@ -908,19 +906,19 @@ namespace CauldronTests
 
             Card mdp = FindCardInPlay("MobileDefensePlatform");
             SetHitPoints(mdp, 6);
-            QuickHandStorage(TangoOne);
+            QuickHandStorage(tango);
 
             DecisionSelectCards = new[]
             {
-                GetCardFromHand(TangoOne, GhostReactorCardController.Identifier),
-                GetCardFromHand(TangoOne, FarsightCardController.Identifier),
+                GetCardFromHand(tango, GhostReactorCardController.Identifier),
+                GetCardFromHand(tango, FarsightCardController.Identifier),
                 null,
                 mdp
             };
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, OneShotOneKillCardController.Identifier);
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, OneShotOneKillCardController.Identifier);
 
             // Assert
             AssertIsInPlay(mdp); // 2 cards were discarded: 2 cards * 2 = 4 which MDP's HP (6) *DOES NOT* qualify for destruction
@@ -933,34 +931,34 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 OpportunistCardController.Identifier
             });
 
             // Fill trash with a few cards so we can assert trash has changed if we shuffle it into the deck
-            PutInTrash(TangoOne, GetCard(ChameleonArmorCardController.Identifier));
-            PutInTrash(TangoOne, GetCard(GhostReactorCardController.Identifier));
+            PutInTrash(tango, GetCard(ChameleonArmorCardController.Identifier));
+            PutInTrash(tango, GetCard(GhostReactorCardController.Identifier));
 
             StartGame();
             Card mdp = FindCardInPlay("MobileDefensePlatform");
 
             QuickHPStorage(mdp);
-            QuickHandStorage(TangoOne);
-            QuickShuffleStorage(TangoOne);
+            QuickHandStorage(tango);
+            QuickShuffleStorage(tango);
 
             DecisionSelectTarget = mdp;
             DecisionYesNo = true;
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, OpportunistCardController.Identifier);
-            UsePower(TangoOne); // Snipe power
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, OpportunistCardController.Identifier);
+            UsePower(tango); // Snipe power
 
             // Assert
             QuickHPCheck(-4); // Snipe (1) + Opportunist (+3)
             QuickHandCheck(1);
-            Assert.AreEqual(1, GetNumberOfCardsInTrash(TangoOne)); // One card in trash (Opportunist)
+            Assert.AreEqual(1, GetNumberOfCardsInTrash(tango)); // One card in trash (Opportunist)
             QuickShuffleCheck(1); // Tango's deck was shuffled by Opportunist card
         }
 
@@ -970,34 +968,34 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 OpportunistCardController.Identifier
             });
 
             // Fill trash with a few cards so we can assert trash has changed after if we shuffle it into the deck
-            PutInTrash(TangoOne, GetCard(ChameleonArmorCardController.Identifier));
-            PutInTrash(TangoOne, GetCard(GhostReactorCardController.Identifier));
+            PutInTrash(tango, GetCard(ChameleonArmorCardController.Identifier));
+            PutInTrash(tango, GetCard(GhostReactorCardController.Identifier));
 
             StartGame();
             Card mdp = FindCardInPlay("MobileDefensePlatform");
 
             QuickHPStorage(mdp);
-            QuickHandStorage(TangoOne);
-            QuickShuffleStorage(TangoOne);
+            QuickHandStorage(tango);
+            QuickShuffleStorage(tango);
 
             DecisionSelectTarget = mdp;
             DecisionYesNo = false;
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, OpportunistCardController.Identifier);
-            UsePower(TangoOne); // Snipe power
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, OpportunistCardController.Identifier);
+            UsePower(tango); // Snipe power
 
             // Assert
             QuickHPCheck(-4); // Snipe (1) + Opportunist (+3)
             QuickHandCheck(1);
-            Assert.AreEqual(3, GetNumberOfCardsInTrash(TangoOne)); // (Opportunist, Ghost Reactor, Chameleon Armor)
+            Assert.AreEqual(3, GetNumberOfCardsInTrash(tango)); // (Opportunist, Ghost Reactor, Chameleon Armor)
             QuickShuffleCheck(0); // Tango's deck was not shuffled by Opportunist card
         }
 
@@ -1007,7 +1005,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 OpportunistCardController.Identifier
             });
@@ -1016,21 +1014,21 @@ namespace CauldronTests
             Card mdp = FindCardInPlay("MobileDefensePlatform");
 
             QuickHPStorage(mdp);
-            QuickHandStorage(TangoOne);
-            QuickShuffleStorage(TangoOne);
+            QuickHandStorage(tango);
+            QuickShuffleStorage(tango);
 
             DecisionSelectTarget = mdp;
             DecisionYesNo = false;
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, OpportunistCardController.Identifier);
-            UsePower(TangoOne); // Snipe power
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, OpportunistCardController.Identifier);
+            UsePower(tango); // Snipe power
 
             // Assert
             QuickHPCheck(-4); // Snipe (1) + Opportunist (+3)
             QuickHandCheck(1);
-            Assert.AreEqual(1, GetNumberOfCardsInTrash(TangoOne)); // (Opportunist)
+            Assert.AreEqual(1, GetNumberOfCardsInTrash(tango)); // (Opportunist)
             QuickShuffleCheck(0); // Tango's deck was not shuffled by Opportunist card
         }
 
@@ -1042,7 +1040,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 PerfectFocusCardController.Identifier,
                 DisablingShotCardController.Identifier,
@@ -1058,9 +1056,9 @@ namespace CauldronTests
             DecisionSelectCard = GetCardFromHand(DisablingShotCardController.Identifier);
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, PerfectFocusCardController.Identifier);
-            UsePower(TangoOne); // Snipe power
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, PerfectFocusCardController.Identifier);
+            UsePower(tango); // Snipe power
 
             // Assert
             QuickHPCheck(-6); // Disabling Shot (2 + Perfect Focus +3), Snipe (1)
@@ -1072,7 +1070,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 PerfectFocusCardController.Identifier,
                 DisablingShotCardController.Identifier,
@@ -1088,9 +1086,9 @@ namespace CauldronTests
             DecisionDoNotSelectCard = SelectionType.PlayCard;
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, PerfectFocusCardController.Identifier);
-            UsePower(TangoOne); // Snipe power
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, PerfectFocusCardController.Identifier);
+            UsePower(tango); // Snipe power
 
             // Assert
             QuickHPCheck(-4); // (Perfect Focus +3), Snipe (1)
@@ -1102,7 +1100,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 PerfectFocusCardController.Identifier
             });
@@ -1115,9 +1113,9 @@ namespace CauldronTests
             DecisionSelectTarget = mdp;
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, PerfectFocusCardController.Identifier);
-            UsePower(TangoOne); // Snipe power
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, PerfectFocusCardController.Identifier);
+            UsePower(tango); // Snipe power
 
             // Assert
             QuickHPCheck(-4); // (Perfect Focus +3), Snipe (1)
@@ -1129,7 +1127,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 PsionicSuppressionCardController.Identifier
             });
@@ -1140,14 +1138,14 @@ namespace CauldronTests
             StartGame();
             Card bb = PlayCard(baron, "BladeBattalion");
             DecisionSelectTarget = bb;
-            QuickHPStorage(TangoOne);
+            QuickHPStorage(tango);
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, PsionicSuppressionCardController.Identifier);
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, PsionicSuppressionCardController.Identifier);
 
             GoToEndOfTurn(baron);
-            GoToStartOfTurn(TangoOne);
+            GoToStartOfTurn(tango);
 
             // Assert
             QuickHPCheck(-5); // Battalion Blade hit prior to playing Psionic Suppression
@@ -1160,7 +1158,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 SniperRifleCardController.Identifier,
                 GhostReactorCardController.Identifier,
@@ -1181,13 +1179,13 @@ namespace CauldronTests
             DecisionSelectTarget = mdp;
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, SniperRifleCardController.Identifier);
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, SniperRifleCardController.Identifier);
             UsePower(GetCardInPlay(SniperRifleCardController.Identifier), 0);
 
             // Assert
             AssertNotInPlay(mdp); // MDP destroyed by Sniper Rifle power #1
-            Assert.AreEqual(2, GetNumberOfCardsInTrash(TangoOne)); // (Ghost Reactor, Disabling Shot)
+            Assert.AreEqual(2, GetNumberOfCardsInTrash(tango)); // (Ghost Reactor, Disabling Shot)
         }
 
         [Test]
@@ -1196,7 +1194,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 SniperRifleCardController.Identifier, // Critical keyword
                 FarsightCardController.Identifier,
@@ -1215,13 +1213,13 @@ namespace CauldronTests
             DecisionSelectTarget = mdp;
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, SniperRifleCardController.Identifier);
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, SniperRifleCardController.Identifier);
             UsePower(GetCardInPlay(SniperRifleCardController.Identifier), 0);
 
             // Assert
             AssertIsInPlay(mdp); // MDP was not destroyed by Sniper Rifle power #1 due to lack of discarded Critical cards
-            Assert.AreEqual(1, GetNumberOfCardsInTrash(TangoOne)); // (Disabling Shot)
+            Assert.AreEqual(1, GetNumberOfCardsInTrash(tango)); // (Disabling Shot)
         }
 
         [Test]
@@ -1230,7 +1228,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 SniperRifleCardController.Identifier // Critical keyword
             });
@@ -1246,13 +1244,13 @@ namespace CauldronTests
             DecisionSelectTarget = mdp;
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, SniperRifleCardController.Identifier);
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, SniperRifleCardController.Identifier);
             UsePower(GetCardInPlay(SniperRifleCardController.Identifier), 0);
 
             // Assert
             AssertIsInPlay(mdp); // MDP was not destroyed by Sniper Rifle power #1 due to lack of discarded Critical cards
-            Assert.AreEqual(0, GetNumberOfCardsInTrash(TangoOne));
+            Assert.AreEqual(0, GetNumberOfCardsInTrash(tango));
         }
 
         [Test]
@@ -1261,7 +1259,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 SniperRifleCardController.Identifier
             });
@@ -1275,8 +1273,8 @@ namespace CauldronTests
             DecisionSelectTarget = mdp;
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, SniperRifleCardController.Identifier);
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, SniperRifleCardController.Identifier);
             UsePower(GetCardInPlay(SniperRifleCardController.Identifier), 1);
 
             // Assert
@@ -1289,20 +1287,20 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 WetWorkCardController.Identifier
             });
 
             // Fill trash with a few cards so we can assert trash has changed after we shuffle some of it into the deck
-            PutInTrash(TangoOne, GetCard(ChameleonArmorCardController.Identifier));
-            PutInTrash(TangoOne, GetCard(DisablingShotCardController.Identifier));
-            PutInTrash(TangoOne, GetCard(GhostReactorCardController.Identifier));
+            PutInTrash(tango, GetCard(ChameleonArmorCardController.Identifier));
+            PutInTrash(tango, GetCard(DisablingShotCardController.Identifier));
+            PutInTrash(tango, GetCard(GhostReactorCardController.Identifier));
 
 
             StartGame();
             Card mdp = FindCardInPlay("MobileDefensePlatform");
-            QuickShuffleStorage(TangoOne, ra, baron, env);
+            QuickShuffleStorage(tango, ra, baron, env);
             QuickHPStorage(mdp);
 
             DecisionSelectTarget = mdp;
@@ -1314,13 +1312,13 @@ namespace CauldronTests
             };
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, WetWorkCardController.Identifier);
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, WetWorkCardController.Identifier);
 
 
             // Assert
             QuickHPCheck(-2); // Wet Work (2)
-            Assert.AreEqual(2, GetNumberOfCardsInTrash(TangoOne)); // (ChameleonArmorCard, WetWork)
+            Assert.AreEqual(2, GetNumberOfCardsInTrash(tango)); // (ChameleonArmorCard, WetWork)
             QuickShuffleCheck(1, 1, 1, 1);
 
         }
@@ -1331,26 +1329,26 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 WetWorkCardController.Identifier
             });
 
             StartGame();
             Card mdp = FindCardInPlay("MobileDefensePlatform");
-            QuickShuffleStorage(TangoOne, ra, baron, env);
+            QuickShuffleStorage(tango, ra, baron, env);
             QuickHPStorage(mdp);
 
             DecisionSelectTarget = mdp;
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            PlayCardFromHand(TangoOne, WetWorkCardController.Identifier);
+            GoToStartOfTurn(tango);
+            PlayCardFromHand(tango, WetWorkCardController.Identifier);
 
 
             // Assert
             QuickHPCheck(-2); // Wet Work (2)
-            Assert.AreEqual(1, GetNumberOfCardsInTrash(TangoOne)); // (WetWork)
+            Assert.AreEqual(1, GetNumberOfCardsInTrash(tango)); // (WetWork)
             QuickShuffleCheck(1, 1, 1, 1);
 
         }

@@ -15,9 +15,8 @@ using NUnit.Framework;
 namespace CauldronTests
 {
     [TestFixture]
-    public class DendronTests : BaseTest
+    public class DendronTests : CauldronBaseTest
     {
-        protected TurnTakerController Dendron => FindVillain("Dendron");
 
         private const string DeckNamespace = "Cauldron.Dendron";
 
@@ -76,10 +75,10 @@ namespace CauldronTests
 
             Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
 
-            Assert.IsNotNull(Dendron);
-            Assert.IsInstanceOf(typeof(DendronCharacterCardController), Dendron.CharacterCardController);
+            Assert.IsNotNull(dendron);
+            Assert.IsInstanceOf(typeof(DendronCharacterCardController), dendron.CharacterCardController);
 
-            Assert.AreEqual(50, Dendron.CharacterCard.HitPoints);
+            Assert.AreEqual(50, dendron.CharacterCard.HitPoints);
         }
 
         [Test]
@@ -89,9 +88,9 @@ namespace CauldronTests
 
             StartGame();
 
-            GoToStartOfTurn(Dendron);
+            GoToStartOfTurn(dendron);
 
-            AssertNotFlipped(Dendron);
+            AssertNotFlipped(dendron);
 
 
             // Stained Wolf and Painted Viper are put in play at game start
@@ -110,24 +109,24 @@ namespace CauldronTests
             // Arrange
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
 
-            SetHitPoints(Dendron, 1);
+            SetHitPoints(dendron, 1);
             StartGame();
 
-            PutInTrash(Dendron, GetCard(AdornedOakCardController.Identifier));
-            DecisionSelectTarget = Dendron.CharacterCard;
+            PutInTrash(dendron, GetCard(AdornedOakCardController.Identifier));
+            DecisionSelectTarget = dendron.CharacterCard;
 
-            QuickShuffleStorage(Dendron);
+            QuickShuffleStorage(dendron);
 
             // Act
-            AssertNotFlipped(Dendron);
+            AssertNotFlipped(dendron);
 
             
             GoToUsePowerPhase(ra);
             UsePower(ra);
             
             // Assert
-            AssertFlipped(Dendron); // Dendron flipped once reduced to 0 HP
-            AssertHitPoints(Dendron, 50); // Dendron's HP was restored to 50
+            AssertFlipped(dendron); // Dendron flipped once reduced to 0 HP
+            AssertHitPoints(dendron, 50); // Dendron's HP was restored to 50
             QuickShuffleCheck(1); // Villain deck was shuffled
         }
 
@@ -137,24 +136,24 @@ namespace CauldronTests
             // Arrange
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Tachyon", "Megalopolis");
 
-            SetHitPoints(Dendron, 1);
+            SetHitPoints(dendron, 1);
             StartGame();
 
-            PutInTrash(Dendron, GetCard(AdornedOakCardController.Identifier));
-            DecisionSelectCard = Dendron.CharacterCard;
+            PutInTrash(dendron, GetCard(AdornedOakCardController.Identifier));
+            DecisionSelectCard = dendron.CharacterCard;
 
-            QuickShuffleStorage(Dendron);
+            QuickShuffleStorage(dendron);
 
             // Act
-            AssertNotFlipped(Dendron);
+            AssertNotFlipped(dendron);
 
 
             GoToPlayCardPhase(tachyon);
             PlayCard("SuckerPunch");
 
             // Assert
-            AssertFlipped(Dendron); // Dendron flipped once reduced to 0 HP
-            AssertHitPoints(Dendron, 50); // Dendron's HP was restored to 50
+            AssertFlipped(dendron); // Dendron flipped once reduced to 0 HP
+            AssertHitPoints(dendron, 50); // Dendron's HP was restored to 50
             QuickShuffleCheck(1); // Villain deck was shuffled
         }
 
@@ -178,13 +177,13 @@ namespace CauldronTests
 
 
             // Loop back around to Dendron and she should play an extra card from the deck due to no tattoos being out
-            GoToStartOfTurn(Dendron);
+            GoToStartOfTurn(dendron);
 
             // Assert
-            AssertInPlayArea(Dendron, owl);
+            AssertInPlayArea(dendron, owl);
 
-            GoToEndOfTurn(Dendron);
-            AssertInPlayArea(Dendron, stag);
+            GoToEndOfTurn(dendron);
+            AssertInPlayArea(dendron, stag);
         }
 
         [Test]
@@ -200,21 +199,21 @@ namespace CauldronTests
             GoToEndOfTurn(FindEnvironment());
             // Act
 
-            FlipCard(Dendron);
-            AssertFlipped(Dendron.CharacterCard);
+            FlipCard(dendron);
+            AssertFlipped(dendron.CharacterCard);
 
 
             Card stag = PutOnDeck("TintedStag");
             Card owl = PutOnDeck("ShadedOwl");
 
             // Loop back around to Dendron and she should play an extra card from the deck due to no tattoos being out
-            GoToStartOfTurn(Dendron);
+            GoToStartOfTurn(dendron);
 
             // Assert
-            AssertInPlayArea(Dendron, owl);
+            AssertInPlayArea(dendron, owl);
 
-            GoToEndOfTurn(Dendron);
-            AssertInPlayArea(Dendron, stag);
+            GoToEndOfTurn(dendron);
+            AssertInPlayArea(dendron, stag);
         }
 
         [Test]
@@ -229,7 +228,7 @@ namespace CauldronTests
             QuickHPStorage(legacy, ra, haka);
             StartGame();
 
-            GoToEndOfTurn(Dendron);
+            GoToEndOfTurn(dendron);
 
             // Tattoos deal +1 damage: -2 on Ra from Painted Viper (normally -1), -3 on Haka from Stained Wolf (normally -2)
             QuickHPCheck(0, -2, -3);
@@ -247,15 +246,15 @@ namespace CauldronTests
             Card staffOfRa = GetCard("TheStaffOfRa");
 
             QuickHPStorage(legacy, ra, haka);
-            SetHitPoints(Dendron, 1);
+            SetHitPoints(dendron, 1);
 
             StartGame();
 
-            StackDeck(Dendron, "ShadedOwl");
+            StackDeck(dendron, "ShadedOwl");
             //keep from messing up the test with random healing
-            PutInTrash(Dendron, Dendron.TurnTaker.Deck.Cards.Where(c => c.Identifier == "Restoration"));
+            PutInTrash(dendron, dendron.TurnTaker.Deck.Cards.Where(c => c.Identifier == "Restoration"));
 
-            GoToEndOfTurn(Dendron);
+            GoToEndOfTurn(dendron);
 
             // Act
             GoToPlayCardPhase(ra);
@@ -265,12 +264,12 @@ namespace CauldronTests
             UsePower(ra);
             UsePower(ra);
 
-            QuickHPStorage(Dendron);
+            QuickHPStorage(dendron);
 
             //Have to keep her *start*-of-turn card play from messing things up too, after the reshuffle
-            PutInTrash(Dendron, Dendron.TurnTaker.Deck.Cards.Where(c => c.Identifier == "Restoration"));
+            PutInTrash(dendron, dendron.TurnTaker.Deck.Cards.Where(c => c.Identifier == "Restoration"));
 
-            GoToStartOfTurn(Dendron);
+            GoToStartOfTurn(dendron);
 
             // Assert
             QuickHPCheck(5);
@@ -287,13 +286,13 @@ namespace CauldronTests
 
             Card adornedOwl = PlayCard(AdornedOakCardController.Identifier);
 
-            QuickHPStorage(GetStainedWolfInPlay(), GetPaintedViperInPlay(),Dendron.CharacterCard);
+            QuickHPStorage(GetStainedWolfInPlay(), GetPaintedViperInPlay(),dendron.CharacterCard);
 
             // Act
             DealDamage(ra, GetStainedWolfInPlay(), 3, DamageType.Fire);
             DealDamage(ra, GetPaintedViperInPlay(), 3, DamageType.Fire);
             //check that it only reduces for tattoos
-            DealDamage(ra, Dendron, 3, DamageType.Fire);
+            DealDamage(ra, dendron, 3, DamageType.Fire);
 
 
             // Assert
@@ -310,13 +309,13 @@ namespace CauldronTests
 
             Card bloodThornAura = PlayCard(BloodThornAuraCardController.Identifier);
             Card monorail = PlayCard("PlummetingMonorail");
-            QuickHPStorage(GetStainedWolfInPlay(), GetPaintedViperInPlay(), ra.CharacterCard, monorail, Dendron.CharacterCard);
+            QuickHPStorage(GetStainedWolfInPlay(), GetPaintedViperInPlay(), ra.CharacterCard, monorail, dendron.CharacterCard);
 
             // Act
             DealDamage(ra, GetStainedWolfInPlay(), 1, DamageType.Fire);
             DealDamage(ra, GetPaintedViperInPlay(), 1, DamageType.Fire);
             DealDamage(monorail, GetPaintedViperInPlay(), 1, DamageType.Projectile);
-            DealDamage(Dendron, GetStainedWolfInPlay(), 1, DamageType.Projectile);
+            DealDamage(dendron, GetStainedWolfInPlay(), 1, DamageType.Projectile);
 
             // Assert
             QuickHPCheck(-2, -2, -2, -1, 0);
@@ -342,7 +341,7 @@ namespace CauldronTests
             //have legacy draw a card to ensure they have the most cards in hand
             DrawCard(legacy);
 
-            GoToPlayCardPhase(Dendron);
+            GoToPlayCardPhase(dendron);
 
             AssertNumberOfStatusEffectsInPlay(0);
 
@@ -406,7 +405,7 @@ namespace CauldronTests
             //have expat draw cards to ensure they have the most cards in hand
             DrawCard(expatriette, 2);
 
-            GoToPlayCardPhase(Dendron);
+            GoToPlayCardPhase(dendron);
 
             AssertNumberOfStatusEffectsInPlay(0);
 
@@ -452,15 +451,15 @@ namespace CauldronTests
             StartGame();
 
             GoToStartOfTurn(legacy);
-            DealDamage(legacy, Dendron, 4, DamageType.Melee);
+            DealDamage(legacy, dendron, 4, DamageType.Melee);
             
-            DealDamage(ra, Dendron, 4, DamageType.Fire); // Ra will be the last person to deal damage to Dendron
+            DealDamage(ra, dendron, 4, DamageType.Fire); // Ra will be the last person to deal damage to Dendron
 
             QuickHandStorage(legacy, ra, haka);
 
             // Act
 
-            GoToStartOfTurn(Dendron);
+            GoToStartOfTurn(dendron);
             Card darkDesign = GetCard(DarkDesignCardController.Identifier);
             PlayCard(darkDesign);
 
@@ -481,26 +480,26 @@ namespace CauldronTests
             var c2 = PutInTrash(LivingInkCardController.Identifier);
 
             //put all non targets in the trash
-            MoveCards(Dendron, c => c.Owner == Dendron.TurnTaker && !c.IsTarget, Dendron.TurnTaker.Trash);
+            MoveCards(dendron, c => c.Owner == dendron.TurnTaker && !c.IsTarget, dendron.TurnTaker.Trash);
             Card bloodThornAura = GetCard(BloodThornAuraCardController.Identifier);
 
             //then load an inkscar as the top card
             Card inkScar = GetCard(InkScarCardController.Identifier);
-            PutOnDeck(Dendron, inkScar);
+            PutOnDeck(dendron, inkScar);
 
-            AssertNumberOfCardsInPlay(Dendron, 3); //dendron, viper, wolf
+            AssertNumberOfCardsInPlay(dendron, 3); //dendron, viper, wolf
 
-            QuickShuffleStorage(Dendron.TurnTaker.Deck);
+            QuickShuffleStorage(dendron.TurnTaker.Deck);
 
-            GoToPlayCardPhase(Dendron);
+            GoToPlayCardPhase(dendron);
             //plays inkscar
             RunActiveTurnPhase();
             // Assert
 
-            AssertInTrash(Dendron, bloodThornAura); //still in trach
-            AssertInTrash(Dendron, inkScar); //in trash after being played
+            AssertInTrash(dendron, bloodThornAura); //still in trach
+            AssertInTrash(dendron, inkScar); //in trash after being played
             AssertNotInTrash(c1, c2); //could be in the deck or playarea
-            AssertNumberOfCardsInPlay(Dendron, 5); //base plus 2 more from inkscar
+            AssertNumberOfCardsInPlay(dendron, 5); //base plus 2 more from inkscar
             QuickShuffleCheck(1);
         }
 
@@ -517,14 +516,14 @@ namespace CauldronTests
 
             StartGame();
 
-            SetHitPoints(Dendron.CharacterCard, 40);
+            SetHitPoints(dendron.CharacterCard, 40);
             SetHitPoints(GetStainedWolfInPlay(), 1);
             SetHitPoints(GetPaintedViperInPlay(), 1);
-            QuickHPStorage(Dendron.CharacterCard, GetStainedWolfInPlay(), GetPaintedViperInPlay());
+            QuickHPStorage(dendron.CharacterCard, GetStainedWolfInPlay(), GetPaintedViperInPlay());
 
             // Act
             PlayCard(livingInk);
-            GoToEndOfTurn(Dendron);
+            GoToEndOfTurn(dendron);
 
             // Assert
             QuickHPCheck(3, 3, 3);
@@ -543,7 +542,7 @@ namespace CauldronTests
 
             // Act
             PlayCard(markOfTheWritingNight);
-            GoToEndOfTurn(Dendron);
+            GoToEndOfTurn(dendron);
 
             // Assert
 
@@ -573,7 +572,7 @@ namespace CauldronTests
 
             // Act
             PlayCard(markOfTheWritingNight);
-            GoToEndOfTurn(Dendron);
+            GoToEndOfTurn(dendron);
 
             // Assert
 
@@ -617,7 +616,7 @@ namespace CauldronTests
 
             // Act
             PlayCard(markOfTheWritingNight);
-            GoToEndOfTurn(Dendron);
+            GoToEndOfTurn(dendron);
 
             // Assert
 
@@ -641,15 +640,15 @@ namespace CauldronTests
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
 
             StartGame();
-            QuickHPStorage(Dendron);
+            QuickHPStorage(dendron);
 
             Card obsidianSkin = GetCard(ObsidianSkinCardController.Identifier);
 
-            GoToPlayCardPhase(Dendron);
+            GoToPlayCardPhase(dendron);
             PlayCard(obsidianSkin);
 
             // Act
-            DealDamage(ra, Dendron, 4, DamageType.Fire);
+            DealDamage(ra, dendron, 4, DamageType.Fire);
 
             // Assert
             QuickHPCheck(-3); // -1 reduction from Obsidian Skin
@@ -669,7 +668,7 @@ namespace CauldronTests
 
             // Painted Viper will be in play @ game start
 
-            GoToEndOfTurn(Dendron);
+            GoToEndOfTurn(dendron);
 
             // Assert
             QuickHPCheck(-1); // Painted Viper deals hero with lowest HP H - 2 toxic (1 damage in this case)
@@ -683,18 +682,18 @@ namespace CauldronTests
 
 
             StartGame();
-            SetHitPoints(Dendron, 30);
+            SetHitPoints(dendron, 30);
             SetHitPoints(GetPaintedViperInPlay(), 1);
             SetHitPoints(GetStainedWolfInPlay(), 1);
 
 
-            QuickHPStorage(Dendron.CharacterCard, GetPaintedViperInPlay(), GetStainedWolfInPlay());
+            QuickHPStorage(dendron.CharacterCard, GetPaintedViperInPlay(), GetStainedWolfInPlay());
 
             Card restoration = GetCard(RestorationCardController.Identifier);
 
 
             // Act
-            GoToPlayCardPhase(Dendron);
+            GoToPlayCardPhase(dendron);
             PlayCard(restoration);
 
             // Assert
@@ -714,9 +713,9 @@ namespace CauldronTests
             QuickHPStorage(legacy, ra, haka);
 
             // Act
-            GoToPlayCardPhase(Dendron);
+            GoToPlayCardPhase(dendron);
             PlayCard(shadedOwl);
-            GoToEndOfTurn(Dendron);
+            GoToEndOfTurn(dendron);
 
             // Assert
 
@@ -737,7 +736,7 @@ namespace CauldronTests
             QuickHPStorage(legacy, ra, haka);
 
             // Act
-            GoToEndOfTurn(Dendron);
+            GoToEndOfTurn(dendron);
 
             // Assert
             QuickHPCheck(0, -1, -2); // 0 for Legacy, -1 Ra from Painted Viper (lowest hp hero), -2 Haka from Stained Wolf (highest hp hero)
@@ -751,12 +750,12 @@ namespace CauldronTests
 
             StartGame();
             Card tintedStag = GetCard(TintedStagCardController.Identifier);
-            QuickShuffleStorage(Dendron.TurnTaker.Trash);
+            QuickShuffleStorage(dendron.TurnTaker.Trash);
 
             // Act
-            GoToPlayCardPhase(Dendron);
+            GoToPlayCardPhase(dendron);
             PlayCard(tintedStag);
-            GoToEndOfTurn(Dendron);
+            GoToEndOfTurn(dendron);
 
             // Assert
             QuickShuffleCheck(1);
@@ -770,19 +769,19 @@ namespace CauldronTests
 
 
             // Put some non Tattoo cards in trash
-            PutInTrash(Dendron, GetCard(RestorationCardController.Identifier));
-            PutInTrash(Dendron, GetCard(InkScarCardController.Identifier));
+            PutInTrash(dendron, GetCard(RestorationCardController.Identifier));
+            PutInTrash(dendron, GetCard(InkScarCardController.Identifier));
 
 
             StartGame();
             Card tintedStag = GetCard(TintedStagCardController.Identifier);
-            QuickShuffleStorage(Dendron.TurnTaker.Trash);
+            QuickShuffleStorage(dendron.TurnTaker.Trash);
             QuickHPStorage(legacy, ra, haka);
 
             // Act
-            GoToPlayCardPhase(Dendron);
+            GoToPlayCardPhase(dendron);
             PlayCard(tintedStag);
-            GoToEndOfTurn(Dendron);
+            GoToEndOfTurn(dendron);
 
             // Assert
             QuickShuffleCheck(1);
@@ -799,19 +798,19 @@ namespace CauldronTests
 
             // Put one Tattoo card in trash
             Card stainedWolfCopy2 = GetCard(StainedWolfCardController.Identifier);
-            PutInTrash(Dendron, stainedWolfCopy2);
-            PutInTrash(Dendron, GetCard(RestorationCardController.Identifier));
+            PutInTrash(dendron, stainedWolfCopy2);
+            PutInTrash(dendron, GetCard(RestorationCardController.Identifier));
 
 
             StartGame();
             Card tintedStag = GetCard(TintedStagCardController.Identifier);
-            QuickShuffleStorage(Dendron.TurnTaker.Trash);
+            QuickShuffleStorage(dendron.TurnTaker.Trash);
             QuickHPStorage(legacy, ra, haka);
 
             // Act
-            GoToPlayCardPhase(Dendron);
+            GoToPlayCardPhase(dendron);
             PlayCard(tintedStag);
-            GoToEndOfTurn(Dendron);
+            GoToEndOfTurn(dendron);
 
             // Assert
             QuickShuffleCheck(1);
@@ -827,25 +826,25 @@ namespace CauldronTests
 
 
             // Put multiple Tattoo card in trash
-            PutInTrash(Dendron, GetCard(StainedWolfCardController.Identifier));
-            PutInTrash(Dendron, GetCard(PaintedViperCardController.Identifier));
-            PutInTrash(Dendron, GetCard(ObsidianSkinCardController.Identifier));
-            PutInTrash(Dendron, GetCard(AdornedOakCardController.Identifier));
+            PutInTrash(dendron, GetCard(StainedWolfCardController.Identifier));
+            PutInTrash(dendron, GetCard(PaintedViperCardController.Identifier));
+            PutInTrash(dendron, GetCard(ObsidianSkinCardController.Identifier));
+            PutInTrash(dendron, GetCard(AdornedOakCardController.Identifier));
 
 
             StartGame();
             Card tintedStag = GetCard(TintedStagCardController.Identifier);
-            QuickShuffleStorage(Dendron.TurnTaker.Trash);
+            QuickShuffleStorage(dendron.TurnTaker.Trash);
             QuickHPStorage(legacy, ra, haka);
 
             // Act
-            GoToPlayCardPhase(Dendron);
+            GoToPlayCardPhase(dendron);
             PlayCard(tintedStag);
-            GoToEndOfTurn(Dendron);
+            GoToEndOfTurn(dendron);
 
             // Assert
             QuickShuffleCheck(1);
-            Assert.True(GetNumberOfCardsInPlay(Dendron) >= 5); // At least Dendron, Stained Wolf, Painted Viper, Tinted Stag, Tattoo from trash
+            Assert.True(GetNumberOfCardsInPlay(dendron) >= 5); // At least Dendron, Stained Wolf, Painted Viper, Tinted Stag, Tattoo from trash
         }
 
         [Test]
@@ -857,7 +856,7 @@ namespace CauldronTests
 
             StartGame();
             Card ursaMajor = GetCard(UrsaMajorCardController.Identifier);
-            PutOnDeck(Dendron, ursaMajor);
+            PutOnDeck(dendron, ursaMajor);
 
             QuickHPStorage(ursaMajor);
             DecisionSelectTarget = legacy.CharacterCard;
@@ -865,9 +864,9 @@ namespace CauldronTests
             
 
             // Act
-            GoToPlayCardPhase(Dendron);
+            GoToPlayCardPhase(dendron);
             PlayCard(ursaMajor);
-            GoToEndOfTurn(Dendron);
+            GoToEndOfTurn(dendron);
 
             DealDamage(ra, ursaMajor, 3, DamageType.Fire);
 

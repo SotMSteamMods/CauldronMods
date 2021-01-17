@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace CauldronTests
 {
     [TestFixture]
-    public class BlackwoodForestTests : BaseTest
+    public class BlackwoodForestTests : CauldronBaseTest
     {
         private const string DeckNamespace = "Cauldron.BlackwoodForest";
 

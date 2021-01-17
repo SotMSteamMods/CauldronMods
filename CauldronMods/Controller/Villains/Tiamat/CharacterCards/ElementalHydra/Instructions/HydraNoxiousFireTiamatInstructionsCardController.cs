@@ -12,12 +12,10 @@ namespace Cauldron.Tiamat
         {
 
             SpecialStringMaker.ShowSpecialString(() => "The heroes may not win the game.").Condition = () => !base.Card.IsFlipped;
-            SpecialStringMaker.ShowNumberOfCards(new LinqCardCriteria((Card c) => c.DoKeywordsContain("head") && c.IsFlipped, "", useCardsSuffix: false, singular: "decapitated head", plural: "decapitated heads")).Condition = () => base.Card.IsFlipped;
+            SpecialStringMaker.ShowNumberOfCards(new LinqCardCriteria((Card c) => IsHead(c) && c.IsFlipped, "", useCardsSuffix: false, singular: "decapitated head", plural: "decapitated heads")).Condition = () => base.Card.IsFlipped;
             SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => !base.Card.IsFlipped;
             SpecialStringMaker.ShowHeroTargetWithHighestHP(ranking: 2).Condition = () => base.Card.IsFlipped && !FirstHeadCardController().Card.IsFlipped;
             SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "AcidBreath", "acid breath")).Condition = () => base.Card.IsFlipped && FirstHeadCardController().Card.IsFlipped && !SecondHeadCardController().Card.IsFlipped && SecondHeadCardController().Card.IsInPlayAndNotUnderCard;
-
-
         }
 
         //Whenever Element of Fire enters play and {InfernoTiamatCharacter} is decapitated, if {DecayTiamatCharacter} is active she deals each hero target X toxic damage, where X = 2 plus the number of Acid Breaths in the villain trash.
@@ -52,7 +50,7 @@ namespace Cauldron.Tiamat
                 {
                     if (base.GameController.HasGameStarted && !(action is GameOverAction) && !(action is IncrementAchievementAction))
                     {
-                        return base.FindCardsWhere((Card c) => c.DoKeywordsContain("head") && c.IsFlipped).Count<Card>() == 6;
+                        return base.FindCardsWhere((Card c) => IsHead(c) && c.IsFlipped).Count() == 6;
                     }
                     return false;
                 }, (GameAction action) => this.VictoryResponse(action), new TriggerType[] { TriggerType.GameOver, TriggerType.Hidden }, TriggerTiming.After),
@@ -87,7 +85,7 @@ namespace Cauldron.Tiamat
 
         private IEnumerator VictoryResponse(GameAction action)
         {
-            IEnumerator coroutine = base.GameController.GameOver(EndingResult.AlternateVictory, "The heroes win!", cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.GameOver(EndingResult.VillainDestroyedVictory, "The heroes win!", cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

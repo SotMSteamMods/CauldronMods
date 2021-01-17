@@ -9,18 +9,8 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    class PhaseVillainTests : BaseTest
+    class PhaseVillainTests : CauldronBaseTest
     {
-        protected TurnTakerController phase { get { return FindVillain("PhaseVillain"); } }
-
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                var card = GetCard(id);
-                AssertCardHasKeyword(card, keyword, false);
-            }
-        }
 
         private void DestroyWall()
         {

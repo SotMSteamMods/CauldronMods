@@ -12,10 +12,9 @@ using System.Collections;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class MagnificentMaraVariantTests : BaseTest
+    public class MagnificentMaraVariantTests : CauldronBaseTest
     {
         #region MaraHelperFunctions
-        protected HeroTurnTakerController mara { get { return FindHero("MagnificentMara"); } }
         private void SetupIncap(TurnTakerController villain)
         {
             SetHitPoints(mara.CharacterCard, 1);

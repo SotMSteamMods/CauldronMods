@@ -11,11 +11,10 @@ using Handelabra;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class AnathemaVariantTests : BaseTest
+    public class AnathemaVariantTests : CauldronBaseTest
     {
         #region AnathemaHelperFunctions
 
-        protected TurnTakerController anathema => FindVillain("Anathema");
 
         protected void AssertNumberOfArmsInPlay(TurnTakerController ttc, int number)
         {

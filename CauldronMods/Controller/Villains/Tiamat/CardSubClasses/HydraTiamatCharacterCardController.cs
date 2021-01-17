@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Cauldron.Tiamat
 {
-    public abstract class HydraTiamatCharacterCardController : VillainCharacterCardController
+    public abstract class HydraTiamatCharacterCardController : TiamatSubCharacterCardController
     {
         protected HydraTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -25,25 +25,14 @@ namespace Cauldron.Tiamat
 
         protected abstract ITrigger[] AddFrontTriggers();
 
-        public bool IsSpell(Card card)
-        {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "spell");
-        }
-        public bool IsHead(Card card)
-        {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "head");
-        }
-
         public override void AddSideTriggers()
         {
-            //Element of Lightning Cancel Draws
-            base.CannotDrawCards(ElementOfLightningCriteria);
             //Win Condition
             base.AddSideTrigger(base.AddTrigger<GameAction>(delegate (GameAction g)
             {
                 if (base.GameController.HasGameStarted && !(g is GameOverAction) && !(g is IncrementAchievementAction))
                 {
-                    return base.FindCardsWhere((Card c) => c.IsFlipped && IsVillain(c) && c.IsInPlayAndNotUnderCard && c.DoKeywordsContain("head")).Count() == 6;
+                    return base.FindCardsWhere((Card c) => c.IsFlipped && IsVillain(c) && c.IsInPlayAndNotUnderCard && IsHead(c)).Count() == 6;
                 }
                 return false;
             }, (GameAction g) => base.DefeatedResponse(g), new TriggerType[]
@@ -104,15 +93,6 @@ namespace Cauldron.Tiamat
                 }
             }
             yield break;
-        }
-
-        private bool ElementOfLightningCriteria(TurnTakerController ttc)
-        {
-            if (ttc is HeroTurnTakerController httc)
-            {
-                return httc.CharacterCardControllers.Any(chc => chc.GetCardPropertyJournalEntryBoolean(ElementOfLightningCardController.PreventDrawPropertyKey) == true);
-            }
-            return false;
         }
     }
 }
