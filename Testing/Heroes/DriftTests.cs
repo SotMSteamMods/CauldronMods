@@ -1076,6 +1076,8 @@ namespace CauldronTests
 
             //{DriftPast} 1 target regains 2 HP. Shift {DriftRR}.
             //{DriftFuture} {Drift} deals each non-hero target 1 radiant damage. Shift {DriftLL}.
+
+            //First part pushes Drift into the Future, triggering the Future part
             QuickHPCheck(1, -1);
             AssertTrackPosition(trackPosition);
         }
@@ -1101,6 +1103,44 @@ namespace CauldronTests
             //{DriftFuture} {Drift} deals each non-hero target 1 radiant damage. Shift {DriftLL}.
             QuickHPCheck(-1, -1);
             AssertTrackPosition(trackPosition - 2);
+        }
+
+        [Test]
+        public void TestTransitionShock()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "TimeCataclysm");
+            StartGame();
+
+            //To prevent healing on Drift's power
+            PlayCard("OppressiveSmog");
+
+            PlayCard(TransitionShock);
+
+            QuickHPStorage(apostate, drift);
+            DecisionYesNo = true;
+
+            //Whenever you shift from {DriftPast} to {DriftFuture} or from {DriftFuture} to {DrifitFuture}, {Drift} may deal 1 other target and herself 1 psychic damage.
+            GoToShiftPosition(2);
+            QuickHPCheckZero();
+
+            GoToShiftPosition(3);
+            QuickHPCheck(-1, -1);
+
+            GoToShiftPosition(4);
+            QuickHPCheckZero();
+
+            GoToShiftPosition(3);
+            QuickHPCheckZero();
+
+            GoToShiftPosition(2);
+            QuickHPCheck(-1, -1);
+
+            GoToShiftPosition(1);
+            QuickHPCheckZero();
+
+            DecisionYesNo = false;
+            GoToShiftPosition(3);
+            QuickHPCheckZero();
         }
     }
 }
