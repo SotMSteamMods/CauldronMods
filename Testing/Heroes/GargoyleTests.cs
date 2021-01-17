@@ -72,14 +72,14 @@ namespace CauldronTests
             UsePower(gargoyle.CharacterCard);
                         
             // Reduce the next damage it deals by 1.
-            QuickHPStorage(gargoyle.CharacterCard);
+            QuickHPStorage(baron, unity, bunker, scholar);
             DealDamage(baron.CharacterCard, gargoyle.CharacterCard, 1, DamageType.Melee);
             QuickHPCheckZero();
 
             // Increase the next damage Gargoyle deals by 1.
-            QuickHPStorage(baron.CharacterCard);
+            QuickHPStorage(baron, unity, bunker, scholar);
             DealDamage(gargoyle.CharacterCard, baron.CharacterCard, 1, DamageType.Melee);
-            QuickHPCheck(-2);
+            QuickHPCheck(-2, 0, 0, 0);
         }
 
         /* 
@@ -93,14 +93,14 @@ namespace CauldronTests
             UseIncapacitatedAbility(gargoyle, 0);
 
             // Make sure it only affects hero damage
-            QuickHPStorage(baron);
+            QuickHPStorage(baron, unity, bunker, scholar);
             DealDamage(bunker.CharacterCard, baron, 1, DamageType.Melee);
-            QuickHPCheck(-3);
+            QuickHPCheck(-3, 0, 0, 0);
 
             // Should only be the next damage,  this packet of damage should not be increased
-            QuickHPStorage(baron);
+            QuickHPStorage(baron, unity, bunker, scholar);
             DealDamage(bunker.CharacterCard, baron, 1, DamageType.Melee);
-            QuickHPCheck(-1);
+            QuickHPCheck(-1, 0, 0, 0);
         }
         [Test()]
         public void TestGargoyleIncap1HeroTarget()
@@ -113,14 +113,14 @@ namespace CauldronTests
             mrChomps = PlayCard(unity, "RaptorBot");
 
             // Make sure it only affects hero damage
-            QuickHPStorage(baron);
+            QuickHPStorage(baron, unity, bunker, scholar);
             DealDamage(mrChomps, baron, 1, DamageType.Melee);
-            QuickHPCheck(-3);
+            QuickHPCheck(-3, 0, 0, 0);
 
             // Should only be the next damage,  this packet of damage should not be increased
-            QuickHPStorage(baron);
+            QuickHPStorage(baron, unity, bunker, scholar);
             DealDamage(mrChomps, baron, 1, DamageType.Melee);
-            QuickHPCheck(-1);
+            QuickHPCheck(-1, 0, 0, 0);
         }
         [Test()]
         public void TestGargoyleIncap1Villain()
@@ -129,9 +129,9 @@ namespace CauldronTests
             UseIncapacitatedAbility(gargoyle, 0);
 
             // Make sure it isn't affecting the villians damage
-            QuickHPStorage(bunker);
+            QuickHPStorage(baron, unity, bunker, scholar);
             DealDamage(baron.CharacterCard, bunker, 1, DamageType.Melee);
-            QuickHPCheck(-1);
+            QuickHPCheck(0, 0, -1, 0);
         }
         [Test()]
         public void TestGargoyleIncap1Environment()
@@ -142,16 +142,15 @@ namespace CauldronTests
             SetupIncapTest();
             UseIncapacitatedAbility(gargoyle, 0);
 
-            megalopolis = FindEnvironment();
-            Assert.IsNotNull(megalopolis);
+            megalopolis = base.env;
 
             plummetingMonorail = PlayCard(megalopolis, "PlummetingMonorail");
             Assert.IsNotNull(plummetingMonorail);
 
             // Make sure it isn't affecting the evironment target's damage
-            QuickHPStorage(bunker);
+            QuickHPStorage(baron, unity, bunker, scholar);
             DealDamage(plummetingMonorail, bunker, 1, DamageType.Melee);
-            QuickHPCheck(-1);
+            QuickHPCheck(0, 0, -1, 0);
         }
 
         /* 
@@ -165,14 +164,14 @@ namespace CauldronTests
             UseIncapacitatedAbility(gargoyle, 1);
 
             // Make sure it only affects heroes
-            QuickHPStorage(bunker);
+            QuickHPStorage(baron, unity, bunker, scholar);
             DealDamage(baron.CharacterCard, bunker, 2, DamageType.Melee);
             QuickHPCheckZero();
 
             // Should only be the next damage,  this packet of damage should not be increased
-            QuickHPStorage(bunker);
+            QuickHPStorage(baron, unity, bunker, scholar);
             DealDamage(baron.CharacterCard, bunker, 2, DamageType.Melee);
-            QuickHPCheck(-2);
+            QuickHPCheck(0, 0, -2, 0);
 
         }
         [Test()]
@@ -186,14 +185,14 @@ namespace CauldronTests
             mrChomps = PlayCard(unity, "RaptorBot");
 
             // Make sure it only affects heroes
-            QuickHPStorage(mrChomps);
+            QuickHPStorage(mrChomps, baron.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard);
             DealDamage(baron.CharacterCard, mrChomps, 2, DamageType.Melee);
             QuickHPCheckZero();
 
             // Should only be the next damage,  this packet of damage should not be increased
-            QuickHPStorage(mrChomps);
+            QuickHPStorage(mrChomps, baron.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard);
             DealDamage(baron.CharacterCard, mrChomps, 1, DamageType.Melee);
-            QuickHPCheck(-1);
+            QuickHPCheck(-1, 0, 0, 0, 0);
         }
         [Test()]
         public void TestGargoyleIncap2Villain()
@@ -202,9 +201,9 @@ namespace CauldronTests
             UseIncapacitatedAbility(gargoyle, 1);
 
             // Make sure it isn't affecting damage to the villian
-            QuickHPStorage(baron);
+            QuickHPStorage(baron, unity, bunker, scholar);
             DealDamage(bunker.CharacterCard, baron, 1, DamageType.Melee);
-            QuickHPCheck(-1);
+            QuickHPCheck(-1, 0, 0, 0);
         }
         [Test()]
         public void TestGargoyleIncap2Environment()
@@ -215,16 +214,15 @@ namespace CauldronTests
             SetupIncapTest();
             UseIncapacitatedAbility(gargoyle, 1);
 
-            megalopolis = FindEnvironment();
-            Assert.IsNotNull(megalopolis);
+            megalopolis = base.env;
 
             plummetingMonorail = PlayCard(megalopolis, "PlummetingMonorail");
             Assert.IsNotNull(plummetingMonorail);
 
             // Make sure it isn't affecting damage to the evironment target
-            QuickHPStorage(plummetingMonorail);
+            QuickHPStorage(plummetingMonorail, baron.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard);
             DealDamage(bunker.CharacterCard, plummetingMonorail, 1, DamageType.Melee);
-            QuickHPCheck(-1);
+            QuickHPCheck(-1, 0, 0, 0, 0);
         }
 
         /* 
