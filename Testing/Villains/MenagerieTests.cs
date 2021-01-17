@@ -9,20 +9,8 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class MenagerieTests : BaseTest
+    public class MenagerieTests : CauldronBaseTest
     {
-        protected TurnTakerController menagerie { get { return FindVillain("Menagerie"); } }
-
-
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                var card = GetCard(id);
-                AssertCardHasKeyword(card, keyword, false);
-            }
-        }
-
         [Test()]
         [Order(0)]
         public void TestMenagerieLoad()

@@ -11,10 +11,9 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class NecroVariantTests : BaseTest
+    public class NecroVariantTests : CauldronBaseTest
     {
         #region NecroHelperFunctions
-        protected HeroTurnTakerController necro { get { return FindHero("Necro"); } }
         private void SetupIncap(TurnTakerController villain)
         {
             SetHitPoints(necro.CharacterCard, 1);

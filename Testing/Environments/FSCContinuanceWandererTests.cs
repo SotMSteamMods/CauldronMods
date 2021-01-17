@@ -11,7 +11,7 @@ using System.Collections;
 namespace CauldronTests
 {
     [TestFixture()]
-    class FSCContinuanceWandererTests : BaseTest
+    class FSCContinuanceWandererTests : CauldronBaseTest
     {
         protected TurnTakerController fsc { get { return FindEnvironment(); } }
 

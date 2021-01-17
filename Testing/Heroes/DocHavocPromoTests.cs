@@ -11,9 +11,8 @@ using NUnit.Framework;
 namespace CauldronTests
 {
     [TestFixture]
-    public class DocHavocPromoTests : BaseTest
+    public class DocHavocPromoTests : CauldronBaseTest
     {
-        protected HeroTurnTakerController DocHavoc => FindHero("DocHavoc");
 
         private const string DeckNamespaceFirstResponse = "Cauldron.DocHavoc/FirstResponseDocHavocCharacter";
 
@@ -25,10 +24,10 @@ namespace CauldronTests
 
             // Assert
             Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
-            Assert.IsNotNull(DocHavoc);
-            Assert.IsInstanceOf(typeof(FirstResponseDocHavocCharacterCardController), DocHavoc.CharacterCardController);
+            Assert.IsNotNull(doc);
+            Assert.IsInstanceOf(typeof(FirstResponseDocHavocCharacterCardController), doc.CharacterCardController);
 
-            Assert.AreEqual(32, DocHavoc.CharacterCard.HitPoints);
+            Assert.AreEqual(32, doc.CharacterCard.HitPoints);
         }
 
         [Test]
@@ -41,13 +40,13 @@ namespace CauldronTests
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             QuickHPStorage(mdp);
-            QuickHandStorage(DocHavoc);
+            QuickHandStorage(doc);
             DecisionYesNo = true;
             DecisionSelectTarget = mdp;
 
             // Act
-            GoToUsePowerPhase(DocHavoc);
-            UsePower(DocHavoc);
+            GoToUsePowerPhase(doc);
+            UsePower(doc);
 
             // Assert
             QuickHPCheck(-1);
@@ -62,13 +61,13 @@ namespace CauldronTests
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             QuickHPStorage(mdp);
-            QuickHandStorage(DocHavoc);
+            QuickHandStorage(doc);
             DecisionYesNo = true;
             DecisionSelectTarget = mdp;
             UsePower(legacy);
             // Act
-            GoToUsePowerPhase(DocHavoc);
-            UsePower(DocHavoc);
+            GoToUsePowerPhase(doc);
+            UsePower(doc);
 
             // Assert
             QuickHPCheck(-2);
@@ -83,14 +82,14 @@ namespace CauldronTests
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             QuickHPStorage(mdp);
-            QuickHandStorage(DocHavoc);
+            QuickHandStorage(doc);
             DecisionYesNo = false;
             DecisionSelectTargets = new Card[] { mdp, mdp, null };
             // Act
-            GoToUsePowerPhase(DocHavoc);
-            UsePower(DocHavoc);
-            UsePower(DocHavoc);
-            UsePower(DocHavoc);
+            GoToUsePowerPhase(doc);
+            UsePower(doc);
+            UsePower(doc);
+            UsePower(doc);
 
             // Assert
             QuickHPCheck(-2);
@@ -106,12 +105,12 @@ namespace CauldronTests
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             QuickHPStorage(mdp);
-            QuickHandStorage(DocHavoc);
+            QuickHandStorage(doc);
             DecisionYesNo = false;
 
             // Act
-            GoToUsePowerPhase(DocHavoc);
-            UsePower(DocHavoc);
+            GoToUsePowerPhase(doc);
+            UsePower(doc);
 
             // Assert
             QuickHPCheck(0);
@@ -131,12 +130,12 @@ namespace CauldronTests
             SetHitPoints(ra.CharacterCard, 5);
             QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, mdp);
 
-            SetHitPoints(DocHavoc.CharacterCard, 1);
-            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+            SetHitPoints(doc.CharacterCard, 1);
+            DealDamage(baron, doc, 2, DamageType.Melee);
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(DocHavoc);
-            UseIncapacitatedAbility(DocHavoc, 0);
+            GoToUseIncapacitatedAbilityPhase(doc);
+            UseIncapacitatedAbility(doc, 0);
 
             GoToStartOfTurn(legacy);
             DecisionSelectTarget = mdp;
@@ -149,7 +148,7 @@ namespace CauldronTests
             QuickHPStorage(ra.CharacterCard, mdp);
 
             // Loop back around to make sure the effect is gone
-            GoToUseIncapacitatedAbilityPhase(DocHavoc);
+            GoToUseIncapacitatedAbilityPhase(doc);
 
             DealDamage(baron, mdp, 2, DamageType.Cold);
             DealDamage(baron, ra, 2, DamageType.Cold);
@@ -157,7 +156,7 @@ namespace CauldronTests
 
 
             // Assert
-            AssertIncapacitated(DocHavoc);
+            AssertIncapacitated(doc);
         }
 
         [Test]
@@ -170,12 +169,12 @@ namespace CauldronTests
 
             SetHitPoints(ra, 7);
 
-            SetHitPoints(DocHavoc.CharacterCard, 1);
-            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+            SetHitPoints(doc.CharacterCard, 1);
+            DealDamage(baron, doc, 2, DamageType.Melee);
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(DocHavoc);
-            UseIncapacitatedAbility(DocHavoc, 0);
+            GoToUseIncapacitatedAbilityPhase(doc);
+            UseIncapacitatedAbility(doc, 0);
 
             QuickHPStorage(ra);
             DealDamage(baron, ra, 2, DamageType.Cold);
@@ -206,15 +205,15 @@ namespace CauldronTests
             DecisionSelectTurnTaker = legacy.TurnTaker;
             DecisionSelectCard = thokk;
 
-            SetHitPoints(DocHavoc.CharacterCard, 1);
-            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+            SetHitPoints(doc.CharacterCard, 1);
+            DealDamage(baron, doc, 2, DamageType.Melee);
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(DocHavoc);
-            UseIncapacitatedAbility(DocHavoc, 1);
+            GoToUseIncapacitatedAbilityPhase(doc);
+            UseIncapacitatedAbility(doc, 1);
 
             // Assert
-            AssertIncapacitated(DocHavoc);
+            AssertIncapacitated(doc);
             AssertNotInTrash(legacy, thokk.Identifier);
             AssertOnTopOfDeck(legacy, thokk);
             AssertInTrash(fireBlast);
@@ -229,15 +228,15 @@ namespace CauldronTests
             StartGame();
             QuickTopCardStorage(legacy, ra);
 
-            SetHitPoints(DocHavoc.CharacterCard, 1);
-            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+            SetHitPoints(doc.CharacterCard, 1);
+            DealDamage(baron, doc, 2, DamageType.Melee);
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(DocHavoc);
-            UseIncapacitatedAbility(DocHavoc, 1);
+            GoToUseIncapacitatedAbilityPhase(doc);
+            UseIncapacitatedAbility(doc, 1);
 
             // Assert
-            AssertIncapacitated(DocHavoc);
+            AssertIncapacitated(doc);
             QuickTopCardCheck(ttc => ttc.CharacterCard.Owner.Deck);
         }
 
@@ -260,15 +259,15 @@ namespace CauldronTests
             QuickTopCardStorage(legacy, ra);
             DecisionSelectTurnTaker = legacy.TurnTaker;
 
-            SetHitPoints(DocHavoc.CharacterCard, 1);
-            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+            SetHitPoints(doc.CharacterCard, 1);
+            DealDamage(baron, doc, 2, DamageType.Melee);
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(DocHavoc);
-            UseIncapacitatedAbility(DocHavoc, 1);
+            GoToUseIncapacitatedAbilityPhase(doc);
+            UseIncapacitatedAbility(doc, 1);
 
             // Assert
-            AssertIncapacitated(DocHavoc);
+            AssertIncapacitated(doc);
             AssertInTrash(dangerSense);
             AssertInTrash(fortitude);
             AssertInTrash(solarFlare);
@@ -292,15 +291,15 @@ namespace CauldronTests
 
             DecisionSelectCards = new[] { enragedTRex, obsidianField };
 
-            SetHitPoints(DocHavoc.CharacterCard, 1);
-            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+            SetHitPoints(doc.CharacterCard, 1);
+            DealDamage(baron, doc, 2, DamageType.Melee);
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(DocHavoc);
-            UseIncapacitatedAbility(DocHavoc, 2);
+            GoToUseIncapacitatedAbilityPhase(doc);
+            UseIncapacitatedAbility(doc, 2);
 
             // Assert
-            AssertIncapacitated(DocHavoc);
+            AssertIncapacitated(doc);
             AssertInTrash(enragedTRex);
             AssertInTrash(obsidianField);
         }
@@ -318,15 +317,15 @@ namespace CauldronTests
 
             DecisionSelectCard = enragedTRex;
 
-            SetHitPoints(DocHavoc.CharacterCard, 1);
-            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+            SetHitPoints(doc.CharacterCard, 1);
+            DealDamage(baron, doc, 2, DamageType.Melee);
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(DocHavoc);
-            UseIncapacitatedAbility(DocHavoc, 2);
+            GoToUseIncapacitatedAbilityPhase(doc);
+            UseIncapacitatedAbility(doc, 2);
 
             // Assert
-            AssertIncapacitated(DocHavoc);
+            AssertIncapacitated(doc);
             AssertInTrash(enragedTRex);
         }
 
@@ -338,15 +337,15 @@ namespace CauldronTests
 
             StartGame();
 
-            SetHitPoints(DocHavoc.CharacterCard, 1);
-            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+            SetHitPoints(doc.CharacterCard, 1);
+            DealDamage(baron, doc, 2, DamageType.Melee);
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(DocHavoc);
-            UseIncapacitatedAbility(DocHavoc, 2);
+            GoToUseIncapacitatedAbilityPhase(doc);
+            UseIncapacitatedAbility(doc, 2);
 
             // Assert
-            AssertIncapacitated(DocHavoc);
+            AssertIncapacitated(doc);
             AssertNumberOfCardsInTrash(env, 0);
         }
         [Test]
@@ -354,10 +353,10 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.DocHavoc/FutureDocHavocCharacter", "Megalopolis");
             Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
-            Assert.IsNotNull(DocHavoc);
-            Assert.IsInstanceOf(typeof(FutureDocHavocCharacterCardController), DocHavoc.CharacterCardController);
+            Assert.IsNotNull(doc);
+            Assert.IsInstanceOf(typeof(FutureDocHavocCharacterCardController), doc.CharacterCardController);
 
-            Assert.AreEqual(29, DocHavoc.CharacterCard.HitPoints);
+            Assert.AreEqual(29, doc.CharacterCard.HitPoints);
         }
         [Test]
         public void TestFuturePowerNoHPGainers()
@@ -368,7 +367,7 @@ namespace CauldronTests
 
             QuickHPStorage(baron);
             AssertMaxNumberOfDecisions(1);
-            UsePower(DocHavoc);
+            UsePower(doc);
             QuickHPCheck(-2);
         }
         [Test]
@@ -386,7 +385,7 @@ namespace CauldronTests
             AssertMaxNumberOfDecisions(3);
 
             QuickHPStorage(baron);
-            UsePower(DocHavoc);
+            UsePower(doc);
             QuickHPCheck(-3);
         }
         [Test]
@@ -394,16 +393,16 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.DocHavoc/FutureDocHavocCharacter", "Ra", "Legacy", "Megalopolis");
             StartGame();
-            DealDamage(baron, DocHavoc, 50, DamageType.Melee);
+            DealDamage(baron, doc, 50, DamageType.Melee);
 
-            AssertIncapLetsHeroDrawCard(DocHavoc, 0, ra, 1);
+            AssertIncapLetsHeroDrawCard(doc, 0, ra, 1);
         }
         [Test]
         public void TestFutureIncap2()
         {
             SetupGameController("BaronBlade", "Cauldron.DocHavoc/FutureDocHavocCharacter", "Ra", "Legacy", "Megalopolis");
             StartGame();
-            DealDamage(baron, DocHavoc, 50, DamageType.Melee);
+            DealDamage(baron, doc, 50, DamageType.Melee);
 
             Card flesh = PlayCard("FleshOfTheSunGod");
             Card fort = PlayCard("Fortitude");
@@ -412,7 +411,7 @@ namespace CauldronTests
             AssertNextDecisionChoices(new Card[] { flesh, fort, lash }, new Card[] { ring });
 
             DecisionSelectCard = lash;
-            UseIncapacitatedAbility(DocHavoc, 1);
+            UseIncapacitatedAbility(doc, 1);
             AssertInTrash(lash);
         }
         [Test]
@@ -420,11 +419,11 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.DocHavoc/FutureDocHavocCharacter", "Ra", "Legacy", "Megalopolis");
             StartGame();
-            DealDamage(baron, DocHavoc, 50, DamageType.Melee);
+            DealDamage(baron, doc, 50, DamageType.Melee);
 
             SetHitPoints(ra, 20);
             QuickHPStorage(ra);
-            UseIncapacitatedAbility(DocHavoc, 2);
+            UseIncapacitatedAbility(doc, 2);
             Card staff = PlayCard("TheStaffOfRa");
             QuickHPCheck(5);
 

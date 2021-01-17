@@ -11,10 +11,9 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class StarlightVariantTests : BaseTest
+    public class StarlightVariantTests : CauldronBaseTest
     {
         #region StarlightHelperFunctions
-        protected HeroTurnTakerController starlight { get { return FindHero("Starlight"); } }
         private void SetupIncap(TurnTakerController villain)
         {
             SetHitPoints(starlight.CharacterCard, 1);

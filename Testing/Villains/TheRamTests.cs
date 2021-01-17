@@ -13,10 +13,9 @@ using Cauldron.TheRam;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class TheRamTests : BaseTest
+    public class TheRamTests : CauldronBaseTest
     {
         #region RamHelperFunctions
-        protected TurnTakerController ram { get { return FindVillain("TheRam"); } }
 
         protected bool IsUpClose(TurnTakerController ttc)
         {

@@ -9,19 +9,11 @@ using Cauldron.Cypher;
 namespace CauldronTests
 {
     [TestFixture]
-    public class CypherVariantTests : BaseTest
+    public class CypherVariantTests : CauldronBaseTest
     {
-        protected HeroTurnTakerController cypher => FindHero("Cypher");
 
         private const string DeckNamespace = "Cauldron.Cypher";
 
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                AssertCardHasKeyword(GetCard(id), keyword, false);
-            }
-        }
         protected bool IsAugment(Card card)
         {
             if (card != null)
