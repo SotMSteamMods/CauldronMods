@@ -14,22 +14,14 @@ using Cauldron.Oriphel;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class OriphelTests : BaseTest
+    public class OriphelTests : CauldronBaseTest
     {
         #region OriphelHelperFunctions
-        protected TurnTakerController oriphel { get { return FindVillain("Oriphel"); } }
         protected DamageType DTM
         {
             get { return DamageType.Melee; }
         }
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                var card = GetCard(id);
-                AssertCardHasKeyword(card, keyword, false);
-            }
-        }
+
         protected bool IsGuardian(Card c)
         {
             return GameController.DoesCardContainKeyword(c, "guardian");

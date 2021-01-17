@@ -14,9 +14,8 @@ using System.Management.Instrumentation;
 namespace CauldronTests
 {
     [TestFixture()]
-    class TiamatTests : BaseTest
+    class TiamatTests : CauldronBaseTest
     {
-        protected TurnTakerController tiamat { get { return FindVillain("Tiamat"); } }
         protected Card inferno { get { return GetCardInPlay("InfernoTiamatCharacter"); } }
         protected Card storm { get { return GetCardInPlay("StormTiamatCharacter"); } }
         protected Card winter { get { return GetCardInPlay("WinterTiamatCharacter"); } }
@@ -25,14 +24,6 @@ namespace CauldronTests
         {
             SetHitPoints(target, 1);
             DealDamage(source, target, 2, DamageType.Melee);
-        }
-
-        protected void AddCannotDealNextDamageTrigger(TurnTakerController ttc, Card card)
-        {
-            CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new CannotDealDamageStatusEffect();
-            cannotDealDamageStatusEffect.NumberOfUses = 1;
-            cannotDealDamageStatusEffect.SourceCriteria.IsSpecificCard = card;
-            this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
         }
 
         private void AddShuffleTrashCounterAttackTrigger(TurnTakerController ttc, TurnTaker turnTakerToReshuffleTrash)

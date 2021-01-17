@@ -9,26 +9,8 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class SwarmEaterVariantTests : BaseTest
+    public class SwarmEaterVariantTests : CauldronBaseTest
     {
-        protected TurnTakerController swarm { get { return FindVillain("SwarmEater"); } }
-
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                var card = GetCard(id);
-                AssertCardHasKeyword(card, keyword, false);
-            }
-        }
-
-        protected void AddCannotDealNextDamageTrigger(TurnTakerController ttc, Card card)
-        {
-            CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new CannotDealDamageStatusEffect();
-            cannotDealDamageStatusEffect.NumberOfUses = 1;
-            cannotDealDamageStatusEffect.SourceCriteria.IsSpecificCard = card;
-            this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
-        }
 
         [Test()]
         public void TestHiveSwarmEaterLoads()

@@ -13,10 +13,9 @@ using Handelabra.Sentinels.Engine.Controller.ChronoRanger;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class TheStrangerVariantTests : BaseTest
+    public class TheStrangerVariantTests : CauldronBaseTest
     {
         #region TheStrangerHelperFunctions
-        protected HeroTurnTakerController stranger { get { return FindHero("TheStranger"); } }
         private void SetupIncap(TurnTakerController villain)
         {
             SetHitPoints(stranger.CharacterCard, 1);
