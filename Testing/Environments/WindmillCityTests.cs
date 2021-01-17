@@ -192,5 +192,28 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestCrashedTanker()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card responder1 = PlayCard("DetectiveSedrick");
+            Card responder2 = PlayCard("IntrepidReporter");
+            SetHitPoints(responder1, 4);
+
+            GoToPlayCardPhase(windmill);
+            //When this card enters play, it deals the Responder with the lowest HP 2 fire damage.
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, responder1, responder2);
+            Card tanker = PlayCard("CrashedTanker");
+            QuickHPCheck(0, 0, 0, 0, -2, 0);
+
+            //At the end of the environment turn, this card deals the target with the second highest HP {H - 1} fire damage.
+            QuickHPUpdate();
+            GoToEndOfTurn(windmill);
+            QuickHPCheck(0, 0, 0, -2, 0, 0);
+
+        }
+
     }
 }
