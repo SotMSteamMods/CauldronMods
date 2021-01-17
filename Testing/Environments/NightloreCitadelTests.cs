@@ -484,5 +484,25 @@ namespace CauldronTests
             GoToStartOfTurn(nightlore);
             AssertInTrash(gravity);
         }
+
+        [Test()]
+        public void TestRogueConstellation()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            SetHitPoints(baron, 3);
+            //When this card enters play, move it next to the villain target with the highest HP.
+            //Play the top card of the environment deck.",
+            Card top = PutOnDeck("AethiumCannon");
+
+            Card rogue = PlayCard("RogueConstellation");
+            AssertNextToCard(rogue, battalion);
+            AssertInPlayArea(nightlore, top);
+
+            DestroyCard(battalion, ra.CharacterCard);
+            AssertInTrash(rogue);
+        }
     }
 }
