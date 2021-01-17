@@ -56,6 +56,7 @@ namespace CauldronTests
             Assert.AreEqual(27, gargoyle.CharacterCard.HitPoints);
         }
 
+        #region Test Innate Power
         /*
          * Power:
          * "Select a target. Reduce the next damage it deals by 1. Increase the next damage Gargoyle deals by 1."
@@ -81,7 +82,9 @@ namespace CauldronTests
             DealDamage(gargoyle.CharacterCard, baron.CharacterCard, 1, DamageType.Melee);
             QuickHPCheck(-2, 0, 0, 0);
         }
+        #endregion Test Innate Power
 
+        #region Test Incap Powers
         /* 
          * Incap 1
          * "Increase the next damage dealt by a hero target by 2."
@@ -235,5 +238,51 @@ namespace CauldronTests
             SetupIncapTest();
             AssertIncapLetsHeroDrawCard(gargoyle, 2, unity, 1);
         }
+
+        #endregion Test Incap Powers
+
+        /*
+         * Absorb And Unleash
+         * {Gargoyle} deals 1 hero target 2 toxic damage.
+         * {Gargoyle} deals up to X targets 3 toxic damage each, where X is the amount of damage that was dealt to that hero target.
+         */
+        [Test()]
+        public void TestAbsorbAndUnleash()
+        {
+            Card absorbAndUnleash;
+
+            StartTestGame();
+
+            PutOnDeck(gargoyle, gargoyle.HeroTurnTaker.Hand.Cards);
+            absorbAndUnleash = PutInHand("AbsorbAndUnleash");
+
+            DecisionSelectCards = new Card[] { gargoyle.CharacterCard, baron.CharacterCard, scholar.CharacterCard, null };
+            DecisionYesNo = true;
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+            PlayCard(absorbAndUnleash);
+
+            // Gargoyle should have been hit for 2. Baron and Scholar should have been hit for 3
+            QuickHPCheck(-3, -2, 0, 0, -3);
+        }
+
+        [Test]
+        public void TestAbsorbAndUnleashSkippedFinalTarget()
+        {
+            Card absorbAndUnleash;
+
+            StartTestGame();
+
+            PutOnDeck(gargoyle, gargoyle.HeroTurnTaker.Hand.Cards);
+            absorbAndUnleash = PutInHand("AbsorbAndUnleash");
+
+            DecisionSelectCards = new Card[] { gargoyle.CharacterCard, baron.CharacterCard, null };
+            DecisionYesNo = true;
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+            PlayCard(absorbAndUnleash);
+
+            // Gargoyle should have been hit for 2. Baron and Scholar should have been hit for 3
+            QuickHPCheck(-3, -2, 0, 0, 0);
+        }
+
     }
 }
