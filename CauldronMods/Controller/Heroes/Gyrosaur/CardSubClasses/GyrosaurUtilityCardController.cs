@@ -51,6 +51,7 @@ namespace Cauldron.Gyrosaur
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
+
                 if(DidSelectFunction(storedFunction, DecisionMaker))
                 {
                     storedModifier.Add(CrashModifierFromDecision(storedFunction.FirstOrDefault()));

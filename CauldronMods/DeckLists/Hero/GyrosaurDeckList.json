@@ -16,7 +16,7 @@
             "hitpointColor": "feef00",
             "character": true,
             "powers": [
-                "If you have at least 2 crash cards in your had, {Gyrosaur} deals up to 3 targets 1 melee damage each. If not, draw a card."
+                "If you have at least 2 crash cards in your hand, {Gyrosaur} deals up to 3 targets 1 melee damage each. If not, draw a card."
             ],
             "icons": [
                 "HasPower",

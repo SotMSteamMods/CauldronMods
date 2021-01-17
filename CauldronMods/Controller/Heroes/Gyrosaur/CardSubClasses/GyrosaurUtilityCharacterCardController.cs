@@ -6,6 +6,8 @@ using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
+using Handelabra;
+
 namespace Cauldron.Gyrosaur
 {
     public abstract class GyrosaurUtilityCharacterCardController : HeroCharacterCardController
@@ -28,8 +30,9 @@ namespace Cauldron.Gyrosaur
             //allow decision of increase/decrease if needed
             //sometimes it is not, as Gyro Stabilizer cannot increase/decrease the count past the requisite threshold
 
-            if (CanActivateEffect(Card, StabilizerKey) && fullShowDecisionIf())
+            if (CanActivateEffect(TurnTakerController, StabilizerKey) && fullShowDecisionIf())
             {
+                //Log.Debug("Gyro Stabilizer active...");
                 IEnumerator coroutine;
                 int currentCrash = TrueCrashInHand;
                 var functions = new List<Function>
@@ -50,6 +53,7 @@ namespace Cauldron.Gyrosaur
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
+
                 if (DidSelectFunction(storedFunction, DecisionMaker))
                 {
                     storedModifier.Add(CrashModifierFromDecision(storedFunction.FirstOrDefault()));
@@ -61,6 +65,7 @@ namespace Cauldron.Gyrosaur
             }
             else
             {
+                //Log.Debug("Gyro Stabilizer not active, returning 0.");
                 storedModifier.Add(0);
                 yield return null;
             }
