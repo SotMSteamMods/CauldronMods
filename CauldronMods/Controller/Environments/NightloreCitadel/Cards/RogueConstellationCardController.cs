@@ -12,6 +12,7 @@ namespace Cauldron.NightloreCitadel
     {
         public RogueConstellationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowVillainTargetWithHighestHP().Condition = () => !Card.IsInPlayAndHasGameText;
         }
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
