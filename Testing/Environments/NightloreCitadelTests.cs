@@ -730,5 +730,43 @@ namespace CauldronTests
             AssertInTrash(bridge);
         }
 
+        [Test()]
+        public void TestWatchedByTheStars_NoStarlightOfOros()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Luminary", "Cauldron.Starlight", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            //When this card enters play, it deals each villain target 2 radiant damage. 
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, luminary.CharacterCard, starlight.CharacterCard);
+            Card stars = PlayCard("WatchedByTheStars");
+            QuickHPCheck(-2, -2, 0, 0, 0, 0);
+            //At the end of the environment turn, destroy this card.
+            GoToPlayCardPhase(nightlore);
+            AssertInPlayArea(nightlore, stars);
+            GoToEndOfTurn(nightlore);
+            AssertInTrash(stars);
+        }
+
+        [Test()]
+        public void TestWatchedByTheStars_WithStarlightOfOros()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Luminary", "Cauldron.Starlight", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            Card turret = PlayCard("RegressionTurret");
+            PlayCard("StarlightOfOros");
+            //When this card enters play, it deals each villain target 2 radiant damage. 
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, luminary.CharacterCard, turret, starlight.CharacterCard);
+            Card stars = PlayCard("WatchedByTheStars");
+            QuickHPCheck(0, 0, -2, -2, -2, -2, -2);
+            //At the end of the environment turn, destroy this card.
+            GoToPlayCardPhase(nightlore);
+            AssertInPlayArea(nightlore, stars);
+            GoToEndOfTurn(nightlore);
+            AssertInTrash(stars);
+        }
+
     }
 }
