@@ -11,7 +11,15 @@
         "ShiftTrack3",
         "ShiftTrack4",
         "PastDriftCharacter",
-        "FutureDriftCharacter"
+        "FutureDriftCharacter",
+        "DualShiftTrack1",
+        "DualShiftTrack2",
+        "DualShiftTrack3",
+        "DualShiftTrack4",
+        "ThroughTheBreachShiftTrack1",
+        "ThroughTheBreachShiftTrack2",
+        "ThroughTheBreachShiftTrack3",
+        "ThroughTheBreachShiftTrack4"
     ],
     "cards": [
         {
@@ -622,6 +630,182 @@
                 "OutlanderCharacter": "Outlander placeholder"
             },
             "complexity": 3
+        },
+        {
+            "identifier": "DualShiftTrack1",
+            "sharedIdentifier": "ShiftTrack",
+            "promoIdentifier": "DualDriftCharacter",
+            "backgroundColor": "D1D2D4",
+            "count": 1,
+            "title": "Shift Track",
+            "isReal": false,
+            "setup": [
+                "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
+                "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
+                "The shift track works as normal; its rules are below."
+            ],
+            "gameplay": [
+                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
+                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
+                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
+                "Once per turn you may do the following in order:",
+                "1. Place your active character on your current shift track space.",
+                "2. Place the shift token on your inactive character's shift track space.",
+                "3. Switch which character is active.",
+                "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
+                "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
+            ]
+        },
+        {
+            "identifier": "DualShiftTrack2",
+            "sharedIdentifier": "ShiftTrack",
+            "promoIdentifier": "DualDriftCharacter",
+            "backgroundColor": "D1D2D4",
+            "count": 1,
+            "title": "Shift Track",
+            "isReal": false,
+            "setup": [
+                "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
+                "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
+                "The shift track works as normal; its rules are below."
+            ],
+            "gameplay": [
+                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
+                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
+                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
+                "Once per turn you may do the following in order:",
+                "1. Place your active character on your current shift track space.",
+                "2. Place the shift token on your inactive character's shift track space.",
+                "3. Switch which character is active.",
+                "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
+                "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
+            ]
+        },
+        {
+            "identifier": "DualShiftTrack3",
+            "sharedIdentifier": "ShiftTrack",
+            "promoIdentifier": "DualDriftCharacter",
+            "backgroundColor": "D1D2D4",
+            "count": 1,
+            "title": "Shift Track",
+            "isReal": false,
+            "setup": [
+                "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
+                "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
+                "The shift track works as normal; its rules are below."
+            ],
+            "gameplay": [
+                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
+                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
+                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
+                "Once per turn you may do the following in order:",
+                "1. Place your active character on your current shift track space.",
+                "2. Place the shift token on your inactive character's shift track space.",
+                "3. Switch which character is active.",
+                "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
+                "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
+            ]
+        },
+        {
+            "identifier": "DualShiftTrack4",
+            "sharedIdentifier": "ShiftTrack",
+            "promoIdentifier": "DualDriftCharacter",
+            "backgroundColor": "D1D2D4",
+            "count": 1,
+            "title": "Shift Track",
+            "isReal": false,
+            "setup": [
+                "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
+                "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
+                "The shift track works as normal; its rules are below."
+            ],
+            "gameplay": [
+                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
+                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
+                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
+                "Once per turn you may do the following in order:",
+                "1. Place your active character on your current shift track space.",
+                "2. Place the shift token on your inactive character's shift track space.",
+                "3. Switch which character is active.",
+                "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
+                "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
+            ]
+        },
+        {
+            "identifier": "ThroughTheBreachShiftTrack1",
+            "sharedIdentifier": "ShiftTrack",
+            "promoIdentifier": "ThroughTheBreachDriftCharacter",
+            "backgroundColor": "FCB040",
+            "count": 1,
+            "title": "Shift Track",
+            "isReal": false,
+            "setup": [
+                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+            ],
+            "gameplay": [
+                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
+                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
+                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
+                "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
+                "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
+            ]
+        },
+        {
+            "identifier": "ThroughTheBreachShiftTrack2",
+            "sharedIdentifier": "ShiftTrack",
+            "promoIdentifier": "ThroughTheBreachDriftCharacter",
+            "backgroundColor": "FCB040",
+            "count": 1,
+            "title": "Shift Track",
+            "isReal": false,
+            "setup": [
+                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+            ],
+            "gameplay": [
+                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
+                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
+                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
+                "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
+                "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
+            ]
+        },
+        {
+            "identifier": "ThroughTheBreachShiftTrack3",
+            "sharedIdentifier": "ShiftTrack",
+            "promoIdentifier": "ThroughTheBreachDriftCharacter",
+            "backgroundColor": "FCB040",
+            "count": 1,
+            "title": "Shift Track",
+            "isReal": false,
+            "setup": [
+                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+            ],
+            "gameplay": [
+                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
+                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
+                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
+                "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
+                "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
+            ]
+        },
+        {
+            "identifier": "ThroughTheBreachShiftTrack4",
+            "sharedIdentifier": "ShiftTrack",
+            "promoIdentifier": "ThroughTheBreachDriftCharacter",
+            "backgroundColor": "FCB040",
+            "count": 1,
+            "title": "Shift Track",
+            "isReal": false,
+            "setup": [
+                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+            ],
+            "gameplay": [
+                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
+                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
+                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
+                "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
+                "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
+            ]
         }
     ],
     "promoCards": [
@@ -667,25 +851,6 @@
             "complexity": 3
         },
         {
-            "identifier": "ShiftTrack1",
-            "sharedIdentifier": "ShiftTrack",
-            "promoIdentifier": "ThroughTheBreachDriftCharacter",
-            "backgroundColor": "FCB040",
-            "count": 1,
-            "title": "Shift Track",
-            "isReal": false,
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
-                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
-                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
-                "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
-                "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
-            ]
-        },
-        {
             "identifier": "DriftCharacter",
             "promoIdentifier": "DualDriftCharacter",
             "count": 1,
@@ -704,31 +869,6 @@
                 "OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger."
             },
             "complexity": 3
-        },
-        {
-            "identifier": "ShiftTrack1",
-            "sharedIdentifier": "ShiftTrack",
-            "promoIdentifier": "DualDriftCharacter",
-            "backgroundColor": "D1D2D4",
-            "count": 1,
-            "title": "Shift Track",
-            "isReal": false,
-            "setup": [
-                "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
-                "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
-                "The shift track works as normal; its rules are below."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {DriftL} or {DriftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {DriftL} or {DriftR}.",
-                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
-                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
-                "Once per turn you may do the following in order:",
-                "1. Place your active character on your current shift track space.",
-                "2. Place the shift token on your inactive character's shift track space.",
-                "3. Switch which character is active.",
-                "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
-                "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
-            ]
         },
         {
             "identifier": "DriftCharacter",
