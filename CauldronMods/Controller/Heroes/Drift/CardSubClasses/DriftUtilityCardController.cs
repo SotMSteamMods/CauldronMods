@@ -15,8 +15,13 @@ namespace Cauldron.Drift
 
         }
 
+        protected const string Base = "Base";
+        protected const string Dual = "Dual";
+        protected const string ThroughTheBreach = "ThroughTheBreach";
+
         protected const string Past = "Past";
         protected const string Future = "Future";
+
         protected const string HasShifted = "HasShifted";
         protected const string ShiftTrack = "ShiftTrack";
         private int totalShifts = 0;
@@ -77,7 +82,7 @@ namespace Cauldron.Drift
                 }
 
                 //Switch to the new card
-                coroutine = base.GameController.SwitchCards(this.GetShiftTrack(), base.FindCard(ShiftTrack + this.CurrentShiftPosition(), false));
+                coroutine = this.SwitchTrack();
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -158,7 +163,7 @@ namespace Cauldron.Drift
                 }
 
                 //Switch to the new card
-                coroutine = base.GameController.SwitchCards(this.GetShiftTrack(), base.FindCard(ShiftTrack + this.CurrentShiftPosition(), false));
+                coroutine = this.SwitchTrack();
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -220,6 +225,28 @@ namespace Cauldron.Drift
                 base.GameController.ExhaustCoroutine(coroutine3);
             }
             yield break;
+        }
+
+        private IEnumerator SwitchTrack()
+        {
+            string promoIdentifier = Base;
+            if (base.CharacterCardController is DualDriftCharacterCardController)
+            {
+                promoIdentifier = Dual;
+            }
+            else if (base.CharacterCardController is ThroughTheBreachDriftCharacterCardController)
+            {
+                promoIdentifier = ThroughTheBreach;
+            }
+            IEnumerator coroutine = base.GameController.SwitchCards(this.GetShiftTrack(), base.FindCard(promoIdentifier + ShiftTrack + this.CurrentShiftPosition(), false));
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
     }
 }
