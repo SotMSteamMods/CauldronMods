@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -12,6 +11,25 @@ namespace Cauldron.NightloreCitadel
     {
         public GravityFluctuationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => BuildHeroesWithMoreThan3CardsInHandString());
+        }
+
+        private string BuildHeroesWithMoreThan3CardsInHandString()
+        {
+            IEnumerable<TurnTaker> source = FindTurnTakersWhere(tt => tt.IsHero && tt.ToHero().NumberOfCardsInHand > 3);
+            int num = source.Count();
+            string heroSpecial = "";
+            if (num > 0)
+            {
+                heroSpecial += "There " + num + " heroes with more than 3 cards in hand: ";
+                heroSpecial += String.Join(", ", source.Select(tt => tt.Name).ToArray());
+            } else
+            {
+                heroSpecial += "There are no heroes with more than 3 cards in hand.";
+            }
+
+            return heroSpecial;
+
         }
 
         public override void AddTriggers()
