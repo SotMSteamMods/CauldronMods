@@ -163,5 +163,34 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestCrackedWaterMain()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card responder1 = PlayCard("DetectiveSedrick");
+            Card responder2 = PlayCard("IntrepidReporter");
+            SetHitPoints(responder1, 4);
+
+            GoToPlayCardPhase(windmill);
+            //When this card enters play, it deals 1 Responder 2 melee damage.
+            DecisionSelectTarget = responder1;
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, responder1, responder2);
+            Card waterMain = PlayCard("CrackedWaterMain");
+            QuickHPCheck(0, 0, 0, 0, -2, 0);
+
+            //villains have damage reduced
+            QuickHPStorage(ra);
+            DealDamage(baron, ra, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            //heroes have damage reduced
+            QuickHPUpdate();
+            DealDamage(haka, ra, 2, DamageType.Melee);
+            QuickHPCheck(-1);
+
+        }
+
     }
 }
