@@ -919,5 +919,28 @@ namespace CauldronTests
             DealDamage(haka, haka, 3, DamageType.Melee);
             QuickHPCheck(-3);
         }
+
+        [Test]
+        public void TestOutOfSync()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard(OutOfSync);
+
+            //{DriftPast} Reduce damage dealt to {Drift} by 1.
+            QuickHPStorage(drift, apostate);
+            DealDamage(apostate, drift, 2, DamageType.Melee);
+            DealDamage(drift, apostate, 2, DamageType.Melee);
+            QuickHPCheck(-1, -2);
+
+            GoToShiftPosition(3);
+            //{DriftFuture} Increase damage dealt by {Drift} to other targets by 1.
+            QuickHPStorage(drift, apostate);
+            DealDamage(apostate, drift, 2, DamageType.Melee);
+            DealDamage(drift, apostate, 2, DamageType.Melee);
+            DealDamage(drift, drift, 2, DamageType.Melee);
+            QuickHPCheck(-4, -3);
+        }
     }
 }
