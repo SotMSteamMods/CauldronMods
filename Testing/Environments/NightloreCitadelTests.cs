@@ -580,6 +580,38 @@ namespace CauldronTests
             AssertUnderCard(cannon, top);
         }
 
+        [Test()]
+        public void TestTalinBrosk()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Starlight", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            GoToPlayCardPhase(nightlore);
+            PlayCard("TalinBrosk");
+            //At the end of the environment turn, this card deals 1 other target 3 sonic damage.
+            //Increase damage dealt by a target damaged this way by 1 until the start of the next environment turn.
+            DecisionSelectTarget = haka.CharacterCard;
+            QuickHPStorage(baron, ra, legacy, haka, starlight);
+            GoToEndOfTurn(nightlore);
+            QuickHPCheck(0, 0, 0, -3, 0);
+
+            //check for increase
+            QuickHPStorage(baron);
+            DealDamage(haka, baron, 3, DamageType.Melee);
+            QuickHPCheck(-4);
+
+            //only haka
+            QuickHPUpdate();
+            DealDamage(ra, baron, 3, DamageType.Fire);
+            QuickHPCheck(-3);
+
+            //expires at start of next turn
+            GoToStartOfTurn(nightlore);
+            QuickHPUpdate();
+            DealDamage(haka, baron, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+        }
+
 
     }
 }
