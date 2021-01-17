@@ -18,7 +18,52 @@ namespace Cauldron.Drift
         public override IEnumerator UsePower(int index = 0)
         {
             //Play an ongoing card. At the end of your next turn, return it from play to your hand. Shift {DriftRR}.
-            IEnumerator coroutine;
+            List<PlayCardAction> playAction = new List<PlayCardAction>();
+            IEnumerator coroutine = base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, playAction, new LinqCardCriteria((Card c) => c.IsOngoing));
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            OnPhaseChangeStatusEffect statusEffect = new OnPhaseChangeStatusEffect(this.Card, nameof(this.EndOfTurnResponse), "At the end of your next turn, return it from play to your hand. Shift {DriftRR}", new TriggerType[] { TriggerType.MoveCard, TriggerType.AddTokensToPool }, this.Card);
+            statusEffect.NumberOfUses = 1;
+            statusEffect.BeforeOrAfter = BeforeOrAfter.Before;
+            statusEffect.TurnPhaseCriteria.Phase = Phase.End;
+            statusEffect.TurnPhaseCriteria.TurnTaker = base.TurnTaker;
+            statusEffect.TurnIndexCriteria.GreaterThan = base.Game.TurnIndex;
+            statusEffect.CardMovedExpiryCriteria.Card = playAction.FirstOrDefault().CardToPlay;
+
+            coroutine = base.AddStatusEffect(statusEffect);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        private IEnumerator EndOfTurnResponse(PhaseChangeAction action, OnPhaseChangeStatusEffect effect)
+        {
+            //...return it from play to your hand.
+            IEnumerator coroutine = base.GameController.MoveCard(base.TurnTakerController, effect.CardMovedExpiryCriteria.Card, base.TurnTaker.ToHero().Hand, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //Shift {DriftRR}.
+            coroutine = base.ShiftRR();
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
