@@ -967,5 +967,52 @@ namespace CauldronTests
             AssertTrackPosition(1);
             AssertIsInPlay(sync);
         }
+
+        [Test, Sequential]
+        public void TestResourcefulDaydreamer([Values(1, 3)] int shiftPosition)
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            GoToShiftPosition(shiftPosition);
+            SetHitPoints(drift, 17);
+            GoToStartOfTurn(drift);
+
+            Card discard = drift.TurnTaker.ToHero().Hand.TopCard;
+            Card resourceful = PutInHand(ResourcefulDaydreamer);
+            Card sync = PutInHand(OutOfSync);
+            DecisionSelectCards = new Card[] { discard, sync };
+            DecisionYesNo = true;
+
+            QuickHPStorage(drift);
+            QuickHandStorage(drift);
+            PlayCard(resourceful);
+            //Draw 2 cards. Discard a card.
+
+            //Draw 2, Discard 1, Play 1 
+            int handChange = 0;
+            int hpChange = 0;
+
+            //Past
+            if (shiftPosition == 1)
+            {
+                //if in Past play another
+                handChange = -1;
+                //{DriftPast} You may play a card.
+                AssertIsInPlay(sync);
+            }
+            //Future
+            if (shiftPosition == 3)
+            {
+                //{DriftFuture} You may use a power.
+                //Drift's only power heals for 1
+                hpChange = 1;
+                //If it's not played then it is in hand
+                AssertInHand(sync);
+            }
+
+            QuickHandCheck(handChange);
+            QuickHPCheck(hpChange);
+        }
     }
 }

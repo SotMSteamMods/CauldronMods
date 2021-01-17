@@ -42,7 +42,7 @@ namespace Cauldron.Drift
             //{DriftPast} You may play a card.
             if (base.IsTimeMatching(Past))
             {
-                base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -56,7 +56,7 @@ namespace Cauldron.Drift
             //{DriftFuture} You may use a power.
             if (base.IsTimeMatching(Future))
             {
-                base.GameController.SelectAndUsePower(base.HeroTurnTakerController, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectAndUsePower(base.HeroTurnTakerController, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
