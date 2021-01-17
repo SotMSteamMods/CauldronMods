@@ -13,5 +13,15 @@ namespace Cauldron.Gyrosaur
         public WreckingBallCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override IEnumerator Play()
+        {
+            //"When this card enters play, {Gyrosaur} deals each target 1 melee damage.",
+            yield break;
+        }
+        public override void AddTriggers()
+        {
+            //"Increase damage dealt to environment targets by 1."
+        }
     }
 }

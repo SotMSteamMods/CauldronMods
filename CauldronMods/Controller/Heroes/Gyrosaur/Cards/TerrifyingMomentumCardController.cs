@@ -13,5 +13,13 @@ namespace Cauldron.Gyrosaur
         public TerrifyingMomentumCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override IEnumerator Play()
+        {
+            //"{Gyrosaur} deals 1 target X+2 melee damage, where X is the number of Crash cards in your hand.",
+            //"If X is more than 4, redirect this damage to the non-hero target with the lowest HP.",
+            //"Draw a card."
+            yield break;
+        }
     }
 }

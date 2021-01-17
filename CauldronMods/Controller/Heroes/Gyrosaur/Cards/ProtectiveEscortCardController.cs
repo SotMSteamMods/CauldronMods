@@ -13,5 +13,12 @@ namespace Cauldron.Gyrosaur
         public ProtectiveEscortCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override IEnumerator Play()
+        {
+            //"Draw 2 cards.",
+            //"Select a target and a damage type. That target is immune to that damage type until the start of your next turn."
+            yield break;
+        }
     }
 }

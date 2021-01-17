@@ -13,5 +13,12 @@ namespace Cauldron.Gyrosaur
         public SphereOfDevastationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override IEnumerator Play()
+        {
+            //"Discard all Crash cards in your hand. {Gyrosaur} deals 1 target X+4 melee damage, where X is 4 times the number of cards discarded this way.",
+            //"If {Gyrosaur} dealt more than 10 damage this way, destroy all environment cards and each other player discards a card."
+            yield break;
+        }
     }
 }

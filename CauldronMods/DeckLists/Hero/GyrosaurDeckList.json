@@ -156,11 +156,10 @@
             "flavorQuotes": [
                 {
                     "identifier": "Gargoyle",
-                    "text": "Gargoyle, This. This is why I work alone."
+                    "text": "This. This is why I work alone."
                 }
             ],
-            "flavorReference": "Shellshocked",
-            "hitpoints": 2
+            "flavorReference": "Gargoyle, Shellshocked"
         },
         {
             "identifier": "Omnivore",
@@ -266,6 +265,8 @@
                 "ongoing"
             ],
             "icons": [
+                "Manipulate",
+                "HasPower",
                 "IncreaseDamageDealt"
             ],
             "body": "At the start of your turn, reveal the top card of your deck and replace or discard it.",
@@ -289,8 +290,8 @@
                 "limited"
             ],
             "icons": [
-                "HasPower",
                 "UsePowerNow",
+                "HasPower",
                 "DealDamageMelee"
             ],
             "body": "During your turn, the first time you have more than 3 Crash cards in your hand, immediately use this card's power and then destroy it.",
@@ -356,8 +357,7 @@
                     "text": "Some damage!"
                 }
             ],
-            "flavorReference": "Adrift One-Shot",
-            "hitpoints": 2
+            "flavorReference": "Adrift One-Shot"
         },
         {
             "identifier": "TerrifyingMomentum",
@@ -384,7 +384,6 @@
                 }
             ],
             "flavorReference": "Gyrosaur, Crash #14",
-            "hitpoints": 2
         },
         {
             "identifier": "Wipeout",
@@ -407,7 +406,6 @@
                 }
             ],
             "flavorReference": "Gyrosaur, Eclipse #6",
-            "hitpoints": 4
         },
         {
             "identifier": "WreckingBall",
@@ -432,7 +430,6 @@
                 }
             ],
             "flavorReference": "Gyrosaur, Starlight #21",
-            "hitpoints": 2
         }
     ],
     "notPromoCards": [
@@ -449,7 +446,7 @@
             "hitpointColor": "AD97AD",
             "character": true,
             "powers": [
-                "If at least half of the cards in your hand are carsh cards. Draw a card. If not, play a card."
+                "If at least half of the cards in your hand are crash cards, draw a card. If not, play a card."
             ],
             "icons": [
                 "HasPower",
@@ -489,7 +486,7 @@
             "hitpointColor": "EC99C1",
             "character": true,
             "powers": [
-                "Discard a card, if it was a crash card, {Gyrosaur} regains 2 HP. Otherwise, she deals 1 target 2 melee damage. Draw a card."
+                "Discard a card. If it was a crash card, {Gyrosaur} regains 2 HP. Otherwise, she deals 1 target 2 melee damage. Draw a card."
             ],
             "icons": [
                 "HasPower",
@@ -545,7 +542,7 @@
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
                 "One hero may use a power now.",
-                "Select a target. In crease the next damage dealt to it by 2."
+                "Select a target. Increase the next damage dealt to it by 2."
             ],
             "flippedIcons": [
                 "DrawCardNow",

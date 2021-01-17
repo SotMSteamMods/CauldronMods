@@ -13,5 +13,10 @@ namespace Cauldron.Gyrosaur
         public OnARollCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override void AddTriggers()
+        {
+            //"At the end of your turn, draw a card. Then if you have at least 2 Crash cards in your hand, {Gyrosaur} deals each non-hero target 1 melee damage and this card is destroyed."
+        }
     }
 }

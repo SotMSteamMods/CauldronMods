@@ -8,14 +8,14 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Gyrosaur
 {
-    public class GyrosaurCharacterCardController : GyrosaurUtilityCharacterCardController
+    public class CaptainGyrosaurCharacterCardController : GyrosaurUtilityCharacterCardController
     {
-        public GyrosaurCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public CaptainGyrosaurCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
         public override IEnumerator UsePower(int index = 0)
         {
-            //"If you have at least 2 crash cards in your had, {Gyrosaur} deals up to 3 targets 1 melee damage each. If not, draw a card."
+            //"Put the top card of your deck beneath {Gyrosaur}, face up. When she deals damage, play or draw it."
             yield break;
         }
 
@@ -31,12 +31,12 @@ namespace Cauldron.Gyrosaur
                     }
                 case 1:
                     {
-                        //"One target with more than 10 HP deals itself 3 melee damage.",
+                        //"One hero may use a power now.",
                         break;
                     }
                 case 2:
                     {
-                        //"Select a non-character target. Increase damage dealt to that target by 1 until the start of your turn."
+                        //"Select a target. Increase the next damage dealt to it by 2."
                         break;
                     }
             }
