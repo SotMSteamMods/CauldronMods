@@ -211,7 +211,7 @@ namespace CauldronTests
         public void TestShiftTrackSetup()
         {
             SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
-            Card track = FindCardsWhere((Card c) => c.Identifier == ShiftTrack + 1, false).FirstOrDefault();
+            Card track = FindCardsWhere((Card c) => c.Identifier == "Base" + ShiftTrack + 1, false).FirstOrDefault();
             DecisionSelectCard = track;
             StartGame();
 
