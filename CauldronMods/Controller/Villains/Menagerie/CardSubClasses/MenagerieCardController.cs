@@ -9,7 +9,6 @@ namespace Cauldron.Menagerie
     {
         protected MenagerieCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.Card.UnderLocation.OverrideIsInPlay = AreCardsUnderNonEnclosuresInPlay;
         }
 
         private bool? AreCardsUnderNonEnclosuresInPlay
@@ -22,6 +21,12 @@ namespace Cauldron.Menagerie
                 }
                 return null;
             }
+        }
+
+        public override void AddTriggers()
+        {
+            base.Card.UnderLocation.OverrideIsInPlay = AreCardsUnderNonEnclosuresInPlay;
+
         }
 
         public bool IsCaptured(TurnTaker tt)
