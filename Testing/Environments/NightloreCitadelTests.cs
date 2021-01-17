@@ -651,5 +651,84 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestWarpBridge_NoRogueConstellation()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Luminary", "Cauldron.Starlight", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card turret = PlayCard("RegressionTurret");
+            PlayCard("FlameBarrier");
+            StackDeckAfterShuffle(luminary, new string[] { "BacklashGenerator" });
+            //At the end of the environment turn, select 1 non-character card in play other than this one and shuffle it back into its associated deck.
+            //If a card leaves play this way, play the top card of the associated deck. 
+            GoToPlayCardPhase(nightlore);
+            Card bridge = PlayCard("WarpBridge");
+            DecisionSelectCard = turret;
+            QuickShuffleStorage(luminary.TurnTaker.Deck);
+            GoToEndOfTurn(nightlore);
+            AssertInDeck(turret);
+            QuickShuffleCheck(1);
+            AssertIsInPlay("BacklashGenerator");
+            AssertIsInPlay(bridge);
+
+
+        }
+
+        [Test()]
+        public void TestWarpBridge_NoRogueConstellation_IndestructibleCard()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Ra", "Legacy", "Luminary", "Cauldron.Starlight", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card turret = PlayCard("RegressionTurret");
+            Card wall = PlayCard("ReinforcedWall");
+            PlayCard("FlameBarrier");
+            //At the end of the environment turn, select 1 non-character card in play other than this one and shuffle it back into its associated deck.
+            //If a card leaves play this way, play the top card of the associated deck. 
+            GoToPlayCardPhase(nightlore);
+            Card bridge = PlayCard("WarpBridge");
+            DecisionSelectCard = wall;
+            QuickShuffleStorage(phase.TurnTaker.Deck);
+            int numCardsInPlay = GetNumberOfCardsInPlay(phase);
+
+            GoToEndOfTurn(nightlore);
+            AssertInPlayArea(phase, wall);
+            QuickShuffleCheck(0);
+            AssertNumberOfCardsInPlay(phase, numCardsInPlay);
+            AssertIsInPlay(bridge);
+
+        }
+
+        [Test()]
+        public void TestWarpBridge_WithRogueConstellation()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Luminary", "Cauldron.Starlight", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card rogue = PutInTrash("RogueConstellation");
+            Card bridge = PutInTrash("WarpBridge");
+            Card turret = PlayCard("RegressionTurret");
+            PlayCard("FlameBarrier");
+            StackDeckAfterShuffle(luminary, new string[] { "BacklashGenerator" });
+            Card top = nightlore.TurnTaker.Deck.TopCard;
+            PlayCard(rogue);
+
+            //At the end of the environment turn, select 1 non-character card in play other than this one and shuffle it back into its associated deck.
+            //If a card leaves play this way, play the top card of the associated deck. 
+            //Then, if Rogue Constellation is in play, destroy this card.
+
+            GoToPlayCardPhase(nightlore);
+            PlayCard(bridge);
+            DecisionSelectCard = turret;
+            QuickShuffleStorage(luminary.TurnTaker.Deck);
+            PreventEndOfTurnEffects(ra, top);
+            GoToEndOfTurn(nightlore);
+            AssertInDeck(turret);
+            QuickShuffleCheck(1);
+            AssertIsInPlay("BacklashGenerator");
+            AssertInTrash(bridge);
+        }
+
     }
 }

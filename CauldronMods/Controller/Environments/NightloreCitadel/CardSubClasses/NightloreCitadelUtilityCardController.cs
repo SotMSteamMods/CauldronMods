@@ -17,6 +17,7 @@ namespace Cauldron.NightloreCitadel
         public static readonly string ConstellationKeyword = "constellation";
         public static readonly string StarlightOfOrosIdentifier = "StarlightOfOros";
         public static readonly string AethiumCannonIdentifier = "AethiumCannon";
+        public static readonly string RogueConstellationIdentifier = "RogueConstellation";
 
         protected bool IsConstellation(Card card)
         {
@@ -49,5 +50,20 @@ namespace Cauldron.NightloreCitadel
         {
             return FindAethiumCannon().Where(c => c.IsInPlayAndHasGameText).Any();
         }
+
+        private IEnumerable<Card> FindRogueConstellation()
+        {
+            return base.FindCardsWhere(c => c.Identifier == RogueConstellationIdentifier);
+        }
+        protected Card FindRogueConstellationInPlay()
+        {
+            return FindRogueConstellation().Where(c => c.IsInPlayAndHasGameText).FirstOrDefault();
+        }
+
+        protected bool IsRogueConstellationInPlay()
+        {
+            return FindRogueConstellation().Where(c => c.IsInPlayAndHasGameText).Any();
+        }
+
     }
 }
