@@ -12,6 +12,7 @@ namespace Cauldron.NightloreCitadel
     {
         public AssembleTheCouncilCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria(c => TurnTaker.Deck.HasCard(c) && c.IsTarget, "", useCardsSuffix: false, singular: "target in the environment deck", plural: "targets in the environment deck"));
         }
 
         public override IEnumerator Play()

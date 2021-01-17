@@ -12,7 +12,7 @@ namespace Cauldron.NightloreCitadel
     {
         public WarpBridgeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria(c => c.IsInPlayAndHasGameText && !c.IsCharacter && c != Card && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "non-character"));
+            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria(c => c.IsInPlayAndHasGameText && !c.IsCharacter && c != Card && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "", useCardsSuffix: false, singular: "non-character card in play", plural: "non-character cards in play"));
         }
 
         public override void AddTriggers()
@@ -33,7 +33,10 @@ namespace Cauldron.NightloreCitadel
         {
             //select 1 non-character card in play other than this one
             List<SelectCardDecision> storedDecision = new List<SelectCardDecision>() ;
-            IEnumerator coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.ShuffleCardIntoDeck, new LinqCardCriteria(c => c != Card && c.IsInPlayAndHasGameText && !c.IsCharacter && GameController.IsCardVisibleToCardSource(c, GetCardSource())), storedDecision, false, cardSource: GetCardSource());
+            IEnumerable<Card> cardList = from c in this.FindCardsWhere((Card c) => c != Card && c.IsInPlayAndHasGameText && !c.IsCharacter && GameController.IsCardVisibleToCardSource(c, GetCardSource()))
+                                         orderby c.Owner.Name
+                                         select c;
+            IEnumerator coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.ShuffleCardIntoDeck, cardList, storedDecision, false, maintainCardOrder: true, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
             {

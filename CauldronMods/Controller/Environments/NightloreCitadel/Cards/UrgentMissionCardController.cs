@@ -52,6 +52,15 @@ namespace Cauldron.NightloreCitadel
             if(GetCardThisCardIsNextTo() != null && GetCardThisCardIsNextTo().IsInPlayAndHasGameText)
             {
                 HeroTurnTakerController httc = FindHeroTurnTakerController(GetCardThisCardIsNextTo().Owner.ToHero());
+                coroutine = GameController.SendMessageAction($"{Card.Title} causes {httc.Name} to draw 2 cards.", Priority.Medium, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
                 coroutine = DrawCards(httc, 2);
                 if (base.UseUnityCoroutines)
                 {
