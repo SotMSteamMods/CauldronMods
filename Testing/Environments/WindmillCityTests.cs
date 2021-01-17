@@ -215,5 +215,40 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestInjuredWorker()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card responder1 = PlayCard("DetectiveSedrick");
+            Card responder2 = PlayCard("IntrepidReporter");
+            SetHitPoints(responder1, 4);
+
+            GoToPlayCardPhase(windmill);
+            //When this card enters play, it deals the Responder wth the lowest HP 2 melee damage. 
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, responder1, responder2);
+            Card worker = PlayCard("InjuredWorker");
+            QuickHPCheck(0, 0, 0, 0, -2, 0);
+            //Then move this card next to the hero with the highest HP.           
+            AssertNextToCard(worker, haka.CharacterCard);
+
+            //Increase the first damage dealt to that hero each turn by 1.
+            QuickHPStorage(haka);
+            DealDamage(baron, haka, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            //only first damage
+            QuickHPUpdate();
+            DealDamage(baron, haka, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //resets next turn
+            GoToNextTurn();
+            QuickHPUpdate();
+            DealDamage(baron, haka, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+        }
+
     }
 }
