@@ -1014,5 +1014,93 @@ namespace CauldronTests
             QuickHandCheck(handChange);
             QuickHPCheck(hpChange);
         }
+
+        [Test]
+        public void TestSabershard_Past()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card saber = PlayCard(Sabershard);
+
+            QuickHPStorage(apostate);
+            QuickHandStorage(drift);
+            int trackPosition = CurrentShiftPosition();
+
+            UsePower(saber);
+
+            //{DriftPast} Draw a card. Shift {DriftR}.
+            //{DriftFuture} {Drift} 1 target 2 radiant damage. Shift {DriftL}.
+            QuickHandCheck(1);
+            AssertTrackPosition(trackPosition + 1);
+            QuickHPCheck(0);
+        }
+
+        [Test]
+        public void TestSabershard_Future()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            GoToShiftPosition(4);
+            Card saber = PlayCard(Sabershard);
+
+            QuickHPStorage(apostate);
+            QuickHandStorage(drift);
+            int trackPosition = CurrentShiftPosition();
+
+            UsePower(saber);
+
+            //{DriftPast} Draw a card. Shift {DriftR}.
+            //{DriftFuture} {Drift} 1 target 2 radiant damage. Shift {DriftL}.
+            QuickHandCheck(0);
+            AssertTrackPosition(trackPosition - 1);
+            QuickHPCheck(-2);
+        }
+
+        [Test]
+        public void TestThrowingShard_Past()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(apostate, 17);
+
+            Card shard = PlayCard(ThrowingShard);
+            Card traffic = PlayCard("TrafficPileup");
+
+            QuickHPStorage(apostate.CharacterCard, traffic);
+            int trackPosition = CurrentShiftPosition();
+
+            UsePower(shard);
+
+            //{DriftPast} 1 target regains 2 HP. Shift {DriftRR}.
+            //{DriftFuture} {Drift} deals each non-hero target 1 radiant damage. Shift {DriftLL}.
+            QuickHPCheck(1, -1);
+            AssertTrackPosition(trackPosition);
+        }
+
+        [Test]
+        public void TestThrowingShard_Future()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            GoToShiftPosition(4);
+            SetHitPoints(apostate, 17);
+
+            Card shard = PlayCard(ThrowingShard);
+            Card traffic = PlayCard("TrafficPileup");
+
+            QuickHPStorage(apostate.CharacterCard, traffic);
+            int trackPosition = CurrentShiftPosition();
+
+            UsePower(shard);
+
+            //{DriftPast} 1 target regains 2 HP. Shift {DriftRR}.
+            //{DriftFuture} {Drift} deals each non-hero target 1 radiant damage. Shift {DriftLL}.
+            QuickHPCheck(-1, -1);
+            AssertTrackPosition(trackPosition - 2);
+        }
     }
 }

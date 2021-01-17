@@ -47,7 +47,7 @@ namespace Cauldron.Drift
             }
 
             //{DriftFuture} 
-            if (base.IsTimeMatching(Past))
+            if (base.IsTimeMatching(Future))
             {
                 int damageNumeral = base.GetPowerNumeral(2, 1);
                 //{Drift} deals each non-hero target 1 radiant damage. 
