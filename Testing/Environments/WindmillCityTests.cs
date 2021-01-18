@@ -254,6 +254,39 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestFrameJob()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card responder = PutOnDeck("DetectiveSedrick");
+            Card frameJob = GetCard("FrameJob");
+            IEnumerable<Card> nonResponders = FindCardsWhere(c => windmill.TurnTaker.Deck.HasCard(c) && !IsResponder(c) && c != frameJob).Take(4);
+            PutOnDeck(windmill, nonResponders);
+            //When this card enters play, reveal cards from the top of the environment deck until a Responder is revealed, put it into play, and discard the other revealed cards.
+            PlayCard(frameJob);
+            AssertInPlayArea(windmill, responder);
+            AssertInTrash(nonResponders);
+            AssertNumberOfCardsInRevealed(windmill, 0);
+
+            //Redirect all damage dealt by Responders to the hero target with the highest HP.
+            QuickHPStorage(baron, ra, legacy, haka);
+            DealDamage(responder, baron, 5, DamageType.Projectile);
+            QuickHPCheck(0, 0, -5, 0);
+
+            //At the start of the environment turn, destroy this card.
+            GoToStartOfTurn(windmill);
+            AssertInTrash(frameJob);
+
+            //check redirection is gone
+            QuickHPUpdate();
+            DealDamage(responder, baron, 5, DamageType.Projectile);
+            QuickHPCheck(-5, 0, 0, 0);
+        }
+
+
+
+        [Test()]
         public void TestInjuredWorker()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
