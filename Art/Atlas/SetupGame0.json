@@ -198,6 +198,15 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"DualDriftCharacter.png":
+{
+	"frame": {"x":1432,"y":1295,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "DynamoCharacter.png":
 {
 	"frame": {"x":0,"y":259,"w":176,"h":256},
@@ -560,7 +569,7 @@
 },
 "NightloreCouncilStarlightCharacter.png":
 {
-	"frame": {"x":1611,"y":1295,"w":178,"h":256},
+	"frame": {"x":1613,"y":1295,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
@@ -772,15 +781,6 @@
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256},
-	"pivot": {"x":0.5,"y":0.5}
-},
-"SplitDriftCharacter.png":
-{
-	"frame": {"x":1792,"y":1295,"w":178,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
-	"sourceSize": {"w":178,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "StarlightCharacter.jpg":
@@ -1055,16 +1055,16 @@
 },
 "WastelandRoninTheKnightCharacter.png":
 {
-	"frame": {"x":895,"y":1295,"w":176,"h":256},
+	"frame": {"x":1794,"y":1295,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256},
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "WastelandRoninTheStrangerCharacter.png":
 {
-	"frame": {"x":1074,"y":1295,"w":176,"h":256},
+	"frame": {"x":895,"y":1295,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -1073,7 +1073,7 @@
 },
 "WindcolorDendronCharacter.jpg":
 {
-	"frame": {"x":1253,"y":1295,"w":176,"h":256},
+	"frame": {"x":1074,"y":1295,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -1082,7 +1082,7 @@
 },
 "WindmillCityDeckBack.png":
 {
-	"frame": {"x":1432,"y":1295,"w":176,"h":256},
+	"frame": {"x":1253,"y":1295,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
@@ -1091,7 +1091,7 @@
 },
 "WinterTiamatCharacter.png":
 {
-	"frame": {"x":1973,"y":1295,"w":178,"h":256},
+	"frame": {"x":1975,"y":1295,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
@@ -1105,6 +1105,6 @@
 	"format": "RGBA8888",
 	"size": {"w":4096,"h":4096},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:8c46ae25e5563723a3f3218c6d40a8fd:7ca821c9a831a057512dd24631d30a9f:4ee285c32a91b7652e02ac049f918b2a$"
+	"smartupdate": "$TexturePacker:SmartUpdate:12ff7f8abd9a2b069509fa5a6e33b17e:8d2496c01750340864e9774eb6e1a6b3:4ee285c32a91b7652e02ac049f918b2a$"
 }
 }

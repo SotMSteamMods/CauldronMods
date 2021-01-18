@@ -634,7 +634,6 @@
         {
             "identifier": "DualShiftTrack1",
             "sharedIdentifier": "ShiftTrack",
-            "promoIdentifier": "DualDriftCharacter",
             "backgroundColor": "D1D2D4",
             "count": 1,
             "title": "Shift Track",
@@ -660,7 +659,6 @@
         {
             "identifier": "DualShiftTrack2",
             "sharedIdentifier": "ShiftTrack",
-            "promoIdentifier": "DualDriftCharacter",
             "backgroundColor": "D1D2D4",
             "count": 1,
             "title": "Shift Track",
@@ -686,7 +684,6 @@
         {
             "identifier": "DualShiftTrack3",
             "sharedIdentifier": "ShiftTrack",
-            "promoIdentifier": "DualDriftCharacter",
             "backgroundColor": "D1D2D4",
             "count": 1,
             "title": "Shift Track",
@@ -712,7 +709,6 @@
         {
             "identifier": "DualShiftTrack4",
             "sharedIdentifier": "ShiftTrack",
-            "promoIdentifier": "DualDriftCharacter",
             "backgroundColor": "D1D2D4",
             "count": 1,
             "title": "Shift Track",
@@ -738,7 +734,6 @@
         {
             "identifier": "ThroughTheBreachShiftTrack1",
             "sharedIdentifier": "ShiftTrack",
-            "promoIdentifier": "ThroughTheBreachDriftCharacter",
             "backgroundColor": "FCB040",
             "count": 1,
             "title": "Shift Track",
@@ -758,7 +753,6 @@
         {
             "identifier": "ThroughTheBreachShiftTrack2",
             "sharedIdentifier": "ShiftTrack",
-            "promoIdentifier": "ThroughTheBreachDriftCharacter",
             "backgroundColor": "FCB040",
             "count": 1,
             "title": "Shift Track",
@@ -778,7 +772,6 @@
         {
             "identifier": "ThroughTheBreachShiftTrack3",
             "sharedIdentifier": "ShiftTrack",
-            "promoIdentifier": "ThroughTheBreachDriftCharacter",
             "backgroundColor": "FCB040",
             "count": 1,
             "title": "Shift Track",
@@ -798,7 +791,6 @@
         {
             "identifier": "ThroughTheBreachShiftTrack4",
             "sharedIdentifier": "ShiftTrack",
-            "promoIdentifier": "ThroughTheBreachDriftCharacter",
             "backgroundColor": "FCB040",
             "count": 1,
             "title": "Shift Track",
