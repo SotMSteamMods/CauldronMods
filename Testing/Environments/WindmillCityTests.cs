@@ -500,6 +500,30 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestSaveTheDay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Fanatic", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            Card responder = PutOnDeck("DetectiveSedrick");
+            //When this card enters play, play the top card of the environment deck.
+            Card saveDay = PlayCard("SaveTheDay");
+            AssertInPlayArea(windmill, responder);
+            SetHitPoints(responder, 3);
+            SetHitPoints(battalion, 3);
+
+            //Whenever a hero card destroys a villain target, 1 Responder regains 1HP.
+            DecisionSelectCards = new Card[] { battalion, baron.CharacterCard };
+            QuickHPStorage(responder);
+            PlayCard("FinalDive");
+            QuickHPCheck(1);
+            
+
+
+        }
+
+        [Test()]
         public void TestWCPDSquad()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
