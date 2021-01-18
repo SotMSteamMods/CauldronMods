@@ -14,6 +14,7 @@ namespace CauldronTests
     class GyrosaurTests : CauldronBaseTest
     {
         #region GyrosaurHelperFunctions
+        protected DamageType DTM = DamageType.Melee;
         #endregion
         [Test]
         public void TestGyrosaurLoads()
@@ -221,6 +222,52 @@ namespace CauldronTests
             QuickHandCheck(0);
             QuickHPCheck(-1, -1, -1, 0);
             AssertOnTopOfDeck(omni);
+        }
+        [Test]
+        public void TestGyrosaurIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DealDamage(baron, gyrosaur, 50, DTM);
+
+            AssertIncapLetsHeroDrawCard(gyrosaur, 0, legacy, 1);
+        }
+        [Test]
+        public void TestGyrosaurIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DealDamage(baron, gyrosaur, 50, DTM);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            AssertNextDecisionChoices(new Card[] { baron.CharacterCard, legacy.CharacterCard, ra.CharacterCard }, new Card[] { mdp });
+            QuickHPStorage(baron, legacy, ra);
+            //check it's self-damage
+            PlayCard("TheStaffOfRa");
+            DecisionSelectTarget = ra.CharacterCard;
+            UseIncapacitatedAbility(gyrosaur, 1);
+            QuickHPCheck(0, 0, -4);
+        }
+        [Test]
+        public void TestGyrosaurIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DealDamage(baron, gyrosaur, 50, DTM);
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card mdp = GetMobileDefensePlatform().Card;
+            AssertNextDecisionChoices(new Card[] { mdp, traffic }, new Card[] { baron.CharacterCard, legacy.CharacterCard, ra.CharacterCard });
+            UseIncapacitatedAbility(gyrosaur, 2);
+            AssertNumberOfStatusEffectsInPlay(1);
+            QuickHPStorage(mdp, traffic);
+            DealDamage(ra, mdp, 1, DTM);
+            DealDamage(ra, traffic, 1, DTM);
+            QuickHPCheck(-2, -1);
+
+            GoToStartOfTurn(gyrosaur);
+            AssertNumberOfStatusEffectsInPlay(0);
+
         }
     }
 }

@@ -24,7 +24,8 @@ namespace Cauldron.Gyrosaur
 
             Func<bool> showDecisionIf = delegate
             {
-                if(TrueCrashInHand == numCrashThreshold || TrueCrashInHand == numCrashThreshold - 1)
+                int trueCrash = TrueCrashInHand;
+                if(trueCrash == numCrashThreshold || trueCrash == numCrashThreshold - 1)
                 {
                     return true;
                 }
@@ -82,16 +83,63 @@ namespace Cauldron.Gyrosaur
                 case 0:
                     {
                         //"One player may draw a card now.",
+                        coroutine = GameController.SelectHeroToDrawCard(DecisionMaker, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case 1:
                     {
                         //"One target with more than 10 HP deals itself 3 melee damage.",
+                        coroutine = GameController.SelectTargetsToDealDamageToSelf(DecisionMaker, 3, DamageType.Melee, 1, false, 1, additionalCriteria: (Card c) => c.IsTarget && c.HitPoints > 10, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case 2:
                     {
                         //"Select a non-character target. Increase damage dealt to that target by 1 until the start of your turn."
+                        var storedTarget = new List<SelectCardDecision>();
+                        coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.IncreaseDamage, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsTarget && !c.IsCharacter && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "", false, singular: "non-character target", plural: "non-character targets"), storedTarget, false, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                        var selectedTarget = storedTarget.FirstOrDefault()?.SelectedCard;
+                        if(selectedTarget != null)
+                        {
+                            var damageEffect = new IncreaseDamageStatusEffect(1);
+                            damageEffect.TargetCriteria.IsSpecificCard = selectedTarget;
+                            damageEffect.UntilTargetLeavesPlay(selectedTarget);
+                            damageEffect.UntilStartOfNextTurn(TurnTaker);
+                            damageEffect.CardSource = Card;
+
+                            coroutine = AddStatusEffect(damageEffect);
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine);
+                            }
+                        }
                         break;
                     }
             }
