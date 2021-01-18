@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.WindmillCity
 {
-    public class CrackedWaterMainCardController : EmergencyCardController
+    public class CrackedWaterMainCardController : WindmillCityUtilityCardController
     {
         public CrackedWaterMainCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
