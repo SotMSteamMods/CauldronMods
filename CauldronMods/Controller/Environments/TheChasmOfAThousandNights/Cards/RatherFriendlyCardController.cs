@@ -12,7 +12,9 @@ namespace Cauldron.TheChasmOfAThousandNights
     {
         public RatherFriendlyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowSpecialString(() => BuildHighestVillainTargetsSpecialString(), relatedCards: GetCardThisCardIsBelow().ToEnumerable).Condition = () => GetCardThisCardIsBelow() != null;
+            var ss = SpecialStringMaker.ShowVillainTargetWithHighestHP();
+            ss.Condition = () => GetCardThisCardIsBelow() != null;
+            ss.RelatedCards = () => new[] { GetCardThisCardIsBelow() };
         }
 
         public override void AddTriggers()
@@ -35,24 +37,6 @@ namespace Cauldron.TheChasmOfAThousandNights
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
-        }
-
-        private string BuildHighestVillainTargetsSpecialString()
-        {
-
-            IEnumerable<Card> highestVillainTargets = GameController.FindAllTargetsWithHighestHitPoints(1, (Card c) => IsVillainTarget(c), cardSource: GetCardSource());
-            string highestHPSpecial = $"Villain targets with the highest HP: ";
-            if (highestVillainTargets.Any())
-            {
-                highestHPSpecial += string.Join(", ", highestVillainTargets.Select(c => c.Title).ToArray());
-            }
-            else
-            {
-                highestHPSpecial += "None";
-            }
-
-            return highestHPSpecial;
-
         }
     }
 }

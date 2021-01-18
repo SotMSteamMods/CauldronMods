@@ -13,7 +13,9 @@ namespace Cauldron.TheChasmOfAThousandNights
     {
         public MalevolentCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowSpecialString(() => BuildHighestHeroTargetsSpecialString(), relatedCards: GetCardThisCardIsBelow().ToEnumerable).Condition = () => GetCardThisCardIsBelow() != null;
+            var ss = SpecialStringMaker.ShowHeroTargetWithHighestHP();
+            ss.Condition = () => GetCardThisCardIsBelow() != null;
+            ss.RelatedCards = () => new[] { GetCardThisCardIsBelow() };
         }
 
         public override void AddTriggers()
@@ -26,34 +28,16 @@ namespace Cauldron.TheChasmOfAThousandNights
 
         private IEnumerator RedirectDamageResponse(DealDamageAction dealDamage)
         {
-			IEnumerator coroutine = RedirectDamage(dealDamage, TargetType.HighestHP, (Card c) => c.IsHero && GameController.IsCardVisibleToCardSource(c, GetCardSource()));
-			
-			if (base.UseUnityCoroutines)
-			{
-				yield return base.GameController.StartCoroutine(coroutine);
-			}
-			else
-			{
-				base.GameController.ExhaustCoroutine(coroutine);
-			}
-            yield break;
-		}
-
-		private string BuildHighestHeroTargetsSpecialString()
-        {
-			
-            IEnumerable<Card> highestHeroTargets = GameController.FindAllTargetsWithHighestHitPoints(1, (Card c) => c.IsHero && c.IsTarget, cardSource: GetCardSource());
-            string highestHPSpecial = $"Hero targets with the highest HP: ";
-            if(highestHeroTargets.Any())
+            IEnumerator coroutine = RedirectDamage(dealDamage, TargetType.HighestHP, (Card c) => c.IsHero && GameController.IsCardVisibleToCardSource(c, GetCardSource()));
+            if (base.UseUnityCoroutines)
             {
-                highestHPSpecial += string.Join(", ", highestHeroTargets.Select(c => c.Title).ToArray());
-            } else
-            {
-                highestHPSpecial += "None";
+                yield return base.GameController.StartCoroutine(coroutine);
             }
-
-            return highestHPSpecial;
-
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
     }
 }
