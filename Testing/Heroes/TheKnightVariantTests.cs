@@ -11,12 +11,11 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class TheKnightVariantTests : BaseTest
+    public class TheKnightVariantTests : CauldronBaseTest
     {
         #region HelperFunctions
         protected string HeroNamespace = "Cauldron.TheKnight";
 
-        protected HeroTurnTakerController knight { get { return FindHero("TheKnight"); } }
 
         protected Card youngKnight { get { return GetCard("TheYoungKnightCharacter"); } }
         protected Card oldKnight { get { return GetCard("TheOldKnightCharacter"); } }

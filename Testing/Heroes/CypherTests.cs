@@ -9,9 +9,8 @@ using Cauldron.Cypher;
 namespace CauldronTests
 {
     [TestFixture]
-    public class CypherTests : BaseTest
+    public class CypherTests : CauldronBaseTest
     {
-        protected HeroTurnTakerController cypher => FindHero("Cypher");
 
         private const string DeckNamespace = "Cauldron.Cypher";
 
@@ -1410,14 +1409,6 @@ namespace CauldronTests
             QuickHPCheck(0);
             GoToEndOfTurn(ra);
             QuickHPCheck(1);
-        }
-
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                AssertCardHasKeyword(GetCard(id), keyword, false);
-            }
         }
 
         #region Augment Helpers

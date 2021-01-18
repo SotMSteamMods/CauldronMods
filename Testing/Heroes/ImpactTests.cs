@@ -11,23 +11,15 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class ImpactTests : BaseTest
+    public class ImpactTests : CauldronBaseTest
     {
         #region ImpactHelperFunctions
-        protected HeroTurnTakerController impact { get { return FindHero("Impact"); } }
         private void SetupIncap(TurnTakerController villain)
         {
             SetHitPoints(impact.CharacterCard, 1);
             DealDamage(villain, impact, 2, DamageType.Melee);
         }
-        private void AssertHasKeyword(string keyword, IEnumerable<string> identifiers)
-        {
-            foreach (var id in identifiers)
-            {
-                var card = GetCard(id);
-                AssertCardHasKeyword(card, keyword, false);
-            }
-        }
+
         private DamageType DTM = DamageType.Melee;
 
         #endregion

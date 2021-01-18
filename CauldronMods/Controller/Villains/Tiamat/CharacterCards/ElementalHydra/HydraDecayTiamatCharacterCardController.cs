@@ -9,7 +9,6 @@ namespace Cauldron.Tiamat
         public HydraDecayTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowSpecialString(() => base.Card.Title + " is immune to Toxic damage.").Condition = () => !base.Card.IsFlipped;
-
         }
 
         protected override ITrigger[] AddFrontTriggers()

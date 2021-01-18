@@ -89,23 +89,6 @@ namespace Cauldron.Tiamat
             yield break;
         }
 
-        //Did Head Deal Damage This Turn
-        protected bool DidDealDamageThisTurn(Card card)
-        {
-            int result = 0;
-            try
-            {
-                result = (from e in base.GameController.Game.Journal.DealDamageEntriesThisTurn()
-                          where e.SourceCard == card
-                          select e.Amount).Sum();
-            }
-            catch (OverflowException ex)
-            {
-                Log.Warning("DamageDealtThisTurn overflowed: " + ex.Message);
-                result = int.MaxValue;
-            }
-            return result != 0;
-        }
         private IEnumerator AlternateElementResponse(PlayCardAction action)
         {
             //Whenever the corresponding "Element of" Card enters play and the firstHead is decapitated, if the secondHead is active do the alternate response.
@@ -123,14 +106,12 @@ namespace Cauldron.Tiamat
 
         protected int PlusNumberOfACardInTrash(int value, string identifier)
         {
-            return value + (from card in base.TurnTaker.Trash.Cards
-                            where card.Identifier == identifier
-                            select card).Count<Card>();
+            return value + GetNumberOfSpecificCardInTrash(identifier);
         }
 
         protected string BuildDecapitatedHeadList()
         {
-            IEnumerable<Card> decappedHeads = FindCardsWhere((Card c) => c.IsFlipped && c.DoKeywordsContain("head") && c.IsInPlayAndNotUnderCard).ToList();
+            IEnumerable<Card> decappedHeads = FindCardsWhere((Card c) => c.IsFlipped && IsHead(c) && c.IsInPlayAndNotUnderCard).ToList();
             string decappedHeadsSpecial = "Decapitated heads: ";
             if (decappedHeads.Any())
             {

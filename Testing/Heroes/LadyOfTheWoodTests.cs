@@ -12,14 +12,13 @@ using Handelabra.Sentinels.Engine.Controller.TheArgentAdept;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class LadyOfTheWoodTests : BaseTest
+    public class LadyOfTheWoodTests : CauldronBaseTest
     {
         #region LadyOfTheWoodHelperFunctions
-        protected HeroTurnTakerController ladyOfTheWood { get { return FindHero("LadyOfTheWood"); } }
         private void SetupIncap(TurnTakerController villain)
         {
-            SetHitPoints(ladyOfTheWood.CharacterCard, 1);
-            DealDamage(villain, ladyOfTheWood, 2, DamageType.Melee);
+            SetHitPoints(ladyWood.CharacterCard, 1);
+            DealDamage(villain, ladyWood, 2, DamageType.Melee);
         }
 
         protected void AssertNumberOfSeasonsInHand(TurnTakerController ttc, int number)
@@ -35,7 +34,6 @@ namespace CauldronTests
             Assert.AreEqual(number, actual, String.Format("{0} should have had {1} cards in play, but actually had {2}: {3}", ttc.Name, number, actual, cardsInPlay.Select(c => c.Title).ToCommaList()));
         }
 
-
         protected int GetNumberOfSeasonsInHand(TurnTakerController ttc)
         {
             var cardsInHand = ttc.TurnTaker.GetAllCards().Where(c => c.IsInHand && this.IsSeason(c));
@@ -47,22 +45,6 @@ namespace CauldronTests
             return card != null && base.GameController.DoesCardContainKeyword(card, "season", false, false);
         }
 
-        private void AddReduceDamageOfDamageTypeTrigger(HeroTurnTakerController httc, DamageType damageType, int amount)
-        {
-            ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(amount);
-            reduceDamageStatusEffect.DamageTypeCriteria.AddType(damageType);
-            reduceDamageStatusEffect.NumberOfUses = 1;
-            this.RunCoroutine(this.GameController.AddStatusEffect(reduceDamageStatusEffect, true, new CardSource(httc.CharacterCardController)));
-        }
-
-        private void AddIncreaseDamageOfDamageTypeTrigger(HeroTurnTakerController httc, DamageType damageType, int amount)
-        {
-            IncreaseDamageStatusEffect increaseDamageStatusEffect = new IncreaseDamageStatusEffect(amount);
-            increaseDamageStatusEffect.DamageTypeCriteria.AddType(damageType);
-            increaseDamageStatusEffect.NumberOfUses = 1;
-            this.RunCoroutine(this.GameController.AddStatusEffect(increaseDamageStatusEffect, true, new CardSource(httc.CharacterCardController)));
-        }
-
         #endregion
 
         [Test()]
@@ -72,10 +54,10 @@ namespace CauldronTests
 
             Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
 
-            Assert.IsNotNull(ladyOfTheWood);
-            Assert.IsInstanceOf(typeof(LadyOfTheWoodCharacterCardController), ladyOfTheWood.CharacterCardController);
+            Assert.IsNotNull(ladyWood);
+            Assert.IsInstanceOf(typeof(LadyOfTheWoodCharacterCardController), ladyWood.CharacterCardController);
 
-            Assert.AreEqual(22, ladyOfTheWood.CharacterCard.HitPoints);
+            Assert.AreEqual(22, ladyWood.CharacterCard.HitPoints);
         }
 
         [Test()]
@@ -85,11 +67,11 @@ namespace CauldronTests
             StartGame();
 
             //Select a damage type. {LadyOfTheWood} deals 1 target 1 damage of the chosen type.
-            GoToUsePowerPhase(ladyOfTheWood);
+            GoToUsePowerPhase(ladyWood);
             DecisionSelectDamageType = DamageType.Cold;
             DecisionSelectTarget = ra.CharacterCard;
             QuickHPStorage(ra, haka);
-            UsePower(ladyOfTheWood.CharacterCard);
+            UsePower(ladyWood.CharacterCard);
             QuickHPCheck(-1, 0);
         }
 
@@ -100,7 +82,7 @@ namespace CauldronTests
             StartGame();
 
             //Select a damage type. {LadyOfTheWood} deals 1 target 1 damage of the chosen type.
-            GoToUsePowerPhase(ladyOfTheWood);
+            GoToUsePowerPhase(ladyWood);
             DecisionSelectDamageTypes = new DamageType?[] {
                 DamageType.Cold, DamageType.Energy, DamageType.Fire,
                 DamageType.Infernal, DamageType.Lightning, DamageType.Melee,
@@ -111,68 +93,68 @@ namespace CauldronTests
 
             PrintSeparator("Check for Cold");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Cold, 1);
-            UsePower(ladyOfTheWood.CharacterCard);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Cold, 1);
+            UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Energy");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Energy, 1);
-            UsePower(ladyOfTheWood.CharacterCard);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Energy, 1);
+            UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Fire");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Fire, 1);
-            UsePower(ladyOfTheWood.CharacterCard);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
+            UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Infernal");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Infernal, 1);
-            UsePower(ladyOfTheWood.CharacterCard);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Infernal, 1);
+            UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Lightning");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Lightning, 1);
-            UsePower(ladyOfTheWood.CharacterCard);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Lightning, 1);
+            UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Melee");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Melee, 1);
-            UsePower(ladyOfTheWood.CharacterCard);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Melee, 1);
+            UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Projectile");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Projectile, 1);
-            UsePower(ladyOfTheWood.CharacterCard);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Projectile, 1);
+            UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Psychic");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Psychic, 1);
-            UsePower(ladyOfTheWood.CharacterCard);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Psychic, 1);
+            UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Radiant");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Radiant, 1);
-            UsePower(ladyOfTheWood.CharacterCard);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Radiant, 1);
+            UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Sonic");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Sonic, 1);
-            UsePower(ladyOfTheWood.CharacterCard);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Sonic, 1);
+            UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Toxic");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Toxic, 1);
-            UsePower(ladyOfTheWood.CharacterCard);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Toxic, 1);
+            UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
         }
 
@@ -183,13 +165,13 @@ namespace CauldronTests
             StartGame();
 
             SetupIncap(baron);
-            AssertIncapacitated(ladyOfTheWood);
+            AssertIncapacitated(ladyWood);
 
             //Select a damage type. Until the start of your next turn, increase damage dealt of the chosen type by 1.
-            GoToUseIncapacitatedAbilityPhase(ladyOfTheWood);
+            GoToUseIncapacitatedAbilityPhase(ladyWood);
 
             DecisionSelectDamageType = DamageType.Fire;
-            UseIncapacitatedAbility(ladyOfTheWood, 0);
+            UseIncapacitatedAbility(ladyWood, 0);
 
             QuickHPStorage(haka);
             DealDamage(ra, haka, 5, DamageType.Fire);
@@ -204,7 +186,7 @@ namespace CauldronTests
             //Damage dealt should be 5,no modifiers
             QuickHPCheck(-5);
 
-            GoToStartOfTurn(ladyOfTheWood);
+            GoToStartOfTurn(ladyWood);
 
             //start of turn has passed, trigger should be gone
             QuickHPStorage(haka);
@@ -219,17 +201,17 @@ namespace CauldronTests
             StartGame();
 
             SetupIncap(baron);
-            AssertIncapacitated(ladyOfTheWood);
+            AssertIncapacitated(ladyWood);
 
             //give hake room to gain health
             SetHitPoints(haka, 20);
 
             //1 hero may discard a card to regain 3 HP.
-            GoToUseIncapacitatedAbilityPhase(ladyOfTheWood);
+            GoToUseIncapacitatedAbilityPhase(ladyWood);
             DecisionSelectTurnTaker = haka.HeroTurnTaker;
             QuickHandStorage(haka);
             QuickHPStorage(haka);
-            UseIncapacitatedAbility(ladyOfTheWood, 1);
+            UseIncapacitatedAbility(ladyWood, 1);
             //should have 1 less card in hand and should have gained 3 HP
             QuickHandCheck(-1);
             QuickHPCheck(3);
@@ -243,18 +225,18 @@ namespace CauldronTests
             StartGame();
 
             SetupIncap(baron);
-            AssertIncapacitated(ladyOfTheWood);
+            AssertIncapacitated(ladyWood);
 
             //give hake room to gain health
             SetHitPoints(haka, 20);
 
             //1 hero may discard a card to regain 3 HP.
-            GoToUseIncapacitatedAbilityPhase(ladyOfTheWood);
+            GoToUseIncapacitatedAbilityPhase(ladyWood);
             DecisionSelectTurnTaker = haka.HeroTurnTaker;
             DecisionDoNotSelectCard = SelectionType.DiscardCard;
             QuickHandStorage(haka);
             QuickHPStorage(haka);
-            UseIncapacitatedAbility(ladyOfTheWood, 1);
+            UseIncapacitatedAbility(ladyWood, 1);
             //should have same number of cards in hand and the same hp
             QuickHandCheck(0);
             QuickHPCheck(0);
@@ -268,17 +250,17 @@ namespace CauldronTests
             StartGame();
 
             SetupIncap(baron);
-            AssertIncapacitated(ladyOfTheWood);
+            AssertIncapacitated(ladyWood);
 
             PutIntoPlay("PoliceBackup");
 
             //Destroy an environment card.
-            GoToUseIncapacitatedAbilityPhase(ladyOfTheWood);
+            GoToUseIncapacitatedAbilityPhase(ladyWood);
 
             int numEnvironmentCardsInPlayBefore = GetNumberOfCardsInPlay(FindEnvironment());
             int numEnvironmentCardsInTrashBefore = GetNumberOfCardsInTrash(FindEnvironment());
 
-            UseIncapacitatedAbility(ladyOfTheWood, 2);
+            UseIncapacitatedAbility(ladyWood, 2);
 
             //1 environment card should have been destroyed, so 1 less card in play, 1 more in trash
             AssertNumberOfCardsInPlay(FindEnvironment(), numEnvironmentCardsInPlayBefore - 1);
@@ -293,13 +275,13 @@ namespace CauldronTests
             StartGame();
 
             //grab the hand besides calm
-            IEnumerable<Card> cardsInHand = base.GameController.GetAllCardsInHand(ladyOfTheWood);
+            IEnumerable<Card> cardsInHand = base.GameController.GetAllCardsInHand(ladyWood);
 
             Card calm = PutInHand("CalmBeforeTheStorm");
             //Discard any number of cards.
             // Increase the next damage dealt by LadyOfTheWood by X, where X is 2 plus the number of cards discarded this way.
-            GoToPlayCardPhase(ladyOfTheWood);
-            QuickHandStorage(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
+            QuickHandStorage(ladyWood);
 
             DecisionSelectCards = new Card[] { cardsInHand.ElementAt(0), cardsInHand.ElementAt(1), cardsInHand.ElementAt(2), cardsInHand.ElementAt(3)};
             PlayCard(calm);
@@ -307,7 +289,7 @@ namespace CauldronTests
             QuickHandCheck(-5);
 
             QuickHPStorage(haka);
-            DealDamage(ladyOfTheWood, haka, 4, DamageType.Melee);
+            DealDamage(ladyWood, haka, 4, DamageType.Melee);
             //since 4 cards discarded, should be +6 for  10 damage
             QuickHPCheck(-10);
 
@@ -320,13 +302,13 @@ namespace CauldronTests
             StartGame();
 
             //grab the hand besides calm
-            IEnumerable<Card> cardsInHand = base.GameController.GetAllCardsInHand(ladyOfTheWood);
+            IEnumerable<Card> cardsInHand = base.GameController.GetAllCardsInHand(ladyWood);
 
             Card calm = PutInHand("CalmBeforeTheStorm");
             //Discard any number of cards.
             // Increase the next damage dealt by LadyOfTheWood by X, where X is 2 plus the number of cards discarded this way.
-            GoToPlayCardPhase(ladyOfTheWood);
-            QuickHandStorage(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
+            QuickHandStorage(ladyWood);
 
             DecisionSelectCards = new Card[] { cardsInHand.ElementAt(0), cardsInHand.ElementAt(1), cardsInHand.ElementAt(2), null };
             PlayCard(calm);
@@ -334,7 +316,7 @@ namespace CauldronTests
             QuickHandCheck(-4);
 
             QuickHPStorage(haka);
-            DealDamage(ladyOfTheWood, haka, 4, DamageType.Melee);
+            DealDamage(ladyWood, haka, 4, DamageType.Melee);
             //since 3 cards discarded, should be +5 for  9 damage
             QuickHPCheck(-9);
 
@@ -347,13 +329,13 @@ namespace CauldronTests
             StartGame();
 
             //grab the hand besides calm
-            IEnumerable<Card> cardsInHand = base.GameController.GetAllCardsInHand(ladyOfTheWood);
+            IEnumerable<Card> cardsInHand = base.GameController.GetAllCardsInHand(ladyWood);
 
             Card calm = PutInHand("CalmBeforeTheStorm");
             //Discard any number of cards.
             // Increase the next damage dealt by LadyOfTheWood by X, where X is 2 plus the number of cards discarded this way.
-            GoToPlayCardPhase(ladyOfTheWood);
-            QuickHandStorage(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
+            QuickHandStorage(ladyWood);
 
             DecisionSelectCards = new Card[] { cardsInHand.ElementAt(0), cardsInHand.ElementAt(1), null };
             PlayCard(calm);
@@ -361,7 +343,7 @@ namespace CauldronTests
             QuickHandCheck(-3);
 
             QuickHPStorage(haka);
-            DealDamage(ladyOfTheWood, haka, 4, DamageType.Melee);
+            DealDamage(ladyWood, haka, 4, DamageType.Melee);
             //since 2 cards discarded, should be +4 for 8 damage
             QuickHPCheck(-8);
 
@@ -374,13 +356,13 @@ namespace CauldronTests
             StartGame();
 
             //grab the hand besides calm
-            IEnumerable<Card> cardsInHand = base.GameController.GetAllCardsInHand(ladyOfTheWood);
+            IEnumerable<Card> cardsInHand = base.GameController.GetAllCardsInHand(ladyWood);
 
             Card calm = PutInHand("CalmBeforeTheStorm");
             //Discard any number of cards.
             // Increase the next damage dealt by LadyOfTheWood by X, where X is 2 plus the number of cards discarded this way.
-            GoToPlayCardPhase(ladyOfTheWood);
-            QuickHandStorage(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
+            QuickHandStorage(ladyWood);
 
             DecisionSelectCards = new Card[] { cardsInHand.ElementAt(0), null };
             PlayCard(calm);
@@ -388,7 +370,7 @@ namespace CauldronTests
             QuickHandCheck(-2);
 
             QuickHPStorage(haka);
-            DealDamage(ladyOfTheWood, haka, 4, DamageType.Melee);
+            DealDamage(ladyWood, haka, 4, DamageType.Melee);
             //since 1 card discarded, should be +3 for  7 damage
             QuickHPCheck(-7);
 
@@ -403,15 +385,15 @@ namespace CauldronTests
             Card calm = PutInHand("CalmBeforeTheStorm");
             //Discard any number of cards.
             // Increase the next damage dealt by LadyOfTheWood by X, where X is 2 plus the number of cards discarded this way.
-            GoToPlayCardPhase(ladyOfTheWood);
-            QuickHandStorage(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
+            QuickHandStorage(ladyWood);
             DecisionDoNotSelectCard = SelectionType.DiscardCard;
             PlayCard(calm);
             //should be -1, 1 for calm before storm, and 0 others discarded
             QuickHandCheck(-1);
 
             QuickHPStorage(haka);
-            DealDamage(ladyOfTheWood, haka, 4, DamageType.Melee);
+            DealDamage(ladyWood, haka, 4, DamageType.Melee);
             //since 0 cards discarded, should be +2 for  6 damage
             QuickHPCheck(-6);
 
@@ -422,13 +404,13 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
-            DiscardAllCards(ladyOfTheWood);
+            DiscardAllCards(ladyWood);
             PutInHand("CalmBeforeTheStorm");
             Card calm = GetCardFromHand("CalmBeforeTheStorm");
             //Discard any number of cards.
             // Increase the next damage dealt by LadyOfTheWood by X, where X is 2 plus the number of cards discarded this way.
-            GoToPlayCardPhase(ladyOfTheWood);
-            QuickHandStorage(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
+            QuickHandStorage(ladyWood);
             
             //there shouldn't be any cards to discard
             PlayCard(calm);
@@ -436,7 +418,7 @@ namespace CauldronTests
             QuickHandCheck(-1);
 
             QuickHPStorage(haka);
-            DealDamage(ladyOfTheWood, haka, 4, DamageType.Melee);
+            DealDamage(ladyWood, haka, 4, DamageType.Melee);
             //since 0 cards discarded, should be +2 for  6 damage
             QuickHPCheck(-6);
 
@@ -451,12 +433,12 @@ namespace CauldronTests
             DestroyCard(mdp, haka.CharacterCard);
             PutInHand("CrownOfTheFourWinds");
             Card crown = GetCardFromHand("CrownOfTheFourWinds");
-            GoToPlayCardPhase(ladyOfTheWood); ;
+            GoToPlayCardPhase(ladyWood); ;
             PlayCard(crown);
             //LadyOfTheWood deals 1 target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage.
-            GoToUsePowerPhase(ladyOfTheWood);
-            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
-            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard };
+            GoToUsePowerPhase(ladyWood);
+            QuickHPStorage(baron, ladyWood, ra, haka);
+            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyWood.CharacterCard, ra.CharacterCard, haka.CharacterCard };
             UsePower(crown);
             //every target in play should get 1 damage
             QuickHPCheck(-1, -1, -1, -1);
@@ -476,35 +458,35 @@ namespace CauldronTests
 
             PutInHand("CrownOfTheFourWinds");
             Card crown = GetCardFromHand("CrownOfTheFourWinds");
-            GoToPlayCardPhase(ladyOfTheWood); ;
+            GoToPlayCardPhase(ladyWood); ;
             PlayCard(crown);
             //LadyOfTheWood deals 1 target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage.
-            GoToUsePowerPhase(ladyOfTheWood);
-            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            GoToUsePowerPhase(ladyWood);
+            QuickHPStorage(baron, ladyWood, ra, haka);
             DecisionSelectCards = new Card[] {
-                baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard, 
-                baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard,
-                baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard,
-                baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard 
+                baron.CharacterCard, ladyWood.CharacterCard, ra.CharacterCard, haka.CharacterCard, 
+                baron.CharacterCard, ladyWood.CharacterCard, ra.CharacterCard, haka.CharacterCard,
+                baron.CharacterCard, ladyWood.CharacterCard, ra.CharacterCard, haka.CharacterCard,
+                baron.CharacterCard, ladyWood.CharacterCard, ra.CharacterCard, haka.CharacterCard 
             };
             PrintSeparator("Check for Toxic");
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Toxic, 1);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Toxic, 1);
             UsePower(crown);
             QuickHPCheck(0, -1, -1, -1);
 
             PrintSeparator("Check for Fire");
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Fire, 1);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
             UsePower(crown);
             QuickHPCheck(-1, 0, -1, -1);
 
 
             PrintSeparator("Check for Lightning");
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Lightning, 1);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Lightning, 1);
             UsePower(crown);
             QuickHPCheck(-1, -1, 0, -1);
 
             PrintSeparator("Check for Cold");
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Cold, 1);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Cold, 1);
             UsePower(crown);
             QuickHPCheck(-1, -1, -1, 0);
 
@@ -521,12 +503,12 @@ namespace CauldronTests
 
             PutInHand("CrownOfTheFourWinds");
             Card crown = GetCardFromHand("CrownOfTheFourWinds");
-            GoToPlayCardPhase(ladyOfTheWood); ;
+            GoToPlayCardPhase(ladyWood); ;
             PlayCard(crown);
             //LadyOfTheWood deals 1 target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage.
-            GoToUsePowerPhase(ladyOfTheWood);
-            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
-            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard, haka.CharacterCard };
+            GoToUsePowerPhase(ladyWood);
+            QuickHPStorage(baron, ladyWood, ra, haka);
+            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyWood.CharacterCard, ra.CharacterCard, haka.CharacterCard };
             UsePower(crown);
             //every target in play should get 1 damage
             QuickHPCheck(-1, -1, -1, -1);
@@ -547,12 +529,12 @@ namespace CauldronTests
             DestroyCard(mdp, haka.CharacterCard);
             PutInHand("CrownOfTheFourWinds");
             Card crown = GetCardFromHand("CrownOfTheFourWinds");
-            GoToPlayCardPhase(ladyOfTheWood); ;
+            GoToPlayCardPhase(ladyWood); ;
             PlayCard(crown);
             //LadyOfTheWood deals 1 target 1 toxic damage, a second target 1 fire damage, a third target 1 lightning damage, and a fourth target 1 cold damage.
-            GoToUsePowerPhase(ladyOfTheWood);
-            QuickHPStorage(baron, ladyOfTheWood, ra);
-            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard };
+            GoToUsePowerPhase(ladyWood);
+            QuickHPStorage(baron, ladyWood, ra);
+            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyWood.CharacterCard, ra.CharacterCard };
 
             UsePower(crown);
             //every target in play should get 1 damage (but only 3 targets)
@@ -569,16 +551,16 @@ namespace CauldronTests
             //Reduce damage dealt to LadyOfTheWood by 1.
             Card clearing = PlayCard("EnchantedClearing");
 
-            QuickHPStorage(ladyOfTheWood);
-            DealDamage(baron, ladyOfTheWood, 5, DamageType.Melee);
+            QuickHPStorage(ladyWood);
+            DealDamage(baron, ladyWood, 5, DamageType.Melee);
 
             //reduced by 1, so should be 4
             QuickHPCheck(-4);
 
             //check that it is gone if enchanted cleared destroyed
             DestroyCard(clearing, baron.CharacterCard);
-            QuickHPStorage(ladyOfTheWood);
-            DealDamage(baron, ladyOfTheWood, 5, DamageType.Melee);
+            QuickHPStorage(ladyWood);
+            DealDamage(baron, ladyWood, 5, DamageType.Melee);
             //should not be modified, so -5
             QuickHPCheck(-5);
 
@@ -591,17 +573,17 @@ namespace CauldronTests
             StartGame();
 
             //Whenever LadyOfTheWood deals lightning damage to a target, reduce damage dealt by that target by 1 until the start of your next turn.
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             PlayCard("Fall");
            
-            DealDamage(ladyOfTheWood, haka, 8, DamageType.Lightning);
+            DealDamage(ladyWood, haka, 8, DamageType.Lightning);
 
             QuickHPStorage(ra);
             DealDamage(haka, ra, 5, DamageType.Projectile);
             //reduced by 1, so should be 4
             QuickHPCheck(-4);
 
-            GoToStartOfTurn(ladyOfTheWood);
+            GoToStartOfTurn(ladyWood);
             QuickHPStorage(ra);
             DealDamage(haka, ra, 5, DamageType.Projectile);
             //no longer reduced by 1, so should be 5
@@ -615,10 +597,10 @@ namespace CauldronTests
             StartGame();
 
             //Whenever LadyOfTheWood deals lightning damage to a target, reduce damage dealt by that target by 1 until the start of your next turn.
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             PlayCard("Fall");
 
-            DealDamage(ladyOfTheWood, haka, 8, DamageType.Fire);
+            DealDamage(ladyWood, haka, 8, DamageType.Fire);
 
             QuickHPStorage(ra);
             DealDamage(haka, ra, 5, DamageType.Projectile);
@@ -634,7 +616,7 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
 
             //LadyOfTheWood deals 1 target 3 fire damage or up to 3 targets 1 lightning damage each.
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             //should deal 1 target 3 fire
             DecisionSelectFunction = 0;
             DecisionSelectTarget = mdp;
@@ -652,14 +634,14 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
 
             //LadyOfTheWood deals 1 target 3 fire damage or up to 3 targets 1 lightning damage each.
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             //should deal 1 target 3 fire
             DecisionSelectFunction = 0;
             DecisionSelectTarget = mdp;
             QuickHPStorage(mdp);
 
             PrintSeparator("Check for fire");
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Fire, 1);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
             PlayCard("FireInTheClouds");
             QuickHPCheck(-2);
 
@@ -673,11 +655,11 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
             //LadyOfTheWood deals 1 target 3 fire damage or up to 3 targets 1 lightning damage each.
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             //should deal 3 target 1 lightning
             DecisionSelectFunction = 1;
-            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard };
-            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyWood.CharacterCard, ra.CharacterCard };
+            QuickHPStorage(baron, ladyWood, ra, haka);
             PlayCard("FireInTheClouds");
             QuickHPCheck(-1, -1, -1, 0);
         }
@@ -690,11 +672,11 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
             //LadyOfTheWood deals 1 target 3 fire damage or up to 3 targets 1 lightning damage each.
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             //should deal 3 target 1 lightning
             DecisionSelectFunction = 1;
-            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyOfTheWood.CharacterCard, null };
-            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyWood.CharacterCard, null };
+            QuickHPStorage(baron, ladyWood, ra, haka);
             PlayCard("FireInTheClouds");
             QuickHPCheck(-1, -1, 0, 0);
         }
@@ -707,11 +689,11 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
             //LadyOfTheWood deals 1 target 3 fire damage or up to 3 targets 1 lightning damage each.
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             //should deal 3 target 1 lightning
             DecisionSelectFunction = 1;
             DecisionSelectCards = new Card[] { baron.CharacterCard, null };
-            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            QuickHPStorage(baron, ladyWood, ra, haka);
 
             PlayCard("FireInTheClouds");
             QuickHPCheck(-1, 0, 0, 0);
@@ -725,13 +707,13 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
             //LadyOfTheWood deals 1 target 3 fire damage or up to 3 targets 1 lightning damage each.
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             //should deal 3 target 1 lightning
             DecisionSelectFunction = 1;
             DecisionSelectCards = new Card[] { baron.CharacterCard, null };
-            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            QuickHPStorage(baron, ladyWood, ra, haka);
             PrintSeparator("Check for lightning");
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Lightning, 1);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Lightning, 1);
             PlayCard("FireInTheClouds");
             QuickHPCheck(0, 0, 0, 0);
         }
@@ -744,11 +726,11 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
             //LadyOfTheWood deals 1 target 3 fire damage or up to 3 targets 1 lightning damage each.
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             //should deal 3 target 1 lightning
             DecisionSelectFunction = 1;
             DecisionDoNotSelectCard = SelectionType.SelectTarget;
-            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            QuickHPStorage(baron, ladyWood, ra, haka);
             PlayCard("FireInTheClouds");
             QuickHPCheck(0, 0, 0, 0);
         }
@@ -761,7 +743,7 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
 
             //LadyOfTheWood deals 1 target 3 toxic damage or up to 3 targets 1 cold damage each.
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             //should deal 1 target 3 toxic
             DecisionSelectFunction = 0;
             DecisionSelectTarget = mdp;
@@ -780,14 +762,14 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
 
             //LadyOfTheWood deals 1 target 3 toxic damage or up to 3 targets 1 cold damage each.
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             //should deal 1 target 3 fire
             DecisionSelectFunction = 0;
             DecisionSelectTarget = mdp;
             QuickHPStorage(mdp);
 
             PrintSeparator("Check for toxic");
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Toxic, 1);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Toxic, 1);
             PlayCard("FrostOnThePetals");
             QuickHPCheck(-2);
 
@@ -801,13 +783,13 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
             //LadyOfTheWood deals 1 target 3 toxic damage or up to 3 targets 1 cold damage each.
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             //should deal 3 target 1 lightning
             DecisionSelectFunction = 1;
             DecisionSelectCards = new Card[] { baron.CharacterCard, null };
-            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            QuickHPStorage(baron, ladyWood, ra, haka);
             PrintSeparator("Check for cold");
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Cold, 1);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Cold, 1);
             PlayCard("FrostOnThePetals");
             QuickHPCheck(0, 0, 0, 0);
         }
@@ -820,11 +802,11 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
             //LadyOfTheWood deals 1 target 3 toxic damage or up to 3 targets 1 cold damage each.
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             //should deal 3 target 1 cold
             DecisionSelectFunction = 1;
-            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyOfTheWood.CharacterCard, ra.CharacterCard };
-            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyWood.CharacterCard, ra.CharacterCard };
+            QuickHPStorage(baron, ladyWood, ra, haka);
             PlayCard("FrostOnThePetals");
             QuickHPCheck(-1, -1, -1, 0);
         }
@@ -837,11 +819,11 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
             //LadyOfTheWood deals 1 target 3 toxic damage or up to 3 targets 1 cold damage each.
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             //should deal 3 target 1 cold
             DecisionSelectFunction = 1;
-            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyOfTheWood.CharacterCard, null };
-            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            DecisionSelectCards = new Card[] { baron.CharacterCard, ladyWood.CharacterCard, null };
+            QuickHPStorage(baron, ladyWood, ra, haka);
             PlayCard("FrostOnThePetals");
             QuickHPCheck(-1, -1, 0, 0);
         }
@@ -854,11 +836,11 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
             //LadyOfTheWood deals 1 target 3 toxic damage or up to 3 targets 1 cold damage each.
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             //should deal 3 target 1 cold
             DecisionSelectFunction = 1;
             DecisionSelectCards = new Card[] { baron.CharacterCard, null };
-            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            QuickHPStorage(baron, ladyWood, ra, haka);
             PlayCard("FrostOnThePetals");
             QuickHPCheck(-1, 0, 0, 0);
         }
@@ -871,11 +853,11 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             DestroyCard(mdp, baron.CharacterCard);
             //LadyOfTheWood deals 1 target 3 toxic damage or up to 3 targets 1 cold damage each.
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             //should deal 3 target 1 cold
             DecisionSelectFunction = 1;
             DecisionDoNotSelectCard = SelectionType.SelectTarget;
-            QuickHPStorage(baron, ladyOfTheWood, ra, haka);
+            QuickHPStorage(baron, ladyWood, ra, haka);
             PlayCard("FrostOnThePetals");
             QuickHPCheck(0, 0, 0, 0);
         }
@@ -887,7 +869,7 @@ namespace CauldronTests
             StartGame();
 
             //stack deck
-            Card spring = StackDeck(ladyOfTheWood, "Spring");
+            Card spring = StackDeck(ladyWood, "Spring");
 
 
             //Draw a card.
@@ -914,15 +896,15 @@ namespace CauldronTests
             //stack deck to prevent drawing a season
             PutOnDeck("FireInTheClouds");
 
-            int numSeasonsBefore = GetNumberOfSeasonsInHand(ladyOfTheWood);
+            int numSeasonsBefore = GetNumberOfSeasonsInHand(ladyWood);
             //pick a random season from deck
-            DecisionSelectCard = (ladyOfTheWood.HeroTurnTaker.Deck.Cards.Where(c => IsSeason(c)).Take(1)).First();
+            DecisionSelectCard = (ladyWood.HeroTurnTaker.Deck.Cards.Where(c => IsSeason(c)).Take(1)).First();
             //Search your deck for a season card, put it into your hand, then shuffle your deck.
             DecisionDoNotSelectCard = SelectionType.PlayCard;
-            QuickShuffleStorage(ladyOfTheWood.TurnTaker.Deck);
+            QuickShuffleStorage(ladyWood.TurnTaker.Deck);
             PlayCard(meadow);
             QuickShuffleCheck(1);
-            AssertNumberOfSeasonsInHand(ladyOfTheWood, numSeasonsBefore + 1);
+            AssertNumberOfSeasonsInHand(ladyWood, numSeasonsBefore + 1);
 
         }
 
@@ -933,7 +915,7 @@ namespace CauldronTests
             StartGame();
 
             //Discard all cards in hand
-            DiscardAllCards(ladyOfTheWood);
+            DiscardAllCards(ladyWood);
 
             //put "Spring" on the top of the deck, a card that will stay in play
             Card spring = PutOnDeck("Spring");
@@ -959,13 +941,13 @@ namespace CauldronTests
             //use effect
             DecisionYesNo = true;
             QuickHPStorage(haka);
-            DealDamage(ladyOfTheWood, haka, 5, DamageType.Lightning);
+            DealDamage(ladyWood, haka, 5, DamageType.Lightning);
             //damage should have increased by 2, so 7
             QuickHPCheck(-7);
 
             //try again, this time there should be no option to increase
             QuickHPStorage(haka);
-            DealDamage(ladyOfTheWood, haka, 5, DamageType.Lightning);
+            DealDamage(ladyWood, haka, 5, DamageType.Lightning);
             //damage should have not been increased by 2, so 5
             QuickHPCheck(-5);
 
@@ -973,7 +955,7 @@ namespace CauldronTests
             GoToNextTurn();
             DecisionYesNo = true;
             QuickHPStorage(haka);
-            DealDamage(ladyOfTheWood, haka, 5, DamageType.Lightning);
+            DealDamage(ladyWood, haka, 5, DamageType.Lightning);
             //damage should have increased by 2, so 7
             QuickHPCheck(-7);
 
@@ -981,7 +963,7 @@ namespace CauldronTests
             GoToNextTurn();
             DecisionYesNo = true;
             QuickHPStorage(haka);
-            DealDamage(ladyOfTheWood, haka, 5, DamageType.Lightning);
+            DealDamage(ladyWood, haka, 5, DamageType.Lightning);
             //damage should have increased by 2, so 7
             QuickHPCheck(-7);
 
@@ -1000,13 +982,13 @@ namespace CauldronTests
             //use effect
             DecisionsYesNo = new bool[] { false, true, true };
             QuickHPStorage(haka);
-            DealDamage(ladyOfTheWood, haka, 5, DamageType.Lightning);
+            DealDamage(ladyWood, haka, 5, DamageType.Lightning);
             //damage should not increase, so 5
             QuickHPCheck(-5);
 
             //try again, this time should be increased
             QuickHPStorage(haka);
-            DealDamage(ladyOfTheWood, haka, 5, DamageType.Lightning);
+            DealDamage(ladyWood, haka, 5, DamageType.Lightning);
             //damage should have been increased by 2, so 7
             QuickHPCheck(-7);
 
@@ -1014,7 +996,7 @@ namespace CauldronTests
             GoToNextTurn();
             DecisionYesNo = true;
             QuickHPStorage(haka);
-            DealDamage(ladyOfTheWood, haka, 5, DamageType.Lightning);
+            DealDamage(ladyWood, haka, 5, DamageType.Lightning);
             //damage should have increased by 2, so 7
             QuickHPCheck(-7);
 
@@ -1028,8 +1010,8 @@ namespace CauldronTests
 
             Card cloak = PlayCard("RainpetalCloak");
             //  Power: Draw a card.
-            GoToUsePowerPhase(ladyOfTheWood);
-            QuickHandStorage(ladyOfTheWood);
+            GoToUsePowerPhase(ladyWood);
+            QuickHandStorage(ladyWood);
             UsePower(cloak);
             QuickHandCheck(1);
 
@@ -1042,27 +1024,27 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
             //give room to gain hp
-            SetHitPoints(ladyOfTheWood.CharacterCard, 15);
+            SetHitPoints(ladyWood.CharacterCard, 15);
             PlayCard("RainpetalCloak");
 
             //  The first time {LadyOfTheWood} would be dealt 1 damage each turn, she regains 1 HP instead.    
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             PrintSeparator("Check initial prevention");
-            QuickHPStorage(ladyOfTheWood);
-            DealDamage(baron, ladyOfTheWood, 1, DamageType.Infernal);
+            QuickHPStorage(ladyWood);
+            DealDamage(baron, ladyWood, 1, DamageType.Infernal);
             //should have prevented and gained an HP
             QuickHPCheck(1);
 
             PrintSeparator("Check doesn't prevent on second damage");
-            QuickHPStorage(ladyOfTheWood);
-            DealDamage(baron, ladyOfTheWood, 1, DamageType.Infernal);
+            QuickHPStorage(ladyWood);
+            DealDamage(baron, ladyWood, 1, DamageType.Infernal);
             //should have not prevented and is normal
             QuickHPCheck(-1);
 
             GoToNextTurn();
             PrintSeparator("check resets on non-lady of wood start of turn");
-            QuickHPStorage(ladyOfTheWood);
-            DealDamage(baron, ladyOfTheWood, 1, DamageType.Infernal);
+            QuickHPStorage(ladyWood);
+            DealDamage(baron, ladyWood, 1, DamageType.Infernal);
             //should have prevented again and gained an HP
             QuickHPCheck(1);
 
@@ -1221,9 +1203,9 @@ namespace CauldronTests
             DecisionSelectCards = new Card[] { spring, fall, summer, summer };
             Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
 
-            QuickHandStorage(ladyOfTheWood);
+            QuickHandStorage(ladyWood);
             //have lady of the wood destroy mdp
-            DestroyCard(mdp, ladyOfTheWood.CharacterCard);
+            DestroyCard(mdp, ladyWood.CharacterCard);
             //summer should have been moved to hand
             QuickHandCheck(1);
             AssertNumberOfCardsUnderCard(rebirth, 2);
@@ -1232,7 +1214,7 @@ namespace CauldronTests
             AssertInHand(summer);
 
             //check doesn't move when another hero destroys a target
-            QuickHandStorage(ladyOfTheWood);
+            QuickHandStorage(ladyWood);
             //have lady of the wood destroy mdp
             DestroyCard(battalion, haka.CharacterCard);
             //nothing should have been moved to hand
@@ -1261,9 +1243,9 @@ namespace CauldronTests
             DecisionSelectCards = new Card[] { spring, fall, summer, summer };
             Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
 
-            QuickHandStorage(ladyOfTheWood);
+            QuickHandStorage(ladyWood);
             //have lady of the wood destroy mdp
-            DealDamage(ladyOfTheWood.CharacterCard, mdp, 99, DamageType.Psychic);
+            DealDamage(ladyWood.CharacterCard, mdp, 99, DamageType.Psychic);
             //summer should have been moved to hand
             QuickHandCheck(1);
             AssertNumberOfCardsUnderCard(rebirth, 2);
@@ -1272,7 +1254,7 @@ namespace CauldronTests
             AssertInHand(summer);
 
             //check doesn't move when another hero destroys a target
-            QuickHandStorage(ladyOfTheWood);
+            QuickHandStorage(ladyWood);
             DealDamage(haka.CharacterCard, battalion, 99, DamageType.Infernal);
             //nothing should have been moved to hand
             QuickHandCheck(0);
@@ -1297,7 +1279,7 @@ namespace CauldronTests
             DecisionSelectCards = new Card[] { spring, fall, summer };
             Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
             
-            MoveCards(ladyOfTheWood, new Card[] { spring, fall, summer }, ladyOfTheWood.HeroTurnTaker.Hand);
+            MoveCards(ladyWood, new Card[] { spring, fall, summer }, ladyWood.HeroTurnTaker.Hand);
             AssertNotInPlay(rebirth);
             AssertInTrash(rebirth);
         }
@@ -1310,12 +1292,12 @@ namespace CauldronTests
             //If LadyOfTheWood deals 3 or more damage to a target, destroy this card.
             Card serenity =  PlayCard("SerenityOfDawn");
 
-            DealDamage(ladyOfTheWood, haka, 2, DamageType.Cold);
+            DealDamage(ladyWood, haka, 2, DamageType.Cold);
 
             //since less than 3 damage has been dealt, serenity should not be destroyed
             AssertIsInPlay(serenity);
 
-            DealDamage(ladyOfTheWood, haka, 5, DamageType.Cold);
+            DealDamage(ladyWood, haka, 5, DamageType.Cold);
 
             //since more than 3 damage has been dealt, serenity should be destroyed
             AssertNotInPlay(serenity);
@@ -1329,13 +1311,13 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
             //At the end of your turn, if {LadyOfTheWood} dealt no damage this turn, she regains 2 HP and you may draw a card.
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
             PlayCard("SerenityOfDawn");
-            DealDamage(ladyOfTheWood, haka, 5, DamageType.Toxic);
+            DealDamage(ladyWood, haka, 5, DamageType.Toxic);
 
-            QuickHPStorage(ladyOfTheWood);
-            QuickHandStorage(ladyOfTheWood);
-            GoToEndOfTurn(ladyOfTheWood);
+            QuickHPStorage(ladyWood);
+            QuickHandStorage(ladyWood);
+            GoToEndOfTurn(ladyWood);
             //since damage was dealt, no hp should be gained
             QuickHPCheckZero();
             //since damage was dealt no cards should have been drawn
@@ -1349,13 +1331,13 @@ namespace CauldronTests
             StartGame();
 
             //set hp to have room to gain later
-            SetHitPoints(ladyOfTheWood.CharacterCard, 15);
+            SetHitPoints(ladyWood.CharacterCard, 15);
             //At the end of your turn, if {LadyOfTheWood} dealt no damage this turn, she regains 2 HP and you may draw a card.
             PlayCard("SerenityOfDawn");
             DecisionYesNo = true;
-            QuickHPStorage(ladyOfTheWood);
-            QuickHandStorage(ladyOfTheWood);
-            GoToEndOfTurn(ladyOfTheWood);
+            QuickHPStorage(ladyWood);
+            QuickHandStorage(ladyWood);
+            GoToEndOfTurn(ladyWood);
             //since no damage dealt, gain 2 HP, draw 1 card
             QuickHPCheck(2);
             QuickHandCheck(1);
@@ -1369,13 +1351,13 @@ namespace CauldronTests
             StartGame();
 
             //give room to gain HP
-            SetHitPoints(ladyOfTheWood, 10);
+            SetHitPoints(ladyWood, 10);
 
             Card gown = PlayCard("SnowshadeGown");
 
             // power: LadyOfTheWood regains 3HP.
-            GoToUsePowerPhase(ladyOfTheWood);
-            QuickHPStorage(ladyOfTheWood);
+            GoToUsePowerPhase(ladyWood);
+            QuickHPStorage(ladyWood);
             UsePower(gown);
             QuickHPCheck(3);
         }
@@ -1387,7 +1369,7 @@ namespace CauldronTests
             StartGame();
 
             //give room to gain HP
-            SetHitPoints(ladyOfTheWood, 10);
+            SetHitPoints(ladyWood, 10);
 
             //destroy mdp so baron is vulnerable
             Card mdp = GetCardInPlay("MobileDefensePlatform");
@@ -1397,12 +1379,12 @@ namespace CauldronTests
 
             // Whenever LadyOfTheWood regains HP, you may select a target that hasn't been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
 
-            GoToUsePowerPhase(ladyOfTheWood);
+            GoToUsePowerPhase(ladyWood);
 
 
             //Have baron blade and LotW have been dealt damage they aren't available for the reaction
             DealDamage(ra, baron, 5, DamageType.Fire);
-            DealDamage(ra, ladyOfTheWood, 3, DamageType.Fire);
+            DealDamage(ra, ladyWood, 3, DamageType.Fire);
             DecisionYesNo = true;
             DecisionSelectCard = ra.CharacterCard;
             QuickHPStorage(ra);
@@ -1427,7 +1409,7 @@ namespace CauldronTests
 
             // Whenever LadyOfTheWood regains HP, you may select a target that hasn't been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
 
-            GoToUsePowerPhase(ladyOfTheWood);
+            GoToUsePowerPhase(ladyWood);
 
 
             //Have baron blade and LotW have been dealt damage they aren't available for the reaction
@@ -1446,7 +1428,7 @@ namespace CauldronTests
             StartGame();
 
             //give room to gain 2 HP, but not the full 3HP from the power.
-            SetHitPoints(ladyOfTheWood, 20);
+            SetHitPoints(ladyWood, 20);
 
             //destroy mdp so baron is vulnerable
             Card mdp = GetCardInPlay("MobileDefensePlatform");
@@ -1455,13 +1437,13 @@ namespace CauldronTests
             Card gown = PlayCard("SnowshadeGown");
 
             // Whenever LadyOfTheWood regains HP, you may select a target that hasn't been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
-            GoToUsePowerPhase(ladyOfTheWood);
+            GoToUsePowerPhase(ladyWood);
 
             //deal damage to ra with the trigger
             DecisionYesNo = true;
             DecisionSelectTarget = ra.CharacterCard;
 
-            QuickHPStorage(ladyOfTheWood, ra);
+            QuickHPStorage(ladyWood, ra);
             //try to gain 3HP and trigger the reaction
             UsePower(gown);
             QuickHPCheck(2, -1);
@@ -1474,7 +1456,7 @@ namespace CauldronTests
             StartGame();
 
             //give room to gain HP
-            SetHitPoints(ladyOfTheWood, 10);
+            SetHitPoints(ladyWood, 10);
 
             //destroy mdp so baron is vulnerable
             Card mdp = GetCardInPlay("MobileDefensePlatform");
@@ -1484,12 +1466,12 @@ namespace CauldronTests
 
             // Whenever LadyOfTheWood regains HP, you may select a target that hasn't been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
 
-            GoToUsePowerPhase(ladyOfTheWood);
+            GoToUsePowerPhase(ladyWood);
 
 
             //Have baron blade and LotW have been dealt damage they aren't available for the reaction
             DealDamage(ra, baron, 5, DamageType.Fire);
-            DealDamage(ra, ladyOfTheWood, 3, DamageType.Fire);
+            DealDamage(ra, ladyWood, 3, DamageType.Fire);
             DealDamage(ra, ra, 2, DamageType.Fire);
             DealDamage(ra, haka, 2, DamageType.Fire);
             QuickHPStorage(ra);
@@ -1507,7 +1489,7 @@ namespace CauldronTests
             StartGame();
 
             //give room to gain HP
-            SetHitPoints(ladyOfTheWood, 10);
+            SetHitPoints(ladyWood, 10);
 
             //destroy mdp so baron is vulnerable
             Card mdp = GetCardInPlay("MobileDefensePlatform");
@@ -1517,7 +1499,7 @@ namespace CauldronTests
 
             // Whenever LadyOfTheWood regains HP, you may select a target that hasn't been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
 
-            GoToUsePowerPhase(ladyOfTheWood);
+            GoToUsePowerPhase(ladyWood);
 
             QuickHPStorage(baron);
             DecisionYesNo = false;
@@ -1535,7 +1517,7 @@ namespace CauldronTests
             StartGame();
 
             //give room to gain HP
-            SetHitPoints(ladyOfTheWood, 10);
+            SetHitPoints(ladyWood, 10);
 
             //destroy mdp so baron is vulnerable
             Card mdp = GetCardInPlay("MobileDefensePlatform");
@@ -1545,15 +1527,15 @@ namespace CauldronTests
 
             // Whenever LadyOfTheWood regains HP, you may select a target that hasn't been dealt damage this turn. LadyOfTheWood deals that target 1 cold damage.
 
-            GoToUsePowerPhase(ladyOfTheWood);
+            GoToUsePowerPhase(ladyWood);
 
 
             DealDamage(ra, baron, 5, DamageType.Fire);
-            DealDamage(ra, ladyOfTheWood, 3, DamageType.Fire);
+            DealDamage(ra, ladyWood, 3, DamageType.Fire);
             DecisionSelectCard = ra.CharacterCard;
             QuickHPStorage(ra);
             //Use LotW power to trigger reaction
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Cold, 1);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Cold, 1);
             UsePower(gown);
             QuickHPCheck(0);
         }
@@ -1565,26 +1547,26 @@ namespace CauldronTests
             StartGame();
 
             //set hp so room to gain more
-            SetHitPoints(ladyOfTheWood, 10);
+            SetHitPoints(ladyWood, 10);
             //put spring in play
             PutIntoPlay("Spring");
 
             //Whenever LadyOfTheWood deals toxic damage to a target, she regains that much HP.
 
             PrintSeparator("Check for toxic");
-            QuickHPStorage(ladyOfTheWood);
-            DealDamage(ladyOfTheWood, ra, 5, DamageType.Toxic);
+            QuickHPStorage(ladyWood);
+            DealDamage(ladyWood, ra, 5, DamageType.Toxic);
             //since she dealt 5 toxic damage, she should gain 5 HP
             QuickHPCheck(5);
 
             PrintSeparator("Check for non-toxic");
-            QuickHPStorage(ladyOfTheWood);
-            DealDamage(ladyOfTheWood, ra, 5, DamageType.Fire);
+            QuickHPStorage(ladyWood);
+            DealDamage(ladyWood, ra, 5, DamageType.Fire);
             //since she dealt fire damage, she should not gain HP
             QuickHPCheckZero();
 
             PrintSeparator("Check for others dealing toxic");
-            QuickHPStorage(ladyOfTheWood);
+            QuickHPStorage(ladyWood);
             DealDamage(haka, ra, 5, DamageType.Toxic);
             //since not lady of the wood dealt the damage, she should not gain hp
             QuickHPCheckZero();
@@ -1603,14 +1585,14 @@ namespace CauldronTests
 
             PrintSeparator("Check for fire");
             QuickHPStorage(ra);
-            DealDamage(ladyOfTheWood, ra, 5, DamageType.Fire);
+            DealDamage(ladyWood, ra, 5, DamageType.Fire);
             //since she dealt 5 fire damage, +2 damage, for 7 total
             QuickHPCheck(-7);
 
             PrintSeparator("Check for non-fire");
             //check bonus doesn't apply to non fire damage
             QuickHPStorage(ra);
-            DealDamage(ladyOfTheWood, ra, 5, DamageType.Toxic);
+            DealDamage(ladyWood, ra, 5, DamageType.Toxic);
             //since she dealt not fire damage, no bonus, just 5
             QuickHPCheck(-5);
 
@@ -1632,7 +1614,7 @@ namespace CauldronTests
             Card suncast = PutIntoPlay("SuncastMantle");
 
             //LadyOfTheWood deals herself 1 fire damage and 1 target 4 fire damage.
-            QuickHPStorage(ladyOfTheWood, haka, baron, ra);
+            QuickHPStorage(ladyWood, haka, baron, ra);
             DecisionSelectTarget = haka.CharacterCard;
             UsePower(suncast);
             QuickHPCheck(-1, -4, 0, 0);
@@ -1648,9 +1630,9 @@ namespace CauldronTests
             Card suncast = PutIntoPlay("SuncastMantle");
 
             //LadyOfTheWood deals herself 1 fire damage and 1 target 4 fire damage.
-            QuickHPStorage(ladyOfTheWood, haka, baron, ra);
+            QuickHPStorage(ladyWood, haka, baron, ra);
             DecisionSelectTarget = haka.CharacterCard;
-            AddReduceDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Fire, 1);
+            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
             UsePower(suncast);
             QuickHPCheck(0, -4, 0, 0);
         }
@@ -1661,7 +1643,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
             //set hp to be less than 5
-            SetHitPoints(ladyOfTheWood, 3);
+            SetHitPoints(ladyWood, 3);
             //put suncast mantle in play
             PutIntoPlay("SuncastMantle");
             Card suncast = GetCardInPlay("SuncastMantle");
@@ -1669,7 +1651,7 @@ namespace CauldronTests
             PrintSeparator("check for lady of the wood damage when hp less than 5");
             QuickHPStorage(haka);
             DecisionSelectTarget = haka.CharacterCard;
-            DealDamage(ladyOfTheWood, haka, 2, DamageType.Fire);
+            DealDamage(ladyWood, haka, 2, DamageType.Fire);
             //should be +3 for 5 damage
             QuickHPCheck(-5);
 
@@ -1682,10 +1664,10 @@ namespace CauldronTests
 
             //check when HP greater than 5
             PrintSeparator("check for when hp greater than 5");
-            SetHitPoints(ladyOfTheWood, 7);
+            SetHitPoints(ladyWood, 7);
             QuickHPStorage(haka);
             DecisionSelectTarget = haka.CharacterCard;
-            DealDamage(ladyOfTheWood, haka, 2, DamageType.Fire);
+            DealDamage(ladyWood, haka, 2, DamageType.Fire);
             //should be +0 for 2 damage
             QuickHPCheck(-2);
         }
@@ -1696,7 +1678,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            GoToUsePowerPhase(ladyOfTheWood);
+            GoToUsePowerPhase(ladyWood);
             Card shawl = PlayCard("ThundergreyShawl");
 
             // power: LadyOfTheWood deals up to 2 targets 1 lightning damage each."
@@ -1713,7 +1695,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            GoToUsePowerPhase(ladyOfTheWood);
+            GoToUsePowerPhase(ladyWood);
             Card shawl = PlayCard("ThundergreyShawl");
 
             // power: LadyOfTheWood deals up to 2 targets 1 lightning damage each."
@@ -1730,14 +1712,14 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            GoToUsePowerPhase(ladyOfTheWood);
+            GoToUsePowerPhase(ladyWood);
             Card shawl = PlayCard("ThundergreyShawl");
 
             // power: LadyOfTheWood deals up to 2 targets 1 lightning damage each."
             DecisionSelectCards = new Card[] { ra.CharacterCard, haka.CharacterCard };
             QuickHPStorage(ra, haka, baron);
             //use increase damage check since damage will be irreducible
-            AddIncreaseDamageOfDamageTypeTrigger(ladyOfTheWood, DamageType.Lightning, 1);
+            AddIncreaseDamageOfDamageTypeTrigger(ladyWood, DamageType.Lightning, 1);
             UsePower(shawl);
             QuickHPCheck(-2, -1, 0);
 
@@ -1760,13 +1742,13 @@ namespace CauldronTests
             //  Whenever LadyOfTheWood deals 2 or less damage to a target, that damage is irreducible.
             PrintSeparator("check for lady of the wood less than 2");
             QuickHPStorage(baron);
-            DealDamage(ladyOfTheWood, baron, 2, DamageType.Lightning);
+            DealDamage(ladyWood, baron, 2, DamageType.Lightning);
             //even though -1 on baron, damage is < 2 so is irreducible
             QuickHPCheck(-2);
 
             PrintSeparator("check for lady of the wood more than 2");
             QuickHPStorage(baron);
-            DealDamage(ladyOfTheWood, baron, 4, DamageType.Lightning);
+            DealDamage(ladyWood, baron, 4, DamageType.Lightning);
             //should not be irreducible
             QuickHPCheck(-3);
 
@@ -1786,7 +1768,7 @@ namespace CauldronTests
             StartGame();
 
             //set hp less than 5 to trigger suncast mantle
-            SetHitPoints(ladyOfTheWood.CharacterCard, 3);
+            SetHitPoints(ladyWood.CharacterCard, 3);
             PlayCard("SuncastMantle");
 
             //destroy mdp so baron is vulnerable
@@ -1799,7 +1781,7 @@ namespace CauldronTests
             PlayCard("ThundergreyShawl");
             //  Whenever LadyOfTheWood deals 2 or less damage to a target, that damage is irreducible.
             QuickHPStorage(baron);
-            DealDamage(ladyOfTheWood, baron, 2, DamageType.Lightning);
+            DealDamage(ladyWood, baron, 2, DamageType.Lightning);
             //because of suncast mantle, +3 damage, now 5
             //it is not irreducible, so -4 total
             QuickHPCheck(-4);
@@ -1822,8 +1804,8 @@ namespace CauldronTests
 
             QuickHPStorage(sword);
 
-            DealDamage(ladyOfTheWood, sword, 1, DamageType.Fire);
-            DealDamage(ladyOfTheWood, periapt, 1, DamageType.Fire);
+            DealDamage(ladyWood, sword, 1, DamageType.Fire);
+            DealDamage(ladyWood, periapt, 1, DamageType.Fire);
 
             //1 damage +3 boost -2 DR = 2, so Shawl applies and Periapt takes the full 4
             AssertInTrash(periapt);
@@ -1850,15 +1832,29 @@ namespace CauldronTests
             PlayCard("StunBolt"); 
             PlayCard("JudgeMental");
 
-            DecisionSelectTarget = ladyOfTheWood.CharacterCard;
+            DecisionSelectTarget = ladyWood.CharacterCard;
 
             //to give LOTW a putative "damage increase" from a hero card
             UsePower("StunBolt");
 
             QuickHPStorage(baronTeam);
-            DealDamage(ladyOfTheWood, baronTeam, 3, DamageType.Melee);
+            DealDamage(ladyWood, baronTeam, 3, DamageType.Melee);
 
             QuickHPCheck(-3);
+        }
+        [Test()]
+        public void TestThundergreyShawlLetsWouldBeDealtDamageReact()
+        {
+            SetupGameController("Apostate", "Cauldron.LadyOfTheWood", "Legacy", "Haka", "Megalopolis");
+            StartGame();
+
+            PlayCard("ThundergreyShawl");
+            Card runes = PlayCard("RunesOfMalediction");
+            Card orb = PlayCard("OrbOfDelirium");
+
+            QuickHPStorage(runes, orb);
+            DealDamage(ladyWood, runes, 1, DamageType.Melee);
+            QuickHPCheck(0, -1);
         }
         [Test()]
         public void TestWinter()
@@ -1872,19 +1868,19 @@ namespace CauldronTests
 
             //check draws when cold
             PrintSeparator("check draws when cold");
-            QuickHandStorage(ladyOfTheWood);
-            DealDamage(ladyOfTheWood, haka, 3, DamageType.Cold);
+            QuickHandStorage(ladyWood);
+            DealDamage(ladyWood, haka, 3, DamageType.Cold);
             QuickHandCheck(1);
 
             PrintSeparator("check no draws when not cold");
             //check does not draw when not cold
-            QuickHandStorage(ladyOfTheWood);
-            DealDamage(ladyOfTheWood, haka, 3, DamageType.Toxic);
+            QuickHandStorage(ladyWood);
+            DealDamage(ladyWood, haka, 3, DamageType.Toxic);
             QuickHandCheck(0);
 
             PrintSeparator("check no draws when not lady of the wood");
             //check does not draw when not cold
-            QuickHandStorage(ladyOfTheWood);
+            QuickHandStorage(ladyWood);
             DealDamage(ra, haka, 3, DamageType.Cold);
             QuickHandCheck(0);
         }
@@ -1896,10 +1892,10 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
 
             Card card = PlayCard(season);
-            AssertInPlayArea(ladyOfTheWood, card);
+            AssertInPlayArea(ladyWood, card);
             AssertCardHasKeyword(card, "season", false);
         }
 
@@ -1911,10 +1907,10 @@ namespace CauldronTests
             StartGame();
             //put a card in trash so that rebirth doesn't destroy itself
             PutInTrash("SuncastMantle");
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
 
             Card card = PlayCard(ongoing);
-            AssertInPlayArea(ladyOfTheWood, card);
+            AssertInPlayArea(ladyWood, card);
             AssertCardHasKeyword(card, "ongoing", false);
         }
 
@@ -1925,10 +1921,10 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
 
             Card card = PlayCard(equipment);
-            AssertInPlayArea(ladyOfTheWood, card);
+            AssertInPlayArea(ladyWood, card);
             AssertCardHasKeyword(card, "equipment", false);
         }
 
@@ -1939,10 +1935,10 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
 
             Card card = PlayCard(limited);
-            AssertInPlayArea(ladyOfTheWood, card);
+            AssertInPlayArea(ladyWood, card);
             AssertCardHasKeyword(card, "limited", false);
         }
 
@@ -1953,10 +1949,10 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
 
             Card card = PlayCard(relic);
-            AssertInPlayArea(ladyOfTheWood, card);
+            AssertInPlayArea(ladyWood, card);
             AssertCardHasKeyword(card, "relic", false);
         }
 
@@ -1967,10 +1963,10 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
-            GoToPlayCardPhase(ladyOfTheWood);
+            GoToPlayCardPhase(ladyWood);
 
             Card card = PlayCard(oneshot);
-            AssertInTrash(ladyOfTheWood, card);
+            AssertInTrash(ladyWood, card);
             AssertCardHasKeyword(card, "one-shot", false);
         }
     }
