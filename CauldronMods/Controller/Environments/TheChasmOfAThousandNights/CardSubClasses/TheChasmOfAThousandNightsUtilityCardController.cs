@@ -16,6 +16,8 @@ namespace Cauldron.TheChasmOfAThousandNights
 
         public static readonly string IreOfTheDjinnIdentifier = "IreOfTheDjinn";
 
+        protected Card TheChasm => TurnTaker.FindCard(TheChasmOfAThousandNightsCardController.Identifier, realCardsOnly: false);
+
         private IEnumerable<Card> FindIreOfTheDjinn()
         {
             return base.FindCardsWhere(c => c.Identifier == IreOfTheDjinnIdentifier);

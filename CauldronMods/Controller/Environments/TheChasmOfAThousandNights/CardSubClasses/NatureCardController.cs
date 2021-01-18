@@ -20,7 +20,12 @@ namespace Cauldron.TheChasmOfAThousandNights
         }
 
         public override bool CanBeDestroyed => false;
-        
+
+        public override IEnumerator DestroyAttempted(DestroyCardAction destroyCard)
+        {
+            return GameController.SendMessageAction($"{TheChasm.Title} makes this card indestructible.", Priority.Medium, FindCardController(TheChasm).GetCardSource());
+        }
+
         protected void AddIfTheTargetThatThisCardIsBelowLeavesPlayMoveBackUnderTrigger()
         {
             if (Card.Location.OwnerCard == null || GetCardThisCardIsBelow() == null)
@@ -39,8 +44,7 @@ namespace Cauldron.TheChasmOfAThousandNights
 
         private IEnumerator MoveAfterBelowCardLeavesPlay()
         {
-            Card chasm = TurnTaker.FindCard(TheChasmOfAThousandNightsCardController.Identifier, realCardsOnly: false);
-            string message = Card.Title + " returns itself to " + chasm.Title + "!";
+            string message = Card.Title + " returns itself to " + TheChasm.Title + "!";
 
             IEnumerator coroutine = base.GameController.SendMessageAction(message, Priority.Medium, base.GetCardSource());
             if (base.UseUnityCoroutines)
@@ -51,7 +55,8 @@ namespace Cauldron.TheChasmOfAThousandNights
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            coroutine = GameController.MoveCard(TurnTakerController, Card, chasm.UnderLocation, evenIfIndestructible: true, flipFaceDown: true, cardSource: GetCardSource());
+
+            coroutine = GameController.MoveCard(TurnTakerController, Card, TheChasm.UnderLocation, evenIfIndestructible: true, flipFaceDown: true, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

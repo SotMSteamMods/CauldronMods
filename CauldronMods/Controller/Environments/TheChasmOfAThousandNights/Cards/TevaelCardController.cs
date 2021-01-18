@@ -12,14 +12,14 @@ namespace Cauldron.TheChasmOfAThousandNights
     {
         public TevaelCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
             SpecialStringMaker.ShowNonEnvironmentTargetWithHighestHP(ranking: 3);
         }
 
-        public override bool AskIfCardIsIndestructible(Card card)
+        public override bool CanBeDestroyed => Card.HitPoints <= 0;
+
+        public override IEnumerator DestroyAttempted(DestroyCardAction destroyCard)
         {
-            //This card is indestructible while it has more than 0 HP.
-            return card == Card && card.HitPoints > 0;
+            return GameController.SendMessageAction($"{Card.Title} is indestructible while it has more than 0 HP.", Priority.Medium, GetCardSource());
         }
 
         public override void AddTriggers()
