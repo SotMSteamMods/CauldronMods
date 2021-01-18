@@ -126,6 +126,23 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestNaturesIndestructible()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheChasmOfAThousandNights");
+            StartGame();
+
+            Card djinn = PlayCard("HighTemoq");
+            Card nature = djinn.BelowLocation.TopCard;
+            
+            AssertBelowCard(nature, djinn);
+
+            DestroyCard(nature, baron.CharacterCard);
+
+            //no change
+            AssertBelowCard(nature, djinn);
+        }
+
+        [Test()]
         public void TestAxion()
         {
             SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheChasmOfAThousandNights" });

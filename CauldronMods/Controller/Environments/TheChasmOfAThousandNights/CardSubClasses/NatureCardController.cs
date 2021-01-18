@@ -7,12 +7,10 @@ using System.Linq;
 
 namespace Cauldron.TheChasmOfAThousandNights
 {
-    public class NatureCardController : TheChasmOfAThousandNightsUtilityCardController
+    public abstract class NatureCardController : TheChasmOfAThousandNightsUtilityCardController
     {
-
-        public NatureCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected NatureCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
         }
 
         public override void AddTriggers()
@@ -21,41 +19,26 @@ namespace Cauldron.TheChasmOfAThousandNights
             AddIfTheTargetThatThisCardIsBelowLeavesPlayMoveBackUnderTrigger();
         }
 
-        public override bool AskIfCardIsIndestructible(Card card)
-        {
-            //This card is indestructible.
-            return card == Card;
-        }
-
-        protected void AddIfTheTargetThatThisCardIsBelowLeavesPlayMoveBackUnderTrigger(IEnumerator doThisFirst = null)
+        public override bool CanBeDestroyed => false;
+        
+        protected void AddIfTheTargetThatThisCardIsBelowLeavesPlayMoveBackUnderTrigger()
         {
             if (Card.Location.OwnerCard == null || GetCardThisCardIsBelow() == null)
             {
                 return;
             }
-            AddTrigger((MoveCardAction moveCard) => GetCardThisCardIsBelow() == moveCard.CardToMove && !moveCard.Destination.IsInPlayAndNotUnderCard, (MoveCardAction d) => MoveAfterBelowCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
-            AddTrigger((BulkMoveCardsAction bulkMove) => bulkMove.CardsToMove.Where((Card c) => GetCardThisCardIsBelow() == c).Count() > 0, (BulkMoveCardsAction d) => MoveAfterBelowCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
-            AddTrigger((FlipCardAction flip) => GetCardThisCardIsBelow() == flip.CardToFlip.Card && flip.CardToFlip.Card.IsFaceDownNonCharacter, (FlipCardAction d) => MoveAfterBelowCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
-            AddTrigger((RemoveTargetAction remove) => GetCardThisCardIsBelow() == remove.CardToRemoveTarget, (RemoveTargetAction d) => MoveAfterBelowCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
-            AddTrigger((BulkRemoveTargetsAction remove) => remove.CardsToRemoveTargets.Contains(GetCardThisCardIsBelow()), (BulkRemoveTargetsAction d) => MoveAfterBelowCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
-            AddTrigger((TargetLeavesPlayAction a) => GetCardThisCardIsBelow() == a.TargetLeavingPlay, (TargetLeavesPlayAction d) => MoveAfterBelowCardLeavesPlay(doThisFirst), TriggerType.MoveCard, TriggerTiming.After);
-           
+            AddTrigger((MoveCardAction moveCard) => GetCardThisCardIsBelow() == moveCard.CardToMove && !moveCard.Destination.IsInPlayAndNotUnderCard, (MoveCardAction d) => MoveAfterBelowCardLeavesPlay(), TriggerType.MoveCard, TriggerTiming.After);
+            AddTrigger((BulkMoveCardsAction bulkMove) => bulkMove.CardsToMove.Where((Card c) => GetCardThisCardIsBelow() == c).Any(), (BulkMoveCardsAction d) => MoveAfterBelowCardLeavesPlay(), TriggerType.MoveCard, TriggerTiming.After);
+            AddTrigger((FlipCardAction flip) => GetCardThisCardIsBelow() == flip.CardToFlip.Card && flip.CardToFlip.Card.IsFaceDownNonCharacter, (FlipCardAction d) => MoveAfterBelowCardLeavesPlay(), TriggerType.MoveCard, TriggerTiming.After);
+            AddTrigger((TargetLeavesPlayAction a) => GetCardThisCardIsBelow() == a.TargetLeavingPlay, (TargetLeavesPlayAction d) => MoveAfterBelowCardLeavesPlay(), TriggerType.MoveCard, TriggerTiming.After);
+
+            //Target-ness removed from card
+            AddTrigger((RemoveTargetAction remove) => GetCardThisCardIsBelow() == remove.CardToRemoveTarget, (RemoveTargetAction d) => MoveAfterBelowCardLeavesPlay(), TriggerType.MoveCard, TriggerTiming.After);
+            AddTrigger((BulkRemoveTargetsAction remove) => remove.CardsToRemoveTargets.Contains(GetCardThisCardIsBelow()), (BulkRemoveTargetsAction d) => MoveAfterBelowCardLeavesPlay(), TriggerType.MoveCard, TriggerTiming.After);
         }
 
-        private IEnumerator MoveAfterBelowCardLeavesPlay(IEnumerator doThisFirst)
+        private IEnumerator MoveAfterBelowCardLeavesPlay()
         {
-            IEnumerator enumerator = doThisFirst;
-            if (enumerator != null)
-            {
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(enumerator);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(enumerator);
-                }
-            }
             Card chasm = TurnTaker.FindCard(TheChasmOfAThousandNightsCardController.Identifier, realCardsOnly: false);
             string message = Card.Title + " returns itself to " + chasm.Title + "!";
 
@@ -68,16 +51,15 @@ namespace Cauldron.TheChasmOfAThousandNights
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            enumerator = GameController.MoveCard(TurnTakerController, Card, chasm.UnderLocation, evenIfIndestructible: true, flipFaceDown: true, cardSource: GetCardSource());
+            coroutine = GameController.MoveCard(TurnTakerController, Card, chasm.UnderLocation, evenIfIndestructible: true, flipFaceDown: true, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
-                yield return GameController.StartCoroutine(enumerator);
+                yield return GameController.StartCoroutine(coroutine);
             }
             else
             {
-                GameController.ExhaustCoroutine(enumerator);
+                GameController.ExhaustCoroutine(coroutine);
             }
         }
-
     }
 }
