@@ -8,7 +8,7 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class TheChasmOfAThousandNightsTests : BaseTest
+    public class TheChasmOfAThousandNightsTests : CauldronBaseTest
     {
 
         #region ChasmrHelperFunctions
@@ -25,13 +25,6 @@ namespace CauldronTests
 
         protected Card chasmCard { get { return FindCardsWhere(c => c.Identifier == "TheChasmOfAThousandNights", realCardsOnly: false).First(); } }
 
-        protected void AddCannotDealDamageTrigger(TurnTakerController ttc, Card specificCard)
-        {
-            CannotDealDamageStatusEffect cannotDealDamageEffect = new CannotDealDamageStatusEffect();
-            cannotDealDamageEffect.SourceCriteria.IsSpecificCard = specificCard;
-            cannotDealDamageEffect.UntilStartOfNextTurn(ttc.TurnTaker);
-            this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageEffect, true, new CardSource(ttc.CharacterCardController)));
-        }
         #endregion
 
         [Test()]
@@ -40,7 +33,6 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheChasmOfAThousandNights");
             StartGame();
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
-
         }
 
         [Test()]
@@ -91,6 +83,7 @@ namespace CauldronTests
             AssertIsInPlay(card);
             Assert.IsFalse(card.Definition.Keywords.Any(), $"{card.Title} has keywords when it shouldn't.");
         }
+
         [Test()]
         public void TestNaturesReturnWhenAbandoned_NextToDestroyed()
         {
@@ -104,7 +97,6 @@ namespace CauldronTests
             DestroyCard(djinn, baron.CharacterCard);
             AssertUnderCard(chasmCard, nature);
             AssertFlipped(nature);
-
         }
 
         [Test()]
@@ -122,7 +114,6 @@ namespace CauldronTests
             UsePower(legacy);
             AssertUnderCard(chasmCard, nature);
             AssertFlipped(nature);
-
         }
 
         [Test()]
@@ -133,7 +124,7 @@ namespace CauldronTests
 
             Card djinn = PlayCard("HighTemoq");
             Card nature = djinn.BelowLocation.TopCard;
-            
+
             AssertBelowCard(nature, djinn);
 
             DestroyCard(nature, baron.CharacterCard);
@@ -176,7 +167,6 @@ namespace CauldronTests
                     QuickHPCheck(-1, -1, 0, 0, 0);
                     break;
             }
-
         }
 
         [Test()]
@@ -214,7 +204,6 @@ namespace CauldronTests
                     QuickHPCheck(-3, 0, 0, -3, 0);
                     break;
             }
-
         }
 
         [Test()]
@@ -251,7 +240,6 @@ namespace CauldronTests
                     QuickHPCheck(0, -3, 0, 0, 0);
                     break;
             }
-
         }
 
         [Test()]
@@ -288,7 +276,6 @@ namespace CauldronTests
                     QuickHPCheck(-1, -1, -1, -1, 0);
                     break;
             }
-
         }
 
         [Test()]
@@ -328,7 +315,6 @@ namespace CauldronTests
                     QuickHPCheck(0, 0, -2, -2, -2, 0);
                     break;
             }
-
         }
 
         [Test()]
@@ -368,7 +354,6 @@ namespace CauldronTests
                     QuickHPCheck(0, -2, 0, 0, 0, -2);
                     break;
             }
-
         }
 
         [Test()]
@@ -408,7 +393,6 @@ namespace CauldronTests
                     QuickHPCheck(0, 0, -4, 0, 0, 0);
                     break;
             }
-
         }
 
         [Test()]
@@ -417,7 +401,7 @@ namespace CauldronTests
             SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheChasmOfAThousandNights" });
             StartGame();
             DestroyNonCharacterVillainCards();
-            
+
             GoToPlayCardPhase(chasm);
             Card djinn = PlayCard("Tevael");
             Card nature = djinn.BelowLocation.TopCard;
@@ -425,7 +409,6 @@ namespace CauldronTests
             AssertIsInPlay(djinn);
             DealDamage(baron, djinn, 10000, DamageType.Melee);
             AssertInTrash(djinn);
-
         }
 
         [Test()]
@@ -638,7 +621,6 @@ namespace CauldronTests
             QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, tachyon.CharacterCard, axion, gul);
             GoToEndOfTurn(chasm);
             QuickHPCheck(-4, -4, -4, -4, -4, 0, 0);
-
         }
 
         [Test()]
@@ -661,7 +643,6 @@ namespace CauldronTests
             PrintSeparator("Finished Checking Triggers");
             GoToEndOfTurn(chasm);
             QuickHPCheck(0, 0, 0, -2, 0);
-
         }
 
         [Test()]
@@ -681,7 +662,6 @@ namespace CauldronTests
             // At the start of the environment turn, destroy this card.
             GoToStartOfTurn(chasm);
             AssertInTrash(ire);
-
         }
 
         [Test()]
@@ -703,8 +683,6 @@ namespace CauldronTests
             // At the start of the environment turn, destroy this card.
             GoToStartOfTurn(chasm);
             AssertInTrash(ire);
-
         }
     }
-
 }
