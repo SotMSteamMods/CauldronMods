@@ -12,6 +12,7 @@ namespace Cauldron.TheChasmOfAThousandNights
     {
         public IreOfTheDjinnCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
         public override void AddTriggers()
