@@ -12,6 +12,7 @@ namespace Cauldron.WindmillCity
     {
         public FrameJobCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria(c => IsResponder(c), "responder")).Condition = () => !Card.IsInPlayAndHasGameText;
             SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
