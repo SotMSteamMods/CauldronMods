@@ -24,7 +24,7 @@ namespace Cauldron.TheKnight
         {
             //"Each player may draw a card, or take an Equipment or Ongoing card from their trash and put it on top of their deck.",
             IEnumerator coroutine = base.EachPlayerSelectsFunction((HeroTurnTakerController h) => !h.IsIncapacitatedOrOutOfGame, httc => ChoiceFunction(httc), 0,
-                outputIfCannotChooseFunction: httc => httc.Name + " has no cards in their trash.");
+                outputIfCannotChooseFunction: httc => httc.Name + " has no cards in their trash and cannot draw cards.");
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
