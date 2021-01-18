@@ -357,5 +357,49 @@ namespace CauldronTests
             AssertInTrash(hakaDiscard);
         }
 
+        [Test()]
+        public void TestWCPDSquad()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            Card emergency = PlayCard("BridgeDisaster");
+            GoToEndOfTurn(haka);
+            //When this card enters play, it deals each villain target 1 projectile damage.
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            DecisionAutoDecideIfAble = true;
+            DecisionSelectCards = new Card[] { emergency, baron.CharacterCard };
+            Card squad = PlayCard("WCPDSquad");
+            QuickHPCheck(-1, -1, 0, 0, 0);
+            //At the start of the environment turn, the players may destroy 1 Emergency card. If a card is destroyed this way, this card deals 1 target 3 projectile damage.
+            QuickHPUpdate();
+            GoToStartOfTurn(windmill);
+            AssertInTrash(emergency);
+            QuickHPCheck(-3, 0, 0, 0,0);
+        }
+
+        [Test()]
+        public void TestWCPDSquad_OptionalDestroy()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            Card emergency = PlayCard("BridgeDisaster");
+            GoToEndOfTurn(haka);
+            //When this card enters play, it deals each villain target 1 projectile damage.
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            DecisionAutoDecideIfAble = true;
+            DecisionSelectCards = new Card[] { null };
+            Card squad = PlayCard("WCPDSquad");
+            QuickHPCheck(-1, -1, 0, 0, 0);
+            //At the start of the environment turn, the players may destroy 1 Emergency card. If a card is destroyed this way, this card deals 1 target 3 projectile damage.
+            QuickHPUpdate();
+            GoToStartOfTurn(windmill);
+            AssertInPlayArea(windmill, emergency);
+            QuickHPCheck(0, 0, 0, 0, 0);
+        }
+
     }
 }
