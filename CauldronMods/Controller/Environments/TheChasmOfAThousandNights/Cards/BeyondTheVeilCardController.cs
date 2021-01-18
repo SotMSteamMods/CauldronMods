@@ -12,7 +12,6 @@ namespace Cauldron.TheChasmOfAThousandNights
     {
         public BeyondTheVeilCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, cardCriteria: new LinqCardCriteria(c => c.IsTarget, "target"));
             SpecialStringMaker.ShowHasBeenUsedThisTurn(FirstTimeDiscard);
         }
         private static readonly string FirstTimeDiscard = "FirstTimeDiscard";
@@ -42,7 +41,7 @@ namespace Cauldron.TheChasmOfAThousandNights
         {
             SetCardPropertyToTrueIfRealAction(FirstTimeDiscard);
             List<Card> storedCharacter = new List<Card>();
-            IEnumerator coroutine = FindCharacterCardToTakeDamage(dca.CardToDiscard.Owner.ToHero(), storedCharacter, base.CharacterCard, 1, DamageType.Energy);
+            IEnumerator coroutine = FindCharacterCardToTakeDamage(dca.CardToDiscard.Owner.ToHero(), storedCharacter, base.CharacterCard, 1, DamageType.Psychic);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
