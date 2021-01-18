@@ -524,6 +524,48 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestWCPDChariot()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            GoToPlayCardPhase(windmill);
+            Card chariot = PlayCard("WCPDChariot");
+            //At the end of the environment turn, this card deals the non-environment target with the second lowest HP {H - 1} projectile damage.
+            //If a hero target would be dealt damage this way, that hero may discard 2 cards to redirect that damage to a non-environment target.
+            DecisionYesNo = true;
+            DecisionSelectTarget = baron.CharacterCard;
+            QuickHPStorage(baron, ra, legacy, haka);
+            QuickHandStorage(ra, legacy, haka);
+            GoToEndOfTurn(windmill);
+            QuickHPCheck(-2, 0, 0, 0);
+            QuickHandCheck(0, -2, 0);
+        }
+
+        [Test()]
+        public void TestWCPDChariot_CheckForNoRedirects()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            GoToPlayCardPhase(windmill);
+            SetHitPoints(baron, 31);
+            Card chariot = PlayCard("WCPDChariot");
+            //At the end of the environment turn, this card deals the non-environment target with the second lowest HP {H - 1} projectile damage.
+            //If a hero target would be dealt damage this way, that hero may discard 2 cards to redirect that damage to a non-environment target.
+            DecisionYesNo = true;
+            DecisionSelectTarget = baron.CharacterCard;
+            QuickHPStorage(baron, ra, legacy, haka);
+            QuickHandStorage(ra, legacy, haka);
+            GoToEndOfTurn(windmill);
+            QuickHPCheck(-2, 0, 0, 0);
+            QuickHandCheck(0, 0, 0);
+
+            DealDamage(chariot, ra, 3, DamageType.Fire);
+            QuickHandCheckZero();
+        }
+
+        [Test()]
         public void TestWCPDSquad()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
