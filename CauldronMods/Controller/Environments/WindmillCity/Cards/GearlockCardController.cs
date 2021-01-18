@@ -13,5 +13,43 @@ namespace Cauldron.WindmillCity
         public GearlockCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        private bool _triggered;
+        public override void AddTriggers()
+        {
+            //Reduce damage dealt to this card by {H - 1}.
+            AddReduceDamageTrigger((Card c) => c == Card, Game.H - 1);
+
+            //Whenever this card is dealt damage, it deals the source of that damage 3 lightning damage.
+            AddCounterDamageTrigger((DealDamageAction dd) => dd.Target == Card, () => Card, () => Card, false, 3, DamageType.Lightning);
+
+            //When this card is reduced to 0 HP, play the top card of each hero deck in turn order.
+            AddTrigger((GameAction a) => !_triggered && base.Card.HitPoints.Value <= 0, LessThanZeroResponse, TriggerType.PlayCard, TriggerTiming.Before);
+        }
+
+        private IEnumerator LessThanZeroResponse(GameAction action)
+        {
+            _triggered = true;
+            IEnumerator coroutine = GameController.SendMessageAction($"{Card.Title} plays the top card of each hero deck!", Priority.Medium, GetCardSource(), showCardSource: true);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            coroutine = PlayTopCardOfEachDeckInTurnOrder((TurnTakerController ttc) => ttc.IsHero, (Location loc) => loc.IsHero);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            _triggered = false;
+            yield break;
+        }
     }
 }

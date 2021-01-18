@@ -284,6 +284,35 @@ namespace CauldronTests
             QuickHPCheck(-5, 0, 0, 0);
         }
 
+        [Test()]
+        public void TestGearlock()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card gearlock = PlayCard("Gearlock");
+
+            //Reduce damage dealt to this card by {H - 1}.
+            //Whenever this card is dealt damage, it deals the source of that damage 3 lightning damage.
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, gearlock);
+            DealDamage(ra, gearlock, 4, DamageType.Fire);
+            QuickHPCheck(0, -3, 0, 0, -2);
+
+            //When this card is reduced to 0 HP, play the top card of each hero deck in turn order.
+            Card baronTop = PutOnDeck("MobileDefensePlatform");
+            Card raTop = PutOnDeck("FlameBarrier");
+            Card legacyTop = PutOnDeck("NextEvolution");
+            Card hakaTop = PutOnDeck("Mere");
+
+            DealDamage(baron, gearlock, 20, DamageType.Fire);
+            AssertInTrash(gearlock);
+            AssertOnTopOfDeck(baronTop);
+            AssertIsInPlay(raTop);
+            AssertIsInPlay(legacyTop);
+            AssertIsInPlay(hakaTop);
+        }
+
 
 
         [Test()]
