@@ -46,7 +46,7 @@ namespace Cauldron.TheChasmOfAThousandNights
         {
             bool? flag = g.DoesFirstCardAffectSecondCard((Card c) => !c.IsEnvironment, (Card c) => c == base.Card || Card.UnderLocation.HasCard(c));
 
-            if (flag != null && flag.Value)
+            if (flag.HasValue && flag.Value)
             {
                 return false;
             }

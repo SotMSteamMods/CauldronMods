@@ -48,7 +48,6 @@ namespace CauldronTests
             Card card = GetCard(nature);
             if (!card.IsInPlayAndHasGameText)
             {
-                FlipCard(card);
                 MoveCard(chasm, card, djinn.BelowLocation);
             }
             AssertIsInPlay(card);
