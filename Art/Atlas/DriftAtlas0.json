@@ -18,7 +18,7 @@
 },
 "AttenuationField.png":
 {
-	"frame": {"x":1077,"y":518,"w":256,"h":188},
+	"frame": {"x":1258,"y":518,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -58,7 +58,7 @@
 },
 "BorrowedTime.png":
 {
-	"frame": {"x":1336,"y":518,"w":256,"h":188},
+	"frame": {"x":1517,"y":518,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -66,7 +66,7 @@
 },
 "DanceOfTheDragons.png":
 {
-	"frame": {"x":1595,"y":518,"w":256,"h":188},
+	"frame": {"x":1776,"y":518,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -128,9 +128,17 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"DualDriftCharacterBack.png":
+"DualDriftCharacter.png":
 {
 	"frame": {"x":896,"y":518,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
+"DualDriftCharacterBack.png":
+{
+	"frame": {"x":1077,"y":518,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
@@ -351,6 +359,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:172347d9e3d98fc359c1253572f9ad09:c22c64fbc4723317fd6274c9cd505753:fa5de8c0f8bc6d138da9987d1682d33b$"
+	"smartupdate": "$TexturePacker:SmartUpdate:6f14984beb3317422fe551344e7d2b79:3aad4954203ee468a9f5ddd351d2c3ef:fa5de8c0f8bc6d138da9987d1682d33b$"
 }
 }

@@ -6,10 +6,10 @@
         "DriftCharacter"
     ],
     "initialOffToTheSideCardIdentifiers":[
-        "ShiftTrack1",
-        "ShiftTrack2",
-        "ShiftTrack3",
-        "ShiftTrack4",
+        "BaseShiftTrack1",
+        "BaseShiftTrack2",
+        "BaseShiftTrack3",
+        "BaseShiftTrack4",
         "PastDriftCharacter",
         "FutureDriftCharacter",
         "DualShiftTrack1",
@@ -859,7 +859,7 @@
             "foilBackgroundColor": "FEFEFE",
             "hitpointColor": "ECCD96",
             "character": true,
-            "hitpoints": 1921,
+            "isReal":false,
             "nemesisIdentifiers": [
                 "Drift"
             ],
