@@ -26,7 +26,17 @@ namespace Cauldron.Drift
             //1. Place your active character on your current shift track space.
             //2. Place the shift token on your inactive character's shift track space.
             //3. Switch which character is active.
-            base.AddTrigger<GameAction>((GameAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<ActivateAbilityAction>((ActivateAbilityAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<DiscardCardAction>((DiscardCardAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<DrawCardAction>((DrawCardAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<GainHPAction>((GainHPAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<GiveHighFiveAction>((GiveHighFiveAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<ModifyTokensAction>((ModifyTokensAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<MoveCardAction>((MoveCardAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<PhaseChangeAction>((PhaseChangeAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<UsePowerAction>((UsePowerAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
         }
 
         private IEnumerator TrackResponse(GameAction action)
