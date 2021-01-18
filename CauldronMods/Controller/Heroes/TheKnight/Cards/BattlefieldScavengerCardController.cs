@@ -16,7 +16,7 @@ namespace Cauldron.TheKnight
             var ss = SpecialStringMaker.ShowNumberOfCardsAtLocations(() => query, new LinqCardCriteria(c => IsEquipment(c) || c.IsOngoing, "equipment or ongoing"));
             ss.Condition = () => GameController.HeroTurnTakerControllers.Any(httc => httc.TurnTaker.Trash.Cards.Any(c => IsEquipment(c) || c.IsOngoing));
 
-            ss = SpecialStringMaker.ShowSpecialString(() => "No hero has has any equipment or ongoing cards in their trash.");
+            ss = SpecialStringMaker.ShowSpecialString(() => "No hero has any equipment or ongoing cards in their trash.");
             ss.Condition = () => GameController.HeroTurnTakerControllers.All(httc => !httc.TurnTaker.Trash.Cards.Any(c => IsEquipment(c) || c.IsOngoing));
         }
 
@@ -40,9 +40,9 @@ namespace Cauldron.TheKnight
         {
             var drawACard = new Function(httc, "Draw a card", SelectionType.DrawCard, () => this.DrawCard(httc.HeroTurnTaker), CanDrawCards(httc));
 
-            var criteria = new LinqCardCriteria(c => IsEquipment(c) || c.IsOngoing, "equipment or ongoing");
+            var criteria = new LinqCardCriteria(c => c.IsInLocation(httc.TurnTaker.Trash) && (IsEquipment(c) || c.IsOngoing), "equipment or ongoing");
             var coroutine = this.GameController.SelectCardFromLocationAndMoveIt(httc, httc.HeroTurnTaker.Trash, criteria, new[] { new MoveCardDestination(httc.HeroTurnTaker.Deck) }, showOutput: true, cardSource: this.GetCardSource());
-            var pullFromTrash = new Function(httc, "Select an Equipment or Ongoing from the trash to put on top of your deck", SelectionType.MoveCardOnDeck, () => coroutine, httc.HeroTurnTaker.Trash.HasCards);
+            var pullFromTrash = new Function(httc, "Select an Equipment or Ongoing from the trash to put on top of your deck", SelectionType.MoveCardOnDeck, () => coroutine, httc.FindCardsWhere(criteria.Criteria).Any());
 
             return new Function[]
             {
