@@ -12,6 +12,7 @@ namespace Cauldron.TheChasmOfAThousandNights
     {
         public BeyondTheVeilCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, cardCriteria: new LinqCardCriteria(c => c.IsTarget, "target")).Condition = () => !Card.IsInPlay;
             SpecialStringMaker.ShowHasBeenUsedThisTurn(FirstTimeDiscard);
         }
         private static readonly string FirstTimeDiscard = "FirstTimeDiscard";
