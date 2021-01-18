@@ -23,21 +23,21 @@ namespace Cauldron.TheChasmOfAThousandNights
 
         private IEnumerator DiscardCardResponse(DealDamageAction dd)
         {
-			HeroTurnTakerController heroTurnTakerController = base.GameController.FindHeroTurnTakerController(dd.Target.Owner.ToHero());
-			if (heroTurnTakerController.NumberOfCardsInHand < 1)
-			{
-				yield break;
-			}
-			IEnumerator coroutine = SelectAndDiscardCards(heroTurnTakerController, 1);
-			if (base.UseUnityCoroutines)
-			{
-				yield return base.GameController.StartCoroutine(coroutine);
-			}
-			else
-			{
-				base.GameController.ExhaustCoroutine(coroutine);
-			}
-			yield break;
-		}
+            HeroTurnTakerController heroTurnTakerController = base.GameController.FindHeroTurnTakerController(dd.Target.Owner.ToHero());
+            if (heroTurnTakerController.NumberOfCardsInHand < 1)
+            {
+                yield break;
+            }
+            IEnumerator coroutine = SelectAndDiscardCards(heroTurnTakerController, 1, gameAction: dd);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
     }
 }

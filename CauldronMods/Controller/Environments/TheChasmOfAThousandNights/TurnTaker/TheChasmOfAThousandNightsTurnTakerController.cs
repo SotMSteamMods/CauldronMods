@@ -16,8 +16,8 @@ namespace Cauldron.TheChasmOfAThousandNights
         public override IEnumerator StartGame()
         {
             List<Card> natures = (from c in TurnTaker.GetAllCards(true)
-                                where IsNature(c) && !c.Location.IsOutOfGame
-                                select c).ToList();
+                                  where IsNature(c) && !c.Location.IsOutOfGame
+                                  select c).ToList();
             List<CardController> natureCC = new List<CardController>();
             foreach (Card item in natures)
             {
@@ -36,30 +36,22 @@ namespace Cauldron.TheChasmOfAThousandNights
 
             CardController chasmCardController = base.GameController.FindCardController(chasm);
 
-
             //move all nature cards to under the chasm card face down
             //shuffle the cards under the chasm card
             IEnumerator coroutine = GameController.BulkMoveCards(this, natures, chasm.UnderLocation, cardSource: chasmCardController.GetCardSource());
-            IEnumerator coroutine3 = GameController.ShuffleLocation(TurnTaker.Deck);
             IEnumerator coroutine2 = GameController.FlipCards(natureCC, cardSource: chasmCardController.GetCardSource());
-            //IEnumerator coroutine4 = GameController.FlipCard(chasmCardController, cardSource: chasmCardController.GetCardSource());
+            IEnumerator coroutine3 = GameController.ShuffleLocation(TurnTaker.Deck);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
                 yield return base.GameController.StartCoroutine(coroutine2);
                 yield return base.GameController.StartCoroutine(coroutine3);
-               // yield return base.GameController.StartCoroutine(coroutine4);
-
-
             }
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
                 base.GameController.ExhaustCoroutine(coroutine2);
                 base.GameController.ExhaustCoroutine(coroutine3);
-               // base.GameController.ExhaustCoroutine(coroutine4);
-
-
             }
 
             yield break;

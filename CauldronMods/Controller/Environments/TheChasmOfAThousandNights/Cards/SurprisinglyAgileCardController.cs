@@ -17,7 +17,7 @@ namespace Cauldron.TheChasmOfAThousandNights
         public override void AddTriggers()
         {
             //Reduce damage dealt to the target next to this card by 1.
-            AddReduceDamageTrigger((Card c) => GetCardThisCardIsBelow() != null && c == GetCardThisCardIsBelow(),1);
+            AddReduceDamageTrigger((Card c) => GetCardThisCardIsBelow() != null && c == GetCardThisCardIsBelow(), 1);
             base.AddTriggers();
         }
     }

@@ -17,7 +17,7 @@ namespace Cauldron.TheChasmOfAThousandNights
         public override void AddTriggers()
         {
             // Redirect all damage dealt by environment targets to the hero target with the highest HP. Nature cards cannot redirect this damage.
-            AddTrigger((DealDamageAction dd) =>dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card.IsEnvironmentTarget && GameController.IsCardVisibleToCardSource(dd.DamageSource.Card, GetCardSource()), RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
+            AddTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card.IsEnvironmentTarget && GameController.IsCardVisibleToCardSource(dd.DamageSource.Card, GetCardSource()), RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
 
             // At the start of the environment turn, destroy this card.
             AddStartOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DestroyThisCardResponse, TriggerType.DestroySelf);
@@ -26,7 +26,6 @@ namespace Cauldron.TheChasmOfAThousandNights
         private IEnumerator RedirectDamageResponse(DealDamageAction dealDamage)
         {
             IEnumerator coroutine = RedirectDamage(dealDamage, TargetType.HighestHP, (Card c) => c.IsHero && GameController.IsCardVisibleToCardSource(c, GetCardSource()));
-
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -53,7 +52,7 @@ namespace Cauldron.TheChasmOfAThousandNights
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
-            if(DidSelectTurnTaker(storedDraws))
+            if (DidSelectTurnTaker(storedDraws))
             {
                 usedHeroes.Add(GetSelectedTurnTaker(storedDraws));
             }
@@ -87,7 +86,7 @@ namespace Cauldron.TheChasmOfAThousandNights
                     }
                 }
             }
-            
+
             yield break;
         }
     }
