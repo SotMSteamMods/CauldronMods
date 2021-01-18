@@ -182,10 +182,9 @@
 			],
 			"body": [
 				"Play this card next to a target.",
-				"Whenever that target would take damage, redirect that damage to {TheKnight}. Damage redirected this way is irreducible."
-			],
-			"powers": [
-				"Destroy this card."
+				"Whenever that target would take damage, redirect that damage to {TheKnight}. Damage redirected this way is irreducible.",
+				"{TheKnight} gains the power:",
+				"[b]Power:[/b] Destroy Knight's Honor."
 			],
 			"flavorQuotes": [{
 				"identifier": "TheKnight",
