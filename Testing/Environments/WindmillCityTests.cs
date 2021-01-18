@@ -289,6 +289,48 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestIntrepidReporter()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card emergency = PlayCard("BridgeDisaster");
+            //When this card enters play, 2 players may each draw a card.
+            DecisionSelectTurnTakers = new TurnTaker[] { legacy.TurnTaker, ra.TurnTaker, legacy.TurnTaker };
+            DecisionSelectCards = new Card[] { emergency };
+            QuickHandStorage(ra, legacy, haka);
+            Card reporter = PlayCard("IntrepidReporter");
+            QuickHandCheck(1, 1, 0);
+
+            //At the start of the environment turn, the players may destroy 1 Emergency card. If a card is destroyed this way, 1 player may draw a card
+            QuickHandUpdate();
+            GoToStartOfTurn(windmill);
+            AssertInTrash(emergency);
+            QuickHandCheck(0, 1, 0);
+        }
+
+        [Test()]
+        public void TestIntrepidReporter_OptionalDestroy()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card emergency = PlayCard("BridgeDisaster");
+            //When this card enters play, 2 players may each draw a card.
+            DecisionSelectTurnTakers = new TurnTaker[] { legacy.TurnTaker, ra.TurnTaker, legacy.TurnTaker };
+            DecisionSelectCards = new Card[] { null };
+            QuickHandStorage(ra, legacy, haka);
+            Card reporter = PlayCard("IntrepidReporter");
+            QuickHandCheck(1, 1, 0);
+
+            //At the start of the environment turn, the players may destroy 1 Emergency card. If a card is destroyed this way, 1 player may draw a card
+            QuickHandUpdate();
+            GoToStartOfTurn(windmill);
+            AssertInPlayArea(windmill, emergency);
+            QuickHandCheck(0, 0, 0);
+        }
+
+        [Test()]
         public void TestRainOfDebris()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
