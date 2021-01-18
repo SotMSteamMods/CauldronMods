@@ -638,8 +638,9 @@
             "backgroundColor": "D1D2D4",
             "count": 1,
             "title": "Shift Track",
+            "character": true,
             "isReal": false,
-            "setup": [
+            "notsetup": [
                 "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
                 "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
                 "The shift track works as normal; its rules are below."
@@ -663,8 +664,9 @@
             "backgroundColor": "D1D2D4",
             "count": 1,
             "title": "Shift Track",
+            "character": true,
             "isReal": false,
-            "setup": [
+            "notsetup": [
                 "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
                 "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
                 "The shift track works as normal; its rules are below."
@@ -688,8 +690,9 @@
             "backgroundColor": "D1D2D4",
             "count": 1,
             "title": "Shift Track",
+            "character": true,
             "isReal": false,
-            "setup": [
+            "notsetup": [
                 "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
                 "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
                 "The shift track works as normal; its rules are below."
@@ -713,8 +716,9 @@
             "backgroundColor": "D1D2D4",
             "count": 1,
             "title": "Shift Track",
+            "character": true,
             "isReal": false,
-            "setup": [
+            "notsetup": [
                 "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
                 "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
                 "The shift track works as normal; its rules are below."
@@ -738,6 +742,7 @@
             "backgroundColor": "FCB040",
             "count": 1,
             "title": "Shift Track",
+            "character": true,
             "isReal": false,
             "setup": [
                 "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
@@ -757,6 +762,7 @@
             "backgroundColor": "FCB040",
             "count": 1,
             "title": "Shift Track",
+            "character": true,
             "isReal": false,
             "setup": [
                 "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
@@ -776,6 +782,7 @@
             "backgroundColor": "FCB040",
             "count": 1,
             "title": "Shift Track",
+            "character": true,
             "isReal": false,
             "setup": [
                 "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
@@ -795,6 +802,7 @@
             "backgroundColor": "FCB040",
             "count": 1,
             "title": "Shift Track",
+            "character": true,
             "isReal": false,
             "setup": [
                 "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
