@@ -12,15 +12,17 @@
             "count": 1,
             "title": "The Chasm Of A Thousand Nights",
             "body": [
-               "At the start of the game, search the environment deck for all nature cards and put them face down beneath this card. Shuffle the environment deck.",
+               "At the start of the game, move all nature cards beneath this card.",
                 "Nature cards are indestructible.",
                 "Whenever an environment target enters play, put a random card beneath this one into play next to that target.",
                 "If a nature ever has no target next to it, put that nature face down beneath this card."
             ],
             "icons": [
-                "Indestructible"
+                "Indestructible",
+                "Manipulate"
             ],
             "isReal": false,
+            "flavorText": "In the center of the Dasht-e Jenn desert,{BR}the Veil is torn, and mysteries roam.",
         },
         {
             "identifier": "Axion",
@@ -58,6 +60,7 @@
             "count": 1,
             "title": "Crumbling Ruins",
             "icons": [
+                "EndOfTurnAction",
                 "DealDamageMelee"
             ],
             "body": "At the end of the environment turn, this card deals each non-environment target X melee damage, where X is the number of environment targets in play.",
@@ -239,7 +242,9 @@
             "keywords": [
                 "nature"
             ],
-            "icons": [],
+            "icons": [
+            "Discard"
+            ],
             "body": "Whenever the target next to this card deals damage to a hero, that hero must discard a card.",
             "flavorText": "“Such pretty trinkets,” Tevael rumbled{BR}to himself in a voice of scraping stone.{BR}Clutching his prize, he sunk out of sight{BR}into the earth.",
             "footerTitle": "Thieving",
