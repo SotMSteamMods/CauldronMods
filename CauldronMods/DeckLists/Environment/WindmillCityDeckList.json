@@ -129,7 +129,7 @@
                 "Whenever this card is dealt damage, it deals the source of that damage 3 lightning damage.",
                 "When this card is reduced to 0 HP, play the top card of each hero deck in turn order."
             ],
-            "flavorText": "No one knew where the city's criminal element obtained such advanced tech and weaponry. Not even Echelon had been able to track down the source.",
+            "flavorText": "No one knew where the city's criminal{BR}element obtained such advanced tech{BR}and weaponry. Not even Echelon had{BR}been able to track down the source.",
             "hitpoints": 6
         },
         {
