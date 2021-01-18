@@ -313,6 +313,72 @@ namespace CauldronTests
             AssertIsInPlay(hakaTop);
         }
 
+        [Test()]
+        public void TestGrayPharmaceuticalBuilding_Increase()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Fanatic", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //Whenever a hero uses a power that deals damage, increase that damage by 2.
+            Card grayBuilding = PlayCard("GrayPharmaceuticalBuilding");
+
+            DecisionSelectTarget = baron.CharacterCard;
+            GoToPlayCardPhase(ra);
+            //non power damage not changed
+            QuickHPStorage(baron);
+            DealDamage(ra, baron, 3, DamageType.Fire);
+            QuickHPCheck(-3);
+
+            //check with a power
+            GoToUsePowerPhase(ra);
+            QuickHPUpdate();
+            UsePower(ra.CharacterCard);
+            QuickHPCheck(-4);
+
+            GoToDrawCardPhase(ra);
+
+            //repeat to ensure not stacking
+            QuickHPUpdate();
+            UsePower(ra.CharacterCard);
+            QuickHPCheck(-4);
+
+            //check on fanatic
+            GoToUsePowerPhase(fanatic);
+            QuickHPUpdate();
+            UsePower(fanatic.CharacterCard);
+            QuickHPCheck(-6);
+
+            //try in the same phase
+            QuickHPUpdate();
+            UsePower(fanatic.CharacterCard);
+            QuickHPCheck(-6);
+        }
+
+        [Test()]
+        public void TestGrayPharmaceuticalBuilding_Destroy()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Fanatic", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //After a hero uses a power on a non-character card, destroy that card.
+            Card grayBuilding = PlayCard("GrayPharmaceuticalBuilding");
+
+            DecisionSelectTarget = baron.CharacterCard;
+            UsePower(ra.CharacterCard);
+            AssertInPlayArea(ra, ra.CharacterCard);
+
+            Card tornado = PlayCard("BlazingTornado");
+            UsePower(tornado);
+            AssertInTrash(tornado);
+
+            //At the start of the environment turn, destroy this card.
+            GoToStartOfTurn(windmill);
+            AssertInTrash(grayBuilding);
+
+        }
+
 
 
         [Test()]
