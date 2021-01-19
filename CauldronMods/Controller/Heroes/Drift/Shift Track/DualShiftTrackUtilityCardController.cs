@@ -36,6 +36,7 @@ namespace Cauldron.Drift
             base.AddTrigger<ModifyTokensAction>((ModifyTokensAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
             base.AddTrigger<MoveCardAction>((MoveCardAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
             base.AddTrigger<PhaseChangeAction>((PhaseChangeAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<RedirectDamageAction>((RedirectDamageAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
             base.AddTrigger<UsePowerAction>((UsePowerAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
         }
 
