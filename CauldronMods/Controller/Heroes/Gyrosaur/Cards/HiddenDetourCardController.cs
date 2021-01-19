@@ -185,6 +185,7 @@ namespace Cauldron.Gyrosaur
         private IEnumerator ReplaceWithPutIntoPlayUnder(MoveCardAction mc)
         {
             var cardUnder = this.Card.UnderLocation.Cards.FirstOrDefault();
+            //done to give the replacement the correct origin
             IEnumerator coroutine = GameController.MoveCard(DecisionMaker, cardUnder, mc.CardToMove.Location, cardSource: GetCardSource(), doesNotEnterPlay: true);
             if (base.UseUnityCoroutines)
             {

@@ -462,5 +462,65 @@ namespace CauldronTests
             AssertIsInPlay(hostage);
             AssertUnderCard(detour, traffic);
         }
+        [Test]
+        public void TestHyperspinExtraPlayAndDamageBoost()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            Card chase = PutInHand("AMerryChase");
+            DecisionSelectCard = chase;
+            PlayCard("Hyperspin");
+
+            AssertIsInPlay(chase);
+
+            Card traffic = PlayCard("TrafficPileup");
+            QuickHPStorage(mdp, legacy.CharacterCard, traffic);
+            DealDamage(gyrosaur, mdp, 1, DTM);
+            DealDamage(gyrosaur, legacy, 1, DTM);
+            DealDamage(gyrosaur, traffic, 1, DTM);
+            QuickHPCheck(-2, -1, -2);
+
+            DealDamage(legacy, mdp, 1, DTM);
+            DealDamage(legacy, legacy, 1, DTM);
+            DealDamage(legacy, traffic, 1, DTM);
+            QuickHPCheck(-1, -1, -1);
+        }
+        [Test]
+        public void TestHyperspinExtraPlayOptional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            Card spin = PutOnDeck("Hyperspin");
+            DecisionSelectCards = new Card[] { null };
+            QuickHandStorage(gyrosaur);
+            PlayCard(spin);
+            QuickHandCheckZero();
+        }
+        [Test]
+        public void TestHyperspinPlayDrawnCrashResponse()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            DecisionSelectCards = new Card[] { null };
+            Card spin1 = PlayCard("Hyperspin");
+            Card spin2 = PlayCard("Hyperspin");
+            DecisionSelectCards = null;
+
+            Card stabilizer = PutOnDeck("GyroStabilizer");
+            DrawCard(gyrosaur);
+            AssertInHand(stabilizer);
+            AssertIsInPlay(spin1, spin2);
+
+            QuickHandStorage(gyrosaur);
+            Card ball = PutOnDeck("WreckingBall");
+            DrawCard(gyrosaur);
+            AssertIsInPlay(ball);
+            AssertInTrash(spin1, spin2);
+            QuickHandCheckZero();
+        }
     }
 }
