@@ -20,7 +20,8 @@ namespace Cauldron.Drift
             int cardNumeral = base.GetPowerNumeral(0, 2);
 
             //Add the top 2 cards of your deck to your shift track, or discard the card from your current shift track space.
-
+            //Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.
+            //When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage.
             yield break;
         }
 

@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Drift
 {
-    public class ThroughTheBreachShiftTrack4CardController : ThroughTheBreachShiftTrackUtilityCardController
+    public class ThroughTheBreachShiftTrack4CardController : ShiftTrackUtilityCardController
     {
         public ThroughTheBreachShiftTrack4CardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
