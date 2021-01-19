@@ -658,5 +658,40 @@ namespace CauldronTests
             AssertInTrash(roll);
             QuickHPCheck(-1, 0, 0, 0, -1);
         }
+        [Test]
+        public void TestProtectiveEscort()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            DecisionSelectCard = legacy.CharacterCard;
+            DecisionSelectDamageType = DamageType.Projectile;
+            QuickHandStorage(gyrosaur);
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+
+            PlayCard("ProtectiveEscort");
+            QuickHandCheck(2);
+
+            //check immunity
+            AssertNumberOfStatusEffectsInPlay(1);
+            DealDamage(gyrosaur, legacy, 1, DamageType.Projectile);
+            DealDamage(baron, legacy, 1, DamageType.Projectile);
+            QuickHPCheckZero();
+
+            //check only projectile
+            DealDamage(gyrosaur, legacy, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, -1, 0);
+
+            //check only the one target
+            DealDamage(baron, gyrosaur, 1, DamageType.Projectile);
+            QuickHPCheck(0, -1, 0, 0);
+
+            //check expiration time
+            GoToStartOfTurn(gyrosaur);
+            AssertNumberOfStatusEffectsInPlay(0);
+            DealDamage(baron, legacy, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, -2, 0);
+        }
     }
 }
