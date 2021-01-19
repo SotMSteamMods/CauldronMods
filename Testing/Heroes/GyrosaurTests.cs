@@ -557,5 +557,65 @@ namespace CauldronTests
             PlayCard("IndiscriminatePass");
             QuickHPCheck(-4, 0, -2, 0);
         }
+        [Test]
+        public void TestOmnivoreDestroyAndGainHP()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card traffic = PlayCard("TrafficPileup");
+            Card redist = PlayCard("ElementalRedistributor");
+
+            SetHitPoints(traffic, 2);
+            SetHitPoints(mdp, 3);
+            SetHitPoints(redist, 4);
+
+            AssertNextDecisionChoices(new Card[] { mdp, traffic }, new Card[] { redist });
+            DecisionSelectCards = new Card[] { mdp, traffic };
+
+            SetHitPoints(gyrosaur, 20);
+            QuickHPStorage(gyrosaur);
+            PlayCard("Omnivore");
+            QuickHPCheck(3);
+            AssertInTrash(mdp);
+            AssertIsInPlay(traffic);
+            PlayCard("Omnivore");
+            QuickHPCheck(2);
+            AssertInTrash(traffic);
+            PlayCard("Omnivore");
+            QuickHPCheckZero();
+        }
+        [Test]
+        public void TestOmnivoreDestroyReplaced()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(baron, 3);
+            SetHitPoints(gyrosaur, 10);
+            QuickHPStorage(gyrosaur);
+            PlayCard("Omnivore");
+            QuickHPCheck(3);
+        }
+        [Test]
+        public void TestOmnivoreShuffleTrash()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            Card chase = PutInTrash("AMerryChase");
+            QuickShuffleStorage(gyrosaur.TurnTaker.Deck);
+            DecisionsYesNo = new bool[] { false, true };
+
+            PlayCard("Omnivore");
+            AssertInTrash(chase);
+            QuickShuffleCheck(0);
+
+            PlayCard("Omnivore");
+            AssertInDeck(chase);
+            QuickShuffleCheck(1);
+
+        }
     }
 }
