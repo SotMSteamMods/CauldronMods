@@ -20,6 +20,27 @@ namespace Cauldron.Gyrosaur
         public override IEnumerator Play()
         {
             //"When this card enters play, discard up to 3 cards. Draw as many cards as you discarded this way.",
+            var discardStorage = new List<DiscardCardAction>();
+            IEnumerator coroutine = SelectAndDiscardCards(DecisionMaker, 3, false, 0, discardStorage);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            int numDiscards = GetNumberOfCardsDiscarded(discardStorage);
+            coroutine = DrawCards(DecisionMaker, numDiscards);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
 

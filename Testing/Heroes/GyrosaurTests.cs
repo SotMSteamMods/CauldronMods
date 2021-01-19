@@ -28,10 +28,51 @@ namespace CauldronTests
 
             Assert.AreEqual(30, gyrosaur.CharacterCard.HitPoints);
         }
-
+        [Test]
         public void TestGyrosaurDecklist()
         {
-            //TODO
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Megalopolis");
+
+            AssertHasKeyword("crash", new string[]
+            {
+                "IndiscriminatePass",
+                "Ricochet",
+                "SphereOfDevastation",
+                "TerrifyingMomentum",
+                "Wipeout",
+                "WreckingBall"
+            });
+            AssertHasKeyword("equipment", new string[]
+            {
+                "GyroStabilizer"
+            });
+            AssertHasKeyword("limited", new string[]
+            {
+                "GyroStabilizer",
+                "RapturianShell",
+                "RecklessAlienRacingTortoise"
+            });
+            AssertHasKeyword("one-shot", new string[]
+            {
+                "IndiscriminatePass",
+                "Omnivore",
+                "ProtectiveEscort",
+                "Ricochet",
+                "SphereOfDevastation",
+                "TerrifyingMomentum",
+                "Wipeout"
+            });
+            AssertHasKeyword("ongoing", new string[]
+            {
+                "AMerryChase",
+                "HiddenDetour",
+                "Hyperspin",
+                "OnARoll",
+                "RapturianShell",
+                "ReadTheTerrain",
+                "RecklessAlienRacingTortoise",
+                "WreckingBall"
+            });
         }
         [Test]
         public void TestGyrosaurInnate2CrashInHand()
@@ -312,6 +353,31 @@ namespace CauldronTests
             AssertInTrash(chase);
             DealDamage(baron, legacy, 1, DTM);
             QuickHPCheck(0, 0, -2, 0);
+        }
+        //Gyro Stabilizer's "adjust crash-in-hand count" is done as an ActivatesEffect and tested on individual cards
+        [Test]
+        public void TestGyroStabilizerDiscardToDraw([Values(0, 1, 2, 3)] int numToDiscard)
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            var discards = new List<Card>();
+            for(int i = 0; i < 3; i++)
+            {
+                if(i < numToDiscard)
+                {
+                    discards.Add(gyrosaur.HeroTurnTaker.Hand.Cards.ToList()[i]);
+                }
+                else
+                {
+                    discards.Add(null);
+                }
+            }
+            DecisionSelectCards = discards.ToArray();
+            QuickHandStorage(gyrosaur);
+            PlayCard("GyroStabilizer");
+            QuickHandCheckZero();
+            AssertNumberOfCardsInTrash(gyrosaur, numToDiscard);
         }
     }
 }
