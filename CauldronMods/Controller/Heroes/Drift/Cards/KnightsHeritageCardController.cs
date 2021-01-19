@@ -12,7 +12,7 @@ namespace Cauldron.Drift
     {
         public KnightsHeritageCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisTurn(DamageTakenThisTurn), () => "Drift has been dealt damage this turn", () => "Drift has not been dealt damage this turn");
         }
 
         protected const string DamageTakenThisTurn = "DamageTakenThisTurn";

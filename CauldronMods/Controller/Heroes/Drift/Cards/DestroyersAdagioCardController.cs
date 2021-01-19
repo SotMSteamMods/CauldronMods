@@ -12,7 +12,7 @@ namespace Cauldron.Drift
     {
         public DestroyersAdagioCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowListOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.IsOngoing, "ongoing"));
         }
 
         public override IEnumerator Play()

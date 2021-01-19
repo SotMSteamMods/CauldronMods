@@ -13,6 +13,7 @@ namespace Cauldron.Drift
         public DualShiftTrackUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowSpecialString(() => this.GetInactiveCharacterCard().AlternateTitleOrTitle + " is the inactive {Drift}, she is at position " + this.InactiveCharacterPosition());
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisTurn(OncePerTurn), () => "Drift has changed the active character this turn", () => "Drift has not changed the active character this turn");
         }
 
         protected const string DriftPosition = "DriftPosition";
