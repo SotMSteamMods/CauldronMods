@@ -379,5 +379,88 @@ namespace CauldronTests
             QuickHandCheckZero();
             AssertNumberOfCardsInTrash(gyrosaur, numToDiscard);
         }
+        [Test]
+        public void TestHiddenDetourPlayCard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(gyrosaur, 20);
+
+            Card traffic = PutOnDeck("TrafficPileup");
+            Card detour = PlayCard("HiddenDetour");
+            AssertHitPoints(gyrosaur, 22);
+            AssertUnderCard(detour, traffic);
+
+            DecisionYesNo = true;
+            Card hostage = PlayCard("HostageSituation");
+            AssertIsInPlay(traffic);
+            AssertUnderCard(detour, hostage);
+        }
+        [Test]
+        public void TestHiddenDetourPutCardInPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(gyrosaur, 20);
+
+            Card traffic = PutOnDeck("TrafficPileup");
+            Card detour = PlayCard("HiddenDetour");
+            AssertHitPoints(gyrosaur, 22);
+            AssertUnderCard(detour, traffic);
+
+            DecisionYesNo = true;
+            Card hostage = PutIntoPlay("HostageSituation");
+            AssertIsInPlay(traffic);
+            AssertUnderCard(detour, hostage);
+        }
+        [Test]
+        public void TestHiddenDetourMoveCard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            SetHitPoints(gyrosaur, 20);
+
+            Card traffic = PutOnDeck("TrafficPileup");
+            Card detour = PlayCard("HiddenDetour");
+            AssertHitPoints(gyrosaur, 22);
+            AssertUnderCard(detour, traffic);
+
+            DecisionYesNo = true;
+            Card hostage = GetCard("HostageSituation");
+            GameController.ExhaustCoroutine(GameController.MoveCard(env, hostage, env.TurnTaker.PlayArea));
+            AssertIsInPlay(traffic);
+            AssertUnderCard(detour, hostage);
+        }
+        [Test]
+        public void TestHiddenDetourEmpty()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "TheTempleOfZhuLong");
+            StartGame();
+
+            Card ninja = PutOnDeck("ShinobiAssassin");
+            Card detour = PlayCard("HiddenDetour");
+
+            AssertNumberOfCardsAtLocation(detour.UnderLocation, 0);
+            AssertNoDecision();
+            PlayCard("RitesOfRevival");
+        }
+        [Test]
+        public void TestHiddenDetourOptional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            Card traffic = PutOnDeck("TrafficPileup");
+            Card detour = PlayCard("HiddenDetour");
+            AssertUnderCard(detour, traffic);
+
+            DecisionYesNo = false;
+            Card hostage = PlayCard("HostageSituation");
+            AssertIsInPlay(hostage);
+            AssertUnderCard(detour, traffic);
+        }
     }
 }
