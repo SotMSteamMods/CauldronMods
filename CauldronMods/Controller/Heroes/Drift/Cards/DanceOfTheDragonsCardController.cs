@@ -12,7 +12,7 @@ namespace Cauldron.Drift
     {
         public DanceOfTheDragonsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowListOfCardsInPlay(new LinqCardCriteria((Card c) => c.IsTarget && this.IncreaseDamageIfTargetEnteredPlaySinceLastTurn(c) == 1));
+            base.SpecialStringMaker.ShowListOfCardsInPlay(new LinqCardCriteria((Card c) => c.IsTarget && this.IncreaseDamageIfTargetEnteredPlaySinceLastTurn(c) == 1, "entered play since Drift's last turn"));
         }
 
         public override IEnumerator Play()
