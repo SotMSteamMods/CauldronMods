@@ -267,7 +267,51 @@ namespace CauldronTests
 
             GoToStartOfTurn(gyrosaur);
             AssertNumberOfStatusEffectsInPlay(0);
+        }
+        [Test]
+        public void TestAMerryChase()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
 
+            Card chase = PlayCard("AMerryChase");
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+            DealDamage(baron, gyrosaur, 1, DTM);
+            AssertNumberOfStatusEffectsInPlay(1);
+            DealDamage(baron, legacy, 1, DTM);
+            QuickHPCheck(0, -1, 0, 0);
+
+            //doesn't prevent damage to Gyrosaur or stack extra effects
+            DealDamage(baron, gyrosaur, 1, DTM);
+            QuickHPCheck(0, -1, 0, 0);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            //doesn't stop damage from other targets
+            DealDamage(mdp, legacy, 1, DTM);
+            QuickHPCheck(0, 0, -1, 0);
+
+            //prevent damage from multiple targets at once
+            Card traffic = PlayCard("TrafficPileup");
+            DealDamage(traffic, gyrosaur, 1, DTM);
+            DealDamage(traffic, legacy, 1, DTM);
+            QuickHPCheck(0, -1, 0, 0);
+            AssertNumberOfStatusEffectsInPlay(2);
+
+            PlayCard("HeroicInterception");
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+
+            //requires damage to actually be dealt
+            DealDamage(mdp, gyrosaur, 1, DTM);
+            AssertNumberOfStatusEffectsInPlay(2);
+            DealDamage(mdp, legacy, 1, DTM);
+            QuickHPCheck(0, 0, -1, 0);
+
+            //start-of-turn destruction and status effect end
+            GoToStartOfTurn(gyrosaur);
+            AssertInTrash(chase);
+            DealDamage(baron, legacy, 1, DTM);
+            QuickHPCheck(0, 0, -2, 0);
         }
     }
 }
