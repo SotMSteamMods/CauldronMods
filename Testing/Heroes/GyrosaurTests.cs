@@ -522,5 +522,40 @@ namespace CauldronTests
             AssertInTrash(spin1, spin2);
             QuickHandCheckZero();
         }
+        [Test]
+        public void TestIndiscriminatePass0Crash()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card batt = PlayCard("BladeBattalion");
+            AssertNextDecisionChoices(new Card[] { baron.CharacterCard, batt, traffic }, new Card[] { gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard });
+            DecisionSelectTarget = baron.CharacterCard;
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+            PlayCard("IndiscriminatePass");
+            QuickHPCheck(-4, 0, 0, 0);
+        }
+        [Test]
+        public void TestIndiscriminatePass1Crash()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+            PutInHand("WreckingBall");
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card batt = PlayCard("BladeBattalion");
+            AssertNextDecisionChoices(new Card[] { legacy.CharacterCard, ra.CharacterCard }, new Card[] { gyrosaur.CharacterCard, baron.CharacterCard, batt, traffic });
+            DecisionSelectTargets = new Card[] { legacy.CharacterCard, baron.CharacterCard };
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+            PlayCard("IndiscriminatePass");
+            QuickHPCheck(-4, 0, -2, 0);
+        }
     }
 }
