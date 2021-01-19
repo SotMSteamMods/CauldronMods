@@ -18,7 +18,7 @@ namespace Cauldron.Gyrosaur
         {
             //"Destroy a target with 3 or fewer HP.",
             var storedSelect = new List<SelectCardDecision>();
-            IEnumerator coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.DestroyCard, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsTarget && c.HitPoints <= 3 && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "", false, singular: "target with 3 or less HP", plural: "targets with 3 or less HP"), storedSelect, false, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.DestroyCard, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsTarget && c.HitPoints <= 3 && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "", false, singular: "target with 3 or fewer HP", plural: "targets with 3 or fewer HP"), storedSelect, false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

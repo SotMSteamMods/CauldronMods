@@ -615,7 +615,48 @@ namespace CauldronTests
             PlayCard("Omnivore");
             AssertInDeck(chase);
             QuickShuffleCheck(1);
+        }
+        [Test]
+        public void TestOnARollDraw()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
 
+            MoveAllCardsFromHandToDeck(gyrosaur);
+            PutInHand("GyroStabilizer");
+
+            Card chase = PutOnDeck("AMerryChase");
+            GoToPlayCardPhaseAndPlayCard(gyrosaur, "OnARoll");
+            QuickHandStorage(gyrosaur);
+            GoToEndOfTurn();
+            AssertInHand(chase);
+            AssertIsInPlay("OnARoll");
+        }
+        [Test]
+        public void TestOnARollSelfDestructResponse()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card roll = PlayCard("OnARoll");
+
+            PutInHand("Wipeout");
+            PutInHand("WreckingBall");
+            Card top = PutOnDeck("AMerryChase");
+            QuickHPStorage(baron.CharacterCard, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard, traffic);
+
+            GoToPlayCardPhase(gyrosaur);
+            AssertIsInPlay(roll);
+            AssertOnTopOfDeck(top);
+            QuickHPCheckZero();
+
+            GoToEndOfTurn();
+            AssertOnTopOfDeck(top);
+            AssertInTrash(roll);
+            QuickHPCheck(-1, 0, 0, 0, -1);
         }
     }
 }
