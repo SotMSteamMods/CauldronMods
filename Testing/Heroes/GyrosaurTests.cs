@@ -693,5 +693,92 @@ namespace CauldronTests
             DealDamage(baron, legacy, 1, DamageType.Melee);
             QuickHPCheck(0, 0, -2, 0);
         }
+        [Test]
+        public void TestRapturianShellEndOfTurn([Values(true, false)] bool hasCrashInHand)
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            DecisionSelectTarget = legacy.CharacterCard;
+            MoveAllCardsFromHandToDeck(gyrosaur);
+            PlayCard("RapturianShell");
+            if(hasCrashInHand)
+            {
+                PutInHand("WreckingBall");
+            }
+
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+            if(hasCrashInHand)
+            {
+                AssertNoDecision();
+            }
+            else
+            {
+                AssertNextDecisionChoices(new Card[] { legacy.CharacterCard, ra.CharacterCard }, new Card[] { gyrosaur.CharacterCard, baron.CharacterCard });
+            }
+            GoToEndOfTurn(gyrosaur);
+            int expectedDamage = hasCrashInHand ? 0 : -2;
+            QuickHPCheck(0, 0, expectedDamage, 0);
+        }
+        [Test]
+        public void TestRapturianShellPowerPlayCard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            Card shell = PlayCard("RapturianShell");
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card ball = PutInHand("WreckingBall");
+            Card pass = PutInHand("IndiscriminatePass");
+            Card chase = PutInHand("AMerryChase");
+            DecisionSelectFunction = 0;
+            DecisionSelectCard = ball;
+
+            AssertNextDecisionChoices(new Card[] { ball, pass }, new Card[] { chase });
+            UsePower(shell);
+            AssertIsInPlay(ball);
+            AssertInHand(pass);
+        }
+        [Test]
+        public void TestRapturianShellPowerFetchCard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            Card shell = PlayCard("RapturianShell");
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card ball = PutInHand("WreckingBall");
+            Card pass = PutOnDeck("IndiscriminatePass");
+            Card chase = PutOnDeck("AMerryChase");
+            DecisionSelectFunction = 1;
+            
+
+            AssertMaxNumberOfDecisions(1);
+            UsePower(shell);
+            AssertInHand(pass, ball);
+            AssertInTrash(chase);
+        }
+        [Test]
+        public void TestRapturianShellCannotPlayCard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            Card shell = PlayCard("RapturianShell");
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card ball = PutInHand("WreckingBall");
+            Card pass = PutOnDeck("IndiscriminatePass");
+            Card chase = PutOnDeck("AMerryChase");
+            DecisionSelectFunction = 1;
+
+            PlayCard("HostageSituation");
+            AssertNoDecision();
+            UsePower(shell);
+            AssertInHand(pass, ball);
+            AssertInTrash(chase);
+        }
     }
 }
