@@ -15,14 +15,150 @@ namespace Cauldron.Drift
 
         }
 
+        protected const string BreachPosition = "BreachPosition";
+
         public override IEnumerator UsePower(int index = 0)
         {
             int cardNumeral = base.GetPowerNumeral(0, 2);
 
             //Add the top 2 cards of your deck to your shift track, or discard the card from your current shift track space.
-            //Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.
-            //When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage.
+            IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
+                    new Function(base.HeroTurnTakerController, "Add the top 2 cards of your deck to your shift track", SelectionType.MoveCard, () => this.AddCardsResponse(cardNumeral)),
+                    new Function(base.HeroTurnTakerController, "discard the card from your current shift track space", SelectionType.DiscardCard, () => this.DiscardCardResponse())
+            });
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
+        }
+
+        private IEnumerator AddCardsResponse(int cardNumeral)
+        {
+            //Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.
+            //Add the top 2 cards of your deck to your shift track...
+            for (int i = 0; i < cardNumeral; i++)
+            {
+                //Reveal card
+                List<Card> revealedCards = new List<Card>();
+                IEnumerator coroutine = base.GameController.RevealCards(base.TurnTakerController, base.TurnTaker.Deck, 1, revealedCards, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                if (revealedCards.Any())
+                {
+                    //Pick position
+                    List<SelectNumberDecision> numberDecisions = new List<SelectNumberDecision>();
+                    coroutine = base.GameController.SelectNumber(base.HeroTurnTakerController, SelectionType.MoveCard, 1, 4, additionalCriteria: (int position) => this.GetBreachedCard(position) == null, storedResults: numberDecisions, cardSource: base.GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+
+                    if (numberDecisions.Any())
+                    {
+                        //Move card
+                        Card cardToMove = revealedCards.FirstOrDefault();
+                        int cardPosition = numberDecisions.FirstOrDefault().SelectedNumber.Value;
+                        coroutine = base.GameController.MoveCard(base.TurnTakerController, cardToMove, base.GetShiftTrack().UnderLocation, cardSource: base.GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+
+                        //Mark card position
+                        base.SetCardPropertyToTrueIfRealAction(BreachPosition + cardPosition, cardToMove);
+                    }
+                    else
+                    {
+                        coroutine = base.GameController.SendMessageAction("There were no open positions", Priority.Medium, base.GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+
+                        coroutine = base.CleanupRevealedCards(base.TurnTaker.Revealed, base.TurnTaker.Trash);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                    }
+                }
+                else
+                {
+                    coroutine = base.GameController.SendMessageAction("There were no cards in the deck", Priority.Medium, base.GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+            }
+            yield break;
+        }
+
+        private IEnumerator DiscardCardResponse()
+        {
+            //...discard the card from your current shift track space.
+            Card cardToDiscard = this.GetBreachedCard(base.CurrentShiftPosition());
+            IEnumerator coroutine = base.GameController.MoveCard(base.TurnTakerController, cardToDiscard, base.TurnTaker.Trash, isDiscard: true, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage.
+            coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
+                    new Function(base.HeroTurnTakerController, "you may play the discarded card", SelectionType.AddTokens, () => base.GameController.PlayCard(base.TurnTakerController, cardToDiscard, optional: true, cardSource: base.GetCardSource())),
+                    new Function(base.HeroTurnTakerController, "Drift may deal 1 target 3 radiant damage", SelectionType.AddTokens, () => base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), 3, DamageType.Radiant, 1, false, 0, cardSource:base.GetCardSource()))
+            });
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        private Card GetBreachedCard(int position)
+        {
+            return base.GetCardPropertyJournalEntryCard(BreachPosition + position);
         }
 
         public override IEnumerator UseIncapacitatedAbility(int index)
