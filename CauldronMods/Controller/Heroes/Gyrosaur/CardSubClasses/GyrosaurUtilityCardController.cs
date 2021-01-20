@@ -6,6 +6,8 @@ using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
+using Handelabra;
+
 namespace Cauldron.Gyrosaur
 {
     public abstract class GyrosaurUtilityCardController : CardController
@@ -28,8 +30,7 @@ namespace Cauldron.Gyrosaur
             }
             //allow decision of increase/decrease if needed
             //sometimes it is not, as Gyro Stabilizer cannot increase/decrease the count past the requisite threshold
-
-            if (CanActivateEffect(Card, StabilizerKey) && fullShowDecisionIf())
+            if (CanActivateEffect(DecisionMaker, StabilizerKey) && fullShowDecisionIf())
             {
                 IEnumerator coroutine;
                 int currentCrash = TrueCrashInHand;
@@ -76,7 +77,7 @@ namespace Cauldron.Gyrosaur
             return GameController.DoesCardContainKeyword(card, "crash");
         }
 
-        protected bool RARTInPlay => TurnTaker.GetCardsWhere((Card c) => c.Identifier == "RecklessAlienRacingTortise" && c.IsInPlayAndHasGameText).Any();
+        protected bool RARTInPlay => TurnTaker.GetCardsWhere((Card c) => c.Identifier == "RecklessAlienRacingTortoise" && c.IsInPlayAndHasGameText).Any();
         protected Func<bool> RARTShowDecision => () => Game.ActiveTurnTaker == TurnTaker && TrueCrashInHand >= 3;
         //if there are at least 3 crash cards in hand and Reckless Alien Racing Tortoise is in play, we ALWAYS need to present
         //the Gyro Stabilizer choice, as it may set off RART, even if it doesn't otherwise matter to the effect in question

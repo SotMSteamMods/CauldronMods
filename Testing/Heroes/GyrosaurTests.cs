@@ -910,5 +910,156 @@ namespace CauldronTests
             DealDamage(gyrosaur, baron, 1, DTM);
             QuickHPCheck(-1, 0, -1, 0);
         }
+        [Test]
+        public void TestRecklessAlienRacingTortoisePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card rart = PlayCard("RecklessAlienRacingTortoise");
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+
+            UsePower(rart);
+            QuickHPCheck(-1, 0, 0, 0);
+
+            PutInHand("Wipeout");
+            UsePower(rart);
+            QuickHPCheck(-2, 0, 0, 0);
+        }
+        [Test]
+        public void TestRecklessAlienRacingTortoiseAutouseStartOfTurn()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card rart = PlayCard("RecklessAlienRacingTortoise");
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+
+            PutInHand("Wipeout");
+            PutInHand("SphereOfDevastation");
+            PutInHand("WreckingBall");
+            PutInHand("IndiscriminatePass");
+
+            AssertIsInPlay(rart);
+            GoToStartOfTurn(gyrosaur);
+            QuickHPCheck(-5, 0, 0, 0);
+            AssertInTrash(rart);
+        }
+        [Test]
+        public void TestRecklessAlienRacingTortoiseAutouseFromDrawCrash()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card rart = PlayCard("RecklessAlienRacingTortoise");
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+
+            PutInHand("Wipeout");
+            PutInHand("SphereOfDevastation");
+            PutInHand("WreckingBall");
+
+            PutOnDeck("IndiscriminatePass");
+
+            AssertIsInPlay(rart);
+            GoToPlayCardPhase(gyrosaur);
+            AssertIsInPlay(rart);
+            DrawCard(gyrosaur);
+            QuickHPCheck(-5, 0, 0, 0);
+            AssertInTrash(rart);
+        }
+        [Test]
+        public void TestRecklessAlienRacingTortoiseAutouseFromPutInHand()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card rart = PlayCard("RecklessAlienRacingTortoise");
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+
+            PutInHand("Wipeout");
+            PutInHand("SphereOfDevastation");
+            PutInHand("WreckingBall");
+
+
+            AssertIsInPlay(rart);
+            GoToPlayCardPhase(gyrosaur);
+            AssertIsInPlay(rart);
+
+            PutInHand("IndiscriminatePass");
+
+            QuickHPCheck(-5, 0, 0, 0);
+            AssertInTrash(rart);
+        }
+        [Test]
+        public void TestRecklessAlienRacingTortoiseAutouseOnlyOnce()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "TimeCataclysm");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card rart = PlayCard("RecklessAlienRacingTortoise");
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+
+            PutInHand("Wipeout");
+            PutInHand("SphereOfDevastation");
+            PutInHand("WreckingBall");
+
+            PlayCard("FixedPoint");
+
+
+            AssertIsInPlay(rart);
+            GoToPlayCardPhase(gyrosaur);
+            AssertIsInPlay(rart);
+
+            PutInHand("IndiscriminatePass");
+
+            QuickHPCheck(-5, 0, 0, 0);
+            AssertIsInPlay(rart);
+
+            GoToEndOfTurn();
+            QuickHPCheckZero();
+        }
+        [Test]
+        public void TestRecklessAlienRacingTortoiseAutouseStabilizedUpToFive()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card rart = PlayCard("RecklessAlienRacingTortoise");
+            PlayCard("GyroStabilizer");
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+
+            PutInHand("Wipeout");
+            PutInHand("SphereOfDevastation");
+            PutInHand("WreckingBall");
+            PutInHand("IndiscriminatePass");
+
+            DecisionSelectFunction = 0;
+            GoToPlayCardPhase(gyrosaur);
+
+            //one for gyro stabilizer, one for who to damage
+            AssertMaxNumberOfDecisions(2);
+            DecisionSelectFunction = 2;
+            UsePower(rart);
+            AssertInTrash(rart);
+            QuickHPCheck(-6, 0, 0, 0);
+        }
     }
 }
