@@ -1226,5 +1226,30 @@ namespace CauldronTests
             PlayCard("TerrifyingMomentum");
             QuickHPCheck(-6, 0);
         }
+        [Test]
+        public void TestWipeout()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card wipe1 = PutInHand("Wipeout");
+            Card wipe2 = PutInHand("Wipeout");
+
+            Card redist = PutIntoPlay("ElementalRedistributor");
+
+            DecisionSelectTargets = new Card[] { baron.CharacterCard, redist };
+            QuickHPStorage(baron.CharacterCard, redist, gyrosaur.CharacterCard);
+
+            PlayCard(wipe1);
+            QuickHPCheck(-4, -4, -2);
+
+            DecisionSelectTargetsIndex = 0;
+
+            PlayCard(wipe2);
+            QuickHPCheck(-4, 0, -1);
+        }
     }
 }

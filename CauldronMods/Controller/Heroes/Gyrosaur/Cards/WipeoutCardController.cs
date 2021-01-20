@@ -16,7 +16,40 @@ namespace Cauldron.Gyrosaur
 
         public override IEnumerator Play()
         {
-            //"{Gyrosaur} deals up to X+1 targets 4 melee damage each, then deals herself X+1 melee damage, where X is the number of Crash cards in your hand."
+            //Where X is the number of Crash cards in your hand:
+            var storedModifier = new List<int>();
+            IEnumerator coroutine = EvaluateCrashInHand(storedModifier);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            var crashMod = storedModifier.FirstOrDefault();
+
+            //"{Gyrosaur} deals up to X+1 targets 4 melee damage each
+            coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), (Card c) => 4, DamageType.Melee, () => TrueCrashInHand + crashMod + 1, false, 0, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //then deals herself X+1 melee damage"
+            coroutine = DealDamage(CharacterCard, CharacterCard, TrueCrashInHand + crashMod + 1, DamageType.Melee);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
     }
