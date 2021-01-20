@@ -48,6 +48,7 @@ Obliveon Mission Reward characters is the other case where we may need to code s
   * `QuickShuffleStorage/Check` - For checking shuffle effects
 * Be aware that cards are in play and in hand once StartGame is called.
   * Villian/Hero/Enviroment Setup will be completed - Example, BaronBlade will have a MobileDefensePlatform in play
+  * You can destroy this initial setup with the built in helper DestroyNonCharacterVillainCards();
   * Hero's will have a hand of random cards.
 * The Test Engine will make default choices for you, but it is recommended that the Decision Properties be used.
 * If a test sequence needs multiple choices (even across different choices) the Decision properties that take a
