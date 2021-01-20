@@ -47,8 +47,6 @@ namespace Cauldron.TheInfernalChoir
         /* ..shuffle all cards under Vagrant Heart back into the hero's deck, and flip {TheInfernalChoir}'s villain character cards and Vagrant Heart." */
         private IEnumerator GoToPhase2(GameAction action)
         {
-            RemoveAllTriggers();
-
             var coroutine = GameController.FlipCard(CharacterCardController, cardSource: CharacterCardController.GetCardSource());
             if (UseUnityCoroutines)
             {

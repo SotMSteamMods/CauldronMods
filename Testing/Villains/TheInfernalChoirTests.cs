@@ -110,7 +110,7 @@ namespace CauldronTests
 
             AssertCardHasKeyword(choir.CharacterCard, "villain", false);
 
-            AssertCard("VagrantHeartPhase1", new string[] { "hidden heart" });
+            AssertCard("VagrantHeartPhase1", new string[] { "soul" });
             AssertCard("VagrantHeartPhase2", new string[] { "soul" });
 
             AssertCard("RedSunXu", new string[] { "ghost" }, 3);
@@ -122,7 +122,7 @@ namespace CauldronTests
             AssertCard("HauntingNocturne", new string[] { "charm" }, 6);
             AssertCard("WretchedSymphony", new string[] { "charm" }, 7);
             AssertCard("InfernalElegy", new string[] { "charm" }, 11);
-            
+
             AssertCard("Eclipse", new string[] { "ongoing" });
             AssertCard("BeneathTheFlesh", new string[] { "ongoing" });
 
@@ -130,6 +130,80 @@ namespace CauldronTests
             AssertCard("TheVoicesGather", new string[] { "one-shot" });
             AssertCard("MoonEater", new string[] { "one-shot" });
             AssertCard("NoWitnesses", new string[] { "one-shot" });
+        }
+
+        [Test()]
+        public void TestTheInfernalChoir_Front_EndOfTurnPlay()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
+            StartGame();
+
+            var c1 = GetCard("BaneOfIron", 0);
+            var c2 = GetCard("BaneOfIron", 1);
+
+            PutOnDeck(choir, c1);
+            PutOnDeck(choir, c2);
+
+            GoToPlayCardPhase(choir);
+            base.RunActiveTurnPhase();
+
+            GoToEndOfTurn(choir);
+            AssertIsInPlay(c1);
+            AssertIsInPlay(c2);
+        }
+
+        [Test()]
+        public void TestTheInfernalChoir_Front_EndOfTurnDamage()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Megalopolis");
+            StartGame();
+
+            var c1 = PlayCard("BaneOfIron");
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, c1);
+            GoToEndOfTurn(choir);
+            QuickHPCheck(0, -1, -1, 0);
+        }
+
+        [Test()]
+        public void TestTheInfernalChoir_Front_Advanced()
+        {
+            SetupGameController(new[] { "Cauldron.TheInfernalChoir", "Legacy", "Haka", "Megalopolis" }, advanced: true);
+            StartGame();
+
+            var c1 = PlayCard("BaneOfIron");
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, c1);
+            DealDamage(legacy, haka, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, -2, 0);
+
+            QuickHPUpdate();
+            DealDamage(c1, haka, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, -2, 0);
+
+            QuickHPUpdate();
+            DealDamage(choir, haka, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, -2, 0);
+        }
+
+        [Test()]
+        public void TestTheInfernalChoir_Flipped_Stuff()
+        {
+            SetupGameController(new[] { "Cauldron.TheInfernalChoir", "Legacy", "Haka", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            GoToStartOfTurn(legacy);
+
+            FlipCard(choir);
+            GoToEndOfTurn(env);
+
+            GoToStartOfTurn(choir);
+
+
+
+
         }
 
         [Test()]
@@ -210,7 +284,7 @@ namespace CauldronTests
             StartGame();
 
             AssertInPlayArea(legacy, heart1);
-            
+
             var deckCount = GetNumberOfCardsInDeck(legacy);
 
             QuickHPStorage(choir, legacy);
@@ -241,5 +315,103 @@ namespace CauldronTests
 
             AssertGameOver(EndingResult.AlternateDefeat);
         }
+
+
+        [Test()]
+        public void TestVagrantHeartPhase2_PreventEmptyDraw()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            FlipCard(choir.CharacterCard);
+            AssertInPlayArea(legacy, heart2);
+
+            QuickHandStorage(legacy);
+            DrawCard(legacy);
+            QuickHandCheck(1);
+
+            MoveAllCards(legacy, legacy.TurnTaker.Deck, legacy.TurnTaker.Trash);
+
+            QuickHandStorage(legacy);
+            DrawCard(legacy);
+            QuickHandCheck(0);
+            AssertNumberOfCardsInDeck(legacy, 0);
+
+        }
+
+        [Test()]
+        public void TestVagrantHeartPhase2_PreventEmptyPlay()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            FlipCard(choir.CharacterCard);
+            AssertInPlayArea(legacy, heart2);
+
+            var p1 = PutOnDeck("InspiringPresence");
+
+            PlayTopCard(legacy);
+            AssertInPlayArea(legacy, p1);
+
+            MoveAllCards(legacy, legacy.TurnTaker.Deck, legacy.TurnTaker.Trash);
+
+            AssertNumberOfCardsInDeck(legacy, 0);
+            int count = GetNumberOfCardsInPlay(legacy);
+
+            PlayTopCard(legacy);
+
+            AssertNumberOfCardsInDeck(legacy, 0);
+            AssertNumberOfCardsInPlay(legacy, count);
+
+        }
+
+        [Test()]
+        public void TestVagrantHeartPhase2_PreventEmptyDiscard()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            FlipCard(choir.CharacterCard);
+            AssertInPlayArea(legacy, heart2);
+
+            var p1 = DiscardTopCards(legacy, 1);
+            AssertInTrash(p1);
+
+            MoveAllCards(legacy, legacy.TurnTaker.Deck, legacy.TurnTaker.Trash);
+
+            AssertNumberOfCardsInDeck(legacy, 0);
+            int count = GetNumberOfCardsInTrash(legacy);
+
+            p1 = DiscardTopCards(legacy, 1);
+
+            AssertNumberOfCardsInTrash(legacy, count);
+            AssertNumberOfCardsInDeck(legacy, 0);
+
+        }
+
+        [Test()]
+        public void TestVagrantHeartPhase2_TestOmnitronXReset()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            FlipCard(choir.CharacterCard);
+            AssertInPlayArea(legacy, heart2);
+
+            DiscardAllCards(omnix);
+            var p1 = PutInHand("Reset");
+            var p2 = PutInHand("DefensiveBlast");
+            RunCoroutine(GameController.BulkMoveCards(omnix, omnix.TurnTaker.Deck.Cards, omnix.TurnTaker.Trash, cardSource: omnix.CharacterCardController.GetCardSource()));
+
+            DecisionSelectCard = p2;
+            PlayCard(p1);
+            AssertInTrash(p1);
+            AssertNumberOfCardsInTrash(omnix, 1);
+        }
+
     }
 }
