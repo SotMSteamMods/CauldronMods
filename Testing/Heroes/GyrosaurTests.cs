@@ -1251,5 +1251,22 @@ namespace CauldronTests
             PlayCard(wipe2);
             QuickHPCheck(-4, 0, -1);
         }
+        [Test]
+        public void TestWreckingBall()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card innocents = PlayCard("TargetingInnocents");
+            Card traffic = PlayCard("TrafficPileup");
+
+            QuickHPStorage(baron.CharacterCard, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard, innocents, traffic);
+            PlayCard("WreckingBall");
+            QuickHPCheck(-1, -1, -1, -1, -2, -2);
+
+            DealDamage(legacy, traffic, 1, DTM);
+            QuickHPCheck(0, 0, 0, 0, 0, -2);
+        }
     }
 }
