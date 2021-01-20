@@ -12,6 +12,7 @@ namespace Cauldron.Gyrosaur
     {
         public HyperspinCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria((Card c) => IsCrash(c), "crash"));
         }
 
         public override IEnumerator Play()

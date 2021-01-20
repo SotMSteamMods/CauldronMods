@@ -12,6 +12,8 @@ namespace Cauldron.Gyrosaur
     {
         public AMerryChaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            var damagedByString = SpecialStringMaker.ShowDamageTaken(CharacterCard, sinceCardEnteredPlay: this.Card, showDamageDealers: true);
+            damagedByString.Condition = () => this.Card.IsInPlayAndHasGameText;
         }
 
         public override void AddTriggers()

@@ -28,7 +28,7 @@ namespace Cauldron.Gyrosaur
             AddTrigger((GameAction ga) => Game.ActiveTurnTaker == TurnTaker && IsCrashInHandIncreaser(ga) && !HasBeenSetToTrueThisTurn(RARTUsedKey), EvaluateCrashForSelf, new TriggerType[] { TriggerType.UsePower, TriggerType.DestroySelf }, TriggerTiming.After);
 
             //This trigger is to prevent autodraws while this card is out
-            AddTrigger((DrawCardAction dc) => dc.HeroTurnTaker == HeroTurnTaker, _ => DoNothing(), TriggerType.DestroySelf, TriggerTiming.Before);
+            AddTrigger((DrawCardAction dc) => dc.HeroTurnTaker == HeroTurnTaker, _ => DoNothing(), TriggerType.DestroySelf, TriggerTiming.After);
         }
         private IEnumerator EvaluateCrashForSelf(GameAction ga)
         {

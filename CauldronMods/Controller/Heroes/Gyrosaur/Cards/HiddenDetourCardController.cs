@@ -15,6 +15,7 @@ namespace Cauldron.Gyrosaur
         {
             //Cards beneath this one are not considered in play.
             Card.UnderLocation.OverrideIsInPlay = false;
+            SpecialStringMaker.ShowListOfCardsAtLocation(Card.UnderLocation, new LinqCardCriteria());
         }
 
         public override IEnumerator Play()
