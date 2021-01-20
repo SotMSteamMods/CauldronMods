@@ -1103,5 +1103,71 @@ namespace CauldronTests
             QuickHPCheckZero();
             AssertNumberOfStatusEffectsInPlay(0);
         }
+        [Test]
+        public void TestSphereOfDevastationBelowThreshold()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            QuickHandStorage(gyrosaur, legacy, ra);
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+            Card wipe = PutInHand("Wipeout");
+            Card chase = PutInHand("AMerryChase");
+            Card police = PutIntoPlay("PoliceBackup");
+            PlayCard("SphereOfDevastation");
+            QuickHPCheck(-8, 0, 0, 0);
+            QuickHandCheck(-1, 0, 0);
+            AssertInTrash(wipe);
+            AssertInHand(chase);
+            AssertIsInPlay(police);
+
+            PlayCard("SphereOfDevastation");
+            QuickHPCheck(-4, 0, 0, 0);
+        }
+        [Test]
+        public void TestSphereOfDevastationAboveThreshold()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card wipe = PutInHand("Wipeout");
+            Card pass = PutInHand("IndiscriminatePass");
+            Card chase = PutInHand("AMerryChase");
+            Card police = PutIntoPlay("PoliceBackup");
+            QuickHandStorage(gyrosaur, legacy, ra);
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+            PlayCard("SphereOfDevastation");
+            QuickHPCheck(-12, 0, 0, 0);
+            QuickHandCheck(-2, -1, -1);
+            AssertInTrash(wipe, pass, police);
+            AssertInHand(chase);
+        }
+        [Test]
+        public void TestSphereOfDevastationDamagePrevented()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card wipe = PutInHand("Wipeout");
+            Card pass = PutInHand("IndiscriminatePass");
+            Card chase = PutInHand("AMerryChase");
+            Card police = PutIntoPlay("PoliceBackup");
+            QuickHandStorage(gyrosaur, legacy, ra);
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+            PlayCard("SphereOfDevastation");
+            QuickHPCheckZero();
+            QuickHandCheck(-2, 0, 0);
+            AssertInTrash(wipe, pass);
+            AssertIsInPlay(police);
+            AssertInHand(chase);
+        }
     }
 }
