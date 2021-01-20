@@ -14,6 +14,7 @@ namespace Cauldron.Gyrosaur
     {
         public GyrosaurCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowCrashInHandCount();
         }
         public override IEnumerator UsePower(int index = 0)
         {

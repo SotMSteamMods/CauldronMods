@@ -12,6 +12,7 @@ namespace Cauldron.Gyrosaur
     {
         public OnARollCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowCrashInHandCount();
         }
 
         public override void AddTriggers()

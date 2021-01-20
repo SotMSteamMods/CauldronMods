@@ -12,6 +12,7 @@ namespace Cauldron.Gyrosaur
     {
         public RapturianShellCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowCrashInHandCount();
         }
 
         public override void AddTriggers()

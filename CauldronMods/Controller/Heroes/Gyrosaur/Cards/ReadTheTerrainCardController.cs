@@ -14,6 +14,7 @@ namespace Cauldron.Gyrosaur
     {
         public ReadTheTerrainCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowDamageDealt(new LinqCardCriteria(CharacterCard), thisTurn: true);
         }
 
         public override void AddTriggers()

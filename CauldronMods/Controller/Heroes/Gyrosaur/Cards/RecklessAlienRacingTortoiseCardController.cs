@@ -16,6 +16,7 @@ namespace Cauldron.Gyrosaur
         private const string RARTUsedKey = "RecklessAlienRacingTortoiseUsedKey";
         public RecklessAlienRacingTortoiseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowCrashInHandCount();
         }
 
         public override void AddTriggers()

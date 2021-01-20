@@ -12,6 +12,7 @@ namespace Cauldron.Gyrosaur
     {
         public WipeoutCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowCrashInHandCount(true);
         }
 
         public override IEnumerator Play()
