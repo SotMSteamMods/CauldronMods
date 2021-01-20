@@ -1153,6 +1153,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
             StartGame();
+            DestroyNonCharacterVillainCards();
 
             MoveAllCardsFromHandToDeck(gyrosaur);
 
@@ -1168,6 +1169,62 @@ namespace CauldronTests
             AssertInTrash(wipe, pass);
             AssertIsInPlay(police);
             AssertInHand(chase);
+        }
+
+        [Test]
+        public void TestTerrifyingMomentumBelowThreshold()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            //2 crash cards
+            Card wipe = PutInHand("Wipeout");
+            Card pass = PutInHand("IndiscriminatePass");
+            Card chase = PutOnDeck("AMerryChase");
+
+            Card innocents = PutIntoPlay("TargetingInnocents");
+            DecisionSelectTarget = baron.CharacterCard;
+            QuickHPStorage(baron.CharacterCard, innocents);
+            PlayCard("TerrifyingMomentum");
+            QuickHPCheck(-4, 0);
+            AssertInHand(chase);
+
+            PutInTrash(wipe);
+            //only 1 crash card now
+            PlayCard("TerrifyingMomentum");
+            QuickHPCheck(-3, 0);
+        }
+        [Test]
+        public void TestTerrifyingMomentumAboveThreshold()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            //5 crash cards
+            Card wipe = PutInHand("Wipeout");
+            Card pass = PutInHand("IndiscriminatePass");
+            Card rico = PutInHand("Ricochet");
+            Card wreck = PutInHand("WreckingBall");
+            Card sphere = PutInHand("SphereOfDevastation");
+            Card chase = PutOnDeck("AMerryChase");
+
+            Card innocents = PutIntoPlay("TargetingInnocents");
+            DecisionSelectTarget = baron.CharacterCard;
+            QuickHPStorage(baron.CharacterCard, innocents);
+            PlayCard("TerrifyingMomentum");
+            QuickHPCheck(0, -7);
+            AssertInHand(chase);
+
+            PutInTrash(wipe);
+            //only 4 crash cards now
+            PlayCard("TerrifyingMomentum");
+            QuickHPCheck(-6, 0);
         }
     }
 }
