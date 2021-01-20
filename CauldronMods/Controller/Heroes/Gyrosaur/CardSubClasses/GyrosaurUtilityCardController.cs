@@ -17,7 +17,7 @@ namespace Cauldron.Gyrosaur
         {
         }
 
-        protected IEnumerator EvaluateCrashInHand(List<int> storedModifier, Func<bool> showDecisionIf = null)
+        protected IEnumerator EvaluateCrashInHand(List<int> storedModifier, Func<bool> showDecisionIf = null, List<bool> didSkip = null)
         {
             if(showDecisionIf == null)
             {
@@ -30,6 +30,7 @@ namespace Cauldron.Gyrosaur
             }
             //allow decision of increase/decrease if needed
             //sometimes it is not, as Gyro Stabilizer cannot increase/decrease the count past the requisite threshold
+
             if (CanActivateEffect(DecisionMaker, StabilizerKey) && fullShowDecisionIf())
             {
                 IEnumerator coroutine;
@@ -59,6 +60,10 @@ namespace Cauldron.Gyrosaur
                 }
                 else
                 {
+                    if(didSkip != null)
+                    {
+                        didSkip.Add(true);
+                    }
                     storedModifier.Add(0);
                 }
             }

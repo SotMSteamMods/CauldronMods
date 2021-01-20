@@ -1062,6 +1062,57 @@ namespace CauldronTests
             QuickHPCheck(-6, 0, 0, 0);
         }
         [Test]
+        public void TestRecklessAlienRacingTortoiseStabilizeSkip()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card rart = PlayCard("RecklessAlienRacingTortoise");
+            PlayCard("GyroStabilizer");
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+
+            PutInHand("Wipeout");
+            PutInHand("SphereOfDevastation");
+            PutInHand("WreckingBall");
+            PutInHand("IndiscriminatePass");
+
+            DecisionDoNotSelectFunction = true;
+
+            AssertMaxNumberOfDecisions(2);
+            GoToPlayCardPhase(gyrosaur);
+
+            AssertInTrash(rart);
+            QuickHPCheck(-5, 0, 0, 0);
+        }
+        [Test]
+        public void TestRecklessAlienRacingTortoiseStabilizeSkipPart2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card rart = PlayCard("RecklessAlienRacingTortoise");
+            PlayCard("GyroStabilizer");
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+
+            PutInHand("Wipeout");
+            PutInHand("SphereOfDevastation");
+            PutInHand("WreckingBall");
+            PutInHand("IndiscriminatePass");
+            DecisionSelectFunction = 0;
+
+            GoToPlayCardPhase(gyrosaur);
+            DecisionDoNotSelectFunction = true;
+            UsePower(rart);
+            AssertInTrash(rart);
+            QuickHPCheck(-5, 0, 0, 0);
+        }
+        [Test]
         public void TestRicochet()
         {
             SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");

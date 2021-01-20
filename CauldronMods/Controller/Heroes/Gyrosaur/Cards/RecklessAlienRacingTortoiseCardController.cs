@@ -33,10 +33,12 @@ namespace Cauldron.Gyrosaur
         private IEnumerator EvaluateCrashForSelf(GameAction ga)
         {
             IEnumerator coroutine;
+            var noChoiceMade = true;
             if(CanActivateEffect(DecisionMaker, StabilizerKey))
             {
                 var storedModifier = new List<int>();
-                coroutine = EvaluateCrashInHand(storedModifier, RARTShowDecision);
+                var didSkip = new List<bool>();
+                coroutine = EvaluateCrashInHand(storedModifier, RARTShowDecision, didSkip);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -45,8 +47,13 @@ namespace Cauldron.Gyrosaur
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
+                noChoiceMade = didSkip.Any();
+                if(noChoiceMade && TrueCrashInHand > 3)
+                {
+                    OverrideCrashCount = TrueCrashInHand;
+                }
             }
-            else if(TrueCrashInHand > 3)
+            if(noChoiceMade && TrueCrashInHand > 3 && this.Card.IsInPlayAndHasGameText)
             {
                 coroutine = ExcessCrashEvaluationResponse(ga);
                 if (base.UseUnityCoroutines)
@@ -64,8 +71,8 @@ namespace Cauldron.Gyrosaur
         {
             if(sf.CardSource.Card.Owner == TurnTaker && sf.AssociatedCards.Any((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "GyroStabilizer"))
             {
-                var type = sf.SelectedFunction.SelectionType;
-                return type == SelectionType.RemoveTokens || type == SelectionType.AddTokens || type == SelectionType.None;
+                var type = sf.SelectedFunction?.SelectionType;
+                return type == SelectionType.RemoveTokens || type == SelectionType.AddTokens || type == SelectionType.None || type == null;
             }
             return false;
         }
