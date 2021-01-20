@@ -780,5 +780,135 @@ namespace CauldronTests
             AssertInHand(pass, ball);
             AssertInTrash(chase);
         }
+        [Test]
+        public void TestReadTheTerrainStartOfTurnReplace()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            PlayCard("ReadTheTerrain");
+            Card spin = PutOnDeck("Hyperspin");
+            DecisionYesNo = false;
+            GoToStartOfTurn(gyrosaur);
+            AssertOnTopOfDeck(spin);
+        }
+        [Test]
+        public void TestReadTheTerrainStartOfTurnDiscard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            PlayCard("ReadTheTerrain");
+            Card spin = PutOnDeck("Hyperspin");
+            DecisionYesNo = true;
+            GoToStartOfTurn(gyrosaur);
+            AssertInTrash(spin);
+        }
+        [Test]
+        public void TestReadTheTerrainPowerStandard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+            Card read = GoToPlayCardPhaseAndPlayCard(gyrosaur, "ReadTheTerrain");
+            UsePower(read);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            //damage boost has not kicked in yet
+            GoToStartOfTurn(legacy);
+            AssertNumberOfStatusEffectsInPlay(1);
+            DealDamage(gyrosaur, legacy, 1, DTM);
+            DealDamage(gyrosaur, baron, 1, DTM);
+            QuickHPCheck(-1, 0, -1, 0);
+
+            //now we get a damage boost
+            GoToStartOfTurn(gyrosaur);
+            AssertNumberOfStatusEffectsInPlay(1);
+            DealDamage(gyrosaur, legacy, 1, DTM);
+            DealDamage(gyrosaur, baron, 1, DTM);
+            QuickHPCheck(-2, 0, -1, 0);
+
+            //wears off
+            GoToStartOfTurn(legacy);
+            AssertNumberOfStatusEffectsInPlay(0);
+            DealDamage(gyrosaur, legacy, 1, DTM);
+            DealDamage(gyrosaur, baron, 1, DTM);
+            QuickHPCheck(-1, 0, -1, 0);
+        }
+        [Test]
+        public void TestReadTheTerrainPowerTurnBefore()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+            Card read = PlayCard(gyrosaur, "ReadTheTerrain");
+            UsePower(read);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            //now we get a damage boost
+            GoToStartOfTurn(gyrosaur);
+            AssertNumberOfStatusEffectsInPlay(1);
+            DealDamage(gyrosaur, legacy, 1, DTM);
+            DealDamage(gyrosaur, baron, 1, DTM);
+            QuickHPCheck(-2, 0, -1, 0);
+
+            //wears off
+            GoToStartOfTurn(legacy);
+            AssertNumberOfStatusEffectsInPlay(0);
+            DealDamage(gyrosaur, legacy, 1, DTM);
+            DealDamage(gyrosaur, baron, 1, DTM);
+            QuickHPCheck(-1, 0, -1, 0);
+        }
+        [Test]
+        public void TestReadTheTerrainPowerDamageStopsEffect()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+            Card read = PlayCard(gyrosaur, "ReadTheTerrain");
+            UsePower(read);
+            AssertNumberOfStatusEffectsInPlay(1);
+            DealDamage(gyrosaur, ra, 1, DTM);
+
+            //no damage boost
+            GoToStartOfTurn(gyrosaur);
+            AssertNumberOfStatusEffectsInPlay(0);
+            DealDamage(gyrosaur, legacy, 1, DTM);
+            DealDamage(gyrosaur, baron, 1, DTM);
+            QuickHPCheck(-1, 0, -1, -1);
+        }
+        [Test]
+        public void TestReadTheTerrainPowerStacks()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+            Card read = PlayCard(gyrosaur, "ReadTheTerrain");
+            UsePower(read);
+            UsePower(read);
+            AssertNumberOfStatusEffectsInPlay(2);
+
+            //now we get a damage boost
+            GoToStartOfTurn(gyrosaur);
+            AssertNumberOfStatusEffectsInPlay(1);
+            DealDamage(gyrosaur, legacy, 1, DTM);
+            DealDamage(gyrosaur, baron, 1, DTM);
+            QuickHPCheck(-3, 0, -1, 0);
+
+            //wears off
+            GoToStartOfTurn(legacy);
+            AssertNumberOfStatusEffectsInPlay(0);
+            DealDamage(gyrosaur, legacy, 1, DTM);
+            DealDamage(gyrosaur, baron, 1, DTM);
+            QuickHPCheck(-1, 0, -1, 0);
+        }
     }
 }
