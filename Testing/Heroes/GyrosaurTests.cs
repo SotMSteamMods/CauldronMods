@@ -1061,5 +1061,47 @@ namespace CauldronTests
             AssertInTrash(rart);
             QuickHPCheck(-6, 0, 0, 0);
         }
+        [Test]
+        public void TestRicochet()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            DecisionSelectCards = new Card[] { ra.CharacterCard, baron.CharacterCard };
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+            PlayCard("ImbuedFire");
+
+            PlayCard("Ricochet");
+            QuickHPCheck(-4, 0, 0, -3);
+
+            AssertNumberOfStatusEffectsInPlay(1);
+            DealDamage(baron, gyrosaur, 1, DamageType.Fire);
+            QuickHPCheckZero();
+            AssertNumberOfStatusEffectsInPlay(0);
+            DealDamage(baron, gyrosaur, 1, DamageType.Fire);
+            QuickHPCheck(0, -2, 0, 0);
+        }
+        [Test]
+        public void TestRicochetNoDamageDealt()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DecisionSelectCards = new Card[] { baron.CharacterCard, mdp };
+            QuickHPStorage(baron.CharacterCard, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard, mdp);
+            PlayCard("ImbuedFire");
+
+            PlayCard("Ricochet");
+            QuickHPCheck(0, 0, 0, 0, -1);
+
+            AssertNumberOfStatusEffectsInPlay(1);
+            DealDamage(baron, gyrosaur, 1, DamageType.Fire);
+            QuickHPCheck(0, -2, 0, 0, 0);
+            DealDamage(mdp, gyrosaur, 1, DamageType.Fire);
+            QuickHPCheckZero();
+            AssertNumberOfStatusEffectsInPlay(0);
+        }
     }
 }
