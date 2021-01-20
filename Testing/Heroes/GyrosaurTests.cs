@@ -1268,5 +1268,49 @@ namespace CauldronTests
             DealDamage(legacy, traffic, 1, DTM);
             QuickHPCheck(0, 0, 0, 0, 0, -2);
         }
+        [Test]
+        public void TestRecklessAlienRacingTortoiseNotLeakCrashStatus()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+            PlayCard("RecklessAlienRacingTortoise");
+            PutInHand("IndiscriminatePass");
+            PutInHand("WreckingBall");
+            PutInHand("SphereOfDevastation");
+
+            GoToStartOfTurn(gyrosaur);
+
+            DecisionYesNo = false;
+            Card wipeout = PutOnDeck("Wipeout");
+            DrawCard(gyrosaur, optional: true);
+            AssertOnTopOfDeck(wipeout);
+
+            Card chase = PutOnDeck("AMerryChase");
+            DrawCard(gyrosaur, optional: true);
+            AssertOnTopOfDeck(chase);
+        }
+        [Test]
+        public void TestHyperspinNotLeakCrashStatus()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+            DecisionYesNo = false;
+
+            PlayCard("Hyperspin");
+
+            Card pass = PutOnDeck("IndiscriminatePass");
+            DrawCard(gyrosaur, optional: true);
+            AssertOnTopOfDeck(pass);
+
+            Card chase = PutOnDeck("AMerryChase");
+            DrawCard(gyrosaur, optional: true);
+            AssertOnTopOfDeck(chase);
+        }
     }
 }

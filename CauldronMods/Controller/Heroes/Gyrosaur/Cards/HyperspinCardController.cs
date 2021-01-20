@@ -34,11 +34,18 @@ namespace Cauldron.Gyrosaur
             //"Increase damage dealt by {Gyrosaur} to non-hero targets by 1.",
             AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(CharacterCard) && !dd.Target.IsHero, 1);
             //"If you would draw a Crash card, play it instead. Then, destroy all copies of Hyperspin."
-            AddTrigger((DrawCardAction dc) => dc.HeroTurnTaker == HeroTurnTaker && IsCrash(dc.CardToDraw), PlayCrashAndEndHyperspin, new TriggerType[] { TriggerType.CancelAction, TriggerType.PlayCard, TriggerType.DestroyCard }, TriggerTiming.Before);
+            AddTrigger((DrawCardAction dc) => dc.HeroTurnTaker == HeroTurnTaker, PlayCrashAndEndHyperspin, new TriggerType[] { TriggerType.PlayCard, TriggerType.DestroyCard }, TriggerTiming.Before);
         }
 
         private IEnumerator PlayCrashAndEndHyperspin(DrawCardAction dc)
         {
+            if(!IsCrash(dc.CardToDraw))
+            {
+                //If we check for this in the trigger conditions,
+                //smart autodraw can leak information about whether the card 
+                //that's about to be drawn is a crash
+                yield break;
+            }
             IEnumerator coroutine = GameController.SendMessageAction($"{Card.Title} goes out of control and plays {dc.CardToDraw.Title}!", Priority.Medium, GetCardSource());
             if (base.UseUnityCoroutines)
             {
