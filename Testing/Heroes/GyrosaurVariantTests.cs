@@ -14,6 +14,7 @@ namespace CauldronTests
     class GyrosaurVariantTests : CauldronBaseTest
     {
         #region GyrosaurHelperFunctions
+        protected DamageType DTM => DamageType.Melee;
         #endregion
         [Test]
         public void TestSpeedDemonGyrosaurLoads()
@@ -110,6 +111,58 @@ namespace CauldronTests
             AssertOnTopOfDeck(wipeout);
             AssertInHand(chase);
             QuickHPCheck(-2, 0, 0, 0);
+        }
+        [Test]
+        public void TestRenegadeIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/RenegadeGyrosaurCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            DealDamage(baron, gyrosaur, 50, DTM);
+
+            AssertIncapLetsHeroDrawCard(gyrosaur, 0, ra, 1);
+        }
+        [Test]
+        public void TestRenegadeIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/RenegadeGyrosaurCharacter", "Legacy", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            DealDamage(baron, gyrosaur, 50, DTM);
+
+            PlayCard("StunBolt");
+            PlayCard("ThrowingKnives");
+
+            UseIncapacitatedAbility(gyrosaur, 1);
+
+            AssertNumberOfUsablePowers(legacy, 0);
+            AssertNumberOfUsablePowers(ra, 0);
+            AssertNumberOfUsablePowers(wraith, 3);
+        }
+        [Test]
+        public void TestRenegadeIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/RenegadeGyrosaurCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            DealDamage(baron, gyrosaur, 50, DTM);
+
+            UseIncapacitatedAbility(gyrosaur, 2);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            SetHitPoints(baron, 10);
+            SetHitPoints(legacy, 10);
+            QuickHPStorage(baron, legacy);
+
+            GainHP(baron, 10);
+            GainHP(legacy, 10);
+            QuickHPCheckZero();
+
+            GoToStartOfTurn(gyrosaur);
+            AssertNumberOfStatusEffectsInPlay(0);
+            GainHP(baron, 10);
+            GainHP(legacy, 10);
+            QuickHPCheck(10, 10);
         }
         [Test]
         public void TestCaptainGyrosaurLoads()
