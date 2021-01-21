@@ -529,5 +529,49 @@ namespace CauldronTests
             AssertInTrash(spin);
             AssertNumberOfStatusEffectsInPlay(0);
         }
+        [Test]
+        public void TestCaptainIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/CaptainGyrosaurCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            DealDamage(baron, gyrosaur, 50, DTM);
+
+            AssertIncapLetsHeroDrawCard(gyrosaur, 0, ra, 1);
+        }
+        [Test]
+        public void TestCaptainIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/CaptainGyrosaurCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            DealDamage(baron, gyrosaur, 50, DTM);
+
+            AssertIncapLetsHeroUsePower(gyrosaur, 1, ra);
+        }
+        [Test]
+        public void TestCaptainIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/CaptainGyrosaurCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            DealDamage(baron, gyrosaur, 50, DTM);
+
+            UseIncapacitatedAbility(gyrosaur, 2);
+            Card redist = PlayCard("ElementalRedistributor");
+
+            QuickHPStorage(baron, legacy, ra);
+            AssertNumberOfStatusEffectsInPlay(1);
+            DealDamage(ra, redist, 1, DTM);
+            AssertHitPoints(redist, 9);
+
+            DealDamage(baron, ra, 1, DTM);
+            DealDamage(ra, baron, 1, DTM);
+            QuickHPCheck(-3, 0, -1);
+
+            AssertNumberOfStatusEffectsInPlay(0);
+            DealDamage(ra, baron, 1, DTM);
+            QuickHPCheck(-1, 0, 0);
+        }
     }
 }

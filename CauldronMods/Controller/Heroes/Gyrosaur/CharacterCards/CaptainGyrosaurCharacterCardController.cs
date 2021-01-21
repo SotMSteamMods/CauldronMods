@@ -12,6 +12,7 @@ namespace Cauldron.Gyrosaur
     {
         public CaptainGyrosaurCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowListOfCardsAtLocation(Card.UnderLocation, new LinqCardCriteria());
         }
         public override IEnumerator UsePower(int index = 0)
         {
@@ -147,18 +148,73 @@ namespace Cauldron.Gyrosaur
                 case 0:
                     {
                         //"One player may draw a card now.",
+                        coroutine = GameController.SelectHeroToDrawCard(DecisionMaker, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case 1:
                     {
                         //"One hero may use a power now.",
+                        coroutine = GameController.SelectHeroToUsePower(DecisionMaker, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
                 case 2:
                     {
                         //"Select a target. Increase the next damage dealt to it by 2."
+                        var validTargets = AllCards.Where((Card c) => c.IsInPlayAndHasGameText && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()));
+                        var selectCard = new SelectCardDecision(GameController, DecisionMaker, SelectionType.SelectTarget, validTargets, cardSource: GetCardSource());
+                        coroutine = GameController.SelectCardAndDoAction(selectCard, IncreaseNextDamageToChosen);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                         break;
                     }
+            }
+            yield break;
+        }
+
+        private IEnumerator IncreaseNextDamageToChosen(SelectCardDecision scd)
+        {
+            Card target = scd.SelectedCard;
+            if(target == null)
+            {
+                yield break;
+            }
+
+            var increaseEffect = new IncreaseDamageStatusEffect(2);
+            increaseEffect.NumberOfUses = 1;
+            increaseEffect.TargetCriteria.IsSpecificCard = target;
+            increaseEffect.UntilTargetLeavesPlay(target);
+            increaseEffect.CardSource = Card;
+
+            IEnumerator coroutine = AddStatusEffect(increaseEffect);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
         }
