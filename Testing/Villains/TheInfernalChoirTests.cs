@@ -207,7 +207,7 @@ namespace CauldronTests
 
             var p1 = PutOnDeck("InspiringPresence", true);
             MoveCards(legacy, GetTopCardsOfDeck(legacy, 4), legacy.TurnTaker.Deck, true);
-            
+
             var p2 = PutOnDeck("Dominion", true);
             MoveCards(haka, GetTopCardsOfDeck(haka, 4), haka.TurnTaker.Deck, true);
 
@@ -240,6 +240,41 @@ namespace CauldronTests
             AssertOutOfGame(p3);
 
             GameController.HeroTurnTakerControllers.ForEach(htt => AssertNumberOfCardsInPlay(htt, inPlay[htt]));
+        }
+
+        [Test()]
+        public void TestTheInfernalChoir_Flipped_DestroyCharacters()
+        {
+            SetupGameController(new[] { "Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            GoToStartOfTurn(legacy);
+
+            FlipCard(choir);
+            GoToEndOfTurn(env);
+
+            var c1 = GetCard("BaneOfIron", 0);
+            var c2 = GetCard("BaneOfIron", 1);
+
+            PutOnDeck(choir, c1);
+            PutOnDeck(choir, c2);
+
+            GameController.HeroTurnTakerControllers.ForEach(htt => RunCoroutine(GameController.BulkMoveCards(htt, htt.TurnTaker.Deck.Cards, htt.TurnTaker.Trash)));
+
+            //Start of Turn
+            //all heros with no cards in there deck are destroyed
+
+            GoToStartOfTurn(choir);
+
+            AssertIncapacitated(legacy);
+            AssertIncapacitated(haka);
+            AssertIncapacitated(sentinels);
+
+            AssertGameOver(EndingResult.HeroesDestroyedDefeat);
+
+
         }
 
         [Test()]

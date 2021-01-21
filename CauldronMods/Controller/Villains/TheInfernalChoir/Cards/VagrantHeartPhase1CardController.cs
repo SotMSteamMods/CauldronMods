@@ -13,6 +13,9 @@ namespace Cauldron.TheInfernalChoir
         public VagrantHeartPhase1CardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowNumberOfCardsAtLocation(() => VagrantDeck).Condition = () => Card.IsInPlay;
+
+            AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
+            AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
         }
 
         public override bool CanBeDestroyed => false;
@@ -47,7 +50,7 @@ namespace Cauldron.TheInfernalChoir
         /* ..shuffle all cards under Vagrant Heart back into the hero's deck, and flip {TheInfernalChoir}'s villain character cards and Vagrant Heart." */
         private IEnumerator GoToPhase2(GameAction action)
         {
-            var coroutine = GameController.FlipCard(CharacterCardController, cardSource: CharacterCardController.GetCardSource());
+            var coroutine = GameController.FlipCard(CharacterCardController, actionSource: action, cardSource: CharacterCardController.GetCardSource(), allowBackToFront: false);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
