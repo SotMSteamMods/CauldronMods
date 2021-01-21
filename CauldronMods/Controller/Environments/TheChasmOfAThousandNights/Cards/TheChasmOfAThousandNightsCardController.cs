@@ -15,8 +15,8 @@ namespace Cauldron.TheChasmOfAThousandNights
         public TheChasmOfAThousandNightsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
+            base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
         }
-
 
         public override void AddTriggers()
         {
@@ -24,6 +24,17 @@ namespace Cauldron.TheChasmOfAThousandNights
             AddTrigger((CardEntersPlayAction cpa) => cpa.CardEnteringPlay != null && cpa.CardEnteringPlay.IsEnvironmentTarget && GameController.IsCardVisibleToCardSource(cpa.CardEnteringPlay, GetCardSource()), MoveNatureUnderResponse, TriggerType.MoveCard, TriggerTiming.After);
 
             base.AddTrigger<MakeDecisionsAction>((MakeDecisionsAction md) => md.CardSource != null && !md.CardSource.Card.IsEnvironment, this.RemoveDecisionsFromMakeDecisionsResponse, TriggerType.RemoveDecision, TriggerTiming.Before);
+        }
+
+        public override bool AskIfCardIsIndestructible(Card card)
+        {
+            if (card == Card)
+                return true;
+
+            if (IsNature(card))
+                return true;
+
+            return base.AskIfCardIsIndestructible(card);
         }
 
         private IEnumerator RemoveDecisionsFromMakeDecisionsResponse(MakeDecisionsAction md)
@@ -106,7 +117,7 @@ namespace Cauldron.TheChasmOfAThousandNights
             }
             if (e3 != null)
             {
-                if (matchingCards.Count() > 0)
+                if (matchingCards.Any())
                 {
                     foreach (Card item in matchingCards)
                     {

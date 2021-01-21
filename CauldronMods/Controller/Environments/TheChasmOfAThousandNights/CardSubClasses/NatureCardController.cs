@@ -11,6 +11,7 @@ namespace Cauldron.TheChasmOfAThousandNights
     {
         protected NatureCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => "This card is indestructible.");
         }
 
         public override void AddTriggers()
@@ -24,6 +25,12 @@ namespace Cauldron.TheChasmOfAThousandNights
         public override IEnumerator DestroyAttempted(DestroyCardAction destroyCard)
         {
             return GameController.SendMessageAction($"{TheChasm.Title} makes this card indestructible.", Priority.Medium, FindCardController(TheChasm).GetCardSource());
+        }
+
+        public override MoveCardDestination GetTrashDestination()
+        {
+            //this doesn't matter, but provides some coverage in case some effect does move or destroy the nature.
+            return new MoveCardDestination(TheChasm.UnderLocation);
         }
 
         protected void AddIfTheTargetThatThisCardIsBelowLeavesPlayMoveBackUnderTrigger()
