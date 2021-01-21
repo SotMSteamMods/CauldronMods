@@ -1,5 +1,6 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+using Handelabra;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,13 +17,66 @@ namespace Cauldron.TheChasmOfAThousandNights
 
         public override void AddTriggers()
         {
+            AddTrigger((MoveCardAction mca) => mca.CardToMove != null && mca.CardToMove == Card && Card.IsInPlayAndNotUnderCard && mca.CardSource != null && mca.CardSource.CardController != GetCardSource().CardController, CancelMoveResponse, new TriggerType[]
+            {
+                TriggerType.CancelAction,
+                TriggerType.ShowMessage
+            }, TriggerTiming.Before);
+
+            AddTrigger((BulkMoveCardsAction bmca) => bmca.CardsToMove != null && bmca.CardsToMove.Contains(Card) && Card.IsInPlayAndNotUnderCard && bmca.CardSource != null && bmca.CardSource.CardController != GetCardSource().CardController, CancelMoveResponse, new TriggerType[]
+            {
+                TriggerType.CancelAction,
+                TriggerType.ShowMessage
+            }, TriggerTiming.Before);
             //If a nature ever has no target next to it, put that nature face down beneath this card.
             AddIfTheTargetThatThisCardIsBelowLeavesPlayMoveBackUnderTrigger();
+        }
+
+        private IEnumerator CancelMoveResponse(BulkMoveCardsAction bmca)
+        {
+            bmca.RemoveCardsFromMove(Card.ToEnumerable());
+            IEnumerator coroutine = IndestructibleMessage();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+        private IEnumerator CancelMoveResponse(MoveCardAction mca)
+        {
+            IEnumerator coroutine = CancelAction(mca);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            coroutine = IndestructibleMessage();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
 
         public override bool CanBeDestroyed => false;
 
         public override IEnumerator DestroyAttempted(DestroyCardAction destroyCard)
+        {
+            return IndestructibleMessage();
+        }
+
+        private IEnumerator IndestructibleMessage()
         {
             return GameController.SendMessageAction($"{TheChasm.Title} makes this card indestructible.", Priority.Medium, FindCardController(TheChasm).GetCardSource());
         }

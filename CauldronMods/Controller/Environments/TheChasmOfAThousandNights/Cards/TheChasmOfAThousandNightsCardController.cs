@@ -16,6 +16,7 @@ namespace Cauldron.TheChasmOfAThousandNights
         {
             base.AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
+            base.Card.UnderLocation.OverrideIsInPlay = false;
         }
 
         public override void AddTriggers()
