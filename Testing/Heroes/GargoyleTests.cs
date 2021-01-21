@@ -12,19 +12,22 @@ using Cauldron.Gargoyle;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class GargoyleTests : BaseTest
+    public class GargoyleTests : CauldronBaseTest
     {
         #region Gargoyle Utilities
-        private HeroTurnTakerController gargoyle => FindHero("Gargoyle");
-        private Card mobileDefensePlatform => GetCardInPlay("MobileDefensePlatform");
         private string[] gameDecks => new string[] { "BaronBlade", "Cauldron.Gargoyle", "Unity", "Bunker", "TheScholar", "Megalopolis" };
 
         private void StartTestGame()
         {
-            SetupGameController(gameDecks);
+            StartTestGame(gameDecks);
+        }
+
+        private void StartTestGame(params String[] decksInPlay)
+        {
+            SetupGameController(decksInPlay);
             StartGame();
 
-            DestroyCard(mobileDefensePlatform);
+            base.DestroyNonCharacterVillainCards();
         }
 
         private void SetupIncapTest()
@@ -241,6 +244,7 @@ namespace CauldronTests
 
         #endregion Test Incap Powers
 
+        #region Test Absorb and Unleash
         /*
          * Absorb And Unleash
          * {Gargoyle} deals 1 hero target 2 toxic damage.
@@ -284,5 +288,1099 @@ namespace CauldronTests
             QuickHPCheck(-3, -2, 0, 0, 0);
         }
 
+        #endregion Test Absorb and Unleash
+
+        #region Test Agile Technique
+        /*
+         * Power
+         * {Gargoyle} deals up to 2 targets 2 toxic damage each.
+         * If a hero was damaged this way, {Gargoyle} deals a third target 2 melee damage.
+         */
+        [Test]
+        public void TestAgileTechnique()
+        {
+            Card agileTechnique;
+            Card bladeBattalion;
+
+            StartTestGame();
+            PutOnDeck(gargoyle, gargoyle.HeroTurnTaker.Hand.Cards);
+
+            GoToUsePowerPhase(gargoyle);
+
+            agileTechnique = PutIntoPlay("AgileTechnique");
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+
+            DecisionSelectCards = new Card[] { gargoyle.CharacterCard, baron.CharacterCard, bladeBattalion };
+
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion);
+            UsePower(agileTechnique);
+
+            // Baron, Gargoyle, and Blade Battallion should have been hit for 2
+            QuickHPCheck(-2, -2, 0, 0, 0, -2);
+        }
+        [Test]
+        public void TestAgileTechniqueNoHero()
+        {
+            Card agileTechnique;
+            Card bladeBattalion;
+
+            StartTestGame();
+            PutOnDeck(gargoyle, gargoyle.HeroTurnTaker.Hand.Cards);
+
+            GoToUsePowerPhase(gargoyle);
+
+            agileTechnique = PutIntoPlay("AgileTechnique");
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+
+            DecisionSelectCards = new Card[] { baron.CharacterCard, bladeBattalion };
+
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion);
+            UsePower(agileTechnique);
+
+            // Baron, Blade Battallion should have been hit for 2
+            QuickHPCheck(-2, 0, 0, 0, 0, -2);
+        }
+        [Test]
+        public void TestAgileTechniqueSelectedOneVillian()
+        {
+            Card agileTechnique;
+            Card bladeBattalion;
+
+            StartTestGame();
+            PutOnDeck(gargoyle, gargoyle.HeroTurnTaker.Hand.Cards);
+
+            GoToUsePowerPhase(gargoyle);
+
+            agileTechnique = PutIntoPlay("AgileTechnique");
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+
+            DecisionSelectCards = new Card[] { baron.CharacterCard, null };
+
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion);
+            UsePower(agileTechnique);
+
+            // Baron, Blade Battallion should have been hit for 2
+            QuickHPCheck(-2, 0, 0, 0, 0, 0);
+        }
+        [Test]
+        public void TestAgileTechniqueSelectedOneHero()
+        {
+            Card agileTechnique;
+            Card bladeBattalion;
+
+            StartTestGame();
+            PutOnDeck(gargoyle, gargoyle.HeroTurnTaker.Hand.Cards);
+
+            GoToUsePowerPhase(gargoyle);
+
+            agileTechnique = PutIntoPlay("AgileTechnique");
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+
+            DecisionSelectCards = new Card[] { gargoyle.CharacterCard, null, baron.CharacterCard };
+
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion);
+            UsePower(agileTechnique);
+
+            // Baron, Blade Battallion should have been hit for 2
+            QuickHPCheck(-2, -2, 0, 0, 0, 0);
+        }
+        #endregion Test Agile Technique
+
+        #region Test Bioenergy Pulse
+        /*
+         * Whenever {Gargoyle} deals himself damage, he may also deal that to 1 other target.
+         * Power
+         * {Gargoyle} deals each non-hero target 1 toxic damage.
+         * Increase the next damage {Gargoyle} deals by 1.
+         */
+        [Test]
+        public void TestBioenergyPulseTrigger()
+        {
+            Card agileTechnique;
+            Card bioenergyPulse;
+            Card bladeBattalion;
+            Card plummetingMonorail;
+
+            StartTestGame();
+            PutOnDeck(gargoyle, gargoyle.HeroTurnTaker.Hand.Cards);
+
+            GoToUsePowerPhase(gargoyle);
+
+            agileTechnique = PutIntoPlay("AgileTechnique");
+            bioenergyPulse = PutIntoPlay("BioenergyPulse");
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+            plummetingMonorail = PutIntoPlay("PlummetingMonorail");
+
+            DecisionSelectCards = new Card[] { gargoyle.CharacterCard, baron.CharacterCard, baron.CharacterCard, bladeBattalion };
+
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion);
+            UsePower(agileTechnique);
+
+            // Gargoyle, and Blade Battallion should have been hit for 2. Baron Blade shouldn't have been hit twice for 4 damage.
+            QuickHPCheck(-4, -2, 0, 0, 0, -2);
+        }
+
+        [Test]
+        public void TestBioenergyPulseTriggerNoDamageToGargoyle()
+        {
+            Card agileTechnique;
+            Card bioenergyPulse;
+            Card bladeBattalion;
+            Card plummetingMonorail;
+
+            StartTestGame();
+            PutOnDeck(gargoyle, gargoyle.HeroTurnTaker.Hand.Cards);
+
+            GoToUsePowerPhase(gargoyle);
+
+            agileTechnique = PutIntoPlay("AgileTechnique");
+            bioenergyPulse = PutIntoPlay("BioenergyPulse");
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+            plummetingMonorail = PutIntoPlay("PlummetingMonorail");
+
+            DecisionSelectCards = new Card[] { unity.CharacterCard, baron.CharacterCard, bladeBattalion };
+
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion);
+            UsePower(agileTechnique);
+
+            // Baron, Unity, and Blade Battallion should have been hit for 2
+            QuickHPCheck(-2, 0, -2, 0, 0, -2);
+        }
+
+        [Test]
+        public void TestBioenergyPulsePower()
+        {
+            Card bioenergyPulse;
+            Card bladeBattalion;
+            Card plummetingMonorail;
+
+            StartTestGame();
+            PutOnDeck(gargoyle, gargoyle.HeroTurnTaker.Hand.Cards);
+
+            GoToUsePowerPhase(gargoyle);
+
+            bioenergyPulse = PutIntoPlay("BioenergyPulse");
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+            plummetingMonorail = PutIntoPlay("PlummetingMonorail");
+
+            DecisionSelectCards = new Card[] { plummetingMonorail, baron.CharacterCard, plummetingMonorail, baron.CharacterCard };
+
+            //{Gargoyle} deals each non-hero target 1 toxic damage.
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion, plummetingMonorail);
+            UsePower(bioenergyPulse);
+
+            // Plummeting Monorail, Baron Blade, and Blade Battalion should have been hit for 1.
+            QuickHPCheck(-1, 0, 0, 0, 0, -1, -1);
+
+            // Increase the next damage {Gargoyle} deals by 1.
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion, plummetingMonorail);
+            UsePower(bioenergyPulse);
+
+            // Plummeting Monorail should have been hit for 2. Baron Blade, and Blade Battalion should have been hit for 1.
+            QuickHPCheck(-1, 0, 0, 0, 0, -1, -2);
+        }
+        #endregion Test Bioenergy Pulse
+
+        #region Dreamcatcher
+        /*                
+         *  Draw 2 cards.
+         *  Reduce the next damage dealt by {Gargoyle} by X, where X is up to 3.
+         *  {Gargoyle} deals 1 target 1 toxic damage. If that target takes damage this way, {Gargoyle} deals X other targets 2 toxic damage each."
+         */
+        [Test]
+        public void TestDreamcatcher()
+        {
+            Card dreamcatcher;
+
+            StartTestGame("BaronBlade", "Cauldron.Gargoyle", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            PutOnDeck(gargoyle, gargoyle.HeroTurnTaker.Hand.Cards);
+            dreamcatcher = PutInHand("Dreamcatcher");
+
+            UsePower(legacy); // increase hero damage by 1
+            PutIntoPlay("InspiringPresence"); // Increase hero damage by 1
+            PutIntoPlay("CrampedQuartersCombat"); // increase all damage by 1 and make it melee
+
+            GoToPlayCardPhase(gargoyle);
+
+            QuickHandStorage(gargoyle, legacy, scholar, bunker);
+            QuickHPStorage(baron, gargoyle, legacy, scholar, bunker);
+            DecisionSelectFunctions = new int?[] { 2 }; // x = 3
+            DecisionSelectTargets = new Card[] { gargoyle.CharacterCard, baron.CharacterCard, legacy.CharacterCard, scholar.CharacterCard };
+            PlayCard(dreamcatcher);
+            // Gargoyle should have gained 2 cards. So -1 card played +2 cards gained would be a net +1
+            QuickHandCheck(1, 0, 0, 0);
+            QuickHPCheck(-5, -1, -5, -5, 0);
+        }
+        #endregion
+
+        #region Essence Theft
+
+        /* 
+         * {Gargoyle} may deal 3 targets 1 toxic damage each or 1 target 3 melee damage.
+         * If any targets were dealt damage this way, {Gargoyle} regains 1HP.
+         */
+        [Test]
+        public void TestEssenceTheftMultipleTarget()
+        {
+            Card bladeBattalion1;
+            Card bladeBattalion2;
+            Card bladeBattalion3;
+
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            bladeBattalion1 = PutIntoPlay("BladeBattalion");
+            bladeBattalion2 = PutIntoPlay("BladeBattalion");
+            bladeBattalion3 = PutIntoPlay("BladeBattalion");
+
+            // {Gargoyle} may deal 3 targets 1 toxic damage each
+            SetHitPoints(gargoyle, gargoyle.CharacterCard.MaximumHitPoints.Value - 1);
+
+            DecisionSelectFunctions = new int?[] { 0 };
+            DecisionSelectTargets = new Card[] { baron.CharacterCard, bladeBattalion1, bladeBattalion2};
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion1, bladeBattalion2, bladeBattalion3);
+            PlayCard("EssenceTheft");
+            //If any targets were dealt damage this way, { Gargoyle} regains 1HP
+            QuickHPCheck(-1, 1, 0, 0, 0, -1, -1, 0);
+        }
+        [Test]
+        public void TestEssenceTheftMultipleTargetNoDamage()
+        {
+            Card bladeBattalion1;
+            Card bladeBattalion2;
+            Card bladeBattalion3;
+
+            StartTestGame("BaronBlade", "Cauldron.Gargoyle", "Cauldron.Cricket", "Bunker", "TheScholar", "Megalopolis");
+
+            GoToPlayCardPhase(gargoyle);
+
+            bladeBattalion1 = PutIntoPlay("BladeBattalion");
+            bladeBattalion2 = PutIntoPlay("BladeBattalion");
+            bladeBattalion3 = PutIntoPlay("BladeBattalion");
+            // Prevent all damage
+            PutIntoPlay("SoundMasking");
+
+            // {Gargoyle} may deal 3 targets 1 toxic damage each
+            SetHitPoints(gargoyle, gargoyle.CharacterCard.MaximumHitPoints.Value - 1);
+
+            DecisionSelectFunctions = new int?[] { 0 };
+            DecisionSelectTargets = new Card[] { baron.CharacterCard, bladeBattalion1, bladeBattalion2 };
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, cricket.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion1, bladeBattalion2, bladeBattalion3);
+            PlayCard("EssenceTheft");
+            //If any targets were dealt damage this way, { Gargoyle} regains 1HP
+            QuickHPCheck(0, 0, 0, 0, 0, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestEssenceTheftSingleTarget()
+        {
+            Card bladeBattalion1;
+            Card bladeBattalion2;
+            Card bladeBattalion3;
+
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            bladeBattalion1 = PutIntoPlay("BladeBattalion");
+            bladeBattalion2 = PutIntoPlay("BladeBattalion");
+            bladeBattalion3 = PutIntoPlay("BladeBattalion");
+
+            // {Gargoyle} may deal 1 targets 3 melee damage
+            SetHitPoints(gargoyle, gargoyle.CharacterCard.MaximumHitPoints.Value - 1);
+
+            DecisionSelectFunctions = new int?[] { 1 };
+            DecisionSelectTargets = new Card[] { baron.CharacterCard };
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion1, bladeBattalion2, bladeBattalion3);
+            PlayCard("EssenceTheft"); 
+            //If any targets were dealt damage this way, { Gargoyle} regains 1HP
+            QuickHPCheck(-3, 1, 0, 0, 0, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestEssenceTheftSingleTargetNoDamage()
+        {
+            Card bladeBattalion1;
+            Card bladeBattalion2;
+            Card bladeBattalion3;
+
+            StartTestGame("BaronBlade", "Cauldron.Gargoyle", "Cauldron.Cricket", "Bunker", "TheScholar", "Megalopolis");
+
+            GoToPlayCardPhase(gargoyle);
+
+            bladeBattalion1 = PutIntoPlay("BladeBattalion");
+            bladeBattalion2 = PutIntoPlay("BladeBattalion");
+            bladeBattalion3 = PutIntoPlay("BladeBattalion");
+            // Prevent all damage
+            PutIntoPlay("SoundMasking");
+
+            // {Gargoyle} may deal 1 targets 3 melee damage
+            SetHitPoints(gargoyle, gargoyle.CharacterCard.MaximumHitPoints.Value - 1);
+
+            DecisionSelectFunctions = new int?[] { 1 };
+            DecisionSelectTargets = new Card[] { baron.CharacterCard };
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, cricket.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion1, bladeBattalion2, bladeBattalion3);
+            PlayCard("EssenceTheft");
+            //If any targets were dealt damage this way, { Gargoyle} regains 1HP
+            QuickHPCheck(0, 0, 0, 0, 0, 0, 0, 0);
+        }
+        #endregion Essence Theft
+
+        #region Grim Herald
+        /*
+         * {Gargoyle} deals 1 target 3 toxic damage. 
+         * One other player may discard a card. If they do, you may play a card or draw a card now.
+         */
+        [Test]
+        public void TestGrimHeraldPlayCard()
+        {
+            Card beeBot;
+            Card markForExecution;
+            Card grimHerald;
+
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            beeBot = PutInHand(unity, "BeeBot");
+            markForExecution = PutInHand(gargoyle, "MarkForExecution");
+            grimHerald = PutInHand(gargoyle, "GrimHerald");
+
+            DecisionSelectTurnTakers = new TurnTaker[] { unity.TurnTaker };
+            DecisionSelectCards = new Card[] { baron.CharacterCard , beeBot, markForExecution };
+
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+            QuickHandStorage(gargoyle, unity, bunker, scholar);
+            PlayCard(grimHerald);
+            QuickHPCheck(-3, 0, 0, 0, 0);
+            QuickHandCheck(-2, -1, 0, 0);
+        }
+
+        [Test]
+        public void TestGrimHeraldDrawCard()
+        {
+            Card beeBot;
+            Card markForExecution;
+            Card grimHerald;
+
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            beeBot = PutInHand(unity, "BeeBot");
+            markForExecution = PutInHand(gargoyle, "MarkForExecution");
+            grimHerald = PutInHand(gargoyle, "GrimHerald");
+
+            DecisionSelectTurnTakers = new TurnTaker[] { unity.TurnTaker };
+            DecisionSelectCards = new Card[] { baron.CharacterCard, beeBot, markForExecution };
+            DecisionSelectFunctions = new int?[] { 1 };
+
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+            QuickHandStorage(gargoyle, unity, bunker, scholar);
+            PlayCard(grimHerald);
+            QuickHPCheck(-3, 0, 0, 0, 0);
+            QuickHandCheck(0, -1, 0, 0);
+        }
+
+        #endregion Grim Herald
+
+        #region Leech Field
+        /*
+         * Once per turn, when {Gargoyle} deals or is dealt damage, or when a non-hero target is dealt damage
+         * you may reduce that damage by 1 and increase the next damage dealt by {Gargoyle} by 1.
+         */
+        [Test]
+        public void TestLeechFieldGargoyleDamaged()
+        {
+            Card bladeBattalion1;
+            Card bladeBattalion2;
+            Card bladeBattalion3;
+
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            bladeBattalion1 = PutIntoPlay("BladeBattalion");
+            bladeBattalion2 = PutIntoPlay("BladeBattalion");
+            bladeBattalion3 = PutIntoPlay("BladeBattalion");
+            PutIntoPlay("LeechField");
+
+            SelectYesNoForNextDecision(true,true);
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion1, bladeBattalion2, bladeBattalion3);
+            DealDamage(baron.CharacterCard, gargoyle.CharacterCard, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, 0, 0, 0, 0);
+            DealDamage(gargoyle.CharacterCard, bladeBattalion1, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, 0, -2, 0, 0);
+        }
+
+        [Test]
+        public void TestLeechFieldGargoyleDealsDamage()
+        {
+            Card bladeBattalion1;
+            Card bladeBattalion2;
+            Card bladeBattalion3;
+
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            bladeBattalion1 = PutIntoPlay("BladeBattalion");
+            bladeBattalion2 = PutIntoPlay("BladeBattalion");
+            bladeBattalion3 = PutIntoPlay("BladeBattalion");
+            PutIntoPlay("LeechField");
+
+            SelectYesNoForNextDecision(true, true);
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion1, bladeBattalion2, bladeBattalion3);
+            DealDamage(gargoyle.CharacterCard, bladeBattalion1, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, 0, 0, 0, 0);
+            DealDamage(gargoyle.CharacterCard, bladeBattalion1, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, 0, -2, 0, 0);
+        }
+
+        [Test]
+        public void TestLeechFieldOtherHeroDamaged()
+        {
+            Card bladeBattalion1;
+            Card bladeBattalion2;
+            Card bladeBattalion3;
+
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            bladeBattalion1 = PutIntoPlay("BladeBattalion");
+            bladeBattalion2 = PutIntoPlay("BladeBattalion");
+            bladeBattalion3 = PutIntoPlay("BladeBattalion");
+            PutIntoPlay("LeechField");
+
+            SelectYesNoForNextDecision(true, true);
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion1, bladeBattalion2, bladeBattalion3);
+            DealDamage(baron.CharacterCard, unity.CharacterCard, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, -1, 0, 0, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestLeechFieldNonHeroDamaged()
+        {
+            Card bladeBattalion1;
+            Card bladeBattalion2;
+            Card bladeBattalion3;
+
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            bladeBattalion1 = PutIntoPlay("BladeBattalion");
+            bladeBattalion2 = PutIntoPlay("BladeBattalion");
+            bladeBattalion3 = PutIntoPlay("BladeBattalion");
+            PutIntoPlay("LeechField");
+
+            SelectYesNoForNextDecision(true, true);
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion1, bladeBattalion2, bladeBattalion3);
+            DealDamage(unity.CharacterCard, bladeBattalion1, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, 0, 0, 0, 0);
+            DealDamage(gargoyle.CharacterCard, bladeBattalion1, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, 0, -2, 0, 0);
+        }
+        #endregion Leech Field
+
+        #region Mark for Execution
+        /*
+         * Each hero gains the following power: 
+         * Power
+         * {Gargoyle} deals 1 target 2 toxic damage.
+         * {Gargoyle} may deal a second target 1 melee damage.
+         */
+        [Test]
+        public void TestMarkforExecutionPowerAdded()
+        {
+            int storedUnityPowersCount = 0;
+            int storedGargoylePowersCount = 0;
+            int storedBunkerPowersCount = 0;
+            int storedScholarPowersCount = 0;
+
+            StartTestGame();
+            GoToPlayCardPhase(gargoyle);
+
+            storedUnityPowersCount = unity.CharacterCard.NumberOfPowers;
+            storedGargoylePowersCount = gargoyle.CharacterCard.NumberOfPowers;
+            storedBunkerPowersCount = bunker.CharacterCard.NumberOfPowers;
+            storedScholarPowersCount = scholar.CharacterCard.NumberOfPowers;
+            PutIntoPlay("MarkForExecution");
+            // Each hero gains the following power: 
+            AssertNumberOfUsablePowers(unity.CharacterCard, storedUnityPowersCount + 1);
+            AssertNumberOfUsablePowers(gargoyle.CharacterCard, storedGargoylePowersCount); // Since gargoyle can use the power on the card, it isn't added to his character
+            AssertNumberOfUsablePowers(bunker.CharacterCard, storedBunkerPowersCount + 1);
+            AssertNumberOfUsablePowers(scholar.CharacterCard, storedScholarPowersCount + 1);
+        }
+
+        [Test]
+        public void TestMarkforExecutionPowerUsed()
+        {
+            Card bladeBattalion;
+
+            StartTestGame();
+
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+            PutIntoPlay("MarkForExecution");
+            GoToUsePowerPhase(unity);
+
+            DecisionSelectCards = new Card[] { baron.CharacterCard, bladeBattalion };
+
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion);
+            UsePower(unity, 1);
+            // { Gargoyle} deals 1 target 2 toxic damage.
+            // { Gargoyle} may deal a second target 1 melee damage.
+            QuickHPCheck(-2, 0, 0, 0, 0, -1);
+        }
+
+        [Test]
+        public void TestMarkforExecutionPowerUsedNoSecondDamage()
+        {
+            Card bladeBattalion;
+
+            StartTestGame();
+
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+            PutIntoPlay("MarkForExecution");
+            GoToUsePowerPhase(unity);
+
+            DecisionSelectCards = new Card[] { baron.CharacterCard, null };
+
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion);
+            UsePower(unity, 1);
+            // { Gargoyle} deals 1 target 2 toxic damage.
+            // { Gargoyle} may deal a second target 1 melee damage.
+            QuickHPCheck(-2, 0, 0, 0, 0, 0);
+        }
+
+        #endregion Mark for Execution
+
+        #region Preservation Engine
+
+        /*
+         * When {Gargoyle} destroys a target by reducing its HP below 0, increase the next damage dealt by {Gargoyle} by X and he regains 1HP, 
+         * where X is the amount of negative HP that target had.
+         * Powers
+         * Discard 2 cards. Draw 2 cards
+         */
+        [Test]
+        public void TestPreservationEngineDamageBoost()
+        {
+            Card bladeBattalion;
+
+            StartTestGame();
+
+            GoToUsePowerPhase(gargoyle);
+
+            PutIntoPlay("PreservationEngine");
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+            SetHitPoints(gargoyle, gargoyle.CharacterCard.MaximumHitPoints.Value - 2);
+            SetHitPoints(bladeBattalion, 1);
+            // Intentionally leaving out blade battalion since it will be destroyed and hit points will just reset to max.
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard);
+            DealDamage(gargoyle, bladeBattalion, 4, DamageType.Melee);
+            QuickHPCheck(0, 1, 0, 0, 0);
+            DealDamage(gargoyle, baron, 1, DamageType.Melee);
+            QuickHPCheck(-4, 0, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestPreservationEngineDiscardAndDraw()
+        {
+            Card preservationEngine;
+            StartTestGame();
+
+            GoToUsePowerPhase(gargoyle);
+
+            preservationEngine = PutIntoPlay("PreservationEngine");
+
+            QuickHandStorage(gargoyle, unity, bunker, scholar);
+            UsePower(preservationEngine);
+            QuickHandCheck(0, 0, 0, 0);
+            AssertNumberOfCardsInTrash(gargoyle, 2);
+        }
+
+        #endregion Preservation Engine
+
+        #region Something to Fear
+
+        /*
+         * Select a target. Reduce the next damage it deals by 1. Increase the next damage {Gargoyle} deals by 1.
+         * Search your deck and trash for a Hunter card and put it into play or into your hand. If you searched your deck, shuffle it.
+         */
+        [Test]
+        public void TestSomethingToFearFromDeckToHand()
+        {
+            Card bladeBattalion;
+            Card somethingToFear;
+
+            StartTestGame();
+
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+            somethingToFear = PutInHand("SomethingToFear");
+
+            GoToPlayCardPhase(gargoyle);
+
+            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(gargoyle.TurnTaker.Deck) };
+            DecisionSelectCards = new Card[] { baron.CharacterCard, FindCard((card)=>card.Identifier == "ViolentAssist") };
+            DecisionMoveCardDestinations = new MoveCardDestination[] { new MoveCardDestination(gargoyle.TurnTaker.ToHero().Hand) };
+
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion);
+            QuickHandStorage(gargoyle, unity, bunker, scholar); 
+            QuickShuffleStorage(gargoyle.TurnTaker.ToHero().Deck, unity.TurnTaker.ToHero().Hand, bunker.TurnTaker.ToHero().Hand, scholar.TurnTaker.ToHero().Hand);
+            PlayCard(somethingToFear);
+            DealDamage(baron, gargoyle, 1, DamageType.Melee);
+            DealDamage(gargoyle, baron, 1, DamageType.Melee);
+            DealDamage(gargoyle, bladeBattalion, 1, DamageType.Melee);
+            QuickHPCheck(-2, 0, 0, 0, 0, -1);
+            QuickHandCheck(0, 0, 0, 0);
+            QuickShuffleCheck(1, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestSomethingToFearFromDeckToPlay()
+        {
+            Card bladeBattalion;
+            Card somethingToFear;
+
+            StartTestGame();
+
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+            somethingToFear = PutInHand("SomethingToFear");
+
+            GoToPlayCardPhase(gargoyle);
+
+            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(gargoyle.TurnTaker.Deck) };
+            DecisionSelectCards = new Card[] { baron.CharacterCard, FindCard((card) => card.Identifier == "ViolentAssist") };
+            DecisionMoveCardDestinations = new MoveCardDestination[] { new MoveCardDestination(gargoyle.TurnTaker.ToHero().PlayArea) };
+
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion);
+            QuickHandStorage(gargoyle, unity, bunker, scholar);
+            QuickShuffleStorage(gargoyle.TurnTaker.ToHero().Deck, unity.TurnTaker.ToHero().Hand, bunker.TurnTaker.ToHero().Hand, scholar.TurnTaker.ToHero().Hand);
+            PlayCard(somethingToFear);
+            DealDamage(baron, gargoyle, 1, DamageType.Melee);
+            DealDamage(gargoyle, baron, 1, DamageType.Melee);
+            DealDamage(gargoyle, bladeBattalion, 1, DamageType.Melee);
+            QuickHPCheck(-2, 0, 0, 0, 0, -1);
+            QuickHandCheck(-1, 0, 0, 0);
+            QuickShuffleCheck(1, 0, 0, 0);
+        }
+        [Test]
+        public void TestSomethingToFearFromTrashToHand()
+        {
+            Card bladeBattalion;
+            Card somethingToFear;
+            
+            StartTestGame();
+
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+            somethingToFear = PutInHand("SomethingToFear");
+            PutInTrash(gargoyle, FindCardsWhere((card)=>card.Identifier== "ViolentAssist"));
+
+            GoToPlayCardPhase(gargoyle);
+
+            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(gargoyle.TurnTaker.Trash) };
+            DecisionSelectCards = new Card[] { baron.CharacterCard, FindCard((card) => card.Identifier == "ViolentAssist") };
+            DecisionMoveCardDestinations = new MoveCardDestination[] { new MoveCardDestination(gargoyle.TurnTaker.ToHero().Hand) };
+
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion);
+            QuickHandStorage(gargoyle, unity, bunker, scholar);
+            QuickShuffleStorage(gargoyle.TurnTaker.ToHero().Deck, unity.TurnTaker.ToHero().Hand, bunker.TurnTaker.ToHero().Hand, scholar.TurnTaker.ToHero().Hand);
+            PlayCard(somethingToFear);
+            DealDamage(baron, gargoyle, 1, DamageType.Melee);
+            DealDamage(gargoyle, baron, 1, DamageType.Melee);
+            DealDamage(gargoyle, bladeBattalion, 1, DamageType.Melee);
+            QuickHPCheck(-2, 0, 0, 0, 0, -1);
+            QuickHandCheck(0, 0, 0, 0);
+            QuickShuffleCheck(0, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestSomethingToFearFromTrashToPlay()
+        {
+            Card bladeBattalion;
+            Card somethingToFear;
+
+            StartTestGame();
+
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+            somethingToFear = PutInHand("SomethingToFear");
+            PutInTrash(gargoyle, FindCardsWhere((card) => card.Identifier == "ViolentAssist"));
+
+            GoToPlayCardPhase(gargoyle);
+
+            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(gargoyle.TurnTaker.Trash) };
+            DecisionSelectCards = new Card[] { baron.CharacterCard, FindCard((card) => card.Identifier == "ViolentAssist") };
+            DecisionMoveCardDestinations = new MoveCardDestination[] { new MoveCardDestination(gargoyle.TurnTaker.ToHero().PlayArea) };
+
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion);
+            QuickHandStorage(gargoyle, unity, bunker, scholar);
+            QuickShuffleStorage(gargoyle.TurnTaker.ToHero().Deck, unity.TurnTaker.ToHero().Hand, bunker.TurnTaker.ToHero().Hand, scholar.TurnTaker.ToHero().Hand);
+            PlayCard(somethingToFear);
+            DealDamage(baron, gargoyle, 1, DamageType.Melee);
+            DealDamage(gargoyle, baron, 1, DamageType.Melee);
+            DealDamage(gargoyle, bladeBattalion, 1, DamageType.Melee);
+            QuickHPCheck(-2, 0, 0, 0, 0, -1);
+            QuickHandCheck(-1, 0, 0, 0);
+            QuickShuffleCheck(0, 0, 0, 0);
+        }
+        #endregion Something to Fear
+
+        #region Terrorize
+
+        /*
+         * At the end of each turn, each non-hero target damaged by {Gargoyle} during that turn deals itself 1 psychic damage.
+         * At the start of the villain turn, {Gargoyle} may deal 1 target 0 psychic damage.
+        */
+        [Test]
+        public void TestTerrorizeEndOfHeroTurn()
+        {
+            Card bladeBattalion1;
+            Card bladeBattalion2;
+            Card bladeBattalion3;
+            Card plummetingMonorail;
+
+            StartTestGame();
+            GoToPlayCardPhase(gargoyle);
+            bladeBattalion1 = PutIntoPlay("BladeBattalion");
+            bladeBattalion2 = PutIntoPlay("BladeBattalion");
+            bladeBattalion3 = PutIntoPlay("BladeBattalion");
+            plummetingMonorail = PutIntoPlay("PlummetingMonorail");
+            PutIntoPlay("Terrorize");
+
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion1, bladeBattalion2, bladeBattalion3, plummetingMonorail);
+            DealDamage(gargoyle.CharacterCard, new Card[] { baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion1, bladeBattalion2, bladeBattalion3, plummetingMonorail }, 1, DamageType.Melee);
+            QuickHPCheck(-1, -1, -1, -1, -1, -1, -1, -1, -1);
+
+            // At the end of each turn, each non-hero target damaged by {Gargoyle} during that turn deals itself 1 psychic damage.
+            GoToEndOfTurn(gargoyle);
+            QuickHPCheck(-1, 0, 0, 0, 0, -1, -1, -1, -1);
+
+            GoToPlayCardPhase(unity); 
+            DealDamage(gargoyle.CharacterCard, new Card[] { baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion1, bladeBattalion2, bladeBattalion3, plummetingMonorail }, 1, DamageType.Melee);
+            QuickHPCheck(-1, -1, -1, -1, -1, -1, -1, -1, -1);
+
+            // At the end of each turn, each non-hero target damaged by {Gargoyle} during that turn deals itself 1 psychic damage.
+            GoToEndOfTurn(unity);
+            QuickHPCheck(-1, 0, 0, 0, 0, -1, -1, -1, -1);
+        }
+
+        [Test]
+        public void TestTerrorizeEndOfEnvironmentTurn()
+        {
+            Card bladeBattalion1;
+            Card bladeBattalion2;
+            Card bladeBattalion3;
+            Card plummetingMonorail;
+
+            StartTestGame();
+            GoToStartOfTurn(env);
+            DestroyCards((card) => card.IsEnvironment);
+
+            bladeBattalion1 = PutIntoPlay("BladeBattalion");
+            bladeBattalion2 = PutIntoPlay("BladeBattalion");
+            bladeBattalion3 = PutIntoPlay("BladeBattalion");
+            plummetingMonorail = PutIntoPlay("PlummetingMonorail");
+            PutIntoPlay("Terrorize");
+
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion1, bladeBattalion2, bladeBattalion3, plummetingMonorail);
+            DealDamage(gargoyle.CharacterCard, new Card[] { baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion1, bladeBattalion2, bladeBattalion3, plummetingMonorail }, 1, DamageType.Melee);
+            QuickHPCheck(-1, -1, -1, -1, -1, -1, -1, -1, -1);
+
+            // At the end of each turn, each non-hero target damaged by {Gargoyle} during that turn deals itself 1 psychic damage.
+
+            GoToEndOfTurn(env);
+            QuickHPCheck(-1, 0, 0, 0, 0, -1, -1, -1, -1);
+        }
+
+        [Test]
+        public void TestTerrorizeStartOfVillainTurn()
+        {
+            StartTestGame();
+
+            PutIntoPlay("Terrorize");
+
+            GoToEndOfTurn(env);
+            // At the start of the villain turn, {Gargoyle} may deal 1 target 0 psychic damage.
+            base.UsePower(gargoyle);
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard);
+            GoToStartOfTurn(baron);
+            QuickHPCheck(-1, 0, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestTerrorizeEndOfVillainTurn()
+        {
+            Card bladeBattalion1;
+            Card bladeBattalion2;
+            Card bladeBattalion3;
+            Card plummetingMonorail;
+
+            StartTestGame();
+
+            bladeBattalion1 = PutIntoPlay("BladeBattalion");
+            bladeBattalion2 = PutIntoPlay("BladeBattalion");
+            bladeBattalion3 = PutIntoPlay("BladeBattalion");
+            plummetingMonorail = PutIntoPlay("PlummetingMonorail");
+            PreventEndOfTurnEffects(baron, bladeBattalion1);
+            PreventEndOfTurnEffects(baron, bladeBattalion2);
+            PreventEndOfTurnEffects(baron, bladeBattalion3);
+
+            PutIntoPlay("Terrorize");
+
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion1, bladeBattalion2, bladeBattalion3, plummetingMonorail);
+            DealDamage(gargoyle.CharacterCard, new Card[] { baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion1, bladeBattalion2, bladeBattalion3, plummetingMonorail }, 1, DamageType.Melee);
+            QuickHPCheck(-1, -1, -1, -1, -1, -1, -1, -1, -1);
+
+            // At the end of each turn, each non-hero target damaged by {Gargoyle} during that turn deals itself 1 psychic damage.
+            GoToEndOfTurn(baron);
+
+            QuickHPCheck(-1, 0, 0, 0, 0, -1, -1, -1, -1);
+        }
+        #endregion Terrorize
+
+        #region Ultimatum
+        /*
+         * Destroy up to 3 hero ongoing or equipment cards belonging to other players.
+         * {Gargoyle} deals 1 target X toxic damage, where X is 3 times the number of cards destroyed this way.
+         */
+        [Test]
+        public void TestUltimatumZeroDestroyed()
+        {
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+            PlayCard("Ultimatum");
+            QuickHPCheck(0, 0, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestUltimatumOneDestroyed()
+        {
+            Card ammoDrop;
+            Card modularWorkbench;
+            Card leechField;
+
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+            ammoDrop = PutIntoPlay("AmmoDrop");
+            modularWorkbench = PutIntoPlay("ModularWorkbench");
+            leechField = PutIntoPlay("LeechField");
+
+            DecisionSelectCards = new Card[] { ammoDrop, null, baron.CharacterCard };
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+            PlayCard("Ultimatum");
+            QuickHPCheck(-3, 0, 0, 0, 0);
+        }
+        [Test]
+        public void TestUltimatumTwoDestroyed()
+        {
+            Card ammoDrop;
+            Card modularWorkbench;
+            Card leechField;
+
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+            ammoDrop = PutIntoPlay("AmmoDrop");
+            modularWorkbench = PutIntoPlay("ModularWorkbench");
+            leechField = PutIntoPlay("LeechField");
+
+            DecisionSelectCards = new Card[] { ammoDrop, modularWorkbench, null, baron.CharacterCard };
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+            PlayCard("Ultimatum");
+            QuickHPCheck(-6, 0, 0, 0, 0);
+        }
+        [Test]
+        public void TestUltimatumThreeDestroyed()
+        {
+            Card ammoDrop;
+            Card modularWorkbench;
+            Card leechField;
+
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+            ammoDrop = PutIntoPlay("AmmoDrop");
+            modularWorkbench = PutIntoPlay("ModularWorkbench");
+            leechField = PutIntoPlay("LeechField");
+
+            DecisionSelectCards = new Card[] { ammoDrop, modularWorkbench, leechField, baron.CharacterCard };
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+            PlayCard("Ultimatum");
+            QuickHPCheck(-9, 0, 0, 0, 0);
+        }
+
+        #endregion Ultimatum
+
+        #region ViolentAssist
+        /* 
+         * Once per turn when {Gargoyle} would be dealt damage by another hero target, you may prevent that damage.
+         * If you do, increase the next damage dealt by {Gargoyle} by X, where X is the amount of damage prevented this way.
+         */
+        [Test]
+        public void TestViolentAssistYes()
+        {
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+            DecisionsYesNo = new bool[] { true };
+            DecisionSelectCards = new Card[] { baron.CharacterCard };
+            PutIntoPlay("ViolentAssist");
+            DealDamage(unity, gargoyle, 5, DamageType.Melee);
+            DealDamage(gargoyle, baron, 1, DamageType.Melee);
+            QuickHPCheck(-6, 0, 0, 0, 0);
+            // should only be the next damage
+            DealDamage(gargoyle, baron, 1, DamageType.Melee);
+            QuickHPCheck(-1, 0, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestViolentAssistNo()
+        {
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+            DecisionsYesNo = new bool[] { false };
+            DecisionSelectCards = new Card[] { baron.CharacterCard };
+            PutIntoPlay("ViolentAssist");
+            DealDamage(unity, gargoyle, 5, DamageType.Melee);
+            DealDamage(gargoyle, baron, 1, DamageType.Melee);
+            QuickHPCheck(-1, -5, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestViolentAssistGargoyleDealsDamage()
+        {
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+            DecisionsYesNo = new bool[] { false };
+            DecisionSelectCards = new Card[] { baron.CharacterCard };
+            PutIntoPlay("ViolentAssist");
+            DealDamage(gargoyle, gargoyle, 5, DamageType.Melee);
+            DealDamage(gargoyle, baron, 1, DamageType.Melee);
+            QuickHPCheck(-1, -5, 0, 0, 0);
+        }
+
+        #endregion ViolentAssist
+
+        #region Wither
+        /*
+         * Destroy 1 ongoing or environment card.
+         * If a card is destroyed this way, increase the next damage dealt by {Gargoyle} by 2.
+         */
+        [Test]
+        public void TestWitherWasCardDestroyed()
+        {
+            Card plummetingMonorail;
+            Card leechField;
+
+            // The destruction isn't optional, so at least 1 card should be destroyed.
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+            plummetingMonorail = PutIntoPlay("PlummetingMonorail");
+            leechField = PutIntoPlay("LeechField");
+
+            PlayCard("Wither");
+
+            Assert.IsTrue(GetNumberOfCardsInTrash(gargoyle) > 0 || GetNumberOfCardsInTrash(env) > 0, "No card was destroyed");
+        }
+
+        [Test]
+        public void TestWitherDamageIncreased()
+        {
+            Card plummetingMonorail;
+            Card leechField;
+
+            // The destruction isn't optional, so at least 1 card should be destroyed.
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+            plummetingMonorail = PutIntoPlay("PlummetingMonorail");
+            leechField = PutIntoPlay("LeechField");
+
+            PlayCard("Wither");
+
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+            DealDamage(gargoyle, baron, 1, DamageType.Melee);
+            QuickHPCheck(-3, 0, 0, 0, 0);
+            DealDamage(gargoyle, baron, 1, DamageType.Melee);
+            QuickHPCheck(-1, 0, 0, 0, 0);
+        }
+
+        #endregion Wither
+
+        #region Your Strength is Mine
+        /*
+         * Play this card next to a target. You may destroy this card at any time.
+         * When this card is destroyed, reduce the next damage dealt by that target by 2 and increase the next damage dealt by {Gargoyle} by 2.
+        */
+        [Test]
+        public void TestYourStrengthIsMineVillainReducedYes()
+        {
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            DecisionsYesNo = new bool[] { true };
+            PutIntoPlay("YourStrengthIsMine");
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+
+            // Your Strength is Mine should have been destroyed so Baron's next damage should be reduced by 2
+            DealDamage(baron.CharacterCard, gargoyle.CharacterCard, 2, DamageType.Toxic);
+            QuickHPCheck(0, 0, 0, 0, 0);
+            // but only his next damage
+            DealDamage(baron.CharacterCard, gargoyle.CharacterCard, 2, DamageType.Toxic);
+            QuickHPCheck(0, -2, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestYourStrengthIsMineHeroIncreasedYes()
+        {
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            DecisionsYesNo = new bool[] { true };
+            PutIntoPlay("YourStrengthIsMine");
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+
+            // Your Strength is Mine should have been destroyed so Baron's next damage should be reduced by 2
+            DealDamage(gargoyle.CharacterCard, baron.CharacterCard, 2, DamageType.Toxic);
+            QuickHPCheck(-4, 0, 0, 0, 0);
+            // but only his next damage
+            DealDamage(gargoyle.CharacterCard, baron.CharacterCard, 2, DamageType.Toxic);
+            QuickHPCheck(-2, 0, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestYourStrengthIsMineHeroIncreasedNo()
+        {
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            DecisionsYesNo = new bool[] { false, false };
+            PutIntoPlay("YourStrengthIsMine");
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+
+            // Your Strength is Mine should have been destroyed so Baron's next damage should be reduced by 2
+            DealDamage(gargoyle.CharacterCard, baron.CharacterCard, 2, DamageType.Toxic);
+            DealDamage(baron.CharacterCard, gargoyle.CharacterCard, 2, DamageType.Toxic);
+            QuickHPCheck(-2, -2, 0, 0, 0);
+        }
+        #endregion Your Strength is Mine
     }
 }
