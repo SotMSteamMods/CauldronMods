@@ -187,9 +187,9 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestTheInfernalChoir_Flipped_Stuff()
+        public void TestTheInfernalChoir_Flipped_StartAndEnd()
         {
-            SetupGameController(new[] { "Cauldron.TheInfernalChoir", "Legacy", "Haka", "Megalopolis" }, advanced: false);
+            SetupGameController(new[] { "Cauldron.TheInfernalChoir", "Legacy", "Haka", "Ra", "Megalopolis" }, advanced: false);
             StartGame();
 
             DecisionAutoDecideIfAble = true;
@@ -199,11 +199,47 @@ namespace CauldronTests
             FlipCard(choir);
             GoToEndOfTurn(env);
 
+            var c1 = GetCard("BaneOfIron", 0);
+            var c2 = GetCard("BaneOfIron", 1);
+
+            PutOnDeck(choir, c1);
+            PutOnDeck(choir, c2);
+
+            var p1 = PutOnDeck("InspiringPresence", true);
+            MoveCards(legacy, GetTopCardsOfDeck(legacy, 4), legacy.TurnTaker.Deck, true);
+            
+            var p2 = PutOnDeck("Dominion", true);
+            MoveCards(haka, GetTopCardsOfDeck(haka, 4), haka.TurnTaker.Deck, true);
+
+            var p3 = PutOnDeck("ImbuedFire", true);
+            MoveCards(ra, GetTopCardsOfDeck(ra, 4), ra.TurnTaker.Deck, true);
+
+            var inPlay = GameController.HeroTurnTakerControllers.ToDictionary(htt => htt, htt => GetNumberOfCardsInPlay(htt));
+
+            //Start of Turn
+            //remove all by 5 cards from each hero's deck
+            //play the top card of each deck, then remove hero plays from game
+
             GoToStartOfTurn(choir);
 
+            AssertInPlayArea(choir, c2);
+            AssertInPlayArea(legacy, p1);
+            AssertInPlayArea(haka, p2);
+            AssertInPlayArea(ra, p3);
 
+            GoToPlayCardPhase(choir);
 
+            RunActiveTurnPhase();
+            AssertInPlayArea(choir, c1);
 
+            GoToEndOfTurn(choir);
+
+            AssertInPlayArea(choir, c2);
+            AssertOutOfGame(p1);
+            AssertOutOfGame(p2);
+            AssertOutOfGame(p3);
+
+            GameController.HeroTurnTakerControllers.ForEach(htt => AssertNumberOfCardsInPlay(htt, inPlay[htt]));
         }
 
         [Test()]
