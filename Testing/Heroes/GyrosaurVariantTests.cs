@@ -370,5 +370,164 @@ namespace CauldronTests
 
             Assert.AreEqual(29, gyrosaur.CharacterCard.HitPoints);
         }
+        [Test]
+        public void TestCaptainPowerPlayStoredCard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/CaptainGyrosaurCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            
+            Card wreck = PutOnDeck("WreckingBall");
+            UsePower(gyrosaur);
+            AssertUnderCard(gyrosaur.CharacterCard, wreck);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            DecisionSelectFunction = 0;
+
+            Card chase = PutOnDeck("AMerryChase");
+
+            //not if damage prevented
+            DealDamage(gyrosaur, baron, 1, DTM);
+            AssertNumberOfStatusEffectsInPlay(1);
+            AssertUnderCard(gyrosaur.CharacterCard, wreck);
+
+            DealDamage(gyrosaur, ra, 1, DTM);
+            AssertIsInPlay(wreck);
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            AssertOnTopOfDeck(chase);
+        }
+        [Test]
+        public void TestCaptainPowerDrawStoredCard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/CaptainGyrosaurCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            Card wreck = PutOnDeck("WreckingBall");
+            UsePower(gyrosaur);
+            AssertUnderCard(gyrosaur.CharacterCard, wreck);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            DecisionSelectFunction = 1;
+
+            Card chase = PutOnDeck("AMerryChase");
+
+            //not if damage prevented
+            DealDamage(gyrosaur, baron, 1, DTM);
+            AssertNumberOfStatusEffectsInPlay(1);
+            AssertUnderCard(gyrosaur.CharacterCard, wreck);
+
+            DealDamage(gyrosaur, ra, 1, DTM);
+            AssertInHand(wreck);
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            AssertOnTopOfDeck(chase);
+        }
+        [Test]
+        public void TestCaptainPowerForcedPlayIfCannotDraw()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/CaptainGyrosaurCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            Card chase = PutOnDeck("AMerryChase");
+
+            UsePower(gyrosaur);
+            AssertUnderCard(gyrosaur.CharacterCard, chase);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            AssertNoDecision();
+            Card wreck = PutOnDeck("WreckingBall");
+            PlayCard("TrafficPileup");
+
+            DealDamage(gyrosaur, ra, 1, DTM);
+            AssertIsInPlay(chase);
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            AssertOnTopOfDeck(wreck);
+        }
+        [Test]
+        public void TestCaptainPowerForcedDrawIfCannotPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/CaptainGyrosaurCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            Card chase = PutOnDeck("AMerryChase");
+
+            UsePower(gyrosaur);
+            AssertUnderCard(gyrosaur.CharacterCard, chase);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            AssertNoDecision();
+            Card wreck = PutOnDeck("WreckingBall");
+            PlayCard("HostageSituation");
+
+            DealDamage(gyrosaur, ra, 1, DTM);
+            AssertInHand(chase);
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            AssertOnTopOfDeck(wreck);
+        }
+        [Test]
+        public void TestCaptainPowerWaitsIfCannotDrawOrPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/CaptainGyrosaurCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            Card chase = PutOnDeck("AMerryChase");
+
+            UsePower(gyrosaur);
+            AssertUnderCard(gyrosaur.CharacterCard, chase);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            AssertNoDecision();
+            Card wreck = PutOnDeck("WreckingBall");
+            PlayCard("HostageSituation");
+            PlayCard("TrafficPileup");
+
+            DealDamage(gyrosaur, ra, 1, DTM);
+            AssertUnderCard(gyrosaur.CharacterCard, chase);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            AssertOnTopOfDeck(wreck);
+        }
+        [Test]
+        public void TestCaptainPowerStacks()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/CaptainGyrosaurCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            Card chase = PutOnDeck("AMerryChase");
+            UsePower(gyrosaur);
+            Card shell = PutOnDeck("RapturianShell");
+            UsePower(gyrosaur);
+
+            AssertUnderCard(gyrosaur.CharacterCard, shell);
+            AssertUnderCard(gyrosaur.CharacterCard, chase);
+            AssertNumberOfStatusEffectsInPlay(2);
+
+            DecisionSelectFunction = 0;
+
+            DealDamage(gyrosaur, ra, 1, DTM);
+
+            AssertIsInPlay(chase, shell);
+            AssertNumberOfStatusEffectsInPlay(0);
+        }
+        [Test]
+        public void TestCaptainPowerDrawIsActualDraw()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/CaptainGyrosaurCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+            Card wreck = PutOnDeck("WreckingBall");
+            UsePower(gyrosaur);
+
+            DecisionSelectFunction = 1;
+            Card spin = PlayCard("Hyperspin");
+
+            DealDamage(gyrosaur, ra, 1, DTM);
+            AssertIsInPlay(wreck);
+            AssertInTrash(spin);
+            AssertNumberOfStatusEffectsInPlay(0);
+        }
     }
 }
