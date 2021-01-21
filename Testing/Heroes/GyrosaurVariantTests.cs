@@ -135,6 +135,94 @@ namespace CauldronTests
             AssertOnTopOfDeck(wipeout);
         }
         [Test]
+        public void TestSpeedDemonIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/SpeedDemonGyrosaurCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            DealDamage(baron, gyrosaur, 50, DTM);
+
+            AssertIncapLetsHeroDrawCard(gyrosaur, 0, legacy, 1);
+        }
+        [Test]
+        public void TestSpeedDemonIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/SpeedDemonGyrosaurCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            DealDamage(baron, gyrosaur, 50, DTM);
+
+            MoveAllCardsFromHandToDeck(legacy);
+            PutInHand("Fortitude");
+            PutInHand("SurgeOfStrength");
+            PutInHand("DangerSense");
+
+            DecisionYesNo = true;
+            UseIncapacitatedAbility(gyrosaur, 1);
+            AssertNumberOfCardsInHand(legacy, 1);
+            AssertNumberOfCardsInPlay(legacy, 3);
+        }
+        [Test]
+        public void TestSpeedDemonIncap2Optional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/SpeedDemonGyrosaurCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            DealDamage(baron, gyrosaur, 50, DTM);
+
+            MoveAllCardsFromHandToDeck(legacy);
+            PutInHand("Fortitude");
+            PutInHand("SurgeOfStrength");
+            PutInHand("DangerSense");
+
+            DecisionYesNo = false;
+            UseIncapacitatedAbility(gyrosaur, 1);
+            AssertNumberOfCardsInHand(legacy, 3);
+            AssertNumberOfCardsInPlay(legacy, 1);
+        }
+        [Test]
+        public void TestSpeedDemonIncap2OnlyOne()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/SpeedDemonGyrosaurCharacter", "Legacy", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            DealDamage(baron, gyrosaur, 50, DTM);
+
+            MoveAllCardsFromHandToDeck(legacy);
+            PutInHand("Fortitude");
+            PutInHand("SurgeOfStrength");
+            PutInHand("DangerSense");
+
+            DiscardCard(wraith);
+            DecisionYesNo = true;
+            AssertNextDecisionChoices(new TurnTaker[] { legacy.TurnTaker, wraith.TurnTaker }, new TurnTaker[] { ra.TurnTaker });
+
+            UseIncapacitatedAbility(gyrosaur, 1);
+            AssertNumberOfCardsInHand(legacy, 1);
+            AssertNumberOfCardsInPlay(legacy, 3);
+            AssertNumberOfCardsInHand(wraith, 3);
+            AssertNumberOfCardsInPlay(wraith, 1);
+        }
+        [Test]
+        public void TestSpeedDemonIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/SpeedDemonGyrosaurCharacter", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            DealDamage(baron, gyrosaur, 50, DTM);
+
+            QuickHPStorage(baron, legacy, ra);
+            UseIncapacitatedAbility(gyrosaur, 2);
+
+            AssertNumberOfStatusEffectsInPlay(1);
+            DealDamage(ra, baron, 3, DTM);
+            DealDamage(baron, ra, 3, DTM);
+            QuickHPCheck(-3, 0, -1);
+            AssertNumberOfStatusEffectsInPlay(0);
+            DealDamage(baron, ra, 3, DTM);
+            QuickHPCheck(0, 0, -3);
+        }
+        [Test]
         public void TestRenegadeGyrosaurLoads()
         {
             SetupGameController("BaronBlade", "Cauldron.Gyrosaur/RenegadeGyrosaurCharacter", "Megalopolis");
