@@ -405,13 +405,13 @@
             "flavorReference": "Gargoyle, Windmill City #86"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "GargoyleCharacter",
             "promoIdentifier": "WastelandRoninGargoyleCharacter",
             "count": 1,
             "title": "Gargoyle",
-            "promoTitle": "Wateland Ronin Gargoyle",
+            "promoTitle": "Wasteland Ronin Gargoyle",
             "shortPromoTitle": "Wasteland Gargoyle",
             "body": "Rusted Claw",
             "backgroundColor": "A7B8C1",
@@ -444,7 +444,9 @@
                 "default": "It's just us monsters, now."
             },
             "complexity": 2
-        },
+        }
+    ],
+    "notPromoCards": [
         {
             "identifier": "GargoyleCharacter",
             "promoIdentifier": "FutureGargoyleCharacter",
