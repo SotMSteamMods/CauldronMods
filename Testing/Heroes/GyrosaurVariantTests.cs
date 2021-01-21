@@ -29,6 +29,112 @@ namespace CauldronTests
             Assert.AreEqual(28, gyrosaur.CharacterCard.HitPoints);
         }
         [Test]
+        public void TestSpeedDemonPowerLessThanHalfCrash()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/SpeedDemonGyrosaurCharacter", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card chase = PutInHand("AMerryChase");
+            Card escort = PutOnDeck("ProtectiveEscort");
+
+            UsePower(gyrosaur);
+            AssertIsInPlay(chase);
+            AssertOnTopOfDeck(escort);
+        }
+        [Test]
+        public void TestSpeedDemonPowerMoreThanHalfCrash()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/SpeedDemonGyrosaurCharacter", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card wreck = PutInHand("WreckingBall");
+            Card chase = PutOnDeck("AMerryChase");
+
+            UsePower(gyrosaur);
+            AssertInHand(wreck, chase);
+        }
+        [Test]
+        public void TestSpeedDemonPowerStabilizedBelowThreshold()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/SpeedDemonGyrosaurCharacter", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            PlayCard("GyroStabilizer");
+            Card wreck = PutInHand("WreckingBall");
+            Card chase = PutOnDeck("AMerryChase");
+            DecisionSelectFunction = 0;
+
+            UsePower(gyrosaur);
+            AssertIsInPlay(wreck);
+            AssertOnTopOfDeck(chase);
+        }
+        [Test]
+        public void TestSpeedDemonPowerStabilizedAboveThreshold()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/SpeedDemonGyrosaurCharacter", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            PlayCard("GyroStabilizer");
+            Card chase = PutInHand("AMerryChase");
+            Card escort = PutOnDeck("ProtectiveEscort");
+            DecisionSelectFunction = 1;
+
+            UsePower(gyrosaur);
+            AssertInHand(chase, escort);
+        }
+        [Test]
+        public void TestSpeedDemonPowerStabilizedCannotDecreasePastThreshold()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/SpeedDemonGyrosaurCharacter", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+            PlayCard("GyroStabilizer");
+
+            Card wipeout = PutInHand("Wipeout");
+            Card wreck = PutInHand("WreckingBall");
+            Card sphere = PutOnDeck("SphereOfDevastation");
+
+            AssertNoDecision();
+            UsePower(gyrosaur);
+            AssertInHand(wipeout, wreck, sphere);
+        }
+        [Test]
+        public void TestSpeedDemonPowerStabilizedCannotIncreasePastThreshold()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/SpeedDemonGyrosaurCharacter", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+            PlayCard("GyroStabilizer");
+
+            Card shell = PutInHand("RapturianShell");
+            Card read = PutInHand("ReadTheTerrain");
+            Card chase = PutInHand("AMerryChase");
+            DecisionSelectCard = shell;
+            Card wipeout = PutOnDeck("Wipeout");
+
+            AssertMaxNumberOfDecisions(1);
+            UsePower(gyrosaur);
+            AssertInHand(read, chase);
+            AssertIsInPlay(shell);
+            AssertOnTopOfDeck(wipeout);
+        }
+        [Test]
         public void TestRenegadeGyrosaurLoads()
         {
             SetupGameController("BaronBlade", "Cauldron.Gyrosaur/RenegadeGyrosaurCharacter", "Megalopolis");
