@@ -12,7 +12,7 @@ namespace Cauldron.Drift
     {
         protected DriftUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            this.TimeSpecialString();
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.IsTimeMatching(Past), () => "Drift is at position " + this.CurrentShiftPosition() + ", this is in the " + Past, () => "Drift is at position " + this.CurrentShiftPosition() + ", this is in the " + Future);
         }
 
         protected const string Base = "Base";
@@ -29,6 +29,10 @@ namespace Cauldron.Drift
 
         public int CurrentShiftPosition()
         {
+            if (this.GetShiftPool() == null)
+            {
+                return 0;
+            }
             return this.GetShiftPool().CurrentValue;
         }
 
