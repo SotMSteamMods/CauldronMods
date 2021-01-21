@@ -11,10 +11,9 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class MalichaeVariantTests : BaseTest
+    public class MalichaeVariantTests : CauldronBaseTest
     {
         #region MalichaeTestsHelperFunctions
-        protected HeroTurnTakerController Malichae { get { return FindHero("Malichae"); } }
         private void SetupIncap(HeroTurnTakerController heroToIncap)
         {
             SetHitPoints(heroToIncap.CharacterCard, 1);
@@ -31,10 +30,10 @@ namespace CauldronTests
 
             Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
 
-            Assert.IsNotNull(Malichae);
-            Assert.IsInstanceOf(typeof(ShardmasterMalichaeCharacterCardController), Malichae.CharacterCardController);
+            Assert.IsNotNull(malichae);
+            Assert.IsInstanceOf(typeof(ShardmasterMalichaeCharacterCardController), malichae.CharacterCardController);
 
-            Assert.AreEqual(26, Malichae.CharacterCard.HitPoints);
+            Assert.AreEqual(26, malichae.CharacterCard.HitPoints);
         }
 
         [Test()]
@@ -43,13 +42,13 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Malichae/ShardmasterMalichaeCharacter", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            GoToUsePowerPhase(Malichae);
+            GoToUsePowerPhase(malichae);
 
-            QuickShuffleStorage(Malichae);
-            var card = Malichae.TurnTaker.Deck.Cards.First(c => c.DoKeywordsContain("djinn"));
+            QuickShuffleStorage(malichae);
+            var card = malichae.TurnTaker.Deck.Cards.First(c => c.DoKeywordsContain("djinn"));
             DecisionSelectCard = card;
 
-            UsePower(Malichae.CharacterCard);
+            UsePower(malichae.CharacterCard);
 
             AssertInHand(card);
             QuickShuffleCheck(1);
@@ -62,9 +61,9 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Malichae/ShardmasterMalichaeCharacter", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            SetupIncap(Malichae);
+            SetupIncap(malichae);
 
-            GoToUseIncapacitatedAbilityPhase(Malichae);
+            GoToUseIncapacitatedAbilityPhase(malichae);
 
             var cs = StackDeck(ra, new[] { "ImbuedFire", "FireBlast" }).ToArray();
             AssertInDeck(cs[0]);
@@ -73,7 +72,7 @@ namespace CauldronTests
             DecisionSelectTurnTaker = ra.TurnTaker;
             DecisionSelectCards = new[] { cs[0], cs[1] };
 
-            UseIncapacitatedAbility(Malichae, 0);
+            UseIncapacitatedAbility(malichae, 0);
             AssertInTrash(cs[0]);
             AssertInDeck(cs[1]);
             AssertOnTopOfDeck(cs[1]);
@@ -87,16 +86,16 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Malichae/ShardmasterMalichaeCharacter", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            SetupIncap(Malichae);
+            SetupIncap(malichae);
 
             var c1 = PlayCard("LivingForceField");
             AssertIsInPlay(c1);
 
-            GoToUseIncapacitatedAbilityPhase(Malichae);
+            GoToUseIncapacitatedAbilityPhase(malichae);
 
             DecisionSelectCard = c1;
 
-            UseIncapacitatedAbility(Malichae, 1);
+            UseIncapacitatedAbility(malichae, 1);
             AssertInTrash(c1);
         }
 
@@ -106,14 +105,14 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Malichae/ShardmasterMalichaeCharacter", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            SetupIncap(Malichae);
+            SetupIncap(malichae);
 
-            GoToUseIncapacitatedAbilityPhase(Malichae);
+            GoToUseIncapacitatedAbilityPhase(malichae);
 
             DecisionSelectTurnTaker = ra.TurnTaker;
 
             QuickHandStorage(ra, haka);
-            UseIncapacitatedAbility(Malichae, 2);
+            UseIncapacitatedAbility(malichae, 2);
 
             QuickHandCheck(1, 0);
         }
@@ -127,10 +126,10 @@ namespace CauldronTests
 
             Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
 
-            Assert.IsNotNull(Malichae);
-            Assert.IsInstanceOf(typeof(MinistryOfStrategicScienceMalichaeCharacterCardController), Malichae.CharacterCardController);
+            Assert.IsNotNull(malichae);
+            Assert.IsInstanceOf(typeof(MinistryOfStrategicScienceMalichaeCharacterCardController), malichae.CharacterCardController);
 
-            Assert.AreEqual(24, Malichae.CharacterCard.HitPoints);
+            Assert.AreEqual(24, malichae.CharacterCard.HitPoints);
         }
 
         [Test()]
@@ -139,14 +138,14 @@ namespace CauldronTests
             SetupGameController(new string[] { "BaronBlade", "Cauldron.Malichae/MinistryOfStrategicScienceMalichaeCharacter", "Ra", "Haka", "Megalopolis" });
             StartGame();
 
-            GoToUsePowerPhase(Malichae);
+            GoToUsePowerPhase(malichae);
 
             var card = PutInHand("Reshiel");
-            var top = GetTopCardOfDeck(Malichae);
+            var top = GetTopCardOfDeck(malichae);
             DecisionSelectCard = card;
 
-            QuickHandStorage(Malichae);
-            UsePower(Malichae.CharacterCard);
+            QuickHandStorage(malichae);
+            UsePower(malichae.CharacterCard);
             QuickHandCheck(0);
             AssertInTrash(card);
             AssertInHand(top);
@@ -159,16 +158,16 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Malichae/MinistryOfStrategicScienceMalichaeCharacter", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
-            GoToUsePowerPhase(Malichae);
+            GoToUsePowerPhase(malichae);
 
             var card = PutInHand("HighReshiel");
 
-            DecisionSelectCards = new Card[] { card, ra.CharacterCard, fanatic.CharacterCard, Malichae.CharacterCard };
-            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard);
-            UsePower(Malichae.CharacterCard);
+            DecisionSelectCards = new Card[] { card, ra.CharacterCard, fanatic.CharacterCard, malichae.CharacterCard };
+            QuickHPStorage(baron.CharacterCard, malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard);
+            UsePower(malichae.CharacterCard);
 
             QuickHPCheck(0, -2, -2, -2); //2
-            AssertInTrash(Malichae, card);
+            AssertInTrash(malichae, card);
         }
 
         public void Djinn_GrandBathiel_UsePower()
@@ -176,16 +175,16 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Malichae/MinistryOfStrategicScienceMalichaeCharacter", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
-            GoToUsePowerPhase(Malichae);
+            GoToUsePowerPhase(malichae);
 
             var card = PutInHand("GrandReshiel");
 
             DecisionSelectCards = new Card[] { card, ra.CharacterCard };
-            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
-            UsePower(Malichae.CharacterCard);
+            QuickHPStorage(baron.CharacterCard, malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, card);
+            UsePower(malichae.CharacterCard);
 
             QuickHPCheck(0, 0, -6, 0, 0); //6
-            AssertInTrash(Malichae, card);
+            AssertInTrash(malichae, card);
         }
 
 
@@ -198,17 +197,17 @@ namespace CauldronTests
             SetHitPoints(ra.CharacterCard, 20);
             SetHitPoints(baron.CharacterCard, 20);
             SetHitPoints(fanatic.CharacterCard, 20);
-            SetHitPoints(Malichae.CharacterCard, 20);
+            SetHitPoints(malichae.CharacterCard, 20);
 
-            GoToUsePowerPhase(Malichae);
+            GoToUsePowerPhase(malichae);
             var card = PutInHand("GrandEzael");
             DecisionSelectCards = new Card[] { card };
 
-            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard);
-            UsePower(Malichae.CharacterCard);
+            QuickHPStorage(baron.CharacterCard, malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard);
+            UsePower(malichae.CharacterCard);
 
             QuickHPCheck(0, 3, 3, 3);
-            AssertInTrash(Malichae, card);
+            AssertInTrash(malichae, card);
         }
 
         [Test]
@@ -220,16 +219,16 @@ namespace CauldronTests
             var mdp = GetCardInPlay("MobileDefensePlatform");
             var blade = PlayCard("BladeBattalion");
 
-            GoToUsePowerPhase(Malichae);
+            GoToUsePowerPhase(malichae);
             var card = PutInHand("GrandReshiel");
 
             DecisionSelectCards = new Card[] { card };
             DecisionAutoDecideIfAble = true;
-            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, blade, mdp);
-            UsePower(Malichae.CharacterCard);
+            QuickHPStorage(baron.CharacterCard, malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, blade, mdp);
+            UsePower(malichae.CharacterCard);
 
             QuickHPCheck(0, 0, 0, 0, -2, -2); //2 + 1
-            AssertInTrash(Malichae, card);
+            AssertInTrash(malichae, card);
         }
 
         [Test]
@@ -241,16 +240,16 @@ namespace CauldronTests
             var mdp = GetCardInPlay("MobileDefensePlatform");
             var blade = PlayCard("BladeBattalion");
 
-            GoToUsePowerPhase(Malichae);
+            GoToUsePowerPhase(malichae);
             var card = PutInHand("GrandSomael");
 
             DecisionSelectCards = new Card[] { card };
 
             DecisionAutoDecideIfAble = true;
-            UsePower(Malichae.CharacterCard);
+            UsePower(malichae.CharacterCard);
 
-            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, mdp, blade);
-            DealDamage(baron.CharacterCard, Malichae.CharacterCard, 2, DamageType.Cold);
+            QuickHPStorage(baron.CharacterCard, malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, mdp, blade);
+            DealDamage(baron.CharacterCard, malichae.CharacterCard, 2, DamageType.Cold);
             DealDamage(baron.CharacterCard, ra.CharacterCard, 2, DamageType.Cold);
             DealDamage(baron.CharacterCard, fanatic.CharacterCard, 2, DamageType.Cold);
             DealDamage(baron.CharacterCard, mdp, 2, DamageType.Cold);
@@ -258,8 +257,8 @@ namespace CauldronTests
             QuickHPCheck(0, 0, 0, 0, -2, -2); //damage reduced to zero except for villain
             SetHitPoints(blade, 5);
 
-            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, mdp, blade);
-            DealDamage(baron.CharacterCard, Malichae.CharacterCard, 2, DamageType.Cold, true);
+            QuickHPStorage(baron.CharacterCard, malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, mdp, blade);
+            DealDamage(baron.CharacterCard, malichae.CharacterCard, 2, DamageType.Cold, true);
             DealDamage(baron.CharacterCard, ra.CharacterCard, 2, DamageType.Cold, true);
             DealDamage(baron.CharacterCard, fanatic.CharacterCard, 2, DamageType.Cold, true);
             DealDamage(baron.CharacterCard, mdp, 2, DamageType.Cold, true);
@@ -269,7 +268,7 @@ namespace CauldronTests
 
             DecisionSelectCard = ra.CharacterCard;
 
-            AssertInTrash(Malichae, card);
+            AssertInTrash(malichae, card);
         }
 
         [Test]
@@ -278,16 +277,16 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Malichae/MinistryOfStrategicScienceMalichaeCharacter", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
-            GoToUsePowerPhase(Malichae);
+            GoToUsePowerPhase(malichae);
             var card = PutInHand("HighBathiel");
 
             DecisionSelectCards = new Card[] { card, ra.CharacterCard };
             DecisionAutoDecideIfAble = true;
-            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard);
-            UsePower(Malichae.CharacterCard);
+            QuickHPStorage(baron.CharacterCard, malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard);
+            UsePower(malichae.CharacterCard);
 
             QuickHPCheck(0, 0, -4, 0); //4
-            AssertInTrash(Malichae, card);
+            AssertInTrash(malichae, card);
         }
 
 
@@ -299,32 +298,32 @@ namespace CauldronTests
 
             var blade = PlayCard("BladeBattalion");
 
-            GoToUsePowerPhase(Malichae);
+            GoToUsePowerPhase(malichae);
 
             var card = PutInHand("HighSomael");
 
             DecisionSelectCards = new Card[] { card };
             DecisionAutoDecideIfAble = true;
 
-            UsePower(Malichae.CharacterCard);
+            UsePower(malichae.CharacterCard);
 
-            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, blade);
-            DealDamage(baron.CharacterCard, Malichae.CharacterCard, 1, DamageType.Cold);
+            QuickHPStorage(baron.CharacterCard, malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, blade);
+            DealDamage(baron.CharacterCard, malichae.CharacterCard, 1, DamageType.Cold);
             DealDamage(baron.CharacterCard, ra.CharacterCard, 1, DamageType.Cold);
             DealDamage(baron.CharacterCard, fanatic.CharacterCard, 1, DamageType.Cold);
             DealDamage(baron.CharacterCard, card, 1, DamageType.Cold);
             DealDamage(baron.CharacterCard, blade, 1, DamageType.Cold);
             QuickHPCheck(0, 0, 0, 0, -1); //damage reduced to zero except for villain
 
-            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, blade);
-            DealDamage(baron.CharacterCard, Malichae.CharacterCard, 1, DamageType.Cold, true);
+            QuickHPStorage(baron.CharacterCard, malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard, blade);
+            DealDamage(baron.CharacterCard, malichae.CharacterCard, 1, DamageType.Cold, true);
             DealDamage(baron.CharacterCard, ra.CharacterCard, 1, DamageType.Cold, true);
             DealDamage(baron.CharacterCard, fanatic.CharacterCard, 1, DamageType.Cold, true);
             DealDamage(baron.CharacterCard, card, 1, DamageType.Cold, true);
             DealDamage(baron.CharacterCard, blade, 1, DamageType.Cold, true);
             QuickHPCheck(0, -1, -1, -1, -1); //damage not reduced to zero
 
-            AssertInTrash(Malichae, card);
+            AssertInTrash(malichae, card);
         }
 
         [Test]
@@ -333,22 +332,22 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Malichae/MinistryOfStrategicScienceMalichaeCharacter", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
-            GoToUsePowerPhase(Malichae);
+            GoToUsePowerPhase(malichae);
 
             SetHitPoints(ra.CharacterCard, 20);
             SetHitPoints(baron.CharacterCard, 20);
             SetHitPoints(fanatic.CharacterCard, 20);
-            SetHitPoints(Malichae.CharacterCard, 20);
+            SetHitPoints(malichae.CharacterCard, 20);
 
             var card = PutInHand("HighEzael");
 
             DecisionSelectCards = new Card[] { card };
             DecisionAutoDecideIfAble = true;
-            QuickHPStorage(baron.CharacterCard, Malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard);
-            UsePower(Malichae.CharacterCard);
+            QuickHPStorage(baron.CharacterCard, malichae.CharacterCard, ra.CharacterCard, fanatic.CharacterCard);
+            UsePower(malichae.CharacterCard);
             QuickHPCheck(0, 1, 1, 1);
 
-            AssertInTrash(Malichae, card);
+            AssertInTrash(malichae, card);
         }
 
 
@@ -358,16 +357,16 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Malichae/MinistryOfStrategicScienceMalichaeCharacter", "Ra", "Fanatic", "Megalopolis");
             StartGame();
 
-            GoToUsePowerPhase(Malichae);
+            GoToUsePowerPhase(malichae);
 
             var card = PutInHand("SummoningCrystal");
             var target = PutInHand("Bathiel");
 
             DecisionSelectCards = new Card[] { card, target };
-            UsePower(Malichae.CharacterCard);
+            UsePower(malichae.CharacterCard);
 
-            AssertInPlayArea(Malichae, target);
-            AssertInTrash(Malichae, card);
+            AssertInPlayArea(malichae, target);
+            AssertInTrash(malichae, card);
         }
 
 
@@ -380,7 +379,7 @@ namespace CauldronTests
             var ongoing = PlayCard("BacklashField");
             var envCard = PlayCard("PlummetingMonorail");
 
-            GoToUsePowerPhase(Malichae);
+            GoToUsePowerPhase(malichae);
 
             var card = PutInHand("ZephaerensCompass");
 
@@ -392,9 +391,9 @@ namespace CauldronTests
             AssertNextToCard(high, target);
 
             DecisionSelectCards = new Card[] { card, ongoing, envCard };
-            QuickHandStorage(Malichae, ra, fanatic);
+            QuickHandStorage(malichae, ra, fanatic);
 
-            UsePower(Malichae.CharacterCard);
+            UsePower(malichae.CharacterCard);
             
             QuickHandCheck(1, 0, 0);
             AssertInTrash(card);
@@ -410,15 +409,15 @@ namespace CauldronTests
             StartGame();
             var mdp = GetMobileDefensePlatform().Card;
 
-            SetupIncap(Malichae);
+            SetupIncap(malichae);
 
-            GoToUseIncapacitatedAbilityPhase(Malichae);
+            GoToUseIncapacitatedAbilityPhase(malichae);
 
             DecisionSelectTurnTaker = ra.TurnTaker;
             DecisionSelectCards = new Card[] { mdp };
 
             QuickHPStorage(mdp);
-            UseIncapacitatedAbility(Malichae, 0);
+            UseIncapacitatedAbility(malichae, 0);
 
             QuickHPCheck(-2);
         }
@@ -429,17 +428,17 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Malichae/MinistryOfStrategicScienceMalichaeCharacter", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            SetupIncap(Malichae);
+            SetupIncap(malichae);
 
             SetHitPoints(ra.CharacterCard, 20);
             SetHitPoints(haka.CharacterCard, 20);
             SetHitPoints(baron.CharacterCard, 20);
 
-            GoToUseIncapacitatedAbilityPhase(Malichae);
+            GoToUseIncapacitatedAbilityPhase(malichae);
 
             QuickHPStorage(baron, ra, haka);
             DecisionSelectCards = new[] { ra.CharacterCard, haka.CharacterCard };
-            UseIncapacitatedAbility(Malichae, 1);
+            UseIncapacitatedAbility(malichae, 1);
 
             QuickHPCheck(0, 1, 1);
         }
@@ -450,12 +449,12 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Malichae/MinistryOfStrategicScienceMalichaeCharacter", "Ra", "Haka", "Megalopolis");
             StartGame();
 
-            SetupIncap(Malichae);
+            SetupIncap(malichae);
 
-            GoToUseIncapacitatedAbilityPhase(Malichae);
+            GoToUseIncapacitatedAbilityPhase(malichae);
 
             AssertNumberOfStatusEffectsInPlay(0);
-            UseIncapacitatedAbility(Malichae, 2);
+            UseIncapacitatedAbility(malichae, 2);
             AssertNumberOfStatusEffectsInPlay(1);
 
             QuickHPStorage(ra.CharacterCard, haka.CharacterCard);

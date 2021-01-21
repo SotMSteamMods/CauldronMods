@@ -12,6 +12,7 @@ namespace Cauldron.Menagerie
     {
         protected EnclosureCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            base.Card.UnderLocation.OverrideIsInPlay = false;
 
         }
         public override void AddTriggers()
@@ -21,6 +22,7 @@ namespace Cauldron.Menagerie
             base.AddBeforeLeavesPlayAction(this.HandleEnclosureCardsResponse, TriggerType.MoveCard);
             //Back: Heroes with enclosures in their play area may not damage cards in other play areas.
             base.AddImmuneToDamageTrigger((DealDamageAction action) => base.CharacterCard.IsFlipped && action.DamageSource.Owner == this.GetEnclosedHero() && action.Target.Location.OwnerTurnTaker != action.DamageSource.Card.Location.OwnerTurnTaker);
+            base.AddTriggers();
         }
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)

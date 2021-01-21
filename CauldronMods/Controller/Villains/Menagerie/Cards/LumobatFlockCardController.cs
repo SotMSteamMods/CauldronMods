@@ -22,6 +22,8 @@ namespace Cauldron.Menagerie
 
             //At the end of the villain turn this card deals the hero target with the highest HP 2 projectile and 2 radiant damage.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
+            base.AddTriggers();
+
         }
 
         private IEnumerator PlayVillainCardResponse(CardEntersPlayAction action)

@@ -63,7 +63,7 @@ namespace Cauldron.Menagerie
         private IEnumerator FlipEnclosedCardResponse(Card card, List<Card> actedEnclosures)
         {
             List<SelectCardDecision> result = new List<SelectCardDecision>();
-            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.FlipCardFaceUp, new LinqCardCriteria((Card c) => c.IsInPlay && c.IsFlipped && c.Location == card.UnderLocation), result, false, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.FlipCardFaceUp, new LinqCardCriteria((Card c) => c.IsFlipped && c.Location == card.UnderLocation), result, false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

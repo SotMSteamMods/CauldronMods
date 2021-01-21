@@ -13,10 +13,9 @@ using Cauldron.TheRam;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class TheRamVariantTests : BaseTest
+    public class TheRamVariantTests : CauldronBaseTest
     {
         #region RamHelperFunctions
-        protected TurnTakerController ram { get { return FindVillain("TheRam"); } }
 
         protected Card winters { get { return GetCard("AdmiralWintersCharacter"); } }
 

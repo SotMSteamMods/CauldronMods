@@ -11,12 +11,18 @@
             "backgroundColor": "E2D6C1",
             "count": 1,
             "title": "The Chasm Of A Thousand Nights",
-            "setup": "At the start of the game search the environment deck for all nature cards and put them face up beneath this card. Shuffle the environment deck and flip this card.",
-            "flippedGameplay": [
-                "Cards beneath this one are not considered in play. Nature cards are indestructible.",
+            "body": [
+               "At the start of the game, move all nature cards beneath this card.",
+                "Nature cards are indestructible.",
                 "Whenever an environment target enters play, put a random card beneath this one into play next to that target.",
                 "If a nature ever has no target next to it, put that nature face down beneath this card."
-            ]
+            ],
+            "icons": [
+                "Indestructible",
+                "Manipulate"
+            ],
+            "isReal": false,
+            "flavorText": "In the center of the Dasht-e Jenn desert,{BR}the Veil is torn, and mysteries roam.",
         },
         {
             "identifier": "Axion",
@@ -54,6 +60,7 @@
             "count": 1,
             "title": "Crumbling Ruins",
             "icons": [
+                "EndOfTurnAction",
                 "DealDamageMelee"
             ],
             "body": "At the end of the environment turn, this card deals each non-environment target X melee damage, where X is the number of environment targets in play.",
@@ -151,7 +158,11 @@
                 "RedirectDamage"
             ],
             "body": "Redirect all damage dealt by the target next to this card to the hero target with the highest HP.",
-            "flavorText": "Mhegas briefly surveyed the conflict{BR}around the Tear. Then he turned{BR}towards the heroes and dove at them,{BR}blade singing. Dawn's forces cheered."
+            "flavorText": "Mhegas briefly surveyed the conflict{BR}around the Tear. Then he turned{BR}towards the heroes and dove at them,{BR}blade singing. Dawn's forces cheered.",
+            "footerTitle": "Malevolent",
+            "footerBody":[
+                "Redirect all damage dealt by this target to the hero target with the highest HP."
+            ]
         },
         {
             "identifier": "Noxious",
@@ -165,7 +176,11 @@
                 "DealDamageToxic"
             ],
             "body": "At the end of the environment turn, the target next to this card deals each hero target 1 toxic damage.",
-            "flavorText": "“I'm not afraid of shadows,” said Jade,{BR}as the billowing creature drifted{BR}forward, its very presence poisoning{BR}the air around her."
+            "flavorText": "“I'm not afraid of shadows,” said Jade,{BR}as the billowing creature drifted{BR}forward, its very presence poisoning{BR}the air around her.",
+            "footerTitle": "Noxious",
+            "footerBody":[
+                "At the end of the environment turn, this target deals each hero target 1 toxic damage."
+            ]
         },
         {
             "identifier": "RatherFriendly",
@@ -178,7 +193,11 @@
                 "RedirectDamage"
             ],
             "body": "Redirect all damage dealt by the target next to this card to the villain target with the highest HP.",
-            "flavorText": "Nature spirit and djinn regarded each{BR}other amicably. “You are much quieter{BR}than your fellows,” said the Lady.{BR}“Especially the little bird.”"
+            "flavorText": "Nature spirit and djinn regarded each{BR}other amicably. “You are much quieter{BR}than your fellows,” said the Lady.{BR}“Especially the little bird.”",
+            "footerTitle": "Rather Friendly",
+            "footerBody":[
+                "Redirect all damage dealt by this target to the villain target with the highest HP."
+            ]
         },
         {
             "identifier": "SurprisinglyAgile",
@@ -191,7 +210,11 @@
                 "ReduceDamageTaken"
             ],
             "body": "Reduce damage dealt to the target next to this card by 1.",
-            "flavorText": "Drift aimed a throwing shard at the{BR}angry djinn, but despite its size it was a{BR}blur of motion, dodging ever closer{BR}while flinging icicles at her in turn."
+            "flavorText": "Drift aimed a throwing shard at the{BR}angry djinn, but despite its size it was a{BR}blur of motion, dodging ever closer{BR}while flinging icicles at her in turn.",
+            "footerTitle": "Surprisingly Agile",
+            "footerBody":[
+                "Reduce damage dealt to this target by 1."
+            ]
         },
         {
             "identifier": "Tevael",
@@ -219,9 +242,15 @@
             "keywords": [
                 "nature"
             ],
-            "icons": [],
+            "icons": [
+            "Discard"
+            ],
             "body": "Whenever the target next to this card deals damage to a hero, that hero must discard a card.",
-            "flavorText": "“Such pretty trinkets,” Tevael rumbled{BR}to himself in a voice of scraping stone.{BR}Clutching his prize, he sunk out of sight{BR}into the earth."
+            "flavorText": "“Such pretty trinkets,” Tevael rumbled{BR}to himself in a voice of scraping stone.{BR}Clutching his prize, he sunk out of sight{BR}into the earth.",
+            "footerTitle": "Thieving",
+            "footerBody":[
+                "Whenever this target deals damage to a hero, that hero must discard a card."
+            ]
         },
         {
             "identifier": "Vicious",
@@ -234,7 +263,11 @@
                 "IncreaseDamageDealt"
             ],
             "body": "Increase damage dealt by the target next to this card by 1.",
-            "flavorText": "Fright Train held his ground as Temoq{BR}took another burning swipe at him. The{BR}djinn's fury was unrelenting: metal{BR}bubbled and sparked at its touch."
+            "flavorText": "Fright Train held his ground as Temoq{BR}took another burning swipe at him. The{BR}djinn's fury was unrelenting: metal{BR}bubbled and sparked at its touch.",
+            "footerTitle": "Vicious",
+            "footerBody":[
+                "Increase damage dealt by this target by 1."
+            ]
         }
     ]
 }

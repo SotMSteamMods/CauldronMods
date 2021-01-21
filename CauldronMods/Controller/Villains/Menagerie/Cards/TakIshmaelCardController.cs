@@ -21,6 +21,8 @@ namespace Cauldron.Menagerie
 
             //At the end of the villain turn, play the top card of the villain deck. Then, this card deals the hero target with the highest HP X projectile damage, where X is the number of Specimens in play.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.PlayTopCardAndDealDamageResponse, new TriggerType[] { TriggerType.PlayCard, TriggerType.DealDamage });
+            base.AddTriggers();
+
         }
 
         private IEnumerator PlayTopCardAndDealDamageResponse(PhaseChangeAction action)
