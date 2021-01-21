@@ -13,12 +13,48 @@ namespace Cauldron.TheInfernalChoir
         public VagrantHeartPhase1CardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowNumberOfCardsAtLocation(() => VagrantDeck).Condition = () => Card.IsInPlay;
+            SpecialStringMaker.ShowSpecialString(() => "This card is indestructible.");
 
             AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
             AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
         }
 
         public override bool CanBeDestroyed => false;
+
+        public override bool AskIfCardIsIndestructible(Card card)
+        {
+            if (card == Card)
+                return true;
+
+            return base.AskIfCardIsIndestructible(card);
+        }
+
+        private IEnumerator RemoveDecisionsFromMakeDecisionsResponse(MakeDecisionsAction md)
+        {
+            //remove this card as an option to make decisions
+            md.RemoveDecisions((IDecision d) => d.SelectedCard == base.Card || Card.UnderLocation.HasCard(d.SelectedCard));
+            return base.DoNothing();
+        }
+
+        public override bool? AskIfCardIsVisibleToCardSource(Card card, CardSource cardSource)
+        {
+            if ((card == base.Card || Card.UnderLocation.HasCard(card)) && !cardSource.Card.IsVillain)
+            {
+                return false;
+            }
+            return base.AskIfCardIsVisibleToCardSource(card, cardSource); ;
+        }
+
+        public override bool AskIfActionCanBePerformed(GameAction action)
+        {
+            bool? effected = action.DoesFirstCardAffectSecondCard((Card c) => !c.IsVillain, (Card c) => c == base.Card || Card.UnderLocation.HasCard(c));
+            if (effected == true)
+            {
+                return false;
+            }
+
+            return base.AskIfActionCanBePerformed(action);
+        }
 
         public HeroTurnTaker VagrantTurnTaker => Card.Location.OwnerTurnTaker.IsHero ? Card.Location.OwnerTurnTaker.ToHero() : null;
         public Location VagrantDeck => VagrantTurnTaker?.Deck;
@@ -42,7 +78,11 @@ namespace Cauldron.TheInfernalChoir
             AddTrigger<DrawCardAction>(dca => dca.DidDrawCard && dca.HeroTurnTaker == VagrantTurnTaker && !VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
             AddTrigger<BulkMoveCardsAction>(bmca => VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
 
+            // "If the Hero is Incapacitated or Vagrant Heart leaves play, the heroes lose. Game over."
             AddTrigger<TargetLeavesPlayAction>(tlpa => tlpa.TargetLeavingPlay.Owner == VagrantTurnTaker && VagrantTurnTaker.IsIncapacitatedOrOutOfGame, VagrantHeartGameOver, TriggerType.GameOver, TriggerTiming.After);
+
+            //visibility
+            base.AddTrigger<MakeDecisionsAction>((MakeDecisionsAction md) => md.CardSource != null && !md.CardSource.Card.IsVillain, this.RemoveDecisionsFromMakeDecisionsResponse, TriggerType.RemoveDecision, TriggerTiming.Before);
 
             base.AddTriggers();
         }
@@ -73,7 +113,6 @@ namespace Cauldron.TheInfernalChoir
                 GameController.ExhaustCoroutine(coroutine);
             }
         }
-
 
         protected IEnumerator VagrantHeartDamageReponse(DealDamageAction action)
         {

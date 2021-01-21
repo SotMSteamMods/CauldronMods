@@ -273,12 +273,39 @@ namespace CauldronTests
             AssertIncapacitated(sentinels);
 
             AssertGameOver(EndingResult.HeroesDestroyedDefeat);
-
-
         }
 
         [Test()]
-        public void TestVagrantHeartPhase1_DamageResponse()
+        public void TestTheInfernalChoir_Flipped_Advanced()
+        {
+            SetupGameController(new[] { "Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis" }, advanced: true);
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            GetCard("BaneOfIron", 0);
+            GoToEndOfTurn(choir);
+
+            FlipCard(choir);
+
+            var top = GetTopCardOfDeck(legacy);
+            GoToStartOfTurn(legacy);
+            AssertOutOfGame(top);
+            GoToEndOfTurn(legacy);
+
+            top = GetTopCardOfDeck(haka);
+            GoToStartOfTurn(haka);
+            AssertOutOfGame(top);
+            GoToEndOfTurn(haka);
+
+            top = GetTopCardOfDeck(sentinels);
+            GoToStartOfTurn(sentinels);
+            AssertOutOfGame(top);
+            GoToEndOfTurn(sentinels);
+        }
+
+        [Test()]
+        public void TestVagrantHeartPhase1_DamagePrevention()
         {
             SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
             StartGame();
@@ -355,6 +382,7 @@ namespace CauldronTests
             StartGame();
 
             AssertInPlayArea(legacy, heart1);
+            PutOnDeck("InspiringPresence", false);
 
             var deckCount = GetNumberOfCardsInDeck(legacy);
 

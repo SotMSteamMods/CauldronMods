@@ -13,6 +13,7 @@ namespace Cauldron.TheInfernalChoir
         public TheInfernalChoirCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowIfSpecificCardIsInPlay(() => !Card.IsFlipped ? FindCard("VagrantHeartPhase1") : FindCard("VagrantHeartPhase2"));
+            SpecialStringMaker.ShowSpecialString(() => "This card is indestructible.").Condition = () => !Card.IsFlipped;
         }
 
         public override void AddSideTriggers()
@@ -73,7 +74,7 @@ namespace Cauldron.TheInfernalChoir
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = GameController.MoveCard(TurnTakerController, p1Heart, TurnTaker.OffToTheSide, flipFaceDown: true, cardSource: GetCardSource());
+            coroutine = GameController.MoveCard(TurnTakerController, p1Heart, TurnTaker.OutOfGame, flipFaceDown: true, evenIfIndestructible: true, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -82,18 +83,11 @@ namespace Cauldron.TheInfernalChoir
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
+
+            if (p2Heart.IsFlipped)
+                p2Heart.SetFlipped(false);
 
             coroutine = GameController.MoveIntoPlay(TurnTakerController, p2Heart, tt, cardSource: GetCardSource());
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-
-            coroutine = GameController.SetHP(CharacterCardWithoutReplacements, CharacterCardWithoutReplacements.MaximumHitPoints.Value);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
