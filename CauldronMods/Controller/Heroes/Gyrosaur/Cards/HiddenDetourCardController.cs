@@ -15,7 +15,7 @@ namespace Cauldron.Gyrosaur
         {
             //Cards beneath this one are not considered in play.
             Card.UnderLocation.OverrideIsInPlay = false;
-            SpecialStringMaker.ShowListOfCardsAtLocation(Card.UnderLocation, new LinqCardCriteria());
+            SpecialStringMaker.ShowListOfCardsAtLocation(Card.UnderLocation, new LinqCardCriteria(c => true));
         }
 
         public override IEnumerator Play()
@@ -79,7 +79,7 @@ namespace Cauldron.Gyrosaur
                 cardEnteringPlay = mc.CardToMove;
             }
             var storedYesNo = new List<YesNoCardDecision>();
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.MoveCardToUnderCard, cardEnteringPlay, storedResults: storedYesNo, associatedCards: new Card[] { this.Card }, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.MoveCardToUnderCard, cardEnteringPlay, storedResults: storedYesNo, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
