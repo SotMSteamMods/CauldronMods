@@ -654,6 +654,15 @@
                 "3. Switch which character is active.",
                 "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
                 "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
+            ],
+            "tokenPools": [
+		 	    {
+		 		    "identifier":"ShiftPool",
+		 		    "name":"Shift Track Location",
+		 		    "initialValue":0,
+		 		    "minimumValue":0,
+		 		    "color":"fcf8b7"
+		 	    }
             ]
         },
         {
@@ -679,6 +688,15 @@
                 "3. Switch which character is active.",
                 "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
                 "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
+            ],
+            "tokenPools": [
+		 	    {
+		 		    "identifier":"ShiftPool",
+		 		    "name":"Shift Track Location",
+		 		    "initialValue":0,
+		 		    "minimumValue":0,
+		 		    "color":"fcf8b7"
+		 	    }
             ]
         },
         {
@@ -704,6 +722,15 @@
                 "3. Switch which character is active.",
                 "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
                 "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
+            ],
+            "tokenPools": [
+		 	    {
+		 		    "identifier":"ShiftPool",
+		 		    "name":"Shift Track Location",
+		 		    "initialValue":0,
+		 		    "minimumValue":0,
+		 		    "color":"fcf8b7"
+		 	    }
             ]
         },
         {
@@ -729,6 +756,15 @@
                 "3. Switch which character is active.",
                 "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
                 "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
+            ],
+            "tokenPools": [
+		 	    {
+		 		    "identifier":"ShiftPool",
+		 		    "name":"Shift Track Location",
+		 		    "initialValue":0,
+		 		    "minimumValue":0,
+		 		    "color":"fcf8b7"
+		 	    }
             ]
         },
         {
@@ -748,6 +784,15 @@
                 "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
                 "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
                 "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
+            ],
+            "tokenPools": [
+		 	    {
+		 		    "identifier":"ShiftPool",
+		 		    "name":"Shift Track Location",
+		 		    "initialValue":0,
+		 		    "minimumValue":0,
+		 		    "color":"fcf8b7"
+		 	    }
             ]
         },
         {
@@ -767,6 +812,15 @@
                 "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
                 "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
                 "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
+            ],
+            "tokenPools": [
+		 	    {
+		 		    "identifier":"ShiftPool",
+		 		    "name":"Shift Track Location",
+		 		    "initialValue":0,
+		 		    "minimumValue":0,
+		 		    "color":"fcf8b7"
+		 	    }
             ]
         },
         {
@@ -786,6 +840,15 @@
                 "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
                 "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
                 "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
+            ],
+            "tokenPools": [
+		 	    {
+		 		    "identifier":"ShiftPool",
+		 		    "name":"Shift Track Location",
+		 		    "initialValue":0,
+		 		    "minimumValue":0,
+		 		    "color":"fcf8b7"
+		 	    }
             ]
         },
         {
@@ -805,6 +868,15 @@
                 "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
                 "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
                 "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
+            ],
+            "tokenPools": [
+		 	    {
+		 		    "identifier":"ShiftPool",
+		 		    "name":"Shift Track Location",
+		 		    "initialValue":0,
+		 		    "minimumValue":0,
+		 		    "color":"fcf8b7"
+		 	    }
             ]
         }
     ],

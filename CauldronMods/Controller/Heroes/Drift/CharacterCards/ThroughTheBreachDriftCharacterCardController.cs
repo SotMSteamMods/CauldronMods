@@ -14,9 +14,9 @@ namespace Cauldron.Drift
         {
             base.SpecialStringMaker.ShowSpecialString(() => "Drift is at position " + base.CurrentShiftPosition());
             base.SpecialStringMaker.ShowIfElseSpecialString(() => this.GetBreachedCard(1) != null, () => "The card at position 1 is " + this.GetBreachedCard(1).Title, () => "There is no card at position 1");
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.GetBreachedCard(2) != null, () => "The card at position 2 is " + this.GetBreachedCard(1).Title, () => "There is no card at position 2");
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.GetBreachedCard(3) != null, () => "The card at position 3 is " + this.GetBreachedCard(1).Title, () => "There is no card at position 3");
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.GetBreachedCard(4) != null, () => "The card at position 4 is " + this.GetBreachedCard(1).Title, () => "There is no card at position 4");
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.GetBreachedCard(2) != null, () => "The card at position 2 is " + this.GetBreachedCard(2).Title, () => "There is no card at position 2");
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.GetBreachedCard(3) != null, () => "The card at position 3 is " + this.GetBreachedCard(3).Title, () => "There is no card at position 3");
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.GetBreachedCard(4) != null, () => "The card at position 4 is " + this.GetBreachedCard(4).Title, () => "There is no card at position 4");
         }
 
         protected const string BreachPosition = "BreachPosition";
@@ -28,7 +28,7 @@ namespace Cauldron.Drift
             //Add the top 2 cards of your deck to your shift track, or discard the card from your current shift track space.
             IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
                     new Function(base.HeroTurnTakerController, "Add the top 2 cards of your deck to your shift track", SelectionType.MoveCard, () => this.AddCardsResponse(cardNumeral)),
-                    new Function(base.HeroTurnTakerController, "discard the card from your current shift track space", SelectionType.DiscardCard, () => this.DiscardCardResponse())
+                    new Function(base.HeroTurnTakerController, "discard the card from your current shift track space", SelectionType.DiscardCard, () => this.DiscardCardResponse(), this.GetBreachedCard(base.CurrentShiftPosition()) != null)
             });
             if (base.UseUnityCoroutines)
             {
@@ -143,6 +143,7 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+            base.FindCardController(cardToDiscard).SetCardProperty(BreachPosition + this.CurrentShiftPosition(), false);
 
             //When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage.
             coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
@@ -157,12 +158,21 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+
             yield break;
         }
 
         private Card GetBreachedCard(int position)
         {
-            return base.GetCardPropertyJournalEntryCard(BreachPosition + position);
+            IEnumerable<CardPropertiesJournalEntry> entries = base.Journal.CardPropertiesEntries((CardPropertiesJournalEntry entry) => entry.Key == BreachPosition + position && entry.BoolValue.Value);
+            foreach (CardPropertiesJournalEntry entry in entries)
+            {
+                if (base.GameController.GetCardPropertyJournalEntryBoolean(entry.Card, BreachPosition + position) ?? false)
+                {
+                    return entry.Card;
+                }
+            }
+            return null;
         }
 
         public override IEnumerator UseIncapacitatedAbility(int index)

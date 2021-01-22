@@ -485,5 +485,57 @@ namespace CauldronTests
             Assert.AreEqual(decision, CurrentShiftPosition());
             AssertIsInPlay(track);
         }
+
+        [Test()]
+        [Order(0)]
+        public void TestDrift_Breach_Load()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/ThroughTheBreachDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+
+            Assert.AreEqual(6, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(drift);
+            Assert.IsInstanceOf(typeof(ThroughTheBreachDriftCharacterCardController), drift.CharacterCardController);
+
+            foreach (var card in drift.HeroTurnTaker.GetAllCards())
+            {
+                var cc = GetCardController(card);
+                Assert.IsTrue(cc.GetType() != typeof(CardController), $"{card.Identifier} is does not have a CardController");
+            }
+
+            Assert.AreEqual(25, drift.CharacterCard.HitPoints);
+        }
+
+        [Test]
+        public void TestDriftCharacter_Breach_InnatePower()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift/ThroughTheBreachDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DecisionYesNo = true;
+            //Add the top 2 cards of your deck to your shift track, or discard the card from your current shift track space.
+            StackDeck(FutureFocus);
+            Card[] top2 = GetTopCardsOfDeck(drift, 2).ToArray();
+            UsePower(drift);
+            AssertUnderCard(GetShiftTrack(), top2[0]);
+            AssertUnderCard(GetShiftTrack(), top2[1]);
+
+            //When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage.
+            QuickHPStorage(apostate);
+            DecisionSelectFunctions = new int?[] { 1, 0, 0, 0, 1, 1 };
+            UsePower(drift);
+            AssertIsInPlay(top2[0]);
+            QuickHPCheck(0);
+
+            //To shift to position 2
+            PlayCard(DestroyersAdagio);
+
+            UsePower(drift);
+            AssertNumberOfCardsUnderCard(GetShiftTrack(), 3);
+
+            UsePower(drift);
+            AssertInTrash(top2[1]);
+            QuickHPCheck(-3);
+        }
     }
 }
