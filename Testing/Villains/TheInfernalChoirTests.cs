@@ -13,11 +13,9 @@ using System.Collections.Generic;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class TheInfernalChoirTests : BaseTest
+    public class TheInfernalChoirTests : CauldronBaseTest
     {
         #region HelperFunctions
-
-        protected TheInfernalChoirTurnTakerController choir { get { return FindVillain("TheInfernalChoir") as TheInfernalChoirTurnTakerController; } }
 
         protected Card heart1 => GetCard("VagrantHeartPhase1");
         protected Card heart2 => GetCard("VagrantHeartPhase2");
@@ -38,39 +36,6 @@ namespace CauldronTests
             }
         }
 
-        protected void AddImmuneToDamageTrigger(TurnTakerController ttc, bool heroesImmune, bool villainsImmune)
-        {
-            ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect();
-            immuneToDamageStatusEffect.TargetCriteria.IsHero = new bool?(heroesImmune);
-            immuneToDamageStatusEffect.TargetCriteria.IsVillain = new bool?(villainsImmune);
-            immuneToDamageStatusEffect.UntilStartOfNextTurn(ttc.TurnTaker);
-            this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
-        }
-
-        protected void AddCannotDealDamageTrigger(TurnTakerController ttc, Card specificCard)
-        {
-            CannotDealDamageStatusEffect cannotDealDamageEffect = new CannotDealDamageStatusEffect();
-            cannotDealDamageEffect.SourceCriteria.IsSpecificCard = specificCard;
-            cannotDealDamageEffect.UntilStartOfNextTurn(ttc.TurnTaker);
-            this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageEffect, true, new CardSource(ttc.CharacterCardController)));
-        }
-
-        protected void AssertDamageTypeChanged(HeroTurnTakerController httc, Card source, Card target, int amount, DamageType initialDamageType, DamageType expectedDamageType)
-        {
-            List<DealDamageAction> storedResults = new List<DealDamageAction>();
-            this.RunCoroutine(this.GameController.DealDamage(httc, source, (Card c) => c == target, amount, initialDamageType, false, false, storedResults, null, null, false, null, null, false, false, new CardSource(GetCardController(source))));
-
-            if (storedResults != null)
-            {
-                DealDamageAction dd = storedResults.FirstOrDefault<DealDamageAction>();
-                DamageType actualDamageType = dd.DamageType;
-                Assert.AreEqual(expectedDamageType, actualDamageType, $"Expected damage type: {expectedDamageType}. Actual damage type: {actualDamageType}");
-            }
-            else
-            {
-                Assert.Fail("storedResults was null");
-            }
-        }
         #endregion
 
         [Test()]
@@ -512,5 +477,90 @@ namespace CauldronTests
             AssertNumberOfCardsInTrash(omnix, 1);
         }
 
+        [Test()]
+        public void TestRedSunXu_MakeEquipment()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheWraith", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            var e1 = PlayCard("TheLegacyRing");
+            var e2 = GetCard("StunBolt");
+
+            var card = PlayCard("RedSunXu", 0, true);
+            AssertInPlayArea(choir, card);
+
+            AssertAreTargets(c => IsEquipment(c));
+            AssertCardHasKeyword(e1, "ghost", true);
+            AssertCardHasKeyword(e2, "ghost", true);
+        }
+
+        [Test()]
+        public void TestRedSunXu_EndOfTurn()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheWraith", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            var card = PlayCard("RedSunXu", 0, true);
+            AssertInPlayArea(choir, card);
+
+            //2 selected targets deal themselves 3 psychic
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
+            DecisionSelectCards = new[] { legacy.CharacterCard, wraith.CharacterCard };
+            GoToEndOfTurn(choir);
+            QuickHPCheck(0, -3, 0, -3, 0);
+        }
+
+        [Test()]
+        public void TestDanchengTheGiant_DrawDamage()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheWraith", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            PlayCard("TakeDown");
+
+            var card = PlayCard("DanchengTheGiant", 0, true);
+            AssertInPlayArea(choir, card);
+
+            DecisionYesNo = false;
+            QuickHandStorage(legacy, omnix, wraith);
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
+            DrawCard(legacy);
+            QuickHPCheck(0, -4, 0, 0, 0);
+            QuickHandCheck(1, 0, 0);
+        }
+
+        [Test()]
+        public void TestDanchengTheGiant_DrawDiscardDamage()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheWraith", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            PlayCard("TakeDown");
+
+            var card = PlayCard("DanchengTheGiant", 0, true);
+            AssertInPlayArea(choir, card);
+
+            DecisionYesNo = true;
+            QuickHandStorage(legacy, omnix, wraith);
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
+            DrawCard(legacy);
+            QuickHPCheck(0, -1, 0, 0, 0);
+            QuickHandCheck(0, 0, 0);
+
+            //make sure the trigger implementation isn't leaking
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
+            DealDamage(choir.CharacterCard, legacy, 4, DamageType.Infernal);
+            QuickHPCheck(0, -4, 0, 0, 0);
+        }
     }
 }
