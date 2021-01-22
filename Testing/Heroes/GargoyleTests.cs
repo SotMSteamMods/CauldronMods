@@ -504,7 +504,7 @@ namespace CauldronTests
 
             QuickHandStorage(gargoyle, legacy, scholar, bunker);
             QuickHPStorage(baron, gargoyle, legacy, scholar, bunker);
-            DecisionSelectFunctions = new int?[] { 2 }; // x = 3
+            DecisionSelectFunctions = new int?[] { 3 }; // x = 3
             DecisionSelectTargets = new Card[] { gargoyle.CharacterCard, baron.CharacterCard, legacy.CharacterCard, scholar.CharacterCard };
             PlayCard(dreamcatcher);
             // Gargoyle should have gained 2 cards. So -1 card played +2 cards gained would be a net +1

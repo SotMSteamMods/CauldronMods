@@ -18,12 +18,23 @@ namespace Cauldron.Gargoyle
         {
         }
 
+        public override bool AllowFastCoroutinesDuringPretend
+        {
+            get
+            {
+                // This allows us to make decisions during damage actions.
+                return false;
+            }
+        }
+
         public override void AddTriggers()
         {
-            ReduceDamageTrigger reduceDamageTrigger;
+            //ReduceDamageTrigger reduceDamageTrigger;
 
-            reduceDamageTrigger = new ReduceDamageTrigger(base.GameController, DealDamageCritera, (card) => true, DealDamageResponse, true, false, base.GetCardSource());
-            base.AddTrigger(reduceDamageTrigger);
+            base.AddTrigger<DealDamageAction>(DealDamageCritera, DealDamageResponse, new TriggerType[] { TriggerType.ModifyDamageAmount }, TriggerTiming.Before, isConditional: false, isActionOptional: false);
+
+            //reduceDamageTrigger = new ReduceDamageTrigger(base.GameController, DealDamageCritera, (card) => true, DealDamageResponse, true, false, base.GetCardSource());
+            //base.AddTrigger(reduceDamageTrigger);
 
             AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeWouldBeDealtDamage), TriggerType.Hidden);
         }
@@ -31,7 +42,7 @@ namespace Cauldron.Gargoyle
         private bool DealDamageCritera(DealDamageAction dealDamageAction)
         {
             // "Once per turn, when {Gargoyle} deals or is dealt damage, or when a non-hero target is dealt damage, 
-            return !base.HasBeenSetToTrueThisTurn(FirstTimeWouldBeDealtDamage) && dealDamageAction.Amount > 0 && (dealDamageAction.DamageSource.Card == base.CharacterCard || dealDamageAction.Target == base.CharacterCard || !dealDamageAction.Target.IsHero);
+            return !base.HasBeenSetToTrueThisTurn(FirstTimeWouldBeDealtDamage) && dealDamageAction.Amount > 0 && !dealDamageAction.IsPretend && (dealDamageAction.DamageSource.Card == base.CharacterCard || dealDamageAction.Target == base.CharacterCard || !dealDamageAction.Target.IsHero);
         }
 
         private bool DealDamageTargetCriteria(Card card)
@@ -45,7 +56,6 @@ namespace Cauldron.Gargoyle
             YesNoDecision decision;
            
             decision = new YesNoDecision(base.GameController, DecisionMaker, SelectionType.ReduceDamageTaken);
-
             coroutine = base.GameController.MakeDecisionAction(decision);
             if (base.UseUnityCoroutines)
             {

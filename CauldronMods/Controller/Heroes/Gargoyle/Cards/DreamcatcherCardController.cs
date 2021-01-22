@@ -43,8 +43,9 @@ namespace Cauldron.Gargoyle
             }
 
             // Reduce the next damage dealt by {Gargoyle} by X, where X is up to 3.
-            functionChoices = new Function[] 
-            { 
+            functionChoices = new Function[]
+            {
+                new Function(DecisionMaker, "Do not reduce damage", SelectionType.None,()=> DoNothing()),
                 new Function(DecisionMaker, "Reduce the next damage dealt by Gargoyle by 1", SelectionType.None,()=>ReduceDamage(1)),
                 new Function(DecisionMaker, "Reduce the next damage dealt by Gargoyle by 2", SelectionType.None,()=>ReduceDamage(2)),
                 new Function(DecisionMaker, "Reduce the next damage dealt by Gargoyle by 3", SelectionType.None,()=>ReduceDamage(3))
@@ -63,7 +64,7 @@ namespace Cauldron.Gargoyle
 
             if (storedResults != null)
             {
-                valueOfX = storedResults.FirstOrDefault().Index.Value + 1;
+                valueOfX = storedResults.FirstOrDefault().Index.Value;
             }
 
             // {Gargoyle} deals 1 target 1 toxic damage. 
