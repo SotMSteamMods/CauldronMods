@@ -537,5 +537,19 @@ namespace CauldronTests
             AssertInTrash(top2[1]);
             QuickHPCheck(-3);
         }
+
+        [Test()]
+        public void TestDriftCharacter_Breach_Incap0()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift/ThroughTheBreachDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard(drift);
+            //One player may draw a card now.
+
+            QuickHandStorage(haka);
+            UseIncapacitatedAbility(drift, 0);
+            QuickHandCheck(1);
+        }
     }
 }
