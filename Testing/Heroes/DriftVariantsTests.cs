@@ -98,26 +98,12 @@ namespace CauldronTests
             StartGame();
 
             DestroyCard(drift);
-            //One hero may use a power now.
+            //One hero may play a card now.
 
-            //Haka deals 2 damage
-            DecisionSelectTurnTaker = haka.TurnTaker;
-            QuickHPStorage(apostate);
+            Card moko = PutInHand("TaMoko");
+            DecisionSelectCard = moko;
             UseIncapacitatedAbility(drift, 0);
-            QuickHPCheck(-2);
-
-            //Bunker draws 1
-            DecisionSelectTurnTaker = bunker.TurnTaker;
-            QuickHandStorage(bunker);
-            UseIncapacitatedAbility(drift, 0);
-            QuickHandCheck(1);
-
-            SetHitPoints(scholar, 17);
-            //Scholar heals 1
-            DecisionSelectTurnTaker = scholar.TurnTaker;
-            QuickHPStorage(scholar);
-            UseIncapacitatedAbility(drift, 0);
-            QuickHPCheck(1);
+            AssertIsInPlay(moko);
         }
 
         [Test()]
@@ -127,14 +113,26 @@ namespace CauldronTests
             StartGame();
 
             DestroyCard(drift);
-            //One target regains 1 HP and deals another target 1 radiant damage.
+            //One hero may use a power now.
 
-            DecisionSelectCards = new Card[] { haka.CharacterCard, apostate.CharacterCard };
-
-            SetHitPoints(haka, 17);
-            QuickHPStorage(haka, apostate);
+            //Haka deals 2 damage
+            DecisionSelectTurnTaker = haka.TurnTaker;
+            QuickHPStorage(apostate);
             UseIncapacitatedAbility(drift, 1);
-            QuickHPCheck(1, -1);
+            QuickHPCheck(-2);
+
+            //Bunker draws 1
+            DecisionSelectTurnTaker = bunker.TurnTaker;
+            QuickHandStorage(bunker);
+            UseIncapacitatedAbility(drift, 1);
+            QuickHandCheck(1);
+
+            SetHitPoints(scholar, 17);
+            //Scholar heals 1
+            DecisionSelectTurnTaker = scholar.TurnTaker;
+            QuickHPStorage(scholar);
+            UseIncapacitatedAbility(drift, 1);
+            QuickHPCheck(1);
         }
 
         [Test()]
@@ -143,22 +141,14 @@ namespace CauldronTests
             SetupGameController("Apostate", "Cauldron.Drift/DriftingShadowDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
+            Card moko = PlayCard("TaMoko");
+            Card flak = PlayCard("FlakCannon");
+            Card iron = PlayCard("FleshToIron");
+
             DestroyCard(drift);
-            GoToStartOfTurn(drift);
-            //One player may discard a one-shot. If they do, they may draw 2 cards.
-            var a = base.GameController.FindTurnTakersWhere(tt => !tt.IsIncapacitatedOrOutOfGame);
-
-            Card elbow = PutInHand("ElbowSmash");
-            QuickHandStorage(haka);
+            //Move up to 3 non-character hero cards from play to their owner' hands.
             UseIncapacitatedAbility(drift, 2);
-            //Discard 1, Draw 2
-            QuickHandCheck(1);
-
-            DiscardAllCards(haka, bunker, scholar);
-            QuickHandStorage(haka, bunker, scholar);
-            UseIncapacitatedAbility(drift, 2);
-            //With no discard, no draw
-            QuickHandCheckZero();
+            AssertInHand(moko, flak, iron);
         }
 
         [Test]
