@@ -92,7 +92,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestDriftCharacter_Incap0()
+        public void TestDriftCharacter_1609_Incap0()
         {
             SetupGameController("Apostate", "Cauldron.Drift/DriftingShadowDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -107,7 +107,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestDriftCharacter_Incap1()
+        public void TestDriftCharacter_1609_Incap1()
         {
             SetupGameController("Apostate", "Cauldron.Drift/DriftingShadowDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -136,7 +136,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestDriftCharacter_Incap2()
+        public void TestDriftCharacter_1609_Incap2()
         {
             SetupGameController("Apostate", "Cauldron.Drift/DriftingShadowDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -224,6 +224,64 @@ namespace CauldronTests
             UsePower(drift);
             QuickHandCheck(1);
             AssertNumberOfCardsInTrash(drift, 3);
+        }
+
+        [Test()]
+        public void TestDriftCharacter_1789_Incap0()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift/AllInGoodTimeDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard(drift);
+            //One hero may play a card now.
+
+            Card moko = PutInHand("TaMoko");
+            DecisionSelectCard = moko;
+            UseIncapacitatedAbility(drift, 0);
+            AssertIsInPlay(moko);
+        }
+
+        [Test()]
+        public void TestDriftCharacter_1789_Incap1()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift/AllInGoodTimeDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard(drift);
+            //Destroy 1 ongoing card.
+
+            Card moko = PlayCard("TaMoko");
+            UseIncapacitatedAbility(drift, 1);
+            AssertInTrash(moko);
+        }
+
+        [Test()]
+        public void TestDriftCharacter_1789_Incap2()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift/AllInGoodTimeDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard(drift);
+            //Select a target. Increase the next damage it deals by 2.
+
+            QuickHPStorage(apostate, haka, bunker, scholar);
+            UseIncapacitatedAbility(drift, 2);
+            QuickHPCheckZero();
+
+            //Only selected target
+            QuickHPStorage(apostate, haka, bunker, scholar);
+            DealDamage(haka, bunker, 2, DamageType.Melee);
+            QuickHPCheck(0, 0, -2, 0);
+
+            //+2 damage
+            QuickHPStorage(apostate, haka, bunker, scholar);
+            DealDamage(apostate, haka, 2, DamageType.Melee);
+            QuickHPCheck(0, -4, 0, 0);
+
+            //Only once
+            QuickHPStorage(apostate, haka, bunker, scholar);
+            DealDamage(apostate, haka, 2, DamageType.Melee);
+            QuickHPCheck(0, -2, 0, 0);
         }
     }
 }

@@ -64,7 +64,7 @@ namespace Cauldron.Drift
                 case 0:
                     {
                         //One hero may play a card now.
-                        coroutine = base.GameController.SelectHeroToPlayCard(base.HeroTurnTakerController, cardSource: base.GetCardSource());
+                        coroutine = base.SelectHeroToPlayCard(base.HeroTurnTakerController, heroCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitated));
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
