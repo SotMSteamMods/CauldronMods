@@ -34,14 +34,14 @@ namespace CauldronTests
 
         [Test()]
         [Order(0)]
-        public void TestDriftLoad()
+        public void TestDrift_1609_Load()
         {
-            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Drift/DriftingShadowDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
 
             Assert.AreEqual(6, this.GameController.TurnTakerControllers.Count());
 
             Assert.IsNotNull(drift);
-            Assert.IsInstanceOf(typeof(DriftCharacterCardController), drift.CharacterCardController);
+            Assert.IsInstanceOf(typeof(DriftingShadowDriftCharacterCardController), drift.CharacterCardController);
 
             foreach (var card in drift.HeroTurnTaker.GetAllCards())
             {
@@ -53,51 +53,48 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestDriftCharacter_InnatePower()
+        public void TestDriftCharacter_1609_InnatePower()
         {
-            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Drift/DriftingShadowDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
             SetHitPoints(drift, 17);
-            //Shift {DriftLL}, {DriftL}, {DriftR}, {DriftRR}. Drift regains 1 HP.
+            //At the start of your next turn, shift {DriftL} or {DriftR}, then draw a card or use a power.
 
-            //Shift Right Twice
-            DecisionSelectFunction = 3;
-            int shiftPosition = CurrentShiftPosition();
-            QuickHPStorage(drift);
-            UsePower(drift);
-            QuickHPCheck(1);
-            AssertTrackPosition(shiftPosition + 2);
-
-            //Shift Right
-            DecisionSelectFunction = 2;
-            shiftPosition = CurrentShiftPosition();
-            QuickHPStorage(drift);
-            UsePower(drift);
-            QuickHPCheck(1);
-            AssertTrackPosition(shiftPosition + 1);
-
-            //Shift Left
             DecisionSelectFunction = 1;
-            shiftPosition = CurrentShiftPosition();
-            QuickHPStorage(drift);
-            UsePower(drift);
-            QuickHPCheck(1);
-            AssertTrackPosition(shiftPosition - 1);
+            GoToUsePowerPhase(drift);
+            int trackPosition = CurrentShiftPosition();
 
-            //Shift Left Twice
-            DecisionSelectFunction = 0;
-            shiftPosition = CurrentShiftPosition();
             QuickHPStorage(drift);
+            QuickHandStorage(drift);
             UsePower(drift);
-            QuickHPCheck(1);
-            AssertTrackPosition(shiftPosition - 2);
+            QuickHPCheck(0);
+            QuickHandCheck(0);
+            AssertTrackPosition(trackPosition);
+
+            GoToEndOfTurn(baron);
+            QuickHPCheck(0);
+            QuickHandCheck(0);
+            AssertTrackPosition(trackPosition);
+
+            GoToStartOfTurn(drift);
+            QuickHPCheck(0);
+            QuickHandCheck(0);
+            AssertTrackPosition(trackPosition + 1);
+
+            trackPosition = CurrentShiftPosition();
+
+            DecisionSelectFunction = 0;
+            GoToStartOfTurn(drift);
+            QuickHPCheck(0);
+            QuickHandCheck(1);
+            AssertTrackPosition(trackPosition - 1);
         }
 
         [Test()]
         public void TestDriftCharacter_Incap0()
         {
-            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("Apostate", "Cauldron.Drift/DriftingShadowDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
             DestroyCard(drift);
@@ -126,7 +123,7 @@ namespace CauldronTests
         [Test()]
         public void TestDriftCharacter_Incap1()
         {
-            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("Apostate", "Cauldron.Drift/DriftingShadowDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
             DestroyCard(drift);
@@ -143,7 +140,7 @@ namespace CauldronTests
         [Test()]
         public void TestDriftCharacter_Incap2()
         {
-            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("Apostate", "Cauldron.Drift/DriftingShadowDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
             DestroyCard(drift);

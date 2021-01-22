@@ -26,6 +26,7 @@ namespace Cauldron.Drift
             effect.CanEffectStack = true;
             effect.CardSource = this.Card;
             effect.NumberOfUses = 1;
+            effect.TurnIndexCriteria.GreaterThan = base.Game.TurnIndex;
 
             IEnumerator coroutine = base.AddStatusEffect(effect);
             if (base.UseUnityCoroutines)
@@ -39,7 +40,7 @@ namespace Cauldron.Drift
             yield break;
         }
 
-        private IEnumerator StartOfTurnResponse(PhaseChangeAction action, OnPhaseChangeStatusEffect effect)
+        public IEnumerator StartOfTurnResponse(PhaseChangeAction action, OnPhaseChangeStatusEffect effect)
         {
             //...shift {DriftL} or {DriftR}...
             IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
