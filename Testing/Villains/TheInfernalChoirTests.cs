@@ -673,5 +673,50 @@ namespace CauldronTests
 
             AssertInTrash(o1, o2, o3);
         }
+
+        [Test()]
+        public void TestHauntingNocturne_PlayEclipse([Values(false, true)] bool stageInTrash)
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheSentinels", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+            var eclipse = GetCard("Eclipse");
+
+            if (stageInTrash)
+                PutInTrash(eclipse);
+            else
+                PutOnDeck(choir, eclipse);
+
+            QuickShuffleStorage(choir);
+            var card = PlayCard("HauntingNocturne", 0, true);
+            AssertInPlayArea(choir, card);
+            AssertInPlayArea(choir, eclipse);
+            QuickShuffleCheck(1);
+        }
+
+        [Test()]
+        public void TestHauntingNocturne_IncreaseDamage()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheSentinels", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+                        
+            var card = PlayCard("HauntingNocturne", 0, true);
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, mainstay, writhe, medico, idealist, card);
+            DealDamage(choir.CharacterCard, legacy, 2, DamageType.Melee);
+            QuickHPCheck(0, -3, 0, 0, 0, 0, 0, 0);
+
+            QuickHPUpdate();
+            DealDamage(omnix, legacy, 2, DamageType.Melee);
+            QuickHPCheck(0, -2, 0, 0, 0, 0, 0, 0);
+        }
     }
 }
