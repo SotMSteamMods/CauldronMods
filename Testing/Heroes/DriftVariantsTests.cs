@@ -283,5 +283,207 @@ namespace CauldronTests
             DealDamage(apostate, haka, 2, DamageType.Melee);
             QuickHPCheck(0, -2, 0, 0);
         }
+
+        [Test]
+        public void TestShiftTrackSetup_1789()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/AllInGoodTimeDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            Card track = FindCardsWhere((Card c) => c.Identifier == "Base" + ShiftTrack + 1, false).FirstOrDefault();
+            DecisionSelectCard = track;
+            StartGame();
+
+            Assert.AreEqual(1, CurrentShiftPosition());
+            AssertIsInPlay(track);
+        }
+
+        [Test, Sequential, Ignore("Picking a ShiftTrack by Identifier always returns the first one. Testing in game confirms this works.")]
+        public void TestShiftTrackSetup_1789_Other([Values(2, 3, 4)] int decision)
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/AllInGoodTimeDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            Card track = FindCardsWhere((Card c) => c.Identifier == ShiftTrack + decision, false).FirstOrDefault();
+            DecisionSelectCard = track;
+            StartGame();
+
+            Assert.AreEqual(decision, CurrentShiftPosition());
+            AssertIsInPlay(track);
+        }
+
+        [Test()]
+        [Order(0)]
+        public void TestDrift_Halberd_Load()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/TestSubjectHalberdDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+
+            Assert.AreEqual(6, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(drift);
+            Assert.IsInstanceOf(typeof(TestSubjectHalberdDriftCharacterCardController), drift.CharacterCardController);
+
+            foreach (var card in drift.HeroTurnTaker.GetAllCards())
+            {
+                var cc = GetCardController(card);
+                Assert.IsTrue(cc.GetType() != typeof(CardController), $"{card.Identifier} is does not have a CardController");
+            }
+
+            Assert.AreEqual(26, drift.CharacterCard.HitPoints);
+        }
+
+        [Test, Sequential]
+        public void TestDriftCharacter_Halberd_InnatePower_ShiftRight([Values(1, 2, 3)] int numDiscard)
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/TestSubjectHalberdDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //Discard 1, 2, or 3 cards. For each card discarded this way, shift {DriftL} or {DriftR}. Draw 2 cards.
+
+            DecisionSelectNumber = numDiscard;
+            DecisionSelectFunction = 1;
+
+            int shiftPosition = CurrentShiftPosition();
+            QuickHandStorage(drift);
+            UsePower(drift);
+            QuickHandCheck(2 - numDiscard);
+            AssertTrackPosition(shiftPosition + numDiscard);
+        }
+
+        [Test, Sequential]
+        public void TestDriftCharacter_Halberd_InnatePower_ShiftLeft([Values(1, 2, 3)] int numDiscard)
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/TestSubjectHalberdDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //Discard 1, 2, or 3 cards. For each card discarded this way, shift {DriftL} or {DriftR}. Draw 2 cards.
+
+            //Get to Position 4
+            DecisionSelectNumber = 3;
+            DecisionSelectFunction = 1;
+            UsePower(drift);
+
+            //Setup
+            DecisionSelectNumber = numDiscard;
+            DecisionSelectFunction = 0;
+
+            int shiftPosition = CurrentShiftPosition();
+            QuickHandStorage(drift);
+            UsePower(drift);
+            QuickHandCheck(2 - numDiscard);
+            AssertTrackPosition(shiftPosition - numDiscard);
+        }
+
+        [Test]
+        public void TestDriftCharacter_Halberd_InnatePower_ShiftMix()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/TestSubjectHalberdDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //Discard 1, 2, or 3 cards. For each card discarded this way, shift {DriftL} or {DriftR}. Draw 2 cards.
+
+            //Setup
+            DecisionSelectNumber = 3;
+            //Right, Left, Right
+            DecisionSelectFunctions = new int?[] { 1, 0, 1 };
+
+            int shiftPosition = CurrentShiftPosition();
+            QuickHandStorage(drift);
+            UsePower(drift);
+            QuickHandCheck(-1);
+            AssertTrackPosition(shiftPosition + 1);
+        }
+
+        [Test()]
+        public void TestDriftCharacter_Halberd_Incap0()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift/TestSubjectHalberdDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard(drift);
+            //One player may draw a card now.
+
+            QuickHandStorage(haka);
+            UseIncapacitatedAbility(drift, 0);
+            QuickHandCheck(1);
+        }
+
+        [Test()]
+        public void TestDriftCharacter_Halberd_Incap1()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift/TestSubjectHalberdDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard(drift);
+            //One hero may use a power now.
+
+            //Haka deals 2 damage
+            DecisionSelectTurnTaker = haka.TurnTaker;
+            QuickHPStorage(apostate);
+            UseIncapacitatedAbility(drift, 1);
+            QuickHPCheck(-2);
+
+            //Bunker draws 1
+            DecisionSelectTurnTaker = bunker.TurnTaker;
+            QuickHandStorage(bunker);
+            UseIncapacitatedAbility(drift, 1);
+            QuickHandCheck(1);
+
+            SetHitPoints(scholar, 17);
+            //Scholar heals 1
+            DecisionSelectTurnTaker = scholar.TurnTaker;
+            QuickHPStorage(scholar);
+            UseIncapacitatedAbility(drift, 1);
+            QuickHPCheck(1);
+        }
+
+        [Test()]
+        public void TestDriftCharacter_Halberd_Incap2()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift/TestSubjectHalberdDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard(drift);
+            //Select a target. Prevent the next damage dealt to it.
+
+            QuickHPStorage(apostate, haka, bunker, scholar);
+            UseIncapacitatedAbility(drift, 2);
+            QuickHPCheckZero();
+
+            //Only selected target
+            QuickHPStorage(apostate, haka, bunker, scholar);
+            DealDamage(haka, bunker, 2, DamageType.Melee);
+            QuickHPCheck(0, 0, -2, 0);
+
+            //+2 damage
+            QuickHPStorage(apostate, haka, bunker, scholar);
+            DealDamage(haka, apostate, 2, DamageType.Melee);
+            QuickHPCheckZero();
+
+            //Only once
+            QuickHPStorage(apostate, haka, bunker, scholar);
+            DealDamage(haka, apostate, 2, DamageType.Melee);
+            QuickHPCheck(-2, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestShiftTrackSetup_Halberd()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/TestSubjectHalberdDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            Card track = FindCardsWhere((Card c) => c.Identifier == "Base" + ShiftTrack + 1, false).FirstOrDefault();
+            DecisionSelectCard = track;
+            StartGame();
+
+            Assert.AreEqual(1, CurrentShiftPosition());
+            AssertIsInPlay(track);
+        }
+
+        [Test, Sequential, Ignore("Picking a ShiftTrack by Identifier always returns the first one. Testing in game confirms this works.")]
+        public void TestShiftTrackSetup_Halberd_Other([Values(2, 3, 4)] int decision)
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/TestSubjectHalberdDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            Card track = FindCardsWhere((Card c) => c.Identifier == ShiftTrack + decision, false).FirstOrDefault();
+            DecisionSelectCard = track;
+            StartGame();
+
+            Assert.AreEqual(decision, CurrentShiftPosition());
+            AssertIsInPlay(track);
+        }
     }
 }
