@@ -152,9 +152,9 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestShiftTrackSetup()
+        public void TestShiftTrackSetup_1609()
         {
-            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Drift/DriftingShadowDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             Card track = FindCardsWhere((Card c) => c.Identifier == "Base" + ShiftTrack + 1, false).FirstOrDefault();
             DecisionSelectCard = track;
             StartGame();
@@ -164,15 +164,66 @@ namespace CauldronTests
         }
 
         [Test, Sequential, Ignore("Picking a ShiftTrack by Identifier always returns the first one. Testing in game confirms this works.")]
-        public void TestShiftTrackSetup_Other([Values(2, 3, 4)] int decision)
+        public void TestShiftTrackSetup_1609_Other([Values(2, 3, 4)] int decision)
         {
-            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Drift/DriftingShadowDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             Card track = FindCardsWhere((Card c) => c.Identifier == ShiftTrack + decision, false).FirstOrDefault();
             DecisionSelectCard = track;
             StartGame();
 
             Assert.AreEqual(decision, CurrentShiftPosition());
             AssertIsInPlay(track);
+        }
+
+        [Test()]
+        [Order(0)]
+        public void TestDrift_1789_Load()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/AllInGoodTimeDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+
+            Assert.AreEqual(6, this.GameController.TurnTakerControllers.Count());
+
+            Assert.IsNotNull(drift);
+            Assert.IsInstanceOf(typeof(AllInGoodTimeDriftCharacterCardController), drift.CharacterCardController);
+
+            foreach (var card in drift.HeroTurnTaker.GetAllCards())
+            {
+                var cc = GetCardController(card);
+                Assert.IsTrue(cc.GetType() != typeof(CardController), $"{card.Identifier} is does not have a CardController");
+            }
+
+            Assert.AreEqual(28, drift.CharacterCard.HitPoints);
+        }
+
+        [Test()]
+        public void TestDriftCharacter_1789_InnatePower_Play()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/AllInGoodTimeDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            StackDeck(TransitionShock, BorrowedTime, DestroyersAdagio, DanceOfTheDragons);
+
+            //Discard cards from the top of your deck until you discard an ongoing. Play or draw it.
+
+            UsePower(drift);
+            FindCardInPlay(TransitionShock);
+            AssertNumberOfCardsInTrash(drift, 3);
+        }
+
+        [Test()]
+        public void TestDriftCharacter_1789_InnatePower_Draw()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/AllInGoodTimeDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            StackDeck(TransitionShock, BorrowedTime, DestroyersAdagio, DanceOfTheDragons);
+
+            //Discard cards from the top of your deck until you discard an ongoing. Play or draw it.
+            DecisionSelectFunction = 1;
+            QuickHandStorage(drift);
+            UsePower(drift);
+            QuickHandCheck(1);
+            AssertNumberOfCardsInTrash(drift, 3);
         }
     }
 }

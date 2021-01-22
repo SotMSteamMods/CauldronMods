@@ -29,7 +29,7 @@ namespace Cauldron.Drift
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = base.CleanupCardsAtLocations(new List<Location> { base.TurnTaker.Revealed }, base.TurnTaker.Trash, isDiscard: true);
+            coroutine = base.GameController.MoveCards(base.TurnTakerController, base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Location.IsRevealed)), base.TurnTaker.Trash, isDiscard: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
