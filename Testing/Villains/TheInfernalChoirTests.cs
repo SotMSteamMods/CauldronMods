@@ -562,5 +562,62 @@ namespace CauldronTests
             DealDamage(choir.CharacterCard, legacy, 4, DamageType.Infernal);
             QuickHPCheck(0, -4, 0, 0, 0);
         }
+
+        [Test()]
+        public void TestBaneOfEmbers_Immunity()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheWraith", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            var card = PlayCard("BaneOfEmbers", 0, true);
+            AssertInPlayArea(choir, card);
+
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
+            DealDamage(legacy, card, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, -1);
+
+            //now immune
+            QuickHPUpdate();
+            DealDamage(legacy, card, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, 0);
+
+            GoToStartOfTurn(legacy);
+
+            //now not
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
+            DealDamage(legacy, card, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, -1);
+
+            //now immune
+            QuickHPUpdate();
+            DealDamage(legacy, card, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestBaneOfEmbers_EndOfTurnDamage([Values(4, 3, 2, 1)] int hp)
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheSentinels", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            var card = PlayCard("BaneOfEmbers", 0, true);
+            AssertInPlayArea(choir, card);
+            SetHitPoints(card, hp);
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, mainstay, writhe, medico, idealist, card);
+            GoToEndOfTurn(choir);
+            QuickHPCheck(0, -hp, -hp, -hp, 0, 0, 0, 0);
+        }
     }
 }
