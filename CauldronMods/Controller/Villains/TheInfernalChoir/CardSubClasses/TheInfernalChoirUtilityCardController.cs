@@ -14,6 +14,18 @@ namespace Cauldron.TheInfernalChoir
         {
         }
 
+        protected Card FindVagrantHeartHiddenSoul()
+        {
+            var p1Heart = TurnTaker.FindCard("VagrantHeartPhase1", false);
+            return (p1Heart?.IsInPlay ?? false) ? p1Heart : null;
+        }
+
+        protected Card FindVagrantHeartSoulRevealed()
+        {
+            var p2Heart = TurnTaker.FindCard("VagrantHeartPhase2", false);
+            return (p2Heart?.IsInPlay ?? false) ? p2Heart : null;
+        }
+
         protected bool IsGhost(Card c, bool evenIfUnderCard = false, bool evenIfFaceDown = false)
         {
             return c != null && (c.DoKeywordsContain("ghost", evenIfUnderCard, evenIfFaceDown) || GameController.DoesCardContainKeyword(c, "ghost", evenIfUnderCard, evenIfFaceDown));

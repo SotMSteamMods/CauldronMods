@@ -619,5 +619,59 @@ namespace CauldronTests
             GoToEndOfTurn(choir);
             QuickHPCheck(0, -hp, -hp, -hp, 0, 0, 0, 0);
         }
+
+
+
+        [Test()]
+        public void TestBaneOfIron_DamageReduction()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheSentinels", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            var card = PlayCard("BaneOfIron", 0, true);
+            AssertInPlayArea(choir, card);
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, mainstay, writhe, medico, idealist, card);
+            DealDamage(card, legacy, 1, DamageType.Melee);
+            QuickHPCheck(0, -1, 0, 0, 0, 0, 0, 0);
+
+            QuickHPUpdate();
+            DealDamage(legacy, omnix, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, -1, 0, 0, 0, 0, 0);
+
+            QuickHPUpdate();
+            DealDamage(omnix, mainstay, 2, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, -1, 0, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestBaneOfIron_DestroyOnDestroy()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheSentinels", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            var o1 = PlayCard("InspiringPresence");
+            var o2 = PlayCard("DangerSense");
+            var o3 = PlayCard("TheLegacyRing");
+
+            var card = PlayCard("BaneOfIron", 0, true);
+            AssertInPlayArea(choir, card);
+
+            DecisionAutoDecideIfAble = false;
+            DecisionSelectCards = new[] { o1, o2, o3 };
+            DealDamage(legacy, card, 4, DamageType.Melee);
+
+            AssertInTrash(o1, o2, o3);
+        }
     }
 }
