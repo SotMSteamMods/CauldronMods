@@ -551,5 +551,39 @@ namespace CauldronTests
             UseIncapacitatedAbility(drift, 0);
             QuickHandCheck(1);
         }
+
+        [Test()]
+        public void TestDriftCharacter_Breach_Incap1()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift/ThroughTheBreachDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard(drift);
+            //One player may draw a card now.
+
+            QuickHPStorage(apostate);
+            QuickHandStorage(bunker);
+            UseIncapacitatedAbility(drift, 1);
+            QuickHandCheck(1);
+            QuickHPCheck(-1);
+        }
+
+        [Test()]
+        public void TestDriftCharacter_Breach_Incap2()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift/ThroughTheBreachDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card moko = PlayCard("TaMoko");
+            Card popo = PlayCard("PoliceBackup");
+            Card sword = FindCardInPlay("Condemnation");
+
+            DestroyCard(drift);
+
+            //Move 1 environment card from play to the of its deck.
+            UseIncapacitatedAbility(drift, 2);
+            AssertIsInPlay(moko, sword);
+            AssertOnTopOfDeck(popo);
+        }
     }
 }
