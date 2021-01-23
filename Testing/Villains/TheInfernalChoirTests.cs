@@ -1089,14 +1089,12 @@ namespace CauldronTests
 
             DecisionSelectNumber = number;
             DecisionYesNo = false;
-            
+
             DealDamage(haka, legacy, 3, DamageType.Melee);
 
             AssertNumberOfCardsInDeck(legacy, inDeck[legacy] - number);
             AssertNumberOfCardsInTrash(legacy, inTrash[legacy] + number);
         }
-
-
 
         [Test()]
         public void TestEclipse()
@@ -1116,6 +1114,24 @@ namespace CauldronTests
             GoToEndOfTurn(choir);
             //have to include The Choir's end of turn damage
             QuickHPCheck(0, -1, -1, -1, -1, -4, -1);
+        }
+
+        [Test()]
+        public void TestNoWitnesses()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Ra", "Megalopolis");
+            //choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            QuickHandStorage(legacy, haka, ra);
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, ra.CharacterCard);
+            var card = PlayCard("NoWitnesses", 0, true);
+            AssertInTrash(choir, card);
+            QuickHPCheck(0, -3, 0, -3);
+            QuickHandCheck(1, 0, -1);
         }
     }
 }
