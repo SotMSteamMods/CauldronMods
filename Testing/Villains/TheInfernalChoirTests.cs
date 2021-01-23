@@ -737,7 +737,7 @@ namespace CauldronTests
 
             DecisionAutoDecideIfAble = true;
             PlayCard("TakeDown");
-            
+
             var card = PlayCard("HauntingNocturne", 0, true);
 
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, mainstay, writhe, medico, idealist, card);
@@ -818,6 +818,28 @@ namespace CauldronTests
             GoToEndOfTurn(choir);
             QuickHPCheck(0, 0, -2, -2, -2, -2, -2, 0);
             AssertHitPoints(g2, 1);
+        }
+
+        [Test()]
+        public void TestInfernalElegy()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheSentinels", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            var e1 = PutOnDeck("ImpendingCasualty");
+            var g1 = PutInTrash("BaneOfIron");
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            var card = PlayCard("InfernalElegy", 0, true);
+            AssertInPlayArea(env, e1);
+
+            DestroyCard(e1);
+
+            AssertInPlayArea(choir, g1);
         }
     }
 }
