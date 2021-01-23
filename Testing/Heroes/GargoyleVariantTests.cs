@@ -389,6 +389,48 @@ namespace CauldronTests
             DealDamage(gargoyle, baron, 2, DamageType.Toxic);
             QuickHPCheck(-2, 0, 0, 0, 0);
         }
+        [Test]
+        public void TestDragonRangerGargoyleInnatePowerMustDealDamageForBenefit()
+        {
+            StartTestGame(DragonRangerGargoyle);
+
+            GoToUsePowerPhase(gargoyle);
+
+            PlayCard("HeavyPlating");
+            // Select a target. 
+            DecisionSelectTargets = new Card[] { baron.CharacterCard, unity.CharacterCard, bunker.CharacterCard };
+
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+            UsePower(gargoyle.CharacterCard);
+            QuickHPCheck(-1, 0, -1, 0, 0);
+
+            DealDamage(gargoyle, baron, 2, DamageType.Toxic);
+            QuickHPCheck(-3, 0, 0, 0, 0);
+
+            DealDamage(gargoyle, baron, 2, DamageType.Toxic);
+            QuickHPCheck(-2, 0, 0, 0, 0);
+        }
+        [Test]
+        public void TestDragonRangerGargoyleInnatePowerDistinctHeroes()
+        {
+            StartTestGame(DragonRangerGargoyle);
+
+            GoToUsePowerPhase(gargoyle);
+
+            PlayCard("AlchemicalRedirection");
+            // Select a target. 
+            DecisionSelectTargets = new Card[] { baron.CharacterCard, unity.CharacterCard, bunker.CharacterCard };
+
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+            UsePower(gargoyle.CharacterCard);
+            QuickHPCheck(-1, 0, 0, 0, -2);
+
+            DealDamage(gargoyle, baron, 2, DamageType.Toxic);
+            QuickHPCheck(-3, 0, 0, 0, 0);
+
+            DealDamage(gargoyle, baron, 2, DamageType.Toxic);
+            QuickHPCheck(-2, 0, 0, 0, 0);
+        }
         #endregion Test Innate Power
 
         #region Test Incap Powers

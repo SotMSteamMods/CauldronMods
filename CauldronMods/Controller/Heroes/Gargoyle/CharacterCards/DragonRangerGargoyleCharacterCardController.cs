@@ -24,11 +24,11 @@ namespace Cauldron.Gargoyle
         public override IEnumerator UsePower(int index = 0)
         {
             IEnumerator coroutine;
-            List<SelectCardDecision> storedResultsDecisions = new List<SelectCardDecision>();
+            List<DealDamageAction> storedResultsDamage = new List<DealDamageAction>();
             IncreaseDamageStatusEffect increaseDamageStatusEffect;
             int totalHeroesDamaged = 0;
 
-            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), ToxicDamageAmount, DamageType.Toxic, TargetsAmount, false, TargetsAmount, storedResultsDecisions: storedResultsDecisions, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), ToxicDamageAmount, DamageType.Toxic, TargetsAmount, false, TargetsAmount, storedResultsDamage: storedResultsDamage, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -38,9 +38,9 @@ namespace Cauldron.Gargoyle
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (storedResultsDecisions != null && storedResultsDecisions.Count((scd)=>scd.SelectedCard.IsHero) > 0)
+            if (storedResultsDamage != null && storedResultsDamage.Any((DealDamageAction dd) => dd.DidDealDamage && dd.Target.IsHeroCharacterCard))
             {
-                totalHeroesDamaged = storedResultsDecisions.Count((scd) => scd.SelectedCard.IsHero);
+                totalHeroesDamaged = storedResultsDamage.Where((dd) => dd.DidDealDamage && dd.Target.IsHeroCharacterCard).Select(dd => dd.Target).Distinct().Count();
 
                 increaseDamageStatusEffect = new IncreaseDamageStatusEffect(totalHeroesDamaged);
                 increaseDamageStatusEffect.SourceCriteria.IsSpecificCard = base.CharacterCard;
