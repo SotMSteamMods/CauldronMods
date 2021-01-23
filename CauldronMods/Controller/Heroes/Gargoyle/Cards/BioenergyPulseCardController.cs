@@ -66,7 +66,7 @@ namespace Cauldron.Gargoyle
             IEnumerator coroutine;
 
             // he may also deal that to 1 other target.
-            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), action.Amount, action.DamageType, 1, false, 0, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), action.Amount, action.DamageType, 1, false, 0, additionalCriteria: (Card c) => c != CharacterCard, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
