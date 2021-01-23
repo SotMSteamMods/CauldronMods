@@ -6,7 +6,6 @@ using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
-//DECKLIST EDIT: is -> would be
 namespace Cauldron.Gargoyle
 {
     public class LeechFieldCardController : GargoyleUtilityCardController
@@ -32,7 +31,7 @@ namespace Cauldron.Gargoyle
         {
             //ReduceDamageTrigger reduceDamageTrigger;
 
-            base.AddTrigger<DealDamageAction>(DealDamageCritera, DealDamageResponse, new TriggerType[] { TriggerType.ModifyDamageAmount }, TriggerTiming.Before, isConditional: false, isActionOptional: false);
+            base.AddTrigger<DealDamageAction>(DealDamageCritera, DealDamageResponse, new TriggerType[] { TriggerType.ModifyDamageAmount }, TriggerTiming.Before, isActionOptional: true);
 
             //reduceDamageTrigger = new ReduceDamageTrigger(base.GameController, DealDamageCritera, (card) => true, DealDamageResponse, true, false, base.GetCardSource());
             //base.AddTrigger(reduceDamageTrigger);
@@ -69,6 +68,7 @@ namespace Cauldron.Gargoyle
 
             if (base.DidPlayerAnswerYes(decision))
             { 
+                base.SetCardPropertyToTrueIfRealAction(FirstTimeWouldBeDealtDamage);
                 // you may reduce that damage by 1 
                 coroutine = base.GameController.ReduceDamage(dealDamageAction, 1, trigger, GetCardSource());
                 if (base.UseUnityCoroutines)
@@ -92,7 +92,6 @@ namespace Cauldron.Gargoyle
                 }
             }
 
-            base.SetCardPropertyToTrueIfRealAction(FirstTimeWouldBeDealtDamage);
 
             yield break;
         }
