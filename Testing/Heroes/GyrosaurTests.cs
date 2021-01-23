@@ -1163,11 +1163,11 @@ namespace CauldronTests
 
             MoveAllCardsFromHandToDeck(gyrosaur);
 
-            QuickHandStorage(gyrosaur, legacy, ra);
             QuickHPStorage(baron, gyrosaur, legacy, ra);
             Card wipe = PutInHand("Wipeout");
             Card chase = PutInHand("AMerryChase");
             Card police = PutIntoPlay("PoliceBackup");
+            QuickHandStorage(gyrosaur, legacy, ra);
             PlayCard("SphereOfDevastation");
             QuickHPCheck(-8, 0, 0, 0);
             QuickHandCheck(-1, 0, 0);
@@ -1204,7 +1204,6 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
             StartGame();
-            DestroyNonCharacterVillainCards();
 
             MoveAllCardsFromHandToDeck(gyrosaur);
 
