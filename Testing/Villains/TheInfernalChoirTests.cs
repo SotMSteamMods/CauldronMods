@@ -739,6 +739,7 @@ namespace CauldronTests
             PlayCard("TakeDown");
 
             var card = PlayCard("HauntingNocturne", 0, true);
+            AssertInPlayArea(choir, card);
 
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, mainstay, writhe, medico, idealist, card);
             DealDamage(choir.CharacterCard, legacy, 2, DamageType.Melee);
@@ -764,6 +765,7 @@ namespace CauldronTests
             GoToStartOfTurn(legacy);
 
             var card = PlayCard("WretchedSymphony", 0, true);
+            AssertInPlayArea(choir, card);
 
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, mainstay, writhe, medico, idealist, card);
             DealDamage(legacy.CharacterCard, choir, 2, DamageType.Melee);
@@ -792,6 +794,7 @@ namespace CauldronTests
             SetHitPoints(g2, 1);
 
             var card = PlayCard("WretchedSymphony", 0, true);
+            AssertInPlayArea(choir, card);
 
             GoToEndOfTurn(choir);
             AssertHitPoints(g1, g1.MaximumHitPoints.Value);
@@ -813,6 +816,7 @@ namespace CauldronTests
             SetHitPoints(g2, 1);
 
             var card = PlayCard("WretchedSymphony", 0, true);
+            AssertInPlayArea(choir, card);
 
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, mainstay, writhe, medico, idealist, card);
             GoToEndOfTurn(choir);
@@ -835,11 +839,45 @@ namespace CauldronTests
             AddCannotDealDamageTrigger(choir, choir.CharacterCard);
 
             var card = PlayCard("InfernalElegy", 0, true);
+            AssertInPlayArea(choir, card);
             AssertInPlayArea(env, e1);
 
             DestroyCard(e1);
 
             AssertInPlayArea(choir, g1);
+        }
+
+        [Test()]
+        public void TestTrueColors_HiddenHeart()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, mainstay, writhe, medico, idealist);
+            var card = PlayCard("TrueColors", 0, true);
+            AssertInTrash(choir, card);
+            QuickHPCheck(0, 0, -6, 0, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestTrueColors_SoulRevealed()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+            FlipCard(choir.CharacterCard);
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, mainstay, writhe, medico, idealist);
+            var card = PlayCard("TrueColors", 0, true);
+            AssertInTrash(choir, card);
+            QuickHPCheck(0, -6, -6, 0, 0, 0, 0);
         }
     }
 }
