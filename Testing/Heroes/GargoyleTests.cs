@@ -76,14 +76,20 @@ namespace CauldronTests
             UsePower(gargoyle.CharacterCard);
                         
             // Reduce the next damage it deals by 1.
-            QuickHPStorage(baron, unity, bunker, scholar);
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
             DealDamage(baron.CharacterCard, gargoyle.CharacterCard, 1, DamageType.Melee);
             QuickHPCheckZero();
-
+            // Only once
+            DealDamage(baron, gargoyle, 1, DamageType.Melee);
+            QuickHPCheck(0, -1, 0, 0, 0);
+            
             // Increase the next damage Gargoyle deals by 1.
-            QuickHPStorage(baron, unity, bunker, scholar);
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
             DealDamage(gargoyle.CharacterCard, baron.CharacterCard, 1, DamageType.Melee);
-            QuickHPCheck(-2, 0, 0, 0);
+            QuickHPCheck(-2, 0, 0, 0, 0);
+            // Only once
+            DealDamage(gargoyle, baron, 1, DamageType.Melee);
+            QuickHPCheck(-1, 0, 0, 0, 0);
         }
         #endregion Test Innate Power
 
@@ -247,6 +253,7 @@ namespace CauldronTests
         #region Test Absorb and Unleash
         /*
          * Absorb And Unleash
+         * {Gargoyle} may deal 1 target 0 toxic damage.
          * {Gargoyle} deals 1 hero target 2 toxic damage.
          * {Gargoyle} deals up to X targets 3 toxic damage each, where X is the amount of damage that was dealt to that hero target.
          */
@@ -260,8 +267,7 @@ namespace CauldronTests
             PutOnDeck(gargoyle, gargoyle.HeroTurnTaker.Hand.Cards);
             absorbAndUnleash = PutInHand("AbsorbAndUnleash");
 
-            DecisionSelectCards = new Card[] { gargoyle.CharacterCard, baron.CharacterCard, scholar.CharacterCard, null };
-            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { null, gargoyle.CharacterCard, baron.CharacterCard, scholar.CharacterCard, null };
             QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
             PlayCard(absorbAndUnleash);
 
@@ -279,13 +285,42 @@ namespace CauldronTests
             PutOnDeck(gargoyle, gargoyle.HeroTurnTaker.Hand.Cards);
             absorbAndUnleash = PutInHand("AbsorbAndUnleash");
 
-            DecisionSelectCards = new Card[] { gargoyle.CharacterCard, baron.CharacterCard, null };
-            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { null, gargoyle.CharacterCard, baron.CharacterCard, null };
             QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
             PlayCard(absorbAndUnleash);
 
-            // Gargoyle should have been hit for 2. Baron and Scholar should have been hit for 3
+            // Gargoyle should have been hit for 2. Baron should have been hit for 3
             QuickHPCheck(-3, -2, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestAbsorbAndUnleashFirstDamage()
+        {
+            StartTestGame("BaronBlade", "Cauldron.Gargoyle", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            //Boost damage so the 0-damage hit is visible
+            UsePower(legacy);
+
+            DecisionSelectCards = new Card[] { baron.CharacterCard, gargoyle.CharacterCard, baron.CharacterCard, legacy.CharacterCard, bunker.CharacterCard, scholar.CharacterCard };
+            QuickHPStorage(baron, gargoyle, legacy, bunker, scholar);
+            PlayCard("AbsorbAndUnleash");
+
+            //Gargoyle hits Baron for 0 + 1, himself for 2 + 1, Baron, Legacy, and Bunker for 3 + 1 each, and runs out before Scholar
+            QuickHPCheck(-5, -3, -4, -4, 0);
+        }
+        [Test]
+        public void TestAbsorbAndUnleashNoHeroDamage()
+        {
+            StartTestGame("BaronBlade", "Cauldron.Gargoyle", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            PlayCard("HeroicInterception");
+            UsePower(legacy);
+            DecisionSelectCards = new Card[] { baron.CharacterCard, gargoyle.CharacterCard, baron.CharacterCard, legacy.CharacterCard, bunker.CharacterCard, scholar.CharacterCard };
+            QuickHPStorage(baron, gargoyle, legacy, bunker, scholar);
+            PlayCard("AbsorbAndUnleash");
+
+            //Gargoyle hits Baron for 1, the damage to himself is prevented, and he doesn't get to hit again.
+            QuickHPCheck(-1, 0, 0, 0, 0);
         }
 
         #endregion Test Absorb and Unleash
