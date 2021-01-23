@@ -27,7 +27,7 @@ namespace Cauldron.Gargoyle
             IEnumerator coroutine;
 
             // Select a target. 
-            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), PowerDamageAmount, DamageType.Toxic, PowerTargetAmount, false, 1, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), PowerDamageAmount, DamageType.Toxic, PowerTargetAmount, false, PowerTargetAmount, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -119,7 +119,7 @@ namespace Cauldron.Gargoyle
                 case 2:
                     {
                         // One hero target deals itself 2 toxic damage. Another regains 2 HP.
-                        coroutine = base.GameController.SelectHeroCharacterCard(DecisionMaker, SelectionType.SelectTarget, selectCardResults, false, false, base.GetCardSource());
+                        coroutine = GameController.SelectTargetsToDealDamageToSelf(DecisionMaker, 2, DamageType.Toxic, 1, false, 1, additionalCriteria: (Card c) => c.IsHero && c.IsTarget, storedResultsDecisions: selectCardResults, selectTargetsEvenIfCannotDealDamage: true, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -129,31 +129,18 @@ namespace Cauldron.Gargoyle
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
 
-
-                        if (selectCardResults != null && selectCardResults.Count() > 0)
+                        // Another regains 2 HP.
+                        var selectedCard = GetSelectedCard(selectCardResults);
+                        coroutine = base.GameController.SelectAndGainHP(DecisionMaker, 2, additionalCriteria: (card) => card.IsHero && card.IsTarget && !(card == selectedCard));
+                        if (base.UseUnityCoroutines)
                         {
-                            // One hero target deals itself 2 toxic damage
-                            coroutine = base.DealDamage(selectCardResults.FirstOrDefault().SelectedCard, selectCardResults.FirstOrDefault().SelectedCard, 2, DamageType.Toxic, cardSource: base.GetCardSource());
-                            if (base.UseUnityCoroutines)
-                            {
-                                yield return base.GameController.StartCoroutine(coroutine);
-                            }
-                            else
-                            {
-                                base.GameController.ExhaustCoroutine(coroutine);
-                            }
-
-                            // Another regains 2 HP.
-                            coroutine = base.GameController.SelectAndGainHP(DecisionMaker, 2, additionalCriteria: (card) => card.IsHero && card.IsTarget);
-                            if (base.UseUnityCoroutines)
-                            {
-                                yield return base.GameController.StartCoroutine(coroutine);
-                            }
-                            else
-                            {
-                                base.GameController.ExhaustCoroutine(coroutine);
-                            }
+                            yield return base.GameController.StartCoroutine(coroutine);
                         }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                        
                     }
                     break;
             }

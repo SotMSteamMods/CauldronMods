@@ -194,6 +194,19 @@ namespace CauldronTests
             UseIncapacitatedAbility(gargoyle, 2);
             QuickHPCheck(0, -2, 2, 0);
         }
+        [Test]
+        public void TestWastelandRoninGargoyleIncap3NonCharacterTarget()
+        {
+            SetupIncapTest(WastelandRoninGargoyle);
+
+            Card bot = PlayCard("SwiftBot");
+            DecisionSelectCards = new Card[] { bot, bunker.CharacterCard };
+            base.SetHitPoints(bunker.CharacterCard, 15);
+
+            QuickHPStorage(baron.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bot);
+            UseIncapacitatedAbility(gargoyle, 2);
+            QuickHPCheck(0, 0, 2, 0, -2);
+        }
 
         #endregion Test Incap Powers
 
