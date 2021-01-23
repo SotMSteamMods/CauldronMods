@@ -25,6 +25,7 @@ namespace Cauldron.TheMistressOfFate
             _isStoredCard = false;
             AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
             AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
+            SpecialStringMaker.ShowSpecialString(() => BuildNumberOfDaySpecialString());
         }
 
         public override void AddTriggers()
@@ -123,6 +124,39 @@ namespace Cauldron.TheMistressOfFate
                 return source.Card.IsVillain;
             }
             return true;
+        }
+
+        private int NumFaceUpDays()
+        {
+            return GameController.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsDay(c)).Count();
+        }
+
+        private string BuildNumberOfDaySpecialString()
+        {
+            int numFaceUpDays = NumFaceUpDays();
+            string special = "";
+            switch(numFaceUpDays)
+            {
+                case 0:
+                    special = "Day 0: The timeline has yet to begin...";
+                    break;
+                case 1:
+                    special = "Dawn of Day 1: 96 hours remain...";
+                    break;
+                case 2:
+                    special = "Dawn of Day 2: 72 hours remain...";
+                    break;
+                case 3:
+                    special = "Dawn of Day 3: 48 hours remain...";
+                    break;
+                case 4:
+                    special = "Dawn of Day 4: 24 hours remain...";
+                    break;
+                default:
+                    special = "Dawn of Day... wait how did you break out of the loop?";
+                    break;
+            }
+            return special;
         }
     }
 }
