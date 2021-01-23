@@ -564,6 +564,32 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestDanchengTheGiant_ChoirCannotDealDamage()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheWraith", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            PlayCard("TakeDown");
+            AddCannotDealNextDamageTrigger(wraith, choir.CharacterCard);
+
+            var card = PlayCard("DanchengTheGiant", 0, true);
+            AssertInPlayArea(choir, card);
+
+            DecisionYesNo = true;
+            QuickHandStorage(legacy, omnix, wraith);
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
+            DrawCard(legacy);
+            QuickHPCheck(0, 0, 0, 0, 0);
+            QuickHandCheck(0, 0, 0);
+
+            //make sure the trigger implementation isn't leaking
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
+            DealDamage(choir.CharacterCard, legacy, 4, DamageType.Infernal);
+            QuickHPCheck(0, -4, 0, 0, 0);
+        }
+
+        [Test()]
         public void TestBaneOfEmbers_Immunity()
         {
             SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheWraith", "Megalopolis");

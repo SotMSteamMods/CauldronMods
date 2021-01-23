@@ -24,6 +24,7 @@ namespace Cauldron.TheInfernalChoir
             _reduceDamageTrigger = AddTrigger(new ReduceDamageTrigger(GameController, VerySecretCriteria, null, DiscardedCardDamageReduction, false, false, GetCardSource()));
         }
 
+        //TODO - If Character card cannot deal damage, flag may not be cleared correctly
         private bool VerySecretCriteria(DealDamageAction dda)
         {
             return dda.OriginalAmount == 4 && dda.OriginalDamageType == DamageType.Infernal && dda.DamageSource.IsSameCard(CharacterCard) && Journal.GetCardPropertiesBoolean(dda.Target, drawDiscardReaction) == true && dda.CardSource.Card == Card;
@@ -33,6 +34,7 @@ namespace Cauldron.TheInfernalChoir
         {
             if (IsRealAction())
             {
+                Handelabra.Log.Debug($"{Card.Title} clearing flag: {drawDiscardReaction} on {dda.Target.Title}");
                 Journal.RecordCardProperties(dda.Target, drawDiscardReaction, (bool?)null);
             }
             var coroutine = GameController.ReduceDamage(dda, 3, _reduceDamageTrigger, GetCardSource());
@@ -88,6 +90,7 @@ namespace Cauldron.TheInfernalChoir
 
                 if (DidPlayerAnswerYes(result) && IsRealAction())
                 {
+                    Handelabra.Log.Debug($"{Card.Title} setting flag: {drawDiscardReaction} on {card.Title}");
                     Journal.RecordCardProperties(card, drawDiscardReaction, true);
                 }
 
