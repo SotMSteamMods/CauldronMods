@@ -1102,6 +1102,31 @@ namespace CauldronTests
             PlayCard("StolenFuture");
             AssertIncapacitated(sentinels);
         }
+
+        [Test]
+        public void TestStolenFuture_CompletionistGuise()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Haka", "Guise/CompletionistGuiseCharacter", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+            ResetRFGCards();
+
+            SetHitPoints(legacy, 10);
+            SetHitPoints(ra, 10);
+            SetHitPoints(haka, 10);
+
+            DecisionSelectCards =  new Card[] { haka.CharacterCard, fate.CharacterCard, ra.CharacterCard, fate.CharacterCard, legacy.CharacterCard, guise.CharacterCard, fate.CharacterCard};
+            UsePower(guise.CharacterCard);
+            UsePower(guise.CharacterCard);
+            UsePower(guise.CharacterCard);
+            UsePower(guise.CharacterCard);
+
+
+            PlayCard("StolenFuture");
+            AssertIncapacitated(guise);
+            AssertNumberOfCardsUnderCard(guise.CharacterCard, 4);
+        }
         [Test]
         public void TestTangledWeftAllowedDiscards()
         {

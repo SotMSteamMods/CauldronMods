@@ -13,6 +13,7 @@ namespace Cauldron.TheMistressOfFate
         public StolenFutureCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             _isStoredCard = false;
+            SpecialStringMaker.ShowHeroCharacterCardWithHighestHP().Condition = () => !Card.IsInPlayAndHasGameText;
         }
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
