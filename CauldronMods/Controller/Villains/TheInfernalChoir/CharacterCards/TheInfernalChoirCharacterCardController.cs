@@ -10,6 +10,26 @@ namespace Cauldron.TheInfernalChoir
 {
     public class TheInfernalChoirCharacterCardController : VillainCharacterCardController
     {
+
+        /*
+         * "setup": [
+				"At the start of the game, put {TheInfernalChoir}'s villain character cards into play, “Unfinished Business“ side up.",
+				"Search the villain deck for the card Vagrant Heart: Hidden Heart and play it face-up in the play area of a random hero.",
+				"Put the card Vagrant Heart: Soul Revealed off to the side. Shuffle the villain deck."
+			],
+			"gameplay": [
+				"(TheInfernalChoir) is indestructible.",
+				"If the Hero with the Vagrant Heart in it's play area has no cards in it's deck, shuffle all cards under Vagrant Heart: Hidden Heart back into the hero's deck, flip {TheInfernalChoir}'s villain character cards and replace the Vagrant Heart: Hidden Heart with Vagrant Heart: Soul Revealed.",
+				"At the end of the villain turn, play the top card of the villain deck. Then {TheInfernalChoir} deals each non-ghost, non-villain target 1 infernal damage."
+			],
+            "advanced": "Increase all damage dealt by 1.",
+            "flippedGameplay": [
+				"Redirect all hero damage that would be dealt to villain targets during the villain turn to the hero target with the highest HP.",
+				"At the start of the villain turn, remove all but the bottom 5 cards of each hero's deck from the game, then destroy each hero character whose deck contains no cards. Play the top card of the villain deck and each hero deck in order in turn order. Remove all hero cards played this way from the game at the end of the villain turn."
+			],
+			"flippedAdvanced": "At the start of each player's turn, remove the top card of their deck from the game.",
+         */
+
         public TheInfernalChoirCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowIfSpecificCardIsInPlay(() => !Card.IsFlipped ? FindCard("VagrantHeartPhase1") : FindCard("VagrantHeartPhase2"));
@@ -40,6 +60,9 @@ namespace Cauldron.TheInfernalChoir
                 {
                     AddSideTrigger(AddStartOfTurnTrigger(tt => tt.IsHero, pca => AdvancedRemoveTopCardOfDeck(pca), TriggerType.RemoveFromGame));
                 }
+
+                //This trigger's only purpose is to force the GameController.WouldAutoDraw to consider there to be a candidate trigger.
+                AddSideTrigger(AddTrigger<DrawCardAction>(dca => dca.HeroTurnTaker.Deck.NumberOfCards <= 5, dca => DoNothing(), TriggerType.Other, TriggerTiming.After));
 
                 AddDefeatedIfDestroyedTriggers();
             }

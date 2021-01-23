@@ -20,7 +20,7 @@ namespace Cauldron.TheInfernalChoir
         public override void AddTriggers()
         {
             base.AddTriggers();
-            AddTrigger((DrawCardAction drawCard) => drawCard.IsSuccessful && drawCard.DidDrawCard, DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After, isActionOptional: true);
+            AddTrigger((DrawCardAction drawCard) => drawCard.IsSuccessful && drawCard.DidDrawCard, DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
             _reduceDamageTrigger = AddTrigger(new ReduceDamageTrigger(GameController, VerySecretCriteria, null, DiscardedCardDamageReduction, false, false, GetCardSource()));
         }
 

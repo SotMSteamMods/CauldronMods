@@ -14,9 +14,12 @@ namespace Cauldron.TheInfernalChoir
         {
         }
 
+        protected string VagrantHeartHiddenHeartIdentifier => "VagrantHeartPhase1";
+        protected string VagrantHeartSoulRevealedIdentifier => "VagrantHeartPhase2";
+
         protected Card FindVagrantHeartHiddenSoul()
         {
-            var p1Heart = TurnTaker.FindCard("VagrantHeartPhase1", false);
+            var p1Heart = TurnTaker.FindCard(VagrantHeartHiddenHeartIdentifier, false);
             return (p1Heart?.IsInPlay ?? false) ? p1Heart : null;
         }
 
@@ -40,7 +43,7 @@ namespace Cauldron.TheInfernalChoir
 
         protected Card FindVagrantHeartSoulRevealed()
         {
-            var p2Heart = TurnTaker.FindCard("VagrantHeartPhase2", false);
+            var p2Heart = TurnTaker.FindCard(VagrantHeartSoulRevealedIdentifier, false);
             return (p2Heart?.IsInPlay ?? false) ? p2Heart : null;
         }
 

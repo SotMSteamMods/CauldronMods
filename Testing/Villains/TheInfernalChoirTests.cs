@@ -280,6 +280,9 @@ namespace CauldronTests
             StartGame();
 
             AssertInPlayArea(legacy, heart1);
+            AssertIsInPlay(heart1);
+            AssertOffToTheSide(heart2);
+            AssertNotInPlay(heart2);
 
             var deckCount = GetNumberOfCardsInDeck(legacy);
             var underCount = GetNumberOfCardsUnderCard(heart1);
@@ -304,6 +307,9 @@ namespace CauldronTests
             StartGame();
 
             AssertInPlayArea(legacy, heart1);
+            AssertIsInPlay(heart1);
+            AssertOffToTheSide(heart2);
+            AssertNotInPlay(heart2);
 
             var deckCount = GetNumberOfCardsInDeck(legacy);
             var underCount = GetNumberOfCardsUnderCard(heart1);
@@ -316,7 +322,10 @@ namespace CauldronTests
 
             AssertFlipped(choir.CharacterCard);
             AssertInPlayArea(legacy, heart2);
+            AssertIsInPlay(heart2);
             AssertNotFlipped(heart2);
+            AssertOutOfGame(heart1);
+            AssertNotInPlay(heart1);
         }
 
         [Test()]
@@ -326,6 +335,9 @@ namespace CauldronTests
             StartGame();
 
             AssertInPlayArea(legacy, heart1);
+            AssertIsInPlay(heart1);
+            AssertOffToTheSide(heart2);
+            AssertNotInPlay(heart2);
 
             var deckCount = GetNumberOfCardsInDeck(legacy);
 
@@ -341,7 +353,10 @@ namespace CauldronTests
 
             AssertFlipped(choir.CharacterCard);
             AssertInPlayArea(legacy, heart2);
+            AssertIsInPlay(heart2);
             AssertNotFlipped(heart2);
+            AssertOutOfGame(heart1);
+            AssertNotInPlay(heart1);
         }
 
         [Test()]
@@ -351,6 +366,10 @@ namespace CauldronTests
             StartGame();
 
             AssertInPlayArea(legacy, heart1);
+            AssertIsInPlay(heart1);
+            AssertOffToTheSide(heart2);
+            AssertNotInPlay(heart2);
+
             PutOnDeck("InspiringPresence", false);
 
             var deckCount = GetNumberOfCardsInDeck(legacy);
@@ -367,7 +386,10 @@ namespace CauldronTests
 
             AssertFlipped(choir.CharacterCard);
             AssertInPlayArea(legacy, heart2);
+            AssertIsInPlay(heart2);
             AssertNotFlipped(heart2);
+            AssertOutOfGame(heart1);
+            AssertNotInPlay(heart1);
         }
 
         [Test()]
@@ -378,6 +400,9 @@ namespace CauldronTests
             StartGame();
 
             AssertInPlayArea(legacy, heart1);
+            AssertIsInPlay(heart1);
+            AssertOffToTheSide(heart2);
+            AssertNotInPlay(heart2);
 
             DestroyCard(legacy);
 
@@ -453,11 +478,23 @@ namespace CauldronTests
             AssertNumberOfCardsInDeck(legacy, 0);
             int count = GetNumberOfCardsInTrash(legacy);
 
+            var top = legacy.TurnTaker.Trash.GetTopCards(2).ToList();
+            var bottom = legacy.TurnTaker.Trash.GetBottomCards(2).ToList();
+
+            AssertOnTopOfLocation(top[0], legacy.TurnTaker.Trash, 0);
+            AssertOnTopOfLocation(top[1], legacy.TurnTaker.Trash, 1);
+            AssertOnBottomOfLocation(bottom[0], legacy.TurnTaker.Trash, 0);
+            AssertOnBottomOfLocation(bottom[1], legacy.TurnTaker.Trash, 1);
+
             p1 = DiscardTopCards(legacy, 1);
 
             AssertNumberOfCardsInTrash(legacy, count);
             AssertNumberOfCardsInDeck(legacy, 0);
 
+            AssertOnTopOfLocation(top[0], legacy.TurnTaker.Trash, 0);
+            AssertOnTopOfLocation(top[1], legacy.TurnTaker.Trash, 1);
+            AssertOnBottomOfLocation(bottom[0], legacy.TurnTaker.Trash, 0);
+            AssertOnBottomOfLocation(bottom[1], legacy.TurnTaker.Trash, 1);
         }
 
         [Test()]
@@ -878,6 +915,66 @@ namespace CauldronTests
             var card = PlayCard("TrueColors", 0, true);
             AssertInTrash(choir, card);
             QuickHPCheck(0, -6, -6, 0, 0, 0, 0);
+        }
+
+
+        [Test()]
+        public void TestTheVoicesGather_HiddenHeart()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis");
+            //choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            var c1 = PutOnDeck("BaneOfIron");
+            var c2 = PutOnDeck("TrueColors");
+            var c3 = PutOnDeck("Eclipse");
+
+            AssertIsInPlay(heart1);
+            AssertNotInPlay(heart2);
+
+            QuickHandStorage(legacy, haka, sentinels);
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, mainstay, writhe, medico, idealist);
+            var card = PlayCard("TheVoicesGather", 0, true);
+            AssertInTrash(choir, card);
+            AssertInPlayArea(choir, c1);
+            AssertInTrash(c2);
+            AssertInTrash(c3);
+            QuickHPCheck(0, 0, -2, 0, 0, 0, 0);
+            QuickHandCheck(0, 0, 0);
+        }
+
+        [Test()]
+        public void TestTheVoicesGather_SoulRevealed()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis");
+            //choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+            FlipCard(choir.CharacterCard);
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            var c1 = PutOnDeck("BaneOfIron");
+            var c2 = PutOnDeck("TrueColors");
+            var c3 = PutOnDeck("Eclipse");
+
+            AssertNotInPlay(heart1);
+            AssertIsInPlay(heart2);
+
+            QuickHandStorage(legacy, haka, sentinels);
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, mainstay, writhe, medico, idealist);
+            var card = PlayCard("TheVoicesGather", 0, true);
+            AssertInTrash(choir, card);
+            AssertInPlayArea(choir, c1);
+            AssertInTrash(c2);
+            AssertInTrash(c3);
+            QuickHPCheck(0, 0, -2, 0, 0, 0, 0);
+            QuickHandCheck(1, 1, 1);
         }
     }
 }
