@@ -13,6 +13,7 @@ namespace Cauldron.TheMistressOfFate
         public ToDustCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             AllowFastCoroutinesDuringPretend = false;
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(ranking: 2);
         }
 
         public override IEnumerator Play()
