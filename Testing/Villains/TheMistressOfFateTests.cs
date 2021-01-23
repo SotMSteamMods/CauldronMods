@@ -736,6 +736,26 @@ namespace CauldronTests
             GoToEndOfTurn(legacy);
             AssertIsInPlay(ring, fort);
         }
+
+        [Test]
+        public void TestIllusionOfFreeWill_HeroIncapped()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest","AbsoluteZero/FreedomFiveAbsoluteZeroCharacter", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+            ResetRFGCards();
+
+            SetHitPoints(az, 20);
+            Card illusion = PlayCard("IllusionOfFreeWill");
+            AssertNextToCard(illusion, az.CharacterCard);
+            DealDamage(fate, az, 100, DTM);
+            AssertIncapacitated(az);
+
+            GoToUseIncapacitatedAbilityPhase(az);
+            UseIncapacitatedAbility(az, 1);
+            AssertNotGameOver();
+        }
         [Test]
         public void TestIllusionOfFreeWillDecksizeDestruction()
         {

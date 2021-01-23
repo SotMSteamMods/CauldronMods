@@ -12,6 +12,8 @@ namespace Cauldron.TheMistressOfFate
     {
         public IllusionOfFreeWillCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroCharacterCardWithLowestHP().Condition = () => !Card.IsInPlayAndHasGameText;
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck);
             _isStoredCard = false;
         }
 
