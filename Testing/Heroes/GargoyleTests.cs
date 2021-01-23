@@ -1353,7 +1353,7 @@ namespace CauldronTests
         #region Terrorize
 
         /*
-         * At the end of each turn, each non-hero target damaged by {Gargoyle} during that turn deals itself 1 psychic damage.
+         * At the end of each turn, each non-hero target damaged by {Gargoyle} during that turn deals itself 1 irreducible psychic damage.
          * At the start of the villain turn, {Gargoyle} may deal 1 target 0 psychic damage.
         */
         [Test]
@@ -1460,6 +1460,20 @@ namespace CauldronTests
             GoToEndOfTurn(baron);
 
             QuickHPCheck(-1, 0, 0, 0, 0, -1, -1, -1, -1);
+        }
+        [Test]
+        public void TestTerrorizeEOTDamageIrreducible()
+        {
+            StartTestGame();
+            PlayCard("LivingForceField");
+            PlayCard("Terrorize");
+
+            QuickHPStorage(baron);
+            DealDamage(gargoyle, baron, 3, DamageType.Melee);
+            QuickHPCheck(-2);
+            GoToEndOfTurn();
+            QuickHPCheck(-1);
+
         }
         #endregion Terrorize
 

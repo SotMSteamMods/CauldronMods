@@ -6,11 +6,10 @@ using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
-//DECKLIST EDIT: EOT damage is irreducible
 namespace Cauldron.Gargoyle
 {
     /*
-     * At the end of each turn, each non-hero target damaged by {Gargoyle} during that turn deals itself 1 psychic damage.
+     * At the end of each turn, each non-hero target damaged by {Gargoyle} during that turn deals itself 1 irreducible psychic damage.
      * At the start of the villain turn, {Gargoyle} may deal 1 target 0 psychic damage.
     */
     public class TerrorizeCardController : GargoyleUtilityCardController
@@ -22,29 +21,25 @@ namespace Cauldron.Gargoyle
         public override void AddTriggers()
         {
             base.AddEndOfTurnTrigger((tt) => true, EndOfTurnResponse, TriggerType.DealDamage);
-            base.AddStartOfTurnTrigger((tt) => tt.IsVillain, StartOfVillainTurnResponse, TriggerType.DealDamage);
+            base.AddStartOfTurnTrigger((tt) => IsVillain(tt), StartOfVillainTurnResponse, TriggerType.DealDamage);
         }
 
         private IEnumerator EndOfTurnResponse(PhaseChangeAction phaseChangeAction)
         {
             IEnumerator coroutine;
-            List<DealDamageJournalEntry> dealDamageJournalEntries;
+            List<Card> dealDamageJournalEntryTargets;
 
-            dealDamageJournalEntries = base.GameController.Game.Journal.DealDamageEntriesThisTurn().Where((ddje)=>ddje.SourceCard == base.CharacterCard && (ddje.TargetCard.IsEnvironmentTarget || base.IsVillainTarget(ddje.TargetCard))).ToList();
-            
-            foreach(DealDamageJournalEntry dealDamageJournalEntry in dealDamageJournalEntries)
+            dealDamageJournalEntryTargets = base.GameController.Game.Journal.DealDamageEntriesThisTurn().Where((ddje)=>ddje.SourceCard == base.CharacterCard && !ddje.TargetCard.IsHero).Select(ddje => ddje.TargetCard).Distinct().ToList();
+
+            coroutine = GameController.SelectTargetsToDealDamageToSelf(DecisionMaker, 1, DamageType.Psychic, null, false, null, isIrreducible: true, additionalCriteria: (Card c) => dealDamageJournalEntryTargets.Contains(c), allowAutoDecide: true, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
             {
-                coroutine = base.DealDamage(dealDamageJournalEntry.TargetCard, dealDamageJournalEntry.TargetCard, 1, DamageType.Psychic, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+                yield return base.GameController.StartCoroutine(coroutine);
             }
-
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
 
