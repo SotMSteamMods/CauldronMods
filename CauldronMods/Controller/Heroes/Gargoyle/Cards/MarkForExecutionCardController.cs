@@ -60,7 +60,7 @@ namespace Cauldron.Gargoyle
         {
             IEnumerator coroutine;
             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-            List<string> selectedIdentifiers = new List<string>();
+            List<Card> selectedCards = new List<Card>();
             int toxicDamageTargets = base.GetPowerNumeral(0, 1);
             int toxicDamageAmount = base.GetPowerNumeral(1, 2);
             int meleeDamageAmount = base.GetPowerNumeral(2, 1);
@@ -78,11 +78,11 @@ namespace Cauldron.Gargoyle
 
             if (storedResults != null && storedResults.Count() > 0)
             {
-                selectedIdentifiers = storedResults.Select(scd => scd.SelectedCard.Identifier).ToList();
+                selectedCards = storedResults.Select(scd => scd.SelectedCard).ToList();
             }
 
             //{Gargoyle} may deal a second target 1 melee damage.
-            coroutine = base.GameController.SelectTargetsAndDealDamage(hero, new DamageSource(base.GameController, base.CharacterCard), meleeDamageAmount, DamageType.Melee, 1, false, 0, additionalCriteria: (card) => !selectedIdentifiers.Contains(card.Identifier), cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectTargetsAndDealDamage(hero, new DamageSource(base.GameController, base.CharacterCard), meleeDamageAmount, DamageType.Melee, 1, false, 0, additionalCriteria: (card) => !selectedCards.Contains(card), cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
