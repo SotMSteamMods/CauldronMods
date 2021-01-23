@@ -10,7 +10,7 @@ using System;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class StSimeonsCatacombsTests : BaseTest
+    public class StSimeonsCatacombsTests : CauldronBaseTest
     {
 
         #region StSimeonsCatacombsHelperFunctions
@@ -19,15 +19,6 @@ namespace CauldronTests
         private bool IsDefinitionRoom(Card card)
         {
             return card != null && card.Definition.Keywords.Contains("room");
-        }
-
-        protected void AddImmuneToDamageTrigger(TurnTakerController ttc, bool heroesImmune, bool villainsImmune)
-        {
-            ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect();
-            immuneToDamageStatusEffect.TargetCriteria.IsHero = new bool?(heroesImmune);
-            immuneToDamageStatusEffect.TargetCriteria.IsVillain = new bool?(villainsImmune);
-            immuneToDamageStatusEffect.UntilStartOfNextTurn(ttc.TurnTaker);
-            this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
         }
 
         #endregion

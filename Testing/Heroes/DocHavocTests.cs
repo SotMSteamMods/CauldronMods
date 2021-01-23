@@ -12,9 +12,8 @@ using NUnit.Framework;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class DocHavocTests : BaseTest
+    public class DocHavocTests : CauldronBaseTest
     {
-        protected HeroTurnTakerController DocHavoc => FindHero("DocHavoc");
 
 
         [Test]
@@ -25,10 +24,10 @@ namespace CauldronTests
 
             // Assert
             Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
-            Assert.IsNotNull(DocHavoc);
-            Assert.IsInstanceOf(typeof(DocHavocCharacterCardController), DocHavoc.CharacterCardController);
+            Assert.IsNotNull(doc);
+            Assert.IsInstanceOf(typeof(DocHavocCharacterCardController), doc.CharacterCardController);
 
-            Assert.AreEqual(30, DocHavoc.CharacterCard.HitPoints);
+            Assert.AreEqual(30, doc.CharacterCard.HitPoints);
         }
 
 
@@ -42,7 +41,7 @@ namespace CauldronTests
             //Setup to reduce variance
             Card cardToPlay = PutInHand("FlameBarrier");
 
-            GoToUsePowerPhase(DocHavoc);
+            GoToUsePowerPhase(doc);
             DecisionSelectTarget = ra.CharacterCard;
             DecisionSelectCard = cardToPlay;
 
@@ -52,7 +51,7 @@ namespace CauldronTests
             // Act
 
             //{DocHavoc} deals 1 hero 3 toxic damage. If that hero took damage this way, they may play a card now.
-            UsePower(DocHavoc.CharacterCard);
+            UsePower(doc.CharacterCard);
 
             // Assert
             QuickHPCheck(-3);
@@ -77,7 +76,7 @@ namespace CauldronTests
             DecisionSelectDamageType = DamageType.Toxic;
             UsePower(nextEvolution);
 
-            GoToUsePowerPhase(DocHavoc);
+            GoToUsePowerPhase(doc);
             DecisionSelectTarget = legacy.CharacterCard;
 
             QuickHandStorage(legacy);
@@ -85,7 +84,7 @@ namespace CauldronTests
 
             // Act
             //{ DocHavoc} deals 1 hero 3 toxic damage. If that hero took damage this way, they may play a card now.
-            UsePower(DocHavoc.CharacterCard);
+            UsePower(doc.CharacterCard);
 
             // Assert
             QuickHPCheck(0); // Legacy immune to toxic, no change to HP
@@ -102,8 +101,8 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
 
             //incap doc havoc
-            SetHitPoints(DocHavoc.CharacterCard, 1);
-            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+            SetHitPoints(doc.CharacterCard, 1);
+            DealDamage(baron, doc, 2, DamageType.Melee);
 
             //give room to gain hp
             SetHitPoints(baron.CharacterCard, 20);
@@ -116,14 +115,14 @@ namespace CauldronTests
             QuickHPStorage(baron.CharacterCard, mdp, legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard);
 
             DecisionSelectCards = healTargets;
-            GoToUseIncapacitatedAbilityPhase(DocHavoc);
+            GoToUseIncapacitatedAbilityPhase(doc);
 
             // Act
-            UseIncapacitatedAbility(DocHavoc, 0);
+            UseIncapacitatedAbility(doc, 0);
 
 
             // Assert
-            AssertIncapacitated(DocHavoc);
+            AssertIncapacitated(doc);
             QuickHPCheck(0, 0, 1, 1, 1);
 
         }
@@ -138,8 +137,8 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
 
             //incap doc havoc
-            SetHitPoints(DocHavoc.CharacterCard, 1);
-            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+            SetHitPoints(doc.CharacterCard, 1);
+            DealDamage(baron, doc, 2, DamageType.Melee);
 
             //give room to gain hp
             SetHitPoints(baron.CharacterCard, 20);
@@ -151,14 +150,14 @@ namespace CauldronTests
             QuickHPStorage(baron.CharacterCard, mdp, legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard);
 
             DecisionSelectCards = healTargets;
-            GoToUseIncapacitatedAbilityPhase(DocHavoc);
+            GoToUseIncapacitatedAbilityPhase(doc);
 
             // Act
-            UseIncapacitatedAbility(DocHavoc, 0);
+            UseIncapacitatedAbility(doc, 0);
 
 
             // Assert
-            AssertIncapacitated(DocHavoc);
+            AssertIncapacitated(doc);
             QuickHPCheck(0, 0, 1, 1, 0);
 
         }
@@ -173,8 +172,8 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
 
             //incap doc havoc
-            SetHitPoints(DocHavoc.CharacterCard, 1);
-            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+            SetHitPoints(doc.CharacterCard, 1);
+            DealDamage(baron, doc, 2, DamageType.Melee);
 
             //give room to gain hp
             SetHitPoints(baron.CharacterCard, 20);
@@ -185,14 +184,14 @@ namespace CauldronTests
             QuickHPStorage(baron.CharacterCard, mdp, legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard);
 
             DecisionSelectCards = healTargets;
-            GoToUseIncapacitatedAbilityPhase(DocHavoc);
+            GoToUseIncapacitatedAbilityPhase(doc);
 
             // Act
-            UseIncapacitatedAbility(DocHavoc, 0);
+            UseIncapacitatedAbility(doc, 0);
 
 
             // Assert
-            AssertIncapacitated(DocHavoc);
+            AssertIncapacitated(doc);
             QuickHPCheck(0, 0, 1, 0, 0);
 
         }
@@ -207,8 +206,8 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
 
             //incap doc havoc
-            SetHitPoints(DocHavoc.CharacterCard, 1);
-            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+            SetHitPoints(doc.CharacterCard, 1);
+            DealDamage(baron, doc, 2, DamageType.Melee);
 
             //give room to gain hp
             SetHitPoints(baron.CharacterCard, 20);
@@ -219,14 +218,14 @@ namespace CauldronTests
             QuickHPStorage(baron.CharacterCard, mdp, legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard);
 
             DecisionDoNotSelectCard = SelectionType.GainHP;
-            GoToUseIncapacitatedAbilityPhase(DocHavoc);
+            GoToUseIncapacitatedAbilityPhase(doc);
 
             // Act
-            UseIncapacitatedAbility(DocHavoc, 0);
+            UseIncapacitatedAbility(doc, 0);
 
 
             // Assert
-            AssertIncapacitated(DocHavoc);
+            AssertIncapacitated(doc);
             QuickHPCheck(0, 0, 0, 0, 0);
 
         }
@@ -238,19 +237,19 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Legacy", "Ra", "Cauldron.DocHavoc", "Megalopolis");
             StartGame();
 
-            SetHitPoints(DocHavoc.CharacterCard, 1);
-            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+            SetHitPoints(doc.CharacterCard, 1);
+            DealDamage(baron, doc, 2, DamageType.Melee);
 
             DecisionSelectTarget = legacy.CharacterCard;
 
             QuickHandStorage(legacy);
 
             // Act
-            UseIncapacitatedAbility(DocHavoc, 1);
+            UseIncapacitatedAbility(doc, 1);
 
 
             // Assert
-            AssertIncapacitated(DocHavoc);
+            AssertIncapacitated(doc);
             QuickHandCheck(1);
 
         }
@@ -262,14 +261,14 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Legacy", "Ra", "MobileDefensePlatform");
             StartGame();
 
-            SetHitPoints(DocHavoc.CharacterCard, 1);
-            DealDamage(baron, DocHavoc, 2, DamageType.Melee);
+            SetHitPoints(doc.CharacterCard, 1);
+            DealDamage(baron, doc, 2, DamageType.Melee);
 
             QuickHPStorage(new[] { legacy.CharacterCard, ra.CharacterCard });
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(DocHavoc);
-            UseIncapacitatedAbility(DocHavoc, 2);
+            GoToUseIncapacitatedAbilityPhase(doc);
+            UseIncapacitatedAbility(doc, 2);
 
             GoToStartOfTurn(env);
 
@@ -278,7 +277,7 @@ namespace CauldronTests
             GoToEndOfTurn(env);
 
             // Assert
-            AssertIncapacitated(DocHavoc);
+            AssertIncapacitated(doc);
             QuickHPCheck(0, 0);
 
             //check that hero and villains can still deal damage
@@ -302,11 +301,11 @@ namespace CauldronTests
 
             SetHitPoints(baron.CharacterCard, 35);
             SetHitPoints(mdp, 5);
-            SetHitPoints(DocHavoc.CharacterCard, 20);
+            SetHitPoints(doc.CharacterCard, 20);
             SetHitPoints(ra.CharacterCard, 20);
             SetHitPoints(haka.CharacterCard, 20);
 
-            QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, DocHavoc.CharacterCard, haka.CharacterCard);
+            QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, doc.CharacterCard, haka.CharacterCard);
 
             // Act
             PutInHand(DocsFlaskCardController.Identifier);
@@ -315,13 +314,13 @@ namespace CauldronTests
 
             DecisionSelectCard = ra.CharacterCard;
             // Procs flask to heal Ra +1 HP
-            GoToStartOfTurn(DocHavoc);
+            GoToStartOfTurn(doc);
 
             QuickHPCheck(0, 0, 1, 0, 0);
             QuickHPUpdate();
 
             // Now use power portion of Doc's Flask
-            GoToUsePowerPhase(DocHavoc);
+            GoToUsePowerPhase(doc);
             UsePower(docsFlask);
 
             // Assert
@@ -337,7 +336,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "Haka", "Megalopolis");
 
             // We need to make an explicit hand so two FieldDressings aren't in hand so it doesn't play another FieldDressing which will throw off the Asserts
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 FieldDressingCardController.Identifier, RecklessChargeCardController.Identifier, RecklessChargeCardController.Identifier
             });
@@ -348,25 +347,25 @@ namespace CauldronTests
 
             SetHitPoints(baron.CharacterCard, 35);
             SetHitPoints(mdp, 5);
-            SetHitPoints(DocHavoc.CharacterCard, 20);
+            SetHitPoints(doc.CharacterCard, 20);
             SetHitPoints(ra.CharacterCard, 20);
             SetHitPoints(haka.CharacterCard, 20);
 
-            QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, DocHavoc.CharacterCard, haka.CharacterCard);
-            QuickHandStorage(DocHavoc);
+            QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, doc.CharacterCard, haka.CharacterCard);
+            QuickHandStorage(doc);
 
             // Act
             Card recklessCharge = GetCardFromHand(RecklessChargeCardController.Identifier);
             DecisionSelectCardToPlay = recklessCharge;
 
-            GoToPlayCardPhase(DocHavoc);
+            GoToPlayCardPhase(doc);
             Card fieldDressing = GetCardFromHand(FieldDressingCardController.Identifier);
             PlayCard(fieldDressing);
 
             // Assert
             QuickHPCheck(0, 0, 1, 1, 1);
             QuickHandCheck(-2);
-            AssertInPlayArea(DocHavoc, recklessCharge);
+            AssertInPlayArea(doc, recklessCharge);
         }
 
         [Test]
@@ -376,7 +375,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "Haka", "Megalopolis");
 
             // We need to make an explicit hand so two FieldDressings aren't in hand so it doesn't play another FieldDressing which will throw off the Asserts
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 FieldDressingCardController.Identifier, RecklessChargeCardController.Identifier, RecklessChargeCardController.Identifier
             });
@@ -387,25 +386,25 @@ namespace CauldronTests
 
             SetHitPoints(baron.CharacterCard, 35);
             SetHitPoints(mdp, 5);
-            SetHitPoints(DocHavoc.CharacterCard, 20);
+            SetHitPoints(doc.CharacterCard, 20);
             SetHitPoints(ra.CharacterCard, 20);
             SetHitPoints(haka.CharacterCard, 20);
 
-            QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, DocHavoc.CharacterCard, haka.CharacterCard);
-            QuickHandStorage(DocHavoc);
+            QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, doc.CharacterCard, haka.CharacterCard);
+            QuickHandStorage(doc);
 
             // Act
             Card recklessCharge = GetCardFromHand(RecklessChargeCardController.Identifier);
             DecisionDoNotSelectCard = SelectionType.PlayCard;
 
-            GoToPlayCardPhase(DocHavoc);
+            GoToPlayCardPhase(doc);
             Card fieldDressing = GetCardFromHand(FieldDressingCardController.Identifier);
             PlayCard(fieldDressing);
 
             // Assert
             QuickHPCheck(0, 0, 1, 1, 1);
             QuickHandCheck(-1);
-            AssertInHand(DocHavoc, recklessCharge);
+            AssertInHand(doc, recklessCharge);
         }
 
         [Test]
@@ -417,14 +416,14 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             Card bladeBattalion = PlayCard("BladeBattalion");
 
-            QuickHPStorage(baron.CharacterCard, mdp, bladeBattalion, DocHavoc.CharacterCard, legacy.CharacterCard, ra.CharacterCard);
+            QuickHPStorage(baron.CharacterCard, mdp, bladeBattalion, doc.CharacterCard, legacy.CharacterCard, ra.CharacterCard);
 
 
             // Act
             Card phosphorBlast = PutInHand(PhosphorBlastCardController.Identifier);
-            GoToPlayCardPhase(DocHavoc);
+            GoToPlayCardPhase(doc);
 
-            QuickHPStorage(baron.CharacterCard, mdp, bladeBattalion, DocHavoc.CharacterCard, legacy.CharacterCard, ra.CharacterCard);
+            QuickHPStorage(baron.CharacterCard, mdp, bladeBattalion, doc.CharacterCard, legacy.CharacterCard, ra.CharacterCard);
 
             PlayCard(phosphorBlast);
 
@@ -450,7 +449,7 @@ namespace CauldronTests
             Assert.AreEqual(2, this.GameController.StatusEffectControllers.Count(sec => sec.StatusEffect is CannotGainHPStatusEffect));
 
             // Go back around to Doc Havoc's turn again to ensure effects have expired
-            GoToStartOfTurn(DocHavoc);
+            GoToStartOfTurn(doc);
 
             // Both status effects should have expired
             AssertNumberOfStatusEffectsInPlay(0);
@@ -463,7 +462,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "Haka", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 FieldDressingCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -471,14 +470,14 @@ namespace CauldronTests
 
             StartGame();
 
-            QuickHPStorage(DocHavoc, ra);
+            QuickHPStorage(doc, ra);
 
             // Act
-            GoToPlayCardPhase(DocHavoc);
-            Card reckless = PlayCardFromHand(DocHavoc, RecklessChargeCardController.Identifier);
+            GoToPlayCardPhase(doc);
+            Card reckless = PlayCardFromHand(doc, RecklessChargeCardController.Identifier);
 
-            GoToDrawCardPhase(DocHavoc);
-            GoToEndOfTurn(DocHavoc);
+            GoToDrawCardPhase(doc);
+            GoToEndOfTurn(doc);
 
             GoToStartOfTurn(env);
             Card mysticalDefences = GetCard("MysticalDefenses");
@@ -497,7 +496,7 @@ namespace CauldronTests
                 && t.ActionType == typeof(PhaseChangeAction)
                 )).Count());
 
-            GoToDrawCardPhase(DocHavoc);
+            GoToDrawCardPhase(doc);
             //should be 3 -> 1 normal, 1 for not playing or using power, 1 from reckless
             AssertPhaseActionCount(new int?(3));
 
@@ -515,7 +514,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Ra", "Haka", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 FieldDressingCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -525,11 +524,11 @@ namespace CauldronTests
 
 
             // Act
-            GoToPlayCardPhase(DocHavoc);
-            Card reckless = PlayCardFromHand(DocHavoc, RecklessChargeCardController.Identifier);
-            GoToUsePowerPhase(DocHavoc);
+            GoToPlayCardPhase(doc);
+            Card reckless = PlayCardFromHand(doc, RecklessChargeCardController.Identifier);
+            GoToUsePowerPhase(doc);
             UsePower(reckless);
-            AssertInTrash(DocHavoc, reckless);
+            AssertInTrash(doc, reckless);
 
         }
 
@@ -539,7 +538,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 RapidRegenCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -548,18 +547,18 @@ namespace CauldronTests
 
             //set initial hp
             SetHitPoints(baron, 20);
-            SetHitPoints(DocHavoc, 10);
+            SetHitPoints(doc, 10);
             SetHitPoints(tempest, 10);
             SetHitPoints(haka, 10);
 
             StartGame();
 
             // Act
-            GoToPlayCardPhase(DocHavoc);
+            GoToPlayCardPhase(doc);
 
-            PlayCardFromHand(DocHavoc, RapidRegenCardController.Identifier);
+            PlayCardFromHand(doc, RapidRegenCardController.Identifier);
 
-            QuickHPStorage(DocHavoc, tempest, haka, baron);
+            QuickHPStorage(doc, tempest, haka, baron);
 
             GoToPlayCardPhase(tempest);
             PutInHand("CleansingDownpour");
@@ -581,7 +580,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 StimShotCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -590,13 +589,13 @@ namespace CauldronTests
             StartGame();
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             QuickHPStorage(mdp);
-            QuickHandStorage(DocHavoc);
+            QuickHandStorage(doc);
 
             DecisionSelectTurnTaker = tempest.TurnTaker;
 
             // Act
-            GoToPlayCardPhase(DocHavoc);
-            PlayCardFromHand(DocHavoc, StimShotCardController.Identifier);
+            GoToPlayCardPhase(doc);
+            PlayCardFromHand(doc, StimShotCardController.Identifier);
 
             // Assert
             QuickHandCheck(0); // No change as Stim Shot allowed Doc Havoc to draw a card
@@ -609,7 +608,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 SyringeDartsCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -623,9 +622,9 @@ namespace CauldronTests
             DecisionSelectWordSkip = true;
 
             // Act
-            GoToPlayCardPhase(DocHavoc);
-            Card syringe = PlayCardFromHand(DocHavoc, SyringeDartsCardController.Identifier);
-            GoToUsePowerPhase(DocHavoc);
+            GoToPlayCardPhase(doc);
+            Card syringe = PlayCardFromHand(doc, SyringeDartsCardController.Identifier);
+            GoToUsePowerPhase(doc);
             UsePower(syringe);
 
             GoToEndOfTurn(env);
@@ -640,7 +639,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 SyringeDartsCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -654,9 +653,9 @@ namespace CauldronTests
             DecisionSelectWordSkip = true;
 
             // Act
-            GoToPlayCardPhase(DocHavoc);
-            Card syringe = PlayCardFromHand(DocHavoc, SyringeDartsCardController.Identifier);
-            GoToUsePowerPhase(DocHavoc);
+            GoToPlayCardPhase(doc);
+            Card syringe = PlayCardFromHand(doc, SyringeDartsCardController.Identifier);
+            GoToUsePowerPhase(doc);
             UsePower(syringe);
 
             GoToEndOfTurn(env);
@@ -671,20 +670,20 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 SearchAndRescueCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
             });
 
-            Card reckless = GetCardFromHand(DocHavoc, RecklessChargeCardController.Identifier);
-            Card brawler = PutOnDeck(DocHavoc, GetCard(BrawlerCardController.Identifier));
-            Card stimshot = PutOnDeck(DocHavoc, GetCard(StimShotCardController.Identifier));
-            Card flask = PutOnDeck(DocHavoc, GetCard(DocsFlaskCardController.Identifier));
+            Card reckless = GetCardFromHand(doc, RecklessChargeCardController.Identifier);
+            Card brawler = PutOnDeck(doc, GetCard(BrawlerCardController.Identifier));
+            Card stimshot = PutOnDeck(doc, GetCard(StimShotCardController.Identifier));
+            Card flask = PutOnDeck(doc, GetCard(DocsFlaskCardController.Identifier));
 
             StartGame();
 
-            QuickHandStorage(DocHavoc, tempest, haka);
+            QuickHandStorage(doc, tempest, haka);
 
             DecisionSelectCards = new[]
             {
@@ -697,9 +696,9 @@ namespace CauldronTests
             };
 
             // Act
-            GoToPlayCardPhase(DocHavoc);
+            GoToPlayCardPhase(doc);
             DecisionYesNo = true;
-            PlayCardFromHand(DocHavoc, SearchAndRescueCardController.Identifier);
+            PlayCardFromHand(doc, SearchAndRescueCardController.Identifier);
 
             // Assert
 
@@ -713,7 +712,7 @@ namespace CauldronTests
             AssertOnBottomOfDeck(stimshot);
             AssertInTrash(flask);
             AssertInTrash(reckless);
-            AssertNumberOfCardsInRevealed(DocHavoc, 0);
+            AssertNumberOfCardsInRevealed(doc, 0);
 
         }
 
@@ -735,7 +734,7 @@ namespace CauldronTests
 
             StartGame();
 
-            QuickHandStorage(DocHavoc, tempest, haka);
+            QuickHandStorage(doc, tempest, haka);
 
             DecisionSelectCards = new[]
             {
@@ -748,7 +747,7 @@ namespace CauldronTests
             };
 
             // Act
-            GoToPlayCardPhase(DocHavoc);
+            GoToPlayCardPhase(doc);
             DecisionYesNo = true;
             PlayCard(SearchAndRescueCardController.Identifier);
 
@@ -764,7 +763,7 @@ namespace CauldronTests
             AssertOnBottomOfDeck(d2);
             AssertInTrash(d3);
             AssertInTrash(discard);
-            AssertNumberOfCardsInRevealed(DocHavoc, 0);
+            AssertNumberOfCardsInRevealed(doc, 0);
 
         }
 
@@ -774,20 +773,20 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 SearchAndRescueCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
             });
 
-            Card reckless = GetCardFromHand(DocHavoc, RecklessChargeCardController.Identifier);
-            Card brawler = PutOnDeck(DocHavoc, GetCard(BrawlerCardController.Identifier));
-            Card stimshot = PutOnDeck(DocHavoc, GetCard(StimShotCardController.Identifier));
-            Card flask = PutOnDeck(DocHavoc, GetCard(DocsFlaskCardController.Identifier));
+            Card reckless = GetCardFromHand(doc, RecklessChargeCardController.Identifier);
+            Card brawler = PutOnDeck(doc, GetCard(BrawlerCardController.Identifier));
+            Card stimshot = PutOnDeck(doc, GetCard(StimShotCardController.Identifier));
+            Card flask = PutOnDeck(doc, GetCard(DocsFlaskCardController.Identifier));
 
             StartGame();
 
-            QuickHandStorage(DocHavoc, tempest, haka);
+            QuickHandStorage(doc, tempest, haka);
 
             DecisionSelectCards = new[]
             {
@@ -800,9 +799,9 @@ namespace CauldronTests
             };
 
             // Act
-            GoToPlayCardPhase(DocHavoc);
+            GoToPlayCardPhase(doc);
             DecisionYesNo = false;
-            PlayCardFromHand(DocHavoc, SearchAndRescueCardController.Identifier);
+            PlayCardFromHand(doc, SearchAndRescueCardController.Identifier);
 
             // Assert
 
@@ -825,20 +824,20 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 SearchAndRescueCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
             });
 
-            Card reckless = GetCardFromHand(DocHavoc, RecklessChargeCardController.Identifier);
+            Card reckless = GetCardFromHand(doc, RecklessChargeCardController.Identifier);
 
-            DiscardTopCards(DocHavoc, 36);
-            Card brawler = PutOnDeck(DocHavoc, GetCard(BrawlerCardController.Identifier));
+            DiscardTopCards(doc, 36);
+            Card brawler = PutOnDeck(doc, GetCard(BrawlerCardController.Identifier));
 
             StartGame();
 
-            QuickHandStorage(DocHavoc, tempest, haka);
+            QuickHandStorage(doc, tempest, haka);
 
             DecisionSelectCards = new[]
             {
@@ -849,9 +848,9 @@ namespace CauldronTests
             };
 
             // Act
-            GoToPlayCardPhase(DocHavoc);
+            GoToPlayCardPhase(doc);
             DecisionYesNo = true;
-            PlayCardFromHand(DocHavoc, SearchAndRescueCardController.Identifier);
+            PlayCardFromHand(doc, SearchAndRescueCardController.Identifier);
 
             // Assert
 
@@ -863,9 +862,9 @@ namespace CauldronTests
             //check all locations
             AssertInHand(brawler);
             AssertInTrash(reckless);
-            AssertNumberOfCardsInDeck(DocHavoc, 0);
+            AssertNumberOfCardsInDeck(doc, 0);
 
-            AssertNumberOfCardsInRevealed(DocHavoc, 0);
+            AssertNumberOfCardsInRevealed(doc, 0);
 
         }
 
@@ -875,7 +874,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 ImmediateEvacCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -886,23 +885,23 @@ namespace CauldronTests
 
             SetHitPoints(baron.CharacterCard, 35);
 
-            PutInTrash(DocHavoc, new List<Card>() { GetCard(DocsFlaskCardController.Identifier), GetCard(BrawlerCardController.Identifier) });
+            PutInTrash(doc, new List<Card>() { GetCard(DocsFlaskCardController.Identifier), GetCard(BrawlerCardController.Identifier) });
             PutInTrash(tempest, new List<Card>() { GetCard("ChainLightning"), GetCard("FlashFlood") });
             PutInTrash(haka, new List<Card>() { GetCard("Mere"), GetCard("GroundPound") });
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             SetHitPoints(mdp, 5);
 
-            QuickHPStorage(baron.CharacterCard, mdp, DocHavoc.CharacterCard, tempest.CharacterCard, haka.CharacterCard);
-            QuickHandStorage(DocHavoc, tempest, haka);
+            QuickHPStorage(baron.CharacterCard, mdp, doc.CharacterCard, tempest.CharacterCard, haka.CharacterCard);
+            QuickHandStorage(doc, tempest, haka);
 
             DecisionSelectFunctions = new int?[] { 1, 0, 1 };
 
-            DecisionSelectCards = new[] { GetCardFromHand(DocHavoc, RecklessChargeCardController.Identifier), GetCardFromTrash(tempest, "FlashFlood"), GetCardFromHand(haka) };
+            DecisionSelectCards = new[] { GetCardFromHand(doc, RecklessChargeCardController.Identifier), GetCardFromTrash(tempest, "FlashFlood"), GetCardFromHand(haka) };
 
             // Act
-            GoToPlayCardPhase(DocHavoc);
-            PlayCardFromHand(DocHavoc, ImmediateEvacCardController.Identifier);
+            GoToPlayCardPhase(doc);
+            PlayCardFromHand(doc, ImmediateEvacCardController.Identifier);
 
             // Assert
             QuickHPCheck(2, 2, 0, 0, 0); // Villain HP gain check
@@ -915,7 +914,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 PainkillersCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -929,8 +928,8 @@ namespace CauldronTests
             DecisionSelectTarget = GetCardInPlay("MobileDefensePlatform");
             DecisionYesNo = true;
 
-            GoToPlayCardPhase(DocHavoc);
-            PlayCardFromHand(DocHavoc, PainkillersCardController.Identifier);
+            GoToPlayCardPhase(doc);
+            PlayCardFromHand(doc, PainkillersCardController.Identifier);
 
             GoToStartOfTurn(tempest);
 
@@ -949,7 +948,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 PainkillersCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -969,8 +968,8 @@ namespace CauldronTests
             reduceDamageStatusEffect.TargetCriteria.IsSpecificCard = mdp;
             RunCoroutine(base.GameController.AddStatusEffect(reduceDamageStatusEffect, true, FindCardController(baron.CharacterCard).GetCardSource()));
 
-            GoToPlayCardPhase(DocHavoc);
-            Card painkillers = PlayCardFromHand(DocHavoc, PainkillersCardController.Identifier);
+            GoToPlayCardPhase(doc);
+            Card painkillers = PlayCardFromHand(doc, PainkillersCardController.Identifier);
             AssertNextToCard(painkillers, tempest.CharacterCard);
 
             QuickHPStorage(mdp);
@@ -987,7 +986,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 PainkillersCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -1001,8 +1000,8 @@ namespace CauldronTests
             DecisionSelectTarget = mdp;
             DecisionYesNo = false;
 
-            GoToPlayCardPhase(DocHavoc);
-            PlayCardFromHand(DocHavoc, PainkillersCardController.Identifier);
+            GoToPlayCardPhase(doc);
+            PlayCardFromHand(doc, PainkillersCardController.Identifier);
 
             GoToStartOfTurn(tempest);
 
@@ -1029,7 +1028,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 UnstableSerumCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -1044,13 +1043,13 @@ namespace CauldronTests
             // Act
             DecisionSelectCards = new[] { tempest.CharacterCard, backlash };
 
-            GoToPlayCardPhase(DocHavoc);
-            Card serum = PlayCardFromHand(DocHavoc, UnstableSerumCardController.Identifier);
-            GoToEndOfTurn(DocHavoc);
+            GoToPlayCardPhase(doc);
+            Card serum = PlayCardFromHand(doc, UnstableSerumCardController.Identifier);
+            GoToEndOfTurn(doc);
 
             // Assert
             QuickHPCheck(2);
-            AssertInTrash(DocHavoc, serum);
+            AssertInTrash(doc, serum);
             AssertInTrash(backlash);
         }
 
@@ -1060,7 +1059,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 UnstableSerumCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -1075,13 +1074,13 @@ namespace CauldronTests
             // Act
             DecisionSelectCards = new[] { tempest.CharacterCard, defenses };
 
-            GoToPlayCardPhase(DocHavoc);
-            Card serum = PlayCardFromHand(DocHavoc, UnstableSerumCardController.Identifier);
-            GoToEndOfTurn(DocHavoc);
+            GoToPlayCardPhase(doc);
+            Card serum = PlayCardFromHand(doc, UnstableSerumCardController.Identifier);
+            GoToEndOfTurn(doc);
 
             // Assert
             QuickHPCheck(2);
-            AssertInTrash(DocHavoc, serum);
+            AssertInTrash(doc, serum);
             AssertInTrash(defenses);
         }
 
@@ -1091,7 +1090,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 UnstableSerumCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -1106,13 +1105,13 @@ namespace CauldronTests
             // Act
             DecisionSelectCards = new[] { tempest.CharacterCard, null };
 
-            GoToPlayCardPhase(DocHavoc);
-            Card serum = PlayCardFromHand(DocHavoc, UnstableSerumCardController.Identifier);
-            GoToEndOfTurn(DocHavoc);
+            GoToPlayCardPhase(doc);
+            Card serum = PlayCardFromHand(doc, UnstableSerumCardController.Identifier);
+            GoToEndOfTurn(doc);
 
             // Assert
             QuickHPCheck(2);
-            AssertInPlayArea(DocHavoc, serum);
+            AssertInPlayArea(doc, serum);
             AssertInPlayArea(baron, backlash);
 
         }
@@ -1123,7 +1122,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 ImprovisedMineCardController.Identifier, RecklessChargeCardController.Identifier,
                 DocsFlaskCardController.Identifier, GasMaskCardController.Identifier
@@ -1138,9 +1137,9 @@ namespace CauldronTests
             DecisionSelectCards = new[] { GetCardFromHand(GasMaskCardController.Identifier), mdp };
             DecisionYesNo = true;
 
-            GoToPlayCardPhase(DocHavoc);
-            PlayCardFromHand(DocHavoc, ImprovisedMineCardController.Identifier);
-            GoToEndOfTurn(DocHavoc);
+            GoToPlayCardPhase(doc);
+            PlayCardFromHand(doc, ImprovisedMineCardController.Identifier);
+            GoToEndOfTurn(doc);
 
             PlayCard(baron, "BacklashField");
 
@@ -1148,7 +1147,7 @@ namespace CauldronTests
             // Assert
 
             // Improvised Mine should be in Doc's trash
-            AssertInTrash(DocHavoc, ImprovisedMineCardController.Identifier);
+            AssertInTrash(doc, ImprovisedMineCardController.Identifier);
 
             // Improvised Mine shouldn't be in play
             Assert.AreEqual(0, FindCardsWhere(c => c.Identifier == ImprovisedMineCardController.Identifier && c.IsInPlay).Count());
@@ -1166,7 +1165,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 ImprovisedMineCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -1178,9 +1177,9 @@ namespace CauldronTests
             DecisionSelectCard = GetCardFromHand(GasMaskCardController.Identifier);
             DecisionYesNo = false;
 
-            GoToPlayCardPhase(DocHavoc);
-            Card mine = PlayCardFromHand(DocHavoc, ImprovisedMineCardController.Identifier);
-            GoToEndOfTurn(DocHavoc);
+            GoToPlayCardPhase(doc);
+            Card mine = PlayCardFromHand(doc, ImprovisedMineCardController.Identifier);
+            GoToEndOfTurn(doc);
 
             PlayCard(baron, "BacklashField");
 
@@ -1188,7 +1187,7 @@ namespace CauldronTests
             // Assert
 
             // Improvised Mine should be in play
-            AssertInPlayArea(DocHavoc, mine);
+            AssertInPlayArea(doc, mine);
             // Backlash Field should be in play
             Assert.AreEqual(1, FindCardsWhere(c => c.Identifier == "BacklashField" && c.IsInPlay).Count());
         }
@@ -1199,7 +1198,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 ImprovisedMineCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -1213,15 +1212,15 @@ namespace CauldronTests
 
 
 
-            GoToPlayCardPhase(DocHavoc);
-            Card mine = PlayCardFromHand(DocHavoc, ImprovisedMineCardController.Identifier);
+            GoToPlayCardPhase(doc);
+            Card mine = PlayCardFromHand(doc, ImprovisedMineCardController.Identifier);
 
             //make mine indestructible
             MakeIndestructibleStatusEffect makeIndestructibleStatusEffect = new MakeIndestructibleStatusEffect();
             makeIndestructibleStatusEffect.CardsToMakeIndestructible.IsSpecificCard = mine;
-            RunCoroutine(base.GameController.AddStatusEffect(makeIndestructibleStatusEffect, true, FindCardController(DocHavoc.CharacterCard).GetCardSource()));
+            RunCoroutine(base.GameController.AddStatusEffect(makeIndestructibleStatusEffect, true, FindCardController(doc.CharacterCard).GetCardSource()));
 
-            GoToEndOfTurn(DocHavoc);
+            GoToEndOfTurn(doc);
 
             //will try to destroy itself but will not work because it is indestructible, thus not triggering the rest of the effects
             PlayCard(baron, "BacklashField");
@@ -1230,7 +1229,7 @@ namespace CauldronTests
             // Assert
 
             // Improvised Mine should be in play
-            AssertInPlayArea(DocHavoc, mine);
+            AssertInPlayArea(doc, mine);
             // Backlash Field should be in play
             Assert.AreEqual(1, FindCardsWhere(c => c.Identifier == "BacklashField" && c.IsInPlay).Count());
         }
@@ -1241,7 +1240,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 ImprovisedMineCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -1255,14 +1254,14 @@ namespace CauldronTests
 
 
 
-            GoToPlayCardPhase(DocHavoc);
-            Card mine = PlayCardFromHand(DocHavoc, ImprovisedMineCardController.Identifier);
+            GoToPlayCardPhase(doc);
+            Card mine = PlayCardFromHand(doc, ImprovisedMineCardController.Identifier);
 
 
             // Assert
 
             // Improvised Mine should be in play
-            AssertInPlayArea(DocHavoc, mine);
+            AssertInPlayArea(doc, mine);
 
         }
 
@@ -1272,7 +1271,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 ImprovisedMineCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, BrawlerCardController.Identifier
@@ -1282,11 +1281,11 @@ namespace CauldronTests
 
             // Act
 
-            GoToPlayCardPhase(DocHavoc);
-            Card mine = PlayCardFromHand(DocHavoc, ImprovisedMineCardController.Identifier);
+            GoToPlayCardPhase(doc);
+            Card mine = PlayCardFromHand(doc, ImprovisedMineCardController.Identifier);
 
 
-            AssertInTrash(DocHavoc, mine);
+            AssertInTrash(doc, mine);
 
         }
 
@@ -1296,7 +1295,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 ImprovisedMineCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, BrawlerCardController.Identifier
@@ -1306,12 +1305,12 @@ namespace CauldronTests
 
             // Act
 
-            GoToPlayCardPhase(DocHavoc);
-            DiscardAllCards(DocHavoc);
-            Card mine = PlayCard(DocHavoc, ImprovisedMineCardController.Identifier);
+            GoToPlayCardPhase(doc);
+            DiscardAllCards(doc);
+            Card mine = PlayCard(doc, ImprovisedMineCardController.Identifier);
 
 
-            AssertInTrash(DocHavoc, mine);
+            AssertInTrash(doc, mine);
 
         }
 
@@ -1321,7 +1320,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "Haka", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 BrawlerCardController.Identifier, RecklessChargeCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -1331,20 +1330,20 @@ namespace CauldronTests
 
             Card mdp = GetCardInPlay("MobileDefensePlatform");
 
-            GoToStartOfTurn(DocHavoc);
+            GoToStartOfTurn(doc);
             //have mdp deal 3 damage earlier in the turn
-            DealDamage(mdp, DocHavoc.CharacterCard, 3, DamageType.Melee);
+            DealDamage(mdp, doc.CharacterCard, 3, DamageType.Melee);
 
-            QuickHPStorage(DocHavoc.CharacterCard, mdp, bunker.CharacterCard, haka.CharacterCard);
+            QuickHPStorage(doc.CharacterCard, mdp, bunker.CharacterCard, haka.CharacterCard);
 
             // Act
             DecisionSelectTarget = mdp;
 
-            GoToPlayCardPhase(DocHavoc);
-            Card brawler = PlayCardFromHand(DocHavoc, BrawlerCardController.Identifier);
+            GoToPlayCardPhase(doc);
+            Card brawler = PlayCardFromHand(doc, BrawlerCardController.Identifier);
             //One non-hero target deals {DocHavoc} 4 melee damage. Then {DocHavoc} deals that target X melee damage, where X is the amount of damage that target dealt {DocHavoc} this turn.
             UsePower(brawler);
-            GoToEndOfTurn(DocHavoc);
+            GoToEndOfTurn(doc);
 
             // Assert
             QuickHPCheck(-4, -7, 0, 0);
@@ -1357,7 +1356,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "Haka", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 CauterizeCardController.Identifier, SyringeDartsCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -1372,9 +1371,9 @@ namespace CauldronTests
             DecisionSelectTargets = new[] { bunker.CharacterCard, null };
 
             // Act
-            PlayCardFromHand(DocHavoc, CauterizeCardController.Identifier);
-            GoToPlayCardPhase(DocHavoc);
-            Card syringe = PlayCardFromHand(DocHavoc, SyringeDartsCardController.Identifier);
+            PlayCardFromHand(doc, CauterizeCardController.Identifier);
+            GoToPlayCardPhase(doc);
+            Card syringe = PlayCardFromHand(doc, SyringeDartsCardController.Identifier);
             UsePower(syringe);
 
             // Assert
@@ -1387,7 +1386,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "Haka", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 CauterizeCardController.Identifier, SyringeDartsCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -1404,9 +1403,9 @@ namespace CauldronTests
             DecisionSelectTargets = new[] { mdp, null };
 
             // Act
-            PlayCardFromHand(DocHavoc, CauterizeCardController.Identifier);
-            GoToPlayCardPhase(DocHavoc);
-            Card syringe = PlayCardFromHand(DocHavoc, SyringeDartsCardController.Identifier);
+            PlayCardFromHand(doc, CauterizeCardController.Identifier);
+            GoToPlayCardPhase(doc);
+            Card syringe = PlayCardFromHand(doc, SyringeDartsCardController.Identifier);
             UsePower(syringe);
 
             // Assert
@@ -1419,7 +1418,7 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
 
-            MakeCustomHeroHand(DocHavoc, new List<string>()
+            MakeCustomHeroHand(doc, new List<string>()
             {
                 CauterizeCardController.Identifier, SyringeDartsCardController.Identifier,
                 RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
@@ -1433,9 +1432,9 @@ namespace CauldronTests
             DecisionSelectTargets = new[] { bunker.CharacterCard, null };
 
             // Act
-            PlayCardFromHand(DocHavoc, CauterizeCardController.Identifier);
-            GoToPlayCardPhase(DocHavoc);
-            Card syringe = PlayCardFromHand(DocHavoc, SyringeDartsCardController.Identifier);
+            PlayCardFromHand(doc, CauterizeCardController.Identifier);
+            GoToPlayCardPhase(doc);
+            Card syringe = PlayCardFromHand(doc, SyringeDartsCardController.Identifier);
             UsePower(syringe);
 
             // Assert
@@ -1450,7 +1449,7 @@ namespace CauldronTests
             StartGame();
 
 
-            GoToPlayCardPhase(DocHavoc);
+            GoToPlayCardPhase(doc);
 
             Card card = PlayCard(oneshot);
             AssertInTrash(card);
@@ -1464,7 +1463,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
             StartGame();
 
-            GoToPlayCardPhase(DocHavoc);
+            GoToPlayCardPhase(doc);
 
             Card card = PlayCard(ongoing);
             AssertIsInPlay(card);
@@ -1481,7 +1480,7 @@ namespace CauldronTests
             //put flask in hand so that mine is not auto destroyed
             PutInHand("DocsFlask");
 
-            GoToPlayCardPhase(DocHavoc);
+            GoToPlayCardPhase(doc);
 
             Card card = PlayCard(equipment);
             AssertIsInPlay(card);
@@ -1495,7 +1494,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
             StartGame();
 
-            GoToPlayCardPhase(DocHavoc);
+            GoToPlayCardPhase(doc);
 
             Card card = PlayCard(limited);
             AssertIsInPlay(card);
@@ -1509,7 +1508,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "RuinsOfAtlantis");
             StartGame();
 
-            GoToPlayCardPhase(DocHavoc);
+            GoToPlayCardPhase(doc);
 
             Card card = PlayCard(relic);
             AssertIsInPlay(card);
@@ -1526,23 +1525,23 @@ namespace CauldronTests
             StartGame();
 
             SetHitPoints(baron.CharacterCard, 30);
-            SetHitPoints(DocHavoc.CharacterCard, 20);
+            SetHitPoints(doc.CharacterCard, 20);
             SetHitPoints(tachyon.CharacterCard, 20);
 
             Card volcanicEruption = GetCard("ObsidianField");
             PlayCard(volcanicEruption);
 
             // Act
-            GoToPlayCardPhase(DocHavoc);
+            GoToPlayCardPhase(doc);
 
             Card gasMask = GetCardFromHand(GasMaskCardController.Identifier);
             PlayCard(gasMask);
-            AssertInPlayArea(DocHavoc, gasMask);
+            AssertInPlayArea(doc, gasMask);
 
             Card blinding = GetCard("BlindingSpeed");
             PutInHand(tachyon, blinding);
 
-            QuickHPStorage(DocHavoc, baron, tachyon);
+            QuickHPStorage(doc, baron, tachyon);
 
             DecisionSelectCard = volcanicEruption;
             PlayCardFromHand(tachyon, "BlindingSpeed");

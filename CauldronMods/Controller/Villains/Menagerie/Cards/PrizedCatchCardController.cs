@@ -43,6 +43,8 @@ namespace Cauldron.Menagerie
             base.AddReduceDamageTrigger((DealDamageAction action) => base.IsCaptured(action.DamageSource.Card.Owner) && !base.IsEnclosure(action.Target), (DealDamageAction action) => 1);
             //Front: The heroes lose if the captured hero is incapacitated.
             base.AddTrigger<FlipCardAction>((FlipCardAction action) => !base.CharacterCard.IsFlipped && base.FindCardsWhere((Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame).Count() > 0 && !base.IsTurnTakerActiveInThisGame(base.Card.Location.OwnerName) && action.CardToFlip.TurnTaker == base.Card.Location.OwnerTurnTaker && action.CardToFlip.Card.IsCharacter && action.CardToFlip.TurnTaker.CharacterCards.Where((Card c) => !c.IsFlipped).Count() == 0, this.LoseTheGameResponse, new TriggerType[] { TriggerType.GameOver }, TriggerTiming.After);
+            base.AddTriggers();
+
         }
 
         private IEnumerator LoseTheGameResponse(FlipCardAction action)

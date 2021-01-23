@@ -9,6 +9,23 @@ namespace Cauldron.Menagerie
     {
         protected MenagerieCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
+
+        private bool? AreCardsUnderNonEnclosuresInPlay
+        {
+            get
+            {
+                if(!CharacterCard.IsFlipped)
+                {
+                    return false;
+                }
+                return null;
+            }
+        }
+
+        public override void AddTriggers()
+        {
+            base.Card.UnderLocation.OverrideIsInPlay = AreCardsUnderNonEnclosuresInPlay;
 
         }
 

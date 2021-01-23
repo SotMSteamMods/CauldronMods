@@ -19,6 +19,8 @@ namespace Cauldron.Menagerie
 
             //At the end of the villain turn, this card deals each non-Specimen target 2 cold damage.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
+            base.AddTriggers();
+
         }
 
         private IEnumerator DealDamageResponse(PhaseChangeAction action)

@@ -36,7 +36,7 @@ namespace CauldronTests.Art.Hero
             string expectedDirectory = Path.Combine(ArtPath, @"LargeCardTextures\" + _name);
 
             if (!Directory.Exists(expectedDirectory))
-                Assert.Inconclusive();
+                Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
             var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
 
@@ -74,11 +74,11 @@ namespace CauldronTests.Art.Hero
             string expectedDirectory = Path.Combine(ArtPath, @"Atlas\");
 
             if (!Directory.Exists(expectedDirectory))
-                Assert.Inconclusive();
+                Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
             var atlas = ReadAtlasJson(expectedDirectory, _name);
             if (atlas is null)
-                Assert.Inconclusive();
+                Assert.Fail("Atlas file " + _name + " does not exist");
 
             if (!atlas.Remove(_name + "DeckBack"))
             {
@@ -131,7 +131,7 @@ namespace CauldronTests.Art.Hero
             string expectedDirectory = Path.Combine(ArtPath, @"Atlas\");
 
             if (!Directory.Exists(expectedDirectory))
-                Assert.Inconclusive();
+                Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
             var atlas = ReadAtlasJson(expectedDirectory, "EndGameHeroes");
             if (atlas is null)
@@ -157,11 +157,11 @@ namespace CauldronTests.Art.Hero
             string expectedDirectory = Path.Combine(ArtPath, @"Atlas\");
 
             if (!Directory.Exists(expectedDirectory))
-                Assert.Inconclusive();
+                Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
             var atlas = ReadAtlasJson(expectedDirectory, "HeroLogos");
             if (atlas is null)
-                Assert.Inconclusive();
+                Assert.Fail("Atlas file " + "HeroLogos" + " does not exist");
 
             foreach (var character in _startEndIdentifiers)
             {
@@ -183,11 +183,11 @@ namespace CauldronTests.Art.Hero
             string expectedDirectory = Path.Combine(ArtPath, @"Atlas\");
 
             if (!Directory.Exists(expectedDirectory))
-                Assert.Inconclusive();
+                Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
             var atlas = ReadAtlasJson(expectedDirectory, "SetupGame");
             if (atlas is null)
-                Assert.Inconclusive();
+                Assert.Fail("Atlas file " + "SetupGame" + " does not exist");
 
             foreach (var character in _startEndIdentifiers)
             {
@@ -208,7 +208,7 @@ namespace CauldronTests.Art.Hero
             string expectedDirectory = Path.Combine(ArtPath, @"Cutouts\StartOfGame\Heroes\");
 
             if (!Directory.Exists(expectedDirectory))
-                Assert.Inconclusive();
+                Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
             var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
 
@@ -236,7 +236,7 @@ namespace CauldronTests.Art.Hero
             string expectedDirectory = Path.Combine(ArtPath, @"Cutouts\YesNoDialog\");
 
             if (!Directory.Exists(expectedDirectory))
-                Assert.Inconclusive();
+                Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
             var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
 
@@ -259,7 +259,7 @@ namespace CauldronTests.Art.Hero
             string expectedDirectory = Path.Combine(ArtPath, @"Cutouts\Heroes\" + _name);
 
             if (!Directory.Exists(expectedDirectory))
-                Assert.Inconclusive();
+                Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
             var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
 

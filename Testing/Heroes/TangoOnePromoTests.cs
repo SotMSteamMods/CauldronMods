@@ -11,9 +11,8 @@ using NUnit.Framework;
 namespace CauldronTests
 {
     [TestFixture]
-    public class TangoOnePromoTests : BaseTest
+    public class TangoOnePromoTests : CauldronBaseTest
     {
-        protected HeroTurnTakerController TangoOne => FindHero("TangoOne");
 
         private const string DeckNamespaceGhostOps = "Cauldron.TangoOne/GhostOpsTangoOneCharacter";
         private const string DeckNamespace1929 = "Cauldron.TangoOne/PastTangoOneCharacter";
@@ -27,10 +26,10 @@ namespace CauldronTests
 
             // Assert
             Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
-            Assert.IsNotNull(TangoOne);
-            Assert.IsInstanceOf(typeof(GhostOpsTangoOneCharacterCardController), TangoOne.CharacterCardController);
+            Assert.IsNotNull(tango);
+            Assert.IsInstanceOf(typeof(GhostOpsTangoOneCharacterCardController), tango.CharacterCardController);
 
-            Assert.AreEqual(28, TangoOne.CharacterCard.HitPoints);
+            Assert.AreEqual(28, tango.CharacterCard.HitPoints);
         }
 
         [Test]
@@ -39,14 +38,14 @@ namespace CauldronTests
             // Arrange
             SetupGameController("BaronBlade", DeckNamespaceGhostOps, "Ra", "Legacy", "Megalopolis");
 
-            MakeCustomHeroHand(TangoOne, new List<string>()
+            MakeCustomHeroHand(tango, new List<string>()
             {
                 FarsightCardController.Identifier, CriticalHitCardController.Identifier,
                 GhostReactorCardController.Identifier, OneShotOneKillCardController.Identifier
             });
 
             StartGame();
-            QuickHandStorage(TangoOne);
+            QuickHandStorage(tango);
 
             Card ghostReactor = GetCardFromHand(GhostReactorCardController.Identifier);
             Card farsight = GetCardFromHand(FarsightCardController.Identifier);
@@ -57,8 +56,8 @@ namespace CauldronTests
             };
 
             // Act
-            GoToStartOfTurn(TangoOne);
-            UsePower(TangoOne);
+            GoToStartOfTurn(tango);
+            UsePower(tango);
 
             // Assert
             AssertOnTopOfDeck(farsight);
@@ -74,18 +73,18 @@ namespace CauldronTests
             StartGame();
             QuickHandStorage(ra);
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
 
             DecisionSelectTarget = ra.CharacterCard;
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 0);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 0);
 
 
             // Assert
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
             QuickHandCheck(1);
 
         }
@@ -99,27 +98,27 @@ namespace CauldronTests
             StartGame();
             QuickHandStorage(ra);
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
 
             DecisionSelectTarget = ra.CharacterCard;
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 1);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 1);
 
             Assert.NotNull(this.GameController.StatusEffectControllers
                 .FirstOrDefault(s => s.StatusEffect.ToString().Equals("damage dealt is irreducible.")
-                                     && s.StatusEffect.CardSource.Equals(TangoOne.CharacterCard)));
+                                     && s.StatusEffect.CardSource.Equals(tango.CharacterCard)));
 
-            GoToStartOfTurn(TangoOne);
+            GoToStartOfTurn(tango);
 
             // Effect expired
             Assert.Null(this.GameController.StatusEffectControllers
                 .FirstOrDefault(s => s.StatusEffect.ToString().Equals("damage dealt is irreducible.")
-                                     && s.StatusEffect.CardSource.Equals(TangoOne.CharacterCard)));
+                                     && s.StatusEffect.CardSource.Equals(tango.CharacterCard)));
 
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
         }
 
         [Test]
@@ -134,14 +133,14 @@ namespace CauldronTests
             Card mdp = GetCardInPlay("MobileDefensePlatform");
             QuickHPStorage(mdp);
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
 
             DecisionSelectTarget = mdp;
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 2);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 2);
 
             GoToUsePowerPhase(ra);
             UsePower(ra);
@@ -151,7 +150,7 @@ namespace CauldronTests
             QuickHPStorage(mdp);
             UsePower(ra);
             QuickHPCheck(-2); // Ra's Pyre 2 dmg, Incap expired
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
         }
 
         [Test]
@@ -162,10 +161,10 @@ namespace CauldronTests
 
             // Assert
             Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
-            Assert.IsNotNull(TangoOne);
-            Assert.IsInstanceOf(typeof(PastTangoOneCharacterCardController), TangoOne.CharacterCardController);
+            Assert.IsNotNull(tango);
+            Assert.IsInstanceOf(typeof(PastTangoOneCharacterCardController), tango.CharacterCardController);
 
-            Assert.AreEqual(24, TangoOne.CharacterCard.HitPoints);
+            Assert.AreEqual(24, tango.CharacterCard.HitPoints);
         }
 
         [Test]
@@ -180,17 +179,17 @@ namespace CauldronTests
 
             DecisionSelectTarget = legacy.CharacterCard;
 
-            GoToStartOfTurn(TangoOne);
+            GoToStartOfTurn(tango);
 
-            GoToUsePowerPhase(TangoOne);
-            UsePower(TangoOne);
+            GoToUsePowerPhase(tango);
+            UsePower(tango);
 
-            GoToDrawCardPhase(TangoOne);
+            GoToDrawCardPhase(tango);
 
-            GoToEndOfTurn(TangoOne);
+            GoToEndOfTurn(tango);
             QuickHPCheck(0); // Damage won't trigger until start of Tango's next turn
 
-            GoToEndOfTurn(TangoOne);  // Go back around to Tango's turn
+            GoToEndOfTurn(tango);  // Go back around to Tango's turn
             QuickHPCheck(-3); // Damage should now have been attempted
         }
 
@@ -207,20 +206,20 @@ namespace CauldronTests
 
             DecisionSelectTarget = mdp;
 
-            GoToStartOfTurn(TangoOne);
+            GoToStartOfTurn(tango);
 
-            GoToUsePowerPhase(TangoOne);
-            UsePower(TangoOne);
+            GoToUsePowerPhase(tango);
+            UsePower(tango);
 
-            GoToDrawCardPhase(TangoOne);
+            GoToDrawCardPhase(tango);
 
-            GoToEndOfTurn(TangoOne);
+            GoToEndOfTurn(tango);
             QuickHPCheck(0); // Damage won't trigger until start of Tango's next turn
 
             DestroyCard(mdp);
 
             AssertNumberOfStatusEffectsInPlay(0); //status effect should have expired.
-            GoToEndOfTurn(TangoOne);  // Go back around to Tango's turn
+            GoToEndOfTurn(tango);  // Go back around to Tango's turn
             QuickHPCheck(0); // Damage should not have been attempted
         }
 
@@ -237,20 +236,20 @@ namespace CauldronTests
 
             DecisionSelectTarget = mdp;
 
-            GoToStartOfTurn(TangoOne);
+            GoToStartOfTurn(tango);
 
-            GoToUsePowerPhase(TangoOne);
-            UsePower(TangoOne);
+            GoToUsePowerPhase(tango);
+            UsePower(tango);
 
-            GoToDrawCardPhase(TangoOne);
+            GoToDrawCardPhase(tango);
 
-            GoToEndOfTurn(TangoOne);
+            GoToEndOfTurn(tango);
             QuickHPCheck(0); // Damage won't trigger until start of Tango's next turn
 
-            DealDamage(baron, TangoOne, 99, DamageType.Cold); //incap tango one
+            DealDamage(baron, tango, 99, DamageType.Cold); //incap tango one
 
             //status effect doesn't expire till after start of turn
-            GoToEndOfTurn(TangoOne);  // Go back around to Tango's turn
+            GoToEndOfTurn(tango);  // Go back around to Tango's turn
             AssertNumberOfStatusEffectsInPlay(0); //status effect should have expired.
             QuickHPCheck(0); // Damage should not have been attempted
         }
@@ -263,7 +262,7 @@ namespace CauldronTests
             QuickHPStorage(legacy);
             DecisionSelectTarget = legacy.CharacterCard;
             PlayCard("HastyAugmentation");
-            GoToStartOfTurn(TangoOne);
+            GoToStartOfTurn(tango);
             QuickHPCheck(-5);
         }
         [Test]
@@ -277,20 +276,20 @@ namespace CauldronTests
             DecisionYesNo = true;
             QuickHandStorage(legacy);
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
 
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 0);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 0);
 
-            GoToEndOfTurn(TangoOne);
+            GoToEndOfTurn(tango);
             QuickHandCheck(0); // Card draw option won't trigger until start of Tango's next turn
 
-            GoToEndOfTurn(TangoOne); // Go back around to Tango's turn
+            GoToEndOfTurn(tango); // Go back around to Tango's turn
             QuickHandCheck(2);
 
             // Assert
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
         }
 
         [Test]
@@ -304,20 +303,20 @@ namespace CauldronTests
             DecisionYesNo = false;
             QuickHandStorage(legacy);
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
 
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 0);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 0);
 
-            GoToEndOfTurn(TangoOne);
+            GoToEndOfTurn(tango);
             QuickHandCheck(0); // Card draw option won't trigger until start of Tango's next turn
 
-            GoToEndOfTurn(TangoOne); // Go back around to Tango's turn
+            GoToEndOfTurn(tango); // Go back around to Tango's turn
             QuickHandCheck(0);
 
             // Assert
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
         }
 
         [Test]
@@ -341,21 +340,21 @@ namespace CauldronTests
             DecisionSelectCards = new[] { GetCardFromHand(legacy, 0), GetCardFromHand(legacy, 1) };
             DecisionYesNo = true;
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
 
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 1);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 1);
 
-            GoToEndOfTurn(TangoOne);
+            GoToEndOfTurn(tango);
             QuickHandCheck(0);
 
-            GoToEndOfTurn(TangoOne); // Go back around to Tango's turn
+            GoToEndOfTurn(tango); // Go back around to Tango's turn
             QuickHandCheck(-2);
             AssertNumberOfCardsInPlay(legacy, 3); // Character card + 2 randomly played cards
 
             // Assert
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
         }
 
         [Test]
@@ -371,21 +370,21 @@ namespace CauldronTests
             DecisionSelectCard = legacy.CharacterCard;
             DecisionYesNo = false;
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
 
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 1);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 1);
 
-            GoToEndOfTurn(TangoOne);
+            GoToEndOfTurn(tango);
             QuickHandCheck(0);
 
-            GoToEndOfTurn(TangoOne); // Go back around to Tango's turn
+            GoToEndOfTurn(tango); // Go back around to Tango's turn
             QuickHandCheck(0);
             AssertNumberOfCardsInPlay(legacy, 1); // Character card
 
             // Assert
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
         }
 
         [Test]
@@ -403,21 +402,21 @@ namespace CauldronTests
             //DecisionSelectCards = new[] { legacy.CharacterCard, GetCardFromHand(legacy, 0), GetCardFromHand(legacy, 1) };
             DecisionYesNo = true;
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
 
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 1);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 1);
 
-            GoToEndOfTurn(TangoOne);
+            GoToEndOfTurn(tango);
             QuickHandCheck(0);
 
-            GoToEndOfTurn(TangoOne); // Go back around to Tango's turn
+            GoToEndOfTurn(tango); // Go back around to Tango's turn
             QuickHandCheck(0);
             AssertNumberOfCardsInPlay(legacy, 1); // Character card
 
             // Assert
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
         }
 
         [Test]
@@ -432,15 +431,15 @@ namespace CauldronTests
             Card enragedTRex = GetCardInPlay("EnragedTRex");
             DecisionSelectCard = enragedTRex;
 
-            SetHitPoints(TangoOne.CharacterCard, 1);
-            DealDamage(baron, TangoOne, 2, DamageType.Melee);
+            SetHitPoints(tango.CharacterCard, 1);
+            DealDamage(baron, tango, 2, DamageType.Melee);
 
             // Act
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            UseIncapacitatedAbility(TangoOne, 2);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            UseIncapacitatedAbility(tango, 2);
 
             // Assert
-            AssertIncapacitated(TangoOne);
+            AssertIncapacitated(tango);
             AssertInTrash(enragedTRex);
         }
 
@@ -453,10 +452,10 @@ namespace CauldronTests
 
             // Assert
             Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
-            Assert.IsNotNull(TangoOne);
-            Assert.IsInstanceOf(typeof(CreedOfTheSniperTangoOneCharacterCardController), TangoOne.CharacterCardController);
+            Assert.IsNotNull(tango);
+            Assert.IsInstanceOf(typeof(CreedOfTheSniperTangoOneCharacterCardController), tango.CharacterCardController);
 
-            Assert.AreEqual(25, TangoOne.CharacterCard.HitPoints);
+            Assert.AreEqual(25, tango.CharacterCard.HitPoints);
         }
 
         [Test]
@@ -468,10 +467,10 @@ namespace CauldronTests
 
             var card = PutOnDeck("SniperRifle");
 
-            QuickHandStorage(TangoOne);
+            QuickHandStorage(tango);
 
-            GoToStartOfTurn(TangoOne);
-            UsePower(TangoOne);
+            GoToStartOfTurn(tango);
+            UsePower(tango);
             AssertInHand(card);
             QuickHandCheck(1);
         }
@@ -486,10 +485,10 @@ namespace CauldronTests
             var card = PutOnDeck("GhostReactor");
             var play = PutInHand(ra, "ImbuedFire");
 
-            QuickHandStorage(TangoOne);
+            QuickHandStorage(tango);
             DecisionSelectTurnTaker = ra.TurnTaker;
             DecisionSelectCard = play;
-            UsePower(TangoOne);
+            UsePower(tango);
             AssertInTrash(card);
             AssertIsInPlay(play);
             QuickHandCheck(0);
@@ -501,10 +500,10 @@ namespace CauldronTests
             SetupGameController("BaronBlade", DeckNamespaceCreed, "Ra", "Legacy", "Megalopolis");
             StartGame();
 
-            DealDamage(baron, TangoOne, 99, DamageType.Melee);
+            DealDamage(baron, tango, 99, DamageType.Melee);
 
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            AssertIncapLetsHeroDrawCard(TangoOne, 0, ra, 1);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            AssertIncapLetsHeroDrawCard(tango, 0, ra, 1);
         }
 
         [Test]
@@ -513,10 +512,10 @@ namespace CauldronTests
             SetupGameController("BaronBlade", DeckNamespaceCreed, "Ra", "Legacy", "Megalopolis");
             StartGame();
 
-            DealDamage(baron, TangoOne, 99, DamageType.Melee);
+            DealDamage(baron, tango, 99, DamageType.Melee);
 
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
-            AssertIncapLetsHeroUsePower(TangoOne, 1, ra);
+            GoToUseIncapacitatedAbilityPhase(tango);
+            AssertIncapLetsHeroUsePower(tango, 1, ra);
         }
 
         [Test]
@@ -526,16 +525,16 @@ namespace CauldronTests
             SetupGameController("BaronBlade", DeckNamespaceCreed, "Ra", "Legacy", "Megalopolis");
             StartGame();
 
-            DealDamage(baron, TangoOne, 99, DamageType.Melee);
+            DealDamage(baron, tango, 99, DamageType.Melee);
 
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            GoToUseIncapacitatedAbilityPhase(tango);
 
             var c1 = PutOnDeck("BackFistStrike");
             var c2 = PutOnDeck("DangerSense");
                         
             DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
             DecisionSelectCards = new[] { c1, c2 };
-            UseIncapacitatedAbility(TangoOne, 2);
+            UseIncapacitatedAbility(tango, 2);
             AssertInTrash(c1);
             AssertInTrash(c2);
         }
@@ -547,16 +546,16 @@ namespace CauldronTests
             SetupGameController("BaronBlade", DeckNamespaceCreed, "Ra", "Legacy", "Megalopolis");
             StartGame();
 
-            DealDamage(baron, TangoOne, 99, DamageType.Melee);
+            DealDamage(baron, tango, 99, DamageType.Melee);
 
-            GoToUseIncapacitatedAbilityPhase(TangoOne);
+            GoToUseIncapacitatedAbilityPhase(tango);
 
             var c1 = PutOnDeck("NextEvolution");
             var c2 = PutOnDeck("DangerSense");
 
             DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
             DecisionSelectCards = new[] { c1, c2 };
-            UseIncapacitatedAbility(TangoOne, 2);
+            UseIncapacitatedAbility(tango, 2);
             AssertIsInPlay(c1);
             AssertIsInPlay(c2);
         }

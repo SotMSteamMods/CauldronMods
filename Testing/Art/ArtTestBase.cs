@@ -6,7 +6,6 @@ using System.Linq;
 using System.Collections;
 using Handelabra.Sentinels.UnitTest;
 using System.Reflection;
-using Cauldron.Anathema;
 using Handelabra;
 using System.Collections.Generic;
 using Boomlagoon.JSON;
@@ -98,12 +97,18 @@ namespace CauldronTests.Art
                         startEndIdentifiers.Add(promoIdentifier);
                 }
 
-                results.Add(new object[] { name, kind, cardIdentifiers, characterIdentifiers, startEndIdentifiers });
+                results.Add(ModifyForSpecificDecks(name, kind, cardIdentifiers, characterIdentifiers, startEndIdentifiers));
 
             }
 
             return results.GetEnumerator();
         }
+
+        private object[] ModifyForSpecificDecks(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> startEndIdentifiers)
+        {
+            return new object[] { name, kind, cardIdentifiers, characterIdentifiers, startEndIdentifiers };
+        }
+
     }
 
     public abstract class ArtTestBase
@@ -153,7 +158,7 @@ namespace CauldronTests.Art
             if (files.Length == 0)
                 return null;
             HashSet<string> results = new HashSet<string>();
-            foreach(var file in files)
+            foreach (var file in files)
             {
                 JSONObject jsonObject;
                 using (var sr = new System.IO.StreamReader(Path.Combine(directoryPath, file)))
@@ -163,7 +168,7 @@ namespace CauldronTests.Art
                 }
 
                 var frames = jsonObject.GetValue("frames");
-                foreach(var thing in frames.Obj)
+                foreach (var thing in frames.Obj)
                 {
                     if (!results.Add(Path.GetFileNameWithoutExtension(thing.Key)))
                     {
