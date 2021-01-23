@@ -752,9 +752,15 @@ namespace CauldronTests
             DealDamage(fate, az, 100, DTM);
             AssertIncapacitated(az);
 
+            //make legacy the highest by a long shot
+            SetHitPoints(ra, 10);
+            SetHitPoints(tempest, 10);
+
             GoToUseIncapacitatedAbilityPhase(az);
+            QuickHPStorage(legacy, ra, tempest);
             UseIncapacitatedAbility(az, 1);
-            AssertNotGameOver();
+            //they should all be redirected to Legacy
+            QuickHPCheck(-3, 0, 0);
         }
         [Test]
         public void TestIllusionOfFreeWillDecksizeDestruction()
