@@ -1096,5 +1096,26 @@ namespace CauldronTests
             AssertNumberOfCardsInTrash(legacy, inTrash[legacy] + number);
         }
 
+
+
+        [Test()]
+        public void TestEclipse()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis");
+            //choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            PutInTrash(GetRandomCardFromHand(sentinels)); //preload haka's trash
+
+            var card = PlayCard("Eclipse", 0, true);
+            AssertInPlayArea(choir, card);
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, mainstay, writhe, medico, idealist);
+            GoToEndOfTurn(choir);
+            //have to include The Choir's end of turn damage
+            QuickHPCheck(0, -1, -1, -1, -1, -4, -1);
+        }
     }
 }
