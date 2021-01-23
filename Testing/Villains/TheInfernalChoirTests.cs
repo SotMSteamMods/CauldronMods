@@ -123,6 +123,8 @@ namespace CauldronTests
             SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Megalopolis");
             StartGame();
 
+            PlayCard("TakeDown");
+
             var c1 = PlayCard("BaneOfIron");
 
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, c1);
@@ -136,18 +138,20 @@ namespace CauldronTests
             SetupGameController(new[] { "Cauldron.TheInfernalChoir", "Legacy", "Haka", "Megalopolis" }, advanced: true);
             StartGame();
 
-            var c1 = PlayCard("BaneOfIron");
 
-            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, c1);
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
             DealDamage(legacy, haka, 1, DamageType.Melee);
-            QuickHPCheck(0, 0, -2, 0);
-
-            QuickHPUpdate();
-            DealDamage(c1, haka, 1, DamageType.Melee);
-            QuickHPCheck(0, 0, -2, 0);
+            QuickHPCheck(0, 0, -2);
 
             QuickHPUpdate();
             DealDamage(choir, haka, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, -2);
+
+            //test ghost after so it's damage mod doesn' change things above
+            var c1 = PlayCard("BaneOfIron");
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, c1);
+            QuickHPUpdate();
+            DealDamage(c1, haka, 1, DamageType.Melee);
             QuickHPCheck(0, 0, -2, 0);
         }
 
@@ -733,7 +737,7 @@ namespace CauldronTests
 
             DecisionAutoDecideIfAble = true;
             PlayCard("TakeDown");
-                        
+            
             var card = PlayCard("HauntingNocturne", 0, true);
 
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, mainstay, writhe, medico, idealist, card);
@@ -743,6 +747,77 @@ namespace CauldronTests
             QuickHPUpdate();
             DealDamage(omnix, legacy, 2, DamageType.Melee);
             QuickHPCheck(0, -2, 0, 0, 0, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestWretchedSymphony_DamageReduction()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheSentinels", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+            FlipCard(choir.CharacterCard);
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            GoToStartOfTurn(legacy);
+
+            var card = PlayCard("WretchedSymphony", 0, true);
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, mainstay, writhe, medico, idealist, card);
+            DealDamage(legacy.CharacterCard, choir, 2, DamageType.Melee);
+            QuickHPCheck(-1, 0, 0, 0, 0, 0, 0, 0);
+
+            QuickHPUpdate();
+            DealDamage(omnix, legacy, 2, DamageType.Melee);
+            QuickHPCheck(0, -2, 0, 0, 0, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestWretchedSymphony_EndOfTurn_SoulRevealed()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheSentinels", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+            FlipCard(choir.CharacterCard);
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            var g1 = PlayCard("BaneOfIron", 0, true);
+            SetHitPoints(g1, 1);
+            var g2 = PlayCard("DanchengTheGiant", 0, true);
+            SetHitPoints(g2, 1);
+
+            var card = PlayCard("WretchedSymphony", 0, true);
+
+            GoToEndOfTurn(choir);
+            AssertHitPoints(g1, g1.MaximumHitPoints.Value);
+            AssertHitPoints(g2, g2.MaximumHitPoints.Value);
+        }
+
+        [Test()]
+        public void TestWretchedSymphony_EndOfTurn_HiddenHeart()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheSentinels", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            var g2 = PlayCard("DanchengTheGiant", 0, true);
+            SetHitPoints(g2, 1);
+
+            var card = PlayCard("WretchedSymphony", 0, true);
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, mainstay, writhe, medico, idealist, card);
+            GoToEndOfTurn(choir);
+            QuickHPCheck(0, 0, -2, -2, -2, -2, -2, 0);
+            AssertHitPoints(g2, 1);
         }
     }
 }

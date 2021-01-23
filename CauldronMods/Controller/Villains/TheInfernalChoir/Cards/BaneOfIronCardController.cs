@@ -25,13 +25,10 @@ namespace Cauldron.TheInfernalChoir
 
         private bool ReductionCriteria(DealDamageAction dda)
         {
-            var card = FindVagrantHeartHiddenSoul();
-            if (card is null)
-                return false;
             if (dda.DamageSource is null || !dda.DamageSource.Card.IsCharacter || !dda.DamageSource.Card.IsHero)
                 return false;
             //is a hero character card
-            return dda.DamageSource.Card.Owner != card.Location.OwnerTurnTaker;
+            return !DoesPlayAreaContainHiddenHeart(dda.DamageSource.Card.Owner);
         }
 
         private IEnumerator DestroyOngoingsOrEquipment(GameAction action)

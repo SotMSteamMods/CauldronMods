@@ -20,6 +20,24 @@ namespace Cauldron.TheInfernalChoir
             return (p1Heart?.IsInPlay ?? false) ? p1Heart : null;
         }
 
+        protected bool DoesPlayAreaContainHiddenHeart(TurnTaker tt)
+        {
+            var card = FindVagrantHeartHiddenSoul();
+            if (card is null)
+                return false;
+            return tt == card.Location.OwnerTurnTaker;
+        }
+
+        protected bool IsHiddenHeartInPlay()
+        {
+            return FindVagrantHeartHiddenSoul() != null;
+        }
+
+        protected bool IsSoulRevealedInPlay()
+        {
+            return FindVagrantHeartSoulRevealed() != null;
+        }
+
         protected Card FindVagrantHeartSoulRevealed()
         {
             var p2Heart = TurnTaker.FindCard("VagrantHeartPhase2", false);
