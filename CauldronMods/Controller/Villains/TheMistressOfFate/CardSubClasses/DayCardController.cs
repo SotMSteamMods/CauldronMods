@@ -112,19 +112,25 @@ namespace Cauldron.TheMistressOfFate
                 Card matchingCard = null;
                 if(reveal == null)
                 {
-                    //message
                     yield break;
                 }
                 else if (reveal.FoundMatchingCards == false)
                 {
-                    //message about fail-to-find?
+                    coroutine = GameController.SendMessageAction($"The {Card.Title} dawns, but could not find any {keywords.ToRecursiveString(" or ")} cards!", Priority.Medium, GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
                     this.ClearStoredCard();
                 }
                 else
                 {
                     matchingCard = reveal.MatchingCards.FirstOrDefault();
                     StoreCard(matchingCard);
-                    //message about newly stored card?
                 }
 
                 coroutine = CleanupCardsAtLocations(new List<Location> { TurnTaker.Revealed }, TurnTaker.Deck, shuffleAfterwards: true, cardsInList: reveal.NonMatchingCards.ToList());
@@ -219,5 +225,7 @@ namespace Cauldron.TheMistressOfFate
             }
             yield break;
         }
+
+        
     }
 }

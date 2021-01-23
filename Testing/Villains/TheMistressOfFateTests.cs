@@ -462,6 +462,21 @@ namespace CauldronTests
 
             AssertUnderCard(day, oneshot);
         }
+
+        [Test]
+        public void TestDayOfSwordsFlipFaceUp_NoOneShotOrAnomaly()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+
+            Card day = GetCard("DayOfSwords");
+            IEnumerable<Card> toTrash = FindCardsWhere(c => fate.TurnTaker.Deck.HasCard(c) && (c.IsOneShot || c.IsAnomaly));
+            PutInTrash(toTrash);
+            AssertNextMessage("The Day of Swords dawns, but could not find any anomaly or one-shot cards!");
+            FlipCard(day);
+            
+        }
         [Test]
         public void TestDayOfSwordsFlipFaceUpGrabAnomaly()
         {
