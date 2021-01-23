@@ -13,6 +13,7 @@ namespace Cauldron.TheMistressOfFate
         public NecessaryCorrectionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             _isStoredCard = false;
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: Game.H - 1).Condition = () => !Card.IsInPlayAndHasGameText;
             SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck);
         }
 
