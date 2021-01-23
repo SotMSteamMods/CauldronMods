@@ -25,7 +25,7 @@ namespace Cauldron.Gargoyle
             int valueOfX = 0;
 
             // Destroy up to 3 hero ongoing or equipment cards belonging to other players.
-            coroutine = base.GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((card) => (base.GameController.IsEquipment(card) || card.IsOngoing) && card.IsInPlay && card.Owner.IsHero), 3, false, 0, storedResultsAction: storedResults, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((card) => (base.GameController.IsEquipment(card) || card.IsOngoing) && card.IsInPlay && card.Owner.IsHero && card.Owner != DecisionMaker.TurnTaker), 3, false, 0, storedResultsAction: storedResults, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

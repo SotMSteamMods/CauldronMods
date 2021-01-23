@@ -1550,6 +1550,18 @@ namespace CauldronTests
             PlayCard("Ultimatum");
             QuickHPCheck(-9, 0, 0, 0, 0);
         }
+        [Test]
+        public void TestUltimatumNotDestroyOwnCards()
+        {
+            StartTestGame();
+
+            Card assist = PlayCard("ViolentAssist");
+
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+            PlayCard("Ultimatum");
+            AssertIsInPlay(assist);
+            QuickHPCheckZero();
+        }
 
         #endregion Ultimatum
 
