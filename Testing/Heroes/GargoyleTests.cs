@@ -350,8 +350,8 @@ namespace CauldronTests
             QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion);
             UsePower(agileTechnique);
 
-            // Baron, Gargoyle, and Blade Battallion should have been hit for 2
-            QuickHPCheck(-2, -2, 0, 0, 0, -2);
+            // Baron and Gargoyle should be hit for 2, and Blade Battallion for 2 + 1
+            QuickHPCheck(-2, -2, 0, 0, 0, -3);
         }
         [Test]
         public void TestAgileTechniqueNoHero()
@@ -416,8 +416,98 @@ namespace CauldronTests
             QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion);
             UsePower(agileTechnique);
 
-            // Baron, Blade Battallion should have been hit for 2
-            QuickHPCheck(-2, -2, 0, 0, 0, 0);
+            // Gargoyle should be hit for 2, Baron for 2 + 1
+            QuickHPCheck(-3, -2, 0, 0, 0, 0);
+        }
+        [Test]
+        public void TestAgileTechniqueImmuneHeroTarget()
+        {
+            StartTestGame("BaronBlade", "Cauldron.Gargoyle", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            PlayCard("HeroicInterception");
+
+            Card battalion = PlayCard("BladeBattalion");
+
+            var ofInterest = new List<Card> { scholar.CharacterCard, baron.CharacterCard, battalion };
+            DecisionSelectCards = ofInterest;
+            QuickHPStorage(ofInterest.ToArray());
+
+            Card agile = PlayCard("AgileTechnique");
+            UsePower(agile);
+
+            QuickHPCheck(0, -2, 0);
+        }
+        [Test]
+        public void TestAgileTechniqueNonCharacterHeroTarget()
+        {
+            StartTestGame("BaronBlade", "Cauldron.Gargoyle", "Unity", "Bunker", "TheScholar", "Megalopolis");
+
+            Card bot = PlayCard("SwiftBot");
+
+            Card battalion = PlayCard("BladeBattalion");
+
+            var ofInterest = new List<Card> { bot, baron.CharacterCard, battalion };
+            DecisionSelectCards = ofInterest;
+            QuickHPStorage(ofInterest.ToArray());
+
+            Card agile = PlayCard("AgileTechnique");
+            UsePower(agile);
+
+            QuickHPCheck(-2, -2, 0);
+        }
+        [Test]
+        public void TestAgileTechniqueFinalDamageBasedOnHeroDamage()
+        {
+            StartTestGame("BaronBlade", "Cauldron.Gargoyle", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            PlayCard("Fortitude");
+
+            Card battalion = PlayCard("BladeBattalion");
+
+            var ofInterest = new List<Card> { legacy.CharacterCard, baron.CharacterCard, battalion };
+            DecisionSelectCards = ofInterest;
+            QuickHPStorage(ofInterest.ToArray());
+
+            Card agile = PlayCard("AgileTechnique");
+            UsePower(agile);
+
+            QuickHPCheck(-1, -2, -2);
+        }
+        [Test]
+        public void TestAgileTechniqueDamageMultipleHeroes()
+        {
+            StartTestGame("BaronBlade", "Cauldron.Gargoyle", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            PlayCard("Fortitude");
+
+            Card battalion = PlayCard("BladeBattalion");
+
+            var ofInterest = new List<Card> { legacy.CharacterCard, gargoyle.CharacterCard, baron.CharacterCard };
+            DecisionSelectCards = ofInterest;
+            QuickHPStorage(ofInterest.ToArray());
+
+            Card agile = PlayCard("AgileTechnique");
+            UsePower(agile);
+
+            QuickHPCheck(-1, -2, -2);
+        }
+        [Test]
+        public void TestAgileTechniqueNoFunctionDecisionIfSameDamage()
+        {
+            StartTestGame("BaronBlade", "Cauldron.Gargoyle", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            Card battalion = PlayCard("BladeBattalion");
+
+            var ofInterest = new List<Card> { legacy.CharacterCard, gargoyle.CharacterCard, baron.CharacterCard };
+            DecisionSelectCards = ofInterest;
+            QuickHPStorage(ofInterest.ToArray());
+
+            Card agile = PlayCard("AgileTechnique");
+            UsePower(agile);
+
+            //who to hit #1, who to hit #2, no function decision, who to hit #3
+            AssertMaxNumberOfDecisions(3);
+            QuickHPCheck(-2, -2, -3);
         }
         #endregion Test Agile Technique
 
