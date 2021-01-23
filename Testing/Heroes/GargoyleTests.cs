@@ -536,13 +536,18 @@ namespace CauldronTests
             bladeBattalion = PutIntoPlay("BladeBattalion");
             plummetingMonorail = PutIntoPlay("PlummetingMonorail");
 
-            DecisionSelectCards = new Card[] { gargoyle.CharacterCard, baron.CharacterCard, baron.CharacterCard, bladeBattalion };
-
+            
+            DecisionSelectCard = baron.CharacterCard;
             QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion);
-            UsePower(agileTechnique);
 
-            // Gargoyle, and Blade Battallion should have been hit for 2. Baron Blade shouldn't have been hit twice for 4 damage.
-            QuickHPCheck(-4, -2, 0, 0, 0, -2);
+            DealDamage(gargoyle, gargoyle, 3, DamageType.Melee);
+            //Gargoyle should hit himself for 3 and Blade for 3
+            QuickHPCheck(-3, -3, 0, 0, 0, 0);
+
+            PlayCard("RooftopCombat");
+            //With +1 damage, he should hit himself for 3 + 1 and Blade for 4 + 1
+            DealDamage(gargoyle, gargoyle, 3, DamageType.Melee);
+            QuickHPCheck(-5, -4, 0, 0, 0, 0);
         }
 
         [Test]
@@ -568,8 +573,8 @@ namespace CauldronTests
             QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion);
             UsePower(agileTechnique);
 
-            // Baron, Unity, and Blade Battallion should have been hit for 2
-            QuickHPCheck(-2, 0, -2, 0, 0, -2);
+            // Baron & Unity hit for 2, Blade Battallion should have been hit for 3
+            QuickHPCheck(-2, 0, -2, 0, 0, -3);
         }
 
         [Test]
@@ -603,6 +608,20 @@ namespace CauldronTests
 
             // Plummeting Monorail should have been hit for 2. Baron Blade, and Blade Battalion should have been hit for 1.
             QuickHPCheck(-1, 0, 0, 0, 0, -1, -2);
+        }
+        [Test]
+        public void TestBioenergyPulseTriggerWhenImmuneToDamage()
+        {
+            StartTestGame("BaronBlade", "Cauldron.Gargoyle", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            PlayCard("HeroicInterception");
+            PlayCard("BioenergyPulse");
+
+            DecisionSelectCard = baron.CharacterCard;
+            QuickHPStorage(baron, gargoyle, legacy, bunker, scholar);
+
+            DealDamage(gargoyle, gargoyle, 5, DamageType.Melee);
+            QuickHPCheckZero();
         }
         #endregion Test Bioenergy Pulse
 
