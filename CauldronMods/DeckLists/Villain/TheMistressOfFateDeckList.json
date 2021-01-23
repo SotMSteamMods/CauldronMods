@@ -29,7 +29,7 @@
             "gameplay": [
                 "At the start of the villain turn, flip the left-most face down day card.",
                 "{TheMistressOfFate} is immune to villain damage. If there are no cards in the villain deck, the heroes lose.",
-                "Continue playing if all heroes are incapacitated. Incapacitated heroes keep the cards from their hand, deck, and trash separarte from each other when removing them from the game. Cards that were in play go to their trash."
+                "Continue playing if all heroes are incapacitated. Incapacitated heroes keep the cards from their hand, deck, and trash separate from each other when removing them from the game. Cards that were in play go to their trash."
             ],
             "advanced": "At the end of the villain turn, {TheMistressOfFate} deals the hero with the lowest HP {H} psychic damage.",
             "icons": [
