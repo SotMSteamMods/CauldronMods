@@ -35,7 +35,7 @@
             "flippedIcons": [
                 "ReduceDamageTaken",
                 "IncreaseDamageDealt",
-                "UsePowerNow"
+                "DrawCardNow"
             ],
             "openingLines": {
                 "default": "Your power will be mine."
@@ -195,7 +195,6 @@
                 "limited"
             ],
             "icons": [
-                "CounterDamage",
                 "ReduceDamageDealt",
                 "IncreaseDamageDealt"
             ],
@@ -357,7 +356,7 @@
             "flavorQuotes": [
                 {
                     "identifier": "Stuntman",
-                    "text": "Bon voyage."
+                    "text": "Bon voyage. See? I remembered."
                 }
             ],
             "flavorReference": "Stuntman, Department of Secrets #120"
@@ -468,7 +467,7 @@
             ],
             "icons": [
                 "HasPower",
-                "DestroyOngoing",
+                "Destroy",
                 "PlayCardNow",
                 "DrawCardNow"
             ],
