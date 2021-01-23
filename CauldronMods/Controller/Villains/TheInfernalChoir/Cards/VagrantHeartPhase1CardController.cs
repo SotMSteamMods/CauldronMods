@@ -17,6 +17,7 @@ namespace Cauldron.TheInfernalChoir
 
             AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
             AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
+            Card.UnderLocation.OverrideIsInPlay = false;
         }
 
         public override bool CanBeDestroyed => false;

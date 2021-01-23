@@ -979,5 +979,60 @@ namespace CauldronTests
             QuickHPCheck(0, 0, -2, 0, 0, 0, 0);
             QuickHandCheck(1, 1, 1);
         }
+
+        [Test()]
+        public void TestMoonEater_HiddenHeart([Values(1, 2, 3)] int number)
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis");
+            //choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            var inDeck = GameController.HeroTurnTakerControllers.ToDictionary(httc => httc, httc => GetNumberOfCardsInDeck(httc));
+            var inTrash = GameController.HeroTurnTakerControllers.ToDictionary(httc => httc, httc => GetNumberOfCardsInTrash(httc));
+
+            DecisionSelectNumber = number;
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, writhe, mainstay, medico, idealist);
+            var card = PlayCard("MoonEater", 0, true);
+            int expectedDamage =  Math.Max(5 - number, 0);
+            QuickHPCheck(0, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage);
+
+            foreach(var httc in GameController.HeroTurnTakerControllers)
+            {
+                AssertNumberOfCardsInDeck(httc, inDeck[httc] - number);
+                AssertNumberOfCardsInTrash(httc, inTrash[httc] + number);
+            }
+        }
+
+        [Test()]
+        public void TestMoonEater_SoulRevealed([Values(1, 2, 3)] int number)
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis");
+            //choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+            FlipCard(choir.CharacterCard);
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            var inDeck = GameController.HeroTurnTakerControllers.ToDictionary(httc => httc, httc => GetNumberOfCardsInDeck(httc));
+            var inTrash = GameController.HeroTurnTakerControllers.ToDictionary(httc => httc, httc => GetNumberOfCardsInTrash(httc));
+
+            DecisionSelectNumber = number;
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, mainstay, writhe, medico, idealist);
+            var card = PlayCard("MoonEater", 0, true);
+            int expectedDamage = Math.Max(5 - (2 * number), 0);
+            QuickHPCheck(0, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage);
+
+            foreach (var httc in GameController.HeroTurnTakerControllers)
+            {
+                AssertNumberOfCardsInDeck(httc, inDeck[httc] - number);
+                AssertNumberOfCardsInTrash(httc, inTrash[httc] + number);
+            }
+        }
     }
 }
