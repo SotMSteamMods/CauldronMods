@@ -31,7 +31,7 @@ namespace Cauldron.Gargoyle
             {
                 return $"{Card.Title} has no temporary damage boosts.";
             }
-            return $"{Card.Title}'s next damage will be increased by {totalBoost}.";
+            return $"{Card.Title}'s next damage will be increased by a total of {totalBoost}.";
         }
     }
 }

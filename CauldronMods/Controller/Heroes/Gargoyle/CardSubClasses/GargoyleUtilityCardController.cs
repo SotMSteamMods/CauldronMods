@@ -43,7 +43,7 @@ namespace Cauldron.Gargoyle
             {
                 return $"{TurnTaker.Name} has no temporary damage boosts.";
             }
-            return $"{TurnTaker.Name}'s next damage will be increased by {totalBoost}.";
+            return $"{TurnTaker.Name}'s next damage will be increased by a total of {totalBoost}.";
         }
     }
 }

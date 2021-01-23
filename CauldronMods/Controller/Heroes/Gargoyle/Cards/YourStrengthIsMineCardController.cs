@@ -19,7 +19,7 @@ namespace Cauldron.Gargoyle
 
         public YourStrengthIsMineCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            this.NextToCardCriteria = new LinqCardCriteria((Card c) => c.IsTarget, "", useCardsSuffix: false, singular: "target", plural: "targets");
+            this.NextToCardCriteria = new LinqCardCriteria((Card c) => c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "", useCardsSuffix: false, singular: "target", plural: "targets");
             SelfDestructTrigger = null;
         }
 

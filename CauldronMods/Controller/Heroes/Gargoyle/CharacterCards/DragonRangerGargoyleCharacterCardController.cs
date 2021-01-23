@@ -70,7 +70,7 @@ namespace Cauldron.Gargoyle
         public override IEnumerator UseIncapacitatedAbility(int index)
         {
             IEnumerator coroutine;
-            IEnumerable<Card> choices = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlayAndHasGameText));
+            IEnumerable<Card> choices = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlayAndHasGameText && GameController.IsCardVisibleToCardSource(c, GetCardSource())));
             List<SelectTargetDecision> selectTargetResults = new List<SelectTargetDecision>();
             CannotDealDamageStatusEffect cannotDealDamageStatusEffect;
 

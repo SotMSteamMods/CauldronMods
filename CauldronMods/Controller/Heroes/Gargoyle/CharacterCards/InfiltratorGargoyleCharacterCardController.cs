@@ -71,7 +71,7 @@ namespace Cauldron.Gargoyle
             IEnumerator coroutine; 
             List<SelectLocationDecision> storedResults = new List<SelectLocationDecision>();
             List<SelectCardDecision> storedDecisonResults = new List<SelectCardDecision>();
-            Func<Card, bool> additionalCriteria = (card) => true;
+            Func<Card, bool> additionalCriteria = (card) => GameController.IsCardVisibleToCardSource(card, GetCardSource());
 
             switch (index)
             {
@@ -132,10 +132,10 @@ namespace Cauldron.Gargoyle
                         // Another regains 1 HP.
                         if (storedDecisonResults != null && storedDecisonResults.Count() > 0)
                         {
-                            additionalCriteria = (card) => card != storedDecisonResults.FirstOrDefault().SelectedCard;
+                            additionalCriteria = (card) => card != storedDecisonResults.FirstOrDefault().SelectedCard && GameController.IsCardVisibleToCardSource(card, GetCardSource());
                         }
 
-                        coroutine = base.GameController.SelectAndGainHP(DecisionMaker, 1, additionalCriteria: additionalCriteria);
+                        coroutine = base.GameController.SelectAndGainHP(DecisionMaker, 1, additionalCriteria: additionalCriteria, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

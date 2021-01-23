@@ -28,7 +28,7 @@ namespace Cauldron.Gargoyle
             List<SelectCardDecision> storedResult = new List<SelectCardDecision>();
 
             // Select a target.
-            coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.None, new LinqCardCriteria(c => c.IsTarget && c.IsInPlayAndHasGameText, "Reduce next damage dealt by 1"), storedResult, false, cardSource: GetCardSource());
+            coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.SelectTargetNoDamage, new LinqCardCriteria(c => c.IsTarget && c.IsInPlayAndHasGameText && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "", false, singular: "target", plural: "targets"), storedResult, false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

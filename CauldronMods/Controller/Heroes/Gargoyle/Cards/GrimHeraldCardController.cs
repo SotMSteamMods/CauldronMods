@@ -21,8 +21,6 @@ namespace Cauldron.Gargoyle
         {
             IEnumerator coroutine;
             List<DiscardCardAction> storedResultsDiscard = new List<DiscardCardAction>();
-            IEnumerable<Function> functionChoices;
-            SelectFunctionDecision selectFunction;
 
             //"{Gargoyle} deals 1 target 3 toxic damage."
             coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 3, DamageType.Toxic, 1, false, 1, cardSource: base.GetCardSource());
