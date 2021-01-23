@@ -1621,6 +1621,29 @@ namespace CauldronTests
             QuickHPCheck(-1, -5, 0, 0, 0);
         }
 
+        [Test]
+        public void TestViolentAssistCanSkipDamage()
+        {
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+            DecisionsYesNo = new bool[] { false, true, true };
+            DecisionSelectCards = new Card[] { baron.CharacterCard };
+            PutIntoPlay("ViolentAssist");
+            DealDamage(unity, gargoyle, 1, DamageType.Melee);
+            QuickHPCheck(0, -1, 0, 0, 0);
+            DealDamage(unity, gargoyle, 5, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, 0);
+            DealDamage(gargoyle, baron, 1, DamageType.Melee);
+            QuickHPCheck(-6, 0, 0, 0, 0);
+            //once used, shouldn't get the option again
+            DealDamage(unity, gargoyle, 1, DamageType.Melee);
+            DealDamage(gargoyle, baron, 1, DamageType.Melee);
+            QuickHPCheck(-1, -1, 0, 0, 0);
+        }
+
         #endregion ViolentAssist
 
         #region Wither

@@ -15,7 +15,7 @@ namespace Cauldron.Gargoyle
     public class ViolentAssistCardController : GargoyleUtilityCardController
     {
         private const string FirstTimeWouldBeDealtDamage = "OncePerTurn";
-
+        public override bool AllowFastCoroutinesDuringPretend => HasBeenSetToTrueThisTurn(FirstTimeWouldBeDealtDamage);
         public ViolentAssistCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
@@ -33,7 +33,7 @@ namespace Cauldron.Gargoyle
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
             int valueOfX = 0;
 
-            coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.PreventDamage, base.Card, storedResults: storedResults, cardSource: base.GetCardSource());
+            coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.PreventDamage, base.Card, action: dealDamageAction, storedResults: storedResults, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -45,6 +45,7 @@ namespace Cauldron.Gargoyle
 
             if (base.DidPlayerAnswerYes(storedResults))
             {
+                base.SetCardPropertyToTrueIfRealAction(FirstTimeWouldBeDealtDamage);
                 valueOfX = dealDamageAction.Amount;
 
                 coroutine = CancelAction(dealDamageAction, showOutput: true, cancelFutureRelatedDecisions: true, isPreventEffect: false);
@@ -67,7 +68,6 @@ namespace Cauldron.Gargoyle
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            base.SetCardPropertyToTrueIfRealAction(FirstTimeWouldBeDealtDamage);
 
             yield break;
         }
