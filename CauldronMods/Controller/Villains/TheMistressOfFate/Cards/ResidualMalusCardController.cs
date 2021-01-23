@@ -15,6 +15,7 @@ namespace Cauldron.TheMistressOfFate
         {
             SpecialStringMaker.ShowNumberOfCardsAtLocation(() => environmentTTC.TurnTaker.Trash).Condition = () => Game.HasGameStarted;
             SpecialStringMaker.ShowHasBeenUsedThisTurn(CardPlayedKey);
+            SpecialStringMaker.ShowIfSpecificCardIsInPlay("WarpedMalus").Condition = () => Card.IsInPlayAndHasGameText;
         }
         private TurnTakerController environmentTTC => FindEnvironment();
         public override void AddTriggers()
@@ -55,7 +56,7 @@ namespace Cauldron.TheMistressOfFate
 
         private IEnumerator DestroyWarpedMalusResponse(DestroyCardAction dc)
         {
-            IEnumerator coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.Identifier == "WarpedMalus", "warped malus"), false, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.Identifier == "WarpedMalus", "Warped Malus"), false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

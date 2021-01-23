@@ -934,6 +934,20 @@ namespace CauldronTests
             DestroyCard(residual);
             AssertInTrash(warped);
         }
+
+        [Test]
+        public void TestResidualMalusOnDestructionEffect_NoWarpedMalus()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+            ResetRFGCards();
+
+            Card residual = PlayCard("ResidualMalus");
+            AssertNextMessage("There are no Warped Malus cards in play for Residual Malus to destroy.");
+            DestroyCard(residual);
+        }
         [Test]
         public void TestSameTimeAndPlaceDamage()
         {
