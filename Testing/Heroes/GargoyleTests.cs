@@ -1199,6 +1199,28 @@ namespace CauldronTests
             QuickHandCheck(0, 0, 0, 0);
             AssertNumberOfCardsInTrash(gargoyle, 2);
         }
+        [Test]
+        public void TestPreservationEngineRegainHPOncePerTurn()
+        {
+            Card bladeBattalion;
+            Card bladeBattalion2;
+
+            StartTestGame();
+
+            GoToUsePowerPhase(gargoyle);
+
+            PutIntoPlay("PreservationEngine");
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+            bladeBattalion2 = PutIntoPlay("BladeBattalion");
+            SetHitPoints(gargoyle, gargoyle.CharacterCard.MaximumHitPoints.Value - 2);
+            SetHitPoints(bladeBattalion, 1);
+            // Intentionally leaving out blade battalion since it will be destroyed and hit points will just reset to max.
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard);
+            DealDamage(gargoyle, bladeBattalion, 4, DamageType.Melee);
+            QuickHPCheck(0, 1, 0, 0, 0);
+            DealDamage(gargoyle, bladeBattalion2, 4, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, 0);
+        }
 
         #endregion Preservation Engine
 

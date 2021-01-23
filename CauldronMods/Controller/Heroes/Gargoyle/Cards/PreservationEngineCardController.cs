@@ -10,15 +10,16 @@ using Handelabra.Sentinels.Engine.Model;
 namespace Cauldron.Gargoyle
 {
     /*
-     * When {Gargoyle} destroys a target by reducing its HP below 0, increase the next damage dealt by {Gargoyle} by X and he regains 1HP, 
-     * where X is the amount of negative HP that target had.
+     * When {Gargoyle} destroys a target by reducing its HP below 0, increase the next damage dealt by {Gargoyle} by X, 
+     * where X is the amount of negative HP that target had. The first time this happens each turn, {Gargoyle} regains 1HP.
      * Powers
      * Discard 2 cards. Draw 2 cards
      */
     public class PreservationEngineCardController : GargoyleUtilityCardController
     {
         private int TotalCardsToDiscard => GetPowerNumeral(0, 2);
-        private int TotalCardsToDraw => GetPowerNumeral(0, 2);
+        private int TotalCardsToDraw => GetPowerNumeral(1, 2);
+        private const string HPGainKey = "PreservationEngineRegainHPKey";
 
         public PreservationEngineCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -28,6 +29,8 @@ namespace Cauldron.Gargoyle
         {
             base.AddTrigger<DestroyCardAction>(DestroyCardActionCriteria, DestroyCardActionResponse, TriggerType.DestroyCard, TriggerTiming.After);
             base.AddTriggers();
+
+            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(HPGainKey), TriggerType.Hidden);
         }
 
         public override IEnumerator UsePower(int index = 0)
@@ -87,15 +90,19 @@ namespace Cauldron.Gargoyle
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                // and he regains 1HP
-                coroutine = base.GameController.GainHP(this.CharacterCard, 1, cardSource: GetCardSource());
-                if (base.UseUnityCoroutines)
+                // The first time this happens each turn, Gargoyle regains 1HP.
+                if (!HasBeenSetToTrueThisTurn(HPGainKey))
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    SetCardPropertyToTrueIfRealAction(HPGainKey);
+                    coroutine = base.GameController.GainHP(this.CharacterCard, 1, cardSource: GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
 
