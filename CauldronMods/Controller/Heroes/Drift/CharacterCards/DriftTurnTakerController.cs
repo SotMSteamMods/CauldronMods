@@ -119,7 +119,7 @@ namespace Cauldron.Drift
                 }
 
                 //Then place 1 of your 2 character cards (1929 or 2199) next to that same space
-                base.GameController.AddCardPropertyJournalEntry(selectedDrift, "DriftPosition" + tokensToAdd, true);
+                base.GameController.AddCardPropertyJournalEntry(selectedTrack, "DriftPosition" + tokensToAdd, true);
             }
             yield break;
         }

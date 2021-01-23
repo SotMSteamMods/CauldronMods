@@ -234,7 +234,7 @@ namespace Cauldron.Drift
         private IEnumerator SwitchTrack()
         {
             string promoIdentifier = Base;
-            if (base.CharacterCardController is DualDriftCharacterCardController)
+            if (base.CharacterCardController is DualDriftSubCharacterCardController)
             {
                 promoIdentifier = Dual;
             }

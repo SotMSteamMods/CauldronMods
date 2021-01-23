@@ -31,17 +31,19 @@ namespace CauldronTests
         protected const string TransitionShock = "TransitionShock";
 
         protected const string ShiftTrack = "ShiftTrack";
+        protected const string PastDriftCharacter = "PastDriftCharacter";
+        protected const string FutureDriftCharacter = "FutureDriftCharacter";
 
         [Test()]
         [Order(0)]
-        public void TestDriftLoad()
+        public void TestDriftLoad_Dual()
         {
-            SetupGameController("BaronBlade", "Cauldron.Drift/DriftingShadowDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
 
             Assert.AreEqual(6, this.GameController.TurnTakerControllers.Count());
 
             Assert.IsNotNull(drift);
-            Assert.IsInstanceOf(typeof(DriftingShadowDriftCharacterCardController), drift.CharacterCardController);
+            Assert.IsInstanceOf(typeof(DualDriftCharacterCardController), drift.CharacterCardController);
 
             foreach (var card in drift.HeroTurnTaker.GetAllCards())
             {
@@ -49,42 +51,67 @@ namespace CauldronTests
                 Assert.IsTrue(cc.GetType() != typeof(CardController), $"{card.Identifier} is does not have a CardController");
             }
 
-            Assert.AreEqual(26, drift.CharacterCard.HitPoints);
+            //Assert.AreEqual(26, drift.CharacterCard.HitPoints);
+            AssertMaximumHitPoints(GetCard("PastDriftCharacter"), 15);
+            AssertMaximumHitPoints(GetCard("FutureDriftCharacter"), 16);
         }
 
         [Test()]
-        public void TestDriftCharacter_1609_InnatePower()
+        public void TestDriftCharacter_StartWithFuture()
         {
-            SetupGameController("BaronBlade", "Cauldron.Drift/DriftingShadowDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
-            SetHitPoints(drift, 17);
-            //At the start of your next turn, shift {DriftL} or {DriftR}, then draw a card or use a power.
+            AssertIsInPlay(FutureDriftCharacter);
+        }
 
-            DecisionSelectFunction = 1;
-            GoToUsePowerPhase(drift);
+        [Test, Ignore("Decisions before start don't seem to work. Tested in game and it works.")]
+        public void TestDriftCharacter_StartWithPast()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            DecisionSelectCard = GetCard(FutureDriftCharacter);
+            StartGame();
 
-            QuickHPStorage(drift);
-            QuickHandStorage(drift);
-            UsePower(drift);
-            QuickHPCheck(0);
-            QuickHandCheck(0);
+            AssertIsInPlay(PastDriftCharacter);
+        }
 
-            GoToEndOfTurn(baron);
-            QuickHPCheck(0);
-            QuickHandCheck(0);
+        [Test()]
+        public void TestDriftCharacter_SwitchActiveHero()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
 
-            GoToStartOfTurn(drift);
-            QuickHPCheck(0);
-            QuickHandCheck(0);
+            DecisionYesNo = true;
+            GoToPlayCardPhase(drift);
 
-            GoToStartOfTurn(drift);
+            AssertIsInPlay(PastDriftCharacter);
+            GoToPlayCardPhase(haka);
+
+            AssertIsInPlay(FutureDriftCharacter);
+        }
+
+        [Test()]
+        public void TestDriftCharacter_Dual_Past_InnatePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //Reveal the top 2 cards of 1 hero deck. Replace or discard each of them in any order. Shift {DriftLL}.
+        }
+
+        [Test()]
+        public void TestDriftCharacter_Dual_Future_InnatePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //Play an ongoing card. At the end of your next turn, return it from play to your hand. Shift {DriftRR}.
         }
 
         [Test()]
         public void TestDriftCharacter_Incap0()
         {
-            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("Apostate", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
             DestroyCard(drift);
@@ -113,7 +140,7 @@ namespace CauldronTests
         [Test()]
         public void TestDriftCharacter_Incap1()
         {
-            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("Apostate", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
             DestroyCard(drift);
@@ -130,7 +157,7 @@ namespace CauldronTests
         [Test()]
         public void TestDriftCharacter_Incap2()
         {
-            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("Apostate", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
             DestroyCard(drift);
@@ -154,7 +181,7 @@ namespace CauldronTests
         [Test]
         public void TestShiftTrackSetup()
         {
-            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             Card track = FindCardsWhere((Card c) => c.Identifier == "Base" + ShiftTrack + 1, false).FirstOrDefault();
             DecisionSelectCard = track;
             StartGame();
@@ -166,7 +193,7 @@ namespace CauldronTests
         [Test, Sequential, Ignore("Picking a ShiftTrack by Identifier always returns the first one. Testing in game confirms this works.")]
         public void TestShiftTrackSetup_Other([Values(2, 3, 4)] int decision)
         {
-            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             Card track = FindCardsWhere((Card c) => c.Identifier == ShiftTrack + decision, false).FirstOrDefault();
             DecisionSelectCard = track;
             StartGame();
