@@ -1,0 +1,272 @@
+{
+    "name": "Oblask Crater",
+    "kind": "Environment",
+    "expansionIdentifier": "Cauldron",
+    "backgroundColor": "52453E",
+    "difficulty": 2,
+    "cards": [
+        {
+            "identifier": "FreshTracks",
+            "count": 1,
+            "title": "Fresh Tracks",
+            "icons": [
+            ],
+            "body": [
+                "When this card enters play, reveal{BR}cards from the top of the environment{BR}deck until a target is revealed, place it{BR}beneath this card, and discard the rest.",
+                "Cards beneath this one are not{BR}considered in play. When a target{BR}enters play, the players may destroy{BR}this card to play the card beneath it"
+            ],
+            "flavorText": "Drift recognized the tracks; a glimpse{BR}into the recent past confirme{BR}their owner. \"If we need a monster, I{BR}suppose we know where to find one.\""
+        },
+        {
+            "identifier": "OblaskObjectY3A",
+            "count": 1,
+            "title": "Oblask Object Y-3A",
+            "keywords": [
+                "impact object"
+            ],
+            "icons": [
+                "Discard",
+                "RedirectDamage"
+            ],
+            "body": [
+                "Play this card next to a hero, then play{BR}the top card of the environment deck.",
+                "When the hero next to this card would{BR}be dealt damage by an environment{BR}target, they may discard a card. If they{BR}do, redirect that damage."
+            ],
+            "flavorText": "\"Such a little thing, to cause so much{BR}trouble,\" said Echelon, holding up the{BR}dented object. The nearby biomachines lifted their heads to follow her hand."
+        },
+        {
+            "identifier": "InscrutableEcology",
+            "count": 1,
+            "title": "InscrutableEcology",
+            "icons": [
+                "ReduceDamageDealt",
+                "StartOfTurnAction",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, reveal{BR}cards from the top of the environmnet{BR}deck until {H - 1} targets are revealed,{BR}put them into play, and discard the{BR}other revealed cards.",
+                "Reduce damage dealt by environment{BR}targets by 1. At the start of the{BR}environment turn, destroy this card."
+            ],
+            "flavorText": "As the massive flyer landed, every{BR}nearby machine paused and began to{BR}sway in unison, extending mechanical{BR}tendrils into the rocks around them."
+        },
+        {
+            "identifier": "GameTrail",
+            "count": 1,
+            "title": "Game Trail",
+            "keywords": [
+                "ecosystem"
+            ],
+            "icons": [
+                "DealDamageMelee"
+            ],
+            "body": [
+                "When this card enters play, play the top{BR}card of the environment deck.",
+                "Whenever a predator card destroys{BR}another target, that predator deals{BR}each hero {H - 2} melee damage."
+            ],
+            "flavorText": "\"What is wrong with the place?\" said{BR}Havoc. \"Everything's trying to kill{BR}everything else.\" Echelon chuckled.{BR}\"Feels just like back home.\""
+        },
+        {
+            "identifier": "OpenGround",
+            "count": 1,
+            "title": "Open Ground",
+            "keywords": [
+                "ecosystem"
+            ],
+            "icons": [
+                "IncreaseDamageDealt",
+                "RedirectDamage"
+            ],
+            "body": [
+                "Once per turn when a hero target{BR}would be dealt damage by a non-hero{BR}target, they may increase that damage{BR}by 1 and play the top card of the{BR}environment deck.",
+                "If that card is a target, redirect that{BR}damage to it."
+            ],
+            "flavorText": "As Drift considered the lack of cover,{BR}Gargoyle began crossing the clearing.{BR}\"We don't need to hide. We just need to\"be faster than the other edible things.\""
+        },
+        {
+            "identifier": "InvasiveGrowth",
+            "count": 1,
+            "title": "InvasiveGrowth",
+            "keywords": [
+                "ecosystem"
+            ],
+            "icons": [
+                "Indestructible"
+            ],
+            "body": [
+                "When this card enters play, discardd the{BR}top 2 cards of the enviroment deck,{BR}then put a random target from the{BR}environment trash into play.",
+                "When an environment target is{BR}destoryed, all other environment cards{BR}become indestructible until the start of{BR}the next turn."
+            ],
+            "flavorText": "In the months since the crater had come{BR}to life, all manner of strange machines{BR}appeared. some were almost plantlike,{BR}weaving veritable mazes of metal."
+        },
+        {
+            "identifier": "ShadowOfOblask",
+            "count": 1,
+            "title": "Shadow of Oblask",
+            "keywords": [
+                "biomachine",
+                "predator"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageEnergy",
+                "IncreaseDamageDealt"
+            ],
+            "body": [
+                "At the end of the environment turn, this{BR}card deals the hero target with the{BR}second lowest HP {H} energey damage.",
+                "If no other predator cards are in{BR}play, increase damage dealt by this{BR}card by 1."
+            ],
+            "flavorText": "the first teams to enter Oblask Crater{BR}after the biomachine activation event{BR]were picked off by what the survivors{BR}described as a giant living shadow.",
+            "hitpoints": 12
+        },
+        {
+            "identifier": "MetalScavenger",
+            "count": 1,
+            "title": "Metal Scavenger",
+            "keywords": [
+                "biomachine",
+                "predator"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageToxic",
+                "DealDamageFire"
+            ],
+            "body": [
+                "At the end of the environment turn,{BR}move the top card of each other trash{BR}pile beneath this card. Then, this card{BR}deals each other target 1 toxic damage{BR}and itself 1 fire damage.",
+                "Cards beneath this one are not{BR}considered in play."
+            ],
+            "flavorText": "As something within the crater continued{BR}to churn out new biomachines, it needed{BR}scavengers to harvest the remains of{BR}its failed designs.",
+            "hitpoints": 5
+        },
+        {
+            "identifier": "UnseenTerror",
+            "count": 1,
+            "title": "Unseen Terror",
+            "keywords": [
+                "biomachine",
+                "predator"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageCold",
+                "ImmuneToDamage"
+            ],
+            "body": [
+                "At the end of the environment turn, this{BR}card deals the 3 other targets with the{BR}highest hp {H - 2} cold damage each.",
+                "Until the end of the next environment{BR}turn, this card becomes immune to{BR}damage from targets that were not{BR}damaged this way."
+            ],
+            "flavorText": "\"We tracked the swarm eater here; I'm{BR}betting he wants to assimilate this stuff,\"{BR} said Cricket. \"But why's he going into{BR}the water? No robots in there...\"",
+            "hitpoints": 4
+        },
+        {
+            "identifier": "SwarmOfFangs",
+            "count": 1,
+            "title": "Swarm of Fangs",
+            "keywords": [
+                "biomachine",
+                "predator"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageMelee"
+            ],
+            "body": [
+                "At the end of the environment turn, this{BR}card deals the target other than itself{BR}with the lowest HP 2 melee damage.",
+                "If this damage destroys a target,{BR}repeat the text of this card."
+            ],
+            "flavorText": "A solitary creature hopped out from{BR}behind the rock, dancing on bladed{BR}limbs. Faint clicks and scrapes indicated{BR}more were on their way.",
+            "hitpoints": 2
+        },
+        {
+            "identifier": "MoonWatcher",
+            "count": 1,
+            "title": "Moon Watcher",
+            "keywords": [
+                "biomachine"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageSonic"
+            ],
+            "body": [
+                "At the end of the environment turn, this{BR}card deals each non-environment{BR}target 1 sonic damage.",
+                "When this card is destroyed, if it has 0{BR}or fewer HP, reveal the top card of{BR}each deck and replace or discard each{BR}one."
+            ],
+            "flavorText": "Antennas around the world picked up{BR}periodic emissions from the skies above{BR}Oblask. The signals seemed to be{BR}navigational, as if mapping the crater.",
+            "hitpoints": 15
+        },
+        {
+            "identifier": "IndustriousHulk",
+            "count": 1,
+            "title": "Industrious Hulk",
+            "keywords": [
+                "biomachine"
+            ],
+            "icons": [
+                "DealDamageMelee"
+            ],
+            "body": [
+                "Whenever a hero draws a card, this{BR}card deals them 1 melee damage.",
+                "When this card is destroyed, each{BR}player may put the top card of their{BR}deck into their hand."
+            ],
+            "flavorText": "Each biomachine had been created for a{BR}specfic purpose. Sturdy hulks were{BR}observed gathering the remnants of the{BR}original oblask impact object.",
+            "hitpoints": 8
+        },
+        {
+            "identifier": "GentleTransport",
+            "count": 1,
+            "title": "Gentle Transport",
+            "keywords": [
+                "biomachine"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "DealDamageMelee",
+                "UsePowerNow"
+            ],
+            "body": [
+                "At the end of the environment turn,{BR}move this card next to a hero. Then the{BR}predator card with the highest HP deals{BR}each target in this card's play area{BR}{H - 1} melee damage.",
+                "If the hero next to this card plays a{BR}card with a power on it, they may{BR}immediately use a power on that card."
+            ],
+            "flavorText": "\"This is ridiculous. You can teleport,\"{BR}said Pyre. Vanish, clinging to the{BR}machine's neck, replied, \"It's nice to not{}be the group transportation, for once.\"",
+            "hitpoints": 5
+        },
+        {
+            "identifier": "PlatedGiant",
+            "count": 1,
+            "title": "PlatedGiant",
+            "keywords": [
+                "biomachine"
+            ],
+            "icons": [
+                "ImmuneToDamage",
+                "DealDamageMelee"
+            ],
+            "body": [
+                "Play this card next to a hero. The hero{BR}next to this card is immune to damage{BR}from enviroment targets other than{BR}this one.",
+                "At the end of the environment turn, this{BR}card deals the hero next to it {H - 1} melee damage."
+            ],
+            "flavorText": "The angry biomachine lashed out with its{BR}energized tail. Dodging the attack, Unity{BR}noticed that the hovering predators did{BR}not seem eager to engage it either.",
+            "hitpoints": 5
+        },
+        {
+            "identifier": "UnknownHerds",
+            "count": 1,
+            "title": "UnknownHerds",
+            "keywords": [
+                "biomachine"
+            ],
+            "icons": [
+                "EndOfTurnAction",
+                "UsePowerNow",
+                "GainHP"
+            ],
+            "body": [
+                "At the end of the environment turn, if{BR}there are 0 or 1 predator cards in{BR}play, 1 hero may use a power that does{BR}not deal damage.",
+                "When this card is destroyed, each{BR}predator and villain target regains {H} HP."
+            ],
+            "flavorText": "Gyrosaur moved slowly, something she{BR}was not good at. The herd spooked{BR}easily, and were constantly scanning{BR}for signs of other biomachines.",
+            "hitpoints": 4
+        }
+    ]
+}
