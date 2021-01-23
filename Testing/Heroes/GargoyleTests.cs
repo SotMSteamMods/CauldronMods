@@ -1239,6 +1239,7 @@ namespace CauldronTests
             StartTestGame();
 
             bladeBattalion = PutIntoPlay("BladeBattalion");
+            MoveAllCardsFromHandToDeck(gargoyle);
             somethingToFear = PutInHand("SomethingToFear");
 
             GoToPlayCardPhase(gargoyle);
@@ -1268,6 +1269,7 @@ namespace CauldronTests
             StartTestGame();
 
             bladeBattalion = PutIntoPlay("BladeBattalion");
+            MoveAllCardsFromHandToDeck(gargoyle);
             somethingToFear = PutInHand("SomethingToFear");
 
             GoToPlayCardPhase(gargoyle);

@@ -69,7 +69,7 @@ namespace Cauldron.Gargoyle
             }
 
             // Search your deck and trash for a Hunter card and put it into play or into your hand. If you searched your deck, shuffle it.
-            coroutine = base.SearchForCards(DecisionMaker, true, true, 1, 1, new LinqCardCriteria((card) => card.DoKeywordsContain(HUNTER), "Hunter"), true, true, false, shuffleAfterwards: true);
+            coroutine = base.SearchForCards(DecisionMaker, true, true, 1, 1, new LinqCardCriteria((card) => card.DoKeywordsContain(HUNTER), "Hunter"), true, true, false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
