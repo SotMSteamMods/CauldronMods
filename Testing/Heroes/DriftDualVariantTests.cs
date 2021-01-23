@@ -81,6 +81,8 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
+            AssertIsInPlay(FutureDriftCharacter);
+
             DecisionYesNo = true;
             GoToPlayCardPhase(drift);
 
@@ -96,7 +98,12 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
+            DecisionYesNo = true;
+            GoToPlayCardPhase(drift);
+
             //Reveal the top 2 cards of 1 hero deck. Replace or discard each of them in any order. Shift {DriftLL}.
+            int shiftPosition = CurrentShiftPosition();
+            UsePower(drift);
         }
 
         [Test()]
@@ -105,7 +112,17 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
+            Card fFocus = PutInHand(FutureFocus);
+            DecisionSelectCard = fFocus;
+
             //Play an ongoing card. At the end of your next turn, return it from play to your hand. Shift {DriftRR}.
+            int shiftPosition = CurrentShiftPosition();
+            UsePower(drift);
+            AssertIsInPlay(fFocus);
+            AssertTrackPosition(shiftPosition + 2);
+
+            GoToEndOfTurn(drift);
+            AssertInHand(fFocus);
         }
 
         [Test()]
