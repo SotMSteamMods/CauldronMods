@@ -12,6 +12,7 @@ namespace Cauldron.TheMistressOfFate
     {
         public DayOfSaintsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroCharacterCardWithLowestHP();
         }
         protected override IEnumerator DayFlipFaceUpEffect()
         {
