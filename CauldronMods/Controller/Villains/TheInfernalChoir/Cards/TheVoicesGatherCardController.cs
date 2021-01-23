@@ -22,16 +22,8 @@ namespace Cauldron.TheInfernalChoir
          */
         public override IEnumerator Play()
         {
-            DebugHeartStatus();
-
-            GameController._triggerManager.DEBUG_PrintTriggers(false);
-
-
             List<RevealCardsAction> results = new List<RevealCardsAction>();
             var coroutine = GameController.RevealCards(TurnTakerController, TurnTaker.Deck, c => c.IsTarget, 1, results, RevealedCardDisplay.ShowMatchingCards, cardSource: GetCardSource());
-
-            DebugHeartStatus();
-
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -40,8 +32,6 @@ namespace Cauldron.TheInfernalChoir
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
-            DebugHeartStatus();
 
             Card target = null;
             var result = results.FirstOrDefault();
@@ -63,8 +53,6 @@ namespace Cauldron.TheInfernalChoir
                     target = playResult.First().CardToPlay;
                 }
             }
-
-            DebugHeartStatus();
 
             coroutine = GameController.MoveCards(TurnTakerController, result.NonMatchingCards, TurnTaker.Trash, isDiscard: true, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
@@ -88,8 +76,6 @@ namespace Cauldron.TheInfernalChoir
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-
-            DebugHeartStatus();
 
             var h1 = TurnTaker.FindCard(VagrantHeartHiddenHeartIdentifier, false);
             var h2 = TurnTaker.FindCard(VagrantHeartSoulRevealedIdentifier, false);
