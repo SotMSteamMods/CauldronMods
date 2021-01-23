@@ -19,7 +19,7 @@ namespace Cauldron.Gargoyle
 
         public YourStrengthIsMineCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            this.NextToCardCriteria = new LinqCardCriteria((Card c) => c.IsTarget, "targets", useCardsSuffix: false);
+            this.NextToCardCriteria = new LinqCardCriteria((Card c) => c.IsTarget, "", useCardsSuffix: false, singular: "target", plural: "targets");
             SelfDestructTrigger = null;
         }
 
@@ -53,10 +53,10 @@ namespace Cauldron.Gargoyle
         public override void AddTriggers()
         {
             // You may destroy this card at any time.
-            base.AddTrigger<DealDamageAction>((dda) => base.IsThisCardNextToCard(dda.DamageSource.Card) || dda.DamageSource.Card == base.CharacterCard, DealDamageActionResponse, new TriggerType[] { TriggerType.DestroyCard, TriggerType.CancelAction, TriggerType.DealDamage }, TriggerTiming.Before, isConditional: true, isActionOptional:true);
+            base.AddTrigger<DealDamageAction>((dda) => base.IsThisCardNextToCard(dda.DamageSource.Card) || dda.DamageSource.Card == base.CharacterCard, DealDamageActionResponse, new TriggerType[] { TriggerType.ModifyDamageAmount }, TriggerTiming.Before, isConditional: true, isActionOptional:true);
 
             // When this card is destroyed, reduce the next damage dealt by that target by 2 and increase the next damage dealt by {Gargoyle} by 2.
-            SelfDestructTrigger =  base.AddWhenDestroyedTrigger(CardDestroyedResponse, TriggerType.ModifyDamageAmount);
+            SelfDestructTrigger =  base.AddWhenDestroyedTrigger(CardDestroyedResponse, TriggerType.CreateStatusEffect);
 
             AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(alsoRemoveTriggersFromThisCard: false);
         }
@@ -108,13 +108,12 @@ namespace Cauldron.Gargoyle
         {
             IEnumerator coroutine;
             ReduceDamageStatusEffect reduceDamageStatusEffect;
-            DealDamageAction actualDealDamageAction = new DealDamageAction(dealDamageAction);
 
             // When this card is destroyed, reduce the next damage dealt by that target by 2
             if (target != null)
             {
                 reduceDamageStatusEffect = new ReduceDamageStatusEffect(2);
-
+                reduceDamageStatusEffect.UntilTargetLeavesPlay(target);
                 reduceDamageStatusEffect.SourceCriteria.IsSpecificCard = target;
                 reduceDamageStatusEffect.NumberOfUses = 1;
 
@@ -130,7 +129,14 @@ namespace Cauldron.Gargoyle
             }
 
             // and increase the next damage dealt by {Gargoyle} by 2.
-            coroutine = base.IncreaseGargoyleNextDamage(2);
+            if (dealDamageAction.DamageSource.IsSameCard(CharacterCard))
+            {
+                coroutine = GameController.IncreaseDamage(dealDamageAction, 2, cardSource: GetCardSource());
+            }
+            else
+            {
+                coroutine = base.IncreaseGargoyleNextDamage(2);
+            }
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -154,10 +160,10 @@ namespace Cauldron.Gargoyle
                 target = base.GetCardThisCardIsNextTo();
 
                 // When this card is destroyed, reduce the next damage dealt by that target by 2
-                if (target != null && target.IsActive)
+                if (target != null && target.IsTarget)
                 {
                     reduceDamageStatusEffect = new ReduceDamageStatusEffect(2);
-
+                    reduceDamageStatusEffect.UntilTargetLeavesPlay(target);
                     reduceDamageStatusEffect.SourceCriteria.IsSpecificCard = target;
                     reduceDamageStatusEffect.NumberOfUses = 1;
 

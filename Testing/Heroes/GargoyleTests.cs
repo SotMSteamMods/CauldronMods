@@ -1752,6 +1752,34 @@ namespace CauldronTests
             DealDamage(baron.CharacterCard, gargoyle.CharacterCard, 2, DamageType.Toxic);
             QuickHPCheck(-2, -2, 0, 0, 0);
         }
+        [Test]
+        public void TestYourStrengthIsMineOtherDestroySource()
+        {
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            Card ysim = PutIntoPlay("YourStrengthIsMine");
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+
+            DestroyCard(ysim);
+            AssertNumberOfStatusEffectsInPlay(2);
+
+        }
+        [Test]
+        public void TestYourStrengthIsMineNonCharacterOtherDestroy()
+        {
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+            Card redist = PlayCard("ElementalRedistributor");
+            DecisionSelectCard = redist;
+            Card ysim = PutIntoPlay("YourStrengthIsMine");
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+
+            DestroyCard(ysim);
+            AssertNumberOfStatusEffectsInPlay(2);
+        }
         #endregion Your Strength is Mine
     }
 }
