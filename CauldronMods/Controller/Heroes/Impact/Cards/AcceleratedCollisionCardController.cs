@@ -25,6 +25,7 @@ namespace Cauldron.Impact
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+
             //"You may play a card."
             coroutine = SelectAndPlayCardFromHand(DecisionMaker);
             if (base.UseUnityCoroutines)

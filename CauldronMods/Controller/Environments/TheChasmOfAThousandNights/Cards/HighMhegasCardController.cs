@@ -12,6 +12,13 @@ namespace Cauldron.TheChasmOfAThousandNights
     {
         public HighMhegasCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: 3);
+        }
+
+        public override void AddTriggers()
+        {
+            //At the end of the environment turn, this card deals the 3 hero targets with the highest HP 2 melee damage each.
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => c.IsHero && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.HighestHP, 2, DamageType.Melee, numberOfTargets: 3);
         }
     }
 }
