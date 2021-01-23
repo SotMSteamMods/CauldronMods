@@ -632,7 +632,7 @@ namespace CauldronTests
          *  {Gargoyle} deals 1 target 1 toxic damage. If that target takes damage this way, {Gargoyle} deals X other targets 2 toxic damage each."
          */
         [Test]
-        public void TestDreamcatcher()
+        public void TestDreamcatcher([Values(0, 1, 2, 3)] int reduction)
         {
             Card dreamcatcher;
 
@@ -648,12 +648,75 @@ namespace CauldronTests
 
             QuickHandStorage(gargoyle, legacy, scholar, bunker);
             QuickHPStorage(baron, gargoyle, legacy, scholar, bunker);
+            DecisionSelectFunctions = new int?[] { reduction }; // x = 3
+            DecisionSelectTargets = new Card[] { gargoyle.CharacterCard, baron.CharacterCard, legacy.CharacterCard, scholar.CharacterCard };
+            PlayCard(dreamcatcher);
+            // Gargoyle should have gained 2 cards. So -1 card played +2 cards gained would be a net +1
+            QuickHandCheck(1, 0, 0, 0);
+
+            var selfDamage = -4 + reduction;
+            var excessDamage = new List<int>();
+            for(int i = 0; i < 3; i++)
+            {
+                if(i < reduction)
+                {
+                    excessDamage.Add(-5);
+                }
+                else
+                {
+                    excessDamage.Add(0);
+                }
+            }
+            QuickHPCheck(excessDamage[0], selfDamage, excessDamage[1], excessDamage[2], 0);
+        }
+        [Test]
+        public void TestDreamcatcherNoDamage()
+        {
+            Card dreamcatcher;
+
+            StartTestGame("BaronBlade", "Cauldron.Gargoyle", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            PutOnDeck(gargoyle, gargoyle.HeroTurnTaker.Hand.Cards);
+            dreamcatcher = PutInHand("Dreamcatcher");
+
+            UsePower(legacy); // increase hero damage by 1
+
+            GoToPlayCardPhase(gargoyle);
+
+            QuickHandStorage(gargoyle, legacy, scholar, bunker);
+            QuickHPStorage(baron, gargoyle, legacy, scholar, bunker);
             DecisionSelectFunctions = new int?[] { 3 }; // x = 3
             DecisionSelectTargets = new Card[] { gargoyle.CharacterCard, baron.CharacterCard, legacy.CharacterCard, scholar.CharacterCard };
             PlayCard(dreamcatcher);
             // Gargoyle should have gained 2 cards. So -1 card played +2 cards gained would be a net +1
             QuickHandCheck(1, 0, 0, 0);
-            QuickHPCheck(-5, -1, -5, -5, 0);
+
+            //self-damage was 1 + 1 - 3 <= 0, so no damage dealt and we don't get the extra hits 
+            QuickHPCheckZero();
+        }
+        [Test]
+        public void TestDreamcatcherDamageRedirected()
+        {
+            Card dreamcatcher;
+
+            StartTestGame("BaronBlade", "Cauldron.Gargoyle", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            PutOnDeck(gargoyle, gargoyle.HeroTurnTaker.Hand.Cards);
+            dreamcatcher = PutInHand("Dreamcatcher");
+
+            UsePower(legacy); // increase hero damage by 1
+            PutIntoPlay("InspiringPresence"); // Increase hero damage by 1
+            PutIntoPlay("CrampedQuartersCombat"); // increase all damage by 1 and make it melee
+            PutIntoPlay("AlchemicalRedirection"); //redirect self-damage to Scholar
+
+            GoToPlayCardPhase(gargoyle);
+
+            QuickHandStorage(gargoyle, legacy, scholar, bunker);
+            QuickHPStorage(baron, gargoyle, legacy, scholar, bunker);
+            DecisionSelectFunctions = new int?[] { 3 }; // x = 3
+            DecisionSelectTargets = new Card[] { gargoyle.CharacterCard, baron.CharacterCard, legacy.CharacterCard, scholar.CharacterCard };
+            PlayCard(dreamcatcher);
+            // Gargoyle should have gained 2 cards. So -1 card played +2 cards gained would be a net +1
+            QuickHandCheck(1, 0, 0, 0);
+            QuickHPCheck(0, 0, 0, -1, 0);
         }
         #endregion
 

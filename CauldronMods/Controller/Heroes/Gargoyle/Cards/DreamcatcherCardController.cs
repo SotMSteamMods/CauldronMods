@@ -27,8 +27,6 @@ namespace Cauldron.Gargoyle
             List<SelectFunctionDecision> storedResults = new List<SelectFunctionDecision>();
             List<SelectCardDecision> storedCardResults = new List<SelectCardDecision>();
             List<DealDamageAction> storedResultsDamage = new List<DealDamageAction>();
-            List<string> damagedTargetIdentifiers;
-            string selectedIdentifier;
             int valueOfX = 0;
 
             // Draw 2 cards.
@@ -78,16 +76,15 @@ namespace Cauldron.Gargoyle
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (valueOfX > 0 && storedCardResults != null && storedCardResults.Count() > 0 && storedResultsDamage != null && storedResultsDamage.Count((dda)=>dda.DidDealDamage == true) > 0)
+            if (valueOfX > 0 && storedCardResults != null && storedCardResults.Any() && storedResultsDamage != null && storedResultsDamage.Any((dda) => dda.DidDealDamage))
             {
-                // If that target takes damage this way, 
-                damagedTargetIdentifiers = storedResultsDamage.Where((dda) => dda.DidDealDamage == true).Select((dda) => dda.Target.Identifier).ToList();
-                if (storedCardResults.Count(scd=> damagedTargetIdentifiers.Contains(scd.SelectedCard.Identifier)) > 0)
-                {
-                    selectedIdentifier = storedCardResults.Select(scd => scd.SelectedCard.Identifier).FirstOrDefault();
+                var selectedCard = storedCardResults.FirstOrDefault().SelectedCard;
 
+                // If that target takes damage this way, 
+                if (storedResultsDamage.FirstOrDefault().Target == selectedCard)
+                {
                     // {Gargoyle} deals X other targets 2 toxic damage each.
-                    coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 2, DamageType.Toxic, valueOfX, false, valueOfX,additionalCriteria: (card)=>card.Identifier != selectedIdentifier, storedResultsDecisions: storedCardResults, storedResultsDamage: storedResultsDamage, cardSource: base.GetCardSource());
+                    coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 2, DamageType.Toxic, valueOfX, false, valueOfX, additionalCriteria: (card)=> card != selectedCard, storedResultsDecisions: storedCardResults, storedResultsDamage: storedResultsDamage, cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
