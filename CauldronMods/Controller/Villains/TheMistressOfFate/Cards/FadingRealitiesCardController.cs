@@ -12,6 +12,7 @@ namespace Cauldron.TheMistressOfFate
     {
         public FadingRealitiesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroCharacterCardWithLowestHP(ranking: 2);
         }
 
         public override IEnumerator Play()
