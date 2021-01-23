@@ -874,6 +874,7 @@ namespace CauldronTests
             StartTestGame();
 
             GoToPlayCardPhase(gargoyle);
+            MoveAllCardsFromHandToDeck(scholar);
 
             beeBot = PutInHand(unity, "BeeBot");
             markForExecution = PutInHand(gargoyle, "MarkForExecution");
@@ -888,6 +889,47 @@ namespace CauldronTests
             PlayCard(grimHerald);
             QuickHPCheck(-3, 0, 0, 0, 0);
             QuickHandCheck(0, -1, 0, 0);
+        }
+        [Test]
+        public void TestGrimHeraldPlayOrDrawOptional()
+        {
+            Card beeBot;
+            Card markForExecution;
+            Card grimHerald;
+
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            beeBot = PutInHand(unity, "BeeBot");
+            markForExecution = PutInHand(gargoyle, "MarkForExecution");
+            grimHerald = PutInHand(gargoyle, "GrimHerald");
+
+            DecisionSelectTurnTakers = new TurnTaker[] { unity.TurnTaker };
+            DecisionSelectCards = new Card[] { baron.CharacterCard, beeBot, markForExecution };
+            DecisionDoNotSelectFunction = true;
+
+            QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
+            QuickHandStorage(gargoyle, unity, bunker, scholar);
+            PlayCard(grimHerald);
+            QuickHPCheck(-3, 0, 0, 0, 0);
+            QuickHandCheck(-1, -1, 0, 0);
+        }
+        [Test]
+        public void TestGrimHeraldExcludeHeroWithNoCardInHand()
+        {
+            Card grimHerald;
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+            grimHerald = PutInHand(gargoyle, "GrimHerald");
+
+            MoveAllCardsFromHandToDeck(unity);
+            MoveAllCardsFromHandToDeck(scholar);
+            MoveAllCardsFromHandToDeck(bunker);
+
+            AssertMaxNumberOfDecisions(1);
+            PlayCard(grimHerald);
         }
 
         #endregion Grim Herald

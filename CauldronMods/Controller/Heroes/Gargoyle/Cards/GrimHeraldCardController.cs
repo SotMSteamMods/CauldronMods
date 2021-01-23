@@ -36,7 +36,7 @@ namespace Cauldron.Gargoyle
             
             // One other player may discard a card,
             var selectTurnTakers = new SelectTurnTakersDecision(GameController, DecisionMaker,
-                                                new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && tt != base.TurnTaker && !tt.IsIncapacitatedOrOutOfGame),
+                                                new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && tt != base.TurnTaker && !tt.IsIncapacitatedOrOutOfGame && tt.ToHero().Hand.HasCards, "other heroes with cards in hand"),
                                                 SelectionType.DiscardCard, numberOfTurnTakers: 1,isOptional: false, requiredDecisions: 0, cardSource: GetCardSource());
             coroutine = GameController.SelectTurnTakersAndDoAction(selectTurnTakers, (TurnTaker tt) => base.SelectAndDiscardCards(FindHeroTurnTakerController(tt.ToHero()), 1, false, 0, storedResults: storedResultsDiscard), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
@@ -51,16 +51,7 @@ namespace Cauldron.Gargoyle
             // If they do, you may play a card or draw a card now.
             if (base.DidDiscardCards(storedResultsDiscard))
             {
-                functionChoices = new Function[]
-                {
-				    //Play a card...
-				    new Function(base.HeroTurnTakerController, "Play a card", SelectionType.PlayCard, () => base.GameController.SelectAndPlayCardFromHand(DecisionMaker, false, cardSource: base.GetCardSource())),
-
-				    //...or draw a card.
-				    new Function(base.HeroTurnTakerController, "Draw a card", SelectionType.DrawCard, () => base.DrawCard())
-                };
-                selectFunction = new SelectFunctionDecision(base.GameController, DecisionMaker, functionChoices, false);
-                coroutine = base.GameController.SelectAndPerformFunction(selectFunction);
+                coroutine = DrawACardOrPlayACard(DecisionMaker, true);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
