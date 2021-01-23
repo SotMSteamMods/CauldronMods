@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Gargoyle
 {
-    public class FutureGargoyleCharacterCardController : HeroCharacterCardController
+    public class FutureGargoyleCharacterCardController : GargoyleUtilityCharacterCardController
     {
         private int HeroOngoingOrEquipmentAmount => GetPowerNumeral(0, 1);
         private int PlayerAmount => GetPowerNumeral(1, 1);

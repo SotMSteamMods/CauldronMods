@@ -14,6 +14,7 @@ namespace Cauldron.Gargoyle
     {
         public EssenceTheftCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(TotalNextDamageBoostString);
         }
 
         public override IEnumerator Play()

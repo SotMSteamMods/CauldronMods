@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Gargoyle
 {
-    public class WastelandRoninGargoyleCharacterCardController : HeroCharacterCardController
+    public class WastelandRoninGargoyleCharacterCardController : GargoyleUtilityCharacterCardController
     {
         private int PowerTargetAmount => GetPowerNumeral(0, 1);
         private int PowerDamageAmount => GetPowerNumeral(1, 2);

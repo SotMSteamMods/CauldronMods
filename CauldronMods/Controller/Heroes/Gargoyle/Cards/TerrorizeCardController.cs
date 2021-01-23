@@ -16,6 +16,8 @@ namespace Cauldron.Gargoyle
     {
         public TerrorizeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(TotalNextDamageBoostString);
+            SpecialStringMaker.ShowSpecialString(TargetsDamagedThisTurn);
         }
 
         public override void AddTriggers()
@@ -56,6 +58,26 @@ namespace Cauldron.Gargoyle
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+        }
+        private bool HasDamagedTargetThisTurn(Card c)
+        {
+            return Journal.DealDamageEntriesThisTurn().Any((DealDamageJournalEntry ddj) => ddj.SourceCard == this.CharacterCard && ddj.TargetCard == c);
+        }
+
+        private string TargetsDamagedThisTurn()
+        {
+            string start = $"Targets dealt damage by {this.TurnTaker.Name} this turn: ";
+            var damagedTargets = GameController.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsTarget && HasDamagedTargetThisTurn(c)), visibleToCard: GetCardSource());
+            string end;
+            if (damagedTargets.FirstOrDefault() == null)
+            {
+                end = "None";
+            }
+            else
+            {
+                end = string.Join(", ", damagedTargets.Select(c => c.Title).ToArray());
+            }
+            return start + end + ".";
         }
     }
 }

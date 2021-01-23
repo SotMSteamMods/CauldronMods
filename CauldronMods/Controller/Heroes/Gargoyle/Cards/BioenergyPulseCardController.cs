@@ -19,6 +19,7 @@ namespace Cauldron.Gargoyle
 
         public BioenergyPulseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(TotalNextDamageBoostString);
         }
 
         public override void AddTriggers()

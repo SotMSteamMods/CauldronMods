@@ -18,6 +18,7 @@ namespace Cauldron.Gargoyle
         public override bool AllowFastCoroutinesDuringPretend => HasBeenSetToTrueThisTurn(FirstTimeWouldBeDealtDamage);
         public ViolentAssistCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHasBeenUsedThisTurn(FirstTimeWouldBeDealtDamage);
         }
 
         public override void AddTriggers()

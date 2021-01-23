@@ -16,6 +16,7 @@ namespace Cauldron.Gargoyle
     {
         public UltimatumCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(TotalNextDamageBoostString);
         }
 
         public override IEnumerator Play()

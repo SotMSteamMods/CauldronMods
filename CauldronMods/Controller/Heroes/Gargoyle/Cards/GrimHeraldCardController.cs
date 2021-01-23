@@ -14,6 +14,7 @@ namespace Cauldron.Gargoyle
         //"One other player may discard a card. If they do, you may play a card or draw a card now."
         public GrimHeraldCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(TotalNextDamageBoostString);
         }
 
         public override IEnumerator Play()

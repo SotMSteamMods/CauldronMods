@@ -1517,14 +1517,14 @@ namespace CauldronTests
         {
             Card ammoDrop;
             Card modularWorkbench;
-            Card leechField;
+            Card fleshToIron;
 
             StartTestGame();
 
             GoToPlayCardPhase(gargoyle);
             ammoDrop = PutIntoPlay("AmmoDrop");
             modularWorkbench = PutIntoPlay("ModularWorkbench");
-            leechField = PutIntoPlay("LeechField");
+            fleshToIron = PutIntoPlay("FleshToIron");
 
             DecisionSelectCards = new Card[] { ammoDrop, modularWorkbench, null, baron.CharacterCard };
             QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
@@ -1536,16 +1536,16 @@ namespace CauldronTests
         {
             Card ammoDrop;
             Card modularWorkbench;
-            Card leechField;
+            Card fleshToIron;
 
             StartTestGame();
 
             GoToPlayCardPhase(gargoyle);
             ammoDrop = PutIntoPlay("AmmoDrop");
             modularWorkbench = PutIntoPlay("ModularWorkbench");
-            leechField = PutIntoPlay("LeechField");
+            fleshToIron = PutIntoPlay("FleshToIron");
 
-            DecisionSelectCards = new Card[] { ammoDrop, modularWorkbench, leechField, baron.CharacterCard };
+            DecisionSelectCards = new Card[] { ammoDrop, modularWorkbench, fleshToIron, baron.CharacterCard };
             QuickHPStorage(baron, gargoyle, unity, bunker, scholar);
             PlayCard("Ultimatum");
             QuickHPCheck(-9, 0, 0, 0, 0);

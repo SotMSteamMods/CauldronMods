@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Gargoyle
 {
-    public class GargoyleCharacterCardController : HeroCharacterCardController
+    public class GargoyleCharacterCardController : GargoyleUtilityCharacterCardController
     {
         private const int REDUCE_DAMAGE_POWER = 1;
         private const int REDUCE_DAMAGE_INCAP = 2;

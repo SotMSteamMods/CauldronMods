@@ -19,6 +19,7 @@ namespace Cauldron.Gargoyle
 
         public AbsorbAndUnleashCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(TotalNextDamageBoostString);
         }
 
         public override IEnumerator Play()

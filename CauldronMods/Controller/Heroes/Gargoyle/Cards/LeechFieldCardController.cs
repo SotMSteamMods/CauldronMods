@@ -16,6 +16,7 @@ namespace Cauldron.Gargoyle
 
         public LeechFieldCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHasBeenUsedThisTurn(FirstTimeWouldBeDealtDamage);
         }
 
         public override bool AllowFastCoroutinesDuringPretend

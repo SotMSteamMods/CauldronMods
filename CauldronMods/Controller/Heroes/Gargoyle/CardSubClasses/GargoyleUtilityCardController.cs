@@ -26,5 +26,24 @@ namespace Cauldron.Gargoyle
 
             return base.AddStatusEffect(increaseDamageStatusEffect);
         }
+
+        protected string TotalNextDamageBoostString()
+        {
+            var allDamageBoosts = GameController.StatusEffectManager.StatusEffectControllers.Where(sec => sec.StatusEffect is IncreaseDamageStatusEffect);
+            int totalBoost = 0;
+            foreach(StatusEffectController sec in allDamageBoosts)
+            {
+                var thisEffect = sec.StatusEffect as IncreaseDamageStatusEffect;
+                if(thisEffect.SourceCriteria.IsSpecificCard == CharacterCard && thisEffect.NumberOfUses == 1)
+                {
+                    totalBoost += thisEffect.Amount;
+                }
+            }
+            if(totalBoost == 0)
+            {
+                return $"{TurnTaker.Name} has no temporary damage boosts.";
+            }
+            return $"{TurnTaker.Name}'s next damage will be increased by {totalBoost}.";
+        }
     }
 }

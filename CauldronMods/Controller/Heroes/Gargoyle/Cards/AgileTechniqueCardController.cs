@@ -6,7 +6,6 @@ using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
-//DECKLIST EDIT: third damage now "damage dealt to that hero + 1"
 namespace Cauldron.Gargoyle
 {
     // Power
@@ -20,6 +19,7 @@ namespace Cauldron.Gargoyle
 
         public AgileTechniqueCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(TotalNextDamageBoostString);
         }
 
         public override IEnumerator UsePower(int index = 0)

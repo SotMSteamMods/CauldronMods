@@ -23,6 +23,7 @@ namespace Cauldron.Gargoyle
 
         public PreservationEngineCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHasBeenUsedThisTurn(HPGainKey);
         }
 
         public override void AddTriggers()

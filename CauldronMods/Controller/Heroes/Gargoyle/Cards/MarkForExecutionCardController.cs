@@ -17,6 +17,7 @@ namespace Cauldron.Gargoyle
         public MarkForExecutionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.AddAsPowerContributor();
+            SpecialStringMaker.ShowSpecialString(TotalNextDamageBoostString);
         }
 
         public override void AddTriggers()
