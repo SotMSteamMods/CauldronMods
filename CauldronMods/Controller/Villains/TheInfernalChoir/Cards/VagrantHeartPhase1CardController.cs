@@ -76,7 +76,7 @@ namespace Cauldron.TheInfernalChoir
             AddTrigger<MoveCardAction>(mca => mca.Origin == VagrantDeck && mca.Destination != VagrantDeck && mca.WasCardMoved && !VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
             AddTrigger<PlayCardAction>(pca => pca.WasCardPlayed && pca.CardToPlay.Owner == VagrantTurnTaker && !VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
             AddTrigger<DrawCardAction>(dca => dca.DidDrawCard && dca.HeroTurnTaker == VagrantTurnTaker && !VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
-            AddTrigger<BulkMoveCardsAction>(bmca => VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
+            AddTrigger<BulkMoveCardsAction>(bmca => !VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
 
             // "If the Hero is Incapacitated or Vagrant Heart leaves play, the heroes lose. Game over."
             AddTrigger<TargetLeavesPlayAction>(tlpa => tlpa.TargetLeavingPlay.Owner == VagrantTurnTaker && VagrantTurnTaker.IsIncapacitatedOrOutOfGame, VagrantHeartGameOver, TriggerType.GameOver, TriggerTiming.After);

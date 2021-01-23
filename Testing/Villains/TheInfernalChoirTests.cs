@@ -832,8 +832,9 @@ namespace CauldronTests
 
             var card = PlayCard("WretchedSymphony", 0, true);
             AssertInPlayArea(choir, card);
-
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, mainstay, writhe, medico, idealist, card);
             GoToEndOfTurn(choir);
+            QuickHPCheck(0, 0, 0, 0, 0, 0, 0, 0);
             AssertHitPoints(g1, g1.MaximumHitPoints.Value);
             AssertHitPoints(g2, g2.MaximumHitPoints.Value);
         }
@@ -921,6 +922,8 @@ namespace CauldronTests
         [Test()]
         public void TestTheVoicesGather_HiddenHeart()
         {
+            Handelabra.Log.ToggleAllLogs(true);
+
             SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis");
             //choir.DebugForceHeartPlayer = legacy;
             StartGame();

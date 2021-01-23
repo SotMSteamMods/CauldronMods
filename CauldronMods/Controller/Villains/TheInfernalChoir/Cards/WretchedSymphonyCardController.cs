@@ -12,7 +12,7 @@ namespace Cauldron.TheInfernalChoir
     {
         public WretchedSymphonyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowIfSpecificCardIsInPlay(() => FindVagrantHeartHiddenSoul() ?? FindVagrantHeartSoulRevealed());
+            SpecialStringMaker.ShowIfSpecificCardIsInPlay(() => FindVagrantHeartHiddenHeart() ?? FindVagrantHeartSoulRevealed());
         }
 
         public override void AddTriggers()
@@ -20,14 +20,13 @@ namespace Cauldron.TheInfernalChoir
             base.AddTriggers();
 
             AddReduceDamageTrigger(c => c == CharacterCard, 1);
-            AddEndOfTurnTrigger(tt => tt == TurnTaker && IsHiddenHeartInPlay(), pca => DealDamageEndOfTurnAction(), TriggerType.DealDamage);
-            AddEndOfTurnTrigger(tt => tt == TurnTaker && IsSoulRevealedInPlay(), pca => RestoreGhostsEndOfTurnAction(), TriggerType.GainHP);
+            AddEndOfTurnTrigger(tt => tt == TurnTaker && IsVagrantHeartHiddenHeartInPlay(), pca => DealDamageEndOfTurnAction(), TriggerType.DealDamage);
+            AddEndOfTurnTrigger(tt => tt == TurnTaker && IsVagrantHeartSoulRevealedInPlay(), pca => RestoreGhostsEndOfTurnAction(), TriggerType.GainHP);
         }
 
         private IEnumerator DealDamageEndOfTurnAction()
         {
-            bool a = IsHiddenHeartInPlay();
-            var vagrantTurnTaker = FindVagrantHeartHiddenSoul().Location.OwnerTurnTaker;
+            var vagrantTurnTaker = FindVagrantHeartHiddenHeart().Location.OwnerTurnTaker;
             var httc = FindHeroTurnTakerController(vagrantTurnTaker.ToHero());
             var result = new List<SelectCardDecision>();
             var coroutine = GameController.SelectHeroCharacterCard(httc, SelectionType.CardToDealDamage, result, cardSource: GetCardSource());

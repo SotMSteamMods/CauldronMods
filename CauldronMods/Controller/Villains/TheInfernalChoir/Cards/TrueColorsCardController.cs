@@ -27,7 +27,7 @@ namespace Cauldron.TheInfernalChoir
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (IsSoulRevealedInPlay())
+            if (IsVagrantHeartSoulRevealedInPlay())
             {
                 coroutine = base.DealDamageToHighestHP(CharacterCard, 1, c => c.IsHero, c => 6, DamageType.Infernal, numberOfTargets: () => 1);
                 if (UseUnityCoroutines)

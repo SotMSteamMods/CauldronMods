@@ -17,7 +17,7 @@ namespace Cauldron.TheInfernalChoir
         protected string VagrantHeartHiddenHeartIdentifier => "VagrantHeartPhase1";
         protected string VagrantHeartSoulRevealedIdentifier => "VagrantHeartPhase2";
 
-        protected Card FindVagrantHeartHiddenSoul()
+        protected Card FindVagrantHeartHiddenHeart()
         {
             var p1Heart = TurnTaker.FindCard(VagrantHeartHiddenHeartIdentifier, false);
             return (p1Heart?.IsInPlay ?? false) ? p1Heart : null;
@@ -25,18 +25,18 @@ namespace Cauldron.TheInfernalChoir
 
         protected bool DoesPlayAreaContainHiddenHeart(TurnTaker tt)
         {
-            var card = FindVagrantHeartHiddenSoul();
+            var card = FindVagrantHeartHiddenHeart();
             if (card is null)
                 return false;
             return tt == card.Location.OwnerTurnTaker;
         }
 
-        protected bool IsHiddenHeartInPlay()
+        protected bool IsVagrantHeartHiddenHeartInPlay()
         {
-            return FindVagrantHeartHiddenSoul() != null;
+            return FindVagrantHeartHiddenHeart() != null;
         }
 
-        protected bool IsSoulRevealedInPlay()
+        protected bool IsVagrantHeartSoulRevealedInPlay()
         {
             return FindVagrantHeartSoulRevealed() != null;
         }
@@ -45,6 +45,16 @@ namespace Cauldron.TheInfernalChoir
         {
             var p2Heart = TurnTaker.FindCard(VagrantHeartSoulRevealedIdentifier, false);
             return (p2Heart?.IsInPlay ?? false) ? p2Heart : null;
+        }
+
+        protected void DebugHeartStatus()
+        {
+            var p1Heart = TurnTaker.FindCard(VagrantHeartHiddenHeartIdentifier, false);
+            var p2Heart = TurnTaker.FindCard(VagrantHeartSoulRevealedIdentifier, false);
+
+            Console.WriteLine($"STATUS - Heart1 {p1Heart.Location.GetFriendlyName()}");
+            Console.WriteLine($"STATUS - Heart2 {p2Heart.Location.GetFriendlyName()}");
+
         }
 
         protected bool IsGhost(Card c, bool evenIfUnderCard = false, bool evenIfFaceDown = false)
