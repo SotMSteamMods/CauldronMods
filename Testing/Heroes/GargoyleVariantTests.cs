@@ -240,6 +240,30 @@ namespace CauldronTests
             UsePower(gargoyle.CharacterCard);
             QuickHandCheck(1, -1, 0, 0);
         }
+        [Test]
+        public void TestFutureGargoyleInnatePowerNoDestroy()
+        {
+            Card leechField;
+            Card modularWorkBench;
+
+            StartTestGame(FutureGargoyle);
+
+            GoToUsePowerPhase(gargoyle);
+
+            leechField = PutIntoPlay("LeechField");
+            modularWorkBench = PutInHand(unity, "ModularWorkbench");
+
+            // Select a target. 
+            DecisionsYesNo = new bool[] { true };
+            DecisionSelectCards = new Card[] { null, modularWorkBench };
+            DecisionSelectTurnTakers = new TurnTaker[] { unity.HeroTurnTaker };
+            AssertMaxNumberOfDecisions(1);
+
+            QuickHandStorage(gargoyle, unity, bunker, scholar);
+            UsePower(gargoyle.CharacterCard);
+            QuickHandCheck(1, 0, 0, 0);
+            AssertIsInPlay(leechField);
+        }
 
         #endregion Test Innate Power
 

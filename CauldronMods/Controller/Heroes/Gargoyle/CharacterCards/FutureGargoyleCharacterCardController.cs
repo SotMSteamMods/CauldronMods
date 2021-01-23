@@ -27,7 +27,7 @@ namespace Cauldron.Gargoyle
             List<DestroyCardAction> storedDestroyCardActions = new List<DestroyCardAction>();
 
             // You may destroy 1 hero ongoing or equipment card. 
-            coroutine = base.GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((card) => card.IsOngoing || base.IsEquipment(card)), true, storedDestroyCardActions, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((card) => card.IsOngoing || base.IsEquipment(card), "hero ongoing or equipment"), HeroOngoingOrEquipmentAmount, false, 0, storedResultsAction: storedDestroyCardActions, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -37,10 +37,17 @@ namespace Cauldron.Gargoyle
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if(base.DidDestroyCard(storedDestroyCardActions))
+            if(GetNumberOfCardsDestroyed(storedDestroyCardActions) >= HeroOngoingOrEquipmentAmount)
             {
                 // If you do, 1 player plays a card
-                coroutine = base.GameController.SelectHeroToPlayCard(DecisionMaker, false, false, cardSource: base.GetCardSource());
+                coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker,
+                                                        new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && CanPlayCardsFromHand(GameController.FindHeroTurnTakerController(tt.ToHero()))),
+                                                        SelectionType.PlayCard,
+                                                        (TurnTaker tt) => SelectAndPlayCardFromHand(GameController.FindHeroTurnTakerController(tt.ToHero()), optional: false),
+                                                        numberOfTurnTakers: PlayerAmount,
+                                                        optional: false,
+                                                        requiredDecisions: PlayerAmount,
+                                                        cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
