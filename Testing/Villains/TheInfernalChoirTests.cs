@@ -997,10 +997,11 @@ namespace CauldronTests
             DecisionSelectNumber = number;
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, writhe, mainstay, medico, idealist);
             var card = PlayCard("MoonEater", 0, true);
-            int expectedDamage =  Math.Max(5 - number, 0);
+            AssertInTrash(card);
+            int expectedDamage = Math.Max(5 - number, 0);
             QuickHPCheck(0, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage);
 
-            foreach(var httc in GameController.HeroTurnTakerControllers)
+            foreach (var httc in GameController.HeroTurnTakerControllers)
             {
                 AssertNumberOfCardsInDeck(httc, inDeck[httc] - number);
                 AssertNumberOfCardsInTrash(httc, inTrash[httc] + number);
@@ -1025,6 +1026,7 @@ namespace CauldronTests
             DecisionSelectNumber = number;
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, mainstay, writhe, medico, idealist);
             var card = PlayCard("MoonEater", 0, true);
+            AssertInTrash(card);
             int expectedDamage = Math.Max(5 - (2 * number), 0);
             QuickHPCheck(0, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage);
 
@@ -1034,5 +1036,65 @@ namespace CauldronTests
                 AssertNumberOfCardsInTrash(httc, inTrash[httc] + number);
             }
         }
+
+
+        [Test()]
+        public void TestBeneathTheFlesh_PlayCard([Values(1, 2, 3)] int number)
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis");
+            //choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            var p1 = StackDeck("InspiringPresence");
+
+            var inDeck = GameController.HeroTurnTakerControllers.ToDictionary(httc => httc, httc => GetNumberOfCardsInDeck(httc));
+            var inTrash = GameController.HeroTurnTakerControllers.ToDictionary(httc => httc, httc => GetNumberOfCardsInTrash(httc));
+
+            var card = PlayCard("BeneathTheFlesh", 0, true);
+            AssertInPlayArea(choir, card);
+
+            DecisionSelectNumber = number;
+            DecisionYesNo = true;
+            DecisionSelectCard = p1;
+
+            DealDamage(haka, legacy, 3, DamageType.Melee);
+            AssertInPlayArea(legacy, p1);
+
+            AssertNumberOfCardsInDeck(legacy, inDeck[legacy] - number);
+            AssertNumberOfCardsInTrash(legacy, inTrash[legacy] + number - 1);
+        }
+
+        [Test()]
+        public void TestBeneathTheFlesh_DontCard([Values(1, 2, 3)] int number)
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis");
+            //choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            var p1 = StackDeck("InspiringPresence");
+
+            var inDeck = GameController.HeroTurnTakerControllers.ToDictionary(httc => httc, httc => GetNumberOfCardsInDeck(httc));
+            var inTrash = GameController.HeroTurnTakerControllers.ToDictionary(httc => httc, httc => GetNumberOfCardsInTrash(httc));
+
+            var card = PlayCard("BeneathTheFlesh", 0, true);
+            AssertInPlayArea(choir, card);
+
+            DecisionSelectNumber = number;
+            DecisionYesNo = false;
+            
+            DealDamage(haka, legacy, 3, DamageType.Melee);
+
+            AssertNumberOfCardsInDeck(legacy, inDeck[legacy] - number);
+            AssertNumberOfCardsInTrash(legacy, inTrash[legacy] + number);
+        }
+
     }
 }
