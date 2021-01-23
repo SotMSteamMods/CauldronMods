@@ -12,6 +12,7 @@ namespace Cauldron.TheMistressOfFate
     {
         public CantFightFateCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroCharacterCardWithHighestHP();
         }
 
         public override IEnumerator Play()
