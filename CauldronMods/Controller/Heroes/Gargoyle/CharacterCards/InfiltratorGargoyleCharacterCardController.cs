@@ -26,9 +26,10 @@ namespace Cauldron.Gargoyle
         {
             IEnumerator coroutine;
             List<SelectCardDecision> storedResultsDecisions = new List<SelectCardDecision>();
+            List<DealDamageAction> storedDamage = new List<DealDamageAction>();
 
             // {Gargoyle} deals 2 targets 1 toxic damage each.
-            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), ToxicDamageAmount, DamageType.Toxic, TargetsAmount, false, TargetsAmount, storedResultsDecisions: storedResultsDecisions, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), ToxicDamageAmount, DamageType.Toxic, TargetsAmount, false, TargetsAmount, storedResultsDamage: storedDamage, storedResultsDecisions: storedResultsDecisions, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -38,10 +39,11 @@ namespace Cauldron.Gargoyle
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (storedResultsDecisions != null && storedResultsDecisions.Count((scd) => scd.SelectedCard.IsHeroCharacterCard) > 0)
+            var damagedHeroes = storedDamage.Where(dd => dd.DidDealDamage && dd.Target.IsHeroCharacterCard).Select(dd => dd.Target).Distinct();
+            if (damagedHeroes.Any())
             {
                 // For each hero damaged this way, draw or play a card.
-                foreach (var selectCardDecision in storedResultsDecisions.Where((scd) => scd.SelectedCard.IsHeroCharacterCard))
+                foreach (var hero in damagedHeroes)
                 {
                     coroutine = base.DrawACardOrPlayACard(DecisionMaker, false);
                     if (base.UseUnityCoroutines)

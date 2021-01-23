@@ -668,6 +668,31 @@ namespace CauldronTests
             QuickHPCheck(0, 0, -1, -1, 0, 0);
             QuickHandCheck(2, 0, 0, 0);
         }
+        [Test]
+        public void TestInfiltratorGargoyleInnatePowerRequiresDamageDealt()
+        {
+            Card bioenergyPulse;
+            Card leechField;
+            Card plummetingMonorail;
+
+            StartTestGame(InfiltratorGargoyle);
+            //prevent the damage to Bunker
+            PlayCard("HeavyPlating");
+
+            GoToUsePowerPhase(gargoyle);
+            bioenergyPulse = PutInHand("BioenergyPulse");
+            leechField = PutInHand("LeechField");
+            plummetingMonorail = PutIntoPlay("PlummetingMonorail");
+
+            DecisionSelectTargets = new Card[] { baron.CharacterCard, bunker.CharacterCard };
+            DecisionSelectFunctions = new int?[] { 1 }; // Draw a card
+
+            QuickHPStorage(baron.CharacterCard, plummetingMonorail, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard);
+            QuickHandStorage(gargoyle, unity, bunker, scholar);
+            UsePower(gargoyle);
+            QuickHPCheck(-1, 0, 0, 0, 0, 0);
+            QuickHandCheck(0, 0, 0, 0);
+        }
         #endregion Test Innate Power
 
         #region Test Incap Powers
