@@ -6,6 +6,7 @@ using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
+//DECKLIST EDIT: HP gain is first time each turn.
 namespace Cauldron.Gargoyle
 {
     /*

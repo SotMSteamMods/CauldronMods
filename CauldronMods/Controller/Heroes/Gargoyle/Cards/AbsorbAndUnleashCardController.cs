@@ -6,6 +6,7 @@ using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
+//DECKLIST EDIT: "may deal 0 damage" at start
 namespace Cauldron.Gargoyle
 {
     

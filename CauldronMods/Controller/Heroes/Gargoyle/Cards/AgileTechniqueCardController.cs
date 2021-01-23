@@ -6,6 +6,7 @@ using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
+//DECKLIST EDIT: third damage now "damage dealt to that hero + 1"
 namespace Cauldron.Gargoyle
 {
     // Power

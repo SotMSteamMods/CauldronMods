@@ -6,6 +6,7 @@ using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
+//DECKLIST EDIT: is -> would be
 namespace Cauldron.Gargoyle
 {
     public class LeechFieldCardController : GargoyleUtilityCardController
