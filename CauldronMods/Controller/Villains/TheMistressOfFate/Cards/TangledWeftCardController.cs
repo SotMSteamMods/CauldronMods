@@ -12,6 +12,7 @@ namespace Cauldron.TheMistressOfFate
     {
         public TangledWeftCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowIfElseSpecialString(() => NumFaceUpDays() == 1, () => $"There is 1 face up day card.", () => $"There are {NumFaceUpDays()} face up day cards.");
         }
 
         public override IEnumerator Play()
@@ -29,7 +30,7 @@ namespace Cauldron.TheMistressOfFate
                 GameController.ExhaustCoroutine(coroutine);
             }
             //"Then, {TheMistressOfFate} deals each hero that did not discard a card this way 5 infernal damage for each face up Day card."
-            var numFaceUpDays = TurnTaker.GetCardsWhere((Card c) => IsDay(c) && c.IsInPlayAndHasGameText).Count();
+            var numFaceUpDays = NumFaceUpDays();
 
             if (numFaceUpDays == 1)
             {
@@ -87,6 +88,11 @@ namespace Cauldron.TheMistressOfFate
                 }
             }
             yield break;
+        }
+
+        private int NumFaceUpDays()
+        {
+            return GameController.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsDay(c)).Count();
         }
     }
 }
