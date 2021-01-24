@@ -441,7 +441,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"InflitratorGargoyleCharacter.png":
+"InfiltratorGargoyleCharacter.png":
 {
 	"frame": {"x":716,"y":518,"w":176,"h":256},
 	"rotated": false,
@@ -1105,6 +1105,6 @@
 	"format": "RGBA8888",
 	"size": {"w":4096,"h":4096},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:12ff7f8abd9a2b069509fa5a6e33b17e:8d2496c01750340864e9774eb6e1a6b3:4ee285c32a91b7652e02ac049f918b2a$"
+	"smartupdate": "$TexturePacker:SmartUpdate:e43556b88e02fec293ade668d4786bc7:8d2496c01750340864e9774eb6e1a6b3:4ee285c32a91b7652e02ac049f918b2a$"
 }
 }

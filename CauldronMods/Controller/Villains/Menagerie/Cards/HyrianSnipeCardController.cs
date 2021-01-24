@@ -17,6 +17,8 @@ namespace Cauldron.Menagerie
         {
             //At the end of the villain turn, this card deals the 2 targets other than itself with the highest HP {H - 1} psychic damage each. Then, destroy 1 equipment card.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageAndDestroyResponse, new TriggerType[] { TriggerType.DealDamage, TriggerType.DestroyCard });
+            base.AddTriggers();
+
         }
 
         private IEnumerator DealDamageAndDestroyResponse(PhaseChangeAction action)

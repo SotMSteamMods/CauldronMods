@@ -18,6 +18,8 @@ namespace Cauldron.Menagerie
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
             //Whenever a Specimen is destroyed, destroy 1 hero ongoing or equipment card.
             base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => action.WasCardDestroyed && base.IsSpecimen(action.CardToDestroy.Card), this.DestroyCardResponse, TriggerType.DestroyCard, TriggerTiming.After);
+            base.AddTriggers();
+
         }
 
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
