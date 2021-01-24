@@ -719,7 +719,7 @@
                 "dragonscale"
             ],
             "body": [
-                "When this card is destroyed, 1 hero may draw a card or use a power. Then, flip this card."
+                "When this card is destroyed, 1{BR}hero may draw a card or use a{BR}power. Then, flip this card."
             ],
             "icons": [
                 "DrawCardNow",
@@ -729,7 +729,7 @@
             "flippedKeywords": [
                 "ruined scale"
             ],
-            "flippedBody": "This card is indestructible and cannot leave the villain play area.",
+            "flippedBody": "This card is indestructible and{BR}cannot leave the villain play area.",
             "difficulty": 1
         },
         {
@@ -745,7 +745,7 @@
                 "dragonscale"
             ],
             "body": [
-                "When this card is destroyed, 1 hero may draw a card or play a card. Then, flip this card."
+                "When this card is destroyed, 1{BR}hero may draw a card or play a{BR}card. Then, flip this card."
             ],
             "icons": [
                 "DrawCardNow",
@@ -755,7 +755,7 @@
             "flippedKeywords": [
                 "ruined scale"
             ],
-            "flippedBody": "This card is indestructible and cannot leave the villain play area.",
+            "flippedBody": "This card is indestructible and{BR}cannot leave the villain play area.",
             "difficulty": 1
         }
     ],
