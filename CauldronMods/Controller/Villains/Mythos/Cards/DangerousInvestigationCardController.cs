@@ -84,7 +84,7 @@ namespace Cauldron.Mythos
 
             if (playedCards.Any())
             {
-                coroutine = base.AddOrRemoveTokens(this.DangerousInvestigationPool, 1);
+                coroutine = base.GameController.AddTokensToPool(this.DangerousInvestigationPool, 1, base.GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
