@@ -212,8 +212,73 @@ namespace CauldronTests
 
             QuickHPStorage(apostate);
             UseIncapacitatedAbility(drift, 2);
-            //Discard 1, Draw 2
             QuickHPCheck(2);
+        }
+
+        [Test()]
+        public void TestDriftCharacter_Past_Incap0()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DecisionYesNo = true;
+            GoToEndOfTurn(apostate);
+            AssertIsInPlay(PastDriftCharacter);
+            DestroyCard(drift);
+            //One player may draw a card now.
+
+            DecisionSelectTurnTaker = bunker.TurnTaker;
+            QuickHandStorage(bunker);
+            UseIncapacitatedAbility(drift, 0);
+            QuickHandCheck(1);
+        }
+
+        [Test()]
+        public void TestDriftCharacter_Past_Incap1()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift/DualDriftCharacter", "Haka", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DecisionYesNo = true;
+            GoToEndOfTurn(apostate);
+            AssertIsInPlay(PastDriftCharacter);
+            DestroyCard(drift);
+
+            //Select a card in a hero trash with a power on it. That hero uses that power, then shuffles that card into their deck.
+            Card mere = PutInTrash("Mere");
+
+            QuickHandStorage(haka);
+            QuickHPStorage(apostate);
+            UseIncapacitatedAbility(drift, 1);
+            QuickHandCheck(1);
+            QuickHPCheck(-2);
+            AssertInDeck(mere);
+
+            Card hurricane = PutInTrash("LocalizedHurricane");
+            DecisionPowerIndex = 1;
+
+            //Make sure we can use other indexes
+            QuickHPStorage(apostate);
+            UseIncapacitatedAbility(drift, 1);
+            QuickHPCheck(0);
+            AssertInDeck(hurricane);
+        }
+
+        [Test()]
+        public void TestDriftCharacter_Past_Incap2()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DecisionYesNo = true;
+            GoToEndOfTurn(apostate);
+            AssertIsInPlay(PastDriftCharacter);
+            DestroyCard(drift);
+            Card popo = PlayCard("PoliceBackup");
+
+            //Destroy an environment card.
+            UseIncapacitatedAbility(drift, 2);
+            AssertInTrash(popo);
         }
 
         [Test]

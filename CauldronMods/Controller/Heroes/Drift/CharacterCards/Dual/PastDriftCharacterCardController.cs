@@ -102,7 +102,6 @@ namespace Cauldron.Drift
                             {
                                 base.GameController.ExhaustCoroutine(coroutine);
                             }
-
                             selectedCard = null;
                             //Pick a new card
                             List<SelectCardDecision> storedResultsCards = new List<SelectCardDecision>();
@@ -196,33 +195,26 @@ namespace Cauldron.Drift
         private IEnumerator UsePowerResponse(SelectCardDecision decision)
         {
             //That hero uses that power...
-            IEnumerator coroutine;
-            int powerIndex = 0;
             Card selectedCard = decision.SelectedCard;
-            if (selectedCard.NumberOfPowers > 1)
+            CardController selectedController = base.FindCardController(selectedCard);
+
+            //Allow selected card to deal damage from trash
+            base.GameController.AddCardControllerToList(CardControllerListType.CanCauseDamageOutOfPlay, selectedController);
+            base.GameController.AddInhibitorException(selectedController, (GameAction action) => true);
+
+            IEnumerator coroutine = base.GameController.SelectAndUsePower(base.FindHeroTurnTakerController(selectedCard.Owner.ToHero()), false, (Power p) => p.CardSource.Card == selectedCard, allowAnyHeroPower: true, canBeCancelled: false, allowOutOfPlayPower: true, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
             {
-                coroutine = base.GameController.SelectAndUsePower(base.HeroTurnTakerController, false, (Power p) => p.CardSource.Card == selectedCard, allowOutOfPlayPower: true, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                coroutine = base.UsePowerOnOtherCard(decision.SelectedCard, powerIndex);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+                base.GameController.ExhaustCoroutine(coroutine);
             }
+
+            //Disallow selected card to deal damage from trash
+            base.GameController.RemoveCardControllerFromList(CardControllerListType.CanCauseDamageOutOfPlay, selectedController);
+            base.GameController.RemoveInhibitorException(selectedController);
 
             //...then shuffles that card into their deck.
             coroutine = base.GameController.MoveCard(base.TurnTakerController, selectedCard, selectedCard.Owner.Deck, shuffledTrashIntoDeck: true, cardSource: base.GetCardSource());
