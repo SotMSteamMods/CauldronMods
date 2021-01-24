@@ -13,9 +13,9 @@
             ],
             "body": [
                 "When this card enters play, reveal{BR}cards from the top of the environment{BR}deck until a target is revealed, place it{BR}beneath this card, and discard the rest.",
-                "Cards beneath this one are not{BR}considered in play. When a target{BR}enters play, the players may destroy{BR}this card to play the card beneath it"
+                "Cards beneath this one are not{BR}considered in play. When a target{BR}enters play, the players may destroy{BR}this card to play the card beneath it."
             ],
-            "flavorText": "Drift recognized the tracks; a glimpse{BR}into the recent past confirme{BR}their owner. \"If we need a monster, I{BR}suppose we know where to find one.\""
+            "flavorText": "Drift recognized the tracks; a glimpse{BR}into the recent past confirmed{BR}their owner. “If we need a monster, I{BR}suppose we know where to find one.”"
         },
         {
             "identifier": "OblaskObjectY3A",
@@ -32,12 +32,12 @@
                 "Play this card next to a hero, then play{BR}the top card of the environment deck.",
                 "When the hero next to this card would{BR}be dealt damage by an environment{BR}target, they may discard a card. If they{BR}do, redirect that damage."
             ],
-            "flavorText": "\"Such a little thing, to cause so much{BR}trouble,\" said Echelon, holding up the{BR}dented object. The nearby biomachines lifted their heads to follow her hand."
+            "flavorText": "“Such a little thing, to cause so much{BR}trouble,” said Echelon, holding up the{BR}dented object. The nearby biomachines{BR}lifted their heads to follow her hand."
         },
         {
             "identifier": "InscrutableEcology",
             "count": 1,
-            "title": "InscrutableEcology",
+            "title": "Inscrutable Ecology",
             "icons": [
                 "ReduceDamageDealt",
                 "StartOfTurnAction",
@@ -63,7 +63,7 @@
                 "When this card enters play, play the top{BR}card of the environment deck.",
                 "Whenever a predator card destroys{BR}another target, that predator deals{BR}each hero {H - 2} melee damage."
             ],
-            "flavorText": "\"What is wrong with the place?\" said{BR}Havoc. \"Everything's trying to kill{BR}everything else.\" Echelon chuckled.{BR}\"Feels just like back home.\""
+            "flavorText": "“What is wrong with this place?” said{BR}Havoc. “Everything's trying to kill{BR}everything else.” Echelon chuckled.{BR}“Feels just like back home.”"
         },
         {
             "identifier": "OpenGround",
@@ -80,12 +80,12 @@
                 "Once per turn when a hero target{BR}would be dealt damage by a non-hero{BR}target, they may increase that damage{BR}by 1 and play the top card of the{BR}environment deck.",
                 "If that card is a target, redirect that{BR}damage to it."
             ],
-            "flavorText": "As Drift considered the lack of cover,{BR}Gargoyle began crossing the clearing.{BR}\"We don't need to hide. We just need to\"be faster than the other edible things.\""
+            "flavorText": "As Drift considered the lack of cover,{BR}Gargoyle began crossing the clearing.{BR}“We don't need to hide. We just need to{BR}be faster than the other edible things.”"
         },
         {
             "identifier": "InvasiveGrowth",
             "count": 1,
-            "title": "InvasiveGrowth",
+            "title": "Invasive Growth",
             "keywords": [
                 "ecosystem"
             ],
@@ -93,8 +93,8 @@
                 "Indestructible"
             ],
             "body": [
-                "When this card enters play, discardd the{BR}top 2 cards of the enviroment deck,{BR}then put a random target from the{BR}environment trash into play.",
-                "When an environment target is{BR}destoryed, all other environment cards{BR}become indestructible until the start of{BR}the next turn."
+                "When this card enters play, discard the{BR}top 2 cards of the enviroment deck,{BR}then put a random target from the{BR}environment trash into play.",
+                "When an environment target is{BR}destroyed, all other environment cards{BR}become indestructible until the start of{BR}the next turn."
             ],
             "flavorText": "In the months since the crater had come{BR}to life, all manner of strange machines{BR}appeared. some were almost plantlike,{BR}weaving veritable mazes of metal."
         },
@@ -115,7 +115,7 @@
                 "At the end of the environment turn, this{BR}card deals the hero target with the{BR}second lowest HP {H} energey damage.",
                 "If no other predator cards are in{BR}play, increase damage dealt by this{BR}card by 1."
             ],
-            "flavorText": "the first teams to enter Oblask Crater{BR}after the biomachine activation event{BR]were picked off by what the survivors{BR}described as a giant living shadow.",
+            "flavorText": "The first teams to enter Oblask Crater{BR}after the biomachine activation event{BR}were picked off by what the survivors{BR}described as a giant living shadow.",
             "hitpoints": 12
         },
         {
@@ -155,7 +155,7 @@
                 "At the end of the environment turn, this{BR}card deals the 3 other targets with the{BR}highest hp {H - 2} cold damage each.",
                 "Until the end of the next environment{BR}turn, this card becomes immune to{BR}damage from targets that were not{BR}damaged this way."
             ],
-            "flavorText": "\"We tracked the swarm eater here; I'm{BR}betting he wants to assimilate this stuff,\"{BR} said Cricket. \"But why's he going into{BR}the water? No robots in there...\"",
+            "flavorText": "“We tracked the swarm eater here; I'm{BR}betting he wants to assimilate this stuff,”{BR} said Cricket. “But why's he going into{BR}the water? No robots in there...”",
             "hitpoints": 4
         },
         {
@@ -209,7 +209,7 @@
                 "Whenever a hero draws a card, this{BR}card deals them 1 melee damage.",
                 "When this card is destroyed, each{BR}player may put the top card of their{BR}deck into their hand."
             ],
-            "flavorText": "Each biomachine had been created for a{BR}specfic purpose. Sturdy hulks were{BR}observed gathering the remnants of the{BR}original oblask impact object.",
+            "flavorText": "Each biomachine had been created for a{BR}specific purpose. Sturdy hulks were{BR}observed gathering the remnants of the{BR}original oblask impact object.",
             "hitpoints": 8
         },
         {
@@ -228,13 +228,13 @@
                 "At the end of the environment turn,{BR}move this card next to a hero. Then the{BR}predator card with the highest HP deals{BR}each target in this card's play area{BR}{H - 1} melee damage.",
                 "If the hero next to this card plays a{BR}card with a power on it, they may{BR}immediately use a power on that card."
             ],
-            "flavorText": "\"This is ridiculous. You can teleport,\"{BR}said Pyre. Vanish, clinging to the{BR}machine's neck, replied, \"It's nice to not{}be the group transportation, for once.\"",
+            "flavorText": "“This is ridiculous. You can teleport,”{BR}said Pyre. Vanish, clinging to the{BR}machine's neck, replied, “It's nice to not{BR}be the group transportation, for once.”",
             "hitpoints": 5
         },
         {
             "identifier": "PlatedGiant",
             "count": 1,
-            "title": "PlatedGiant",
+            "title": "Plated Giant",
             "keywords": [
                 "biomachine"
             ],
@@ -252,7 +252,7 @@
         {
             "identifier": "UnknownHerds",
             "count": 1,
-            "title": "UnknownHerds",
+            "title": "Unknown Herds",
             "keywords": [
                 "biomachine"
             ],
