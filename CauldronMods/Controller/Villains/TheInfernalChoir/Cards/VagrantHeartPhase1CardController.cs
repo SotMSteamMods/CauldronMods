@@ -73,11 +73,14 @@ namespace Cauldron.TheInfernalChoir
 
             /*
              * "Whenever the Hero with the Vagrant Heart has no cards in it's deck...
+             * I exclude Revealed Locations from the triggers since every move into a revealed will be matched with one of the other actions.
+             * Cricket's Reveal and Replace card shouldn't trigger the flip unless that card is also played.
              */
-            AddTrigger<MoveCardAction>(mca => mca.Origin == VagrantDeck && mca.Destination != VagrantDeck && mca.WasCardMoved && !VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
-            AddTrigger<PlayCardAction>(pca => pca.WasCardPlayed && pca.CardToPlay.Owner == VagrantTurnTaker && !VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
+
+            AddTrigger<MoveCardAction>(mca => mca.WasCardMoved && mca.CardToMove.Owner == VagrantTurnTaker && !mca.Destination.IsRevealed && !VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
+            AddTrigger<PlayCardAction>(pca => pca.WasCardPlayed && pca.CardToPlay.Owner == VagrantTurnTaker && !VagrantTurnTaker.Revealed.HasCards && !VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
             AddTrigger<DrawCardAction>(dca => dca.DidDrawCard && dca.HeroTurnTaker == VagrantTurnTaker && !VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
-            AddTrigger<BulkMoveCardsAction>(bmca => !VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
+            AddTrigger<BulkMoveCardsAction>(bmca => !VagrantTurnTaker.Revealed.HasCards && !VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
 
             // "If the Hero is Incapacitated or Vagrant Heart leaves play, the heroes lose. Game over."
             AddTrigger<TargetLeavesPlayAction>(tlpa => tlpa.TargetLeavingPlay.Owner == VagrantTurnTaker && VagrantTurnTaker.IsIncapacitatedOrOutOfGame, VagrantHeartGameOver, TriggerType.GameOver, TriggerTiming.After);

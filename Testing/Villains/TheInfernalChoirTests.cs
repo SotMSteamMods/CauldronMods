@@ -393,6 +393,42 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestVagrantHeartPhase1_DontFlipFromReveal()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Cauldron.Cricket", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            AssertInPlayArea(legacy, heart1);
+            AssertIsInPlay(heart1);
+            AssertOffToTheSide(heart2);
+            AssertNotInPlay(heart2);
+
+            PutOnDeck("InspiringPresence", false);
+
+            var deckCount = GetNumberOfCardsInDeck(legacy);
+
+            QuickHPStorage(choir, legacy);
+            DealDamage(legacy, choir, 35, DamageType.Melee);
+            QuickHPCheck(0, 0);
+
+            AssertNotFlipped(choir.CharacterCard);
+
+            DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
+
+            PlayCard("BeforeTheThunder");
+
+            AssertNumberOfCardsInDeck(legacy, 1);
+
+            AssertNotFlipped(choir.CharacterCard);
+
+            AssertInPlayArea(legacy, heart1);
+            AssertIsInPlay(heart1);
+            AssertOffToTheSide(heart2);
+            AssertNotInPlay(heart2);
+        }
+
+        [Test()]
         public void TestVagrantHeartPhase1_Defeated()
         {
             SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
