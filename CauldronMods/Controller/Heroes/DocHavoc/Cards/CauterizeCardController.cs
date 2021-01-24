@@ -118,7 +118,7 @@ namespace Cauldron.DocHavoc
                     DecisionShouldHeal = false;
                 }
             }
-            else if (DecisionShouldHeal == true)
+            if (DecisionShouldHeal == true)
             {
                 IEnumerator coroutine = base.CancelAction(ga, showOutput: showOutput, cancelFutureRelatedDecisions: cancelFutureRelatedDecisions, storedResults: storedResults, isPreventEffect: isPreventEffect);
                 if (base.UseUnityCoroutines)
