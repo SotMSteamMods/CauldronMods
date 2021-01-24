@@ -12,6 +12,10 @@ namespace Cauldron.Outlander
     {
         public RiftbladeStrikesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
         }
+
+        //{Outlander} deals the non-villain target with the second highest HP 2 fire damage.
+        //{Outlander} deals the non-villain target with the highest HP 4 melee damage.
     }
 }

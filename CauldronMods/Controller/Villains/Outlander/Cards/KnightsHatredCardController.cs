@@ -12,6 +12,11 @@ namespace Cauldron.Outlander
     {
         public KnightsHatredCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
         }
+
+        //Increase damage dealt by {Outlander} by 1.
+        //Reduce damage dealt to {Outlander} by 1.
+        //At the start of the villain turn, destroy this card.
     }
 }

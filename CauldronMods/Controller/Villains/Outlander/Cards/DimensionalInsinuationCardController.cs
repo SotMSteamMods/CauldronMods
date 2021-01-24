@@ -12,6 +12,10 @@ namespace Cauldron.Outlander
     {
         public DimensionalInsinuationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
         }
+
+        //When this card enters play, Search the villain deck for a copy of Anchored Fragment and put it into play. Shuffle the villain deck and play its top card.
+        //Damage dealt by {Outlander} is irreducible. At the start of the villain turn, destroy this card.
     }
 }

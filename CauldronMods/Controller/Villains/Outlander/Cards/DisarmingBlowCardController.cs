@@ -12,6 +12,10 @@ namespace Cauldron.Outlander
     {
         public DisarmingBlowCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
         }
+
+        //{Outlander} deals the 2 non-villain targets with the highest HP 3 melee damage each.
+        //Any hero damaged this way discards 1 card.
     }
 }

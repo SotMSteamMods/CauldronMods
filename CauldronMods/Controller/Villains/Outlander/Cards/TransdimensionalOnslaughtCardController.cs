@@ -12,6 +12,9 @@ namespace Cauldron.Outlander
     {
         public TransdimensionalOnslaughtCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
         }
+
+        //{Outlander} deals each non-villain target X irreducible psychic damage, where X is the number of Trace cards in play.
     }
 }
