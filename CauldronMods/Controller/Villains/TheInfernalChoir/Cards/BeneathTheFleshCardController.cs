@@ -83,7 +83,7 @@ namespace Cauldron.TheInfernalChoir
                         GameController.ExhaustCoroutine(coroutine);
                     }
 
-                    coroutine = GameController.SelectAndPlayCard(httc, discardResult.Select(d => d.CardToMove), isPutIntoPlay: true, cardSource: GetCardSource());
+                    coroutine = GameController.SelectAndPlayCard(httc, discardResult.Where(r => r.WasCardMoved && !r.CardToMove.IsInPlay).Select(d => d.CardToMove), isPutIntoPlay: true, cardSource: GetCardSource());
                     if (UseUnityCoroutines)
                     {
                         yield return GameController.StartCoroutine(coroutine);

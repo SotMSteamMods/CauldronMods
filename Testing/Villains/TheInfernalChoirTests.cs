@@ -428,6 +428,45 @@ namespace CauldronTests
             AssertNotInPlay(heart2);
         }
 
+
+        [Test()]
+        public void TestVagrantHeartPhase1_TempleOfSzuLong()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Cauldron.Cricket", "TheTempleOfZhuLong");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            AssertInPlayArea(legacy, heart1);
+            AssertIsInPlay(heart1);
+            AssertOffToTheSide(heart2);
+            AssertNotInPlay(heart2);
+
+            PutOnDeck("InspiringPresence", false);
+            var c = GetCard("ShinobiAssassin");
+
+            var deckCount = GetNumberOfCardsInDeck(legacy);
+
+            QuickHPStorage(choir, legacy);
+            DealDamage(legacy, choir, 35, DamageType.Melee);
+            QuickHPCheck(0, 0);
+
+            AssertNotFlipped(choir.CharacterCard);
+            AssertNumberOfCardsInDeck(legacy, 1);
+            AssertNotFlipped(choir.CharacterCard);
+            PutOnDeck(legacy, c);
+
+            DealDamage(legacy, choir, 2, DamageType.Melee);
+
+            AssertNumberOfCardsInDeck(legacy, deckCount + 1);
+
+            AssertFlipped(choir.CharacterCard);
+            AssertInPlayArea(legacy, heart2);
+            AssertIsInPlay(heart2);
+            AssertNotFlipped(heart2);
+            AssertOutOfGame(heart1);
+            AssertNotInPlay(heart1);
+        }
+
         [Test()]
         public void TestVagrantHeartPhase1_Defeated()
         {
@@ -593,6 +632,145 @@ namespace CauldronTests
             DecisionSelectCards = new[] { legacy.CharacterCard, wraith.CharacterCard };
             GoToEndOfTurn(choir);
             QuickHPCheck(0, -3, 0, -3, 0);
+        }
+
+        [Test()]
+        public void TestKataMichi_IncreaseDamage_HiddenHeart()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheWraith", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            PlayCard("TakeDown");
+
+            var card = PlayCard("KataMichi", 0, true);
+            AssertInPlayArea(choir, card);
+
+            //legacy damage increases, rest not
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
+            DealDamage(legacy, omnix, 1, DamageType.Cold);
+            QuickHPCheck(0, 0, -2, 0, 0);
+
+            //legacy damage increases, rest not
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
+            DealDamage(omnix, wraith, 1, DamageType.Cold);
+            QuickHPCheck(0, 0, 0, -1, 0);
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
+            DealDamage(choir, legacy, 1, DamageType.Cold);
+            QuickHPCheck(0, -1, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestKataMichi_IncreaseDamage_SoulRevealed()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheWraith", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+            FlipCard(choir.CharacterCard);
+
+            PlayCard("TakeDown");
+
+            var card = PlayCard("KataMichi", 0, true);
+            AssertInPlayArea(choir, card);
+
+            //no ones damage increased
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
+            DealDamage(legacy, omnix, 1, DamageType.Cold);
+            QuickHPCheck(0, 0, -1, 0, 0);
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
+            DealDamage(omnix, wraith, 1, DamageType.Cold);
+            QuickHPCheck(0, 0, 0, -1, 0);
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
+            DealDamage(choir, legacy, 1, DamageType.Cold);
+            QuickHPCheck(0, -1, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestKataMichi_PowerReplaced_Innate()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheWraith", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+
+            PlayCard("TakeDown");
+
+            var card = PlayCard("KataMichi", 0, true);
+            AssertInPlayArea(choir, card);
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
+            UsePower(legacy);
+            QuickHPCheck(0, -3, -2, -2, -2);
+
+            AssertNotUsablePower(legacy, legacy.CharacterCard);
+        }
+
+        [Test()]
+        public void TestKataMichi_PowerReplaced_Other()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheWraith", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            PlayCard("TakeDown");
+
+            var card = PlayCard("KataMichi", 0, true);
+            AssertInPlayArea(choir, card);
+
+            var e1 = PlayCard("StunBolt");
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
+            UsePower(e1);
+            QuickHPCheck(0, -3, -2, -2, -2);
+
+            AssertNotUsablePower(wraith, e1);
+        }
+
+        [Test()]
+        public void TestKataMichi_PowerReplaced_AppliedNumerology()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheHarpy", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            PlayCard("TakeDown");
+
+            var card = PlayCard("KataMichi", 0, true);
+            AssertInPlayArea(choir, card);
+
+            var o1 = PlayCard("AppliedNumerology");
+            DecisionYesNo = false;
+            DecisionAutoDecideIfAble = true;
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, harpy.CharacterCard, card);
+            UsePower(harpy);
+            QuickHPCheck(0, -4, -3, -3, -3);
+
+            AssertNotUsablePower(harpy, harpy.CharacterCard);
+        }
+
+        [Test()]
+        public void TestKataMichi_PowerReplaced_KataMichiDestroyed()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheWraith", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            PlayCard("TakeDown");
+
+            var card = PlayCard("KataMichi", 0, true);
+            AssertInPlayArea(choir, card);
+            SetHitPoints(card, 2);
+
+            DecisionSelectCards = new[] { card, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard };
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard);
+            UsePower(wraith);
+            QuickHPCheck(0, -2, -2, -2);
+
+            AssertNotUsablePower(wraith, wraith.CharacterCard);
         }
 
         [Test()]

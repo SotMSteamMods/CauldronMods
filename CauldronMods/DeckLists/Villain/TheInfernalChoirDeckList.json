@@ -27,12 +27,12 @@
 			],
 			"setup": [
 				"At the start of the game, put {TheInfernalChoir}'s villain character cards into play, “Unfinished Business“ side up.",
-				"Search the villain deck for the card Vagrant Heart: Hidden Heart and play it face-up in the play area of a random hero.",
-				"Put the card Vagrant Heart: Soul Revealed off to the side. Shuffle the villain deck."
+				"Search the villain deck for the card “Vagrant Heart: Hidden Heart“ and play it face-up in the play area of a random hero.",
+				"Put the card “Vagrant Heart: Soul Revealed“ off to the side. Shuffle the villain deck."
 			],
 			"gameplay": [
-				"(TheInfernalChoir) is indestructible.",
-				"If the Hero with the Vagrant Heart in it's play area has no cards in it's deck, shuffle all cards under Vagrant Heart: Hidden Heart back into the hero's deck, flip {TheInfernalChoir}'s villain character cards and replace the Vagrant Heart: Hidden Heart with Vagrant Heart: Soul Revealed.",
+				"{TheInfernalChoir} is indestructible.",
+				"If the Hero with the “Vagrant Heart: Hidden Heart“ in it's play area has no cards in it's deck, shuffle all cards under “Vagrant Heart: Hidden Heart“ back into the hero's deck, flip {TheInfernalChoir}'s villain character cards and replace the “Vagrant Heart: Hidden Heart“ with “Vagrant Heart: Soul Revealed“.",
 				"At the end of the villain turn, play the top card of the villain deck. Then {TheInfernalChoir} deals each non-ghost, non-villain target 1 infernal damage."
 			],
 			"advanced": "Increase all damage dealt by 1.",
@@ -81,7 +81,7 @@
 			"body": [
 				"This card is indestructible. Cards underneath this one are not in play and have no game text.",
 				"When {TheInfernalChoir} would be dealt damage, prevent that damage and instead move a card for each damage that would have been dealt from the bottom of this Hero's deck to beneath this card.",
-				"If this Hero is Incapacitated or Vagrant Heart leaves play, the heroes lose. [b]Game over[/b]."
+				"If this Hero is Incapacitated or this card leaves play, the heroes lose. [b]Game over[/b]."
 			],
 			"flavorQuotes": [{
 				"identifier": "TheInfernalChoir",
@@ -152,7 +152,7 @@
 				"DestroyEquipment"
 			],
 			"body": [
-				"Reduce damage dealt by hero characters whose play area does not contain Vagrant Heart: Hidden Heart by 1.",
+				"Reduce damage dealt by hero characters whose play area does not contain “Vagrant Heart: Hidden Heart“ by 1.",
 				"When this card is destroyed, destroy {H} hero ongoing and/or equipment cards."
 			],
 			"flavorQuotes": [{
@@ -273,7 +273,7 @@
 				"DealDamageCold"
 			],
 			"body": [
-				"Increase damage dealt by hero characters whose play area contains Vagrant Heart: Hidden Heart by 1.",
+				"Increase damage dealt by hero characters whose play area contains “Vagrant Heart: Hidden Heart“ by 1.",
 				"Replace all powers on hero character cards with the following power:",
 				"[b]Power:[/b] Each hero target and each Ghost{BR}       deals itself 2 cold damage."
 			],
@@ -292,8 +292,8 @@
 				"DealDamageCold"
 			],
 			"body": [
-				"Each player puts the top 1, 2, or 3 cards of their deck into their trash, then each hero deals themself X cold damage.",
-				"If Vagrant Heart: Soul Revealed is in play, X is half the number of cards in that hero's deck, rounded up. Otherwise, X is the number of cards put into that hero's trash this way."
+				"Each player puts the top 1, 2, or 3 cards of their deck into their trash, then each hero deals themselves 5-X cold damage where X is the number of cards put into that hero's trash this way.",
+				"If “Vagrant Heart: Soul Revealed“ is in play, X is twice that number instead."
 			],
 			"flavorQuotes": [{
 				"identifier": "KataMichi",
@@ -359,7 +359,7 @@
 			],
 			"body": [
 				"Reveal cards from the top of the villain deck until a target is revealed, put it into play, and discard the other revealed cards.",
-				"That target deals the hero target with the highest HP {H - 1} psychic damage. If Vagrant Heart: Soul Revealed is in play, each player draws a card."
+				"That target deals the hero target with the highest HP {H - 1} psychic damage. If “Vagrant Heart: Soul Revealed“ is in play, each player draws a card."
 			],
 			"flavorQuotes": [{
 				"identifier": "TheStranger",
@@ -380,7 +380,7 @@
 			],
 			"body": [
 				"{TheInfernalChoir} deals the hero target with the highest HP 6 infernal damage.",
-				"If Vagrant Heart: Soul Revealed is in play, {TheInfernalChoir} deals the hero target with the highest HP 6 cold damage."
+				"If “Vagrant Heart: Soul Revealed“ is in play, {TheInfernalChoir} deals the hero target with the highest HP 6 cold damage."
 			],
 			"flavorQuotes": [{
 				"identifier": "TheInfernalChoir",
@@ -403,7 +403,7 @@
 			],
 			"body": [
 				"Reduce damage dealt to {TheInfernalChoir} by 1.",
-				"At the end of the villain turn, if Vagrant Heart: Soul Revealed is in play, restore each Ghost to its maximum HP. Otherwise, the hero whose play area contains Vagrant Heart: Hidden Heart deals each other hero character 2 cold damage."
+				"At the end of the villain turn, if “Vagrant Heart: Soul Revealed“ is in play, restore each Ghost to its maximum HP. Otherwise, the hero whose play area contains “Vagrant Heart: Hidden Heart“ deals each other hero character 2 cold damage."
 			],
 			"flavorQuotes": [{
 				"identifier": "Titan",

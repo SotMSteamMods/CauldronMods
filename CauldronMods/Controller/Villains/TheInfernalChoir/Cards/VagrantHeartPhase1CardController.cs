@@ -77,10 +77,10 @@ namespace Cauldron.TheInfernalChoir
              * Cricket's Reveal and Replace card shouldn't trigger the flip unless that card is also played.
              */
 
-            AddTrigger<MoveCardAction>(mca => mca.WasCardMoved && mca.CardToMove.Owner == VagrantTurnTaker && !mca.Destination.IsRevealed && !VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
-            AddTrigger<PlayCardAction>(pca => pca.WasCardPlayed && pca.CardToPlay.Owner == VagrantTurnTaker && !VagrantTurnTaker.Revealed.HasCards && !VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
-            AddTrigger<DrawCardAction>(dca => dca.DidDrawCard && dca.HeroTurnTaker == VagrantTurnTaker && !VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
-            AddTrigger<BulkMoveCardsAction>(bmca => !VagrantTurnTaker.Revealed.HasCards && !VagrantDeck.HasCards, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
+            AddTrigger<MoveCardAction>(HeartMoveCriteria, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
+            AddTrigger<PlayCardAction>(HeartPlayCriteria, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
+            AddTrigger<DrawCardAction>(HeartDrawCriteria, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
+            AddTrigger<BulkMoveCardsAction>(HeartBulkMoveCriteria, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
 
             // "If the Hero is Incapacitated or Vagrant Heart leaves play, the heroes lose. Game over."
             AddTrigger<TargetLeavesPlayAction>(tlpa => tlpa.TargetLeavingPlay.Owner == VagrantTurnTaker && VagrantTurnTaker.IsIncapacitatedOrOutOfGame, VagrantHeartGameOver, TriggerType.GameOver, TriggerTiming.After);
@@ -89,6 +89,26 @@ namespace Cauldron.TheInfernalChoir
             base.AddTrigger<MakeDecisionsAction>((MakeDecisionsAction md) => md.CardSource != null && !md.CardSource.Card.IsVillain, this.RemoveDecisionsFromMakeDecisionsResponse, TriggerType.RemoveDecision, TriggerTiming.Before);
 
             base.AddTriggers();
+        }
+
+        private bool HeartMoveCriteria(MoveCardAction mca)
+        {
+            return mca.WasCardMoved && mca.Origin.OwnerTurnTaker == VagrantTurnTaker && !mca.Destination.IsRevealed && !VagrantDeck.HasCards;
+        }
+
+        private bool HeartPlayCriteria(PlayCardAction pca)
+        {
+            return pca.WasCardPlayed && pca.CardToPlay.Owner == VagrantTurnTaker && !VagrantTurnTaker.Revealed.HasCards && !VagrantDeck.HasCards;
+        }
+
+        private bool HeartDrawCriteria(DrawCardAction dca)
+        {
+            return dca.DidDrawCard && dca.HeroTurnTaker == VagrantTurnTaker && !VagrantDeck.HasCards;
+        }
+
+        private bool HeartBulkMoveCriteria(BulkMoveCardsAction bmca)
+        {
+            return !VagrantTurnTaker.Revealed.HasCards && !VagrantDeck.HasCards;
         }
 
         /* ..shuffle all cards under Vagrant Heart back into the hero's deck, and flip {TheInfernalChoir}'s villain character cards and Vagrant Heart." */
