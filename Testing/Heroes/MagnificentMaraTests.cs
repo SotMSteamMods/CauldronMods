@@ -1210,5 +1210,21 @@ namespace CauldronTests
             AssertInTrash(minion);
             AssertInTrash(hiftte);
         }
+        [Test]
+        public void TestHandIsFasterThanTheEyeNonDamageTurnTakerDecision()
+        {
+            SetupGameController("MissInformation", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            GoToPlayCardPhase(miss);
+            PlayCard("ThreatToThePresident");
+
+            PlayCard("DowsingCrystal");
+            PlayCard("Fortitude");
+            PlayCard("HandIsFasterThanTheEye");
+
+            GoToEndOfTurn();
+        }
     }
 }
