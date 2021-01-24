@@ -70,7 +70,7 @@ namespace Cauldron.MagnificentMara
             //cancel the SelectTurnTakerDecision in DetermineTurnTakersWithMostOrFewest
             //for an ambiguous who-to-damage decision as on Voss's Gene Bound Banshee
             //I have tried to keep this exception limited - it's possibly worth keeping an eye on.
-            if (ga is MakeDecisionAction md)
+            if (ga is MakeDecisionAction md && (md.Decision is SelectTurnTakerDecision || md.Decision is SelectTurnTakersDecision))
             {
                 return _justActivatedTrigger != null && _justActivatedTrigger.Types.Contains(TriggerType.DealDamage);
             }
