@@ -99,6 +99,13 @@ namespace Cauldron.Gargoyle
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
+
+                var destruction = destroyCardActions.FirstOrDefault();
+                if(this.Card.IsInPlayAndHasGameText && (destruction == null || !destruction.WasCardDestroyed))
+                {
+                    //in case the destruction fails for one reason or another
+                    SelfDestructTrigger = AddWhenDestroyedTrigger(CardDestroyedResponse, TriggerType.CreateStatusEffect);
+                }
             }
 
             yield break;

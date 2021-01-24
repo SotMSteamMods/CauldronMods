@@ -1780,6 +1780,27 @@ namespace CauldronTests
             DestroyCard(ysim);
             AssertNumberOfStatusEffectsInPlay(2);
         }
+        [Test]
+        public void TestYourStrengthIsMineDestructionFailed()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gargoyle", "Legacy", "Ra", "TimeCataclysm");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card ysim = PlayCard("YourStrengthIsMine");
+            Card point = PlayCard("FixedPoint");
+            DecisionYesNo = true;
+
+            QuickHPStorage(baron);
+            DealDamage(gargoyle, baron, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+            AssertIsInPlay(ysim);
+
+            DestroyCard(point);
+            DestroyCard(ysim);
+            DealDamage(gargoyle, baron, 2, DamageType.Melee);
+            QuickHPCheck(-4);
+        }
         #endregion Your Strength is Mine
     }
 }
