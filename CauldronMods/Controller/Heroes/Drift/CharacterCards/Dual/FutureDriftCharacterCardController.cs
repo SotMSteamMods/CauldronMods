@@ -85,7 +85,7 @@ namespace Cauldron.Drift
                 case 0:
                     {
                         //One player may draw a card now.
-                        coroutine = base.GameController.SelectHeroToDrawCard(base.HeroTurnTakerController, cardSource: base.GetCardSource());
+                        coroutine = base.GameController.SelectHeroToDrawCard(base.HeroTurnTakerController, additionalCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && !tt.IsIncapacitated), cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -100,7 +100,7 @@ namespace Cauldron.Drift
                     {
                         //Reveal the top card of a hero deck and replace it. If that card has a power on it. Play it and that hero uses that power.
                         List<SelectLocationDecision> selectedDeck = new List<SelectLocationDecision>();
-                        coroutine = base.GameController.SelectADeck(base.HeroTurnTakerController, SelectionType.RevealTopCardOfDeck, (Location loc) => loc.IsHero && loc.IsDeck, storedResults: selectedDeck, cardSource: base.GetCardSource());
+                        coroutine = base.GameController.SelectADeck(base.HeroTurnTakerController, SelectionType.RevealTopCardOfDeck, (Location loc) => loc.IsHero && loc.IsDeck && !loc.OwnerTurnTaker.IsIncapacitatedOrOutOfGame && !loc.OwnerTurnTaker.IsIncapacitated, storedResults: selectedDeck, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -114,7 +114,7 @@ namespace Cauldron.Drift
                         {
                             //Reveal the top card of a hero deck and replace it. If that card has a power on it. Play it...
                             List<Card> playResult = new List<Card>();
-                            coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, selectedDeck.FirstOrDefault().SelectedLocation.Location, true, false, false, new LinqCardCriteria((Card c) => c.HasPowers), null, 1, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, storedPlayResults: playResult);
+                            coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, selectedDeck.FirstOrDefault().SelectedLocation.Location, true, false, false, new LinqCardCriteria((Card c) => c.HasPowers), null, 1, shuffleSourceAfterwards: false, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, storedPlayResults: playResult);
                             if (base.UseUnityCoroutines)
                             {
                                 yield return base.GameController.StartCoroutine(coroutine);
