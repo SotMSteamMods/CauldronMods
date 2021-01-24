@@ -1161,5 +1161,54 @@ namespace CauldronTests
             AssertIsInPlay(abra);
             AssertInTrash(apoc);
         }
+        [Test]
+        public void TestHandIsFasterThanTheEyeGeneBoundBanshee()
+        {
+            SetupGameController("GrandWarlordVoss", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card banshee = PlayCard("GeneBoundBanshee");
+            Card hiftte = PlayCard("HandIsFasterThanTheEye");
+            PlayCard("Fortitude");
+
+            GoToEndOfTurn();
+            AssertInTrash(banshee);
+            AssertInTrash(hiftte);
+        }
+        [Test]
+        public void TestHandIsFasterThanTheEyeOtherMostCardsInPlay()
+        {
+            SetupGameController("Ambuscade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            SetHitPoints(legacy, 30);
+            SetHitPoints(scholar, 29);
+            //Card turret = PlayCard("AutomatedTurret");
+            Card banshee = PlayCard("CustomHandCannon");
+            Card hiftte = PlayCard("HandIsFasterThanTheEye");
+            PlayCard("Fortitude");
+
+            GoToEndOfTurn();
+            AssertInTrash(banshee);
+            AssertInTrash(hiftte);
+        }
+        [Test]
+        public void TestHandIsFasterThanTheEyeOtherTiedDecision()
+        {
+            SetupGameController("GrandWarlordVoss", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            SetHitPoints(legacy, 29);
+            Card minion = PlayCard("GeneBoundFiresworn");
+            Card hiftte = PlayCard("HandIsFasterThanTheEye");
+            PlayCard("Fortitude");
+
+            GoToEndOfTurn();
+            AssertInTrash(minion);
+            AssertInTrash(hiftte);
+        }
     }
 }
