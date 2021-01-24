@@ -10,7 +10,7 @@ namespace Cauldron.Menagerie
     {
         public SecuritySphereCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => base.IsCaptured(c.Owner), "captured"));
+            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && base.IsCaptured(c.Owner), "captured"));
             AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
         }
 
