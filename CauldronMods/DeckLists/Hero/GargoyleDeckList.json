@@ -20,7 +20,7 @@
             ],
             "icons": [
                 "HasPower",
-                "ReduceDamageTaken",
+                "ReduceDamageDealt",
                 "IncreaseDamageDealt"
             ],
             "hitpoints": 27,
@@ -33,8 +33,9 @@
                 "One player may draw a card now."
             ],
             "flippedIcons": [
+                "ReduceDamageTaken",
                 "IncreaseDamageDealt",
-                "UsePowerNow"
+                "DrawCardNow"
             ],
             "openingLines": {
                 "default": "Your power will be mine."
@@ -52,6 +53,7 @@
                 "DealDamageToxic"
             ],
             "body": [
+                "{Gargoyle} may deal 1 target 0 toxic damage",
                 "{Gargoyle} deals 1 hero target 2 toxic damage.",
                 "{Gargoyle} deals up to X targets 3 toxic damage each, where X is the amount of damage that was dealt to that hero target."
             ],
@@ -71,10 +73,12 @@
                 "ongoing"
             ],
             "icons": [
-                "DealDamageToxic"
+                "HasPower",
+                "DealDamageToxic",
+                "DealDamageMelee"
             ],
             "powers": [
-                "{Gargoyle} deals up to 2 targets 2 toxic damage each.{BR}If a hero was damaged this way, {Gargoyle} deals a third target 2 melee damage."
+                "{Gargoyle} deals up to 2 targets 2 toxic damage each.{BR}If a hero was damaged this way, {Gargoyle} deals a third target X+1 melee damage, where X is the damage dealt to that hero."
             ],
             "flavorQuotes": [
                 {
@@ -93,6 +97,7 @@
             ],
             "icons": [
                 "CounterDamage",
+                "HasPower",
                 "DealDamageToxic",
                 "IncreaseDamageDealt"
             ],
@@ -136,6 +141,7 @@
             ],
             "icons": [
                 "DealDamageToxic",
+                "DealDamageMelee",
                 "GainHP"
             ],
             "body": [
@@ -189,12 +195,11 @@
                 "limited"
             ],
             "icons": [
-                "CounterDamage",
                 "ReduceDamageDealt",
                 "IncreaseDamageDealt"
             ],
             "body": [
-                "Once per turn, when {Gargoyle} deals or is dealt damage, or when a non-hero target is dealt damage, you may reduce that damage by 1 and increase the next damage dealt by {Gargoyle} by 1."
+                "Once per turn, when {Gargoyle} deals or would be dealt damage, or when a non-hero target would be dealt damage, you may reduce that damage by 1 and increase the next damage dealt by {Gargoyle} by 1."
             ],
             "flavorQuotes": [
                 {
@@ -242,9 +247,10 @@
             "icons": [
                 "IncreaseDamageDealt",
                 "GainHP",
-                "HasPower"
+                "HasPower",
+                "DrawCardNow"
             ],
-            "body": "When {Gargoyle} destroys a target by reducing its HP below 0, increase the next damage dealt by {Gargoyle} by X and he regains 1HP, where X is the amount of negative HP that target had.",
+            "body": "When {Gargoyle} destroys a target by reducing its HP below 0, increase the next damage dealt by {Gargoyle} by X, where X is the amount of negative HP that target had. The first time this happens each turn, {Gargoyle} regains 1HP.",
             "powers": [
                 "Discard 2 cards. Draw 2 cards."
             ],
@@ -295,7 +301,7 @@
                 "StartOfTurnAction"
             ],
             "body": [
-                "At the end of each turn, each non-hero target damaged by {Gargoyle} during that turn deals itself 1 psychic damage.",
+                "At the end of each turn, each non-hero target damaged by {Gargoyle} during that turn deals itself 1 irreducible psychic damage.",
                 "At the start of the villain turn, {Gargoyle} may deal 1 target 0 psychic damage."
             ],
             "flavorQuotes": [
@@ -350,7 +356,7 @@
             "flavorQuotes": [
                 {
                     "identifier": "Stuntman",
-                    "text": "Bon voyage."
+                    "text": "Bon voyage. See? I remembered."
                 }
             ],
             "flavorReference": "Stuntman, Department of Secrets #120"
@@ -404,13 +410,13 @@
             "flavorReference": "Gargoyle, Windmill City #86"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "GargoyleCharacter",
             "promoIdentifier": "WastelandRoninGargoyleCharacter",
             "count": 1,
             "title": "Gargoyle",
-            "promoTitle": "Wateland Ronin Gargoyle",
+            "promoTitle": "Wasteland Ronin Gargoyle",
             "shortPromoTitle": "Wasteland Gargoyle",
             "body": "Rusted Claw",
             "backgroundColor": "A7B8C1",
@@ -461,7 +467,7 @@
             ],
             "icons": [
                 "HasPower",
-                "DestroyOngoing",
+                "Destroy",
                 "PlayCardNow",
                 "DrawCardNow"
             ],
@@ -480,7 +486,8 @@
                 "Manipulate"
             ],
             "openingLines": {
-                "default": "So full of energy... But not for long."
+                "default": "So full of energy... But not for long.",
+				"FutureTiamatCharacter": "Just a robot? Good, I don't have to restrain myself."
             },
             "complexity": 2
         },
@@ -525,11 +532,11 @@
         },
         {
             "identifier": "GargoyleCharacter",
-            "promoIdentifier": "InflitratorGargoyleCharacter",
+            "promoIdentifier": "InfiltratorGargoyleCharacter",
             "count": 1,
             "title": "Gargoyle",
-            "promoTitle": "Inflitrator Gargoyle",
-            "shortPromoTitle": "Inflitrator Gargoyle",
+            "promoTitle": "Infiltrator Gargoyle",
+            "shortPromoTitle": "Infiltrator Gargoyle",
             "body": "Ruthless Technique",
             "backgroundColor": "bdd98f",
             "foilBackgroundColor": "FEFEFE",
@@ -564,5 +571,7 @@
             },
             "complexity": 2
         }
+    ],
+    "notPromoCards": [
     ]
 }

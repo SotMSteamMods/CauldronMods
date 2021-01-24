@@ -35,7 +35,7 @@ namespace Cauldron.Malichae
 
         public override Power GetGrantedPower(CardController cardController)
         {
-            return new Power(cardController.HeroTurnTakerController, this, $"All Djinn regain 2HP. All other hero targets regain 1HP. Destroy {this.Card.Title}.", UseGrantedPower(), 0, null, cardController.GetCardSource());
+            return new Power(cardController.HeroTurnTakerController, cardController, $"All Djinn regain 2HP. All other hero targets regain 1HP. Destroy {this.Card.Title}.", UseGrantedPower(), 0, null, GetCardSource());
         }
 
         private IEnumerator UseGrantedPower()
@@ -43,8 +43,8 @@ namespace Cauldron.Malichae
             int djinnHP = GetPowerNumeral(0, 2);
             int otherHP = GetPowerNumeral(1, 1);
 
-            var usePowerAction = ActionSources.OfType<UsePowerAction>().First();
-            var cs = usePowerAction.CardSource ?? usePowerAction.Power.CardSource;
+            CardSource cs = GetCardSourceForGrantedPower();
+            var card = cs.Card;
 
             var coroutine = base.GameController.GainHP(DecisionMaker, c => c.IsTarget && c.IsInPlayAndHasGameText && (c.IsHero || IsDjinn(c)), c => IsDjinn(c) ? djinnHP : otherHP, cardSource: cs);
             if (base.UseUnityCoroutines)

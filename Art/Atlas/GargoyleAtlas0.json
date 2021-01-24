@@ -104,7 +104,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"InflitratorGargoyleCharacter.png":
+"InfiltratorGargoyleCharacter.png":
 {
 	"frame": {"x":796,"y":259,"w":176,"h":256},
 	"rotated": false,
@@ -112,7 +112,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"InflitratorGargoyleCharacterBack.png":
+"InfiltratorGargoyleCharacterBack.png":
 {
 	"frame": {"x":975,"y":259,"w":176,"h":256},
 	"rotated": false,
@@ -215,6 +215,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:24c5a12d48117efaf06548bf5010e3f4:6a18a435dc564f66238bdc123cf97740:b6b4c76ea5a1b2d9bf6952481493b484$"
+	"smartupdate": "$TexturePacker:SmartUpdate:6a6be97c8bac8d4a8e9e4ae87953154d:6a18a435dc564f66238bdc123cf97740:b6b4c76ea5a1b2d9bf6952481493b484$"
 }
 }
