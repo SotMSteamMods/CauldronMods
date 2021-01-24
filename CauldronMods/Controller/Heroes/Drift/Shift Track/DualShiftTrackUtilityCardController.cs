@@ -27,27 +27,24 @@ namespace Cauldron.Drift
             //1. Place your active character on your current shift track space.
             //2. Place the shift token on your inactive character's shift track space.
             //3. Switch which character is active.
-            base.AddTrigger<ActivateAbilityAction>((ActivateAbilityAction action) => base.Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => base.Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => base.Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<DiscardCardAction>((DiscardCardAction action) => base.Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<DrawCardAction>((DrawCardAction action) => base.Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<ActivateAbilityAction>((ActivateAbilityAction action) => !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<DiscardCardAction>((DiscardCardAction action) => !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<DrawCardAction>((DrawCardAction action) => !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
             base.AddTrigger<GainHPAction>((GainHPAction action) => !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<GiveHighFiveAction>((GiveHighFiveAction action) => base.Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<ModifyTokensAction>((ModifyTokensAction action) => base.Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<MoveCardAction>((MoveCardAction action) => base.Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<PhaseChangeAction>((PhaseChangeAction action) => base.Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<RedirectDamageAction>((RedirectDamageAction action) => base.Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<UsePowerAction>((UsePowerAction action) => base.Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<GiveHighFiveAction>((GiveHighFiveAction action) => !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<ModifyTokensAction>((ModifyTokensAction action) => !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<MoveCardAction>((MoveCardAction action) => !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<PhaseChangeAction>((PhaseChangeAction action) => !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<RedirectDamageAction>((RedirectDamageAction action) => !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<UsePowerAction>((UsePowerAction action) => !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
         }
 
         private bool HasTrackAbilityBeenActivated()
         {
-            if (base.Game.TurnIndex == 0)
-            {
-                return true;
-            }
-            return base.HasBeenSetToTrueThisTurn(OncePerTurn);
+            IEnumerable<CardPropertiesJournalEntry> trackEntries = base.Journal.CardPropertiesEntries((CardPropertiesJournalEntry entry) => entry.Key == OncePerTurn && entry.Card.SharedIdentifier == ShiftTrack && entry.TurnIndex == base.Game.TurnIndex);
+            return trackEntries.Any();
         }
 
         private IEnumerator TrackResponse(GameAction action)
@@ -66,6 +63,7 @@ namespace Cauldron.Drift
             {
                 //Once per turn you may do the following in order:
                 base.SetCardPropertyToTrueIfRealAction(OncePerTurn);
+                IEnumerable<CardPropertiesJournalEntry> trackEntries = base.Journal.CardPropertiesEntries((CardPropertiesJournalEntry entry) => entry.Key == OncePerTurn && entry.Card.SharedIdentifier == ShiftTrack);
 
                 int inactivePosition = this.InactiveCharacterPosition();
                 base.SetCardProperty(DriftPosition + inactivePosition, false);

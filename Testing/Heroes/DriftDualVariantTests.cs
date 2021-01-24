@@ -81,15 +81,29 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
+            //Start with Future
             AssertIsInPlay(FutureDriftCharacter);
+            int position1 = CurrentShiftPosition();
 
+            //Shift Right 1
+            PlayCard(DestroyersAdagio);
+            AssertTrackPosition(position1 + 1);
+            int position2 = CurrentShiftPosition();
+
+            //Trigger switch with phase change
             DecisionYesNo = true;
+            GoToEndOfTurn(baron);
+
+            //Assert that other character and starting position are active
+            AssertIsInPlay(PastDriftCharacter);
+            AssertTrackPosition(position1);
+
+            //Switch back
             GoToPlayCardPhase(drift);
 
-            AssertIsInPlay(PastDriftCharacter);
-            GoToPlayCardPhase(haka);
-
+            //Assert in secondary position
             AssertIsInPlay(FutureDriftCharacter);
+            AssertTrackPosition(position2);
         }
 
         [Test()]
@@ -98,12 +112,26 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
+            //Switch to Past and Shift to far Right
             DecisionYesNo = true;
-            GoToPlayCardPhase(drift);
+            DecisionSelectFunction = 1;
+            DecisionSelectNumber = 3;
+            PlayCard(BorrowedTime);
+
+            int shiftPosition = CurrentShiftPosition();
+            Card[] top2 = GetTopCardsOfDeck(drift, 2).ToArray();
+            DecisionMoveCardDestinations = new MoveCardDestination[]
+            {
+                new MoveCardDestination(drift.TurnTaker.Trash),
+                new MoveCardDestination(drift.TurnTaker.Deck)
+            };
 
             //Reveal the top 2 cards of 1 hero deck. Replace or discard each of them in any order. Shift {DriftLL}.
-            int shiftPosition = CurrentShiftPosition();
+
             UsePower(drift);
+            AssertTrackPosition(shiftPosition - 2);
+            AssertOnTopOfDeck(top2[1]);
+            AssertInTrash(top2[0]);
         }
 
         [Test()]
@@ -126,7 +154,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestDriftCharacter_Incap0()
+        public void TestDriftCharacter_Future_Incap0()
         {
             SetupGameController("Apostate", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -155,7 +183,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestDriftCharacter_Incap1()
+        public void TestDriftCharacter_Future_Incap1()
         {
             SetupGameController("Apostate", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -172,7 +200,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestDriftCharacter_Incap2()
+        public void TestDriftCharacter_Future_Incap2()
         {
             SetupGameController("Apostate", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -199,7 +227,7 @@ namespace CauldronTests
         public void TestShiftTrackSetup()
         {
             SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
-            Card track = FindCardsWhere((Card c) => c.Identifier == "Base" + ShiftTrack + 1, false).FirstOrDefault();
+            Card track = FindCardsWhere((Card c) => c.Identifier == "Dual" + ShiftTrack + 1, false).FirstOrDefault();
             DecisionSelectCard = track;
             StartGame();
 

@@ -55,11 +55,21 @@ namespace Cauldron.Drift
                         //Replace or discard each of them in any order.
                         if (revealedCards.Count() == 1)
                         {
+                            //If there is only one card then we can only select that one
                             coroutine = base.GameController.SendMessageAction("There was only 1 card to reveal.", Priority.High, base.GetCardSource(), revealedCards);
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine);
+                            }
                             selectedCard = revealedCards.FirstOrDefault();
                         }
                         else
                         {
+                            //Else pick one
                             List<SelectCardDecision> storedResultsCards = new List<SelectCardDecision>();
                             coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.ReturnToDeck, revealedCards, storedResultsCards, false, cardSource: base.GetCardSource());
                             if (base.UseUnityCoroutines)
@@ -73,6 +83,10 @@ namespace Cauldron.Drift
                             selectedCard = base.GetSelectedCard(storedResultsCards);
                         }
 
+                        //List of selected cards
+                        List<Card> chosenCards = new List<Card>() { selectedCard };
+
+                        //While there are cards to select
                         while (selectedCard != null)
                         {
                             //Replace or discard...
@@ -89,9 +103,10 @@ namespace Cauldron.Drift
                                 base.GameController.ExhaustCoroutine(coroutine);
                             }
 
+                            selectedCard = null;
                             //Pick a new card
                             List<SelectCardDecision> storedResultsCards = new List<SelectCardDecision>();
-                            coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.ReturnToDeck, revealedCards, storedResultsCards, false, cardSource: base.GetCardSource());
+                            coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.ReturnToDeck, revealedCards, storedResultsCards, false, additionalCriteria: new LinqCardCriteria((Card c) => !chosenCards.Contains(c)), cardSource: base.GetCardSource());
                             if (base.UseUnityCoroutines)
                             {
                                 yield return base.GameController.StartCoroutine(coroutine);
@@ -100,7 +115,10 @@ namespace Cauldron.Drift
                             {
                                 base.GameController.ExhaustCoroutine(coroutine);
                             }
+
+                            //Get the new card and add it to the list of chosen cards
                             selectedCard = base.GetSelectedCard(storedResultsCards);
+                            chosenCards.Add(selectedCard);
                         }
                     }
                 }
