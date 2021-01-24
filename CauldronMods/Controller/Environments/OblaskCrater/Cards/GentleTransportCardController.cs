@@ -23,6 +23,7 @@ namespace Cauldron.OblaskCrater
         {
             base.AddEndOfTurnTrigger((ttc)=> ttc == base.FindEnvironment().TurnTaker, PhaseChangeActionResponse, new TriggerType[] { TriggerType.MoveCard, TriggerType.DealDamage });
             base.AddTrigger<PlayCardAction>((pca) => pca.CardToPlay.HasPowers && base.GetCardThisCardIsNextTo() == pca.CardToPlay.Owner.CharacterCard, PlayCardActionResponse, TriggerType.UsePower, TriggerTiming.After);
+            base.AddIfTheTargetThatThisCardIsNextToLeavesPlayDestroyThisCardTrigger();
         }
 
         private IEnumerator PhaseChangeActionResponse(PhaseChangeAction phaseChangeAction)

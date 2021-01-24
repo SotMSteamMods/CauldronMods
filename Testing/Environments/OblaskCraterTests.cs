@@ -198,7 +198,7 @@ namespace CauldronTests
 
         #endregion Test Industrious Hulk
 
-        #region Load Inscrutable Ecology
+        #region Test Inscrutable Ecology
 
         /* 
          * When this card enters play, reveal cards from the top of the environmnet deck until {H - 1} targets are 
@@ -246,6 +246,349 @@ namespace CauldronTests
             QuickHPCheck(0, 0, 0, 0, -1, 0);
         }
 
-        #endregion Load Inscrutable Ecology
+        #endregion Test Inscrutable Ecology
+
+        #region Test Invasive Growth
+
+        /* 
+         * When this card enters play, discard the top 2 cards of the enviroment deck, then put a random target 
+         * from the environment trash into play.
+         * When an environment target is destroyed, all other environment cards become indestructible until the 
+         * start of the next turn.
+         */
+        [Test]
+        public void TestInvasiveGrowthEnterPlay()
+        {
+            /* 
+             * When this card enters play, discard the top 2 cards of the enviroment deck, then put a random target 
+             * from the environment trash into play.
+             */
+            Card invasiveGrowth;
+            Card oblaskObjectY3A;
+            Card inscrutableEcology;
+            Card swarmOfFangs;
+            int numberOfCardsInDeck;
+            int numberOfCardsInTrash;
+
+            // Arrange & Act
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+            invasiveGrowth = base.GetCard("InvasiveGrowth");
+            swarmOfFangs = base.GetCard("SwarmOfFangs");
+            inscrutableEcology = base.GetCard("InscrutableEcology");
+            oblaskObjectY3A = base.GetCard("OblaskObjectY3A");
+
+            base.env.PutOnDeck(inscrutableEcology);
+            base.env.PutOnDeck(swarmOfFangs);
+            base.env.PutOnDeck(oblaskObjectY3A);
+
+            numberOfCardsInDeck = base.env.TurnTaker.Deck.NumberOfCards;
+            numberOfCardsInTrash = base.env.TurnTaker.Trash.NumberOfCards;
+
+            invasiveGrowth = PlayCard(invasiveGrowth);
+
+            AssertNumberOfCardsInDeck(base.env, numberOfCardsInDeck - 3);
+            AssertNumberOfCardsInTrash(base.env, numberOfCardsInTrash + 1);
+            AssertIsInPlay(swarmOfFangs);
+        }
+
+        [Test]
+        public void TestInvasiveGrowthEnviromentTargetDestroyed()
+        {
+            /* 
+             * When an environment target is destroyed, all other environment cards become indestructible until the 
+             * start of the next turn.
+             */
+            Card invasiveGrowth;
+            Card oblaskObjectY3A;
+            Card inscrutableEcology;
+            Card swarmOfFangs;
+            Card shadowOfOblask;
+
+            // Arrange & Act
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+            invasiveGrowth = base.GetCard("InvasiveGrowth");
+            swarmOfFangs = base.GetCard("SwarmOfFangs");
+            inscrutableEcology = base.GetCard("InscrutableEcology");
+            oblaskObjectY3A = base.GetCard("OblaskObjectY3A");
+
+            base.env.PutOnDeck(inscrutableEcology);
+            base.env.PutOnDeck(swarmOfFangs);
+            base.env.PutOnDeck(oblaskObjectY3A);
+
+            invasiveGrowth = PlayCard(invasiveGrowth);
+            shadowOfOblask = PutIntoPlay("ShadowOfOblask");
+
+            GoToStartOfTurn(ra);
+            DealDamage(ra, swarmOfFangs, 4, DamageType.Melee);
+            DealDamage(ra, shadowOfOblask, 20, DamageType.Melee);
+            AssertIsInPlay(shadowOfOblask);
+
+            GoToStartOfTurn(legacy);
+            AssertNotInPlay(shadowOfOblask);
+        }
+        #endregion Test Invasive Growth
+
+        #region Test Metal Scavenger
+
+        [Test]
+        public void TestMetalScavenger()
+        {
+            Card metalScavenger;
+            int numberOfCardsInBaronTrash;
+            int numberOfCardsInRaTrash;
+            int numberOfCardsInLegacyTrash;
+            int numberOfCardsInHakaTrash;
+            int numberOfCardsInEnvTrash;
+            /* 
+             * At the end of the environment turn, move the top card of each other trash pile beneath this card.
+             * Then, this card deals each other target 1 toxic damage and itself 1 fire damage.
+             * Cards beneath this one are not considered in play.
+             */
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+            PutInTrash("BladeBattalion", "BlazingTornado", "BackFistStrike", "Dominion");
+
+            base.GameController.SkipToTurnTakerTurn(env);
+
+            numberOfCardsInBaronTrash = baron.TurnTaker.Trash.NumberOfCards;
+            numberOfCardsInRaTrash = ra.TurnTaker.Trash.NumberOfCards;
+            numberOfCardsInLegacyTrash = legacy.TurnTaker.Trash.NumberOfCards;
+            numberOfCardsInHakaTrash = haka.TurnTaker.Trash.NumberOfCards;
+            numberOfCardsInEnvTrash = env.TurnTaker.Trash.NumberOfCards;
+            metalScavenger = PutIntoPlay("MetalScavenger");
+
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, metalScavenger);
+            GoToEndOfTurn(env);
+            QuickHPCheck(-1, -1, -1, -1, -1);
+            AssertNumberOfCardsInTrash(baron, numberOfCardsInBaronTrash - 1);
+            AssertNumberOfCardsInTrash(ra, numberOfCardsInRaTrash - 1);
+            AssertNumberOfCardsInTrash(legacy, numberOfCardsInLegacyTrash - 1);
+            AssertNumberOfCardsInTrash(haka, numberOfCardsInHakaTrash - 1);
+            AssertNumberOfCardsInTrash(env, numberOfCardsInEnvTrash);
+            AssertNumberOfCardsUnderCard(metalScavenger, 4);
+            AssertNotInPlay(metalScavenger.UnderLocation.Cards);
+        }
+
+        #endregion Test Metal Scavenger
+
+        #region Test Moon Watcher
+        /*
+         * At the end of the environment turn, this card deals each non-environment target 1 sonic damage.
+         * When this card is destroyed, if it has 0 or fewer HP, reveal the top card of each deck and 
+         * replace or discard each one.
+         */
+        [Test]
+        public void TestMoonWatcherEndOfTurn()
+        {
+            /*
+             * At the end of the environment turn, this card deals each non-environment target 1 sonic damage.
+             */
+            Card moonWatcher;
+
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            base.GameController.SkipToTurnTakerTurn(env);
+            moonWatcher = PutIntoPlay("MoonWatcher");
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, moonWatcher);
+            GoToEndOfTurn(env);
+            QuickHPCheck(-1, -1, -1, -1, 0);
+        }
+        [Test]
+        public void TestMoonWatcherDestroyReduceTo0()
+        {
+            /*
+             * When this card is destroyed, if it has 0 or fewer HP, reveal the top card of each deck and 
+             * replace or discard each one.
+             */
+            Card moonWatcher;
+            int numberOfCardsInBaronTrash;
+            int numberOfCardsInRaTrash;
+            int numberOfCardsInLegacyTrash;
+            int numberOfCardsInHakaTrash;
+            int numberOfCardsInEnvTrash;
+
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            moonWatcher = PutIntoPlay("MoonWatcher");
+            numberOfCardsInBaronTrash = baron.TurnTaker.Trash.NumberOfCards;
+            numberOfCardsInRaTrash = ra.TurnTaker.Trash.NumberOfCards;
+            numberOfCardsInLegacyTrash = legacy.TurnTaker.Trash.NumberOfCards;
+            numberOfCardsInHakaTrash = haka.TurnTaker.Trash.NumberOfCards;
+            numberOfCardsInEnvTrash = env.TurnTaker.Trash.NumberOfCards;
+
+            DecisionSelectTurnTakers = new TurnTaker[] { baron.TurnTaker, ra.TurnTaker, legacy.TurnTaker, haka.TurnTaker, env.TurnTaker };
+            DecisionMoveCardDestinations = new MoveCardDestination[] 
+            { 
+                new MoveCardDestination( baron.TurnTaker.Trash), 
+                new MoveCardDestination(ra.TurnTaker.Trash), 
+                new MoveCardDestination(legacy.TurnTaker.Trash), 
+                new MoveCardDestination(haka.TurnTaker.Trash),
+                new MoveCardDestination(env.TurnTaker.Trash)
+            };
+            base.DealDamage(legacy, moonWatcher, 15, DamageType.Melee);
+
+            AssertNumberOfCardsInTrash(baron, numberOfCardsInBaronTrash + 1);
+            AssertNumberOfCardsInTrash(ra, numberOfCardsInRaTrash + 1);
+            AssertNumberOfCardsInTrash(legacy, numberOfCardsInLegacyTrash + 1);
+            AssertNumberOfCardsInTrash(haka, numberOfCardsInHakaTrash + 1);
+            AssertNumberOfCardsInTrash(env, numberOfCardsInEnvTrash + 2);
+        }
+        [Test]
+        public void TestMoonWatcherDestroyReduceBelow0()
+        {
+            /*
+             * When this card is destroyed, if it has 0 or fewer HP, reveal the top card of each deck and 
+             * replace or discard each one.
+             */
+            Card moonWatcher;
+            int numberOfCardsInBaronTrash;
+            int numberOfCardsInRaTrash;
+            int numberOfCardsInLegacyTrash;
+            int numberOfCardsInHakaTrash;
+            int numberOfCardsInEnvTrash;
+
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            moonWatcher = PutIntoPlay("MoonWatcher");
+            numberOfCardsInBaronTrash = baron.TurnTaker.Trash.NumberOfCards;
+            numberOfCardsInRaTrash = ra.TurnTaker.Trash.NumberOfCards;
+            numberOfCardsInLegacyTrash = legacy.TurnTaker.Trash.NumberOfCards;
+            numberOfCardsInHakaTrash = haka.TurnTaker.Trash.NumberOfCards;
+            numberOfCardsInEnvTrash = env.TurnTaker.Trash.NumberOfCards;
+
+            DecisionSelectTurnTakers = new TurnTaker[] { baron.TurnTaker, ra.TurnTaker, legacy.TurnTaker, haka.TurnTaker, env.TurnTaker };
+            DecisionMoveCardDestinations = new MoveCardDestination[]
+            {
+                new MoveCardDestination( baron.TurnTaker.Trash),
+                new MoveCardDestination(ra.TurnTaker.Trash),
+                new MoveCardDestination(legacy.TurnTaker.Trash),
+                new MoveCardDestination(haka.TurnTaker.Trash),
+                new MoveCardDestination(env.TurnTaker.Trash)
+            };
+            base.DealDamage(legacy, moonWatcher, 16, DamageType.Melee);
+
+            AssertNumberOfCardsInTrash(baron, numberOfCardsInBaronTrash + 1);
+            AssertNumberOfCardsInTrash(ra, numberOfCardsInRaTrash + 1);
+            AssertNumberOfCardsInTrash(legacy, numberOfCardsInLegacyTrash + 1);
+            AssertNumberOfCardsInTrash(haka, numberOfCardsInHakaTrash + 1);
+            AssertNumberOfCardsInTrash(env, numberOfCardsInEnvTrash + 2);
+        }
+        [Test]
+        public void TestMoonWatcherDestroyByEffect()
+        {
+            /*
+             * When this card is destroyed, if it has 0 or fewer HP, reveal the top card of each deck and 
+             * replace or discard each one.
+             */
+            Card moonWatcher;
+            int numberOfCardsInBaronTrash;
+            int numberOfCardsInRaTrash;
+            int numberOfCardsInLegacyTrash;
+            int numberOfCardsInHakaTrash;
+            int numberOfCardsInEnvTrash;
+
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+            StartGame();
+
+            moonWatcher = PutIntoPlay("MoonWatcher");
+            numberOfCardsInBaronTrash = baron.TurnTaker.Trash.NumberOfCards;
+            numberOfCardsInRaTrash = ra.TurnTaker.Trash.NumberOfCards;
+            numberOfCardsInLegacyTrash = legacy.TurnTaker.Trash.NumberOfCards;
+            numberOfCardsInHakaTrash = haka.TurnTaker.Trash.NumberOfCards;
+            numberOfCardsInEnvTrash = env.TurnTaker.Trash.NumberOfCards;
+
+            DecisionSelectTurnTakers = new TurnTaker[] { baron.TurnTaker, ra.TurnTaker, legacy.TurnTaker, haka.TurnTaker, env.TurnTaker };
+            DecisionMoveCardDestinations = new MoveCardDestination[]
+            {
+                new MoveCardDestination( baron.TurnTaker.Trash),
+                new MoveCardDestination(ra.TurnTaker.Trash),
+                new MoveCardDestination(legacy.TurnTaker.Trash),
+                new MoveCardDestination(haka.TurnTaker.Trash),
+                new MoveCardDestination(env.TurnTaker.Trash)
+            };
+            base.DealDamage(legacy, moonWatcher, 14, DamageType.Melee);
+            base.PlayCard("WrathfulGaze");
+            base.UsePower(base.PlayCard("WrathfulGaze"));
+
+            AssertNumberOfCardsInTrash(baron, numberOfCardsInBaronTrash);
+            AssertNumberOfCardsInTrash(ra, numberOfCardsInRaTrash);
+            AssertNumberOfCardsInTrash(legacy, numberOfCardsInLegacyTrash);
+            AssertNumberOfCardsInTrash(haka, numberOfCardsInHakaTrash);
+            AssertNumberOfCardsInTrash(env, numberOfCardsInEnvTrash + 1);
+
+        }
+
+        #endregion Test Moon Watcher
+
+        #region Test Oblask Object Y-3A
+        /* 
+         * Play this card next to a hero, then play the top card of the environment deck. 
+         * When the hero next to this card would be dealt damage by an environment target, 
+         * they may discard a card. If they do, redirect that damage.
+         */
+        [Test]
+        public void TestOblaskObjectY3A()
+        {
+            Card oblaskObjectY3A;
+            Card shadowOfOblask;
+            Card drawnToTheFlame;
+            Card blazingTornado;
+
+            // Arrange & Act
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+            StartGame();
+
+            base.DestroyNonCharacterVillainCards();
+
+            oblaskObjectY3A = base.GetCard("OblaskObjectY3A");
+            shadowOfOblask = base.GetCard("ShadowOfOblask");
+            drawnToTheFlame = base.PutInHand("DrawnToTheFlame");
+            blazingTornado = base.PutInHand("BlazingTornado");
+
+            base.env.PutOnDeck(shadowOfOblask);
+
+            DecisionSelectCards = new Card[] { ra.CharacterCard, drawnToTheFlame, baron.CharacterCard, blazingTornado, shadowOfOblask };
+            PlayCard(oblaskObjectY3A);
+            AssertIsInPlay(shadowOfOblask);
+
+            QuickHPStorage(baron.CharacterCard, shadowOfOblask, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            DealDamage(shadowOfOblask, ra, 2, DamageType.Melee);
+            QuickHPCheck(-2, 0, 0, 0, 0);
+
+            DealDamage(shadowOfOblask, ra, 2, DamageType.Melee);
+            QuickHPCheck(0, -2, 0, 0, 0);
+        }
+
+        // test non environment damage to make sure no redirect happens
+        #endregion Test Oblask Object Y-3A
+
+        #region Test Open Ground
+        /* 
+         * Once per turn when a hero target would be dealt damage by a non-hero target, they may increase that damage
+         * by 1 and play the top card of the environment deck.
+         * If that card is a target, redirect that damage to it.
+         */
+        [Test]
+        public void TestOpenGround()
+        {
+            Card shadowOfOblask;
+            // Arrange & Act
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+            StartGame();
+
+            PutIntoPlay("OpenGround");
+            shadowOfOblask = PutOnDeck("ShadowOfOblask");
+
+            DecisionsYesNo = new bool[] { true, true };
+
+            QuickHPStorage(baron.CharacterCard, shadowOfOblask, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+
+            DealDamage(baron, ra, 2, DamageType.Cold);
+            QuickHPCheck(0, -3, 0, 0, 0);
+
+            DealDamage(baron, ra, 2, DamageType.Cold);
+            QuickHPCheck(0, 0, -2, 0, 0);
+        }
+
+        #endregion Test Open Ground
     }
 }
