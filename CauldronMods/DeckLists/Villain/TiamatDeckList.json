@@ -642,7 +642,7 @@
             "gameplay": [
                 "The heroes may not win the game.",
                 "At the start of the villain turn, if {InfernoTiamatCharacter} is decapitated, flip this card and put {HydraDecayTiamatCharacter} into play with 15 HP.",
-                "At the end of the villain turn, {InfernoTiamatCharacter} deals the hero target with the highest HP 1 fire damage."
+                "At the end of the villain turn, {InfernoTiamatCharacter} deals the hero target with the highest HP 2 fire damage."
             ],
             "advanced": "The first time {InfernoTiamatCharacter} deals damage each turn, increase that damage by 2.",
             "icons": [
