@@ -38,8 +38,7 @@
                 "ImmuneToDamage"
             ],
             "openingLines": {
-                "default": "We have an audience! Let's make some magic.",
-                "PastTheRamCharacter": "1929 Ram placeholder"
+                "default": "We have an audience! Let's make some magic."
             },
             "complexity": 3
         },
@@ -452,8 +451,7 @@
             ],
             "openingLines": {
                 "default": "Wouldn't you know it, I'm sensing a threatening presence. Right over there.",
-                "MythosCharacter": "I don't think so. That 'little crystal' points out trouble, which is what you're in!",
-                "PastTheRamCharacter": "1929 Ram placeholder"
+                "MythosCharacter": "I don't think so. That 'little crystal' points out trouble, which is what you're in!"
             },
             "complexity": 3
         },
@@ -494,7 +492,7 @@
             "openingLines": {
                 "default": "Excuse me, let's keep it classy!",
                 "TheMistressOfFateCharacter": "I've escaped from plenty of traps. This should be easy!",
-                "PastTheRamCharacter": "1929 Ram placeholder"
+                "PastTheRamCharacter": "Sort of: I'm here to make you disappear."
             },
             "complexity": 3
         }

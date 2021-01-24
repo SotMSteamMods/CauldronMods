@@ -870,7 +870,17 @@
             ],
             "difficulty": 1,
             "openingLines": {
-                "default": "BzzzzzrroooOOAAGH!"
+                "default": "BzzzzzrroooOOAAGH!",
+                "TheKnightCharacter": "BzzzzzrroooOOAAGH!",
+                "BerserkerTheKnightCharacter": "BzzzzzrroooOOAAGH!",
+                "FairTheKnightCharacter": "BzzzzzrroooOOAAGH!",
+                "PastTheKnightCharacter": "BzzzzzrroooOOAAGH!",
+                "WastelandRoninTheKnightCharacter": "BzzzzzrroooOOAAGH!",
+                "DriftCharacter": "BzzzzzrroooOOAAGH.",
+                "SplitDriftCharacter": "BzzzzzrroooOOAAGH.",
+                "FutureTerminusCharacter": "BzzzzzrroooOOAAGH!",
+                "FutureGargoyleCharacter": "BzzzzzrroooOOAAGH!",
+                "FutureLadyOfTheWoodCharacter": "BzzzzzrroooOOAAGH!"
             }
         }
     ]
