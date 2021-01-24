@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -16,13 +17,12 @@ namespace Cauldron.StSimeonsCatacombs
 
         public override void AddTriggers()
         {
-            //At the end of the environment turn, each target regains 1 HP
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, (PhaseChangeAction pca) => this.AllTargetsGainHP(), TriggerType.GainHP);
-
+            //At the start of the villain turn, each target regains 1 HP
+            AddStartOfTurnTrigger((TurnTaker tt) => FindVillainTurnTakerControllers(true).Contains(FindTurnTakerController(tt)), AllTargetsGainHP, TriggerType.GainHP);
             base.AddTriggers();
         }
 
-        private IEnumerator AllTargetsGainHP()
+        private IEnumerator AllTargetsGainHP(PhaseChangeAction pca)
         {
             IEnumerator allTargetsGainHP = base.GameController.GainHP(this.DecisionMaker, (Card c) => true, 1, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)

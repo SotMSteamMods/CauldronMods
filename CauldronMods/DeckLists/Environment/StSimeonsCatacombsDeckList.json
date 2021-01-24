@@ -62,7 +62,7 @@
                 "EndOfTurnAction",
                 "GainHP"
             ],
-            "body": "At the end of the environment turn, each target regains 1 HP.",
+            "body": "At the start of the Villain turn, each target regains 1 HP.",
             "flavorText": "“Great,” said Chrono-Ranger. “Out of the{BR}sewers, into the ancient underground{BR}waterways. Can't these guys set up shop{BR}in a saloon?”"
         },
         {
