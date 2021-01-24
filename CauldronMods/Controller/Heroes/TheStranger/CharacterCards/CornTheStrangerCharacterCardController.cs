@@ -36,7 +36,7 @@ namespace Cauldron.TheStranger
             if (DidSelectCard(storedResults))
             {
                 Card source = GetSelectedCard(storedResults);
-                coroutine2 = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, source), amount, DamageType.Infernal, target, optional: false, target, cardSource: GetCardSource());
+                coroutine2 = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, source), amount, DamageType.Psychic, target, optional: false, target, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine2);
