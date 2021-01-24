@@ -143,7 +143,7 @@ namespace Cauldron.Mythos
             //For special string describing the order of icons in the deck top(1) to bottom
             string output = null;
             int place = 0;
-            foreach (Card c in base.TurnTaker.Deck.Cards)
+            foreach (Card c in base.TurnTaker.Deck.Cards.ToArray().Reverse())
             {
                 place++;
                 if (output == null)
