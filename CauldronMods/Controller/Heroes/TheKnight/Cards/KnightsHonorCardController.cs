@@ -19,6 +19,7 @@ namespace Cauldron.TheKnight
 
             Card cardThisCardIsNextTo = base.GetCardThisCardIsNextTo(true);
             base.AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(true, cardThisCardIsNextTo != null && !cardThisCardIsNextTo.IsHeroCharacterCard);
+            base.AddAsPowerContributor();
         }
 
         private IEnumerator RedirectToKnight(DealDamageAction dd)
@@ -69,6 +70,7 @@ namespace Cauldron.TheKnight
             }
             yield break;
         }
+
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             //"Play this card next to a target.",
@@ -85,7 +87,20 @@ namespace Cauldron.TheKnight
             yield break;
         }
 
-        public override IEnumerator UsePower(int index = 0)
+        public override IEnumerable<Power> AskIfContributesPowersToCardController(CardController cardController)
+        {
+            
+            if (TurnTakerController.CharacterCardControllers.Any(cc => cc == cardController))
+            {
+                return new Power[]
+                {
+                    new Power(HeroTurnTakerController, cardController, $"Destroy {Card.Title}.", DestroyKnightsHonorPower(), 0, null, GetCardSource())
+                };
+            }
+            return null;
+        }
+
+        public IEnumerator DestroyKnightsHonorPower()
         {
             //"Destroy this card."
             IEnumerator coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card, cardSource: base.GetCardSource());
