@@ -39,7 +39,7 @@
 			"openingLines": {
 				"default": "I have some friends from beyond the Veil who'd like a word with you.",
 				"OriphelCharacter": "Bathiel has a score to settle with you.",
-				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+				"HydraWinterTiamatCharacter": "This doesn't bode well."
 			},
 			"complexity": 3
 		},
@@ -537,7 +537,7 @@
 			"openingLines": {
 				"default": "The power of the Djinn will be your undoing.",
 				"OriphelCharacter": "You'll go mad! Your mind cannot share its vessel with a being of such power!",
-				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+				"HydraWinterTiamatCharacter": "As fearsome a creature as any from beyond the Veil."
 			},
 			"complexity": 3
 		},
@@ -580,7 +580,7 @@
 				"default": "My friends taught me some new tricks to use on the likes of you.",
 				"OriphelCharacter": "We must disrupt her ritual before it is too late!",
 				"MythosCharacter": "How do you know me, fiend? And what do you know of those beyond the Veil?",
-				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+				"HydraWinterTiamatCharacter": "I'm sure Ministry would love to study this thing. [i]IF[/i] we can take it down."
 			},
 			"complexity": 3
 		}

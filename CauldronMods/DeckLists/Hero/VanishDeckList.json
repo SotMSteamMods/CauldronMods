@@ -38,8 +38,7 @@
             ],
             "openingLines": {
                 "default": "Okay team, don't blink or you might miss me.",
-                "GrayCharacter": "The only thing I did was get people out of a mess [b]you[/b] made!",
-                "PastTheRamCharacter": "1929 Ram placeholder"
+                "GrayCharacter": "The only thing I did was get people out of a mess [b]you[/b] made!"
             },
             "complexity": 2
         },
@@ -373,8 +372,7 @@
             ],
             "openingLines": {
                 "default": "I'll get everyone into position. Who's ready to jump?",
-                "GrayCharacter": "If you keep at it, you'll only destroy yourself. Much as I'd love to watch that, we can't have you melt down in public.",
-                "PastTheRamCharacter": "1929 Ram placeholder"
+                "GrayCharacter": "If you keep at it, you'll only destroy yourself. Much as I'd love to watch that, we can't have you melt down in public."
             },
             "complexity": 2
         },
@@ -415,7 +413,7 @@
             "openingLines": {
                 "default": "I'll scout ahead. There must be some advantage we can exploit.",
                 "GrayCharacter": "Hey, the best part of 1929 was that you weren't trying to kill me.",
-                "PastTheRamCharacter": "1929 Ram placeholder",
+                "PastTheRamCharacter": "Well, we're here to take it back!",
                 "TheMistressOfFateCharacter": "Uh, you're welcome. But I'm afraid that we're here to stop you, not help you."
             },
             "complexity": 2
