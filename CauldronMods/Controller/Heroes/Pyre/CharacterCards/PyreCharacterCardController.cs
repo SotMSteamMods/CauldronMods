@@ -69,14 +69,17 @@ namespace Cauldron.Pyre
             {
                 case 0:
                     {
+                        //"One player may discard a {PyreIrradiate} card to draw a card, play a card, and use a power now.",
                         break;
                     }
                 case 1:
                     {
+                        //"One hero target deals each target 1 energy damage.",
                         break;
                     }
                 case 2:
                     {
+                        //"One player may discard 2 cards, then draw 2 cards."
                         break;
                     }
             }

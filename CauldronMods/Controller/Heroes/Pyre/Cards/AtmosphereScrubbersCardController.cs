@@ -13,5 +13,16 @@ namespace Cauldron.Pyre
         public AtmosphereScrubbersCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override IEnumerator Play()
+        {
+            //"When this card enters play, you may use a power.",
+            yield break;
+        }
+        public override IEnumerator UsePower(int index = 0)
+        {
+            //"2 heroes may each discard a card to regain 2 HP. Each hero who discards a {PyreIrradiate} card this way may draw a card."
+            yield break;
+        }
     }
 }

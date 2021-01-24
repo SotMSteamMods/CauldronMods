@@ -13,5 +13,18 @@ namespace Cauldron.Pyre
         public RogueFissionCascadeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override void AddStartOfGameTriggers()
+        {
+            //"When this card enters your hand, put it into play.",
+        }
+
+        public override IEnumerator Play()
+        {
+            
+            //"{Pyre} deals each hero with {PyreIrradiate} cards in their hand X energy damage, where X is the number of {PyreIrradiate} cards in all hands.",
+            //"Reveal the top card of your deck and draw or discard it."
+            yield break;
+        }
     }
 }

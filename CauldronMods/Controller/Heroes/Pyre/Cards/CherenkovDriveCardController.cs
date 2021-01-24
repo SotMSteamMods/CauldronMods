@@ -13,5 +13,11 @@ namespace Cauldron.Pyre
         public CherenkovDriveCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override void AddTriggers()
+        {
+            //"At the end of your turn, 1 player may select 1 non-{PyreIrradiate} card in their hand. {PyreIrradiate} that card it until it leaves their hand. Then, they may use a power on that card.",
+            //"If that power destroys that card, discard it instead."
+        }
     }
 }

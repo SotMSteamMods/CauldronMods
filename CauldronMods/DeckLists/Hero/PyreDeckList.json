@@ -109,10 +109,10 @@
             ],
             "body": [
                 "Select a hero. They activate each of the following in order if they have at least that many {PyreIrradiate} cards in their hand:",
-                "{Bulletpoint}1: Use a power.",
-                "{Bulletpoint}2: Draw a card.",
-                "{Bulletpoint}3: Deal themselves 2 energy damage.",
-                "{Bulletpoint}4: Play a card."
+                "{ 1: Use a power.",
+                "{ 2: Draw a card.",
+                "{ 3: Deal themselves 2 energy damage.",
+                "{ 4: Play a card."
             ],
             "flavorQuotes": [
                 {
@@ -220,7 +220,7 @@
             "powers": [
                 "Each player selects 1 non-{PyreIrradiate} card in their hand. {PyreIrradiate} those cards until they leave their hands."
             ],
-            "flavorText": "Destruction without{BR}profit has no appeal, said Gray.{BR}Vanish narrowed her eyes. “I'll{BR}pretend that was a 'thank you'”."
+            "flavorText": "“Destruction without{BR}profit has no appeal,” said Gray.{BR}Vanish narrowed her eyes. “I'll{BR}pretend that was a 'thank you'”."
         },
         {
             "identifier": "FracturedControlRod",
@@ -313,7 +313,10 @@
                 "HasPower",
                 "DrawCardNow"
             ],
-            "body": "Reduce damage dealt to and by {Pyre} by 1. If Containment Breach is ever in play, destroy it or destroy this card.",
+            "body": [
+                "Reduce damage dealt to and by {Pyre} by 1.",
+                "If Containment Breach is ever in play, destroy it or destroy this card."
+            ],
             "powers": [
                 "Draw 2 cards. Destroy this card."
             ],
@@ -525,7 +528,7 @@
                 "Pyre"
             ],
             "incapacitatedAbilities": [
-                "One player may discard a {PyreIrradiate} card. If they do, they deal 3 targets 3 energy damage.",
+                "One player may discard a {PyreIrradiate} card. If they do, they deal 3 targets 3 energy damage each.",
                 "Each target regains 1 HP.",
                 "One hero may deal themselves 2 energy damage and play 2 cards."
             ],

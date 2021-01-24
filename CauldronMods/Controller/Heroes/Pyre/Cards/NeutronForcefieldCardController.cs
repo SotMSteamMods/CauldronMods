@@ -13,5 +13,16 @@ namespace Cauldron.Pyre
         public NeutronForcefieldCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override IEnumerator Play()
+        {
+            //"If this card is {PyreIrradiate} when you play it, it becomes indestructible until the end of your turn.",
+            yield break;
+        }
+        public override IEnumerator UsePower(int index = 0)
+        {
+            //"Select a hero target. Until the start of your next turn, that target is immune to damage. Destroy this card."
+            yield break;
+        }
     }
 }

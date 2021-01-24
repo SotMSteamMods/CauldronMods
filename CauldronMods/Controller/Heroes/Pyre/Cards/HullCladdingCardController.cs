@@ -13,5 +13,11 @@ namespace Cauldron.Pyre
         public HullCladdingCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override void AddTriggers()
+        {
+            //"Reduce damage dealt to and by {Pyre} by 1.",
+            //"If Containment Breach is ever in play, destroy it or destroy this card."
+        }
     }
 }
