@@ -20,6 +20,13 @@ All CardController methods, generally, include this check already.  This check i
 * Likewise, IsVillain(Card) and IsVillainTarget(Card) should be used instead of Card.IsVillain.
 * When checking cards for Keywords by default cards that are under or facedown do not have keywords.  This behavior can be overriden by calling GameController.DoesCardContainKeyword directly.
 
+## Save/Load, Roll Back
+The game saves/serializaes all the objects in the Handelabra.Sentinels.Engine.Model name space only.  This means that fields/properties on the Card Controllers are NOT saved.
+Fields on Controller classes can only be safely set in the Constructor or 'init' functions like AddTrigges.  All other state must be saved as a Card Property.
+There's a few cases were base game cards use local fields for temp. storage.  These are not good examples and should not be replicated.
+Even in cases when the Card works, these local variables could break multiplayer in the future and are best avoided.
+Another anomoly is that the Save Game does export the Decklist.  So changes to the Decklist won't appear on a re-loaded game.
+
 ## Is a Card in play, who knows!
 The logic around wheather a card is in play when looking at things like cards under other cards, flipped, under and flipped, next to and flipped, etc are obscure.
 This distinction matters as game text (read that as 'code') is not run when the card is out of play.
@@ -69,6 +76,7 @@ Store this, and use it in subsequent tests.
     * The branch should be run up in game and played at least once.
     * Each card's implementation should be compared to the Google Drive card image.
     * The in-game deck text, flavor text should be compared to the Google Drive card image.
+    * Does each card have at least one test case, and is that test case sane.
     * Changes or recommendations should be discussed in the PR before being made.
     * The reviewer can and should make small edits and improvements to the deck.
 
