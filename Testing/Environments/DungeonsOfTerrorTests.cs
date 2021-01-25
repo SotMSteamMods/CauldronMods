@@ -199,6 +199,8 @@ namespace CauldronTests
             Card edibles = PlayCard("DubiousEdibles");
             QuickHPCheck(0, 0, 0, 4);
 
+            //Then, destroy this card.
+            AssertInTrash(edibles);
         }
 
         [Test()]
@@ -221,6 +223,119 @@ namespace CauldronTests
             Card edibles = PlayCard("DubiousEdibles");
             QuickHPCheck(0, -1, -1, -1);
 
+            //Then, destroy this card.
+            AssertInTrash(edibles);
         }
+
+        [Test()]
+        public void TestEnormousPack_Fate_Play()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card ring = PutInHand("TheLegacyRing");
+
+            //put fate in trash
+            PutInTrash("HighGround");
+            //When this card enters play, check the top card of the environment trash.
+            //If it is a fate card, 1 hero may play card, draw a card, or use a power
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            DecisionSelectFunction = 0;
+            DecisionSelectCard = ring;
+            Card pack = PlayCard("EnormousPack");
+            AssertInPlayArea(legacy, ring);
+
+            //Then, destroy this card.
+            AssertInTrash(pack);
+
+        }
+
+        [Test()]
+        public void TestEnormousPack_Fate_Draw()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card top = GetTopCardOfDeck(legacy);
+            //put fate in trash
+            PutInTrash("HighGround");
+            //When this card enters play, check the top card of the environment trash.
+            //If it is a fate card, 1 hero may play card, draw a card, or use a power
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            DecisionSelectFunction = 1;
+            Card pack = PlayCard("EnormousPack");
+            AssertInHand(top);
+
+            //Then, destroy this card.
+            AssertInTrash(pack);
+
+        }
+
+        [Test()]
+        public void TestEnormousPack_Fate_Power()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //put fate in trash
+            PutInTrash("HighGround");
+            //When this card enters play, check the top card of the environment trash.
+            //If it is a fate card, 1 hero may play card, draw a card, or use a power
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            DecisionSelectFunction = 2;
+            Card pack = PlayCard("EnormousPack");
+
+            QuickHPStorage(baron);
+            DealDamage(ra, baron, 3, DamageType.Fire);
+            QuickHPCheck(-4);
+
+            //Then, destroy this card.
+            AssertInTrash(pack);
+
+        }
+
+        [Test()]
+        public void TestEnormousPack_Fate_Optional()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //put fate in trash
+            PutInTrash("HighGround");
+            //When this card enters play, check the top card of the environment trash.
+            //If it is a fate card, 1 hero may play card, draw a card, or use a power
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            DecisionDoNotSelectFunction = true;
+            QuickHandStorage(legacy);
+            QuickHPStorage(baron, ra, legacy, haka);
+            Card pack = PlayCard("EnormousPack");
+            QuickHandCheckZero();
+            QuickHPCheckZero();
+
+            //Then, destroy this card.
+            AssertInTrash(pack);
+
+        }
+
+        [Test()]
+        public void TestEnormousPack_NotFate()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            DrawCard(legacy);
+
+            //put not fate in trash
+            PutInTrash("StoneWarden");
+            //When this card enters play, check the top card of the environment trash.
+            //If it is not a fate card, the player with the most cards in hand discards 2 cards
+            QuickHandStorage(ra, legacy, haka);
+            Card pack = PlayCard("EnormousPack");
+            QuickHandCheck(0, -2, 0);
+            //Then, destroy this card.
+            AssertInTrash(pack);
+
+        }
+
     }
 }
