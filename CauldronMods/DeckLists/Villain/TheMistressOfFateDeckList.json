@@ -512,42 +512,6 @@
                         }
                     ],
                     "flavorReference": "Unity, Abstract Tales Annual #4"
-                },
-                {
-                    "identifier": "DeckStorage",
-                    "count": 5,
-                    "title": "Deck Storage",
-                    "keywords": [],
-                    "icons": [],
-                    "isReal": false,
-                    "body": [
-                        "This exists as a way to help the Mistress of Fate organize the cards of incapacitated heroes.",
-                        "If you see this card in gameplay, something has gone wrong. Please file a bug report at https://github.com/SotMSteamMods/CauldronMods"
-                    ]
-                },
-                {
-                    "identifier": "HandStorage",
-                    "count": 5,
-                    "title": "Hand Storage",
-                    "keywords": [],
-                    "icons": [],
-                    "isReal": false,
-                    "body": [
-                        "This exists as a way to help the Mistress of Fate organize the cards of incapacitated heroes.",
-                        "If you see this card in gameplay, something has gone wrong. Please file a bug report at https://github.com/SotMSteamMods/CauldronMods"
-                    ]
-                },
-                {
-                    "identifier": "TrashStorage",
-                    "count": 5,
-                    "title": "Trash Storage",
-                    "keywords": [],
-                    "icons": [],
-                    "isReal": false,
-                    "body": [
-                        "This exists as a way to help the Mistress of Fate organize the cards of incapacitated heroes.",
-                        "If you see this card in gameplay, something has gone wrong. Please file a bug report at https://github.com/SotMSteamMods/CauldronMods"
-                    ]
                 }
     ],
     "subdecks": [
