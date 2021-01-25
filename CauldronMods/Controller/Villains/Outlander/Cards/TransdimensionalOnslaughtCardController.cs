@@ -15,6 +15,19 @@ namespace Cauldron.Outlander
 
         }
 
-        //{Outlander} deals each non-villain target X irreducible psychic damage, where X is the number of Trace cards in play.
+        public override IEnumerator Play()
+        {
+            //{Outlander} deals each non-villain target X irreducible psychic damage, where X is the number of Trace cards in play.
+            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => !base.IsVillain(c) && c.IsTarget, (Card c) => base.FindCardsWhere(new LinqCardCriteria((Card card) => base.IsTrace(card) && c.IsInPlayAndHasGameText)).Count(), DamageType.Psychic);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
     }
 }
