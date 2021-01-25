@@ -20,7 +20,7 @@ namespace Cauldron.Outlander
         public override void AddTriggers()
         {
             //The first time a hero one-shot enters play each turn, {Outlander} deals the hero target with the highest HP 1 irreducible lightning damage.
-            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => base.HasBeenSetToTrueThisTurn(OncePerTurn) && action.CardEnteringPlay.IsHero && action.CardEnteringPlay.IsOneShot, this.OncePerTurnResponse, TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn) && action.CardEnteringPlay.IsHero && action.CardEnteringPlay.IsOneShot, this.OncePerTurnResponse, TriggerType.DealDamage, TriggerTiming.After);
 
             //At the end of the villain turn, {Outlander} deals the hero target with the highest HP 3 melee damage.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);

@@ -20,7 +20,7 @@ namespace Cauldron.Outlander
         public override void AddTriggers()
         {
             //The first time {Outlander} is dealt 4 or more damage from a single source each turn, play the top card of the villain deck.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => base.HasBeenSetToTrueThisTurn(OncePerTurn) && action.Amount >= 4 && action.Target == base.CharacterCard, this.OncePerTurnResponse, TriggerType.PlayCard, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn) && action.Amount >= 4 && action.Target == base.CharacterCard, this.OncePerTurnResponse, TriggerType.PlayCard, TriggerTiming.After);
 
             //At the end of the villain turn, {Outlander} deals each non-villain target irreducible 1 projectile damage.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);

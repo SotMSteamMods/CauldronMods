@@ -20,7 +20,7 @@ namespace Cauldron.Outlander
         public override void AddTriggers()
         {
             //The first time {Outlander} is dealt damage each turn, he deals the source of that damage 2 fire damage.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => base.HasBeenSetToTrueThisTurn(OncePerTurn) && action.Target == base.CharacterCard && action.DidDealDamage, this.OncePerTurnResponse, TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn) && action.Target == base.CharacterCard && action.DidDealDamage, this.OncePerTurnResponse, TriggerType.DealDamage, TriggerTiming.After);
 
             //At the end of the villain turn, {Outlander} deals each non-villain target 1 fire damage.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
