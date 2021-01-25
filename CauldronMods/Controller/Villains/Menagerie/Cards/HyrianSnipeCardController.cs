@@ -37,7 +37,7 @@ namespace Cauldron.Menagerie
             //Then, destroy 1 equipment card.
             if (base.FindCardsWhere(new LinqCardCriteria((Card c) => base.IsEquipment(c) && c.IsInPlayAndHasGameText)).Any())
             {
-                coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c), "equipment"), false);
+                coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsEquipment(c), "equipment"), false, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
