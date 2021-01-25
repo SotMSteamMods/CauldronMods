@@ -141,5 +141,49 @@ namespace CauldronTests
             AssertIsInPlay(card);
             Assert.IsFalse(card.Definition.Keywords.Any(), $"{card.Title} has keywords when it shouldn't.");
         }
+
+        [Test()]
+        public void TestDelayedRockTrap_Fate()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //Play this card next to a hero.
+            DecisionSelectCard = legacy.CharacterCard;
+            Card trap = PlayCard("DelayedRockTrap");
+            AssertNextToCard(trap, legacy.CharacterCard);
+
+            //When a card enters the environment trash, check that card. 
+            //If it is a fate card, this card deal the hero next to it {H} melee damage.
+            QuickHPStorage(baron, ra, legacy, haka);
+            PutInTrash("HighGround");
+            QuickHPCheck(0, 0, -3, 0);
+
+            //Then, destroy this card.
+            AssertInTrash(trap);
+        }
+
+        [Test()]
+        public void TestDelayedRockTrap_NotFate()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //Play this card next to a hero.
+            DecisionSelectCard = legacy.CharacterCard;
+            Card trap = PlayCard("DelayedRockTrap");
+            AssertNextToCard(trap, legacy.CharacterCard);
+
+            //When a card enters the environment trash, check that card. 
+            //If it is not a fate card, this card deals each other hero target {H-2} melee damage. 
+            QuickHPStorage(baron, ra, legacy, haka);
+            PutInTrash("StoneWarden");
+            QuickHPCheck(0, -1, 0, -1);
+
+            //Then, destroy this card.
+            AssertInTrash(trap);
+        }
     }
 }
