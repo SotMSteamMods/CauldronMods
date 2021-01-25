@@ -40,7 +40,6 @@ namespace CauldronTests
             GoToPlayCardPhase(dungeon);
 
             Card card = PlayCard(characterClass);
-            AssertIsInPlay(card);
             AssertCardHasKeyword(card, "character class", false);
         }
 
@@ -54,7 +53,6 @@ namespace CauldronTests
             GoToPlayCardPhase(dungeon);
 
             Card card = PlayCard(fate);
-            AssertIsInPlay(card);
             AssertCardHasKeyword(card, "fate", false);
         }
 
@@ -68,7 +66,6 @@ namespace CauldronTests
             GoToPlayCardPhase(dungeon);
 
             Card card = PlayCard(monster);
-            AssertIsInPlay(card);
             AssertCardHasKeyword(card, "monster", false);
         }
 
@@ -82,7 +79,6 @@ namespace CauldronTests
             GoToPlayCardPhase(dungeon);
 
             Card card = PlayCard(npc);
-            AssertIsInPlay(card);
             AssertCardHasKeyword(card, "npc", false);
         }
 
@@ -96,7 +92,6 @@ namespace CauldronTests
             GoToPlayCardPhase(dungeon);
 
             Card card = PlayCard(tavern);
-            AssertIsInPlay(card);
             AssertCardHasKeyword(card, "tavern", false);
         }
 
@@ -110,7 +105,6 @@ namespace CauldronTests
             GoToPlayCardPhase(dungeon);
 
             Card card = PlayCard(trap);
-            AssertIsInPlay(card);
             AssertCardHasKeyword(card, "trap", false);
         }
 
@@ -124,7 +118,6 @@ namespace CauldronTests
             GoToPlayCardPhase(dungeon);
 
             Card card = PlayCard(treasure);
-            AssertIsInPlay(card);
             AssertCardHasKeyword(card, "treasure", false);
         }
 
@@ -138,7 +131,6 @@ namespace CauldronTests
             GoToPlayCardPhase(dungeon);
 
             Card card = PlayCard(keywordLess);
-            AssertIsInPlay(card);
             Assert.IsFalse(card.Definition.Keywords.Any(), $"{card.Title} has keywords when it shouldn't.");
         }
 
@@ -184,6 +176,51 @@ namespace CauldronTests
 
             //Then, destroy this card.
             AssertInTrash(trap);
+        }
+
+        [Test()]
+        public void TestDubiousEdibles_NotFate()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            SetHitPoints(baron, 20);
+            SetHitPoints(ra, 20);
+            SetHitPoints(legacy, 20);
+            SetHitPoints(haka, 20);
+
+            //put not fate in trash
+            PutInTrash("StoneWarden");
+            //When this card enters play, check the top card of the environment trash.
+            //If it is not a fate card, 1 hero target regains 4HP. 
+            DecisionSelectCard = haka.CharacterCard;
+            QuickHPStorage(baron, ra, legacy, haka);
+            Card edibles = PlayCard("DubiousEdibles");
+            QuickHPCheck(0, 0, 0, 4);
+
+        }
+
+        [Test()]
+        public void TestDubiousEdibles_Fate()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            SetHitPoints(baron, 20);
+            SetHitPoints(ra, 20);
+            SetHitPoints(legacy, 20);
+            SetHitPoints(haka, 20);
+
+            //put fate in trash
+            PutInTrash("HighGround");
+            //When this card enters play, check the top card of the environment trash.
+            //If it is a fate card, this card deals each hero 1 toxic damage.
+            QuickHPStorage(baron, ra, legacy, haka);
+            Card edibles = PlayCard("DubiousEdibles");
+            QuickHPCheck(0, -1, -1, -1);
+
         }
     }
 }
